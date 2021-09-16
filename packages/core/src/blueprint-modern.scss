@@ -1,0 +1,548 @@
+/*
+
+Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
+Licensed under the Apache License, Version 2.0.
+
+*/
+
+// Import files in the same order that they are documented in the docs
+@import "common/variables-modern";
+@import "~@blueprintjs/colors/lib/css/colors.css";
+
+@import "reset";
+@import "typography";
+@import "accessibility/focus-states";
+
+// Button variables and overrides
+$button-intents: (
+  "primary": ($pt-intent-primary, rgba($blue3, 0.1), rgba($blue3, 0.2)),
+  "success": ($pt-intent-success, rgba($green3, 0.1), rgba($green3, 0.2)),
+  "warning": ($pt-intent-warning, rgba($orange3, 0.1), rgba($orange3, 0.2)),
+  "danger": ($pt-intent-danger, rgba($red3, 0.1), rgba($red3, 0.2))
+);
+
+$dark-button-intents: (
+  "primary": ($pt-intent-primary, rgba($blue3, 0.1), rgba($blue3, 0.2)),
+  "success": ($pt-intent-success, rgba($green3, 0.1), rgba($green3, 0.2)),
+  "warning": ($pt-intent-warning, rgba($orange3, 0.1), rgba($orange3, 0.2)),
+  "danger": ($pt-intent-danger, rgba($red3, 0.1), rgba($red3, 0.2))
+);
+
+$button-active-minimal-intent-text-modern: (
+  "primary": $blue1,
+  "success": $green1,
+  "warning": $orange1,
+  "danger": $red1
+);
+
+$dark-minimal-button-intents-modern: (
+  "primary": (rgba($blue3, 0.2) $blue5, rgba($blue3, 0.3), #99c4ff),
+  "success": (rgba($green3, 0.2), $green5, rgba($green3, 0.3), #7cd7a2),
+  "warning": (rgba($orange3, 0.2), $orange5, rgba($orange3, 0.3), #f5c186),
+  "danger": (rgba($red3, 0.2), $red5, rgba($red3, 0.3), #ffa1a4)
+);
+$minimal-button-background-color-hover: $rgba($gray3, 0.15);
+$minimal-button-background-color-active: $rgba($gray3, 0.3);
+
+// Editable text variable overrides
+$input-placeholder-color: $gray1;
+$dark-input-placeholder-color: $gray4;
+
+// Menu variables
+$menu-item-intent-text-colors-modern: (
+  "primary": $blue1,
+  "success": $green1,
+  "warning": $orange1,
+  "danger" : $red1,
+);
+
+// Tag variables
+$tag-intent-interactive-colors-modern: (
+  "primary": ($blue2, $blue1),
+  "success": ($green2, $green1),
+  "warning": ($orange2, $orange1),
+  "danger": ($red2, $red1)
+);
+
+$minimal-tag-intent-interactive-colors-modern: (
+  "primary": ($pt-intent-primary, $blue2, $blue1, $blue1),
+  "success": ($pt-intent-success, $green2, $green1, $green1),
+  "warning": ($pt-intent-warning, $orange2, $orange1, $orange1),
+  "danger": ($pt-intent-danger, $red2, $red1, $red1)
+);
+
+$minimal-dark-tag-intent-interactive-colors-modern: (
+  "primary": ($pt-intent-primary, $blue5, #99c4ff, #99c4ff),
+  "success": ($pt-intent-success, $green5, #7cd7a2, #7cd7a2),
+  "warning": ($pt-intent-warning, $orange5, #f5c186, #f5c186),
+  "danger": ($pt-intent-danger, $red5, $red1, #ffa1a4, #ffa1a4)
+);
+
+// Toast variables
+// action-button-bg, action-button-text, action-button-hover, action-button-active
+$toast-intent-button-colors-modern: (
+  "primary": ($pt-intent-primary, $white, $blue2, $blue1),
+  "success": ($pt-intent-success, $white, $green2, $green1),
+  "warning": ($orange5, $dark-gray1, $orange4, $orange3),
+  "danger": ($pt-intent-danger, $white, $red1, $red2, $red1)
+);
+@import "components/index";
+
+
+// Contrast for breadcrumbs
+.#{$ns}-breadcrumbs-collapsed, .#{$ns}-collapsible-list, .#{$ns}-overflow-list {
+  background: rgba($gray3, 0.15);
+
+  &:hover {
+    background: rgba($gray3, 0.3);
+  }
+}
+
+.#{$ns}-dark {
+  .#{$ns}-breadcrumbs-collapsed, .#{$ns}-collapsible-list {
+    background: rgba($gray3, 0.2);
+
+    &:hover {
+      background: rgba($gray3, 0.3);
+    }
+  }
+}
+
+// Contrast for buttons
+.#{$ns}-button {
+  // Use dark text for warning intent
+  .#{$ns}-intent-warning {
+    background: $orange5;
+    color: $pt-text-color;
+
+    #{$icon-classes} {
+      color: rgba($dark-gray1, 0.7);
+    }
+
+    &:hover {
+      background: $orange4;
+    }
+
+    &:active {
+      background: $orange3;
+    }
+  }
+
+  &.#{$ns}-minimal {
+    @each $intent, $colors in $button-intents {
+      &.#{$ns}-intent-#{$intent} {
+        @include pt-button-minimal-intent-modern(
+          map-get($button-active-minimal-intent-text-modern, $intent),
+        );
+      }
+    }
+  }
+
+  .#{$ns}-dark & {
+    // TODO: Fix this maybe
+    &:not([class*="#{$ns}-intent-"]) &.#{$ns}-minimal {
+      color: $white;
+    }
+
+    @each $intent, $colors in $button-intents {
+      &.#{$ns}-intent-#{$intent} {
+        @include pt-button-minimal-dark-intent-modern(
+          map-get($button-active-minimal-intent-text-modern, $intent)
+        );
+      }
+    }
+  }
+}
+
+// Contrast for callouts
+.#{$ns}-callout {
+  @each $intent, $color in $pt-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      background-color: rgba($color, 0.1);
+    }
+
+    .#{$ns}-dark & {
+      background-color: rgba($color, 0.2);
+    }
+  }
+}
+
+// TODO
+// Contrast for checkboxes and radio buttons
+
+// TODO
+// Contrast for date pickers
+
+// Contrast for HTML tables
+table.#{$ns}-html-table {
+  &.#{$ns}-html-table-striped {
+    tbody tr:nth-child(odd) td {
+      background: rgba($gray3, 0.15);
+    }
+  }
+
+  &.#{$ns}-interactive {
+    tbody tr {
+      &:hover td {
+        background-color: rgba($gray3, 0.3);
+        cursor: pointer;
+      }
+
+      &:active td {
+        background-color: rgba($gray3, 0.4);
+      }
+    }
+  }
+}
+
+// TODO
+// Contrast for inputs
+
+// Contrast for menus
+.#{$ns}-menu-item {
+  @include menu-item-intent($menu-item-intent-text-colors-modern);
+
+  .#{$ns}-menu-item-label {
+    color: $pt-text-color;
+  }
+}
+
+// TODO
+// Contrast for sliders
+
+// TODO
+// Contrast for switches
+
+// Contrast for tags
+.#{$ns}-tag {
+  color: $white;
+
+  .#{$ns}-tag-remove {
+    color: rgba($white, 0.7);
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:active {
+      opacity: 1;
+    }
+  }
+
+  // Dark mode contrast for default intent
+  &:not([class*="#{$ns}-intent-"]) {
+    .#{$ns}-dark & {
+      background: $gray5;
+      color: $pt-text-color;
+
+      .#{$ns}-tag-remove {
+        color: rgba($dark-gray1, 0.7);
+      }
+
+      &:hover {
+        background: $gray4;
+      }
+
+      &:active {
+        background: $gray3;
+      }
+    }
+  }
+
+  // Light mode contrast for intents
+  @each $intent, $color in $tag-intent-interactive-colors-modern {
+    &.#{$ns}-intent-#{$intent} {
+      @include pt-tag-interactive-modern($color...);
+    }
+  }
+
+  // Warning intent contrast
+  .#{$ns}-intent-warning {
+    background-color: $orange5;
+    // Use dark text for warning intent
+    color: $pt-text-color;
+
+    #{$icon-classes} {
+      color: rgba($pt-text-color, 0.7);
+    }
+
+    &:hover {
+      background-color: $orange4;
+    }
+
+    &:active {
+      background-color: $orange3;
+    }
+
+    .#{$ns}-tag-remove {
+      color: rgba($pt-text-color, 0.7);
+    }
+  }
+
+  // Minimal style contrast
+  &.#{$ns}-minimal {
+    // Default intent
+    background-color: rgba($gray3, 0.15);
+    color: $pt-text-color;
+    &.#{$ns}-interactive {
+      &:hover {
+        background-color: rgba($gray3, 0.3);
+        color: $black;
+      }
+
+      &:active {
+        background-color: rgba($gray3, 0.35);
+        color: $black;
+      }
+
+      .#{$ns}-tag-remove {
+        color: $gray1;
+
+        &:hover {
+          color: $dark-gray1;
+        }
+
+        &:active {
+          color: $dark-gray1;
+        }
+      }
+    }
+
+    .#{$ns}-dark & {
+      background-color: rgba($gray3, 0.15);
+      color: $light-gray1;
+
+      &:hover {
+        background-color: rgba($gray3, 0.3);
+        color: $white;
+      }
+
+      &:active {
+        background-color: rgba($gray3, 0.35);
+        color: $white;
+      }
+
+      .#{$ns}-tag-remove {
+        color: $gray4;
+
+        &:hover {
+          color: $light-gray1;
+        }
+
+        &:active {
+          color: $light-gray1;
+        }
+      }
+    }
+
+    @each $intent, $color in $minimal-tag-intent-interactive-colors-modern {
+      &.#{$ns}-intent-#{$intent} {
+        @include pt-tag-minimal-intent-interactive-modern($color...);
+      }
+    }
+
+    @each $intent, $color in $minimal-dark-tag-intent-interactive-colors-modern {
+      &.#{$ns}-intent-#{$intent} {
+        @include pt-tag-minimal-dark-intent-interactive-modern($color...);
+      }
+    }
+  }
+}
+
+// Contrast for toasts
+.#{$ns}-toast {
+  // Contrast for default intent
+  .#{$ns}-button {
+    &:hover {
+      background-color: rgba($gray3, 0.15);
+    }
+
+    &:active {
+      background-color: rgba($gra3, 0.3);
+    }
+  }
+
+  // Contrast for default intent in dark mode
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    .#{$ns}-button .#{$ns}-icon {
+      color: rgba($white, 0.7);
+    }
+  }
+
+  @each $intent, $color in $toast-intent-button-colors-modern {
+    &.#{$ns}-intent-#{$intent} {
+      @include pt-toast-intent-button-colors-modern($color...);
+    }
+  }
+
+  .#{$ns}-intent-warning {
+    background-color: $orange5;
+    color: $pt-text-color;
+  }
+
+  // HACK needs !important to override the existing hack
+  /* stylelint-disable declaration-no-important */
+  // Warning toasts use 70% opacity text in all states, unlike other intents
+  .#{$ns}-button .#{$ns}-intent-warning .#{$ns}-icon {
+    color: rgba($dark-gray, 0.7) !important;
+  }
+}
+
+// Contrast for trees
+.#{$ns}-tree-node-content {
+  background: none;
+
+  &:hover {
+    background-color: rgba($gray3, 0.15);
+  }
+
+  &:active {
+    background-color: rgba($gray3, 0.3);
+  }
+}
+
+
+// Mixin helpers
+@mixin pt-button-minimal-intent-modern($active-text-color) {
+  &:active {
+    color: $text-color;
+  }
+}
+
+@mixin pt-button-minimal-dark-intent-modern(
+  $hover-color,
+  $hover-text,
+  $active-color,
+  $active-text
+) {
+  &:hover {
+    background: $hover-color;
+    color: $hover-text;
+  }
+
+  &:active {
+    background: $active-color;
+    color: $active-text;
+  }
+}
+
+@mixin pt-tag-interactive-modern($hover-color, $active-color) {
+  &.#{$ns}-interactive {
+    &:hover {
+      background-color: $hover-color;
+    }
+
+    &:active {
+      background-color: $active-color;
+    }
+  }
+}
+
+@mixin pt-tag-minimal-intent-interactive-modern(
+  $background-color,
+  $text-color,
+  $hover-text-color,
+  $active-text-color
+) {
+  background-color: rgba($background-color, 0.1);
+  color: $text-color;
+
+  &.#{$ns}-interactive {
+    &:hover {
+      background-color: rgba($background-color, 0.2);
+      color: $hover-text-color;
+    }
+
+    &:active {
+      background-color: rgba($background-color, 0.3);
+      color: $active-text-color;
+    }
+
+
+
+    .#{$ns}-tag-remove {
+      color: $text-color;
+
+      &:hover {
+        color: $hover-text-color;
+      }
+
+      &:active {
+        color: $active-text-color;
+      }
+    }
+  }
+}
+
+@mixin pt-tag-minimal-dark-intent-interactive-modern (
+  $background-color,
+  $text-color,
+  $hover-text-color,
+  $active-text-color,
+) {
+  .#{$ns}-dark & {
+    background-color: rgba($background-color, 0.2);
+    color: $text-color;
+
+    &.#{$ns}-interactive {
+      &:hover {
+        background-color: rgba($background-color, 0.3);
+        color: $hover-text-color;
+      }
+
+      &:active {
+        background-color: rgba($background-color, 0.35);
+        color: $active-text-color;
+      }
+
+      .#{$ns}-tag-remove {
+        color: $text-color;
+
+        &:hover {
+          color: $hover-text-color;
+        }
+
+        &:active {
+          color: $active-text-color;
+        }
+      }
+    }
+  }
+}
+
+// HACK needs !important to override the existing hack
+@mixin pt-toast-intent-button-colors-modern (
+  $background-color,
+  $text-color,
+  $hover-color,
+  $active-color
+) {
+  .#{$ns}-button {
+    background-color: $background-color;
+    color: $text-color;
+
+    &:hover {
+      background-color: $hover-color !important;
+    }
+
+    &:active {
+      background-color: $active-color !important;
+    }
+
+
+    .#{$ns}-icon {
+      color: rgba($text-color, 0.7);
+
+      &:hover {
+        background-color: $hover-color !important;
+        color: $text-color !important;
+      }
+
+      &:active {
+        background-color: $active-color !important;
+        color: $text-color !important;
+      }
+    }
+  }
+}
