@@ -36,13 +36,13 @@ $button-active-minimal-intent-text-modern: (
 );
 
 $dark-minimal-button-intents-modern: (
-  "primary": (rgba($blue3, 0.2) $blue5, rgba($blue3, 0.3), #99c4ff),
+  "primary": (rgba($blue3, 0.2), $blue5, rgba($blue3, 0.3), #99c4ff),
   "success": (rgba($green3, 0.2), $green5, rgba($green3, 0.3), #7cd7a2),
   "warning": (rgba($orange3, 0.2), $orange5, rgba($orange3, 0.3), #f5c186),
   "danger": (rgba($red3, 0.2), $red5, rgba($red3, 0.3), #ffa1a4)
 );
-$minimal-button-background-color-hover: $rgba($gray3, 0.15);
-$minimal-button-background-color-active: $rgba($gray3, 0.3);
+$minimal-button-background-color-hover: rgba($gray3, 0.15);
+$minimal-button-background-color-active: rgba($gray3, 0.3);
 
 // Checkbox and Radio variable overrides
 $dark-control-background-color: $gray4;
@@ -54,10 +54,10 @@ $dark-input-placeholder-color: $gray4;
 
 // Input variables and overrides
 $pt-input-box-shadow: inset border-shadow(0.15),
-                      inset 0 1px 1px rgba($gray2);
+                      inset 0 1px 1px $gray2;
 
 $pt-dark-input-box-shadow: inset border-shadow(0.3),
-                           inset 0 1px 1px rgba($gray3);
+                           inset 0 1px 1px $gray3;
 $dark-input-intent-box-shadow-colors: (
   "primary": $blue4,
   "success": $green4,
@@ -75,7 +75,7 @@ $menu-item-intent-text-colors-modern: (
 
 // Slider variable overrides
 $button-box-shadow-overlay:
-  0 0 0 $button-border-width rgba($black, 0.5),
+  0 0 0 1px rgba($black, 0.5),
   0 1px 1px rgba($black, 0.5);
 
 // Switch variable overrides
@@ -114,6 +114,151 @@ $toast-intent-button-colors-modern: (
   "danger": ($pt-intent-danger, $white, $red1, $red2, $red1)
 );
 @import "components/index";
+
+// Mixin helpers
+@mixin pt-button-minimal-intent-modern($active-text-color) {
+  &:active {
+    color: $active-text-color;
+  }
+}
+
+@mixin pt-button-minimal-dark-intent-modern(
+  $hover-color,
+  $hover-text,
+  $active-color,
+  $active-text
+) {
+  &:hover {
+    background: $hover-color;
+    color: $hover-text;
+  }
+
+  &:active {
+    background: $active-color;
+    color: $active-text;
+  }
+}
+
+@mixin pt-tag-interactive-modern($hover-color, $active-color) {
+  &.#{$ns}-interactive {
+    &:hover {
+      background-color: $hover-color;
+    }
+
+    &:active {
+      background-color: $active-color;
+    }
+  }
+}
+
+@mixin pt-tag-minimal-intent-interactive-modern(
+  $background-color,
+  $text-color,
+  $hover-text-color,
+  $active-text-color
+) {
+  background-color: rgba($background-color, 0.1);
+  color: $text-color;
+
+  &.#{$ns}-interactive {
+    &:hover {
+      background-color: rgba($background-color, 0.2);
+      color: $hover-text-color;
+    }
+
+    &:active {
+      background-color: rgba($background-color, 0.3);
+      color: $active-text-color;
+    }
+
+
+
+    .#{$ns}-tag-remove {
+      color: $text-color;
+
+      &:hover {
+        color: $hover-text-color;
+      }
+
+      &:active {
+        color: $active-text-color;
+      }
+    }
+  }
+}
+
+@mixin pt-tag-minimal-dark-intent-interactive-modern (
+  $background-color,
+  $text-color,
+  $hover-text-color,
+  $active-text-color,
+) {
+  .#{$ns}-dark & {
+    background-color: rgba($background-color, 0.2);
+    color: $text-color;
+
+    &.#{$ns}-interactive {
+      &:hover {
+        background-color: rgba($background-color, 0.3);
+        color: $hover-text-color;
+      }
+
+      &:active {
+        background-color: rgba($background-color, 0.35);
+        color: $active-text-color;
+      }
+
+      .#{$ns}-tag-remove {
+        color: $text-color;
+
+        &:hover {
+          color: $hover-text-color;
+        }
+
+        &:active {
+          color: $active-text-color;
+        }
+      }
+    }
+  }
+}
+
+// HACK needs !important to override the existing hack
+/* stylelint-disable declaration-no-important */
+@mixin pt-toast-intent-button-colors-modern (
+  $background-color,
+  $text-color,
+  $hover-color,
+  $active-color
+) {
+  .#{$ns}-button {
+    background-color: $background-color;
+    color: $text-color;
+
+    &:hover {
+      background-color: $hover-color !important;
+    }
+
+    &:active {
+      background-color: $active-color !important;
+    }
+
+
+    .#{$ns}-icon {
+      color: rgba($text-color, 0.7);
+
+      &:hover {
+        background-color: $hover-color !important;
+        color: $text-color !important;
+      }
+
+      &:active {
+        background-color: $active-color !important;
+        color: $text-color !important;
+      }
+    }
+  }
+}
 
 
 // Contrast for breadcrumbs
@@ -163,19 +308,17 @@ $toast-intent-button-colors-modern: (
         );
       }
     }
-  }
 
-  .#{$ns}-dark & {
-    // TODO: Fix this maybe
-    &:not([class*="#{$ns}-intent-"]) &.#{$ns}-minimal {
-      color: $white;
-    }
+    .#{$ns}-dark & {
+      // TODO: Fix this maybe
+      &:not([class*="#{$ns}-intent-"]) {
+        color: $white;
+      }
 
-    @each $intent, $colors in $button-intents {
-      &.#{$ns}-intent-#{$intent} {
-        @include pt-button-minimal-dark-intent-modern(
-          map-get($button-active-minimal-intent-text-modern, $intent)
-        );
+      @each $intent, $color in $dark-minimal-button-intents-modern {
+        &.#{$ns}-intent-#{$intent} {
+          @include pt-button-minimal-dark-intent-modern($color...);
+        }
       }
     }
   }
@@ -217,7 +360,7 @@ $toast-intent-button-colors-modern: (
     &.#{$ns}-checkbox, &.#{$ns}-radio {
       input:not(:disabled):active ~ .#{$ns}-control-indicator {
         background:
-          linear-gradient(0deg, rgba($white, 0.1), rgba($white 0.1)),
+          linear-gradient(0deg, rgba($white, 0.1), rgba($white, 0.1)),
           linear-gradient(0deg, $gray2, $gray2);
       }
     }
@@ -294,6 +437,7 @@ table.#{$ns}-html-table {
     background-color: rgba($gray3, 0.6);
   }
 
+  // TODO: Make sure these don't override disabled and override light themes where necessary
   .#{$ns}-dark & {
     &:hover .#{$ns}-control-indicator::before {
       background-color: rgba($gray3, 0.5);
@@ -487,7 +631,7 @@ table.#{$ns}-html-table {
     }
 
     &:active {
-      background-color: rgba($gra3, 0.3);
+      background-color: rgba($gray3, 0.3);
     }
   }
 
@@ -511,10 +655,9 @@ table.#{$ns}-html-table {
   }
 
   // HACK needs !important to override the existing hack
-  /* stylelint-disable declaration-no-important */
   // Warning toasts use 70% opacity text in all states, unlike other intents
   .#{$ns}-button .#{$ns}-intent-warning .#{$ns}-icon {
-    color: rgba($dark-gray, 0.7) !important;
+    color: rgba($dark-gray1, 0.7) !important;
   }
 }
 
@@ -532,146 +675,3 @@ table.#{$ns}-html-table {
 }
 
 
-// Mixin helpers
-@mixin pt-button-minimal-intent-modern($active-text-color) {
-  &:active {
-    color: $text-color;
-  }
-}
-
-@mixin pt-button-minimal-dark-intent-modern(
-  $hover-color,
-  $hover-text,
-  $active-color,
-  $active-text
-) {
-  &:hover {
-    background: $hover-color;
-    color: $hover-text;
-  }
-
-  &:active {
-    background: $active-color;
-    color: $active-text;
-  }
-}
-
-@mixin pt-tag-interactive-modern($hover-color, $active-color) {
-  &.#{$ns}-interactive {
-    &:hover {
-      background-color: $hover-color;
-    }
-
-    &:active {
-      background-color: $active-color;
-    }
-  }
-}
-
-@mixin pt-tag-minimal-intent-interactive-modern(
-  $background-color,
-  $text-color,
-  $hover-text-color,
-  $active-text-color
-) {
-  background-color: rgba($background-color, 0.1);
-  color: $text-color;
-
-  &.#{$ns}-interactive {
-    &:hover {
-      background-color: rgba($background-color, 0.2);
-      color: $hover-text-color;
-    }
-
-    &:active {
-      background-color: rgba($background-color, 0.3);
-      color: $active-text-color;
-    }
-
-
-
-    .#{$ns}-tag-remove {
-      color: $text-color;
-
-      &:hover {
-        color: $hover-text-color;
-      }
-
-      &:active {
-        color: $active-text-color;
-      }
-    }
-  }
-}
-
-@mixin pt-tag-minimal-dark-intent-interactive-modern (
-  $background-color,
-  $text-color,
-  $hover-text-color,
-  $active-text-color,
-) {
-  .#{$ns}-dark & {
-    background-color: rgba($background-color, 0.2);
-    color: $text-color;
-
-    &.#{$ns}-interactive {
-      &:hover {
-        background-color: rgba($background-color, 0.3);
-        color: $hover-text-color;
-      }
-
-      &:active {
-        background-color: rgba($background-color, 0.35);
-        color: $active-text-color;
-      }
-
-      .#{$ns}-tag-remove {
-        color: $text-color;
-
-        &:hover {
-          color: $hover-text-color;
-        }
-
-        &:active {
-          color: $active-text-color;
-        }
-      }
-    }
-  }
-}
-
-// HACK needs !important to override the existing hack
-@mixin pt-toast-intent-button-colors-modern (
-  $background-color,
-  $text-color,
-  $hover-color,
-  $active-color
-) {
-  .#{$ns}-button {
-    background-color: $background-color;
-    color: $text-color;
-
-    &:hover {
-      background-color: $hover-color !important;
-    }
-
-    &:active {
-      background-color: $active-color !important;
-    }
-
-
-    .#{$ns}-icon {
-      color: rgba($text-color, 0.7);
-
-      &:hover {
-        background-color: $hover-color !important;
-        color: $text-color !important;
-      }
-
-      &:active {
-        background-color: $active-color !important;
-        color: $text-color !important;
-      }
-    }
-  }
-}
