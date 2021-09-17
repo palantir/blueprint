@@ -44,9 +44,26 @@ $dark-minimal-button-intents-modern: (
 $minimal-button-background-color-hover: $rgba($gray3, 0.15);
 $minimal-button-background-color-active: $rgba($gray3, 0.3);
 
+// Checkbox and Radio variable overrides
+$dark-control-background-color: $gray4;
+$dark-control-background-color-hover: $gray3;
+
 // Editable text variable overrides
 $input-placeholder-color: $gray1;
 $dark-input-placeholder-color: $gray4;
+
+// Input variables and overrides
+$pt-input-box-shadow: inset border-shadow(0.15),
+                      inset 0 1px 1px rgba($gray2);
+
+$pt-dark-input-box-shadow: inset border-shadow(0.3),
+                           inset 0 1px 1px rgba($gray3);
+$dark-input-intent-box-shadow-colors: (
+  "primary": $blue4,
+  "success": $green4,
+  "warning": $orange4,
+  "danger" : $red4,
+);
 
 // Menu variables
 $menu-item-intent-text-colors-modern: (
@@ -55,6 +72,16 @@ $menu-item-intent-text-colors-modern: (
   "warning": $orange1,
   "danger" : $red1,
 );
+
+// Slider variable overrides
+$button-box-shadow-overlay:
+  0 0 0 $button-border-width rgba($black, 0.5),
+  0 1px 1px rgba($black, 0.5);
+
+// Switch variable overrides
+$switch-indicator-background-color: rgba($gray3, 0.3);
+$switch-checked-background-color-hover: $blue2;
+$switch-checked-background-color-active: $blue1;
 
 // Tag variables
 $tag-intent-interactive-colors-modern: (
@@ -167,8 +194,35 @@ $toast-intent-button-colors-modern: (
   }
 }
 
-// TODO
 // Contrast for checkboxes and radio buttons
+.#{$ns}-control {
+  input:focus ~ .#{$ns}-control-indicator {
+    outline: $blue3 auto 2px;
+  }
+
+  &.#{$ns}-checkbox, &.#{$ns}-radio {
+    .#{$ns}-control-indicator {
+      box-shadow:
+        inset 0 0 0 $button-border-width rgba($black, 0.5),
+        //TODO: verify that this is right
+        inset 0 (-$button-border-width) 0 rgba($black, 0.1);
+    }
+  }
+
+  .#{$ns}-dark & {
+    input:focus ~ .#{$ns}-control-indicator {
+      outline: $blue5 auto 2px;
+    }
+
+    &.#{$ns}-checkbox, &.#{$ns}-radio {
+      input:not(:disabled):active ~ .#{$ns}-control-indicator {
+        background:
+          linear-gradient(0deg, rgba($white, 0.1), rgba($white 0.1)),
+          linear-gradient(0deg, $gray2, $gray2);
+      }
+    }
+  }
+}
 
 // TODO
 // Contrast for date pickers
@@ -195,8 +249,14 @@ table.#{$ns}-html-table {
   }
 }
 
-// TODO
 // Contrast for inputs
+.#{$ns}-input {
+  @each $intent, $color in $dark-input-intent-box-shadow-colors {
+    .#{$ns}-dark & {
+      @include pt-dark-input-intent($color);
+    }
+  }
+}
 
 // Contrast for menus
 .#{$ns}-menu-item {
@@ -207,11 +267,80 @@ table.#{$ns}-html-table {
   }
 }
 
-// TODO
 // Contrast for sliders
+.#{$ns}-slider-handle {
+  .#{$ns}-dark & {
+    background-color: $gray4;
 
-// TODO
+    &:hover {
+      background-color: $dark-gray3;
+    }
+
+    &.#{$ns}-active {
+      background:
+        linear-gradient(0deg, rgba($white, 0.1), rgba($white, 0.1)),
+        linear-gradient(0deg, $gray2, $gray2);
+    }
+  }
+}
+
 // Contrast for switches
+.#{$ns}-control.#{$ns}-switch {
+  &:hover ~ .#{$ns}-control-indicator::before {
+    background-color: rgba($gray3, 0.5);
+  }
+
+  &:active ~ .#{$ns}-control-indicator::before {
+    background-color: rgba($gray3, 0.6);
+  }
+
+  .#{$ns}-dark & {
+    &:hover .#{$ns}-control-indicator::before {
+      background-color: rgba($gray3, 0.5);
+    }
+
+    &:active .#{$ns}-control-indicator::before {
+      background-color: rgba($gray3, 0.6);
+    }
+
+    input:checked ~ .#{$ns}-control-indicator::before {
+      background-color: $gray4;
+    }
+
+    input:checked:hover ~ .#{$ns}-control-indicator::before {
+      background-color: $gray3;
+    }
+
+    input:checked:active ~ .#{$ns}-control-indicator::before {
+      background-color: $gray2;
+    }
+
+    input:checked ~ .#{$ns}-control-indicator {
+      background-color: rgba($black, 0.5);
+    }
+
+    input:checked:hover ~ .#{$ns}-control-indicator {
+      background-color: rgba($black, 0.65);
+    }
+
+    input:checked:active ~ .#{$ns}-control-indicator {
+      background-color: rgba($black, 0.8);
+    }
+
+    input:not(:checked) ~ .#{$ns}-control-indicator {
+      background-color: rgba($gray3, 0.3);
+    }
+
+    input:not(:checked):hover ~ .#{$ns}-control-indicator {
+      background-color: rgba($gray3, 0.5);
+    }
+
+    input:not(:checked):active ~ .#{$ns}-control-indicator {
+      background-color: rgba($gray3, 0.6);
+    }
+  }
+}
+
 
 // Contrast for tags
 .#{$ns}-tag {
