@@ -596,7 +596,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
 
     private handleDocumentClick = (e: MouseEvent) => {
         const { canOutsideClickClose, isOpen, onClose } = this.props;
-        // get the actual target even if we are in an open mode Shadow DOM
+        // get the actual target even in the Shadow DOM
         const eventTarget = (e.composed ? e.composedPath()[0] : e.target) as HTMLElement;
 
         const stackIndex = Overlay.openStack.indexOf(this);
@@ -616,7 +616,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
 
     /**
      * When multiple Overlays are open, this event handler is only active for the most recently
-     * opened one to avoid Overlay competing with each other for focus.
+     * opened one to avoid Overlays competing with each other for focus.
      */
     private handleDocumentFocus = (e: FocusEvent) => {
         // get the actual target even in the Shadow DOM
