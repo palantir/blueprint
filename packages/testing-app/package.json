@@ -1,0 +1,68 @@
+{
+    "name": "@blueprintjs/testing-app",
+    "version": "0.1.0",
+    "description": "Blueprint Testing App",
+    "private": true,
+    "scripts": {
+        "bundle": "webpack --config ./webpack.config.js",
+        "clean": "rm -rf dist/*",
+        "dev": "webpack-dev-server --config ./webpack.config.js --host 0.0.0.0",
+        "dist": "cross-env NODE_ENV=production yarn bundle",
+        "lint": "run-p lint:scss lint:es",
+        "lint:scss": "sass-lint",
+        "lint:es": "es-lint",
+        "lint-fix": "es-lint --fix && sass-lint --fix",
+        "test": "exit 0",
+        "verify": "run-p dist lint"
+    },
+    "dependencies": {
+        "@blueprintjs/core": "^3.50.1",
+        "@blueprintjs/datetime": "^3.23.11",
+        "@blueprintjs/docs-data": "^3.50.1",
+        "@blueprintjs/docs-theme": "^3.10.11",
+        "@blueprintjs/icons": "^3.30.1",
+        "@blueprintjs/popover2": "^0.12.1",
+        "@blueprintjs/select": "^3.18.3",
+        "@blueprintjs/table": "^3.9.5",
+        "@blueprintjs/test-commons": "^0.10.13",
+        "@blueprintjs/timezone": "^3.9.11",
+        "@documentalist/client": "~3.0.0",
+        "chroma-js": "^2.1.0",
+        "classnames": "^2.2",
+        "core-js": "^3.8.1",
+        "dom4": "^2.1.5",
+        "downloadjs": "^1.4.7",
+        "lodash-es": "^4.17.15",
+        "moment": "^2.29.1",
+        "normalize.css": "^8.0.1",
+        "popper.js": "^1.16.1",
+        "promise": "^8.1.0",
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0",
+        "react-transition-group": "^4.4.1",
+        "tslib": "~1.13.0",
+        "whatwg-fetch": "^3.4.1"
+    },
+    "devDependencies": {
+        "@blueprintjs/node-build-scripts": "^1.6.0",
+        "@blueprintjs/webpack-build-scripts": "^2.0.2",
+        "@types/chroma-js": "^2.1.2",
+        "@types/downloadjs": "^1.4.2",
+        "copy-webpack-plugin": "^6.4.0",
+        "npm-run-all": "^4.1.5",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/testing-app"
+    },
+    "keywords": [
+        "palantir",
+        "blueprint",
+        "testing"
+    ],
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0"
+}
