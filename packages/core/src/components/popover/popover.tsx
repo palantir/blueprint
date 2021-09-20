@@ -86,6 +86,8 @@ export interface IPopoverProps extends IPopoverSharedProps {
      * If you are attaching a popover _and_ a tooltip to the same target, you must take
      * care to either disable this prop for the popover _or_ disable the tooltip's
      * `openOnTargetFocus` prop.
+     *
+     * @default false
      */
     shouldReturnFocusOnClose?: boolean;
 
@@ -129,6 +131,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         minimal: false,
         modifiers: {},
         openOnTargetFocus: true,
+        shouldReturnFocusOnClose: false,
         // N.B. we don't set a default for `placement` or `position` here because that would trigger
         // a warning in validateProps if the other prop is specified by a user of this component
         targetTagName: "span",
