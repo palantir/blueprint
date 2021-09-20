@@ -544,6 +544,10 @@ describe("<Overlay>", () => {
 
     let index = 0;
     function createOverlayContents() {
-        return <strong id={`overlay-${index++}`}>Overlay content!</strong>;
+        return (
+            <strong id={`overlay-${index++}`} tabIndex={0}>
+                Overlay content!
+            </strong>
+        );
     }
 });
