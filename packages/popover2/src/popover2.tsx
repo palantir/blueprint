@@ -96,6 +96,8 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
      * If you are attaching a popover _and_ a tooltip to the same target, you must take
      * care to either disable this prop for the popover _or_ disable the tooltip's
      * `openOnTargetFocus` prop.
+     *
+     * @default false
      */
     shouldReturnFocusOnClose?: boolean;
 
@@ -141,6 +143,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         // a warning in validateProps if the other prop is specified by a user of this component
         positioningStrategy: "absolute",
         renderTarget: undefined as any,
+        shouldReturnFocusOnClose: false,
         targetTagName: "span",
         transitionDuration: 300,
         usePortal: true,
