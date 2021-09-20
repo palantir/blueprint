@@ -249,7 +249,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     private refHandlers = {
         // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
         /* eslint-disable-next-line react/no-find-dom-node */
-        container: (ref: TransitionGroup) => (this.containerElement = findDOMNode(ref) as HTMLElement),
+        container: (ref: TransitionGroup | null) => (this.containerElement = findDOMNode(ref) as HTMLElement),
         firstFocusable: (ref: HTMLDivElement | null) => {
             this.startFocusTrapElement = ref;
             ref?.addEventListener("focusin", this.handleStartFocusTrapElementFocusIn);
@@ -371,13 +371,11 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         }
 
         // add a special class to each child element that will automatically set the appropriate
-        // CSS position mode under the hood. also, make the container focusable so we can
-        // trap focus inside it (via `enforceFocus`).
+        // CSS position mode under the hood.
         const decoratedChild =
             typeof child === "object" ? (
                 React.cloneElement(child as React.ReactElement, {
                     className: classNames((child as React.ReactElement).props.className, Classes.OVERLAY_CONTENT),
-                    tabIndex: this.props.enforceFocus || this.props.autoFocus ? 0 : undefined,
                 })
             ) : (
                 <span className={Classes.OVERLAY_CONTENT}>{child}</span>
@@ -486,7 +484,13 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         ) {
             this.startFocusTrapElement?.focus();
         } else {
-            this.getKeyboardFocusableElements().pop()?.focus();
+            const nextFocusableElement = this.getKeyboardFocusableElements().pop();
+            if (nextFocusableElement != null) {
+                nextFocusableElement.focus();
+            } else {
+                // Keeps focus within Overlay even if there are no keyboard-focusable children
+                this.startFocusTrapElement?.focus();
+            }
         }
     };
 
@@ -520,6 +524,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     }
 
     private overlayWillClose() {
+        document.removeEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", this.handleDocumentClick);
         this.startFocusTrapElement?.removeEventListener("focusin", this.handleStartFocusTrapElementFocusIn);
         this.endFocusTrapElement?.removeEventListener("focusin", this.handleEndFocusTrapElementFocusIn);
@@ -532,6 +537,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                 const lastOpenedOverlay = Overlay.getLastOpened();
                 if (lastOpenedOverlay.props.enforceFocus) {
                     lastOpenedOverlay.bringFocusInsideOverlay();
+                    document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
                 }
             }
 
@@ -542,13 +548,23 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     }
 
     private overlayWillOpen() {
-        Overlay.openStack.push(this);
+        const { getLastOpened, openStack } = Overlay;
+        if (openStack.length > 0) {
+            document.removeEventListener("focus", getLastOpened().handleDocumentFocus, /* useCapture */ true);
+        }
+        openStack.push(this);
 
         if (this.props.autoFocus) {
             this.bringFocusInsideOverlay();
         }
 
-        if (this.props.canOutsideClickClose || this.props.enforceFocus) {
+        if (this.props.enforceFocus) {
+            // Focus events do not bubble, but setting useCapture allows us to listen in and execute
+            // our handler before all others
+            document.addEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
+        }
+
+        if (this.props.canOutsideClickClose && !this.props.hasBackdrop) {
             document.addEventListener("mousedown", this.handleDocumentClick);
         }
 
@@ -579,8 +595,8 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     };
 
     private handleDocumentClick = (e: MouseEvent) => {
-        const { canOutsideClickClose, enforceFocus, isOpen, onClose } = this.props;
-        // get the actual target even if we are in an open mode Shadow DOM
+        const { canOutsideClickClose, isOpen, onClose } = this.props;
+        // get the actual target even in the Shadow DOM
         const eventTarget = (e.composed ? e.composedPath()[0] : e.target) as HTMLElement;
 
         const stackIndex = Overlay.openStack.indexOf(this);
@@ -592,14 +608,29 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                 return elem && elem.contains(eventTarget) && !elem.isSameNode(eventTarget);
             });
 
-        if (isOpen && !isClickInThisOverlayOrDescendant) {
-            if (canOutsideClickClose) {
-                // casting to any because this is a native event
-                onClose?.(e as any);
-            }
-            if (enforceFocus) {
-                this.bringFocusInsideOverlay();
-            }
+        if (isOpen && !isClickInThisOverlayOrDescendant && canOutsideClickClose) {
+            // casting to any because this is a native event
+            onClose?.(e as any);
+        }
+    };
+
+    /**
+     * When multiple Overlays are open, this event handler is only active for the most recently
+     * opened one to avoid Overlays competing with each other for focus.
+     */
+    private handleDocumentFocus = (e: FocusEvent) => {
+        // get the actual target even in the Shadow DOM
+        const eventTarget = e.composed ? e.composedPath()[0] : e.target;
+        if (
+            this.props.enforceFocus &&
+            this.containerElement != null &&
+            eventTarget instanceof Node &&
+            !this.containerElement.contains(eventTarget as HTMLElement)
+        ) {
+            // prevent default focus behavior (sometimes auto-scrolls the page)
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            this.bringFocusInsideOverlay();
         }
     };
 
