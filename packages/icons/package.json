@@ -35,6 +35,7 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
+        "@blueprintjs/colors": "^5.0.0-alpha.0",
         "classnames": "^2.2",
         "tslib": "~1.13.0"
     },

@@ -3,13 +3,14 @@
 @import "~@blueprintjs/core/lib/scss/variables";
 
 $dark-content-background-color: $dark-gray3;
+$background-color: $light-gray2;
 $content-background-color: $light-gray4;
 $topbar-background-color: $white;
-$dark-topbar-background-color: $dark-gray4;
+$dark-topbar-background-color: $dark-gray2;
 
 .examples-root {
   align-items: center;
-  background-color: $content-background-color;
+  background-color: $background-color;
   display: flex;
   flex-direction: column;
 
@@ -60,6 +61,7 @@ $dark-topbar-background-color: $dark-gray4;
 }
 
 .example-card {
+  background-color: $content-background-color;
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;

@@ -10,7 +10,7 @@
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:colors": "generate-css-variables --outputFileName colors _colors.scss",
+        "dist:colors": "generate-css-variables --outputFileName colors colors.scss",
         "lint": "npm-run-all -p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",

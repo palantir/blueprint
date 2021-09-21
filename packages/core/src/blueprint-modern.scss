@@ -263,7 +263,7 @@ $toast-intent-button-colors-modern: (
 
 
 // Contrast for breadcrumbs
-.#{$ns}-breadcrumbs-collapsed, .#{$ns}-collapsible-list, .#{$ns}-overflow-list {
+.#{$ns}-breadcrumbs-collapsed {
   background: rgba($gray3, 0.15);
 
   &:hover {
@@ -271,9 +271,19 @@ $toast-intent-button-colors-modern: (
   }
 }
 
+
 .#{$ns}-dark {
-  .#{$ns}-breadcrumbs-collapsed, .#{$ns}-collapsible-list {
+  .#{$ns}-breadcrumbs {
+    > li::after {
+      background: svg-icon("16px/chevron-right.svg", (path: (fill: $pt-dark-icon-color)));
+    }
+  }
+  .#{$ns}-breadcrumbs-collapsed {
     background: rgba($gray3, 0.2);
+
+    &::before {
+      background: svg-icon("16px/more.svg", (circle: (fill: $pt-dark-icon-color))) center no-repeat;
+    }
 
     &:hover {
       background: rgba($gray3, 0.3);
