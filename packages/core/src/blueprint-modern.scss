@@ -6,8 +6,8 @@ Licensed under the Apache License, Version 2.0.
 */
 
 // Import files in the same order that they are documented in the docs
-@import "common/variables-modern";
-@import "~@blueprintjs/colors/lib/css/colors.css";
+@import "~@blueprintjs/colors/lib/scss/colors";
+@import "common/variables";
 
 @import "reset";
 @import "typography";
@@ -113,6 +113,7 @@ $toast-intent-button-colors-modern: (
   "warning": ($orange5, $dark-gray1, $orange4, $orange3),
   "danger": ($pt-intent-danger, $white, $red1, $red2, $red1)
 );
+
 @import "components/index";
 
 // Mixin helpers
@@ -283,7 +284,8 @@ $toast-intent-button-colors-modern: (
 // Contrast for buttons
 .#{$ns}-button {
   // Use dark text for warning intent
-  .#{$ns}-intent-warning {
+  &.#{$ns}-intent-warning:not([class*="#{$ns}-minimal"]) {
+
     background: $orange5;
     color: $pt-text-color;
 
@@ -300,6 +302,7 @@ $toast-intent-button-colors-modern: (
     }
   }
 
+
   &.#{$ns}-minimal {
     @each $intent, $colors in $button-intents {
       &.#{$ns}-intent-#{$intent} {
@@ -310,7 +313,6 @@ $toast-intent-button-colors-modern: (
     }
 
     .#{$ns}-dark & {
-      // TODO: Fix this maybe
       &:not([class*="#{$ns}-intent-"]) {
         color: $white;
       }
@@ -484,7 +486,6 @@ table.#{$ns}-html-table {
     }
   }
 }
-
 
 // Contrast for tags
 .#{$ns}-tag {

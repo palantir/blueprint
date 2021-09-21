@@ -1,5 +1,6 @@
 @import "~@blueprintjs/core/lib/css/blueprint-modern.css";
-@import "~@blueprintjs/core/lib/scss/variables-modern";
+@import "~@blueprintjs/colors/lib/scss/colors";
+@import "~@blueprintjs/core/lib/scss/variables";
 
 $dark-content-background-color: $dark-gray3;
 $content-background-color: $light-gray4;
