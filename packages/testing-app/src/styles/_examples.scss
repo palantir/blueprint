@@ -2,58 +2,33 @@
 @import "~@blueprintjs/colors/lib/scss/colors";
 @import "~@blueprintjs/core/lib/scss/variables";
 
-$dark-content-background-color: $dark-gray3;
 $background-color: $light-gray2;
 $content-background-color: $light-gray4;
-$topbar-background-color: $white;
-$dark-topbar-background-color: $dark-gray2;
+$dark-background-color: $dark-gray2;
+$dark-content-background-color: $dark-gray3;
 
 .examples-root {
   align-items: center;
   background-color: $background-color;
   display: flex;
-  flex-direction: column;
-
-  &.#{$ns}-dark {
-    background-color: $dark-content-background-color;
-  }
-}
-
-.toggle-mode-button-container {
-  background-color: $topbar-background-color;
-  box-shadow: 0 1px 0 $pt-divider-black;
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 100;
-
-
-  &.#{$ns}-dark {
-    background-color: $dark-topbar-background-color;
-  }
-}
-
-.toggle-mode-button {
-  margin: 10px;
-  max-width: 150px;
+  flex-direction: row;
 }
 
 .examples-container {
   align-items: center;
+  background-color: $background-color;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  justify-content: center;
-  margin: auto;
-  margin-top: 50px;
   padding: 10px;
+  width: 100%;
+
+  &.#{$ns}-dark {
+    background-color: $dark-background-color;
+  }
 }
 
 .example-row {
   display: flex;
-  flex-direction: row;
 
   > :not(:last-child) {
     margin-right: 10px;

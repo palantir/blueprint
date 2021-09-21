@@ -399,6 +399,15 @@ table.#{$ns}-html-table {
   }
 }
 
+// Contrast for icons
+.#{$ns}-icon:not([class*="#{$ns}-intent-"]) {
+  color: $pt-icon-color;
+
+  .#{$ns}-dark & {
+    color: $pt-dark-icon-color;
+  }
+}
+
 // Contrast for inputs
 .#{$ns}-input {
   @each $intent, $color in $dark-input-intent-box-shadow-colors {

@@ -15,7 +15,7 @@ limitations under the License.*/
 import classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes } from "@blueprintjs/core";
+import { Classes } from "@blueprintjs/core";
 
 import { BreadcrumbExample } from "./BreadcrumbExample";
 import { ButtonExample } from "./ButtonExample";
@@ -33,47 +33,39 @@ import { TextExample } from "./TextExample";
 import { TooltipExample } from "./TooltipExample";
 import { TreeExample } from "./TreeExample";
 
-export interface ExamplesState {
-    isDarkMode: boolean;
-}
-
-export class Examples extends React.PureComponent<{}, ExamplesState> {
-    public state: ExamplesState = { isDarkMode: false };
-
-    private toggleDarkMode = () => this.setState({ isDarkMode: !this.state.isDarkMode });
+export class Examples extends React.PureComponent {
+    private renderExamples(isDarkMode: boolean) {
+        return (
+            <div className={classNames("examples-container", { [Classes.DARK]: isDarkMode })}>
+                <BreadcrumbExample />
+                <ButtonExample />
+                <CalloutExample />
+                <CheckboxRadioExample />
+                {/* Add DatePickerExample */}
+                <DialogExample isDarkMode={isDarkMode} />
+                <EditableTextExample />
+                <HtmlCodeExample />
+                {/* Add HtmlTableExample */}
+                <IconExample />
+                {/* Add InputExample */}
+                <MenuExample />
+                <SwitchExample />
+                {/* Add TableExample */}
+                <TabsExample />
+                <TagExample />
+                <TextExample />
+                {/* Add ToastExample */}
+                <TooltipExample />
+                <TreeExample />
+            </div>
+        );
+    }
 
     public render() {
         return (
-            <div className={classNames("examples-root", { [Classes.DARK]: this.state.isDarkMode })}>
-                <div className={classNames("toggle-mode-button-container", { [Classes.DARK]: this.state.isDarkMode })}>
-                    <Button
-                        className="toggle-mode-button"
-                        minimal={true}
-                        text={`Toggle ${this.state.isDarkMode ? "light mode" : "dark mode"}`}
-                        onClick={this.toggleDarkMode}
-                    />
-                </div>
-                <div className="examples-container">
-                    <BreadcrumbExample />
-                    <ButtonExample />
-                    <CalloutExample />
-                    <CheckboxRadioExample />
-                    {/* Add DatePickerExample */}
-                    <DialogExample isDarkMode={this.state.isDarkMode} />
-                    <EditableTextExample />
-                    <HtmlCodeExample />
-                    <IconExample />
-                    {/* Add InputExample */}
-                    <MenuExample />
-                    <SwitchExample />
-                    {/* Add TableExample */}
-                    <TabsExample />
-                    <TagExample />
-                    <TextExample />
-                    {/* Add ToastExample */}
-                    <TooltipExample />
-                    <TreeExample />
-                </div>
+            <div className="examples-root">
+                {this.renderExamples(false)}
+                {this.renderExamples(true)}
             </div>
         );
     }
