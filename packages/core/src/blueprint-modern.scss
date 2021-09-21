@@ -14,20 +14,6 @@ Licensed under the Apache License, Version 2.0.
 @import "accessibility/focus-states";
 
 // Button variables and overrides
-$button-intents: (
-  "primary": ($pt-intent-primary, rgba($blue3, 0.1), rgba($blue3, 0.2)),
-  "success": ($pt-intent-success, rgba($green3, 0.1), rgba($green3, 0.2)),
-  "warning": ($pt-intent-warning, rgba($orange3, 0.1), rgba($orange3, 0.2)),
-  "danger": ($pt-intent-danger, rgba($red3, 0.1), rgba($red3, 0.2))
-);
-
-$dark-button-intents: (
-  "primary": ($pt-intent-primary, rgba($blue3, 0.1), rgba($blue3, 0.2)),
-  "success": ($pt-intent-success, rgba($green3, 0.1), rgba($green3, 0.2)),
-  "warning": ($pt-intent-warning, rgba($orange3, 0.1), rgba($orange3, 0.2)),
-  "danger": ($pt-intent-danger, rgba($red3, 0.1), rgba($red3, 0.2))
-);
-
 $button-active-minimal-intent-text-modern: (
   "primary": $blue1,
   "success": $green1,
@@ -117,29 +103,6 @@ $toast-intent-button-colors-modern: (
 @import "components/index";
 
 // Mixin helpers
-@mixin pt-button-minimal-intent-modern($active-text-color) {
-  &:active {
-    color: $active-text-color;
-  }
-}
-
-@mixin pt-button-minimal-dark-intent-modern(
-  $hover-color,
-  $hover-text,
-  $active-color,
-  $active-text
-) {
-  &:hover {
-    background: $hover-color;
-    color: $hover-text;
-  }
-
-  &:active {
-    background: $active-color;
-    color: $active-text;
-  }
-}
-
 @mixin pt-tag-interactive-modern($hover-color, $active-color) {
   &.#{$ns}-interactive {
     &:hover {
@@ -295,11 +258,10 @@ $toast-intent-button-colors-modern: (
 .#{$ns}-button {
   // Use dark text for warning intent
   &.#{$ns}-intent-warning:not([class*="#{$ns}-minimal"]) {
-
     background: $orange5;
     color: $pt-text-color;
 
-    #{$icon-classes} {
+    .#{$ns}-icon>svg:not([fill]) {
       color: rgba($dark-gray1, 0.7);
     }
 
@@ -314,6 +276,29 @@ $toast-intent-button-colors-modern: (
 
 
   &.#{$ns}-minimal {
+    @mixin pt-button-minimal-intent-modern($active-text-color) {
+      &:active {
+        color: $active-text-color;
+      }
+    }
+
+    @mixin pt-button-minimal-dark-intent-modern(
+      $hover-color,
+      $hover-text,
+      $active-color,
+      $active-text
+    ) {
+      &:hover {
+        background: $hover-color;
+        color: $hover-text;
+      }
+
+      &:active {
+        background: $active-color;
+        color: $active-text;
+      }
+    }
+
     @each $intent, $colors in $button-intents {
       &.#{$ns}-intent-#{$intent} {
         @include pt-button-minimal-intent-modern(
