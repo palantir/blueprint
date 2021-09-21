@@ -323,13 +323,23 @@ $toast-intent-button-colors-modern: (
 
 // Contrast for callouts
 .#{$ns}-callout {
+  background-color: rgba($gray3, 0.15);
+
+  .#{$ns}-dark & {
+    background-color: rgba($gray3, 0.2);
+
+    &.#{$ns}-callout-icon:not([class*="#{$ns}-intent-"])>.#{$ns}-icon:first-child {
+      color: $pt-dark-icon-color;
+    }
+  }
+
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
       background-color: rgba($color, 0.1);
-    }
 
-    .#{$ns}-dark & {
-      background-color: rgba($color, 0.2);
+      .#{$ns}-dark & {
+        background-color: rgba($color, 0.2);
+      }
     }
   }
 }
