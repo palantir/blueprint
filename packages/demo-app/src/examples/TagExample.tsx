@@ -15,12 +15,15 @@ limitations under the License.*/
 import * as React from "react";
 
 import { Intent, Tag } from "@blueprintjs/core";
-import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
 const WIDTH = 200;
 export class TagExample extends React.PureComponent {
+    private onRemove = () => {
+        return;
+    };
+
     public render() {
         return (
             <div className="example-row">
@@ -31,7 +34,7 @@ export class TagExample extends React.PureComponent {
                                 key={`${intent}-button`}
                                 intent={intent as Intent}
                                 interactive={true}
-                                rightIcon={IconNames.CROSS}
+                                onRemove={this.onRemove}
                             >
                                 Tag
                             </Tag>
@@ -53,7 +56,7 @@ export class TagExample extends React.PureComponent {
                                 minimal={true}
                                 intent={intent as Intent}
                                 interactive={true}
-                                rightIcon={IconNames.CROSS}
+                                onRemove={this.onRemove}
                             >
                                 Tag
                             </Tag>

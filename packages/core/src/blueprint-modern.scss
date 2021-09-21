@@ -76,25 +76,25 @@ $switch-checked-background-color-hover: $blue2;
 $switch-checked-background-color-active: $blue1;
 
 // Tag variables
-$tag-intent-interactive-colors-modern: (
-  "primary": ($blue2, $blue1),
-  "success": ($green2, $green1),
-  "warning": ($orange2, $orange1),
-  "danger": ($red2, $red1)
+$tag-intent-colors-modern: (
+  "primary": ($pt-intent-primary, $blue2, $blue1, $white, $white),
+  "success": ($pt-intent-success, $green2, $green1, $white, $white),
+  "warning": ($orange5, $orange4, $orange3, $pt-text-color, $pt-text-color),
+  "danger": ($pt-intent-danger, $red2, $red1, $white, $white)
 );
 
-$minimal-tag-intent-interactive-colors-modern: (
+$minimal-tag-intent-colors-modern: (
   "primary": ($pt-intent-primary, $blue2, $blue1, $blue1),
   "success": ($pt-intent-success, $green2, $green1, $green1),
   "warning": ($pt-intent-warning, $orange2, $orange1, $orange1),
   "danger": ($pt-intent-danger, $red2, $red1, $red1)
 );
 
-$minimal-dark-tag-intent-interactive-colors-modern: (
-  "primary": ($pt-intent-primary, $blue5, #99c4ff, #99c4ff),
-  "success": ($pt-intent-success, $green5, #7cd7a2, #7cd7a2),
-  "warning": ($pt-intent-warning, $orange5, #f5c186, #f5c186),
-  "danger": ($pt-intent-danger, $red5, $red1, #ffa1a4, #ffa1a4)
+$minimal-dark-tag-intent-colors-modern: (
+  "primary": ($pt-intent-primary, $blue5, $blue6, $blue6),
+  "success": ($pt-intent-success, $green5, $green6, $green6),
+  "warning": ($pt-intent-warning, $orange5, $orange6, $orange6),
+  "danger": ($pt-intent-danger, $red5, $red1, $red6, $red6)
 );
 
 // Toast variables
@@ -123,90 +123,6 @@ $toast-intent-button-colors-modern: (
   &:active {
     background: $active-color;
     color: $active-text;
-  }
-}
-
-@mixin pt-tag-interactive-modern($hover-color, $active-color) {
-  &.#{$ns}-interactive {
-    &:hover {
-      background-color: $hover-color;
-    }
-
-    &:active {
-      background-color: $active-color;
-    }
-  }
-}
-
-@mixin pt-tag-minimal-intent-interactive-modern(
-  $background-color,
-  $text-color,
-  $hover-text-color,
-  $active-text-color
-) {
-  background-color: rgba($background-color, 0.1);
-  color: $text-color;
-
-  &.#{$ns}-interactive {
-    &:hover {
-      background-color: rgba($background-color, 0.2);
-      color: $hover-text-color;
-    }
-
-    &:active {
-      background-color: rgba($background-color, 0.3);
-      color: $active-text-color;
-    }
-
-
-
-    .#{$ns}-tag-remove {
-      color: $text-color;
-
-      &:hover {
-        color: $hover-text-color;
-      }
-
-      &:active {
-        color: $active-text-color;
-      }
-    }
-  }
-}
-
-@mixin pt-tag-minimal-dark-intent-interactive-modern (
-  $background-color,
-  $text-color,
-  $hover-text-color,
-  $active-text-color,
-) {
-  .#{$ns}-dark & {
-    background-color: rgba($background-color, 0.2);
-    color: $text-color;
-
-    &.#{$ns}-interactive {
-      &:hover {
-        background-color: rgba($background-color, 0.3);
-        color: $hover-text-color;
-      }
-
-      &:active {
-        background-color: rgba($background-color, 0.35);
-        color: $active-text-color;
-      }
-
-      .#{$ns}-tag-remove {
-        color: $text-color;
-
-        &:hover {
-          color: $hover-text-color;
-        }
-
-        &:active {
-          color: $active-text-color;
-        }
-      }
-    }
   }
 }
 
@@ -577,73 +493,170 @@ table.#{$ns}-html-table {
 
 // Contrast for tags
 .#{$ns}-tag {
+  @mixin pt-tag-modern(
+    $background-color,
+    $hover-color,
+    $active-color,
+    $text-color,
+    $cross-button-color
+  ) {
+    background: $background-color;
+    color: $text-color;
+    &.#{$ns}-interactive {
+      &:hover {
+        background-color: $hover-color;
+      }
+
+      &:active {
+        background-color: $active-color;
+      }
+    }
+
+    .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
+      color: rgba($cross-button-color, 0.7);
+
+      &:hover {
+        color: $cross-button-color;
+      }
+
+      &:active {
+        color: $cross-button-color;
+      }
+    }
+  }
+
+  @mixin pt-tag-minimal-intent-modern(
+    $background-color,
+    $text-color,
+    $hover-text-color,
+    $active-text-color
+  ) {
+    background-color: rgba($background-color, 0.1);
+    color: $text-color;
+
+    &.#{$ns}-interactive {
+      &:hover {
+        background-color: rgba($background-color, 0.2);
+        color: $hover-text-color;
+      }
+
+      &:active {
+        background-color: rgba($background-color, 0.3);
+        color: $active-text-color;
+      }
+    }
+
+    .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
+      color: $text-color;
+
+      &:hover {
+        color: $hover-text-color;
+      }
+
+      &:active {
+        color: $active-text-color;
+      }
+    }
+  }
+
+  @mixin pt-tag-minimal-dark-intent-modern (
+    $background-color,
+    $text-color,
+    $hover-text-color,
+    $active-text-color,
+  ) {
+    .#{$ns}-dark & {
+      background-color: rgba($background-color, 0.2);
+      color: $text-color;
+
+      &.#{$ns}-interactive {
+        &:hover {
+          background-color: rgba($background-color, 0.3);
+          color: $hover-text-color;
+        }
+
+        &:active {
+          background-color: rgba($background-color, 0.35);
+          color: $active-text-color;
+        }
+      }
+
+      .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
+        color: $text-color;
+
+        &:hover {
+          color: $hover-text-color;
+        }
+
+        &:active {
+          color: $active-text-color;
+        }
+      }
+    }
+  }
+
+  // Contrast for default intent
   color: $white;
-
-  .#{$ns}-tag-remove {
-    color: rgba($white, 0.7);
-
+  &.#{$ns}-interactive {
     &:hover {
-      opacity: 1;
+      background: $dark-gray5;
     }
 
     &:active {
-      opacity: 1;
+      background: $dark-gray4;
+    }
+  }
+
+  .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
+    color: rgba($white, 0.7);
+
+    &:hover {
+      color: $white;
+    }
+
+    &:active {
+      color: $white;
     }
   }
 
   // Dark mode contrast for default intent
-  &:not([class*="#{$ns}-intent-"]) {
-    .#{$ns}-dark & {
-      background: $gray5;
-      color: $pt-text-color;
+  .#{$ns}-dark & {
+    background: $gray5;
+    color: $pt-text-color;
 
-      .#{$ns}-tag-remove {
-        color: rgba($dark-gray1, 0.7);
-      }
-
+    &.#{$ns}-interactive {
       &:hover {
-        background: $gray4;
+        color: $gray4;
       }
 
       &:active {
-        background: $gray3;
+        color: $gray3;
+      }
+    }
+
+    .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
+      color: rgba($dark-gray1, 0.7);
+
+      &:hover {
+        color: $dark-gray1;
+      }
+
+      &:active {
+        color: $dark-gray1;
       }
     }
   }
 
   // Light mode contrast for intents
-  @each $intent, $color in $tag-intent-interactive-colors-modern {
+  @each $intent, $color in $tag-intent-colors-modern {
     &.#{$ns}-intent-#{$intent} {
-      @include pt-tag-interactive-modern($color...);
-    }
-  }
-
-  // Warning intent contrast
-  .#{$ns}-intent-warning {
-    background-color: $orange5;
-    // Use dark text for warning intent
-    color: $pt-text-color;
-
-    #{$icon-classes} {
-      color: rgba($pt-text-color, 0.7);
-    }
-
-    &:hover {
-      background-color: $orange4;
-    }
-
-    &:active {
-      background-color: $orange3;
-    }
-
-    .#{$ns}-tag-remove {
-      color: rgba($pt-text-color, 0.7);
+      @include pt-tag-modern($color...);
     }
   }
 
   // Minimal style contrast
   &.#{$ns}-minimal {
-    // Default intent
+    // Minimal style for default intent
     background-color: rgba($gray3, 0.15);
     color: $pt-text-color;
     &.#{$ns}-interactive {
@@ -657,7 +670,7 @@ table.#{$ns}-html-table {
         color: $black;
       }
 
-      .#{$ns}-tag-remove {
+      .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
         color: $gray1;
 
         &:hover {
@@ -670,21 +683,24 @@ table.#{$ns}-html-table {
       }
     }
 
+    // Minimal dark style for default intent
     .#{$ns}-dark & {
       background-color: rgba($gray3, 0.15);
       color: $light-gray1;
 
-      &:hover {
-        background-color: rgba($gray3, 0.3);
-        color: $white;
+      &.#{$ns}-interactive {
+        &:hover {
+          background-color: rgba($gray3, 0.3);
+          color: $white;
+        }
+
+        &:active {
+          background-color: rgba($gray3, 0.35);
+          color: $white;
+        }
       }
 
-      &:active {
-        background-color: rgba($gray3, 0.35);
-        color: $white;
-      }
-
-      .#{$ns}-tag-remove {
+      .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
         color: $gray4;
 
         &:hover {
@@ -697,15 +713,15 @@ table.#{$ns}-html-table {
       }
     }
 
-    @each $intent, $color in $minimal-tag-intent-interactive-colors-modern {
+    @each $intent, $color in $minimal-tag-intent-colors-modern {
       &.#{$ns}-intent-#{$intent} {
-        @include pt-tag-minimal-intent-interactive-modern($color...);
+        @include pt-tag-minimal-intent-modern($color...);
       }
     }
 
-    @each $intent, $color in $minimal-dark-tag-intent-interactive-colors-modern {
+    @each $intent, $color in $minimal-dark-tag-intent-colors-modern {
       &.#{$ns}-intent-#{$intent} {
-        @include pt-tag-minimal-dark-intent-interactive-modern($color...);
+        @include pt-tag-minimal-dark-intent-modern($color...);
       }
     }
   }
