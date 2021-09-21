@@ -22,6 +22,7 @@ import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import { clamp } from "../../common/utils";
 import { Browser } from "../../compatibility";
+import { AsyncControllableInput } from "../forms/asyncControllableInput";
 
 // eslint-disable-next-line deprecation/deprecation
 export type EditableTextProps = IEditableTextProps;
@@ -40,6 +41,15 @@ export interface IEditableTextProps extends IntentProps, Props {
      * @default false
      */
     alwaysRenderInput?: boolean;
+
+    /**
+     * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
+     * These may occur if you do not immediately call setState in a parent component with the value from
+     * the `onChange` handler, or if working with certain libraries like __redux-form__.
+     *
+     * @default false
+     */
+    asyncControl?: boolean;
 
     /**
      * If `true` and in multiline mode, the `enter` key will trigger onConfirm and `mod+enter`
@@ -363,7 +373,7 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
     };
 
     private renderInput(value: string | undefined) {
-        const { disabled, maxLength, multiline, type, placeholder } = this.props;
+        const { asyncControl, disabled, maxLength, multiline, type, placeholder } = this.props;
         const props: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> = {
             className: Classes.EDITABLE_TEXT_INPUT,
             disabled,
@@ -384,7 +394,9 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
             };
         }
 
-        return multiline ? (
+        return asyncControl ? (
+            <AsyncControllableInput inputRef={this.refHandlers.input} type={type} multiline={multiline} {...props} />
+        ) : multiline ? (
             <textarea ref={this.refHandlers.input} {...props} />
         ) : (
             <input ref={this.refHandlers.input} type={type} {...props} />
