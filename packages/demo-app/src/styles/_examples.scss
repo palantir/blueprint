@@ -64,3 +64,33 @@ $dark-content-background-color: $dark-gray3;
     margin-bottom: 10px;
   }
 }
+
+.html-table-example {
+  .#{$ns}-intent-primary {
+    color: $blue1;
+  }
+  .#{$ns}-intent-success {
+    color: $green1;
+  }
+  .#{$ns}-intent-warning {
+    color: $orange1;
+  }
+  .#{$ns}-intent-danger {
+    color: $red1;
+  }
+
+  .#{$ns}-dark & {
+    .#{$ns}-intent-primary {
+      color: $blue5;
+    }
+    .#{$ns}-intent-success {
+      color: $green5;
+    }
+    .#{$ns}-intent-warning {
+      color: $orange5;
+    }
+    .#{$ns}-intent-danger {
+      color: $red5;
+    }
+  }
+}

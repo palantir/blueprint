@@ -24,6 +24,7 @@ import { CheckboxRadioExample } from "./CheckboxExample";
 import { DialogExample } from "./DialogExample";
 import { EditableTextExample } from "./EditableTextExample";
 import { HtmlCodeExample } from "./HtmlCodeExample";
+import { HtmlTableExample } from "./HtmlTableExample";
 import { IconExample } from "./IconExample";
 import { MenuExample } from "./MenuExample";
 import { SwitchExample } from "./SwitchExample";
@@ -45,7 +46,7 @@ export class Examples extends React.PureComponent {
                 <DialogExample isDarkMode={isDarkMode} />
                 <EditableTextExample />
                 <HtmlCodeExample />
-                {/* Add HtmlTableExample */}
+                <HtmlTableExample />
                 <IconExample />
                 {/* Add InputExample */}
                 <MenuExample />
