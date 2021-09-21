@@ -65,13 +65,6 @@ $menu-item-intent-colors-modern: (
   "danger" : (rgba($red3, 0.1), $red2, rgba($red3, 0.2), $red1),
 );
 
-$dark-menu-item-intent-colors-modern: (
-  "primary": (rgba($blue3, 0.2), $blue2, rgba($blue3, 0.2), $blue1),
-  "success": (rgba($green3, 0.2), $green2, rgba($green3, 0.2), $green1),
-  "warning": (rgba($orange3, 0.2), $orange2, rgba($orange3, 0.2), $orange1),
-  "danger" : (rgba($red3, 0.2), $red2, rgba($red3, 0.2), $red1),
-);
-
 // Slider variable overrides
 $button-box-shadow-overlay:
   0 0 0 1px rgba($black, 0.5),
@@ -473,9 +466,35 @@ table.#{$ns}-html-table {
   }
 
   .#{$ns}-dark & {
+    &:not([class*="#{$ns}-intent-"]) {
+      &:hover {
+        .#{$ns}-icon:first-child {
+          color: $pt-dark-icon-color;
+        }
+      }
+
+      &:active {
+        .#{$ns}-menu-item-label {
+          color: $light-gray5;
+        }
+      }
+    }
+
     @each $intent, $color in $dark-minimal-button-intents-modern {
       &.#{$ns}-intent-#{$intent} {
         @include pt-button-minimal-dark-intent-modern($color...);
+
+        &:hover {
+          .#{$ns}-menu-item-label {
+            color: nth($color, 2);
+          }
+        }
+
+        &:active {
+          .#{$ns}-menu-item-label {
+            color: nth($color, 4);
+          }
+        }
       }
     }
   }
