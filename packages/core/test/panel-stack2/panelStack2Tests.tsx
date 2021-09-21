@@ -19,13 +19,14 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, Panel, PanelProps, PanelStack2Props, PanelStack2 } from "../../src";
+import { Classes, NumericInput, Panel, PanelProps, PanelStack2Props, PanelStack2 } from "../../src";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type TestPanelInfo = {};
 type TestPanelType = Panel<TestPanelInfo>;
 
 const TestPanel: React.FC<PanelProps<TestPanelInfo>> = props => {
+    const [counter, setCounter] = React.useState(0);
     const newPanel = { renderPanel: TestPanel, title: "New Panel 1" };
 
     return (
@@ -33,6 +34,8 @@ const TestPanel: React.FC<PanelProps<TestPanelInfo>> = props => {
             <button id="new-panel-button" onClick={() => props.openPanel(newPanel)} />
             {/* eslint-disable-next-line @typescript-eslint/unbound-method */}
             <button id="close-panel-button" onClick={props.closePanel} />
+            <span aria-label="counter value">{counter}</span>
+            <NumericInput value={counter} stepSize={1} onValueChange={setCounter} />
         </div>
     );
 };
@@ -258,18 +261,58 @@ describe("<PanelStack2>", () => {
             assert.equal(panelHeaders.at(0).text(), stack[1].title);
         });
 
-        it("renders all panels with renderActivePanelOnly disabled", () => {
-            const stack = [
-                { renderPanel: TestPanel, title: "Panel A" },
-                { renderPanel: TestPanel, title: "Panel B" },
-            ];
-            panelStackWrapper = renderPanelStack({ renderActivePanelOnly: false, stack });
+        describe("with renderActivePanelOnly={false}", () => {
+            it("renders all panels", () => {
+                const stack = [
+                    { renderPanel: TestPanel, title: "Panel A" },
+                    { renderPanel: TestPanel, title: "Panel B" },
+                ];
+                panelStackWrapper = renderPanelStack({ renderActivePanelOnly: false, stack });
 
-            const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
-            assert.exists(panelHeaders);
-            assert.equal(panelHeaders.length, 2);
-            assert.equal(panelHeaders.at(0).text(), stack[0].title);
-            assert.equal(panelHeaders.at(1).text(), stack[1].title);
+                const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
+                assert.exists(panelHeaders);
+                assert.equal(panelHeaders.length, 2);
+                assert.equal(panelHeaders.at(0).text(), stack[0].title);
+                assert.equal(panelHeaders.at(1).text(), stack[1].title);
+            });
+
+            it("keeps panels mounted", () => {
+                let stack = [initialPanel];
+                panelStackWrapper = renderPanelStack({
+                    onClose: () => {
+                        stack = stack.slice(0, -1);
+                    },
+                    onOpen: panel => {
+                        stack = [...stack, panel];
+                    },
+                    renderActivePanelOnly: false,
+                    stack,
+                });
+
+                const incrementButton = panelStackWrapper.find(`[aria-label="increment"]`);
+                assert.exists(incrementButton);
+                incrementButton.hostNodes().simulate("mousedown");
+                assert.equal(getFirstPanelCounterValue(), 1, "clicking increment button should increase counter");
+
+                const newPanelButton = panelStackWrapper.find("#new-panel-button");
+                newPanelButton.hostNodes().simulate("click");
+                panelStackWrapper.setProps({ stack });
+
+                const backButton = panelStackWrapper.find(`[aria-label="Back"]`);
+                backButton.hostNodes().simulate("click");
+                panelStackWrapper.setProps({ stack });
+                assert.equal(
+                    getFirstPanelCounterValue(),
+                    1,
+                    "first panel should retain its counter state when we return to it",
+                );
+            });
+
+            function getFirstPanelCounterValue() {
+                const counterValue = panelStackWrapper.find(`[aria-label="counter value"]`);
+                assert.exists(counterValue);
+                return parseInt(counterValue.hostNodes().first().text().trim(), 10);
+            }
         });
     });
 
