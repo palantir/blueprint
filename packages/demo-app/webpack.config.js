@@ -20,7 +20,7 @@ const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        "testing-app": [
+        "demo-app": [
             // environment polyfills
             "dom4",
             "./polyfill.js",

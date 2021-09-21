@@ -18,4 +18,4 @@ import * as ReactDOM from "react-dom";
 
 import { Examples } from "./examples/Examples";
 
-ReactDOM.render(<Examples />, document.querySelector("#blueprint-testing-app"));
+ReactDOM.render(<Examples />, document.querySelector("#blueprint-demo-app"));

@@ -13,6 +13,12 @@ Licensed under the Apache License, Version 2.0.
 @import "typography";
 @import "accessibility/focus-states";
 
+// Extended color pallete
+$blue6: #99c4ff;
+$green6: #7cd7a2;
+$orange6: #f5c186;
+$red6: #ffa1a4;
+
 // Button variables and overrides
 $button-active-minimal-intent-text-modern: (
   "primary": $blue1,
@@ -22,10 +28,10 @@ $button-active-minimal-intent-text-modern: (
 );
 
 $dark-minimal-button-intents-modern: (
-  "primary": (rgba($blue3, 0.2), $blue5, rgba($blue3, 0.3), #99c4ff),
-  "success": (rgba($green3, 0.2), $green5, rgba($green3, 0.3), #7cd7a2),
-  "warning": (rgba($orange3, 0.2), $orange5, rgba($orange3, 0.3), #f5c186),
-  "danger": (rgba($red3, 0.2), $red5, rgba($red3, 0.3), #ffa1a4)
+  "primary": (rgba($blue3, 0.2), $blue5, rgba($blue3, 0.3), $blue6),
+  "success": (rgba($green3, 0.2), $green5, rgba($green3, 0.3), $green6),
+  "warning": (rgba($orange3, 0.2), $orange5, rgba($orange3, 0.3), $orange6),
+  "danger": (rgba($red3, 0.2), $red5, rgba($red3, 0.3), $red6)
 );
 $minimal-button-background-color-hover: rgba($gray3, 0.15);
 $minimal-button-background-color-active: rgba($gray3, 0.3);
@@ -52,11 +58,18 @@ $dark-input-intent-box-shadow-colors: (
 );
 
 // Menu variables
-$menu-item-intent-text-colors-modern: (
-  "primary": $blue1,
-  "success": $green1,
-  "warning": $orange1,
-  "danger" : $red1,
+$menu-item-intent-colors-modern: (
+  "primary": (rgba($blue3, 0.1), $blue2, rgba($blue3, 0.2), $blue1),
+  "success": (rgba($green3, 0.1), $green2, rgba($green3, 0.2), $green1),
+  "warning": (rgba($orange3, 0.1), $orange2, rgba($orange3, 0.2), $orange1),
+  "danger" : (rgba($red3, 0.1), $red2, rgba($red3, 0.2), $red1),
+);
+
+$dark-menu-item-intent-colors-modern: (
+  "primary": (rgba($blue3, 0.2), $blue2, rgba($blue3, 0.2), $blue1),
+  "success": (rgba($green3, 0.2), $green2, rgba($green3, 0.2), $green1),
+  "warning": (rgba($orange3, 0.2), $orange2, rgba($orange3, 0.2), $orange1),
+  "danger" : (rgba($red3, 0.2), $red2, rgba($red3, 0.2), $red1),
 );
 
 // Slider variable overrides
@@ -103,6 +116,23 @@ $toast-intent-button-colors-modern: (
 @import "components/index";
 
 // Mixin helpers
+@mixin pt-button-minimal-dark-intent-modern(
+  $hover-color,
+  $hover-text,
+  $active-color,
+  $active-text
+) {
+  &:hover {
+    background: $hover-color;
+    color: $hover-text;
+  }
+
+  &:active {
+    background: $active-color;
+    color: $active-text;
+  }
+}
+
 @mixin pt-tag-interactive-modern($hover-color, $active-color) {
   &.#{$ns}-interactive {
     &:hover {
@@ -282,23 +312,6 @@ $toast-intent-button-colors-modern: (
       }
     }
 
-    @mixin pt-button-minimal-dark-intent-modern(
-      $hover-color,
-      $hover-text,
-      $active-color,
-      $active-text
-    ) {
-      &:hover {
-        background: $hover-color;
-        color: $hover-text;
-      }
-
-      &:active {
-        background: $active-color;
-        color: $active-text;
-      }
-    }
-
     @each $intent, $colors in $button-intents {
       &.#{$ns}-intent-#{$intent} {
         @include pt-button-minimal-intent-modern(
@@ -419,10 +432,52 @@ table.#{$ns}-html-table {
 
 // Contrast for menus
 .#{$ns}-menu-item {
-  @include menu-item-intent($menu-item-intent-text-colors-modern);
+  @mixin menu-item-intent-modern(
+    $hover-background-color,
+    $hover-text-color,
+    $active-background-color,
+    $active-text-color) {
+    &:hover {
+      background: $hover-background-color;
+      color: $hover-text-color;
 
-  .#{$ns}-menu-item-label {
-    color: $pt-text-color;
+      .#{$ns}-menu-item-label {
+        color: $hover-text-color;
+      }
+    }
+
+    &:active {
+      background: $active-background-color;
+      color: $active-text-color;
+    }
+  }
+
+  &:not([class*="#{$ns}-intent-"]) {
+    &:hover {
+      background: rgba($gray3, 0.1);
+    }
+
+    &:active {
+      background: rgba($gray3, 0.2);
+
+      .#{$ns}-menu-item-label {
+        color: $pt-text-color;
+      }
+    }
+  }
+
+  @each $intent, $color in $menu-item-intent-colors-modern {
+    &.#{$ns}-intent-#{$intent} {
+      @include menu-item-intent-modern($color...);
+    }
+  }
+
+  .#{$ns}-dark & {
+    @each $intent, $color in $dark-minimal-button-intents-modern {
+      &.#{$ns}-intent-#{$intent} {
+        @include pt-button-minimal-dark-intent-modern($color...);
+      }
+    }
   }
 }
 

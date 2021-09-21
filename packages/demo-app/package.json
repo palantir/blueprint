@@ -1,7 +1,7 @@
 {
-    "name": "@blueprintjs/testing-app",
+    "name": "@blueprintjs/demo-app",
     "version": "0.1.0",
-    "description": "Blueprint Testing App",
+    "description": "Blueprint Demo App",
     "private": true,
     "scripts": {
         "bundle": "webpack --config ./webpack.config.js",
@@ -56,7 +56,7 @@
     "repository": {
         "type": "git",
         "url": "git@github.com:palantir/blueprint.git",
-        "directory": "packages/testing-app"
+        "directory": "packages/demo-app"
     },
     "keywords": [
         "palantir",
