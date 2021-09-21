@@ -113,7 +113,7 @@ const initialPanel: Panel<Panel1Info> = {
 };
 
 export const PanelStack2Example: React.FC<IExampleProps> = props => {
-    const [activePanelOnly, setActivePanelOnly] = React.useState(true);
+    const [activePanelOnly, setActivePanelOnly] = React.useState(false);
     const [showHeader, setShowHeader] = React.useState(true);
     const [currentPanelStack, setCurrentPanelStack] = React.useState<
         Array<Panel<Panel1Info | Panel2Info | Panel3Info>>
