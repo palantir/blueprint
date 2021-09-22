@@ -98,17 +98,16 @@ $minimal-dark-tag-intent-colors-modern: (
 );
 
 // Toast variables
-// action-button-bg, action-button-text, action-button-hover, action-button-active
 $toast-intent-button-colors-modern: (
   "primary": ($pt-intent-primary, $white, $blue2, $blue1),
   "success": ($pt-intent-success, $white, $green2, $green1),
   "warning": ($orange5, $dark-gray1, $orange4, $orange3),
-  "danger": ($pt-intent-danger, $white, $red1, $red2, $red1)
+  "danger": ($pt-intent-danger, $white, $red2, $red1)
 );
 
 @import "components/index";
 
-// Mixin helpers
+// Mixin helpers used across multiple components
 @mixin pt-button-minimal-dark-intent-modern(
   $hover-color,
   $hover-text,
@@ -125,44 +124,6 @@ $toast-intent-button-colors-modern: (
     color: $active-text;
   }
 }
-
-// HACK needs !important to override the existing hack
-/* stylelint-disable declaration-no-important */
-@mixin pt-toast-intent-button-colors-modern (
-  $background-color,
-  $text-color,
-  $hover-color,
-  $active-color
-) {
-  .#{$ns}-button {
-    background-color: $background-color;
-    color: $text-color;
-
-    &:hover {
-      background-color: $hover-color !important;
-    }
-
-    &:active {
-      background-color: $active-color !important;
-    }
-
-
-    .#{$ns}-icon {
-      color: rgba($text-color, 0.7);
-
-      &:hover {
-        background-color: $hover-color !important;
-        color: $text-color !important;
-      }
-
-      &:active {
-        background-color: $active-color !important;
-        color: $text-color !important;
-      }
-    }
-  }
-}
-
 
 // Contrast for breadcrumbs
 .#{$ns}-breadcrumbs-collapsed {
@@ -729,40 +690,54 @@ table.#{$ns}-html-table {
 
 // Contrast for toasts
 .#{$ns}-toast {
-  // Contrast for default intent
-  .#{$ns}-button {
-    &:hover {
-      background-color: rgba($gray3, 0.15);
-    }
+  // HACK needs !important to override the existing hack
+  /* stylelint-disable declaration-no-important */
+  @mixin pt-toast-intent-button-colors-modern (
+    $background-color,
+    $text-color,
+    $hover-color,
+    $active-color
+  ) {
+    .#{$ns}-button {
+      background-color: $background-color !important;
+      color: $text-color !important;
 
-    &:active {
-      background-color: rgba($gray3, 0.3);
+      &:hover {
+        background-color: $hover-color !important;
+        color: $text-color !important;
+      }
+
+      &:active {
+        background-color: $active-color !important;
+        color: $text-color !important;
+      }
+
+      &:last-child >.#{$ns}-icon-cross {
+        color: rgba($text-color, 0.7) !important;
+      }
     }
   }
 
-  // Contrast for default intent in dark mode
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    .#{$ns}-button .#{$ns}-icon {
-      color: rgba($white, 0.7);
+  // Contrast for default intent
+  &:not([class*="#{$ns}-intent-"]) {
+    // Contrast for default intent in dark mode
+    &.#{$ns}-dark,
+    .#{$ns}-dark & {
+      .#{$ns}-button .#{$ns}-icon {
+        color: rgba($white, 0.7);
+      }
     }
+  }
+
+  &.#{$ns}-intent-warning {
+    background-color: $orange5;
+    color: $dark-gray1;
   }
 
   @each $intent, $color in $toast-intent-button-colors-modern {
     &.#{$ns}-intent-#{$intent} {
       @include pt-toast-intent-button-colors-modern($color...);
     }
-  }
-
-  .#{$ns}-intent-warning {
-    background-color: $orange5;
-    color: $pt-text-color;
-  }
-
-  // HACK needs !important to override the existing hack
-  // Warning toasts use 70% opacity text in all states, unlike other intents
-  .#{$ns}-button .#{$ns}-intent-warning .#{$ns}-icon {
-    color: rgba($dark-gray1, 0.7) !important;
   }
 }
 
