@@ -20,7 +20,7 @@ import { Classes } from "@blueprintjs/core";
 import { BreadcrumbExample } from "./BreadcrumbExample";
 import { ButtonExample } from "./ButtonExample";
 import { CalloutExample } from "./CalloutExample";
-import { CheckboxRadioExample } from "./CheckboxExample";
+import { CheckboxRadioExample } from "./CheckboxRadioExample";
 import { DialogExample } from "./DialogExample";
 import { EditableTextExample } from "./EditableTextExample";
 import { HtmlCodeExample } from "./HtmlCodeExample";
@@ -44,7 +44,6 @@ export class Examples extends React.PureComponent {
                 <BreadcrumbExample />
                 <ButtonExample />
                 <CalloutExample />
-                {/* Verify CheckboxRadioExample */}
                 <CheckboxRadioExample />
                 {/* Add DatePickerExample */}
                 <DialogExample isDarkMode={isDarkMode} />
@@ -54,7 +53,6 @@ export class Examples extends React.PureComponent {
                 <IconExample />
                 <InputExample />
                 <MenuExample />
-                {/* Verify SliderExample */}
                 <SliderExample />
                 {/* Verify SwitchExample */}
                 <SwitchExample />
@@ -62,6 +60,7 @@ export class Examples extends React.PureComponent {
                 <TabsExample />
                 <TagExample />
                 <TextExample />
+                {/* Fix Toast icon colors */}
                 <ToastExample />
                 {/* Verify TooltipExample */}
                 <TooltipExample />

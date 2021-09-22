@@ -39,6 +39,8 @@ $minimal-button-background-color-active: rgba($gray3, 0.3);
 // Checkbox and Radio variable overrides
 $dark-control-background-color: $gray4;
 $dark-control-background-color-hover: $gray3;
+$dark-control-background-color-active: linear-gradient(0deg, rgba($white, 0.1), rgba($white, 0.1)),
+  linear-gradient(0deg, $gray2, $gray2);
 
 // Editable text variable overrides
 $input-placeholder-color: $gray1;
@@ -232,7 +234,6 @@ $toast-intent-button-colors-modern: (
     .#{$ns}-control-indicator {
       box-shadow:
         inset 0 0 0 $button-border-width rgba($black, 0.5),
-        //TODO: verify that this is right
         inset 0 (-$button-border-width) 0 rgba($black, 0.1);
     }
   }
@@ -243,10 +244,9 @@ $toast-intent-button-colors-modern: (
     }
 
     &.#{$ns}-checkbox, &.#{$ns}-radio {
-      input:not(:disabled):active ~ .#{$ns}-control-indicator {
-        background:
-          linear-gradient(0deg, rgba($white, 0.1), rgba($white, 0.1)),
-          linear-gradient(0deg, $gray2, $gray2);
+      input:not(:disabled):active:checked ~ .#{$ns}-control-indicator {
+        background: linear-gradient(180deg, rgba($white, 0.1) 0%, rgba($white, 0) 100%),
+          linear-gradient(0deg, $blue1, $blue1);
       }
     }
   }
