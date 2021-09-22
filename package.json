@@ -25,7 +25,7 @@
         "dev:demo": "lerna run dev --parallel --scope \"@blueprintjs/demo-app\"",
         "dist": "run-s dist:libs dist:apps",
         "dist:libs": "lerna run dist --parallel --scope \"@blueprintjs/{colors,core,datetime,docs-theme,icons,popover2,select,table,timezone}\"",
-        "dist:apps": "lerna run dist --parallel --scope \"@blueprintjs/{docs-app,landing-app,table-dev-app}\"",
+        "dist:apps": "lerna run dist --parallel --scope \"@blueprintjs/{docs-app,landing-app,table-dev-app,demo-app}\"",
         "docs-data": "lerna run compile --scope \"@blueprintjs/docs-data\"",
         "format": "prettier --write \"./**/*.{ts,tsx,json}\"",
         "format-check": "prettier --check \"./**/*.{ts,tsx,json}\"",
