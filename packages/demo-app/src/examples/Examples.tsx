@@ -60,7 +60,6 @@ export class Examples extends React.PureComponent {
                 <TagExample />
                 <TextExample />
                 <ToastExample />
-                {/* Verify TooltipExample */}
                 <TooltipExample />
                 <TreeExample />
             </div>
