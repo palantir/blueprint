@@ -111,12 +111,12 @@ $toast-intent-button-colors-modern: (
   $active-color,
   $active-text
 ) {
-  &:hover {
+  &:hover:not(:disabled) {
     background: $hover-color;
     color: $hover-text;
   }
 
-  &:active {
+  &:active:not(:disabled) {
     background: $active-color;
     color: $active-text;
   }
@@ -155,26 +155,36 @@ $toast-intent-button-colors-modern: (
 .#{$ns}-button {
   // Use dark text for warning intent
   &.#{$ns}-intent-warning:not([class*="#{$ns}-minimal"]) {
-    background: $orange5;
-    color: $pt-text-color;
+    &:not(:disabled) {
+      background: $orange5;
+      color: $pt-text-color;
 
-    .#{$ns}-icon>svg:not([fill]) {
-      color: rgba($dark-gray1, 0.7);
+      .#{$ns}-icon>svg:not([fill]) {
+        color: rgba($dark-gray1, 0.7);
+      }
+
+      &:hover {
+        background: $orange4;
+      }
+
+      &:active {
+        background: $orange3;
+      }
     }
 
-    &:hover {
-      background: $orange4;
-    }
+    &:disabled {
+      color: $pt-text-color-disabled;
 
-    &:active {
-      background: $orange3;
+      .#{$ns}-dark & {
+        color: $pt-dark-text-color-disabled;
+      }
     }
   }
 
 
   &.#{$ns}-minimal {
     @mixin pt-button-minimal-intent-modern($active-text-color) {
-      &:active {
+      &:active:not(:disabled) {
         color: $active-text-color;
       }
     }
@@ -188,7 +198,7 @@ $toast-intent-button-colors-modern: (
     }
 
     .#{$ns}-dark & {
-      &:not([class*="#{$ns}-intent-"]) {
+      &:not([class*="#{$ns}-intent-"]):not(:disabled) {
         color: $white;
       }
 
