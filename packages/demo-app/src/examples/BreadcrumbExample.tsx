@@ -20,11 +20,9 @@ import { ExampleCard } from "./ExampleCard";
 
 const ITEMS: BreadcrumbProps[] = [
     { icon: "folder-close", text: "All files" },
-    { icon: "folder-close", text: "Users" },
     { icon: "folder-close", text: "Unselectable" },
-    { href: "#", icon: "folder-close", text: "Photos" },
-    { href: "#", icon: "folder-close", text: "Wednesday" },
-    { icon: "document", text: "image.jpg", current: true },
+    { href: "#", icon: "folder-close", text: "Link" },
+    { icon: "document", text: "Selected", current: true },
 ];
 
 export class BreadcrumbExample extends React.PureComponent {
