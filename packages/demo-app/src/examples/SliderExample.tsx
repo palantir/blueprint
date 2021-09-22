@@ -23,7 +23,7 @@ interface SliderExampleState {
     value2?: number;
 }
 
-export class SliderExample extends React.PureComponent<{}, SliderExampleState> {
+export class SliderExample extends React.PureComponent<Record<string, unknown>, SliderExampleState> {
     public state: SliderExampleState = {
         value1: 5,
         value2: 5,
