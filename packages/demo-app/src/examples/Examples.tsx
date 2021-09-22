@@ -31,6 +31,7 @@ import { SwitchExample } from "./SwitchExample";
 import { TabsExample } from "./TabsExample";
 import { TagExample } from "./TagExample";
 import { TextExample } from "./TextExample";
+import { ToastExample } from "./ToastExample";
 import { TooltipExample } from "./TooltipExample";
 import { TreeExample } from "./TreeExample";
 
@@ -50,12 +51,13 @@ export class Examples extends React.PureComponent {
                 <IconExample />
                 {/* Add InputExample */}
                 <MenuExample />
+                {/* Add SliderExample */}
                 <SwitchExample />
                 {/* Add TableExample */}
                 <TabsExample />
                 <TagExample />
                 <TextExample />
-                {/* Add ToastExample */}
+                <ToastExample />
                 <TooltipExample />
                 <TreeExample />
             </div>
