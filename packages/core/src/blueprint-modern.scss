@@ -399,9 +399,10 @@ table.#{$ns}-html-table {
     background-color: $gray4;
 
     &:hover {
-      background-color: $dark-gray3;
+      background-color: $gray3;
     }
 
+    &:active,
     &.#{$ns}-active {
       background:
         linear-gradient(0deg, rgba($white, 0.1), rgba($white, 0.1)),

@@ -20,6 +20,8 @@ import { ExampleCard } from "./ExampleCard";
 
 const ITEMS: BreadcrumbProps[] = [
     { icon: "folder-close", text: "All files" },
+    { icon: "folder-close", text: "Overflow 1" },
+    { icon: "folder-close", text: "Overflow 2" },
     { icon: "folder-close", text: "Unselectable" },
     { href: "#", icon: "folder-close", text: "Link" },
     { icon: "document", text: "Selected", current: true },

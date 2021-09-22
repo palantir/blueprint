@@ -26,6 +26,7 @@ export class InputExample extends React.PureComponent {
                 {Object.values(Intent).map(intent => (
                     <InputGroup
                         key={`${intent}-button`}
+                        fill={true}
                         intent={intent as Intent}
                         placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} input`}
                         leftIcon={IconNames.CALENDAR}

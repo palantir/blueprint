@@ -144,7 +144,7 @@ const INITIAL_STATE: TreeNodeInfo[] = [
             {
                 id: 3,
                 icon: <Icon icon="tag" intent={Intent.PRIMARY} className={Classes.TREE_NODE_ICON} />,
-                label: "Organic meditation gluten-free, sriracha VHS drinking vinegar beard man.",
+                label: "Primary icon item",
             },
             {
                 id: 4,
