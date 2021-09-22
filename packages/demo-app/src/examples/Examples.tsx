@@ -28,6 +28,7 @@ import { HtmlTableExample } from "./HtmlTableExample";
 import { IconExample } from "./IconExample";
 import { InputExample } from "./InputExample";
 import { MenuExample } from "./MenuExample";
+import { SliderExample } from "./SliderExample";
 import { SwitchExample } from "./SwitchExample";
 import { TabsExample } from "./TabsExample";
 import { TagExample } from "./TagExample";
@@ -43,6 +44,7 @@ export class Examples extends React.PureComponent {
                 <BreadcrumbExample />
                 <ButtonExample />
                 <CalloutExample />
+                {/* Verify CheckboxRadioExample */}
                 <CheckboxRadioExample />
                 {/* Add DatePickerExample */}
                 <DialogExample isDarkMode={isDarkMode} />
@@ -52,13 +54,16 @@ export class Examples extends React.PureComponent {
                 <IconExample />
                 <InputExample />
                 <MenuExample />
-                {/* Add SliderExample */}
+                {/* Verify SwitchExample */}
+                <SliderExample />
+                {/* Verify SwitchExample */}
                 <SwitchExample />
                 {/* Add TableExample */}
                 <TabsExample />
                 <TagExample />
                 <TextExample />
                 <ToastExample />
+                {/* Verify TooltipExample */}
                 <TooltipExample />
                 <TreeExample />
             </div>

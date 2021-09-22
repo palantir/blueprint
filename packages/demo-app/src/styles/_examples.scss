@@ -46,6 +46,7 @@ $dark-intent-danger-text: $red5;
 }
 
 .example-card {
+  align-items: center;
   background-color: $content-background-color;
   display: flex;
   flex-direction: column;
