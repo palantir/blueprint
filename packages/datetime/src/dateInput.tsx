@@ -419,14 +419,17 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         if (e.which === Keys.ENTER) {
             const nextDate = this.parseDate(this.state.valueString);
             this.handleDateChange(nextDate, true, true);
-        } else if (e.which === Keys.TAB) {
-            this.setState({ isOpen: false });
+        } else if (e.which === Keys.TAB && this.state.isOpen) {
+            this.getFirstTabbableElement()?.focus();
         } else if (e.which === Keys.ESCAPE) {
             this.setState({ isOpen: false });
             this.inputElement?.blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
     };
+
+    private getFirstTabbableElement = (): HTMLElement | null =>
+        this.popoverContentElement?.querySelector("input, [tabindex]:not([tabindex='-1'])");
 
     private getLastTabbableElement = () => {
         // Popover contents are well structured, but the selector will need
