@@ -26,6 +26,7 @@ import { EditableTextExample } from "./EditableTextExample";
 import { HtmlCodeExample } from "./HtmlCodeExample";
 import { HtmlTableExample } from "./HtmlTableExample";
 import { IconExample } from "./IconExample";
+import { InputExample } from "./InputExample";
 import { MenuExample } from "./MenuExample";
 import { SwitchExample } from "./SwitchExample";
 import { TabsExample } from "./TabsExample";
@@ -49,7 +50,7 @@ export class Examples extends React.PureComponent {
                 <HtmlCodeExample />
                 <HtmlTableExample />
                 <IconExample />
-                {/* Add InputExample */}
+                <InputExample />
                 <MenuExample />
                 {/* Add SliderExample */}
                 <SwitchExample />

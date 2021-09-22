@@ -45,11 +45,6 @@ $input-placeholder-color: $gray1;
 $dark-input-placeholder-color: $gray4;
 
 // Input variables and overrides
-$pt-input-box-shadow: inset border-shadow(0.15),
-                      inset 0 1px 1px $gray2;
-
-$pt-dark-input-box-shadow: inset border-shadow(0.3),
-                           inset 0 1px 1px $gray3;
 $dark-input-intent-box-shadow-colors: (
   "primary": $blue4,
   "success": $green4,
@@ -293,9 +288,30 @@ table.#{$ns}-html-table {
 
 // Contrast for inputs
 .#{$ns}-input {
-  @each $intent, $color in $dark-input-intent-box-shadow-colors {
-    .#{$ns}-dark & {
-      @include pt-dark-input-intent($color);
+
+  // Use intent-styled box-shadows for default intent
+  box-shadow: input-transition-shadow($input-shadow-color-focus),
+      inset border-shadow(1, $gray2),
+      $pt-input-box-shadow;
+
+  &:focus {
+    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+  }
+
+  .#{$ns}-dark & {
+    box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus),
+      inset border-shadow(1, $gray3),
+      $pt-dark-input-box-shadow;
+
+    &:focus {
+      box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
+                    $pt-dark-input-box-shadow;
+    }
+
+    @each $intent, $color in $dark-input-intent-box-shadow-colors {
+      &.#{$ns}-intent-#{$intent} {
+        @include pt-dark-input-intent($color);
+      }
     }
   }
 }
