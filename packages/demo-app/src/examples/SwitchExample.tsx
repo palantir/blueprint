@@ -23,10 +23,8 @@ export class SwitchExample extends React.PureComponent {
         return (
             <ExampleCard width={250} horizontal={true}>
                 <div>
-                    <Switch checked={false} />
-                    <Switch checked={true} />
-                    <Switch checked={false} innerLabel="Off" />
-                    <Switch checked={true} innerLabel="On" />
+                    <Switch />
+                    <Switch innerLabel="Off" innerLabelChecked="On" />
                 </div>
                 <div>
                     <Switch disabled={true} checked={false} />

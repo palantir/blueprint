@@ -30,6 +30,10 @@ export class EditableTextExample extends React.PureComponent {
                     <EditableText defaultValue="Sample title" />
                 </H1>
                 <EditableText defaultValue="Sample text" />
+                <H1>
+                    <EditableText disabled={true} defaultValue="Disabled title" />
+                </H1>
+                <EditableText disabled={true} defaultValue="Disabled text" />
             </ExampleCard>
         );
     }

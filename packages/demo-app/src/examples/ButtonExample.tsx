@@ -19,7 +19,7 @@ import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
-const WIDTH = 200;
+const WIDTH = 150;
 export class ButtonExample extends React.PureComponent {
     public render() {
         return (
@@ -32,6 +32,29 @@ export class ButtonExample extends React.PureComponent {
                 <ExampleCard width={WIDTH}>
                     {Object.values(Intent).map(intent => (
                         <Button
+                            disabled={true}
+                            key={`${intent}-button`}
+                            intent={intent as Intent}
+                            text="Button"
+                            icon={IconNames.ADD}
+                        />
+                    ))}
+                </ExampleCard>
+                <ExampleCard width={WIDTH}>
+                    {Object.values(Intent).map(intent => (
+                        <Button
+                            minimal={true}
+                            key={`${intent}-button`}
+                            intent={intent as Intent}
+                            text="Button"
+                            icon={IconNames.ADD}
+                        />
+                    ))}
+                </ExampleCard>
+                <ExampleCard width={WIDTH}>
+                    {Object.values(Intent).map(intent => (
+                        <Button
+                            disabled={true}
                             minimal={true}
                             key={`${intent}-button`}
                             intent={intent as Intent}

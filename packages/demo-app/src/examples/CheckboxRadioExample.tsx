@@ -26,10 +26,14 @@ export class CheckboxRadioExample extends React.PureComponent {
                     <Checkbox checked={false} label="Unchecked" />
                     <Checkbox indeterminate={true} label="Indeterminate" />
                     <Checkbox checked={true} label="Checked" />
+                    <Checkbox disabled={true} checked={false} label="Unchecked" />
+                    <Checkbox disabled={true} checked={true} label="Unchecked" />
                 </ExampleCard>
                 <ExampleCard width={200}>
                     <Radio checked={false} label="Unchecked" />
                     <Radio checked={true} label="Checked" />
+                    <Radio disabled={true} checked={false} label="Unchecked" />
+                    <Radio disabled={true} checked={true} label="Checked" />
                 </ExampleCard>
             </div>
         );

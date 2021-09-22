@@ -54,7 +54,6 @@ export class Examples extends React.PureComponent {
                 <InputExample />
                 <MenuExample />
                 <SliderExample />
-                {/* Verify SwitchExample */}
                 <SwitchExample />
                 {/* Add TableExample */}
                 <TabsExample />

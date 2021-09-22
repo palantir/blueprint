@@ -19,21 +19,37 @@ import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
+const WIDTH = 300;
 export class InputExample extends React.PureComponent {
     public render() {
         return (
-            <ExampleCard>
-                {Object.values(Intent).map(intent => (
-                    <InputGroup
-                        key={`${intent}-button`}
-                        fill={true}
-                        intent={intent as Intent}
-                        placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} input`}
-                        leftIcon={IconNames.CALENDAR}
-                    />
-                ))}
-                <NumericInput fill={true} />
-            </ExampleCard>
+            <div className="example-row">
+                <ExampleCard width={WIDTH}>
+                    {Object.values(Intent).map(intent => (
+                        <InputGroup
+                            key={`${intent}-button`}
+                            fill={true}
+                            intent={intent as Intent}
+                            placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} input`}
+                            leftIcon={IconNames.CALENDAR}
+                        />
+                    ))}
+                    <NumericInput fill={true} />
+                </ExampleCard>
+                <ExampleCard width={WIDTH}>
+                    {Object.values(Intent).map(intent => (
+                        <InputGroup
+                            disabled={true}
+                            key={`${intent}-button`}
+                            fill={true}
+                            intent={intent as Intent}
+                            placeholder={`(Disabled) ${intent.charAt(0).toUpperCase() + intent.slice(1)} input`}
+                            leftIcon={IconNames.CALENDAR}
+                        />
+                    ))}
+                    <NumericInput disabled={true} fill={true} />
+                </ExampleCard>
+            </div>
         );
     }
 }

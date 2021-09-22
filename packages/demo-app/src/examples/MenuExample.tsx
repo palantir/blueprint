@@ -33,6 +33,22 @@ export class MenuExample extends React.PureComponent {
                         ))}
                     </Menu>
                 </ExampleCard>
+                <ExampleCard width={250}>
+                    <Menu className={Classes.ELEVATION_1}>
+                        {Object.values(Intent).map(intent => (
+                            <div key={`${intent}-menu-item`}>
+                                <MenuItem
+                                    disabled={true}
+                                    intent={intent}
+                                    icon={IconNames.APPLICATIONS}
+                                    text="Item"
+                                    label="⌘M"
+                                />
+                                {intent !== "danger" && <MenuDivider />}
+                            </div>
+                        ))}
+                    </Menu>
+                </ExampleCard>
             </div>
         );
     }

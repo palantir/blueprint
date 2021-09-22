@@ -413,58 +413,99 @@ table.#{$ns}-html-table {
 
 // Contrast for switches
 .#{$ns}-control.#{$ns}-switch {
-  &:hover ~ .#{$ns}-control-indicator::before {
+
+  // Switch background styles
+  input:not(:disabled):hover ~ .#{$ns}-control-indicator {
     background-color: rgba($gray3, 0.5);
   }
 
-  &:active ~ .#{$ns}-control-indicator::before {
+  input:not(:disabled):active ~ .#{$ns}-control-indicator {
     background-color: rgba($gray3, 0.6);
   }
 
-  // TODO: Make sure these don't override disabled and override light themes where necessary
+  // Checked switch background styles
+  input:checked:not(:disabled) ~ .#{$ns}-control-indicator {
+    background: $blue3;
+  }
+
+  input:checked:not(:disabled):hover ~ .#{$ns}-control-indicator {
+    background: $blue2;
+  }
+
+  input:checked:not(:disabled):active ~ .#{$ns}-control-indicator {
+    background: $blue1;
+  }
+
+  // Switch handle styles
+  .#{$ns}-control-indicator::before {
+    background: linear-gradient(180deg, rgba($white, 0.8) 0%, rgba($white, 0) 100%),
+  linear-gradient(0deg, $light-gray5, $light-gray5);
+  }
+
+  input:not(:disabled):hover ~ .#{$ns}-control-indicator::before {
+    background: linear-gradient(180deg, rgba($white, 0.5) 0%, rgba($white, 0) 100%),
+    linear-gradient(0deg, $light-gray4, $light-gray4);
+  }
+
+  input:not(:disabled):active ~ .#{$ns}-control-indicator::before {
+    background: $light-gray2;
+  }
+
+  // Dark switch styles
   .#{$ns}-dark & {
-    &:hover .#{$ns}-control-indicator::before {
-      background-color: rgba($gray3, 0.5);
+    // Dark switch background styles
+    input:not(:disabled) ~ .#{$ns}-control-indicator {
+      background: rgba($black, 0.5);
     }
 
-    &:active .#{$ns}-control-indicator::before {
-      background-color: rgba($gray3, 0.6);
+    input:not(:disabled):hover ~ .#{$ns}-control-indicator {
+      background: rgba($black, 0.65);
     }
 
-    input:checked ~ .#{$ns}-control-indicator::before {
-      background-color: $gray4;
+    input:not(:disabled):active ~ .#{$ns}-control-indicator {
+      background: rgba($black, 0.8);
     }
 
-    input:checked:hover ~ .#{$ns}-control-indicator::before {
-      background-color: $gray3;
+    // Dark checked switch background styles
+    input:checked:not(:disabled) ~ .#{$ns}-control-indicator {
+      background: $blue3;
     }
 
-    input:checked:active ~ .#{$ns}-control-indicator::before {
-      background-color: $gray2;
+    input:checked:not(:disabled):hover ~ .#{$ns}-control-indicator {
+      background: $blue2;
     }
 
-    input:checked ~ .#{$ns}-control-indicator {
-      background-color: rgba($black, 0.5);
+    input:checked:not(:disabled):active ~ .#{$ns}-control-indicator {
+      background: $blue1;
     }
 
-    input:checked:hover ~ .#{$ns}-control-indicator {
-      background-color: rgba($black, 0.65);
+    // Dark switch handle styles
+    input:not(:disabled):not(:checked) ~ .#{$ns}-control-indicator::before {
+      background: $gray4;
     }
 
-    input:checked:active ~ .#{$ns}-control-indicator {
-      background-color: rgba($black, 0.8);
+    input:not(:disabled):not(:checked):hover ~ .#{$ns}-control-indicator::before {
+      background: $gray3;
     }
 
-    input:not(:checked) ~ .#{$ns}-control-indicator {
-      background-color: rgba($gray3, 0.3);
+    input:not(:disabled):not(:checked):active ~ .#{$ns}-control-indicator::before {
+      background: linear-gradient(0deg, rgba($white, 0.1), rgba($white, 0.1)),
+      linear-gradient(0deg, $gray2, $gray2);
     }
 
-    input:not(:checked):hover ~ .#{$ns}-control-indicator {
-      background-color: rgba($gray3, 0.5);
+    // Dark checked switch handle styles
+    input:checked:not(:disabled) ~ .#{$ns}-control-indicator::before {
+      background: linear-gradient(180deg, rgba($white, 0.8) 0%, rgba($white, 0) 100%),
+      linear-gradient(0deg, $light-gray5, $light-gray5);
     }
 
-    input:not(:checked):active ~ .#{$ns}-control-indicator {
-      background-color: rgba($gray3, 0.6);
+    input:checked:not(:disabled):hover ~ .#{$ns}-control-indicator::before {
+      background: linear-gradient(180deg, rgba($white, 0.5) 0%, rgba($white, 0) 100%),
+      linear-gradient(0deg, $light-gray4, $light-gray4);
+    }
+
+    input:checked:not(:disabled):active ~ .#{$ns}-control-indicator::before {
+      background: $light-gray2;
     }
   }
 }
