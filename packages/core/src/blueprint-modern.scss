@@ -96,10 +96,10 @@ $minimal-dark-tag-intent-colors-modern: (
 
 // Toast variables
 $toast-intent-button-colors-modern: (
-  "primary": ($pt-intent-primary, $white, $blue2, $blue1),
-  "success": ($pt-intent-success, $white, $green2, $green1),
-  "warning": ($orange5, $dark-gray1, $orange4, $orange3),
-  "danger": ($pt-intent-danger, $white, $red2, $red1)
+  "primary": ($pt-intent-primary, $white, $blue2, $blue1, rgba($white, 0.7)),
+  "success": ($pt-intent-success, $white, $green2, $green1, rgba($white, 0.7)),
+  "warning": ($orange5, $dark-gray1, $orange4, $orange3, rgba($dark-gray1, 0.7)),
+  "danger": ($pt-intent-danger, $white, $red2, $red1, rgba($white, 0.7))
 );
 
 @import "components/index";
@@ -764,8 +764,13 @@ table.#{$ns}-html-table {
     $background-color,
     $text-color,
     $hover-color,
-    $active-color
+    $active-color,
+    $icon-color,
   ) {
+    .#{$ns}-icon:first-child {
+      color: $icon-color;
+    }
+
     .#{$ns}-button {
       background-color: $background-color !important;
       color: $text-color !important;

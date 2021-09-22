@@ -59,7 +59,6 @@ export class Examples extends React.PureComponent {
                 <TabsExample />
                 <TagExample />
                 <TextExample />
-                {/* Fix Toast icon colors */}
                 <ToastExample />
                 {/* Verify TooltipExample */}
                 <TooltipExample />
