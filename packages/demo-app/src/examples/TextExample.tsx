@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.*/
 
+import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Intent, Text } from "@blueprintjs/core";
@@ -26,9 +27,11 @@ export class TextExample extends React.PureComponent {
                 <ExampleCard width={WIDTH}>
                     <Text>Default</Text>
                     <Text className={Classes.TEXT_MUTED}>Muted</Text>
-                    {/* TODO: See if we can get intent colors here */}
                     {Object.values(Intent).map(intent => (
-                        <Text key={`${intent}-text`} className={Classes.intentClass(intent as Intent)}>
+                        <Text
+                            key={`${intent}-text`}
+                            className={classNames("text-example", Classes.intentClass(intent as Intent))}
+                        >
                             {intent.charAt(0).toUpperCase() + intent.slice(1)}
                         </Text>
                     ))}
