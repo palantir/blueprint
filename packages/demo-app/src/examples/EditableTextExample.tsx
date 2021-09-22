@@ -21,7 +21,7 @@ import { ExampleCard } from "./ExampleCard";
 export class EditableTextExample extends React.PureComponent {
     public render() {
         return (
-            <ExampleCard>
+            <ExampleCard label="Editable text">
                 <H1>
                     <EditableText placeholder="Placeholder title" />
                 </H1>

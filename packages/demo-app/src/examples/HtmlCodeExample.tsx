@@ -21,7 +21,7 @@ import { ExampleCard } from "./ExampleCard";
 export class HtmlCodeExample extends React.PureComponent {
     public render() {
         return (
-            <ExampleCard>
+            <ExampleCard label="HTML Code">
                 <div>
                     <Code>Code</Code> next to default UI text
                 </div>

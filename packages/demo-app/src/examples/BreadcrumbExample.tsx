@@ -30,7 +30,7 @@ const ITEMS: BreadcrumbProps[] = [
 export class BreadcrumbExample extends React.PureComponent {
     public render() {
         return (
-            <ExampleCard>
+            <ExampleCard label="Breadcrumbs">
                 <Breadcrumbs items={ITEMS} />
             </ExampleCard>
         );

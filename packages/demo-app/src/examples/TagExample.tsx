@@ -27,7 +27,7 @@ export class TagExample extends React.PureComponent {
     public render() {
         return (
             <div className="example-row">
-                <ExampleCard width={WIDTH} horizontal={true}>
+                <ExampleCard label="Tag" subLabel="Default" width={WIDTH} horizontal={true}>
                     <div className="tag-container">
                         {Object.values(Intent).map(intent => (
                             <Tag
@@ -48,7 +48,7 @@ export class TagExample extends React.PureComponent {
                         ))}
                     </div>
                 </ExampleCard>
-                <ExampleCard width={WIDTH} horizontal={true}>
+                <ExampleCard label="Tag" subLabel="Minimal" width={WIDTH} horizontal={true}>
                     <div className="tag-container">
                         {Object.values(Intent).map(intent => (
                             <Tag

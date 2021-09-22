@@ -24,12 +24,12 @@ export class ButtonExample extends React.PureComponent {
     public render() {
         return (
             <div className="example-row">
-                <ExampleCard width={WIDTH}>
+                <ExampleCard label="Button" subLabel="Default" width={WIDTH}>
                     {Object.values(Intent).map(intent => (
                         <Button key={`${intent}-button`} intent={intent as Intent} text="Button" icon={IconNames.ADD} />
                     ))}
                 </ExampleCard>
-                <ExampleCard width={WIDTH}>
+                <ExampleCard label="Button" subLabel="Disabled" width={WIDTH}>
                     {Object.values(Intent).map(intent => (
                         <Button
                             disabled={true}
@@ -40,7 +40,7 @@ export class ButtonExample extends React.PureComponent {
                         />
                     ))}
                 </ExampleCard>
-                <ExampleCard width={WIDTH}>
+                <ExampleCard label="Button" subLabel="Minimal" width={WIDTH}>
                     {Object.values(Intent).map(intent => (
                         <Button
                             minimal={true}
@@ -51,7 +51,7 @@ export class ButtonExample extends React.PureComponent {
                         />
                     ))}
                 </ExampleCard>
-                <ExampleCard width={WIDTH}>
+                <ExampleCard label="Button" subLabel="Minimal, Disabled" width={WIDTH}>
                     {Object.values(Intent).map(intent => (
                         <Button
                             disabled={true}

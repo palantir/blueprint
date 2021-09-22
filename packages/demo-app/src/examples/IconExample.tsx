@@ -23,7 +23,7 @@ export class IconExample extends React.PureComponent {
     public render() {
         return (
             <div className="example-row">
-                <ExampleCard horizontal={true}>
+                <ExampleCard label="Icon" horizontal={true}>
                     {Object.values(Intent).map(intent => (
                         <Icon key={`${intent}-icon`} intent={intent} icon={IconNames.ADD} />
                     ))}

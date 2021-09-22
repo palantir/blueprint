@@ -21,7 +21,7 @@ import { ExampleCard } from "./ExampleCard";
 export class HtmlTableExample extends React.PureComponent {
     public render() {
         return (
-            <ExampleCard>
+            <ExampleCard label="HTML Table">
                 <HTMLTable className="html-table-example" interactive={true} striped={true}>
                     <thead>
                         <tr>

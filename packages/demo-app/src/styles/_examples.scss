@@ -1,4 +1,3 @@
-@import "~@blueprintjs/core/lib/css/blueprint-modern.css";
 @import "~@blueprintjs/colors/lib/scss/colors";
 @import "~@blueprintjs/core/lib/scss/variables";
 
@@ -25,7 +24,6 @@ $dark-intent-danger-text: $red5;
 }
 
 .examples-container {
-  align-items: center;
   background-color: $background-color;
   display: flex;
   flex-direction: column;
@@ -39,14 +37,21 @@ $dark-intent-danger-text: $red5;
 
 .example-row {
   display: flex;
+  justify-content: space-evenly;
 
   > :not(:last-child) {
     margin-right: 10px;
   }
 }
 
-.example-card {
+.example-card-container {
   align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+
+.example-card {
   background-color: $content-background-color;
   display: flex;
   flex-direction: column;

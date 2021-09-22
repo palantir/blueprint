@@ -24,7 +24,7 @@ export class TextExample extends React.PureComponent {
     public render() {
         return (
             <div className="example-row">
-                <ExampleCard width={WIDTH}>
+                <ExampleCard label="Text" width={WIDTH}>
                     <Text>Default</Text>
                     <Text className={Classes.TEXT_MUTED}>Muted</Text>
                     {Object.values(Intent).map(intent => (

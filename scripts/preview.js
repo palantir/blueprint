@@ -9,7 +9,7 @@ const ARTIFACTS = {
     "packages/docs-app/dist/index.html": "documentation",
     "packages/landing-app/dist/index.html": "landing",
     "packages/table-dev-app/dist/index.html": "table",
-    "packages/demo-app/dist/index.html": "demo"
+    "packages/demo-app/dist/index.html": "modern colors demo"
 };
 
 if (!process.env.GH_AUTH_TOKEN) {

@@ -27,7 +27,7 @@ export class ToastExample extends React.PureComponent {
     public render() {
         return (
             <div className="example-row">
-                <ExampleCard>
+                <ExampleCard label="Toast">
                     {Object.values(Intent).map(intent => (
                         <Toast
                             key={`${intent}-toast`}

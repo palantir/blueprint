@@ -19,15 +19,12 @@ import { Slider } from "@blueprintjs/core";
 import { ExampleCard } from "./ExampleCard";
 
 interface SliderExampleState {
-    value1?: number;
-    value2?: number;
+    value?: number;
 }
 
-const WIDTH = 300;
 export class SliderExample extends React.PureComponent<Record<string, unknown>, SliderExampleState> {
     public state: SliderExampleState = {
-        value1: 5,
-        value2: 5,
+        value: 5,
     };
 
     private getChangeHandler(key: string) {
@@ -37,34 +34,14 @@ export class SliderExample extends React.PureComponent<Record<string, unknown>, 
     public render() {
         return (
             <div className="example-row">
-                <ExampleCard width={WIDTH}>
+                <ExampleCard label="Slider">
                     <Slider
                         min={0}
                         max={10}
                         stepSize={0.1}
                         labelStepSize={10}
-                        onChange={this.getChangeHandler("value1")}
-                        value={this.state.value1}
-                        vertical={true}
-                    />
-                    <Slider
-                        min={0}
-                        max={10}
-                        stepSize={0.1}
-                        labelStepSize={10}
-                        onChange={this.getChangeHandler("value2")}
-                        value={this.state.value2}
-                    />
-                </ExampleCard>
-                <ExampleCard width={WIDTH}>
-                    <Slider
-                        disabled={true}
-                        min={0}
-                        max={10}
-                        stepSize={0.1}
-                        labelStepSize={10}
-                        value={5}
-                        vertical={true}
+                        onChange={this.getChangeHandler("value")}
+                        value={this.state.value}
                     />
                     <Slider disabled={true} min={0} max={10} stepSize={0.1} labelStepSize={10} value={5} />
                 </ExampleCard>

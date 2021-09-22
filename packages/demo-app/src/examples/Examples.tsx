@@ -38,15 +38,15 @@ import { TooltipExample } from "./TooltipExample";
 import { TreeExample } from "./TreeExample";
 
 export class Examples extends React.PureComponent {
-    private renderExamples(isDarkMode: boolean) {
+    private renderExamples(className?: string) {
         return (
-            <div className={classNames("examples-container", { [Classes.DARK]: isDarkMode })}>
+            <div className={classNames("examples-container", className)}>
                 <BreadcrumbExample />
                 <ButtonExample />
                 <CalloutExample />
                 <CheckboxRadioExample />
                 {/* Add DatePickerExample */}
-                <DialogExample isDarkMode={isDarkMode} />
+                <DialogExample className={className} />
                 <EditableTextExample />
                 <HtmlCodeExample />
                 <HtmlTableExample />
@@ -70,8 +70,8 @@ export class Examples extends React.PureComponent {
     public render() {
         return (
             <div className="examples-root">
-                {this.renderExamples(false)}
-                {this.renderExamples(true)}
+                {this.renderExamples()}
+                {this.renderExamples(Classes.DARK)}
             </div>
         );
     }

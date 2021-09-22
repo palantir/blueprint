@@ -93,7 +93,7 @@ export const TreeExample: React.FC = _props => {
     }, []);
 
     return (
-        <ExampleCard width={400}>
+        <ExampleCard label="Tree" width={400}>
             <Tree
                 contents={nodes}
                 onNodeClick={handleNodeClick}

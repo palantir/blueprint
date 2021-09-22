@@ -21,7 +21,7 @@ import { ExampleCard } from "./ExampleCard";
 export class TabsExample extends React.PureComponent {
     public render() {
         return (
-            <ExampleCard>
+            <ExampleCard label="Tabs">
                 <Tabs>
                     <Tab id="1" title="Tab" />
                     <Tab id="2" title="Tab" />

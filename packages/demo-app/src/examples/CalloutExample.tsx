@@ -23,7 +23,7 @@ export class CalloutExample extends React.PureComponent {
     public render() {
         return (
             <div className="example-row">
-                <ExampleCard>
+                <ExampleCard label="Callout">
                     {Object.values(Intent).map(intent => (
                         <Callout
                             key={`${intent}-callout`}

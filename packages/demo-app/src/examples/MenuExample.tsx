@@ -23,7 +23,7 @@ export class MenuExample extends React.PureComponent {
     public render() {
         return (
             <div className="example-row">
-                <ExampleCard width={250}>
+                <ExampleCard label="Menu" subLabel="Default" width={250}>
                     <Menu className={Classes.ELEVATION_1}>
                         {Object.values(Intent).map(intent => (
                             <div key={`${intent}-menu-item`}>
@@ -33,7 +33,7 @@ export class MenuExample extends React.PureComponent {
                         ))}
                     </Menu>
                 </ExampleCard>
-                <ExampleCard width={250}>
+                <ExampleCard label="Menu" subLabel="Disabled" width={250}>
                     <Menu className={Classes.ELEVATION_1}>
                         {Object.values(Intent).map(intent => (
                             <div key={`${intent}-menu-item`}>

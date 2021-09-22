@@ -24,7 +24,7 @@ export class InputExample extends React.PureComponent {
     public render() {
         return (
             <div className="example-row">
-                <ExampleCard width={WIDTH}>
+                <ExampleCard label="Input" subLabel="Default" width={WIDTH}>
                     {Object.values(Intent).map(intent => (
                         <InputGroup
                             key={`${intent}-button`}
@@ -36,7 +36,7 @@ export class InputExample extends React.PureComponent {
                     ))}
                     <NumericInput fill={true} />
                 </ExampleCard>
-                <ExampleCard width={WIDTH}>
+                <ExampleCard label="Input" subLabel="Disabled" width={WIDTH}>
                     {Object.values(Intent).map(intent => (
                         <InputGroup
                             disabled={true}

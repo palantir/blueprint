@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.*/
 
-import classNames from "classnames";
 import * as React from "react";
 
 import { Button, Classes, Dialog } from "@blueprintjs/core";
@@ -21,7 +20,7 @@ import { IconNames } from "@blueprintjs/icons";
 import { ExampleCard } from "./ExampleCard";
 
 export interface DialogExampleProps {
-    isDarkMode: boolean;
+    className?: string;
 }
 
 export interface DialogExampleState {
@@ -35,10 +34,10 @@ export class DialogExample extends React.PureComponent<DialogExampleProps, Dialo
 
     public render() {
         return (
-            <ExampleCard>
+            <ExampleCard label="Dialog">
                 <Button onClick={this.toggleDialog} text="Show dialog" />
                 <Dialog
-                    className={classNames({ [Classes.DARK]: this.props.isDarkMode })}
+                    className={this.props.className}
                     isOpen={this.state.isOpen}
                     onClose={this.toggleDialog}
                     icon={IconNames.INFO_SIGN}

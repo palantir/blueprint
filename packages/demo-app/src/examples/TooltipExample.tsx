@@ -21,10 +21,16 @@ import { ExampleCard } from "./ExampleCard";
 const WIDTH = 200;
 export class TooltipExample extends React.PureComponent {
     public render() {
+        const content = (
+            <span>
+                In facilisis scelerisque dui vel dignissim. Sed nunc orci, ultricies congue vehicula quis, facilisis a
+                orci.
+            </span>
+        );
         return (
-            <ExampleCard width={WIDTH}>
-                <Tooltip2 className={Classes.TOOLTIP2_INDICATOR} content={<span>Tooltip</span>} isOpen={true}>
-                    <div>Target</div>
+            <ExampleCard label="Tooltip" width={WIDTH}>
+                <Tooltip2 className={Classes.TOOLTIP2_INDICATOR} content={content}>
+                    Target
                 </Tooltip2>
             </ExampleCard>
         );

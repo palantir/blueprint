@@ -21,7 +21,7 @@ import { ExampleCard } from "./ExampleCard";
 export class SwitchExample extends React.PureComponent {
     public render() {
         return (
-            <ExampleCard width={250} horizontal={true}>
+            <ExampleCard label="Switch" width={250} horizontal={true}>
                 <div>
                     <Switch />
                     <Switch innerLabel="Off" innerLabelChecked="On" />
