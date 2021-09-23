@@ -15,3 +15,4 @@
  */
 
 export * from "./browser";
+export type { Popover2CompatProps } from "./popover2CompatTypes";

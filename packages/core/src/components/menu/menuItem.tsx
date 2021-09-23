@@ -15,12 +15,13 @@
  */
 
 import classNames from "classnames";
-import { Modifiers } from "popper.js";
+import type { Modifiers } from "popper.js";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { DISPLAYNAME_PREFIX, ActionProps, LinkProps } from "../../common/props";
+import type { Popover2CompatProps } from "../../compatibility";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
@@ -84,7 +85,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      * changed and `usePortal` defaults to `false` so all submenus will live in
      * the same container.
      */
-    popoverProps?: Partial<IPopoverProps>;
+    popoverProps?: Partial<IPopoverProps> | Partial<Popover2CompatProps>;
 
     /**
      * Whether an enabled item without a submenu should automatically close its parent popover when clicked.
@@ -205,10 +206,11 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 enforceFocus={false}
                 hoverCloseDelay={0}
                 interactionKind={PopoverInteractionKind.HOVER}
-                modifiers={SUBMENU_POPOVER_MODIFIERS}
+                // HACKHACK
+                modifiers={SUBMENU_POPOVER_MODIFIERS as any}
                 position={Position.RIGHT_TOP}
                 usePortal={false}
-                {...popoverProps}
+                {...downgradePopoverProps(popoverProps)}
                 content={<Menu>{children}</Menu>}
                 minimal={true}
                 popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
@@ -216,6 +218,13 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             />
         );
     }
+}
+
+function downgradePopoverProps(
+    props: Partial<IPopoverProps> | Partial<Popover2CompatProps> | undefined,
+): Partial<IPopoverProps> {
+    // HACKHACK: TODO
+    return (props as any) as Partial<IPopoverProps>;
 }
 
 const SUBMENU_POPOVER_MODIFIERS: Modifiers = {

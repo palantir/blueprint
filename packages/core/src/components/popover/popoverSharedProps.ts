@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { Boundary as PopperBoundary, Modifiers as PopperModifiers, Placement } from "popper.js";
+import type { Boundary as PopperBoundary, Modifiers as PopperModifiers, Placement } from "popper.js";
 
 import { Position } from "../../common/position";
 import { Props } from "../../common/props";
 import { OverlayableProps } from "../overlay/overlay";
 
 // re-export symbols for library consumers
-export { PopperBoundary, PopperModifiers };
+export type { PopperBoundary, PopperModifiers };
 
 /** `Position` with `"auto"` values, used by `Popover` and `Tooltip`. */
 export const PopoverPosition = {

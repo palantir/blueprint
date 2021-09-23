@@ -48,6 +48,7 @@
     "dependencies": {
         "@blueprintjs/colors": "^5.0.0-alpha.0",
         "@blueprintjs/icons": "^3.30.1",
+        "@popperjs/core": "^2.5.4",
         "@types/dom4": "^2.0.1",
         "classnames": "^2.2",
         "dom4": "^2.1.5",
