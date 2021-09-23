@@ -53,6 +53,7 @@ $dark-input-intent-box-shadow-colors: (
   "warning": $orange4,
   "danger" : $red4,
 );
+$dark-input-shadow-color-focus: $blue4;
 
 // Menu variables
 $menu-item-intent-colors-modern: (
@@ -254,10 +255,26 @@ $toast-intent-button-colors-modern: (
     }
 
     &.#{$ns}-checkbox, &.#{$ns}-radio {
+      input:not(:disabled):not(:checked) ~ .#{$ns}-control-indicator {
+        box-shadow: $dark-button-box-shadow-active;
+      }
+
       input:not(:disabled):active:checked ~ .#{$ns}-control-indicator {
         background: linear-gradient(180deg, rgba($white, 0.1) 0%, rgba($white, 0) 100%),
           linear-gradient(0deg, $blue1, $blue1);
       }
+    }
+  }
+}
+
+
+// Contrast for disabled editable text
+.#{$ns}-editable-text.#{$ns}-disabled {
+  > .#{$ns}-editable-text-content {
+    color: $pt-text-color-disabled;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-disabled;
     }
   }
 }
@@ -285,29 +302,32 @@ table.#{$ns}-html-table {
 }
 
 // Contrast for inputs
-.#{$ns}-input {
-
-  // Use intent-styled box-shadows for default intent
-  box-shadow: input-transition-shadow($input-shadow-color-focus),
-      inset border-shadow(1, $gray2),
-      $pt-input-box-shadow;
-
-  &:focus {
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
-  }
-
-  .#{$ns}-dark & {
-    box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus),
-      inset border-shadow(1, $gray3),
-      $pt-dark-input-box-shadow;
+.#{$ns}-input-group {
+  .#{$ns}-input {
+    // Use intent-styled box-shadows for default intent
+    box-shadow: input-transition-shadow($input-shadow-color-focus),
+        inset border-shadow(1, $gray2),
+        $pt-input-box-shadow;
 
     &:focus {
-      box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
-                    $pt-dark-input-box-shadow;
+      box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
     }
 
-    @each $intent, $color in $dark-input-intent-box-shadow-colors {
-      &.#{$ns}-intent-#{$intent} {
+    .#{$ns}-dark & {
+      box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus),
+        inset border-shadow(1, $gray3),
+        $pt-dark-input-box-shadow;
+
+      &:focus {
+        box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
+                      $pt-dark-input-box-shadow;
+      }
+    }
+  }
+
+  @each $intent, $color in $dark-input-intent-box-shadow-colors {
+    &.#{$ns}-intent-#{$intent} {
+      .#{$ns}-input {
         @include pt-dark-input-intent($color);
       }
     }
@@ -638,17 +658,17 @@ table.#{$ns}-html-table {
   }
 
   // Dark mode contrast for default intent
-  .#{$ns}-dark & {
+  .#{$ns}-dark &:not([class*="#{$ns}-intent-"]) {
     background: $gray5;
     color: $pt-text-color;
 
     &.#{$ns}-interactive {
       &:hover {
-        color: $gray4;
+        background: $gray4;
       }
 
       &:active {
-        color: $gray3;
+        background: $gray3;
       }
     }
 
@@ -816,6 +836,10 @@ table.#{$ns}-html-table {
   &:active {
     background-color: rgba($gray3, 0.3);
   }
+
+  .#{$ns}-tree-node.#{$ns}-tree-node-selected > & {
+    #{$icon-classes} {
+      color: $white;
+    }
+  }
 }
-
-
