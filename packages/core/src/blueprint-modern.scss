@@ -218,7 +218,7 @@ $toast-intent-button-colors-modern: (
   .#{$ns}-dark & {
     background-color: rgba($gray3, 0.2);
 
-    &.#{$ns}-callout-icon:not([class*="#{$ns}-intent-"])>.#{$ns}-icon:first-child {
+    &.#{$ns}-callout-icon:not([class*="#{$ns}-intent-"]) > .#{$ns}-icon:first-child {
       color: $pt-dark-icon-color;
     }
   }
@@ -262,9 +262,6 @@ $toast-intent-button-colors-modern: (
   }
 }
 
-// TODO
-// Contrast for date pickers
-
 // Contrast for HTML tables
 table.#{$ns}-html-table {
   &.#{$ns}-html-table-striped {
@@ -284,15 +281,6 @@ table.#{$ns}-html-table {
         background-color: rgba($gray3, 0.35);
       }
     }
-  }
-}
-
-// Contrast for icons
-.#{$ns}-icon:not([class*="#{$ns}-intent-"]) {
-  color: $pt-icon-color;
-
-  .#{$ns}-dark & {
-    color: $pt-dark-icon-color;
   }
 }
 
@@ -541,7 +529,7 @@ table.#{$ns}-html-table {
       }
     }
 
-    .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
+    .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
       color: rgba($cross-button-color, 0.7);
 
       &:hover {
@@ -575,7 +563,7 @@ table.#{$ns}-html-table {
       }
     }
 
-    .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
+    .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
       color: $text-color;
 
       &:hover {
@@ -610,7 +598,7 @@ table.#{$ns}-html-table {
         }
       }
 
-      .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
+      .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
         color: $text-color;
 
         &:hover {
@@ -626,6 +614,7 @@ table.#{$ns}-html-table {
 
   // Contrast for default intent
   color: $white;
+
   &.#{$ns}-interactive {
     &:hover {
       background: $dark-gray5;
@@ -636,7 +625,7 @@ table.#{$ns}-html-table {
     }
   }
 
-  .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
+  .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
     color: rgba($white, 0.7);
 
     &:hover {
@@ -663,7 +652,7 @@ table.#{$ns}-html-table {
       }
     }
 
-    .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
+    .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
       color: rgba($dark-gray1, 0.7);
 
       &:hover {
@@ -699,7 +688,7 @@ table.#{$ns}-html-table {
         color: $black;
       }
 
-      .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
+      .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
         color: $gray1;
 
         &:hover {
@@ -729,7 +718,7 @@ table.#{$ns}-html-table {
         }
       }
 
-      .#{$ns}-tag-remove >.#{$ns}-icon:first-child {
+      .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
         color: $gray4;
 
         &:hover {
@@ -785,11 +774,13 @@ table.#{$ns}-html-table {
         color: $text-color !important;
       }
 
-      &:last-child >.#{$ns}-icon-cross {
+      &:last-child > .#{$ns}-icon-cross {
         color: rgba($text-color, 0.7) !important;
       }
     }
   }
+  /* stylelint-enable declaration-no-important */
+
 
   // Contrast for default intent
   &:not([class*="#{$ns}-intent-"]) {
