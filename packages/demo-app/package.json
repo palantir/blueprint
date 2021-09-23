@@ -26,7 +26,6 @@
         "classnames": "^2.2",
         "core-js": "^3.8.1",
         "dom4": "^2.1.5",
-        "downloadjs": "^1.4.7",
         "lodash-es": "^4.17.15",
         "moment": "^2.29.1",
         "normalize.css": "^8.0.1",
