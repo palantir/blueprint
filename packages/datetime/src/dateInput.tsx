@@ -186,13 +186,13 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
 
     public popoverContentElement: HTMLDivElement | null = null;
 
-    // Last element in popover that is tabbable, and the one that triggers popover closure
-    // when the user presses shift+TAB on it
-    private firstTabbableElement: HTMLElement | null = null;
+    // First element in popover that is keyboard-focusable and triggers popover closure when the
+    // user presses shift+TAB to focus it
+    private startFocusBoundaryElement: HTMLDivElement | null = null;
 
-    // Last element in popover that is tabbable, and the one that triggers popover closure
-    // when the user press TAB on it
-    private lastTabbableElement: HTMLElement | null = null;
+    // Last element in popover that is keyboard-focusable and triggers popover closure when the user
+    // press TAB to focus it
+    private endFocusBoundaryElement: HTMLDivElement | null = null;
 
     private handleInputRef = refHandler<HTMLInputElement, "inputElement">(
         this,
@@ -202,8 +202,19 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
 
     private handlePopoverContentRef: IRef<HTMLDivElement> = refHandler(this, "popoverContentElement");
 
+    private handleFirstTabbableElementRef = (ref: HTMLDivElement) => {
+        this.startFocusBoundaryElement = ref;
+        this.startFocusBoundaryElement?.addEventListener("focusin", this.handleStartFocusBoundaryFocusIn);
+    };
+
+    private handleLastTabbableElementRef = (ref: HTMLDivElement) => {
+        this.endFocusBoundaryElement = ref;
+        this.endFocusBoundaryElement?.addEventListener("focusin", this.handleEndFocusBoundaryFocusIn);
+    };
+
     public componentWillUnmount() {
-        this.unregisterPopoverBlurHandlers();
+        this.startFocusBoundaryElement?.removeEventListener("focusin", this.handleStartFocusBoundaryFocusIn);
+        this.endFocusBoundaryElement?.removeEventListener("focusin", this.handleEndFocusBoundaryFocusIn);
     }
 
     public render() {
@@ -212,29 +223,17 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         const dateValue = isDateValid(value) ? value : null;
         const dayPickerProps: DayPickerProps = {
             ...this.props.dayPickerProps,
-            // If the user presses the TAB key on a DayPicker Day element and the lastTabbableElement is also a DayPicker Day
-            // element, the popover should be closed
             onDayKeyDown: (day, modifiers, e) => {
-                if (
-                    e.key === "Tab" &&
-                    !e.shiftKey &&
-                    this.lastTabbableElement?.classList.contains(Classes.DATEPICKER_DAY)
-                ) {
-                    this.setState({ isOpen: false });
-                }
                 this.props.dayPickerProps.onDayKeyDown?.(day, modifiers, e);
             },
-            // dom elements for the updated month is not available when
-            // onMonthChange is called. setTimeout is necessary to wait
-            // for the updated month to be rendered
             onMonthChange: (month: Date) => {
                 this.props.dayPickerProps.onMonthChange?.(month);
-                this.setTimeout(this.registerPopoverBlurHandlers);
             },
         };
 
         const wrappedPopoverContent = (
             <div ref={this.handlePopoverContentRef}>
+                <div ref={this.handleFirstTabbableElementRef} tabIndex={0} />
                 <DatePicker
                     {...this.props}
                     dayPickerProps={dayPickerProps}
@@ -243,6 +242,7 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
                     onShortcutChange={this.handleShortcutChange}
                     selectedShortcutIndex={this.state.selectedShortcutIndex}
                 />
+                <div ref={this.handleLastTabbableElementRef} tabIndex={0} />
             </div>
         );
 
@@ -305,6 +305,8 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         const { popoverProps = {} } = this.props;
         popoverProps.onClose?.(e);
         this.setState({ isOpen: false });
+        this.startFocusBoundaryElement?.removeEventListener("focusin", this.handleStartFocusBoundaryFocusIn);
+        this.endFocusBoundaryElement?.removeEventListener("focusin", this.handleEndFocusBoundaryFocusIn);
     };
 
     private handleDateChange = (newDate: Date | null, isUserChange: boolean, didSubmitWithEnter = false) => {
@@ -413,7 +415,6 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
                 this.setState({ isInputFocused: false });
             }
         }
-        this.registerPopoverBlurHandlers();
         this.safeInvokeInputProp("onBlur", e);
     };
 
@@ -424,9 +425,11 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
             const nextDate = this.parseDate(this.state.valueString);
             this.handleDateChange(nextDate, true, true);
         } else if (e.which === Keys.TAB && e.shiftKey) {
+            // close popover on SHIFT+TAB key press
             this.handleClosePopover();
         } else if (e.which === Keys.TAB && this.state.isOpen) {
-            this.getFirstTabbableElement()?.focus();
+            this.getKeyboardFocusableElements().shift()?.focus();
+            // necessary to prevent focusing the second focusable element
             e.preventDefault();
         } else if (e.which === Keys.ESCAPE) {
             this.setState({ isOpen: false });
@@ -435,73 +438,41 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         this.safeInvokeInputProp("onKeyDown", e);
     };
 
-    private getFirstTabbableElement = (): HTMLElement | null =>
-        this.popoverContentElement?.querySelector("input, [tabindex]:not([tabindex='-1'])");
-
-    private getLastTabbableElement = () => {
-        // Popover contents are well structured, but the selector will need
-        // to be updated if more focusable components are added in the future
-        const tabbableElements = this.popoverContentElement?.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
-        const numOfElements = tabbableElements?.length ?? 0;
-        // Keep track of the last focusable element in popover and add
-        // a blur handler, so that when:
-        // * user tabs to the next element, popover closes
-        // * focus moves to element within popover, popover stays open
-        const lastTabbableElement = numOfElements > 0 ? tabbableElements[numOfElements - 1] : null;
-
-        return lastTabbableElement as HTMLElement | null;
+    private getKeyboardFocusableElements = (): HTMLElement[] => {
+        const elements: HTMLElement[] = Array.from(
+            this.popoverContentElement?.querySelectorAll(
+                "button:not([disabled]),input,[tabindex]:not([tabindex='-1'])",
+            ),
+        );
+        // Remove focus boundary div elements
+        elements.pop();
+        elements.shift();
+        return elements;
     };
 
-    // focus DOM event listener (not React event)
-    private handlePopoverBlur = (e: FocusEvent) => {
-        let relatedTarget = e.relatedTarget as HTMLElement;
-        if (relatedTarget == null) {
-            // Support IE11 (#2924)
-            relatedTarget = document.activeElement as HTMLElement;
-        }
-        const eventTarget = e.target as HTMLElement;
-        // Beware: this.popoverContentElement is sometimes null under Chrome
-        if (
-            relatedTarget == null ||
-            (this.popoverContentElement != null && !this.popoverContentElement.contains(relatedTarget))
-        ) {
-            // Exclude the following blur operations that makes "body" the activeElement
-            // and would close the Popover unexpectedly
-            // - On disabled change months buttons
-            // - DayPicker day elements, their "blur" will be managed at its own onKeyDown
-            const isChangeMonthEvt = eventTarget.classList.contains(Classes.DATEPICKER_NAVBUTTON);
-            const isChangeMonthButtonDisabled = isChangeMonthEvt && (eventTarget as HTMLButtonElement).disabled;
-            const isDayPickerDayEvt = eventTarget.classList.contains(Classes.DATEPICKER_DAY);
-            if (!isChangeMonthButtonDisabled && !isDayPickerDayEvt) {
-                if (eventTarget === this.firstTabbableElement) {
-                    this.inputElement?.focus();
-                    e.preventDefault();
-                }
-                this.handleClosePopover();
-            }
-        } else if (relatedTarget != null) {
-            this.unregisterPopoverBlurHandlers();
-            this.firstTabbableElement = this.getFirstTabbableElement();
-            this.firstTabbableElement?.addEventListener("blur", this.handlePopoverBlur);
-            this.lastTabbableElement = this.getLastTabbableElement();
-            this.lastTabbableElement?.addEventListener("blur", this.handlePopoverBlur);
+    private handleStartFocusBoundaryFocusIn = (e: FocusEvent) => {
+        if (this.popoverContentElement.contains(this.getRelatedTarget(e))) {
+            // Not closing Popover to allow user to freely switch between manually entering a date
+            // string in the input and selecting one via the Popover
+            this.inputElement?.focus();
+        } else {
+            this.getKeyboardFocusableElements().shift()?.focus();
         }
     };
 
-    private registerPopoverBlurHandlers = () => {
-        if (this.popoverContentElement != null) {
-            this.unregisterPopoverBlurHandlers();
-            this.firstTabbableElement = this.getFirstTabbableElement();
-            this.firstTabbableElement?.addEventListener("blur", this.handlePopoverBlur);
-            this.lastTabbableElement = this.getLastTabbableElement();
-            this.lastTabbableElement?.addEventListener("blur", this.handlePopoverBlur);
+    private handleEndFocusBoundaryFocusIn = (e: FocusEvent) => {
+        if (this.popoverContentElement.contains(this.getRelatedTarget(e))) {
+            this.inputElement?.focus();
+            this.handleClosePopover();
+        } else {
+            this.getKeyboardFocusableElements().pop()?.focus();
         }
     };
 
-    private unregisterPopoverBlurHandlers = () => {
-        this.firstTabbableElement?.removeEventListener("blur", this.handlePopoverBlur);
-        this.lastTabbableElement?.removeEventListener("blur", this.handlePopoverBlur);
-    };
+    private getRelatedTarget(e: FocusEvent): HTMLElement {
+        // Support IE11 (#2924)
+        return (e.relatedTarget ?? document.activeElement) as HTMLElement;
+    }
 
     private handleShortcutChange = (_: DatePickerShortcut, selectedShortcutIndex: number) => {
         this.setState({ selectedShortcutIndex });
