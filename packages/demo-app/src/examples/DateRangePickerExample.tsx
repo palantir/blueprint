@@ -20,6 +20,7 @@ import { DateRangePicker } from "@blueprintjs/datetime";
 import { ExampleCard } from "./ExampleCard";
 
 export const DateRangePickerExample = React.memo(() => {
+    DateRangePickerExample.displayName = "DateRangerPickerExample";
     return (
         <ExampleCard width={700} horizontal={true} label="Date range picker">
             <DateRangePicker className={Classes.ELEVATION_1} />
