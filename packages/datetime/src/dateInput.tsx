@@ -423,7 +423,9 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         if (e.which === Keys.ENTER) {
             const nextDate = this.parseDate(this.state.valueString);
             this.handleDateChange(nextDate, true, true);
-        } else if (e.which === Keys.TAB && !e.shiftKey && this.state.isOpen) {
+        } else if (e.which === Keys.TAB && e.shiftKey) {
+            this.handleClosePopover();
+        } else if (e.which === Keys.TAB && this.state.isOpen) {
             this.getFirstTabbableElement()?.focus();
             e.preventDefault();
         } else if (e.which === Keys.ESCAPE) {
