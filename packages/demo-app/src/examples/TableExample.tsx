@@ -19,7 +19,7 @@ import { Cell, Column, ColumnHeaderCell, Table2 } from "@blueprintjs/table";
 import { ExampleCard } from "./ExampleCard";
 
 const WIDTH = 600;
-export const TableExample = React.memo(function TableExampleFn() {
+export const TableExample = React.memo(() => {
     const cellRenderer = React.useCallback(
         (rowIndex: number, columnIndex: number) => <Cell>{`${rowIndex}, ${columnIndex}`}</Cell>,
         [],
