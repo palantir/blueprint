@@ -187,6 +187,10 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
     public popoverContentElement: HTMLDivElement | null = null;
 
     // Last element in popover that is tabbable, and the one that triggers popover closure
+    // when the user presses shift+TAB on it
+    private firstTabbableElement: HTMLElement | null = null;
+
+    // Last element in popover that is tabbable, and the one that triggers popover closure
     // when the user press TAB on it
     private lastTabbableElement: HTMLElement | null = null;
 
@@ -199,7 +203,7 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
     private handlePopoverContentRef: IRef<HTMLDivElement> = refHandler(this, "popoverContentElement");
 
     public componentWillUnmount() {
-        this.unregisterPopoverBlurHandler();
+        this.unregisterPopoverBlurHandlers();
     }
 
     public render() {
@@ -225,7 +229,7 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
             // for the updated month to be rendered
             onMonthChange: (month: Date) => {
                 this.props.dayPickerProps.onMonthChange?.(month);
-                this.setTimeout(this.registerPopoverBlurHandler);
+                this.setTimeout(this.registerPopoverBlurHandlers);
             },
         };
 
@@ -409,7 +413,7 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
                 this.setState({ isInputFocused: false });
             }
         }
-        this.registerPopoverBlurHandler();
+        this.registerPopoverBlurHandlers();
         this.safeInvokeInputProp("onBlur", e);
     };
 
@@ -421,6 +425,7 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
             this.handleDateChange(nextDate, true, true);
         } else if (e.which === Keys.TAB && this.state.isOpen) {
             this.getFirstTabbableElement()?.focus();
+            e.preventDefault();
         } else if (e.which === Keys.ESCAPE) {
             this.setState({ isOpen: false });
             this.inputElement?.blur();
@@ -466,24 +471,33 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
             const isChangeMonthButtonDisabled = isChangeMonthEvt && (eventTarget as HTMLButtonElement).disabled;
             const isDayPickerDayEvt = eventTarget.classList.contains(Classes.DATEPICKER_DAY);
             if (!isChangeMonthButtonDisabled && !isDayPickerDayEvt) {
+                if (eventTarget === this.firstTabbableElement) {
+                    this.inputElement?.focus();
+                    e.preventDefault();
+                }
                 this.handleClosePopover();
             }
         } else if (relatedTarget != null) {
-            this.unregisterPopoverBlurHandler();
+            this.unregisterPopoverBlurHandlers();
+            this.firstTabbableElement = this.getFirstTabbableElement();
+            this.firstTabbableElement?.addEventListener("blur", this.handlePopoverBlur);
             this.lastTabbableElement = this.getLastTabbableElement();
             this.lastTabbableElement?.addEventListener("blur", this.handlePopoverBlur);
         }
     };
 
-    private registerPopoverBlurHandler = () => {
+    private registerPopoverBlurHandlers = () => {
         if (this.popoverContentElement != null) {
-            this.unregisterPopoverBlurHandler();
+            this.unregisterPopoverBlurHandlers();
+            this.firstTabbableElement = this.getFirstTabbableElement();
+            this.firstTabbableElement?.addEventListener("blur", this.handlePopoverBlur);
             this.lastTabbableElement = this.getLastTabbableElement();
             this.lastTabbableElement?.addEventListener("blur", this.handlePopoverBlur);
         }
     };
 
-    private unregisterPopoverBlurHandler = () => {
+    private unregisterPopoverBlurHandlers = () => {
+        this.firstTabbableElement?.removeEventListener("blur", this.handlePopoverBlur);
         this.lastTabbableElement?.removeEventListener("blur", this.handlePopoverBlur);
     };
 
