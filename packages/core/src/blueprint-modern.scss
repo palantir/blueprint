@@ -103,6 +103,15 @@ $toast-intent-button-colors-modern: (
   "danger": ($pt-intent-danger, $white, $red2, $red1, rgba($white, 0.7))
 );
 
+// Tree variables
+$tree-intent-icon-colors-modern: (
+  "primary": $blue5,
+  "success": $green5,
+  "warning": $orange5,
+  "danger" : $red5,
+);
+
+
 @import "components/index";
 
 // Mixin helpers used across multiple components
@@ -835,6 +844,14 @@ table.#{$ns}-html-table {
 
   &:active {
     background-color: rgba($gray3, 0.3);
+  }
+
+  .#{$ns}-dark & .#{$ns}-icon {
+    @each $intent, $color in $tree-intent-icon-colors-modern {
+      &.#{$ns}-intent-#{$intent} {
+        color: $color;
+      }
+    }
   }
 
   .#{$ns}-tree-node.#{$ns}-tree-node-selected > & {

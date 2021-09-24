@@ -148,6 +148,21 @@ const INITIAL_STATE: TreeNodeInfo[] = [
             },
             {
                 id: 4,
+                icon: <Icon icon="endorsed" intent={Intent.SUCCESS} className={Classes.TREE_NODE_ICON} />,
+                label: "Success icon item",
+            },
+            {
+                id: 5,
+                icon: <Icon icon="warning-sign" intent={Intent.WARNING} className={Classes.TREE_NODE_ICON} />,
+                label: "Warning icon item",
+            },
+            {
+                id: 6,
+                icon: <Icon icon="error" intent={Intent.DANGER} className={Classes.TREE_NODE_ICON} />,
+                label: "Danger icon item",
+            },
+            {
+                id: 7,
                 hasCaret: true,
                 icon: "folder-close",
                 label: (
@@ -158,10 +173,10 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                     </ContextMenu2>
                 ),
                 childNodes: [
-                    { id: 5, label: "No-Icon Item" },
-                    { id: 6, icon: "tag", label: "Item 1" },
+                    { id: 8, label: "No-Icon Item" },
+                    { id: 9, icon: "tag", label: "Item 1" },
                     {
-                        id: 7,
+                        id: 10,
                         hasCaret: true,
                         icon: "folder-close",
                         label: (
@@ -170,8 +185,8 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                             </ContextMenu2>
                         ),
                         childNodes: [
-                            { id: 8, icon: "document", label: "Item 0" },
-                            { id: 9, icon: "tag", label: "Item 1" },
+                            { id: 11, icon: "document", label: "Item 0" },
+                            { id: 12, icon: "tag", label: "Item 1" },
                         ],
                     },
                 ],
