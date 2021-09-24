@@ -21,6 +21,8 @@ import { BreadcrumbExample } from "./BreadcrumbExample";
 import { ButtonExample } from "./ButtonExample";
 import { CalloutExample } from "./CalloutExample";
 import { CheckboxRadioExample } from "./CheckboxRadioExample";
+import { DatePickerExample } from "./DatePickerExample";
+import { DateRangePickerExample } from "./DateRangePickerExample";
 import { DialogExample } from "./DialogExample";
 import { EditableTextExample } from "./EditableTextExample";
 import { HtmlCodeExample } from "./HtmlCodeExample";
@@ -45,7 +47,8 @@ export class Examples extends React.PureComponent {
                 <ButtonExample />
                 <CalloutExample />
                 <CheckboxRadioExample />
-                {/* Add DatePickerExample */}
+                <DatePickerExample />
+                <DateRangePickerExample />
                 <DialogExample className={className} />
                 <EditableTextExample />
                 <HtmlCodeExample />
