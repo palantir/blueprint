@@ -52,7 +52,7 @@ if (!args["retainDefault"]) {
 variablesScss = COPYRIGHT_HEADER + "\n" + variablesScss;
 
 if (!fs.existsSync(`${DEST_DIR}/scss`)) {
-    fs.mkdirSync(`${DEST_DIR}/scss`);
+    fs.mkdirSync(`${DEST_DIR}/scss`, { recursive: true });
 }
 fs.writeFileSync(`${DEST_DIR}/scss/${outputFileName}.scss`, variablesScss);
 
@@ -65,6 +65,6 @@ const variablesLess = variablesScss
     .replace(/\$/g, "@");
 
 if (!fs.existsSync(`${DEST_DIR}/less`)) {
-    fs.mkdirSync(`${DEST_DIR}/less`);
+    fs.mkdirSync(`${DEST_DIR}/less`, { recursive: true });
 }
 fs.writeFileSync(`${DEST_DIR}/less/${outputFileName}.less`, variablesLess);

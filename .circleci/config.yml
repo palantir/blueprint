@@ -211,6 +211,7 @@ jobs:
       - store_artifacts: { path: packages/docs-app/dist }
       - store_artifacts: { path: packages/landing-app/dist }
       - store_artifacts: { path: packages/table-dev-app/dist }
+      - store_artifacts: { path: packages/demo-app/dist }
       - run:
           name: Submit Github comment with links to built artifacts
           command: node ./scripts/preview.js
