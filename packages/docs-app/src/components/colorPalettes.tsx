@@ -128,7 +128,7 @@ export const ExtendedColorsPalette = createPaletteBook([
     expand("rose"),
     expand("violet"),
     expand("indigo"),
-    expand("cobalt"),
+    expand("cerulean"),
     expand("turquoise"),
     expand("forest"),
     expand("lime"),
