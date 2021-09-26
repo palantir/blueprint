@@ -186,14 +186,6 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
 
     public popoverContentElement: HTMLDivElement | null = null;
 
-    // First element in popover that is keyboard-focusable and triggers popover closure when the
-    // user presses shift+TAB to focus it
-    private startFocusBoundaryElement: HTMLDivElement | null = null;
-
-    // Last element in popover that is keyboard-focusable and triggers popover closure when the user
-    // press TAB to focus it
-    private endFocusBoundaryElement: HTMLDivElement | null = null;
-
     private handleInputRef = refHandler<HTMLInputElement, "inputElement">(
         this,
         "inputElement",
@@ -201,21 +193,6 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
     );
 
     private handlePopoverContentRef: IRef<HTMLDivElement> = refHandler(this, "popoverContentElement");
-
-    private handleFirstTabbableElementRef = (ref: HTMLDivElement) => {
-        this.startFocusBoundaryElement = ref;
-        this.startFocusBoundaryElement?.addEventListener("focusin", this.handleStartFocusBoundaryFocusIn);
-    };
-
-    private handleLastTabbableElementRef = (ref: HTMLDivElement) => {
-        this.endFocusBoundaryElement = ref;
-        this.endFocusBoundaryElement?.addEventListener("focusin", this.handleEndFocusBoundaryFocusIn);
-    };
-
-    public componentWillUnmount() {
-        this.startFocusBoundaryElement?.removeEventListener("focusin", this.handleStartFocusBoundaryFocusIn);
-        this.endFocusBoundaryElement?.removeEventListener("focusin", this.handleEndFocusBoundaryFocusIn);
-    }
 
     public render() {
         const { value, valueString } = this.state;
@@ -231,9 +208,12 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
             },
         };
 
+        // React's onFocus prop listens to the focusin browser event under the hood, so it's safe to
+        // provide it the focusIn event handlers instead of using a ref and manually adding the
+        // event listeners ourselves.
         const wrappedPopoverContent = (
             <div ref={this.handlePopoverContentRef}>
-                <div ref={this.handleFirstTabbableElementRef} tabIndex={0} />
+                <div onFocus={this.handleStartFocusBoundaryFocusIn} tabIndex={0} />
                 <DatePicker
                     {...this.props}
                     dayPickerProps={dayPickerProps}
@@ -242,7 +222,7 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
                     onShortcutChange={this.handleShortcutChange}
                     selectedShortcutIndex={this.state.selectedShortcutIndex}
                 />
-                <div ref={this.handleLastTabbableElementRef} tabIndex={0} />
+                <div onFocus={this.handleEndFocusBoundaryFocusIn} tabIndex={0} />
             </div>
         );
 
@@ -305,8 +285,6 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         const { popoverProps = {} } = this.props;
         popoverProps.onClose?.(e);
         this.setState({ isOpen: false });
-        this.startFocusBoundaryElement?.removeEventListener("focusin", this.handleStartFocusBoundaryFocusIn);
-        this.endFocusBoundaryElement?.removeEventListener("focusin", this.handleEndFocusBoundaryFocusIn);
     };
 
     private handleDateChange = (newDate: Date | null, isUserChange: boolean, didSubmitWithEnter = false) => {
@@ -450,7 +428,7 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         return elements;
     };
 
-    private handleStartFocusBoundaryFocusIn = (e: FocusEvent) => {
+    private handleStartFocusBoundaryFocusIn = (e: React.FocusEvent<HTMLDivElement>) => {
         if (this.popoverContentElement.contains(this.getRelatedTarget(e))) {
             // Not closing Popover to allow user to freely switch between manually entering a date
             // string in the input and selecting one via the Popover
@@ -460,7 +438,7 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         }
     };
 
-    private handleEndFocusBoundaryFocusIn = (e: FocusEvent) => {
+    private handleEndFocusBoundaryFocusIn = (e: React.FocusEvent<HTMLDivElement>) => {
         if (this.popoverContentElement.contains(this.getRelatedTarget(e))) {
             this.inputElement?.focus();
             this.handleClosePopover();
@@ -469,7 +447,7 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         }
     };
 
-    private getRelatedTarget(e: FocusEvent): HTMLElement {
+    private getRelatedTarget(e: React.FocusEvent<HTMLDivElement>): HTMLElement {
         // Support IE11 (#2924)
         return (e.relatedTarget ?? document.activeElement) as HTMLElement;
     }
