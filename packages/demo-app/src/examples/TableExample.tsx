@@ -50,3 +50,4 @@ export const TableExample = React.memo(() => {
         </ExampleCard>
     );
 });
+TableExample.displayName = "TableExample";
