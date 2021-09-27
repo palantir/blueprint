@@ -1,9 +1,9 @@
 {
     "name": "@blueprintjs/eslint-config",
-    "version": "0.7.3",
+    "version": "0.7.4",
     "description": "ESLint configuration for @blueprintjs packages",
     "dependencies": {
-        "@blueprintjs/eslint-plugin": "^0.3.4",
+        "@blueprintjs/eslint-plugin": "^0.3.5",
         "@blueprintjs/tslint-config": "^3.0.4",
         "@typescript-eslint/eslint-plugin": "^4.9.1",
         "@typescript-eslint/eslint-plugin-tslint": "^4.9.1",

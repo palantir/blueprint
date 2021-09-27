@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/stylelint-plugin",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "Stylelint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
@@ -12,7 +12,7 @@
         "test": "mocha test/index.js"
     },
     "dependencies": {
-        "@blueprintjs/colors": "^5.0.0-alpha.0",
+        "@blueprintjs/colors": "^4.0.0-alpha.0",
         "postcss": "^7.0.35",
         "postcss-selector-parser": "^6.0.5",
         "postcss-value-parser": "^4.1.0"
@@ -21,7 +21,7 @@
         "stylelint": "^13.0.0"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^1.6.0",
+        "@blueprintjs/node-build-scripts": "^1.6.1",
         "@types/stylelint": "^9.10.1",
         "mocha": "^8.2.1",
         "typescript": "^4.1.2"

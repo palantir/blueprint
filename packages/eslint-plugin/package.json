@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/eslint-plugin",
-    "version": "0.3.4",
+    "version": "0.3.5",
     "description": "ESLint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
@@ -17,7 +17,7 @@
         "eslint": "^7.15.0"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^1.6.0",
+        "@blueprintjs/node-build-scripts": "^1.6.1",
         "@types/dedent": "^0.7.0",
         "dedent": "^0.7.0",
         "ts-node": "^9.1.1",

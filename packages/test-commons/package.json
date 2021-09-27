@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/test-commons",
-    "version": "0.10.13",
+    "version": "0.10.14",
     "description": "Common utilities for tests in @blueprintjs packages",
     "main": "lib/cjs/index.js",
     "typings": "lib/cjs/index.d.ts",
@@ -24,7 +24,7 @@
         "react": ">=15.3.0"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^1.6.0",
+        "@blueprintjs/node-build-scripts": "^1.6.1",
         "react": "^16.13.1",
         "typescript": "~4.0.3"
     },

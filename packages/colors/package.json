@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/colors",
-    "version": "5.0.0-alpha.0",
+    "version": "4.0.0-alpha.0",
     "description": "Blueprint color definitions",
     "main": "lib/index.js",
     "scripts": {
@@ -18,7 +18,7 @@
         "verify": "npm-run-all compile -p dist lint"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^1.6.0",
+        "@blueprintjs/node-build-scripts": "^1.6.1",
         "mocha": "^8.2.1",
         "typescript": "^4.1.2"
     },
