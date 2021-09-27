@@ -21,10 +21,10 @@ import { ExampleCard } from "./ExampleCard";
 
 const WIDTH = 300;
 export const DatePickerExample = React.memo(() => {
-    DatePickerExample.displayName = "DatePickerExample";
     return (
         <ExampleCard width={WIDTH} horizontal={true} label="Date picker">
             <DatePicker className={Classes.ELEVATION_1} />
         </ExampleCard>
     );
 });
+DatePickerExample.displayName = "DatePickerExample";
