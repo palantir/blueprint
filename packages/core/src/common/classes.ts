@@ -19,7 +19,10 @@ import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
 
-const NS = process.env.BLUEPRINT_NAMESPACE || process.env.REACT_APP_BLUEPRINT_NAMESPACE || "bp3";
+let NS = "bp3";
+if (typeof process !== "undefined") {
+    NS = process.env?.BLUEPRINT_NAMESPACE ?? process.env?.REACT_APP_BLUEPRINT_NAMESPACE ?? NS;
+}
 
 // modifiers
 export const ACTIVE = `${NS}-active`;
