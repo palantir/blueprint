@@ -21,6 +21,8 @@ import { BreadcrumbExample } from "./BreadcrumbExample";
 import { ButtonExample } from "./ButtonExample";
 import { CalloutExample } from "./CalloutExample";
 import { CheckboxRadioExample } from "./CheckboxRadioExample";
+import { DatePickerExample } from "./DatePickerExample";
+import { DateRangePickerExample } from "./DateRangePickerExample";
 import { DialogExample } from "./DialogExample";
 import { EditableTextExample } from "./EditableTextExample";
 import { HtmlCodeExample } from "./HtmlCodeExample";
@@ -30,6 +32,7 @@ import { InputExample } from "./InputExample";
 import { MenuExample } from "./MenuExample";
 import { SliderExample } from "./SliderExample";
 import { SwitchExample } from "./SwitchExample";
+import { TableExample } from "./TableExample";
 import { TabsExample } from "./TabsExample";
 import { TagExample } from "./TagExample";
 import { TextExample } from "./TextExample";
@@ -45,7 +48,8 @@ export class Examples extends React.PureComponent {
                 <ButtonExample />
                 <CalloutExample />
                 <CheckboxRadioExample />
-                {/* Add DatePickerExample */}
+                <DatePickerExample />
+                <DateRangePickerExample />
                 <DialogExample className={className} />
                 <EditableTextExample />
                 <HtmlCodeExample />
@@ -55,7 +59,7 @@ export class Examples extends React.PureComponent {
                 <MenuExample />
                 <SliderExample />
                 <SwitchExample />
-                {/* Add TableExample */}
+                <TableExample />
                 <TabsExample />
                 <TagExample />
                 <TextExample />
