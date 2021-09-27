@@ -64,7 +64,6 @@ const coreColors = {
     RED5: "#F99498",
 };
 
-// Extended colors are still using the "legacy" palette
 const extendedColors = {
     CERULEAN1: "#0C5174",
     CERULEAN2: "#0F6894",
