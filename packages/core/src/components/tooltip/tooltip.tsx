@@ -25,7 +25,7 @@ import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import { PopoverSharedProps } from "../popover/popoverSharedProps";
 import { TooltipContext, TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 
-export interface TooltipProps<TProps = React.HTMLProps<HTMLElement>> extends PopoverSharedProps<TProps>, IntentProps {
+export interface TooltipProps<TProps = React.HTMLProps<HTMLElement>> extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose">, IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */

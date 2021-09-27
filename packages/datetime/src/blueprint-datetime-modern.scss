@@ -1,0 +1,62 @@
+@import "~@blueprintjs/colors/lib/scss/colors";
+
+$datepicker-day-background-color-hover: rgba($gray3, 0.15);
+$datepicker-day-background-color-active: rgba($gray3, 0.3);
+$dark-datepicker-day-background-color-hover: rgba($gray3, 0.15);
+$dark-datepicker-day-background-color-active: rgba($gray3, 0.3);
+$daterangepicker-range-background-color: rgba($blue3, 0.1);
+$daterangepicker-range-background-color-selected: rgba($blue3, 0.1);
+$daterangepicker-range-background-color-selected-hover: rgba($blue3, 0.2);
+$dark-daterangepicker-range-background-color: rgba($blue3, 0.2);
+$dark-daterangepicker-range-background-color-selected: rgba($blue3, 0.2);
+$dark-daterangepicker-range-background-color-selected-hover: rgba($blue3, 0.4);
+
+@import "./blueprint-datetime";
+
+/* stylelint-disable selector-class-pattern */
+
+.#{$ns}-datepicker, .#{$ns}-daterangepicker {
+  .DayPicker-Day {
+    &.DayPicker-Day--selected {
+      &:active {
+        background-color: $blue1;
+      }
+
+      .#{$ns}-dark & {
+        &:hover {
+          background-color: $blue2;
+        }
+
+        &:active {
+          background-color: $blue1;
+        }
+      }
+    }
+  }
+}
+
+.#{$ns}-daterangepicker {
+  .DayPicker-Day {
+    &--hovered-range {
+      color: $blue2;
+    }
+
+    &--selected-range {
+      color: $blue2;
+
+      &:hover {
+        color: $blue2;
+      }
+    }
+
+    .#{$ns}-dark & {
+      &--hovered-range {
+        color: $light-gray5;
+      }
+
+      &--selected-range {
+        color: $light-gray5;
+      }
+    }
+  }
+}

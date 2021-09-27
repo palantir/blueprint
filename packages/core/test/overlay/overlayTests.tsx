@@ -60,6 +60,10 @@ describe("<Overlay>", () => {
         }
     });
 
+    after(() => {
+        document.documentElement.removeChild(testsContainerElement);
+    });
+
     it("renders its content correctly", () => {
         const overlay = shallow(
             <Overlay isOpen={true} usePortal={false}>
@@ -82,6 +86,16 @@ describe("<Overlay>", () => {
         );
         assert.lengthOf(container.getElementsByClassName(CLASS_TO_TEST), 1);
         document.body.removeChild(container);
+    });
+
+    it("sets aria-live", () => {
+        // Using an open Overlay because an initially closed Overlay will not render anything to the
+        // DOM
+        mountWrapper(<Overlay className="aria-test" isOpen={true} usePortal={false} />);
+        const overlayElement = document.querySelector(".aria-test");
+        assert.exists(overlayElement);
+        // Element#ariaLive not supported in Firefox or IE
+        assert.equal(overlayElement?.getAttribute("aria-live"), "polite");
     });
 
     it("portalClassName appears on Portal", () => {
@@ -247,16 +261,16 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
             assertFocus(() => {
-                const backdrops = Array.from(document.querySelectorAll("." + Classes.OVERLAY_BACKDROP));
-                assert.include(backdrops, document.activeElement);
+                const contents = Array.from(document.querySelectorAll("." + Classes.OVERLAY_CONTENT));
+                assert.include(contents, document.activeElement);
             }, done);
         });
 
-        it("does not bring focus to overlay if autoFocus=false", done => {
+        it("does not bring focus to overlay if autoFocus=false and enforceFocus=false", done => {
             mountWrapper(
                 <div>
                     <button>something outside overlay for browser to focus on</button>
-                    <Overlay autoFocus={false} isOpen={true} usePortal={true}>
+                    <Overlay autoFocus={false} enforceFocus={false} isOpen={true} usePortal={true}>
                         <input type="text" />
                     </Overlay>
                 </div>,
@@ -290,10 +304,7 @@ describe("<Overlay>", () => {
             buttonRef!.focus();
             assertFocus(() => {
                 assert.notStrictEqual(document.activeElement, buttonRef);
-                assert.isTrue(
-                    document.activeElement?.classList.contains(Classes.OVERLAY_BACKDROP),
-                    "focus on backdrop",
-                );
+                assert.isTrue(document.activeElement?.classList.contains(Classes.OVERLAY_CONTENT), "focus on content");
             }, done);
         });
 
@@ -304,6 +315,25 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
             wrapper.find(BACKDROP_SELECTOR).simulate("mousedown");
+            assertFocus(`strong.${Classes.OVERLAY_CONTENT}`, done);
+        });
+
+        it("returns focus to overlay after clicking an outside element if enforceFocus=true", done => {
+            mountWrapper(
+                <div>
+                    <Overlay
+                        enforceFocus={true}
+                        canOutsideClickClose={false}
+                        isOpen={true}
+                        usePortal={false}
+                        hasBackdrop={false}
+                    >
+                        {createOverlayContents()}
+                    </Overlay>
+                    <button id="buttonId" />
+                </div>,
+            );
+            wrapper.find("#buttonId").simulate("click");
             assertFocus(`strong.${Classes.OVERLAY_CONTENT}`, done);
         });
 
@@ -514,6 +544,10 @@ describe("<Overlay>", () => {
 
     let index = 0;
     function createOverlayContents() {
-        return <strong id={`overlay-${index++}`}>Overlay content!</strong>;
+        return (
+            <strong id={`overlay-${index++}`} tabIndex={0}>
+                Overlay content!
+            </strong>
+        );
     }
 });

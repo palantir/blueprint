@@ -21,6 +21,7 @@ import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, HTMLDivProps, mergeRefs, Utils } from "../../common";
 import * as Errors from "../../common/errors";
+import { isKeyboardClick } from "../../common/keys";
 import { Ref, refHandler, setRef } from "../../common/refs";
 import { Overlay } from "../overlay/overlay";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
@@ -74,6 +75,20 @@ export interface PopoverProps<TProps = React.HTMLProps<HTMLElement>> extends Pop
     hasBackdrop?: boolean;
 
     /**
+     * Whether the application should return focus to the last active element in the
+     * document after this popover closes.
+     *
+     * This is automatically set to `false` if this is a hover interaction popover.
+     *
+     * If you are attaching a popover _and_ a tooltip to the same target, you must take
+     * care to either disable this prop for the popover _or_ disable the tooltip's
+     * `openOnTargetFocus` prop.
+     *
+     * @default false
+     */
+    shouldReturnFocusOnClose?: boolean;
+
+    /**
      * Ref attached to the `Classes.POPOVER` element.
      */
     popoverRef?: Ref<HTMLElement>;
@@ -111,6 +126,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         interactionKind: PopoverInteractionKind.CLICK,
         minimal: false,
         openOnTargetFocus: true,
+        shouldReturnFocusOnClose: false,
         // N.B. we don't set a default for `placement` or `position` here because that would trigger
         // a warning in validateProps if the other prop is specified by a user of this component
         positioningStrategy: "absolute",
@@ -299,8 +315,11 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                   onMouseLeave: this.handleMouseLeave,
               }
             : {
-                  // CLICK needs only one handler
                   onClick: this.handleTargetClick,
+                  // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
+                  onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>
+                      // eslint-disable-next-line deprecation/deprecation
+                      isKeyboardClick(event.keyCode) && this.handleTargetClick(event),
               };
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
@@ -360,7 +379,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const { interactionKind, usePortal } = this.props;
+        const { interactionKind, shouldReturnFocusOnClose, usePortal } = this.props;
         const { isOpen } = this.state;
 
         // compute an appropriate transform origin so the scale animation points towards target
@@ -375,6 +394,9 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         const popoverHandlers: HTMLDivProps = {
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
+            // treat ENTER/SPACE keys the same as a click for accessibility
+            // eslint-disable-next-line deprecation/deprecation
+            onKeyDown: event => isKeyboardClick(event.keyCode) && this.handlePopoverClick(event),
         };
         if (
             interactionKind === PopoverInteractionKind.HOVER ||
@@ -416,6 +438,8 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                 usePortal={this.props.usePortal}
                 portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
+                // if hover interaciton, it doesn't make sense to take over focus control
+                shouldReturnFocusOnClose={this.isHoverInteractionKind() ? false : shouldReturnFocusOnClose}
             >
                 <div className={Classes.POPOVER_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
                     <ResizeSensor onResize={this.reposition} targetRef={this.popoverRef}>
@@ -502,13 +526,19 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
 
     private handleTargetBlur = (e: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
-            // if the next element to receive focus is within the popover, we'll want to leave the
-            // popover open. e.relatedTarget ought to tell us the next element to receive focus, but if the user just
+            // e.relatedTarget ought to tell us the next element to receive focus, but if the user just
             // clicked on an element which is not focusable (either by default or with a tabIndex attribute),
             // it won't be set. So, we filter those out here and assume that a click handler somewhere else will
             // close the popover if necessary.
-            if (e.relatedTarget != null && !this.isElementInPopover(e.relatedTarget as HTMLElement)) {
-                this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+            if (e.relatedTarget != null) {
+                // if the next element to receive focus is within the popover, we'll want to leave the
+                // popover open.
+                if (
+                    e.relatedTarget !== this.popoverElement &&
+                    !this.isElementInPopover(e.relatedTarget as HTMLElement)
+                ) {
+                    this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+                }
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;
@@ -555,7 +585,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         });
     };
 
-    private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
+    private handlePopoverClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
         const eventPopover = eventTarget.closest(`.${Classes.POPOVER}`);
         const isEventFromSelf = eventPopover === this.getPopoverElement();
@@ -584,7 +614,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         }
     };
 
-    private handleTargetClick = (e: React.MouseEvent<HTMLElement>) => {
+    private handleTargetClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         // ensure click did not originate from within inline popover before closing
         if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {

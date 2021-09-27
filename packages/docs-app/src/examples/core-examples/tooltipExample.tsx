@@ -131,7 +131,12 @@ export class TooltipExample extends React.PureComponent<ExampleProps, TooltipExa
                     placement="right"
                     popoverClassName={Classes.POPOVER_CONTENT_SIZING}
                 >
-                    <Tooltip content={<span>This button also has a popover!</span>} placement="right" usePortal={false}>
+                    <Tooltip
+                        content={<span>This button also has a popover!</span>}
+                        openOnTargetFocus={false}
+                        placement="right"
+                        usePortal={false}
+                    >
                         <Button intent="success" text="Hover and click me" />
                     </Tooltip>
                 </Popover>

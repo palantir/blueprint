@@ -3,6 +3,8 @@
 
 /* stylelint-disable @blueprintjs/no-color-literal */
 
+// "Legacy" Blueprint 3.x colors
+
 // Gray scale
 
 $black: #10161a !default;
@@ -114,3 +116,5 @@ $sepia2: #7d5125 !default;
 $sepia3: #96622d !default;
 $sepia4: #b07b46 !default;
 $sepia5: #c99765 !default;
+
+@import "color-aliases";

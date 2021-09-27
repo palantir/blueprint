@@ -77,7 +77,7 @@ export const PanelView: PanelViewComponent = (props: PanelViewProps) => {
                 closePanel: handleClose,
                 openPanel: props.onOpen,
             }),
-        [props.panel.renderPanel, handleClose, props.onOpen],
+        [props.panel, props.onOpen],
     );
 
     return (

@@ -43,7 +43,7 @@
         "whatwg-fetch": "^3.4.1"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^1.6.0-alpha.0",
+        "@blueprintjs/node-build-scripts": "^1.6.1",
         "@blueprintjs/webpack-build-scripts": "^3.0.0-alpha.0",
         "@types/chroma-js": "^2.1.2",
         "@types/downloadjs": "^1.4.2",

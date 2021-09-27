@@ -24,7 +24,7 @@
         "react": ">=15.3.0"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^1.6.0-alpha.0",
+        "@blueprintjs/node-build-scripts": "^1.6.1",
         "react": "^16.13.1",
         "typescript": "~4.0.3"
     },

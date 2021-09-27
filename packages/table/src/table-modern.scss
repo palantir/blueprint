@@ -1,0 +1,7 @@
+@import "~@blueprintjs/colors/lib/scss/colors";
+@import "./table";
+
+.#{$ns}-dark & .#{$ns}-table-selection-region {
+  background-color: rgba($blue4, 0.1);
+  border: $cell-border-width solid $blue4;
+}

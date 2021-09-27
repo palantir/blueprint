@@ -163,20 +163,24 @@ describe("<MultistepDialog>", () => {
     });
 
     it("gets by without children", () => {
-        assert.doesNotThrow(() => mount(<MultistepDialog isOpen={true} />));
+        assert.doesNotThrow(() => {
+            const dialog = mount(<MultistepDialog isOpen={true} />);
+            dialog.unmount();
+        });
     });
 
     it("supports non-existent children", () => {
-        assert.doesNotThrow(() =>
-            mount(
+        assert.doesNotThrow(() => {
+            const dialog = mount(
                 <MultistepDialog>
                     {null}
                     <DialogStep id="one" panel={<Panel />} />
                     {undefined}
                     <DialogStep id="two" panel={<Panel />} />
                 </MultistepDialog>,
-            ),
-        );
+            );
+            dialog.unmount();
+        });
     });
 
     it("enables next by default", () => {

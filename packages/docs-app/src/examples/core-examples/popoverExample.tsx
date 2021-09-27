@@ -166,7 +166,7 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                         isOpen={this.state.isControlled ? this.state.isOpen : undefined}
                         content={this.getContents(exampleIndex)}
                     >
-                        <Button intent={Intent.PRIMARY} text="Popover target" />
+                        <Button intent={Intent.PRIMARY} text="Popover target" tabIndex={0} />
                     </Popover>
                     <p>
                         Scroll around this container to experiment

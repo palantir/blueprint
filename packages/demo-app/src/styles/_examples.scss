@@ -1,0 +1,146 @@
+@import "~@blueprintjs/colors/lib/scss/colors";
+@import "~@blueprintjs/core/lib/scss/variables";
+
+$background-color: $light-gray2;
+$content-background-color: $light-gray4;
+$dark-background-color: $dark-gray2;
+$dark-content-background-color: $dark-gray3;
+
+$intent-primary-text: $blue1;
+$intent-success-text: $green1;
+$intent-warning-text: $orange1;
+$intent-danger-text: $red1;
+
+$dark-intent-primary-text: $blue5;
+$dark-intent-success-text: $green5;
+$dark-intent-warning-text: $orange5;
+$dark-intent-danger-text: $red5;
+
+.examples-root {
+  align-items: center;
+  background-color: $background-color;
+  display: flex;
+  flex-direction: row;
+}
+
+.examples-container {
+  background-color: $background-color;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 100%;
+
+  &.#{$ns}-dark {
+    background-color: $dark-background-color;
+  }
+}
+
+.example-row {
+  display: flex;
+  justify-content: space-evenly;
+
+  > :not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
+.example-card-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+
+.example-card {
+  background-color: $content-background-color;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+
+  > :not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  &.horizontal {
+    flex-direction: row;
+    justify-content: center;
+
+    > :not(:last-child) {
+      margin-bottom: 0;
+      margin-right: 10px;
+    }
+  }
+}
+
+.tag-container {
+  display: flex;
+  flex-direction: column;
+
+  > :not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
+.html-table-example {
+  .#{$ns}-intent-primary {
+    color: $intent-primary-text;
+  }
+  .#{$ns}-intent-success {
+    color: $intent-success-text;
+  }
+  .#{$ns}-intent-warning {
+    color: $intent-warning-text;
+  }
+  .#{$ns}-intent-danger {
+    color: $intent-danger-text;
+  }
+
+  .#{$ns}-dark & {
+    .#{$ns}-intent-primary {
+      color: $dark-intent-primary-text;
+    }
+    .#{$ns}-intent-success {
+      color: $dark-intent-success-text;
+    }
+    .#{$ns}-intent-warning {
+      color: $dark-intent-warning-text;
+    }
+    .#{$ns}-intent-danger {
+      color: $dark-intent-danger-text;
+    }
+  }
+}
+
+.text-example {
+  &.#{$ns}-intent-primary {
+    color: $intent-primary-text;
+  }
+  &.#{$ns}-intent-success {
+    color: $intent-success-text;
+  }
+  &.#{$ns}-intent-warning {
+    color: $intent-warning-text;
+  }
+  &.#{$ns}-intent-danger {
+    color: $intent-danger-text;
+  }
+
+  .#{$ns}-dark & {
+    &.#{$ns}-intent-primary {
+      color: $dark-intent-primary-text;
+    }
+    &.#{$ns}-intent-success {
+      color: $dark-intent-success-text;
+    }
+    &.#{$ns}-intent-warning {
+      color: $dark-intent-warning-text;
+    }
+    &.#{$ns}-intent-danger {
+      color: $dark-intent-danger-text;
+    }
+  }
+}
+
+.#{$ns}-toast {
+  margin: 10px 0;
+}
