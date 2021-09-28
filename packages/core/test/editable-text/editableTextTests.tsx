@@ -48,7 +48,7 @@ describe("<EditableText>", () => {
     });
 
     it("passes an ID to the underlying span", () => {
-        const editable = shallow(<EditableText disabled={true} isEditing={true} textId="my-id" />).find("span");
+        const editable = shallow(<EditableText disabled={true} isEditing={true} contentId="my-id" />).find("span");
         assert.strictEqual(editable.prop("id"), "my-id");
     });
 

@@ -114,7 +114,7 @@ export interface IEditableTextProps extends IntentProps, Props {
     value?: string;
 
     /** ID attribute to pass to the underlying element that contains the text contents. This allows for referencing via aria attributes */
-    textId?: string;
+    contentId?: string;
 
     /** Callback invoked when user cancels input with the `esc` key. Receives last confirmed value. */
     onCancel?(value: string): void;
@@ -207,7 +207,7 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
     }
 
     public render() {
-        const { alwaysRenderInput, disabled, multiline, textId } = this.props;
+        const { alwaysRenderInput, disabled, multiline, contentId } = this.props;
         const value = this.props.value ?? this.state.value;
         const hasValue = value != null && value !== "";
 
@@ -246,7 +246,7 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
         // and size the container element responsively
         const shouldHideContents = alwaysRenderInput && !this.state.isEditing;
 
-        const spanProps: React.HTMLProps<HTMLSpanElement> = textId != null ? { id: textId } : {};
+        const spanProps: React.HTMLProps<HTMLSpanElement> = contentId != null ? { id: contentId } : {};
 
         return (
             <div className={classes} onFocus={this.handleFocus} tabIndex={tabIndex}>
