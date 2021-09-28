@@ -126,11 +126,11 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         interactionKind: PopoverInteractionKind.CLICK,
         minimal: false,
         openOnTargetFocus: true,
-        shouldReturnFocusOnClose: false,
         // N.B. we don't set a default for `placement` or `position` here because that would trigger
         // a warning in validateProps if the other prop is specified by a user of this component
         positioningStrategy: "absolute",
         renderTarget: undefined as any,
+        shouldReturnFocusOnClose: false,
         targetTagName: "span",
         transitionDuration: 300,
         usePortal: true,

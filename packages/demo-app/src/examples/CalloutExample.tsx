@@ -15,7 +15,6 @@ limitations under the License.*/
 import * as React from "react";
 
 import { Callout, Intent } from "@blueprintjs/core";
-import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -29,7 +28,7 @@ export class CalloutExample extends React.PureComponent {
                             key={`${intent}-callout`}
                             intent={intent as Intent}
                             title="Callout heading"
-                            icon={IconNames.INFO_SIGN}
+                            icon="info-sign"
                         >
                             This is callout text
                         </Callout>
