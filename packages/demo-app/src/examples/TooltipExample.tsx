@@ -23,11 +23,7 @@ export class TooltipExample extends React.PureComponent {
     public render() {
         return (
             <ExampleCard label="Tooltip" width={WIDTH}>
-                <Tooltip
-                    className={Classes.TOOLTIP_INDICATOR}
-                    content={<span>Always open tooltip</span>}
-                    isOpen={true}
-                >
+                <Tooltip className={Classes.TOOLTIP_INDICATOR} content={<span>Always open tooltip</span>} isOpen={true}>
                     Always open target
                 </Tooltip>
                 <Tooltip className={Classes.TOOLTIP_INDICATOR} content={<span>Regular tooltip</span>}>

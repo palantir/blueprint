@@ -14,7 +14,7 @@ limitations under the License.*/
 
 import * as React from "react";
 
-import { Cell, Column, ColumnHeaderCell, Table2 } from "@blueprintjs/table";
+import { Cell, Column, ColumnHeaderCell, Table } from "@blueprintjs/table";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -30,7 +30,7 @@ export const TableExample = React.memo(() => {
     );
     return (
         <ExampleCard width={WIDTH} horizontal={true} label="Table">
-            <Table2 numRows={4}>
+            <Table numRows={4}>
                 <Column
                     cellRenderer={cellRenderer}
                     columnHeaderCellRenderer={columnHeaderCellRenderer}
@@ -46,7 +46,7 @@ export const TableExample = React.memo(() => {
                     columnHeaderCellRenderer={columnHeaderCellRenderer}
                     key="column-2"
                 />
-            </Table2>
+            </Table>
         </ExampleCard>
     );
 });

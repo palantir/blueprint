@@ -15,7 +15,6 @@ limitations under the License.*/
 import * as React from "react";
 
 import { Icon, Intent } from "@blueprintjs/core";
-import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -25,7 +24,7 @@ export class IconExample extends React.PureComponent {
             <div className="example-row">
                 <ExampleCard label="Icon" horizontal={true}>
                     {Object.values(Intent).map(intent => (
-                        <Icon key={`${intent}-icon`} intent={intent} icon={IconNames.ADD} />
+                        <Icon key={`${intent}-icon`} intent={intent} icon="add" />
                     ))}
                 </ExampleCard>
             </div>

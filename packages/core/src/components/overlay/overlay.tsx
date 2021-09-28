@@ -249,8 +249,18 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
             childrenWithTransitions.unshift(maybeBackdrop);
         }
         if (isOpen && enforceFocus && childrenWithTransitions.length > 0) {
-            childrenWithTransitions.unshift(this.renderDummyElement("__first", { onFocus: this.handleStartFocusTrapElementFocusIn, ref: this.startFocusTrapElement }));
-            childrenWithTransitions.push(this.renderDummyElement("__last", { onFocus: this.handleEndFocusTrapElementFocusIn, ref: this.endFocusTrapElement }));
+            childrenWithTransitions.unshift(
+                this.renderDummyElement("__first", {
+                    onFocus: this.handleStartFocusTrapElementFocusIn,
+                    ref: this.startFocusTrapElement,
+                }),
+            );
+            childrenWithTransitions.push(
+                this.renderDummyElement("__last", {
+                    onFocus: this.handleEndFocusTrapElementFocusIn,
+                    ref: this.endFocusTrapElement,
+                }),
+            );
         }
 
         const containerClasses = classNames(
@@ -263,7 +273,12 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         );
 
         const transitionGroup = (
-            <div aria-live="polite" className={containerClasses} onKeyDown={this.handleKeyDown} ref={this.containerElement}>
+            <div
+                aria-live="polite"
+                className={containerClasses}
+                onKeyDown={this.handleKeyDown}
+                ref={this.containerElement}
+            >
                 <TransitionGroup appear={true} component={null}>
                     {childrenWithTransitions}
                 </TransitionGroup>
