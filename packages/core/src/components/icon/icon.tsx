@@ -106,12 +106,6 @@ export interface IIconProps extends IntentProps, Props {
 export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
-    /** @deprecated use IconSize.STANDARD */
-    public static readonly SIZE_STANDARD = IconSize.STANDARD;
-
-    /** @deprecated use IconSize.LARGE */
-    public static readonly SIZE_LARGE = IconSize.LARGE;
-
     public render(): JSX.Element | null {
         const { icon } = this.props;
         if (icon == null || typeof icon === "boolean") {
