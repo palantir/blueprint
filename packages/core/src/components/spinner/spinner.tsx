@@ -77,15 +77,6 @@ export interface ISpinnerProps extends Props, IntentProps {
 export class Spinner extends AbstractPureComponent2<SpinnerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
 
-    /** @deprecated use SpinnerSize.SMALL */
-    public static readonly SIZE_SMALL = SpinnerSize.SMALL;
-
-    /** @deprecated use SpinnerSize.STANDARD */
-    public static readonly SIZE_STANDARD = SpinnerSize.STANDARD;
-
-    /** @deprecated use SpinnerSize.LARGE */
-    public static readonly SIZE_LARGE = SpinnerSize.LARGE;
-
     public componentDidUpdate(prevProps: SpinnerProps) {
         if (prevProps.value !== this.props.value) {
             // IE/Edge: re-render after changing value to force SVG update

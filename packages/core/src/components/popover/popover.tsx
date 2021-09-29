@@ -114,7 +114,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
     // eslint-disable-next-line deprecation/deprecation
-    private popoverRef = Utils.createReactRef<HTMLDivElement>();
+    private popoverRef = React.createRef<HTMLDivElement>();
 
     public static defaultProps: IPopoverProps = {
         boundary: "scrollParent",

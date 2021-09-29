@@ -80,7 +80,7 @@ interface INamed {
 }
 
 /**
- * @deprecated will be removed in 4.0
+ * @deprecated will be removed in v5.0
  */
 export function getDisplayName(ComponentClass: React.ComponentType | INamed) {
     return (ComponentClass as React.ComponentType).displayName || (ComponentClass as INamed).name || "Unknown";
@@ -107,13 +107,4 @@ export function isElementOfType<P = {}>(
         element.type.displayName != null &&
         element.type.displayName === ComponentType.displayName
     );
-}
-
-/**
- * Returns React.createRef if it's available, or a ref-like object if not.
- *
- * @deprecated use React.createRef or React.useRef
- */
-export function createReactRef<T>() {
-    return typeof React.createRef !== "undefined" ? React.createRef<T>() : { current: null };
 }

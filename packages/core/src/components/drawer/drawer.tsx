@@ -108,15 +108,6 @@ export class Drawer extends AbstractPureComponent2<DrawerProps> {
         style: {},
     };
 
-    /** @deprecated use DrawerSize.SMALL */
-    public static readonly SIZE_SMALL = DrawerSize.SMALL;
-
-    /** @deprecated use DrawerSize.STANDARD */
-    public static readonly SIZE_STANDARD = DrawerSize.STANDARD;
-
-    /** @deprecated use DrawerSize.LARGE */
-    public static readonly SIZE_LARGE = DrawerSize.LARGE;
-
     public render() {
         const { size, style, position } = this.props;
         const realPosition = getPositionIgnoreAngles(position);
