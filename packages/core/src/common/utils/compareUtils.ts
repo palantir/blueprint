@@ -19,11 +19,6 @@
 
 /* eslint-disable deprecation/deprecation */
 
-/** @deprecated use IKeyAllowlist */
-export type IKeyWhitelist<T> = IKeyAllowlist<T>;
-/** @deprecated use IKeyDenylist */
-export type IKeyBlacklist<T> = IKeyDenylist<T>;
-
 /** @deprecated use KeyAllowlist */
 export interface IKeyAllowlist<T> {
     include: Array<keyof T>;

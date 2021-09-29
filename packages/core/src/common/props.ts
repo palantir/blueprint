@@ -125,7 +125,7 @@ export interface IControlledProps2 {
 export type ControlledProps2 = IControlledProps2;
 
 /**
- * @deprecated will be removed in Blueprint v4.0, where components will use `ref` prop instead
+ * @deprecated will be removed in Blueprint v5.0, where components will use `ref` prop instead
  */
 export interface IElementRefProps<E extends HTMLElement> {
     /** A ref handler or a ref object that receives the native HTML element rendered by this component. */
