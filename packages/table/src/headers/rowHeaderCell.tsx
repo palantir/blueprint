@@ -15,7 +15,6 @@
  */
 
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Props } from "@blueprintjs/core";
 
@@ -48,7 +47,6 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, Props {
     nameRenderer?: (name: string, index?: number) => React.ReactElement<Props>;
 }
 
-@polyfill
 export class RowHeaderCell extends AbstractPureComponent2<IRowHeaderCellProps> {
     public render() {
         const {

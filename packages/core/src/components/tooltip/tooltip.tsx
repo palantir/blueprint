@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps } from "../../common/props";
@@ -72,7 +71,6 @@ export interface ITooltipProps extends IPopoverSharedProps, IntentProps {
 }
 
 /** @deprecated use { Tooltip2 } from "@blueprintjs/popover2" */
-@polyfill
 export class Tooltip extends AbstractPureComponent2<TooltipProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 

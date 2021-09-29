@@ -15,7 +15,6 @@ limitations under the License.*/
 import * as React from "react";
 
 import { Classes, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -27,7 +26,7 @@ export class MenuExample extends React.PureComponent {
                     <Menu className={Classes.ELEVATION_1}>
                         {Object.values(Intent).map(intent => (
                             <div key={`${intent}-menu-item`}>
-                                <MenuItem intent={intent} icon={IconNames.APPLICATIONS} text="Item" label="⌘M" />
+                                <MenuItem intent={intent} icon="applications" text="Item" label="⌘M" />
                                 {intent !== "danger" && <MenuDivider />}
                             </div>
                         ))}
@@ -37,13 +36,7 @@ export class MenuExample extends React.PureComponent {
                     <Menu className={Classes.ELEVATION_1}>
                         {Object.values(Intent).map(intent => (
                             <div key={`${intent}-menu-item`}>
-                                <MenuItem
-                                    disabled={true}
-                                    intent={intent}
-                                    icon={IconNames.APPLICATIONS}
-                                    text="Item"
-                                    label="⌘M"
-                                />
+                                <MenuItem disabled={true} intent={intent} icon="applications" text="Item" label="⌘M" />
                                 {intent !== "danger" && <MenuDivider />}
                             </div>
                         ))}

@@ -48,7 +48,6 @@ Markup:
 .#{$ns}-html-table-condensed - Condensed smaller appearance
 .#{$ns}-html-table-striped - Striped appearance
 .#{$ns}-interactive - Enables hover styles on rows
-.#{$ns}-small - Small, condensed appearance for this element _and all child elements_
 
 Styleguide html-table
 */
@@ -113,8 +112,7 @@ $dark-table-border-color: $pt-dark-divider-white !default;
 table.#{$ns}-html-table {
   @extend %html-table;
 
-  &.#{$ns}-html-table-condensed,
-  &.#{$ns}-small {
+  &.#{$ns}-html-table-condensed {
     $small-vertical-padding: centered-text($table-row-height-small);
 
     th,

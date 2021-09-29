@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-import * as IconContents from "./generated/iconContents";
-import * as IconNames from "./generated/iconNames";
+// icon sets should be identical aside from SVG paths, so we just import the info for the 16px set
+import {
+    BlueprintIcons_16 as IconNames,
+    BlueprintIcons_16Id as IconName,
+    BLUEPRINT_ICONS_16_CODEPOINTS as IconCodepoints,
+} from "./generated/16px/blueprint-icons-16";
+import * as IconSvgPaths16 from "./generated/16px/paths";
+import * as IconSvgPaths20 from "./generated/20px/paths";
 
-export { IconContents, IconNames };
-export { IconSvgPaths16, IconSvgPaths20 } from "./generated/iconSvgPaths";
-export { IconName } from "./iconName";
+export { IconCodepoints, IconName, IconNames, IconSvgPaths16, IconSvgPaths20 };

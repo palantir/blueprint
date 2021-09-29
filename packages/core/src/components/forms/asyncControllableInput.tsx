@@ -15,7 +15,6 @@
  */
 
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 
@@ -64,7 +63,7 @@ export interface IAsyncControllableInputState {
  *
  * Note: this component does not apply any Blueprint-specific styling.
  */
-@polyfill
+
 export class AsyncControllableInput extends React.PureComponent<
     IAsyncControllableInputProps,
     IAsyncControllableInputState

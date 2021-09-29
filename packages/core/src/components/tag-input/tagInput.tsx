@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, IRef, Keys, refHandler, setRef, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, Props, MaybeElement } from "../../common/props";
@@ -194,7 +193,6 @@ export interface ITagInputState {
 /** special value for absence of active tag */
 const NONE = -1;
 
-@polyfill
 export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
@@ -467,9 +465,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
     private removeIndexFromValues(index: number) {
         const { onChange, onRemove, values } = this.props;
         onRemove?.(values[index], index);
-        if (Utils.isFunction(onChange)) {
-            onChange(values.filter((_, i) => i !== index));
-        }
+        onChange?.(values.filter((_, i) => i !== index));
     }
 
     private invokeKeyPressCallback(

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-theme",
-    "version": "3.10.13",
+    "version": "3.10.14",
     "description": "Blueprint theme for documentalist",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -30,16 +30,16 @@
         "verify": "npm-run-all compile -p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.50.3",
-        "@blueprintjs/select": "^3.18.5",
+        "@blueprintjs/core": "^3.50.4",
+        "@blueprintjs/select": "^3.18.6",
         "@documentalist/client": "~3.0.0",
         "classnames": "^2.2",
         "fuzzaldrin-plus": "^0.6.0",
         "tslib": "~1.13.0"
     },
     "peerDependencies": {
-        "react": "^15.3.0 || 16 || 17",
-        "react-dom": "^15.3.0 || 16 || 17"
+        "react": "^16.8 || 17",
+        "react-dom": "^16.8 || 17"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^1.6.1",

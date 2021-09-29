@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
     AbstractComponent2,
@@ -72,7 +71,6 @@ import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./t
 
 /** @deprecated use Table2, which supports usage of the new hotkeys API in the same application */
 @HotkeysTarget
-@polyfill
 export class Table extends AbstractComponent2<TableProps, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 

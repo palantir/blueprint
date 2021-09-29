@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
     AbstractPureComponent2,
@@ -120,7 +119,6 @@ export interface ITagProps
     htmlTitle?: string;
 }
 
-@polyfill
 export class Tag extends AbstractPureComponent2<TagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 

@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, ActionProps, IntentProps, LinkProps, Props, MaybeElement } from "../../common/props";
@@ -55,7 +54,6 @@ export interface IToastProps extends Props, IntentProps {
     timeout?: number;
 }
 
-@polyfill
 export class Toast extends AbstractPureComponent2<IToastProps> {
     public static defaultProps: IToastProps = {
         className: "",

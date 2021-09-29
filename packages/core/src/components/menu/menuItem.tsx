@@ -17,15 +17,12 @@
 import classNames from "classnames";
 import { Modifiers } from "popper.js";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { DISPLAYNAME_PREFIX, ActionProps, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
-// this cyclic import can be removed in v4.0 (https://github.com/palantir/blueprint/issues/3829)
-// eslint-disable-next-line import/no-cycle
 import { Menu } from "./menu";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -111,7 +108,6 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     htmlTitle?: string;
 }
 
-@polyfill
 export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: MenuItemProps = {
         disabled: false,

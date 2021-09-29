@@ -19,7 +19,7 @@ import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
 
-let NS = "bp3";
+let NS = "bp4";
 if (typeof process !== "undefined") {
     NS = process.env?.BLUEPRINT_NAMESPACE ?? process.env?.REACT_APP_BLUEPRINT_NAMESPACE ?? NS;
 }
@@ -306,9 +306,7 @@ export const TREE_NODE_SELECTED = `${TREE_NODE}-selected`;
 export const TREE_ROOT = `${NS}-tree-root`;
 
 export const ICON = `${NS}-icon`;
-/** @deprecated use <Icon> components and iconName prop APIs instead */
 export const ICON_STANDARD = `${ICON}-standard`;
-/** @deprecated use <Icon> components and iconName prop APIs instead */
 export const ICON_LARGE = `${ICON}-large`;
 
 /**

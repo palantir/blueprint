@@ -15,7 +15,6 @@
  */
 
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractComponent2, Props, IRef, setRef, Utils as CoreUtils } from "@blueprintjs/core";
 
@@ -259,7 +258,6 @@ const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
     "enableColumnInteractionBar",
 ];
 
-@polyfill
 export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.

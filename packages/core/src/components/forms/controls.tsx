@@ -20,7 +20,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Alignment, Classes, IRef, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, Props } from "../../common/props";
@@ -164,7 +163,6 @@ export interface ISwitchProps extends ControlProps {
     innerLabel?: string;
 }
 
-@polyfill
 export class Switch extends AbstractPureComponent2<SwitchProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Switch`;
 
@@ -203,7 +201,6 @@ export type IRadioProps = ControlProps;
 // eslint-disable-next-line deprecation/deprecation
 export type RadioProps = IRadioProps;
 
-@polyfill
 export class Radio extends AbstractPureComponent2<RadioProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Radio`;
 
@@ -239,7 +236,6 @@ export interface ICheckboxState {
     indeterminate: boolean;
 }
 
-@polyfill
 export class Checkbox extends AbstractPureComponent2<CheckboxProps, ICheckboxState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Checkbox`;
 
