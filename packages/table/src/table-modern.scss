@@ -1,4 +1,5 @@
 @import "~@blueprintjs/colors/lib/scss/colors";
+@import "~@blueprintjs/core/src/common/variables";
 @import "./table";
 
 .#{$ns}-dark & .#{$ns}-table-selection-region {

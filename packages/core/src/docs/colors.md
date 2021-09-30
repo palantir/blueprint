@@ -48,6 +48,7 @@ Blueprint provides variables for colors in Sass, Less, and JavaScript.
 Example in Sass:
 
 ```css.scss
+@import "~@blueprintjs/colors/lib/scss/colors";
 @import "~@blueprintjs/core/lib/scss/variables";
 
 .rule {
