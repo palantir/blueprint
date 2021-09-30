@@ -367,6 +367,16 @@ table.#{$ns}-html-table {
       background: $active-background-color;
       color: $active-text-color;
     }
+
+    &:hover,
+    &:active,
+    &.#{$ns}-active {
+      &::before,
+      &::after,
+      .#{$ns}-menu-item-label {
+        color: inherit;
+      }
+    }
   }
 
   &:not([class*="#{$ns}-intent-"]) {
