@@ -127,7 +127,7 @@ const extendedColors = {
 };
 
 /**
- * Blueprint 5.x "modernized" colors
+ * Blueprint 4.x "modernized" colors
  */
 export const Colors = {
     ...grayScale,
