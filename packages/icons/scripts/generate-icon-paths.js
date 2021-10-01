@@ -18,7 +18,7 @@
  * N.B. we expect ../src/generated/ to contain SVG definitions of all the icons already
  */
 
-const camelcase = require("camelcase");
+const { camelCase } = require("change-case");
 const fs = require("fs");
 const path = require("path");
 const { parse } = require("svg-parser");
@@ -43,7 +43,7 @@ for (const iconSize of [16, 20]) {
     console.info(`Writing index file for ${iconSize}px icon kit paths...`);
     writeLinesToFile(
         `${iconSize}px/paths/index.ts`,
-        ...icons.map(iconName => `export { default as ${camelcase(iconName)} } from "./${iconName}";`),
+        ...icons.map(iconName => `export { default as ${camelCase(iconName)} } from "./${iconName}";`),
     );
     console.info("Done.");
 }
