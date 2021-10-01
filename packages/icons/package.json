@@ -37,12 +37,12 @@
     },
     "dependencies": {
         "classnames": "^2.2",
+        "change-case": "^4.1.2",
         "tslib": "~1.13.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^2.0.0-beta.0",
         "@blueprintjs/test-commons": "^1.0.0-beta.0",
-        "change-case": "^4.1.2",
         "enzyme": "^3.11.0",
         "fantasticon": "^1.2.2",
         "mocha": "^8.2.1",
