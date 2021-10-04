@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/icons",
-    "version": "4.0.0-beta.0",
+    "version": "4.0.0-beta.1",
     "description": "Components, fonts, icons, and css files for creating and displaying icons.",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -36,8 +36,8 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "classnames": "^2.2",
         "change-case": "^4.1.2",
+        "classnames": "^2.2",
         "tslib": "~1.13.0"
     },
     "devDependencies": {
