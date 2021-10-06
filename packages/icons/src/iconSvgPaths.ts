@@ -20,6 +20,13 @@ import type { IconName } from "./iconNames";
 
 export { IconSvgPaths16, IconSvgPaths20 };
 
+/**
+ * Type safe string literal conversion of snake-case icon names to camelCase icon names,
+ * useful for indexing into the SVG paths record to extract a single icon's SVG path definition.
+ *
+ * N.B. `IconSvgPaths16` and `IconSvgPaths20` are assignable to each other, so it doesn't matter
+ * which one is used in the return type definition here.
+ */
 export function iconNameToPathsRecordKey(name: IconName): keyof typeof IconSvgPaths16 {
     return kebabCaseToCamelCase(name);
 }
