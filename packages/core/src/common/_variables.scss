@@ -14,6 +14,16 @@ $bp-ns: $ns;
 // (so other variables can use it to define themselves)
 $pt-grid-size: 10px !default;
 
+// Icon variables
+
+$icons16-family: "blueprint-icons-16" !default;
+$icons20-family: "blueprint-icons-20" !default;
+
+$pt-icon-size-standard: 16px !default;
+$pt-icon-size-large: 20px !default;
+
+// Typography
+
 // see https://bitsofco.de/the-new-system-font-stack/
 $pt-font-family: -apple-system,
                  "BlinkMacSystemFont",
@@ -24,7 +34,7 @@ $pt-font-family: -apple-system,
                  "Cantarell",
                  "Open Sans",
                  "Helvetica Neue",
-                 "Icons16", // support inline Palantir icons
+                 $icons16-family, // support inline Blueprint icons
                  sans-serif !default;
 
 $pt-font-family-monospace: monospace !default;
@@ -35,14 +45,6 @@ $pt-font-size-small: $pt-grid-size * 1.2 !default;
 
 // a little bit extra to ensure the height comes out to just over 18px (and browser rounds to 18px)
 $pt-line-height: ($pt-grid-size * 1.8) / $pt-font-size + 0.0001 !default;
-
-// Icon variables
-
-$icons16-family: "Icons16" !default;
-$icons20-family: "Icons20" !default;
-
-$pt-icon-size-standard: 16px !default;
-$pt-icon-size-large: 20px !default;
 
 // Grids & dimensions
 
