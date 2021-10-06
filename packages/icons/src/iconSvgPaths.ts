@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-import { IconName, IconSvgPaths16 } from "@blueprintjs/icons";
+import * as IconSvgPaths16 from "./generated/16px/paths";
+import * as IconSvgPaths20 from "./generated/20px/paths";
+import type { IconName } from "./iconNames";
+
+export { IconSvgPaths16, IconSvgPaths20 };
 
 export function iconNameToPathsRecordKey(name: IconName): keyof typeof IconSvgPaths16 {
     return kebabCaseToCamelCase(name);

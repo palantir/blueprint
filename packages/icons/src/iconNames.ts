@@ -19,9 +19,15 @@
 import { snakeCase } from "change-case";
 
 // icon sets are identical aside from SVG paths, so we just import the info for the 16px set
-import { BlueprintIcons_16, BlueprintIcons_16Id, BlueprintIcons_16Key } from "./generated/16px/blueprint-icons-16";
+import {
+    BlueprintIcons_16,
+    BlueprintIcons_16Id as IconName,
+    BlueprintIcons_16Key,
+} from "./generated/16px/blueprint-icons-16";
 
-const IconNamesLegacy: Record<string, BlueprintIcons_16Id> = {};
+export type { IconName };
+
+const IconNamesLegacy: Record<string, IconName> = {};
 
 for (const [pascalCaseKey, iconName] of Object.entries(BlueprintIcons_16)) {
     const screamingSnakeCaseKey = snakeCase(pascalCaseKey).toUpperCase();
@@ -30,7 +36,7 @@ for (const [pascalCaseKey, iconName] of Object.entries(BlueprintIcons_16)) {
 
 export const IconNames = {
     ...BlueprintIcons_16,
-    ...(IconNamesLegacy as Record<ScreamingSnakeCaseIconNames, BlueprintIcons_16Id>),
+    ...(IconNamesLegacy as Record<ScreamingSnakeCaseIconNames, IconName>),
 };
 
 type ScreamingSnakeCaseIconNames = Uppercase<StripLeadingUnderscore<CamelToSnake<BlueprintIcons_16Key>>>;
