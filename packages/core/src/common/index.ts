@@ -20,6 +20,7 @@ export * from "./abstractPureComponent";
 export * from "./abstractPureComponent2";
 export * from "./alignment";
 export * from "./boundary";
+export { Colors } from "./colors";
 export * from "./constructor";
 export * from "./elevation";
 export * from "./intent";
@@ -27,11 +28,9 @@ export * from "./position";
 export * from "./props";
 export * from "./refs";
 
-import { LegacyColors } from "@blueprintjs/colors";
-
 import * as Classes from "./classes";
 import * as Keys from "./keys";
 import * as Utils from "./utils";
 
-export { Classes, Keys, Utils, LegacyColors as Colors };
+export { Classes, Keys, Utils };
 // NOTE: Errors is not exported in public API
