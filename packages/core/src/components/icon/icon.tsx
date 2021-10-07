@@ -17,10 +17,9 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
+import { IconName, IconSvgPaths16, IconSvgPaths20, iconNameToPathsRecordKey } from "@blueprintjs/icons";
 
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
-import { iconNameToPathsRecordKey } from "./iconUtils";
 
 export { IconName };
 

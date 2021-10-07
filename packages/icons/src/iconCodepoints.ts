@@ -14,6 +14,5 @@
  * limitations under the License.
  */
 
-export { IconSvgPaths16, IconSvgPaths20, iconNameToPathsRecordKey } from "./iconSvgPaths";
-export { IconCodepoints } from "./iconCodepoints";
-export { IconName, IconNames } from "./iconNames";
+// icon sets are identical aside from SVG paths, so we just import the info for the 16px set
+export { BLUEPRINT_ICONS_16_CODEPOINTS as IconCodepoints } from "./generated/16px/blueprint-icons-16";
