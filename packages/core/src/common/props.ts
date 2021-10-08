@@ -21,7 +21,7 @@ import { IconName } from "@blueprintjs/icons";
 import { Intent } from "./intent";
 import { IRef } from "./refs";
 
-export const DISPLAYNAME_PREFIX = "Blueprint3";
+export const DISPLAYNAME_PREFIX = "Blueprint4";
 
 /**
  * Alias for all valid HTML props for `<div>` element.
