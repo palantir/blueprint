@@ -400,11 +400,18 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         this.popperScheduleUpdate = popperProps.update;
 
         const popoverHandlers: HTMLDivProps = {
-            // always check popover clicks for dismiss class
-            onClick: this.handlePopoverClick,
             // treat ENTER/SPACE keys the same as a click for accessibility
             // eslint-disable-next-line deprecation/deprecation
             onKeyDown: event => Keys.isKeyboardClick(event.keyCode) && this.handlePopoverClick(event),
+            // Always check popover clicks for dismiss class. Using onMouseDown instead of onClick.
+            // If the Overlay is opened with autofocus=true, it will move focus to the first
+            // keyboard-focusable element. After pressing the enter key, programmatically moving
+            // focus to another element will result in new click event being created for that
+            // element. The usual workaround is to call event#preventDefault but because the overlay
+            // autofocus behavior is event-based, we cannot prevent the click event being created.
+            // Using onMouseDown instead of onClick allows us to sidestep the problem by listening
+            // to a different event.
+            onMouseDown: this.handlePopoverClick,
         };
         if (
             interactionKind === Popover2InteractionKind.HOVER ||
@@ -639,6 +646,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     };
 
     private handleTargetClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        e.preventDefault();
         // ensure click did not originate from within inline popover before closing
         if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {
