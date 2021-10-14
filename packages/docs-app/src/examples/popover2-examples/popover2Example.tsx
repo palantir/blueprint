@@ -50,6 +50,7 @@ import {
     StrictModifierNames,
 } from "@blueprintjs/popover2";
 
+import { PopoverInteractionKind } from "../../../../core/src/components/popover/popover";
 import FilmSelect from "../../common/filmSelect";
 
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
@@ -155,7 +156,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover2-example-scroll" ref={this.centerScroll}>
                     <Popover2
-                        popoverClassName={exampleIndex <= 2 ? Classes.POPOVER2_CONTENT_SIZING : ""}
+                        popoverClassName={exampleIndex <= 3 ? Classes.POPOVER2_CONTENT_SIZING : ""}
                         portalClassName="foo"
                         {...popoverProps}
                         boundary={
@@ -208,9 +209,10 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                         <option value="0">Text</option>
                         <option value="1">Input</option>
                         <option value="2">Slider</option>
-                        <option value="3">Menu</option>
-                        <option value="4">Select</option>
-                        <option value="5">Empty</option>
+                        <option value="3">Popover</option>
+                        <option value="4">Menu</option>
+                        <option value="5">Select</option>
+                        <option value="6">Empty</option>
                     </HTMLSelect>
                 </Label>
                 <Switch checked={this.state.usePortal} onChange={this.toggleUsePortal}>
@@ -302,6 +304,15 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                 </label>
             </div>,
             <Slider key="slider" min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />,
+            <div key="popover">
+                <Popover2
+                    content={<div>A nested popover</div>}
+                    interactionKind={PopoverInteractionKind.HOVER}
+                    popoverClassName={Classes.POPOVER2_CONTENT_SIZING}
+                >
+                    <Button text="Hover me" />
+                </Popover2>
+            </div>,
             <Menu key="menu">
                 <MenuDivider title="Edit" />
                 <MenuItem icon="cut" text="Cut" label="⌘X" />

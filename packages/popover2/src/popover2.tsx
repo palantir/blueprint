@@ -435,7 +435,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
 
         return (
             <Overlay
-                autoFocus={this.props.autoFocus}
+                autoFocus={this.props.autoFocus ?? (this.isHoverInteractionKind() ? false : undefined)}
                 backdropClassName={Classes.POPOVER2_BACKDROP}
                 backdropProps={this.props.backdropProps}
                 canEscapeKeyClose={this.props.canEscapeKeyClose}
