@@ -51,7 +51,6 @@ import {
 } from "@blueprintjs/popover2";
 
 import FilmSelect from "../../common/filmSelect";
-import { BugRepro } from "./popover2BugRepro";
 
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
 
@@ -155,7 +154,6 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         console.info(popoverProps);
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <BugRepro />
                 <div className="docs-popover2-example-scroll" ref={this.centerScroll}>
                     <Popover2
                         popoverClassName={exampleIndex <= 2 ? Classes.POPOVER2_CONTENT_SIZING : ""}
