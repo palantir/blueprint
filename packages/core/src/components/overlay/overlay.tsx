@@ -351,7 +351,6 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
 
             const isFocusOutsideModal = !this.containerElement.contains(document.activeElement);
             if (isFocusOutsideModal) {
-                console.info("focussing start focus trap element", this.startFocusTrapElement);
                 this.startFocusTrapElement?.focus();
                 this.isAutoFocusing = false;
             }
@@ -455,7 +454,6 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         if (!this.props.enforceFocus || this.isAutoFocusing) {
             return;
         }
-        console.info("handling start focus trap element focus...");
         e.preventDefault();
         e.stopImmediatePropagation();
         // e.relatedTarget will not be defined if this was a programmatic focus event, as is the
