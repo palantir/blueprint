@@ -3706,5 +3706,11 @@
         "iconName": "hurricane",
         "tags": "storm, cyclone, typhoon, tropical storm",
         "group": "miscellaneous"
+    },
+    {
+        "displayName": "Small square",
+        "iconName": "small-square",
+        "tags": "square",
+        "group": "miscellaneous"
     }
 ]
