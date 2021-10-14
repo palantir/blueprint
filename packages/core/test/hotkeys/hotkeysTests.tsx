@@ -38,7 +38,7 @@ import {
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
 import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
 
-describe.skip("Hotkeys", () => {
+describe("Hotkeys", () => {
     it("throws error if given non-Hotkey child", () => {
         expectPropValidationError(Hotkeys, { children: <div /> }, HOTKEYS_HOTKEY_CHILDREN, "element");
         expectPropValidationError(Hotkeys, { children: "string contents" }, HOTKEYS_HOTKEY_CHILDREN, "string");
