@@ -170,7 +170,6 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
         /* eslint-disable deprecation/deprecation */
         if (Keys.isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
-            this.buttonRef?.click();
         }
         this.currentKeyDown = undefined;
         this.props.onKeyUp?.(e);

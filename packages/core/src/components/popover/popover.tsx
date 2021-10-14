@@ -20,7 +20,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent2, Classes, IRef, refHandler, setRef } from "../../common";
+import { AbstractPureComponent2, Classes, IRef, Keys, refHandler, setRef } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -381,6 +381,9 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             : {
                   // CLICK needs only one handler
                   onClick: this.handleTargetClick,
+                  onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>
+                      // eslint-disable-next-line deprecation/deprecation
+                      Keys.isKeyboardClick(event.keyCode) && this.handleTargetClick(event),
               };
         finalTargetProps["aria-haspopup"] = "true";
         finalTargetProps.className = classNames(
@@ -556,7 +559,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         }
     };
 
-    private handleTargetClick = (e: React.MouseEvent<HTMLElement>) => {
+    private handleTargetClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         // ensure click did not originate from within inline popover before closing
         if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {
@@ -565,7 +568,9 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 this.setOpenState(!this.props.isOpen, e);
             }
         }
-        this.props.targetProps?.onClick?.(e);
+        if (e.type === "click") {
+            this.props.targetProps?.onClick?.(e as React.MouseEvent<HTMLElement>);
+        }
     };
 
     // a wrapper around setState({isOpen}) that will call props.onInteraction instead when in controlled mode.
