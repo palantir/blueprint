@@ -21,7 +21,7 @@ import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes, IOverlayProps, Overlay, Portal, Utils } from "../../src";
+import { Classes, OverlayProps, Overlay, Portal, Utils } from "../../src";
 import * as Keys from "../../src/common/keys";
 import { findInPortal } from "../utils";
 
@@ -36,7 +36,7 @@ The `wrapper` variable below and the `mountWrapper` method should be used for fu
 For shallow mounts, be sure to call `shallowWrapper.unmount()` after the assertions.
 */
 describe("<Overlay>", () => {
-    let wrapper: ReactWrapper<IOverlayProps, any>;
+    let wrapper: ReactWrapper<OverlayProps, any>;
     let isMounted = false;
     const testsContainerElement = document.createElement("div");
     document.documentElement.appendChild(testsContainerElement);
@@ -260,10 +260,7 @@ describe("<Overlay>", () => {
                     <input type="text" />
                 </Overlay>,
             );
-            assertFocus(() => {
-                const contents = Array.from(document.querySelectorAll("." + Classes.OVERLAY_CONTENT));
-                assert.include(contents, document.activeElement);
-            }, done);
+            assertFocusIsInOverlayWithTimeout(done);
         });
 
         it("does not bring focus to overlay if autoFocus=false and enforceFocus=false", done => {
@@ -275,7 +272,7 @@ describe("<Overlay>", () => {
                     </Overlay>
                 </div>,
             );
-            assertFocus("body", done);
+            assertFocusWithTimeout("body", done);
         });
 
         // React implements autoFocus itself so our `[autofocus]` logic never fires.
@@ -286,7 +283,7 @@ describe("<Overlay>", () => {
                     <input autoFocus={true} type="text" />
                 </Overlay>,
             );
-            assertFocus("input", done);
+            assertFocusWithTimeout("input", done);
         });
 
         it("returns focus to overlay if enforceFocus=true", done => {
@@ -302,10 +299,7 @@ describe("<Overlay>", () => {
             );
             assert.strictEqual(document.activeElement, inputRef);
             buttonRef!.focus();
-            assertFocus(() => {
-                assert.notStrictEqual(document.activeElement, buttonRef);
-                assert.isTrue(document.activeElement?.classList.contains(Classes.OVERLAY_CONTENT), "focus on content");
-            }, done);
+            assertFocusIsInOverlayWithTimeout(done);
         });
 
         it("returns focus to overlay after clicking the backdrop if enforceFocus=true", done => {
@@ -315,7 +309,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
             wrapper.find(BACKDROP_SELECTOR).simulate("mousedown");
-            assertFocus(`strong.${Classes.OVERLAY_CONTENT}`, done);
+            assertFocusIsInOverlayWithTimeout(done);
         });
 
         it("returns focus to overlay after clicking an outside element if enforceFocus=true", done => {
@@ -334,7 +328,7 @@ describe("<Overlay>", () => {
                 </div>,
             );
             wrapper.find("#buttonId").simulate("click");
-            assertFocus(`strong.${Classes.OVERLAY_CONTENT}`, done);
+            assertFocusIsInOverlayWithTimeout(done);
         });
 
         it("does not result in maximum call stack if two overlays open with enforceFocus=true", () => {
@@ -391,7 +385,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
             textarea!.focus();
-            assertFocus("textarea", done);
+            assertFocusWithTimeout("textarea", done);
         });
 
         it("does not focus overlay when closed", done => {
@@ -401,7 +395,7 @@ describe("<Overlay>", () => {
                     <Overlay isOpen={false} usePortal={true} />
                 </div>,
             );
-            assertFocus("button", done);
+            assertFocusWithTimeout("button", done);
         });
 
         it("does not crash while trying to return focus to overlay if user clicks outside the document", () => {
@@ -424,7 +418,7 @@ describe("<Overlay>", () => {
             }
         });
 
-        function assertFocus(selector: string | (() => void), done: Mocha.Done) {
+        function assertFocusWithTimeout(selector: string | (() => void), done: Mocha.Done) {
             // the behavior being tested relies on requestAnimationFrame.
             // setTimeout for a few frames later to let things settle (to reduce flakes).
             setTimeout(() => {
@@ -436,6 +430,13 @@ describe("<Overlay>", () => {
                 }
                 done();
             }, 40);
+        }
+
+        function assertFocusIsInOverlayWithTimeout(done: Mocha.Done) {
+            assertFocusWithTimeout(() => {
+                const overlayElement = document.querySelector(`.${Classes.OVERLAY}`);
+                assert.isTrue(overlayElement?.contains(document.activeElement));
+            }, done);
         }
     });
 
