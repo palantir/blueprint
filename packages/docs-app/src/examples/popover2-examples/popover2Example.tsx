@@ -45,12 +45,13 @@ import {
     Popover2SharedProps,
     Placement,
     PlacementOptions,
-    Popover2,
+    // Popover2,
     Popover2InteractionKind,
     StrictModifierNames,
 } from "@blueprintjs/popover2";
 
 import FilmSelect from "../../common/filmSelect";
+import { BugRepro } from "./popover2BugRepro";
 
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
 
@@ -100,9 +101,9 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         usePortal: true,
     };
 
-    private scrollParentElement: HTMLElement | null = null;
+    public scrollParentElement: HTMLElement | null = null;
 
-    private bodyElement: HTMLElement | null = null;
+    // private bodyElement: HTMLElement | null = null;
 
     private handleSliderChange = (value: number) => this.setState({ sliderValue: value });
 
@@ -145,15 +146,17 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         });
     }
 
-    public componentDidMount() {
-        this.bodyElement = document.body;
-    }
+    // public componentDidMount() {
+    //     this.bodyElement = document.body;
+    // }
 
     public render() {
         const { boundary, exampleIndex, sliderValue, ...popoverProps } = this.state;
+        console.info(popoverProps);
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <div className="docs-popover2-example-scroll" ref={this.centerScroll}>
+                <BugRepro />
+                {/* <div className="docs-popover2-example-scroll" ref={this.centerScroll}>
                     <Popover2
                         popoverClassName={exampleIndex <= 2 ? Classes.POPOVER2_CONTENT_SIZING : ""}
                         portalClassName="foo"
@@ -176,7 +179,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                         <br />
                         with <Code>flip</Code> and <Code>preventOverflow</Code> modifiers.
                     </p>
-                </div>
+                </div> */}
             </Example>
         );
     }
@@ -281,7 +284,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         );
     }
 
-    private getContents(index: number): JSX.Element {
+    public getContents(index: number): JSX.Element {
         return [
             <div key="text">
                 <H5>Confirm deletion</H5>
@@ -326,7 +329,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         ][index];
     }
 
-    private centerScroll = (overflowingDiv: HTMLDivElement) => {
+    public centerScroll = (overflowingDiv: HTMLDivElement) => {
         this.scrollParentElement = overflowingDiv?.parentElement;
 
         if (overflowingDiv != null) {
