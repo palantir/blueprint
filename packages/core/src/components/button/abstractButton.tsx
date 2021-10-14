@@ -156,7 +156,6 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
         /* eslint-disable deprecation/deprecation */
         if (Keys.isKeyboardClick(e.which)) {
-            e.preventDefault();
             if (e.which !== this.currentKeyDown) {
                 this.setState({ isActive: true });
             }
