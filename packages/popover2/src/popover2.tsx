@@ -64,12 +64,6 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
     content?: string | JSX.Element;
 
     /**
-     * Whether the wrapper and target should take up the full width of their container.
-     * Note that supplying `true` for this prop will force  `targetTagName="div"`.
-     */
-    fill?: boolean;
-
-    /**
      * The kind of interaction that triggers the display of the popover.
      *
      * @default "click"
