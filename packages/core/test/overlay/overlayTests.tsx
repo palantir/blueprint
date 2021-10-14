@@ -254,9 +254,11 @@ describe("<Overlay>", () => {
     });
 
     describe("Focus management", () => {
+        const overlayClassName = "test-overlay";
+
         it("brings focus to overlay if autoFocus=true", done => {
             mountWrapper(
-                <Overlay autoFocus={true} isOpen={true} usePortal={true}>
+                <Overlay className={overlayClassName} autoFocus={true} isOpen={true} usePortal={true}>
                     <input type="text" />
                 </Overlay>,
             );
@@ -267,7 +269,13 @@ describe("<Overlay>", () => {
             mountWrapper(
                 <div>
                     <button>something outside overlay for browser to focus on</button>
-                    <Overlay autoFocus={false} enforceFocus={false} isOpen={true} usePortal={true}>
+                    <Overlay
+                        className={overlayClassName}
+                        autoFocus={false}
+                        enforceFocus={false}
+                        isOpen={true}
+                        usePortal={true}
+                    >
                         <input type="text" />
                     </Overlay>
                 </div>,
@@ -279,7 +287,7 @@ describe("<Overlay>", () => {
         // Still, worth testing we can control where the focus goes.
         it("autoFocus element inside overlay gets the focus", done => {
             mountWrapper(
-                <Overlay isOpen={true} usePortal={true}>
+                <Overlay className={overlayClassName} isOpen={true} usePortal={true}>
                     <input autoFocus={true} type="text" />
                 </Overlay>,
             );
@@ -292,7 +300,7 @@ describe("<Overlay>", () => {
             mountWrapper(
                 <div>
                     <button ref={ref => (buttonRef = ref)} />
-                    <Overlay enforceFocus={true} isOpen={true} usePortal={true}>
+                    <Overlay className={overlayClassName} enforceFocus={true} isOpen={true} usePortal={true}>
                         <input autoFocus={true} ref={ref => (inputRef = ref)} />
                     </Overlay>
                 </div>,
@@ -304,7 +312,13 @@ describe("<Overlay>", () => {
 
         it("returns focus to overlay after clicking the backdrop if enforceFocus=true", done => {
             mountWrapper(
-                <Overlay enforceFocus={true} canOutsideClickClose={false} isOpen={true} usePortal={false}>
+                <Overlay
+                    className={overlayClassName}
+                    enforceFocus={true}
+                    canOutsideClickClose={false}
+                    isOpen={true}
+                    usePortal={false}
+                >
                     {createOverlayContents()}
                 </Overlay>,
             );
@@ -318,6 +332,7 @@ describe("<Overlay>", () => {
                     <Overlay
                         enforceFocus={true}
                         canOutsideClickClose={false}
+                        className={overlayClassName}
                         isOpen={true}
                         usePortal={false}
                         hasBackdrop={false}
@@ -335,14 +350,14 @@ describe("<Overlay>", () => {
             const anotherContainer = document.createElement("div");
             document.documentElement.appendChild(anotherContainer);
             const temporaryWrapper = mount(
-                <Overlay enforceFocus={true} isOpen={true} usePortal={false}>
+                <Overlay className={overlayClassName} enforceFocus={true} isOpen={true} usePortal={false}>
                     <input type="text" />
                 </Overlay>,
                 { attachTo: anotherContainer },
             );
 
             mountWrapper(
-                <Overlay enforceFocus={true} isOpen={false} usePortal={false}>
+                <Overlay className={overlayClassName} enforceFocus={true} isOpen={false} usePortal={false}>
                     <input id="inputId" type="text" />
                 </Overlay>,
             );
@@ -370,7 +385,7 @@ describe("<Overlay>", () => {
             mountWrapper(
                 <div>
                     <button ref={ref => (buttonRef = ref)} />
-                    <Overlay enforceFocus={false} isOpen={true} usePortal={true}>
+                    <Overlay className={overlayClassName} enforceFocus={false} isOpen={true} usePortal={true}>
                         <input ref={ref => ref && setTimeout(focusBtnAndAssert)} />
                     </Overlay>
                 </div>,
@@ -380,7 +395,7 @@ describe("<Overlay>", () => {
         it("doesn't focus overlay if focus is already inside overlay", done => {
             let textarea: HTMLTextAreaElement | null;
             mountWrapper(
-                <Overlay isOpen={true} usePortal={true}>
+                <Overlay className={overlayClassName} isOpen={true} usePortal={true}>
                     <textarea ref={ref => (textarea = ref)} />
                 </Overlay>,
             );
@@ -392,7 +407,7 @@ describe("<Overlay>", () => {
             mountWrapper(
                 <div>
                     <button ref={ref => ref && ref.focus()} />
-                    <Overlay isOpen={false} usePortal={true} />
+                    <Overlay className={overlayClassName} isOpen={false} usePortal={true} />
                 </div>,
             );
             assertFocusWithTimeout("button", done);
@@ -400,7 +415,13 @@ describe("<Overlay>", () => {
 
         it("does not crash while trying to return focus to overlay if user clicks outside the document", () => {
             mountWrapper(
-                <Overlay enforceFocus={true} canOutsideClickClose={false} isOpen={true} usePortal={false}>
+                <Overlay
+                    className={overlayClassName}
+                    enforceFocus={true}
+                    canOutsideClickClose={false}
+                    isOpen={true}
+                    usePortal={false}
+                >
                     {createOverlayContents()}
                 </Overlay>,
             );
@@ -434,7 +455,7 @@ describe("<Overlay>", () => {
 
         function assertFocusIsInOverlayWithTimeout(done: Mocha.Done) {
             assertFocusWithTimeout(() => {
-                const overlayElement = document.querySelector(`.${Classes.OVERLAY}`);
+                const overlayElement = document.querySelector(`.${overlayClassName}`);
                 assert.isTrue(overlayElement?.contains(document.activeElement));
             }, done);
         }
