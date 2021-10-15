@@ -560,6 +560,8 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
     };
 
     private handleTargetClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        // prevents default click action in case focus popover moves focus to a clickable element
+        e.preventDefault();
         // ensure click did not originate from within inline popover before closing
         if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {

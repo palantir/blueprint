@@ -63,8 +63,10 @@ const INTERACTION_KINDS = [
 ];
 
 export interface IPopover2ExampleState {
+    autoFocus: boolean;
     boundary?: "scrollParent" | "body" | "clippingParents";
     canEscapeKeyClose?: boolean;
+    enforceFocus: boolean;
     exampleIndex?: number;
     hasBackdrop?: boolean;
     inheritDarkTheme?: boolean;
@@ -82,8 +84,10 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     public static displayName = "Popover2Example";
 
     public state: IPopover2ExampleState = {
+        autoFocus: false,
         boundary: "scrollParent",
         canEscapeKeyClose: true,
+        enforceFocus: false,
         exampleIndex: 0,
         hasBackdrop: false,
         inheritDarkTheme: true,
@@ -126,6 +130,10 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
 
     private toggleIsOpen = handleBooleanChange(isOpen => this.setState({ isOpen }));
 
+    private toggleAutoFocus = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
+
+    private toggleEnforceFocus = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
+
     private toggleMinimal = handleBooleanChange(minimal => this.setState({ minimal }));
 
     private toggleUsePortal = handleBooleanChange(usePortal => {
@@ -166,7 +174,6 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                                 ? this.bodyElement ?? undefined
                                 : boundary
                         }
-                        enforceFocus={false}
                         isOpen={this.state.isControlled ? this.state.isOpen : undefined}
                         content={this.getContents(exampleIndex)}
                     >
@@ -228,6 +235,10 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                     label="Open"
                     onChange={this.toggleIsOpen}
                 />
+
+                <H5>Focus</H5>
+                <Switch checked={this.state.autoFocus} label="Autofocus" onChange={this.toggleAutoFocus} />
+                <Switch checked={this.state.enforceFocus} label="Enforce focus" onChange={this.toggleEnforceFocus} />
 
                 <H5>Interactions</H5>
                 <RadioGroup
@@ -305,7 +316,10 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
             </div>,
             <Slider key="slider" min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />,
             <div key="popover">
+                <p>You can nest popovers inside one another.</p>
                 <Popover2
+                    autoFocus={false}
+                    enforceFocus={false}
                     content={<div>A nested popover</div>}
                     interactionKind={PopoverInteractionKind.HOVER}
                     popoverClassName={Classes.POPOVER2_CONTENT_SIZING}
