@@ -30,8 +30,17 @@ import {
     Radio,
     NumericInput,
     Label,
+    Position,
+    MultistepDialogNavigationPosition,
+    HTMLSelect,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    handleBooleanChange,
+    handleStringChange,
+    handleValueChange,
+    IExampleProps,
+} from "@blueprintjs/docs-theme";
 
 import { IBlueprintExampleData } from "../../tags/types";
 
@@ -43,10 +52,13 @@ export interface IMultistepDialogExampleState {
     hasTitle: boolean;
     isFooterCloseButtonShown: boolean;
     isOpen: boolean;
+    position: MultistepDialogNavigationPosition;
     usePortal: boolean;
     value?: string;
     initialStepIndex: number;
 }
+
+const POSITIONS = [Position.LEFT, Position.TOP, Position.RIGHT];
 
 export class MultistepDialogExample extends React.PureComponent<
     IExampleProps<IBlueprintExampleData>,
@@ -61,6 +73,7 @@ export class MultistepDialogExample extends React.PureComponent<
         initialStepIndex: 0,
         isFooterCloseButtonShown: true,
         isOpen: false,
+        position: Position.LEFT,
         usePortal: true,
     };
 
@@ -80,19 +93,24 @@ export class MultistepDialogExample extends React.PureComponent<
 
     private handleHasTitleChange = handleBooleanChange(hasTitle => this.setState({ hasTitle }));
 
+    private handlePositionChange = handleValueChange((position: MultistepDialogNavigationPosition) =>
+        this.setState({ position }),
+    );
+
     public render() {
         const finalButtonProps: Partial<ButtonProps> = {
             intent: "primary",
             onClick: this.handleClose,
             text: "Close",
         };
-        const { hasTitle, ...state } = this.state;
+        const { hasTitle, position, ...state } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <Button onClick={this.handleOpen}>Show dialog</Button>
                 <MultistepDialog
                     className={this.props.data.themeName}
                     icon="info-sign"
+                    navigationPosition={position}
                     onClose={this.handleClose}
                     nextButtonProps={{ disabled: this.state.value === undefined }}
                     finalButtonProps={finalButtonProps}
@@ -124,6 +142,7 @@ export class MultistepDialogExample extends React.PureComponent<
             hasTitle,
             initialStepIndex,
             isFooterCloseButtonShown,
+            position,
         } = this.state;
         return (
             <>
@@ -145,6 +164,10 @@ export class MultistepDialogExample extends React.PureComponent<
                     onChange={this.handleFooterCloseButtonChange}
                 />
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
+                <Label>
+                    Navigation Position
+                    <HTMLSelect value={position} onChange={this.handlePositionChange} options={POSITIONS} />
+                </Label>
                 <Label>Initial step index (0-indexed)</Label>
                 <NumericInput
                     value={initialStepIndex}
