@@ -41,6 +41,7 @@ export interface IMultistepDialogExampleState {
     canOutsideClickClose: boolean;
     enforceFocus: boolean;
     hasTitle: boolean;
+    isFooterCloseButtonShown: boolean;
     isOpen: boolean;
     usePortal: boolean;
     value?: string;
@@ -58,6 +59,7 @@ export class MultistepDialogExample extends React.PureComponent<
         enforceFocus: true,
         hasTitle: true,
         initialStepIndex: 0,
+        isFooterCloseButtonShown: true,
         isOpen: false,
         usePortal: true,
     };
@@ -71,6 +73,10 @@ export class MultistepDialogExample extends React.PureComponent<
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
 
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
+
+    private handleFooterCloseButtonChange = handleBooleanChange(isFooterCloseButtonShown =>
+        this.setState({ isFooterCloseButtonShown }),
+    );
 
     private handleHasTitleChange = handleBooleanChange(hasTitle => this.setState({ hasTitle }));
 
@@ -117,6 +123,7 @@ export class MultistepDialogExample extends React.PureComponent<
             usePortal,
             hasTitle,
             initialStepIndex,
+            isFooterCloseButtonShown,
         } = this.state;
         return (
             <>
@@ -132,6 +139,11 @@ export class MultistepDialogExample extends React.PureComponent<
                     onChange={this.handleOutsideClickChange}
                 />
                 <Switch checked={hasTitle} label="Has title" onChange={this.handleHasTitleChange} />
+                <Switch
+                    checked={isFooterCloseButtonShown}
+                    label="Display footer close button"
+                    onChange={this.handleFooterCloseButtonChange}
+                />
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
                 <Label>Initial step index (0-indexed)</Label>
                 <NumericInput
