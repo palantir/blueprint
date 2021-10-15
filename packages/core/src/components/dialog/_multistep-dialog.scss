@@ -23,6 +23,76 @@ $step-radius: $pt-border-radius * 2 !default;
       border-top-right-radius: $dialog-border-radius;
     }
   }
+
+  .#{$ns}-multistep-dialog-position-top & {
+    flex-direction: column;
+
+    // Handle case where title it not rendered.
+    &:first-child {
+      .#{$bp-ns}-dialog-step-container:first-child {
+        border-radius: $dialog-border-radius 0 0 0;
+      }
+
+      .#{$bp-ns}-dialog-step-container:last-child {
+        border-radius: 0 $dialog-border-radius 0 0;
+      }
+    }
+
+    .#{$bp-ns}-multistep-dialog-left-panel {
+      flex-direction: row;
+    }
+
+    .#{$bp-ns}-dialog-step-container {
+      border-left: 1px solid $pt-divider-black;
+      flex-grow: 1;
+
+      .#{$ns}-dark & {
+        border-color: $pt-dark-divider-black;
+      }
+    }
+
+    .#{$bp-ns}-multistep-dialog-right-panel {
+      border-left: none;
+    }
+
+    .#{$bp-ns}-multistep-dialog-right-panel,
+    .#{$bp-ns}-multistep-dialog-footer {
+      border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
+    }
+  }
+
+  .#{$ns}-multistep-dialog-position-right & {
+    flex-direction: row-reverse;
+
+    // Handle case where title it not rendered.
+    &:first-child {
+      .#{$bp-ns}-multistep-dialog-right-panel {
+        border-radius: $dialog-border-radius 0 0 $dialog-border-radius;
+      }
+
+      .#{$bp-ns}-dialog-step-container:first-child {
+        border-radius: 0 $dialog-border-radius 0 0;
+      }
+    }
+
+    .#{$bp-ns}-multistep-dialog-left-panel {
+      border-radius: 0 0 $dialog-border-radius 0;
+    }
+
+    .#{$bp-ns}-multistep-dialog-right-panel {
+      border-left: none;
+      border-radius: $dialog-border-radius 0 0 $dialog-border-radius;
+      border-right: 1px solid $pt-divider-black;
+
+      .#{$ns}-dark & {
+        border-color: $pt-dark-divider-black;
+      }
+    }
+
+    .#{$bp-ns}-multistep-dialog-footer {
+      border-radius: 0 0 0 $dialog-border-radius;
+    }
+  }
 }
 
 .#{$ns}-multistep-dialog-left-panel {

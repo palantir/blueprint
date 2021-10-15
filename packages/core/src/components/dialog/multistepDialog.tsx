@@ -18,13 +18,15 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, Utils } from "../../common";
+import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { Button, ButtonProps } from "../button/buttons";
 import { Dialog, DialogProps } from "./dialog";
 import { DialogStep, DialogStepId, DialogStepProps, DialogStepButtonProps } from "./dialogStep";
 
 type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.ReactNode }>;
+
+export type MultistepDialogNavigationPosition = typeof Position.TOP | typeof Position.LEFT | typeof Position.RIGHT;
 
 // eslint-disable-next-line deprecation/deprecation
 export type MultistepDialogProps = IMultistepDialogProps;
@@ -52,6 +54,13 @@ export interface IMultistepDialogProps extends DialogProps {
      * @default false
      */
     isFooterCloseButtonShown?: boolean;
+
+    /**
+     * Position of the step navigation.
+     *
+     * @default Position.LEFT
+     */
+    navigationPosition?: MultistepDialogNavigationPosition;
 
     /**
      * Props for the next button.
@@ -100,14 +109,26 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         canOutsideClickClose: true,
         isFooterCloseButtonShown: false,
         isOpen: false,
+        navigationPosition: Position.LEFT,
         resetOnClose: true,
     };
 
     public state: IMultistepDialogState = this.getInitialIndexFromProps(this.props);
 
     public render() {
+        const { className, navigationPosition, ...otherProps } = this.props;
         return (
-            <Dialog {...this.props} style={this.getDialogStyle()}>
+            <Dialog
+                {...otherProps}
+                className={classNames(
+                    {
+                        [Classes.MULTISTEP_DIALOG_POSITION_RIGHT]: navigationPosition === Position.RIGHT,
+                        [Classes.MULTISTEP_DIALOG_POSITION_TOP]: navigationPosition === Position.TOP,
+                    },
+                    className,
+                )}
+                style={this.getDialogStyle()}
+            >
                 <div className={Classes.MULTISTEP_DIALOG_PANELS}>
                     {this.renderLeftPanel()}
                     {this.maybeRenderRightPanel()}
