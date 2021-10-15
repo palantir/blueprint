@@ -27,6 +27,7 @@ export interface DialogExampleState {
     canEscapeKeyClose: boolean;
     canOutsideClickClose: boolean;
     enforceFocus: boolean;
+    shouldReturnFocusOnClose: boolean;
     usePortal: boolean;
 }
 
@@ -36,6 +37,7 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
         canEscapeKeyClose: true,
         canOutsideClickClose: true,
         enforceFocus: true,
+        shouldReturnFocusOnClose: true,
         usePortal: true,
     };
 
@@ -45,9 +47,13 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
 
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
 
-    private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
-
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
+
+    private handleShouldReturnFocusOnCloseChange = handleBooleanChange(shouldReturnFocusOnClose =>
+        this.setState({ shouldReturnFocusOnClose }),
+    );
+
+    private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
 
     public render() {
         return (
@@ -79,7 +85,14 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
     }
 
     private renderOptions() {
-        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, usePortal } = this.state;
+        const {
+            autoFocus,
+            enforceFocus,
+            canEscapeKeyClose,
+            canOutsideClickClose,
+            shouldReturnFocusOnClose,
+            usePortal,
+        } = this.state;
         return (
             <>
                 <H5>Props</H5>
@@ -94,6 +107,11 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
                     onChange={this.handleOutsideClickChange}
                 />
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
+                <Switch
+                    checked={shouldReturnFocusOnClose}
+                    label="Return focus to previously active element upon closing"
+                    onChange={this.handleShouldReturnFocusOnCloseChange}
+                />
             </>
         );
     }

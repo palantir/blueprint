@@ -286,7 +286,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                 childrenWithTransitions.push(
                     this.renderDummyElement("__end", {
                         className: Classes.OVERLAY_END_FOCUS_TRAP,
-                        onFocus: this.handleEndFocusTrapElementFocusIn,
+                        onFocus: this.handleEndFocusTrapElementFocus,
                         ref: this.refHandlers.endFocusTrap,
                     }),
                 );
@@ -474,7 +474,13 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         }
     };
 
+    /**
+     * Wrap around to the end of the dialog if `enforceFocus` is enabled.
+     */
     private handleStartFocusTrapElementKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (!this.props.enforceFocus) {
+            return;
+        }
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
         /* eslint-disable-next-line deprecation/deprecation */
         if (e.shiftKey && e.which === Keys.TAB) {
@@ -493,7 +499,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
      * `startFocusTrapElement`), depending on whether the element losing focus is inside the
      * Overlay.
      */
-    private handleEndFocusTrapElementFocusIn = (e: React.FocusEvent<HTMLDivElement>) => {
+    private handleEndFocusTrapElementFocus = (e: React.FocusEvent<HTMLDivElement>) => {
         // No need for this.props.enforceFocus check here because this element is only rendered
         // when that prop is true.
         // During user interactions, e.relatedTarget will be defined, and we should wrap around to the
@@ -505,14 +511,19 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             this.containerElement!.contains(e.relatedTarget as Element) &&
             e.relatedTarget !== this.startFocusTrapElement
         ) {
-            this.startFocusTrapElement?.focus();
+            const firstFocusableElement = this.getKeyboardFocusableElements().shift();
+            // ensure we don't re-focus an already active element by comparing against e.relatedTarget
+            if (!this.isAutoFocusing && firstFocusableElement != null && firstFocusableElement !== e.relatedTarget) {
+                firstFocusableElement.focus();
+            } else {
+                this.startFocusTrapElement?.focus();
+            }
         } else {
             const lastFocusableElement = this.getKeyboardFocusableElements().pop();
             if (lastFocusableElement != null) {
                 lastFocusableElement.focus();
             } else {
                 // Keeps focus within Overlay even if there are no keyboard-focusable children
-                console.info("focusing start focus trap element");
                 this.startFocusTrapElement?.focus();
             }
         }
