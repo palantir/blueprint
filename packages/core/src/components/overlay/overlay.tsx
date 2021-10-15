@@ -507,11 +507,12 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         ) {
             this.startFocusTrapElement?.focus();
         } else {
-            const nextFocusableElement = this.getKeyboardFocusableElements().pop();
-            if (nextFocusableElement != null) {
-                nextFocusableElement.focus();
+            const lastFocusableElement = this.getKeyboardFocusableElements().pop();
+            if (lastFocusableElement != null) {
+                lastFocusableElement.focus();
             } else {
                 // Keeps focus within Overlay even if there are no keyboard-focusable children
+                console.info("focusing start focus trap element");
                 this.startFocusTrapElement?.focus();
             }
         }
