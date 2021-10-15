@@ -518,7 +518,6 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     };
 
     private getKeyboardFocusableElements() {
-        const { autoFocus, enforceFocus } = this.props;
         const focusableElements: HTMLElement[] =
             this.containerElement !== null
                 ? Array.from(
@@ -539,14 +538,11 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                   )
                 : [];
 
-        // trim "dummy" focus trap elements
-        if (autoFocus || enforceFocus) {
-            focusableElements.shift();
-            if (enforceFocus) {
-                focusableElements.pop();
-            }
-        }
-        return focusableElements;
+        return focusableElements.filter(
+            el =>
+                !el.classList.contains(Classes.OVERLAY_START_FOCUS_TRAP) &&
+                !el.classList.contains(Classes.OVERLAY_END_FOCUS_TRAP),
+        );
     }
 
     private overlayWillClose() {
