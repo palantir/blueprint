@@ -195,12 +195,14 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             [Classes.FILL]: fill,
         });
 
+        const defaultAutoFocus = this.isHoverInteractionKind() ? false : undefined;
+
         const wrapper = React.createElement(
             wrapperTagName!,
             { className: wrapperClasses },
             <Reference innerRef={this.handleTargetRef}>{this.renderTarget}</Reference>,
             <Overlay
-                autoFocus={this.props.autoFocus}
+                autoFocus={this.props.autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
                 backdropProps={this.props.backdropProps}
                 canEscapeKeyClose={this.props.canEscapeKeyClose}
