@@ -33,7 +33,7 @@ const ITEMS: ITestItem[] = IDS.map(id => ({ id }));
 const TestItem: React.FunctionComponent<ITestItem> = () => <div style={{ width: 10, flex: "0 0 auto" }} />;
 const TestOverflow: React.FunctionComponent<{ items: ITestItem[] }> = () => <div />;
 
-describe("<OverflowList>", function (this) {
+describe.skip("<OverflowList>", function (this) {
     // these tests rely on DOM measurement which can be flaky, so we allow some retries
     this.retries(3);
 
