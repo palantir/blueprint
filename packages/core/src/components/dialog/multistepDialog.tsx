@@ -36,9 +36,22 @@ export interface IMultistepDialogProps extends DialogProps {
     backButtonProps?: DialogStepButtonProps;
 
     /**
+     * Props for the close button that appears in the footer when there is no
+     * title.
+     */
+    closeButtonProps?: Partial<ButtonProps>;
+
+    /**
      * Props for the button to display on the final step.
      */
     finalButtonProps?: Partial<ButtonProps>;
+
+    /**
+     * Whether the footer close button is visible.
+     *
+     * @default false
+     */
+    isFooterCloseButtonShown?: boolean;
 
     /**
      * Props for the next button.
@@ -85,6 +98,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
     public static defaultProps: Partial<MultistepDialogProps> = {
         canOutsideClickClose: true,
+        isFooterCloseButtonShown: false,
         isOpen: false,
         resetOnClose: true,
     };
@@ -167,8 +181,13 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
     }
 
     private renderFooter() {
+        const { closeButtonProps, isFooterCloseButtonShown, onClose } = this.props;
+        const maybeCloseButton = !isFooterCloseButtonShown ? undefined : (
+            <Button text="Close" onClick={onClose} {...closeButtonProps} />
+        );
         return (
             <div className={Classes.MULTISTEP_DIALOG_FOOTER}>
+                {maybeCloseButton}
                 <div className={Classes.DIALOG_FOOTER_ACTIONS}>{this.renderButtons()}</div>
             </div>
         );
