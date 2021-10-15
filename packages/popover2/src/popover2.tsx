@@ -322,7 +322,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                   onMouseLeave: this.handleMouseLeave,
               }
             : {
-                  // CLICK needs only one handler
+                  // CLICK handlers
                   onClick: this.handleTargetClick,
                   // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
                   onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>

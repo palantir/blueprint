@@ -100,12 +100,12 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.SPACE);
         });
 
-        it("calls onClick when enter key released", done => {
-            checkClickTriggeredOnKeyUp(done, {}, { which: Keys.ENTER });
+        it("native click event not prevented when enter key pressed", done => {
+            assertDefaultActionNotPreventedOnEnterOrSpaceKeyDown(done, {}, { which: Keys.ENTER });
         });
 
-        it("calls onClick when space key released", done => {
-            checkClickTriggeredOnKeyUp(done, {}, { which: Keys.SPACE });
+        it("native click event not prevented when space key pressed", done => {
+            assertDefaultActionNotPreventedOnEnterOrSpaceKeyDown(done, {}, { which: Keys.SPACE });
         });
 
         if (typeof React.createRef !== "undefined") {
@@ -192,25 +192,25 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             return useMount ? mount(element) : shallow(element);
         }
 
-        function checkClickTriggeredOnKeyUp(
+        function assertDefaultActionNotPreventedOnEnterOrSpaceKeyDown(
             done: Mocha.Done,
             buttonProps: Partial<IButtonProps>,
             keyEventProps: Partial<React.KeyboardEvent<any>>,
         ) {
             const wrapper = button(buttonProps, true);
 
-            // mock the DOM click() function, because enzyme only handles
-            // simulated React events
-            const buttonRef = (wrapper.instance() as any).buttonRef;
-            const onClick = spy(buttonRef, "click");
+            // mock the preventDefault function because tests are not always run in a full browser
+            // environment
+            const preventDefault = spy();
+            wrapper.simulate("keydown", { ...keyEventProps, preventDefault });
 
-            wrapper.simulate("keyup", keyEventProps);
-
-            // wait for the whole lifecycle to run
-            setTimeout(() => {
-                assert.equal(onClick.callCount, 1);
-                done();
-            }, 0);
+            if (keyEventProps.which === Keys.SPACE || keyEventProps.which === Keys.ENTER) {
+                // wait for the whole lifecycle to run
+                setTimeout(() => {
+                    assert.equal(preventDefault.callCount, 0);
+                    done();
+                }, 0);
+            }
         }
 
         function checkKeyEventCallbackInvoked(callbackPropName: string, eventName: string, keyCode: number) {

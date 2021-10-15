@@ -379,11 +379,19 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                   onMouseLeave: this.handleMouseLeave,
               }
             : {
-                  // CLICK needs only one handler
-                  onClick: this.handleTargetClick,
-                  onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>
+                  // CLICK handlers
+                  onClick: (event: React.MouseEvent<HTMLElement>) => {
+                      this.props.targetProps?.onClick?.(event);
+                      this.handleTargetClick(event);
+                  },
+                  // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
+                  onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
+                      this.props.targetProps?.onKeyDown?.(event);
                       // eslint-disable-next-line deprecation/deprecation
-                      Keys.isKeyboardClick(event.keyCode) && this.handleTargetClick(event),
+                      if (Keys.isKeyboardClick(event.keyCode)) {
+                          this.handleTargetClick(event);
+                      }
+                  },
               };
         finalTargetProps["aria-haspopup"] = "true";
         finalTargetProps.className = classNames(
@@ -569,9 +577,6 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             } else {
                 this.setOpenState(!this.props.isOpen, e);
             }
-        }
-        if (e.type === "click") {
-            this.props.targetProps?.onClick?.(e as React.MouseEvent<HTMLElement>);
         }
     };
 
