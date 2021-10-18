@@ -54,7 +54,7 @@ export class TabTitle extends AbstractPureComponent2<TabTitleProps> {
                 id={generateTabTitleId(parentId, id)}
                 onClick={disabled ? undefined : this.handleClick}
                 role="tab"
-                tabIndex={disabled ? undefined : 0}
+                tabIndex={disabled ? undefined : selected ? 0 : -1}
             >
                 {title}
                 {children}

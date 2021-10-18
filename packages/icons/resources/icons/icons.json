@@ -3712,5 +3712,11 @@
         "iconName": "nest",
         "tags": "nest, indent, down right",
         "group": "interface"
+    },
+    {
+        "displayName": "Small square",
+        "iconName": "small-square",
+        "tags": "square",
+        "group": "miscellaneous"
     }
 ]

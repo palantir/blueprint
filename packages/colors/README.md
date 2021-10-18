@@ -4,7 +4,9 @@
 
 Blueprint is a React UI toolkit for the web.
 
-This package contains color variables for Blueprint's color palettte.
+This package contains color variables for Blueprint's color palette.
+
+There are currently two color palettes available: modern 4.x colors and "legacy" 3.x colors.
 
 ## Installation
 

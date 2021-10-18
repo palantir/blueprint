@@ -19,7 +19,10 @@ import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
 
-const NS = process.env.BLUEPRINT_NAMESPACE || process.env.REACT_APP_BLUEPRINT_NAMESPACE || "bp3";
+let NS = "bp3";
+if (typeof process !== "undefined") {
+    NS = process.env?.BLUEPRINT_NAMESPACE ?? process.env?.REACT_APP_BLUEPRINT_NAMESPACE ?? NS;
+}
 
 // modifiers
 export const ACTIVE = `${NS}-active`;
@@ -218,6 +221,8 @@ export const OVERLAY_CONTENT = `${OVERLAY}-content`;
 export const OVERLAY_INLINE = `${OVERLAY}-inline`;
 export const OVERLAY_OPEN = `${OVERLAY}-open`;
 export const OVERLAY_SCROLL_CONTAINER = `${OVERLAY}-scroll-container`;
+export const OVERLAY_START_FOCUS_TRAP = `${OVERLAY}-start-focus-trap`;
+export const OVERLAY_END_FOCUS_TRAP = `${OVERLAY}-end-focus-trap`;
 
 export const PANEL_STACK = `${NS}-panel-stack`;
 export const PANEL_STACK_HEADER = `${PANEL_STACK}-header`;

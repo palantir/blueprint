@@ -55,6 +55,13 @@ export type Popover2InteractionKind = typeof Popover2InteractionKind[keyof typeo
 export type Popover2Props<TProps = React.HTMLProps<HTMLElement>> = IPopover2Props<TProps>;
 /** @deprecated use Popover2Props */
 export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends Popover2SharedProps<TProps> {
+    /**
+     * Whether the popover/tooltip should acquire application focus when it first opens.
+     *
+     * @default true for click interations, false for hover interactions
+     */
+    autoFocus?: boolean;
+
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
@@ -62,12 +69,6 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
      * The content displayed inside the popover.
      */
     content?: string | JSX.Element;
-
-    /**
-     * Whether the wrapper and target should take up the full width of their container.
-     * Note that supplying `true` for this prop will force  `targetTagName="div"`.
-     */
-    fill?: boolean;
 
     /**
      * The kind of interaction that triggers the display of the popover.
@@ -426,9 +427,11 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             this.props.popoverClassName,
         );
 
+        const defaultAutoFocus = this.isHoverInteractionKind() ? false : undefined;
+
         return (
             <Overlay
-                autoFocus={this.props.autoFocus}
+                autoFocus={this.props.autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER2_BACKDROP}
                 backdropProps={this.props.backdropProps}
                 canEscapeKeyClose={this.props.canEscapeKeyClose}

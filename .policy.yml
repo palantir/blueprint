@@ -65,6 +65,7 @@ approval_rules:
           - "^\\.circleci/.*$"
           - "^\\.docker-compose-rule\\.yml$"
           - "^.*gradle$"
+          - "^\\.palantir/go-version$"
           - "^gradle/wrapper/.*"
           - "^gradlew$"
           - "^gradlew.bat$"

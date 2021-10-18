@@ -160,11 +160,12 @@ describe("Toaster", () => {
             toaster = Toaster.create({ autoFocus: true }, testsContainerElement);
         });
 
-        it("focuses on newly created toast", done => {
-            toaster.show({ message: "focus on me" });
+        it("focuses inside toast container", done => {
+            toaster.show({ message: "focus near me" });
             // small explicit timeout reduces flakiness of these tests
             setTimeout(() => {
-                assert.equal(testsContainerElement.querySelector(`.${Classes.TOAST}`), document.activeElement);
+                const toastElement = testsContainerElement.querySelector(`.${Classes.TOAST_CONTAINER}`);
+                assert.isTrue(toastElement?.contains(document.activeElement));
                 done();
             }, 100);
         });

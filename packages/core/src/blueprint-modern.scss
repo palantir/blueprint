@@ -332,6 +332,10 @@ table.#{$ns}-html-table {
                       $pt-dark-input-box-shadow;
       }
     }
+
+    &:disabled {
+      box-shadow: none;
+    }
   }
 
   @each $intent, $color in $dark-input-intent-box-shadow-colors {
