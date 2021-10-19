@@ -49,13 +49,6 @@ export interface IMultistepDialogProps extends DialogProps {
     finalButtonProps?: Partial<ButtonProps>;
 
     /**
-     * Whether the footer close button is visible.
-     *
-     * @default false
-     */
-    isFooterCloseButtonShown?: boolean;
-
-    /**
      * Position of the step navigation.
      *
      * @default Position.LEFT
@@ -116,7 +109,6 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
     public static defaultProps: Partial<MultistepDialogProps> = {
         canOutsideClickClose: true,
-        isFooterCloseButtonShown: false,
         isOpen: false,
         navigationPosition: Position.LEFT,
         resetOnClose: true,
