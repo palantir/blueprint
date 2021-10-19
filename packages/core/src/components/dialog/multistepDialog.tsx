@@ -47,13 +47,6 @@ export interface IMultistepDialogProps extends DialogProps {
     finalButtonProps?: Partial<ButtonProps>;
 
     /**
-     * Whether the footer close button is visible.
-     *
-     * @default false
-     */
-    isFooterCloseButtonShown?: boolean;
-
-    /**
      * Props for the next button.
      */
     nextButtonProps?: DialogStepButtonProps;
@@ -74,6 +67,13 @@ export interface IMultistepDialogProps extends DialogProps {
      * @default true
      */
     resetOnClose?: boolean;
+
+    /**
+     * Whether the footer close button is visible.
+     *
+     * @default false
+     */
+    showCloseButtonInFooter?: boolean;
 
     /**
      * A 0 indexed initial step to start off on, to start in the middle of the dialog, for example.
@@ -98,16 +98,22 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
     public static defaultProps: Partial<MultistepDialogProps> = {
         canOutsideClickClose: true,
-        isFooterCloseButtonShown: false,
         isOpen: false,
         resetOnClose: true,
+        showCloseButtonInFooter: false,
     };
 
     public state: IMultistepDialogState = this.getInitialIndexFromProps(this.props);
 
     public render() {
+        const { showCloseButtonInFooter, isCloseButtonShown, ...otherProps } = this.props;
+
+        // Only one close button should be displayed. If the footer close button
+        // is shown, we need to ensure the dialog close button is not displayed.
+        const isCloseButtonVisible = !showCloseButtonInFooter && isCloseButtonShown;
+
         return (
-            <Dialog {...this.props} style={this.getDialogStyle()}>
+            <Dialog isCloseButtonShown={isCloseButtonVisible} {...otherProps} style={this.getDialogStyle()}>
                 <div className={Classes.MULTISTEP_DIALOG_PANELS}>
                     {this.renderLeftPanel()}
                     {this.maybeRenderRightPanel()}
@@ -181,8 +187,9 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
     }
 
     private renderFooter() {
-        const { closeButtonProps, isFooterCloseButtonShown, onClose } = this.props;
-        const maybeCloseButton = !isFooterCloseButtonShown ? undefined : (
+        const { closeButtonProps, isCloseButtonShown, showCloseButtonInFooter, onClose } = this.props;
+        const isFooterCloseButtonVisible = showCloseButtonInFooter && isCloseButtonShown;
+        const maybeCloseButton = !isFooterCloseButtonVisible ? undefined : (
             <Button text="Close" onClick={onClose} {...closeButtonProps} />
         );
         return (
