@@ -69,7 +69,9 @@ export interface IMultistepDialogProps extends DialogProps {
     resetOnClose?: boolean;
 
     /**
-     * Whether the footer close button is visible.
+     * Whether the footer close button is shown. The button will only appear if
+     * `isCloseButtonShown` is `true`. The close button in the dialog title will
+     * not be shown when this is `true`.
      *
      * @default false
      */
