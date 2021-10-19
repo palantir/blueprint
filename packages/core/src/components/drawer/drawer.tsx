@@ -63,7 +63,7 @@ export interface IDrawerProps extends OverlayableProps, IBackdropProps, Props {
      *
      * @default Position.RIGHT
      */
-    position: Position;
+    position?: Position;
 
     /**
      * CSS size of the drawer. This sets `width` if horizontal position (default)
@@ -110,7 +110,7 @@ export class Drawer extends AbstractPureComponent2<DrawerProps> {
 
     public render() {
         const { size, style, position } = this.props;
-        const realPosition = getPositionIgnoreAngles(position);
+        const realPosition = getPositionIgnoreAngles(position!);
 
         const classes = classNames(
             Classes.DRAWER,
