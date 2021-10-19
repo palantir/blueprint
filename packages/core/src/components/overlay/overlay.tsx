@@ -555,7 +555,10 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             openStack.splice(stackIndex, 1);
             if (openStack.length > 0) {
                 const lastOpenedOverlay = Overlay.getLastOpened();
-                if (lastOpenedOverlay.props.enforceFocus) {
+                // Only bring focus back to last overlay if it had autoFocus _and_ enforceFocus enabled.
+                // If `autoFocus={false}`, it's likely that the overlay never received focus in the first place,
+                // so it would be surprising for us to send it there. See https://github.com/palantir/blueprint/issues/4921
+                if (lastOpenedOverlay.props.autoFocus && lastOpenedOverlay.props.enforceFocus) {
                     lastOpenedOverlay.bringFocusInsideOverlay();
                     document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
                 }
