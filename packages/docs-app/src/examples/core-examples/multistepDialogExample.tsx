@@ -50,7 +50,8 @@ export interface IMultistepDialogExampleState {
     canOutsideClickClose: boolean;
     enforceFocus: boolean;
     hasTitle: boolean;
-    isFooterCloseButtonShown: boolean;
+    isCloseButtonShown: boolean;
+    showCloseButtonInFooter: boolean;
     isOpen: boolean;
     position: MultistepDialogNavigationPosition;
     usePortal: boolean;
@@ -71,9 +72,10 @@ export class MultistepDialogExample extends React.PureComponent<
         enforceFocus: true,
         hasTitle: true,
         initialStepIndex: 0,
-        isFooterCloseButtonShown: true,
+        isCloseButtonShown: true,
         isOpen: false,
         position: Position.LEFT,
+        showCloseButtonInFooter: true,
         usePortal: true,
     };
 
@@ -87,8 +89,10 @@ export class MultistepDialogExample extends React.PureComponent<
 
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
-    private handleFooterCloseButtonChange = handleBooleanChange(isFooterCloseButtonShown =>
-        this.setState({ isFooterCloseButtonShown }),
+    private handleCloseButtonChange = handleBooleanChange(isCloseButtonShown => this.setState({ isCloseButtonShown }));
+
+    private handleFooterCloseButtonChange = handleBooleanChange(showCloseButtonInFooter =>
+        this.setState({ showCloseButtonInFooter }),
     );
 
     private handleHasTitleChange = handleBooleanChange(hasTitle => this.setState({ hasTitle }));
@@ -141,8 +145,9 @@ export class MultistepDialogExample extends React.PureComponent<
             usePortal,
             hasTitle,
             initialStepIndex,
-            isFooterCloseButtonShown,
+            isCloseButtonShown,
             position,
+            showCloseButtonInFooter,
         } = this.state;
         return (
             <>
@@ -159,8 +164,13 @@ export class MultistepDialogExample extends React.PureComponent<
                 />
                 <Switch checked={hasTitle} label="Has title" onChange={this.handleHasTitleChange} />
                 <Switch
-                    checked={isFooterCloseButtonShown}
-                    label="Display footer close button"
+                    checked={isCloseButtonShown}
+                    label="Show close button"
+                    onChange={this.handleCloseButtonChange}
+                />
+                <Switch
+                    checked={showCloseButtonInFooter}
+                    label="Show footer close button"
                     onChange={this.handleFooterCloseButtonChange}
                 />
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />

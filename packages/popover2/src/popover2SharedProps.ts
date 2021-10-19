@@ -156,6 +156,9 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
      * target will render with `tabindex="0"` to make it focusable via keyboard
      * navigation.
      *
+     * Note that this functionality is only enabled for hover interaction
+     * popovers/tooltips.
+     *
      * @default true
      */
     openOnTargetFocus?: boolean;
