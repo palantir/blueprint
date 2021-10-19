@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/table-dev-app",
-    "version": "4.0.0-beta.3",
+    "version": "4.0.0-beta.4",
     "description": "Dev application for @blueprintjs/table",
     "private": true,
     "scripts": {
@@ -16,8 +16,8 @@
         "verify": "npm-run-all -p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.0.0-beta.3",
-        "@blueprintjs/table": "^4.0.0-beta.3",
+        "@blueprintjs/core": "^4.0.0-beta.4",
+        "@blueprintjs/table": "^4.0.0-beta.4",
         "classnames": "^2.2.6",
         "dom4": "^2.1.5",
         "lodash-es": "^4.17.15",
