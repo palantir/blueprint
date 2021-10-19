@@ -61,8 +61,8 @@ export class MultistepDialogExample extends React.PureComponent<
         hasTitle: true,
         initialStepIndex: 0,
         isCloseButtonShown: true,
-        showCloseButtonInFooter: true,
         isOpen: false,
+        showCloseButtonInFooter: true,
         usePortal: true,
     };
 
