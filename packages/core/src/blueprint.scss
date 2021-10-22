@@ -276,18 +276,6 @@ $tree-intent-icon-colors-modern: (
   }
 }
 
-
-// Contrast for disabled editable text
-.#{$ns}-editable-text.#{$ns}-disabled {
-  > .#{$ns}-editable-text-content {
-    color: $pt-text-color-disabled;
-
-    .#{$ns}-dark & {
-      color: $pt-dark-text-color-disabled;
-    }
-  }
-}
-
 // Contrast for HTML tables
 table.#{$ns}-html-table {
   &.#{$ns}-html-table-striped {
