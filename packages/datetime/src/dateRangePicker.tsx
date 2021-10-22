@@ -755,6 +755,7 @@ function getStateChange(
         return {
             leftView,
             rightView,
+            time: nextValue,
             value: nextValue,
         };
     } else if (contiguousCalendarMonths === true) {
