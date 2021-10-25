@@ -352,7 +352,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
 
             const isFocusOutsideModal = !this.containerElement.contains(document.activeElement);
             if (isFocusOutsideModal) {
-                this.startFocusTrapElement?.focus();
+                this.startFocusTrapElement?.focus({ preventScroll: true });
                 this.isAutoFocusing = false;
             }
         });
@@ -458,7 +458,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             this.containerElement!.contains(e.relatedTarget as Element) &&
             e.relatedTarget !== this.endFocusTrapElement
         ) {
-            this.endFocusTrapElement?.focus();
+            this.endFocusTrapElement?.focus({ preventScroll: true });
         }
     };
 
@@ -476,7 +476,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             if (lastFocusableElement != null) {
                 lastFocusableElement.focus();
             } else {
-                this.endFocusTrapElement?.focus();
+                this.endFocusTrapElement?.focus({ preventScroll: true });
             }
         }
     };
@@ -504,7 +504,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             if (!this.isAutoFocusing && firstFocusableElement != null && firstFocusableElement !== e.relatedTarget) {
                 firstFocusableElement.focus();
             } else {
-                this.startFocusTrapElement?.focus();
+                this.startFocusTrapElement?.focus({ preventScroll: true });
             }
         } else {
             const lastFocusableElement = this.getKeyboardFocusableElements().pop();
@@ -512,7 +512,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                 lastFocusableElement.focus();
             } else {
                 // Keeps focus within Overlay even if there are no keyboard-focusable children
-                this.startFocusTrapElement?.focus();
+                this.startFocusTrapElement?.focus({ preventScroll: true });
             }
         }
     };

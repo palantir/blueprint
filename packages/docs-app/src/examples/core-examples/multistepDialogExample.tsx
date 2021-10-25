@@ -40,6 +40,9 @@ export interface IMultistepDialogExampleState {
     canEscapeKeyClose: boolean;
     canOutsideClickClose: boolean;
     enforceFocus: boolean;
+    hasTitle: boolean;
+    isCloseButtonShown: boolean;
+    showCloseButtonInFooter: boolean;
     isOpen: boolean;
     usePortal: boolean;
     value?: string;
@@ -55,8 +58,11 @@ export class MultistepDialogExample extends React.PureComponent<
         canEscapeKeyClose: true,
         canOutsideClickClose: true,
         enforceFocus: true,
+        hasTitle: true,
         initialStepIndex: 0,
+        isCloseButtonShown: true,
         isOpen: false,
+        showCloseButtonInFooter: true,
         usePortal: true,
     };
 
@@ -70,12 +76,21 @@ export class MultistepDialogExample extends React.PureComponent<
 
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
+    private handleCloseButtonChange = handleBooleanChange(isCloseButtonShown => this.setState({ isCloseButtonShown }));
+
+    private handleFooterCloseButtonChange = handleBooleanChange(showCloseButtonInFooter =>
+        this.setState({ showCloseButtonInFooter }),
+    );
+
+    private handleHasTitleChange = handleBooleanChange(hasTitle => this.setState({ hasTitle }));
+
     public render() {
         const finalButtonProps: Partial<ButtonProps> = {
             intent: "primary",
             onClick: this.handleClose,
             text: "Close",
         };
+        const { hasTitle, ...state } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <Button onClick={this.handleOpen}>Show dialog</Button>
@@ -85,8 +100,8 @@ export class MultistepDialogExample extends React.PureComponent<
                     onClose={this.handleClose}
                     nextButtonProps={{ disabled: this.state.value === undefined }}
                     finalButtonProps={finalButtonProps}
-                    title="Multistep dialog"
-                    {...this.state}
+                    title={hasTitle ? "Multistep dialog" : undefined}
+                    {...state}
                 >
                     <DialogStep
                         id="select"
@@ -110,7 +125,10 @@ export class MultistepDialogExample extends React.PureComponent<
             canEscapeKeyClose,
             canOutsideClickClose,
             usePortal,
+            hasTitle,
             initialStepIndex,
+            isCloseButtonShown,
+            showCloseButtonInFooter,
         } = this.state;
         return (
             <>
@@ -124,6 +142,17 @@ export class MultistepDialogExample extends React.PureComponent<
                     checked={canOutsideClickClose}
                     label="Click outside to close"
                     onChange={this.handleOutsideClickChange}
+                />
+                <Switch checked={hasTitle} label="Has title" onChange={this.handleHasTitleChange} />
+                <Switch
+                    checked={isCloseButtonShown}
+                    label="Show close button"
+                    onChange={this.handleCloseButtonChange}
+                />
+                <Switch
+                    checked={showCloseButtonInFooter}
+                    label="Show footer close button"
+                    onChange={this.handleFooterCloseButtonChange}
                 />
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
                 <Label>Initial step index (0-indexed)</Label>
