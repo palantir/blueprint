@@ -31,8 +31,6 @@ $icon-classes: (
   > svg {
     // prevent extra vertical whitespace
     display: block;
-    // paths parsed by generate-icon-paths.js are mirrored vertically, so we need
-    // to flip them upright here
 
     // inherit text color unless explicit fill is set
     &:not([fill]) {
