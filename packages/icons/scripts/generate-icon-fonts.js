@@ -22,11 +22,9 @@ const { getLogger } = require("fantasticon/lib/cli/logger");
 const fs = require("fs");
 const path = require("path");
 
-const RESOURCES_DIR = path.resolve(__dirname, "../../../resources/icons");
-const GENERATED_SRC_DIR = path.resolve(__dirname, "../src/generated");
-const logger = getLogger();
-const NS = "bp4";
+const { RESOURCES_DIR, GENERATED_SRC_DIR, NS } = require("./common");
 
+const logger = getLogger();
 logger.start();
 
 fs.mkdirSync(path.join(GENERATED_SRC_DIR, `16px/paths`), { recursive: true });
