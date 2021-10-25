@@ -17,20 +17,19 @@
 import * as React from "react";
 
 import { Alignment, Button, Classes, MenuItem } from "@blueprintjs/core";
-import { IconName, IconNames } from "@blueprintjs/icons";
+import { IconName } from "@blueprintjs/icons";
 import { ItemRenderer, Select } from "@blueprintjs/select";
+
+import { getIconNames, IconNameOrNone, NONE } from "./iconNames";
+
+const ICON_NAMES = getIconNames();
 
 export interface IIconSelectProps {
     iconName?: IconName;
     onChange: (iconName?: IconName) => void;
 }
 
-const NONE = "(none)";
-type IconType = IconName | typeof NONE;
-const ICON_NAMES = Object.keys(IconNames).map<IconType>((name: string) => IconNames[name as keyof typeof IconNames]);
-ICON_NAMES.push(NONE);
-
-const TypedSelect = Select.ofType<IconType>();
+const TypedSelect = Select.ofType<IconNameOrNone>();
 
 export class IconSelect extends React.PureComponent<IIconSelectProps> {
     public render() {
@@ -84,5 +83,5 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
         return iconName.toLowerCase().indexOf(query.toLowerCase()) >= 0;
     };
 
-    private handleIconChange = (icon: IconType) => this.props.onChange(icon === NONE ? undefined : icon);
+    private handleIconChange = (icon: IconNameOrNone) => this.props.onChange(icon === NONE ? undefined : icon);
 }

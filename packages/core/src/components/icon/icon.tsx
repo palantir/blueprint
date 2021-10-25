@@ -150,12 +150,12 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
     }
 
     /** Render `<path>` elements for the given icon name. Returns `null` if name is unknown. */
-    private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element | null {
+    private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element[] | null {
         const svgPathsRecord = pathsSize === IconSize.STANDARD ? IconSvgPaths16 : IconSvgPaths20;
-        const pathString = svgPathsRecord[iconNameToPathsRecordKey(iconName)];
-        if (pathString == null) {
+        const paths = svgPathsRecord[iconNameToPathsRecordKey(iconName)];
+        if (paths == null) {
             return null;
         }
-        return <path d={pathString} fillRule="evenodd" />;
+        return paths.map((path, i) => <path key={i} d={path} fillRule="evenodd" />);
     }
 }
