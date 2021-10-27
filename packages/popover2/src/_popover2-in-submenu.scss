@@ -11,7 +11,11 @@
     &.#{$ns}-popover2-open > .#{$ns}-menu-item {
       // keep a trail of hovered items as submenus are opened
       @include menu-item();
-      @include menu-item-intent();
+
+      @each $intent, $colors in $menu-item-intent-colors {
+        @include menu-item-intent($intent, false, $colors...);
+      }
+
       color: inherit;
     }
   }

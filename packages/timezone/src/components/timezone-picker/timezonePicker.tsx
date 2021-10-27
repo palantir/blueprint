@@ -218,7 +218,7 @@ export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, 
         return (
             <MenuItem
                 key={item.key}
-                active={modifiers.active}
+                selected={modifiers.active}
                 icon={item.iconName}
                 text={item.text}
                 label={item.label}

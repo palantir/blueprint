@@ -41,6 +41,7 @@ export const MINIMAL = `${NS}-minimal`;
 export const OUTLINED = `${NS}-outlined`;
 export const MULTILINE = `${NS}-multiline`;
 export const ROUND = `${NS}-round`;
+export const SELECTED = `${NS}-selected`;
 export const SMALL = `${NS}-small`;
 export const VERTICAL = `${NS}-vertical`;
 export const POSITION_TOP = positionClass(Position.TOP);
