@@ -180,12 +180,14 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 ...(disabled ? DISABLED_PROPS : {}),
                 className: anchorClasses,
             },
-            <Icon icon={icon} />,
+            <Icon className={Classes.MENU_ITEM_ICON} icon={icon} />,
             <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline} title={htmlTitle}>
                 {text}
             </Text>,
             this.maybeRenderLabel(labelElement),
-            hasSubmenu ? <Icon title="Open sub menu" icon="caret-right" /> : undefined,
+            hasSubmenu ? (
+                <Icon className={Classes.MENU_SUBMENU_ICON} title="Open sub menu" icon="caret-right" />
+            ) : undefined,
         );
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });

@@ -60,7 +60,8 @@ $dark-menu-item-intent-colors: (
   }
 
   &::before,
-  .#{$ns}-icon {
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-submenu-icon {
     color: $pt-icon-color;
     margin-top: ($menu-item-line-height - $pt-icon-size-standard) / 2;
   }
@@ -89,7 +90,8 @@ $dark-menu-item-intent-colors: (
       color: nth(map-get($menu-item-intent-colors, "primary"), 2);
 
       &::before,
-      .#{$ns}-icon {
+      .#{$ns}-menu-item-icon,
+      .#{$ns}-submenu-icon {
         color: nth(map-get($menu-item-intent-colors, "primary"), 2);
       }
 
@@ -103,7 +105,8 @@ $dark-menu-item-intent-colors: (
           color: nth(map-get($menu-item-intent-colors, $intent), 2);
 
           &::before,
-          .#{$ns}-icon {
+          .#{$ns}-menu-item-icon,
+          .#{$ns}-submenu-icon {
             color: inherit;
           }
         }
@@ -121,7 +124,8 @@ $dark-menu-item-intent-colors: (
     outline: none !important;
 
     &::before,
-    > .#{$ns}-icon {
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-submenu-icon {
       color: $pt-icon-color-disabled !important;
     }
 
@@ -140,7 +144,8 @@ $dark-menu-item-intent-colors: (
   }
 
   &::before,
-  .#{$ns}-icon {
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-submenu-icon {
     color: $pt-dark-icon-color;
   }
 
@@ -148,7 +153,8 @@ $dark-menu-item-intent-colors: (
     color: inherit;
 
     // need to override typography styles here
-    .#{$ns}-icon {
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-submenu-icon {
       color: $pt-dark-icon-color;
     }
   }
@@ -168,7 +174,8 @@ $dark-menu-item-intent-colors: (
       color: nth(map-get($dark-menu-item-intent-colors, "primary"), 2);
 
       &::before,
-      .#{$ns}-icon {
+      .#{$ns}-menu-item-icon,
+      .#{$ns}-submenu-icon {
         color: nth(map-get($dark-menu-item-intent-colors, "primary"), 2);
       }
 
@@ -178,7 +185,8 @@ $dark-menu-item-intent-colors: (
           color: nth(map-get($dark-menu-item-intent-colors, $intent), 2);
 
           &::before,
-          .#{$ns}-icon {
+          .#{$ns}-menu-item-icon,
+          .#{$ns}-submenu-icon {
             color: inherit;
           }
         }
@@ -192,7 +200,8 @@ $dark-menu-item-intent-colors: (
     color: $pt-dark-text-color-disabled !important;
 
     &::before,
-    .#{$ns}-icon {
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-submenu-icon {
       color: $pt-dark-icon-color-disabled !important;
     }
 
@@ -208,7 +217,8 @@ $dark-menu-item-intent-colors: (
     color: $fg-color;
 
     &::before,
-    .#{$ns}-icon,
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-submenu-icon,
     .#{$ns}-menu-item-label {
       color: inherit;
     }
