@@ -22,6 +22,7 @@ import { Example, IExampleProps, handleBooleanChange, handleValueChange } from "
 import { IntentSelect } from "./common/intentSelect";
 
 export function MenuItemExample(props: IExampleProps) {
+    const [large, setLarge] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [selected, setSelected] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>("none");
@@ -30,6 +31,7 @@ export function MenuItemExample(props: IExampleProps) {
     const options = (
         <>
             <H5>Props</H5>
+            <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
             <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
             <Switch label="Selected" checked={selected} onChange={handleBooleanChange(setSelected)} />
             <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
@@ -39,7 +41,7 @@ export function MenuItemExample(props: IExampleProps) {
 
     return (
         <Example className="docs-menu-example" options={options} {...props}>
-            <Menu className={Classes.ELEVATION_1}>
+            <Menu className={Classes.ELEVATION_1} large={large}>
                 <MenuItem
                     disabled={disabled}
                     selected={selected}

@@ -63,6 +63,10 @@ $dark-menu-item-intent-colors: (
   .#{$ns}-menu-item-icon,
   .#{$ns}-submenu-icon {
     color: $pt-icon-color;
+  }
+
+  &::before,
+  .#{$ns}-submenu-icon {
     margin-top: ($menu-item-line-height - $pt-icon-size-standard) / 2;
   }
 
@@ -247,6 +251,16 @@ $dark-menu-item-intent-colors: (
   font-size: $pt-font-size-large;
   line-height: $menu-item-line-height-large;
   padding: $menu-item-padding-vertical-large $menu-item-padding;
+
+  &::before,
+  .#{$ns}-submenu-icon {
+    // SVG icons remain standard size when menu is large
+    margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) / 2;
+  }
+
+  .#{$ns}-menu-item-icon {
+    margin-top: -1px;
+  }
 }
 
 @mixin menu-divider() {

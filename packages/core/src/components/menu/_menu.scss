@@ -64,15 +64,9 @@ Styleguide menu
   .#{$ns}-large & {
     @include menu-item-large();
 
-    .#{$ns}-icon {
-      // SVG icons remain standard size when menu is large
-      margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) / 2;
-    }
-
     &::before {
       @include pt-icon($pt-icon-size-large);
       margin-right: $menu-item-padding-large;
-      margin-top: ($menu-item-line-height-large - $pt-icon-size-large) / 2;
     }
   }
 }
