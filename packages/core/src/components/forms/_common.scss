@@ -137,6 +137,10 @@ $control-group-stack: (
   color: $input-color-disabled;
   cursor: not-allowed;
   resize: none;
+
+  &::placeholder {
+    color: $input-color-disabled;
+  }
 }
 
 @mixin pt-input-large() {
