@@ -8,16 +8,11 @@ Licensed under the Apache License, Version 2.0.
 // Import files in the same order that they are documented in the docs
 @import "~@blueprintjs/colors/lib/scss/colors";
 @import "common/variables";
+@import "common/mixins";
 
 @import "reset";
 @import "typography";
 @import "accessibility/focus-states";
-
-// Extended color pallete
-$blue6: #99c4ff;
-$green6: #7cd7a2;
-$orange6: #f5c186;
-$red6: #ffa1a4;
 
 // Button variables and overrides
 $button-active-minimal-intent-text-modern: (
@@ -54,14 +49,6 @@ $dark-input-intent-box-shadow-colors: (
   "danger" : $red4,
 );
 $dark-input-shadow-color-focus: $blue4;
-
-// Menu variables
-$menu-item-intent-colors-modern: (
-  "primary": (rgba($blue3, 0.1), $blue2, rgba($blue3, 0.2), $blue1),
-  "success": (rgba($green3, 0.1), $green2, rgba($green3, 0.2), $green1),
-  "warning": (rgba($orange3, 0.1), $orange2, rgba($orange3, 0.2), $orange1),
-  "danger" : (rgba($red3, 0.1), $red2, rgba($red3, 0.2), $red1),
-);
 
 // Slider variable overrides
 $button-box-shadow-overlay:
@@ -335,92 +322,7 @@ table.#{$ns}-html-table {
   }
 }
 
-// Contrast for menus
-.#{$ns}-menu-item {
-  @mixin menu-item-intent-modern(
-    $hover-background-color,
-    $hover-text-color,
-    $active-background-color,
-    $active-text-color) {
-    &:hover {
-      background: $hover-background-color;
-      color: $hover-text-color;
-
-      .#{$ns}-menu-item-label {
-        color: $hover-text-color;
-      }
-    }
-
-    &:active {
-      background: $active-background-color;
-      color: $active-text-color;
-    }
-
-    &:hover,
-    &:active,
-    &.#{$ns}-active {
-      &::before,
-      &::after,
-      .#{$ns}-menu-item-label {
-        color: inherit;
-      }
-    }
-  }
-
-  &:not([class*="#{$ns}-intent-"]) {
-    &:hover {
-      background: rgba($gray3, 0.1);
-    }
-
-    &:active {
-      background: rgba($gray3, 0.2);
-
-      .#{$ns}-menu-item-label {
-        color: $pt-text-color;
-      }
-    }
-  }
-
-  @each $intent, $color in $menu-item-intent-colors-modern {
-    &.#{$ns}-intent-#{$intent} {
-      @include menu-item-intent-modern($color...);
-    }
-  }
-
-  .#{$ns}-dark & {
-    &:not([class*="#{$ns}-intent-"]) {
-      &:hover {
-        .#{$ns}-icon:first-child {
-          color: $pt-dark-icon-color;
-        }
-      }
-
-      &:active {
-        .#{$ns}-menu-item-label {
-          color: $light-gray5;
-        }
-      }
-    }
-
-    @each $intent, $color in $dark-minimal-button-intents-modern {
-      &.#{$ns}-intent-#{$intent} {
-        @include pt-button-minimal-dark-intent-modern($color...);
-
-        &:hover {
-          .#{$ns}-menu-item-label {
-            color: nth($color, 2);
-          }
-        }
-
-        &:active {
-          .#{$ns}-menu-item-label {
-            color: nth($color, 4);
-          }
-        }
-      }
-    }
-  }
-}
+// Contrast for menus - no overrides necessary, modern colors are now built-in
 
 // Contrast for sliders
 .#{$ns}-slider-handle {

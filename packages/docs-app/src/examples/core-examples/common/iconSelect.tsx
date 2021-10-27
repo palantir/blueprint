@@ -64,7 +64,7 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
         }
         return (
             <MenuItem
-                active={modifiers.active}
+                selected={modifiers.active}
                 icon={icon === NONE ? undefined : icon}
                 key={icon}
                 onClick={handleClick}
