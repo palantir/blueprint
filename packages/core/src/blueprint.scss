@@ -92,7 +92,7 @@ $minimal-dark-tag-intent-colors-modern: (
   "primary": ($pt-intent-primary, $blue5, $blue6, $blue6),
   "success": ($pt-intent-success, $green5, $green6, $green6),
   "warning": ($pt-intent-warning, $orange5, $orange6, $orange6),
-  "danger": ($pt-intent-danger, $red5, $red1, $red6, $red6)
+  "danger": ($pt-intent-danger, $red5, $red6, $red6)
 );
 
 // Toast variables
@@ -550,6 +550,7 @@ table.#{$ns}-html-table {
   ) {
     background: $background-color;
     color: $text-color;
+
     &.#{$ns}-interactive {
       &:hover {
         background-color: $hover-color;
@@ -646,6 +647,14 @@ table.#{$ns}-html-table {
   // Contrast for default intent
   color: $white;
 
+  .#{$ns}-tag-remove {
+    &,
+    &:hover,
+    &:active {
+      opacity: 1;
+    }
+  }
+
   &.#{$ns}-interactive {
     &:hover {
       background: $dark-gray5;
@@ -708,6 +717,7 @@ table.#{$ns}-html-table {
     // Minimal style for default intent
     background-color: rgba($gray3, 0.15);
     color: $pt-text-color;
+
     &.#{$ns}-interactive {
       &:hover {
         background-color: rgba($gray3, 0.3);
@@ -718,17 +728,17 @@ table.#{$ns}-html-table {
         background-color: rgba($gray3, 0.35);
         color: $black;
       }
+    }
 
-      .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
-        color: $gray1;
+    .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
+      color: $gray1;
 
-        &:hover {
-          color: $dark-gray1;
-        }
+      &:hover {
+        color: $dark-gray5;
+      }
 
-        &:active {
-          color: $dark-gray1;
-        }
+      &:active {
+        color: $dark-gray5;
       }
     }
 
