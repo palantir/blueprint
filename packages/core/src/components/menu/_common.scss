@@ -55,6 +55,13 @@ $dark-menu-item-intent-colors: (
     word-break: break-word;
   }
 
+  .#{$ns}-menu-item-icon {
+    display: flex;
+    flex-direction: column;
+    height: $menu-item-line-height;
+    justify-content: center;
+  }
+
   .#{$ns}-menu-item-label {
     color: $pt-text-color-muted;
   }
@@ -252,14 +259,14 @@ $dark-menu-item-intent-colors: (
   line-height: $menu-item-line-height-large;
   padding: $menu-item-padding-vertical-large $menu-item-padding;
 
+  .#{$ns}-menu-item-icon {
+    height: $menu-item-line-height-large;
+  }
+
   &::before,
   .#{$ns}-submenu-icon {
     // SVG icons remain standard size when menu is large
     margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) / 2;
-  }
-
-  .#{$ns}-menu-item-icon {
-    margin-top: -1px;
   }
 }
 
