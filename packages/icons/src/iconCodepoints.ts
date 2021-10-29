@@ -14,5 +14,18 @@
  * limitations under the License.
  */
 
+import type { IconName } from "./iconNames";
 // icon sets are identical aside from SVG paths, so we just import the info for the 16px set
-export { BLUEPRINT_ICONS_16_CODEPOINTS as IconCodepoints } from "./generated/16px/blueprint-icons-16";
+import { BLUEPRINT_ICONS_16_CODEPOINTS as IconCodepoints } from "./generated/16px/blueprint-icons-16";
+
+export { IconCodepoints };
+
+/**
+ * Returns the hex code content string which represents the codepoint in the icon font
+ * for a given icon. You can render this string to the DOM and if the icon font is loaded
+ * as an active font family, this string will be replaced with the associated icon.
+ */
+export function getIconFontCodepoint(icon: IconName) {
+    // parse base 10 number from string, then convert to hex code
+    return parseInt(IconCodepoints[icon], 10).toString(16);
+}
