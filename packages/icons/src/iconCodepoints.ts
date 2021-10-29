@@ -20,8 +20,8 @@ import type { IconName } from "./iconNames";
 
 /**
  * Icon codepoints as base 10 number strings. If you need to render these strings
- * into an SVG document or as ::before pseudo content, consider using `getIconFontCodepoint()`
- * instead;
+ * into an SVG document or as `::before` pseudo content, consider using `getIconFontCodepoint()`
+ * instead.
  */
 export const IconCodepoints = BLUEPRINT_ICONS_16_CODEPOINTS;
 
