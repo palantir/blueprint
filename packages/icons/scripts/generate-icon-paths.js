@@ -47,10 +47,14 @@ const ICON_NAMES = ICONS_METADATA.map(icon => icon.iconName);
         const iconPaths = await getIconPaths(iconSize);
 
         for (const [iconName, pathStrings] of Object.entries(iconPaths)) {
+            const line = pathStrings.length > 0
+                ?  `export default [${pathStrings.join(", ")}];`
+                // special case for "blank" icon - we need an explicit typedef
+                : `const p: string[] = []; export default p;`
+
             writeLinesToFile(
                 `${iconSize}px/paths/${iconName}.ts`,
-                `const paths: string[] = [${pathStrings.join(", ")}];`,
-                "export default paths;",
+                line,
             );
         }
 
