@@ -16,7 +16,6 @@
 const fs = require("fs");
 const path = require("path");
 
-const COPYRIGHT_HEADER = "/*\n * Copyright 2021 Palantir Technologies, Inc. All rights reserved.\n */\n";
 const RESOURCES_DIR = path.resolve(__dirname, "../../../resources/icons");
 const GENERATED_SRC_DIR = path.resolve(__dirname, "../src/generated");
 const NS = "bp4";
@@ -29,12 +28,11 @@ const NS = "bp4";
  */
 function writeLinesToFile(filename, ...lines) {
     const outputPath = path.join(GENERATED_SRC_DIR, filename);
-    const contents = [COPYRIGHT_HEADER, ...lines, ""].join("\n");
+    const contents = [...lines, ""].join("\n");
     fs.writeFileSync(outputPath, contents);
 }
 
 module.exports = {
-    COPYRIGHT_HEADER,
     RESOURCES_DIR,
     GENERATED_SRC_DIR,
     NS,
