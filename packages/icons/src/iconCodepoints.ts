@@ -16,9 +16,14 @@
 
 import type { IconName } from "./iconNames";
 // icon sets are identical aside from SVG paths, so we just import the info for the 16px set
-import { BLUEPRINT_ICONS_16_CODEPOINTS as IconCodepoints } from "./generated/16px/blueprint-icons-16";
+import { BLUEPRINT_ICONS_16_CODEPOINTS } from "./generated/16px/blueprint-icons-16";
 
-export { IconCodepoints };
+/**
+ * Icon codepoints as base 10 number strings. If you need to render these strings
+ * into an SVG document or as ::before pseudo content, consider using `getIconFontCodepoint()`
+ * instead;
+ */
+export const IconCodepoints = BLUEPRINT_ICONS_16_CODEPOINTS;
 
 /**
  * Returns the hex code content string which represents the codepoint in the icon font
