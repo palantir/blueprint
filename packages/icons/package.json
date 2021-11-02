@@ -12,7 +12,7 @@
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/**/* && rm -rf src/generated/*",
+        "clean": "rm -rf dist/* && rm -rf lib/**/* && rm -rf src/generated/* && rm -rf build/*",
         "compile": "npm-run-all -s \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
@@ -47,6 +47,7 @@
         "fantasticon": "^1.2.2",
         "mocha": "^8.2.1",
         "npm-run-all": "^4.1.5",
+        "oslllo-svg-fixer": "^1.4.1",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",

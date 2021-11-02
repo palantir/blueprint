@@ -17,66 +17,59 @@
  * @fileoverview Generates icon fonts and codepoints from SVG sources
  */
 
-const { generateFonts, FontAssetType, OtherAssetType } = require("fantasticon");
+const { generateFonts: runFantasticon, FontAssetType, OtherAssetType } = require("fantasticon");
 const { getLogger } = require("fantasticon/lib/cli/logger");
 const fs = require("fs");
 const path = require("path");
+const svgFixer = require("oslllo-svg-fixer");
 
-const { RESOURCES_DIR, GENERATED_SRC_DIR, NS } = require("./common");
+const { BUILD_DIR, RESOURCES_DIR, GENERATED_SRC_DIR, NS } = require("./common");
 
 const logger = getLogger();
-logger.start();
 
-fs.mkdirSync(path.join(GENERATED_SRC_DIR, `16px/paths`), { recursive: true });
-generateFonts({
-    name: "blueprint-icons-16",
-    inputDir: path.join(RESOURCES_DIR, "16px"),
-    outputDir: path.join(GENERATED_SRC_DIR, "16px"),
-    fontHeight: 16,
-    fontTypes: [FontAssetType.TTF, FontAssetType.EOT, FontAssetType.WOFF2, FontAssetType.WOFF, FontAssetType.SVG],
-    // CSS contains @font-face, SCSS contains codepoints, TS contains enums & codepoints
-    assetTypes: [OtherAssetType.CSS, OtherAssetType.SCSS, OtherAssetType.TS],
-    templates: {
-        // N.B. we don't generate CSS, just the map of code points which we can use downstream
-        scss: path.resolve(__dirname, "./icons-16.scss.hbs"),
-        css: path.resolve(__dirname, "./icons.css.hbs"),
-    },
-    pathOptions: {
-        scss: path.join(GENERATED_SRC_DIR, "16px", "_icon-variables.scss"),
-    },
-    tag: "i",
-    prefix: `${NS}-icon-standard`,
-})
-    .then(results => {
-        logger.results(results);
-    })
-    .catch(error => {
-        logger.error(error);
-    });
+(async function() {
+    logger.start();
+    await fixSVGs(16);
+    await fixSVGs(20);
+    await Promise.all([
+        connectToLogger(generateFonts(16, `${NS}-icon-standard`)),
+        connectToLogger(generateFonts(20, `${NS}-icon-large`)),
+    ]);
+})();
 
-fs.mkdirSync(path.join(GENERATED_SRC_DIR, `20px/paths`), { recursive: true });
-generateFonts({
-    name: "blueprint-icons-20",
-    inputDir: path.join(RESOURCES_DIR, "20px"),
-    outputDir: path.join(GENERATED_SRC_DIR, "20px"),
-    fontHeight: 20,
-    fontTypes: [FontAssetType.TTF, FontAssetType.EOT, FontAssetType.WOFF2, FontAssetType.WOFF, FontAssetType.SVG],
-    // CSS contains @font-face, SCSS contains codepoints, TS contains enums & codepoints
-    assetTypes: [OtherAssetType.CSS, OtherAssetType.SCSS, OtherAssetType.TS],
-    templates: {
-        // N.B. here we don't generate CSS, or even the code points (we expect them to be the same as icons-16)
-        scss: path.resolve(__dirname, "./icons-20.scss.hbs"),
-        css: path.resolve(__dirname, "./icons.css.hbs"),
-    },
-    pathOptions: {
-        scss: path.join(GENERATED_SRC_DIR, "20px", "_icon-variables.scss"),
-    },
-    tag: "i",
-    prefix: `${NS}-icon-large`,
-})
-    .then(results => {
-        logger.results(results);
-    })
-    .catch(error => {
-        logger.error(error);
+async function fixSVGs(size) {
+    console.info(`Tranforming ${size}px icon SVGs into an icon-font-ready representation...`);
+    const resourcesDir = path.join(RESOURCES_DIR, `${size}px`);
+    const buildDir = path.join(BUILD_DIR, `${size}px`);
+    fs.mkdirSync(buildDir, { recursive: true });
+    return svgFixer(resourcesDir, buildDir, { showProgressBar: true }).fix();
+}
+
+async function generateFonts(size, prefix) {
+    fs.mkdirSync(path.join(GENERATED_SRC_DIR, `${size}px/paths`), { recursive: true });
+    return runFantasticon({
+        name: `blueprint-icons-${size}`,
+        inputDir: path.join(BUILD_DIR, `${size}px`),
+        outputDir: path.join(GENERATED_SRC_DIR, `${size}px`),
+        fontHeight: size,
+        fontTypes: [FontAssetType.TTF, FontAssetType.EOT, FontAssetType.WOFF2, FontAssetType.WOFF, FontAssetType.SVG],
+        // CSS contains @font-face, SCSS contains codepoints, TS contains enums & codepoints
+        assetTypes: [OtherAssetType.CSS, OtherAssetType.SCSS, OtherAssetType.TS],
+        templates: {
+            // N.B. here we don't generate CSS, or even the code points (we expect them to be the same as icons-16)
+            scss: path.resolve(__dirname, `./icons-${size}.scss.hbs`),
+            css: path.resolve(__dirname, "./icons.css.hbs"),
+        },
+        pathOptions: {
+            scss: path.join(GENERATED_SRC_DIR, `${size}px`, "_icon-variables.scss"),
+        },
+        tag: "i",
+        prefix,
     });
+}
+
+function connectToLogger(runner) {
+    return runner
+        .then(results => logger.results(results))
+        .catch(error => logger.error(error));
+}
