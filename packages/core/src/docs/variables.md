@@ -50,9 +50,9 @@ full list of identifiers):
 ```
 
 ```ts
-import { IconCodepoints } from "@blueprintjs/icons";
+import { getIconContentString } from "@blueprintjs/icons";
 
-document.querySelector(".my-custom-icon").style.content = IconCodepoints["tick"];
+document.querySelector(".my-custom-icon").style.content = getIconContentString("tick");
 ```
 
 Sass variables are also provided for the two icon font families and their pixel sizes:

@@ -20,7 +20,7 @@ import type { IconName } from "./iconNames";
 
 /**
  * Icon codepoints as base 10 number strings. If you need to render these strings
- * into an SVG document or as `::before` pseudo content, consider using `getIconFontCodepoint()`
+ * into an SVG document or as `::before` pseudo content, consider using `getIconContentString()`
  * instead.
  */
 export const IconCodepoints = BLUEPRINT_ICONS_16_CODEPOINTS;
@@ -30,7 +30,7 @@ export const IconCodepoints = BLUEPRINT_ICONS_16_CODEPOINTS;
  * for a given icon. You can render this string to the DOM and if the icon font is loaded
  * as an active font family, this string will be replaced with the associated icon.
  */
-export function getIconFontCodepoint(icon: IconName) {
+export function getIconContentString(icon: IconName) {
     // parse base 10 number from string, then convert to hex code
-    return parseInt(IconCodepoints[icon], 10).toString(16);
+    return String.fromCodePoint(parseInt(IconCodepoints[icon], 10));
 }

@@ -16,53 +16,23 @@
 
 /* eslint-disable camelcase */
 
-import { snakeCase } from "change-case";
+import { pascalCase, snakeCase } from "change-case";
+import type { PascalCase, ScreamingSnakeCase } from "type-fest";
 
 // icon sets are identical aside from SVG paths, so we just import the info for the 16px set
-import {
-    BlueprintIcons_16,
-    BlueprintIcons_16Id as IconName,
-    BlueprintIcons_16Key,
-} from "./generated/16px/blueprint-icons-16";
+import { BlueprintIcons_16, BlueprintIcons_16Id as IconName } from "./generated/16px/blueprint-icons-16";
 
 export type { IconName };
 
-const IconNamesLegacy: Record<string, IconName> = {};
+const IconNamesNew = {} as Record<PascalCase<IconName>, IconName>;
+const IconNamesLegacy = {} as Record<ScreamingSnakeCase<IconName>, IconName>;
 
-for (const [pascalCaseKey, iconName] of Object.entries(BlueprintIcons_16)) {
-    const screamingSnakeCaseKey = snakeCase(pascalCaseKey).toUpperCase();
-    IconNamesLegacy[screamingSnakeCaseKey] = iconName;
+for (const name of Object.values(BlueprintIcons_16) as IconName[]) {
+    IconNamesNew[pascalCase(name) as PascalCase<IconName>] = name;
+    IconNamesLegacy[snakeCase(name).toUpperCase() as ScreamingSnakeCase<IconName>] = name;
 }
 
 export const IconNames = {
-    ...BlueprintIcons_16,
-    ...(IconNamesLegacy as Record<ScreamingSnakeCaseIconNames, IconName>),
+    ...IconNamesNew,
+    ...IconNamesLegacy,
 };
-
-type ScreamingSnakeCaseIconNames = Uppercase<StripLeadingUnderscore<CamelToSnake<BlueprintIcons_16Key>>>;
-
-/**
- * The CamelToSnake converter works ok for PascalCase identifiers, but it
- * always adds a leading underscore. So we add this simple additional converter
- * to the chain to strip that underscore.
- */
-type StripLeadingUnderscore<T extends string> = T extends `_${infer R}` ? `${R}` : T;
-
-/**
- * This is a hacky implementation of a camelCase to Snake_Case string literal
- * type converter... it works up to 30 characters, which is fine for our
- * current icon set.
- *
- * Copied from StackOverflow
- *
- * @see https://stackoverflow.com/questions/64932525/is-it-possible-to-use-mapped-types-in-typescript-to-change-a-types-key-names
- */
-type CamelToSnake<T extends string> = string extends T
-    ? string
-    : T extends `${infer C0}${infer C1}${infer R}`
-    ? `${C0 extends Uppercase<C0> ? "_" : ""}${Lowercase<C0>}${C1 extends Uppercase<C1>
-          ? "_"
-          : ""}${Lowercase<C1>}${CamelToSnake<R>}`
-    : T extends `${infer C0}${infer R}`
-    ? `${C0 extends Uppercase<C0> ? "_" : ""}${Lowercase<C0>}${CamelToSnake<R>}`
-    : "";

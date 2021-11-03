@@ -14,41 +14,20 @@
  * limitations under the License.
  */
 
-import * as IconSvgPaths16 from "./generated/16px/paths";
-import * as IconSvgPaths20 from "./generated/20px/paths";
+import { pascalCase } from "change-case";
+import type { PascalCase } from "type-fest";
+
 import type { IconName } from "./iconNames";
 
-export { IconSvgPaths16, IconSvgPaths20 };
+/* eslint-disable @typescript-eslint/no-var-requires */
+export const IconSvgPaths16 = require("./generated/16px/paths") as Record<PascalCase<IconName>, string[]>;
+export const IconSvgPaths20 = require("./generated/20px/paths") as Record<PascalCase<IconName>, string[]>;
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 /**
- * Type safe string literal conversion of snake-case icon names to camelCase icon names,
+ * Type safe string literal conversion of snake-case icon names to PascalCase icon names,
  * useful for indexing into the SVG paths record to extract a single icon's SVG path definition.
- *
- * N.B. `IconSvgPaths16` and `IconSvgPaths20` are assignable to each other, so it doesn't matter
- * which one is used in the return type definition here.
  */
-export function iconNameToPathsRecordKey(name: IconName): keyof typeof IconSvgPaths16 {
-    return kebabCaseToCamelCase(name);
+export function iconNameToPathsRecordKey(name: IconName): PascalCase<IconName> {
+    return pascalCase(name) as PascalCase<IconName>;
 }
-
-/**
- * Type safe string literal conversion of snake-case strings to camelCase strings.
- * Note that this requires TypeScript 4.1+.
- *
- * Implementation and template literal mapped types borrowed from
- * https://davidtimms.github.io/programming-languages/typescript/2020/11/20/exploring-template-literal-types-in-typescript-4.1.html
- */
-function kebabCaseToCamelCase<S extends string>(snakeCaseString: S): KebabCaseToCamelCase<S> {
-    return snakeCaseString
-        .split("-")
-        .map((word, i) => (i === 0 ? word.toLowerCase() : word && word[0].toUpperCase() + word.slice(1).toLowerCase()))
-        .join("") as KebabCaseToCamelCase<S>;
-}
-
-type KebabCaseToCamelCase<S extends string> = S extends `${infer FirstWord}-${infer Rest}`
-    ? `${Lowercase<FirstWord>}${KebabCaseToPascalCase<Rest>}`
-    : `${Lowercase<S>}`;
-
-type KebabCaseToPascalCase<S extends string> = S extends `${infer FirstWord}-${infer Rest}`
-    ? `${Capitalize<Lowercase<FirstWord>>}${KebabCaseToPascalCase<Rest>}`
-    : Capitalize<Lowercase<S>>;
