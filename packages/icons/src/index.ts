@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export { IconCodepoints, IconName } from "./generated/blueprint-icons";
+
 export { IconSvgPaths16, IconSvgPaths20, iconNameToPathsRecordKey } from "./iconSvgPaths";
-export { getIconFontCodepoint, IconCodepoints } from "./iconCodepoints";
-export { IconName, IconNames } from "./iconNames";
+export { IconNames } from "./iconNames";

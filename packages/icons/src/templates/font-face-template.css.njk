@@ -1,0 +1,9 @@
+@font-face {
+    font-display: swap;
+    font-family: "{{ fontName }}";
+    src:
+        url("{{ fontPath }}{{ fontName }}.ttf?{{ hash }}") format("truetype"),
+        url("{{ fontPath }}{{ fontName }}.eot?{{ hash }}#iefix") format("embedded-opentype"),
+        url("{{ fontPath }}{{ fontName }}.woff2?{{ hash }}") format("woff2"),
+        url("{{ fontPath }}{{ fontName }}.woff?{{ hash }}") format("woff");
+}

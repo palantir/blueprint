@@ -1,0 +1,8 @@
+$blueprint-icons-16-font: "blueprint-icons-16";
+$blueprint-icons-20-font: "blueprint-icons-20";
+
+$blueprint-icon-codepoints: (
+{% for glyph in glyphs %}
+    "{{ glyph.name }}": "\{{ glyph.unicode[0].charCodeAt(0).toString(16) }}",
+{% endfor %}
+);

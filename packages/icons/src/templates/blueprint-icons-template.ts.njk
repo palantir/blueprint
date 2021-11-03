@@ -1,0 +1,8 @@
+export type IconName =
+{% for glyph in glyphs %}
+    | "{{ glyph.name }}"{% endfor %};
+
+export const IconCodepoints: { [key in IconName]: string } = {
+{% for glyph in glyphs %}
+    "{{ glyph.name }}": "\{{ glyph.unicode[0].charCodeAt(0).toString(16) }}",
+{% endfor %}};

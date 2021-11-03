@@ -13,7 +13,7 @@
     ],
     "scripts": {
         "clean": "rm -rf dist/* && rm -rf lib/**/* && rm -rf src/generated/* && rm -rf build/*",
-        "compile": "npm-run-all -s \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
+        "compile": "npm-run-all -s \"generate-icon-src-v2\" -p \"compile:*\" -p \"copy:*\"",
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
@@ -26,6 +26,7 @@
         "dist:css": "css-dist lib/css/*.css",
         "dist:verify": "assert-package-layout",
         "generate-icon-src": "node scripts/generate-icon-fonts.js && node scripts/generate-icon-paths.js",
+        "generate-icon-src-v2": "node scripts/prepare-icon-svgs.js && node scripts/generate-icon-fonts-with-webfont.js && node scripts/generate-icon-paths.js",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
@@ -38,7 +39,8 @@
     "dependencies": {
         "change-case": "^4.1.2",
         "classnames": "^2.2",
-        "tslib": "~1.13.0"
+        "tslib": "~1.13.0",
+        "type-fest": "^1.4.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^2.0.0-beta.1",
@@ -53,6 +55,7 @@
         "react-test-renderer": "^16.14.0",
         "svgo": "^1.3.2",
         "typescript": "~4.1.2",
+        "webfont": "^11.2.26",
         "webpack-cli": "^3.3.12"
     },
     "repository": {
