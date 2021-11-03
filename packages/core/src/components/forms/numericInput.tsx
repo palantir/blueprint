@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconName } from "@blueprintjs/icons";
+import type { IconName } from "@blueprintjs/icons";
 
 import {
     AbstractPureComponent2,
