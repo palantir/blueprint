@@ -32,5 +32,5 @@ export const IconCodepoints = BLUEPRINT_ICONS_16_CODEPOINTS;
  */
 export function getIconContentString(icon: IconName) {
     // parse base 10 number from string, then convert to hex code
-    return String.fromCodePoint(parseInt(IconCodepoints[icon], 10))
+    return String.fromCodePoint(parseInt(IconCodepoints[icon], 10));
 }

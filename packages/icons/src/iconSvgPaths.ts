@@ -15,7 +15,7 @@
  */
 
 import { pascalCase } from "change-case";
-import { PascalCase } from "type-fest";
+import type { PascalCase } from "type-fest";
 
 import type { IconName } from "./iconNames";
 
@@ -26,6 +26,6 @@ export const IconSvgPaths20 = require("./generated/20px/paths") as Record<Pascal
  * Type safe string literal conversion of snake-case icon names to PascalCase icon names,
  * useful for indexing into the SVG paths record to extract a single icon's SVG path definition.
  */
- export function iconNameToPathsRecordKey(name: IconName): PascalCase<IconName> {
+export function iconNameToPathsRecordKey(name: IconName): PascalCase<IconName> {
     return pascalCase(name) as PascalCase<IconName>;
 }
