@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import type { Class } from "type-fest";
+
 /**
  * Generic interface defining constructor types, such as classes. This is used to type the class
  * itself in meta-programming situations such as decorators.
  *
  * @deprecated will be removed in Blueprint v5.0
  */
-export type IConstructor<T> = new (...args: any[]) => T;
+export type IConstructor<T> = Class<T>;
