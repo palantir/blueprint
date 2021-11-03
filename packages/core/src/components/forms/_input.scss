@@ -108,8 +108,4 @@ textarea.#{$ns}-input {
   &.#{$ns}-small {
     padding: $input-small-padding;
   }
-
-  .#{$ns}-dark & {
-    @include pt-dark-input();
-  }
 }
