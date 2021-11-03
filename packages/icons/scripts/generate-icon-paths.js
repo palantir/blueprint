@@ -18,7 +18,7 @@
  * N.B. we expect ../src/generated/ to contain SVG definitions of all the icons already
  */
 
-const { camelCase } = require("change-case");
+const { pascalCase } = require("change-case");
 const fs = require("fs");
 const path = require("path");
 // Note: we had issues with this approach using svgo v2.x, so for now we stick with v1.x
@@ -61,7 +61,7 @@ const ICON_NAMES = ICONS_METADATA.map(icon => icon.iconName);
         console.info(`Writing index file for ${iconSize}px icon kit paths...`);
         writeLinesToFile(
             `${iconSize}px/paths/index.ts`,
-            ...ICON_NAMES.map(iconName => `export { default as ${camelCase(iconName)} } from "./${iconName}";`),
+            ...ICON_NAMES.map(iconName => `export { default as ${pascalCase(iconName)} } from "./${iconName}";`),
         );
         console.info("Done.");
     }

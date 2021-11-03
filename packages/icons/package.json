@@ -38,7 +38,8 @@
     "dependencies": {
         "change-case": "^4.1.2",
         "classnames": "^2.2",
-        "tslib": "~1.13.0"
+        "tslib": "~1.13.0",
+        "type-fest": "^1.4.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^2.0.0-beta.1",

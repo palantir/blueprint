@@ -15,5 +15,5 @@
  */
 
 export { IconSvgPaths16, IconSvgPaths20, iconNameToPathsRecordKey } from "./iconSvgPaths";
-export { getIconFontCodepoint, IconCodepoints } from "./iconCodepoints";
+export { getIconContentString, IconCodepoints } from "./iconCodepoints";
 export { IconName, IconNames } from "./iconNames";
