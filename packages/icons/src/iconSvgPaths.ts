@@ -15,8 +15,8 @@
  */
 
 import { pascalCase } from "change-case";
-import type { PascalCase } from "type-fest";
 
+import type { PascalCase } from "./type-utils";
 import type { IconName } from "./iconNames";
 
 /* eslint-disable @typescript-eslint/no-var-requires */

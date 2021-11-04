@@ -17,7 +17,7 @@
 /* eslint-disable camelcase */
 
 import { pascalCase, snakeCase } from "change-case";
-import type { PascalCase, ScreamingSnakeCase } from "type-fest";
+import type { PascalCase, ScreamingSnakeCase } from "./type-utils";
 
 // icon sets are identical aside from SVG paths, so we just import the info for the 16px set
 import { BlueprintIcons_16, BlueprintIcons_16Id as IconName } from "./generated/16px/blueprint-icons-16";
