@@ -16,8 +16,8 @@
 
 import { pascalCase } from "change-case";
 
-import type { PascalCase } from "./type-utils";
 import type { IconName } from "./iconNames";
+import type { PascalCase } from "./type-utils";
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 export const IconSvgPaths16 = require("./generated/16px/paths") as Record<PascalCase<IconName>, string[]>;
