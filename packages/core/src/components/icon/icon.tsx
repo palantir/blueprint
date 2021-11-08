@@ -21,7 +21,7 @@ import { IconName, IconSvgPaths16, IconSvgPaths20, iconNameToPathsRecordKey } fr
 
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
 
-export { IconName };
+export type { IconName };
 
 export enum IconSize {
     STANDARD = 16,
