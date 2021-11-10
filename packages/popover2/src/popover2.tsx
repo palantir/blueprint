@@ -612,7 +612,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         );
         // dismiss selectors from the "V1" version of Popover in the core pacakge
         // we expect these to be rendered by MenuItem, which at this point has no knowledge of Popover2
-        // this can be removed once Popover2 is merged into core in v4.0
+        // this can be removed once Popover2 is merged into core in v5.0
         const dismissElementV1 = eventTarget.closest(
             `.${CoreClasses.POPOVER_DISMISS}, .${CoreClasses.POPOVER_DISMISS_OVERRIDE}`,
         );

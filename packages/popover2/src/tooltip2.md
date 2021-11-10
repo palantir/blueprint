@@ -7,7 +7,7 @@ Migrating from [Tooltip](#core/components/tooltip)?
 
 </h4>
 
-Tooltip2 is a replacement for Tooltip and will become the standard Popover API in Blueprint core v4.
+Tooltip2 is a replacement for Tooltip and will become the standard Popover API in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
 See the full [migration guide](https://github.com/palantir/blueprint/wiki/Popover2-migration) on the wiki.
 
