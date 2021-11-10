@@ -17,7 +17,7 @@ Migrating from [HotkeysTarget](#core/components/hotkeys)?
 
 HotkeysTarget2 is a replacement for HotkeysTarget. You are encouraged to use this new API, or
 the `useHotkeys` hook directly in your function components, as they will become the standard
-APIs in Blueprint v4. See the full
+APIs in Blueprint v5. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration) on the wiki.
 
 </div>

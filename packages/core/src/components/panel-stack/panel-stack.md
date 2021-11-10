@@ -9,7 +9,7 @@ Deprecated: use [PanelStack2](#core/components/panel-stack2)
 
 This API is **deprecated since @blueprintjs/core v3.40.0** in favor of the new
 PanelStack2 component available to React 16.8+ users. You should migrate to the
-new API which will become the standard in Blueprint v4.
+new API which will become the standard in Blueprint v5.
 
 </div>
 
