@@ -156,6 +156,8 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             htmlTitle,
             ...htmlProps
         } = this.props;
+
+        const hasIcon = icon != null;
         const hasSubmenu = children != null;
 
         const intentClass = Classes.intentClass(intent);
@@ -180,11 +182,13 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 ...(disabled ? DISABLED_PROPS : {}),
                 className: anchorClasses,
             },
-            // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
-            // so that we always render this class
-            <span className={Classes.MENU_ITEM_ICON}>
-                <Icon icon={icon} />
-            </span>,
+            hasIcon ? (
+                // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
+                // so that we always render this class
+                <span className={Classes.MENU_ITEM_ICON}>
+                    <Icon icon={icon} />
+                </span>
+            ) : undefined,
             <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline} title={htmlTitle}>
                 {text}
             </Text>,
