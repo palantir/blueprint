@@ -151,21 +151,24 @@ $tree-intent-icon-colors-modern: (
 // Contrast for buttons
 .#{$ns}-button {
   // Use dark text for warning intent
-  &.#{$ns}-intent-warning:not([class*="#{$ns}-minimal"]) {
-    &:not(:disabled):not(.#{$ns}-disabled) {
-      background: $orange5;
-      color: $pt-text-color;
+  &.#{$ns}-intent-warning {
+    background: $orange5;
+    color: $pt-text-color;
 
-      .#{$ns}-icon > svg {
-        fill: rgba($dark-gray1, 0.7);
-      }
+    .#{$ns}-icon > svg {
+      fill: rgba($dark-gray1, 0.7);
+    }
 
+    &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
       &:hover {
         background: $orange4;
+        color: $pt-text-color;
       }
 
-      &:active {
+      &:active,
+      &.#{$ns}-active {
         background: $orange3;
+        color: $pt-text-color;
       }
     }
 
@@ -175,11 +178,21 @@ $tree-intent-icon-colors-modern: (
       color: rgba($dark-gray1, 0.35);
 
       .#{$ns}-dark & {
-        color: $pt-dark-text-color-disabled;
+        color: rgba($dark-gray1, 0.6);
+      }
+    }
+
+    &.#{$ns}-minimal,
+    &.#{$ns}-outlined {
+      background: none;
+
+      .#{$ns}-dark & {
+        .#{$ns}-icon > svg {
+          fill: $orange5;
+        }
       }
     }
   }
-
 
   &.#{$ns}-minimal {
     @mixin pt-button-minimal-intent-modern($active-text-color) {
