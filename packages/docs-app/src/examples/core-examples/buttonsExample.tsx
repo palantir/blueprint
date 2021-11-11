@@ -19,7 +19,7 @@ import * as React from "react";
 import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
-import { IntentSelect } from "./common/intentSelect"
+import { IntentSelect } from "./common/intentSelect";
 import { Size, SizeSelect } from "./common/sizeSelect";
 
 export interface IButtonsExampleState {
