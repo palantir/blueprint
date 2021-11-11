@@ -26,6 +26,7 @@ export function MenuItemExample(props: IExampleProps) {
     const [disabled, setDisabled] = React.useState(false);
     const [selected, setSelected] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>("none");
+    const [iconEnabled, setIconEnabled] = React.useState(true);
     const [submenuEnabled, setSubmenuEnabled] = React.useState(false);
 
     const options = (
@@ -34,6 +35,7 @@ export function MenuItemExample(props: IExampleProps) {
             <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
             <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
             <Switch label="Selected" checked={selected} onChange={handleBooleanChange(setSelected)} />
+            <Switch label="Enable icon" checked={iconEnabled} onChange={handleBooleanChange(setIconEnabled)} />
             <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
             <IntentSelect intent={intent} onChange={handleValueChange(setIntent)} />
         </>
@@ -46,7 +48,7 @@ export function MenuItemExample(props: IExampleProps) {
                     disabled={disabled}
                     selected={selected}
                     text="Settings"
-                    icon="cog"
+                    icon={iconEnabled ? "cog" : undefined}
                     intent={intent}
                     labelElement={submenuEnabled ? undefined : "⌘,"}
                     children={
