@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-app",
-    "version": "4.0.0-beta.9",
+    "version": "4.0.0-beta.10",
     "description": "Blueprint Documentation Site",
     "private": true,
     "scripts": {
@@ -16,16 +16,16 @@
         "verify": "run-p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.0.0-beta.9",
-        "@blueprintjs/datetime": "^4.0.0-beta.9",
-        "@blueprintjs/docs-data": "^4.0.0-beta.9",
-        "@blueprintjs/docs-theme": "^4.0.0-beta.9",
+        "@blueprintjs/core": "^4.0.0-beta.10",
+        "@blueprintjs/datetime": "^4.0.0-beta.10",
+        "@blueprintjs/docs-data": "^4.0.0-beta.10",
+        "@blueprintjs/docs-theme": "^4.0.0-beta.10",
         "@blueprintjs/icons": "^4.0.0-beta.6",
-        "@blueprintjs/popover2": "^1.0.0-beta.9",
-        "@blueprintjs/select": "^4.0.0-beta.9",
-        "@blueprintjs/table": "^4.0.0-beta.9",
+        "@blueprintjs/popover2": "^1.0.0-beta.10",
+        "@blueprintjs/select": "^4.0.0-beta.10",
+        "@blueprintjs/table": "^4.0.0-beta.10",
         "@blueprintjs/test-commons": "^1.0.0-beta.2",
-        "@blueprintjs/timezone": "^4.0.0-beta.9",
+        "@blueprintjs/timezone": "^4.0.0-beta.10",
         "@documentalist/client": "~3.0.0",
         "chroma-js": "^2.1.0",
         "classnames": "^2.2",
