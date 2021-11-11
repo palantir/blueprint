@@ -152,12 +152,12 @@ $tree-intent-icon-colors-modern: (
 .#{$ns}-button {
   // Use dark text for warning intent
   &.#{$ns}-intent-warning:not([class*="#{$ns}-minimal"]) {
-    &:not(:disabled) {
+    &:not(:disabled):not(.#{$ns}-disabled) {
       background: $orange5;
       color: $pt-text-color;
 
-      .#{$ns}-icon>svg:not([fill]) {
-        color: rgba($dark-gray1, 0.7);
+      .#{$ns}-icon > svg {
+        fill: rgba($dark-gray1, 0.7);
       }
 
       &:hover {
@@ -169,8 +169,10 @@ $tree-intent-icon-colors-modern: (
       }
     }
 
-    &:disabled {
-      color: $pt-text-color-disabled;
+    &:disabled,
+    &.#{$ns}-disabled {
+      background: rgba($orange3, 0.5);
+      color: rgba($dark-gray1, 0.35);
 
       .#{$ns}-dark & {
         color: $pt-dark-text-color-disabled;
