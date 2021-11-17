@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
 
-import { IFocusedCellCoordinates } from "../common/cell";
+import type { FocusedCellCoordinates } from "../common/cellTypes";
 import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
 import * as PlatformUtils from "../common/internal/platformUtils";
 import { Utils } from "../common/utils";
@@ -47,14 +47,14 @@ export interface ISelectableProps {
     /**
      * The currently focused cell.
      */
-    focusedCell?: IFocusedCellCoordinates;
+    focusedCell?: FocusedCellCoordinates;
 
     /**
      * When the user focuses something, this callback is called with new
      * focused cell coordinates. This should be considered the new focused cell
      * state for the entire table.
      */
-    onFocusedCell: (focusedCell: IFocusedCellCoordinates) => void;
+    onFocusedCell: (focusedCell: FocusedCellCoordinates) => void;
 
     /**
      * When the user selects something, this callback is called with a new
@@ -357,7 +357,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
      * last-selected region with the expanded region. If a focused cell is provided,
      * the focused cell will serve as an anchor for the expansion.
      */
-    private expandSelectedRegions(regions: Region[], region: Region, focusedCell?: IFocusedCellCoordinates) {
+    private expandSelectedRegions(regions: Region[], region: Region, focusedCell?: FocusedCellCoordinates) {
         if (regions.length === 0) {
             return [region];
         } else if (focusedCell != null) {

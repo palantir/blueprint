@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { AbstractComponent2, Utils as CoreUtils } from "@blueprintjs/core";
 
-import { ICellCoordinates } from "./common/cell";
+import type { CellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { RenderMode } from "./common/renderMode";
@@ -68,7 +68,7 @@ export class TableBody extends AbstractComponent2<ITableBodyProps> {
         return cellClassNames(rowIndex, columnIndex);
     }
 
-    private activationCell: ICellCoordinates;
+    private activationCell: CellCoordinates;
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         return (

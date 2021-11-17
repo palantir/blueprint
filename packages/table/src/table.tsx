@@ -29,7 +29,7 @@ import {
 
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
-import { IFocusedCellCoordinates } from "./common/cell";
+import type { IFocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "./common/context";
 import * as Errors from "./common/errors";

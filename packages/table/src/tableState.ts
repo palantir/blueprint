@@ -15,7 +15,7 @@
 
 import type { ColumnProps } from "./column";
 import type { Rect } from "./common";
-import type { IFocusedCellCoordinates } from "./common/cell";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
 import type { Region } from "./regions";
 
 export interface TableState {
@@ -28,7 +28,7 @@ export interface TableState {
     /**
      * The coordinates of the currently focused table cell
      */
-    focusedCell?: IFocusedCellCoordinates;
+    focusedCell?: FocusedCellCoordinates;
 
     /**
      * An array of pixel offsets for resize guides, which are drawn over the

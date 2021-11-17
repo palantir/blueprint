@@ -20,7 +20,7 @@ import * as React from "react";
 import { Icon, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { Grid } from "../common";
-import { FocusedCellCoordinates } from "../common/cell";
+import type { FocusedCellCoordinates } from "../common/cellTypes";
 import * as Classes from "../common/classes";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";

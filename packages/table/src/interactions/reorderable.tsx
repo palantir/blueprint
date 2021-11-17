@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
 
-import { FocusedCellCoordinates } from "../common/cell";
+import type { FocusedCellCoordinates } from "../common/cellTypes";
 import { Utils } from "../common/utils";
 import { Region, RegionCardinality, Regions } from "../regions";
 import { Draggable, IDraggableProps } from "./draggable";

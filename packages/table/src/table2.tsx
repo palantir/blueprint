@@ -26,9 +26,9 @@ import {
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
-import { ICellProps } from "./cell/cell";
-import { Column, IColumnProps } from "./column";
-import { IFocusedCellCoordinates } from "./common/cell";
+import type { CellProps } from "./cell/cell";
+import { Column, ColumnProps } from "./column";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "./common/context";
 import * as Errors from "./common/errors";
@@ -105,7 +105,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             rowHeights = state.rowHeights;
         }
 
-        const newChildrenArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
+        const newChildrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
         const didChildrenChange = newChildrenArray !== state.childrenArray;
         const numCols = newChildrenArray.length;
 
@@ -115,7 +115,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             // column that had the same `ID` prop. If none is found, use the
             // previous width at the same index.
             const previousColumnWidths = newChildrenArray.map(
-                (child: React.ReactElement<IColumnProps>, index: number) => {
+                (child: React.ReactElement<ColumnProps>, index: number) => {
                     const mappedIndex = state.columnIdToIndex[child.props.id];
                     return state.columnWidths[mappedIndex != null ? mappedIndex : index];
                 },
@@ -235,7 +235,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
         const { children, columnWidths, defaultRowHeight, defaultColumnWidth, numRows, rowHeights } = this.props;
 
-        const childrenArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
+        const childrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
         const columnIdToIndex = Table2.createColumnIdIndex(childrenArray);
 
         // Create height/width arrays using the lengths from props and
@@ -512,7 +512,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         this.hotkeysImpl.setProps(this.props);
 
         const didChildrenChange =
-            (React.Children.toArray(this.props.children) as Array<React.ReactElement<IColumnProps>>) !==
+            (React.Children.toArray(this.props.children) as Array<React.ReactElement<ColumnProps>>) !==
             this.state.childrenArray;
 
         const shouldInvalidateGrid =
@@ -656,7 +656,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private getColumnProps(columnIndex: number) {
-        const column = this.state.childrenArray[columnIndex] as React.ReactElement<IColumnProps>;
+        const column = this.state.childrenArray[columnIndex] as React.ReactElement<ColumnProps>;
         return column === undefined ? undefined : column.props;
     }
 
@@ -830,7 +830,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         const cell = cellRenderer(rowIndex, columnIndex);
         const { loading = hasLoadingOption(loadingOptions, ColumnLoadingOption.CELLS) } = cell.props;
 
-        const cellProps: ICellProps = {
+        const cellProps: CellProps = {
             ...restColumnProps,
             loading,
         };
@@ -1195,7 +1195,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
     };
 
-    private handleFocus = (focusedCell: IFocusedCellCoordinates) => {
+    private handleFocus = (focusedCell: FocusedCellCoordinates) => {
         if (!this.props.enableFocusedCell) {
             // don't set focus state if focus is not allowed
             return;

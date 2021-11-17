@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IFocusedCellCoordinates } from "./common/cell";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { Utils } from "./common/utils";
 
@@ -593,7 +593,7 @@ export class Regions {
     public static joinStyledRegionGroups(
         selectedRegions: Region[],
         otherRegions: StyledRegionGroup[],
-        focusedCell: IFocusedCellCoordinates,
+        focusedCell: FocusedCellCoordinates,
     ) {
         let regionGroups: StyledRegionGroup[] = [];
         if (otherRegions != null) {

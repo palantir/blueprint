@@ -17,7 +17,7 @@
 import type { Props } from "@blueprintjs/core";
 
 import type { IColumnProps } from "./column";
-import type { IFocusedCellCoordinates } from "./common/cell";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
 import type { IColumnIndices, IRowIndices } from "./common/grid";
 import type { RenderMode } from "./common/renderMode";
 import type { IColumnWidths } from "./headers/columnHeader";
@@ -128,7 +128,7 @@ export interface ITableProps extends Props, IRowHeights, IColumnWidths {
      * the focused cell to controlled mode, meaning you are in charge of
      * setting the focus in response to events in the `onFocusedCell` callback.
      */
-    focusedCell?: IFocusedCellCoordinates;
+    focusedCell?: FocusedCellCoordinates;
 
     /**
      * If `true`, selection state changes will cause the component to re-render.
@@ -207,7 +207,7 @@ export interface ITableProps extends Props, IRowHeights, IColumnWidths {
     /**
      * A callback called when the focus is changed in the table.
      */
-    onFocusedCell?: (focusedCell: IFocusedCellCoordinates) => void;
+    onFocusedCell?: (focusedCell: FocusedCellCoordinates) => void;
 
     /**
      * If resizing is enabled, this callback will be invoked when the user

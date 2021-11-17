@@ -15,7 +15,7 @@
  */
 
 import { Region, RegionCardinality, Regions } from "../../regions";
-import { CellCoordinates, FocusedCellCoordinates } from "../cell";
+import type { CellCoordinates, FocusedCellCoordinates } from "../cellTypes";
 import * as Errors from "../errors";
 
 /**

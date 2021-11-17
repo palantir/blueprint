@@ -15,7 +15,7 @@
 
 import * as React from "react";
 
-import { IFocusedCellCoordinates } from "./common/cell";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
 import { Clipboard } from "./common/clipboard";
 import { Direction } from "./common/direction";
 import { Grid } from "./common/grid";
@@ -27,7 +27,7 @@ import type { TableState, TableSnapshot } from "./tableState";
 
 export interface TableHandlers {
     handleSelection: (selectedRegions: Region[]) => void;
-    handleFocus: (focusedCell: IFocusedCellCoordinates) => void;
+    handleFocus: (focusedCell: FocusedCellCoordinates) => void;
     getEnabledSelectionHandler: (selectionMode: RegionCardinality) => (selectedRegions: Region[]) => void;
     syncViewportPosition: (snapshot: TableSnapshot) => void;
 }
@@ -285,7 +285,7 @@ export class TableHotkeys {
         this.scrollBodyToFocusedCell(newFocusedCell);
     };
 
-    private scrollBodyToFocusedCell = (focusedCell: IFocusedCellCoordinates) => {
+    private scrollBodyToFocusedCell = (focusedCell: FocusedCellCoordinates) => {
         const { row, col } = focusedCell;
         const { viewportRect } = this.state;
 
@@ -344,7 +344,7 @@ export class TableHotkeys {
         primaryAxis: "row" | "col",
         secondaryAxis: "row" | "col",
         isUpOrLeft: boolean,
-        newFocusedCell: IFocusedCellCoordinates,
+        newFocusedCell: FocusedCellCoordinates,
         focusCellRegion: Region,
     ) {
         const { selectedRegions } = this.state;

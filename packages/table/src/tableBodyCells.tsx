@@ -21,7 +21,7 @@ import { AbstractComponent2, Props, Utils as CoreUtils } from "@blueprintjs/core
 
 import { emptyCellRenderer, CellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
-import { IFocusedCellCoordinates } from "./common/cell";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
@@ -36,7 +36,7 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, Props
     /**
      * The coordinates of the currently focused cell, for setting the "isFocused" prop on cells.
      */
-    focusedCell?: IFocusedCellCoordinates;
+    focusedCell?: FocusedCellCoordinates;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
