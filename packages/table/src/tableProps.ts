@@ -307,3 +307,24 @@ export interface ITableProps extends Props, IRowHeights, IColumnWidths {
      */
     styledRegionGroups?: StyledRegionGroup[];
 }
+
+export type TablePropsDefaults = Required<Pick<TableProps,
+    "defaultColumnWidth" |
+    "defaultRowHeight" |
+    "enableColumnInteractionBar" |
+    "enableFocusedCell" |
+    "enableGhostCells" |
+    "enableMultipleSelection" |
+    "enableRowHeader" |
+    "forceRerenderOnSelectionChange" |
+    "loadingOptions" |
+    "minColumnWidth" |
+    "minRowHeight" |
+    "numFrozenColumns" |
+    "numFrozenRows" |
+    "numRows" |
+    "renderMode" |
+    "rowHeaderCellRenderer" |
+    "selectionModes"
+>>;
+export type TablePropsWithDefaults = Omit<TableProps, keyof TablePropsDefaults> & TablePropsDefaults;

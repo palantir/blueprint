@@ -17,28 +17,26 @@
 import * as React from "react";
 
 import { Utils } from "./common/utils";
-import type { TableProps } from "./tableProps";
+import type { TablePropsWithDefaults } from "./tableProps";
 
-export function clampNumFrozenColumns(props: TableProps) {
+export function clampNumFrozenColumns(props: TablePropsWithDefaults) {
     const { numFrozenColumns } = props;
     const numColumns = React.Children.count(props.children);
-    return clampPotentiallyNullValue(numFrozenColumns, numColumns);
+    return maybeClampValue(numFrozenColumns, numColumns);
 }
 
-export function clampNumFrozenRows(props: TableProps) {
+export function clampNumFrozenRows(props: TablePropsWithDefaults) {
     const { numFrozenRows, numRows } = props;
-    return clampPotentiallyNullValue(numFrozenRows, numRows);
+    return maybeClampValue(numFrozenRows, numRows);
 }
 
-// add explicit `| null | undefined`, because the params make more sense in this
-// order, and you can't have an optional param precede a required param.
-function clampPotentiallyNullValue(value: number | null | undefined, max: number) {
-    return value == null ? 0 : Utils.clamp(value, 0, max);
+function maybeClampValue(value: number | undefined, max: number) {
+    return value === undefined ? 0 : Utils.clamp(value, 0, max);
 }
 
-export function hasLoadingOption(loadingOptions: string[], loadingOption: string) {
-    if (loadingOptions == null) {
-        return undefined;
+export function hasLoadingOption(loadingOptions: string[] | undefined, loadingOption: string) {
+    if (loadingOptions === undefined) {
+        return false;
     }
     return loadingOptions.indexOf(loadingOption) >= 0;
 }

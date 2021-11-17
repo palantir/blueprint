@@ -152,7 +152,7 @@ export function resizeRowsByTallestCell(
     columnIndices?: number | number[],
 ) {
     let tallest = 0;
-    if (columnIndices == null) {
+    if (columnIndices === undefined) {
         // Consider all columns currently in viewport
         const viewportColumnIndices = grid.getColumnIndicesInRect(viewportRect);
         for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {

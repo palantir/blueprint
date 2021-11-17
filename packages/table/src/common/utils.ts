@@ -162,7 +162,7 @@ export const Utils = {
      * @param defaults - the full array of default values
      * @param sparseOverrides - the sparse array of override values
      */
-    assignSparseValues<T>(defaults: T[], sparseOverrides: T[]) {
+    assignSparseValues<T>(defaults: T[], sparseOverrides: Array<T | undefined | null>) {
         if (sparseOverrides == null || defaults.length !== sparseOverrides.length) {
             return defaults;
         }

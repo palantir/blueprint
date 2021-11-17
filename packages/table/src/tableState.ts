@@ -23,7 +23,7 @@ export interface TableState {
      * An array of column widths. These are initialized from the column props
      * and updated when the user drags column header resize handles.
      */
-    columnWidths?: number[];
+    columnWidths: number[];
 
     /**
      * The coordinates of the currently focused table cell
@@ -65,12 +65,12 @@ export interface TableState {
      * An array of row heights. These are initialized updated when the user
      * drags row header resize handles.
      */
-    rowHeights?: number[];
+    rowHeights: number[];
 
     /**
      * An array of Regions representing the selections of the table.
      */
-    selectedRegions?: Region[];
+    selectedRegions: Region[];
 
     /**
      * An array of pixel offsets for resize guides, which are drawn over the

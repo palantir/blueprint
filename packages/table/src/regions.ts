@@ -180,8 +180,6 @@ export class Regions {
                 return { col: 0, row: region.rows[0] };
             case RegionCardinality.CELLS:
                 return { col: region.cols[0], row: region.rows[0] };
-            default:
-                return null;
         }
     }
 

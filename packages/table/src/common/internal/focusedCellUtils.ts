@@ -38,10 +38,10 @@ export function getFocusedOrLastSelectedIndex(selectedRegions: Region[], focused
  */
 export function getInitialFocusedCell(
     enableFocusedCell: boolean,
-    focusedCellFromProps: FocusedCellCoordinates,
-    focusedCellFromState: FocusedCellCoordinates,
+    focusedCellFromProps: FocusedCellCoordinates | undefined,
+    focusedCellFromState: FocusedCellCoordinates | undefined,
     selectedRegions: Region[],
-): FocusedCellCoordinates {
+): FocusedCellCoordinates | undefined {
     if (!enableFocusedCell) {
         return undefined;
     } else if (focusedCellFromProps != null) {

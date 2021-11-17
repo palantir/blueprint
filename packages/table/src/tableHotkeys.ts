@@ -36,7 +36,7 @@ export class TableHotkeys {
     public constructor(
         private props: TableProps,
         private state: TableState,
-        private grid: Grid,
+        private grid: Grid | null,
         private tableHandlers: TableHandlers,
     ) {
         // no-op
