@@ -27,6 +27,7 @@ export interface IFormGroupExampleState {
     inline: boolean;
     intent: Intent;
     label: boolean;
+    labelHelperText: boolean;
     requiredLabel: boolean;
 }
 
@@ -37,6 +38,7 @@ export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGr
         inline: false,
         intent: Intent.NONE,
         label: true,
+        labelHelperText: false,
         requiredLabel: true,
     };
 
@@ -50,10 +52,12 @@ export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGr
 
     private handleRequiredLabelChange = handleBooleanChange(requiredLabel => this.setState({ requiredLabel }));
 
+    private handleLabelHelperTextChange = handleBooleanChange(labelHelperText => this.setState({ labelHelperText }));
+
     private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
 
     public render() {
-        const { disabled, helperText, inline, intent, label, requiredLabel } = this.state;
+        const { disabled, helperText, inline, intent, label, labelHelperText, requiredLabel } = this.state;
 
         const options = (
             <>
@@ -63,6 +67,11 @@ export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGr
                 <Switch label="Show helper text" checked={helperText} onChange={this.handleHelperTextChange} />
                 <Switch label="Show label" checked={label} onChange={this.handleLabelChange} />
                 <Switch label="Show label info" checked={requiredLabel} onChange={this.handleRequiredLabelChange} />
+                <Switch
+                    label="Show label helper text"
+                    checked={labelHelperText}
+                    onChange={this.handleLabelHelperTextChange}
+                />
                 <IntentSelect intent={intent} onChange={this.handleIntentChange} />
             </>
         );
@@ -76,6 +85,7 @@ export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGr
                     intent={intent}
                     label={label && "Label"}
                     labelFor="text-input"
+                    labelHelperText={labelHelperText && "Label helper text with details..."}
                     labelInfo={requiredLabel && "(required)"}
                 >
                     <InputGroup id="text-input" placeholder="Placeholder text" disabled={disabled} intent={intent} />
