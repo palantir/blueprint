@@ -28,7 +28,7 @@ export interface TableState {
     /**
      * The coordinates of the currently focused table cell
      */
-    focusedCell?: FocusedCellCoordinates;
+    focusedCell: FocusedCellCoordinates | undefined;
 
     /**
      * An array of pixel offsets for resize guides, which are drawn over the
@@ -54,12 +54,12 @@ export interface TableState {
     /**
      * The number of frozen columns, clamped to [0, num <Column>s].
      */
-    numFrozenColumnsClamped?: number;
+    numFrozenColumnsClamped: number;
 
     /**
      * The number of frozen rows, clamped to [0, numRows].
      */
-    numFrozenRowsClamped?: number;
+    numFrozenRowsClamped: number;
 
     /**
      * An array of row heights. These are initialized updated when the user

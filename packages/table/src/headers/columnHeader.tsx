@@ -20,7 +20,7 @@ import * as React from "react";
 import { IRef } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { IColumnIndices } from "../common/grid";
+import { ColumnIndices } from "../common/grid";
 import { Utils } from "../common/index";
 import { IClientCoordinates } from "../interactions/dragTypes";
 import { IIndexedResizeCallback } from "../interactions/resizable";
@@ -30,7 +30,7 @@ import { ColumnHeaderCell, IColumnHeaderCellProps } from "./columnHeaderCell";
 import { Header, IHeaderProps } from "./header";
 
 /** @deprecated use ColumnHeaderRenderer */
-export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
+export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps> | null;
 // eslint-disable-next-line deprecation/deprecation
 export type ColumnHeaderRenderer = IColumnHeaderRenderer;
 
@@ -40,9 +40,9 @@ export interface IColumnWidths {
     defaultColumnWidth?: number;
 }
 
-export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, IColumnIndices {
+export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, ColumnIndices {
     /**
-     * A IColumnHeaderRenderer that, for each `<Column>`, will delegate to:
+     * A ColumnHeaderRenderer that, for each `<Column>`, will delegate to:
      * 1. The `columnHeaderCellRenderer` method from the `<Column>`
      * 2. A `<ColumnHeaderCell>` using the `name` prop from the `<Column>`
      * 3. A `<ColumnHeaderCell>` with a `name` generated from `Utils.toBase26Alpha`

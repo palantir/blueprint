@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
-import { IRowIndices } from "../common/grid";
+import { RowIndices } from "../common/grid";
 import { IClientCoordinates } from "../interactions/dragTypes";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
@@ -37,7 +37,7 @@ export interface IRowHeights {
     defaultRowHeight?: number;
 }
 
-export interface IRowHeaderProps extends IHeaderProps, IRowHeights, IRowIndices {
+export interface IRowHeaderProps extends IHeaderProps, IRowHeights, RowIndices {
     /**
      * A callback invoked when user is done resizing the column
      */

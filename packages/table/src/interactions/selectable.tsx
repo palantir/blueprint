@@ -124,7 +124,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
 
     private didExpandSelectionOnActivate = false;
 
-    private lastEmittedSelectedRegions: Region[];
+    private lastEmittedSelectedRegions: Region[] | null = null;
 
     public render() {
         const draggableProps = this.getDraggableProps();
@@ -162,7 +162,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
             region = selectedRegionTransform(region, event);
         }
 
-        const foundIndex = Regions.findMatchingRegion(selectedRegions, region);
+        const foundIndex = Regions.findMatchingRegion(selectedRegions!, region);
         const matchesExistingSelection = foundIndex !== -1;
 
         if (matchesExistingSelection && DragEvents.isAdditive(event)) {
@@ -208,8 +208,8 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
         }
 
         const nextSelectedRegions = this.didExpandSelectionOnActivate
-            ? this.expandSelectedRegions(selectedRegions, region, focusedCell)
-            : Regions.update(selectedRegions, region);
+            ? this.expandSelectedRegions(selectedRegions!, region, focusedCell)
+            : Regions.update(selectedRegions!, region);
 
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
@@ -265,7 +265,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
         const { selectedRegions } = this.props;
 
         // remove just the clicked region, leaving other selected regions in place
-        const nextSelectedRegions = selectedRegions.slice();
+        const nextSelectedRegions = selectedRegions!.slice();
         nextSelectedRegions.splice(selectedRegionIndex, 1);
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
@@ -280,7 +280,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
     private handleClearAllSelectionsNotAtIndex = (selectedRegionIndex: number) => {
         const { selectedRegions } = this.props;
 
-        const nextSelectedRegion = selectedRegions[selectedRegionIndex];
+        const nextSelectedRegion = selectedRegions![selectedRegionIndex];
         this.maybeInvokeSelectionCallback([nextSelectedRegion]);
         this.invokeOnFocusCallbackForRegion(nextSelectedRegion, 0);
     };
@@ -291,7 +291,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
 
         // there should be only one selected region after expanding. do not
         // update the focused cell.
-        const nextSelectedRegions = this.expandSelectedRegions(selectedRegions, region, focusedCell);
+        const nextSelectedRegions = this.expandSelectedRegions(selectedRegions!, region, focusedCell);
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
         // move the focused cell into the new region if there were no selections before
@@ -304,7 +304,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
         const { selectedRegions } = this.props;
 
         // add the new region to the existing selections
-        const nextSelectedRegions = Regions.add(selectedRegions, region);
+        const nextSelectedRegions = Regions.add(selectedRegions!, region);
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
         // put the focused cell in the new region
@@ -347,7 +347,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
     // =====
 
     private finishInteraction = () => {
-        this.props.onSelectionEnd?.(this.props.selectedRegions);
+        this.props.onSelectionEnd?.(this.props.selectedRegions!);
         this.didExpandSelectionOnActivate = false;
         this.lastEmittedSelectedRegions = null;
     };

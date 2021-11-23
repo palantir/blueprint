@@ -649,7 +649,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         return areGhostColumnsVisible && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
     }
 
-    private renderMenu = (refHandler: IRef<HTMLDivElement>) => {
+    private renderMenu = (refHandler: IRef<HTMLDivElement> | undefined) => {
         const classes = classNames(Classes.TABLE_MENU, {
             [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props, RegionCardinality.FULL_TABLE),
         });
@@ -695,12 +695,11 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
         if (columnHeaderCellRenderer != null) {
             const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
-            const columnHeaderCellLoading = columnHeaderCell.props.loading;
-
-            const columnHeaderCellProps: IColumnHeaderCellProps = {
-                loading: columnHeaderCellLoading != null ? columnHeaderCellLoading : columnLoading,
-            };
-            return React.cloneElement(columnHeaderCell, columnHeaderCellProps);
+            if (columnHeaderCell != null) {
+                return React.cloneElement(columnHeaderCell, {
+                    loading: columnHeaderCell.props.loading ?? columnLoading,
+                });
+            }
         }
 
         const baseProps: IColumnHeaderCellProps = {
@@ -733,6 +732,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             minColumnWidth,
             selectedRegionTransform,
         } = this.props;
+
+        if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
+            return;
+        }
 
         const classes = classNames(Classes.TABLE_COLUMN_HEADERS, {
             [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props, RegionCardinality.FULL_COLUMNS),
@@ -795,6 +798,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             selectedRegionTransform,
         } = this.props;
 
+        if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
+            return;
+        }
+
         const classes = classNames(Classes.TABLE_ROW_HEADERS, {
             [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props, RegionCardinality.FULL_ROWS),
         });
@@ -837,7 +844,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     private bodyCellRenderer = (rowIndex: number, columnIndex: number) => {
         const columnProps = this.getColumnProps(columnIndex);
         if (columnProps === undefined) {
-            return null;
+            return;
         }
 
         const {
@@ -850,15 +857,16 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             ...restColumnProps
         } = columnProps;
 
-        const cell = cellRenderer(rowIndex, columnIndex);
-        const { loading = hasLoadingOption(loadingOptions, ColumnLoadingOption.CELLS) } = cell.props;
+        // HACKHACK: cellRenderer prop has a default value, so we can assert non-null
+        const cell = cellRenderer!(rowIndex, columnIndex);
+        if (cell === undefined) {
+            return;
+        }
 
-        const cellProps: CellProps = {
+        return React.cloneElement(cell, {
             ...restColumnProps,
-            loading,
-        };
-
-        return React.cloneElement(cell, cellProps);
+            loading: cell.props.loading ?? hasLoadingOption(loadingOptions, ColumnLoadingOption.CELLS),
+        });
     };
 
     private renderBody = (
@@ -880,6 +888,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             bodyContextMenuRenderer,
             selectedRegionTransform,
         } = this.props;
+
+        if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
+            return;
+        }
 
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
@@ -953,7 +965,8 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             const { defaultRowHeight, defaultColumnWidth } = this.props;
             const { rowHeights, columnWidths } = this.state;
             this.grid = new Grid(rowHeights, columnWidths, Grid.DEFAULT_BLEED, defaultRowHeight, defaultColumnWidth);
-            this.invokeOnVisibleCellsChangeCallback(this.state.viewportRect);
+            // HACKHACK: non-null assertion
+            this.invokeOnVisibleCellsChangeCallback(this.state.viewportRect!);
             this.hotkeysImpl.setGrid(this.grid);
         }
         return this.grid;
@@ -961,7 +974,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     /**
      * Renders a `RegionLayer`, applying styles to the regions using the
-     * supplied `RegionStyler`. `RegionLayer` is a `PureRender` component, so
+     * supplied `RegionStyler`. `RegionLayer` is a pure component, so
      * the `RegionStyler` should be a new instance on every render if we
      * intend to redraw the region layer.
      */
@@ -973,7 +986,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
         const regionGroups = Regions.joinStyledRegionGroups(
             this.state.selectedRegions,
-            this.props.styledRegionGroups,
+            this.props.styledRegionGroups ?? [],
             this.state.focusedCell,
         );
 
@@ -1001,8 +1014,12 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
     };
 
-    private styleBodyRegion = (region: Region, quadrantType: QuadrantType): React.CSSProperties => {
+    private styleBodyRegion = (region: Region, quadrantType?: QuadrantType): React.CSSProperties => {
         const { numFrozenColumns } = this.props;
+
+        if (this.grid == null) {
+            return {};
+        }
 
         const cardinality = Regions.getRegionCardinality(region);
         const style = this.grid.getRegionStyle(region);
@@ -1050,7 +1067,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private styleMenuRegion = (region: Region): React.CSSProperties => {
         const { viewportRect } = this.state;
-        if (viewportRect == null) {
+        if (this.grid == null || viewportRect == null) {
             return {};
         }
         const cardinality = Regions.getRegionCardinality(region);
@@ -1073,7 +1090,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private styleColumnHeaderRegion = (region: Region): React.CSSProperties => {
         const { viewportRect } = this.state;
-        if (viewportRect == null) {
+        if (this.grid == null || viewportRect == null) {
             return {};
         }
         const cardinality = Regions.getRegionCardinality(region);
@@ -1096,7 +1113,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private styleRowHeaderRegion = (region: Region): React.CSSProperties => {
         const { viewportRect } = this.state;
-        if (viewportRect == null) {
+        if (this.grid == null || viewportRect == null) {
             return {};
         }
         const cardinality = Regions.getRegionCardinality(region);
@@ -1197,6 +1214,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     private syncViewportPosition = ({ nextScrollLeft, nextScrollTop }: TableSnapshot) => {
         const { viewportRect } = this.state;
 
+        if (this.scrollContainerElement == null || this.columnHeaderElement == null || viewportRect === undefined) {
+            return;
+        }
+
         if (nextScrollLeft !== undefined || nextScrollTop !== undefined) {
             // we need to modify the scroll container explicitly for the viewport to shift. in so
             // doing, we add the size of the header elements, which are not technically part of the
@@ -1214,7 +1235,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                 this.scrollContainerElement.scrollLeft = nextScrollLeft + leftCorrection;
             }
 
-            const nextViewportRect = new Rect(nextScrollLeft, nextScrollTop, viewportRect.width, viewportRect.height);
+            const nextViewportRect = new Rect(nextScrollLeft ?? 0, nextScrollTop ?? 0, viewportRect.width, viewportRect.height);
             this.updateViewportRect(nextViewportRect);
         }
     };
@@ -1268,6 +1289,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private updateLocator() {
+        if (this.locator === undefined || this.grid == null) {
+            return;
+        }
+
         this.locator
             .setGrid(this.grid)
             .setNumFrozenRows(this.state.numFrozenRowsClamped)
@@ -1292,19 +1317,20 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private invokeOnVisibleCellsChangeCallback(viewportRect: Rect) {
+        if (this.grid == null) {
+            return;
+        }
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect);
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect);
         this.props.onVisibleCellsChange?.(rowIndices, columnIndices);
     }
 
     private getMaxFrozenColumnIndex = () => {
-        const { numFrozenColumnsClamped: numFrozenColumns } = this.state;
-        return numFrozenColumns != null ? numFrozenColumns - 1 : undefined;
+        return this.state.numFrozenColumnsClamped - 1;
     };
 
     private getMaxFrozenRowIndex = () => {
-        const { numFrozenRowsClamped: numFrozenRows } = this.state;
-        return numFrozenRows != null ? numFrozenRows - 1 : undefined;
+        return this.state.numFrozenRowsClamped - 1;
     };
 
     /**

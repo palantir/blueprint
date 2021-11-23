@@ -18,7 +18,7 @@ import type { Props } from "@blueprintjs/core";
 
 import type { IColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
-import type { IColumnIndices, IRowIndices } from "./common/grid";
+import type { ColumnIndices, RowIndices } from "./common/grid";
 import type { RenderMode } from "./common/renderMode";
 import type { IColumnWidths } from "./headers/columnHeader";
 import type { RowHeaderRenderer, IRowHeights } from "./headers/rowHeader";
@@ -229,7 +229,7 @@ export interface ITableProps extends Props, IRowHeights, IColumnWidths {
     /**
      * A callback called when the visible cell indices change in the table.
      */
-    onVisibleCellsChange?: (rowIndices: IRowIndices, columnIndices: IColumnIndices) => void;
+    onVisibleCellsChange?: (rowIndices: RowIndices, columnIndices: ColumnIndices) => void;
 
     /**
      * Dictates how cells should be rendered. Supported modes are:

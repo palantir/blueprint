@@ -25,12 +25,12 @@ export type ICellMapper<T> = (rowIndex: number, columnIndex: number) => T;
 export type IRowMapper<T> = (rowIndex: number) => T;
 export type IColumnMapper<T> = (columnIndex: number) => T;
 
-export interface IRowIndices {
+export interface RowIndices {
     rowIndexStart: number;
     rowIndexEnd: number;
 }
 
-export interface IColumnIndices {
+export interface ColumnIndices {
     columnIndexStart: number;
     columnIndexEnd: number;
 }
@@ -247,7 +247,7 @@ export class Grid {
      * Returns the start and end indices of rows that intersect with the given
      * `Rect` argument.
      */
-    public getRowIndicesInRect(rect: Rect, includeGhostCells = false, limit = Grid.DEFAULT_MAX_ROWS): IRowIndices {
+    public getRowIndicesInRect(rect: Rect, includeGhostCells = false, limit = Grid.DEFAULT_MAX_ROWS): RowIndices {
         if (rect == null) {
             return { rowIndexEnd: 0, rowIndexStart: 0 };
         }
@@ -277,7 +277,7 @@ export class Grid {
         rect: Rect,
         includeGhostCells = false,
         limit = Grid.DEFAULT_MAX_COLUMNS,
-    ): IColumnIndices {
+    ): ColumnIndices {
         if (rect == null) {
             return { columnIndexEnd: 0, columnIndexStart: 0 };
         }
@@ -325,8 +325,8 @@ export class Grid {
         const cardinality = Regions.getRegionCardinality(region);
         switch (cardinality) {
             case RegionCardinality.CELLS: {
-                const [rowStart, rowEnd] = region.rows;
-                const [colStart, colEnd] = region.cols;
+                const [rowStart, rowEnd] = region.rows!;
+                const [colStart, colEnd] = region.cols!;
 
                 // if the region is outside the bounds of the table, don't display it
                 if (this.isGhostIndex(rowStart, colStart) || this.isGhostIndex(rowEnd, colEnd)) {
@@ -345,7 +345,7 @@ export class Grid {
             }
 
             case RegionCardinality.FULL_COLUMNS: {
-                const [colStart, colEnd] = region.cols;
+                const [colStart, colEnd] = region.cols!;
 
                 // if the region is outside the bounds of the table, don't display it
                 if (this.isGhostIndex(0, colStart) || this.isGhostIndex(0, colEnd)) {
@@ -365,7 +365,7 @@ export class Grid {
             }
 
             case RegionCardinality.FULL_ROWS: {
-                const [rowStart, rowEnd] = region.rows;
+                const [rowStart, rowEnd] = region.rows!;
 
                 // if the region is outside the bounds of the table, don't display it
                 if (this.isGhostIndex(rowStart, 0) || this.isGhostIndex(rowEnd, 0)) {
