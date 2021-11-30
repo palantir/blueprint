@@ -155,7 +155,7 @@ $tree-intent-icon-colors-modern: (
     background: $orange5;
     color: $pt-text-color;
 
-    .#{$ns}-icon > svg {
+    &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
       fill: rgba($dark-gray1, 0.7);
     }
 
@@ -187,7 +187,7 @@ $tree-intent-icon-colors-modern: (
       background: none;
 
       .#{$ns}-dark & {
-        .#{$ns}-icon > svg {
+        &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
           fill: $orange5;
         }
       }
