@@ -50,11 +50,11 @@ $button-box-shadow-overlay-active:
 $dark-button-box-shadow:
   inset 0 0 0 1px rgba(17, 20, 24, 0.8) !default;
 $dark-button-box-shadow-active:
-  inset 0 0 0 1px rgba(17, 20, 24, 0.8)!default;
+  inset 0 0 0 1px rgba(17, 20, 24, 0.8) !default;
 $dark-button-intent-box-shadow:
-  inset 0 0 0 1px rgba(17, 20, 24, 0.8)!default;
+  inset 0 0 0 1px rgba(17, 20, 24, 0.8) !default;
 $dark-button-intent-box-shadow-active:
-  inset 0 0 0 1px rgba(17, 20, 24, 0.8)!default;
+  inset 0 0 0 1px rgba(17, 20, 24, 0.8) !default;
 
 $button-gradient: linear-gradient(to bottom, rgba($black, 0), rgba($black, 0.05)) !default;
 $button-intent-gradient: linear-gradient(to bottom, rgba($black, 0), rgba($black, 0.05)) !default;
