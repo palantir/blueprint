@@ -215,7 +215,7 @@ export class Regions {
     /**
      * Returns a region containing one or more cells.
      */
-    public static cell(row: number, col: number, row2?: number, col2?: number): Region {
+    public static cell(row: number, col: number, row2?: number, col2?: number): NonNullRegion {
         return {
             cols: this.normalizeInterval(col, col2),
             rows: this.normalizeInterval(row, row2),
@@ -508,7 +508,7 @@ export class Regions {
      * Using the supplied region, returns an "equivalent" region of
      * type CELLS that define the bounds of the given region
      */
-    public static getCellRegionFromRegion(region: Region, numRows: number, numCols: number) {
+    public static getCellRegionFromRegion(region: Region, numRows: number, numCols: number): NonNullRegion {
         const regionCardinality = Regions.getRegionCardinality(region);
 
         switch (regionCardinality) {
@@ -520,8 +520,6 @@ export class Regions {
                 return Regions.cell(region.rows![0], 0, region.rows![1], numCols - 1);
             case RegionCardinality.CELLS:
                 return Regions.cell(region.rows![0], region.cols![0], region.rows![1], region.cols![1]);
-            default:
-                return null;
         }
     }
 

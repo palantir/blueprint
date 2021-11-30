@@ -113,7 +113,7 @@ export interface ITableQuadrantProps extends Props {
         quadrantType: QuadrantType,
         showFrozenRowsOnly?: boolean,
         showFrozenColumnsOnly?: boolean,
-    ) => JSX.Element;
+    ) => JSX.Element | undefined;
 
     /**
      * A callback that receives a `ref` to the quadrant's scroll-container element.

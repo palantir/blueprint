@@ -112,7 +112,7 @@ export interface IDragSelectableProps extends ISelectableProps {
      * coordinate data representing a drag. If no valid region can be found,
      * `null` may be returned.
      */
-    locateDrag: (event: MouseEvent, coords: ICoordinateData, returnEndOnly?: boolean) => Region;
+    locateDrag: (event: MouseEvent, coords: ICoordinateData, returnEndOnly?: boolean) => Region | undefined;
 }
 
 export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
@@ -201,7 +201,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
             ? locateDrag(event, coords, /* returnEndOnly? */ this.didExpandSelectionOnActivate)
             : locateClick(event);
 
-        if (!Regions.isValid(region)) {
+        if (region === undefined || !Regions.isValid(region)) {
             return;
         } else if (selectedRegionTransform != null) {
             region = selectedRegionTransform(region, event, coords);

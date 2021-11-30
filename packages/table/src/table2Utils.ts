@@ -19,10 +19,10 @@ import { HotkeyConfig } from "@blueprintjs/core";
 
 import { RegionCardinality } from "./regions";
 import type { TableHotkeys } from "./tableHotkeys";
-import { TableProps } from "./tableProps";
+import { TablePropsWithDefaults } from "./tableProps";
 
 export function isSelectionModeEnabled(
-    props: TableProps,
+    props: TablePropsWithDefaults,
     selectionMode: RegionCardinality,
     selectionModes = props.selectionModes,
 ): boolean {
@@ -31,7 +31,7 @@ export function isSelectionModeEnabled(
     return selectionModes.indexOf(selectionMode) >= 0 && numRows > 0 && numColumns > 0;
 }
 
-export function getHotkeysFromProps(props: TableProps, hotkeysImpl: TableHotkeys): HotkeyConfig[] {
+export function getHotkeysFromProps(props: TablePropsWithDefaults, hotkeysImpl: TableHotkeys): HotkeyConfig[] {
     const { getCellClipboardData, enableFocusedCell, enableMultipleSelection, selectionModes } = props;
     const hotkeys: HotkeyConfig[] = [];
 

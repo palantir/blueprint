@@ -26,7 +26,6 @@ import {
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
-import type { CellProps } from "./cell/cell";
 import { Column, ColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
@@ -268,7 +267,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             selectedRegions,
         };
 
-        this.hotkeysImpl = new TableHotkeys(props, this.state, this.grid, {
+        this.hotkeysImpl = new TableHotkeys(props, this.state, {
             getEnabledSelectionHandler: this.getEnabledSelectionHandler,
             handleFocus: this.handleFocus,
             handleSelection: this.handleSelection,
@@ -415,7 +414,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                 [Classes.TABLE_REORDERING]: this.state.isReordering,
                 [Classes.TABLE_NO_VERTICAL_SCROLL]: this.shouldDisableVerticalScroll(),
                 [Classes.TABLE_NO_HORIZONTAL_SCROLL]: this.shouldDisableHorizontalScroll(),
-                [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props, RegionCardinality.CELLS),
+                [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props as TablePropsWithDefaults, RegionCardinality.CELLS),
                 [Classes.TABLE_NO_ROWS]: numRows === 0,
             },
             className,
@@ -565,7 +564,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             this.props.selectionModes !== prevProps.selectionModes;
 
         if (shouldInvalidateHotkeys) {
-            this.hotkeys = getHotkeysFromProps(this.props, this.hotkeysImpl);
+            this.hotkeys = getHotkeysFromProps(this.props as TablePropsWithDefaults, this.hotkeysImpl);
         }
     }
 
@@ -651,7 +650,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private renderMenu = (refHandler: IRef<HTMLDivElement> | undefined) => {
         const classes = classNames(Classes.TABLE_MENU, {
-            [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props, RegionCardinality.FULL_TABLE),
+            [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props as TablePropsWithDefaults, RegionCardinality.FULL_TABLE),
         });
         return (
             <div className={classes} ref={refHandler} onMouseDown={this.handleMenuMouseDown}>
@@ -738,7 +737,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
 
         const classes = classNames(Classes.TABLE_COLUMN_HEADERS, {
-            [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props, RegionCardinality.FULL_COLUMNS),
+            [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props as TablePropsWithDefaults, RegionCardinality.FULL_COLUMNS),
         });
 
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
@@ -803,7 +802,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
 
         const classes = classNames(Classes.TABLE_ROW_HEADERS, {
-            [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props, RegionCardinality.FULL_ROWS),
+            [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props as TablePropsWithDefaults, RegionCardinality.FULL_ROWS),
         });
 
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
@@ -944,7 +943,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     }
 
     private getEnabledSelectionHandler = (selectionMode: RegionCardinality) => {
-        if (!isSelectionModeEnabled(this.props, selectionMode)) {
+        if (!isSelectionModeEnabled(this.props as TablePropsWithDefaults, selectionMode)) {
             // If the selection mode isn't enabled, return a callback that
             // will clear the selection. For example, if row selection is
             // disabled, clicking on the row header will clear the table's

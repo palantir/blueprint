@@ -91,16 +91,16 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         wrapText: false,
     };
 
-    private cellRef: HTMLElement;
+    private cellRef: HTMLElement | null | undefined;
 
     private refHandlers = {
-        cell: (ref: HTMLElement) => {
+        cell: (ref: HTMLElement | null) => {
             this.cellRef = ref;
         },
     };
 
-    public constructor(props: IEditableCellProps, context?: any) {
-        super(props, context);
+    public constructor(props: IEditableCellProps) {
+        super(props);
         this.state = {
             isEditing: false,
             savedValue: props.value,
@@ -146,7 +146,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         const { isEditing, dirtyValue, savedValue } = this.state;
         const interactive = spreadableProps.interactive || isEditing;
 
-        let cellContents: JSX.Element = null;
+        let cellContents: JSX.Element | undefined;
         if (isEditing) {
             const className = editableTextProps ? editableTextProps.className : null;
             cellContents = (
@@ -155,7 +155,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                     isEditing={true}
                     className={classNames(Classes.TABLE_EDITABLE_TEXT, Classes.TABLE_EDITABLE_NAME, className)}
                     intent={spreadableProps.intent}
-                    minWidth={null}
+                    minWidth={0}
                     onCancel={this.handleCancel}
                     onChange={this.handleChange}
                     onConfirm={this.handleConfirm}
@@ -214,7 +214,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     private checkShouldFocus() {
         if (this.props.isFocused && !this.state.isEditing) {
             // don't focus if we're editing -- we'll lose the fact that we're editing
-            this.cellRef.focus();
+            this.cellRef?.focus();
         }
     }
 
@@ -246,7 +246,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         this.invokeCallback(this.props.onConfirm, value);
     };
 
-    private invokeCallback(callback: (value: string, rowIndex?: number, columnIndex?: number) => void, value: string) {
+    private invokeCallback(callback: ((value: string, rowIndex?: number, columnIndex?: number) => void) | undefined, value: string) {
         // pass through the row and column indices if they were provided as props by the consumer
         const { rowIndex, columnIndex } = this.props;
         callback?.(value, rowIndex, columnIndex);
