@@ -45,13 +45,13 @@ Styleguide form-group
     margin-top: ($pt-input-height - $control-indicator-size) / 2;
   }
 
-  .#{$ns}-label-helper-text,
+  .#{$ns}-form-group-sub-label,
   .#{$ns}-form-helper-text {
     color: $pt-text-color-muted;
     font-size: $pt-font-size-small;
   }
 
-  .#{$ns}-label-helper-text {
+  .#{$ns}-form-group-sub-label {
     margin-bottom: $pt-grid-size / 2;
   }
 
@@ -62,7 +62,7 @@ Styleguide form-group
   /* stylelint-disable-next-line order/declaration-block-order */
   @each $intent, $color in $pt-intent-text-colors {
     &.#{$ns}-intent-#{$intent} {
-      .#{$ns}-label-helper-text,
+      .#{$ns}-form-group-sub-label,
       .#{$ns}-form-helper-text {
         color: $color;
       }
@@ -87,7 +87,7 @@ Styleguide form-group
   &.#{$ns}-disabled {
     .#{$ns}-label,
     .#{$ns}-text-muted,
-    .#{$ns}-label-helper-text,
+    .#{$ns}-form-group-sub-label,
     .#{$ns}-form-helper-text {
       // disabled state always overrides over styles
       /* stylelint-disable-next-line declaration-no-important */
@@ -98,7 +98,7 @@ Styleguide form-group
   .#{$ns}-dark & {
     @each $intent, $color in $pt-dark-intent-text-colors {
       &.#{$ns}-intent-#{$intent} {
-        .#{$ns}-label-helper-text,
+        .#{$ns}-form-group-sub-label,
         .#{$ns}-form-helper-text {
           color: $color;
         }
@@ -112,7 +112,7 @@ Styleguide form-group
     &.#{$ns}-disabled {
       .#{$ns}-label,
       .#{$ns}-text-muted,
-      .#{$ns}-label-helper-text,
+      .#{$ns}-form-group-sub-label,
       .#{$ns}-form-helper-text {
         // disabled state always overrides over styles
         /* stylelint-disable-next-line declaration-no-important */
