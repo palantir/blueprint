@@ -39,22 +39,4 @@
       }
     }
   }
-
-  .#{$ns}-dark & {
-    // support wrapping buttons in a tooltip, which adds a wrapper element
-    // in dark theme, we adjust the spacing between buttons for best visual results
-    &:not(.#{$ns}-minimal) {
-      // deeply nested selector necessary to target the appropriate popover
-      // wrapper, yet ensure we only style buttons within the target.
-      > .#{$ns}-popover2-wrapper:not(:last-child) .#{$ns}-button {
-        margin-right: $button-border-width;
-      }
-    }
-
-    &.#{$ns}-vertical {
-      > .#{$ns}-popover2-wrapper:not(:last-child) .#{$ns}-button {
-        margin-bottom: $button-border-width;
-      }
-    }
-  }
 }
