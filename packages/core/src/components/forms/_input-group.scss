@@ -233,6 +233,10 @@ $input-button-height-small: $pt-button-height-smaller !default;
     &.#{$ns}-intent-#{$intent} {
       .#{$ns}-input {
         @include pt-input-intent($color);
+
+        .#{$ns}-dark & {
+          @include pt-dark-input-intent(map-get($pt-dark-input-intent-box-shadow-colors, $intent));
+        }
       }
 
       > .#{$ns}-icon {

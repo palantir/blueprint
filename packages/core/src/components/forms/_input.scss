@@ -43,12 +43,12 @@ Styleguide input
     @include pt-dark-input();
   }
 
-  @each $intent, $color in $pt-dark-input-intent-box-shadow-colors {
+  @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      @include pt-input-intent(map-get($pt-intent-colors, $intent));
+      @include pt-input-intent($color);
 
       .#{$ns}-dark & {
-        @include pt-dark-input-intent($color);
+        @include pt-dark-input-intent(map-get($pt-dark-input-intent-box-shadow-colors, $intent));
       }
     }
   }

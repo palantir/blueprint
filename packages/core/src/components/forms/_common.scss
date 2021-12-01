@@ -59,8 +59,8 @@ $control-group-stack: (
 @function input-transition-shadow($color: $input-shadow-color-focus, $focus: false) {
   @if $focus {
     @return
-      border-shadow(1, $color, 1px),
-      border-shadow(0.3, $color, 3px);
+      inset border-shadow(1, $color, 1px),
+      border-shadow(0.3, $color, 2px);
   } @else {
     @return
       border-shadow(0, $color, 0),
@@ -71,9 +71,9 @@ $control-group-stack: (
 @function dark-input-transition-shadow($color: $dark-input-shadow-color-focus, $focus: false) {
   @if $focus {
     @return
-      border-shadow(1, $color, 1px),
-      border-shadow(1, $color, 1px), // duplicating to minimize browser antialiasing in dark
-      border-shadow(0.3, $color, 3px);
+      inset border-shadow(1, $color, 1px),
+      inset border-shadow(1, $color, 1px), // duplicating to minimize browser antialiasing in dark
+      border-shadow(0.3, $color, 2px);
   } @else {
     @return
       border-shadow(0, $color, 0),
@@ -188,8 +188,7 @@ $control-group-stack: (
   color: $dark-input-color;
 
   &:focus {
-    box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
-                $pt-dark-input-box-shadow;
+    box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true);
   }
 
   &[readonly] {
