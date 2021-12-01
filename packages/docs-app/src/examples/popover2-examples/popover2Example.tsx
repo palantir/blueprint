@@ -43,7 +43,7 @@ import {
 import {
     Classes,
     Popover2SharedProps,
-    Placement,
+    PopperPlacements,
     PlacementOptions,
     Popover2,
     Popover2InteractionKind,
@@ -72,7 +72,7 @@ export interface IPopover2ExampleState {
     isOpen?: boolean;
     minimal?: boolean;
     modifiers?: Popover2SharedProps<HTMLElement>["modifiers"];
-    placement?: Placement;
+    placement?: PopperPlacements;
     sliderValue?: number;
     usePortal?: boolean;
 }
@@ -113,7 +113,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         this.setState({ interactionKind, hasBackdrop });
     });
 
-    private handlePlacementChange = handleValueChange((placement: Placement) => this.setState({ placement }));
+    private handlePlacementChange = handleValueChange((placement: PopperPlacements) => this.setState({ placement }));
 
     private handleBoundaryChange = handleValueChange((boundary: IPopover2ExampleState["boundary"]) =>
         this.setState({ boundary }),

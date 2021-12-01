@@ -19,7 +19,7 @@ import { StrictModifier } from "react-popper";
 
 import { OverlayableProps, Props, PopoverPosition } from "@blueprintjs/core";
 
-export { Boundary as PopperBoundary, Placement, placements as PlacementOptions };
+export { Boundary as PopperBoundary, Placement as PopperPlacements, placements as PlacementOptions };
 // copied from @popperjs/core, where it is not exported as public
 export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
 

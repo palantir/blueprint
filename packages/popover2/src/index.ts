@@ -31,7 +31,7 @@ export {
     Popover2SharedProps,
     Popover2TargetProps,
     PopperBoundary,
-    Placement,
+    PopperPlacements,
     PlacementOptions,
     StrictModifierNames,
 } from "./popover2SharedProps";
