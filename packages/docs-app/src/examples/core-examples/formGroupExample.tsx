@@ -27,6 +27,7 @@ export interface IFormGroupExampleState {
     inline: boolean;
     intent: Intent;
     label: boolean;
+    subLabel: boolean;
     requiredLabel: boolean;
 }
 
@@ -38,6 +39,7 @@ export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGr
         intent: Intent.NONE,
         label: true,
         requiredLabel: true,
+        subLabel: false,
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
@@ -50,10 +52,12 @@ export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGr
 
     private handleRequiredLabelChange = handleBooleanChange(requiredLabel => this.setState({ requiredLabel }));
 
+    private handleSubLabelChange = handleBooleanChange(subLabel => this.setState({ subLabel }));
+
     private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
 
     public render() {
-        const { disabled, helperText, inline, intent, label, requiredLabel } = this.state;
+        const { disabled, helperText, inline, intent, label, subLabel, requiredLabel } = this.state;
 
         const options = (
             <>
@@ -63,6 +67,7 @@ export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGr
                 <Switch label="Show helper text" checked={helperText} onChange={this.handleHelperTextChange} />
                 <Switch label="Show label" checked={label} onChange={this.handleLabelChange} />
                 <Switch label="Show label info" checked={requiredLabel} onChange={this.handleRequiredLabelChange} />
+                <Switch label="Show sub label" checked={subLabel} onChange={this.handleSubLabelChange} />
                 <IntentSelect intent={intent} onChange={this.handleIntentChange} />
             </>
         );
@@ -77,6 +82,7 @@ export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGr
                     label={label && "Label"}
                     labelFor="text-input"
                     labelInfo={requiredLabel && "(required)"}
+                    subLabel={subLabel && "Label helper text with details..."}
                 >
                     <InputGroup id="text-input" placeholder="Placeholder text" disabled={disabled} intent={intent} />
                 </FormGroup>
