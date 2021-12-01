@@ -132,3 +132,9 @@ $pt-dark-input-box-shadow: inset border-shadow(0.3),
 $pt-dark-dialog-box-shadow: $pt-dark-elevation-shadow-4 !default;
 $pt-dark-popover-box-shadow: $pt-dark-elevation-shadow-3 !default;
 $pt-dark-tooltip-box-shadow: $pt-dark-popover-box-shadow !default;
+$pt-dark-input-intent-box-shadow-colors: (
+  "primary": $blue4,
+  "success": $green4,
+  "warning": $orange4,
+  "danger" : $red4,
+);

@@ -41,15 +41,6 @@ $dark-control-background-color-active: linear-gradient(0deg, rgba($white, 0.1), 
 $input-placeholder-color: $gray1;
 $dark-input-placeholder-color: $gray4;
 
-// Input variables and overrides
-$dark-input-intent-box-shadow-colors: (
-  "primary": $blue4,
-  "success": $green4,
-  "warning": $orange4,
-  "danger" : $red4,
-);
-$dark-input-shadow-color-focus: $blue4;
-
 // Slider variable overrides
 $button-box-shadow-overlay:
   0 0 0 1px rgba($black, 0.5),
@@ -300,40 +291,7 @@ table.#{$ns}-html-table {
   }
 }
 
-// Contrast for inputs
-.#{$ns}-input {
-  // Use intent-styled box-shadows for default intent
-  box-shadow: input-transition-shadow($input-shadow-color-focus),
-      inset border-shadow(1, $gray2),
-      $pt-input-box-shadow;
-
-  &:focus {
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
-  }
-
-  .#{$ns}-dark & {
-    box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus),
-      inset border-shadow(1, $gray3),
-      $pt-dark-input-box-shadow;
-
-    &:focus {
-      box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
-                    $pt-dark-input-box-shadow;
-    }
-  }
-
-  &:disabled {
-    box-shadow: none;
-  }
-}
-
-@each $intent, $color in $dark-input-intent-box-shadow-colors {
-  &.#{$ns}-intent-#{$intent} {
-    .#{$ns}-input {
-      @include pt-dark-input-intent($color);
-    }
-  }
-}
+// Contrast for inputs - no overrides necessary, modern colors are now built-in
 
 // Contrast for menus - no overrides necessary, modern colors are now built-in
 

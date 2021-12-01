@@ -43,9 +43,9 @@ Styleguide input
     @include pt-dark-input();
   }
 
-  @each $intent, $color in $pt-intent-colors {
+  @each $intent, $color in $pt-dark-input-intent-box-shadow-colors {
     &.#{$ns}-intent-#{$intent} {
-      @include pt-input-intent($color);
+      @include pt-input-intent(map-get($pt-intent-colors, $intent));
 
       .#{$ns}-dark & {
         @include pt-dark-input-intent($color);
