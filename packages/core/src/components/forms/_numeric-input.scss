@@ -3,10 +3,6 @@
 @import "./common";
 
 .#{$ns}-numeric-input {
-  > *:not(:last-child) {
-    margin-right: 2px;
-  }
-
   // we need a very-specific selector here to override specificicty of selectors defined elsewhere.
   .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
     // let the buttons shrink to equal heights
