@@ -77,7 +77,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
         @include pt-input-intent($color);
 
         .#{$ns}-dark & {
-          @include pt-dark-input-intent($color);
+          @include pt-dark-input-intent(map-get($pt-dark-input-intent-box-shadow-colors, $intent));
         }
       }
     }

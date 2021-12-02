@@ -80,6 +80,15 @@ $dark-intent-danger-text: $red5;
   }
 }
 
+.tag-input-container {
+  display: flex;
+  flex-direction: column;
+
+  > :not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
 .html-table-example {
   .#{$ns}-intent-primary {
     color: $intent-primary-text;

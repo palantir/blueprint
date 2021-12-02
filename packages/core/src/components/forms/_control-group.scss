@@ -91,12 +91,9 @@ Styleguide control-group
   }
 
   .#{$ns}-input {
-    // inherit radius since it's most likely to be zero
-    border-radius: inherit;
     z-index: index($control-group-stack, "input-default");
 
     &:focus {
-      border-radius: $pt-border-radius;
       z-index: index($control-group-stack, "input-focus");
     }
 
@@ -127,8 +124,6 @@ Styleguide control-group
   .#{$ns}-html-select select,
   .#{$ns}-select select {
     @include new-render-layer();
-    // inherit radius since it's most likely to be zero
-    border-radius: inherit;
     z-index: index($control-group-stack, "button-default");
 
     &:focus {
@@ -195,57 +190,10 @@ Styleguide control-group
     z-index: index($control-group-stack, "button-focus");
   }
 
-  // have consecutive elements share a border
   &:not(.#{$ns}-vertical) {
-    > *:not(.#{$ns}-divider) {
-      margin-right: -$button-border-width;
+    > :not(:last-child) {
+      margin-right: 2px;
     }
-
-    > .#{$ns}-divider:not(:first-child) {
-      margin-left: $divider-margin + $button-border-width;
-    }
-
-    .#{$ns}-dark & {
-      > *:not(.#{$ns}-divider) {
-        margin-right: 0;
-      }
-
-
-      // consecutive buttons within a button group look okay out of the box, but
-      // we need need to make a small correction for non-grouped buttons. this
-      // replicates what's already done in dark theme button groups.
-      > .#{$ns}-button + .#{$ns}-button {
-        margin-left: $button-border-width;
-      }
-    }
-  }
-
-  // Add border radius inheritance to support components wrapped in a popover
-  .#{$ns}-popover-wrapper,
-  .#{$ns}-popover-target {
-    border-radius: inherit;
-  }
-
-  // round the left corners of the left-most element
-  > :first-child {
-    border-radius: $pt-border-radius 0 0 $pt-border-radius;
-  }
-
-  // round the right corners of the right-most element
-  > :last-child {
-    border-radius: 0 $pt-border-radius $pt-border-radius 0;
-    margin-right: 0;
-  }
-
-  // round all the corners of the only child element
-  > :only-child {
-    border-radius: $pt-border-radius;
-    margin-right: 0;
-  }
-
-  // bring back border radius on these buttons
-  .#{$ns}-input-group .#{$ns}-button {
-    border-radius: $pt-border-radius;
   }
 
   // special handling of numeric input, which is a nested control group itself
@@ -307,17 +255,8 @@ Styleguide control-group
   &.#{$ns}-vertical {
     flex-direction: column;
 
-    > * {
-      margin-top: -$button-border-width;
-    }
-
-    > :first-child {
-      border-radius: $pt-border-radius $pt-border-radius 0 0;
-      margin-top: 0;
-    }
-
-    > :last-child {
-      border-radius: 0 0 $pt-border-radius $pt-border-radius;
+    > :not(:last-child) {
+      margin-bottom: 2px;
     }
   }
 }
