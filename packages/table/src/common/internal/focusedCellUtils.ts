@@ -139,7 +139,7 @@ function getExpandedRegionIndices(
     regionDimension: "rows" | "cols",
 ) {
     const sourceIndex = focusedCell[focusedCellDimension];
-    const [destinationIndex, destinationIndexEnd] = newRegion[regionDimension];
+    const [destinationIndex, destinationIndexEnd] = newRegion[regionDimension]!;
 
     if (destinationIndex !== destinationIndexEnd) {
         if (regionDimension === "rows") {

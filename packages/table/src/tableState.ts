@@ -34,7 +34,7 @@ export interface TableState {
      * An array of pixel offsets for resize guides, which are drawn over the
      * table body when a row is being resized.
      */
-    horizontalGuides?: number[];
+    horizontalGuides: number[];
 
     /**
      * If `true`, will disable updates that will cause re-renders of children
@@ -76,7 +76,7 @@ export interface TableState {
      * An array of pixel offsets for resize guides, which are drawn over the
      * table body when a column is being resized.
      */
-    verticalGuides?: number[];
+    verticalGuides: number[];
 
     /**
      * The `Rect` bounds of the viewport used to perform virtual viewport

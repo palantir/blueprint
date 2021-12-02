@@ -169,7 +169,7 @@ export interface ITableQuadrantStackProps extends Props {
      */
     columnHeaderCellRenderer?: (
         refHandler: IRef<HTMLDivElement>,
-        resizeHandler: (verticalGuides: number[]) => void,
+        resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenColumnsOnly?: boolean,
     ) => JSX.Element | undefined;
@@ -185,7 +185,7 @@ export interface ITableQuadrantStackProps extends Props {
      */
     rowHeaderCellRenderer?: (
         refHandler: IRef<HTMLDivElement>,
-        resizeHandler: (verticalGuides: number[]) => void,
+        resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenRowsOnly?: boolean,
     ) => JSX.Element | undefined;
@@ -679,13 +679,13 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             clientSize = this.updateScrollContainerClientSize(isHorizontal);
         }
 
-        // by now, the client width and height will have been saved in cache, so
-        // they can't be nully anymore. also, events can only happen after
+        // By now, the client width and height will have been saved in cache, so
+        // they can't be undefined anymore. Also, events can only happen after
         // mount, so we're guaranteed to have measured the header sizes in
         // syncQuadrantViews() by now too, as it's invoked on mount.
         const containerSize = isHorizontal
-            ? this.cache.getScrollContainerClientWidth() - this.cache.getRowHeaderWidth()
-            : this.cache.getScrollContainerClientHeight() - this.cache.getColumnHeaderHeight();
+            ? this.cache.getScrollContainerClientWidth()! - this.cache.getRowHeaderWidth()
+            : this.cache.getScrollContainerClientHeight()! - this.cache.getColumnHeaderHeight();
 
         const gridSize = isHorizontal ? grid.getWidth() : grid.getHeight();
         const maxScrollOffset = Math.max(0, gridSize - containerSize);
@@ -700,48 +700,52 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
 
     // Columns
 
-    private handleColumnResizeGuideMain = (verticalGuides: number[]) => {
+    private handleColumnResizeGuideMain = (verticalGuides: number[] | null) => {
         this.invokeColumnResizeHandler(verticalGuides, QuadrantType.MAIN);
     };
 
-    private handleColumnResizeGuideTop = (verticalGuides: number[]) => {
+    private handleColumnResizeGuideTop = (verticalGuides: number[] | null) => {
         this.invokeColumnResizeHandler(verticalGuides, QuadrantType.TOP);
     };
 
-    private handleColumnResizeGuideLeft = (verticalGuides: number[]) => {
+    private handleColumnResizeGuideLeft = (verticalGuides: number[] | null) => {
         this.invokeColumnResizeHandler(verticalGuides, QuadrantType.LEFT);
     };
 
-    private handleColumnResizeGuideTopLeft = (verticalGuides: number[]) => {
+    private handleColumnResizeGuideTopLeft = (verticalGuides: number[] | null) => {
         this.invokeColumnResizeHandler(verticalGuides, QuadrantType.TOP_LEFT);
     };
 
-    private invokeColumnResizeHandler = (verticalGuides: number[], quadrantType: QuadrantType) => {
-        const adjustedGuides = this.adjustVerticalGuides(verticalGuides, quadrantType);
-        this.props.handleColumnResizeGuide?.(adjustedGuides);
+    private invokeColumnResizeHandler = (verticalGuides: number[] | null, quadrantType: QuadrantType) => {
+        if (verticalGuides !== null) {
+            const adjustedGuides = this.adjustVerticalGuides(verticalGuides, quadrantType);
+            this.props.handleColumnResizeGuide?.(adjustedGuides);
+        }
     };
 
     // Rows
 
-    private handleRowResizeGuideMain = (horizontalGuides: number[]) => {
+    private handleRowResizeGuideMain = (horizontalGuides: number[] | null) => {
         this.invokeRowResizeHandler(horizontalGuides, QuadrantType.MAIN);
     };
 
-    private handleRowResizeGuideTop = (horizontalGuides: number[]) => {
+    private handleRowResizeGuideTop = (horizontalGuides: number[] | null) => {
         this.invokeRowResizeHandler(horizontalGuides, QuadrantType.TOP);
     };
 
-    private handleRowResizeGuideLeft = (horizontalGuides: number[]) => {
+    private handleRowResizeGuideLeft = (horizontalGuides: number[] | null) => {
         this.invokeRowResizeHandler(horizontalGuides, QuadrantType.LEFT);
     };
 
-    private handleRowResizeGuideTopLeft = (horizontalGuides: number[]) => {
+    private handleRowResizeGuideTopLeft = (horizontalGuides: number[] | null) => {
         this.invokeRowResizeHandler(horizontalGuides, QuadrantType.TOP_LEFT);
     };
 
-    private invokeRowResizeHandler = (horizontalGuides: number[], quadrantType: QuadrantType) => {
-        const adjustedGuides = this.adjustHorizontalGuides(horizontalGuides, quadrantType);
-        this.props.handleRowResizeGuide?.(adjustedGuides);
+    private invokeRowResizeHandler = (horizontalGuides: number[] | null, quadrantType: QuadrantType) => {
+        if (horizontalGuides !== null) {
+            const adjustedGuides = this.adjustHorizontalGuides(horizontalGuides, quadrantType);
+            this.props.handleRowResizeGuide?.(adjustedGuides);
+        }
     };
 
     // Reordering
@@ -994,25 +998,13 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         const isFrozenQuadrant = quadrantType === QuadrantType.LEFT || quadrantType === QuadrantType.TOP_LEFT;
         const scrollAmount = isFrozenQuadrant ? 0 : this.cache.getScrollOffset("scrollLeft");
         const rowHeaderWidth = this.cache.getRowHeaderWidth();
-
-        const adjustedVerticalGuides =
-            verticalGuides != null
-                ? verticalGuides.map(verticalGuide => verticalGuide - scrollAmount + rowHeaderWidth)
-                : verticalGuides;
-
-        return adjustedVerticalGuides;
+        return verticalGuides.map(verticalGuide => verticalGuide - scrollAmount + rowHeaderWidth)
     }
 
     private adjustHorizontalGuides(horizontalGuides: number[], quadrantType: QuadrantType) {
         const isFrozenQuadrant = quadrantType === QuadrantType.TOP || quadrantType === QuadrantType.TOP_LEFT;
         const scrollAmount = isFrozenQuadrant ? 0 : this.cache.getScrollOffset("scrollTop");
         const columnHeaderHeight = this.cache.getColumnHeaderHeight();
-
-        const adjustedHorizontalGuides =
-            horizontalGuides != null
-                ? horizontalGuides.map(horizontalGuide => horizontalGuide - scrollAmount + columnHeaderHeight)
-                : horizontalGuides;
-
-        return adjustedHorizontalGuides;
+        return horizontalGuides.map(horizontalGuide => horizontalGuide - scrollAmount + columnHeaderHeight)
     }
 }

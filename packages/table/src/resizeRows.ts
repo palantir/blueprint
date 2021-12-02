@@ -43,10 +43,10 @@ export interface IResizeRowsByApproximateHeightOptions {
 }
 
 export interface IResizeRowsByApproximateHeightResolvedOptions {
-    getApproximateCharWidth?: number;
-    getApproximateLineHeight?: number;
-    getCellHorizontalPadding?: number;
-    getNumBufferLines?: number;
+    getApproximateCharWidth: number;
+    getApproximateLineHeight: number;
+    getCellHorizontalPadding: number;
+    getNumBufferLines: number;
 }
 
 // these default values for `resizeRowsByApproximateHeight` have been
@@ -71,7 +71,7 @@ function resolveResizeRowsByApproximateHeightOptions(
         keyof IResizeRowsByApproximateHeightOptions
     >;
     const optionReducer = (
-        agg: IResizeRowsByApproximateHeightResolvedOptions,
+        agg: Partial<IResizeRowsByApproximateHeightResolvedOptions>,
         key: keyof IResizeRowsByApproximateHeightOptions,
     ) => {
         const valueOrMapper = options?.[key];
@@ -85,8 +85,7 @@ function resolveResizeRowsByApproximateHeightOptions(
 
         return agg;
     };
-    const resolvedOptions: IResizeRowsByApproximateHeightResolvedOptions = optionKeys.reduce(optionReducer, {});
-    return resolvedOptions;
+    return optionKeys.reduce(optionReducer, {}) as IResizeRowsByApproximateHeightResolvedOptions;
 }
 
 /**

@@ -116,7 +116,8 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             // previous width at the same index.
             const previousColumnWidths = newChildrenArray.map(
                 (child: React.ReactElement<ColumnProps>, index: number) => {
-                    const mappedIndex = child.props.id === undefined ? undefined : state.columnIdToIndex[child.props.id];
+                    const mappedIndex =
+                        child.props.id === undefined ? undefined : state.columnIdToIndex[child.props.id];
                     return state.columnWidths[mappedIndex ?? index];
                 },
             );
@@ -135,15 +136,17 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
         }
 
-        const newSelectedRegions = selectedRegions ?? state.selectedRegions.filter(region => {
-            // if we're in uncontrolled mode, filter out all selected regions that don't
-            // fit in the current new table dimensions
-            const regionCardinality = Regions.getRegionCardinality(region);
-            return (
-                isSelectionModeEnabled(props, regionCardinality, selectionModes) &&
-                Regions.isRegionValidForTable(region, numRows, numCols)
-            );
-        });
+        const newSelectedRegions =
+            selectedRegions ??
+            state.selectedRegions.filter(region => {
+                // if we're in uncontrolled mode, filter out all selected regions that don't
+                // fit in the current new table dimensions
+                const regionCardinality = Regions.getRegionCardinality(region);
+                return (
+                    isSelectionModeEnabled(props, regionCardinality, selectionModes) &&
+                    Regions.isRegionValidForTable(region, numRows, numCols)
+                );
+            });
 
         const newFocusedCell = FocusedCellUtils.getInitialFocusedCell(
             enableFocusedCell,
@@ -230,7 +233,15 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     public constructor(props: TablePropsWithDefaults, context?: any) {
         super(props, context);
 
-        const { children, columnWidths, defaultRowHeight, defaultColumnWidth, numRows, rowHeights, selectedRegions = ([] as Region[]) } = props;
+        const {
+            children,
+            columnWidths,
+            defaultRowHeight,
+            defaultColumnWidth,
+            numRows,
+            rowHeights,
+            selectedRegions = [] as Region[],
+        } = props;
 
         const childrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
         const columnIdToIndex = Table2.createColumnIdIndex(childrenArray);
@@ -259,12 +270,14 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             columnIdToIndex,
             columnWidths: newColumnWidths,
             focusedCell,
+            horizontalGuides: [],
             isLayoutLocked: false,
             isReordering: false,
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
             rowHeights: newRowHeights,
             selectedRegions,
+            verticalGuides: [],
         };
 
         this.hotkeysImpl = new TableHotkeys(props, this.state, {
@@ -310,6 +323,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
      */
     public resizeRowsByTallestCell(columnIndices?: number | number[]) {
         if (this.grid == null || this.state.viewportRect === undefined || this.locator === undefined) {
+            console.warn(Errors.TABLE_UNMOUNTED_RESIZE_WARNING);
             return;
         }
 
@@ -342,7 +356,11 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
      * corner is reached.
      */
     public scrollToRegion(region: Region) {
-        const { numFrozenColumnsClamped: numFrozenColumns, numFrozenRowsClamped: numFrozenRows, viewportRect } = this.state;
+        const {
+            numFrozenColumnsClamped: numFrozenColumns,
+            numFrozenRowsClamped: numFrozenRows,
+            viewportRect,
+        } = this.state;
 
         if (viewportRect === undefined || this.grid === null || this.quadrantStackInstance === undefined) {
             return;
@@ -414,7 +432,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                 [Classes.TABLE_REORDERING]: this.state.isReordering,
                 [Classes.TABLE_NO_VERTICAL_SCROLL]: this.shouldDisableVerticalScroll(),
                 [Classes.TABLE_NO_HORIZONTAL_SCROLL]: this.shouldDisableHorizontalScroll(),
-                [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props as TablePropsWithDefaults, RegionCardinality.CELLS),
+                [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(
+                    this.props as TablePropsWithDefaults,
+                    RegionCardinality.CELLS,
+                ),
                 [Classes.TABLE_NO_ROWS]: numRows === 0,
             },
             className,
@@ -650,7 +671,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private renderMenu = (refHandler: IRef<HTMLDivElement> | undefined) => {
         const classes = classNames(Classes.TABLE_MENU, {
-            [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props as TablePropsWithDefaults, RegionCardinality.FULL_TABLE),
+            [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(
+                this.props as TablePropsWithDefaults,
+                RegionCardinality.FULL_TABLE,
+            ),
         });
         return (
             <div className={classes} ref={refHandler} onMouseDown={this.handleMenuMouseDown}>
@@ -716,7 +740,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private renderColumnHeader = (
         refHandler: IRef<HTMLDivElement>,
-        resizeHandler: (verticalGuides: number[]) => void,
+        resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenColumnsOnly: boolean = false,
     ) => {
@@ -737,7 +761,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
 
         const classes = classNames(Classes.TABLE_COLUMN_HEADERS, {
-            [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props as TablePropsWithDefaults, RegionCardinality.FULL_COLUMNS),
+            [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(
+                this.props as TablePropsWithDefaults,
+                RegionCardinality.FULL_COLUMNS,
+            ),
         });
 
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
@@ -780,7 +807,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private renderRowHeader = (
         refHandler: IRef<HTMLDivElement>,
-        resizeHandler: (verticalGuides: number[]) => void,
+        resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenRowsOnly: boolean = false,
     ) => {
@@ -802,7 +829,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
 
         const classes = classNames(Classes.TABLE_ROW_HEADERS, {
-            [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(this.props as TablePropsWithDefaults, RegionCardinality.FULL_ROWS),
+            [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(
+                this.props as TablePropsWithDefaults,
+                RegionCardinality.FULL_ROWS,
+            ),
         });
 
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
@@ -843,7 +873,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     private bodyCellRenderer = (rowIndex: number, columnIndex: number) => {
         const columnProps = this.getColumnProps(columnIndex);
         if (columnProps === undefined) {
-            return;
+            return undefined;
         }
 
         const {
@@ -859,7 +889,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         // HACKHACK: cellRenderer prop has a default value, so we can assert non-null
         const cell = cellRenderer!(rowIndex, columnIndex);
         if (cell === undefined) {
-            return;
+            return undefined;
         }
 
         return React.cloneElement(cell, {
@@ -1234,7 +1264,12 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                 this.scrollContainerElement.scrollLeft = nextScrollLeft + leftCorrection;
             }
 
-            const nextViewportRect = new Rect(nextScrollLeft ?? 0, nextScrollTop ?? 0, viewportRect.width, viewportRect.height);
+            const nextViewportRect = new Rect(
+                nextScrollLeft ?? 0,
+                nextScrollTop ?? 0,
+                viewportRect.width,
+                viewportRect.height,
+            );
             this.updateViewportRect(nextViewportRect);
         }
     };
@@ -1270,7 +1305,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        this.setState({ isReordering: false, verticalGuides: undefined });
+        this.setState({ isReordering: false, verticalGuides: [] });
         this.props.onColumnsReordered?.(oldIndex, newIndex, length);
     };
 
@@ -1279,7 +1314,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        this.setState({ isReordering: false, horizontalGuides: undefined });
+        this.setState({ isReordering: false, horizontalGuides: [] });
         this.props.onRowsReordered?.(oldIndex, newIndex, length);
     };
 

@@ -78,12 +78,12 @@ export interface IResizeableState {
     /**
      * The dimensional size, respecting minimum and maximum constraints.
      */
-    size?: number;
+    size: number;
 
     /**
      * The dimensional size, ignoring minimum and maximum constraints.
      */
-    unclampedSize?: number;
+    unclampedSize: number;
 }
 
 export class Resizable extends AbstractPureComponent2<IResizableProps, IResizeableState> {
@@ -92,7 +92,7 @@ export class Resizable extends AbstractPureComponent2<IResizableProps, IResizeab
         minSize: 0,
     };
 
-    public static getDerivedStateFromProps({ size }: IResizableProps, prevState: IResizeableState) {
+    public static getDerivedStateFromProps({ size }: IResizableProps, prevState: IResizeableState | null) {
         if (prevState == null) {
             return {
                 size,
@@ -103,7 +103,10 @@ export class Resizable extends AbstractPureComponent2<IResizableProps, IResizeab
         return null;
     }
 
-    public state: IResizeableState = Resizable.getDerivedStateFromProps(this.props, null);
+    public state: IResizeableState = {
+        size: this.props.size,
+        unclampedSize: this.props.size
+    };
 
     public componentDidUpdate(prevProps: IResizableProps) {
         if (prevProps.size !== this.props.size) {
@@ -140,18 +143,13 @@ export class Resizable extends AbstractPureComponent2<IResizableProps, IResizeab
 
     private onResizeMove = (_offset: number, delta: number) => {
         this.offsetSize(delta);
-        if (this.props.onSizeChanged != null) {
-            this.props.onSizeChanged(this.state.size);
-        }
+        this.props.onSizeChanged?.(this.state.size);
     };
 
     private onResizeEnd = (_offset: number) => {
         // reset "unclamped" size on end
         this.setState({ unclampedSize: this.state.size });
-
-        if (this.props.onResizeEnd != null) {
-            this.props.onResizeEnd(this.state.size);
-        }
+        this.props.onResizeEnd?.(this.state.size);
     };
 
     /**

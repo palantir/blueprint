@@ -35,8 +35,8 @@ export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<
 export type ColumnHeaderRenderer = IColumnHeaderRenderer;
 
 export interface IColumnWidths {
-    minColumnWidth?: number;
-    maxColumnWidth?: number;
+    minColumnWidth: number;
+    maxColumnWidth: number;
     defaultColumnWidth?: number;
 }
 
@@ -88,6 +88,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
         } = this.props;
 
         return (
+            // HACKHACK(adahiya): strange shouldComponentUpdate type error with strict null checks
+            // @ts-ignore
             <Header
                 convertPointToIndex={this.convertPointToColumn}
                 fullRegionCardinality={RegionCardinality.FULL_COLUMNS}
@@ -147,8 +149,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
     };
 
     private convertPointToColumn = (clientXOrY: number, useMidpoint?: boolean) => {
-        const { locator } = this.props;
-        return locator != null ? locator.convertPointToColumn(clientXOrY, useMidpoint) : null;
+        return this.props.locator.convertPointToColumn(clientXOrY, useMidpoint);
     };
 
     private getCellExtremaClasses = (index: number, indexEnd: number) => {
@@ -188,7 +189,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
     };
 
     private isCellSelected = (index: number) => {
-        return Regions.hasFullColumn(this.props.selectedRegions, index);
+        return Regions.hasFullColumn(this.props.selectedRegions!, index);
     };
 
     private isGhostIndex = (index: number) => {

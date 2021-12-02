@@ -130,9 +130,11 @@ export type Region = IRegion;
 /**
  * A fully-defined cells `Region`, with both column and row bounds.
  */
-export type NonNullRegion = Required<{
-    [P in keyof Region]: NonNullable<Region[P]>;
-}>;
+export type NonNullRegion = Required<
+    {
+        [P in keyof Region]: NonNullable<Region[P]>;
+    }
+>;
 
 export class Regions {
     /**
@@ -535,7 +537,10 @@ export class Regions {
      * If there is no contiguous `Region` which contains all the cells, we
      * return `undefined`.
      */
-    public static sparseMapCells<T>(cells: CellCoordinate[], mapper: (row: number, col: number) => T): T[][] | undefined {
+    public static sparseMapCells<T>(
+        cells: CellCoordinate[],
+        mapper: (row: number, col: number) => T,
+    ): T[][] | undefined {
         const bounds = Regions.getBoundingRegion(cells);
         if (bounds === undefined) {
             return undefined;
