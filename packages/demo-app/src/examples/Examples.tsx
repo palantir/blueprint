@@ -35,6 +35,7 @@ import { SwitchExample } from "./SwitchExample";
 import { TableExample } from "./TableExample";
 import { TabsExample } from "./TabsExample";
 import { TagExample } from "./TagExample";
+import { TagInputExample } from "./TagInputExample";
 import { TextExample } from "./TextExample";
 import { ToastExample } from "./ToastExample";
 import { TooltipExample } from "./TooltipExample";
@@ -62,6 +63,7 @@ export class Examples extends React.PureComponent {
                 <TableExample />
                 <TabsExample />
                 <TagExample />
+                <TagInputExample />
                 <TextExample />
                 <ToastExample />
                 <TooltipExample />
