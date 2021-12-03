@@ -5,16 +5,24 @@
 @import "../../common/variables";
 @import "../button/common";
 
-$control-background-color: $button-background-color !default;
-$control-background-color-hover: $button-background-color-hover !default;
-$control-background-color-active: $button-background-color-active !default;
-$dark-control-background-color: $dark-button-background-color !default;
-$dark-control-background-color-hover: $dark-button-background-color-hover !default;
-$dark-control-background-color-active: $dark-button-background-color-active !default;
+$control-background-color: transparent !default;
+$control-background-color-hover: $minimal-button-background-color-hover !default;
+$control-background-color-active: $minimal-button-background-color-active !default;
+$control-background-color-disabled: $minimal-button-background-color-hover !default;
+$dark-control-background-color: transparent !default;
+$dark-control-background-color-hover: $minimal-button-background-color-hover !default;
+$dark-control-background-color-active: $minimal-button-background-color-active !default;
+$dark-control-background-color-disabled: $minimal-button-background-color-hover !default;
 
 $control-checked-background-color: nth(map-get($button-intents, "primary"), 1) !default;
 $control-checked-background-color-hover: nth(map-get($button-intents, "primary"), 2) !default;
 $control-checked-background-color-active: nth(map-get($button-intents, "primary"), 3) !default;
+$control-checked-background-color-disabled: rgba($control-checked-background-color, 0.5) !default;
+
+$control-box-shadow: inset 0 0 0 $button-border-width $gray2 !default;
+$control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($black, 0.2) !default;
+$dark-control-box-shadow: inset 0 0 0 $button-border-width $gray3 !default;
+$dark-control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($white, 0.1) !default;
 
 $control-indicator-size: $pt-icon-size-standard !default;
 $control-indicator-size-large: $pt-icon-size-large !default;
@@ -24,43 +32,43 @@ $control-indicator-spacing: $pt-grid-size !default;
   input#{$selector} ~ .#{$ns}-control-indicator {
     background-color: $control-checked-background-color;
     background-image: $button-intent-gradient;
-    box-shadow: $button-intent-box-shadow;
+    box-shadow: $control-checked-box-shadow;
     color: $white;
   }
 
   &:hover input#{$selector} ~ .#{$ns}-control-indicator {
     background-color: $control-checked-background-color-hover;
-    box-shadow: $button-intent-box-shadow;
   }
 
   input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
     background: $control-checked-background-color-active;
-    box-shadow: $button-intent-box-shadow-active;
   }
 
   input:disabled#{$selector} ~ .#{$ns}-control-indicator {
-    background: rgba($control-checked-background-color, 0.5);
+    background: $control-checked-background-color-disabled;
     box-shadow: none;
+    color: rgba($white, 0.6);
   }
 
   .#{$ns}-dark & {
     input#{$selector} ~ .#{$ns}-control-indicator {
-      box-shadow: $dark-button-intent-box-shadow;
+      box-shadow: $dark-control-checked-box-shadow;
     }
 
     &:hover input#{$selector} ~ .#{$ns}-control-indicator {
       background-color: $control-checked-background-color-hover;
-      box-shadow: $dark-button-intent-box-shadow;
+      box-shadow: $dark-control-checked-box-shadow;
     }
 
     input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
       background-color: $control-checked-background-color-active;
-      box-shadow: $dark-button-intent-box-shadow-active;
+      box-shadow: $dark-control-checked-box-shadow;
     }
 
     input:disabled#{$selector} ~ .#{$ns}-control-indicator {
-      background: rgba($control-checked-background-color-active, 0.5);
+      background: $control-checked-background-color-disabled;
       box-shadow: none;
+      color: rgba($white, 0.6);
     }
   }
 }
@@ -118,7 +126,7 @@ $control-indicator-spacing: $pt-grid-size !default;
     background-color: $control-background-color;
     background-image: $button-gradient;
     border: none;
-    box-shadow: $button-box-shadow;
+    box-shadow: $control-box-shadow;
     cursor: pointer;
     display: inline-block;
     // font-size is used to size indicator for all control types,
@@ -146,17 +154,18 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   input:not(:disabled):active ~ .#{$ns}-control-indicator {
     background: $control-background-color-active;
-    box-shadow: $button-box-shadow-active;
+    box-shadow: $control-box-shadow;
   }
 
   input:disabled ~ .#{$ns}-control-indicator {
-    background: $button-background-color-disabled;
+    background: $control-background-color-disabled;
     box-shadow: none;
     cursor: not-allowed;
   }
 
   input:focus ~ .#{$ns}-control-indicator {
     @include focus-outline();
+    outline: $blue3 auto 2px;
   }
 
   // right-aligned indicator is glued to the right side of the container
@@ -468,20 +477,24 @@ $control-indicator-spacing: $pt-grid-size !default;
     .#{$ns}-control-indicator {
       background-color: $dark-control-background-color;
       background-image: $dark-button-gradient;
-      box-shadow: $dark-button-box-shadow;
+      box-shadow: $dark-control-box-shadow;
     }
 
     &:hover .#{$ns}-control-indicator {
       background-color: $dark-control-background-color-hover;
     }
 
+    input:focus ~ .#{$ns}-control-indicator {
+      outline: $blue5 auto 2px;
+    }
+
     input:not(:disabled):active ~ .#{$ns}-control-indicator {
       background: $dark-control-background-color-active;
-      box-shadow: $dark-button-box-shadow-active;
+      box-shadow: $dark-control-box-shadow;
     }
 
     input:disabled ~ .#{$ns}-control-indicator {
-      background: $dark-button-background-color-disabled;
+      background: $dark-control-background-color-disabled;
       box-shadow: none;
       cursor: not-allowed;
     }
@@ -490,7 +503,7 @@ $control-indicator-spacing: $pt-grid-size !default;
       &:checked,
       &:indeterminate {
         ~ .#{$ns}-control-indicator {
-          color: $dark-button-color-disabled;
+          background: $control-checked-background-color-disabled;
         }
       }
     }
