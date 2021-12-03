@@ -487,7 +487,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         const reorderingHandler = this.handleColumnsReordering;
 
         if (refHandler === undefined) {
-            return;
+            return undefined;
         }
 
         return this.props.columnHeaderCellRenderer?.(
@@ -504,7 +504,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         const reorderingHandler = this.handleColumnsReordering;
 
         if (refHandler === undefined) {
-            return;
+            return undefined;
         }
 
         return this.props.columnHeaderCellRenderer?.(
@@ -521,7 +521,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         const reorderingHandler = this.handleColumnsReordering;
 
         if (refHandler === undefined) {
-            return;
+            return undefined;
         }
 
         return this.props.columnHeaderCellRenderer?.(
@@ -538,7 +538,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         const reorderingHandler = this.handleColumnsReordering;
 
         if (refHandler === undefined) {
-            return;
+            return undefined;
         }
 
         return this.props.columnHeaderCellRenderer?.(
@@ -554,7 +554,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     private renderMainQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.MAIN].rowHeader;
         if (refHandler === undefined) {
-            return;
+            return undefined;
         }
 
         return this.props.rowHeaderCellRenderer?.(
@@ -568,7 +568,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     private renderTopQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.TOP].rowHeader;
         if (refHandler === undefined) {
-            return;
+            return undefined;
         }
 
         return this.props.rowHeaderCellRenderer?.(
@@ -582,7 +582,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     private renderLeftQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.LEFT].rowHeader;
         if (refHandler === undefined) {
-            return;
+            return undefined;
         }
 
         return this.props.rowHeaderCellRenderer?.(
@@ -596,7 +596,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     private renderTopLeftQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.TOP_LEFT].rowHeader;
         if (refHandler === undefined) {
-            return;
+            return undefined;
         }
 
         return this.props.rowHeaderCellRenderer?.(

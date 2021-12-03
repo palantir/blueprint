@@ -168,7 +168,7 @@ export class TableBody extends AbstractComponent2<ITableBodyProps> {
 
     private locateDrag = (_event: MouseEvent, coords: ICoordinateData, returnEndOnly = false) => {
         if (this.activationCell === null) {
-            return;
+            return undefined;
         }
         const start = this.activationCell;
         const end = this.props.locator.convertPointToCell(coords.current[0], coords.current[1]);

@@ -92,7 +92,7 @@ export class DragEvents {
     private updateCoordinateData(event: MouseEvent) {
         if (this.activationCoordinates === undefined) {
             // invalid state; we should have activation by this point
-            return;
+            return undefined;
         }
 
         const currentCoordinates: [number, number] = [event.clientX, event.clientY];

@@ -900,7 +900,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         } = this.props;
 
         if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
-            return;
+            return undefined;
         }
 
         const classes = classNames(Classes.TABLE_COLUMN_HEADERS, {
@@ -970,7 +970,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         } = this.props;
 
         if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
-            return;
+            return undefined;
         }
 
         const classes = classNames(Classes.TABLE_ROW_HEADERS, {
@@ -1064,7 +1064,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         } = this.props;
 
         if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
-            return;
+            return undefined;
         }
 
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
