@@ -447,11 +447,6 @@ $control-indicator-spacing: $pt-grid-size !default;
         background: $dark-switch-indicator-background-color;
         box-shadow: $dark-switch-indicator-box-shadow;
       }
-
-      input:checked ~ .#{$ns}-control-indicator::before {
-        // inset shadow so it forms a dark line instead of blurring into the blue
-        box-shadow: inset $dark-switch-indicator-box-shadow;
-      }
     }
 
     .#{$ns}-switch-inner-text {
