@@ -37,7 +37,7 @@ export type ColumnHeaderRenderer = IColumnHeaderRenderer;
 export interface IColumnWidths {
     minColumnWidth: number;
     maxColumnWidth: number;
-    defaultColumnWidth?: number;
+    defaultColumnWidth: number;
 }
 
 export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, ColumnIndices {

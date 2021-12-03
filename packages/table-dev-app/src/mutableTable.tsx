@@ -51,8 +51,8 @@ import {
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
-import { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
-import { IColumnIndices, IRowIndices } from "@blueprintjs/table/src/common/grid";
+import type { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cellTypes";
+import type { ColumnIndices, RowIndices } from "@blueprintjs/table/src/common/grid";
 import { RenderMode } from "@blueprintjs/table/src/common/renderMode";
 
 import { DenseGridMutableStore } from "./denseGridMutableStore";
@@ -914,7 +914,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.maybeLogCallback(`[onCopy] success = ${success}`);
     };
 
-    private onVisibleCellsChange = (rowIndices: IRowIndices, columnIndices: IColumnIndices) => {
+    private onVisibleCellsChange = (rowIndices: RowIndices, columnIndices: ColumnIndices) => {
         const { rowIndexStart, rowIndexEnd } = rowIndices;
         const { columnIndexStart, columnIndexEnd } = columnIndices;
         this.maybeLogCallback(

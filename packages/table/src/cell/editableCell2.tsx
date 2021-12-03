@@ -231,7 +231,10 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
         this.invokeCallback(this.props.onConfirm, value);
     };
 
-    private invokeCallback(callback: ((value: string, rowIndex?: number, columnIndex?: number) => void) | undefined, value: string) {
+    private invokeCallback(
+        callback: ((value: string, rowIndex?: number, columnIndex?: number) => void) | undefined,
+        value: string,
+    ) {
         // pass through the row and column indices if they were provided as props by the consumer
         const { rowIndex, columnIndex } = this.props;
         callback?.(value, rowIndex, columnIndex);

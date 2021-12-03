@@ -76,6 +76,8 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         enableRowHeader: true,
         forceRerenderOnSelectionChange: false,
         loadingOptions: [],
+        maxColumnWidth: 9999,
+        maxRowHeight: 9999,
         minColumnWidth: 50,
         minRowHeight: 20,
         numFrozenColumns: 0,
@@ -886,6 +888,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     ) => {
         const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
+            defaultColumnWidth,
             enableMultipleSelection,
             enableGhostCells,
             enableColumnReordering,
@@ -914,6 +917,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         return (
             <div className={classes}>
                 <ColumnHeader
+                    defaultColumnWidth={defaultColumnWidth!}
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
                     focusedCell={focusedCell}
@@ -922,9 +926,9 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
                     isResizable={enableColumnResizing}
                     loading={hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={this.locator}
-                    maxColumnWidth={maxColumnWidth}
+                    maxColumnWidth={maxColumnWidth!}
                     measurableElementRef={refHandler}
-                    minColumnWidth={minColumnWidth}
+                    minColumnWidth={minColumnWidth!}
                     onColumnWidthChanged={this.handleColumnWidthChanged}
                     onFocusedCell={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
@@ -953,6 +957,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     ) => {
         const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
+            defaultRowHeight,
             enableMultipleSelection,
             enableGhostCells,
             enableRowReordering,
@@ -982,6 +987,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         return (
             <div className={classes} ref={refHandler}>
                 <RowHeader
+                    defaultRowHeight={defaultRowHeight!}
                     enableMultipleSelection={enableMultipleSelection}
                     focusedCell={focusedCell}
                     grid={this.grid}
@@ -989,8 +995,8 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
                     isReorderable={enableRowReordering}
                     isResizable={enableRowResizing}
                     loading={hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
-                    maxRowHeight={maxRowHeight}
-                    minRowHeight={minRowHeight}
+                    maxRowHeight={maxRowHeight!}
+                    minRowHeight={minRowHeight!}
                     onFocusedCell={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
                     onResizeGuide={resizeHandler}

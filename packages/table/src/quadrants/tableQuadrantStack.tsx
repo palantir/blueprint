@@ -557,7 +557,12 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return;
         }
 
-        return this.props.rowHeaderCellRenderer?.(refHandler, this.handleRowResizeGuideMain, this.handleRowsReordering, showFrozenRowsOnly);
+        return this.props.rowHeaderCellRenderer?.(
+            refHandler,
+            this.handleRowResizeGuideMain,
+            this.handleRowsReordering,
+            showFrozenRowsOnly,
+        );
     };
 
     private renderTopQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
@@ -566,7 +571,12 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return;
         }
 
-        return this.props.rowHeaderCellRenderer?.(refHandler, this.handleRowResizeGuideTop, this.handleRowsReordering, showFrozenRowsOnly);
+        return this.props.rowHeaderCellRenderer?.(
+            refHandler,
+            this.handleRowResizeGuideTop,
+            this.handleRowsReordering,
+            showFrozenRowsOnly,
+        );
     };
 
     private renderLeftQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
@@ -575,7 +585,12 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return;
         }
 
-        return this.props.rowHeaderCellRenderer?.(refHandler, this.handleRowResizeGuideLeft, this.handleRowsReordering, showFrozenRowsOnly);
+        return this.props.rowHeaderCellRenderer?.(
+            refHandler,
+            this.handleRowResizeGuideLeft,
+            this.handleRowsReordering,
+            showFrozenRowsOnly,
+        );
     };
 
     private renderTopLeftQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
@@ -584,7 +599,12 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return;
         }
 
-        return this.props.rowHeaderCellRenderer?.(refHandler, this.handleRowResizeGuideTopLeft, this.handleRowsReordering, showFrozenRowsOnly);
+        return this.props.rowHeaderCellRenderer?.(
+            refHandler,
+            this.handleRowResizeGuideTopLeft,
+            this.handleRowsReordering,
+            showFrozenRowsOnly,
+        );
     };
 
     // Event handlers
@@ -998,13 +1018,13 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         const isFrozenQuadrant = quadrantType === QuadrantType.LEFT || quadrantType === QuadrantType.TOP_LEFT;
         const scrollAmount = isFrozenQuadrant ? 0 : this.cache.getScrollOffset("scrollLeft");
         const rowHeaderWidth = this.cache.getRowHeaderWidth();
-        return verticalGuides.map(verticalGuide => verticalGuide - scrollAmount + rowHeaderWidth)
+        return verticalGuides.map(verticalGuide => verticalGuide - scrollAmount + rowHeaderWidth);
     }
 
     private adjustHorizontalGuides(horizontalGuides: number[], quadrantType: QuadrantType) {
         const isFrozenQuadrant = quadrantType === QuadrantType.TOP || quadrantType === QuadrantType.TOP_LEFT;
         const scrollAmount = isFrozenQuadrant ? 0 : this.cache.getScrollOffset("scrollTop");
         const columnHeaderHeight = this.cache.getColumnHeaderHeight();
-        return horizontalGuides.map(horizontalGuide => horizontalGuide - scrollAmount + columnHeaderHeight)
+        return horizontalGuides.map(horizontalGuide => horizontalGuide - scrollAmount + columnHeaderHeight);
     }
 }

@@ -105,7 +105,7 @@ export class Resizable extends AbstractPureComponent2<IResizableProps, IResizeab
 
     public state: IResizeableState = {
         size: this.props.size,
-        unclampedSize: this.props.size
+        unclampedSize: this.props.size,
     };
 
     public componentDidUpdate(prevProps: IResizableProps) {

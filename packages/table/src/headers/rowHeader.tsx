@@ -34,7 +34,7 @@ export type RowHeaderRenderer = IRowHeaderRenderer;
 export interface IRowHeights {
     minRowHeight: number;
     maxRowHeight: number;
-    defaultRowHeight?: number;
+    defaultRowHeight: number;
 }
 
 export interface IRowHeaderProps extends IHeaderProps, IRowHeights, RowIndices {

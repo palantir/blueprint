@@ -30,7 +30,7 @@ import type { Region, StyledRegionGroup, RegionCardinality, TableLoadingOption }
 // eslint-disable-next-line deprecation/deprecation
 export type TableProps = ITableProps;
 /** @deprecated use TableProps */
-export interface ITableProps extends Props, IRowHeights, IColumnWidths {
+export interface ITableProps extends Props, Partial<IRowHeights>, Partial<IColumnWidths> {
     /**
      * The children of a `Table` component, which must be React elements
      * that use `IColumnProps`.
@@ -308,23 +308,28 @@ export interface ITableProps extends Props, IRowHeights, IColumnWidths {
     styledRegionGroups?: StyledRegionGroup[];
 }
 
-export type TablePropsDefaults = Required<Pick<TableProps,
-    "defaultColumnWidth" |
-    "defaultRowHeight" |
-    "enableColumnInteractionBar" |
-    "enableFocusedCell" |
-    "enableGhostCells" |
-    "enableMultipleSelection" |
-    "enableRowHeader" |
-    "forceRerenderOnSelectionChange" |
-    "loadingOptions" |
-    "minColumnWidth" |
-    "minRowHeight" |
-    "numFrozenColumns" |
-    "numFrozenRows" |
-    "numRows" |
-    "renderMode" |
-    "rowHeaderCellRenderer" |
-    "selectionModes"
->>;
+export type TablePropsDefaults = Required<
+    Pick<
+        TableProps,
+        | "defaultColumnWidth"
+        | "defaultRowHeight"
+        | "enableColumnInteractionBar"
+        | "enableFocusedCell"
+        | "enableGhostCells"
+        | "enableMultipleSelection"
+        | "enableRowHeader"
+        | "forceRerenderOnSelectionChange"
+        | "loadingOptions"
+        | "maxColumnWidth"
+        | "maxRowHeight"
+        | "minColumnWidth"
+        | "minRowHeight"
+        | "numFrozenColumns"
+        | "numFrozenRows"
+        | "numRows"
+        | "renderMode"
+        | "rowHeaderCellRenderer"
+        | "selectionModes"
+    >
+>;
 export type TablePropsWithDefaults = Omit<TableProps, keyof TablePropsDefaults> & TablePropsDefaults;

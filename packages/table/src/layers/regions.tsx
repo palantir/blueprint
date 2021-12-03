@@ -48,7 +48,11 @@ export class RegionLayer extends React.Component<RegionLayerProps> {
         // altogether.
         return (
             !CoreUtils.arraysEqual(this.props.regions ?? [], nextProps.regions ?? [], Regions.regionsEqual) ||
-            !CoreUtils.arraysEqual(this.props.regionStyles ?? [], nextProps.regionStyles ?? [], CoreUtils.shallowCompareKeys) ||
+            !CoreUtils.arraysEqual(
+                this.props.regionStyles ?? [],
+                nextProps.regionStyles ?? [],
+                CoreUtils.shallowCompareKeys,
+            ) ||
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { include: UPDATE_PROPS_KEYS })
         );
     }
