@@ -303,7 +303,7 @@ $control-indicator-spacing: $pt-grid-size !default;
   $switch-text-color: $pt-text-color !default;
   $switch-text-color-disabled: $pt-text-color-disabled !default;
   $switch-checked-text-color: $white !default;
-  $switch-checked-text-color-disabled: $white !default;
+  $switch-checked-text-color-disabled: rgba($white, 0.6) !default;
   $switch-background-color: rgba($gray3, 0.3) !default;
   $switch-background-color-hover: rgba($gray3, 0.4) !default;
   $switch-background-color-active: rgba($gray3, 0.5) !default;
