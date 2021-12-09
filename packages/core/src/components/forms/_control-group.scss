@@ -172,6 +172,11 @@ Styleguide control-group
     }
   }
 
+  .#{$ns}-input-group {
+    // also need inheritance here, in case an input is wrapped by a popover or tooltip
+    border-radius: inherit;
+  }
+
   // input group contents appear above input always
   .#{$ns}-input-group > .#{$ns}-icon,
   .#{$ns}-input-group > .#{$ns}-button,
