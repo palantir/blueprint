@@ -14,7 +14,6 @@
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix && sass-lint --fix",
-        "test": "mocha test/index.js",
         "verify": "npm-run-all compile -p dist lint"
     },
     "devDependencies": {

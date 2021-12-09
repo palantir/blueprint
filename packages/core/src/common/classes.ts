@@ -181,6 +181,7 @@ export const LABEL = `${NS}-label`;
 export const FORM_GROUP = `${NS}-form-group`;
 export const FORM_CONTENT = `${NS}-form-content`;
 export const FORM_HELPER_TEXT = `${NS}-form-helper-text`;
+export const FORM_GROUP_SUB_LABEL = `${NS}-form-group-sub-label`;
 
 export const MENU = `${NS}-menu`;
 export const MENU_ITEM = `${MENU}-item`;

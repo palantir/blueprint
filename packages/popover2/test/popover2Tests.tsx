@@ -752,7 +752,7 @@ describe("<Popover2>", () => {
         });
     });
 
-    // these tests can be removed once Popover2 is merged into core in v4.0
+    // these tests can be removed once Popover2 is merged into core in v5.0
     describe("compatibility", () => {
         it("MenuItem from core package is able to dismiss open Popover2", () => {
             wrapper = renderPopover(

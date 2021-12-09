@@ -62,13 +62,20 @@ export interface IFormGroupProps extends IntentProps, Props {
 
     /** CSS properties to apply to the root element. */
     style?: React.CSSProperties;
+
+    /**
+     * Optional text for `label`. The given content will be wrapped in
+     * `Classes.FORM_GROUP_SUB_LABEL` and displayed beneath `label`. The text color
+     * is determined by the `intent`.
+     */
+    subLabel?: React.ReactNode;
 }
 
 export class FormGroup extends AbstractPureComponent2<FormGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
 
     public render() {
-        const { children, contentClassName, helperText, label, labelFor, labelInfo, style } = this.props;
+        const { children, contentClassName, helperText, label, labelFor, labelInfo, style, subLabel } = this.props;
         return (
             <div className={this.getClassName()} style={style}>
                 {label && (
@@ -76,6 +83,7 @@ export class FormGroup extends AbstractPureComponent2<FormGroupProps> {
                         {label} <span className={Classes.TEXT_MUTED}>{labelInfo}</span>
                     </label>
                 )}
+                {subLabel && <div className={Classes.FORM_GROUP_SUB_LABEL}>{subLabel}</div>}
                 <div className={classNames(Classes.FORM_CONTENT, contentClassName)}>
                     {children}
                     {helperText && <div className={Classes.FORM_HELPER_TEXT}>{helperText}</div>}

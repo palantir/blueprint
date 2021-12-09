@@ -8,7 +8,7 @@ Migrating from [ContextMenu](#core/components/context-menu)?
 </h4>
 
 ContextMenu2 is a replacement for ContextMenu + ContextMenuTarget. It will become the standard
-context menu API in Blueprint core v4. You are encouraged to use this new API now to ease the
+context menu API in Blueprint core v5. You are encouraged to use this new API now to ease the
 transition to the next major version of Blueprint. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/ContextMenu2-migration) on the wiki.
 
