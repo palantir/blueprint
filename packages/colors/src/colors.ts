@@ -126,11 +126,29 @@ const extendedColors = {
     VIOLET5: "#D69FD6",
 };
 
+/* eslint-disable deprecation/deprecation */
 /**
- * Blueprint 4.x "modernized" colors
+ * Blueprint v3.x legacy color names, provided as aliases for their new names in v4.x.
+ * These symbols allow references to the "cobalt" identifiers (not color hex values)
+ * to continue working with the new color palette. They will be removed in v5.0.
  */
+const legacyColors = {
+    /** @deprecated use CERULEAN1 */
+    COBALT1: extendedColors.CERULEAN1,
+    /** @deprecated use CERULEAN2 */
+    COBALT2: extendedColors.CERULEAN2,
+    /** @deprecated use CERULEAN3 */
+    COBALT3: extendedColors.CERULEAN3,
+    /** @deprecated use CERULEAN4 */
+    COBALT4: extendedColors.CERULEAN4,
+    /** @deprecated use CERULEAN5 */
+    COBALT5: extendedColors.CERULEAN5,
+};
+/* eslint-enable deprecation/deprecation */
+
 export const Colors = {
     ...grayScale,
     ...coreColors,
     ...extendedColors,
+    ...legacyColors,
 };
