@@ -32,7 +32,9 @@ generateFonts({
     name: "blueprint-icons-16",
     inputDir: path.join(RESOURCES_DIR, "16px"),
     outputDir: path.join(GENERATED_SRC_DIR, "16px"),
-    fontHeight: 16,
+    // N.B. Important: specifying the fontHeight option somehow breaks font path generation, so we should leave it undefined.
+    // See https://github.com/palantir/blueprint/issues/5002
+    fontHeight: undefined,
     fontTypes: [FontAssetType.TTF, FontAssetType.EOT, FontAssetType.WOFF2, FontAssetType.WOFF, FontAssetType.SVG],
     // CSS contains @font-face, SCSS contains codepoints, TS contains enums & codepoints
     assetTypes: [OtherAssetType.CSS, OtherAssetType.SCSS, OtherAssetType.TS],
@@ -59,7 +61,9 @@ generateFonts({
     name: "blueprint-icons-20",
     inputDir: path.join(RESOURCES_DIR, "20px"),
     outputDir: path.join(GENERATED_SRC_DIR, "20px"),
-    fontHeight: 20,
+    // N.B. Important: specifying the fontHeight option somehow breaks font path generation, so we should leave it undefined.
+    // See https://github.com/palantir/blueprint/issues/5002
+    fontHeight: undefined,
     fontTypes: [FontAssetType.TTF, FontAssetType.EOT, FontAssetType.WOFF2, FontAssetType.WOFF, FontAssetType.SVG],
     // CSS contains @font-face, SCSS contains codepoints, TS contains enums & codepoints
     assetTypes: [OtherAssetType.CSS, OtherAssetType.SCSS, OtherAssetType.TS],
