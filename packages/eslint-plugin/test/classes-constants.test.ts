@@ -41,7 +41,6 @@ ruleTester.run("classes-constants", classesConstantsRule, {
             errors: [{ messageId: "useBlueprintClasses", column: 16, line: 1 }],
             output: dedent`
                 import { Classes } from "@blueprintjs/core";
-
                 <div className={Classes.FILL} />
             `,
         },
@@ -51,18 +50,15 @@ ruleTester.run("classes-constants", classesConstantsRule, {
             errors: [{ messageId: "useBlueprintClasses", column: 16, line: 1 }],
             output: dedent`
                 import { Classes } from "@blueprintjs/core";
-
                 <div className={${"`${Classes.FILL} and-some-other-things`"}} />
             `,
         },
-
         // literal string inside curly brackets
         {
             code: `<div className={"pt-fill"} />`,
             errors: [{ messageId: "useBlueprintClasses", column: 17, line: 1 }],
             output: dedent`
                 import { Classes } from "@blueprintjs/core";
-
                 <div className={Classes.FILL} />
             `,
         },
@@ -72,18 +68,15 @@ ruleTester.run("classes-constants", classesConstantsRule, {
             errors: [{ messageId: "useBlueprintClasses", column: 17, line: 1 }],
             output: dedent`
                 import { Classes } from "@blueprintjs/core";
-
                 <div className={${"`${Classes.FILL} and-some-other-things`"}} />
             `,
         },
-
         // template string
         {
             code: "<div className={`pt-fill`} />",
             errors: [{ messageId: "useBlueprintClasses", column: 17, line: 1 }],
             output: dedent`
                 import { Classes } from "@blueprintjs/core";
-
                 <div className={Classes.FILL} />
             `,
         },
@@ -93,55 +86,44 @@ ruleTester.run("classes-constants", classesConstantsRule, {
             errors: [{ messageId: "useBlueprintClasses", column: 17, line: 1 }],
             output: dedent`
                 import { Classes } from "@blueprintjs/core";
-
                 <div className={${"`${Classes.FILL} and-some-other-things`"}} />
             `,
         },
-
         // function usage
         {
             code: `classNames("pt-fill");`,
             errors: [{ messageId: "useBlueprintClasses", column: 12, line: 1 }],
             output: dedent`
                 import { Classes } from "@blueprintjs/core";
-
                 classNames(Classes.FILL);
             `,
         },
-
         // array index usage
         {
             code: `classNames["pt-fill"] = true;`,
             errors: [{ messageId: "useBlueprintClasses", column: 12, line: 1 }],
             output: dedent`
                 import { Classes } from "@blueprintjs/core";
-
                 classNames[Classes.FILL] = true;
             `,
         },
-
         // adding import to existing import
-
         {
             code: dedent`
                 import { Dialog } from "@blueprintjs/core";
-
                 classNames["pt-fill"] = true;
             `,
             errors: [{ messageId: "useBlueprintClasses", column: 12, line: 3 }],
             output: dedent`
                 import { Classes, Dialog } from "@blueprintjs/core";
-
                 classNames[Classes.FILL] = true;
             `,
         },
-
         // adding import in alphabetical order
         {
             code: dedent`
                 import { Something } from "@a/somewhere";
                 import { SomethingElse } from "somewhere";
-
                 classNames["pt-fill"] = true;
             `,
             errors: [{ messageId: "useBlueprintClasses", column: 12, line: 4 }],
@@ -149,7 +131,6 @@ ruleTester.run("classes-constants", classesConstantsRule, {
                 import { Something } from "@a/somewhere";
                 import { Classes } from "@blueprintjs/core";
                 import { SomethingElse } from "somewhere";
-
                 classNames[Classes.FILL] = true;
             `,
         },
@@ -162,5 +143,8 @@ ruleTester.run("classes-constants", classesConstantsRule, {
 
         // it should not touch icons as theyre handled by a different rule
         '<div className="pt-icon-folder-open" />',
+        // don't flag strings in import statements
+        'import { test } from "packagewithpt-thatshouldnterror";',
+        'export { test } from "packagewithpt-thatshouldnterror";',
     ],
 });
