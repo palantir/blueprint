@@ -106,7 +106,7 @@ export interface IEditableTextProps extends IntentProps, Props {
     selectAllOnFocus?: boolean;
 
     /**
-     * Whether the input should stop the evnet propagation when escape is pressed
+     * Whether the input should stop the event propagation when escape is pressed
      *
      * @default false
      */
