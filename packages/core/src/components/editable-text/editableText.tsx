@@ -106,6 +106,13 @@ export interface IEditableTextProps extends IntentProps, Props {
     selectAllOnFocus?: boolean;
 
     /**
+     * Whether the input should stop the evnet propagation when escape is pressed
+     *
+     * @default false
+     */
+    stopPropagation?: boolean;
+
+    /**
      * The type of input that should be shown, when not `multiline`.
      */
     type?: string;
@@ -347,6 +354,9 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
         /* eslint-disable-next-line deprecation/deprecation */
         const { altKey, ctrlKey, metaKey, shiftKey, which } = event;
         if (which === Keys.ESCAPE) {
+            if (this.props.stopPropagation === true) {
+                event.stopPropagation();
+            }
             this.cancelEditing();
             return;
         }
