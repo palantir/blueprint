@@ -25,7 +25,7 @@ import { getProgram } from "./utils/getProgram";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
 // currently support pt- and bp3- prefixes.
-const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.]?((pt|bp3)-(?!icon-?)[\w-]+)/g;
+const BLUEPRINT_CLASSNAME_PATTERN = /(?<![\w])((?:pt|bp3)-(?!icon)[\w-]+)/g;
 
 type MessageIds = "useBlueprintClasses";
 
