@@ -162,5 +162,9 @@ ruleTester.run("classes-constants", classesConstantsRule, {
 
         // it should not touch icons as theyre handled by a different rule
         '<div className="pt-icon-folder-open" />',
+
+        // don't flag strings in export/import statements
+        'import { test } from "packagewithpt-thatshouldnterror";',
+        'export { test } from "packagewithpt-thatshouldnterror";',
     ],
 });
