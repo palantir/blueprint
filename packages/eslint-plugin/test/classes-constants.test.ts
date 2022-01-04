@@ -166,5 +166,9 @@ ruleTester.run("classes-constants", classesConstantsRule, {
         // don't flag strings in export/import statements
         'import { test } from "packagewithpt-thatshouldnterror";',
         'export { test } from "packagewithpt-thatshouldnterror";',
+
+        // don't flag non applicable strings in function calls
+        `myFunction("stringwithpt-thatshouldnt-error");`,
+        "myFunction(`stringwithpt-thatshouldnt-error`);",
     ],
 });
