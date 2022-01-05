@@ -25,7 +25,7 @@ import { getProgram } from "./utils/getProgram";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
 // currently support "pt-", "bp3-", "bp4-" prefixes.
-const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.]?((pt|bp3|bp4)-(?!icon-?)[\w-]+)/g;
+const BLUEPRINT_CLASSNAME_PATTERN = /(?<![\w])((?:pt|bp3|bp4)-(?!icon)[\w-]+)/g;
 
 type MessageIds = "useBlueprintClasses";
 
@@ -52,6 +52,13 @@ export const classesConstantsRule = createRule<[], MessageIds>({
 });
 
 function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | TSESTree.TemplateElement): void {
+    // We shouldn't lint on strings from imports/exports
+    if (
+        node.parent?.type === AST_NODE_TYPES.ImportDeclaration ||
+        node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration
+    ) {
+        return;
+    }
     const nodeValue = node.type === AST_NODE_TYPES.Literal ? node.raw : node.value.raw;
     const prefixMatches = getAllMatches(nodeValue);
     if (prefixMatches.length > 0) {
