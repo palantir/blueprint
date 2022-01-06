@@ -92,7 +92,7 @@ $minimal-dark-tag-intent-colors-modern: (
   "primary": ($pt-intent-primary, $blue5, $blue6, $blue6),
   "success": ($pt-intent-success, $green5, $green6, $green6),
   "warning": ($pt-intent-warning, $orange5, $orange6, $orange6),
-  "danger": ($pt-intent-danger, $red5, $red1, $red6, $red6)
+  "danger": ($pt-intent-danger, $red5, $red1, $red6)
 );
 
 // Toast variables
@@ -610,6 +610,7 @@ table.#{$ns}-html-table {
     $text-color,
     $hover-text-color,
     $active-text-color,
+    // $icon-color, // unused
   ) {
     .#{$ns}-dark & {
       background-color: rgba($background-color, 0.2);
@@ -783,7 +784,7 @@ table.#{$ns}-html-table {
     $text-color,
     $hover-color,
     $active-color,
-    $icon-color,
+    $icon-color
   ) {
     .#{$ns}-icon:first-child {
       color: $icon-color;
