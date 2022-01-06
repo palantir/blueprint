@@ -109,6 +109,39 @@ ruleTester.run("classes-constants", classesConstantsRule, {
             `,
         },
 
+        // function usage with literal string and preceding period
+        {
+            code: `myFunction(".pt-fill");`,
+            errors: [{ messageId: "useBlueprintClasses", column: 12, line: 1 }],
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                myFunction(${"`.${Classes.FILL}`"});
+            `,
+        },
+
+        // function usage literal string with preceding period and preceding class
+        {
+            code: `myFunction("my-class .pt-fill");`,
+            errors: [{ messageId: "useBlueprintClasses", column: 12, line: 1 }],
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                myFunction(${"`my-class .${Classes.FILL}`"});
+            `,
+        },
+
+        // function usage with template string and preceding period
+        {
+            code: "myFunction(`my-class .pt-fill`);",
+            errors: [{ messageId: "useBlueprintClasses", column: 12, line: 1 }],
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                myFunction(${"`my-class .${Classes.FILL}`"});
+            `,
+        },
+
         // array index usage
         {
             code: `classNames["pt-fill"] = true;`,
