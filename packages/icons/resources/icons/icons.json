@@ -3722,13 +3722,13 @@
     {
         "displayName": "Ship",
         "iconName": "ship",
-        "tags": "transportation, ship, boat, cruise, yacht, move, supply, supply chain, trip, shipping",
+        "tags": "transportation, ship, boat, cruise, yacht, supply, supply chain, trip, shipping",
         "group": "interface"
     },
     {
         "displayName": "Cargo Ship",
-        "iconName": "ship-cargo",
-        "tags": "transportation, cargo, cargo ship, freight, ship, boat, cruise, yacht, move, supply, supply chain, shipping container, shipping",
+        "iconName": "cargo-ship",
+        "tags": "transportation, cargo, freight, ship, boat, cruise, yacht, supply, supply chain, container, shipping",
         "group": "interface"
     }
 ]
