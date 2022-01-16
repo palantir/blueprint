@@ -28,7 +28,14 @@ export type { IconName };
 const IconNamesNew = {} as Record<PascalCase<IconName>, IconName>;
 const IconNamesLegacy = {} as Record<ScreamingSnakeCase<IconName>, IconName>;
 
-for (const name of Object.values(BlueprintIcons_16) as IconName[]) {
+const BlueprintIconsMap: Record<string, IconName> = BlueprintIcons_16;
+
+for (const key in BlueprintIconsMap) {
+    if (!BlueprintIconsMap.propertyIsEnumerable(key)) {
+        continue;
+    }
+
+    const name = BlueprintIconsMap[key];
     IconNamesNew[pascalCase(name) as PascalCase<IconName>] = name;
     IconNamesLegacy[snakeCase(name).toUpperCase() as ScreamingSnakeCase<IconName>] = name;
 }
