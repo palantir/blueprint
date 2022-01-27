@@ -339,6 +339,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
                 [Classes.MINIMAL]: this.props.minimal,
                 [Classes.POPOVER_CAPTURING_DISMISS]: this.props.captureDismiss,
+                [Classes.POPOVER_OUT_OF_BOUNDARIES]: popperProps.outOfBoundaries === true,
             },
             this.props.popoverClassName,
         );

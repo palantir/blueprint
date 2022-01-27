@@ -422,6 +422,8 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 [CoreClasses.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
                 [CoreClasses.MINIMAL]: this.props.minimal,
                 [Classes.POPOVER2_CAPTURING_DISMISS]: this.props.captureDismiss,
+                [Classes.POPOVER2_REFERENCE_HIDDEN]: popperProps.isReferenceHidden === true,
+                [Classes.POPOVER2_POPPER_ESCAPED]: popperProps.hasPopperEscaped === true,
             },
             `${Classes.POPOVER2_CONTENT_PLACEMENT}-${basePlacement}`,
             this.props.popoverClassName,
