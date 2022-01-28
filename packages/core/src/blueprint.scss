@@ -13,6 +13,7 @@ Licensed under the Apache License, Version 2.0.
 @import "reset";
 @import "typography";
 @import "accessibility/focus-states";
+@import "dark-theme";
 
 // Button variables and overrides
 $button-active-minimal-intent-text-modern: (
@@ -28,27 +29,10 @@ $dark-minimal-button-intents-modern: (
   "warning": (rgba($orange3, 0.2), $orange5, rgba($orange3, 0.3), $orange6),
   "danger": (rgba($red3, 0.2), $red5, rgba($red3, 0.3), $red6)
 );
-$minimal-button-background-color-hover: rgba($gray3, 0.15);
-$minimal-button-background-color-active: rgba($gray3, 0.3);
-
-// Checkbox and Radio variable overrides
-$dark-control-background-color: $gray4;
-$dark-control-background-color-hover: $gray3;
-$dark-control-background-color-active: linear-gradient(0deg, rgba($white, 0.1), rgba($white, 0.1)),
-  linear-gradient(0deg, $gray2, $gray2);
 
 // Editable text variable overrides
 $input-placeholder-color: $gray1;
 $dark-input-placeholder-color: $gray4;
-
-// Input variables and overrides
-$dark-input-intent-box-shadow-colors: (
-  "primary": $blue4,
-  "success": $green4,
-  "warning": $orange4,
-  "danger" : $red4,
-);
-$dark-input-shadow-color-focus: $blue4;
 
 // Slider variable overrides
 $button-box-shadow-overlay:
@@ -155,7 +139,7 @@ $tree-intent-icon-colors-modern: (
     background: $orange5;
     color: $pt-text-color;
 
-    .#{$ns}-icon > svg {
+    &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
       fill: rgba($dark-gray1, 0.7);
     }
 
@@ -187,7 +171,7 @@ $tree-intent-icon-colors-modern: (
       background: none;
 
       .#{$ns}-dark & {
-        .#{$ns}-icon > svg {
+        &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
           fill: $orange5;
         }
       }
@@ -246,37 +230,7 @@ $tree-intent-icon-colors-modern: (
   }
 }
 
-// Contrast for checkboxes and radio buttons
-.#{$ns}-control {
-  input:focus ~ .#{$ns}-control-indicator {
-    outline: $blue3 auto 2px;
-  }
-
-  &.#{$ns}-checkbox, &.#{$ns}-radio {
-    .#{$ns}-control-indicator {
-      box-shadow:
-        inset 0 0 0 $button-border-width rgba($black, 0.5),
-        inset 0 (-$button-border-width) 0 rgba($black, 0.1);
-    }
-  }
-
-  .#{$ns}-dark & {
-    input:focus ~ .#{$ns}-control-indicator {
-      outline: $blue5 auto 2px;
-    }
-
-    &.#{$ns}-checkbox, &.#{$ns}-radio {
-      input:not(:disabled):not(:checked) ~ .#{$ns}-control-indicator {
-        box-shadow: $dark-button-box-shadow-active;
-      }
-
-      input:not(:disabled):active:checked ~ .#{$ns}-control-indicator {
-        background: linear-gradient(180deg, rgba($white, 0.1) 0%, rgba($white, 0) 100%),
-          linear-gradient(0deg, $blue1, $blue1);
-      }
-    }
-  }
-}
+// Contrast for checkboxes and radio buttons - no overrides necessary, modern colors are now built-in
 
 // Contrast for HTML tables
 table.#{$ns}-html-table {
@@ -300,40 +254,7 @@ table.#{$ns}-html-table {
   }
 }
 
-// Contrast for inputs
-.#{$ns}-input {
-  // Use intent-styled box-shadows for default intent
-  box-shadow: input-transition-shadow($input-shadow-color-focus),
-      inset border-shadow(1, $gray2),
-      $pt-input-box-shadow;
-
-  &:focus {
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
-  }
-
-  .#{$ns}-dark & {
-    box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus),
-      inset border-shadow(1, $gray3),
-      $pt-dark-input-box-shadow;
-
-    &:focus {
-      box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
-                    $pt-dark-input-box-shadow;
-    }
-  }
-
-  &:disabled {
-    box-shadow: none;
-  }
-}
-
-@each $intent, $color in $dark-input-intent-box-shadow-colors {
-  &.#{$ns}-intent-#{$intent} {
-    .#{$ns}-input {
-      @include pt-dark-input-intent($color);
-    }
-  }
-}
+// Contrast for inputs - no overrides necessary, modern colors are now built-in
 
 // Contrast for menus - no overrides necessary, modern colors are now built-in
 
@@ -355,104 +276,7 @@ table.#{$ns}-html-table {
   }
 }
 
-// Contrast for switches
-.#{$ns}-control.#{$ns}-switch {
-
-  // Switch background styles
-  input:not(:disabled):hover ~ .#{$ns}-control-indicator {
-    background-color: rgba($gray3, 0.5);
-  }
-
-  input:not(:disabled):active ~ .#{$ns}-control-indicator {
-    background-color: rgba($gray3, 0.6);
-  }
-
-  // Checked switch background styles
-  input:checked:not(:disabled) ~ .#{$ns}-control-indicator {
-    background: $blue3;
-  }
-
-  input:checked:not(:disabled):hover ~ .#{$ns}-control-indicator {
-    background: $blue2;
-  }
-
-  input:checked:not(:disabled):active ~ .#{$ns}-control-indicator {
-    background: $blue1;
-  }
-
-  // Switch handle styles
-  .#{$ns}-control-indicator::before {
-    background: linear-gradient(180deg, rgba($white, 0.8) 0%, rgba($white, 0) 100%),
-  linear-gradient(0deg, $light-gray5, $light-gray5);
-  }
-
-  input:not(:disabled):hover ~ .#{$ns}-control-indicator::before {
-    background: linear-gradient(180deg, rgba($white, 0.5) 0%, rgba($white, 0) 100%),
-    linear-gradient(0deg, $light-gray4, $light-gray4);
-  }
-
-  input:not(:disabled):active ~ .#{$ns}-control-indicator::before {
-    background: $light-gray2;
-  }
-
-  // Dark switch styles
-  .#{$ns}-dark & {
-    // Dark switch background styles
-    input:not(:disabled) ~ .#{$ns}-control-indicator {
-      background: rgba($black, 0.5);
-    }
-
-    input:not(:disabled):hover ~ .#{$ns}-control-indicator {
-      background: rgba($black, 0.65);
-    }
-
-    input:not(:disabled):active ~ .#{$ns}-control-indicator {
-      background: rgba($black, 0.8);
-    }
-
-    // Dark checked switch background styles
-    input:checked:not(:disabled) ~ .#{$ns}-control-indicator {
-      background: $blue3;
-    }
-
-    input:checked:not(:disabled):hover ~ .#{$ns}-control-indicator {
-      background: $blue2;
-    }
-
-    input:checked:not(:disabled):active ~ .#{$ns}-control-indicator {
-      background: $blue1;
-    }
-
-    // Dark switch handle styles
-    input:not(:disabled):not(:checked) ~ .#{$ns}-control-indicator::before {
-      background: $gray4;
-    }
-
-    input:not(:disabled):not(:checked):hover ~ .#{$ns}-control-indicator::before {
-      background: $gray3;
-    }
-
-    input:not(:disabled):not(:checked):active ~ .#{$ns}-control-indicator::before {
-      background: linear-gradient(0deg, rgba($white, 0.1), rgba($white, 0.1)),
-      linear-gradient(0deg, $gray2, $gray2);
-    }
-
-    // Dark checked switch handle styles
-    input:checked:not(:disabled) ~ .#{$ns}-control-indicator::before {
-      background: linear-gradient(180deg, rgba($white, 0.8) 0%, rgba($white, 0) 100%),
-      linear-gradient(0deg, $light-gray5, $light-gray5);
-    }
-
-    input:checked:not(:disabled):hover ~ .#{$ns}-control-indicator::before {
-      background: linear-gradient(180deg, rgba($white, 0.5) 0%, rgba($white, 0) 100%),
-      linear-gradient(0deg, $light-gray4, $light-gray4);
-    }
-
-    input:checked:not(:disabled):active ~ .#{$ns}-control-indicator::before {
-      background: $light-gray2;
-    }
-  }
-}
+// Contrast for switches - no overrides necessary, modern colors are now built-in
 
 // Contrast for tags
 .#{$ns}-tag {

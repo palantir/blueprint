@@ -9,7 +9,7 @@ Deprecated: use [Tooltip2](#popover2-package/tooltip2)
 
 This component is **deprecated since @blueprintjs/core v3.38.0** in favor of the new
 Tooltip2 component available in the `@blueprintjs/popover2` package. You should migrate
-to the new API which will become the standard in Blueprint v4.
+to the new API which will become the standard in Blueprint v5.
 
 </div>
 

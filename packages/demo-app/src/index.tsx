@@ -16,6 +16,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { FocusStyleManager } from "@blueprintjs/core";
+
 import { Examples } from "./examples/Examples";
 
+FocusStyleManager.onlyShowFocusOnTabs();
 ReactDOM.render(<Examples />, document.querySelector("#blueprint-demo-app"));

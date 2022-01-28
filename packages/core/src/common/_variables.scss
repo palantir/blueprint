@@ -117,8 +117,8 @@ $pt-transition-duration: 100ms !default;
 
 // Light theme styles
 
-$pt-input-box-shadow: inset border-shadow(0.15),
-                      inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
+$pt-input-box-shadow: inset 0 0 0 1px rgba($black, 0.2),
+                      inset 0 1px 1px rgba($black, 0.5) !default;
 
 $pt-dialog-box-shadow: $pt-elevation-shadow-4 !default;
 $pt-popover-box-shadow: $pt-elevation-shadow-3 !default;
@@ -126,9 +126,17 @@ $pt-tooltip-box-shadow: $pt-popover-box-shadow !default;
 
 // Dark theme styles
 
-$pt-dark-input-box-shadow: inset border-shadow(0.3),
-                           inset 0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+$pt-dark-input-box-shadow: inset 0 1px 0 0 rgba($black, 0.6),
+                           inset -1px 0 0 rgba($black, 0.6),
+                           inset 1px 0 0 rgba($black, 0.6),
+                           inset 0 -1px 0 0 $gray3 !default;
 
 $pt-dark-dialog-box-shadow: $pt-dark-elevation-shadow-4 !default;
 $pt-dark-popover-box-shadow: $pt-dark-elevation-shadow-3 !default;
 $pt-dark-tooltip-box-shadow: $pt-dark-popover-box-shadow !default;
+$pt-dark-input-intent-box-shadow-colors: (
+  "primary": $blue4,
+  "success": $green4,
+  "warning": $orange4,
+  "danger" : $red4,
+) !default;
