@@ -199,8 +199,6 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private hotkeysImpl: TableHotkeys;
 
-    public grid: Grid | null = null;
-
     public locator?: Locator;
 
     private resizeSensorDetach?: () => void;
@@ -272,6 +270,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             columnIdToIndex,
             columnWidths: newColumnWidths,
             focusedCell,
+            grid: null,
             horizontalGuides: [],
             isLayoutLocked: false,
             isReordering: false,
@@ -324,13 +323,13 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
      * If no indices are provided, default to using the tallest visible cell from all columns in view.
      */
     public resizeRowsByTallestCell(columnIndices?: number | number[]) {
-        if (this.grid == null || this.state.viewportRect === undefined || this.locator === undefined) {
+        if (this.state.grid == null || this.state.viewportRect === undefined || this.locator === undefined) {
             console.warn(Errors.TABLE_UNMOUNTED_RESIZE_WARNING);
             return;
         }
 
         const rowHeights = resizeRowsByTallestCell(
-            this.grid,
+            this.state.grid,
             this.state.viewportRect,
             this.locator,
             this.state.rowHeights.length,
@@ -361,10 +360,11 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         const {
             numFrozenColumnsClamped: numFrozenColumns,
             numFrozenRowsClamped: numFrozenRows,
+            grid,
             viewportRect,
         } = this.state;
 
-        if (viewportRect === undefined || this.grid === null || this.quadrantStackInstance === undefined) {
+        if (viewportRect === undefined || grid === null || this.quadrantStackInstance === undefined) {
             return;
         }
 
@@ -373,8 +373,8 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             region,
             currScrollLeft,
             currScrollTop,
-            this.grid.getCumulativeWidthBefore,
-            this.grid.getCumulativeHeightBefore,
+            grid.getCumulativeWidthBefore,
+            grid.getCumulativeHeightBefore,
             numFrozenRows,
             numFrozenColumns,
         );
@@ -629,8 +629,9 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private gridDimensionsMatchProps() {
         const { children, numRows } = this.props;
+        const { grid } = this.state;
         return (
-            this.grid != null && this.grid.numCols === React.Children.count(children) && this.grid.numRows === numRows
+            grid != null && grid.numCols === React.Children.count(children) && grid.numRows === numRows
         );
     }
 
@@ -639,34 +640,34 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private shouldDisableVerticalScroll() {
         const { enableGhostCells } = this.props;
-        const { viewportRect } = this.state;
+        const { grid, viewportRect } = this.state;
 
-        if (this.grid === null || viewportRect === undefined) {
+        if (grid === null || viewportRect === undefined) {
             return false;
         }
 
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells!);
+        const rowIndices = grid.getRowIndicesInRect(viewportRect, enableGhostCells!);
 
         const isViewportUnscrolledVertically = viewportRect != null && viewportRect.top === 0;
         const areRowHeadersLoading = hasLoadingOption(this.props.loadingOptions, TableLoadingOption.ROW_HEADERS);
-        const areGhostRowsVisible = enableGhostCells! && this.grid.isGhostIndex(rowIndices.rowIndexEnd, 0);
+        const areGhostRowsVisible = enableGhostCells! && grid.isGhostIndex(rowIndices.rowIndexEnd, 0);
 
         return areGhostRowsVisible && (isViewportUnscrolledVertically || areRowHeadersLoading);
     }
 
     private shouldDisableHorizontalScroll() {
         const { enableGhostCells } = this.props;
-        const { viewportRect } = this.state;
+        const { grid, viewportRect } = this.state;
 
-        if (this.grid === null || viewportRect === undefined) {
+        if (grid === null || viewportRect === undefined) {
             return false;
         }
 
-        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells!);
+        const columnIndices = grid.getColumnIndicesInRect(viewportRect, enableGhostCells!);
 
         const isViewportUnscrolledHorizontally = viewportRect != null && viewportRect.left === 0;
         const areColumnHeadersLoading = hasLoadingOption(this.props.loadingOptions, TableLoadingOption.COLUMN_HEADERS);
-        const areGhostColumnsVisible = enableGhostCells! && this.grid.isGhostColumn(columnIndices.columnIndexEnd);
+        const areGhostColumnsVisible = enableGhostCells! && grid.isGhostColumn(columnIndices.columnIndexEnd);
 
         return areGhostColumnsVisible && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
     }
@@ -746,7 +747,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenColumnsOnly: boolean = false,
     ) => {
-        const { focusedCell, selectedRegions, viewportRect } = this.state;
+        const { focusedCell, grid, selectedRegions, viewportRect } = this.state;
         const {
             defaultColumnWidth,
             enableMultipleSelection,
@@ -759,7 +760,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             selectedRegionTransform,
         } = this.props;
 
-        if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
+        if (grid === null || this.locator === undefined || viewportRect === undefined) {
             return undefined;
         }
 
@@ -770,7 +771,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             ),
         });
 
-        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
+        const columnIndices = grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
         const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
         const columnIndexEnd = showFrozenColumnsOnly ? this.getMaxFrozenColumnIndex() : columnIndices.columnIndexEnd;
 
@@ -781,7 +782,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
                     focusedCell={focusedCell}
-                    grid={this.grid}
+                    grid={grid}
                     isReorderable={enableColumnReordering}
                     isResizable={enableColumnResizing}
                     loading={hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
@@ -815,7 +816,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenRowsOnly: boolean = false,
     ) => {
-        const { focusedCell, selectedRegions, viewportRect } = this.state;
+        const { focusedCell, grid, selectedRegions, viewportRect } = this.state;
         const {
             defaultRowHeight,
             enableMultipleSelection,
@@ -829,7 +830,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             selectedRegionTransform,
         } = this.props;
 
-        if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
+        if (grid === null || this.locator === undefined || viewportRect === undefined) {
             return undefined;
         }
 
@@ -840,7 +841,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             ),
         });
 
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
+        const rowIndices = grid.getRowIndicesInRect(viewportRect, enableGhostCells);
         const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
         const rowIndexEnd = showFrozenRowsOnly ? this.getMaxFrozenRowIndex() : rowIndices.rowIndexEnd;
 
@@ -850,7 +851,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                     defaultRowHeight={defaultRowHeight!}
                     enableMultipleSelection={enableMultipleSelection}
                     focusedCell={focusedCell}
-                    grid={this.grid}
+                    grid={grid}
                     locator={this.locator}
                     isReorderable={enableRowReordering}
                     isResizable={enableRowResizing}
@@ -911,6 +912,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     ) => {
         const {
             focusedCell,
+            grid,
             numFrozenColumnsClamped: numFrozenColumns,
             numFrozenRowsClamped: numFrozenRows,
             selectedRegions,
@@ -924,12 +926,12 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             selectedRegionTransform,
         } = this.props;
 
-        if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
+        if (grid === null || this.locator === undefined || viewportRect === undefined) {
             return undefined;
         }
 
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
-        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
+        const rowIndices = grid.getRowIndicesInRect(viewportRect, enableGhostCells);
+        const columnIndices = grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
 
         // start beyond the frozen area if rendering unrelated quadrants, so we
         // don't render duplicate cells underneath the frozen ones.
@@ -951,7 +953,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
                     focusedCell={focusedCell}
-                    grid={this.grid}
+                    grid={grid}
                     loading={hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                     locator={this.locator}
                     onCompleteRender={onCompleteRender}
@@ -992,19 +994,21 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private invalidateGrid() {
-        this.grid = null;
+        this.setState({ grid: null });
     }
 
     private validateGrid() {
-        if (this.grid == null) {
+        if (this.state.grid == null) {
             const { defaultRowHeight, defaultColumnWidth } = this.props;
             const { rowHeights, columnWidths } = this.state;
-            this.grid = new Grid(rowHeights, columnWidths, Grid.DEFAULT_BLEED, defaultRowHeight, defaultColumnWidth);
+            const grid = new Grid(rowHeights, columnWidths, Grid.DEFAULT_BLEED, defaultRowHeight, defaultColumnWidth);
             // HACKHACK: non-null assertion
             this.invokeOnVisibleCellsChangeCallback(this.state.viewportRect!);
-            this.hotkeysImpl.setGrid(this.grid);
+            this.hotkeysImpl.setGrid(grid);
+            setTimeout(() => this.setState({ grid  }));
+            return grid;
         }
-        return this.grid;
+        return this.state.grid;
     }
 
     /**
@@ -1051,13 +1055,14 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private styleBodyRegion = (region: Region, quadrantType?: QuadrantType): React.CSSProperties => {
         const { numFrozenColumns } = this.props;
+        const { grid } = this.state;
 
-        if (this.grid == null) {
+        if (grid == null) {
             return {};
         }
 
         const cardinality = Regions.getRegionCardinality(region);
-        const style = this.grid.getRegionStyle(region);
+        const style = grid.getRegionStyle(region);
 
         // ensure we're not showing borders at the boundary of the frozen-columns area
         const canHideRightBorder =
@@ -1065,8 +1070,8 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             numFrozenColumns != null &&
             numFrozenColumns > 0;
 
-        const fixedHeight = this.grid.getHeight();
-        const fixedWidth = this.grid.getWidth();
+        const fixedHeight = grid.getHeight();
+        const fixedWidth = grid.getWidth();
 
         // include a correction in some cases to hide borders along quadrant boundaries
         const alignmentCorrection = 1;
@@ -1101,12 +1106,13 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private styleMenuRegion = (region: Region): React.CSSProperties => {
+        const { grid } = this.state;
         const { viewportRect } = this.state;
-        if (this.grid == null || viewportRect == null) {
+        if (grid == null || viewportRect == null) {
             return {};
         }
         const cardinality = Regions.getRegionCardinality(region);
-        const style = this.grid.getRegionStyle(region);
+        const style = grid.getRegionStyle(region);
 
         switch (cardinality) {
             case RegionCardinality.FULL_TABLE:
@@ -1124,12 +1130,12 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private styleColumnHeaderRegion = (region: Region): React.CSSProperties => {
-        const { viewportRect } = this.state;
-        if (this.grid == null || viewportRect == null) {
+        const { grid, viewportRect } = this.state;
+        if (grid == null || viewportRect == null) {
             return {};
         }
         const cardinality = Regions.getRegionCardinality(region);
-        const style = this.grid.getRegionStyle(region);
+        const style = grid.getRegionStyle(region);
 
         switch (cardinality) {
             case RegionCardinality.FULL_TABLE:
@@ -1147,12 +1153,12 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private styleRowHeaderRegion = (region: Region): React.CSSProperties => {
-        const { viewportRect } = this.state;
-        if (this.grid == null || viewportRect == null) {
+        const { grid, viewportRect } = this.state;
+        if (grid == null || viewportRect == null) {
             return {};
         }
         const cardinality = Regions.getRegionCardinality(region);
-        const style = this.grid.getRegionStyle(region);
+        const style = grid.getRegionStyle(region);
         switch (cardinality) {
             case RegionCardinality.FULL_TABLE:
                 style.top = "-1px";
@@ -1329,12 +1335,12 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private updateLocator() {
-        if (this.locator === undefined || this.grid == null) {
+        if (this.locator === undefined || this.state.grid == null) {
             return;
         }
 
         this.locator
-            .setGrid(this.grid)
+            .setGrid(this.state.grid)
             .setNumFrozenRows(this.state.numFrozenRowsClamped)
             .setNumFrozenColumns(this.state.numFrozenColumnsClamped);
     }
@@ -1357,11 +1363,12 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private invokeOnVisibleCellsChangeCallback(viewportRect: Rect) {
-        if (this.grid == null) {
+        const { grid } = this.state;
+        if (grid == null) {
             return;
         }
-        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect);
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect);
+        const columnIndices = grid.getColumnIndicesInRect(viewportRect);
+        const rowIndices = grid.getRowIndicesInRect(viewportRect);
         this.props.onVisibleCellsChange?.(rowIndices, columnIndices);
     }
 

@@ -977,7 +977,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     }
 
     /**
-     * Measures the desired width of the row header based on its tallest
+     * Measures the desired width of the row header based on its widest
      * contents.
      */
     private measureDesiredRowHeaderWidth() {
