@@ -252,7 +252,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         }
     }
 
-    public shouldComponentUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
+    public shouldComponentUpdate(nextProps: IInternalHeaderProps, nextState: IHeaderState) {
         return (
             !CoreUtils.shallowCompareKeys(this.state, nextState) ||
             !CoreUtils.shallowCompareKeys(this.props, nextProps, {
