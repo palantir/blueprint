@@ -31,5 +31,3 @@ ReactDOM.render(
 
 `EditableCell` also binds its own hotkeys, so we have provided a new component `EditableCell2` which uses the new
 hotkeys API.
-
-@reactExample TableSortableExample

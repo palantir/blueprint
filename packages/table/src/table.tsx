@@ -63,7 +63,7 @@ import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./t
 
 /** @deprecated use Table2, which supports usage of the new hotkeys API in the same application */
 @HotkeysTarget
-export class Table extends AbstractComponent2<TableProps, Omit<TableState, "grid">, TableSnapshot> {
+export class Table extends AbstractComponent2<TableProps, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 
     public static defaultProps: TablePropsDefaults = {

@@ -14,7 +14,7 @@
  */
 
 import type { ColumnProps } from "./column";
-import type { Grid, Rect } from "./common";
+import type { Rect } from "./common";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import type { Region } from "./regions";
 
@@ -87,8 +87,6 @@ export interface TableState {
     columnIdToIndex: { [key: string]: number };
 
     childrenArray: Array<React.ReactElement<ColumnProps>>;
-
-    grid: Grid | null;
 }
 
 export interface TableSnapshot {
