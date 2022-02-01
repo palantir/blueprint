@@ -240,6 +240,10 @@ export interface ITableQuadrantStackProps extends Props {
 // confusingly collapse to zero height unless we establish this default.
 const DEFAULT_COLUMN_HEADER_HEIGHT = 30;
 
+// HACKHACK: used on first render of the top left quadrant to avoid collapsing
+// its width to 0. originally defined in headers/_common.scss
+const MIN_ROW_HEADER_WIDTH = 30;
+
 // the debounce delay for updating the view on scroll. elements will be resized
 // and rejiggered once scroll has ceased for at least this long, but not before.
 const DEFAULT_VIEW_SYNC_DELAY = 500;
@@ -876,7 +880,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     private maybeSetQuadrantSizes = (width: number, height: number) => {
         this.maybesSetQuadrantSize(QuadrantType.LEFT, "width", width);
         this.maybesSetQuadrantSize(QuadrantType.TOP, "height", height);
-        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "width", width);
+        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "width", Utils.clamp(width, MIN_ROW_HEADER_WIDTH));
         this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "height", height);
     };
 
@@ -895,10 +899,11 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     };
 
     private maybesSetQuadrantRowHeaderSizes = (width: number) => {
-        this.maybeSetQuadrantRowHeaderSize(QuadrantType.MAIN, width);
-        this.maybeSetQuadrantRowHeaderSize(QuadrantType.TOP, width);
-        this.maybeSetQuadrantRowHeaderSize(QuadrantType.LEFT, width);
-        this.maybeSetQuadrantRowHeaderSize(QuadrantType.TOP_LEFT, width);
+        const clampedWidth = Utils.clamp(width, MIN_ROW_HEADER_WIDTH);
+        this.maybeSetQuadrantRowHeaderSize(QuadrantType.MAIN, clampedWidth);
+        this.maybeSetQuadrantRowHeaderSize(QuadrantType.TOP, clampedWidth);
+        this.maybeSetQuadrantRowHeaderSize(QuadrantType.LEFT, clampedWidth);
+        this.maybeSetQuadrantRowHeaderSize(QuadrantType.TOP_LEFT, clampedWidth);
     };
 
     private maybeSetQuadrantRowHeaderSize = (quadrantType: QuadrantType, width: number) => {
@@ -909,10 +914,11 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     };
 
     private maybeSetQuadrantMenuElementSizes = (width: number, height: number) => {
-        this.maybeSetQuadrantMenuElementSize(QuadrantType.MAIN, width, height);
-        this.maybeSetQuadrantMenuElementSize(QuadrantType.TOP, width, height);
-        this.maybeSetQuadrantMenuElementSize(QuadrantType.LEFT, width, height);
-        this.maybeSetQuadrantMenuElementSize(QuadrantType.TOP_LEFT, width, height);
+        const clampedWidth = Utils.clamp(width, MIN_ROW_HEADER_WIDTH);
+        this.maybeSetQuadrantMenuElementSize(QuadrantType.MAIN, clampedWidth, height);
+        this.maybeSetQuadrantMenuElementSize(QuadrantType.TOP, clampedWidth, height);
+        this.maybeSetQuadrantMenuElementSize(QuadrantType.LEFT, clampedWidth, height);
+        this.maybeSetQuadrantMenuElementSize(QuadrantType.TOP_LEFT, clampedWidth, height);
     };
 
     private maybeSetQuadrantMenuElementSize = (quadrantType: QuadrantType, width: number, height: number) => {
