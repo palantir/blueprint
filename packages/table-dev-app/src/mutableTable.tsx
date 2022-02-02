@@ -322,6 +322,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         table: (ref: Table2) => (this.tableInstance = ref),
     };
 
+    // eslint-disable-next-line @typescript-eslint/ban-types
     public constructor(props: {}) {
         super(props);
         this.stateStore = new LocalStore<IMutableTableState>("BP_TABLE_MUTABLE_TABLE_DEV_PREVIEW", true);

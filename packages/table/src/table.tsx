@@ -856,7 +856,9 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
 
         const { id, cellRenderer, columnHeaderCellRenderer, ...spreadableProps } = columnProps;
 
-        const columnLoading = hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.HEADER) || hasLoadingOption(this.props.loadingOptions, TableLoadingOption.COLUMN_HEADERS);
+        const columnLoading =
+            hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.HEADER) ||
+            hasLoadingOption(this.props.loadingOptions, TableLoadingOption.COLUMN_HEADERS);
 
         if (columnHeaderCellRenderer != null) {
             const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
@@ -1037,7 +1039,9 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             return undefined;
         }
 
-        const inheritedIsLoading = hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS) || hasLoadingOption(this.props.loadingOptions, TableLoadingOption.CELLS);
+        const inheritedIsLoading =
+            hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS) ||
+            hasLoadingOption(this.props.loadingOptions, TableLoadingOption.CELLS);
 
         return React.cloneElement(cell, {
             ...restColumnProps,

@@ -716,7 +716,9 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
         const { id, cellRenderer, columnHeaderCellRenderer, ...spreadableProps } = columnProps;
 
-        const columnLoading = hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.HEADER) || hasLoadingOption(this.props.loadingOptions, TableLoadingOption.COLUMN_HEADERS);
+        const columnLoading =
+            hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.HEADER) ||
+            hasLoadingOption(this.props.loadingOptions, TableLoadingOption.COLUMN_HEADERS);
 
         if (columnHeaderCellRenderer != null) {
             const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
@@ -882,14 +884,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             return undefined;
         }
 
-        const {
-            id,
-            cellRenderer,
-            columnHeaderCellRenderer,
-            name,
-            nameRenderer,
-            ...restColumnProps
-        } = columnProps;
+        const { id, cellRenderer, columnHeaderCellRenderer, name, nameRenderer, ...restColumnProps } = columnProps;
 
         // HACKHACK: cellRenderer prop has a default value, so we can assert non-null
         const cell = cellRenderer!(rowIndex, columnIndex);
@@ -897,7 +892,9 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             return undefined;
         }
 
-        const inheritedIsLoading = hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS) || hasLoadingOption(this.props.loadingOptions, TableLoadingOption.CELLS);
+        const inheritedIsLoading =
+            hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS) ||
+            hasLoadingOption(this.props.loadingOptions, TableLoadingOption.CELLS);
 
         return React.cloneElement(cell, {
             ...restColumnProps,

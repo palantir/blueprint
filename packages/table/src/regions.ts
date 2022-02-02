@@ -483,7 +483,11 @@ export class Regions {
      * returns an ordered array of every unique cell that exists in those
      * regions.
      */
-    public static enumerateUniqueCells(regions: Region[] | null | undefined, numRows: number, numCols: number): CellCoordinate[] {
+    public static enumerateUniqueCells(
+        regions: Region[] | null | undefined,
+        numRows: number,
+        numCols: number,
+    ): CellCoordinate[] {
         if (regions == null || regions.length === 0) {
             return [];
         }

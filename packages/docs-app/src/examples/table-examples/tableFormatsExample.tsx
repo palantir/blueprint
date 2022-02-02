@@ -81,7 +81,7 @@ const FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
     minute: "2-digit",
     month: "long",
     second: "2-digit",
-    weekday: "long" as ,
+    weekday: "long",
     year: "numeric",
 };
 

@@ -305,7 +305,9 @@ describe("<Table2>", function (this) {
                 expect(table!.state.rowHeights[0], "resizes by both column").to.equal(MAX_HEIGHT);
 
                 table!.resizeRowsByTallestCell([1]);
-                expect(table!.state.rowHeights[0], "resizes by second column via array").to.equal(DEFAULT_RESIZE_HEIGHT);
+                expect(table!.state.rowHeights[0], "resizes by second column via array").to.equal(
+                    DEFAULT_RESIZE_HEIGHT,
+                );
 
                 table!.resizeRowsByTallestCell();
                 expect(table!.state.rowHeights[0], "resizes by visible columns").to.equal(MAX_HEIGHT);
@@ -1740,7 +1742,8 @@ describe("<Table2>", function (this) {
     xdescribe("Persists column widths", () => {
         const expectHeaderWidth = (table: ElementHarness, index: number, width: number) => {
             expect(
-                table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!.find(`.${Classes.TABLE_HEADER}`, index)!.bounds()!.width,
+                table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!.find(`.${Classes.TABLE_HEADER}`, index)!.bounds()!
+                    .width,
             ).to.equal(width);
         };
 

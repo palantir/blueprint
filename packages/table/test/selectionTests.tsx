@@ -214,7 +214,10 @@ describe("Selection", () => {
         onSelection.resetHistory();
 
         const isMetaKeyDown = true;
-        table.find(COLUMN_TH_SELECTOR, 1)!.mouse("mousedown", 0, 0, isMetaKeyDown).mouse("mouseup", 0, 0, isMetaKeyDown);
+        table
+            .find(COLUMN_TH_SELECTOR, 1)!
+            .mouse("mousedown", 0, 0, isMetaKeyDown)
+            .mouse("mouseup", 0, 0, isMetaKeyDown);
 
         expect(onSelection.called).to.equal(true, "second select called");
         expect(onSelection.lastCall.args.length).to.equal(1);
