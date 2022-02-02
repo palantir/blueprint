@@ -97,7 +97,8 @@ export class ElementHarness {
     public find(query: string, nth?: number) {
         const element = this.findElement(query, nth);
         if (element == null) {
-            throw new Error(`Could not find element with query string "${query}"`);
+            console.error(`Could not find element with query string "${query}"`);
+            return undefined;
         }
         return new ElementHarness(element);
     }
@@ -237,5 +238,9 @@ export class ReactHarness {
         document.documentElement.removeChild(this.container);
         // @ts-ignore
         delete this.container;
+    }
+
+    public sleep(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

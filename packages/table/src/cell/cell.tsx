@@ -122,7 +122,6 @@ export class Cell extends React.Component<ICellProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Cell`;
 
     public static defaultProps = {
-        loading: false,
         truncated: true,
         wrapText: false,
     };
@@ -191,7 +190,7 @@ export class Cell extends React.Component<ICellProps> {
                 ref={cellRef}
                 {...{ style, tabIndex, onKeyDown, onKeyUp, onKeyPress }}
             >
-                <LoadableContent loading={loading!} variableLength={true}>
+                <LoadableContent loading={loading ?? false} variableLength={true}>
                     {content}
                 </LoadableContent>
             </div>
