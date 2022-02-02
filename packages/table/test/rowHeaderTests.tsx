@@ -39,7 +39,7 @@ describe("<RowHeaderCell>", () => {
 
     it("Default renderer", () => {
         const table = harness.mount(createTableOfSize(3, 2));
-        const text = table.find(`.${Classes.TABLE_ROW_NAME_TEXT}`, 1)!.element.textContent;
+        const text = table.find(`.${Classes.TABLE_ROW_NAME_TEXT}`, 1)!.text();
         expect(text).to.equal("2");
     });
 
@@ -65,7 +65,7 @@ describe("<RowHeaderCell>", () => {
                 return <RowHeaderCell name={`ROW-${rowIndex}`} />;
             };
             const table = harness.mount(createTableOfSize(3, 2, null, { rowHeaderCellRenderer }));
-            const text = table.find(`.${Classes.TABLE_ROW_NAME_TEXT}`, 1)!.element.textContent;
+            const text = table.find(`.${Classes.TABLE_ROW_NAME_TEXT}`, 1)!.text();
             expect(text).to.equal("ROW-1");
         });
 
@@ -78,7 +78,7 @@ describe("<RowHeaderCell>", () => {
                 );
             };
             const table = harness.mount(createTableOfSize(3, 2, null, { rowHeaderCellRenderer }));
-            const text = table.find(`.${Classes.TABLE_ROW_HEADERS} h4`, 1)!.element.textContent;
+            const text = table.find(`.${Classes.TABLE_ROW_HEADERS} h4`, 1)!.text();
             expect(text).to.equal("Header of 1");
         });
 

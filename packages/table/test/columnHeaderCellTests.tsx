@@ -39,7 +39,7 @@ describe("<ColumnHeaderCell>", () => {
 
     it("Default renderer", () => {
         const table = harness.mount(createTableOfSize(3, 2));
-        const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.element.textContent;
+        const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.text();
         expect(text).to.equal("B");
     });
 
@@ -65,7 +65,7 @@ describe("<ColumnHeaderCell>", () => {
                 return <ColumnHeaderCell name={`COLUMN-${columnIndex}`} />;
             };
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.element.textContent;
+            const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.text();
             expect(text).to.equal("COLUMN-1");
         });
 
@@ -78,7 +78,7 @@ describe("<ColumnHeaderCell>", () => {
                 );
             };
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            const text = table.find(`.${Classes.TABLE_HEADER_CONTENT} h4`, 2)!.element.textContent;
+            const text = table.find(`.${Classes.TABLE_HEADER_CONTENT} h4`, 2)!.text();
             expect(text).to.equal("Header of 2");
         });
 

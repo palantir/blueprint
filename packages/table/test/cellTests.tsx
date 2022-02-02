@@ -46,7 +46,7 @@ describe("Cell", () => {
 
     it("renders loading state", () => {
         const cellHarness = harness.mount(<Cell loading={true} />);
-        expectCellLoading(cellHarness!.element.children[0], CellType.BODY_CELL);
+        expectCellLoading(cellHarness.element!.children[0], CellType.BODY_CELL);
     });
 
     it("uses intents for styling", () => {

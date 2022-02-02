@@ -84,9 +84,9 @@ export class ElementHarness {
         return new ElementHarness(document.documentElement);
     }
 
-    public element: Element;
+    public element: Element | null;
 
-    constructor(element: Element) {
+    constructor(element: Element | null) {
         this.element = element;
     }
 
@@ -96,36 +96,32 @@ export class ElementHarness {
 
     public find(query: string, nth?: number) {
         const element = this.findElement(query, nth);
-        if (element == null) {
-            console.error(`Could not find element with query string "${query}"`);
-            return undefined;
-        }
-        return new ElementHarness(element);
+        return new ElementHarness(element ?? null);
     }
 
     public hasClass(className: string) {
-        return this.element.classList.contains(className);
+        return this.element?.classList.contains(className) ?? false;
     }
 
     public bounds() {
-        return this.element.getBoundingClientRect();
+        return this.element?.getBoundingClientRect();
     }
 
     public text() {
-        return this.element.textContent;
+        return this.element?.textContent;
     }
 
     public style() {
-        return (this.element as HTMLElement).style;
+        return (this.element as HTMLElement | null)?.style;
     }
 
     public focus() {
-        (this.element as HTMLElement).focus();
+        (this.element as HTMLElement | null)?.focus();
         return this;
     }
 
     public blur() {
-        (this.element as HTMLElement).blur();
+        (this.element as HTMLElement | null)?.blur();
         return this;
     }
 
@@ -154,60 +150,66 @@ export class ElementHarness {
         }
 
         const bounds = this.bounds();
-        const x = bounds.left + bounds.width / 2 + offsetX;
-        const y = bounds.top + bounds.height / 2 + offsetY;
-        const event = document.createEvent("MouseEvent");
+        if (bounds !== undefined) {
+            const x = bounds.left + bounds.width / 2 + offsetX;
+            const y = bounds.top + bounds.height / 2 + offsetY;
+            const event = document.createEvent("MouseEvent");
 
-        // The crazy long list of arguments below are defined in this ancient web API:
-        // event.initMouseEvent(
-        //     type, canBubble, cancelable, view,
-        //     detail, screenX, screenY, clientX, clientY,
-        //     ctrlKey, altKey, shiftKey, metaKey,
-        //     button, relatedTarget
-        // );
-        event.initMouseEvent(
-            eventType,
-            true,
-            true,
-            window,
-            0,
-            0,
-            0,
-            x,
-            y,
-            isCtrlKeyDown,
-            isAltKeyDown,
-            isShiftKeyDown,
-            isMetaKeyDown,
-            button,
-            null,
-        );
-        this.element.dispatchEvent(event);
+            // The crazy long list of arguments below are defined in this ancient web API:
+            // event.initMouseEvent(
+            //     type, canBubble, cancelable, view,
+            //     detail, screenX, screenY, clientX, clientY,
+            //     ctrlKey, altKey, shiftKey, metaKey,
+            //     button, relatedTarget
+            // );
+            event.initMouseEvent(
+                eventType,
+                true,
+                true,
+                window,
+                0,
+                0,
+                0,
+                x,
+                y,
+                isCtrlKeyDown,
+                isAltKeyDown,
+                isShiftKeyDown,
+                isMetaKeyDown,
+                button,
+                null,
+            );
+            this.element!.dispatchEvent(event);
+        }
         return this;
     }
 
     public keyboard(eventType: KeyboardEventType = "keypress", key = "", modKey = false) {
-        dispatchTestKeyboardEvent(this.element, eventType, key, modKey);
+        if (this.exists()) {
+            dispatchTestKeyboardEvent(this.element!, eventType, key, modKey);
+        }
         return this;
     }
 
     public change(value?: string) {
-        if (value != null) {
-            (this.element as HTMLInputElement).value = value;
-        }
+        if (this.exists()) {
+            if (value != null) {
+                (this.element as HTMLInputElement).value = value;
+            }
 
-        // Apparently onChange listeners are listening for "input" events.
-        const event = document.createEvent("HTMLEvents");
-        event.initEvent("input", true, true);
-        this.element.dispatchEvent(event);
+            // Apparently onChange listeners are listening for "input" events.
+            const event = document.createEvent("HTMLEvents");
+            event.initEvent("input", true, true);
+            this.element!.dispatchEvent(event);
+        }
         return this;
     }
 
     private findElement(query: string, nth?: number) {
         if (nth != null) {
-            return this.element.querySelectorAll(query)[nth];
+            return this.element?.querySelectorAll(query)[nth];
         } else {
-            return this.element.querySelector(query);
+            return this.element?.querySelector(query);
         }
     }
 

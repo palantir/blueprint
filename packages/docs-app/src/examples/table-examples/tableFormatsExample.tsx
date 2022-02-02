@@ -75,13 +75,13 @@ const TIME_ZONES: ITimezone[] = ([
     };
 });
 
-const FORMAT_OPTIONS = {
+const FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
     day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
     month: "long",
     second: "2-digit",
-    weekday: "long",
+    weekday: "long" as ,
     year: "numeric",
 };
 

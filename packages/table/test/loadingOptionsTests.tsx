@@ -107,17 +107,17 @@ describe("Loading Options", () => {
                 // columns are meant to test column related loading combinations
                 const quadrantSelector = `.${Classes.TABLE_QUADRANT_MAIN}`;
                 const cells = Array.from(
-                    tableHarness.element.querySelectorAll(
+                    tableHarness.element!.querySelectorAll(
                         `${quadrantSelector} .${Classes.TABLE_CELL}.${Classes.columnCellIndexClass(0)}`,
                     ),
                 );
                 const columnHeaders = Array.from(
-                    tableHarness.element.querySelectorAll(
+                    tableHarness.element!.querySelectorAll(
                         `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
                     ),
                 );
                 const rowHeaders = Array.from(
-                    tableHarness.element.querySelectorAll(
+                    tableHarness.element!.querySelectorAll(
                         `${quadrantSelector} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`,
                     ),
                 );

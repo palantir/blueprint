@@ -80,7 +80,7 @@ describe("Column", () => {
             </Table2>,
         );
 
-        const columnHeaders = table.element.querySelectorAll(
+        const columnHeaders = table.element!.querySelectorAll(
             `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
         );
 
@@ -113,7 +113,7 @@ describe("Column", () => {
         const cellsSelector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(columnIndex)}.${
             Classes.TABLE_CELL
         }`;
-        const cells = Array.from(table.element.querySelectorAll(cellsSelector));
+        const cells = Array.from(table.element!.querySelectorAll(cellsSelector));
         cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL, isCellLoading));
         expect(cells.length).to.equal(expectedLength);
     }
