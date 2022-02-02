@@ -125,7 +125,7 @@ describe("<Table2>", function (this) {
                 </Table2>,
             );
 
-            expect(tableHarness.element!.textContent).to.equal("");
+            expect(tableHarness.text()).to.equal("");
 
             const cells = Array.from(tableHarness.element!.querySelectorAll(`.${Classes.TABLE_CELL}`));
             cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL));

@@ -1113,8 +1113,8 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         );
     };
 
-    private isGuidesShowing() {
-        return this.state.verticalGuides != null || this.state.horizontalGuides != null;
+    private isGuideLayerShowing() {
+        return this.state.verticalGuides.length > 0 || this.state.horizontalGuides.length > 0;
     }
 
     private getEnabledSelectionHandler = (selectionMode: RegionCardinality) => {
@@ -1152,7 +1152,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
      * intend to redraw the region layer.
      */
     private maybeRenderRegions(getRegionStyle: RegionStyler, quadrantType?: QuadrantType) {
-        if (this.isGuidesShowing() && !this.state.isReordering) {
+        if (this.isGuideLayerShowing() && !this.state.isReordering) {
             // we want to show guides *and* the selection styles when reordering rows or columns
             return undefined;
         }

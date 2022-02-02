@@ -741,10 +741,8 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     };
 
     private invokeColumnResizeHandler = (verticalGuides: number[] | null, quadrantType: QuadrantType) => {
-        if (verticalGuides !== null) {
-            const adjustedGuides = this.adjustVerticalGuides(verticalGuides, quadrantType);
-            this.props.handleColumnResizeGuide?.(adjustedGuides);
-        }
+        const adjustedGuides = this.adjustVerticalGuides(verticalGuides, quadrantType);
+        this.props.handleColumnResizeGuide?.(adjustedGuides);
     };
 
     // Rows
@@ -766,10 +764,8 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     };
 
     private invokeRowResizeHandler = (horizontalGuides: number[] | null, quadrantType: QuadrantType) => {
-        if (horizontalGuides !== null) {
-            const adjustedGuides = this.adjustHorizontalGuides(horizontalGuides, quadrantType);
-            this.props.handleRowResizeGuide?.(adjustedGuides);
-        }
+        const adjustedGuides = this.adjustHorizontalGuides(horizontalGuides, quadrantType);
+        this.props.handleRowResizeGuide?.(adjustedGuides);
     };
 
     // Reordering
@@ -1020,17 +1016,19 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
 
     // Resizing
 
-    private adjustVerticalGuides(verticalGuides: number[], quadrantType: QuadrantType) {
+    // should return empty array [] if we just finished resizing
+    private adjustVerticalGuides(verticalGuides: number[] | null, quadrantType: QuadrantType) {
         const isFrozenQuadrant = quadrantType === QuadrantType.LEFT || quadrantType === QuadrantType.TOP_LEFT;
         const scrollAmount = isFrozenQuadrant ? 0 : this.cache.getScrollOffset("scrollLeft");
         const rowHeaderWidth = this.cache.getRowHeaderWidth();
-        return verticalGuides.map(verticalGuide => verticalGuide - scrollAmount + rowHeaderWidth);
+        return verticalGuides?.map(verticalGuide => verticalGuide - scrollAmount + rowHeaderWidth) ?? [];
     }
 
-    private adjustHorizontalGuides(horizontalGuides: number[], quadrantType: QuadrantType) {
+    // should return empty array [] if we just finished resizing
+    private adjustHorizontalGuides(horizontalGuides: number[] | null, quadrantType: QuadrantType) {
         const isFrozenQuadrant = quadrantType === QuadrantType.TOP || quadrantType === QuadrantType.TOP_LEFT;
         const scrollAmount = isFrozenQuadrant ? 0 : this.cache.getScrollOffset("scrollTop");
         const columnHeaderHeight = this.cache.getColumnHeaderHeight();
-        return horizontalGuides.map(horizontalGuide => horizontalGuide - scrollAmount + columnHeaderHeight);
+        return horizontalGuides?.map(horizontalGuide => horizontalGuide - scrollAmount + columnHeaderHeight) ?? [];
     }
 }
