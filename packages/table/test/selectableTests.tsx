@@ -597,7 +597,7 @@ describe("DragSelectable", () => {
     }
 
     function getItem(component: ElementHarness, index: number = 0) {
-        return component.find(".selectable", index);
+        return component.find(".selectable", index)!;
     }
 
     function toCell(region: IRegion) {

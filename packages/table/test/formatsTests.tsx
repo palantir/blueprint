@@ -45,7 +45,7 @@ describe("Formats", () => {
             );
             const textElement = comp.element.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
             expect(textElement.scrollWidth).to.be.greaterThan(textElement.clientWidth);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).to.exist;
         });
 
         // This test was super flaky. It started failing without clear cause when the Table Frozen
@@ -83,7 +83,7 @@ describe("Formats", () => {
             );
             const textElement = comp.element.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
             expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).to.exist;
         });
 
         it("can automatically truncate and show popover when truncated and word wrapped in approx mode", () => {
@@ -125,7 +125,7 @@ describe("Formats", () => {
             );
             const textElement = comp.element.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
             expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).to.exist;
         });
 
         it("can manually truncate and show popover when truncated", () => {
@@ -134,18 +134,18 @@ describe("Formats", () => {
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`)!.text()!.length).to.equal(
                 TruncatedFormat.defaultProps.truncateLength! + 3,
             );
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).to.exist;
         });
 
         it("can always show popover", () => {
             const comp = harness.mount(<TruncatedFormat showPopover={TruncatedPopoverMode.ALWAYS} />);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).to.exist;
         });
 
         it("does not show popover if text is not truncated by default", () => {
             const str = `Richard Dawkins`;
             const comp = harness.mount(<TruncatedFormat>{str}</TruncatedFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).to.not.exist;
         });
 
         it("doesn't truncate if truncation length is 0", () => {
@@ -193,7 +193,7 @@ describe("Formats", () => {
                     </TruncatedFormat>
                 </div>,
             );
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text()).to.have.lengthOf(str.length);
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`)!.text()).to.have.lengthOf(str.length);
         });
     });
 
@@ -205,23 +205,23 @@ describe("Formats", () => {
             };
             const str = JSON.stringify(obj, null, 2);
             const comp = harness.mount(<JSONFormat>{obj}</JSONFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal(str);
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`)!.text()).to.equal(str);
         });
 
         it("omits quotes on strings and null-likes", () => {
             let comp = harness.mount(<JSONFormat>{"a string"}</JSONFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal("a string");
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`)!.text()).to.equal("a string");
 
             comp = harness.mount(<JSONFormat>{null}</JSONFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal("null");
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`)!.text()).to.equal("null");
 
             comp = harness.mount(<JSONFormat>{undefined}</JSONFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal("undefined");
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`)!.text()).to.equal("undefined");
         });
 
         it("hides popover for null-likes, still passes showPopover prop", () => {
             let comp = harness.mount(<JSONFormat>{null}</JSONFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).to.not.exist;
 
             const str = `this is a very long string that will be truncated by the following settings`;
             comp = harness.mount(
@@ -233,10 +233,10 @@ describe("Formats", () => {
                     {str}
                 </JSONFormat>,
             );
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).exist;
 
             comp = harness.mount(<JSONFormat showPopover={TruncatedPopoverMode.NEVER}>{str}</JSONFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).to.not.exist;
         });
     });
 });

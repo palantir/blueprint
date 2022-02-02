@@ -95,7 +95,7 @@ describe("Resizable", () => {
             </Resizable>,
         );
 
-        expect(resizable.find(".resizable-div").bounds().width).to.equal(100);
+        expect(resizable.find(".resizable-div")!.bounds().width).to.equal(100);
         expect(onLayoutLock.called).to.be.false;
         expect(onSizeChanged.called).to.be.false;
         expect(onResizeEnd.called).to.be.false;
@@ -122,7 +122,7 @@ describe("Resizable", () => {
             </Resizable>,
         );
 
-        const target = resizable.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`);
+        const target = resizable.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`)!;
         expect(target.element).to.exist;
 
         // drag resize handle to the right by 10 pixels
@@ -133,7 +133,7 @@ describe("Resizable", () => {
         expect(onSizeChanged.called).to.be.true;
         expect(onResizeEnd.called).to.be.true;
         expect(onDoubleClick.called).to.be.false;
-        expect(resizable.find(".resizable-div").bounds().width).to.equal(110);
+        expect(resizable.find(".resizable-div")!.bounds().width).to.equal(110);
 
         onDoubleClick.resetHistory();
         onLayoutLock.resetHistory();

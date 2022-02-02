@@ -74,8 +74,8 @@ describe("<Table2>", function (this) {
                 </Table2>,
             );
 
-            expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2).text()).to.equal("My Name");
-            expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).text()).to.equal("B");
+            expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2)!.text()).to.equal("My Name");
+            expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.text()).to.equal("B");
         });
 
         it("Adds custom className to table container", () => {
@@ -87,7 +87,7 @@ describe("<Table2>", function (this) {
                     <Column />
                 </Table2>,
             );
-            const hasCustomClass = table.find(`.${Classes.TABLE_CONTAINER}`, 0).hasClass(CLASS_NAME);
+            const hasCustomClass = table.find(`.${Classes.TABLE_CONTAINER}`, 0)!.hasClass(CLASS_NAME);
             expect(hasCustomClass).to.be.true;
         });
 
@@ -97,8 +97,8 @@ describe("<Table2>", function (this) {
                     <Column />
                 </Table2>,
             );
-            expect(table.find(COLUMN_HEADER_SELECTOR, 0).element).to.be.ok;
-            expect(table.find(COLUMN_HEADER_SELECTOR, 1).element).to.not.be.ok;
+            expect(table.find(COLUMN_HEADER_SELECTOR, 0)!.element).to.be.ok;
+            expect(table.find(COLUMN_HEADER_SELECTOR, 1)!.element).to.not.be.ok;
         });
 
         it("Renders ghost cells", () => {
@@ -108,8 +108,8 @@ describe("<Table2>", function (this) {
                 </Table2>,
             );
 
-            expect(table.find(COLUMN_HEADER_SELECTOR, 0).element).to.be.ok;
-            expect(table.find(COLUMN_HEADER_SELECTOR, 1).element).to.be.ok;
+            expect(table.find(COLUMN_HEADER_SELECTOR, 0)!.element).to.be.ok;
+            expect(table.find(COLUMN_HEADER_SELECTOR, 1)!.element).to.be.ok;
         });
 
         it("Renders correctly with loading options", () => {
@@ -750,26 +750,26 @@ describe("<Table2>", function (this) {
     describe("Resizing", () => {
         it("Resizes selected rows together", () => {
             const table = mountTable();
-            const rows = getRowHeadersWrapper(table);
-            const resizeHandleTarget = getResizeHandle(rows, 0);
+            const rows = getRowHeadersWrapper(table)!;
+            const resizeHandleTarget = getResizeHandle(rows, 0)!;
 
             resizeHandleTarget.mouse("mousemove").mouse("mousedown").mouse("mousemove", 0, 2).mouse("mouseup");
 
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 0).bounds().height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 1).bounds().height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 2).bounds().height).to.equal(1);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 3).bounds().height).to.equal(1);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 4).bounds().height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 5).bounds().height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 6).bounds().height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 7).bounds().height).to.equal(1);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 8).bounds().height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 0)!.bounds().height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 1)!.bounds().height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 2)!.bounds().height).to.equal(1);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 3)!.bounds().height).to.equal(1);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 4)!.bounds().height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 5)!.bounds().height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 6)!.bounds().height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 7)!.bounds().height).to.equal(1);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 8)!.bounds().height).to.equal(3);
         });
 
         it("Resizes columns when row headers are hidden without throwing an error", () => {
             const table = mountTable({ enableRowHeader: false });
-            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
-            const resizeHandleTarget = getResizeHandle(columnHeader, 0);
+            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!;
+            const resizeHandleTarget = getResizeHandle(columnHeader, 0)!;
 
             expect(() => {
                 resizeHandleTarget.mouse("mousemove").mouse("mousedown").mouse("mousemove", 0, 2).mouse("mouseup");
@@ -778,13 +778,13 @@ describe("<Table2>", function (this) {
 
         it("Hides selected-region styles while resizing", () => {
             const table = mountTable();
-            const resizeHandleTarget = getResizeHandle(getRowHeadersWrapper(table), 0);
+            const resizeHandleTarget = getResizeHandle(getRowHeadersWrapper(table)!, 0)!;
 
             resizeHandleTarget.mouse("mousemove").mouse("mousedown").mouse("mousemove", 0, 2);
-            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.false;
+            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`)!.exists()).to.be.false;
 
             resizeHandleTarget.mouse("mouseup");
-            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.true;
+            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`)!.exists()).to.be.true;
         });
 
         it("resizes frozen column on double-click when corresponding MAIN-quadrant column not in view", () => {
@@ -830,8 +830,8 @@ describe("<Table2>", function (this) {
             const columnHeaderSelector = `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS}`;
             const resizeHandleSelector = `${columnHeaderSelector} .${Classes.TABLE_RESIZE_HANDLE_TARGET}`;
 
-            const quadrantElement = tableElement.find(quadrantSelector, 0);
-            const frozenColumnResizeHandle = tableElement.find(resizeHandleSelector, FROZEN_COLUMN_INDEX);
+            const quadrantElement = tableElement.find(quadrantSelector, 0)!;
+            const frozenColumnResizeHandle = tableElement.find(resizeHandleSelector, FROZEN_COLUMN_INDEX)!;
 
             // double-click the frozen column's resize handle
             frozenColumnResizeHandle.mouse("mousedown").mouse("mouseup", 10).mouse("mousedown").mouse("mouseup", 10);
@@ -911,8 +911,8 @@ describe("<Table2>", function (this) {
                 onColumnsReordered,
                 selectedRegions: [Regions.column(OLD_INDEX, LENGTH - 1)],
             });
-            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
-            const reorderHandle = getReorderHandle(headerCell);
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table)!, 0)!;
+            const reorderHandle = getReorderHandle(headerCell)!;
             reorderHandle.mouse("mousedown").mouse("mousemove", getAdjustedOffsetX(OFFSET_X, reorderHandle));
 
             const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`);
@@ -929,10 +929,10 @@ describe("<Table2>", function (this) {
                 onRowsReordered,
                 selectedRegions: [Regions.row(OLD_INDEX, LENGTH - 1)],
             });
-            const headerCell = getHeaderCell(getRowHeadersWrapper(table), 0);
+            const headerCell = getHeaderCell(getRowHeadersWrapper(table)!, 0)!;
             headerCell.mouse("mousedown").mouse("mousemove", 0, OFFSET_Y);
 
-            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`);
+            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`)!;
             expect(guide, "Could not find preview guide").to.exist;
 
             headerCell.mouse("mouseup", 0, OFFSET_Y);
@@ -950,8 +950,8 @@ describe("<Table2>", function (this) {
                 onColumnsReordered,
                 onSelection,
             });
-            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
-            const reorderHandle = getReorderHandle(headerCell);
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table)!, 0)!;
+            const reorderHandle = getReorderHandle(headerCell)!;
             reorderHandle
                 .mouse("mousedown")
                 .mouse("mousemove", getAdjustedOffsetX(OFFSET_X, reorderHandle))
@@ -965,7 +965,7 @@ describe("<Table2>", function (this) {
                 enableColumnReordering: true,
                 onColumnsReordered,
             });
-            getHeaderCell(getColumnHeadersWrapper(table), 0)
+            getHeaderCell(getColumnHeadersWrapper(table)!, 0)!
                 .mouse("mousedown")
                 .mouse("mousemove", OFFSET_X)
                 .mouse("mouseup", OFFSET_X);
@@ -979,8 +979,8 @@ describe("<Table2>", function (this) {
                 onSelection,
                 selectedRegions: [Regions.column(2)], // some other column
             });
-            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
-            const reorderHandle = getReorderHandle(headerCell);
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table)!, 0)!;
+            const reorderHandle = getReorderHandle(headerCell)!;
 
             // now we can reorder the column one spot to the right
             const newIndex = 1;
@@ -1001,10 +1001,10 @@ describe("<Table2>", function (this) {
                 onSelection,
                 selectedRegions: [Regions.row(OLD_INDEX)],
             });
-            const headerCell = getHeaderCell(getRowHeadersWrapper(table), 0);
+            const headerCell = getHeaderCell(getRowHeadersWrapper(table)!, 0)!;
             headerCell.mouse("mousedown", { metaKey: true }).mouse("mousemove", 0, OFFSET_Y);
 
-            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`);
+            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`)!;
             expect(guide.exists(), "guide not drawn").be.false;
 
             headerCell.mouse("mouseup", 0, OFFSET_Y);
@@ -1020,10 +1020,10 @@ describe("<Table2>", function (this) {
                 onSelection,
                 selectedRegions: [Regions.column(OLD_INDEX)],
             });
-            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table)!, 0)!;
             headerCell.mouse("mousedown", { metaKey: true }).mouse("mousemove", 0, OFFSET_Y);
 
-            const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`);
+            const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`)!;
             expect(guide.exists(), "guide not drawn").be.false;
 
             headerCell.mouse("mouseup", 0, OFFSET_Y);
@@ -1038,8 +1038,8 @@ describe("<Table2>", function (this) {
                 onColumnsReordered,
                 onSelection,
             });
-            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
-            const reorderHandle = getReorderHandle(headerCell);
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table)!, 0)!;
+            const reorderHandle = getReorderHandle(headerCell)!;
             reorderHandle
                 .mouse("mousedown", { metaKey: true })
                 .mouse("mousemove", getAdjustedOffsetX(OFFSET_X, reorderHandle))
@@ -1731,16 +1731,16 @@ describe("<Table2>", function (this) {
             </Table2>,
         );
 
-        const columns = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
-        expect(columns.find(`.${Classes.TABLE_HEADER}`, 0).bounds().width).to.equal(75);
-        expect(columns.find(`.${Classes.TABLE_HEADER}`, 1).bounds().width).to.equal(200);
-        expect(columns.find(`.${Classes.TABLE_HEADER}`, 2).bounds().width).to.equal(75);
+        const columns = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!;
+        expect(columns.find(`.${Classes.TABLE_HEADER}`, 0)!.bounds().width).to.equal(75);
+        expect(columns.find(`.${Classes.TABLE_HEADER}`, 1)!.bounds().width).to.equal(200);
+        expect(columns.find(`.${Classes.TABLE_HEADER}`, 2)!.bounds().width).to.equal(75);
     });
 
     xdescribe("Persists column widths", () => {
         const expectHeaderWidth = (table: ElementHarness, index: number, width: number) => {
             expect(
-                table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).find(`.${Classes.TABLE_HEADER}`, index).bounds().width,
+                table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!.find(`.${Classes.TABLE_HEADER}`, index)!.bounds().width,
             ).to.equal(width);
         };
 

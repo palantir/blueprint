@@ -69,7 +69,7 @@ describe("Menus", () => {
                 </Menu>,
             );
 
-            menu.find(`.${Classes.MENU_ITEM}`).mouse("click");
+            menu.find(`.${Classes.MENU_ITEM}`)!.mouse("click");
             expect(clipboardSpy.called).to.be.true;
             expect(clipboardSpy.lastCall.args).to.deep.equal([[["X"], ["X"], ["X"]]]);
             expect(onCopySpy.called).to.be.true;
