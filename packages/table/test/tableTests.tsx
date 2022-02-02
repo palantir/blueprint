@@ -220,7 +220,7 @@ describe("<Table>", function (this) {
         const CONTAINER_HEIGHT = 320;
 
         function runTest(enableGhostCells: boolean) {
-            it(`isn't disabled halfway through the last row when ghostCells are  set to ${enableGhostCells}`, () => {
+            it(`isn't disabled when there is half a row left to scroll to and enableGhostCells is set to ${enableGhostCells}`, () => {
                 const ROW_HEIGHT = 30;
                 const { containerElement, table } = mountTable({ defaultRowHeight: ROW_HEIGHT, enableGhostCells });
                 const tableContainer = table.find(`.${Classes.TABLE_CONTAINER}`);
