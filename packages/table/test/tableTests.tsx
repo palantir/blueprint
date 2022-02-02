@@ -215,6 +215,41 @@ describe("<Table>", function (this) {
         }
     });
 
+    describe("Vertically scrolling", () => {
+        const CONTAINER_WIDTH = 300;
+        const CONTAINER_HEIGHT = 320;
+
+        function runTest(enableGhostCells: boolean) {
+            it(`isn't disabled halfway through the last row when ghostCells are  set to ${enableGhostCells}`, () => {
+                const ROW_HEIGHT = 30;
+                const { containerElement, table } = mountTable({ defaultRowHeight: ROW_HEIGHT, enableGhostCells });
+                const tableContainer = table.find(`.${Classes.TABLE_CONTAINER}`);
+                // There should be 10px left of scrolling. Height is 320, rows take up 300, and headerRow takes up 30
+                expect(tableContainer.hasClass(Classes.TABLE_NO_VERTICAL_SCROLL)).to.be.false;
+
+                // clean up created div
+                document.body.removeChild(containerElement);
+            });
+        }
+        runTest(true);
+        runTest(false);
+
+        function mountTable(tableProps: Partial<TableProps> = {}) {
+            const containerElement = document.createElement("div");
+            containerElement.style.width = `${CONTAINER_WIDTH}px`;
+            containerElement.style.height = `${CONTAINER_HEIGHT}px`;
+            document.body.appendChild(containerElement);
+
+            const table = mount(
+                <Table numRows={10} {...tableProps}>
+                    <Column cellRenderer={renderDummyCell} />
+                </Table>,
+                { attachTo: containerElement },
+            );
+            return { containerElement, table };
+        }
+    });
+
     describe("Instance methods", () => {
         describe("resizeRowsByApproximateHeight", () => {
             const STR_LENGTH_SHORT = 10;
