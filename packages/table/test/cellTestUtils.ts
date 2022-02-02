@@ -40,7 +40,7 @@ export function expectCellLoading(cell: Element, cellType: CellType, loading = t
                     ? cell.querySelector(`.${Classes.TABLE_COLUMN_NAME_TEXT}`)
                     : cell.querySelector(`.${Classes.TABLE_ROW_NAME}`);
             expect(headerNameText).to.not.be.null;
-            expect(headerNameText.textContent).to.equal("");
+            expect(headerNameText!.textContent).to.equal("");
         } else {
             expect(cell.textContent).to.equal("");
         }

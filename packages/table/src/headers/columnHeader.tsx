@@ -79,7 +79,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
             maxColumnWidth: maxSize,
             defaultColumnWidth,
 
-            // from IColumnIndices
+            // from ColumnIndices
             columnIndexStart: indexStart,
             columnIndexEnd: indexEnd,
 

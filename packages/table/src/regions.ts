@@ -291,7 +291,7 @@ export class Regions {
      * Returns true iff the specified region is equal to the last region in
      * the region list. This allows us to avoid immediate additive re-selection.
      */
-    public static lastRegionIsEqual(regions: Region[], region: Region) {
+    public static lastRegionIsEqual(regions: Region[] | null | undefined, region: Region) {
         if (regions == null || regions.length === 0) {
             return false;
         }
@@ -303,7 +303,7 @@ export class Regions {
      * Returns the index of the region that is equal to the supplied
      * parameter. Returns -1 if no such region is found.
      */
-    public static findMatchingRegion(regions: Region[], region: Region) {
+    public static findMatchingRegion(regions: Region[] | null | undefined, region: Region) {
         if (regions == null) {
             return -1;
         }
@@ -320,7 +320,7 @@ export class Regions {
      * Returns the index of the region that wholly contains the supplied
      * parameter. Returns -1 if no such region is found.
      */
-    public static findContainingRegion(regions: Region[], region: Region) {
+    public static findContainingRegion(regions: Region[] | null | undefined, region: Region) {
         if (regions == null) {
             return -1;
         }
@@ -337,7 +337,7 @@ export class Regions {
      * Returns true if the regions contain a region that has FULL_COLUMNS
      * cardinality and contains the specified column index.
      */
-    public static hasFullColumn(regions: Region[], col: number) {
+    public static hasFullColumn(regions: Region[] | null | undefined, col: number) {
         if (regions == null) {
             return false;
         }
@@ -359,7 +359,7 @@ export class Regions {
      * Returns true if the regions contain a region that has FULL_ROWS
      * cardinality and contains the specified row index.
      */
-    public static hasFullRow(regions: Region[], row: number) {
+    public static hasFullRow(regions: Region[] | null | undefined, row: number) {
         if (regions == null) {
             return false;
         }
@@ -483,7 +483,7 @@ export class Regions {
      * returns an ordered array of every unique cell that exists in those
      * regions.
      */
-    public static enumerateUniqueCells(regions: Region[], numRows: number, numCols: number): CellCoordinate[] {
+    public static enumerateUniqueCells(regions: Region[] | null | undefined, numRows: number, numCols: number): CellCoordinate[] {
         if (regions == null || regions.length === 0) {
             return [];
         }
@@ -579,7 +579,7 @@ export class Regions {
         };
     }
 
-    public static isValid(region: Region) {
+    public static isValid(region: Region | null | undefined) {
         if (region == null) {
             return false;
         }

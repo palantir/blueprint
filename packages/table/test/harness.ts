@@ -95,7 +95,11 @@ export class ElementHarness {
     }
 
     public find(query: string, nth?: number) {
-        return new ElementHarness(this.findElement(query, nth));
+        const element = this.findElement(query, nth);
+        if (element == null) {
+            throw new Error(`Could not find element with query string "${query}"`);
+        }
+        return new ElementHarness(element);
     }
 
     public hasClass(className: string) {
@@ -133,8 +137,8 @@ export class ElementHarness {
         button: number = 0,
     ) {
         let offsetX: number;
-        let isAltKeyDown: boolean;
-        let isCtrlKeyDown: boolean;
+        let isAltKeyDown: boolean = false;
+        let isCtrlKeyDown: boolean = false;
 
         if (typeof offsetXOrOptions === "object") {
             offsetX = this.defaultValue(offsetXOrOptions.offsetX, 0);
@@ -165,7 +169,7 @@ export class ElementHarness {
             true,
             true,
             window,
-            null,
+            0,
             0,
             0,
             x,
@@ -231,6 +235,7 @@ export class ReactHarness {
 
     public destroy() {
         document.documentElement.removeChild(this.container);
+        // @ts-ignore
         delete this.container;
     }
 }

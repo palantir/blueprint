@@ -150,7 +150,7 @@ describe("Loading Options", () => {
 function generatePowerSet<T>(list: T[]) {
     const base2 = (num: number) => num.toString(2);
     const numberOfSubsets = Math.pow(2, list.length);
-    const listOfSubsets: T[][] = [undefined];
+    const listOfSubsets: T[][] = [[]];
 
     for (let i = 1; i < numberOfSubsets; i++) {
         const subset: T[] = [];
@@ -183,7 +183,7 @@ function generatePowerSet<T>(list: T[]) {
 function testLoadingOptionOverrides(
     cells: Element[],
     cellType: CellType,
-    cellLoading: (index: number) => boolean,
+    cellLoading: (index: number) => boolean | undefined,
     columnLoadingOptions: ColumnLoadingOption[],
     tableLoadingOptions: TableLoadingOption[],
 ) {

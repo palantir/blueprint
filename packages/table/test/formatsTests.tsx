@@ -36,14 +36,14 @@ describe("Formats", () => {
 
     describe("Truncated Format", () => {
         it("can automatically truncate and show popover when truncated", () => {
-            const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength + 1);
+            const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength! + 1);
 
             const comp = harness.mount(
                 <div className={Classes.TABLE_NO_WRAP_TEXT}>
                     <TruncatedFormat>{str}</TruncatedFormat>
                 </div>,
             );
-            const textElement = comp.element.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);
+            const textElement = comp.element.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
             expect(textElement.scrollWidth).to.be.greaterThan(textElement.clientWidth);
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });
@@ -81,7 +81,7 @@ describe("Formats", () => {
                     <TruncatedFormat detectTruncation={true}>{str}</TruncatedFormat>
                 </div>,
             );
-            const textElement = comp.element.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);
+            const textElement = comp.element.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
             expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });
@@ -123,16 +123,16 @@ describe("Formats", () => {
                     </TruncatedFormat>
                 </div>,
             );
-            const textElement = comp.element.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);
+            const textElement = comp.element.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
             expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });
 
         it("can manually truncate and show popover when truncated", () => {
-            const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength + 1);
+            const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength! + 1);
             const comp = harness.mount(<TruncatedFormat detectTruncation={false}>{str}</TruncatedFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text().length).to.equal(
-                TruncatedFormat.defaultProps.truncateLength + 3,
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`)!.text()!.length).to.equal(
+                TruncatedFormat.defaultProps.truncateLength! + 3,
             );
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });

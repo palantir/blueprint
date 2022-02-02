@@ -226,7 +226,7 @@ describe("TableBody", () => {
                 cellRenderer={cellRenderer}
                 grid={grid}
                 loading={false}
-                locator={null}
+                locator={null as any}
                 renderMode={renderMode as RenderMode.BATCH | RenderMode.NONE}
                 viewportRect={viewportRect}
                 // ISelectableProps
@@ -236,10 +236,10 @@ describe("TableBody", () => {
                 selectedRegions={[]}
                 // IRowIndices
                 rowIndexStart={0}
-                rowIndexEnd={rowIndexEnd}
+                rowIndexEnd={numRows}
                 // IColumnIndices
                 columnIndexStart={0}
-                columnIndexEnd={columnIndexEnd}
+                columnIndexEnd={numCols}
                 {...spreadableProps}
             />,
         );
