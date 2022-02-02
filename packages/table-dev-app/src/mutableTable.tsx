@@ -322,8 +322,8 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         table: (ref: Table2) => (this.tableInstance = ref),
     };
 
-    public constructor(props: any, context?: any) {
-        super(props, context);
+    public constructor(props: {}) {
+        super(props);
         this.stateStore = new LocalStore<IMutableTableState>("BP_TABLE_MUTABLE_TABLE_DEV_PREVIEW", true);
         this.state = this.stateStore.getWithDefaults(DEFAULT_STATE);
     }

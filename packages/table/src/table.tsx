@@ -849,14 +849,14 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     }
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
-        const props = this.getColumnProps(columnIndex);
-        if (props === undefined) {
+        const columnProps = this.getColumnProps(columnIndex);
+        if (columnProps === undefined) {
             return null;
         }
 
-        const { id, loadingOptions, cellRenderer, columnHeaderCellRenderer, ...spreadableProps } = props;
+        const { id, cellRenderer, columnHeaderCellRenderer, ...spreadableProps } = columnProps;
 
-        const columnLoading = hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
+        const columnLoading = hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.HEADER) || hasLoadingOption(this.props.loadingOptions, TableLoadingOption.COLUMN_HEADERS);
 
         if (columnHeaderCellRenderer != null) {
             const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
@@ -873,7 +873,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             ...spreadableProps,
         };
 
-        if (props.name != null) {
+        if (columnProps.name != null) {
             return <ColumnHeaderCell {...baseProps} />;
         } else {
             return <ColumnHeaderCell {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
@@ -1037,9 +1037,11 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             return undefined;
         }
 
+        const inheritedIsLoading = hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS) || hasLoadingOption(this.props.loadingOptions, TableLoadingOption.CELLS);
+
         return React.cloneElement(cell, {
             ...restColumnProps,
-            loading: cell.props.loading ?? hasLoadingOption(loadingOptions, ColumnLoadingOption.CELLS),
+            loading: cell.props.loading ?? inheritedIsLoading,
         });
     };
 
