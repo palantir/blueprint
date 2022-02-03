@@ -3232,5 +3232,17 @@
         "iconName": "small-square",
         "tags": "square",
         "group": "miscellaneous"
+    },
+    {
+        "displayName": "Ship",
+        "iconName": "ship",
+        "tags": "transportation, ship, boat, cruise, yacht, supply, supply chain, trip, shipping",
+        "group": "interface"
+    },
+    {
+        "displayName": "Cargo Ship",
+        "iconName": "cargo-ship",
+        "tags": "transportation, cargo, freight, ship, boat, cruise, yacht, supply, supply chain, container, shipping",
+        "group": "interface"
     }
 ]

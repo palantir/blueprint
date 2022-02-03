@@ -422,6 +422,8 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 [CoreClasses.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
                 [CoreClasses.MINIMAL]: this.props.minimal,
                 [Classes.POPOVER2_CAPTURING_DISMISS]: this.props.captureDismiss,
+                [Classes.POPOVER2_REFERENCE_HIDDEN]: popperProps.isReferenceHidden === true,
+                [Classes.POPOVER2_POPPER_ESCAPED]: popperProps.hasPopperEscaped === true,
             },
             `${Classes.POPOVER2_CONTENT_PLACEMENT}-${basePlacement}`,
             this.props.popoverClassName,
@@ -536,10 +538,6 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
 
     private handleTargetBlur = (e: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
-            // e.relatedTarget ought to tell us the next element to receive focus, but if the user just
-            // clicked on an element which is not focusable (either by default or with a tabIndex attribute),
-            // it won't be set. So, we filter those out here and assume that a click handler somewhere else will
-            // close the popover if necessary.
             if (e.relatedTarget != null) {
                 // if the next element to receive focus is within the popover, we'll want to leave the
                 // popover open.
@@ -549,6 +547,8 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 ) {
                     this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
                 }
+            } else {
+                this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;
