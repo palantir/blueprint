@@ -650,7 +650,8 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         const isViewportScrolledToTop = viewportRect.top === 0;
         const areRowHeadersLoading = hasLoadingOption(this.props.loadingOptions, TableLoadingOption.ROW_HEADERS);
         const areGhostRowsVisible = enableGhostCells! && this.grid.isGhostIndex(rowIndices.rowIndexEnd - 1, 0);
-        const isViewportScrolledToBottom = this.locator?.hasVerticalOverflow && this.grid.isGhostIndex(rowIndices.rowIndexEnd, 0);
+        const isViewportScrolledToBottom =
+            this.locator?.hasVerticalOverflow && this.grid.isGhostIndex(rowIndices.rowIndexEnd, 0);
 
         return areGhostRowsVisible && (isViewportScrolledToTop || isViewportScrolledToBottom || areRowHeadersLoading);
     }
