@@ -58,6 +58,8 @@ export interface ILocator {
 export class Locator implements ILocator {
     public static CELL_HORIZONTAL_PADDING = 10;
 
+    public hasVerticalOverflow = false;
+
     private grid: Grid | undefined;
 
     // these values affect how we map a mouse coordinate to a cell coordinate.
@@ -78,6 +80,7 @@ export class Locator implements ILocator {
     ) {
         this.numFrozenRows = 0;
         this.numFrozenColumns = 0;
+        this.updateOverflow();
     }
 
     // Setters
@@ -96,6 +99,10 @@ export class Locator implements ILocator {
     public setNumFrozenColumns(numFrozenColumns: number) {
         this.numFrozenColumns = numFrozenColumns;
         return this;
+    }
+
+    public updateOverflow() {
+        this.hasVerticalOverflow = this.scrollContainerElement.scrollHeight > this.scrollContainerElement.clientHeight;
     }
 
     // Getters

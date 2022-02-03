@@ -18,7 +18,6 @@ import * as React from "react";
 
 export type AnyRect = Rect | ClientRect;
 
-// HACKHACK: workaround for https://github.com/palantir/tslint/issues/1768
 // eslint-disable  @typescript-eslint/adjacent-overload-signatures
 
 /**

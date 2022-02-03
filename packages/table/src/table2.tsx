@@ -647,11 +647,12 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells!);
 
-        const isViewportUnscrolledVertically = viewportRect != null && viewportRect.top === 0;
+        const isViewportScrolledToTop = viewportRect.top === 0;
         const areRowHeadersLoading = hasLoadingOption(this.props.loadingOptions, TableLoadingOption.ROW_HEADERS);
         const areGhostRowsVisible = enableGhostCells! && this.grid.isGhostIndex(rowIndices.rowIndexEnd - 1, 0);
+        const isViewportScrolledToBottom = this.locator?.hasVerticalOverflow && this.grid.isGhostIndex(rowIndices.rowIndexEnd, 0);
 
-        return areGhostRowsVisible && (isViewportUnscrolledVertically || areRowHeadersLoading);
+        return areGhostRowsVisible && (isViewportScrolledToTop || isViewportScrolledToBottom || areRowHeadersLoading);
     }
 
     private shouldDisableHorizontalScroll() {
@@ -664,7 +665,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells!);
 
-        const isViewportUnscrolledHorizontally = viewportRect != null && viewportRect.left === 0;
+        const isViewportUnscrolledHorizontally = viewportRect.left === 0;
         const areColumnHeadersLoading = hasLoadingOption(this.props.loadingOptions, TableLoadingOption.COLUMN_HEADERS);
         const areGhostColumnsVisible = enableGhostCells! && this.grid.isGhostColumn(columnIndices.columnIndexEnd);
 
@@ -1334,7 +1335,8 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         this.locator
             .setGrid(this.grid)
             .setNumFrozenRows(this.state.numFrozenRowsClamped)
-            .setNumFrozenColumns(this.state.numFrozenColumnsClamped);
+            .setNumFrozenColumns(this.state.numFrozenColumnsClamped)
+            .updateOverflow();
     }
 
     private updateViewportRect = (nextViewportRect: Rect | undefined) => {
