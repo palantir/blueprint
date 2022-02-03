@@ -162,7 +162,7 @@ export const Utils = {
      * @param defaults - the full array of default values
      * @param sparseOverrides - the sparse array of override values
      */
-    assignSparseValues<T>(defaults: T[], sparseOverrides: T[]) {
+    assignSparseValues<T>(defaults: T[], sparseOverrides: Array<T | undefined | null>) {
         if (sparseOverrides == null || defaults.length !== sparseOverrides.length) {
             return defaults;
         }
@@ -183,7 +183,7 @@ export const Utils = {
      * context to measure the text.
      */
     measureElementTextContent(element: Element): TextMetrics {
-        const context = document.createElement("canvas").getContext("2d");
+        const context = document.createElement("canvas").getContext("2d")!;
         const style = getComputedStyle(element, null);
         context.font = CSS_FONT_PROPERTIES.map(prop => style.getPropertyValue(prop)).join(" ");
         return measureTextContentWithExclusions(context, element);
@@ -271,7 +271,7 @@ export const Utils = {
      * For example, given the array [A,B,C,D,E,F], reordering the 3 contiguous elements starting at
      * index 1 (B, C, and D) to start at index 2 would yield [A,E,B,C,D,F].
      */
-    reorderArray<T>(array: T[], from: number, to: number, length = 1): T[] {
+    reorderArray<T>(array: T[], from: number, to: number, length = 1): T[] | undefined {
         if (length === 0 || length === array.length || from === to) {
             // return an unchanged copy
             return array.slice();
@@ -360,12 +360,12 @@ function measureTextContentWithExclusions(context: CanvasRenderingContext2D, ele
     let excludedElementsWidth = 0;
     if (elementsToExclude && elementsToExclude.length) {
         elementsToExclude.forEach(e => {
-            const excludedMetrics = context.measureText(e.textContent);
+            const excludedMetrics = context.measureText(e.textContent ?? "");
             excludedElementsWidth += excludedMetrics.width - EXCLUDED_ICON_PLACEHOLDER_WIDTH;
         });
     }
 
-    const metrics = context.measureText(element.textContent);
+    const metrics = context.measureText(element.textContent ?? "");
     const metricsWithExclusions = {
         ...metrics,
         width: metrics.width - excludedElementsWidth,

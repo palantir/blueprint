@@ -21,13 +21,13 @@ import { AbstractComponent2, Props, Utils as CoreUtils } from "@blueprintjs/core
 
 import { emptyCellRenderer, CellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
-import { IFocusedCellCoordinates } from "./common/cell";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
-import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
+import { Grid, ColumnIndices, RowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 
-export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, Props {
+export interface ITableBodyCellsProps extends RowIndices, ColumnIndices, Props {
     /**
      * A cell renderer for the cells in the body.
      */
@@ -36,7 +36,7 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, Props
     /**
      * The coordinates of the currently focused cell, for setting the "isFocused" prop on cells.
      */
-    focusedCell?: IFocusedCellCoordinates;
+    focusedCell?: FocusedCellCoordinates;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -101,7 +101,7 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
         this.maybeInvokeOnCompleteRender();
     }
 
-    public shouldComponentUpdate(nextProps?: ITableBodyCellsProps) {
+    public shouldComponentUpdate(nextProps: ITableBodyCellsProps) {
         return (
             !CoreUtils.shallowCompareKeys(nextProps, this.props, {
                 exclude: SHALLOW_COMPARE_DENYLIST,

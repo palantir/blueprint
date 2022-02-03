@@ -106,7 +106,9 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         );
     }
 
-    public context: IColumnInteractionBarContextTypes;
+    public context: IColumnInteractionBarContextTypes = {
+        enableColumnInteractionBar: false,
+    };
 
     public state = {
         isActive: false,
@@ -153,8 +155,8 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
 
         const nameComponent = (
-            <LoadableContent loading={loading} variableLength={true}>
-                {nameRenderer == null ? defaultName : nameRenderer(name, index)}
+            <LoadableContent loading={loading ?? false} variableLength={true}>
+                {nameRenderer?.(name!, index) ?? defaultName}
             </LoadableContent>
         );
 

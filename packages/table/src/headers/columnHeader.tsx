@@ -20,7 +20,7 @@ import * as React from "react";
 import { IRef } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { IColumnIndices } from "../common/grid";
+import { ColumnIndices } from "../common/grid";
 import { Utils } from "../common/index";
 import { IClientCoordinates } from "../interactions/dragTypes";
 import { IIndexedResizeCallback } from "../interactions/resizable";
@@ -30,19 +30,19 @@ import { ColumnHeaderCell, IColumnHeaderCellProps } from "./columnHeaderCell";
 import { Header, IHeaderProps } from "./header";
 
 /** @deprecated use ColumnHeaderRenderer */
-export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
+export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps> | null;
 // eslint-disable-next-line deprecation/deprecation
 export type ColumnHeaderRenderer = IColumnHeaderRenderer;
 
 export interface IColumnWidths {
-    minColumnWidth?: number;
-    maxColumnWidth?: number;
-    defaultColumnWidth?: number;
+    minColumnWidth: number;
+    maxColumnWidth: number;
+    defaultColumnWidth: number;
 }
 
-export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, IColumnIndices {
+export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, ColumnIndices {
     /**
-     * A IColumnHeaderRenderer that, for each `<Column>`, will delegate to:
+     * A ColumnHeaderRenderer that, for each `<Column>`, will delegate to:
      * 1. The `columnHeaderCellRenderer` method from the `<Column>`
      * 2. A `<ColumnHeaderCell>` using the `name` prop from the `<Column>`
      * 3. A `<ColumnHeaderCell>` with a `name` generated from `Utils.toBase26Alpha`
@@ -79,7 +79,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
             maxColumnWidth: maxSize,
             defaultColumnWidth,
 
-            // from IColumnIndices
+            // from ColumnIndices
             columnIndexStart: indexStart,
             columnIndexEnd: indexEnd,
 
@@ -88,6 +88,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
         } = this.props;
 
         return (
+            // HACKHACK(adahiya): strange shouldComponentUpdate type error with strict null checks
+            // @ts-ignore
             <Header
                 convertPointToIndex={this.convertPointToColumn}
                 fullRegionCardinality={RegionCardinality.FULL_COLUMNS}
@@ -147,8 +149,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
     };
 
     private convertPointToColumn = (clientXOrY: number, useMidpoint?: boolean) => {
-        const { locator } = this.props;
-        return locator != null ? locator.convertPointToColumn(clientXOrY, useMidpoint) : null;
+        return this.props.locator.convertPointToColumn(clientXOrY, useMidpoint);
     };
 
     private getCellExtremaClasses = (index: number, indexEnd: number) => {
@@ -188,7 +189,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
     };
 
     private isCellSelected = (index: number) => {
-        return Regions.hasFullColumn(this.props.selectedRegions, index);
+        return Regions.hasFullColumn(this.props.selectedRegions!, index);
     };
 
     private isGhostIndex = (index: number) => {

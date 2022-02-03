@@ -31,19 +31,19 @@ export class DragEvents {
         return event.ctrlKey || event.metaKey;
     }
 
-    private handler: IDragHandler;
+    private handler?: IDragHandler;
 
-    private element: HTMLElement;
+    private element?: HTMLElement;
 
-    private activationCoordinates: IClientCoordinates;
+    private activationCoordinates?: IClientCoordinates;
 
-    private doubleClickTimeoutToken: number;
+    private doubleClickTimeoutToken?: number;
 
-    private isActivated: boolean;
+    private isActivated: boolean = false;
 
-    private isDragging: boolean;
+    private isDragging: boolean = false;
 
-    private lastCoordinates: IClientCoordinates;
+    private lastCoordinates?: IClientCoordinates;
 
     public attach(element: HTMLElement, handler: IDragHandler) {
         this.detach();
@@ -90,10 +90,16 @@ export class DragEvents {
     }
 
     private updateCoordinateData(event: MouseEvent) {
+        if (this.activationCoordinates === undefined) {
+            // invalid state; we should have activation by this point
+            return undefined;
+        }
+
         const currentCoordinates: [number, number] = [event.clientX, event.clientY];
+        const lastCoordinates = this.lastCoordinates ?? [0, 0];
         const deltaCoordinates: [number, number] = [
-            currentCoordinates[0] - this.lastCoordinates[0],
-            currentCoordinates[1] - this.lastCoordinates[1],
+            currentCoordinates[0] - lastCoordinates[0],
+            currentCoordinates[1] - lastCoordinates[1],
         ];
         const offsetCoordinates: [number, number] = [
             currentCoordinates[0] - this.activationCoordinates[0],
@@ -103,7 +109,7 @@ export class DragEvents {
             activation: this.activationCoordinates,
             current: currentCoordinates,
             delta: deltaCoordinates,
-            last: this.lastCoordinates,
+            last: lastCoordinates,
             offset: offsetCoordinates,
         };
         this.lastCoordinates = [event.clientX, event.clientY];
@@ -111,10 +117,10 @@ export class DragEvents {
     }
 
     private maybeAlterEventChain(event: MouseEvent) {
-        if (this.handler.preventDefault) {
+        if (this.handler?.preventDefault) {
             event.preventDefault();
         }
-        if (this.handler.stopPropagation) {
+        if (this.handler?.stopPropagation) {
             event.stopPropagation();
         }
     }
@@ -148,9 +154,8 @@ export class DragEvents {
 
         if (this.isDragging) {
             const coords = this.updateCoordinateData(event);
-
-            if (this.handler != null && this.handler.onDragMove != null) {
-                this.handler.onDragMove(event, coords);
+            if (coords !== undefined) {
+                this.handler?.onDragMove?.(event, coords);
             }
         }
     };
@@ -161,13 +166,9 @@ export class DragEvents {
         if (this.handler != null) {
             if (this.isDragging) {
                 const coords = this.updateCoordinateData(event);
-
-                if (this.handler.onDragMove != null) {
-                    this.handler.onDragMove(event, coords);
-                }
-
-                if (this.handler.onDragEnd != null) {
-                    this.handler.onDragEnd(event, coords);
+                if (coords !== undefined) {
+                    this.handler?.onDragMove?.(event, coords);
+                    this.handler?.onDragEnd?.(event, coords);
                 }
             } else if (this.isActivated) {
                 if (this.handler.onDoubleClick != null) {
@@ -177,9 +178,7 @@ export class DragEvents {
                         // timeout.
                         this.doubleClickTimeoutToken = window.setTimeout(() => {
                             delete this.doubleClickTimeoutToken;
-                            if (this.handler.onClick != null) {
-                                this.handler.onClick(event);
-                            }
+                            this.handler?.onClick?.(event);
                         }, DragEvents.DOUBLE_CLICK_TIMEOUT_MSEC);
                     } else {
                         // otherwise, this is the second click in the double-

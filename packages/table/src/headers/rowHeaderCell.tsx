@@ -62,8 +62,8 @@ export class RowHeaderCell extends AbstractPureComponent2<IRowHeaderCellProps> {
         const defaultName = <div className={Classes.TABLE_ROW_NAME_TEXT}>{name}</div>;
 
         const nameComponent = (
-            <LoadableContent loading={spreadableProps.loading}>
-                {nameRenderer == null ? defaultName : nameRenderer(name, spreadableProps.index)}
+            <LoadableContent loading={spreadableProps.loading ?? false}>
+                {nameRenderer?.(name!, spreadableProps.index) ?? defaultName}
             </LoadableContent>
         );
 

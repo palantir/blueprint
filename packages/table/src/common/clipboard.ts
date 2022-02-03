@@ -95,7 +95,7 @@ export const Clipboard = {
         // must be document.body instead of document.documentElement for firefox
         document.body.appendChild(elem);
         try {
-            window.getSelection().selectAllChildren(elem);
+            window!.getSelection()!.selectAllChildren(elem);
 
             if (plaintext != null) {
                 // add plaintext fallback

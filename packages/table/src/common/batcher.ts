@@ -69,7 +69,7 @@ export class Batcher<T> {
 
     private done = true;
 
-    private callback: Callback;
+    private callback: Callback | undefined;
 
     /**
      * Resets the "batch" and "current" sets. This essentially clears the cache

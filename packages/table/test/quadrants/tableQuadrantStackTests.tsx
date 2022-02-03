@@ -192,10 +192,10 @@ describe("TableQuadrantStack", () => {
             const component = mount(<TableQuadrantStack grid={grid} bodyRenderer={bodyRenderer} />);
             const element = component.getDOMNode() as HTMLElement;
             expect(element.classList.contains(Classes.TABLE_QUADRANT_STACK));
-            expect(element.children.item(0).classList.contains(Classes.TABLE_QUADRANT_MAIN));
-            expect(element.children.item(1).classList.contains(Classes.TABLE_QUADRANT_TOP));
-            expect(element.children.item(2).classList.contains(Classes.TABLE_QUADRANT_LEFT));
-            expect(element.children.item(3).classList.contains(Classes.TABLE_QUADRANT_TOP_LEFT));
+            expect(element.children.item(0)?.classList.contains(Classes.TABLE_QUADRANT_MAIN));
+            expect(element.children.item(1)?.classList.contains(Classes.TABLE_QUADRANT_TOP));
+            expect(element.children.item(2)?.classList.contains(Classes.TABLE_QUADRANT_LEFT));
+            expect(element.children.item(3)?.classList.contains(Classes.TABLE_QUADRANT_TOP_LEFT));
         });
 
         it("invokes menuRenderer once for each quadrant on mount", () => {

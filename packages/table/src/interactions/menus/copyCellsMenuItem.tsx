@@ -57,7 +57,9 @@ export class CopyCellsMenuItem extends React.PureComponent<ICopyCellsMenuItemPro
         const { context, getCellData, onCopy } = this.props;
         const cells = context.getUniqueCells();
         const sparse = Regions.sparseMapCells(cells, getCellData);
-        const success = Clipboard.copyCells(sparse);
-        onCopy?.(success);
+        if (sparse !== undefined) {
+            const success = Clipboard.copyCells(sparse);
+            onCopy?.(success);
+        }
     };
 }
