@@ -232,13 +232,16 @@ describe("<Table2>", function (this) {
 
         it("does not continue scrolling to ghost rows at the bottom of table", () => {
             const onVisibleCellsChange = sinon.spy();
-            const { containerElement, table } = mountTable({ defaultRowHeight: 20, enableGhostCells: true, onVisibleCellsChange }, {
-                width: 300,
-                // we need _some_ amount of vertical overflow to avoid the code path which disables vertical scroll
-                // in the table altogether. 200px leaves just enough space for the rows, but there is 30px taken up by
-                // the column header, which will overflow.
-                height: 200,
-            });
+            const { containerElement, table } = mountTable(
+                { defaultRowHeight: 20, enableGhostCells: true, onVisibleCellsChange },
+                {
+                    // we need _some_ amount of vertical overflow to avoid the code path which disables vertical scroll
+                    // in the table altogether. 200px leaves just enough space for the rows, but there is 30px taken up by
+                    // the column header, which will overflow.
+                    height: 200,
+                    width: 300,
+                },
+            );
             const OVERFLOW_DISTANCE_TO_SCROLL = 30;
             const locator = table.instance().locator!;
             const prevViewportRect = locator.getViewportRect();
@@ -246,7 +249,13 @@ describe("<Table2>", function (this) {
             // first: scroll the table to the bottom
             // HACKHACK: consider exposing this for testing somehow
             ((locator as any).scrollContainerElement as HTMLElement).scrollTop = OVERFLOW_DISTANCE_TO_SCROLL;
-            updateLocatorElements(table, 0, OVERFLOW_DISTANCE_TO_SCROLL, prevViewportRect.width, prevViewportRect.height);
+            updateLocatorElements(
+                table,
+                0,
+                OVERFLOW_DISTANCE_TO_SCROLL,
+                prevViewportRect.width,
+                prevViewportRect.height,
+            );
             // need to simulate the scroll event to trigger React event handlers after we touched the real DOM
             table
                 .find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`)
@@ -271,10 +280,13 @@ describe("<Table2>", function (this) {
 
         function runTestToEnsureScrollingIsEnabled(enableGhostCells: boolean) {
             it(`isn't disabled when there is half a row left to scroll to and enableGhostCells is set to ${enableGhostCells}`, () => {
-                const { containerElement, table } = mountTable({ defaultRowHeight: 30, enableGhostCells }, {
-                    width: 300,
-                    height: 320,
-                });
+                const { containerElement, table } = mountTable(
+                    { defaultRowHeight: 30, enableGhostCells },
+                    {
+                        height: 320,
+                        width: 300,
+                    },
+                );
                 const tableContainer = table.find(`.${Classes.TABLE_CONTAINER}`);
                 // There should be 10px left of scrolling. Height is 320, rows take up 300, and headerRow takes up 30
                 expect(tableContainer.hasClass(Classes.TABLE_NO_VERTICAL_SCROLL)).to.be.false;
@@ -284,7 +296,7 @@ describe("<Table2>", function (this) {
             });
         }
 
-        function mountTable(tableProps: Partial<TableProps> = {}, tableDimensions: { width: number, height: number }) {
+        function mountTable(tableProps: Partial<TableProps> = {}, tableDimensions: { width: number; height: number }) {
             const containerElement = document.createElement("div");
             containerElement.style.width = `${tableDimensions.width}px`;
             containerElement.style.height = `${tableDimensions.height}px`;
