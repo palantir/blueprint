@@ -1230,13 +1230,28 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private handleBodyScroll = (event: React.SyntheticEvent<HTMLElement>) => {
-        // Prevent the event from propagating to avoid a resize event on the
-        // resize sensor.
+        // Prevent the event from propagating to avoid a resize event on the resize sensor.
         event.stopPropagation();
 
+        const oldScrollTop = this.state.viewportRect?.top ?? 0;
+        const enableGhostCells = this.props.enableGhostCells!;
+
         if (this.locator != null && !this.state.isLayoutLocked) {
-            const viewportRect = this.locator.getViewportRect();
-            this.updateViewportRect(viewportRect);
+            const newViewportRect = this.locator.getViewportRect();
+
+            // if there are ghost rows, we must take care to avoid unnecessarily scrolling them into view
+            // (see https://github.com/palantir/blueprint/issues/5027)
+            if (enableGhostCells && this.grid != null) {
+                const didScrollDownVertically = newViewportRect.top > oldScrollTop;
+                const rowIndices = this.grid.getRowIndicesInRect(newViewportRect, enableGhostCells);
+                // subtract 1 to give one row of buffer, to ensure that the last row does not get hidden in some edge cases
+                const areGhostRowsVisible = this.grid.isGhostIndex(rowIndices.rowIndexEnd - 1, 0);
+                if (didScrollDownVertically && areGhostRowsVisible && this.locator.hasVerticalOverflow) {
+                    // reached bottom of table, not scrolling further
+                    return;
+                }
+            }
+            this.updateViewportRect(newViewportRect);
         }
     };
 
@@ -1334,7 +1349,8 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         this.locator
             .setGrid(this.grid)
             .setNumFrozenRows(this.state.numFrozenRowsClamped)
-            .setNumFrozenColumns(this.state.numFrozenColumnsClamped);
+            .setNumFrozenColumns(this.state.numFrozenColumnsClamped)
+            .updateOverflow();
     }
 
     private updateViewportRect = (nextViewportRect: Rect | undefined) => {

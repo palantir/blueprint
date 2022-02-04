@@ -226,6 +226,80 @@ describe("<Table2>", function (this) {
         }
     });
 
+    describe("Vertically scrolling", () => {
+        runTestToEnsureScrollingIsEnabled(true);
+        runTestToEnsureScrollingIsEnabled(false);
+
+        it("does not continue scrolling to ghost rows at the bottom of table", () => {
+            const onVisibleCellsChange = sinon.spy();
+            const { containerElement, table } = mountTable({ defaultRowHeight: 20, enableGhostCells: true, onVisibleCellsChange }, {
+                width: 300,
+                // we need _some_ amount of vertical overflow to avoid the code path which disables vertical scroll
+                // in the table altogether. 200px leaves just enough space for the rows, but there is 30px taken up by
+                // the column header, which will overflow.
+                height: 200,
+            });
+            const OVERFLOW_DISTANCE_TO_SCROLL = 30;
+            const locator = table.instance().locator!;
+            const prevViewportRect = locator.getViewportRect();
+
+            // first: scroll the table to the bottom
+            // HACKHACK: consider exposing this for testing somehow
+            ((locator as any).scrollContainerElement as HTMLElement).scrollTop = OVERFLOW_DISTANCE_TO_SCROLL;
+            updateLocatorElements(table, 0, OVERFLOW_DISTANCE_TO_SCROLL, prevViewportRect.width, prevViewportRect.height);
+            // need to simulate the scroll event to trigger React event handlers after we touched the real DOM
+            table
+                .find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`)
+                .simulate("scroll");
+            onVisibleCellsChange.resetHistory();
+
+            // next, try to scroll a bit farther
+            // N.B. this is tricky to test via unit testing (perhaps better handled by an integration test), so your results may vary
+            ((locator as any).scrollContainerElement as HTMLElement).scrollTop = OVERFLOW_DISTANCE_TO_SCROLL + 5;
+            // updateLocatorElements(table, 0, OVERFLOW_DISTANCE_TO_SCROLL + 5, prevViewportRect.width, prevViewportRect.height);
+            // again, we need to simulate the scroll event to trigger React event handlers after we touched the real DOM
+            table
+                .find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`)
+                .simulate("scroll");
+
+            // we expect the body scroll handler to have exited early, and not triggered a visible cells change
+            expect(onVisibleCellsChange.callCount).to.be.eq(0);
+
+            // cleanup
+            document.body.removeChild(containerElement);
+        });
+
+        function runTestToEnsureScrollingIsEnabled(enableGhostCells: boolean) {
+            it(`isn't disabled when there is half a row left to scroll to and enableGhostCells is set to ${enableGhostCells}`, () => {
+                const { containerElement, table } = mountTable({ defaultRowHeight: 30, enableGhostCells }, {
+                    width: 300,
+                    height: 320,
+                });
+                const tableContainer = table.find(`.${Classes.TABLE_CONTAINER}`);
+                // There should be 10px left of scrolling. Height is 320, rows take up 300, and headerRow takes up 30
+                expect(tableContainer.hasClass(Classes.TABLE_NO_VERTICAL_SCROLL)).to.be.false;
+
+                // clean up created div
+                document.body.removeChild(containerElement);
+            });
+        }
+
+        function mountTable(tableProps: Partial<TableProps> = {}, tableDimensions: { width: number, height: number }) {
+            const containerElement = document.createElement("div");
+            containerElement.style.width = `${tableDimensions.width}px`;
+            containerElement.style.height = `${tableDimensions.height}px`;
+            document.body.appendChild(containerElement);
+
+            const table = mount(
+                <Table2 numRows={10} {...tableProps}>
+                    <Column cellRenderer={renderDummyCell} />
+                </Table2>,
+                { attachTo: containerElement },
+            );
+            return { containerElement, table };
+        }
+    });
+
     describe("Instance methods", () => {
         describe("resizeRowsByApproximateHeight", () => {
             const STR_LENGTH_SHORT = 10;
