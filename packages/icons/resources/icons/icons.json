@@ -3730,5 +3730,17 @@
         "iconName": "cargo-ship",
         "tags": "transportation, cargo, freight, ship, boat, cruise, yacht, supply, supply chain, container, shipping",
         "group": "interface"
+    },
+    {
+        "displayName": "Clip",
+        "iconName": "clip",
+        "tags": "screenshot, segment, edit",
+        "group": "interface"
+    },
+    {
+        "displayName": "Add clip",
+        "iconName": "add-clip",
+        "tags": "screenshot, segment, add",
+        "group": "interface"
     }
 ]
