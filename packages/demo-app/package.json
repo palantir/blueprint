@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/demo-app",
-    "version": "4.0.0-beta.12",
+    "version": "4.0.0-beta.13",
     "description": "Blueprint Demo App",
     "private": true,
     "scripts": {
@@ -16,13 +16,13 @@
         "verify": "run-p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.0.0-beta.12",
-        "@blueprintjs/datetime": "^4.0.0-beta.12",
-        "@blueprintjs/icons": "^4.0.0-beta.6",
-        "@blueprintjs/popover2": "^1.0.0-beta.12",
-        "@blueprintjs/select": "^4.0.0-beta.12",
-        "@blueprintjs/table": "^4.0.0-beta.12",
-        "@blueprintjs/timezone": "^4.0.0-beta.12",
+        "@blueprintjs/core": "^4.0.0-beta.13",
+        "@blueprintjs/datetime": "^4.0.0-beta.13",
+        "@blueprintjs/icons": "^4.0.0-beta.7",
+        "@blueprintjs/popover2": "^1.0.0-beta.13",
+        "@blueprintjs/select": "^4.0.0-beta.13",
+        "@blueprintjs/table": "^4.0.0-beta.13",
+        "@blueprintjs/timezone": "^4.0.0-beta.13",
         "classnames": "^2.2",
         "core-js": "^3.8.1",
         "dom4": "^2.1.5",
@@ -36,7 +36,7 @@
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^2.0.0-beta.1",
-        "@blueprintjs/webpack-build-scripts": "^3.0.0-beta.0",
+        "@blueprintjs/webpack-build-scripts": "^3.0.0-beta.1",
         "copy-webpack-plugin": "^6.4.0",
         "npm-run-all": "^4.1.5",
         "webpack-cli": "^3.3.12",

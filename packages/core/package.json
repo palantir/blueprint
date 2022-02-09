@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "4.0.0-beta.12",
+    "version": "4.0.0-beta.13",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -47,7 +47,7 @@
     },
     "dependencies": {
         "@blueprintjs/colors": "^4.0.0-beta.3",
-        "@blueprintjs/icons": "^4.0.0-beta.6",
+        "@blueprintjs/icons": "^4.0.0-beta.7",
         "@types/dom4": "^2.0.1",
         "classnames": "^2.2",
         "dom4": "^2.1.5",
@@ -63,7 +63,7 @@
         "react-dom": "^16.8 || 17"
     },
     "devDependencies": {
-        "@blueprintjs/karma-build-scripts": "^3.0.0-beta.0",
+        "@blueprintjs/karma-build-scripts": "^3.0.0-beta.1",
         "@blueprintjs/node-build-scripts": "^2.0.0-beta.1",
         "@blueprintjs/test-commons": "^1.0.0-beta.2",
         "@testing-library/react": "^11.2.5",
