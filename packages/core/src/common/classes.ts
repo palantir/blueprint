@@ -187,6 +187,7 @@ export const LABEL = `${NS}-label`;
 export const FORM_GROUP = `${NS}-form-group`;
 export const FORM_CONTENT = `${NS}-form-content`;
 export const FORM_HELPER_TEXT = `${NS}-form-helper-text`;
+export const FORM_GROUP_SUB_LABEL = `${NS}-form-group-sub-label`;
 
 export const MENU = `${NS}-menu`;
 export const MENU_ITEM = `${MENU}-item`;
@@ -243,6 +244,7 @@ export const POPOVER_CONTENT_SIZING = `${POPOVER_CONTENT}-sizing`;
 export const POPOVER_DISMISS = `${POPOVER}-dismiss`;
 export const POPOVER_DISMISS_OVERRIDE = `${POPOVER_DISMISS}-override`;
 export const POPOVER_OPEN = `${POPOVER}-open`;
+export const POPOVER_OUT_OF_BOUNDARIES = `${POPOVER}-out-of-boundaries`;
 export const POPOVER_TARGET = `${POPOVER}-target`;
 export const POPOVER_WRAPPER = `${POPOVER}-wrapper`;
 export const TRANSITION_CONTAINER = `${NS}-transition-container`;

@@ -3714,9 +3714,39 @@
         "group": "interface"
     },
     {
+        "displayName": "Target",
+        "iconName": "target",
+        "tags": "location, pinpoint, scope, center",
+        "group": "interface"
+    },
+    {
         "displayName": "Small square",
         "iconName": "small-square",
         "tags": "square",
         "group": "miscellaneous"
+    },
+    {
+        "displayName": "Ship",
+        "iconName": "ship",
+        "tags": "transportation, ship, boat, cruise, yacht, supply, supply chain, trip, shipping",
+        "group": "interface"
+    },
+    {
+        "displayName": "Cargo Ship",
+        "iconName": "cargo-ship",
+        "tags": "transportation, cargo, freight, ship, boat, cruise, yacht, supply, supply chain, container, shipping",
+        "group": "interface"
+    },
+    {
+        "displayName": "Clip",
+        "iconName": "clip",
+        "tags": "screenshot, segment, edit",
+        "group": "interface"
+    },
+    {
+        "displayName": "Add clip",
+        "iconName": "add-clip",
+        "tags": "screenshot, segment, add",
+        "group": "interface"
     }
 ]

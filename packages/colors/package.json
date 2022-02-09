@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/colors",
-    "version": "4.0.0-alpha.1",
+    "version": "4.0.0-alpha.2",
     "description": "Blueprint color definitions",
     "main": "lib/index.js",
     "scripts": {
@@ -14,7 +14,6 @@
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix && sass-lint --fix",
-        "test": "mocha test/index.js",
         "verify": "npm-run-all compile -p dist lint"
     },
     "devDependencies": {
