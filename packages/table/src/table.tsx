@@ -1146,7 +1146,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             const { rowHeights, columnWidths } = this.state;
 
             // gridBleed should always be >= numFrozenColumns since columnIndexStart adds numFrozenColumns
-            const gridBleed = Math.max(Grid.DEFAULT_BLEED, numFrozenColumns);
+            const gridBleed = Math.max(Grid.DEFAULT_BLEED, numFrozenColumns!);
             this.grid = new Grid(rowHeights, columnWidths, gridBleed, defaultRowHeight, defaultColumnWidth);
             this.invokeOnVisibleCellsChangeCallback(this.state.viewportRect!);
             this.hotkeysImpl.setGrid(this.grid);
