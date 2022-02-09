@@ -995,10 +995,12 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private validateGrid() {
         if (this.grid == null) {
-            const { defaultRowHeight, defaultColumnWidth } = this.props;
+            const { defaultRowHeight, defaultColumnWidth, numFrozenColumns } = this.props;
             const { rowHeights, columnWidths } = this.state;
-            this.grid = new Grid(rowHeights, columnWidths, Grid.DEFAULT_BLEED, defaultRowHeight, defaultColumnWidth);
-            // HACKHACK: non-null assertion
+
+            // gridBleed should always be >= numFrozenColumns since columnIndexStart adds numFrozenColumns
+            const gridBleed = Math.max(Grid.DEFAULT_BLEED, numFrozenColumns);
+            this.grid = new Grid(rowHeights, columnWidths, gridBleed, defaultRowHeight, defaultColumnWidth);
             this.invokeOnVisibleCellsChangeCallback(this.state.viewportRect!);
             this.hotkeysImpl.setGrid(this.grid);
         }
