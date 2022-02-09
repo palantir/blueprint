@@ -59,11 +59,16 @@ export class Locator implements ILocator {
     public static CELL_HORIZONTAL_PADDING = 10;
 
     /**
-     * Marks whether the rendered rows overflow the table scroll container.
+     * The amount of vertical and horizontal overflow, recorded as width/height dimensions.
+     * If all the visible cells fit into the viewport, this should be 0/0.
+     *
      * This should be updated via calls to `.updateOverflow()` whenever updating
-     * the Locator.
+     * the Locator, and when the table root container element is resized.
      */
-    public hasVerticalOverflow = false;
+    public overflowDimensions = {
+        height: 0,
+        width: 0,
+    };
 
     private grid: Grid | undefined;
 
@@ -85,7 +90,7 @@ export class Locator implements ILocator {
     ) {
         this.numFrozenRows = 0;
         this.numFrozenColumns = 0;
-        this.updateOverflow();
+        this.updateOverflowDimensions();
     }
 
     // Setters
@@ -106,8 +111,11 @@ export class Locator implements ILocator {
         return this;
     }
 
-    public updateOverflow() {
-        this.hasVerticalOverflow = this.scrollContainerElement.scrollHeight > this.scrollContainerElement.clientHeight;
+    public updateOverflowDimensions() {
+        this.overflowDimensions = {
+            height: this.scrollContainerElement.scrollHeight - this.scrollContainerElement.clientHeight,
+            width: this.scrollContainerElement.scrollWidth - this.scrollContainerElement.clientWidth,
+        };
     }
 
     // Getters

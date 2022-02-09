@@ -502,6 +502,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             this.updateViewportRect(this.locator.getViewportRect());
             this.resizeSensorDetach = ResizeSensor.attach(this.rootTableElement, () => {
                 if (!this.state.isLayoutLocked) {
+                    this.locator?.updateOverflowDimensions();
                     this.updateViewportRect(this.locator?.getViewportRect());
                 }
             });
@@ -761,16 +762,17 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             selectedRegionTransform,
         } = this.props;
 
-        if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
-            return undefined;
-        }
-
         const classes = classNames(Classes.TABLE_COLUMN_HEADERS, {
             [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(
                 this.props as TablePropsWithDefaults,
                 RegionCardinality.FULL_COLUMNS,
             ),
         });
+
+        if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
+            // TODO(adahiya): why do we need the refHandler here?
+            return <div className={classes} ref={refHandler} />;
+        }
 
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
         const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
@@ -1235,7 +1237,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         // Prevent the event from propagating to avoid a resize event on the resize sensor.
         event.stopPropagation();
 
-        const oldScrollTop = this.state.viewportRect?.top ?? 0;
+        const oldViewportRect = this.state.viewportRect!;
         const enableGhostCells = this.props.enableGhostCells!;
 
         if (this.locator != null && !this.state.isLayoutLocked) {
@@ -1244,15 +1246,23 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             // if there are ghost rows, we must take care to avoid unnecessarily scrolling them into view
             // (see https://github.com/palantir/blueprint/issues/5027)
             if (enableGhostCells && this.grid != null) {
-                const didScrollDownVertically = newViewportRect.top > oldScrollTop;
+
+                // HACKHACK(adahiya): cache this value somehow
+                // const columnHeaderHeight = this.columnHeaderElement?.clientHeight ?? 0;
+                // const didScrollToBottom = newViewportRect.top + columnHeaderHeight >= this.locator.overflowDimensions.height;
+
+                const didScrollDownVertically = newViewportRect.top - oldViewportRect.top > 1; // ignore subpixel scrolls
                 const rowIndices = this.grid.getRowIndicesInRect(newViewportRect, enableGhostCells);
                 // subtract 1 to give one row of buffer, to ensure that the last row does not get hidden in some edge cases
                 const areGhostRowsVisible = this.grid.isGhostIndex(rowIndices.rowIndexEnd - 1, 0);
-                if (didScrollDownVertically && areGhostRowsVisible && this.locator.hasVerticalOverflow) {
+
+                if (didScrollDownVertically && areGhostRowsVisible && this.locator.overflowDimensions.height > 0) {
                     // reached bottom of table, not scrolling further
+                    event.preventDefault();
                     return;
                 }
             }
+
             this.updateViewportRect(newViewportRect);
         }
     };
@@ -1352,7 +1362,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             .setGrid(this.grid)
             .setNumFrozenRows(this.state.numFrozenRowsClamped)
             .setNumFrozenColumns(this.state.numFrozenColumnsClamped)
-            .updateOverflow();
+            .updateOverflowDimensions();
     }
 
     private updateViewportRect = (nextViewportRect: Rect | undefined) => {
