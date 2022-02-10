@@ -516,7 +516,6 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             this.updateViewportRect(this.locator.getViewportRect());
             this.resizeSensorDetach = ResizeSensor.attach(this.rootTableElement, () => {
                 if (!this.state.isLayoutLocked) {
-                    this.locator?.updateOverflowDimensions();
                     this.updateViewportRect(this.locator?.getViewportRect());
                 }
             });
@@ -1365,8 +1364,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         this.locator
             .setGrid(this.grid)
             .setNumFrozenRows(this.state.numFrozenRowsClamped)
-            .setNumFrozenColumns(this.state.numFrozenColumnsClamped)
-            .updateOverflowDimensions();
+            .setNumFrozenColumns(this.state.numFrozenColumnsClamped);
     }
 
     private updateViewportRect = (nextViewportRect: Rect | undefined) => {

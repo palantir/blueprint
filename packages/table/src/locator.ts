@@ -58,18 +58,6 @@ export interface ILocator {
 export class Locator implements ILocator {
     public static CELL_HORIZONTAL_PADDING = 10;
 
-    /**
-     * The amount of vertical and horizontal overflow, recorded as width/height dimensions.
-     * If all the visible cells fit into the viewport, this should be 0/0.
-     *
-     * This should be updated via calls to `.updateOverflow()` whenever updating
-     * the Locator, and when the table root container element is resized.
-     */
-    public overflowDimensions = {
-        height: 0,
-        width: 0,
-    };
-
     private grid: Grid | undefined;
 
     // these values affect how we map a mouse coordinate to a cell coordinate.
@@ -90,7 +78,6 @@ export class Locator implements ILocator {
     ) {
         this.numFrozenRows = 0;
         this.numFrozenColumns = 0;
-        this.updateOverflowDimensions();
     }
 
     // Setters
@@ -109,13 +96,6 @@ export class Locator implements ILocator {
     public setNumFrozenColumns(numFrozenColumns: number) {
         this.numFrozenColumns = numFrozenColumns;
         return this;
-    }
-
-    public updateOverflowDimensions() {
-        this.overflowDimensions = {
-            height: this.scrollContainerElement.scrollHeight - this.scrollContainerElement.clientHeight,
-            width: this.scrollContainerElement.scrollWidth - this.scrollContainerElement.clientWidth,
-        };
     }
 
     // Getters
