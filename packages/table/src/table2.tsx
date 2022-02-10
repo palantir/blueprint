@@ -207,10 +207,20 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private refHandlers = {
         cellContainer: (ref: HTMLElement | null) => (this.cellContainerElement = ref),
-        columnHeader: (ref: HTMLElement | null) => (this.columnHeaderElement = ref),
+        columnHeader: (ref: HTMLElement | null) => {
+            this.columnHeaderElement = ref;
+            if (ref != null) {
+                this.columnHeaderHeight = ref.clientHeight;
+            }
+        },
         quadrantStack: (ref: TableQuadrantStack) => (this.quadrantStackInstance = ref),
         rootTable: (ref: HTMLElement | null) => (this.rootTableElement = ref),
-        rowHeader: (ref: HTMLElement | null) => (this.rowHeaderElement = ref),
+        rowHeader: (ref: HTMLElement | null) => {
+            this.rowHeaderElement = ref;
+            if (ref != null) {
+                this.rowHeaderWidth = ref.clientWidth;
+            }
+        },
         scrollContainer: (ref: HTMLElement | null) => (this.scrollContainerElement = ref),
     };
 
@@ -218,11 +228,15 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private columnHeaderElement?: HTMLElement | null;
 
+    private columnHeaderHeight = Grid.MIN_COLUMN_HEADER_HEIGHT;
+
     private quadrantStackInstance?: TableQuadrantStack;
 
     private rootTableElement?: HTMLElement | null;
 
     private rowHeaderElement?: HTMLElement | null;
+
+    private rowHeaderWidth = Grid.MIN_ROW_HEADER_WIDTH;
 
     private scrollContainerElement?: HTMLElement | null;
 
@@ -761,10 +775,6 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             selectedRegionTransform,
         } = this.props;
 
-        if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
-            return undefined;
-        }
-
         const classes = classNames(Classes.TABLE_COLUMN_HEADERS, {
             [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(
                 this.props as TablePropsWithDefaults,
@@ -772,12 +782,25 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             ),
         });
 
-        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
+        if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
+            // if we haven't mounted yet (which we need in order for grid/viewport calculations),
+            // we still want to hand a DOM ref over to TableQuadrantStack for later
+            return <div className={classes} ref={refHandler} />;
+        }
+
+        // if we have horizontal overflow, no need to render ghost columns
+        // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
+        const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(this.rowHeaderWidth, viewportRect);
+        const columnIndices = this.grid.getColumnIndicesInRect(
+            viewportRect,
+            hasHorizontalOverflow ? false : enableGhostCells,
+        );
+
         const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
         const columnIndexEnd = showFrozenColumnsOnly ? this.getMaxFrozenColumnIndex() : columnIndices.columnIndexEnd;
 
         return (
-            <div className={classes}>
+            <div className={classes} ref={refHandler}>
                 <ColumnHeader
                     defaultColumnWidth={defaultColumnWidth!}
                     enableMultipleSelection={enableMultipleSelection}
@@ -789,7 +812,6 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                     loading={hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={this.locator}
                     maxColumnWidth={maxColumnWidth!}
-                    measurableElementRef={refHandler}
                     minColumnWidth={minColumnWidth!}
                     onColumnWidthChanged={this.handleColumnWidthChanged}
                     onFocusedCell={this.handleFocus}
@@ -831,10 +853,6 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             selectedRegionTransform,
         } = this.props;
 
-        if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
-            return undefined;
-        }
-
         const classes = classNames(Classes.TABLE_ROW_HEADERS, {
             [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(
                 this.props as TablePropsWithDefaults,
@@ -842,7 +860,17 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             ),
         });
 
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
+        if (this.grid === null || this.locator === undefined || viewportRect === undefined) {
+            // if we haven't mounted yet (which we need in order for grid/viewport calculations),
+            // we still want to hand a DOM ref over to TableQuadrantStack for later
+            return <div className={classes} ref={refHandler} />;
+        }
+
+        // if we have vertical overflow, no need to render ghost rows
+        // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
+        const hasVerticalOverflow = this.locator.hasVerticalOverflow(this.columnHeaderHeight, viewportRect);
+        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, hasVerticalOverflow ? false : enableGhostCells);
+
         const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
         const rowIndexEnd = showFrozenRowsOnly ? this.getMaxFrozenRowIndex() : rowIndices.rowIndexEnd;
 
@@ -926,8 +954,15 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             return undefined;
         }
 
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
-        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
+        // if we have vertical/horizontal overflow, no need to render ghost rows/columns (respectively)
+        // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
+        const hasVerticalOverflow = this.locator.hasVerticalOverflow(this.columnHeaderHeight, viewportRect);
+        const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(this.rowHeaderWidth, viewportRect);
+        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, hasVerticalOverflow ? false : enableGhostCells);
+        const columnIndices = this.grid.getColumnIndicesInRect(
+            viewportRect,
+            hasHorizontalOverflow ? false : enableGhostCells,
+        );
 
         // start beyond the frozen area if rendering unrelated quadrants, so we
         // don't render duplicate cells underneath the frozen ones.
@@ -1232,13 +1267,12 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private handleBodyScroll = (event: React.SyntheticEvent<HTMLElement>) => {
-        // Prevent the event from propagating to avoid a resize event on the
-        // resize sensor.
+        // Prevent the event from propagating to avoid a resize event on the resize sensor.
         event.stopPropagation();
 
         if (this.locator != null && !this.state.isLayoutLocked) {
-            const viewportRect = this.locator.getViewportRect();
-            this.updateViewportRect(viewportRect);
+            const newViewportRect = this.locator.getViewportRect();
+            this.updateViewportRect(newViewportRect);
         }
     };
 

@@ -62,8 +62,9 @@ export class TableBody extends AbstractComponent2<ITableBodyProps> {
         renderMode: RenderMode.BATCH,
     };
 
-    // TODO: Does this method need to be public?
-    // (see: https://github.com/palantir/blueprint/issues/1617)
+    /**
+     * @deprecated, will be removed from public API in the next major version
+     */
     public static cellClassNames(rowIndex: number, columnIndex: number) {
         return cellClassNames(rowIndex, columnIndex);
     }

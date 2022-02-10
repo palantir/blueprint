@@ -158,6 +158,33 @@ export class Locator implements ILocator {
         return maxHeight;
     }
 
+    /**
+     * Pass in an already-computed viewport rect here, if available, to reduce DOM reads.
+     *
+     * @returns whether the rendered rows overflow the visible viewport vertically, helpful for scrolling calculations
+     */
+    public hasVerticalOverflow(
+        columnHeaderHeight = Grid.MIN_COLUMN_HEADER_HEIGHT,
+        viewportRect = this.getViewportRect(),
+    ) {
+        if (this.grid === undefined) {
+            return false;
+        }
+        return this.grid.getHeight() > viewportRect.height - columnHeaderHeight;
+    }
+
+    /**
+     * Pass in an already-computed viewport rect here, if available, to reduce DOM reads.
+     *
+     * @returns whether the rendered columns overflow the visible viewport horizontally, helpful for scrolling calculations
+     */
+    public hasHorizontalOverflow(rowHeaderWidth = Grid.MIN_ROW_HEADER_WIDTH, viewportRect = this.getViewportRect()) {
+        if (this.grid === undefined) {
+            return false;
+        }
+        return this.grid.getWidth() > viewportRect.width - rowHeaderWidth;
+    }
+
     // Converters
     // ==========
 

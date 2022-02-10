@@ -88,8 +88,6 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
         } = this.props;
 
         return (
-            // HACKHACK(adahiya): strange shouldComponentUpdate type error with strict null checks
-            // @ts-ignore
             <Header
                 convertPointToIndex={this.convertPointToColumn}
                 fullRegionCardinality={RegionCardinality.FULL_COLUMNS}

@@ -31,6 +31,7 @@ import type { ColumnIndices, RowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
+import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
 import { IRegion, Regions } from "../src/regions";
 import { TableState } from "../src/tableState";
 import { CellType, expectCellLoading } from "./cellTestUtils";
@@ -208,16 +209,98 @@ describe("<Table2>", function (this) {
             });
         });
 
-        function mountTable(tableProps: Partial<TableProps> = {}) {
+        it("does not render ghost columns when there is horizontal overflow", () => {
+            const { containerElement } = mountTable(
+                { numRows: 2, defaultRowHeight: 20, defaultColumnWidth: 100 },
+                {
+                    height: 200,
+                    // 300px leaves just enough space for the 3 columns, but there is 30px taken up by
+                    // the row header, which will overflow.
+                    width: 300,
+                },
+            );
+            const numGhostCellsInFirstRow = containerElement.querySelectorAll(
+                `.${Classes.TABLE_CELL_GHOST}.${Classes.rowCellIndexClass(0)}`,
+            ).length;
+            expect(numGhostCellsInFirstRow).to.be.eq(0);
+
+            // cleanup
+            document.body.removeChild(containerElement);
+        });
+
+        function mountTable(
+            tableProps: Partial<TableProps> = {},
+            tableDimensions: { width: number; height: number } = { width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT },
+        ) {
             const containerElement = document.createElement("div");
-            containerElement.style.width = `${CONTAINER_WIDTH}px`;
-            containerElement.style.height = `${CONTAINER_HEIGHT}px`;
+            containerElement.style.width = `${tableDimensions.width}px`;
+            containerElement.style.height = `${tableDimensions.height}px`;
             document.body.appendChild(containerElement);
 
+            TableQuadrantStack.defaultProps.throttleScrolling = false;
             const table = mount(
                 <Table2 numRows={0} enableGhostCells={true} {...tableProps}>
                     <Column cellRenderer={renderDummyCell} />
                     <Column cellRenderer={renderDummyCell} />
+                    <Column cellRenderer={renderDummyCell} />
+                </Table2>,
+                { attachTo: containerElement },
+            );
+            return { containerElement, table };
+        }
+    });
+
+    describe("Vertically scrolling", () => {
+        runTestToEnsureScrollingIsEnabled(true);
+        runTestToEnsureScrollingIsEnabled(false);
+
+        it("does not render ghost rows when there is vertical overflow", () => {
+            const { containerElement } = mountTable(
+                { defaultRowHeight: 20, enableGhostCells: true },
+                {
+                    // we need _some_ amount of vertical overflow to avoid the code path which disables vertical scroll
+                    // in the table altogether. 200px leaves just enough space for the rows, but there is 30px taken up by
+                    // the column header, which will overflow.
+                    height: 200,
+                    width: 300,
+                },
+            );
+            const numGhostCellsInFirstColumn = containerElement.querySelectorAll(
+                `.${Classes.TABLE_CELL_GHOST}.${Classes.columnCellIndexClass(0)}`,
+            ).length;
+            expect(numGhostCellsInFirstColumn).to.be.eq(0);
+
+            // cleanup
+            document.body.removeChild(containerElement);
+        });
+
+        function runTestToEnsureScrollingIsEnabled(enableGhostCells: boolean) {
+            it(`isn't disabled when there is half a row left to scroll to and enableGhostCells is set to ${enableGhostCells}`, () => {
+                const { containerElement, table } = mountTable(
+                    { defaultRowHeight: 30, enableGhostCells },
+                    {
+                        height: 320,
+                        width: 300,
+                    },
+                );
+                const tableContainer = table.find(`.${Classes.TABLE_CONTAINER}`);
+                // There should be 10px left of scrolling. Height is 320, rows take up 300, and headerRow takes up 30
+                expect(tableContainer.hasClass(Classes.TABLE_NO_VERTICAL_SCROLL)).to.be.false;
+
+                // clean up created div
+                document.body.removeChild(containerElement);
+            });
+        }
+
+        function mountTable(tableProps: Partial<TableProps> = {}, tableDimensions: { width: number; height: number }) {
+            const containerElement = document.createElement("div");
+            containerElement.style.width = `${tableDimensions.width}px`;
+            containerElement.style.height = `${tableDimensions.height}px`;
+            document.body.appendChild(containerElement);
+
+            TableQuadrantStack.defaultProps.throttleScrolling = false;
+            const table = mount(
+                <Table2 numRows={10} {...tableProps}>
                     <Column cellRenderer={renderDummyCell} />
                 </Table2>,
                 { attachTo: containerElement },
