@@ -220,7 +220,7 @@ describe("<Table2>", function (this) {
                 },
             );
             const numGhostCellsInFirstRow = containerElement.querySelectorAll(
-                `.${Classes.TABLE_CELL_GHOST}.${Classes.rowCellIndexClass(0)}`
+                `.${Classes.TABLE_CELL_GHOST}.${Classes.rowCellIndexClass(0)}`,
             ).length;
             expect(numGhostCellsInFirstRow).to.be.eq(0);
 
@@ -228,7 +228,10 @@ describe("<Table2>", function (this) {
             document.body.removeChild(containerElement);
         });
 
-        function mountTable(tableProps: Partial<TableProps> = {}, tableDimensions: { width: number; height: number } = { width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT }) {
+        function mountTable(
+            tableProps: Partial<TableProps> = {},
+            tableDimensions: { width: number; height: number } = { width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT },
+        ) {
             const containerElement = document.createElement("div");
             containerElement.style.width = `${tableDimensions.width}px`;
             containerElement.style.height = `${tableDimensions.height}px`;
@@ -263,7 +266,7 @@ describe("<Table2>", function (this) {
                 },
             );
             const numGhostCellsInFirstColumn = containerElement.querySelectorAll(
-                `.${Classes.TABLE_CELL_GHOST}.${Classes.columnCellIndexClass(0)}`
+                `.${Classes.TABLE_CELL_GHOST}.${Classes.columnCellIndexClass(0)}`,
             ).length;
             expect(numGhostCellsInFirstColumn).to.be.eq(0);
 
@@ -829,7 +832,7 @@ describe("<Table2>", function (this) {
         });
     });
 
-    describe.only("Resizing", () => {
+    describe("Resizing", () => {
         it("Resizes selected rows together", () => {
             const table = mountTable();
             const rows = getRowHeadersWrapper(table)!;

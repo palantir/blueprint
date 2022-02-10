@@ -788,10 +788,13 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             return <div className={classes} ref={refHandler} />;
         }
 
-        // if we have horizontal overflow, no need to render ghost rows
+        // if we have horizontal overflow, no need to render ghost columns
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
         const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(this.rowHeaderWidth, viewportRect);
-        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, hasHorizontalOverflow ? false : enableGhostCells);
+        const columnIndices = this.grid.getColumnIndicesInRect(
+            viewportRect,
+            hasHorizontalOverflow ? false : enableGhostCells,
+        );
 
         const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
         const columnIndexEnd = showFrozenColumnsOnly ? this.getMaxFrozenColumnIndex() : columnIndices.columnIndexEnd;
@@ -956,7 +959,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         const hasVerticalOverflow = this.locator.hasVerticalOverflow(this.columnHeaderHeight, viewportRect);
         const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(this.rowHeaderWidth, viewportRect);
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect, hasVerticalOverflow ? false : enableGhostCells);
-        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, hasHorizontalOverflow ? false : enableGhostCells);
+        const columnIndices = this.grid.getColumnIndicesInRect(
+            viewportRect,
+            hasHorizontalOverflow ? false : enableGhostCells,
+        );
 
         // start beyond the frozen area if rendering unrelated quadrants, so we
         // don't render duplicate cells underneath the frozen ones.

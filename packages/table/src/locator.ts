@@ -178,10 +178,7 @@ export class Locator implements ILocator {
      *
      * @returns whether the rendered columns overflow the visible viewport horizontally, helpful for scrolling calculations
      */
-    public hasHorizontalOverflow(
-        rowHeaderWidth = Grid.MIN_ROW_HEADER_WIDTH,
-        viewportRect = this.getViewportRect(),
-    ) {
+    public hasHorizontalOverflow(rowHeaderWidth = Grid.MIN_ROW_HEADER_WIDTH, viewportRect = this.getViewportRect()) {
         if (this.grid === undefined) {
             return false;
         }

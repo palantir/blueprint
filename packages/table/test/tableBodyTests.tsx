@@ -41,10 +41,7 @@ describe("TableBody", () => {
     const ROW_HEIGHT = 20;
 
     it("cellClassNames", () => {
-        expect(cellClassNames(0, 0)).to.deep.equal([
-            Classes.rowCellIndexClass(0),
-            Classes.columnCellIndexClass(0),
-        ]);
+        expect(cellClassNames(0, 0)).to.deep.equal([Classes.rowCellIndexClass(0), Classes.columnCellIndexClass(0)]);
         expect(cellClassNames(4096, 1024)).to.deep.equal([
             Classes.rowCellIndexClass(4096),
             Classes.columnCellIndexClass(1024),
