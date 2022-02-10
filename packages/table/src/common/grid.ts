@@ -49,6 +49,12 @@ export class Grid {
 
     public static DEFAULT_GHOST_WIDTH = 150;
 
+    // defined in headers/_common.scss
+    public static MIN_COLUMN_HEADER_HEIGHT = 30;
+
+    // defined in headers/_common.scss
+    public static MIN_ROW_HEADER_WIDTH = 30;
+
     public numCols: number;
 
     public numRows: number;

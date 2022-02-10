@@ -31,6 +31,7 @@ import type { ColumnIndices, RowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
+import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
 import { IRegion, Regions } from "../src/regions";
 import { TableState } from "../src/tableState";
 import { CellType, expectCellLoading } from "./cellTestUtils";
@@ -208,12 +209,32 @@ describe("<Table2>", function (this) {
             });
         });
 
-        function mountTable(tableProps: Partial<TableProps> = {}) {
+        it("does not render ghost columns when there is horizontal overflow", () => {
+            const { containerElement } = mountTable(
+                { numRows: 2, defaultRowHeight: 20, defaultColumnWidth: 100 },
+                {
+                    height: 200,
+                    // 300px leaves just enough space for the 3 columns, but there is 30px taken up by
+                    // the row header, which will overflow.
+                    width: 300,
+                },
+            );
+            const numGhostCellsInFirstRow = containerElement.querySelectorAll(
+                `.${Classes.TABLE_CELL_GHOST}.${Classes.rowCellIndexClass(0)}`
+            ).length;
+            expect(numGhostCellsInFirstRow).to.be.eq(0);
+
+            // cleanup
+            document.body.removeChild(containerElement);
+        });
+
+        function mountTable(tableProps: Partial<TableProps> = {}, tableDimensions: { width: number; height: number } = { width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT }) {
             const containerElement = document.createElement("div");
-            containerElement.style.width = `${CONTAINER_WIDTH}px`;
-            containerElement.style.height = `${CONTAINER_HEIGHT}px`;
+            containerElement.style.width = `${tableDimensions.width}px`;
+            containerElement.style.height = `${tableDimensions.height}px`;
             document.body.appendChild(containerElement);
 
+            TableQuadrantStack.defaultProps.throttleScrolling = false;
             const table = mount(
                 <Table2 numRows={0} enableGhostCells={true} {...tableProps}>
                     <Column cellRenderer={renderDummyCell} />
@@ -230,10 +251,9 @@ describe("<Table2>", function (this) {
         runTestToEnsureScrollingIsEnabled(true);
         runTestToEnsureScrollingIsEnabled(false);
 
-        it("does not continue scrolling to ghost rows at the bottom of table", () => {
-            const onVisibleCellsChange = sinon.spy();
-            const { containerElement, table } = mountTable(
-                { defaultRowHeight: 20, enableGhostCells: true, onVisibleCellsChange },
+        it("does not render ghost rows when there is vertical overflow", () => {
+            const { containerElement } = mountTable(
+                { defaultRowHeight: 20, enableGhostCells: true },
                 {
                     // we need _some_ amount of vertical overflow to avoid the code path which disables vertical scroll
                     // in the table altogether. 200px leaves just enough space for the rows, but there is 30px taken up by
@@ -242,37 +262,10 @@ describe("<Table2>", function (this) {
                     width: 300,
                 },
             );
-            const OVERFLOW_DISTANCE_TO_SCROLL = 30;
-            const locator = table.instance().locator!;
-            const prevViewportRect = locator.getViewportRect();
-
-            // first: scroll the table to the bottom
-            // HACKHACK: consider exposing this for testing somehow
-            ((locator as any).scrollContainerElement as HTMLElement).scrollTop = OVERFLOW_DISTANCE_TO_SCROLL;
-            updateLocatorElements(
-                table,
-                0,
-                OVERFLOW_DISTANCE_TO_SCROLL,
-                prevViewportRect.width,
-                prevViewportRect.height,
-            );
-            // need to simulate the scroll event to trigger React event handlers after we touched the real DOM
-            table
-                .find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`)
-                .simulate("scroll");
-            onVisibleCellsChange.resetHistory();
-
-            // next, try to scroll a bit farther
-            // N.B. this is tricky to test via unit testing (perhaps better handled by an integration test), so your results may vary
-            ((locator as any).scrollContainerElement as HTMLElement).scrollTop = OVERFLOW_DISTANCE_TO_SCROLL + 5;
-            // updateLocatorElements(table, 0, OVERFLOW_DISTANCE_TO_SCROLL + 5, prevViewportRect.width, prevViewportRect.height);
-            // again, we need to simulate the scroll event to trigger React event handlers after we touched the real DOM
-            table
-                .find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`)
-                .simulate("scroll");
-
-            // we expect the body scroll handler to have exited early, and not triggered a visible cells change
-            expect(onVisibleCellsChange.callCount).to.be.eq(0);
+            const numGhostCellsInFirstColumn = containerElement.querySelectorAll(
+                `.${Classes.TABLE_CELL_GHOST}.${Classes.columnCellIndexClass(0)}`
+            ).length;
+            expect(numGhostCellsInFirstColumn).to.be.eq(0);
 
             // cleanup
             document.body.removeChild(containerElement);
@@ -302,6 +295,7 @@ describe("<Table2>", function (this) {
             containerElement.style.height = `${tableDimensions.height}px`;
             document.body.appendChild(containerElement);
 
+            TableQuadrantStack.defaultProps.throttleScrolling = false;
             const table = mount(
                 <Table2 numRows={10} {...tableProps}>
                     <Column cellRenderer={renderDummyCell} />
@@ -835,7 +829,7 @@ describe("<Table2>", function (this) {
         });
     });
 
-    describe("Resizing", () => {
+    describe.only("Resizing", () => {
         it("Resizes selected rows together", () => {
             const table = mountTable();
             const rows = getRowHeadersWrapper(table)!;

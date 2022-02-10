@@ -74,8 +74,6 @@ export class RowHeader extends React.Component<IRowHeaderProps> {
         } = this.props;
 
         return (
-            // HACKHACK(adahiya): strange shouldComponentUpdate type error with strict null checks
-            // @ts-ignore
             <Header
                 convertPointToIndex={this.convertPointToRow}
                 fullRegionCardinality={RegionCardinality.FULL_ROWS}
