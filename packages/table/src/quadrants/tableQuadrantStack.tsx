@@ -304,9 +304,8 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
 
     private throttledHandleWheel: (event: React.WheelEvent<HTMLElement>) => any;
 
-    // the interval instance that we maintain to enable debouncing of view
-    // updates on scroll
-    private debouncedViewSyncInterval?: number;
+    // cancel function for the debounced view sync handler
+    private cancelPendingViewSync?: () => void;
 
     private cache: TableQuadrantStackCache;
 
@@ -813,8 +812,8 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             this.syncQuadrantViews();
         } else {
             // update asynchronously after a debounced delay
-            clearInterval(this.debouncedViewSyncInterval);
-            this.debouncedViewSyncInterval = window.setTimeout(this.syncQuadrantViews, viewSyncDelay);
+            this.cancelPendingViewSync?.();
+            this.cancelPendingViewSync = this.setTimeout(this.syncQuadrantViews, viewSyncDelay);
         }
     };
 
