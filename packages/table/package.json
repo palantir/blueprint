@@ -38,6 +38,7 @@
         "@blueprintjs/core": "^3.53.0",
         "classnames": "^2.2",
         "prop-types": "^15.7.2",
+        "react-innertext": "^1.1.5",
         "react-lifecycles-compat": "^3.0.4",
         "tslib": "~1.13.0"
     },

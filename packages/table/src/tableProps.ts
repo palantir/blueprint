@@ -26,6 +26,7 @@ import type { IContextMenuRenderer } from "./interactions/menus";
 import type { IIndexedResizeCallback } from "./interactions/resizable";
 import type { ISelectedRegionTransform } from "./interactions/selectable";
 import type { Region, StyledRegionGroup, RegionCardinality, TableLoadingOption } from "./regions";
+import type { TableState } from "./tableState";
 
 // eslint-disable-next-line deprecation/deprecation
 export type TableProps = ITableProps;
@@ -145,7 +146,7 @@ export interface ITableProps extends Props, IRowHeights, IColumnWidths {
      * The data will be invisibly added as `textContent` into the DOM before
      * copying. If not defined, keyboard copying via `mod+c` will be disabled.
      */
-    getCellClipboardData?: (row: number, col: number) => any;
+    getCellClipboardData?: (row: number, col: number, tableState: TableState) => any;
 
     /**
      * A list of `TableLoadingOption`. Set this prop to specify whether to

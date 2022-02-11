@@ -16,6 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import innerText from "react-innertext";
 import { polyfill } from "react-lifecycles-compat";
 
 import {
@@ -84,6 +85,8 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         enableMultipleSelection: true,
         enableRowHeader: true,
         forceRerenderOnSelectionChange: false,
+        getCellClipboardData: (row: number, col: number, tableState: TableState) =>
+            innerText(tableState.childrenArray[col].props.cellRenderer(row, col)),
         loadingOptions: [],
         minColumnWidth: 50,
         minRowHeight: 20,

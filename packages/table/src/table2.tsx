@@ -15,6 +15,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import innerText from "react-innertext";
 
 import {
     AbstractComponent2,
@@ -71,6 +72,8 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         enableMultipleSelection: true,
         enableRowHeader: true,
         forceRerenderOnSelectionChange: false,
+        getCellClipboardData: (row: number, col: number, tableState: TableState) =>
+            innerText(tableState.childrenArray[col].props.cellRenderer(row, col)),
         loadingOptions: [],
         minColumnWidth: 50,
         minRowHeight: 20,
