@@ -51,7 +51,7 @@
         "@blueprintjs/node-build-scripts": "^1.6.1",
         "@blueprintjs/test-commons": "^0.10.14",
         "enzyme": "^3.11.0",
-        "karma": "^5.2.3",
+        "karma": "^6.3.14",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
