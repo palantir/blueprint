@@ -19,7 +19,7 @@ import { IconSize } from "../../constants";
 import * as Classes from "../../classes";
 
 export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, SVGIconProps>(({
-    className,
+    className = "",
     color,
     size = IconSize.STANDARD,
     title,

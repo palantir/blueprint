@@ -68,7 +68,7 @@ Styleguide menu
     color: $pt-text-color-muted;
   }
 
-  &:hover {
+  &:hover, %menu-item-hover {
     color: inherit;
   }
 
