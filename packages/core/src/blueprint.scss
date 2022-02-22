@@ -92,12 +92,12 @@ $tree-intent-icon-colors-modern: (
   $active-color,
   $active-text
 ) {
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled):not(.#{$ns}-disabled) {
     background: $hover-color;
     color: $hover-text;
   }
 
-  &:active:not(:disabled) {
+  &:active:not(:disabled):not(.#{$ns}-disabled) {
     background: $active-color;
     color: $active-text;
   }
@@ -180,7 +180,7 @@ $tree-intent-icon-colors-modern: (
 
   &.#{$ns}-minimal {
     @mixin pt-button-minimal-intent-modern($active-text-color) {
-      &:active:not(:disabled) {
+      &:active:not(:disabled):not(.#{$ns}-disabled) {
         color: $active-text-color;
       }
     }
@@ -194,7 +194,7 @@ $tree-intent-icon-colors-modern: (
     }
 
     .#{$ns}-dark & {
-      &:not([class*="#{$ns}-intent-"]):not(:disabled) {
+      &:not([class*="#{$ns}-intent-"]):not(:disabled):not(.#{$ns}-disabled) {
         color: $white;
       }
 
