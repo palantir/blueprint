@@ -367,11 +367,11 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             // it when layout-affecting props change.
             !CoreUtils.shallowCompareKeys(this.props, prevProps, {
                 include: SYNC_TRIGGER_PROP_KEYS,
-            })
+            }) ||
             // in addition to those props, we also care about frozen parts of the grid
             // which may cause the top / left quadrants to change height / width
-            || this.didFrozenColumnWidthsChange(prevProps)
-            || this.didFrozenRowHeightsChange(prevProps)
+            this.didFrozenColumnWidthsChange(prevProps) ||
+            this.didFrozenRowHeightsChange(prevProps)
         ) {
             this.emitRefs();
             this.syncQuadrantViews();
@@ -969,16 +969,22 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
 
     /** Returns true the cumulative width of all frozen columns in the grid changed. */
     private didFrozenColumnWidthsChange(prevProps: ITableQuadrantStackProps) {
-        return this.props.numFrozenColumns > 0
-            && this.props.grid !== prevProps.grid
-            && (this.props.grid.getCumulativeWidthAt(this.props.numFrozenColumns - 1) !== prevProps.grid.getCumulativeWidthAt(prevProps.numFrozenColumns - 1));
+        return (
+            this.props.numFrozenColumns > 0 &&
+            this.props.grid !== prevProps.grid &&
+            this.props.grid.getCumulativeWidthAt(this.props.numFrozenColumns - 1) !==
+                prevProps.grid.getCumulativeWidthAt(prevProps.numFrozenColumns - 1)
+        );
     }
 
     /** Returns true the cumulative height of all frozen rows in the grid changed. */
     private didFrozenRowHeightsChange(prevProps: ITableQuadrantStackProps) {
-        return this.props.numFrozenRows > 0
-            && this.props.grid !== prevProps.grid
-            && (this.props.grid.getCumulativeHeightAt(this.props.numFrozenRows - 1) !== prevProps.grid.getCumulativeHeightAt(prevProps.numFrozenRows - 1));
+        return (
+            this.props.numFrozenRows > 0 &&
+            this.props.grid !== prevProps.grid &&
+            this.props.grid.getCumulativeHeightAt(this.props.numFrozenRows - 1) !==
+                prevProps.grid.getCumulativeHeightAt(prevProps.numFrozenRows - 1)
+        );
     }
 
     /**
