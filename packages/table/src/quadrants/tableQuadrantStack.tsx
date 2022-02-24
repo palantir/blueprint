@@ -125,7 +125,7 @@ export interface ITableQuadrantStackProps extends Props {
      *
      * REQUIRES QUADRANT RESYNC
      */
-    numFrozenColumns?: number;
+    numFrozenColumns: number;
 
     /**
      * The number of frozen rows. Affects the layout of the table, so we need to
@@ -133,7 +133,7 @@ export interface ITableQuadrantStackProps extends Props {
      *
      * REQUIRES QUADRANT RESYNC
      */
-    numFrozenRows?: number;
+    numFrozenRows: number;
 
     /**
      * The number of rows. Affects the layout of the table, so we need to know
@@ -362,12 +362,16 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     }
 
     public componentDidUpdate(prevProps: ITableQuadrantStackProps) {
-        // sync'ing quadrant views triggers expensive reflows, so we only call
-        // it when layout-affecting props change.
         if (
+            // sync'ing quadrant views triggers expensive reflows, so we only call
+            // it when layout-affecting props change.
             !CoreUtils.shallowCompareKeys(this.props, prevProps, {
                 include: SYNC_TRIGGER_PROP_KEYS,
-            })
+            }) ||
+            // in addition to those props, we also care about frozen parts of the grid
+            // which may cause the top / left quadrants to change height / width
+            this.didFrozenColumnWidthsChange(prevProps) ||
+            this.didFrozenRowHeightsChange(prevProps)
         ) {
             this.emitRefs();
             this.syncQuadrantViews();
@@ -962,6 +966,26 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
 
     // Helpers
     // =======
+
+    /** Returns true the cumulative width of all frozen columns in the grid changed. */
+    private didFrozenColumnWidthsChange(prevProps: ITableQuadrantStackProps) {
+        return (
+            this.props.numFrozenColumns > 0 &&
+            this.props.grid !== prevProps.grid &&
+            this.props.grid.getCumulativeWidthAt(this.props.numFrozenColumns - 1) !==
+                prevProps.grid.getCumulativeWidthAt(prevProps.numFrozenColumns - 1)
+        );
+    }
+
+    /** Returns true the cumulative height of all frozen rows in the grid changed. */
+    private didFrozenRowHeightsChange(prevProps: ITableQuadrantStackProps) {
+        return (
+            this.props.numFrozenRows > 0 &&
+            this.props.grid !== prevProps.grid &&
+            this.props.grid.getCumulativeHeightAt(this.props.numFrozenRows - 1) !==
+                prevProps.grid.getCumulativeHeightAt(prevProps.numFrozenRows - 1)
+        );
+    }
 
     /**
      * Returns the width or height of *only the grid* in the secondary quadrants
