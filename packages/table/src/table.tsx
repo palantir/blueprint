@@ -276,6 +276,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             childrenArray,
             columnIdToIndex,
             columnWidths: newColumnWidths,
+            didHeadersMount: false,
             focusedCell,
             horizontalGuides: [],
             isLayoutLocked: false,
@@ -449,7 +450,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
                 <TableQuadrantStack
                     bodyRef={this.refHandlers.cellContainer}
                     bodyRenderer={this.renderBody}
-                    columnHeaderCellRenderer={this.renderColumnHeader}
+                    columnHeaderRenderer={this.renderColumnHeader}
                     columnHeaderRef={this.refHandlers.columnHeader}
                     enableColumnInteractionBar={enableColumnInteractionBar}
                     enableRowHeader={enableRowHeader}
@@ -468,7 +469,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
                     onScroll={this.handleBodyScroll}
                     ref={this.refHandlers.quadrantStack}
                     menuRenderer={this.renderMenu}
-                    rowHeaderCellRenderer={this.renderRowHeader}
+                    rowHeaderRenderer={this.renderRowHeader}
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
                 />

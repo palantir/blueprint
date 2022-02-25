@@ -167,7 +167,7 @@ export interface ITableQuadrantStackProps extends Props {
      * A callback that renders either all of or just the frozen section of the column header.
      * May return undefined if the table is not attached to the DOM yet.
      */
-    columnHeaderCellRenderer?: (
+    columnHeaderRenderer?: (
         refHandler: IRef<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
@@ -183,7 +183,7 @@ export interface ITableQuadrantStackProps extends Props {
      * A callback that renders either all of or just the frozen section of the row header.
      * May return undefined if the table is not attached to the DOM yet.
      */
-    rowHeaderCellRenderer?: (
+    rowHeaderRenderer?: (
         refHandler: IRef<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
@@ -234,6 +234,13 @@ export interface ITableQuadrantStackProps extends Props {
      * @default undefined
      */
     enableColumnInteractionBar?: boolean;
+
+    /**
+     * Flag indicating that both the column headers (if present)
+     * and row headers (if present) have been rendered and mounted, including any
+     * custom renderers which may affect quadrant layout measurements.
+     */
+    didHeadersMount: boolean;
 }
 
 // Used on first render of the top-left and top quadrants to avoid collapsing
@@ -263,6 +270,7 @@ const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
     "numColumns",
     "numRows",
     "enableColumnInteractionBar",
+    "didHeadersMount",
 ];
 
 export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackProps> {
@@ -497,7 +505,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return undefined;
         }
 
-        return this.props.columnHeaderCellRenderer?.(
+        return this.props.columnHeaderRenderer?.(
             refHandler,
             resizeHandler,
             reorderingHandler,
@@ -514,7 +522,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return undefined;
         }
 
-        return this.props.columnHeaderCellRenderer?.(
+        return this.props.columnHeaderRenderer?.(
             refHandler,
             resizeHandler,
             reorderingHandler,
@@ -531,7 +539,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return undefined;
         }
 
-        return this.props.columnHeaderCellRenderer?.(
+        return this.props.columnHeaderRenderer?.(
             refHandler,
             resizeHandler,
             reorderingHandler,
@@ -548,7 +556,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return undefined;
         }
 
-        return this.props.columnHeaderCellRenderer?.(
+        return this.props.columnHeaderRenderer?.(
             refHandler,
             resizeHandler,
             reorderingHandler,
@@ -564,7 +572,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return undefined;
         }
 
-        return this.props.rowHeaderCellRenderer?.(
+        return this.props.rowHeaderRenderer?.(
             refHandler,
             this.handleRowResizeGuideMain,
             this.handleRowsReordering,
@@ -578,7 +586,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return undefined;
         }
 
-        return this.props.rowHeaderCellRenderer?.(
+        return this.props.rowHeaderRenderer?.(
             refHandler,
             this.handleRowResizeGuideTop,
             this.handleRowsReordering,
@@ -592,7 +600,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return undefined;
         }
 
-        return this.props.rowHeaderCellRenderer?.(
+        return this.props.rowHeaderRenderer?.(
             refHandler,
             this.handleRowResizeGuideLeft,
             this.handleRowsReordering,
@@ -606,7 +614,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return undefined;
         }
 
-        return this.props.rowHeaderCellRenderer?.(
+        return this.props.rowHeaderRenderer?.(
             refHandler,
             this.handleRowResizeGuideTopLeft,
             this.handleRowsReordering,
