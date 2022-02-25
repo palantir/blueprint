@@ -1097,7 +1097,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         if (this.didColumnHeaderMount && this.didRowHeaderMount) {
             this.setState({ didHeadersMount: true });
         }
-    }
+    };
 
     private handleCompleteRender = () => {
         // the first onCompleteRender is triggered before the viewportRect is

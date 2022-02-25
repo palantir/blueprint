@@ -505,12 +505,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return undefined;
         }
 
-        return this.props.columnHeaderRenderer?.(
-            refHandler,
-            resizeHandler,
-            reorderingHandler,
-            showFrozenColumnsOnly,
-        );
+        return this.props.columnHeaderRenderer?.(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
     };
 
     private renderTopQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
@@ -522,12 +517,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return undefined;
         }
 
-        return this.props.columnHeaderRenderer?.(
-            refHandler,
-            resizeHandler,
-            reorderingHandler,
-            showFrozenColumnsOnly,
-        );
+        return this.props.columnHeaderRenderer?.(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
     };
 
     private renderLeftQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
@@ -539,12 +529,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return undefined;
         }
 
-        return this.props.columnHeaderRenderer?.(
-            refHandler,
-            resizeHandler,
-            reorderingHandler,
-            showFrozenColumnsOnly,
-        );
+        return this.props.columnHeaderRenderer?.(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
     };
 
     private renderTopLeftQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
@@ -556,12 +541,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             return undefined;
         }
 
-        return this.props.columnHeaderRenderer?.(
-            refHandler,
-            resizeHandler,
-            reorderingHandler,
-            showFrozenColumnsOnly,
-        );
+        return this.props.columnHeaderRenderer?.(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
     };
 
     // Row header

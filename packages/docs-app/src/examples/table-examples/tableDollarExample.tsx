@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { H2 } from "@blueprintjs/core";
+import { Classes } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, ColumnHeaderCell, Table2 } from "@blueprintjs/table";
 
@@ -42,13 +42,14 @@ export class TableDollarExample extends React.PureComponent<IExampleProps> {
 
 function renderColumnHeader(index: number) {
     const name = ["Dollars", "Euros"][index]!;
-    return (
-        <ColumnHeaderCell name={name} index={index} nameRenderer={renderName} />
-    );
+    return <ColumnHeaderCell name={name} index={index} nameRenderer={renderName} />;
 }
 
 function renderName(name: string) {
     return (
-        <H2>{name}</H2>
+        <div style={{ lineHeight: "24px" }}>
+            <div className={Classes.TEXT_LARGE}><strong>{name}</strong></div>
+            <div className={Classes.MONOSPACE_TEXT}>Number</div>
+        </div>
     )
 }
