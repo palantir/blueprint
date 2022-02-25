@@ -106,9 +106,7 @@ describe("TableQuadrantStack", () => {
             return <div />;
         };
 
-        mount(
-            <TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} rowHeaderRenderer={rowHeaderRenderer} />,
-        );
+        mount(<TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} rowHeaderRenderer={rowHeaderRenderer} />);
 
         const HORIZONTAL_GUIDES = [1, 2, 3];
         expect(() => resizeHandlerMain(HORIZONTAL_GUIDES)).not.to.throw();
@@ -221,13 +219,7 @@ describe("TableQuadrantStack", () => {
         it("invokes rowHeaderRenderer once for each quadrant on mount", () => {
             const bodyRenderer = sinon.spy();
             const rowHeaderRenderer = sinon.spy();
-            mount(
-                <TableQuadrantStack
-                    grid={grid}
-                    bodyRenderer={bodyRenderer}
-                    rowHeaderRenderer={rowHeaderRenderer}
-                />,
-            );
+            mount(<TableQuadrantStack grid={grid} bodyRenderer={bodyRenderer} rowHeaderRenderer={rowHeaderRenderer} />);
             expect(rowHeaderRenderer.callCount).to.equal(4);
         });
 

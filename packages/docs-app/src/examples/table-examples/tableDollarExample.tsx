@@ -48,8 +48,10 @@ function renderColumnHeader(index: number) {
 function renderName(name: string) {
     return (
         <div style={{ lineHeight: "24px" }}>
-            <div className={Classes.TEXT_LARGE}><strong>{name}</strong></div>
+            <div className={Classes.TEXT_LARGE}>
+                <strong>{name}</strong>
+            </div>
             <div className={Classes.MONOSPACE_TEXT}>Number</div>
         </div>
-    )
+    );
 }
