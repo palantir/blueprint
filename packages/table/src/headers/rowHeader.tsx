@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
-import { IRowIndices } from "../common/grid";
+import { RowIndices } from "../common/grid";
 import { IClientCoordinates } from "../interactions/dragTypes";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
@@ -32,12 +32,12 @@ export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHe
 export type RowHeaderRenderer = IRowHeaderRenderer;
 
 export interface IRowHeights {
-    minRowHeight?: number;
-    maxRowHeight?: number;
-    defaultRowHeight?: number;
+    minRowHeight: number;
+    maxRowHeight: number;
+    defaultRowHeight: number;
 }
 
-export interface IRowHeaderProps extends IHeaderProps, IRowHeights, IRowIndices {
+export interface IRowHeaderProps extends IHeaderProps, IRowHeights, RowIndices {
     /**
      * A callback invoked when user is done resizing the column
      */
@@ -47,6 +47,11 @@ export interface IRowHeaderProps extends IHeaderProps, IRowHeights, IRowIndices 
      * Renders the cell for each row header
      */
     rowHeaderCellRenderer?: RowHeaderRenderer;
+
+    /**
+     * Called on component mount.
+     */
+    onMount?: (whichHeader: "column" | "row") => void;
 }
 
 export class RowHeader extends React.Component<IRowHeaderProps> {
@@ -54,11 +59,15 @@ export class RowHeader extends React.Component<IRowHeaderProps> {
         rowHeaderCellRenderer: renderDefaultRowHeader,
     };
 
+    public componentDidMount() {
+        this.props.onMount?.("row");
+    }
+
     public render() {
         const {
             // from IRowHeaderProps
             onRowHeightChanged,
-            rowHeaderCellRenderer: renderHeaderCell,
+            rowHeaderCellRenderer,
 
             // from IRowHeights
             minRowHeight: minSize,
@@ -88,7 +97,7 @@ export class RowHeader extends React.Component<IRowHeaderProps> {
                 handleSizeChanged={this.handleSizeChanged}
                 headerCellIsReorderablePropName={"enableRowReordering"}
                 headerCellIsSelectedPropName={"isRowSelected"}
-                headerCellRenderer={renderHeaderCell}
+                headerCellRenderer={rowHeaderCellRenderer!}
                 indexEnd={indexEnd}
                 indexStart={indexStart}
                 isCellSelected={this.isCellSelected}
@@ -130,8 +139,7 @@ export class RowHeader extends React.Component<IRowHeaderProps> {
     };
 
     private convertPointToRow = (clientXOrY: number, useMidpoint?: boolean) => {
-        const { locator } = this.props;
-        return locator != null ? locator.convertPointToRow(clientXOrY, useMidpoint) : null;
+        return this.props.locator?.convertPointToRow(clientXOrY, useMidpoint);
     };
 
     private getCellExtremaClasses = (index: number, indexEnd: number) => {
@@ -161,7 +169,7 @@ export class RowHeader extends React.Component<IRowHeaderProps> {
     };
 
     private isCellSelected = (index: number) => {
-        return Regions.hasFullRow(this.props.selectedRegions, index);
+        return Regions.hasFullRow(this.props.selectedRegions!, index);
     };
 
     private isGhostIndex = (index: number) => {

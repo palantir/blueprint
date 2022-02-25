@@ -39,14 +39,14 @@ describe("<ColumnHeaderCell>", () => {
 
     it("Default renderer", () => {
         const table = harness.mount(createTableOfSize(3, 2));
-        const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).element.textContent;
+        const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.text();
         expect(text).to.equal("B");
     });
 
     it("renders with custom className if provided", () => {
         const CLASS_NAME = "my-custom-class-name";
         const table = harness.mount(<ColumnHeaderCell className={CLASS_NAME} />);
-        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
+        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0)!.hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
 
@@ -65,7 +65,7 @@ describe("<ColumnHeaderCell>", () => {
                 return <ColumnHeaderCell name={`COLUMN-${columnIndex}`} />;
             };
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).element.textContent;
+            const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.text();
             expect(text).to.equal("COLUMN-1");
         });
 
@@ -78,7 +78,7 @@ describe("<ColumnHeaderCell>", () => {
                 );
             };
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            const text = table.find(`.${Classes.TABLE_HEADER_CONTENT} h4`, 2).element.textContent;
+            const text = table.find(`.${Classes.TABLE_HEADER_CONTENT} h4`, 2)!.text();
             expect(text).to.equal("Header of 2");
         });
 
@@ -111,8 +111,8 @@ describe("<ColumnHeaderCell>", () => {
                 return <ColumnHeaderCell loading={columnIndex === 0} name="Column Header" />;
             };
             const table = harness.mount(createTableOfSize(2, 1, { columnHeaderCellRenderer }));
-            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).text()).to.equal("");
-            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).text()).to.equal(
+            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0)!.text()).to.equal("");
+            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1)!.text()).to.equal(
                 "Column Header",
             );
         });
@@ -128,9 +128,9 @@ describe("<ColumnHeaderCell>", () => {
         }
 
         function expectMenuToOpen(table: ElementHarness, menuClickSpy: sinon.SinonSpy) {
-            table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).mouse("mousemove");
-            table.find(`.${Classes.TABLE_TH_MENU} .${CoreClasses.POPOVER_TARGET}`).mouse("click");
-            ElementHarness.document().find('[data-icon="export"]').mouse("click");
+            table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!.mouse("mousemove");
+            table.find(`.${Classes.TABLE_TH_MENU} .${CoreClasses.POPOVER_TARGET}`)!.mouse("click");
+            ElementHarness.document().find('[data-icon="export"]')!.mouse("click");
             expect(menuClickSpy.called).to.be.true;
         }
     });
@@ -143,12 +143,12 @@ describe("<ColumnHeaderCell>", () => {
 
         it("shows reorder handle in interaction bar if reordering and interaction bar are enabled", () => {
             const element = mount({ enableColumnReordering: true });
-            expect(element.find(`.${Classes.TABLE_INTERACTION_BAR} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
+            expect(element.find(`.${Classes.TABLE_INTERACTION_BAR} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
         });
 
         it("shows reorder handle next to column name if reordering enabled but interaction bar disabled", () => {
             const element = mount({ enableColumnReordering: true });
-            expect(element.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
+            expect(element.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
         });
 
         function mount(props: Partial<IColumnHeaderCellProps>) {
