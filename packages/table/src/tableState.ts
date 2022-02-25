@@ -37,6 +37,13 @@ export interface TableState {
     horizontalGuides: number[];
 
     /**
+     * Flag indicating that both the column headers (if present)
+     * and row headers (if present) have been rendered and mounted, including any
+     * custom renderers which may affect quadrant layout measurements.
+     */
+    didHeadersMount: boolean;
+
+    /**
      * If `true`, will disable updates that will cause re-renders of children
      * components. This is used, for example, to disable layout updates while
      * the user is dragging a resize handle.

@@ -47,12 +47,21 @@ export interface IRowHeaderProps extends IHeaderProps, IRowHeights, RowIndices {
      * Renders the cell for each row header
      */
     rowHeaderCellRenderer?: RowHeaderRenderer;
+
+    /**
+     * Called on component mount.
+     */
+    onMount?: (whichHeader: "column" | "row") => void;
 }
 
 export class RowHeader extends React.Component<IRowHeaderProps> {
     public static defaultProps = {
         rowHeaderCellRenderer: renderDefaultRowHeader,
     };
+
+    public componentDidMount() {
+        this.props.onMount?.("row");
+    }
 
     public render() {
         const {

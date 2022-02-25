@@ -59,6 +59,11 @@ export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, ColumnI
      * A callback invoked when user is done resizing the column
      */
     onColumnWidthChanged: IIndexedResizeCallback;
+
+    /**
+     * Called on component mount.
+     */
+    onMount?: (whichHeader: "column" | "row") => void;
 }
 
 export class ColumnHeader extends React.Component<IColumnHeaderProps> {
@@ -67,6 +72,10 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
         isResizable: true,
         loading: false,
     };
+
+    public componentDidMount() {
+        this.props.onMount?.("column");
+    }
 
     public render() {
         const {
@@ -101,8 +110,8 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
                 handleResizeDoubleClick={this.handleResizeDoubleClick}
                 handleResizeEnd={this.handleResizeEnd}
                 handleSizeChanged={this.handleSizeChanged}
-                headerCellIsReorderablePropName={"enableColumnReordering"}
-                headerCellIsSelectedPropName={"isColumnSelected"}
+                headerCellIsReorderablePropName="enableColumnReordering"
+                headerCellIsSelectedPropName="isColumnSelected"
                 headerCellRenderer={renderHeaderCell}
                 indexEnd={indexEnd}
                 indexStart={indexStart}

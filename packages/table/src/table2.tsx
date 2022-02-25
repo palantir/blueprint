@@ -240,6 +240,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     private scrollContainerElement?: HTMLElement | null;
 
+    private didColumnHeaderMount = false;
+
+    private didRowHeaderMount = false;
+
     /*
      * This value is set to `true` when all cells finish mounting for the first
      * time. It serves as a signal that we can switch to batch rendering.
@@ -285,6 +289,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             childrenArray,
             columnIdToIndex,
             columnWidths: newColumnWidths,
+            didHeadersMount: false,
             focusedCell,
             horizontalGuides: [],
             isLayoutLocked: false,
@@ -469,8 +474,9 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                 <TableQuadrantStack
                     bodyRef={this.refHandlers.cellContainer}
                     bodyRenderer={this.renderBody}
-                    columnHeaderCellRenderer={this.renderColumnHeader}
+                    columnHeaderRenderer={this.renderColumnHeader}
                     columnHeaderRef={this.refHandlers.columnHeader}
+                    didHeadersMount={this.state.didHeadersMount}
                     enableColumnInteractionBar={enableColumnInteractionBar}
                     enableRowHeader={enableRowHeader}
                     grid={grid}
@@ -488,7 +494,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                     onScroll={this.handleBodyScroll}
                     ref={this.refHandlers.quadrantStack}
                     menuRenderer={this.renderMenu}
-                    rowHeaderCellRenderer={this.renderRowHeader}
+                    rowHeaderRenderer={this.renderRowHeader}
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
                 />
@@ -519,6 +525,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                     this.updateViewportRect(this.locator?.getViewportRect());
                 }
             });
+            this.forceUpdate();
         }
     }
 
@@ -815,6 +822,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                     minColumnWidth={minColumnWidth!}
                     onColumnWidthChanged={this.handleColumnWidthChanged}
                     onFocusedCell={this.handleFocus}
+                    onMount={this.handleHeaderMounted}
                     onLayoutLock={this.handleLayoutLock}
                     onReordered={this.handleColumnsReordered}
                     onReordering={reorderingHandler}
@@ -889,6 +897,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                     minRowHeight={minRowHeight!}
                     onFocusedCell={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
+                    onMount={this.handleHeaderMounted}
                     onResizeGuide={resizeHandler}
                     onReordered={this.handleRowsReordered}
                     onReordering={reorderingHandler}
@@ -1073,12 +1082,29 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         });
     }
 
+    private handleHeaderMounted = (whichHeader: "column" | "row") => {
+        const { didHeadersMount } = this.state;
+        if (didHeadersMount) {
+            return;
+        }
+
+        if (whichHeader === "column") {
+            this.didColumnHeaderMount = true;
+        } else {
+            this.didRowHeaderMount = true;
+        }
+
+        if (this.didColumnHeaderMount && this.didRowHeaderMount) {
+            this.setState({ didHeadersMount: true });
+        }
+    };
+
     private handleCompleteRender = () => {
         // the first onCompleteRender is triggered before the viewportRect is
         // defined and the second after the viewportRect has been set. the cells
         // will only actually render once the viewportRect is defined though, so
         // we defer invoking onCompleteRender until that check passes.
-        if (this.state.viewportRect != null) {
+        if (this.state.viewportRect != null && this.state.didHeadersMount) {
             this.props.onCompleteRender?.();
             this.didCompletelyMount = true;
         }
