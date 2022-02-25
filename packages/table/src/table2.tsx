@@ -457,6 +457,15 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             className,
         );
 
+        // if (this.grid == null) {
+        //     return (
+        //         <div
+        //             className={classes}
+        //             ref={this.refHandlers.rootTable}
+        //         />
+        //     );
+        // }
+
         return (
             <div
                 className={classes}
@@ -519,6 +528,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                     this.updateViewportRect(this.locator?.getViewportRect());
                 }
             });
+            this.forceUpdate();
         }
     }
 
