@@ -1104,7 +1104,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         // defined and the second after the viewportRect has been set. the cells
         // will only actually render once the viewportRect is defined though, so
         // we defer invoking onCompleteRender until that check passes.
-        if (this.state.viewportRect != null) {
+        if (this.state.viewportRect != null && this.state.didHeadersMount) {
             this.props.onCompleteRender?.();
             this.didCompletelyMount = true;
         }
