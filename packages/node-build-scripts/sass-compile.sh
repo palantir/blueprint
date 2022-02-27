@@ -19,4 +19,4 @@ $ROOT_NM/.bin/node-sass-chokidar \
 
 # in source maps, paths to blueprint packages should be direct, rather than
 # going through node_modules. https://github.com/palantir/blueprint/issues/3500
-sed -i '' 's/..\/node_modules\/@blueprintjs\///' $OUTPUT/*.css.map
+sed -i 's/..\/node_modules\/@blueprintjs\///' $OUTPUT/*.css.map
