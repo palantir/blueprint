@@ -67,7 +67,7 @@ export interface PanelStack2Props<T extends Panel<object>> extends Props {
      * The full stack of panels in controlled mode. The last panel in the stack
      * will be displayed.
      */
-    stack?: T[];
+    stack?: readonly T[];
 }
 
 interface PanelStack2Component {

@@ -48,7 +48,7 @@ export interface UseHotkeysReturnValue {
  * @param keys list of hotkeys to configure
  * @param options hook options
  */
-export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}): UseHotkeysReturnValue {
+export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOptions = {}): UseHotkeysReturnValue {
     const { document = getDefaultDocument(), showDialogKeyCombo = "?" } = options;
     const localKeys = React.useMemo(
         () =>

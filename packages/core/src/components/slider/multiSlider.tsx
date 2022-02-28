@@ -52,7 +52,7 @@ export interface ISliderBaseProps extends Props, IntentProps {
      * Array of specific values for the label placement. This prop is mutually exclusive with
      * `labelStepSize`.
      */
-    labelValues?: number[];
+    labelValues?: readonly number[];
 
     /**
      * Number of decimal places to use when rendering label value. Default value is the number of
@@ -444,7 +444,7 @@ export class MultiSlider extends AbstractPureComponent2<MultiSliderProps, ISlide
         const { labelStepSize, labelValues, min, max } = this.props;
         let values: number[] = [];
         if (labelValues !== undefined) {
-            values = labelValues;
+            values = labelValues.slice();
         } else {
             for (let i = min!; i < max! || Utils.approxEqual(i, max!); i += labelStepSize ?? 1) {
                 values.push(i);
