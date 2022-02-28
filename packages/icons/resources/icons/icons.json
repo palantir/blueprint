@@ -3748,5 +3748,11 @@
         "iconName": "add-clip",
         "tags": "screenshot, segment, add",
         "group": "interface"
+    },
+    {
+        "displayName": "Rectangle",
+        "iconName": "rectangle",
+        "tags": "block, area, shape",
+        "group": "miscellaneous"
     }
 ]
