@@ -52,7 +52,7 @@ import {
     resizeRowsByApproximateHeight,
     resizeRowsByTallestCell,
 } from "./resizeRows";
-import { getHotkeysFromProps, isSelectionModeEnabled } from "./table2Utils";
+import { compareChildren, getHotkeysFromProps, isSelectionModeEnabled } from "./table2Utils";
 import { TableBody } from "./tableBody";
 import { TableHotkeys } from "./tableHotkeys";
 import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./tableProps";
@@ -108,7 +108,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
 
         const newChildrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
-        const didChildrenChange = newChildrenArray !== state.childrenArray;
+        const didChildrenChange = !compareChildren(newChildrenArray, state.childrenArray);
         const numCols = newChildrenArray.length;
 
         let newColumnWidths = columnWidths;
@@ -537,41 +537,15 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         this.didCompletelyMount = false;
     }
 
-    public getSnapshotBeforeUpdate() {
-        const { viewportRect } = this.state;
-
-        if (viewportRect === undefined) {
-            return {};
-        }
-
-        const grid = this.validateGrid();
-        const tableBottom = grid.getCumulativeHeightAt(grid.numRows - 1);
-        const tableRight = grid.getCumulativeWidthAt(grid.numCols - 1);
-
-        const nextScrollTop =
-            tableBottom < viewportRect.top + viewportRect.height
-                ? // scroll the last row into view
-                  Math.max(0, tableBottom - viewportRect.height)
-                : undefined;
-
-        const nextScrollLeft =
-            tableRight < viewportRect.left + viewportRect.width
-                ? // scroll the last column into view
-                  Math.max(0, tableRight - viewportRect.width)
-                : undefined;
-
-        // these will only be defined if they differ from viewportRect
-        return { nextScrollLeft, nextScrollTop };
-    }
-
-    public componentDidUpdate(prevProps: TableProps, prevState: TableState, snapshot: TableSnapshot) {
-        super.componentDidUpdate(prevProps, prevState, snapshot);
+    public componentDidUpdate(prevProps: TableProps, prevState: TableState) {
+        super.componentDidUpdate(prevProps, prevState);
         this.hotkeysImpl.setState(this.state);
         this.hotkeysImpl.setProps(this.props);
 
-        const didChildrenChange =
-            (React.Children.toArray(this.props.children) as Array<React.ReactElement<ColumnProps>>) !==
-            this.state.childrenArray;
+        const didChildrenChange = !compareChildren(
+            React.Children.toArray(this.props.children) as Array<React.ReactElement<ColumnProps>>,
+            this.state.childrenArray,
+        );
 
         const shouldInvalidateGrid =
             didChildrenChange ||
@@ -587,18 +561,6 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         if (this.locator != null) {
             this.validateGrid();
             this.updateLocator();
-        }
-
-        // When true, we'll need to imperatively synchronize quadrant views after
-        // the update. This check lets us avoid expensively diff'ing columnWidths
-        // and rowHeights in <TableQuadrantStack> on each update.
-        const didUpdateColumnOrRowSizes =
-            !CoreUtils.arraysEqual(this.state.columnWidths, prevState.columnWidths) ||
-            !CoreUtils.arraysEqual(this.state.rowHeights, prevState.rowHeights);
-
-        if (didUpdateColumnOrRowSizes) {
-            this.quadrantStackInstance?.synchronizeQuadrantViews();
-            this.syncViewportPosition(snapshot);
         }
 
         const shouldInvalidateHotkeys =
