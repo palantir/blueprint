@@ -3748,5 +3748,17 @@
         "iconName": "add-clip",
         "tags": "screenshot, segment, add",
         "group": "interface"
+    },
+    {
+        "displayName": "Rectangle",
+        "iconName": "rectangle",
+        "tags": "block, area, shape",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Symbol: rectangle",
+        "iconName": "symbol-rectangle",
+        "tags": "symbol, rectangle, filled shape",
+        "group": "interface"
     }
 ]
