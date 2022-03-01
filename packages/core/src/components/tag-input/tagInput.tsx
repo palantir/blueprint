@@ -181,7 +181,7 @@ export interface ITagInputProps extends IntentProps, Props {
      * subtype, such as `string` or `ReactChild`, you can use that type on all your handlers
      * to simplify type logic.
      */
-    values: React.ReactNode[];
+    values: readonly React.ReactNode[];
 }
 
 export interface ITagInputState {

@@ -58,7 +58,7 @@ export interface IOverflowListProps<T> extends Props {
      * All items to display in the list. Items that do not fit in the container
      * will be rendered in the overflow instead.
      */
-    items: T[];
+    items: readonly T[];
 
     /**
      * The minimum number of visible items that should never collapse into the
@@ -124,8 +124,8 @@ export interface IOverflowListState<T> {
     direction: OverflowDirection;
     /** Length of last overflow to dedupe `onOverflow` calls during smooth resizing. */
     lastOverflowCount: number;
-    overflow: T[];
-    visible: T[];
+    overflow: readonly T[];
+    visible: readonly T[];
 }
 
 export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOverflowListState<T>> {
@@ -198,7 +198,7 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOver
             direction !== prevState.direction &&
             overflow.length !== lastOverflowCount
         ) {
-            this.props.onOverflow?.(overflow);
+            this.props.onOverflow?.(overflow.slice());
         }
     }
 
@@ -229,10 +229,10 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOver
         if (overflow.length === 0 && !this.props.alwaysRenderOverflow) {
             return null;
         }
-        return this.props.overflowRenderer(overflow);
+        return this.props.overflowRenderer(overflow.slice());
     }
 
-    private resize = (entries: ResizeEntry[]) => {
+    private resize = (entries: readonly ResizeEntry[]) => {
         // if any parent is growing, assume we have more room than before
         const growing = entries.some(entry => {
             const previousWidth = this.previousWidths.get(entry.target) || 0;

@@ -59,7 +59,7 @@ export interface IRadioGroupProps extends Props {
      * with `children`: either provide an array of `OptionProps` objects or
      * provide `<Radio>` children elements.
      */
-    options?: OptionProps[];
+    options?: readonly OptionProps[];
 
     /** Value of the selected radio. The child with this value will be `:checked`. */
     selectedValue?: string | number;
