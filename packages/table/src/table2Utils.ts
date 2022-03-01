@@ -17,9 +17,10 @@ import * as React from "react";
 
 import { HotkeyConfig } from "@blueprintjs/core";
 
+import type { ColumnProps } from "./column";
 import { RegionCardinality } from "./regions";
 import type { TableHotkeys } from "./tableHotkeys";
-import { TablePropsWithDefaults } from "./tableProps";
+import type { TablePropsWithDefaults } from "./tableProps";
 
 export function isSelectionModeEnabled(
     props: TablePropsWithDefaults,
@@ -141,4 +142,17 @@ export function getHotkeysFromProps(props: TablePropsWithDefaults, hotkeysImpl: 
     }
 
     return hotkeys;
+}
+
+/**
+ * @returns true if new and old children arrays are the same
+ */
+export function compareChildren(
+    newChildren: Array<React.ReactElement<ColumnProps>>,
+    oldChildren: Array<React.ReactElement<ColumnProps>>,
+): boolean {
+    return (
+        newChildren.length === oldChildren.length &&
+        newChildren.every((child, index) => child.key === oldChildren[index].key)
+    );
 }

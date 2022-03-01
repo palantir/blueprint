@@ -52,7 +52,7 @@ import {
     resizeRowsByApproximateHeight,
     resizeRowsByTallestCell,
 } from "./resizeRows";
-import { getHotkeysFromProps, isSelectionModeEnabled } from "./table2Utils";
+import { compareChildren, getHotkeysFromProps, isSelectionModeEnabled } from "./table2Utils";
 import { TableBody } from "./tableBody";
 import { TableHotkeys } from "./tableHotkeys";
 import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./tableProps";
@@ -108,9 +108,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
 
         const newChildrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
-        const didChildrenChange = !newChildrenArray.every(
-            (child, index) => child.key === state.childrenArray[index].key,
-        );
+        const didChildrenChange = !compareChildren(newChildrenArray, state.childrenArray);
         const numCols = newChildrenArray.length;
 
         let newColumnWidths = columnWidths;
@@ -544,9 +542,9 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         this.hotkeysImpl.setState(this.state);
         this.hotkeysImpl.setProps(this.props);
 
-        const newChildrenArray = React.Children.toArray(this.props.children) as Array<React.ReactElement<ColumnProps>>;
-        const didChildrenChange = !newChildrenArray.every(
-            (child, index) => child.key === this.state.childrenArray[index].key,
+        const didChildrenChange = !compareChildren(
+            React.Children.toArray(this.props.children) as Array<React.ReactElement<ColumnProps>>,
+            this.state.childrenArray,
         );
 
         const shouldInvalidateGrid =
