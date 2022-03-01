@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-app",
-    "version": "4.0.0-beta.15",
+    "version": "4.0.0-beta.16",
     "description": "Blueprint Documentation Site",
     "private": true,
     "scripts": {
@@ -23,7 +23,7 @@
         "@blueprintjs/icons": "^4.0.0-beta.8",
         "@blueprintjs/popover2": "^1.0.0-beta.15",
         "@blueprintjs/select": "^4.0.0-beta.15",
-        "@blueprintjs/table": "^4.0.0-beta.15",
+        "@blueprintjs/table": "^4.0.0-beta.16",
         "@blueprintjs/test-commons": "^1.0.0-beta.2",
         "@blueprintjs/timezone": "^4.0.0-beta.15",
         "@documentalist/client": "~3.0.0",
