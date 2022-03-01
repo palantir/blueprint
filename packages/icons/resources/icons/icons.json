@@ -3759,6 +3759,6 @@
         "displayName": "Symbol-rectangle",
         "iconName": "symbol-rectangle",
         "tags": "symbol, rectangle, filled shape",
-        "group": "miscellaneous"
+        "group": "interface"
     }
 ]
