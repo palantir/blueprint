@@ -22,11 +22,22 @@ const { getLogger } = require("fantasticon/lib/cli/logger");
 const fs = require("fs");
 const path = require("path");
 
+const iconsMetadata = require("../icons.json");
 const { RESOURCES_DIR, GENERATED_SRC_DIR, NS } = require("./common");
 
 const logger = getLogger();
+const codepoints = {};
 
 (async function () {
+    for (const icon of iconsMetadata) {
+        if (Object.values(codepoints).indexOf(icon.codepoint) !== -1) {
+            throw new Error(
+                `[generate-icon-fonts] Invalid metadata entry in icons.json: icon "${icon.iconName}" cannot have codepoint ${icon.codepoint}, it is already in use.`,
+            );
+        }
+        codepoints[icon.iconName] = icon.codepoint;
+    }
+
     logger.start();
     await Promise.all([
         connectToLogger(generateFonts(16, `${NS}-icon-standard`)),
@@ -57,6 +68,7 @@ async function generateFonts(size, prefix) {
         pathOptions: {
             scss: path.join(GENERATED_SRC_DIR, `${size}px`, "_icon-variables.scss"),
         },
+        codepoints,
         tag: "i",
         prefix,
     });
