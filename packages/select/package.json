@@ -47,7 +47,7 @@
         "@blueprintjs/karma-build-scripts": "^2.0.2",
         "@blueprintjs/node-build-scripts": "^1.6.1",
         "enzyme": "^3.11.0",
-        "karma": "^5.2.3",
+        "karma": "^6.3.16",
         "mocha": "^8.2.1",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
