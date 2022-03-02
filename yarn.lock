@@ -1771,6 +1771,11 @@
     "@webassemblyjs/ast" "1.11.0"
     "@xtuc/long" "4.2.2"
 
+"@xmldom/xmldom@^0.7.2":
+  version "0.7.5"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/@xmldom/xmldom/-/xmldom-0.7.5.tgz#09fa51e356d07d0be200642b0e4f91d8e6dd408d"
+  integrity sha512-V3BIhmY36fXZ1OtVcI9W+FxQqxVLsPKcNjWigIaa81dLC9IolJl5Mt4Cvhmr0flUnjSpTdrbMTSbXqYqV5dT6A==
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"
@@ -3919,6 +3924,11 @@ cubic2quad@^1.0.0:
   resolved "https://registry.yarnpkg.com/cubic2quad/-/cubic2quad-1.1.1.tgz#69b19c61a3f5b41ecf2f1d5fae8fb03415aa8b15"
   integrity sha1-abGcYaP1tB7PLx1fro+wNBWqixU=
 
+cubic2quad@^1.2.1:
+  version "1.2.1"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/cubic2quad/-/cubic2quad-1.2.1.tgz#2442260b72c02ee4b6a2fe998fcc1c4073622286"
+  integrity sha512-wT5Y7mO8abrV16gnssKdmIhIbA9wSkeMzhh27jAguKrV82i24wER0vL5TGhUJ9dbJNDcigoRZ0IAHFEEEI4THQ==
+
 currently-unhandled@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/currently-unhandled/-/currently-unhandled-0.4.1.tgz#988df33feab191ef799a61369dd76c17adf957ea"
@@ -5230,7 +5240,7 @@ extsprintf@1.3.0, extsprintf@^1.2.0:
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.3.0.tgz#96918440e3041a7a414f8c52e3c574eb3c3e1e05"
   integrity sha1-lpGEQOMEGnpBT4xS48V06zw+HgU=
 
-fantasticon@^1.0.26, fantasticon@^1.2.2:
+fantasticon@^1.0.26:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/fantasticon/-/fantasticon-1.2.2.tgz#a3bafdb0c0e1713126539facdc5b3f9207cce50e"
   integrity sha512-UlIrgPQ6vanvrCRu7EUkxFBjCdVDpERQ9WGw35BcoTrBmqtJ2UWq3kLnx059j46aAZIFK/d5jVoAEWQoY0Xy9A==
@@ -5246,6 +5256,23 @@ fantasticon@^1.0.26, fantasticon@^1.2.2:
     ttf2eot "^2.0.0"
     ttf2woff "^2.0.2"
     ttf2woff2 "^4.0.2"
+
+fantasticon@^1.2.3:
+  version "1.2.3"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/fantasticon/-/fantasticon-1.2.3.tgz#9082b8bcb38ef6fd63e4f392643b12675c2fb310"
+  integrity sha512-VoPXI8+wbLq4qooK2LAFRcqKtOCR20+InF/Io/9I1kLp3IT+LwqJgeFijFvp9a3HRZptfCAxNvazoVHn4kihzQ==
+  dependencies:
+    change-case "^4.1.2"
+    cli-color "^2.0.0"
+    commander "^7.2.0"
+    glob "^7.2.0"
+    handlebars "^4.7.7"
+    slugify "^1.6.0"
+    svg2ttf "^6.0.3"
+    svgicons2svgfont "^10.0.3"
+    ttf2eot "^2.0.0"
+    ttf2woff "^3.0.0"
+    ttf2woff2 "^4.0.4"
 
 fast-deep-equal@^1.0.0:
   version "1.1.0"
@@ -5935,6 +5962,18 @@ glob@^5.0.15:
     inflight "^1.0.4"
     inherits "2"
     minimatch "2 || 3"
+    once "^1.3.0"
+    path-is-absolute "^1.0.0"
+
+glob@^7.2.0:
+  version "7.2.0"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/glob/-/glob-7.2.0.tgz#d15535af7732e02e948f4c41628bd910293f6023"
+  integrity sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==
+  dependencies:
+    fs.realpath "^1.0.0"
+    inflight "^1.0.4"
+    inherits "2"
+    minimatch "^3.0.4"
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
@@ -11492,6 +11531,11 @@ slugify@^1.5.3:
   resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.6.0.tgz#6bdf8ed01dabfdc46425b67e3320b698832ff893"
   integrity sha512-FkMq+MQc5hzYgM86nLuHI98Acwi3p4wX+a5BO9Hhw4JdK4L7WueIiZ4tXEobImPqBz2sVcV0+Mu3GRB30IGang==
 
+slugify@^1.6.0:
+  version "1.6.5"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/slugify/-/slugify-1.6.5.tgz#c8f5c072bf2135b80703589b39a3d41451fbe8c8"
+  integrity sha512-8mo9bslnBO3tr5PEVFzMPIWwWnipGS0xVbYf65zxDqfNwmzYn1LpiKNrR6DlClusuvo+hDHd1zKpmfAe83NQSQ==
+
 smart-buffer@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-4.1.0.tgz#91605c25d91652f4661ea69ccf45f1b331ca21ba"
@@ -12290,6 +12334,11 @@ svg-pathdata@^5.0.0:
   resolved "https://registry.yarnpkg.com/svg-pathdata/-/svg-pathdata-5.0.5.tgz#65e8d765642ba15fe15434444087d082bc526b29"
   integrity sha512-TAAvLNSE3fEhyl/Da19JWfMAdhSXTYeviXsLSoDT1UM76ADj5ndwAPX1FKQEgB/gFMPavOy6tOqfalXKUiXrow==
 
+svg-pathdata@^6.0.0:
+  version "6.0.3"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/svg-pathdata/-/svg-pathdata-6.0.3.tgz#80b0e0283b652ccbafb69ad4f8f73e8d3fbf2cac"
+  integrity sha512-qsjeeq5YjBZ5eMdFuUa4ZosMLxgr5RZ+F+Y1OrDhuOCEInRMA3x74XdBtggJcj9kOeInz0WE+LgCPDkZFlBYJw==
+
 svg-tags@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/svg-tags/-/svg-tags-1.0.0.tgz#58f71cee3bd519b59d4b2a843b6c7de64ac04764"
@@ -12306,6 +12355,31 @@ svg2ttf@^5.2.0:
     microbuffer "^1.0.0"
     svgpath "^2.1.5"
     xmldom "~0.5.0"
+
+svg2ttf@^6.0.3:
+  version "6.0.3"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/svg2ttf/-/svg2ttf-6.0.3.tgz#7b92978ff124b2a583d21e1208b9675e245e56d1"
+  integrity sha512-CgqMyZrbOPpc+WqH7aga4JWkDPso23EgypLsbQ6gN3uoPWwwiLjXvzgrwGADBExvCRJrWFzAeK1bSoSpE7ixSQ==
+  dependencies:
+    "@xmldom/xmldom" "^0.7.2"
+    argparse "^2.0.1"
+    cubic2quad "^1.2.1"
+    lodash "^4.17.10"
+    microbuffer "^1.0.0"
+    svgpath "^2.1.5"
+
+svgicons2svgfont@^10.0.3:
+  version "10.0.5"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/svgicons2svgfont/-/svgicons2svgfont-10.0.5.tgz#f6b9a468387a113890e5c8a78de0d434eb71392b"
+  integrity sha512-mkP/i0SW5jah4bwIOBpZvrTwJY7rOB3QIIMb/1QwIvJSOScmtAagJTrN3FwHnK1Cu4gw6LgemsefS1Oi0lqkkQ==
+  dependencies:
+    commander "^7.2.0"
+    geometry-interfaces "^1.1.4"
+    glob "^7.1.6"
+    neatequal "^1.0.0"
+    readable-stream "^3.4.0"
+    sax "^1.2.4"
+    svg-pathdata "^6.0.0"
 
 svgicons2svgfont@^9.1.1:
   version "9.1.1"
@@ -12776,7 +12850,7 @@ ttf2eot@^2.0.0:
     argparse "^1.0.6"
     microbuffer "^1.0.0"
 
-ttf2woff2@^4.0.2:
+ttf2woff2@^4.0.2, ttf2woff2@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/ttf2woff2/-/ttf2woff2-4.0.4.tgz#a995856dc0cc6f4b12ea38c5de7ab289b645ef26"
   integrity sha512-pdt/q89D6VmWToUkiwrUo/OrQtmHGr2iBl3GQriHE6xq0cnteb8gJF8UitOdXmFTX8ajKgb3HMGKpKAsCJM61g==
@@ -12793,6 +12867,14 @@ ttf2woff@^2.0.2:
   dependencies:
     argparse "^1.0.6"
     microbuffer "^1.0.0"
+    pako "^1.0.0"
+
+ttf2woff@^3.0.0:
+  version "3.0.0"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/ttf2woff/-/ttf2woff-3.0.0.tgz#bd0fc0157e428b7a9a30340f78adf72fb741962a"
+  integrity sha512-OvmFcj70PhmAsVQKfC15XoKH55cRWuaRzvr2fpTNhTNer6JBpG8n6vOhRrIgxMjcikyYt88xqYXMMVapJ4Rjvg==
+  dependencies:
+    argparse "^2.0.1"
     pako "^1.0.0"
 
 tunnel-agent@^0.6.0:
