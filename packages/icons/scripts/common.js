@@ -17,7 +17,6 @@ const fs = require("fs");
 const path = require("path");
 
 const RESOURCES_DIR = path.resolve(__dirname, "../../../resources/icons");
-const BUILD_DIR = path.resolve(__dirname, "../build");
 const GENERATED_SRC_DIR = path.resolve(__dirname, "../src/generated");
 const NS = "bp4";
 
@@ -34,7 +33,6 @@ function writeLinesToFile(filename, ...lines) {
 }
 
 module.exports = {
-    BUILD_DIR,
     RESOURCES_DIR,
     GENERATED_SRC_DIR,
     NS,
