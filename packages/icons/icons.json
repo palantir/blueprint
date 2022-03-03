@@ -3806,5 +3806,19 @@
         "tags": "screenshot, segment, add",
         "group": "interface",
         "codepoint": 61697
+    },
+    {
+        "displayName": "Rectangle",
+        "iconName": "rectangle",
+        "tags": "block, area, shape",
+        "group": "miscellaneous",
+        "codepoint": 62241
+    },
+    {
+        "displayName": "Symbol: rectangle",
+        "iconName": "symbol-rectangle",
+        "tags": "symbol, rectangle, filled shape",
+        "group": "interface",
+        "codepoint": 62242
     }
 ]
