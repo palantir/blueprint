@@ -258,6 +258,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             columnWidths,
             defaultRowHeight,
             defaultColumnWidth,
+            enableRowHeader,
             numRows,
             rowHeights,
             selectedRegions = [] as Region[],
@@ -308,6 +309,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             syncViewportPosition: this.syncViewportPosition,
         });
         this.hotkeys = getHotkeysFromProps(props, this.hotkeysImpl);
+
+        if (enableRowHeader === false) {
+            this.didRowHeaderMount = true;
+        }
     }
 
     // Instance methods
@@ -549,8 +554,8 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
         const shouldInvalidateGrid =
             didChildrenChange ||
-            this.props.columnWidths !== prevState.columnWidths ||
-            this.props.rowHeights !== prevState.rowHeights ||
+            !Utils.compareSparseArrays(this.props.columnWidths, prevState.columnWidths) ||
+            !Utils.compareSparseArrays(this.props.rowHeights, prevState.rowHeights) ||
             this.props.numRows !== prevProps.numRows ||
             (this.props.forceRerenderOnSelectionChange && this.props.selectedRegions !== prevProps.selectedRegions);
 
@@ -1210,11 +1215,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
         this.invalidateGrid();
         this.setState({ columnWidths });
-
-        const { onColumnWidthChanged } = this.props;
-        if (onColumnWidthChanged != null) {
-            onColumnWidthChanged(columnIndex, width);
-        }
+        this.props.onColumnWidthChanged?.(columnIndex, width);
     };
 
     private handleRowHeightChanged = (rowIndex: number, height: number) => {
@@ -1236,11 +1237,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
         this.invalidateGrid();
         this.setState({ rowHeights });
-
-        const { onRowHeightChanged } = this.props;
-        if (onRowHeightChanged != null) {
-            onRowHeightChanged(rowIndex, height);
-        }
+        this.props.onRowHeightChanged?.(rowIndex, height);
     };
 
     private handleRootScroll = (_event: React.UIEvent<HTMLElement>) => {
