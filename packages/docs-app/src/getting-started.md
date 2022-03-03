@@ -70,6 +70,7 @@ Blueprint components require the following ES2015 features:
 -   `Array.prototype.fill`
 -   `Array.prototype.from`
 -   `String.prototype.startsWith`
+-   `Object.values`
 
 Popper.js also has some polyfill requirements, [see the docs here](https://popper.js.org/docs/v2/browser-support/).
 We recommend polyfilling these features using [core-js](https://github.com/zloirock/core-js).
