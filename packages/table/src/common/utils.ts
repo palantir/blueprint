@@ -347,6 +347,23 @@ export const Utils = {
         const approxCellHeight = approxNumLinesDesired * approxLineHeight;
         return approxCellHeight;
     },
+
+    /**
+     * Shallow comparison of potentially sparse arrays.
+     *
+     * @returns true if the array values are equal
+     */
+    compareSparseArrays(
+        a: Array<number | null | undefined> | undefined,
+        b: Array<number | null | undefined> | undefined,
+    ): boolean {
+        return (
+            a !== undefined &&
+            b !== undefined &&
+            a.length === b.length &&
+            a.every((aValue, index) => aValue === b[index])
+        );
+    },
 };
 
 // table is nearly deprecated, let's not block on code coverage
