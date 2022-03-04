@@ -165,6 +165,6 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
         if (pathStrings == null) {
             return null;
         }
-        return pathStrings.map((d, i) => <path key={i} d={d} fillRule="evenodd" />);
+        return pathStrings.map((d: string | undefined, i: React.Key | null | undefined) => <path key={i} d={d} fillRule="evenodd" />);
     }
 }
