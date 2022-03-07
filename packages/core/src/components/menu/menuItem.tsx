@@ -166,7 +166,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 ...(disabled ? DISABLED_PROPS : {}),
                 className: anchorClasses,
             },
-            <Icon icon={icon} />,
+            <Icon icon={icon} aria-hidden={true} tabIndex={-1} />,
             <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline} title={htmlTitle}>
                 {text}
             </Text>,
