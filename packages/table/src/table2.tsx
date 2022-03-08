@@ -1004,14 +1004,25 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         this.grid = null;
     }
 
-    private validateGrid() {
-        if (this.grid == null) {
+    /**
+     * This method's arguments allow us to support the following use case:
+     * In some cases, we want to update the grid _before_ this.setState() is called with updated
+     * `columnWidths` or `rowHeights` so that when that setState update _does_ flush through the React render
+     * tree, our TableQuadrantStack has the correct updated grid measurements.
+     */
+    private validateGrid({ columnWidths, rowHeights }: Partial<Pick<TableState, "columnWidths" | "rowHeights">> = {}) {
+        if (this.grid == null || columnWidths !== undefined || rowHeights !== undefined) {
             const { defaultRowHeight, defaultColumnWidth, numFrozenColumns } = this.props;
-            const { rowHeights, columnWidths } = this.state;
 
             // gridBleed should always be >= numFrozenColumns since columnIndexStart adds numFrozenColumns
             const gridBleed = Math.max(Grid.DEFAULT_BLEED, numFrozenColumns!);
-            this.grid = new Grid(rowHeights, columnWidths, gridBleed, defaultRowHeight, defaultColumnWidth);
+            this.grid = new Grid(
+                rowHeights ?? this.state.rowHeights,
+                columnWidths ?? this.state.columnWidths,
+                gridBleed,
+                defaultRowHeight,
+                defaultColumnWidth,
+            );
             this.invokeOnVisibleCellsChangeCallback(this.state.viewportRect!);
             this.hotkeysImpl.setGrid(this.grid);
         }
@@ -1213,7 +1224,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             columnWidths[columnIndex] = width;
         }
 
-        this.invalidateGrid();
+        this.validateGrid({ columnWidths });
         this.setState({ columnWidths });
         this.props.onColumnWidthChanged?.(columnIndex, width);
     };
@@ -1235,7 +1246,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             rowHeights[rowIndex] = height;
         }
 
-        this.invalidateGrid();
+        this.validateGrid({ rowHeights });
         this.setState({ rowHeights });
         this.props.onRowHeightChanged?.(rowIndex, height);
     };
