@@ -21,6 +21,7 @@ import * as React from "react";
 
 import {
     Button,
+    Checkbox,
     Classes,
     FocusStyleManager,
     H4,
@@ -220,6 +221,7 @@ export interface IMutableTableState {
     cellContent?: CellContent;
     cellTruncatedPopoverMode?: TruncatedPopoverMode;
     cellTruncationLength?: number;
+    checkedRows?: boolean[];
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
     enableCellTruncation?: boolean;
@@ -267,6 +269,7 @@ const DEFAULT_STATE: IMutableTableState = {
     cellContent: CellContent.LONG_TEXT,
     cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
     cellTruncationLength: TRUNCATION_LENGTHS[TRUNCATION_LENGTH_DEFAULT_INDEX],
+    checkedRows: Utils.times(ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX], () => false),
     enableCellEditing: false,
     enableCellSelection: true,
     enableCellTruncation: false,
@@ -370,9 +373,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     }
 
-    public componentDidUpdate() {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    public componentDidUpdate(_prevProps: {}, prevState: IMutableTableState) {
         this.syncFocusStyle();
-        this.syncDependentBooleanStates();
+        this.syncDependentBooleanStates(prevState);
         this.stateStore.set(this.state);
     }
 
@@ -388,6 +392,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderTable() {
         return (
+            // @ts-ignore
             <Table2
                 bodyContextMenuRenderer={this.renderBodyContextMenu}
                 enableColumnInteractionBar={this.state.showTableInteractionBar}
@@ -401,7 +406,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 enableRowResizing={this.state.enableRowResizing}
                 getCellClipboardData={this.getCellValue}
                 loadingOptions={this.getEnabledLoadingOptions()}
-                numFrozenColumns={this.state.numFrozenCols}
+                numFrozenColumns={this.state.numFrozenCols + 1}
                 numFrozenRows={this.state.numFrozenRows}
                 numRows={this.state.numRows}
                 onColumnsReordered={this.onColumnsReordered}
@@ -421,10 +426,68 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 selectedRegions={this.state.selectedRegions}
                 styledRegionGroups={this.getStyledRegionGroups()}
             >
+                {this.renderCheckboxColumn()}
                 {this.renderColumns()}
             </Table2>
         );
     }
+
+    private renderCheckboxColumn() {
+        return (
+            <Column
+                key="checkbox"
+                cellRenderer={this.renderCheckboxCell}
+                columnHeaderCellRenderer={this.renderCheckedColumnHeaderCell}
+            />
+        );
+    }
+
+    private renderCheckboxCell = (rowIndex: number) => {
+        const { checkedRows } = this.state;
+        return (
+            <Cell>
+                <Checkbox
+                    checked={checkedRows[rowIndex]}
+                    onChange={() => {
+                        const newCheckedRows = checkedRows.slice();
+                        newCheckedRows[rowIndex] = !newCheckedRows[rowIndex];
+                        this.setState({ checkedRows: newCheckedRows });
+                    }}
+                />
+            </Cell>
+        );
+    };
+
+    private renderCheckedColumnHeaderCell = () => {
+        const { checkedRows } = this.state;
+        const allChecked = checkedRows.every(isChecked => isChecked);
+        const someChecked = checkedRows.some(isChecked => isChecked);
+
+        return (
+            <ColumnHeaderCell
+                index={0}
+                enableColumnReordering={false}
+                menuRenderer={undefined}
+                nameRenderer={() => (
+                    <Checkbox
+                        indeterminate={!allChecked && someChecked}
+                        checked={allChecked}
+                        onChange={this.toggleAllRows}
+                    />
+                )}
+            />
+        );
+    };
+
+    private toggleAllRows = () => {
+        const { checkedRows } = this.state;
+        const someChecked = checkedRows.some(isChecked => isChecked);
+        if (someChecked) {
+            this.setState({ checkedRows: checkedRows.map(() => false) });
+        } else {
+            this.setState({ checkedRows: checkedRows.map(() => true) });
+        }
+    };
 
     private renderColumns() {
         return Utils.times(this.state.numCols, columnIndex => {
@@ -1008,13 +1071,26 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     }
 
-    private syncDependentBooleanStates = () => {
+    private syncDependentBooleanStates = (prevState: IMutableTableState) => {
         if (this.state.enableCellEditing && this.state.enableCellTruncation) {
             this.setState({ enableCellTruncation: false });
         }
 
         if (this.state.enableColumnNameEditing && this.state.enableColumnCustomHeaders) {
             this.setState({ enableColumnNameEditing: false });
+        }
+
+        if (this.state.numRows !== prevState.numRows) {
+            // update checkedRows array
+            let newCheckedRows = this.state.checkedRows;
+            if (this.state.numRows > prevState.numRows) {
+                newCheckedRows = newCheckedRows.concat(
+                    Utils.times(this.state.numRows - prevState.numRows, () => false),
+                );
+            } else if (this.state.numRows < prevState.numRows) {
+                newCheckedRows = newCheckedRows.slice(0, this.state.numRows);
+            }
+            this.setState({ checkedRows: newCheckedRows });
         }
     };
 
