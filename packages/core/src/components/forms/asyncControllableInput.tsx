@@ -20,8 +20,19 @@ import { polyfill } from "react-lifecycles-compat";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 
 export interface IAsyncControllableInputProps
-    extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
-    inputRef?: React.LegacyRef<HTMLInputElement>;
+    extends React.DetailedHTMLProps<
+        React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement>,
+        HTMLInputElement | HTMLTextAreaElement
+    > {
+    /**
+     * Whether the component supports multiple lines of text.
+     * This prop should not be changed during the component's lifetime.
+     *
+     * @default false
+     */
+    multiline?: boolean;
+
+    inputRef?: React.LegacyRef<HTMLInputElement> | React.LegacyRef<HTMLTextAreaElement>;
 }
 
 type InputValue = IAsyncControllableInputProps["value"];
@@ -117,11 +128,23 @@ export class AsyncControllableInput extends React.PureComponent<
 
     public render() {
         const { isComposing, hasPendingUpdate, value, nextValue } = this.state;
-        const { inputRef, ...restProps } = this.props;
-        return (
+        const { multiline, inputRef, ...restProps } = this.props;
+        return multiline ? (
+            <textarea
+                {...restProps}
+                ref={inputRef as React.LegacyRef<HTMLTextAreaElement>}
+                // render the pending value even if it is not confirmed by a parent's async controlled update
+                // so that the cursor does not jump to the end of input as reported in
+                // https://github.com/palantir/blueprint/issues/4298
+                value={isComposing || hasPendingUpdate ? nextValue : value}
+                onCompositionStart={this.handleCompositionStart}
+                onCompositionEnd={this.handleCompositionEnd}
+                onChange={this.handleChange}
+            />
+        ) : (
             <input
                 {...restProps}
-                ref={inputRef}
+                ref={inputRef as React.LegacyRef<HTMLInputElement>}
                 // render the pending value even if it is not confirmed by a parent's async controlled update
                 // so that the cursor does not jump to the end of input as reported in
                 // https://github.com/palantir/blueprint/issues/4298
@@ -133,7 +156,7 @@ export class AsyncControllableInput extends React.PureComponent<
         );
     }
 
-    private handleCompositionStart = (e: React.CompositionEvent<HTMLInputElement>) => {
+    private handleCompositionStart = (e: React.CompositionEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         this.setState({
             isComposing: true,
             // Make sure that localValue matches externalValue, in case externalValue
@@ -143,12 +166,12 @@ export class AsyncControllableInput extends React.PureComponent<
         this.props.onCompositionStart?.(e);
     };
 
-    private handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
+    private handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         this.setState({ isComposing: false });
         this.props.onCompositionEnd?.(e);
     };
 
-    private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    private handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { value } = e.target;
 
         this.setState({ nextValue: value });

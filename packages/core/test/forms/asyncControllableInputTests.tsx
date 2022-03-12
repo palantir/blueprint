@@ -149,4 +149,11 @@ describe("<AsyncControllableInput>", () => {
             });
         }
     });
+
+    describe("multiline", () => {
+        it("renders a textarea", () => {
+            const wrapper = mount(<AsyncControllableInput type="text" value="hi" multiline={true} />);
+            assert.strictEqual(wrapper.childAt(0).type(), "textarea");
+        });
+    });
 });
