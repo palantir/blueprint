@@ -78,6 +78,8 @@ export class AsyncControllableInput extends React.PureComponent<
         value: this.props.value,
     };
 
+    private compositionStatusTimeoutID: number | null = null;
+
     public static getDerivedStateFromProps(
         nextProps: IAsyncControllableInputProps,
         nextState: IAsyncControllableInputState,
@@ -134,17 +136,17 @@ export class AsyncControllableInput extends React.PureComponent<
     }
 
     private handleCompositionStart = (e: React.CompositionEvent<HTMLInputElement>) => {
-        this.setState({
-            isComposing: true,
-            // Make sure that localValue matches externalValue, in case externalValue
-            // has changed since the last onChange event.
-            nextValue: this.state.value,
-        });
+        if (this.compositionStatusTimeoutID !== null) {
+            window.clearTimeout(this.compositionStatusTimeoutID);
+            this.compositionStatusTimeoutID = null;
+        }
+
+        this.setState({ isComposing: true });
         this.props.onCompositionStart?.(e);
     };
 
     private handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
-        this.setState({ isComposing: false });
+        this.compositionStatusTimeoutID = window.setTimeout(() => this.setState({ isComposing: false }), 10);
         this.props.onCompositionEnd?.(e);
     };
 
