@@ -146,6 +146,9 @@ export class AsyncControllableInput extends React.PureComponent<
     };
 
     private handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
+        // In some non-latin languages, a keystroke can end a composition event and immediately afterwards open another.
+        // This timeout unlocks nextValue to be overwritten by the `value` prop, if and only if a delay (10ms) has
+        // passed without a new composition event starting.
         this.compositionStatusTimeoutID = window.setTimeout(() => this.setState({ isComposing: false }), 10);
         this.props.onCompositionEnd?.(e);
     };
