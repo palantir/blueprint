@@ -99,8 +99,10 @@ describe("<AsyncControllableInput>", () => {
             input.simulate("compositionend", { data: " " });
             input.simulate("compositionstart", { data: "" });
 
-            // Wait for the composition ending delay (10ms) to pass
-            await new Promise(resolve => setTimeout(() => resolve(null), 15));
+            // Wait for the composition ending delay to pass
+            await new Promise(resolve =>
+                setTimeout(() => resolve(null), AsyncControllableInput.COMPOSITION_END_DELAY + 5),
+            );
 
             assert.strictEqual(wrapper.find("input").prop("value"), "hi ");
         });
@@ -114,8 +116,10 @@ describe("<AsyncControllableInput>", () => {
             input.simulate("change", { target: { value: "hi " } });
             input.simulate("compositionend", { data: " " });
 
-            // Wait for the composition ending delay (10ms) to pass
-            await new Promise(resolve => setTimeout(() => resolve(null), 15));
+            // Wait for the composition ending delay to pass
+            await new Promise(resolve =>
+                setTimeout(() => resolve(null), AsyncControllableInput.COMPOSITION_END_DELAY + 5),
+            );
 
             // we are "rejecting" the composition here by supplying a different controlled value
             wrapper.setProps({ value: "bye" }).update();

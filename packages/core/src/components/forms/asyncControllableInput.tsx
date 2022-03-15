@@ -17,7 +17,7 @@
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { AbstractPureComponent2, DISPLAYNAME_PREFIX } from "../../common";
 
 export interface IAsyncControllableInputProps
     extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
@@ -65,11 +65,17 @@ export interface IAsyncControllableInputState {
  * Note: this component does not apply any Blueprint-specific styling.
  */
 @polyfill
-export class AsyncControllableInput extends React.PureComponent<
+export class AsyncControllableInput extends AbstractPureComponent2<
     IAsyncControllableInputProps,
     IAsyncControllableInputState
 > {
     public static displayName = `${DISPLAYNAME_PREFIX}.AsyncControllableInput`;
+
+    /**
+     * The amount of time (in milliseconds) which the input will wait after a compositionEnd event before
+     * unlocking its state value for external updates via props. See `handleCompositionEnd` for more details.
+     */
+    public static COMPOSITION_END_DELAY = 10;
 
     public state: IAsyncControllableInputState = {
         hasPendingUpdate: false,
@@ -78,7 +84,7 @@ export class AsyncControllableInput extends React.PureComponent<
         value: this.props.value,
     };
 
-    private compositionStatusTimeoutID: number | null = null;
+    private cancelPendingCompositionEnd: (() => void) | null = null;
 
     public static getDerivedStateFromProps(
         nextProps: IAsyncControllableInputProps,
@@ -136,20 +142,21 @@ export class AsyncControllableInput extends React.PureComponent<
     }
 
     private handleCompositionStart = (e: React.CompositionEvent<HTMLInputElement>) => {
-        if (this.compositionStatusTimeoutID !== null) {
-            window.clearTimeout(this.compositionStatusTimeoutID);
-            this.compositionStatusTimeoutID = null;
-        }
-
+        this.cancelPendingCompositionEnd?.();
         this.setState({ isComposing: true });
         this.props.onCompositionStart?.(e);
     };
 
     private handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
-        // In some non-latin languages, a keystroke can end a composition event and immediately afterwards open another.
-        // This timeout unlocks nextValue to be overwritten by the `value` prop, if and only if a delay (10ms) has
+        // In some non-latin languages, a keystroke can end a composition event and immediately afterwards start another.
+        // This can lead to unexpected characters showing up in the text input. In order to circumvent this problem, we
+        // use a timeout which creates a delay which merges the two composition events, creating a more natural and predictable UX.
+        // `this.state.nextValue` will become "locked" (it cannot be overwritten by the `value` prop) until a delay (10ms) has
         // passed without a new composition event starting.
-        this.compositionStatusTimeoutID = window.setTimeout(() => this.setState({ isComposing: false }), 10);
+        this.cancelPendingCompositionEnd = this.setTimeout(
+            () => this.setState({ isComposing: false }),
+            AsyncControllableInput.COMPOSITION_END_DELAY,
+        );
         this.props.onCompositionEnd?.(e);
     };
 
