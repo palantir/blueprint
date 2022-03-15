@@ -703,7 +703,7 @@ describe("<Table2>", function (this) {
                     <Column cellRenderer={renderDummyCell} />
                 </Table2>,
             );
-            expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(1);
+            expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(2);
         });
 
         it("triggers immediately on mount/update with RenderMode.BATCH for very small batches", () => {
@@ -717,9 +717,9 @@ describe("<Table2>", function (this) {
                 </Table2>,
             );
 
-            expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(1);
+            expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(2);
             table.setProps({ numRows: 2 }); // still small enough to fit in one batch
-            expect(onCompleteRenderSpy.callCount, "call count on update").to.equal(2);
+            expect(onCompleteRenderSpy.callCount, "call count on update").to.equal(3);
         });
     });
 
@@ -2066,6 +2066,54 @@ describe("<Table2>", function (this) {
             const key = keyCode === Keys.ARROW_LEFT ? "left" : "right";
             component.simulate("keyDown", createKeyEventConfig(component, key, keyCode, true));
         }
+    });
+
+    describe("EXPERIMENTAL: cellRendererDependencies", () => {
+        it("Does not re-render cells when dependencies don't change", () => {
+            const dependencies: any[] = ["stable"];
+            const cellRenderer = sinon.stub().returns(<Cell>foo</Cell>);
+            const table = mount(
+                <Table2 numRows={1} cellRendererDependencies={dependencies}>
+                    <Column name="Column0" cellRenderer={cellRenderer} />
+                </Table2>,
+            );
+            const originalCallCount = cellRenderer.callCount;
+
+            // replace the single dependency with a shallow-equal value
+            dependencies[0] = "stable";
+            table.setProps({ cellRendererDependencies: dependencies });
+
+            expect(cellRenderer.callCount).to.be.equal(
+                originalCallCount,
+                "cellRenderer should not have been called again when cellRendererDependencies are the same",
+            );
+        });
+
+        it("Does re-render cells when dependencies change", () => {
+            const dependencies: string[] = ["some data from external store"];
+            const cellRenderer = () => <Cell>{dependencies[0]}</Cell>;
+            const table = mount(
+                <Table2 numRows={1} cellRendererDependencies={dependencies.slice()}>
+                    <Column name="Column0" cellRenderer={cellRenderer} />
+                </Table2>,
+            );
+            expect(getFirstCellText()).to.equal(dependencies[0]);
+
+            // replace the single dependency with a shallow-equal value
+            dependencies[0] = "new data from external store";
+            table.setProps({ cellRendererDependencies: dependencies.slice() });
+            expect(getFirstCellText()).to.equal(
+                dependencies[0],
+                "cellRenderer should have been called again when cellRendererDependencies changed",
+            );
+
+            function getFirstCellText() {
+                return table
+                    .find(`.${Classes.rowCellIndexClass(0)}.${Classes.columnCellIndexClass(0)}`)
+                    .hostNodes()
+                    .text();
+            }
+        });
     });
 
     function renderDummyCell() {

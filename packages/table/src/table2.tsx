@@ -59,7 +59,18 @@ import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./t
 import type { TableState, TableSnapshot } from "./tableState";
 import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./tableUtils";
 
-export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnapshot> {
+export interface Table2Props extends TableProps {
+    /**
+     * Warning: experimental feature!
+     *
+     * This dependency list may be used to trigger a re-render of all cells when one of its elements changes
+     * (compared using shallow equality checks). This is done by invalidating the grid, which forces
+     * TableQuadrantStack to re-render.
+     */
+    cellRendererDependencies?: React.DependencyList;
+}
+
+export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table2`;
 
     public static defaultProps: TablePropsDefaults = {
@@ -419,7 +430,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         };
     }
 
-    public shouldComponentUpdate(nextProps: TableProps, nextState: TableState) {
+    public shouldComponentUpdate(nextProps: Table2Props, nextState: TableState) {
         const propKeysDenylist = { exclude: Table2.SHALLOW_COMPARE_PROP_KEYS_DENYLIST };
         const stateKeysDenylist = { exclude: Table2.SHALLOW_COMPARE_STATE_KEYS_DENYLIST };
 
@@ -542,7 +553,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         this.didCompletelyMount = false;
     }
 
-    public componentDidUpdate(prevProps: TableProps, prevState: TableState) {
+    public componentDidUpdate(prevProps: Table2Props, prevState: TableState) {
         super.componentDidUpdate(prevProps, prevState);
         this.hotkeysImpl.setState(this.state);
         this.hotkeysImpl.setProps(this.props);
@@ -552,10 +563,28 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
             this.state.childrenArray,
         );
 
+        if (this.props.cellRendererDependencies !== undefined && prevProps.cellRendererDependencies === undefined) {
+            console.error(Errors.TABLE_INVALID_CELL_RENDERER_DEPS);
+        }
+
+        const didCellRendererDependenciesChange =
+            this.props.cellRendererDependencies !== undefined &&
+            this.props.cellRendererDependencies.some(
+                (dep, index) => dep !== (prevProps.cellRendererDependencies ?? [])[index],
+            );
+
+        const didColumnWidthsChange =
+            this.props.columnWidths !== undefined &&
+            !Utils.compareSparseArrays(this.props.columnWidths, prevState.columnWidths);
+        const didRowHeightsChange =
+            this.props.rowHeights !== undefined &&
+            !Utils.compareSparseArrays(this.props.rowHeights, prevState.rowHeights);
+
         const shouldInvalidateGrid =
             didChildrenChange ||
-            !Utils.compareSparseArrays(this.props.columnWidths, prevState.columnWidths) ||
-            !Utils.compareSparseArrays(this.props.rowHeights, prevState.rowHeights) ||
+            didCellRendererDependenciesChange ||
+            didColumnWidthsChange ||
+            didRowHeightsChange ||
             this.props.numRows !== prevProps.numRows ||
             (this.props.forceRerenderOnSelectionChange && this.props.selectedRegions !== prevProps.selectedRegions);
 
@@ -576,6 +605,11 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
         if (shouldInvalidateHotkeys) {
             this.hotkeys = getHotkeysFromProps(this.props as TablePropsWithDefaults, this.hotkeysImpl);
+        }
+
+        if (didCellRendererDependenciesChange) {
+            // force an update with the new grid
+            this.forceUpdate();
         }
     }
 
@@ -1078,11 +1112,18 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
     };
 
     private handleCompleteRender = () => {
-        // the first onCompleteRender is triggered before the viewportRect is
-        // defined and the second after the viewportRect has been set. the cells
+        // The first onCompleteRender is triggered before the viewportRect is
+        // defined and the second after the viewportRect has been set. The cells
         // will only actually render once the viewportRect is defined though, so
         // we defer invoking onCompleteRender until that check passes.
-        if (this.state.viewportRect != null && this.state.didHeadersMount) {
+
+        // Additional note: we run into an unfortunate race condition between the order of execution
+        // of this callback and this.handleHeaderMounted(...). The setState() call in the latter
+        // does not update this.state quickly enough for us to query for the new state here, so instead
+        // we read the private member variables which are the dependent parts of that "didHeadersMount"
+        // state.
+        const didHeadersMount = this.didColumnHeaderMount && this.didRowHeaderMount;
+        if (this.state.viewportRect != null && didHeadersMount) {
             this.props.onCompleteRender?.();
             this.didCompletelyMount = true;
         }

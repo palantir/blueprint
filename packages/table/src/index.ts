@@ -91,4 +91,4 @@ export { ITableProps, TableProps } from "./tableProps";
 
 export { Table } from "./table";
 
-export { Table2 } from "./table2";
+export { Table2, Table2Props } from "./table2";
