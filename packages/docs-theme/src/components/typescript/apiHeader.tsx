@@ -24,7 +24,7 @@ export class ApiHeader extends React.PureComponent<ITsDocBase> {
 
     public static displayName = "Docs2.ApiHeader";
 
-    public context: IDocumentationContext;
+    public declare context: IDocumentationContext;
 
     public render() {
         return (

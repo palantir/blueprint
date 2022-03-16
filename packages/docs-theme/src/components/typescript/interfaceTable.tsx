@@ -47,7 +47,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
 
     public static displayName = "Docs2.InterfaceTable";
 
-    public context: IDocumentationContext;
+    public declare context: IDocumentationContext;
 
     public render() {
         const { data, title } = this.props;
