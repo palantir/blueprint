@@ -165,7 +165,6 @@ These bundles _do not include_ external dependencies; your application will need
         <script src="https://unpkg.com/react-transition-group@^2.2.1/dist/react-transition-group.min.js"></script>
         <script src="https://unpkg.com/popper.js@^1.14.1/dist/umd/popper.js"></script>
         <script src="https://unpkg.com/react-popper@^1.0.0/dist/index.umd.min.js"></script>
-        <script src="https://unpkg.com/resize-observer-polyfill@^1.5.0"></script>
         <!-- Blueprint packages (note: icons script must come first) -->
         <script src="https://unpkg.com/@blueprintjs/icons@^3.4.0"></script>
         <script src="https://unpkg.com/@blueprintjs/core@^3.10.0"></script>

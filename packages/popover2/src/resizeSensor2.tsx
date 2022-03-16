@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import { ResizeObserver } from "@juggle/resize-observer";
 import * as React from "react";
-import ResizeObserver from "resize-observer-polyfill";
 
 import { AbstractPureComponent2, DISPLAYNAME_PREFIX, ResizeEntry } from "@blueprintjs/core";
 
