@@ -19,6 +19,7 @@
  * `false` otherwise.
  */
 export function isMac(platformOverride?: string) {
+    // eslint-disable-next-line deprecation/deprecation
     const platformActual = typeof navigator !== "undefined" ? navigator.platform : undefined;
     const platform = platformOverride != null ? platformOverride : platformActual;
     return platform == null ? false : /Mac|iPod|iPhone|iPad/.test(platform);

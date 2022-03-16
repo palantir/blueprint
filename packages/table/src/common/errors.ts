@@ -38,3 +38,5 @@ export const TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH =
 export const TABLE_NUM_ROWS_NEGATIVE = ns + ` <Table> requires numRows to be greater than or equal to 0.`;
 export const TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH =
     ns + ` <Table> requires columnWidths.length to equal the number of <Column>s if provided.`;
+
+export const TABLE_COPY_FAILED = ns + ` Copy failed.`;
