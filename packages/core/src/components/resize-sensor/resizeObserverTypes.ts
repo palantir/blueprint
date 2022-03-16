@@ -16,9 +16,9 @@
 
 /** @fileoverview types re-exported from the resize observer polyfill library, will be removed in v4.0 */
 
-import { ResizeObserverEntry } from "@juggle/resize-observer";
+import type { ResizeObserverEntry } from "@juggle/resize-observer";
 // tslint:disable-next-line no-submodule-imports
-import { DOMRectReadOnly } from "@juggle/resize-observer/lib/DOMRectReadOnly";
+import type { DOMRectReadOnly } from "@juggle/resize-observer/lib/DOMRectReadOnly";
 
 /* eslint-disable deprecation/deprecation */
 

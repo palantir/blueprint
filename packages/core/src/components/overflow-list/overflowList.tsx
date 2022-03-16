@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ResizeObserverEntry } from "@juggle/resize-observer";
+import type { ResizeObserverEntry } from "@juggle/resize-observer";
 import classNames from "classnames";
 import * as React from "react";
 
