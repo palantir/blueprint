@@ -151,7 +151,7 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOver
     /** A cache containing the widths of all elements being observed to detect growing/shrinking */
     private previousWidths = new Map<Element, number>();
 
-    private spacer: Element | null = null;
+    private spacer: HTMLElement | null = null;
 
     public componentDidMount() {
         this.repartition(false);
@@ -255,7 +255,7 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOver
                 overflow: [],
                 visible: this.props.items,
             }));
-        } else if (this.spacer.getBoundingClientRect().width < 0.9) {
+        } else if (this.spacer.offsetWidth < 0.9) {
             // spacer has flex-shrink and width 1px so if it's much smaller then we know to shrink
             this.setState(state => {
                 if (state.visible.length <= this.props.minVisibleItems!) {
