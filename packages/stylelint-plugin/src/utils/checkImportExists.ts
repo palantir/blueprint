@@ -46,7 +46,7 @@ function stripQuotes(str: string): string {
         (str.charAt(0) === '"' && str.charAt(str.length - 1) === '"') ||
         (str.charAt(0) === "'" && str.charAt(str.length - 1) === "'")
     ) {
-        return str.substring(1, str.length - 2);
+        return str.substring(1, str.length - 1);
     }
     return str;
 }
