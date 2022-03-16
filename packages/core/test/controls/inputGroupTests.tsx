@@ -92,7 +92,7 @@ describe("<InputGroup>", () => {
             <TestComponent
                 initialValue="abc"
                 // tslint:disable-next-line:jsx-no-lambda
-                transformInput={(value: string) => value.substring(0, 2)}
+                transformInput={(value: string) => value.substring(0, 3)}
             />,
         );
 
