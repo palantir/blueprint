@@ -116,6 +116,8 @@ export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) 
             break;
     }
 
+    // HACKHACK: see https://github.com/palantir/blueprint/issues/5173
+    // eslint-disable-next-line deprecation/deprecation
     event.initMouseEvent(
         eventType,
         true /* bubble */,
