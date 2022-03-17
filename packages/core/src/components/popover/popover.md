@@ -135,7 +135,7 @@ The `Position` enumeration defines the full set of supported values. There are t
 These two attributes can be expressed with a single value having the following structure:
 
 <pre class="docs-popover-position-value-code-block">
-    <span class="docs-popover-position-label-side">[SIDE]</span>_<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span>
+    <span class="docs-popover-position-label-side">[SIDE]</span>-<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span>
 </pre>
 
 The following example shows all supported `Position` values and how each behaves in practice.
