@@ -209,7 +209,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         this.selectFilms([film]);
     }
 
-    private selectFilms(filmsToSelect: readonly IFilm[]) {
+    private selectFilms(filmsToSelect: IFilm[]) {
         const { createdItems, films, items } = this.state;
 
         let nextCreatedItems = createdItems.slice();
@@ -259,7 +259,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         }
     };
 
-    private handleFilmsPaste = (films: readonly IFilm[]) => {
+    private handleFilmsPaste = (films: IFilm[]) => {
         // On paste, don't bother with deselecting already selected values, just
         // add the new ones.
         this.selectFilms(films);

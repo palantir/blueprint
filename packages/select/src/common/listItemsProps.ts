@@ -155,7 +155,7 @@ export interface IListItemsProps<T> extends Props {
     /**
      * Callback invoked when multiple items are selected at once via pasting.
      */
-    onItemsPaste?: (items: readonly T[]) => void;
+    onItemsPaste?: (items: T[]) => void;
 
     /**
      * Callback invoked when the query string changes.

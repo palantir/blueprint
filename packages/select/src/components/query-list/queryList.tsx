@@ -218,7 +218,8 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
             handleQueryChange: this.handleInputQueryChange,
             itemList: itemListRenderer({
                 ...spreadableState,
-                items,
+                filteredItems: spreadableState.filteredItems.slice(),
+                items: items.slice(),
                 itemsParentRef: this.refHandlers.itemsParent,
                 renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,
@@ -609,7 +610,7 @@ function getMatchingItem<T>(query: string, { items, itemPredicate }: QueryListPr
 function getFilteredItems<T>(query: string, { items, itemPredicate, itemListPredicate }: QueryListProps<T>) {
     if (Utils.isFunction(itemListPredicate)) {
         // note that implementations can reorder the items here
-        return itemListPredicate(query, items);
+        return itemListPredicate(query, items.slice());
     } else if (Utils.isFunction(itemPredicate)) {
         return items.filter((item, index) => itemPredicate(query, item, index));
     }

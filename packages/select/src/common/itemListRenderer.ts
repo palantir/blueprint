@@ -37,13 +37,13 @@ export interface IItemListRendererProps<T> {
      * map each item in this array through `renderItem`, with support for
      * optional `noResults` and `initialContent` states.
      */
-    filteredItems: readonly T[];
+    filteredItems: T[];
 
     /**
      * Array of all items in the list.
      * See `filteredItems` for a filtered array based on `query` and predicate props.
      */
-    items: readonly T[];
+    items: T[];
 
     /**
      * The current query string.
