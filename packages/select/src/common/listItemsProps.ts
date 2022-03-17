@@ -44,7 +44,7 @@ export interface IListItemsProps<T> extends Props {
     activeItem?: T | ICreateNewItem | null;
 
     /** Array of items in the list. */
-    items: T[];
+    items: readonly T[];
 
     /**
      * Specifies how to test if two items are equal. By default, simple strict
