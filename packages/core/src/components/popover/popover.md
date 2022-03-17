@@ -139,7 +139,7 @@ These two attributes can be expressed with a single value having the following s
 </pre>
 
 The following example shows all supported `Position` values and how each behaves in practice.
-Note that if <strong><code>\_<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span></code></strong> is ommitted,
+Note that if <strong><code>\-<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span></code></strong> is ommitted,
 the popover will align to the **center** of the target.
 
 @reactExample PopoverPositionExample
