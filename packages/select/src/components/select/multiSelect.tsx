@@ -83,7 +83,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     popoverProps?: Partial<IPopoverProps> & object;
 
     /** Controlled selected values. */
-    selectedItems?: T[];
+    selectedItems?: readonly T[];
 
     /** Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input. */
     // eslint-disable-next-line @typescript-eslint/ban-types

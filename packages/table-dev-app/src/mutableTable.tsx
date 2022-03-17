@@ -197,9 +197,10 @@ function getRandomInteger(min: number, max: number): number {
 function getRandomString(length: number): string {
     let str = "";
     while (str.length < length) {
-        str += Math.random().toString(36).substr(2);
+        const part = Math.random().toString(36);
+        str += part.substring(2, part.length - 1);
     }
-    return str.substr(0, length);
+    return str.substring(0, length - 1);
 }
 
 function contains(arr: any[], value: any) {

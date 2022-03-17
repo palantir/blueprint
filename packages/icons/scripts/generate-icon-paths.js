@@ -47,15 +47,13 @@ const ICON_NAMES = ICONS_METADATA.map(icon => icon.iconName);
         const iconPaths = await getIconPaths(iconSize);
 
         for (const [iconName, pathStrings] of Object.entries(iconPaths)) {
-            const line = pathStrings.length > 0
-                ?  `export default [${pathStrings.join(", ")}];`
-                // special case for "blank" icon - we need an explicit typedef
-                : `const p: string[] = []; export default p;`
+            const line =
+                pathStrings.length > 0
+                    ? `export default [${pathStrings.join(", ")}];`
+                    : // special case for "blank" icon - we need an explicit typedef
+                      `const p: string[] = []; export default p;`;
 
-            writeLinesToFile(
-                `${iconSize}px/paths/${iconName}.ts`,
-                line,
-            );
+            writeLinesToFile(`${iconSize}px/paths/${iconName}.ts`, line);
         }
 
         console.info(`Writing index file for ${iconSize}px icon kit paths...`);

@@ -31,7 +31,7 @@ export interface IApiLinkProps extends Props {
 export class ApiLink extends React.PureComponent<IApiLinkProps> {
     public static contextTypes = DocumentationContextTypes;
 
-    public context: IDocumentationContext;
+    public declare context: IDocumentationContext;
 
     public render() {
         const { className, name } = this.props;

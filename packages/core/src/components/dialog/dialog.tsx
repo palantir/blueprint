@@ -163,7 +163,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
-                <Icon icon={icon} size={IconSize.LARGE} />
+                <Icon icon={icon} size={IconSize.LARGE} aria-hidden={true} tabIndex={-1} />
                 <H4 id={this.titleId}>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>

@@ -75,16 +75,6 @@ const TIME_ZONES: ITimezone[] = ([
     };
 });
 
-const FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    month: "long",
-    second: "2-digit",
-    weekday: "long",
-    year: "numeric",
-};
-
 export class TableFormatsExample extends React.PureComponent<IExampleProps> {
     private data = TIME_ZONES;
 
@@ -110,7 +100,15 @@ export class TableFormatsExample extends React.PureComponent<IExampleProps> {
     private renderLocalTime = (row: number) => {
         const localDateTime = new Date(this.date);
         localDateTime.setTime(localDateTime.getTime() + this.data[row].offsetMsec);
-        const formattedDateTime = localDateTime.toLocaleString("en-US", FORMAT_OPTIONS);
+        const formattedDateTime = localDateTime.toLocaleString("en-US", {
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            month: "long",
+            second: "2-digit",
+            weekday: "long",
+            year: "numeric",
+        });
         return (
             <Cell>
                 <TruncatedFormat>{formattedDateTime}</TruncatedFormat>

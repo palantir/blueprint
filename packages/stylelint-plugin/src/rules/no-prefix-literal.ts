@@ -102,7 +102,9 @@ export default stylelint.createPlugin(ruleName, ((
                     }
                     if ((context as any).fix && !disableFix) {
                         assertBpVariablesImportExists(cssSyntax);
-                        const fixed = BpPrefixVariableMap[cssSyntax] + selector.value.substr(bannedPrefix.length);
+                        const fixed =
+                            BpPrefixVariableMap[cssSyntax] +
+                            selector.value.substring(bannedPrefix.length, selector.value.length - 1);
                         // Note - selector.value = "#{$var}" escapes special characters and produces "\#\{\$var\}",
                         // and to work around that we use selector.toString instead.
                         selector.toString = () => `.${fixed}`;

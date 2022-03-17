@@ -8,17 +8,17 @@
     "dependencies": {
         "@blueprintjs/webpack-build-scripts": "^3.0.0-beta.1",
         "istanbul-instrumenter-loader": "^3.0.1",
-        "karma": "^6.1.0",
-        "karma-chrome-launcher": "^3.1.0",
-        "karma-coverage": "^2.0.3",
-        "karma-firefox-launcher": "^2.1.0",
+        "karma": "^6.3.17",
+        "karma-chrome-launcher": "^3.1.1",
+        "karma-coverage": "^2.2.0",
+        "karma-firefox-launcher": "^2.1.2",
         "karma-helpful-reporter": "^0.3.4",
         "karma-junit-reporter": "^2.0.1",
         "karma-mocha": "^2.0.1",
         "karma-remap-coverage": "^0.1.5",
         "karma-sourcemap-loader": "^0.3.8",
         "karma-webpack": "^5.0.0",
-        "mocha": "^8.2.1"
+        "mocha": "^9.2.2"
     },
     "repository": {
         "type": "git",

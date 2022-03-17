@@ -85,14 +85,14 @@ export class ClickToCopy extends React.PureComponent<IClickToCopyProps, IClickTo
         );
     }
 
-    private copy = () => {
+    private copy = async () => {
         this.inputElement.select();
-        document.execCommand("copy");
+        await navigator.clipboard.writeText(this.inputElement.value);
         this.setState({ hasCopied: true });
     };
 
-    private handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        this.copy();
+    private handleClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+        await this.copy();
         this.props.onClick?.(e);
     };
 

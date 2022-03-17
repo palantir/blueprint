@@ -1,13 +1,13 @@
 {
     "name": "@blueprintjs/tslint-config",
-    "version": "3.0.4",
+    "version": "3.1.0",
     "description": "TSLint configuration for @blueprintjs packages",
     "scripts": {
         "compile": "tsc -p ./src",
         "test": "tslint --rules-dir ./lib/rules --test test/rules/**/tslint.json"
     },
     "dependencies": {
-        "tslib": "~1.13.0",
+        "tslib": "~2.3.1",
         "tslint-react": "^5.0.0"
     },
     "peerDependencies": {

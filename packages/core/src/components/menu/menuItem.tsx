@@ -186,7 +186,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
                 // so that we always render this class
                 <span className={Classes.MENU_ITEM_ICON}>
-                    <Icon icon={icon} />
+                    <Icon icon={icon} aria-hidden={true} tabIndex={-1} />,
                 </span>
             ) : undefined,
             <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline} title={htmlTitle}>
