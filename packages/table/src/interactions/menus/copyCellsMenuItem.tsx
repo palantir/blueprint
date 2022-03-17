@@ -60,10 +60,10 @@ export class CopyCellsMenuItem extends React.PureComponent<ICopyCellsMenuItemPro
         const sparse = Regions.sparseMapCells(cells, getCellData);
         if (sparse !== undefined) {
             Clipboard.copyCells(sparse)
-                .then(() => onCopy(true))
+                .then(() => onCopy?.(true))
                 .catch((reason: any) => {
                     console.error(TABLE_COPY_FAILED, reason);
-                    onCopy(false);
+                    onCopy?.(false);
                 });
         }
     };

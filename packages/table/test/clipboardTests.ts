@@ -31,7 +31,7 @@ describe.skip("Clipboard", () => {
     });
 
     afterEach(() => {
-        document.body.removeChild(focusableElement);
+        document.body.removeChild(focusableElement!);
     });
 
     it("copies cells", async () => {
