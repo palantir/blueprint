@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
 /* istanbul ignore next */
 
 export const Clipboard = {
     /**
      * Overrides the inherited CSS of the element to make sure it is
      * selectable. This method also makes the element pseudo-invisible.
+     *
+     * @deprecated will be removed in v4.0
      */
     applySelectableStyles(elem: HTMLElement) {
         elem.style.overflow = "hidden";
