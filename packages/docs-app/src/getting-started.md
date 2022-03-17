@@ -162,13 +162,12 @@ These bundles _do not include_ external dependencies; your application will need
         <!-- Blueprint dependencies -->
         <script src="https://unpkg.com/classnames@^2.2"></script>
         <script src="https://unpkg.com/dom4@^2.1"></script>
-        <script src="https://unpkg.com/tslib@~1.13.0"></script>
+        <script src="https://unpkg.com/tslib@~2.3.1"></script>
         <script src="https://unpkg.com/react@^16.14.0/umd/react.production.min.js"></script>
         <script src="https://unpkg.com/react-dom@^16.14.0/umd/react-dom.production.min.js"></script>
         <script src="https://unpkg.com/react-transition-group@^4.4.1/dist/react-transition-group.min.js"></script>
         <script src="https://unpkg.com/@popperjs/core@^2.5.4/dist/umd/popper.js"></script>
         <script src="https://unpkg.com/react-popper@^2.2.4/dist/index.umd.min.js"></script>
-        <script src="https://unpkg.com/resize-observer-polyfill@^1.5.0"></script>
         <!-- Blueprint packages (note: packages must be topo-sorted, where dependencies come first) -->
         <script src="https://unpkg.com/@blueprintjs/icons@^4.0.0"></script>
         <script src="https://unpkg.com/@blueprintjs/core@^4.0.0"></script>

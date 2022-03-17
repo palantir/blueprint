@@ -73,7 +73,7 @@ export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
         } else {
             return (
                 <div className={Classes.NON_IDEAL_STATE_VISUAL}>
-                    <Icon icon={icon} size={IconSize.LARGE * 3} />
+                    <Icon icon={icon} size={IconSize.LARGE * 3} aria-hidden={true} tabIndex={-1} />
                 </div>
             );
         }

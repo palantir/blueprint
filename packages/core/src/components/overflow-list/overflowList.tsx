@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import type { ResizeObserverEntry } from "@juggle/resize-observer";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -22,7 +23,6 @@ import * as Classes from "../../common/classes";
 import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { shallowCompareKeys } from "../../common/utils";
-import { ResizeEntry } from "../resize-sensor/resizeObserverTypes";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 
 /** @internal - do not expose this type */
@@ -151,7 +151,7 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOver
     /** A cache containing the widths of all elements being observed to detect growing/shrinking */
     private previousWidths = new Map<Element, number>();
 
-    private spacer: Element | null = null;
+    private spacer: HTMLElement | null = null;
 
     public componentDidMount() {
         this.repartition(false);
@@ -232,7 +232,7 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOver
         return this.props.overflowRenderer(overflow.slice());
     }
 
-    private resize = (entries: readonly ResizeEntry[]) => {
+    private resize = (entries: readonly ResizeObserverEntry[]) => {
         // if any parent is growing, assume we have more room than before
         const growing = entries.some(entry => {
             const previousWidth = this.previousWidths.get(entry.target) || 0;
@@ -255,7 +255,7 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOver
                 overflow: [],
                 visible: this.props.items,
             }));
-        } else if (this.spacer.getBoundingClientRect().width < 0.9) {
+        } else if (this.spacer.offsetWidth < 0.9) {
             // spacer has flex-shrink and width 1px so if it's much smaller then we know to shrink
             this.setState(state => {
                 if (state.visible.length <= this.props.minVisibleItems!) {

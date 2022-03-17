@@ -18,6 +18,7 @@ import * as React from "react";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import { Clipboard } from "./common/clipboard";
 import { Direction } from "./common/direction";
+import { TABLE_COPY_FAILED } from "./common/errors";
 import { Grid } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
@@ -417,8 +418,12 @@ export class TableHotkeys {
         const cells = Regions.enumerateUniqueCells(selectedRegions, this.grid.numRows, this.grid.numCols);
         const sparse = Regions.sparseMapCells(cells, getCellClipboardData);
         if (sparse != null) {
-            const success = Clipboard.copyCells(sparse);
-            onCopy?.(success);
+            Clipboard.copyCells(sparse)
+                .then(() => onCopy(true))
+                .catch((reason: any) => {
+                    console.error(TABLE_COPY_FAILED, reason);
+                    onCopy(false);
+                });
         }
     };
 }

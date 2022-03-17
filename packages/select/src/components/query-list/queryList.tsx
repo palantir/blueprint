@@ -134,7 +134,7 @@ export interface IQueryListState<T> {
     createNewItem: T | undefined;
 
     /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
-    filteredItems: T[];
+    filteredItems: readonly T[];
 
     /** The current query string. */
     query: string;
@@ -218,7 +218,8 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
             handleQueryChange: this.handleInputQueryChange,
             itemList: itemListRenderer({
                 ...spreadableState,
-                items,
+                filteredItems: spreadableState.filteredItems.slice(),
+                items: items.slice(),
                 itemsParentRef: this.refHandlers.itemsParent,
                 renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,
@@ -609,7 +610,7 @@ function getMatchingItem<T>(query: string, { items, itemPredicate }: QueryListPr
 function getFilteredItems<T>(query: string, { items, itemPredicate, itemListPredicate }: QueryListProps<T>) {
     if (Utils.isFunction(itemListPredicate)) {
         // note that implementations can reorder the items here
-        return itemListPredicate(query, items);
+        return itemListPredicate(query, items.slice());
     } else if (Utils.isFunction(itemPredicate)) {
         return items.filter((item, index) => itemPredicate(query, item, index));
     }
@@ -645,7 +646,7 @@ function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: IListIt
  * @param startIndex which index to begin moving from
  */
 export function getFirstEnabledItem<T>(
-    items: T[],
+    items: readonly T[],
     itemDisabled?: keyof T | ((item: T, index: number) => boolean),
     direction = 1,
     startIndex = items.length - 1,

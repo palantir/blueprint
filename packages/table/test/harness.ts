@@ -162,6 +162,8 @@ export class ElementHarness {
             //     ctrlKey, altKey, shiftKey, metaKey,
             //     button, relatedTarget
             // );
+            // HACKHACK: see https://github.com/palantir/blueprint/issues/5173
+            // eslint-disable-next-line deprecation/deprecation
             event.initMouseEvent(
                 eventType,
                 true,

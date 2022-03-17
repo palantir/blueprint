@@ -19,6 +19,7 @@ import * as React from "react";
 import { MenuItemProps, MenuItem } from "@blueprintjs/core";
 
 import { Clipboard } from "../../common/clipboard";
+import { TABLE_COPY_FAILED } from "../../common/errors";
 import { Regions } from "../../regions";
 import { IMenuContext } from "./menuContext";
 
@@ -58,8 +59,12 @@ export class CopyCellsMenuItem extends React.PureComponent<ICopyCellsMenuItemPro
         const cells = context.getUniqueCells();
         const sparse = Regions.sparseMapCells(cells, getCellData);
         if (sparse !== undefined) {
-            const success = Clipboard.copyCells(sparse);
-            onCopy?.(success);
+            Clipboard.copyCells(sparse)
+                .then(() => onCopy(true))
+                .catch((reason: any) => {
+                    console.error(TABLE_COPY_FAILED, reason);
+                    onCopy(false);
+                });
         }
     };
 }

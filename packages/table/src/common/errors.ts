@@ -41,3 +41,5 @@ export const TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH =
 export const TABLE_UNMOUNTED_RESIZE_WARNING = `${ns} Table resize method called while component is unmounted, this is a no-op.`;
 
 export const TABLE_INVALID_CELL_RENDERER_DEPS = `${ns} cellRendererDependencies should either always be defined or undefined; this feature cannot be enabled during the component lifecycle`;
+
+export const TABLE_COPY_FAILED = ns + ` Copy failed.`;

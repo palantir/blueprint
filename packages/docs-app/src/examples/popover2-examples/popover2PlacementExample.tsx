@@ -83,7 +83,7 @@ export class Popover2PlacementExample extends React.PureComponent<IExampleProps>
                 <>{sideSpan}</>
             ) : (
                 <>
-                    {sideSpan}_{<span className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</span>}
+                    {sideSpan}-{<span className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</span>}
                 </>
             );
 

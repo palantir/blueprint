@@ -86,6 +86,27 @@ describe("<AsyncControllableInput>", () => {
             assert.strictEqual(wrapper.find("input").prop("value"), "hi ");
         });
 
+        it("external updates DO NOT flush with immediately ongoing compositions", async () => {
+            const wrapper = mount(<AsyncControllableInput type="text" value="hi" />);
+            const input = wrapper.find("input");
+
+            input.simulate("compositionstart", { data: "" });
+            input.simulate("compositionupdate", { data: " " });
+            input.simulate("change", { target: { value: "hi " } });
+
+            wrapper.setProps({ value: "bye" }).update();
+
+            input.simulate("compositionend", { data: " " });
+            input.simulate("compositionstart", { data: "" });
+
+            // Wait for the composition ending delay to pass
+            await new Promise(resolve =>
+                setTimeout(() => resolve(null), AsyncControllableInput.COMPOSITION_END_DELAY + 5),
+            );
+
+            assert.strictEqual(wrapper.find("input").prop("value"), "hi ");
+        });
+
         it("external updates flush after composition ends", async () => {
             const wrapper = mount(<AsyncControllableInput type="text" value="hi" />);
             const input = wrapper.find("input");
@@ -95,7 +116,11 @@ describe("<AsyncControllableInput>", () => {
             input.simulate("change", { target: { value: "hi " } });
             input.simulate("compositionend", { data: " " });
 
-            await Promise.resolve();
+            // Wait for the composition ending delay to pass
+            await new Promise(resolve =>
+                setTimeout(() => resolve(null), AsyncControllableInput.COMPOSITION_END_DELAY + 5),
+            );
+
             // we are "rejecting" the composition here by supplying a different controlled value
             wrapper.setProps({ value: "bye" }).update();
 
