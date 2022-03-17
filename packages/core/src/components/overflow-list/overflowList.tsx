@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import type { ResizeObserverEntry } from "@juggle/resize-observer";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -22,7 +23,6 @@ import * as Classes from "../../common/classes";
 import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { shallowCompareKeys } from "../../common/utils";
-import { ResizeEntry } from "../resize-sensor/resizeObserverTypes";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 
 /** @internal - do not expose this type */
@@ -232,7 +232,7 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOver
         return this.props.overflowRenderer(overflow.slice());
     }
 
-    private resize = (entries: readonly ResizeEntry[]) => {
+    private resize = (entries: readonly ResizeObserverEntry[]) => {
         // if any parent is growing, assume we have more room than before
         const growing = entries.some(entry => {
             const previousWidth = this.previousWidths.get(entry.target) || 0;

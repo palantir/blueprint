@@ -20,26 +20,26 @@ module.exports = externalize({
     "@blueprintjs/select": ["Blueprint", "Select"],
     "@blueprintjs/table": ["Blueprint", "Table"],
     "@blueprintjs/timezone": ["Blueprint", "Timezone"],
-    "classnames": "classNames",
-    "dom4": "window",
-    "moment": "moment",
+    classnames: "classNames",
+    dom4: "window",
+    moment: "moment",
     "moment-timezone": "moment",
     "popper.js": "Popper",
-    "react": "React",
+    react: "React",
     "react-day-picker": "DayPicker",
     "react-dom": "ReactDOM",
     "react-popper": "ReactPopper",
     "react-transition-group": "ReactTransitionGroup",
-    "resize-observer-polyfill": "ResizeObserver",
-    "tslib": "window",
+    tslib: "window",
 });
 
 /**
  * Generates a full webpack `external` listing declaring names for various module formats.
+ *
  * @param {Record<string, string | string[]>} externals
  */
 function externalize(externals) {
-    const newExternals = {}
+    const newExternals = {};
     for (const pkgName in externals) {
         if (externals.hasOwnProperty(pkgName)) {
             newExternals[pkgName] = {
@@ -47,7 +47,7 @@ function externalize(externals) {
                 commonjs2: pkgName,
                 amd: pkgName,
                 root: externals[pkgName],
-            }
+            };
         }
     }
     return newExternals;

@@ -180,7 +180,7 @@ describe("Toaster", () => {
             public componentDidMount() {
                 try {
                     Toaster.create();
-                } catch (err) {
+                } catch (err: any) {
                     assert.equal(err.message, TOASTER_CREATE_NULL);
                 }
             }

@@ -27,7 +27,7 @@ import { isNodeEnv } from "./utils";
 // eslint-disable-next-line @typescript-eslint/ban-types
 export abstract class AbstractPureComponent<P, S = {}> extends React.PureComponent<P, S> {
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
-    protected displayName: never;
+    protected displayName!: never;
 
     // Not bothering to remove entries when their timeouts finish because clearing invalid ID is a no-op
     private timeoutIds: number[] = [];

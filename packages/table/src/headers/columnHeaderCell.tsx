@@ -108,7 +108,7 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         );
     }
 
-    public context: IColumnInteractionBarContextTypes;
+    public declare context: IColumnInteractionBarContextTypes;
 
     public state = {
         isActive: false,

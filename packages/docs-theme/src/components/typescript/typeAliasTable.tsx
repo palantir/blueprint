@@ -32,7 +32,7 @@ export class TypeAliasTable extends React.PureComponent<ITypeAliasTableProps> {
 
     public static displayName = "Docs2.TypeAliasTable";
 
-    public context: IDocumentationContext;
+    public declare context: IDocumentationContext;
 
     public render() {
         const { data } = this.props;

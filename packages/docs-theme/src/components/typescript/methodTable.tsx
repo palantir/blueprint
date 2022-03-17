@@ -36,7 +36,7 @@ export class MethodTable extends React.PureComponent<IMethodTableProps> {
 
     public static displayName = "Docs2.MethodTable";
 
-    public context: IDocumentationContext;
+    public declare context: IDocumentationContext;
 
     public render() {
         const { data } = this.props;
