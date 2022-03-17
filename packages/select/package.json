@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/select",
-    "version": "4.0.0-rc.0",
+    "version": "4.0.0-rc.1",
     "description": "Components related to selecting items from a list",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -35,7 +35,7 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.0.0-rc.0",
+        "@blueprintjs/core": "^4.0.0-rc.1",
         "classnames": "^2.2",
         "tslib": "~2.3.1"
     },
@@ -44,8 +44,8 @@
         "react-dom": "^16.8 || 17"
     },
     "devDependencies": {
-        "@blueprintjs/karma-build-scripts": "^3.0.0-beta.1",
-        "@blueprintjs/node-build-scripts": "^2.0.0-rc.0",
+        "@blueprintjs/karma-build-scripts": "^3.0.0-beta.2",
+        "@blueprintjs/node-build-scripts": "^2.0.0-rc.1",
         "enzyme": "^3.11.0",
         "karma": "^6.3.17",
         "mocha": "^9.2.2",
