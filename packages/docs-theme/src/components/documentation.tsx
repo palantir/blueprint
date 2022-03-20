@@ -333,6 +333,9 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
         const navItemElement = this.navElement.querySelector(`a[href="#${activeSectionId}"]`) as HTMLElement;
+        if (navItemElement == null) {
+            return;
+        }
         const scrollOffset = navItemElement.offsetTop - this.navElement.scrollTop;
         if (scrollOffset < 0 || scrollOffset > this.navElement.offsetHeight) {
             // reveal two items above this item in list
