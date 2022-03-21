@@ -130,7 +130,7 @@ function renderCreateFilmOption(
         <MenuItem
             icon="add"
             text={`Create "${query}"`}
-            active={active}
+            selected={active}
             onClick={handleClick}
             shouldDismissPopover={false}
         />
@@ -229,7 +229,7 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
     }
     return (
         <MenuItem
-            active={modifiers.active}
+            selected={modifiers.active}
             key={film.title}
             label={film.year}
             onClick={handleClick}

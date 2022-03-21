@@ -69,7 +69,7 @@ describe("Menus", () => {
                 </Menu>,
             );
 
-            menu.find(`.${Classes.MENU_ITEM}`).mouse("click");
+            menu.find(`.${Classes.MENU_ITEM}`)!.mouse("click");
 
             // wait 100ms for clipboard promise to resolve
             setTimeout(() => {

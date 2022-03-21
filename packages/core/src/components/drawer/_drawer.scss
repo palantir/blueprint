@@ -1,7 +1,7 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/src/icons";
+@import "~@blueprintjs/icons/lib/scss/variables";
 @import "../../common/mixins";
 @import "../../common/react-transition";
 @import "../../common/variables";
@@ -116,55 +116,6 @@ $dark-drawer-background-color: $dark-gray4 !default;
 
     top: 0;
     width: $drawer-default-size;
-  }
-
-  &:not(.#{$ns}-position-top):not(.#{$ns}-position-bottom):not(.#{$ns}-position-left):not(
-  .#{$ns}-position-right) {
-    &:not(.#{$ns}-vertical) {
-      @include react-transition-phase(
-        "#{$ns}-overlay",
-        "enter",
-        (transform: (translateX(100%), translateX(0))),
-        $pt-transition-duration * 2,
-        $pt-transition-ease,
-        $before: "&"
-      );
-      @include react-transition-phase(
-        "#{$ns}-overlay",
-        "exit",
-        (transform: (translateX(100%), translateX(0))),
-        $pt-transition-duration,
-        $before: "&"
-      );
-      bottom: 0;
-      right: 0;
-
-      top: 0;
-      width: $drawer-default-size;
-    }
-
-    &.#{$ns}-vertical {
-      @include react-transition-phase(
-        "#{$ns}-overlay",
-        "enter",
-        (transform: (translateY(100%), translateY(0))),
-        $pt-transition-duration * 2,
-        $pt-transition-ease,
-        $before: "&"
-      );
-      @include react-transition-phase(
-        "#{$ns}-overlay",
-        "exit",
-        (transform: (translateY(100%), translateY(0))),
-        $pt-transition-duration,
-        $before: "&"
-      );
-      bottom: 0;
-      height: $drawer-default-size;
-      left: 0;
-
-      right: 0;
-    }
   }
 
   &.#{$ns}-dark,

@@ -24,15 +24,24 @@ $menu-item-padding-vertical-large:
 $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray4 !default;
 
-$menu-item-color-hover: $minimal-button-background-color-hover !default;
-$menu-item-color-active: $minimal-button-background-color-active !default;
-$dark-menu-item-color-hover: $dark-minimal-button-background-color-hover !default;
-$dark-menu-item-color-active: $dark-minimal-button-background-color-active !default;
+$menu-item-color-hover: rgba($gray3, 0.15) !default;
+$menu-item-color-active: rgba($gray3, 0.3) !default;
 
-// customize modifier classes with params.
-// setting modifier to "" will generally apply it as default styles due to & selectors
+$menu-item-intent-colors: (
+  "primary": (/* bg */ $blue3, /* fg */ $blue2, /* fg active */ $blue1),
+  "success": (/* bg */ $green3, /* fg */ $green2, /* fg active */ $green1),
+  "warning": (/* bg */ $orange3, /* fg */ $orange2, /* fg active */ $orange1),
+  "danger": (/* bg */ $red3, /* fg */ $red2, /* fg active */ $red1),
+) !default;
 
-@mixin menu-item($disabled-selector: ".#{$ns}-disabled", $hover-selector: ":hover") {
+$dark-menu-item-intent-colors: (
+  "primary": (/* bg */ $blue3, /* fg */ $blue5, /* fg active */ $blue6),
+  "success": (/* bg */ $green3, /* fg */ $green5, /* fg active */ $green6),
+  "warning": (/* bg */ $orange3, /* fg */ $orange5, /* fg active */ $orange6),
+  "danger": (/* bg */ $red3, /* fg */ $red5, /* fg active */ $red6),
+) !default;
+
+@mixin menu-item() {
   @include pt-flex-container(row, $menu-item-padding);
   align-items: flex-start;
   border-radius: $menu-item-border-radius;
@@ -46,71 +55,201 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
     word-break: break-word;
   }
 
-  &#{$hover-selector} {
+  .#{$ns}-menu-item-icon {
+    display: flex;
+    flex-direction: column;
+    height: $menu-item-line-height;
+    justify-content: center;
+  }
+
+  .#{$ns}-menu-item-label {
+    color: $pt-text-color-muted;
+  }
+
+  &::before,
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-submenu-icon {
+    color: $pt-icon-color;
+  }
+
+  &::before,
+  .#{$ns}-submenu-icon {
+    margin-top: ($menu-item-line-height - $pt-icon-size-standard) / 2;
+  }
+
+  &:hover {
     background-color: $menu-item-color-hover;
+    color: inherit;
     cursor: pointer;
     text-decoration: none;
   }
 
-  &#{$disabled-selector} {
-    background-color: inherit;
-    color: $pt-text-color-disabled;
-    cursor: not-allowed;
+  &:active,
+  &.#{$ns}-active {
+    background-color: $menu-item-color-active;
+
+    .#{$ns}-menu-item-label {
+      color: $pt-text-color;
+    }
   }
 
-  .#{$ns}-dark & {
-    @include dark-menu-item($disabled-selector, $hover-selector);
-  }
-}
+  &.#{$ns}-selected {
+    &,
+    &:hover,
+    &:active {
+      background-color: rgba(nth(map-get($menu-item-intent-colors, "primary"), 1), 0.1);
+      color: nth(map-get($menu-item-intent-colors, "primary"), 2);
 
-@mixin dark-menu-item($disabled-selector: ".#{$ns}-disabled", $hover-selector: ":hover") {
-  color: inherit;
+      &::before,
+      .#{$ns}-menu-item-icon,
+      .#{$ns}-submenu-icon {
+        color: nth(map-get($menu-item-intent-colors, "primary"), 2);
+      }
 
-  &#{$hover-selector} {
-    background-color: $dark-menu-item-color-hover;
-    color: inherit;
-  }
-
-  &#{$disabled-selector} {
-    background-color: inherit;
-    color: $pt-dark-text-color-disabled;
-  }
-}
-
-@mixin menu-item-intent($text-colors: $pt-intent-text-colors) {
-  @each $intent, $color in $text-colors {
-    &.#{$ns}-intent-#{$intent} {
-      color: $color;
-
-      .#{$ns}-icon {
+      .#{$ns}-menu-item-label {
         color: inherit;
       }
 
-      &::before,
-      &::after,
-      .#{$ns}-menu-item-label {
-        color: $color;
-      }
+      @each $intent in ("success", "warning", "danger") {
+        &.#{$ns}-intent-#{$intent} {
+          background-color: rgba(nth(map-get($menu-item-intent-colors, $intent), 1), 0.1);
+          color: nth(map-get($menu-item-intent-colors, $intent), 2);
 
-      &:hover,
-      &.#{$ns}-active {
-        background-color: nth(map-get($button-intents, $intent), 1);
-      }
-
-      &:active {
-        background-color: nth(map-get($button-intents, $intent), 2);
-      }
-
-      &:hover,
-      &:active,
-      &.#{$ns}-active {
-        &,
-        &::before,
-        &::after,
-        .#{$ns}-menu-item-label {
-          color: $white;
+          &::before,
+          .#{$ns}-menu-item-icon,
+          .#{$ns}-submenu-icon {
+            color: inherit;
+          }
         }
       }
+    }
+  }
+
+  // pt-disable always overrides over styles
+  /* stylelint-disable declaration-no-important */
+  &.#{$ns}-disabled {
+    background-color: inherit !important;
+    color: $pt-text-color-disabled !important;
+    cursor: not-allowed !important;
+    // override global a:focus styles
+    outline: none !important;
+
+    &::before,
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-submenu-icon {
+      color: $pt-icon-color-disabled !important;
+    }
+
+    .#{$ns}-menu-item-label {
+      color: $pt-text-color-disabled !important;
+    }
+  }
+  /* stylelint-enable declaration-no-important */
+}
+
+@mixin dark-menu-item() {
+  color: inherit;
+
+  .#{$ns}-menu-item-label {
+    color: $pt-dark-text-color-muted;
+  }
+
+  &::before,
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-submenu-icon {
+    color: $pt-dark-icon-color;
+  }
+
+  &:hover {
+    color: inherit;
+
+    // need to override typography styles here
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-submenu-icon {
+      color: $pt-dark-icon-color;
+    }
+  }
+
+  &:active,
+  &.#{$ns}-active {
+    .#{$ns}-menu-item-label {
+      color: $pt-dark-text-color;
+    }
+  }
+
+  &.#{$ns}-selected {
+    &,
+    &:hover,
+    &:active {
+      background-color: rgba(nth(map-get($dark-menu-item-intent-colors, "primary"), 1), 0.2);
+      color: nth(map-get($dark-menu-item-intent-colors, "primary"), 2);
+
+      &::before,
+      .#{$ns}-menu-item-icon,
+      .#{$ns}-submenu-icon {
+        color: nth(map-get($dark-menu-item-intent-colors, "primary"), 2);
+      }
+
+      @each $intent in ("success", "warning", "danger") {
+        &.#{$ns}-intent-#{$intent} {
+          background-color: rgba(nth(map-get($dark-menu-item-intent-colors, $intent), 1), 0.2);
+          color: nth(map-get($dark-menu-item-intent-colors, $intent), 2);
+
+          &::before,
+          .#{$ns}-menu-item-icon,
+          .#{$ns}-submenu-icon {
+            color: inherit;
+          }
+        }
+      }
+    }
+  }
+
+  // pt-disable always overrides over styles
+  /* stylelint-disable declaration-no-important */
+  &.#{$ns}-disabled {
+    color: $pt-dark-text-color-disabled !important;
+
+    &::before,
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-submenu-icon {
+      color: $pt-dark-icon-color-disabled !important;
+    }
+
+    .#{$ns}-menu-item-label {
+      color: $pt-dark-text-color-disabled !important;
+    }
+  }
+  /* stylelint-enable declaration-no-important */
+}
+
+@mixin menu-item-intent($intent, $is-dark, $bg-color, $fg-color, $fg-color-active) {
+  &.#{$ns}-intent-#{$intent} {
+    color: $fg-color;
+
+    &::before,
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-submenu-icon,
+    .#{$ns}-menu-item-label {
+      color: inherit;
+    }
+
+    &:hover {
+      @if $is-dark {
+        background-color: rgba($bg-color, 0.2);
+      } @else {
+        background-color: rgba($bg-color, 0.1);
+      }
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      @if $is-dark {
+        background-color: rgba($bg-color, 0.3);
+      } @else {
+        background-color: rgba($bg-color, 0.2);
+      }
+      color: $fg-color-active;
     }
   }
 }
@@ -119,6 +258,16 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   font-size: $pt-font-size-large;
   line-height: $menu-item-line-height-large;
   padding: $menu-item-padding-vertical-large $menu-item-padding;
+
+  .#{$ns}-menu-item-icon {
+    height: $menu-item-line-height-large;
+  }
+
+  &::before,
+  .#{$ns}-submenu-icon {
+    // SVG icons remain standard size when menu is large
+    margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) / 2;
+  }
 }
 
 @mixin menu-divider() {

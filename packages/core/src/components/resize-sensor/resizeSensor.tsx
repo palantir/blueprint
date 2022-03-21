@@ -17,7 +17,6 @@
 import { ResizeObserver, ResizeObserverEntry } from "@juggle/resize-observer";
 import * as React from "react";
 import { findDOMNode } from "react-dom";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2 } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
@@ -53,7 +52,6 @@ export interface IResizeSensorProps {
 }
 
 /** `ResizeSensor` requires a single DOM element child and will error otherwise. */
-@polyfill
 export class ResizeSensor extends AbstractPureComponent2<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 

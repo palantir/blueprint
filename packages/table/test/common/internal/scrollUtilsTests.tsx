@@ -284,7 +284,7 @@ describe("scrollUtils", () => {
         const PARENT_WIDTH = 100;
         const PARENT_HEIGHT = 100;
 
-        let containerElement: HTMLElement;
+        let containerElement: HTMLElement | undefined;
 
         const baseStyles = { display: "block" };
         const parentStyle: React.CSSProperties = {
@@ -306,7 +306,7 @@ describe("scrollUtils", () => {
         });
 
         afterEach(() => {
-            document.body.removeChild(containerElement);
+            document.body.removeChild(containerElement!);
             containerElement = undefined;
         });
 
@@ -338,12 +338,13 @@ describe("scrollUtils", () => {
         });
 
         function mountElementsWithContentSize(contentWidth: number, contentHeight: number) {
-            return ReactDOM.render<React.HTMLProps<HTMLDivElement>>(
+            // HACKHACK: `as unknown as HTMLElement` cast is sketchy
+            return (ReactDOM.render<React.HTMLProps<HTMLDivElement>>(
                 <div style={parentStyle}>
                     <div style={{ ...baseStyles, width: contentWidth, height: contentHeight }} />
                 </div>,
-                containerElement,
-            ) as HTMLElement;
+                containerElement!,
+            ) as unknown) as HTMLElement;
         }
     });
 });

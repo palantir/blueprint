@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
@@ -51,7 +50,6 @@ export interface ITextState {
     isContentOverflowing: boolean;
 }
 
-@polyfill
 export class Text extends AbstractPureComponent2<
     TextProps & Omit<React.HTMLAttributes<HTMLElement>, "title">,
     ITextState

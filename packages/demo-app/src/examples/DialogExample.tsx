@@ -15,7 +15,6 @@ limitations under the License.*/
 import * as React from "react";
 
 import { Button, Classes, Dialog } from "@blueprintjs/core";
-import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -40,7 +39,7 @@ export class DialogExample extends React.PureComponent<DialogExampleProps, Dialo
                     className={this.props.className}
                     isOpen={this.state.isOpen}
                     onClose={this.toggleDialog}
-                    icon={IconNames.INFO_SIGN}
+                    icon="info-sign"
                     title="Dialog header"
                 >
                     <div className={Classes.DIALOG_BODY}>

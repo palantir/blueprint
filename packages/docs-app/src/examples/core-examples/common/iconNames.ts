@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import { LegacyColors } from "@blueprintjs/colors";
+import { IconName, IconNames } from "@blueprintjs/icons";
 
-export const Colors = {
-    ...LegacyColors,
-    // "cobalt" is becoming "cerulean" in Blueprint 4.0
-    // for a smoother migration, we provide these aliases so that consumers
-    // can reference the new names in 3.x
-    CERULEAN1: LegacyColors.COBALT1,
-    CERULEAN2: LegacyColors.COBALT2,
-    CERULEAN3: LegacyColors.COBALT3,
-    CERULEAN4: LegacyColors.COBALT4,
-    CERULEAN5: LegacyColors.COBALT5,
-};
+export const NONE = "(none)";
+export type IconNameOrNone = IconName | typeof NONE;
+
+export function getIconNames(): IconNameOrNone[] {
+    const iconNames = new Set<IconNameOrNone>();
+    for (const [, name] of Object.entries(IconNames)) {
+        iconNames.add(name);
+    }
+    iconNames.add(NONE);
+    return Array.from(iconNames.values());
+}

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/webpack-build-scripts",
-    "version": "2.1.0",
+    "version": "3.0.0-rc.0",
     "description": "Webpack build scripts for @blueprintjs packages",
     "scripts": {
         "test": "exit 0"
@@ -27,7 +27,7 @@
         "ts-loader": "^8.0.15",
         "webpack": "^5.21.0",
         "webpack-bundle-analyzer": "^4.4.0",
-        "webpack-dev-server": "^4.0.0-beta.0",
+        "webpack-dev-server": "^3.11.0",
         "webpack-notifier": "^1.13.0"
     },
     "repository": {

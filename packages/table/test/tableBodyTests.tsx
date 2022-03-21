@@ -28,6 +28,7 @@ import { RenderMode } from "../src/common/renderMode";
 import { MenuContext } from "../src/interactions/menus/menuContext";
 import { IRegion, Regions } from "../src/regions";
 import { ITableBodyProps, TableBody } from "../src/tableBody";
+import { cellClassNames } from "../src/tableBodyCells";
 
 describe("TableBody", () => {
     // use enough rows that batching won't render all of them in one pass.
@@ -40,11 +41,8 @@ describe("TableBody", () => {
     const ROW_HEIGHT = 20;
 
     it("cellClassNames", () => {
-        expect(TableBody.cellClassNames(0, 0)).to.deep.equal([
-            Classes.rowCellIndexClass(0),
-            Classes.columnCellIndexClass(0),
-        ]);
-        expect(TableBody.cellClassNames(4096, 1024)).to.deep.equal([
+        expect(cellClassNames(0, 0)).to.deep.equal([Classes.rowCellIndexClass(0), Classes.columnCellIndexClass(0)]);
+        expect(cellClassNames(4096, 1024)).to.deep.equal([
             Classes.rowCellIndexClass(4096),
             Classes.columnCellIndexClass(1024),
         ]);
@@ -226,7 +224,7 @@ describe("TableBody", () => {
                 cellRenderer={cellRenderer}
                 grid={grid}
                 loading={false}
-                locator={null}
+                locator={null as any}
                 renderMode={renderMode as RenderMode.BATCH | RenderMode.NONE}
                 viewportRect={viewportRect}
                 // ISelectableProps
@@ -236,10 +234,10 @@ describe("TableBody", () => {
                 selectedRegions={[]}
                 // IRowIndices
                 rowIndexStart={0}
-                rowIndexEnd={rowIndexEnd}
+                rowIndexEnd={numRows}
                 // IColumnIndices
                 columnIndexStart={0}
-                columnIndexEnd={columnIndexEnd}
+                columnIndexEnd={numCols}
                 {...spreadableProps}
             />,
         );

@@ -17,26 +17,32 @@
 import classNames from "classnames";
 import { Modifiers } from "popper.js";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { DISPLAYNAME_PREFIX, ActionProps, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
-// this cyclic import can be removed in v4.0 (https://github.com/palantir/blueprint/issues/3829)
-// eslint-disable-next-line import/no-cycle
 import { Menu } from "./menu";
 
 // eslint-disable-next-line deprecation/deprecation
 export type MenuItemProps = IMenuItemProps;
 /** @deprecated use MenuItemProps */
 export interface IMenuItemProps extends ActionProps, LinkProps {
-    // override from IActionProps to make it required
     /** Item text, required for usability. */
     text: React.ReactNode;
 
-    /** Whether this menu item should appear with an active state. */
+    /**
+     * Whether this item should render with an active appearance.
+     * This is the same styling as the `:active` CSS element state.
+     *
+     * Note: in Blueprint 3.x, this prop was conflated with a "selected" appearance
+     * when `intent` was undefined. For legacy purposes, we emulate this behavior in
+     * Blueprint 4.x, so setting `active={true} intent={undefined}` is the same as
+     * `selected={true}`. This prop will be removed in a future major version.
+     *
+     * @deprecated use `selected` prop
+     */
     active?: boolean;
 
     /**
@@ -87,6 +93,11 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     popoverProps?: Partial<IPopoverProps>;
 
     /**
+     * Whether this item should appear selected.
+     */
+    selected?: boolean;
+
+    /**
      * Whether an enabled item without a submenu should automatically close its parent popover when clicked.
      *
      * @default true
@@ -111,12 +122,13 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     htmlTitle?: string;
 }
 
-@polyfill
 export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: MenuItemProps = {
+        active: false,
         disabled: false,
         multiline: false,
         popoverProps: {},
+        selected: false,
         shouldDismissPopover: true,
         text: "",
     };
@@ -125,6 +137,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
     public render() {
         const {
+            // eslint-disable-next-line deprecation/deprecation
             active,
             className,
             children,
@@ -135,6 +148,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             labelElement,
             multiline,
             popoverProps,
+            selected,
             shouldDismissPopover,
             text,
             textClassName,
@@ -142,6 +156,8 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             htmlTitle,
             ...htmlProps
         } = this.props;
+
+        const hasIcon = icon != null;
         const hasSubmenu = children != null;
 
         const intentClass = Classes.intentClass(intent);
@@ -150,10 +166,10 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             intentClass,
             {
                 [Classes.ACTIVE]: active,
-                [Classes.INTENT_PRIMARY]: active && intentClass == null,
                 [Classes.DISABLED]: disabled,
                 // prevent popover from closing when clicking on submenu trigger or disabled item
                 [Classes.POPOVER_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
+                [Classes.SELECTED]: selected || (active && intentClass === undefined),
             },
             className,
         );
@@ -166,12 +182,20 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 ...(disabled ? DISABLED_PROPS : {}),
                 className: anchorClasses,
             },
-            <Icon icon={icon} aria-hidden={true} tabIndex={-1} />,
+            hasIcon ? (
+                // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
+                // so that we always render this class
+                <span className={Classes.MENU_ITEM_ICON}>
+                    <Icon icon={icon} aria-hidden={true} tabIndex={-1} />,
+                </span>
+            ) : undefined,
             <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline} title={htmlTitle}>
                 {text}
             </Text>,
             this.maybeRenderLabel(labelElement),
-            hasSubmenu ? <Icon title="Open sub menu" icon="caret-right" /> : undefined,
+            hasSubmenu ? (
+                <Icon className={Classes.MENU_SUBMENU_ICON} title="Open sub menu" icon="caret-right" />
+            ) : undefined,
         );
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });

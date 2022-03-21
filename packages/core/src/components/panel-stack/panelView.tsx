@@ -15,7 +15,6 @@
  */
 
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { Button } from "../button/buttons";
@@ -47,7 +46,6 @@ export interface IPanelViewProps {
     showHeader: boolean;
 }
 
-@polyfill
 export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
     public render() {
         const { panel, onOpen } = this.props;

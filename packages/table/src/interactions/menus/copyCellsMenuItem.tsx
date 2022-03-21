@@ -58,11 +58,13 @@ export class CopyCellsMenuItem extends React.PureComponent<ICopyCellsMenuItemPro
         const { context, getCellData, onCopy } = this.props;
         const cells = context.getUniqueCells();
         const sparse = Regions.sparseMapCells(cells, getCellData);
-        Clipboard.copyCells(sparse)
-            .then(() => onCopy(true))
-            .catch((reason: any) => {
-                console.error(TABLE_COPY_FAILED, reason);
-                onCopy(false);
-            });
+        if (sparse !== undefined) {
+            Clipboard.copyCells(sparse)
+                .then(() => onCopy?.(true))
+                .catch((reason: any) => {
+                    console.error(TABLE_COPY_FAILED, reason);
+                    onCopy?.(false);
+                });
+        }
     };
 }

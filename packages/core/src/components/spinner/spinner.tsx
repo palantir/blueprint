@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
@@ -75,18 +74,8 @@ export interface ISpinnerProps extends Props, IntentProps {
     value?: number;
 }
 
-@polyfill
 export class Spinner extends AbstractPureComponent2<SpinnerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
-
-    /** @deprecated use SpinnerSize.SMALL */
-    public static readonly SIZE_SMALL = SpinnerSize.SMALL;
-
-    /** @deprecated use SpinnerSize.STANDARD */
-    public static readonly SIZE_STANDARD = SpinnerSize.STANDARD;
-
-    /** @deprecated use SpinnerSize.LARGE */
-    public static readonly SIZE_LARGE = SpinnerSize.LARGE;
 
     public componentDidUpdate(prevProps: SpinnerProps) {
         if (prevProps.value !== this.props.value) {

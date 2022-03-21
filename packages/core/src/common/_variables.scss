@@ -1,19 +1,28 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "colors";
 @import "color-aliases";
 @import "mixins";
 
 // Namespace appended to the beginning of each CSS class: `.#{$ns}-button`.
 // Do not quote this value, for Less consumers.
-$ns: bp3 !default;
+$ns: bp4 !default;
 // Alias for BP users outside this repo
 $bp-ns: $ns;
 
 // easily the most important variable, so it comes up top
 // (so other variables can use it to define themselves)
 $pt-grid-size: 10px !default;
+
+// Icon variables
+
+$icons16-family: "blueprint-icons-16" !default;
+$icons20-family: "blueprint-icons-20" !default;
+
+$pt-icon-size-standard: 16px !default;
+$pt-icon-size-large: 20px !default;
+
+// Typography
 
 // see https://bitsofco.de/the-new-system-font-stack/
 $pt-font-family: -apple-system,
@@ -25,7 +34,7 @@ $pt-font-family: -apple-system,
                  "Cantarell",
                  "Open Sans",
                  "Helvetica Neue",
-                 "Icons16", // support inline Palantir icons
+                 $icons16-family, // support inline Blueprint icons
                  sans-serif !default;
 
 $pt-font-family-monospace: monospace !default;
@@ -36,14 +45,6 @@ $pt-font-size-small: $pt-grid-size * 1.2 !default;
 
 // a little bit extra to ensure the height comes out to just over 18px (and browser rounds to 18px)
 $pt-line-height: ($pt-grid-size * 1.8) / $pt-font-size + 0.0001 !default;
-
-// Icon variables
-
-$icons16-family: "Icons16" !default;
-$icons20-family: "Icons20" !default;
-
-$pt-icon-size-standard: 16px !default;
-$pt-icon-size-large: 20px !default;
 
 // Grids & dimensions
 
@@ -116,8 +117,8 @@ $pt-transition-duration: 100ms !default;
 
 // Light theme styles
 
-$pt-input-box-shadow: inset border-shadow(0.15),
-                      inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
+$pt-input-box-shadow: inset 0 0 0 1px rgba($black, 0.2),
+                      inset 0 1px 1px rgba($black, 0.5) !default;
 
 $pt-dialog-box-shadow: $pt-elevation-shadow-4 !default;
 $pt-popover-box-shadow: $pt-elevation-shadow-3 !default;
@@ -125,9 +126,17 @@ $pt-tooltip-box-shadow: $pt-popover-box-shadow !default;
 
 // Dark theme styles
 
-$pt-dark-input-box-shadow: inset border-shadow(0.3),
-                           inset 0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+$pt-dark-input-box-shadow: inset 0 1px 0 0 rgba($black, 0.6),
+                           inset -1px 0 0 rgba($black, 0.6),
+                           inset 1px 0 0 rgba($black, 0.6),
+                           inset 0 -1px 0 0 $gray3 !default;
 
 $pt-dark-dialog-box-shadow: $pt-dark-elevation-shadow-4 !default;
 $pt-dark-popover-box-shadow: $pt-dark-elevation-shadow-3 !default;
 $pt-dark-tooltip-box-shadow: $pt-dark-popover-box-shadow !default;
+$pt-dark-input-intent-box-shadow-colors: (
+  "primary": $blue4,
+  "success": $green4,
+  "warning": $orange4,
+  "danger" : $red4,
+) !default;

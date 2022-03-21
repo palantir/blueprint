@@ -17,7 +17,6 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { IOverlayLifecycleProps } from "../overlay/overlay";
@@ -46,7 +45,7 @@ type IContextMenuProps = IOverlayLifecycleProps;
 
 /* istanbul ignore next */
 /** @deprecated use ContextMenu2 */
-@polyfill
+
 class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenuState> {
     public state: IContextMenuState = {
         isDarkTheme: false,
@@ -134,6 +133,8 @@ let contextMenu: ContextMenu | undefined;
  * Show the given menu element at the given offset from the top-left corner of the viewport.
  * The menu will appear below-right of this point and will flip to below-left if there is not enough
  * room onscreen. The optional callback will be invoked when this menu closes.
+ *
+ * @deprecated use ContextMenu2
  */
 export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme?: boolean) {
     if (contextMenuElement === undefined) {

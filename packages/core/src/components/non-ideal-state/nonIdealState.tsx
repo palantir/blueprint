@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2 } from "../../common";
 import * as Classes from "../../common/classes";
@@ -51,7 +50,6 @@ export interface INonIdealStateProps extends Props {
     title?: React.ReactNode;
 }
 
-@polyfill
 export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
 

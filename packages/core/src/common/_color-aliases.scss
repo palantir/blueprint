@@ -41,12 +41,3 @@ $pt-code-text-color: $pt-text-color-muted !default;
 $pt-dark-code-text-color: $pt-dark-text-color-muted !default;
 $pt-code-background-color: rgba($white, 0.7) !default;
 $pt-dark-code-background-color: rgba($black, 0.3) !default;
-
-// "cobalt" is becoming "cerulean" in Blueprint 4.0
-// for a smoother migration, we provide these aliases so that consumers
-// can reference the new names in 3.x
-$cerulean1: $cobalt1;
-$cerulean2: $cobalt2;
-$cerulean3: $cobalt3;
-$cerulean4: $cobalt4;
-$cerulean5: $cobalt5;

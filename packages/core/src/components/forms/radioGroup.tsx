@@ -15,7 +15,6 @@
  */
 
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
@@ -70,7 +69,6 @@ function nextName() {
     return `${RadioGroup.displayName}-${counter++}`;
 }
 
-@polyfill
 export class RadioGroup extends AbstractPureComponent2<RadioGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.RadioGroup`;
 
