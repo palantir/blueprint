@@ -4,7 +4,7 @@ Menus display lists of interactive items.
 
 @reactExample MenuExample
 
-The Men` API includes three React components:
+The Menu API includes three React components:
 
 * [`Menu`](#core/components/menu.menu)
 * [`MenuItem`](#core/components/menu.menu-item)
