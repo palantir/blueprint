@@ -3832,6 +3832,7 @@
         "displayName": "Playbook",
         "iconName": "playbook",
         "tags": "strategy, play, plan, course of action",
-        "group": "interface"
+        "group": "interface",
+        "codepoint": 62244
     }
 ]
