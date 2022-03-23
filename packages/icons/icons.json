@@ -3825,7 +3825,8 @@
         "displayName": "Fuel",
         "iconName": "fuel",
         "tags": "fuel, gas, gas can, refuel",
-        "group": "interface"
+        "group": "interface",
+        "codepoint": 62243
     },
     {
         "displayName": "Playbook",
