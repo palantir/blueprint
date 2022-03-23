@@ -3820,5 +3820,19 @@
         "tags": "symbol, rectangle, filled shape",
         "group": "interface",
         "codepoint": 62242
+    },
+    {
+        "displayName": "Fuel",
+        "iconName": "fuel",
+        "tags": "fuel, gas, gas can, refuel",
+        "group": "interface",
+        "codepoint": 62243
+    },
+    {
+        "displayName": "Playbook",
+        "iconName": "playbook",
+        "tags": "strategy, play, plan, course of action",
+        "group": "interface",
+        "codepoint": 62244
     }
 ]
