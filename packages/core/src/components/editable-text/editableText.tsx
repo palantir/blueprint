@@ -354,7 +354,7 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
         /* eslint-disable-next-line deprecation/deprecation */
         const { altKey, ctrlKey, metaKey, shiftKey, which } = event;
         if (which === Keys.ESCAPE) {
-            if (this.props.stopPropagation) {
+            if (this.props.stopEscapeKeyPropagation) {
                 event.stopPropagation();
             }
             this.cancelEditing();
