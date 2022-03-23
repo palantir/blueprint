@@ -110,7 +110,7 @@ export interface IEditableTextProps extends IntentProps, Props {
      *
      * @default false
      */
-    stopPropagation?: boolean;
+    stopEscapeKeyPropagation?: boolean;
 
     /**
      * The type of input that should be shown, when not `multiline`.
