@@ -1,6 +1,6 @@
 @# QueryList
 
-`QueryList<T>` is a higher-order component that provides interactions between a query string and a list of items. Specifically, it implements the two predicate props describe above and provides keyboard selection. It does not render anything on its own, instead deferring to a `renderer` prop to perform the actual composition of components.
+`QueryList<T>` is a higher-order component that provides interactions between a query string and a list of items. Specifically, it implements the two predicate props described above and provides keyboard selection. It does not render anything on its own, instead deferring to a `renderer` prop to perform the actual composition of components.
 
 `QueryList<T>` is a generic component where `<T>` represents the type of one item in the array of `items`. The static method `QueryList.ofType<T>()` is available to simplify the TypeScript usage.
 

@@ -59,7 +59,7 @@ describe("Menus", () => {
             (Clipboard.copyCells as any).restore(); // a little sinon hackery
         });
 
-        it("copies cells", () => {
+        it("copies cells", done => {
             const context = new MenuContextImpl(Regions.cell(1, 1), [Regions.column(1)], 3, 3);
             const getCellData = () => "X";
             const onCopySpy = sinon.spy();
@@ -69,11 +69,16 @@ describe("Menus", () => {
                 </Menu>,
             );
 
-            menu.find(`.${Classes.MENU_ITEM}`).mouse("click");
-            expect(clipboardSpy.called).to.be.true;
-            expect(clipboardSpy.lastCall.args).to.deep.equal([[["X"], ["X"], ["X"]]]);
-            expect(onCopySpy.called).to.be.true;
-            expect(onCopySpy.lastCall.args[0]).to.be.false;
+            menu.find(`.${Classes.MENU_ITEM}`)!.mouse("click");
+
+            // wait 100ms for clipboard promise to resolve
+            setTimeout(() => {
+                expect(clipboardSpy.called).to.be.true;
+                expect(clipboardSpy.lastCall.args).to.deep.equal([[["X"], ["X"], ["X"]]]);
+                expect(onCopySpy.called).to.be.true;
+                expect(onCopySpy.lastCall.args[0]).to.be.false;
+                done();
+            }, 100);
         });
     });
 });

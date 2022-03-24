@@ -85,7 +85,7 @@ export class EditableName extends React.PureComponent<EditableNameProps, Editabl
                 className={classNames(className, Classes.TABLE_EDITABLE_NAME)}
                 defaultValue={name}
                 intent={intent}
-                minWidth={null}
+                minWidth={0}
                 onCancel={this.handleCancel}
                 onChange={this.handleChange}
                 onConfirm={this.handleConfirm}
@@ -104,21 +104,16 @@ export class EditableName extends React.PureComponent<EditableNameProps, Editabl
     private handleCancel = (value: string) => {
         // don't strictly need to clear the dirtyName, but it's better hygiene
         this.setState({ isEditing: false, dirtyName: undefined });
-        this.invokeCallback(this.props.onCancel, value);
+        this.props.onCancel?.(value, this.props.index);
     };
 
     private handleChange = (value: string) => {
         this.setState({ dirtyName: value });
-        this.invokeCallback(this.props.onChange, value);
+        this.props.onChange?.(value, this.props.index);
     };
 
     private handleConfirm = (value: string) => {
         this.setState({ isEditing: false, savedName: value, dirtyName: undefined });
-        this.invokeCallback(this.props.onConfirm, value);
+        this.props.onConfirm?.(value, this.props.index);
     };
-
-    private invokeCallback(callback: (value: string, columnIndex?: number) => void, value: string) {
-        const { index } = this.props;
-        callback?.(value, index);
-    }
 }

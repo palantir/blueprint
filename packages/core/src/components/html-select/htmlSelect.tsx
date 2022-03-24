@@ -51,7 +51,7 @@ export interface HTMLSelectProps
      * `{ label?, value }` objects. If no `label` is supplied, `value`
      * will be used as the label.
      */
-    options?: Array<string | number | OptionProps>;
+    options?: ReadonlyArray<string | number | OptionProps>;
 
     /** Controlled value of this component. */
     value?: string | number;

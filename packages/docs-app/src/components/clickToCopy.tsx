@@ -47,15 +47,15 @@ export const ClickToCopy: React.FC<ClickToCopyProps> = forwardRef<any, ClickToCo
     const [hasCopied, setHasCopied] = useState(false);
     const inputRef = useRef<HTMLInputElement>();
 
-    const copy = useCallback(() => {
+    const copy = useCallback(async () => {
         inputRef.current?.select();
-        document.execCommand("copy");
+        await navigator.clipboard.writeText(inputRef.current.value);
         setHasCopied(true);
     }, [inputRef]);
 
     const handleClick = useCallback(
-        (e: React.MouseEvent<HTMLDivElement>) => {
-            copy();
+        async (e: React.MouseEvent<HTMLDivElement>) => {
+            await copy();
             props.onClick?.(e);
         },
         [copy, props.onClick],

@@ -17,68 +17,63 @@
  * @fileoverview Generates icon fonts and codepoints from SVG sources
  */
 
-const { generateFonts, FontAssetType, OtherAssetType } = require("fantasticon");
+const { generateFonts: runFantasticon, FontAssetType, OtherAssetType } = require("fantasticon");
 const { getLogger } = require("fantasticon/lib/cli/logger");
 const fs = require("fs");
 const path = require("path");
 
-const RESOURCES_DIR = path.resolve(__dirname, "../../../resources/icons");
-const GENERATED_SRC_DIR = path.resolve(__dirname, "../src/generated");
+const iconsMetadata = require("../icons.json");
+const { RESOURCES_DIR, GENERATED_SRC_DIR, NS } = require("./common");
+
 const logger = getLogger();
-const NS = "bp4";
+const codepoints = {};
 
-logger.start();
+(async function () {
+    for (const icon of iconsMetadata) {
+        if (Object.values(codepoints).indexOf(icon.codepoint) !== -1) {
+            throw new Error(
+                `[generate-icon-fonts] Invalid metadata entry in icons.json: icon "${icon.iconName}" cannot have codepoint ${icon.codepoint}, it is already in use.`,
+            );
+        }
+        codepoints[icon.iconName] = icon.codepoint;
+    }
 
-fs.mkdirSync(path.join(GENERATED_SRC_DIR, `16px/paths`), { recursive: true });
-generateFonts({
-    name: "blueprint-icons-16",
-    inputDir: path.join(RESOURCES_DIR, "16px"),
-    outputDir: path.join(GENERATED_SRC_DIR, "16px"),
-    fontHeight: 16,
-    fontTypes: [FontAssetType.TTF, FontAssetType.EOT, FontAssetType.WOFF2, FontAssetType.WOFF, FontAssetType.SVG],
-    // CSS contains @font-face, SCSS contains codepoints, TS contains enums & codepoints
-    assetTypes: [OtherAssetType.CSS, OtherAssetType.SCSS, OtherAssetType.TS],
-    templates: {
-        // N.B. we don't generate CSS, just the map of code points which we can use downstream
-        scss: path.resolve(__dirname, "./icons-16.scss.hbs"),
-        css: path.resolve(__dirname, "./icons.css.hbs"),
-    },
-    pathOptions: {
-        scss: path.join(GENERATED_SRC_DIR, "16px", "_icon-variables.scss"),
-    },
-    tag: "i",
-    prefix: `${NS}-icon-standard`,
-})
-    .then(results => {
-        logger.results(results);
-    })
-    .catch(error => {
-        logger.error(error);
+    logger.start();
+    await Promise.all([
+        connectToLogger(generateFonts(16, `${NS}-icon-standard`)),
+        connectToLogger(generateFonts(20, `${NS}-icon-large`)),
+    ]);
+})();
+
+async function generateFonts(size, prefix) {
+    fs.mkdirSync(path.join(GENERATED_SRC_DIR, `${size}px/paths`), { recursive: true });
+    return runFantasticon({
+        name: `blueprint-icons-${size}`,
+        inputDir: path.join(RESOURCES_DIR, `${size}px`),
+        outputDir: path.join(GENERATED_SRC_DIR, `${size}px`),
+        normalize: true,
+        descent: 0,
+        // N.B. Important: we need to scale up the font height so that the icons do not get visually degraded
+        // or compressed through rounding errors (svgicons2svgfont rasterizes the icons in order to convert them)
+        // See https://github.com/palantir/blueprint/issues/5002
+        fontHeight: size * 20,
+        fontTypes: [FontAssetType.TTF, FontAssetType.EOT, FontAssetType.WOFF2, FontAssetType.WOFF, FontAssetType.SVG],
+        // CSS contains @font-face, SCSS contains codepoints, TS contains enums & codepoints
+        assetTypes: [OtherAssetType.CSS, OtherAssetType.SCSS, OtherAssetType.TS],
+        templates: {
+            // N.B. in icons-20, we don't generate CSS or the codepoints since we expect them to be the same as icons-16
+            scss: path.resolve(__dirname, `./icons-${size}.scss.hbs`),
+            css: path.resolve(__dirname, "./icons.css.hbs"),
+        },
+        pathOptions: {
+            scss: path.join(GENERATED_SRC_DIR, `${size}px`, "_icon-variables.scss"),
+        },
+        codepoints,
+        tag: "i",
+        prefix,
     });
+}
 
-fs.mkdirSync(path.join(GENERATED_SRC_DIR, `20px/paths`), { recursive: true });
-generateFonts({
-    name: "blueprint-icons-20",
-    inputDir: path.join(RESOURCES_DIR, "20px"),
-    outputDir: path.join(GENERATED_SRC_DIR, "20px"),
-    fontHeight: 20,
-    fontTypes: [FontAssetType.TTF, FontAssetType.EOT, FontAssetType.WOFF2, FontAssetType.WOFF, FontAssetType.SVG],
-    // CSS contains @font-face, SCSS contains codepoints, TS contains enums & codepoints
-    assetTypes: [OtherAssetType.CSS, OtherAssetType.SCSS, OtherAssetType.TS],
-    templates: {
-        // N.B. here we don't generate CSS, or even the code points (we expect them to be the same as icons-16)
-        scss: path.resolve(__dirname, "./icons-20.scss.hbs"),
-        css: path.resolve(__dirname, "./icons.css.hbs"),
-    },
-    pathOptions: {
-        scss: path.join(GENERATED_SRC_DIR, "20px", "_icon-variables.scss"),
-    },
-    tag: "i",
-    prefix: `${NS}-icon-large`,
-})
-    .then(results => {
-        logger.results(results);
-    })
-    .catch(error => {
-        logger.error(error);
-    });
+function connectToLogger(runner) {
+    return runner.then(results => logger.results(results)).catch(error => logger.error(error));
+}

@@ -182,7 +182,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
         }
         return (
             <MenuItem
-                active={modifiers.active}
+                selected={modifiers.active}
                 icon={this.isFilmSelected(film) ? "tick" : "blank"}
                 key={film.rank}
                 label={film.year.toString()}

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/node-build-scripts",
-    "version": "1.6.1",
+    "version": "2.0.0",
     "description": "Node.js build scripts for @blueprintjs packages",
     "scripts": {
         "test": "exit 0"
@@ -28,9 +28,8 @@
         "strip-css-comments": "^4.1.0",
         "stylelint": "~13.8.0",
         "stylelint-junit-formatter": "^0.2.2",
-        "svgo": "^1.3.2",
         "tslint": "~6.1.3",
-        "typescript": "~4.1.2",
+        "typescript": "~4.6.2",
         "yargs": "^17.1.1"
     },
     "devDependencies": {

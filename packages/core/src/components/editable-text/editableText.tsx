@@ -109,6 +109,9 @@ export interface EditableTextProps extends IntentProps, Props {
     /** Text value of controlled input. */
     value?: string;
 
+    /** ID attribute to pass to the underlying element that contains the text contents. This allows for referencing via aria attributes */
+    contentId?: string;
+
     /** Callback invoked when user cancels input with the `esc` key. Receives last confirmed value. */
     onCancel?(value: string): void;
 
@@ -199,7 +202,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
     }
 
     public render() {
-        const { alwaysRenderInput, disabled, multiline } = this.props;
+        const { alwaysRenderInput, disabled, multiline, contentId } = this.props;
         const value = this.props.value ?? this.state.value;
         const hasValue = value != null && value !== "";
 
@@ -238,11 +241,18 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         // and size the container element responsively
         const shouldHideContents = alwaysRenderInput && !this.state.isEditing;
 
+        const spanProps: React.HTMLProps<HTMLSpanElement> = contentId != null ? { id: contentId } : {};
+
         return (
             <div className={classes} onFocus={this.handleFocus} tabIndex={tabIndex}>
                 {alwaysRenderInput || this.state.isEditing ? this.renderInput(value) : undefined}
                 {shouldHideContents ? undefined : (
-                    <span className={Classes.EDITABLE_TEXT_CONTENT} ref={this.refHandlers.content} style={contentStyle}>
+                    <span
+                        {...spanProps}
+                        className={Classes.EDITABLE_TEXT_CONTENT}
+                        ref={this.refHandlers.content}
+                        style={contentStyle}
+                    >
                         {hasValue ? value : this.props.placeholder}
                     </span>
                 )}

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Icon, IconName, Popover, Props, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractPureComponent, Icon, IconName, Props, Popover, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "../common/context";
@@ -98,7 +98,9 @@ export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProp
         );
     }
 
-    public context: ColumnInteractionBarContextTypes;
+    public context: ColumnInteractionBarContextTypes = {
+        enableColumnInteractionBar: false,
+    };
 
     public state = {
         isActive: false,
@@ -145,8 +147,8 @@ export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProp
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
 
         const nameComponent = (
-            <LoadableContent loading={loading} variableLength={true}>
-                {nameRenderer == null ? defaultName : nameRenderer(name, index)}
+            <LoadableContent loading={loading ?? false} variableLength={true}>
+                {nameRenderer?.(name!, index) ?? defaultName}
             </LoadableContent>
         );
 

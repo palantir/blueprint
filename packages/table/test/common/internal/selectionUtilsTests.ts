@@ -16,7 +16,7 @@
 
 import { expect } from "chai";
 
-import { FocusedCellCoordinates } from "../../../src/common/cell";
+import type { FocusedCellCoordinates } from "../../../src/common/cellTypes";
 import { Direction } from "../../../src/common/direction";
 import * as SelectionUtils from "../../../src/common/internal/selectionUtils";
 import { Regions } from "../../../src/regions";

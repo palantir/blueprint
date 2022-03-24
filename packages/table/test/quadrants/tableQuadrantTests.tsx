@@ -129,10 +129,6 @@ describe("TableQuadrant", () => {
             runTest(QuadrantType.TOP_LEFT, [QuadrantType.TOP_LEFT, true, true]);
         });
 
-        it("invokes with no params when quarantType not provided", () => {
-            runTest(undefined, []);
-        });
-
         function runTest(quadrantType: QuadrantType, expectedArgs: any[]) {
             mountTableQuadrant({ quadrantType });
             expect(bodyRenderer.calledOnce).to.be.true;

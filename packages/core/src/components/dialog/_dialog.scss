@@ -95,7 +95,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
   min-height: $pt-icon-size-large + $dialog-padding;
   padding-left: $dialog-padding;
   padding-right: $dialog-padding / 4;
-  z-index: $pt-z-index-dialog-header;
+  z-index: 0;
 
   .#{$ns}-icon-large,
   .#{$ns}-icon {

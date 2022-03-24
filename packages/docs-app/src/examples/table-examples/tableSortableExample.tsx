@@ -213,6 +213,7 @@ export class TableSortableExample extends React.PureComponent<ExampleProps> {
                     bodyContextMenuRenderer={this.renderBodyContextMenu}
                     numRows={numRows}
                     selectionModes={SelectionModes.COLUMNS_AND_CELLS}
+                    getCellClipboardData={this.getCellData}
                 >
                     {columns}
                 </Table>

@@ -83,6 +83,12 @@ export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
     disabled?: boolean;
 
     /**
+     * Whether the wrapper and target should take up the full width of their container.
+     * Note that supplying `true` for this prop will force  `targetTagName="div"`.
+     */
+    fill?: boolean;
+
+    /**
      * The amount of time in milliseconds the popover should remain open after
      * the user hovers off the trigger. The timer is canceled if the user mouses
      * over the target before it expires.
@@ -157,6 +163,9 @@ export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
      * Whether the popover should open when its target is focused. If `true`,
      * target will render with `tabindex="0"` to make it focusable via keyboard
      * navigation.
+     *
+     * Note that this functionality is only enabled for hover interaction
+     * popovers/tooltips.
      *
      * @default true
      */

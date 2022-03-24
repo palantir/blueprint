@@ -19,7 +19,7 @@ import React from "react";
 
 import { AbstractComponent, ContextMenu, ContextMenuContentProps, Utils as CoreUtils } from "@blueprintjs/core";
 
-import { CellCoordinates } from "./common/cell";
+import type { CellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { RenderMode } from "./common/renderMode";
 import { CoordinateData } from "./interactions/dragTypes";
@@ -69,13 +69,14 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
         renderMode: RenderMode.BATCH,
     };
 
-    // TODO: Does this method need to be public?
-    // (see: https://github.com/palantir/blueprint/issues/1617)
+    /**
+     * @deprecated, will be removed from public API in the next major version
+     */
     public static cellClassNames(rowIndex: number, columnIndex: number) {
         return cellClassNames(rowIndex, columnIndex);
     }
 
-    private activationCell: CellCoordinates;
+    private activationCell: CellCoordinates | null = null;
 
     public shouldComponentUpdate(nextProps: TableBodyProps) {
         return (
@@ -143,7 +144,7 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
         }
 
         const targetRegion = this.locateClick(mouseEvent.nativeEvent as MouseEvent);
-        let nextSelectedRegions: Region[] = selectedRegions;
+        let nextSelectedRegions: Region[] = selectedRegions ?? [];
 
         // if the event did not happen within a selected region, update selection info for menu renderer
         const foundIndex = Regions.findContainingRegion(selectedRegions, targetRegion);
@@ -182,10 +183,13 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
 
     private locateClick = (event: MouseEvent) => {
         this.activationCell = this.props.locator.convertPointToCell(event.clientX, event.clientY);
-        return Regions.cell(this.activationCell.row, this.activationCell.col);
+        return Regions.cell(this.activationCell!.row, this.activationCell!.col);
     };
 
     private locateDrag = (_event: MouseEvent, coords: CoordinateData, returnEndOnly = false) => {
+        if (this.activationCell === null) {
+            return undefined;
+        }
         const start = this.activationCell;
         const end = this.props.locator.convertPointToCell(coords.current[0], coords.current[1]);
         return returnEndOnly ? Regions.cell(end.row, end.col) : Regions.cell(start.row, start.col, end.row, end.col);

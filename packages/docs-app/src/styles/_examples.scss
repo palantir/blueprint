@@ -62,6 +62,10 @@
   max-width: 280px;
 }
 
+#{example("DialogExample")} .docs-example-options {
+  max-width: 260px;
+}
+
 .docs-multistep-dialog-example-step {
   min-height: 150px;
 }
@@ -382,10 +386,10 @@
 }
 
 .docs-popover-placement-label-side {
-  color: $cobalt3;
+  color: $cerulean3;
 
   .#{$ns}-dark & {
-    color: $cobalt5;
+    color: $cerulean5;
   }
 }
 

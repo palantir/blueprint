@@ -47,7 +47,7 @@ export type ButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLBu
         large?: boolean;
 
         /**
-         * If set to `true`, the button will display a centered loading spinner instead of its contents.
+         * If set to `true`, the button will display a centered loading spinner instead of its contents, and the button will be disabled.
          * The width of the button is not affected by the value of this prop.
          *
          * @default false

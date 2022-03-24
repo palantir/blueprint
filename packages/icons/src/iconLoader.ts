@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { IconName, IconNames } from "./constants";
+import { IconName, IconNames } from "./iconNames";
 import { wrapWithTimer } from "./loaderUtils";
 import { SVGIconProps } from "./svgIconProps";
 

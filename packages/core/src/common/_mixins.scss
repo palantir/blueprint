@@ -1,8 +1,14 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "colors";
+@import "~@blueprintjs/colors/lib/scss/colors";
 @import "flex";
+
+// Extended color pallete
+$blue6: #99c4ff;
+$green6: #7cd7a2;
+$orange6: #f5c186;
+$red6: #ffa1a4;
 
 $pt-intent-colors: (
   "primary": $pt-intent-primary,

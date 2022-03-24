@@ -18,37 +18,36 @@ import * as React from "react";
 
 import { HotkeyConfig } from "@blueprintjs/core";
 
+import type { ColumnProps } from "./column";
 import { Utils } from "./common/utils";
 import { RegionCardinality } from "./regions";
 import type { TableHotkeys } from "./tableHotkeys";
-import type { TableProps } from "./tableProps";
+import type { TablePropsWithDefaults } from "./tableProps";
 
-export function clampNumFrozenColumns(props: TableProps) {
+export function clampNumFrozenColumns(props: TablePropsWithDefaults) {
     const { numFrozenColumns } = props;
     const numColumns = React.Children.count(props.children);
-    return clampPotentiallyNullValue(numFrozenColumns, numColumns);
+    return maybeClampValue(numFrozenColumns, numColumns);
 }
 
-export function clampNumFrozenRows(props: TableProps) {
+export function clampNumFrozenRows(props: TablePropsWithDefaults) {
     const { numFrozenRows, numRows } = props;
-    return clampPotentiallyNullValue(numFrozenRows, numRows);
+    return maybeClampValue(numFrozenRows, numRows);
 }
 
-// add explicit `| null | undefined`, because the params make more sense in this
-// order, and you can't have an optional param precede a required param.
-function clampPotentiallyNullValue(value: number | null | undefined, max: number) {
-    return value == null ? 0 : Utils.clamp(value, 0, max);
+function maybeClampValue(value: number | undefined, max: number) {
+    return value === undefined ? 0 : Utils.clamp(value, 0, max);
 }
 
-export function hasLoadingOption(loadingOptions: string[], loadingOption: string) {
-    if (loadingOptions == null) {
-        return undefined;
+export function hasLoadingOption(loadingOptions: string[] | undefined, loadingOption: string) {
+    if (loadingOptions === undefined) {
+        return false;
     }
     return loadingOptions.indexOf(loadingOption) >= 0;
 }
 
 export function isSelectionModeEnabled(
-    props: TableProps,
+    props: TablePropsWithDefaults,
     selectionMode: RegionCardinality,
     selectionModes = props.selectionModes,
 ): boolean {
@@ -57,7 +56,7 @@ export function isSelectionModeEnabled(
     return selectionModes.indexOf(selectionMode) >= 0 && numRows > 0 && numColumns > 0;
 }
 
-export function getHotkeysFromProps(props: TableProps, hotkeysImpl: TableHotkeys): HotkeyConfig[] {
+export function getHotkeysFromProps(props: TablePropsWithDefaults, hotkeysImpl: TableHotkeys): HotkeyConfig[] {
     const { getCellClipboardData, enableFocusedCell, enableMultipleSelection, selectionModes } = props;
     const hotkeys: HotkeyConfig[] = [];
 
@@ -167,4 +166,17 @@ export function getHotkeysFromProps(props: TableProps, hotkeysImpl: TableHotkeys
     }
 
     return hotkeys;
+}
+
+/**
+ * @returns true if new and old children arrays are the same
+ */
+export function compareChildren(
+    newChildren: Array<React.ReactElement<ColumnProps>>,
+    oldChildren: Array<React.ReactElement<ColumnProps>>,
+): boolean {
+    return (
+        newChildren.length === oldChildren.length &&
+        newChildren.every((child, index) => child.key === oldChildren[index].key)
+    );
 }

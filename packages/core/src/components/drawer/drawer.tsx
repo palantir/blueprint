@@ -62,10 +62,10 @@ export interface DrawerProps extends OverlayableProps, BackdropProps, Props {
      *
      * @default "right"
      */
-    position: Position;
+    position?: Position;
 
     /**
-     * CSS size of the drawer. This sets `width` if `vertical={false}` (default)
+     * CSS size of the drawer. This sets `width` if horizontal position (default)
      * and `height` otherwise.
      *
      * Constants are available for common sizes:
@@ -107,18 +107,9 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
         style: {},
     };
 
-    /** @deprecated use DrawerSize.SMALL */
-    public static readonly SIZE_SMALL = DrawerSize.SMALL;
-
-    /** @deprecated use DrawerSize.STANDARD */
-    public static readonly SIZE_STANDARD = DrawerSize.STANDARD;
-
-    /** @deprecated use DrawerSize.LARGE */
-    public static readonly SIZE_LARGE = DrawerSize.LARGE;
-
     public render() {
         const { size, style, position } = this.props;
-        const realPosition = getPositionIgnoreAngles(position);
+        const realPosition = getPositionIgnoreAngles(position!);
 
         const classes = classNames(
             Classes.DRAWER,

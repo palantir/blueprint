@@ -17,7 +17,7 @@
 import type { Props } from "@blueprintjs/core";
 
 import type { ColumnProps } from "./column";
-import type { FocusedCellCoordinates } from "./common/cell";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
 import type { ColumnIndices, RowIndices } from "./common/grid";
 import type { RenderMode } from "./common/renderMode";
 import type { ColumnWidths } from "./headers/columnHeader";
@@ -27,7 +27,7 @@ import type { IndexedResizeCallback } from "./interactions/resizable";
 import type { SelectedRegionTransform } from "./interactions/selectable";
 import type { Region, StyledRegionGroup, RegionCardinality, TableLoadingOption } from "./regions";
 
-export interface TableProps extends Props, RowHeights, ColumnWidths {
+export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWidths> {
     /**
      * The children of a `Table` component, which must be React elements
      * that use `ColumnProps`.
@@ -311,3 +311,29 @@ export interface TableProps extends Props, RowHeights, ColumnWidths {
      */
     styledRegionGroups?: StyledRegionGroup[];
 }
+
+export type TablePropsDefaults = Required<
+    Pick<
+        TableProps,
+        | "defaultColumnWidth"
+        | "defaultRowHeight"
+        | "enableColumnInteractionBar"
+        | "enableFocusedCell"
+        | "enableGhostCells"
+        | "enableMultipleSelection"
+        | "enableRowHeader"
+        | "forceRerenderOnSelectionChange"
+        | "loadingOptions"
+        | "maxColumnWidth"
+        | "maxRowHeight"
+        | "minColumnWidth"
+        | "minRowHeight"
+        | "numFrozenColumns"
+        | "numFrozenRows"
+        | "numRows"
+        | "renderMode"
+        | "rowHeaderCellRenderer"
+        | "selectionModes"
+    >
+>;
+export type TablePropsWithDefaults = Omit<TableProps, keyof TablePropsDefaults> & TablePropsDefaults;

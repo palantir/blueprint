@@ -29,12 +29,12 @@ import { RegionCardinality, Regions } from "../regions";
 import { ColumnHeaderCell, ColumnHeaderCellProps } from "./columnHeaderCell";
 import { Header, HeaderProps } from "./header";
 
-export type ColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<ColumnHeaderCellProps>;
+export type ColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<ColumnHeaderCellProps> | null;
 
 export interface ColumnWidths {
-    minColumnWidth?: number;
-    maxColumnWidth?: number;
-    defaultColumnWidth?: number;
+    minColumnWidth: number;
+    maxColumnWidth: number;
+    defaultColumnWidth: number;
 }
 
 export interface ColumnHeaderProps extends HeaderProps, ColumnWidths, ColumnIndices {
@@ -56,6 +56,11 @@ export interface ColumnHeaderProps extends HeaderProps, ColumnWidths, ColumnIndi
      * A callback invoked when user is done resizing the column
      */
     onColumnWidthChanged: IndexedResizeCallback;
+
+    /**
+     * Called on component mount.
+     */
+    onMount?: (whichHeader: "column" | "row") => void;
 }
 
 export class ColumnHeader extends React.Component<ColumnHeaderProps> {
@@ -64,6 +69,10 @@ export class ColumnHeader extends React.Component<ColumnHeaderProps> {
         isResizable: true,
         loading: false,
     };
+
+    public componentDidMount() {
+        this.props.onMount?.("column");
+    }
 
     public render() {
         const {
@@ -98,8 +107,8 @@ export class ColumnHeader extends React.Component<ColumnHeaderProps> {
                 handleResizeDoubleClick={this.handleResizeDoubleClick}
                 handleResizeEnd={this.handleResizeEnd}
                 handleSizeChanged={this.handleSizeChanged}
-                headerCellIsReorderablePropName={"enableColumnReordering"}
-                headerCellIsSelectedPropName={"isColumnSelected"}
+                headerCellIsReorderablePropName="enableColumnReordering"
+                headerCellIsSelectedPropName="isColumnSelected"
                 headerCellRenderer={renderHeaderCell}
                 indexEnd={indexEnd}
                 indexStart={indexStart}
@@ -144,8 +153,7 @@ export class ColumnHeader extends React.Component<ColumnHeaderProps> {
     };
 
     private convertPointToColumn = (clientXOrY: number, useMidpoint?: boolean) => {
-        const { locator } = this.props;
-        return locator != null ? locator.convertPointToColumn(clientXOrY, useMidpoint) : null;
+        return this.props.locator.convertPointToColumn(clientXOrY, useMidpoint);
     };
 
     private getCellExtremaClasses = (index: number, indexEnd: number) => {
@@ -185,7 +193,7 @@ export class ColumnHeader extends React.Component<ColumnHeaderProps> {
     };
 
     private isCellSelected = (index: number) => {
-        return Regions.hasFullColumn(this.props.selectedRegions, index);
+        return Regions.hasFullColumn(this.props.selectedRegions!, index);
     };
 
     private isGhostIndex = (index: number) => {

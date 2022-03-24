@@ -3,7 +3,6 @@
 @import "./common";
 
 .#{$ns}-numeric-input {
-
   // we need a very-specific selector here to override specificicty of selectors defined elsewhere.
   .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
     // let the buttons shrink to equal heights
@@ -11,27 +10,6 @@
     min-height: 0;
     padding: 0;
     width: $pt-button-height;
-
-    &:first-child {
-      border-radius: 0 $pt-border-radius 0 0;
-    }
-
-    &:last-child {
-      border-radius: 0 0 $pt-border-radius 0;
-    }
-  }
-
-  // fix button border radius when the buttons are on the left
-  .#{$ns}-button-group.#{$ns}-vertical {
-    &:first-child > .#{$ns}-button {
-      &:first-child {
-        border-radius: $pt-border-radius 0 0 0;
-      }
-
-      &:last-child {
-        border-radius: 0 0 0 $pt-border-radius;
-      }
-    }
   }
 
   &.#{$ns}-large .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {

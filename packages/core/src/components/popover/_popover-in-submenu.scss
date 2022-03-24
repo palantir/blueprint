@@ -7,13 +7,6 @@
 .#{$ns}-submenu {
   .#{$ns}-popover-target {
     display: block;
-
-    &.#{$ns}-popover-open > .#{$ns}-menu-item {
-      // keep a trail of hovered items as submenus are opened
-      @include menu-item();
-      @include menu-item-intent();
-      color: inherit;
-    }
   }
 
   &.#{$ns}-popover {

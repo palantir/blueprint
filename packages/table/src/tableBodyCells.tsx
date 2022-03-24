@@ -21,7 +21,7 @@ import { AbstractComponent, Props, Utils as CoreUtils } from "@blueprintjs/core"
 
 import { emptyCellRenderer, CellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
-import { FocusedCellCoordinates } from "./common/cell";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { Grid, ColumnIndices, RowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
@@ -101,7 +101,7 @@ export class TableBodyCells extends AbstractComponent<TableBodyCellsProps> {
         this.maybeInvokeOnCompleteRender();
     }
 
-    public shouldComponentUpdate(nextProps?: TableBodyCellsProps) {
+    public shouldComponentUpdate(nextProps: TableBodyCellsProps) {
         return (
             !CoreUtils.shallowCompareKeys(nextProps, this.props, {
                 exclude: SHALLOW_COMPARE_DENYLIST,

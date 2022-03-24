@@ -24,7 +24,16 @@ export { TruncatedPopoverMode, TruncatedFormat, TruncatedFormatProps } from "./c
 
 export { Column, ColumnProps } from "./column";
 
-export { AnyRect, Clipboard, Grid, Rect, RenderMode, Utils } from "./common/index";
+export {
+    AnyRect,
+    CellCoordinates,
+    Clipboard,
+    FocusedCellCoordinates,
+    Grid,
+    Rect,
+    RenderMode,
+    Utils,
+} from "./common/index";
 
 export { DraggableProps, Draggable } from "./interactions/draggable";
 
@@ -59,6 +68,5 @@ export {
     TableLoadingOption,
 } from "./regions";
 
-export { Table } from "./table";
-
-export { TableProps } from "./tableProps";
+// TODO(adahiya): rename Table2 to Table
+export { Table2 as Table, Table2Props as TableProps } from "./table";

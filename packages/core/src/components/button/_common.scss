@@ -48,19 +48,17 @@ $button-box-shadow-overlay-active:
   inset 0 1px 1px rgba($black, 0.1) !default;
 
 $dark-button-box-shadow:
-  0 0 0 $button-border-width rgba($black, 0.4) !default;
+  inset 0 0 0 $button-border-width rgba($black, 0.8) !default;
 $dark-button-box-shadow-active:
-  0 0 0 $button-border-width rgba($black, 0.6),
-  inset 0 1px 2px rgba($black, 0.2) !default;
+  inset 0 0 0 $button-border-width rgba($black, 0.8) !default;
 $dark-button-intent-box-shadow:
-  0 0 0 $button-border-width rgba($black, 0.4) !default;
+  inset 0 0 0 $button-border-width rgba($black, 0.8) !default;
 $dark-button-intent-box-shadow-active:
-  0 0 0 $button-border-width rgba($black, 0.4),
-  inset 0 1px 2px rgba($black, 0.2) !default;
+  inset 0 0 0 $button-border-width rgba($black, 0.8) !default;
 
-$button-gradient: linear-gradient(to bottom, rgba($white, 0.8), rgba($white, 0)) !default;
-$button-intent-gradient: linear-gradient(to bottom, rgba($white, 0.1), rgba($white, 0)) !default;
-$dark-button-gradient: linear-gradient(to bottom, rgba($white, 0.05), rgba($white, 0)) !default;
+$button-gradient: linear-gradient(to bottom, rgba($black, 0), rgba($black, 0.05)) !default;
+$button-intent-gradient: linear-gradient(to bottom, rgba($black, 0), rgba($black, 0.05)) !default;
+$dark-button-gradient: linear-gradient(to bottom, rgba($black, 0), rgba($black, 0.05)) !default;
 
 $button-color-disabled: $pt-text-color-disabled !default;
 $button-background-color: $light-gray5 !default;
@@ -79,8 +77,8 @@ $dark-button-intent-color-disabled: rgba($white, 0.3);
 
 $minimal-button-divider-width: 1px !default;
 $minimal-button-background-color: none !default;
-$minimal-button-background-color-hover: rgba($gray4, 0.3) !default;
-$minimal-button-background-color-active: rgba($gray2, 0.3) !default;
+$minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
+$minimal-button-background-color-active: rgba($gray3, 0.3) !default;
 $dark-minimal-button-background-color: none !default;
 $dark-minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
 $dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;

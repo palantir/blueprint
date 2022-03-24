@@ -11,6 +11,18 @@ $step-radius: $pt-border-radius * 2 !default;
 
 .#{$ns}-multistep-dialog-panels {
   display: flex;
+
+  // If title doesn't exist, this element will be the first child and top
+  // borders needs to be rounded.
+  &:first-child {
+    .#{$ns}-dialog-step-container:first-child {
+      border-radius: $dialog-border-radius 0 0 0;
+    }
+
+    .#{$ns}-multistep-dialog-right-panel {
+      border-top-right-radius: $dialog-border-radius;
+    }
+  }
 }
 
 .#{$ns}-multistep-dialog-left-panel {
@@ -40,11 +52,17 @@ $step-radius: $pt-border-radius * 2 !default;
   background-color: $white;
   border-radius: 0  0 $dialog-border-radius 0;
   border-top: 1px solid $pt-divider-black;
+  display: flex;
+  justify-content: space-between;
   padding: 10px;
 
   .#{$ns}-dark & {
     background: $dark-gray4;
     border-top: 1px solid $pt-dark-divider-black;
+  }
+
+  .#{$ns}-dialog-footer-actions {
+    flex-grow: 1;
   }
 }
 

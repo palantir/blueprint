@@ -42,10 +42,10 @@ describe("Column", () => {
             </Table>,
         );
         const selector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
-        expect(table.find(selector, 0).element).to.exist;
-        expect(table.find(selector, 1).element).to.exist;
-        expect(table.find(selector, 2).element).to.exist;
-        expect(table.find(selector, 3).element).to.not.exist;
+        expect(table.find(selector, 0)?.element).to.exist;
+        expect(table.find(selector, 1)?.element).to.exist;
+        expect(table.find(selector, 2)?.element).to.exist;
+        expect(table.find(selector, 3)?.element).to.not.exist;
     });
 
     it("passes column name to renderer or defaults if none specified", () => {
@@ -59,9 +59,9 @@ describe("Column", () => {
 
         const selector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
 
-        expect(table.find(selector, 0).text()).to.equal("Zero"); // custom
-        expect(table.find(selector, 1).text()).to.equal("One"); // custom
-        expect(table.find(selector, 2).text()).to.equal("C"); // default
+        expect(table.find(selector, 0)?.text()).to.equal("Zero"); // custom
+        expect(table.find(selector, 1)?.text()).to.equal("One"); // custom
+        expect(table.find(selector, 2)?.text()).to.equal("C"); // default
     });
 
     it("renders correctly with loading options", () => {
@@ -80,7 +80,7 @@ describe("Column", () => {
             </Table>,
         );
 
-        const columnHeaders = table.element.querySelectorAll(
+        const columnHeaders = table.element!.querySelectorAll(
             `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
         );
 
@@ -100,7 +100,7 @@ describe("Column", () => {
                 <Column className={CLASS_NAME} />
             </Table>,
         );
-        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
+        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0)?.hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
 
@@ -113,7 +113,7 @@ describe("Column", () => {
         const cellsSelector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(columnIndex)}.${
             Classes.TABLE_CELL
         }`;
-        const cells = Array.from(table.element.querySelectorAll(cellsSelector));
+        const cells = Array.from(table.element!.querySelectorAll(cellsSelector));
         cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL, isCellLoading));
         expect(cells.length).to.equal(expectedLength);
     }

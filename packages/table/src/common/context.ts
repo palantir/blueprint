@@ -17,7 +17,7 @@ import * as PropTypes from "prop-types";
 import React from "react";
 
 export interface ColumnInteractionBarContextTypes {
-    enableColumnInteractionBar: boolean;
+    enableColumnInteractionBar: boolean | null | undefined;
 }
 
 export const columnInteractionBarContextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> = {

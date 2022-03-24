@@ -114,7 +114,7 @@ export class Navigator extends React.PureComponent<NavigatorProps> {
         );
         return (
             <MenuItem
-                active={props.modifiers.active}
+                selected={props.modifiers.active}
                 href={"#" + section.route}
                 key={section.route}
                 multiline={true}

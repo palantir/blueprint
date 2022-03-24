@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
+import { ResizeObserver, ResizeObserverEntry } from "@juggle/resize-observer";
 import React, { cloneElement, createRef } from "react";
-import ResizeObserver from "resize-observer-polyfill";
 
-import { AbstractPureComponent } from "../../common";
-import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { ResizeEntry } from "./resizeObserverTypes";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
 
 /** `ResizeSensor` requires a single DOM element child and will error otherwise. */
 export interface ResizeSensorProps {
@@ -38,7 +36,7 @@ export interface ResizeSensorProps {
      * Note that this method is called _asynchronously_ after a resize is
      * detected and typically it will be called no more than once per frame.
      */
-    onResize: (entries: ResizeEntry[]) => void;
+    onResize: (entries: ResizeObserverEntry[]) => void;
 
     /**
      * If `true`, all parent DOM elements of the container will also be
@@ -60,6 +58,7 @@ export interface ResizeSensorProps {
     targetRef?: React.Ref<any>;
 }
 
+/** `ResizeSensor` requires a single DOM element child and will error otherwise. */
 export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 

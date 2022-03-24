@@ -17,9 +17,10 @@
 import React from "react";
 
 import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 import { Duplicate, Refresh } from "@blueprintjs/icons";
 
+import { IntentSelect } from "./common/intentSelect";
 import { Size, SizeSelect } from "./common/sizeSelect";
 
 export interface ButtonsExampleState {
@@ -61,6 +62,8 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
 
     private handleSizeChange = (size: Size) => this.setState({ size });
 
+    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+
     private wiggleTimeoutId: number;
 
     public componentWillUnmount() {
@@ -79,6 +82,7 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Outlined" checked={this.state.outlined} onChange={this.handleOutlinedChange} />
                 <SizeSelect size={this.state.size} onChange={this.handleSizeChange} />
+                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
                 <H5>Example</H5>
                 <Switch label="Icons only" checked={this.state.iconOnly} onChange={this.handleIconOnlyChange} />
             </>

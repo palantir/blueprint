@@ -107,10 +107,6 @@ export const TABLE_VERTICAL_GUIDE = `${NS}-table-vertical-guide`;
 
 /** Common code for row and column index class generator functions, since they're essentially the same. */
 function dimensionIndexClass(classPrefix: string, index: string | number) {
-    if (index == null) {
-        return undefined;
-    }
-
     if (typeof index === "number") {
         return `${classPrefix}${index}`;
     }

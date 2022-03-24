@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-import { BlueprintIcons_16Id as IconName, BlueprintIcons_16 as IconNames } from "./generated/16px/blueprint-icons-16";
+import { IconName, IconNames } from "@blueprintjs/icons";
 
-export { IconName, IconNames };
+export const NONE = "(none)";
+export type IconNameOrNone = IconName | typeof NONE;
 
-export enum IconSize {
-    STANDARD = 16,
-    LARGE = 20,
+export function getIconNames(): IconNameOrNone[] {
+    const iconNames = new Set<IconNameOrNone>();
+    for (const [, name] of Object.entries(IconNames)) {
+        iconNames.add(name);
+    }
+    iconNames.add(NONE);
+    return Array.from(iconNames.values());
 }

@@ -44,7 +44,7 @@ export function renderBlock(
                 throw new Error(`Unknown @tag: ${node.tag}`);
             }
             return React.createElement(renderer, { ...node, key: i });
-        } catch (ex) {
+        } catch (ex: any) {
             console.error(ex.message);
             return (
                 <H3 key={`__error-${i}`}>

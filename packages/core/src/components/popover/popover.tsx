@@ -42,6 +42,13 @@ export const PopoverInteractionKind = {
 export type PopoverInteractionKind = typeof PopoverInteractionKind[keyof typeof PopoverInteractionKind];
 
 export interface PopoverProps<TProps = React.HTMLProps<HTMLElement>> extends PopoverSharedProps<TProps> {
+    /**
+     * Whether the popover/tooltip should acquire application focus when it first opens.
+     *
+     * @default true for click interations, false for hover interactions
+     */
+    autoFocus?: boolean;
+
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
@@ -49,12 +56,6 @@ export interface PopoverProps<TProps = React.HTMLProps<HTMLElement>> extends Pop
      * The content displayed inside the popover.
      */
     content?: string | JSX.Element;
-
-    /**
-     * Whether the wrapper and target should take up the full width of their container.
-     * Note that supplying `true` for this prop will force  `targetTagName="div"`.
-     */
-    fill?: boolean;
 
     /**
      * The kind of interaction that triggers the display of the popover.
@@ -413,14 +414,18 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                 [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
                 [Classes.MINIMAL]: this.props.minimal,
                 [Classes.POPOVER_CAPTURING_DISMISS]: this.props.captureDismiss,
+                [Classes.POPOVER_REFERENCE_HIDDEN]: popperProps.isReferenceHidden === true,
+                [Classes.POPOVER_POPPER_ESCAPED]: popperProps.hasPopperEscaped === true,
             },
             `${Classes.POPOVER_CONTENT_PLACEMENT}-${basePlacement}`,
             this.props.popoverClassName,
         );
 
+        const defaultAutoFocus = this.isHoverInteractionKind() ? false : undefined;
+
         return (
             <Overlay
-                autoFocus={this.props.autoFocus}
+                autoFocus={this.props.autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
                 backdropProps={this.props.backdropProps}
                 canEscapeKeyClose={this.props.canEscapeKeyClose}
@@ -438,7 +443,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                 usePortal={this.props.usePortal}
                 portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
-                // if hover interaciton, it doesn't make sense to take over focus control
+                // if hover interaction, it doesn't make sense to take over focus control
                 shouldReturnFocusOnClose={this.isHoverInteractionKind() ? false : shouldReturnFocusOnClose}
             >
                 <div className={Classes.POPOVER_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
@@ -539,6 +544,8 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                 ) {
                     this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
                 }
+            } else {
+                this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;

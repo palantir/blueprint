@@ -25,11 +25,11 @@ export * from "./position";
 export * from "./props";
 export * from "./refs";
 
-import { LegacyColors } from "@blueprintjs/colors";
+import { Colors } from "@blueprintjs/colors";
 
 import * as Classes from "./classes";
 import * as Keys from "./keys";
 import * as Utils from "./utils";
 
-export { Classes, Keys, Utils, LegacyColors as Colors };
+export { Classes, Keys, Utils, Colors };
 // NOTE: Errors is not exported in public API

@@ -23,7 +23,7 @@ import { Position } from "./position";
 declare let BLUEPRINT_NAMESPACE: string | undefined;
 declare let REACT_APP_BLUEPRINT_NAMESPACE: string | undefined;
 
-let NS = "bp4";
+let NS = "bp5";
 
 if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
     NS = BLUEPRINT_NAMESPACE;
@@ -48,6 +48,7 @@ export const MINIMAL = `${NS}-minimal`;
 export const OUTLINED = `${NS}-outlined`;
 export const MULTILINE = `${NS}-multiline`;
 export const ROUND = `${NS}-round`;
+export const SELECTED = `${NS}-selected`;
 export const SMALL = `${NS}-small`;
 export const VERTICAL = `${NS}-vertical`;
 export const POSITION_TOP = positionClass(Position.TOP);
@@ -86,13 +87,6 @@ export const HEADING = `${NS}-heading`;
 export const LIST = `${NS}-list`;
 export const LIST_UNSTYLED = `${NS}-list-unstyled`;
 export const RTL = `${NS}-rtl`;
-
-// layout utilities
-/**
- * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
- * @deprecated this is no longer needed for ContextMenu2, will be removed in v4.0
- */
-export const FIXED_POSITIONING_CONTAINING_BLOCK = `${NS}-fixed-positioning-containing-block`;
 
 // components
 export const ALERT = `${NS}-alert`;
@@ -192,11 +186,14 @@ export const LABEL = `${NS}-label`;
 export const FORM_GROUP = `${NS}-form-group`;
 export const FORM_CONTENT = `${NS}-form-content`;
 export const FORM_HELPER_TEXT = `${NS}-form-helper-text`;
+export const FORM_GROUP_SUB_LABEL = `${NS}-form-group-sub-label`;
 
 export const MENU = `${NS}-menu`;
 export const MENU_ITEM = `${MENU}-item`;
+export const MENU_ITEM_ICON = `${MENU_ITEM}-icon`;
 export const MENU_ITEM_LABEL = `${MENU_ITEM}-label`;
 export const MENU_SUBMENU = `${NS}-submenu`;
+export const MENU_SUBMENU_ICON = `${MENU_SUBMENU}-icon`;
 export const MENU_DIVIDER = `${MENU}-divider`;
 export const MENU_HEADER = `${MENU}-header`;
 
@@ -226,6 +223,8 @@ export const OVERLAY_CONTENT = `${OVERLAY}-content`;
 export const OVERLAY_INLINE = `${OVERLAY}-inline`;
 export const OVERLAY_OPEN = `${OVERLAY}-open`;
 export const OVERLAY_SCROLL_CONTAINER = `${OVERLAY}-scroll-container`;
+export const OVERLAY_START_FOCUS_TRAP = `${OVERLAY}-start-focus-trap`;
+export const OVERLAY_END_FOCUS_TRAP = `${OVERLAY}-end-focus-trap`;
 
 export const PANEL_STACK = `${NS}-panel-stack`;
 export const PANEL_STACK_HEADER = `${PANEL_STACK}-header`;
@@ -242,6 +241,8 @@ export const POPOVER_CONTENT_SIZING = `${POPOVER_CONTENT}-sizing`;
 export const POPOVER_DISMISS = `${POPOVER}-dismiss`;
 export const POPOVER_DISMISS_OVERRIDE = `${POPOVER_DISMISS}-override`;
 export const POPOVER_OPEN = `${POPOVER}-open`;
+export const POPOVER_POPPER_ESCAPED = `${POPOVER}-popper-escaped`;
+export const POPOVER_REFERENCE_HIDDEN = `${POPOVER}-reference-hidden`;
 export const POPOVER_TARGET = `${POPOVER}-target`;
 export const POPOVER_TRANSITION_CONTAINER = `${POPOVER}-transition-container`;
 

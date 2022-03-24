@@ -79,7 +79,7 @@ export class TreeNode<T = {}> extends React.Component<TreeNodeProps<T>> {
             <li className={classes}>
                 <div className={contentClasses} ref={this.handleContentRef} {...eventHandlers}>
                     {this.maybeRenderCaret()}
-                    <Icon className={Classes.TREE_NODE_ICON} icon={icon} />
+                    <Icon className={Classes.TREE_NODE_ICON} icon={icon} aria-hidden={true} tabIndex={-1} />
                     <span className={Classes.TREE_NODE_LABEL}>{label}</span>
                     {this.maybeRenderSecondaryLabel()}
                 </div>

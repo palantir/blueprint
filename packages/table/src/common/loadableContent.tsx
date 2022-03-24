@@ -56,7 +56,7 @@ export class LoadableContent extends React.PureComponent<LoadableContentProps> {
         return React.Children.only(this.props.children);
     }
 
-    private calculateStyle(variableLength: boolean) {
+    private calculateStyle(variableLength = false) {
         const skeletonLength = variableLength ? 75 - Math.floor(Math.random() * 11) * 5 : 100;
         return { width: `${skeletonLength}%` };
     }

@@ -54,7 +54,7 @@ export interface BreadcrumbsProps extends Props {
      * All breadcrumbs to display. Breadcrumbs that do not fit in the container
      * will be rendered in an overflow menu instead.
      */
-    items: BreadcrumbProps[];
+    items: readonly BreadcrumbProps[];
 
     /**
      * The minimum number of visible breadcrumbs that should never collapse into
@@ -97,7 +97,7 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
         );
     }
 
-    private renderOverflow = (items: BreadcrumbProps[]) => {
+    private renderOverflow = (items: readonly BreadcrumbProps[]) => {
         const { collapseFrom } = this.props;
         const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
         let orderedItems = items;

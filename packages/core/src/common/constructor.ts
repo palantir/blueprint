@@ -18,6 +18,6 @@
  * Generic interface defining constructor types, such as classes. This is used to type the class
  * itself in meta-programming situations such as decorators.
  *
- * @deprecated will be removed in Blueprint v4.0
+ * @deprecated will be removed in Blueprint v5.0
  */
 export type Constructor<T> = new (...args: any[]) => T;

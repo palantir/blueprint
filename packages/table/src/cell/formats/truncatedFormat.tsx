@@ -172,7 +172,9 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
         isTruncated: false,
     };
 
-    private contentDiv: HTMLDivElement;
+    private contentDiv: HTMLDivElement | null | undefined;
+
+    private handleContentDivRef = (ref: HTMLDivElement | null) => (this.contentDiv = ref);
 
     public componentDidMount() {
         this.setTruncationState();
@@ -187,7 +189,7 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
         const content = "" + children;
 
         let cellContent = content;
-        if (!detectTruncation && truncateLength > 0 && cellContent.length > truncateLength) {
+        if (!detectTruncation && truncateLength! > 0 && cellContent.length > truncateLength!) {
             cellContent = cellContent.substring(0, truncateLength) + truncationSuffix;
         }
 
@@ -246,8 +248,6 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
         }
     }
 
-    private handleContentDivRef = (ref: HTMLDivElement) => (this.contentDiv = ref);
-
     private handlePopoverOpen = () => {
         this.setState({ isPopoverOpen: true });
     };
@@ -267,10 +267,10 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
             case TruncatedPopoverMode.WHEN_TRUNCATED:
                 return detectTruncation
                     ? this.state.isTruncated
-                    : truncateLength > 0 && content.length > truncateLength;
+                    : truncateLength! > 0 && content.length > truncateLength!;
             case TruncatedPopoverMode.WHEN_TRUNCATED_APPROX:
                 if (!detectTruncation) {
-                    return truncateLength > 0 && content.length > truncateLength;
+                    return truncateLength! > 0 && content.length > truncateLength!;
                 }
                 if (this.props.parentCellHeight == null || this.props.parentCellWidth == null) {
                     return false;
@@ -281,7 +281,7 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
                     approximateLineHeight,
                     cellHorizontalPadding,
                     numBufferLines,
-                } = measureByApproxOptions;
+                } = measureByApproxOptions!;
 
                 const cellWidth = this.props.parentCellWidth;
                 const approxCellHeight = Utils.getApproxCellHeight(
@@ -305,7 +305,7 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
             return;
         }
 
-        if (this.contentDiv === undefined) {
+        if (this.contentDiv == null) {
             this.setState({ isTruncated: false });
             return;
         }

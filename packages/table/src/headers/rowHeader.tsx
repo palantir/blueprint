@@ -29,9 +29,9 @@ import { RowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 export type RowHeaderRenderer = (rowIndex: number) => React.ReactElement<RowHeaderCellProps>;
 
 export interface RowHeights {
-    minRowHeight?: number;
-    maxRowHeight?: number;
-    defaultRowHeight?: number;
+    minRowHeight: number;
+    maxRowHeight: number;
+    defaultRowHeight: number;
 }
 
 export interface RowHeaderProps extends HeaderProps, RowHeights, RowIndices {
@@ -44,6 +44,11 @@ export interface RowHeaderProps extends HeaderProps, RowHeights, RowIndices {
      * Renders the cell for each row header
      */
     rowHeaderCellRenderer?: RowHeaderRenderer;
+
+    /**
+     * Called on component mount.
+     */
+    onMount?: (whichHeader: "column" | "row") => void;
 }
 
 export class RowHeader extends React.Component<RowHeaderProps> {
@@ -51,11 +56,15 @@ export class RowHeader extends React.Component<RowHeaderProps> {
         rowHeaderCellRenderer: renderDefaultRowHeader,
     };
 
+    public componentDidMount() {
+        this.props.onMount?.("row");
+    }
+
     public render() {
         const {
             // from RowHeaderProps
             onRowHeightChanged,
-            rowHeaderCellRenderer: renderHeaderCell,
+            rowHeaderCellRenderer,
 
             // from RowHeights
             minRowHeight: minSize,
@@ -85,7 +94,7 @@ export class RowHeader extends React.Component<RowHeaderProps> {
                 handleSizeChanged={this.handleSizeChanged}
                 headerCellIsReorderablePropName={"enableRowReordering"}
                 headerCellIsSelectedPropName={"isRowSelected"}
-                headerCellRenderer={renderHeaderCell}
+                headerCellRenderer={rowHeaderCellRenderer!}
                 indexEnd={indexEnd}
                 indexStart={indexStart}
                 isCellSelected={this.isCellSelected}
@@ -127,8 +136,7 @@ export class RowHeader extends React.Component<RowHeaderProps> {
     };
 
     private convertPointToRow = (clientXOrY: number, useMidpoint?: boolean) => {
-        const { locator } = this.props;
-        return locator != null ? locator.convertPointToRow(clientXOrY, useMidpoint) : null;
+        return this.props.locator?.convertPointToRow(clientXOrY, useMidpoint);
     };
 
     private getCellExtremaClasses = (index: number, indexEnd: number) => {
@@ -158,7 +166,7 @@ export class RowHeader extends React.Component<RowHeaderProps> {
     };
 
     private isCellSelected = (index: number) => {
-        return Regions.hasFullRow(this.props.selectedRegions, index);
+        return Regions.hasFullRow(this.props.selectedRegions!, index);
     };
 
     private isGhostIndex = (index: number) => {

@@ -51,8 +51,8 @@ import {
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
-import { FocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
-import { ColumnIndices, RowIndices } from "@blueprintjs/table/src/common/grid";
+import type { FocusedCellCoordinates } from "@blueprintjs/table/src/common/cellTypes";
+import type { ColumnIndices, RowIndices } from "@blueprintjs/table/src/common/grid";
 import { RenderMode } from "@blueprintjs/table/src/common/renderMode";
 
 import { DenseGridMutableStore } from "./denseGridMutableStore";
@@ -195,9 +195,10 @@ function getRandomInteger(min: number, max: number): number {
 function getRandomString(length: number): string {
     let str = "";
     while (str.length < length) {
-        str += Math.random().toString(36).substr(2);
+        const part = Math.random().toString(36);
+        str += part.substring(2, part.length - 1);
     }
-    return str.substr(0, length);
+    return str.substring(0, length - 1);
 }
 
 function contains(arr: any[], value: any) {
@@ -320,7 +321,8 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
         table: (ref: Table) => (this.tableInstance = ref),
     };
 
-    public constructor(props: any) {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    public constructor(props: {}) {
         super(props);
         this.stateStore = new LocalStore<MutableTableState>("BP_TABLE_MUTABLE_TABLE_DEV_PREVIEW", true);
         this.state = this.stateStore.getWithDefaults(DEFAULT_STATE);

@@ -25,7 +25,7 @@ import { getProgram } from "./utils/getProgram";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
 // currently support "pt-", "bp3-", "bp4-" prefixes.
-const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.]?((pt|bp3|bp4)-(?!icon-?)[\w-]+)/g;
+const BLUEPRINT_CLASSNAME_PATTERN = /(?<![\w])((?:pt|bp3|bp4)-(?!icon)[\w-]+)/g;
 
 type MessageIds = "useBlueprintClasses";
 
@@ -52,6 +52,13 @@ export const classesConstantsRule = createRule<[], MessageIds>({
 });
 
 function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | TSESTree.TemplateElement): void {
+    // We shouldn't lint on strings from imports/exports
+    if (
+        node.parent?.type === AST_NODE_TYPES.ImportDeclaration ||
+        node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration
+    ) {
+        return;
+    }
     const nodeValue = node.type === AST_NODE_TYPES.Literal ? node.raw : node.value.raw;
     const prefixMatches = getAllMatches(nodeValue);
     if (prefixMatches.length > 0) {
@@ -59,9 +66,8 @@ function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | T
         const replacementText =
             node.type === AST_NODE_TYPES.Literal
                 ? // "string literal" likely becomes `${template} string` so we may need to change how it is assigned
-                  wrapForParent(getLiteralReplacement(nodeValue, ptClassStrings), node)
+                  wrapForParent(getLiteralReplacement(nodeValue, prefixMatches), node)
                 : getTemplateReplacement(nodeValue, ptClassStrings);
-
         context.report({
             messageId: "useBlueprintClasses",
             node,
@@ -93,20 +99,37 @@ function getAllMatches(className: string) {
 }
 
 /** Produce replacement text for a string literal that contains invalid classes. */
-function getLiteralReplacement(className: string, ptClassStrings: string[]) {
-    // remove all illegal classnames, then slice off the quotes, then merge & trim any remaining white space
-    const stringWithoutPtClasses = ptClassStrings
-        .reduce((value, cssClass) => value.replace(cssClass, ""), className)
-        .slice(1, -1)
-        .replace(/(\s)+/, "$1")
-        .trim();
-    // special case: only one invalid class name
-    if (stringWithoutPtClasses.length === 0 && ptClassStrings.length === 1) {
-        return convertPtClassName(ptClassStrings[0]);
+function getLiteralReplacement(className: string, prefixMatches: Array<{ match: string; index: number }>) {
+    // Special case: the string consists entirely of the invalid class name (ignoring quotes/spaces)
+    // In this scenario, we just want to return the converted classnames without surrounding with ${} for interpolation
+    if (prefixMatches.length === 1) {
+        const remainingString = className
+            .replace(prefixMatches[0].match, "")
+            .slice(1, -1)
+            .replace(/(\s)+/, "$1")
+            .trim();
+        if (remainingString.length === 0) {
+            return convertPtClassName(prefixMatches[0].match);
+        }
     }
-    // otherwise produce a `template string`
-    const templateStrings = ptClassStrings.map(n => `\${${convertPtClassName(n)}}`).join(" ");
-    return `\`${[templateStrings, stringWithoutPtClasses].join(" ").trim()}\``;
+
+    // Start with the beginning of the string until the first match of an invalid classname
+    let newString = "";
+    let currentIndex = 0;
+    for (const { match, index } of prefixMatches) {
+        // Add the strings between the currentIndex and this invalid class name's index
+        newString += className.slice(currentIndex, index);
+        // Add the converted string instead of the original string
+        newString += `\${${convertPtClassName(match)}}`;
+        // Update the index to immediately after this invalid class name
+        currentIndex = index + match.length;
+    }
+    // Add remaining parts of string that occurred after the last invalid class name
+    newString += className.slice(currentIndex, className.length);
+    // Slice off the quotes, and merge & trim any remaining white space
+    newString = newString.slice(1, -1).replace(/(\s)+/, "$1").trim();
+    // Surround with backticks instead for the newly added template strings
+    return `\`${newString}\``;
 }
 
 /** Produce replacement text for a `template string` that contains invalid classes. */

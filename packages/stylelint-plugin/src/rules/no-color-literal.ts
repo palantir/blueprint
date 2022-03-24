@@ -18,7 +18,7 @@ import valueParser from "postcss-value-parser";
 import stylelint, { RuleTesterContext } from "stylelint";
 import type { Plugin } from "stylelint";
 
-import { LegacyColors } from "@blueprintjs/colors";
+import { Colors } from "@blueprintjs/colors";
 
 import { checkImportExists } from "../utils/checkImportExists";
 import {
@@ -146,7 +146,7 @@ function getCssColorVariable(hexColor: string, cssSyntax: CssSyntax.SASS | CssSy
 
 function getHexToColorName(): { [upperHex: string]: string } {
     const ret: { [key: string]: string } = {};
-    for (const [name, hex] of Object.entries(LegacyColors)) {
+    for (const [name, hex] of Object.entries(Colors)) {
         ret[normalizeHexColor(hex)] = name;
     }
     return ret;

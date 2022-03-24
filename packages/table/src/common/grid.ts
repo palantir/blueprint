@@ -49,6 +49,12 @@ export class Grid {
 
     public static DEFAULT_GHOST_WIDTH = 150;
 
+    // defined in headers/_common.scss
+    public static MIN_COLUMN_HEADER_HEIGHT = 30;
+
+    // defined in headers/_common.scss
+    public static MIN_ROW_HEADER_WIDTH = 30;
+
     public numCols: number;
 
     public numRows: number;
@@ -325,8 +331,8 @@ export class Grid {
         const cardinality = Regions.getRegionCardinality(region);
         switch (cardinality) {
             case RegionCardinality.CELLS: {
-                const [rowStart, rowEnd] = region.rows;
-                const [colStart, colEnd] = region.cols;
+                const [rowStart, rowEnd] = region.rows!;
+                const [colStart, colEnd] = region.cols!;
 
                 // if the region is outside the bounds of the table, don't display it
                 if (this.isGhostIndex(rowStart, colStart) || this.isGhostIndex(rowEnd, colEnd)) {
@@ -345,7 +351,7 @@ export class Grid {
             }
 
             case RegionCardinality.FULL_COLUMNS: {
-                const [colStart, colEnd] = region.cols;
+                const [colStart, colEnd] = region.cols!;
 
                 // if the region is outside the bounds of the table, don't display it
                 if (this.isGhostIndex(0, colStart) || this.isGhostIndex(0, colEnd)) {
@@ -365,7 +371,7 @@ export class Grid {
             }
 
             case RegionCardinality.FULL_ROWS: {
-                const [rowStart, rowEnd] = region.rows;
+                const [rowStart, rowEnd] = region.rows!;
 
                 // if the region is outside the bounds of the table, don't display it
                 if (this.isGhostIndex(rowStart, 0) || this.isGhostIndex(rowEnd, 0)) {

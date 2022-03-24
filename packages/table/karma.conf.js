@@ -14,8 +14,8 @@ module.exports = function (config) {
                 lines: 70,
             },
             "src/common/clipboard*": {
-                lines: 60,
-                statements: 60,
+                lines: 0,
+                statements: 0,
             },
             "src/headers/headerCell*": {
                 lines: 70,

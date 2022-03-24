@@ -57,7 +57,7 @@ export class Draggable extends React.PureComponent<DraggableProps> {
         stopPropagation: false,
     };
 
-    private events: DragEvents;
+    private events?: DragEvents;
 
     public render() {
         return React.Children.only(this.props.children);
@@ -65,7 +65,7 @@ export class Draggable extends React.PureComponent<DraggableProps> {
 
     public componentDidUpdate(prevProps: DraggableProps) {
         const propsWhitelist = { include: REATTACH_PROPS_KEYS };
-        if (this.events && !CoreUtils.shallowCompareKeys(prevProps, this.props, propsWhitelist)) {
+        if (this.events !== undefined && !CoreUtils.shallowCompareKeys(prevProps, this.props, propsWhitelist)) {
             // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
             // eslint-disable-next-line react/no-find-dom-node
             this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, this.props);
@@ -80,7 +80,7 @@ export class Draggable extends React.PureComponent<DraggableProps> {
     }
 
     public componentWillUnmount() {
-        this.events.detach();
+        this.events?.detach();
         delete this.events;
     }
 }

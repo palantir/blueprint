@@ -12,10 +12,11 @@ const fs = require("fs");
 const path = require("path");
 const semver = require("semver");
 
+
 const docsUtils = require("./docsUtils");
 
 // this is defined in core by webpack.DefinePlugin, but we aren't running webpack here
-const NS = "bp4";
+const NS = "bp5";
 
 // assume we are running from packages/docs-app
 const ROOT_DIR = path.resolve(process.cwd(), "../../");

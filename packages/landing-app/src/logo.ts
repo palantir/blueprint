@@ -970,7 +970,7 @@ export class SceneRenderer extends CanvasRenderer {
         // composite overlays
         if (face.overlays != null) {
             Object.keys(face.overlays).forEach(operation => {
-                this.ctx.globalCompositeOperation = operation;
+                this.ctx.globalCompositeOperation = operation as GlobalCompositeOperation;
                 this.ctx.fillStyle = face.overlays[operation];
                 this.ctx.fill();
             });
