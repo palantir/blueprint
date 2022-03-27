@@ -574,11 +574,13 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             );
 
         const didColumnWidthsChange =
-            this.props.columnWidths !== undefined &&
-            !Utils.compareSparseArrays(this.props.columnWidths, prevState.columnWidths);
+            this.props.columnWidths !== undefined
+                ? !Utils.compareSparseArrays(this.props.columnWidths, prevState.columnWidths)
+                : !Utils.compareSparseArrays(this.state.columnWidths, prevState.columnWidths);
         const didRowHeightsChange =
-            this.props.rowHeights !== undefined &&
-            !Utils.compareSparseArrays(this.props.rowHeights, prevState.rowHeights);
+            this.props.rowHeights !== undefined
+                ? !Utils.compareSparseArrays(this.props.rowHeights, prevState.rowHeights)
+                : !Utils.compareSparseArrays(this.state.rowHeights, prevState.rowHeights);
 
         const shouldInvalidateGrid =
             didChildrenChange ||
