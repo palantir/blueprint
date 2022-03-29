@@ -3,7 +3,6 @@
  */
 
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const path = require("path");
 const webpack = require("webpack");
 
 /**
@@ -28,11 +27,11 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                use: "source-map-loader",
+                use: require.resolve("source-map-loader"),
             },
             {
                 test: /\.tsx?$/,
-                loader: "ts-loader",
+                loader: require.resolve("ts-loader"),
                 options: {
                     configFile: "test/tsconfig.json",
                     transpileOnly: true,
@@ -45,7 +44,7 @@ module.exports = {
             {
                 enforce: "post",
                 test: /src\/.*\.tsx?$/,
-                loader: "istanbul-instrumenter-loader",
+                loader: require.resolve("istanbul-instrumenter-loader"),
                 options: {
                     esModules: true,
                 },
