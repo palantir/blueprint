@@ -213,8 +213,23 @@ jobs:
       - store_artifacts: { path: packages/table-dev-app/dist }
       - store_artifacts: { path: packages/demo-app/dist }
       - run:
+          name: Get artifacts
+          when: on_fail
+          command: |
+            artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" \
+            -H "Accept: application/json" \
+            -u "$CIRCLE_AUTH_TOKEN:")
+            # generate a heredoc in BASH_ENV
+            # the '\<<' is a CircleCI escape
+            echo "read -r -d '' STORED_ARTIFACTS \<< 'EOF_ARTIFACTS'" >> $BASH_ENV
+            echo "$artifacts" >> $BASH_ENV
+            echo "EOF_ARTIFACTS" >> $BASH_ENV
+      - run:
           name: Submit Github comment with links to built artifacts
-          command: node ./scripts/preview.js
+          command: |
+            artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" -H "Accept: application/json" -u "$CIRCLE_AUTH_TOKEN:")
+            echo $artifacts > ./scripts/artifacts.json
+            node ./scripts/preview.js
 
   deploy-npm:
     docker: *docker-node-lts
