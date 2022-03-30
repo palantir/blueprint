@@ -13,8 +13,9 @@
  * limitations under the License.
  */
 
-const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
 const path = require("path");
+
+const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
