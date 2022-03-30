@@ -7,10 +7,11 @@
 // show the results of the code change being applied.
 
 const bot = require("circle-github-bot").create();
-const yargs = require("yargs").usage("$0 <artifacts-base-url>").help();
 
-const args = yargs.argv;
-const artifactsBaseUrl = args._[0];
+/**
+ * @type {Array<{path: string; url: string;}>}
+ */
+const artifacts = require("./artifacts.json").items;
 
 const ARTIFACTS = {
     documentation: "packages/docs-app/dist/index.html",
@@ -21,11 +22,11 @@ const ARTIFACTS = {
 
 if (!process.env.GH_AUTH_TOKEN) {
     // simply log artifact URLs if auth token is missed (typical on forks)
-    Object.keys(ARTIFACTS).forEach(path => console.info(`${ARTIFACTS[path]}: ${getArtifactUrl(path)}`));
+    Object.keys(ARTIFACTS).forEach(package => console.info(`${ARTIFACTS[package]}: ${getArtifactAnchorLink(package)}`));
     process.exit();
 }
 
-const links = Object.keys(ARTIFACTS).map(getArtifactUrl).join(" | ");
+const links = Object.keys(ARTIFACTS).map(getArtifactAnchorLink).join(" | ");
 bot.comment(
     process.env.GH_AUTH_TOKEN,
     `
@@ -34,6 +35,7 @@ Previews: <strong>${links}</strong>
 `,
 );
 
-function getArtifactUrl(path) {
-    return `${artifactsBaseUrl}/0/${ARTIFACTS[path]}`;
+function getArtifactAnchorLink(package) {
+    const artifactInfo = artifacts.find(a => a.path === ARTIFACTS[package]);
+    return `<a href="${artifactInfo.url}">${package}</a>`;
 }
