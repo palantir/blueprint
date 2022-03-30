@@ -7,6 +7,10 @@
 // show the results of the code change being applied.
 
 const bot = require("circle-github-bot").create();
+const yargs = require("yargs").usage("$0 <artifacts-base-url>").help();
+
+const args = yargs.argv;
+const artifactsBaseUrl = args._[0];
 
 const ARTIFACTS = {
     documentation: "packages/docs-app/dist/index.html",
@@ -31,5 +35,5 @@ Previews: <strong>${links}</strong>
 );
 
 function getArtifactUrl(path) {
-    return `${process.env.STORED_ARTIFACTS}/0/${ARTIFACTS[path]}`;
+    return `${artifactsBaseUrl}/0/${ARTIFACTS[path]}`;
 }
