@@ -51,7 +51,10 @@ module.exports = {
             },
             {
                 test: /\.(eot|ttf|woff|woff2|svg|png)$/,
-                loader: require.resolve("file-loader"),
+                type: "asset/resource",
+                generator: {
+                    filename: "assets/[hash][ext][query]",
+                },
             },
         ],
     },

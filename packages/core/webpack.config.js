@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
 const path = require("path");
+
+const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
@@ -28,6 +29,6 @@ module.exports = Object.assign({}, baseConfig, {
         filename: "[name].bundle.js",
         library: ["Blueprint", "Core"],
         libraryTarget: "umd",
-        path: path.resolve(__dirname, "./dist")
+        path: path.resolve(__dirname, "./dist"),
     },
 });
