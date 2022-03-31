@@ -140,11 +140,11 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - run:
-          name: Install Chrome browser
+          name: Verify Chrome browser installed
           command: |
-            browser-tools/install-chrome
-            browser-tools/install-chromedriver
             google-chrome --version
             chromedriver --version
       - run: mkdir -p ./reports
