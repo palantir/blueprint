@@ -19,7 +19,7 @@ module.exports = {
         fallback: {
             assert: require.resolve("assert/"),
             buffer: false,
-            stream: false,
+            stream: require.resolve("stream-browserify"),
         },
     },
 

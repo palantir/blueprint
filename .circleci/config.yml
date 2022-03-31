@@ -1,11 +1,14 @@
-version: 2
+version: 2.1
+
+orbs:
+  browser-tools: circleci/browser-tools@1.2.5
 
 aliases:
-  - &docker-node-lts
-    - image: circleci/node:12
+  - &docker-node-image
+    - image: cimg/node:12.22
 
-  - &docker-node-browsers
-    - image: circleci/node:12-browsers
+  - &docker-node-browsers-image
+    - image: cimg/node:12.22-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -35,7 +38,7 @@ references:
 
 jobs:
   checkout-code:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     steps:
       - checkout
       - restore_cache: *restore-yarn-cache
@@ -51,14 +54,14 @@ jobs:
           paths: [packages/*/node_modules]
 
   clean-lockfile:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - run: ./scripts/verifyCleanLockfile.sh
 
   compile:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     resource_class: large
     steps:
       - checkout
@@ -70,7 +73,7 @@ jobs:
           paths: [packages/*/lib, packages/*/src/generated]
 
   format-check:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     environment:
       JUNIT_REPORT_PATH: reports
       NODE_ENV: test
@@ -81,7 +84,7 @@ jobs:
       - run: yarn format-check
 
   lint:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     resource_class: large
     environment:
       JUNIT_REPORT_PATH: reports
@@ -97,7 +100,7 @@ jobs:
       - store_artifacts: { path: ./reports }
 
   dist:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     resource_class: large
     steps:
       - checkout
@@ -109,7 +112,7 @@ jobs:
           paths: [packages/*/lib, packages/*/dist]
 
   test-node-libs:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     environment:
       JUNIT_REPORT_PATH: reports
     parallelism: 2
@@ -129,7 +132,7 @@ jobs:
       - store_artifacts: { path: ./reports }
 
   test-react-16: &test-react
-    docker: *docker-node-browsers
+    docker: *docker-node-browsers-image
     environment:
       JUNIT_REPORT_PATH: reports
     parallelism: 7
@@ -137,6 +140,13 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - run:
+          name: Verify Chrome browser installed
+          command: |
+            google-chrome --version
+            chromedriver --version
       - run: mkdir -p ./reports
       - run:
           # split karma tests into containers because they can take up a lot of memory
@@ -157,7 +167,7 @@ jobs:
       - store_artifacts: { path: ./reports }
 
   test-iso-react-16: &test-iso
-    docker: *docker-node-lts
+    docker: *docker-node-image
     environment:
       JUNIT_REPORT_PATH: reports
     steps:
@@ -170,7 +180,7 @@ jobs:
       - store_artifacts: { path: ./reports }
 
   deploy-preview:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
@@ -199,7 +209,7 @@ jobs:
             node ./scripts/preview.js
 
   deploy-npm:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
