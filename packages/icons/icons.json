@@ -3836,15 +3836,15 @@
         "codepoint": 62244
     },
     {
-        "displayName": "Card height",
-        "iconName": "card-height",
+        "displayName": "Rectangle height",
+        "iconName": "rectangle-height",
         "tags": "card, height, vertical, expand",
         "group": "interface",
         "codepoint": 62245
     },
     {
-        "displayName": "Card width",
-        "iconName": "card-width",
+        "displayName": "Rectangle width",
+        "iconName": "rectangle-width",
         "tags": "card, width, horizontal, expand",
         "group": "interface",
         "codepoint": 62246
@@ -3858,7 +3858,7 @@
     },
     {
         "displayName": "Color fill",
-        "iconName": "fill",
+        "iconName": "color-fill",
         "tags": "bucket, color, fill",
         "group": "interface",
         "codepoint": 62248
