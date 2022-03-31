@@ -1,4 +1,7 @@
-version: 2
+version: 2.1
+
+orbs:
+  browser-tools: circleci/browser-tools@1.2.5
 
 aliases:
   - &docker-node-lts
@@ -8,6 +11,14 @@ aliases:
     - image: cimg/node:12.22-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
+      steps:
+        - browser-tools/install-chrome
+        - browser-tools/install-chromedriver
+        - run:
+            name: Verify Chrome browser install
+            command: |
+              google-chrome --version
+              chromedriver --version
 
   - &restore-node-modules-cache
     name: Restore node_modules cache
