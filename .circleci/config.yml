@@ -11,14 +11,6 @@ aliases:
     - image: cimg/node:12.22-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
-      steps:
-        - browser-tools/install-chrome
-        - browser-tools/install-chromedriver
-        - run:
-            name: Verify Chrome browser install
-            command: |
-              google-chrome --version
-              chromedriver --version
 
   - &restore-node-modules-cache
     name: Restore node_modules cache
@@ -148,6 +140,13 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run:
+          name: Install Chrome browser
+          command: |
+            browser-tools/install-chrome
+            browser-tools/install-chromedriver
+            google-chrome --version
+            chromedriver --version
       - run: mkdir -p ./reports
       - run:
           # split karma tests into containers because they can take up a lot of memory
