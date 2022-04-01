@@ -22,7 +22,6 @@
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^2.0.1",
-        "@types/stylelint": "^14.0.0",
         "mocha": "^9.2.2",
         "typescript": "^4.6.2"
     },

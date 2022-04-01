@@ -13,14 +13,14 @@
  * limitations under the License.
  */
 
-import postcss, { Root } from "postcss";
-import type { RuleTesterContext } from "stylelint";
+import postcss, { AtRule, Comment, Root } from "postcss";
+import type { PluginContext } from "stylelint";
 
 /**
  * Adds an import statement to the file. The import is inserted below the existing imports, and if there are
  * no imports present then it's inserted at the top of the file (but below any copyright headers).
  */
-export function insertImport(root: Root, context: RuleTesterContext, importPath: string): void {
+export function insertImport(root: Root, context: PluginContext, importPath: string): void {
     const newline: string = (context as any).newline || "\n";
     const ruleOrComment = getLastImport(root) || getCopyrightHeader(root);
     if (ruleOrComment != null) {
@@ -59,8 +59,8 @@ export function insertImport(root: Root, context: RuleTesterContext, importPath:
 /**
  * Returns the last import node in the file, or undefined if one does not exist
  */
-function getLastImport(root: Root): postcss.AtRule | undefined {
-    let lastImport: postcss.AtRule | undefined;
+function getLastImport(root: Root): AtRule | undefined {
+    let lastImport: AtRule | undefined;
     root.walkAtRules(/^import$/i, atRule => {
         lastImport = atRule;
     });
@@ -70,14 +70,14 @@ function getLastImport(root: Root): postcss.AtRule | undefined {
 /**
  * Returns the first copyright header in the file, or undefined if one does not exist
  */
-function getCopyrightHeader(root: Root): postcss.Comment | undefined {
-    let copyrightComment: postcss.Comment | undefined;
+function getCopyrightHeader(root: Root): Comment | undefined {
+    let copyrightComment: Comment | undefined;
     root.walkComments(comment => {
         if (comment.text.toLowerCase().includes("copyright")) {
             copyrightComment = comment;
             return false; // Stop the iteration
         }
-        return true;
+        return;
     });
     return copyrightComment;
 }
