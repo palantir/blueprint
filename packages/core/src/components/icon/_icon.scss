@@ -34,7 +34,7 @@ $icon-classes: (
 
     // inherit text color unless explicit fill is set
     &:not([fill]) {
-      fill: currentColor;
+      fill: currentcolor;
     }
   }
 }
