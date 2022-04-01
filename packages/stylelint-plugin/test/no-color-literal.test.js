@@ -18,6 +18,7 @@ const { expect } = require("chai");
 const stylelint = require("stylelint");
 
 const config = {
+    customSyntax: "postcss-scss",
     plugins: ["@blueprintjs/stylelint-plugin"],
     rules: {
         "@blueprintjs/no-color-literal": true,
@@ -33,8 +34,8 @@ describe("no-color-literal", () => {
         expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
         expect(warnings).lengthOf(1);
-        expect(warnings[0].line).to.be.eq(2);
-        expect(warnings[0].column).to.be.eq(10);
+        expect(warnings[0].line).to.be.eq(2, "line number");
+        expect(warnings[0].column).to.be.eq(10, "col number");
     });
 
     it("Warns when blueprint color literal is used (2)", async () => {
@@ -45,8 +46,8 @@ describe("no-color-literal", () => {
         expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
         expect(warnings).lengthOf(1);
-        expect(warnings[0].line).to.be.eq(5);
-        expect(warnings[0].column).to.be.eq(21);
+        expect(warnings[0].line).to.be.eq(5, "line number");
+        expect(warnings[0].column).to.be.eq(21, "col number");
     });
 
     it("Doesn't warn when non-blueprint color literal is used", async () => {

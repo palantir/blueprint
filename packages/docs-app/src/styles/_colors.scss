@@ -140,7 +140,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
 }
 
 .docs-color-swatch {
-  border: 1px solid rgba($black, $pt-border-shadow-opacity * 2);
+  border: 1px solid rgba($black, $pt-border-shadow-opacity * 200%);
   border-bottom-width: 0;
   border-top-width: 0;
   display: block;

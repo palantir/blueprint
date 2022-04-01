@@ -212,11 +212,11 @@ $dark-selectable-header-menu-selected-hover-background:
   }
 
   &:hover .#{$ns}-icon {
-    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity * 2);
+    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity * 200%);
     color: $pt-icon-color-hover;
 
     .#{$ns}-dark & {
-      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity * 2);
+      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity * 200%);
       color: $pt-dark-icon-color-hover;
     }
   }

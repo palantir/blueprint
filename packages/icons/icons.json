@@ -3834,5 +3834,54 @@
         "tags": "strategy, play, plan, course of action",
         "group": "interface",
         "codepoint": 62244
+    },
+    {
+        "displayName": "Rectangle height",
+        "iconName": "rect-height",
+        "tags": "card, height, vertical, expand",
+        "group": "interface",
+        "codepoint": 62245
+    },
+    {
+        "displayName": "Rectangle width",
+        "iconName": "rect-width",
+        "tags": "card, width, horizontal, expand",
+        "group": "interface",
+        "codepoint": 62246
+    },
+    {
+        "displayName": "Divide",
+        "iconName": "divide",
+        "tags": "math, symbol, divide, mathematical, equations, expression, formula",
+        "group": "action",
+        "codepoint": 62247
+    },
+    {
+        "displayName": "Color fill",
+        "iconName": "color-fill",
+        "tags": "bucket, color, fill",
+        "group": "interface",
+        "codepoint": 62248
+    },
+    {
+        "displayName": "Horizontal space inbetween",
+        "iconName": "horizontal-inbetween",
+        "tags": "space, horizontal, gap, inbetween",
+        "group": "interface",
+        "codepoint": 62249
+    },
+    {
+        "displayName": "Vertical space inbetween",
+        "iconName": "vertical-inbetween",
+        "tags": "space, vertical, gap, inbetween",
+        "group": "interface",
+        "codepoint": 62250
+    },
+    {
+        "displayName": "Open application",
+        "iconName": "open-application",
+        "tags": "open, application, new-tab, external",
+        "group": "interface",
+        "codepoint": 62251
     }
 ]
