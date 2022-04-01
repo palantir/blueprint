@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-app",
-    "version": "3.54.1",
+    "version": "3.54.2",
     "description": "Blueprint Documentation Site",
     "private": true,
     "scripts": {
@@ -17,7 +17,7 @@
     },
     "dependencies": {
         "@blueprintjs/core": "^3.54.0",
-        "@blueprintjs/datetime": "^3.24.0",
+        "@blueprintjs/datetime": "^3.24.1",
         "@blueprintjs/docs-data": "^3.54.1",
         "@blueprintjs/docs-theme": "^3.11.1",
         "@blueprintjs/icons": "^3.33.0",

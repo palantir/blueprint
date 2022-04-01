@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/demo-app",
-    "version": "0.1.10",
+    "version": "0.1.11",
     "description": "Blueprint Demo App",
     "private": true,
     "scripts": {
@@ -17,7 +17,7 @@
     },
     "dependencies": {
         "@blueprintjs/core": "^3.54.0",
-        "@blueprintjs/datetime": "^3.24.0",
+        "@blueprintjs/datetime": "^3.24.1",
         "@blueprintjs/icons": "^3.33.0",
         "@blueprintjs/popover2": "^0.14.0",
         "@blueprintjs/select": "^3.19.1",

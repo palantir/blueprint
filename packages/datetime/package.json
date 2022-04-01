@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/datetime",
-    "version": "3.24.0",
+    "version": "3.24.1",
     "description": "Components for interacting with dates and times",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
