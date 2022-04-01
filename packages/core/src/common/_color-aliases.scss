@@ -22,7 +22,7 @@ $pt-dark-text-color-disabled: rgba($pt-dark-text-color-muted, 0.6) !default;
 $pt-dark-heading-color: $pt-dark-text-color !default;
 $pt-dark-link-color: $blue5 !default;
 // Default text selection color using #7dbcff
-$pt-text-selection-color: rgba(125, 188, 255, 0.6) !default;
+$pt-text-selection-color: rgba(125, 188, 255, 60%) !default;
 
 $pt-icon-color: $pt-text-color-muted !default;
 $pt-icon-color-hover: $pt-text-color !default;

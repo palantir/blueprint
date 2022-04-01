@@ -28,7 +28,7 @@ export function checkImportExists(root: Root, importPath: string | string[]): bo
                 return false; // Stop the iteration
             }
         }
-        return true;
+        return;
     });
     return hasBpVarsImport;
 }

@@ -55,7 +55,7 @@ $tag-round-adjustment: 2px !default;
     color: $pt-text-color;
 
     > #{$icon-classes} {
-      fill: currentColor;
+      fill: currentcolor;
     }
   }
 
@@ -132,12 +132,12 @@ $tag-round-adjustment: 2px !default;
     cursor: pointer;
 
     &:hover {
-      background-color: rgba($background-color, $opacity - 0.15);
+      background-color: rgba($background-color, $opacity - 15%);
     }
 
     &.#{$ns}-active,
     &:active {
-      background-color: rgba($background-color, $opacity - 0.3);
+      background-color: rgba($background-color, $opacity - 30%);
     }
   }
 }
@@ -147,12 +147,12 @@ $tag-round-adjustment: 2px !default;
     cursor: pointer;
 
     &:hover {
-      background-color: rgba($background-color, $opacity + 0.1);
+      background-color: rgba($background-color, $opacity + 10%);
     }
 
     &.#{$ns}-active,
     &:active {
-      background-color: rgba($background-color, $opacity + 0.2);
+      background-color: rgba($background-color, $opacity + 20%);
     }
   }
 }

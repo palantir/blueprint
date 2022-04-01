@@ -138,7 +138,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
 }
 
 .docs-color-swatch {
-  border: 1px solid rgba($black, $pt-border-shadow-opacity * 2);
+  border: 1px solid rgba($black, $pt-border-shadow-opacity * 200%);
   border-bottom-width: 0;
   border-top-width: 0;
   display: block;
@@ -163,7 +163,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
     @include position-all(absolute, $swatch-hover-offset);
     border-radius: $pt-border-radius;
     box-shadow: inset border-shadow($pt-border-shadow-opacity * 2),
-                      0 2px 4px rgba($black, $pt-drop-shadow-opacity / 2),
+                      0 2px 4px rgba($black, $pt-drop-shadow-opacity / 200%),
                       0 8px 24px rgba($black, $pt-drop-shadow-opacity);
     z-index: $pt-z-index-base + 1;
   }
@@ -179,7 +179,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
 
     &:hover .docs-color-swatch-trigger {
       box-shadow: inset border-shadow($pt-dark-border-shadow-opacity, $color: $white),
-                  0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity / 2),
+                  0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity / 200%),
                   0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity);
     }
 

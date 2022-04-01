@@ -18,6 +18,7 @@ const { expect } = require("chai");
 const stylelint = require("stylelint");
 
 const config = {
+    customSyntax: "postcss-scss",
     plugins: ["@blueprintjs/stylelint-plugin"],
     rules: {
         "@blueprintjs/no-prefix-literal": true,
@@ -153,7 +154,7 @@ describe("no-prefix-literal", () => {
                 },
             },
         });
-        expect(result.results[0].invalidOptionWarnings.length).to.be.eq(2);
+        expect(result.results[0].invalidOptionWarnings.length).to.be.eq(1);
     });
 
     it("Works for a double bp3 selector", async () => {

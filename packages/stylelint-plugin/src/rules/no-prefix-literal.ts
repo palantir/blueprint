@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-import { Root, Result } from "postcss";
+import type { Root } from "postcss";
 import selectorParser from "postcss-selector-parser";
 import stylelint from "stylelint";
-import type { Plugin, RuleTesterContext } from "stylelint";
+import type { PluginContext, PostcssResult } from "stylelint";
 
 import { checkImportExists } from "../utils/checkImportExists";
 import {
@@ -32,7 +32,7 @@ import { insertImport } from "../utils/insertImport";
 const ruleName = "@blueprintjs/no-prefix-literal";
 
 const messages = stylelint.utils.ruleMessages(ruleName, {
-    expected: (unfixed: string, fixed: string) => `Use the \`${fixed}\` variable instead of the \`${unfixed}\` literal`,
+    expected: (unfixed: any, fixed: any) => `Use the \`${fixed}\` variable instead of the \`${unfixed}\` literal`,
 });
 
 const bannedPrefixes = ["bp3", "bp4"];
@@ -42,84 +42,83 @@ interface Options {
     variablesImportPath?: Partial<Record<Exclude<CssSyntax, CssSyntax.OTHER>, string>>;
 }
 
-export default stylelint.createPlugin(ruleName, ((
-    enabled: boolean,
-    options: Options | undefined,
-    context: RuleTesterContext,
-) => (root: Root, result: Result) => {
-    if (!enabled) {
-        return;
-    }
+export default stylelint.createPlugin(
+    ruleName,
+    (enabled: boolean, options: Options | undefined, context: PluginContext) => (root: Root, result: PostcssResult) => {
+        if (!enabled) {
+            return;
+        }
 
-    const validOptions = stylelint.utils.validateOptions(
-        result,
-        ruleName,
-        {
-            actual: enabled,
-            optional: false,
-            possible: [true, false],
-        },
-        {
-            actual: options,
-            optional: true,
-            possible: {
-                disableFix: [true, false],
-                variablesImportPath: isCssSyntaxToStringMap,
+        const validOptions = stylelint.utils.validateOptions(
+            result,
+            ruleName,
+            {
+                actual: enabled,
+                optional: false,
+                possible: [true, false],
             },
-        },
-    );
+            {
+                actual: options,
+                optional: true,
+                possible: {
+                    disableFix: [true, false],
+                    variablesImportPath: [isCssSyntaxToStringMap],
+                },
+            },
+        );
 
-    if (!validOptions) {
-        return;
-    }
-
-    const disableFix = options?.disableFix ?? false;
-
-    const cssSyntax = getCssSyntax(root.source?.input.file || "");
-    if (cssSyntax === CssSyntax.OTHER) {
-        return;
-    }
-
-    let hasBpVariablesImport: boolean | undefined; // undefined means not checked yet
-    function assertBpVariablesImportExists(cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS) {
-        const importPath = options?.variablesImportPath?.[cssSyntaxType] ?? BpVariableImportMap[cssSyntaxType];
-        const extension = CssExtensionMap[cssSyntaxType];
-        if (hasBpVariablesImport == null) {
-            hasBpVariablesImport = checkImportExists(root, [importPath, `${importPath}.${extension}`]);
+        if (!validOptions) {
+            return;
         }
-        if (!hasBpVariablesImport) {
-            insertImport(root, context, importPath);
-            hasBpVariablesImport = true;
-        }
-    }
 
-    root.walkRules(rule => {
-        rule.selector = selectorParser(selectors => {
-            selectors.walkClasses(selector => {
-                for (const bannedPrefix of bannedPrefixes) {
-                    if (!selector.value.startsWith(`${bannedPrefix}-`)) {
-                        continue;
+        const disableFix = options?.disableFix ?? false;
+
+        const cssSyntax = getCssSyntax(root.source?.input.file || "");
+        if (cssSyntax === CssSyntax.OTHER) {
+            return;
+        }
+
+        let hasBpVariablesImport: boolean | undefined; // undefined means not checked yet
+        function assertBpVariablesImportExists(cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS) {
+            const importPath = options?.variablesImportPath?.[cssSyntaxType] ?? BpVariableImportMap[cssSyntaxType];
+            const extension = CssExtensionMap[cssSyntaxType];
+            if (hasBpVariablesImport == null) {
+                hasBpVariablesImport = checkImportExists(root, [importPath, `${importPath}.${extension}`]);
+            }
+            if (!hasBpVariablesImport) {
+                insertImport(root, context, importPath);
+                hasBpVariablesImport = true;
+            }
+        }
+
+        root.walkRules(rule => {
+            rule.selector = selectorParser(selectors => {
+                selectors.walkClasses(selector => {
+                    for (const bannedPrefix of bannedPrefixes) {
+                        if (!selector.value.startsWith(`${bannedPrefix}-`)) {
+                            continue;
+                        }
+                        if ((context as any).fix && !disableFix) {
+                            assertBpVariablesImportExists(cssSyntax);
+                            const fixed =
+                                BpPrefixVariableMap[cssSyntax] +
+                                selector.value.substring(bannedPrefix.length, selector.value.length - 1);
+                            // Note - selector.value = "#{$var}" escapes special characters and produces "\#\{\$var\}",
+                            // and to work around that we use selector.toString instead.
+                            selector.toString = () => `.${fixed}`;
+                        } else {
+                            stylelint.utils.report({
+                                // HACKHACK - offset by one because otherwise the error is reported at a wrong position
+                                index: selector.sourceIndex + 1,
+                                message: messages.expected(bannedPrefix, BpPrefixVariableMap[cssSyntax]),
+                                node: rule,
+                                result,
+                                ruleName,
+                            });
+                        }
                     }
-                    if ((context as any).fix && !disableFix) {
-                        assertBpVariablesImportExists(cssSyntax);
-                        const fixed =
-                            BpPrefixVariableMap[cssSyntax] +
-                            selector.value.substring(bannedPrefix.length, selector.value.length - 1);
-                        // Note - selector.value = "#{$var}" escapes special characters and produces "\#\{\$var\}",
-                        // and to work around that we use selector.toString instead.
-                        selector.toString = () => `.${fixed}`;
-                    } else {
-                        stylelint.utils.report({
-                            // HACKHACK - offset by one because otherwise the error is reported at a wrong position
-                            index: selector.sourceIndex + 1,
-                            message: messages.expected(bannedPrefix, BpPrefixVariableMap[cssSyntax]),
-                            node: rule,
-                            result,
-                            ruleName,
-                        });
-                    }
-                }
-            });
-        }).processSync(rule.selector);
-    });
-}) as Plugin);
+                });
+            }).processSync(rule.selector);
+        });
+    },
+);
