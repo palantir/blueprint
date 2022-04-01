@@ -17,11 +17,11 @@
       // keep a trail of hovered items as submenus are opened
       /* stylelint-disable scss/at-extend-no-missing-placeholder */
       &:not([class*="#{$ns}-intent-"]) {
-        @extend .#{$ns}-menu-item:hover;
+        @extend .#{$ns}-menu-item, :hover;
       }
 
       &[class*="#{$ns}-intent-"] {
-        @extend .#{$ns}-menu-item.#{$ns}-selected;
+        @extend .#{$ns}-menu-item, .#{$ns}-selected;
       }
       /* stylelint-enable scss/at-extend-no-missing-placeholder */
     }
