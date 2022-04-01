@@ -1,10 +1,9 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:math";
-
 @import "~@blueprintjs/colors/lib/scss/colors";
 @import "flex";
+@use "sass:math";
 
 // Extended color pallete
 $blue6: #99c4ff;

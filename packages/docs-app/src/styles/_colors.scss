@@ -1,9 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:math";
-
 @import "~@blueprintjs/icons/lib/scss/variables";
+@use "sass:math";
 
 $palette-spacing: $pt-grid-size * 2;
 $palette-border-radius: 4px;
@@ -165,7 +164,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
     @include position-all(absolute, $swatch-hover-offset);
     border-radius: $pt-border-radius;
     box-shadow: inset border-shadow($pt-border-shadow-opacity * 2),
-                      0 2px 4px rgba($black, $pt-drop-shadow-opacity * 0.5),
+                      0 2px 4px rgba($black, $pt-drop-shadow-opacity * 50%),
                       0 8px 24px rgba($black, $pt-drop-shadow-opacity);
     z-index: $pt-z-index-base + 1;
   }
@@ -181,7 +180,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
 
     &:hover .docs-color-swatch-trigger {
       box-shadow: inset border-shadow($pt-dark-border-shadow-opacity, $color: $white),
-                  0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity * 0.5),
+                  0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity * 50%),
                   0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity);
     }
 

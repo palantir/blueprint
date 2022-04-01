@@ -1,10 +1,9 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:math";
-
 @import "color-aliases";
 @import "mixins";
+@use "sass:math";
 
 // Namespace appended to the beginning of each CSS class: `.#{$ns}-button`.
 // Do not quote this value, for Less consumers.
