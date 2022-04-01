@@ -3837,14 +3837,14 @@
     },
     {
         "displayName": "Rectangle height",
-        "iconName": "rectangle-height",
+        "iconName": "rect-height",
         "tags": "card, height, vertical, expand",
         "group": "interface",
         "codepoint": 62245
     },
     {
         "displayName": "Rectangle width",
-        "iconName": "rectangle-width",
+        "iconName": "rect-width",
         "tags": "card, width, horizontal, expand",
         "group": "interface",
         "codepoint": 62246
