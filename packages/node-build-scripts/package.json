@@ -24,8 +24,9 @@
         "postcss": "^8.4.12",
         "postcss-cli": "^9.1.0",
         "postcss-discard-comments": "^5.1.1",
+        "postcss-scss": "^4.0.3",
         "strip-css-comments": "^4.1.0",
-        "stylelint": "~13.13.1",
+        "stylelint": "^14.6.1",
         "stylelint-junit-formatter": "^0.2.2",
         "yargs": "^17.4.0"
     },

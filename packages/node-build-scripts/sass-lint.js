@@ -13,16 +13,14 @@ const { junitReportPath } = require("./utils");
 
 const emitReport = process.env.JUNIT_REPORT_PATH != null;
 
-const options = {
-    configFile: path.resolve(__dirname, "../..", ".stylelintrc"),
-    files: "src/**/*.scss",
-    formatter: emitReport ? require("stylelint-junit-formatter") : "string",
-    syntax: "scss",
-    fix: process.argv.indexOf("--fix") > 0,
-};
-
 stylelint
-    .lint(options)
+    .lint({
+        configFile: path.resolve(__dirname, "../..", ".stylelintrc"),
+        files: "src/**/*.scss",
+        formatter: emitReport ? require("stylelint-junit-formatter") : "string",
+        customSyntax: "postcss-scss",
+        fix: process.argv.indexOf("--fix") > 0,
+    })
     .then(resultObject => {
         if (emitReport) {
             // emit JUnit XML report to <cwd>/<reports>/<pkg>/stylelint.xml when this env variable is set
