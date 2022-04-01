@@ -95,10 +95,10 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
         const shortcutElements = shortcuts.map((shortcut, index) => (
             <MenuItem
                 active={this.props.selectedShortcutIndex === index}
-                className={Classes.POPOVER_DISMISS_OVERRIDE}
                 disabled={!this.isShortcutInRange(shortcut.dateRange)}
                 key={index}
                 onClick={this.getShorcutClickHandler(shortcut, index)}
+                shouldDismissPopover={false}
                 text={shortcut.label}
             />
         ));
