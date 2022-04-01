@@ -339,7 +339,7 @@ Styleguide preformatted
   vertical-align: middle;
 
   #{$icon-classes} {
-    margin-right: $pt-grid-size / 2;
+    margin-right: $pt-grid-size * 0.5;
   }
 
   .#{$ns}-dark & {
@@ -408,13 +408,13 @@ Styleguide lists
   padding-left: $pt-grid-size * 3;
 
   li:not(:last-child) {
-    margin-bottom: $pt-grid-size / 2;
+    margin-bottom: $pt-grid-size * 0.5;
   }
 
   // nested lists
   ol,
   ul {
-    margin-top: $pt-grid-size / 2;
+    margin-top: $pt-grid-size * 0.5;
   }
 }
 

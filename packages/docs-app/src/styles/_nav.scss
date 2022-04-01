@@ -54,7 +54,7 @@ $dark-package-colors: (
   margin-right: $pt-grid-size;
 
   .#{$ns}-tag {
-    margin-left: $pt-grid-size / 2;
+    margin-left: $pt-grid-size * 0.5;
     padding-left: $pt-grid-size;
     vertical-align: middle;
   }
@@ -138,7 +138,7 @@ $dark-package-colors: (
   }
 
   + .docs-nav-menu {
-    margin-bottom: $pt-grid-size / 2;
+    margin-bottom: $pt-grid-size * 0.5;
     margin-left: $pkg-icon-width + $pt-grid-size;
 
     &:empty {
@@ -166,7 +166,7 @@ $dark-package-colors: (
 
   svg {
     height: 1.2em;
-    padding: 0 ($pt-grid-size / 2);
+    padding: 0 ($pt-grid-size * 0.5);
   }
 
   a:not(:hover) {

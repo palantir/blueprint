@@ -77,7 +77,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   .#{$ns}-button {
     @include pt-button-height($input-button-height);
-    margin: ($pt-input-height - $input-button-height) / 2;
+    margin: ($pt-input-height - $input-button-height) * 0.5;
     padding: $button-padding-small;
 
     // icons CSS API support
@@ -105,11 +105,11 @@ $input-button-height-small: $pt-button-height-smaller !default;
   > .#{$ns}-input-left-container > .#{$ns}-icon,
   > .#{$ns}-icon,
   .#{$ns}-input-action > .#{$ns}-spinner {
-    margin: ($pt-input-height - $pt-icon-size-standard) / 2;
+    margin: ($pt-input-height - $pt-icon-size-standard) * 0.5;
   }
 
   .#{$ns}-tag {
-    margin: $pt-grid-size / 2;
+    margin: $pt-grid-size * 0.5;
   }
 
   // all buttons go gray in default state and assume their native colors only when hovered
@@ -154,13 +154,13 @@ $input-button-height-small: $pt-button-height-smaller !default;
   &.#{$ns}-large {
     .#{$ns}-button {
       @include pt-button-height($input-button-height-large);
-      margin: ($pt-input-height-large - $input-button-height-large) / 2;
+      margin: ($pt-input-height-large - $input-button-height-large) * 0.5;
     }
 
     > .#{$ns}-input-left-container > .#{$ns}-icon,
     > .#{$ns}-icon,
     .#{$ns}-input-action > .#{$ns}-spinner {
-      margin: ($pt-input-height-large - $pt-icon-size-standard) / 2;
+      margin: ($pt-input-height-large - $pt-icon-size-standard) * 0.5;
     }
 
     .#{$ns}-input {
@@ -179,18 +179,18 @@ $input-button-height-small: $pt-button-height-smaller !default;
   &.#{$ns}-small {
     .#{$ns}-button {
       @include pt-button-height($pt-button-height-smaller);
-      margin: ($pt-input-height-small - $pt-button-height-smaller) / 2;
+      margin: ($pt-input-height-small - $pt-button-height-smaller) * 0.5;
     }
 
     .#{$ns}-tag {
       @include pt-button-height($pt-button-height-smaller);
-      margin: ($pt-input-height-small - $pt-button-height-smaller) / 2;
+      margin: ($pt-input-height-small - $pt-button-height-smaller) * 0.5;
     }
 
     > .#{$ns}-input-left-container > .#{$ns}-icon,
     > .#{$ns}-icon,
     .#{$ns}-input-action > .#{$ns}-spinner {
-      margin: ($pt-input-height-small - $pt-icon-size-standard) / 2;
+      margin: ($pt-input-height-small - $pt-icon-size-standard) * 0.5;
     }
 
     .#{$ns}-input {

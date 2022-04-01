@@ -13,7 +13,7 @@ $attribute-modifier-color: $violet5;
 
 // title of a section
 .docs-title {
-  margin: $heading-margin 0 ($heading-margin / 2);
+  margin: $heading-margin 0 ($heading-margin * 0.5);
   position: relative;
 
   // first heading (the h1 at the top) needs smaller top margin to avoid extra scrolling

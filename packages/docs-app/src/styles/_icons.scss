@@ -1,6 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:math";
+
 @import "~@blueprintjs/core/src/common/variables";
 
 $svg-icon-size: 36px;
@@ -89,7 +91,7 @@ $icons-per-row: 5;
   padding: ($pt-grid-size * 2) 0;
 
   transition: background-color $hover-transition;
-  width: 100% / $icons-per-row;
+  width: math.div(100%, $icons-per-row);
 
   .docs-icon-svg {
     max-height: $svg-icon-size;

@@ -6,11 +6,11 @@
 @import "../progress-bar/common";
 
 $button-border-width: 1px !default;
-$button-padding: ($pt-grid-size / 2) $pt-grid-size !default;
+$button-padding: ($pt-grid-size * 0.5) $pt-grid-size !default;
 $button-padding-small: 0 ($pt-grid-size * 0.7) !default;
-$button-padding-large: ($pt-grid-size / 2) ($pt-grid-size * 1.5) !default;
-$button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
-$button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
+$button-padding-large: ($pt-grid-size * 0.5) ($pt-grid-size * 1.5) !default;
+$button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
+$button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
 
 /*
 CSS `border` property issues:
@@ -442,7 +442,7 @@ $button-intents: (
   $divider-height: $pt-grid-size * 2;
   background: $pt-divider-black;
 
-  margin: ($pt-button-height - $divider-height) / 2;
+  margin: ($pt-button-height - $divider-height) * 0.5;
   width: $minimal-button-divider-width;
 
   .#{$ns}-dark & {

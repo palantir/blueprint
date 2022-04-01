@@ -133,7 +133,7 @@ $dark-drawer-background-color: $dark-gray4 !default;
   display: flex;
   flex: 0 0 auto;
   min-height: $pt-icon-size-large + $drawer-padding;
-  padding: $drawer-padding / 4;
+  padding: $drawer-padding * 0.25;
   padding-left: $drawer-padding;
   position: relative;
 
@@ -141,7 +141,7 @@ $dark-drawer-background-color: $dark-gray4 !default;
   .#{$ns}-icon {
     color: $pt-icon-color;
     flex: 0 0 auto;
-    margin-right: $drawer-padding / 2;
+    margin-right: $drawer-padding * 0.5;
   }
 
   .#{$ns}-heading {
@@ -174,7 +174,7 @@ $dark-drawer-background-color: $dark-gray4 !default;
 .#{$ns}-drawer-footer {
   box-shadow: inset 0 1px 0 $pt-divider-black;
   flex: 0 0 auto;
-  padding: $drawer-padding/2 $drawer-padding;
+  padding: $drawer-padding*0.5 $drawer-padding;
   position: relative;
 
   .#{$ns}-dark & {

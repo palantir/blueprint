@@ -20,12 +20,12 @@
   &::before {
     content: "=";
     display: inline-block;
-    margin: 0 ($pt-grid-size / 2);
+    margin: 0 ($pt-grid-size * 0.5);
   }
 }
 
 .docs-prop-description {
-  margin-top: $pt-grid-size / 2;
+  margin-top: $pt-grid-size * 0.5;
 
   p:last-child {
     margin: 0;
@@ -37,14 +37,14 @@
 
   .#{$ns}-tag {
     margin-right: $pt-grid-size;
-    margin-top: $pt-grid-size / 2;
+    margin-top: $pt-grid-size * 0.5;
   }
 }
 
 .docs-prop-name code::after {
   @include pt-icon();
   line-height: small;
-  margin-left: $pt-grid-size / 2;
+  margin-left: $pt-grid-size * 0.5;
   vertical-align: middle;
 }
 
@@ -124,5 +124,5 @@
 // modifiers table parent
 .docs-modifiers {
   margin-bottom: $heading-margin;
-  margin-top: $heading-margin / 2;
+  margin-top: $heading-margin * 0.5;
 }

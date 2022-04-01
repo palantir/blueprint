@@ -123,7 +123,7 @@ Styleguide button
   // if loading, then it contains exactly [spinner, icon]
   .#{$ns}-spinner + .#{$ns}-icon:last-child {
     // center icon horizontally. this works for large buttons too.
-    margin: 0 (-($pt-button-height - $pt-icon-size-standard) / 2);
+    margin: 0 (-($pt-button-height - $pt-icon-size-standard) * 0.5);
   }
 
   // dark theme
