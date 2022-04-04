@@ -1,7 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-$half-grid-size: $pt-grid-size / 2 !default;
+$half-grid-size: $pt-grid-size * 0.5 !default;
 
 $menu-item-border-radius: $pt-border-radius - 1 !default;
 
@@ -15,11 +15,11 @@ $menu-item-line-height: round($pt-font-size * $menu-item-line-height-factor);
 $menu-item-line-height-large: round($pt-font-size-large * $menu-item-line-height-factor);
 
 $menu-min-width: $pt-grid-size * 18 !default;
-$menu-item-padding: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
-$menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
-$menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) / 2 !default;
+$menu-item-padding: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
+$menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
+$menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 !default;
 $menu-item-padding-vertical-large:
-  ($pt-button-height-large - $menu-item-line-height-large) / 2 !default;
+  ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
 
 $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray4 !default;
@@ -74,14 +74,11 @@ $dark-menu-item-intent-colors: (
 
   &::before,
   .#{$ns}-submenu-icon {
-    margin-top: ($menu-item-line-height - $pt-icon-size-standard) / 2;
+    margin-top: ($menu-item-line-height - $pt-icon-size-standard) * 0.5;
   }
 
   &:hover {
-    background-color: $menu-item-color-hover;
-    color: inherit;
-    cursor: pointer;
-    text-decoration: none;
+    @include menu-item-hover();
   }
 
   &:active,
@@ -97,31 +94,7 @@ $dark-menu-item-intent-colors: (
     &,
     &:hover,
     &:active {
-      background-color: rgba(nth(map-get($menu-item-intent-colors, "primary"), 1), 0.1);
-      color: nth(map-get($menu-item-intent-colors, "primary"), 2);
-
-      &::before,
-      .#{$ns}-menu-item-icon,
-      .#{$ns}-submenu-icon {
-        color: nth(map-get($menu-item-intent-colors, "primary"), 2);
-      }
-
-      .#{$ns}-menu-item-label {
-        color: inherit;
-      }
-
-      @each $intent in ("success", "warning", "danger") {
-        &.#{$ns}-intent-#{$intent} {
-          background-color: rgba(nth(map-get($menu-item-intent-colors, $intent), 1), 0.1);
-          color: nth(map-get($menu-item-intent-colors, $intent), 2);
-
-          &::before,
-          .#{$ns}-menu-item-icon,
-          .#{$ns}-submenu-icon {
-            color: inherit;
-          }
-        }
-      }
+      @include menu-item-selected-active(false);
     }
   }
 
@@ -161,13 +134,7 @@ $dark-menu-item-intent-colors: (
   }
 
   &:hover {
-    color: inherit;
-
-    // need to override typography styles here
-    .#{$ns}-menu-item-icon,
-    .#{$ns}-submenu-icon {
-      color: $pt-dark-icon-color;
-    }
+    @include dark-menu-item-hover();
   }
 
   &:active,
@@ -181,27 +148,7 @@ $dark-menu-item-intent-colors: (
     &,
     &:hover,
     &:active {
-      background-color: rgba(nth(map-get($dark-menu-item-intent-colors, "primary"), 1), 0.2);
-      color: nth(map-get($dark-menu-item-intent-colors, "primary"), 2);
-
-      &::before,
-      .#{$ns}-menu-item-icon,
-      .#{$ns}-submenu-icon {
-        color: nth(map-get($dark-menu-item-intent-colors, "primary"), 2);
-      }
-
-      @each $intent in ("success", "warning", "danger") {
-        &.#{$ns}-intent-#{$intent} {
-          background-color: rgba(nth(map-get($dark-menu-item-intent-colors, $intent), 1), 0.2);
-          color: nth(map-get($dark-menu-item-intent-colors, $intent), 2);
-
-          &::before,
-          .#{$ns}-menu-item-icon,
-          .#{$ns}-submenu-icon {
-            color: inherit;
-          }
-        }
-      }
+      @include menu-item-selected-active(true);
     }
   }
 
@@ -221,6 +168,67 @@ $dark-menu-item-intent-colors: (
     }
   }
   /* stylelint-enable declaration-no-important */
+}
+
+@mixin menu-item-hover() {
+  background-color: $menu-item-color-hover;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+
+  &.#{ns}-selected {
+    @include menu-item-selected-active(false);
+  }
+}
+
+@mixin dark-menu-item-hover() {
+  color: inherit;
+
+  // need to override typography styles here
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-submenu-icon {
+    color: $pt-dark-icon-color;
+  }
+
+  &.#{ns}-selected {
+    @include menu-item-selected-active(true);
+  }
+}
+
+@mixin menu-item-selected-active($is-dark) {
+  $intent-colors: $menu-item-intent-colors;
+  $background-alpha: 0.1;
+
+  @if $is-dark {
+    $intent-colors: $dark-menu-item-intent-colors;
+    $background-alpha: 0.2;
+  } @else {
+    .#{$ns}-menu-item-label {
+      color: inherit;
+    }
+  }
+
+  background-color: rgba(nth(map-get($intent-colors, "primary"), 1), $background-alpha);
+  color: nth(map-get($intent-colors, "primary"), 2);
+
+  &::before,
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-submenu-icon {
+    color: nth(map-get($intent-colors, "primary"), 2);
+  }
+
+  @each $intent in ("success", "warning", "danger") {
+    &.#{$ns}-intent-#{$intent} {
+      background-color: rgba(nth(map-get($intent-colors, $intent), 1), $background-alpha);
+      color: nth(map-get($intent-colors, $intent), 2);
+
+      &::before,
+      .#{$ns}-menu-item-icon,
+      .#{$ns}-submenu-icon {
+        color: inherit;
+      }
+    }
+  }
 }
 
 @mixin menu-item-intent($intent, $is-dark, $bg-color, $fg-color, $fg-color-active) {
@@ -266,7 +274,7 @@ $dark-menu-item-intent-colors: (
   &::before,
   .#{$ns}-submenu-icon {
     // SVG icons remain standard size when menu is large
-    margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) / 2;
+    margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) * 0.5;
   }
 }
 
@@ -312,7 +320,7 @@ $dark-menu-item-intent-colors: (
 @mixin menu-header-large($heading-selector) {
   #{$heading-selector} {
     font-size: $pt-grid-size * 1.8;
-    padding-bottom: $pt-grid-size / 2;
+    padding-bottom: $pt-grid-size * 0.5;
     padding-top: $pt-grid-size * 1.5;
   }
 

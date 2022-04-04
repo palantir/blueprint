@@ -40,7 +40,7 @@ Styleguide breadcrumbs
       content: "";
       display: block;
       height: $pt-icon-size-standard;
-      margin: 0 ($pt-grid-size / 2);
+      margin: 0 ($pt-grid-size * 0.5);
       width: $pt-icon-size-standard;
     }
 
@@ -74,7 +74,7 @@ Styleguide breadcrumbs
   }
 
   .#{$ns}-icon {
-    margin-right: $pt-grid-size / 2;
+    margin-right: $pt-grid-size * 0.5;
   }
 }
 
@@ -95,7 +95,7 @@ Styleguide breadcrumbs
   border-radius: $pt-border-radius;
   cursor: pointer;
   margin-right: 2px;
-  padding: 1px ($pt-grid-size / 2);
+  padding: 1px ($pt-grid-size * 0.5);
   vertical-align: text-bottom;
 
   &::before {

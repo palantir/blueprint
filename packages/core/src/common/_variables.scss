@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:math";
 @import "color-aliases";
 @import "mixins";
 
@@ -44,11 +45,11 @@ $pt-font-size-large: $pt-grid-size * 1.6 !default;
 $pt-font-size-small: $pt-grid-size * 1.2 !default;
 
 // a little bit extra to ensure the height comes out to just over 18px (and browser rounds to 18px)
-$pt-line-height: ($pt-grid-size * 1.8) / $pt-font-size + 0.0001 !default;
+$pt-line-height: math.div($pt-grid-size * 1.8, $pt-font-size) + 0.0001 !default;
 
 // Grids & dimensions
 
-$pt-border-radius: floor($pt-grid-size / 3) !default;
+$pt-border-radius: floor(math.div($pt-grid-size, 3)) !default;
 
 // Buttons
 $pt-button-height: $pt-grid-size * 3 !default;

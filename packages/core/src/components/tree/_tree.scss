@@ -42,7 +42,7 @@ Styleguide tree
 */
 
 $tree-row-height: $pt-grid-size * 3 !default;
-$tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
+$tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
 
 .#{$ns}-tree {
   #{$icon-classes} {
@@ -80,7 +80,7 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   align-items: center;
   display: flex;
   height: $tree-row-height;
-  padding-right: $pt-grid-size / 2;
+  padding-right: $pt-grid-size * 0.5;
   width: 100%;
 
   &:hover {
@@ -128,7 +128,7 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 }
 
 .#{$ns}-tree-node-secondary-label {
-  padding: 0 ($pt-grid-size / 2);
+  padding: 0 ($pt-grid-size * 0.5);
   user-select: none;
 
   .#{$ns}-popover-wrapper,

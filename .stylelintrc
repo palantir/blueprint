@@ -18,6 +18,9 @@
       100,
       { "ignore": ["comments"] }
     ],
+    "no-invalid-position-at-import-rule": [true, {
+        "ignoreAtRules": ["use"]
+    }],
     "selector-max-universal": 1
   }
 }

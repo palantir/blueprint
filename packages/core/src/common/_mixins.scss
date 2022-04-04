@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:math";
 @import "~@blueprintjs/colors/lib/scss/colors";
 @import "flex";
 
@@ -91,7 +92,7 @@ $pt-dark-intent-text-colors: (
 // default line-height is that of base typography, 18px assuming 14px font-size.
 
 @function centered-text($height, $line-height: floor($pt-font-size * $pt-line-height)) {
-  @return floor(($height - $line-height) / 2);
+  @return floor(($height - $line-height) * 0.5);
 }
 
 // Removes the unit from a Sass numeric value (if present): `strip-unit(12px) => 12`
@@ -99,7 +100,7 @@ $pt-dark-intent-text-colors: (
 
 @function strip-unit($number) {
   @if type-of($number) == "number" and not unitless($number) {
-    @return $number / ($number * 0 + 1);
+    @return math.div($number, $number * 0 + 1);
   }
 
   @return $number;

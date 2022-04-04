@@ -24,8 +24,8 @@ Styleguide file-input
 
 $file-input-button-width: $pt-grid-size * 7 !default;
 $file-input-button-width-large: $pt-grid-size * 8.5 !default;
-$file-input-button-padding: ($pt-input-height - $pt-button-height-small) / 2 !default;
-$file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) / 2 !default;
+$file-input-button-padding: ($pt-input-height - $pt-button-height-small) * 0.5 !default;
+$file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) * 0.5 !default;
 
 .#{$ns}-file-input {
   cursor: pointer;

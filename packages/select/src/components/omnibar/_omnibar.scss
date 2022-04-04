@@ -25,8 +25,8 @@ $omnibar-input-height: $pt-grid-size * 4;
   background-color: $white;
   border-radius: $pt-border-radius;
   box-shadow: $pt-elevation-shadow-4;
-  left: calc(50% - #{$omnibar-width / 2});
-  top: (100 - $omnibar-height) / 2;
+  left: calc(50% - #{$omnibar-width * 0.5});
+  top: (100 - $omnibar-height) * 0.5;
   width: $omnibar-width;
   z-index: $pt-z-index-overlay + 1;
 

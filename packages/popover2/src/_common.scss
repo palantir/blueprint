@@ -1,6 +1,7 @@
 // Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:math";
 @import "~@blueprintjs/colors/lib/scss/colors";
 @import "~@blueprintjs/core/src/common/variables";
 @import "~@blueprintjs/core/src/common/react-transition";
@@ -18,7 +19,7 @@ $pt-dark-tooltip2-box-shadow: $pt-dark-popover-box-shadow !default;
 @mixin popover2-sizing($arrow-square-size, $arrow-offset, $arrow-target-offset) {
   // since this is a 45-45-90 triangle, half hypotenuse === side * sqrt(2) / 2 === side / sqrt(2)
   // fun fact: there's no built-in square root function in SASS
-  $arrow-diagonal-half-size: $arrow-square-size / 1.41421356;
+  $arrow-diagonal-half-size: math.div($arrow-square-size, 1.41421356);
   // we want the margin to be the size of the part of the arrow that is showing plus
   // a little extra space.
   $content-margin: floor($arrow-diagonal-half-size + $arrow-target-offset);

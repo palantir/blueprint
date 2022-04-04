@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:math";
 @import "../../common/mixins";
 @import "../../common/variables";
 @import "../button/common";
@@ -391,7 +392,7 @@ $control-indicator-spacing: $pt-grid-size !default;
       $switch-checked-indicator-background-color-disabled
     );
     // convert em variable to px value
-    @include indicator-position($switch-width / 1em * $control-indicator-size);
+    @include indicator-position(math.div($switch-width, 1em) * $control-indicator-size);
 
     .#{$ns}-control-indicator {
       border: none;
@@ -422,7 +423,7 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     &.#{$ns}-large {
-      @include indicator-position($switch-width / 1em * $control-indicator-size-large);
+      @include indicator-position(math.div($switch-width, 1em) * $control-indicator-size-large);
     }
 
     .#{$ns}-dark & {

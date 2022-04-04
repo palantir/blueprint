@@ -5,10 +5,10 @@
 @import "../forms/common";
 @import "../tag/common";
 
-$tag-input-padding: ($pt-input-height - $tag-height) / 2 !default;
+$tag-input-padding: ($pt-input-height - $tag-height) * 0.5 !default;
 
-$tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2 !default;
-$tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2 !default;
+$tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) * 0.5 !default;
+$tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 0.5 !default;
 
 .#{$ns}-tag-input {
   @include pt-flex-container(row, $fill: ".#{$ns}-tag-input-values");
@@ -76,7 +76,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
 
   .#{$ns}-button,
   .#{$ns}-spinner {
-    margin: ($pt-input-height - $pt-button-height-small) / 2;
+    margin: ($pt-input-height - $pt-button-height-small) * 0.5;
     margin-left: 0;
   }
 
@@ -100,12 +100,12 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
 
     .#{$ns}-button {
       @include pt-button-height-default();
-      margin: ($pt-input-height-large - $pt-button-height) / 2;
+      margin: ($pt-input-height-large - $pt-button-height) * 0.5;
       margin-left: 0;
     }
 
     .#{$ns}-spinner {
-      margin: ($pt-input-height-large - $pt-button-height-small) / 2;
+      margin: ($pt-input-height-large - $pt-button-height-small) * 0.5;
       margin-left: 0;
     }
   }
