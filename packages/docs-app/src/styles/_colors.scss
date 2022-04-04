@@ -40,8 +40,8 @@ $swatch-copied-message: "#{map-get($blueprint-icon-codepoints, "tick")} Copied t
   // override more specific selector above
   /* stylelint-disable declaration-no-important */
   &.docs-clipboard-copied .docs-clipboard-message::after {
-    font-family: $blueprint-icons-16-font;
     content: $swatch-copied-message !important;
+    font-family: $blueprint-icons-16-font, $pt-font-family-monospace, sans-serif;
   }
 
   &.docs-clipboard-copied .docs-clipboard-message[data-copied-message]::after {
