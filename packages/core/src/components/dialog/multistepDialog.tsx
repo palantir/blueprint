@@ -17,13 +17,15 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, Utils } from "../../common";
+import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { Button, ButtonProps } from "../button/buttons";
 import { Dialog, DialogProps } from "./dialog";
 import { DialogStep, DialogStepId, DialogStepProps, DialogStepButtonProps } from "./dialogStep";
 
 type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.ReactNode }>;
+
+export type MultistepDialogNavPosition = typeof Position.TOP | typeof Position.LEFT | typeof Position.RIGHT;
 
 // eslint-disable-next-line deprecation/deprecation
 export type MultistepDialogProps = IMultistepDialogProps;
@@ -44,6 +46,13 @@ export interface IMultistepDialogProps extends DialogProps {
      * Props for the button to display on the final step.
      */
     finalButtonProps?: Partial<ButtonProps>;
+
+    /**
+     * Position of the step navigation within the dialog.
+     *
+     * @default "left"
+     */
+    navigationPosition?: MultistepDialogNavPosition;
 
     /**
      * Props for the next button.
@@ -99,6 +108,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
     public static defaultProps: Partial<MultistepDialogProps> = {
         canOutsideClickClose: true,
         isOpen: false,
+        navigationPosition: "left",
         resetOnClose: true,
         showCloseButtonInFooter: false,
     };
@@ -106,14 +116,31 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
     public state: IMultistepDialogState = this.getInitialIndexFromProps(this.props);
 
     public render() {
-        const { showCloseButtonInFooter, isCloseButtonShown, ...otherProps } = this.props;
+        const {
+            className,
+            navigationPosition,
+            showCloseButtonInFooter,
+            isCloseButtonShown,
+            ...otherProps
+        } = this.props;
 
         // Only one close button should be displayed. If the footer close button
         // is shown, we need to ensure the dialog close button is not displayed.
         const isCloseButtonVisible = !showCloseButtonInFooter && isCloseButtonShown;
 
         return (
-            <Dialog isCloseButtonShown={isCloseButtonVisible} {...otherProps} style={this.getDialogStyle()}>
+            <Dialog
+                isCloseButtonShown={isCloseButtonVisible}
+                {...otherProps}
+                className={classNames(
+                    {
+                        [Classes.MULTISTEP_DIALOG_NAV_RIGHT]: navigationPosition === "right",
+                        [Classes.MULTISTEP_DIALOG_NAV_TOP]: navigationPosition === "top",
+                    },
+                    className,
+                )}
+                style={this.getDialogStyle()}
+            >
                 <div className={Classes.MULTISTEP_DIALOG_PANELS}>
                     {this.renderLeftPanel()}
                     {this.maybeRenderRightPanel()}

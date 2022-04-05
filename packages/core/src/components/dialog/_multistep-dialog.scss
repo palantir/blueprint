@@ -23,6 +23,79 @@ $step-radius: $pt-border-radius * 2 !default;
       border-top-right-radius: $dialog-border-radius;
     }
   }
+
+  .#{$ns}-multistep-dialog-nav-top & {
+    flex-direction: column;
+
+    // Handle case where title it not rendered.
+    &:first-child {
+      .#{$ns}-dialog-step-container:first-child {
+        border-radius: $dialog-border-radius 0 0 0;
+      }
+
+      .#{$ns}-dialog-step-container:last-child {
+        border-radius: 0 $dialog-border-radius 0 0;
+      }
+    }
+
+    .#{$ns}-multistep-dialog-left-panel {
+      flex-direction: row;
+    }
+
+    .#{$ns}-dialog-step-container {
+      flex-grow: 1;
+
+      &:not(:first-child) {
+        border-left: 1px solid $pt-divider-black;
+      }
+
+      .#{$ns}-dark & {
+        border-color: $pt-dark-divider-black;
+      }
+    }
+
+    .#{$ns}-multistep-dialog-right-panel {
+      border-left: none;
+    }
+
+    .#{$ns}-multistep-dialog-right-panel,
+    .#{$ns}-multistep-dialog-footer {
+      border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
+    }
+  }
+
+  .#{$ns}-multistep-dialog-nav-right & {
+    flex-direction: row-reverse;
+
+    // Handle case where title it not rendered.
+    &:first-child {
+      .#{$ns}-multistep-dialog-right-panel {
+        border-radius: $dialog-border-radius 0 0 $dialog-border-radius;
+      }
+
+      .#{$ns}-dialog-step-container:first-child {
+        border-radius: 0 $dialog-border-radius 0 0;
+      }
+    }
+
+    .#{$ns}-multistep-dialog-left-panel {
+      border-radius: 0 0 $dialog-border-radius 0;
+    }
+
+    .#{$ns}-multistep-dialog-right-panel {
+      border-left: none;
+      border-radius: $dialog-border-radius 0 0 $dialog-border-radius;
+      border-right: 1px solid $pt-divider-black;
+
+      .#{$ns}-dark & {
+        border-color: $pt-dark-divider-black;
+      }
+    }
+
+    .#{$ns}-multistep-dialog-footer {
+      border-radius: 0 0 0 $dialog-border-radius;
+    }
+  }
 }
 
 .#{$ns}-multistep-dialog-left-panel {
