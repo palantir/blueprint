@@ -1,7 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/src/icons";
+@import "~@blueprintjs/icons/lib/scss/variables";
 @import "../../common/mixins";
 @import "../../common/react-transition";
 @import "../../common/variables";
@@ -94,14 +94,14 @@ $dialog-padding: $pt-grid-size * 2 !default;
   flex: 0 0 auto;
   min-height: $pt-icon-size-large + $dialog-padding;
   padding-left: $dialog-padding;
-  padding-right: $dialog-padding / 4;
+  padding-right: $dialog-padding * 0.25;
   z-index: 0;
 
   .#{$ns}-icon-large,
   .#{$ns}-icon {
     color: $pt-icon-color;
     flex: 0 0 auto;
-    margin-right: $dialog-padding / 2;
+    margin-right: $dialog-padding * 0.5;
   }
 
   .#{$ns}-heading {

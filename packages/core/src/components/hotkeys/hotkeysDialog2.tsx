@@ -30,7 +30,7 @@ export interface HotkeysDialog2Props extends DialogProps {
      */
     globalGroupName?: string;
 
-    hotkeys: HotkeyConfig[];
+    hotkeys: readonly HotkeyConfig[];
 }
 
 export const HotkeysDialog2: React.FC<HotkeysDialog2Props> = ({ globalGroupName = "Global", hotkeys, ...props }) => {

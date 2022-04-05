@@ -44,7 +44,7 @@
   pointer-events: none;
   position: absolute;
   right: $input-padding-horizontal * 0.7;
-  top: ($pt-button-height - $pt-icon-size-standard) / 2;
+  top: ($pt-button-height - $pt-icon-size-standard) * 0.5;
 
   &.#{$ns}-disabled {
     color: $pt-icon-color-disabled;

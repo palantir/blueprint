@@ -77,7 +77,7 @@ export interface IDocumentationContext {
  * ```tsx
  * export class ContextComponent extends React.PureComponent<IApiLinkProps> {
  *     public static contextTypes = DocumentationContextTypes;
- *     public context: IDocumentationContext;
+ *     public declare context: IDocumentationContext;
  *
  *     public render() {
  *         return this.context.renderBlock(this.props.block);

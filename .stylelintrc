@@ -9,6 +9,7 @@
   "rules": {
     "@blueprintjs/no-prefix-literal": [true, { "disableFix": true }],
     "@blueprintjs/no-color-literal": [true, { "disableFix": true }],
+    "color-function-notation": "legacy",
     "declaration-empty-line-before": null,
     "indentation": [2, {
       "ignore": ["value"]
@@ -17,6 +18,9 @@
       100,
       { "ignore": ["comments"] }
     ],
+    "no-invalid-position-at-import-rule": [true, {
+        "ignoreAtRules": ["use"]
+    }],
     "selector-max-universal": 1
   }
 }

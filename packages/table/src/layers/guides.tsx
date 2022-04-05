@@ -25,12 +25,12 @@ export interface IGuideLayerProps extends Props {
     /**
      *  The left-offset location of the vertical guides
      */
-    verticalGuides?: number[];
+    verticalGuides: number[];
 
     /**
      *  The top-offset location of the horizontal guides
      */
-    horizontalGuides?: number[];
+    horizontalGuides: number[];
 }
 
 export class GuideLayer extends React.Component<IGuideLayerProps> {

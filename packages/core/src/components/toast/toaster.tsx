@@ -17,7 +17,6 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
@@ -108,7 +107,6 @@ export interface IToasterState {
     toasts: IToastOptions[];
 }
 
-@polyfill
 export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState> implements IToaster {
     public static displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
 
@@ -197,6 +195,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
                 hasBackdrop={false}
                 isOpen={this.state.toasts.length > 0 || this.props.children != null}
                 onClose={this.handleClose}
+                shouldReturnFocusOnClose={false}
                 // $pt-transition-duration * 3 + $pt-transition-duration / 2
                 transitionDuration={350}
                 transitionName={Classes.TOAST}

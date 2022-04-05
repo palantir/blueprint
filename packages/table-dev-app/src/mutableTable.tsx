@@ -51,8 +51,8 @@ import {
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
-import { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
-import { IColumnIndices, IRowIndices } from "@blueprintjs/table/src/common/grid";
+import type { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cellTypes";
+import type { ColumnIndices, RowIndices } from "@blueprintjs/table/src/common/grid";
 import { RenderMode } from "@blueprintjs/table/src/common/renderMode";
 
 import { DenseGridMutableStore } from "./denseGridMutableStore";
@@ -197,9 +197,10 @@ function getRandomInteger(min: number, max: number): number {
 function getRandomString(length: number): string {
     let str = "";
     while (str.length < length) {
-        str += Math.random().toString(36).substr(2);
+        const part = Math.random().toString(36);
+        str += part.substring(2, part.length - 1);
     }
-    return str.substr(0, length);
+    return str.substring(0, length - 1);
 }
 
 function contains(arr: any[], value: any) {
@@ -322,8 +323,9 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         table: (ref: Table2) => (this.tableInstance = ref),
     };
 
-    public constructor(props: any, context?: any) {
-        super(props, context);
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    public constructor(props: {}) {
+        super(props);
         this.stateStore = new LocalStore<IMutableTableState>("BP_TABLE_MUTABLE_TABLE_DEV_PREVIEW", true);
         this.state = this.stateStore.getWithDefaults(DEFAULT_STATE);
     }
@@ -914,7 +916,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.maybeLogCallback(`[onCopy] success = ${success}`);
     };
 
-    private onVisibleCellsChange = (rowIndices: IRowIndices, columnIndices: IColumnIndices) => {
+    private onVisibleCellsChange = (rowIndices: RowIndices, columnIndices: ColumnIndices) => {
         const { rowIndexStart, rowIndexEnd } = rowIndices;
         const { columnIndexStart, columnIndexEnd } = columnIndices;
         this.maybeLogCallback(

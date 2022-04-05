@@ -15,7 +15,6 @@ limitations under the License.*/
 import * as React from "react";
 
 import { Intent, Toast } from "@blueprintjs/core";
-import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -33,7 +32,7 @@ export class ToastExample extends React.PureComponent {
                             key={`${intent}-toast`}
                             intent={intent as Intent}
                             message="This is a toast message"
-                            icon={IconNames.INFO_SIGN}
+                            icon="info-sign"
                             timeout={0}
                             action={{ text: "Undo" }}
                             onDismiss={this.onDismiss}

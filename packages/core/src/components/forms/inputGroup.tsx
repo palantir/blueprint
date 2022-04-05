@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, IRef } from "../../common";
 import * as Errors from "../../common/errors";
@@ -188,7 +187,6 @@ export interface IInputGroupState {
     rightElementWidth?: number;
 }
 
-@polyfill
 export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
@@ -269,7 +267,7 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
                 </span>
             );
         } else if (leftIcon != null) {
-            return <Icon icon={leftIcon} />;
+            return <Icon icon={leftIcon} aria-hidden={true} tabIndex={-1} />;
         }
 
         return undefined;

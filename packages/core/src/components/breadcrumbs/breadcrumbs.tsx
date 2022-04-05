@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Boundary, Classes, Props, Position, removeNonHTMLProps } from "../../common";
 import { Menu } from "../menu/menu";
@@ -58,7 +57,7 @@ export interface IBreadcrumbsProps extends Props {
      * All breadcrumbs to display. Breadcrumbs that do not fit in the container
      * will be rendered in an overflow menu instead.
      */
-    items: BreadcrumbProps[];
+    items: readonly BreadcrumbProps[];
 
     /**
      * The minimum number of visible breadcrumbs that should never collapse into
@@ -80,7 +79,6 @@ export interface IBreadcrumbsProps extends Props {
     popoverProps?: IPopoverProps;
 }
 
-@polyfill
 export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
     public static defaultProps: Partial<BreadcrumbsProps> = {
         collapseFrom: Boundary.START,
@@ -102,7 +100,7 @@ export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
         );
     }
 
-    private renderOverflow = (items: BreadcrumbProps[]) => {
+    private renderOverflow = (items: readonly BreadcrumbProps[]) => {
         const { collapseFrom } = this.props;
         const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
         let orderedItems = items;

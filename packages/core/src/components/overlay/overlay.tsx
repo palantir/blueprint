@@ -17,14 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 import { findDOMNode } from "react-dom";
-import { polyfill } from "react-lifecycles-compat";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-// tslint:disable-next-line no-submodule-imports
-import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
-import { isFunction, LifecycleCompatPolyfill } from "../../common/utils";
+import { isFunction } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -199,9 +196,6 @@ export interface IOverlayState {
     hasEverOpened?: boolean;
 }
 
-// HACKHACK: https://github.com/palantir/blueprint/issues/4342
-// eslint-disable-next-line deprecation/deprecation
-@(polyfill as LifecycleCompatPolyfill<OverlayProps, any>)
 export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 
@@ -358,7 +352,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
 
             const isFocusOutsideModal = !this.containerElement.contains(document.activeElement);
             if (isFocusOutsideModal) {
-                this.startFocusTrapElement?.focus();
+                this.startFocusTrapElement?.focus({ preventScroll: true });
                 this.isAutoFocusing = false;
             }
         });
@@ -385,14 +379,8 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             );
         const { onOpening, onOpened, onClosing, transitionDuration, transitionName } = this.props;
 
-        // a breaking change in react-transition-group types requires us to be explicit about the type overload here,
-        // using a technique similar to Select.ofType() in @blueprintjs/select
-        const CSSTransitionImplicit = CSSTransition as new (
-            props: CSSTransitionProps<undefined>,
-        ) => CSSTransition<undefined>;
-
         return (
-            <CSSTransitionImplicit
+            <CSSTransition
                 classNames={transitionName}
                 onEntering={onOpening}
                 onEntered={onOpened}
@@ -402,7 +390,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                 addEndListener={this.handleTransitionAddEnd}
             >
                 {decoratedChild}
-            </CSSTransitionImplicit>
+            </CSSTransition>
         );
     };
 
@@ -470,7 +458,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             this.containerElement!.contains(e.relatedTarget as Element) &&
             e.relatedTarget !== this.endFocusTrapElement
         ) {
-            this.endFocusTrapElement?.focus();
+            this.endFocusTrapElement?.focus({ preventScroll: true });
         }
     };
 
@@ -488,7 +476,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             if (lastFocusableElement != null) {
                 lastFocusableElement.focus();
             } else {
-                this.endFocusTrapElement?.focus();
+                this.endFocusTrapElement?.focus({ preventScroll: true });
             }
         }
     };
@@ -516,7 +504,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             if (!this.isAutoFocusing && firstFocusableElement != null && firstFocusableElement !== e.relatedTarget) {
                 firstFocusableElement.focus();
             } else {
-                this.startFocusTrapElement?.focus();
+                this.startFocusTrapElement?.focus({ preventScroll: true });
             }
         } else {
             const lastFocusableElement = this.getKeyboardFocusableElements().pop();
@@ -524,7 +512,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                 lastFocusableElement.focus();
             } else {
                 // Keeps focus within Overlay even if there are no keyboard-focusable children
-                this.startFocusTrapElement?.focus();
+                this.startFocusTrapElement?.focus({ preventScroll: true });
             }
         }
     };

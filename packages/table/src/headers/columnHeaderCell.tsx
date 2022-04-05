@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
     AbstractPureComponent2,
@@ -83,7 +82,6 @@ export function HorizontalCellDivider(): JSX.Element {
     return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER} />;
 }
 
-@polyfill
 export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellProps, IColumnHeaderCellState> {
     public static defaultProps: IColumnHeaderCellProps = {
         isActive: false,
@@ -108,7 +106,9 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         );
     }
 
-    public context: IColumnInteractionBarContextTypes;
+    public context: IColumnInteractionBarContextTypes = {
+        enableColumnInteractionBar: false,
+    };
 
     public state = {
         isActive: false,
@@ -155,8 +155,8 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
 
         const nameComponent = (
-            <LoadableContent loading={loading} variableLength={true}>
-                {nameRenderer == null ? defaultName : nameRenderer(name, index)}
+            <LoadableContent loading={loading ?? false} variableLength={true}>
+                {nameRenderer?.(name!, index) ?? defaultName}
             </LoadableContent>
         );
 

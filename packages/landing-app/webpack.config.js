@@ -28,7 +28,10 @@ module.exports = Object.assign({}, baseConfig, {
         rules: baseConfig.module.rules.slice(0, 3).concat([
             {
                 test: /^((?!svgs).)*\.(eot|ttf|woff|woff2|svg|png)$/,
-                loader: require.resolve("file-loader"),
+                type: "asset/resource",
+                generator: {
+                    filename: "assets/[hash][ext][query]",
+                },
             },
         ]),
     },

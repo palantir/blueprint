@@ -1,11 +1,14 @@
-version: 2
+version: 2.1
+
+orbs:
+  browser-tools: circleci/browser-tools@1.2.5
 
 aliases:
-  - &docker-node-lts
-    - image: circleci/node:12
+  - &docker-node-image
+    - image: cimg/node:16.14
 
-  - &docker-node-browsers
-    - image: circleci/node:12-browsers
+  - &docker-node-browsers-image
+    - image: cimg/node:16.14-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -35,7 +38,7 @@ references:
 
 jobs:
   checkout-code:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     steps:
       - checkout
       - restore_cache: *restore-yarn-cache
@@ -51,14 +54,14 @@ jobs:
           paths: [packages/*/node_modules]
 
   clean-lockfile:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - run: ./scripts/verifyCleanLockfile.sh
 
   compile:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     resource_class: large
     steps:
       - checkout
@@ -70,7 +73,7 @@ jobs:
           paths: [packages/*/lib, packages/*/src/generated]
 
   format-check:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     environment:
       JUNIT_REPORT_PATH: reports
       NODE_ENV: test
@@ -81,7 +84,7 @@ jobs:
       - run: yarn format-check
 
   lint:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     resource_class: large
     environment:
       JUNIT_REPORT_PATH: reports
@@ -97,7 +100,7 @@ jobs:
       - store_artifacts: { path: ./reports }
 
   dist:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     resource_class: large
     steps:
       - checkout
@@ -109,7 +112,7 @@ jobs:
           paths: [packages/*/lib, packages/*/dist]
 
   test-node-libs:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     environment:
       JUNIT_REPORT_PATH: reports
     parallelism: 2
@@ -129,14 +132,21 @@ jobs:
       - store_artifacts: { path: ./reports }
 
   test-react-16: &test-react
-    docker: *docker-node-browsers
+    docker: *docker-node-browsers-image
     environment:
       JUNIT_REPORT_PATH: reports
-    parallelism: 6
+    parallelism: 7
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - run:
+          name: Verify Chrome browser installed
+          command: |
+            google-chrome --version
+            chromedriver --version
       - run: mkdir -p ./reports
       - run:
           # split karma tests into containers because they can take up a lot of memory
@@ -147,43 +157,17 @@ jobs:
             0) yarn lerna run --parallel test:typeCheck ;; \
             1) yarn lerna run --scope "@blueprintjs/core" test:karma ;; \
             2) yarn lerna run --scope "@blueprintjs/datetime" test:karma ;; \
-            3) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
-            4) yarn lerna run --scope "@blueprintjs/table" test:karma ;; \
-            5) yarn lerna run --scope "@blueprintjs/timezone" test:karma ;; \
-            esac
-          when: always
-      - store_test_results: { path: ./reports }
-      - store_artifacts: { path: ./reports }
-
-  test-react-15:
-    # copy test-react-16 and override environment
-    <<: *test-react
-    environment:
-      JUNIT_REPORT_PATH: reports
-      REACT: 15 # use React 15 for this job
-
-  test-react-16-only:
-    # test packages which only work with React 16
-    docker: *docker-node-browsers
-    environment:
-      JUNIT_REPORT_PATH: reports
-    parallelism: 1
-    steps:
-      - checkout
-      - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: "." }
-      - run: mkdir ./reports
-      - run:
-          command: |
-            case $CIRCLE_NODE_INDEX in \
-            0) yarn lerna run --scope "@blueprintjs/popover2" test:karma ;; \
+            3) yarn lerna run --scope "@blueprintjs/popover2" test:karma ;; \
+            4) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
+            5) yarn lerna run --scope "@blueprintjs/table" test:karma ;; \
+            6) yarn lerna run --scope "@blueprintjs/timezone" test:karma ;; \
             esac
           when: always
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
   test-iso-react-16: &test-iso
-    docker: *docker-node-lts
+    docker: *docker-node-image
     environment:
       JUNIT_REPORT_PATH: reports
     steps:
@@ -195,15 +179,8 @@ jobs:
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
-  test-iso-react-15:
-    # copy test-iso-react-16 and override environment
-    <<: *test-iso
-    environment:
-      JUNIT_REPORT_PATH: reports
-      REACT: 15 # use React 15 for this job
-
   deploy-preview:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
@@ -214,10 +191,13 @@ jobs:
       - store_artifacts: { path: packages/demo-app/dist }
       - run:
           name: Submit Github comment with links to built artifacts
-          command: node ./scripts/preview.js
+          command: |
+            artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" -H "Accept: application/json" -u "$CIRCLE_AUTH_TOKEN:")
+            echo $artifacts > ./scripts/artifacts.json
+            node ./scripts/preview.js
 
   deploy-npm:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
@@ -241,13 +221,7 @@ workflows:
           requires: [compile]
       - test-node-libs:
           requires: [compile]
-      - test-react-15:
-          requires: [compile]
       - test-react-16:
-          requires: [compile]
-      - test-react-16-only:
-          requires: [compile]
-      - test-iso-react-15:
           requires: [compile]
       - test-iso-react-16:
           requires: [compile]
@@ -259,10 +233,7 @@ workflows:
               dist,
               lint,
               test-node-libs,
-              test-react-15,
               test-react-16,
-              test-react-16-only,
-              test-iso-react-15,
               test-iso-react-16,
             ]
           filters:

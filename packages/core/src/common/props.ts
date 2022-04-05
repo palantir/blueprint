@@ -16,12 +16,12 @@
 
 import * as React from "react";
 
-import { IconName } from "@blueprintjs/icons";
+import type { IconName } from "@blueprintjs/icons";
 
 import { Intent } from "./intent";
 import { IRef } from "./refs";
 
-export const DISPLAYNAME_PREFIX = "Blueprint3";
+export const DISPLAYNAME_PREFIX = "Blueprint4";
 
 /**
  * Alias for all valid HTML props for `<div>` element.
@@ -125,7 +125,7 @@ export interface IControlledProps2 {
 export type ControlledProps2 = IControlledProps2;
 
 /**
- * @deprecated will be removed in Blueprint v4.0, where components will use `ref` prop instead
+ * @deprecated will be removed in Blueprint v5.0, where components will use `ref` prop instead
  */
 export interface IElementRefProps<E extends HTMLElement> {
     /** A ref handler or a ref object that receives the native HTML element rendered by this component. */

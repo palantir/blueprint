@@ -26,7 +26,7 @@ export class ButtonExample extends React.PureComponent {
             <div className="example-row">
                 <ExampleCard label="Button" subLabel="Default" width={WIDTH}>
                     {Object.values(Intent).map(intent => (
-                        <Button key={`${intent}-button`} intent={intent as Intent} text="Button" icon={IconNames.ADD} />
+                        <Button key={`${intent}-button`} intent={intent as Intent} text="Button" icon="add" />
                     ))}
                 </ExampleCard>
                 <ExampleCard label="Button" subLabel="Disabled" width={WIDTH}>
@@ -36,6 +36,8 @@ export class ButtonExample extends React.PureComponent {
                             key={`${intent}-button`}
                             intent={intent as Intent}
                             text="Button"
+                            // this kind of `IconNames` reference is discouraged (we prefer the plain string literal instead),
+                            // but we keep it here to test the type of `IconNames` at compile time
                             icon={IconNames.ADD}
                         />
                     ))}
@@ -47,7 +49,7 @@ export class ButtonExample extends React.PureComponent {
                             key={`${intent}-button`}
                             intent={intent as Intent}
                             text="Button"
-                            icon={IconNames.ADD}
+                            icon="add"
                         />
                     ))}
                 </ExampleCard>
@@ -59,7 +61,7 @@ export class ButtonExample extends React.PureComponent {
                             key={`${intent}-button`}
                             intent={intent as Intent}
                             text="Button"
-                            icon={IconNames.ADD}
+                            icon="add"
                         />
                     ))}
                 </ExampleCard>

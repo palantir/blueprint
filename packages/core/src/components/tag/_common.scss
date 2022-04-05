@@ -6,16 +6,16 @@ $dark-tag-default-color: $gray5 !default;
 
 $tag-height: $pt-grid-size * 2 !default;
 $tag-line-height: $pt-icon-size-standard !default;
-$tag-padding-top: ($tag-height - $tag-line-height) / 2 !default;
+$tag-padding-top: ($tag-height - $tag-line-height) * 0.5 !default;
 $tag-padding: $tag-padding-top * 3 !default;
-$tag-margin: ($pt-input-height - $tag-height) / 2 !default;
+$tag-margin: ($pt-input-height - $tag-height) * 0.5 !default;
 
 $tag-height-large: $pt-grid-size * 3 !default;
 $tag-line-height-large: $pt-icon-size-large !default;
 $tag-padding-large: ($tag-height-large - $tag-line-height-large) !default;
 
-$tag-icon-spacing: ($tag-height - 12px) / 2 !default;
-$tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !default;
+$tag-icon-spacing: ($tag-height - 12px) * 0.5 !default;
+$tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) * 0.5 !default;
 
 $tag-round-adjustment: 2px !default;
 
@@ -55,7 +55,7 @@ $tag-round-adjustment: 2px !default;
     color: $pt-text-color;
 
     > #{$icon-classes} {
-      fill: currentColor;
+      fill: currentcolor;
     }
   }
 
@@ -70,7 +70,7 @@ $tag-round-adjustment: 2px !default;
   line-height: $tag-line-height-large;
   min-height: $tag-height-large;
   min-width: $tag-height-large;
-  padding: ($tag-padding-large / 2) $tag-padding-large;
+  padding: ($tag-padding-large * 0.5) $tag-padding-large;
 
   &.#{$ns}-round {
     padding-left: $tag-padding-large + $tag-round-adjustment;
@@ -132,12 +132,12 @@ $tag-round-adjustment: 2px !default;
     cursor: pointer;
 
     &:hover {
-      background-color: rgba($background-color, $opacity - 0.15);
+      background-color: rgba($background-color, $opacity - 15%);
     }
 
     &.#{$ns}-active,
     &:active {
-      background-color: rgba($background-color, $opacity - 0.3);
+      background-color: rgba($background-color, $opacity - 30%);
     }
   }
 }
@@ -147,12 +147,12 @@ $tag-round-adjustment: 2px !default;
     cursor: pointer;
 
     &:hover {
-      background-color: rgba($background-color, $opacity + 0.1);
+      background-color: rgba($background-color, $opacity + 10%);
     }
 
     &.#{$ns}-active,
     &:active {
-      background-color: rgba($background-color, $opacity + 0.2);
+      background-color: rgba($background-color, $opacity + 20%);
     }
   }
 }
@@ -186,13 +186,13 @@ $tag-round-adjustment: 2px !default;
   // CSS API support
   &:empty::before {
     @include pt-icon();
-    content: $pt-icon-small-cross;
+    content: map-get($blueprint-icon-codepoints, "small-cross");
   }
 
   .#{$ns}-large & {
     /* stylelint-disable-next-line declaration-no-important */
     margin-right: -$tag-padding-large !important;
-    padding: 0 ($tag-padding-large / 2) 0 0;
+    padding: 0 ($tag-padding-large * 0.5) 0 0;
 
     &:empty::before {
       @include pt-icon-sized($pt-icon-size-large);

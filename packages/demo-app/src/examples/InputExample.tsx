@@ -15,7 +15,6 @@ limitations under the License.*/
 import * as React from "react";
 
 import { InputGroup, Intent, NumericInput } from "@blueprintjs/core";
-import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -31,7 +30,7 @@ export class InputExample extends React.PureComponent {
                             fill={true}
                             intent={intent as Intent}
                             placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} input`}
-                            leftIcon={IconNames.CALENDAR}
+                            leftIcon="calendar"
                         />
                     ))}
                     <NumericInput fill={true} />
@@ -44,7 +43,7 @@ export class InputExample extends React.PureComponent {
                             fill={true}
                             intent={intent as Intent}
                             placeholder={`(Disabled) ${intent.charAt(0).toUpperCase() + intent.slice(1)} input`}
-                            leftIcon={IconNames.CALENDAR}
+                            leftIcon="calendar"
                         />
                     ))}
                     <NumericInput disabled={true} fill={true} />

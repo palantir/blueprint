@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
     AbstractPureComponent2,
@@ -61,8 +60,6 @@ export interface ICalloutProps extends IntentProps, Props, HTMLDivProps {
     title?: string;
 }
 
-/** This component supports the full range of HTML `<div>` props. */
-@polyfill
 export class Callout extends AbstractPureComponent2<CalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
@@ -78,7 +75,7 @@ export class Callout extends AbstractPureComponent2<CalloutProps> {
 
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && <Icon icon={iconName} size={IconSize.LARGE} />}
+                {iconName && <Icon icon={iconName} size={IconSize.LARGE} aria-hidden={true} tabIndex={-1} />}
                 {title && <H4>{title}</H4>}
                 {children}
             </div>

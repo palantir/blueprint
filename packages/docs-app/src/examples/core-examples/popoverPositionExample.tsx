@@ -34,17 +34,17 @@ export class PopoverPositionExample extends React.PureComponent<IExampleProps> {
                         <tr>
                             <td />
                             <td>
-                                {this.renderPopover(Position.BOTTOM_LEFT, "BOTTOM", "LEFT")}
-                                {this.renderPopover(Position.BOTTOM, "BOTTOM")}
-                                {this.renderPopover(Position.BOTTOM_RIGHT, "BOTTOM", "RIGHT")}
+                                {this.renderPopover(Position.BOTTOM_LEFT, "bottom", "left")}
+                                {this.renderPopover(Position.BOTTOM, "bottom")}
+                                {this.renderPopover(Position.BOTTOM_RIGHT, "bottom", "right")}
                             </td>
                             <td />
                         </tr>
                         <tr>
                             <td>
-                                {this.renderPopover(Position.RIGHT_TOP, "RIGHT", "TOP")}
-                                {this.renderPopover(Position.RIGHT, "RIGHT")}
-                                {this.renderPopover(Position.RIGHT_BOTTOM, "RIGHT", "BOTTOM")}
+                                {this.renderPopover(Position.RIGHT_TOP, "right", "top")}
+                                {this.renderPopover(Position.RIGHT, "right")}
+                                {this.renderPopover(Position.RIGHT_BOTTOM, "right", "bottom")}
                             </td>
                             <td>
                                 <em className={Classes.TEXT_MUTED}>
@@ -52,17 +52,17 @@ export class PopoverPositionExample extends React.PureComponent<IExampleProps> {
                                 </em>
                             </td>
                             <td>
-                                {this.renderPopover(Position.LEFT_TOP, "LEFT", "TOP")}
-                                {this.renderPopover(Position.LEFT, "LEFT")}
-                                {this.renderPopover(Position.LEFT_BOTTOM, "LEFT", "BOTTOM")}
+                                {this.renderPopover(Position.LEFT_TOP, "left", "top")}
+                                {this.renderPopover(Position.LEFT, "left")}
+                                {this.renderPopover(Position.LEFT_BOTTOM, "left", "bottom")}
                             </td>
                         </tr>
                         <tr>
                             <td />
                             <td>
-                                {this.renderPopover(Position.TOP_LEFT, "TOP", "LEFT")}
-                                {this.renderPopover(Position.TOP, "TOP")}
-                                {this.renderPopover(Position.TOP_RIGHT, "TOP", "RIGHT")}
+                                {this.renderPopover(Position.TOP_LEFT, "top", "left")}
+                                {this.renderPopover(Position.TOP, "top")}
+                                {this.renderPopover(Position.TOP_RIGHT, "top", "right")}
                             </td>
                             <td />
                         </tr>
@@ -80,7 +80,7 @@ export class PopoverPositionExample extends React.PureComponent<IExampleProps> {
                 <>{sideSpan}</>
             ) : (
                 <>
-                    {sideSpan}_{<span className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</span>}
+                    {sideSpan}-{<span className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</span>}
                 </>
             );
 

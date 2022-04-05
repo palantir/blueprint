@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2 } from "../../common";
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
@@ -56,7 +55,7 @@ export interface IHTMLSelectProps
      * `{ label?, value }` objects. If no `label` is supplied, `value`
      * will be used as the label.
      */
-    options?: Array<string | number | OptionProps>;
+    options?: ReadonlyArray<string | number | OptionProps>;
 
     /** Controlled value of this component. */
     value?: string | number;
@@ -64,7 +63,6 @@ export interface IHTMLSelectProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@polyfill
 export class HTMLSelect extends AbstractPureComponent2<HTMLSelectProps> {
     public render() {
         const {

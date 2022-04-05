@@ -4,6 +4,51 @@ Menus display lists of interactive items.
 
 @reactExample MenuExample
 
+The Menu API includes three React components:
+
+* [`Menu`](#core/components/menu.menu)
+* [`MenuItem`](#core/components/menu.menu-item)
+* [`MenuDivider`](#core/components/menu.menu-divider)
+
+```tsx
+<Menu>
+    <MenuItem icon="new-text-box" onClick={handleClick} text="New text box" />
+    <MenuItem icon="new-object" onClick={handleClick} text="New object" />
+    <MenuItem icon="new-link" onClick={handleClick} text="New link" />
+    <MenuDivider />
+    <MenuItem text="Settings..." icon="cog" intent="primary">
+        <MenuItem icon="tick" text="Save on edit" />
+        <Menu.Item icon="blank" text="Compile on edit" />
+    </MenuItem>
+</Menu>
+```
+
+@## Props
+
+A `Menu` is a `<ul>` container for menu items and dividers.
+
+@interface IMenuProps
+
+@## Menu item
+
+A `MenuItem` is a single interactive item in a `Menu`.
+
+This component renders an `<li>` containing an `<a>`. Make the `MenuItem`
+interactive by providing the `href`, `target`, and `onClick` props as necessary.
+
+Create submenus by nesting `MenuItem`s inside each other as `children`. Use the
+required `text` prop for `MenuItem` content.
+
+@reactExample MenuItemExample
+
+@interface IMenuItemProps
+
+@## Menu divider
+
+Use `MenuDivider` to separate menu sections. Optionally, add a title to the divider.
+
+@interface IMenuDividerProps
+
 @## Dropdowns
 
 The `Menu` component by itself simply renders a list of items. To make a
@@ -48,51 +93,6 @@ Submenus are only supported in the React components. They cannot be created with
 they rely on the [`Popover`](#core/components/popover) component for positioning and transitions.
 
 </div>
-
-@## Props
-
-The `Menu` API includes three stateless React components:
-
-* [`Menu`](#core/components/menu.menu)
-* [`MenuItem`](#core/components/menu.menu-item) (aliased as `Menu.Item`)
-* [`MenuDivider`](#core/components/menu.menu-divider) (aliased as `Menu.Divider`)
-
-```tsx
-<Menu>
-    <Menu.Item icon="new-text-box" onClick={this.handleClick} text="New text box" />
-    <Menu.Item icon="new-object" onClick={this.handleClick} text="New object" />
-    <Menu.Item icon="new-link" onClick={this.handleClick} text="New link" />
-    <Menu.Divider />
-    <Menu.Item text="Settings..." icon="cog">
-        <Menu.Item icon="tick" text="Save on edit" />
-        <Menu.Item icon="blank" text="Compile on edit" />
-    </Menu.Item>
-</Menu>
-```
-
-@### Menu
-
-A `Menu` is a `<ul>` container for menu items and dividers.
-
-@interface IMenuProps
-
-@### Menu item
-
-A `MenuItem` is a single interactive item in a `Menu`.
-
-This component renders an `<li>` containing an `<a>`. Make the `MenuItem`
-interactive by providing the `href`, `target`, and `onClick` props as necessary.
-
-Create submenus by nesting `MenuItem`s inside each other as `children`. Use the
-required `text` prop for `MenuItem` content.
-
-@interface IMenuItemProps
-
-@### Menu divider
-
-Use `MenuDivider` to separate menu sections. Optionally, add a title to the divider.
-
-@interface IMenuDividerProps
 
 @## CSS
 

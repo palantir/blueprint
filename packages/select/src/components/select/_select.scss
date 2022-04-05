@@ -19,7 +19,7 @@ $select-popover-max-width: $pt-grid-size * 40 !default;
   .#{$ns}-popover-content {
     // use padding on container rather than margin on input group
     // because top margin leaves some empty space with no background color.
-    padding: $pt-grid-size / 2;
+    padding: $pt-grid-size * 0.5;
   }
 
   .#{$ns}-input-group {
@@ -34,7 +34,7 @@ $select-popover-max-width: $pt-grid-size * 40 !default;
 
     &:not(:first-child) {
       // adjust padding to account for that on .#{$ns}-popover-content above
-      padding-top: $pt-grid-size / 2;
+      padding-top: $pt-grid-size * 0.5;
     }
   }
 }

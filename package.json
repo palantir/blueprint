@@ -1,6 +1,6 @@
 {
     "name": "blueprintjs-monorepo",
-    "version": "3.38.0",
+    "version": "4.0.0",
     "private": true,
     "description": "A React UI toolkit for the web.",
     "workspaces": [
@@ -57,20 +57,20 @@
         "eslint-plugin-prettier": "^3.3.1",
         "gh-pages": "^3.1.0",
         "http-server": "^0.12.3",
-        "lerna": "^3.22.1",
+        "lerna": "^4.0.0",
         "npm-run-all": "^4.1.5",
         "prettier": "~2.2.1",
         "sinon": "^9.2.1",
-        "stylelint-config-palantir": "^5.0.0",
-        "stylelint-scss": "^3.18.0",
-        "typescript": "~4.1.2",
-        "yarn-deduplicate": "^3.1.0"
+        "stylelint-config-palantir": "^6.0.1",
+        "stylelint-scss": "^4.2.0",
+        "typescript": "~4.6.2",
+        "yarn-deduplicate": "^4.0.0"
     },
     "resolutions": {
         "@types/react": "16.14.2"
     },
     "engines": {
-        "node": ">=12 <14"
+        "node": ">=12"
     },
     "repository": {
         "type": "git",

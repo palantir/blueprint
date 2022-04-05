@@ -1,4 +1,4 @@
-/* !
+/*
  * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,34 +14,22 @@
  * limitations under the License.
  */
 
-/** This file contains types duplicated from resize-observer-polyfill which are not exported in a consumer-friendly way. */
+/** @fileoverview types re-exported from the resize observer polyfill library, will be removed in v4.0 */
 
-// eslint-disable-next-line deprecation/deprecation
+import type { ResizeObserverEntry } from "@juggle/resize-observer";
+// tslint:disable-next-line no-submodule-imports
+import type { DOMRectReadOnly } from "@juggle/resize-observer/lib/DOMRectReadOnly";
+
+/* eslint-disable deprecation/deprecation */
+
+/** @deprecated use { ResizeObserverEntry } from "@juggle/resize-observer" */
+export type IResizeEntry = ResizeObserverEntry;
+
+/** @deprecated use { ResizeObserverEntry } from "@juggle/resize-observer" */
 export type ResizeEntry = IResizeEntry;
 
-/**
- * Equivalent to `ResizeObserverEntry`
- *
- * @deprecated use ResizeEntry
- */
-export interface IResizeEntry {
-    /** Measured dimensions of the target. */
-    readonly contentRect: DOMRectReadOnly;
+/** @deprecated */
+export type IDOMRectReadOnly = DOMRectReadOnly;
 
-    /** The resized element. */
-    readonly target: Element;
-}
-
-// eslint-disable-next-line deprecation/deprecation
-export type DOMRectReadOnly = IDOMRectReadOnly;
-/** @deprecated use DOMRectReadOnly */
-interface IDOMRectReadOnly {
-    readonly x: number;
-    readonly y: number;
-    readonly width: number;
-    readonly height: number;
-    readonly top: number;
-    readonly right: number;
-    readonly bottom: number;
-    readonly left: number;
-}
+/** @deprecated */
+export { DOMRectReadOnly };

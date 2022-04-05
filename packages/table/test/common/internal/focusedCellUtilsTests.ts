@@ -18,7 +18,7 @@
 
 import { expect } from "chai";
 
-import { ICellCoordinates, IFocusedCellCoordinates } from "../../../src/common/cell";
+import type { ICellCoordinates, IFocusedCellCoordinates } from "../../../src/common/cellTypes";
 import * as FocusedCellUtils from "../../../src/common/internal/focusedCellUtils";
 import { IRegion, Regions } from "../../../src/regions";
 
@@ -193,7 +193,7 @@ describe("FocusedCellUtils", () => {
         it("returns the focusedCellFromState if focusedCellFromProps not defined", () => {
             const focusedCell = FocusedCellUtils.getInitialFocusedCell(
                 true,
-                null,
+                undefined,
                 FOCUSED_CELL_FROM_STATE,
                 SELECTED_REGIONS,
             );
@@ -201,7 +201,7 @@ describe("FocusedCellUtils", () => {
         });
 
         it("returns the focused cell for the last selected region if focusedCell not provided", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, SELECTED_REGIONS);
+            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, undefined, undefined, SELECTED_REGIONS);
             const lastIndex = SELECTED_REGIONS.length - 1;
             const expectedFocusedCell = {
                 ...Regions.getFocusCellCoordinatesFromRegion(SELECTED_REGIONS[lastIndex]),
@@ -211,7 +211,7 @@ describe("FocusedCellUtils", () => {
         });
 
         it("returns cell (0, 0) if nothing else is defined", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, []);
+            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, undefined, undefined, []);
             const expectedFocusedCell = {
                 col: 0,
                 focusSelectionIndex: 0,

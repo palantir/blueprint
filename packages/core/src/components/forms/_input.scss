@@ -48,7 +48,7 @@ Styleguide input
       @include pt-input-intent($color);
 
       .#{$ns}-dark & {
-        @include pt-dark-input-intent($color);
+        @include pt-dark-input-intent(map-get($pt-dark-input-intent-box-shadow-colors, $intent));
       }
     }
   }
@@ -107,9 +107,5 @@ textarea.#{$ns}-input {
 
   &.#{$ns}-small {
     padding: $input-small-padding;
-  }
-
-  .#{$ns}-dark & {
-    @include pt-dark-input();
   }
 }

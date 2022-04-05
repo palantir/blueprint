@@ -1,4 +1,3 @@
-@import "~@blueprintjs/colors/lib/scss/colors";
 @import "~@blueprintjs/core/lib/scss/variables";
 
 $background-color: $light-gray2;
@@ -73,6 +72,15 @@ $dark-intent-danger-text: $red5;
 }
 
 .tag-container {
+  display: flex;
+  flex-direction: column;
+
+  > :not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
+.tag-input-container {
   display: flex;
   flex-direction: column;
 

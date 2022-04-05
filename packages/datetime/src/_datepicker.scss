@@ -1,12 +1,13 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@import "~@blueprintjs/colors/lib/scss/colors";
 @import "~@blueprintjs/core/src/components/popover/common";
 @import "./common";
 
 $cell-size: $pt-grid-size * 3 !default;
 $header-height: $pt-grid-size * 4 !default;
-$header-margin: ($header-height - $pt-input-height) / 2 !default;
+$header-margin: ($header-height - $pt-input-height) * 0.5 !default;
 
 @mixin calendar-day() {
   display: table-cell;

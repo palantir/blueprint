@@ -112,7 +112,7 @@ export interface ICellProps extends IntentProps, Props {
 }
 
 /** @deprecated use CellRenderer */
-export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
+export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps> | undefined;
 // eslint-disable-next-line deprecation/deprecation
 export type CellRenderer = ICellRenderer;
 
@@ -174,8 +174,8 @@ export class Cell extends React.Component<ICellProps> {
                 CoreUtils.isElementOfType(child, TruncatedFormat) || CoreUtils.isElementOfType(child, JSONFormat);
             if (style != null && React.isValidElement(child) && isFormatElement) {
                 return React.cloneElement(child as React.ReactElement<any>, {
-                    parentCellHeight: parseInt(style.height.toString(), 10),
-                    parentCellWidth: parseInt(style.width.toString(), 10),
+                    parentCellHeight: style.height === undefined ? undefined : parseInt(style.height.toString(), 10),
+                    parentCellWidth: style.width === undefined ? undefined : parseInt(style.width.toString(), 10),
                 });
             }
             return child;
@@ -190,7 +190,7 @@ export class Cell extends React.Component<ICellProps> {
                 ref={cellRef}
                 {...{ style, tabIndex, onKeyDown, onKeyUp, onKeyPress }}
             >
-                <LoadableContent loading={loading} variableLength={true}>
+                <LoadableContent loading={loading ?? false} variableLength={true}>
                     {content}
                 </LoadableContent>
             </div>

@@ -1,4 +1,4 @@
-/*\
+/*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,13 @@
  * limitations under the License.
  */
 
-const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
 const path = require("path");
+
+const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        table: [
-            "./src/index.ts"
-        ],
+        table: ["./src/index.ts"],
     },
 
     externals: COMMON_EXTERNALS,
@@ -29,6 +28,6 @@ module.exports = Object.assign({}, baseConfig, {
         filename: "[name].bundle.js",
         library: ["Blueprint", "Table"],
         libraryTarget: "umd",
-        path: path.resolve(__dirname, "./dist")
+        path: path.resolve(__dirname, "./dist"),
     },
 });

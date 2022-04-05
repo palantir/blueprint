@@ -19,8 +19,8 @@ the name as a string, these components render `<Icon icon="..." />` under the ho
 
 Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon`
 prop is typed such that editors can offer autocomplete for known icon names. The
-optional `size` prop (previously called `iconSize`) determines the exact width
-and height of the icon image; the icon element itself can be sized separately using CSS.
+optional `size` prop determines the exact width and height of the icon
+image; the icon element itself can be sized separately using CSS.
 
 The HTML element rendered by `<Icon>` can be customized with the `tagName` prop
 (defaults to `span`), and additional props are passed to this element.
@@ -37,23 +37,29 @@ it will be assumed that the icon is decorative if not labeled.
 ```tsx
 import { Icon, IconSize } from "@blueprintjs/core";
 
-// string literals are supported through IconName union type
+// icon name string literals are type checked
 <Icon icon="cross" />
 <Icon icon="globe" size={20} />
 
 // constants are provided for name and size
 <Icon icon="graph" size={IconSize.LARGE} intent="primary" />
 
-// can pass all valid HTML props
+// you can also pass all valid HTML props
 <Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys} />
 ```
 
+Custom sizes are supported. The following React component:
+
+```tsx
+<Icon icon="globe" iconSize={30} />
+```
+
+...renders this HTML markup:
+
 ```html
-<Icon icon="globe" size={30} />
-<!-- renders the following HTML markup: -->
 <svg class="@ns-icon" data-icon="globe" width="30" height="30" viewBox="0 0 20 20">
     <title>globe</title>
-    <path ... />
+    <path d="..."></path>
 </svg>
 ```
 
@@ -62,14 +68,6 @@ import { Icon, IconSize } from "@blueprintjs/core";
 @interface IIconProps
 
 @## CSS
-
-<div class="@ns-callout @ns-intent-danger @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Some icons are missing in the icon font in 3.x</h4>
-
-Blueprint icons added after `@blueprintjs/icons@3.14.0` do not have icon font support.
-Support for the icon font for these icons will be restored in Blueprint v4.0.
-
-</div>
 
 The CSS-only icons API uses the __icon fonts__ from the __@blueprintjs/icons__ package.
 

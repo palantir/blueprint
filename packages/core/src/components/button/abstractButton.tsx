@@ -62,7 +62,7 @@ export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = 
     large?: boolean;
 
     /**
-     * If set to `true`, the button will display a centered loading spinner instead of its contents.
+     * If set to `true`, the button will display a centered loading spinner instead of its contents, and the button will be disabled.
      * The width of the button is not affected by the value of this prop.
      *
      * @default false
@@ -185,10 +185,12 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
 
     protected renderChildren(): React.ReactNode {
         const { children, icon, loading, rightIcon, text } = this.props;
+        const maybeHasText = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
         return [
             loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={IconSize.LARGE} />,
-            <Icon key="leftIcon" icon={icon} />,
-            (!Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children)) && (
+            // The icon is purely decorative if text is provided
+            <Icon key="leftIcon" icon={icon} aria-hidden={maybeHasText} tabIndex={maybeHasText ? -1 : 0} />,
+            maybeHasText && (
                 <span key="text" className={Classes.BUTTON_TEXT}>
                     {text}
                     {children}

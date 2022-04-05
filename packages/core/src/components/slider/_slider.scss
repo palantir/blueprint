@@ -122,7 +122,7 @@ $track-height: $track-size !default;
     border-radius: $pt-border-radius;
     box-shadow: $pt-tooltip-box-shadow;
     color: $tooltip-text-color;
-    margin-left: $handle-size / 2;
+    margin-left: $handle-size * 0.5;
 
     .#{$ns}-dark & {
       background: $dark-tooltip-background-color;
@@ -137,7 +137,7 @@ $track-height: $track-size !default;
 
   &.#{$ns}-start,
   &.#{$ns}-end {
-    width: $handle-size / 2;
+    width: $handle-size * 0.5;
   }
 
   &.#{$ns}-start {
@@ -148,7 +148,7 @@ $track-height: $track-size !default;
   &.#{$ns}-end {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
-    margin-left: $handle-size / 2;
+    margin-left: $handle-size * 0.5;
 
     .#{$ns}-slider-label {
       margin-left: 0;
@@ -161,7 +161,7 @@ $track-height: $track-size !default;
   display: inline-block;
   font-size: $pt-font-size-small;
   line-height: 1;
-  padding: ($pt-grid-size / 5) ($pt-grid-size / 2);
+  padding: ($pt-grid-size * 0.2) ($pt-grid-size * 0.5);
   position: absolute;
   vertical-align: top;
 }
@@ -187,12 +187,12 @@ $track-height: $track-size !default;
 
     .#{$ns}-slider-label {
       margin-left: 0;
-      margin-top: -$handle-size / 2;
+      margin-top: -$handle-size * 0.5;
     }
 
     &.#{$ns}-end,
     &.#{$ns}-start {
-      height: $handle-size / 2;
+      height: $handle-size * 0.5;
       margin-left: 0;
       width: $handle-size;
     }
@@ -210,7 +210,7 @@ $track-height: $track-size !default;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
       border-top-left-radius: $pt-border-radius;
-      margin-bottom: $handle-size / 2;
+      margin-bottom: $handle-size * 0.5;
     }
   }
 }

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+import { ResizeObserver, ResizeObserverEntry } from "@juggle/resize-observer";
 import * as React from "react";
-import ResizeObserver from "resize-observer-polyfill";
 
-import { AbstractPureComponent2, DISPLAYNAME_PREFIX, ResizeEntry } from "@blueprintjs/core";
+import { AbstractPureComponent2, DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
 /** `ResizeSensor2` requires a single DOM element child and will error otherwise. */
 export interface ResizeSensor2Props {
@@ -36,7 +36,7 @@ export interface ResizeSensor2Props {
      * Note that this method is called _asynchronously_ after a resize is
      * detected and typically it will be called no more than once per frame.
      */
-    onResize: (entries: ResizeEntry[]) => void;
+    onResize: (entries: ResizeObserverEntry[]) => void;
 
     /**
      * If `true`, all parent DOM elements of the container will also be
