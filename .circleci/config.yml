@@ -5,10 +5,10 @@ orbs:
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:12.22
+    - image: cimg/node:16.14
 
   - &docker-node-browsers-image
-    - image: cimg/node:12.22-browsers
+    - image: cimg/node:16.14-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -189,18 +189,6 @@ jobs:
       - store_artifacts: { path: packages/landing-app/dist }
       - store_artifacts: { path: packages/table-dev-app/dist }
       - store_artifacts: { path: packages/demo-app/dist }
-      - run:
-          name: Get artifacts
-          when: on_fail
-          command: |
-            artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" \
-            -H "Accept: application/json" \
-            -u "$CIRCLE_AUTH_TOKEN:")
-            # generate a heredoc in BASH_ENV
-            # the '\<<' is a CircleCI escape
-            echo "read -r -d '' STORED_ARTIFACTS \<< 'EOF_ARTIFACTS'" >> $BASH_ENV
-            echo "$artifacts" >> $BASH_ENV
-            echo "EOF_ARTIFACTS" >> $BASH_ENV
       - run:
           name: Submit Github comment with links to built artifacts
           command: |

@@ -1,15 +1,12 @@
 #!/usr/bin/env node
-
 /**
  * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Generates data for packages/docs-app
  */
 
 // @ts-check
-const { execSync, spawn } = require("child_process");
 const dm = require("@documentalist/compiler");
 const fs = require("fs");
-const glob = require("glob");
 const path = require("path");
 const semver = require("semver");
 
@@ -19,9 +16,7 @@ const docsUtils = require("./docsUtils");
 
 // assume we are running from packages/docs-app
 const ROOT_DIR = path.resolve(process.cwd(), "../../");
-const PACKAGES_DIR = path.resolve(process.cwd(), "../");
 const GENERATED_SRC_DIR = path.resolve(process.cwd(), "./src/generated");
-const BUILD_DIR = path.resolve(process.cwd(), "build");
 const NAV_PAGE_NAME = "_nav";
 
 const DOCS_DATA_PATH = path.join(GENERATED_SRC_DIR, "docs.json");
@@ -34,12 +29,12 @@ const DOCS_DATA_PATH = path.join(GENERATED_SRC_DIR, "docs.json");
         await generateDocumentalistData();
     } catch (err) {
         // console.error messages get swallowed by lerna but console.log is emitted to terminal.
-        console.log(`[docs-data] ERROR when generating JSON docs data:`);
-        console.log(err);
+        console.error(`[docs-data] ERROR when generating JSON docs data:`);
+        console.error(err);
         process.exit(1);
     }
 
-    console.log(`[docs-data] successfully generated docs.json`);
+    console.info(`[docs-data] successfully generated docs.json`);
     process.exit(0);
 })();
 
