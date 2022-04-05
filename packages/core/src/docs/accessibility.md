@@ -37,6 +37,25 @@ __@blueprintjs/core__ package. It supports the following public methods:
 - `FocusStyleManager.onlyShowFocusOnTabs(): void`: Enable behavior which hides focus styles during mouse interaction.
 - `FocusStyleManager.alwaysShowFocus(): void`: Stop this behavior (focus styles are always visible).
 
+@### Selectivly ignoring the focus manager
+
+There is an escape hatch to allow components to ignore the focus manager. This
+can be useful when you do want to always show the focus outline, but only for certain
+components, like a tree. This is done by applying `Classes.FOCUS_MANAGER_IGNORE`
+to a container.
+
+```tsx
+import { Classes } from "@blueprintjs/core";
+
+
+const MyComponent = () => ({
+    <div classname={Classes.FOCUS_MANAGER_IGNORE}>
+        // Any components here will always show the focus outline when clicked.
+    </div>
+})
+```
+
+
 @## Color contrast
 
 Colors have been designed to be accessible to as many people as possible, even those who are

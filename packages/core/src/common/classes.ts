@@ -61,6 +61,7 @@ export const INTENT_WARNING = intentClass(Intent.WARNING)!;
 export const INTENT_DANGER = intentClass(Intent.DANGER)!;
 
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
+export const FOCUS_MANAGER_IGNORE = `${NS}-focus-manager-ignore`;
 
 // text utilities
 export const UI_TEXT = `${NS}-ui-text`;
