@@ -3,7 +3,7 @@
  */
 
 const Highlights = require("highlights");
-const marked = require("marked");
+const { marked } = require("marked");
 
 const DEFAULT_SCOPE = "source.tsx";
 const HIGHLIGHTS_LANGUAGES = ["better-handlebars", "language-less", "tree-sitter-typescript"];
