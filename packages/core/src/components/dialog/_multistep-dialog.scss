@@ -24,7 +24,7 @@ $step-radius: $pt-border-radius * 2 !default;
     }
   }
 
-  .#{$ns}-multistep-dialog-position-top & {
+  .#{$ns}-multistep-dialog-nav-top & {
     flex-direction: column;
 
     // Handle case where title it not rendered.
@@ -64,7 +64,7 @@ $step-radius: $pt-border-radius * 2 !default;
     }
   }
 
-  .#{$ns}-multistep-dialog-position-right & {
+  .#{$ns}-multistep-dialog-nav-right & {
     flex-direction: row-reverse;
 
     // Handle case where title it not rendered.

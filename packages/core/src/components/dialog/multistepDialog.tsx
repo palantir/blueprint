@@ -25,7 +25,7 @@ import { DialogStep, DialogStepId, DialogStepProps, DialogStepButtonProps } from
 
 type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.ReactNode }>;
 
-export type MultistepDialogNavigationPosition = typeof Position.TOP | typeof Position.LEFT | typeof Position.RIGHT;
+export type MultistepDialogNavPosition = typeof Position.TOP | typeof Position.LEFT | typeof Position.RIGHT;
 
 // eslint-disable-next-line deprecation/deprecation
 export type MultistepDialogProps = IMultistepDialogProps;
@@ -48,11 +48,11 @@ export interface IMultistepDialogProps extends DialogProps {
     finalButtonProps?: Partial<ButtonProps>;
 
     /**
-     * Position of the step navigation.
+     * Position of the step navigation within the dialog.
      *
-     * @default Position.LEFT
+     * @default "left"
      */
-    navigationPosition?: MultistepDialogNavigationPosition;
+    navigationPosition?: MultistepDialogNavPosition;
 
     /**
      * Props for the next button.
@@ -108,7 +108,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
     public static defaultProps: Partial<MultistepDialogProps> = {
         canOutsideClickClose: true,
         isOpen: false,
-        navigationPosition: Position.LEFT,
+        navigationPosition: "left",
         resetOnClose: true,
         showCloseButtonInFooter: false,
     };
@@ -134,8 +134,8 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
                 {...otherProps}
                 className={classNames(
                     {
-                        [Classes.MULTISTEP_DIALOG_POSITION_RIGHT]: navigationPosition === Position.RIGHT,
-                        [Classes.MULTISTEP_DIALOG_POSITION_TOP]: navigationPosition === Position.TOP,
+                        [Classes.MULTISTEP_DIALOG_NAV_RIGHT]: navigationPosition === "right",
+                        [Classes.MULTISTEP_DIALOG_NAV_TOP]: navigationPosition === "top",
                     },
                     className,
                 )}

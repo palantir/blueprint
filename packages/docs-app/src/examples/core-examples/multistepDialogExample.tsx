@@ -30,8 +30,7 @@ import {
     Radio,
     NumericInput,
     Label,
-    Position,
-    MultistepDialogNavigationPosition,
+    MultistepDialogNavPosition,
     HTMLSelect,
 } from "@blueprintjs/core";
 import {
@@ -53,13 +52,13 @@ export interface IMultistepDialogExampleState {
     isCloseButtonShown: boolean;
     showCloseButtonInFooter: boolean;
     isOpen: boolean;
-    position: MultistepDialogNavigationPosition;
+    navPosition: MultistepDialogNavPosition;
     usePortal: boolean;
     value?: string;
     initialStepIndex: number;
 }
 
-const POSITIONS = [Position.LEFT, Position.TOP, Position.RIGHT];
+const NAV_POSITIONS = ["left", "top", "right"];
 
 export class MultistepDialogExample extends React.PureComponent<
     IExampleProps<IBlueprintExampleData>,
@@ -74,7 +73,7 @@ export class MultistepDialogExample extends React.PureComponent<
         initialStepIndex: 0,
         isCloseButtonShown: true,
         isOpen: false,
-        position: Position.LEFT,
+        navPosition: "left",
         showCloseButtonInFooter: true,
         usePortal: true,
     };
@@ -97,8 +96,8 @@ export class MultistepDialogExample extends React.PureComponent<
 
     private handleHasTitleChange = handleBooleanChange(hasTitle => this.setState({ hasTitle }));
 
-    private handlePositionChange = handleValueChange((position: MultistepDialogNavigationPosition) =>
-        this.setState({ position }),
+    private handleNavPositionChange = handleValueChange((navPosition: MultistepDialogNavPosition) =>
+        this.setState({ navPosition }),
     );
 
     public render() {
@@ -107,7 +106,7 @@ export class MultistepDialogExample extends React.PureComponent<
             onClick: this.handleClose,
             text: "Close",
         };
-        const { hasTitle, position, ...state } = this.state;
+        const { hasTitle, navPosition: position, ...state } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <Button onClick={this.handleOpen}>Show dialog</Button>
@@ -146,7 +145,7 @@ export class MultistepDialogExample extends React.PureComponent<
             hasTitle,
             initialStepIndex,
             isCloseButtonShown,
-            position,
+            navPosition: position,
             showCloseButtonInFooter,
         } = this.state;
         return (
@@ -176,7 +175,7 @@ export class MultistepDialogExample extends React.PureComponent<
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
                 <Label>
                     Navigation Position
-                    <HTMLSelect value={position} onChange={this.handlePositionChange} options={POSITIONS} />
+                    <HTMLSelect value={position} onChange={this.handleNavPositionChange} options={NAV_POSITIONS} />
                 </Label>
                 <Label>Initial step index (0-indexed)</Label>
                 <NumericInput
