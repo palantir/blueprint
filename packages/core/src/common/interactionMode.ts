@@ -24,7 +24,7 @@
 export class InteractionModeEngine {
     private isRunning = false;
 
-    constructor(private container: Element, private className: string) {}
+    constructor(private container: HTMLElement, private className: string) {}
 
     /** Returns whether the engine is currently running. */
     public isActive() {
@@ -45,8 +45,7 @@ export class InteractionModeEngine {
 
     private reset() {
         this.container.classList.remove(this.className);
-        // HACKHACK: see https://github.com/palantir/blueprint/issues/4342
-        this.container.removeEventListener("keydown", this.handleKeyDown as EventListener);
+        this.container.removeEventListener("keydown", this.handleKeyDown);
         this.container.removeEventListener("mousedown", this.handleMouseDown);
     }
 
@@ -60,7 +59,6 @@ export class InteractionModeEngine {
     private handleMouseDown = () => {
         this.reset();
         this.container.classList.add(this.className);
-        // HACKHACK: see https://github.com/palantir/blueprint/issues/4342
-        this.container.addEventListener("keydown", this.handleKeyDown as EventListener);
+        this.container.addEventListener("keydown", this.handleKeyDown);
     };
 }
