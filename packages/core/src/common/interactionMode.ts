@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-const TAB_KEY_CODE = 9;
-
 /* istanbul ignore next */
 
 /**
@@ -53,9 +51,7 @@ export class InteractionModeEngine {
     }
 
     private handleKeyDown = (e: KeyboardEvent) => {
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        // eslint-disable-next-line deprecation/deprecation
-        if (e.which === TAB_KEY_CODE) {
+        if (e.key === "Tab") {
             this.reset();
             this.container.addEventListener("mousedown", this.handleMouseDown);
         }
