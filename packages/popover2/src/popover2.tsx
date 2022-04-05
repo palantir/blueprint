@@ -29,7 +29,6 @@ import {
     mergeRefs,
     Overlay,
     Utils,
-    IRef,
 } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
@@ -101,11 +100,6 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
      * @default false
      */
     shouldReturnFocusOnClose?: boolean;
-
-    /**
-     * Ref supplied to the `Classes.POPOVER` element.
-     */
-    popoverRef?: IRef<HTMLElement>;
 
     /**
      * Popper.js positioning strategy.
