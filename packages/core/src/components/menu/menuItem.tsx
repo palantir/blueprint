@@ -257,5 +257,4 @@ const DISABLED_PROPS: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
     onMouseDown: undefined,
     onMouseEnter: undefined,
     onMouseLeave: undefined,
-    tabIndex: -1,
 };
