@@ -143,7 +143,7 @@ module.exports = {
                 test: /\.(eot|ttf|woff|woff2|svg|png|gif|jpe?g)$/,
                 type: "asset/resource",
                 generator: {
-                    filename: "assets/[hash][ext][query]",
+                    filename: "assets/[name][ext][query][hash]",
                 },
             },
         ],
