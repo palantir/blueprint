@@ -1,4 +1,4 @@
-/* eslint-disable header/header */
+/* eslint-disable header/header, camelcase, import/no-extraneous-dependencies */
 /**
  * Forked from https://github.com/niksy/node-sass-json-functions
  * To resolve an issue where it's impossible to know if a list should be separated by
@@ -33,6 +33,7 @@ const round = require("round-to");
 const sass = require("sass");
 const shortHexColor = require("shorten-css-hex");
 
+// eslint-disable-next-line no-underscore-dangle
 function _interopDefaultLegacy(e) {
     return e && typeof e === "object" && "default" in e ? e : { default: e };
 }
@@ -268,4 +269,3 @@ const api = {
 };
 
 module.exports = api;
-// # sourceMappingURL=index.js.map
