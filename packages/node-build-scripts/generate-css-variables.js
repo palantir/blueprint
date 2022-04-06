@@ -60,12 +60,13 @@ fs.writeFileSync(`${DEST_DIR}/scss/${outputFileName}.scss`, variablesScss);
 
 /* BEGIN LESS CONVERSION */
 
-
 // Gets variable values from compiled sass vars
 // @ts-ignore, issues with types in `get-sass-vars`
-const parsedVars = getSassVars.sync(variablesScss, {functions: require("./node-sass-json-functions.js")});
+const parsedVars = getSassVars.sync(variablesScss, {
+    sassOptions: { functions: require("./node-sass-json-functions.js") },
+});
 
-const isPrimitive = (value) => value !== Object(value);
+const isPrimitive = value => value !== Object(value);
 
 // Convert value received from `get-sass-vars` to less variable value
 const convertValue = value => {
@@ -90,16 +91,20 @@ const convertField = ([varName, value]) => {
     if (typeof value === "object" && !Array.isArray(value)) {
         return `${varName}: ${convertValue(value)}`;
     }
-    return `${varName}: ${convertValue(value)};`
-}
+    return `${varName}: ${convertValue(value)};`;
+};
 
 // split into blocks by double newlines to get the same spacing in the less output
 const splitBlocks = stripCssComments(variablesScss).split("\n\n");
 
 let variablesLess = COPYRIGHT_HEADER + "\n";
 for (const block of splitBlocks) {
-    const varsInBlock = new Set([...block.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)/g)].map(match => match.groups.varName));
-    const lessVariablesArray = Object.entries(parsedVars).filter(([varName, _value]) => varsInBlock.has(varName)).map(convertField);
+    const varsInBlock = new Set(
+        [...block.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)/g)].map(match => match.groups.varName),
+    );
+    const lessVariablesArray = Object.entries(parsedVars)
+        .filter(([varName, _value]) => varsInBlock.has(varName))
+        .map(convertField);
 
     const lessBlock = lessVariablesArray
         .join("\n")
