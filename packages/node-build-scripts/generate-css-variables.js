@@ -69,7 +69,7 @@ const isPrimitive = (value) => value !== Object(value);
 
 // Convert value received from `get-sass-vars` to less variable value
 const convertValue = value => {
-    // arrays of arrays should be separated with commas
+    // array values should be separated with commas
     if (Array.isArray(value)) {
         return `${value.map(elt => convertValue(elt)).join(",\n")}`;
     }
