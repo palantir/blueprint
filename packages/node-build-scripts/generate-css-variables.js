@@ -11,7 +11,7 @@ const prettier = require("prettier");
 const stripCssComments = require("strip-css-comments");
 const yargs = require("yargs/yargs");
 
-const { COPYRIGHT_HEADER } = require("./constants");
+const { COPYRIGHT_HEADER, USE_MATH_RULE } = require("./constants");
 
 const SRC_DIR = path.resolve(process.cwd(), "./src");
 const DEST_DIR = path.resolve(process.cwd(), "./lib");
@@ -56,12 +56,13 @@ function generateScssVariables(inputSources, outputFilename, retainDefault) {
     variablesScss = stripCssComments(variablesScss);
     variablesScss = variablesScss
         .replace(/(@import|\/\/).*\n+/g, "")
+        .replace(/@use "sass:math";\n/g, "")
         .replace(/border-shadow\((.+)\)/g, "0 0 0 1px rgba($black, $1)")
         .replace(/\n{3,}/g, "\n\n");
     if (!retainDefault) {
         variablesScss = variablesScss.replace(/\ \!default/g, "");
     }
-    variablesScss = COPYRIGHT_HEADER + "\n" + variablesScss;
+    variablesScss = [COPYRIGHT_HEADER, USE_MATH_RULE, variablesScss].join("\n");
 
     if (!fs.existsSync(`${DEST_DIR}/scss`)) {
         fs.mkdirSync(`${DEST_DIR}/scss`, { recursive: true });
