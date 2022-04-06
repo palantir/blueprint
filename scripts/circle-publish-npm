@@ -20,14 +20,6 @@ if ! [[ "$branch" == "develop" || "$branch" == "next" || "$branch" == release/* 
     exit 1
 fi
 
-if [ -z "${NPM_AUTH_TOKEN}" ]; then
-    echo "No NPM auth token available. Check the \$NPM_AUTH_TOKEN environment variable."
-    exit 1
-fi
-
-# set the auth token for this user, not just the repo
-npm set //registry.npmjs.org/:_authToken $NPM_AUTH_TOKEN
-
 if [[ "$branch" == "next" ]]; then
     echo "Publishing with next tag because branch name is next"
     # must set public access for scoped packages
