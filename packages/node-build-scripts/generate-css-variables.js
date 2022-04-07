@@ -33,94 +33,139 @@ function main() {
         }).argv;
 
     const outputFilename = args["outputFileName"];
-    const scssVariables = generateScssVariables(args["_"], outputFilename, args["retainDefault"]);
-    generateLessVariables(scssVariables, outputFilename);
+    const parsedInput = getParsedVars(args["_"], args["retainDefault"]);
+    generateScssVariables(parsedInput, outputFilename);
+    generateLessVariables(parsedInput, outputFilename);
+}
+
+/**
+ * Pulls together variables from the specified Sass source files, sanitizes them for consumption,
+ * and gets compiled output from `get-sass-vars`.
+ *
+ * @param {string[]} inputSources
+ * @param {boolean} retainDefault
+ * @returns {{parsedVars: object, varsInBlocks: Set<string>[]}} output compiled variable values and grouped variable blocks
+ */
+function getParsedVars(inputSources, retainDefault) {
+    // concatenate sources
+    let cleanedInput = inputSources.reduce((str, currentFilename) => {
+        return str + fs.readFileSync(`${SRC_DIR}/${currentFilename}`).toString();
+    }, "");
+    // strip comments, clean up for consumption
+    cleanedInput = stripCssComments(cleanedInput);
+    cleanedInput = cleanedInput
+        .replace(/(@import|\/\/).*\n+/g, "")
+        .replace(/@use "sass:math";\n/g, "")
+        .replace(/border-shadow\((.+)\)/g, "0 0 0 1px rgba($black, $1)")
+        .replace(/\n{3,}/g, "\n\n");
+    if (!retainDefault) {
+        cleanedInput = cleanedInput.replace(/\ \!default/g, "");
+    }
+    cleanedInput = [USE_MATH_RULE, cleanedInput].join("\n");
+
+    // @ts-ignore, issues with types in `get-sass-vars`
+    const getSassVarsSync = getSassVars.sync;
+
+    const parsedVars = getSassVarsSync(cleanedInput, {
+        sassOptions: { functions: require("./node-sass-json-functions.js") },
+    });
+
+    // get variable blocks for separating variables in output
+    const varsInBlocks = cleanedInput
+        .split("\n\n")
+        .map(
+            block =>
+                new Set([...block.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)/g)].map(match => match.groups.varName)),
+        );
+    return { parsedVars, varsInBlocks };
+}
+
+function isPrimitive(value) {
+    return value !== Object(value);
+}
+
+/**
+ * Converts values from parsed output of `get-sass-vars` to valid scss or less
+ *
+ * @param {unknown} value
+ * @param {"less" | "scss"} outputType
+ * @returns {unknown} output
+ */
+function convertParsedValueToOutput(value, outputType) {
+    // array values should be separated with commas
+    if (Array.isArray(value)) {
+        return `${value.map(elt => convertParsedValueToOutput(elt, outputType)).join(",\n")}`;
+    }
+
+    // Objects are map variables, formatted like:
+    // https://lesscss.org/features/#maps-feature
+    // https://sass-lang.com/documentation/values/maps
+    if (typeof value === "object") {
+        return outputType === "scss"
+            ? `(${Object.entries(value).reduce(
+                  (str, [key, val]) => `${str}\n"${key}": ${convertParsedValueToOutput(val, outputType)},`,
+                  "",
+              )}\n)`
+            : `{${Object.entries(value).reduce(
+                  (str, [key, val]) => `${str}\n${key}: ${convertParsedValueToOutput(val, outputType)};`,
+                  "",
+              )}\n}`;
+    }
+
+    if (isPrimitive(value)) {
+        return value;
+    }
+
+    throw new Error(`Encountered sass variable value that cannot be converted to scss/less value: ${value}`);
 }
 
 /**
  * Pulls together variables from the specified Sass source files, sanitizes them for consumption,
  * and writes to an output file.
  *
- * @param {string[]} inputSources
+ * @param {{parsedVars: object, varsInBlocks: Set<string>[]}} parsedInput
  * @param {string} outputFilename
- * @param {boolean} retainDefault
  * @returns {string} output Sass contents
  */
-function generateScssVariables(inputSources, outputFilename, retainDefault) {
-    // concatenate sources
-    let variablesScss = inputSources.reduce((str, currentFilename) => {
-        return str + fs.readFileSync(`${SRC_DIR}/${currentFilename}`).toString();
-    }, "");
+function generateScssVariables(parsedInput, outputFilename) {
+    const { parsedVars, varsInBlocks } = parsedInput;
 
-    // strip comments, clean up for consumption
-    variablesScss = stripCssComments(variablesScss);
-    variablesScss = variablesScss
-        .replace(/(@import|\/\/).*\n+/g, "")
-        .replace(/@use "sass:math";\n/g, "")
-        .replace(/border-shadow\((.+)\)/g, "0 0 0 1px rgba($black, $1)")
-        .replace(/\n{3,}/g, "\n\n");
-    if (!retainDefault) {
-        variablesScss = variablesScss.replace(/\ \!default/g, "");
+    let variablesScss = COPYRIGHT_HEADER + "\n";
+    for (const varsInBlock of varsInBlocks) {
+        const variablesArray = Object.entries(parsedVars)
+            .filter(([varName, _value]) => varsInBlock.has(varName))
+            .map(([varName, value]) => `${varName}: ${convertParsedValueToOutput(value, "scss")};`);
+
+            variablesScss = `${variablesScss}${variablesArray.join("\n")}\n\n`;
     }
-    variablesScss = [COPYRIGHT_HEADER, USE_MATH_RULE, variablesScss].join("\n");
+
+    const formattedVariablesScss = prettier.format(variablesScss, { parser: "less" });
 
     if (!fs.existsSync(`${DEST_DIR}/scss`)) {
         fs.mkdirSync(`${DEST_DIR}/scss`, { recursive: true });
     }
-    fs.writeFileSync(`${DEST_DIR}/scss/${outputFilename}.scss`, variablesScss);
-    return variablesScss;
+    fs.writeFileSync(`${DEST_DIR}/scss/${outputFilename}.scss`, formattedVariablesScss);
+    return formattedVariablesScss;
 }
 
 /**
- * Gets variable values from compiled sass vars, converts them to Less and writes to an output file.
- * @param {string} scssVariablesSource
+ * Takes in variable values from compiled sass vars, converts them to Less and writes to an output file.
+ * @param {{parsedVars: object, varsInBlocks: Set<string>[]}} parsedInput
  * @param {string} outputFilename
  * @returns {void}
  */
-function generateLessVariables(scssVariablesSource, outputFilename) {
-    // @ts-ignore, issues with types in `get-sass-vars`
-    const getSassVarsSync = getSassVars.sync;
-
-    const parsedVars = getSassVarsSync(scssVariablesSource, {
-        sassOptions: { functions: require("./node-sass-json-functions.js") },
-    });
-
-    const isPrimitive = value => value !== Object(value);
-
-    // Convert value received from `get-sass-vars` to less variable value
-    const convertValue = value => {
-        // array values should be separated with commas
-        if (Array.isArray(value)) {
-            return `${value.map(elt => convertValue(elt)).join(",\n")}`;
-        }
-
-        // Objects are map variables, formatted like: https://lesscss.org/features/#maps-feature
-        if (typeof value === "object") {
-            return `{${Object.entries(value).reduce((str, [key, val]) => `${str}\n${key}: ${convertValue(val)};`, "")}\n}`;
-        }
-
-        if (isPrimitive(value)) {
-            return value;
-        }
-
-        throw new Error(`Encountered sass variable value that cannot be converted to less value: ${value}`);
-    };
+function generateLessVariables(parsedInput, outputFilename) {
+    const { parsedVars, varsInBlocks } = parsedInput;
 
     const convertField = ([varName, value]) => {
         if (typeof value === "object" && !Array.isArray(value)) {
-            return `${varName}: ${convertValue(value)}`;
+            return `${varName}: ${convertParsedValueToOutput(value, "less")}`;
         }
-        return `${varName}: ${convertValue(value)};`;
+        return `${varName}: ${convertParsedValueToOutput(value, "less")};`;
     };
 
-    // split into blocks by double newlines to get the same spacing in the less output
-    const splitBlocks = stripCssComments(scssVariablesSource).split("\n\n");
-
     let variablesLess = COPYRIGHT_HEADER + "\n";
-    for (const block of splitBlocks) {
-        const varsInBlock = new Set(
-            [...block.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)/g)].map(match => match.groups.varName),
-        );
+    for (const varsInBlock of varsInBlocks) {
         const lessVariablesArray = Object.entries(parsedVars)
             .filter(([varName, _value]) => varsInBlock.has(varName))
             .map(convertField);
@@ -130,11 +175,11 @@ function generateLessVariables(scssVariablesSource, outputFilename) {
             // !default syntax is not valid in less, so remove it regardless of `retainDefault` flag
             .replace(/\ \!default/g, "")
             .replace(/rgba\((\$[\w-]+), ([\d\.]+)\)/g, (_match, color, opacity) => `fade(${color}, ${+opacity * 100}%)`)
-            .replace(/rgba\((\$[\w-]+), (\$[\w-]+)\)/g, (_match, color, variable) => `fade(${color}, ${variable} * 100%)`)
-            .replace(/\$/g, "@")
-            // @use doesn't exist in less and is only used for `@use "sass:math"`
-            // and those values get computed in get-sass-vars
-            .replace(/@use.*/g, "");
+            .replace(
+                /rgba\((\$[\w-]+), (\$[\w-]+)\)/g,
+                (_match, color, variable) => `fade(${color}, ${variable} * 100%)`,
+            )
+            .replace(/\$/g, "@");
 
         variablesLess = `${variablesLess}${lessBlock}\n\n`;
     }
