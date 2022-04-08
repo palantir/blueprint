@@ -262,11 +262,17 @@ export class DatePicker extends AbstractPureComponent2<DatePickerProps, IDatePic
     );
 
     private renderOptionsBar() {
-        const { clearButtonText, todayButtonText } = this.props;
+        const { clearButtonText, todayButtonText, minDate, maxDate } = this.props;
+        const todayEnabled = isTodayEnabled(minDate, maxDate);
         return [
             <Divider key="div" />,
             <div className={Classes.DATEPICKER_FOOTER} key="footer">
-                <Button minimal={true} onClick={this.handleTodayClick} text={todayButtonText} />
+                <Button
+                    minimal={true}
+                    disabled={!todayEnabled}
+                    onClick={this.handleTodayClick}
+                    text={todayButtonText}
+                />
                 <Button minimal={true} onClick={this.handleClearClick} text={clearButtonText} />
             </div>,
         ];
@@ -457,4 +463,9 @@ function getInitialMonth(props: DatePickerProps, value: Date | null): Date {
     } else {
         return DateUtils.getDateBetween([props.minDate, props.maxDate]);
     }
+}
+
+function isTodayEnabled(minDate: Date, maxDate: Date): boolean {
+    const today = new Date();
+    return DateUtils.isDayInRange(today, [minDate, maxDate]);
 }
