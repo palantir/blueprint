@@ -199,7 +199,7 @@ describe("Grid", () => {
         });
 
         it("unlimited rows", () => {
-            const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect(rect, false, 0);
+            const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect(rect, false, 0, 0);
             expect(rowIndexStart).to.equal(0);
             expect(rowIndexEnd).to.equal(5000 - 1);
         });

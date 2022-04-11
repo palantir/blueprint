@@ -253,7 +253,12 @@ export class Grid {
      * Returns the start and end indices of rows that intersect with the given
      * `Rect` argument.
      */
-    public getRowIndicesInRect(rect: Rect, includeGhostCells = false, limit = Grid.DEFAULT_MAX_ROWS): RowIndices {
+    public getRowIndicesInRect(
+        rect: Rect,
+        includeGhostCells = false,
+        rectHeightCorrection = 0,
+        limit = Grid.DEFAULT_MAX_ROWS,
+    ): RowIndices {
         if (rect == null) {
             return { rowIndexEnd: 0, rowIndexStart: 0 };
         }
@@ -262,7 +267,7 @@ export class Grid {
         const { top = 0, height } = rect;
         const { start, end } = this.getIndicesInInterval(
             top,
-            top + height,
+            top + (height - rectHeightCorrection),
             searchEnd,
             !includeGhostCells,
             this.getCumulativeHeightAt,
