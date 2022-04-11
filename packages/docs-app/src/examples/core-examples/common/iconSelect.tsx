@@ -58,7 +58,7 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
         );
     }
 
-    private renderIconItem: ItemRenderer<IconName | typeof NONE> = (icon, { handleClick, modifiers }) => {
+    private renderIconItem: ItemRenderer<IconName | typeof NONE> = (icon, { handleClick, handleFocus, modifiers }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
@@ -68,6 +68,7 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
                 icon={icon === NONE ? undefined : icon}
                 key={icon}
                 onClick={handleClick}
+                onFocus={handleFocus}
                 text={icon}
             />
         );

@@ -374,6 +374,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
             };
             return this.props.itemRenderer(item, {
                 handleClick: e => this.handleItemSelect(item, e),
+                handleFocus: () => this.setActiveItem(item),
                 index,
                 modifiers,
                 query,

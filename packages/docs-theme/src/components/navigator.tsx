@@ -118,6 +118,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
                 key={section.route}
                 multiline={true}
                 onClick={props.handleClick}
+                onFocus={props.handleFocus}
                 text={text}
             />
         );

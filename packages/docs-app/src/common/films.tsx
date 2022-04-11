@@ -132,7 +132,7 @@ export const TOP_100_FILMS: IFilm[] = [
     { title: "Monty Python and the Holy Grail", year: 1975 },
 ].map((m, index) => ({ ...m, rank: index + 1 }));
 
-export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, modifiers, query }) => {
+export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, handleFocus, modifiers, query }) => {
     if (!modifiers.matchesPredicate) {
         return null;
     }
@@ -144,6 +144,7 @@ export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, modifiers, 
             label={film.year.toString()}
             key={film.rank}
             onClick={handleClick}
+            onFocus={handleFocus}
             text={highlightText(text, query)}
         />
     );
