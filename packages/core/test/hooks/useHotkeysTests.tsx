@@ -17,13 +17,14 @@
 import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
 import * as React from "react";
-import { spy } from "sinon";
+import { spy, SinonSpy } from "sinon";
 
 import { InputGroup } from "@blueprintjs/core";
 // N.B. { fireEvent } from "@testing-library/react" does not generate "real" enough events which
 // work with our hotkey parser implementation (worth investigating...)
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
+import { HotkeysProvider } from "../../src/context";
 import { useHotkeys } from "../../src/hooks";
 
 interface TestComponentProps extends TestComponentContainerProps {
@@ -155,5 +156,31 @@ describe("useHotkeys", () => {
         const target = screen.getByTestId("input-target");
         dispatchTestKeyboardEvent(target, "keydown", "A");
         expect(onKeyASpy.calledOnce).to.be.true;
+    });
+
+    describe("working with HotkeysProvider", () => {
+        let warnSpy: SinonSpy | undefined;
+
+        beforeEach(() => {
+            warnSpy = spy(console, "warn");
+        });
+
+        afterEach(() => {
+            warnSpy?.restore();
+        });
+
+        it("logs a warning when used outside of HotkeysProvider context", () => {
+            render(<TestComponentContainer />);
+            expect(warnSpy?.calledOnce).to.be.true;
+        });
+
+        it("does NOT log a warning when used inside a HotkeysProvider context", () => {
+            render(
+                <HotkeysProvider>
+                    <TestComponentContainer />
+                </HotkeysProvider>,
+            );
+            expect(warnSpy?.notCalled).to.be.true;
+        });
     });
 });
