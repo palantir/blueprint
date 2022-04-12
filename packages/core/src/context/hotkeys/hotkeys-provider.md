@@ -4,10 +4,6 @@ tag: new
 
 @# HotkeysProvider
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">This API requires React 16.8+</h4>
-</div>
-
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">
 
