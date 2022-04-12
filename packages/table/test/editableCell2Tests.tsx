@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";

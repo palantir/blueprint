@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import { mount as untypedMount, MountRendererProps, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -32,7 +32,7 @@ import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
-import { IRegion, Regions } from "../src/regions";
+import { Region, Regions } from "../src/regions";
 import { TableState } from "../src/tableState";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
@@ -490,7 +490,7 @@ describe("<Table2>", function (this) {
                 checkInstanceMethod(Regions.table(), 0, 0);
             });
 
-            function checkInstanceMethod(region: IRegion, expectedScrollLeft: number, expectedScrollTop: number) {
+            function checkInstanceMethod(region: Region, expectedScrollLeft: number, expectedScrollTop: number) {
                 // cast as `any` to access private members
                 const spy = sinon.spy((tableInstance as any).quadrantStackInstance, "scrollToPosition");
                 tableInstance.scrollToRegion(region);
@@ -1248,7 +1248,7 @@ describe("<Table2>", function (this) {
                 expectedCoords: IFocusedCellCoordinates,
             ) {
                 it(name, () => {
-                    const selectedRegions: IRegion[] = [
+                    const selectedRegions: Region[] = [
                         { cols: [0, 1], rows: [0, 1] },
                         { cols: [2, 2], rows: [2, 2] },
                     ];
