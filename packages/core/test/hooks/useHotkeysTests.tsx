@@ -17,7 +17,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
 import * as React from "react";
-import { spy, SinonSpy } from "sinon";
+import { spy, stub, SinonStub } from "sinon";
 
 import { InputGroup } from "@blueprintjs/core";
 // N.B. { fireEvent } from "@testing-library/react" does not generate "real" enough events which
@@ -159,15 +159,11 @@ describe("useHotkeys", () => {
     });
 
     describe("working with HotkeysProvider", () => {
-        let warnSpy: SinonSpy | undefined;
+        let warnSpy: SinonStub | undefined;
 
-        beforeEach(() => {
-            warnSpy = spy(console, "warn");
-        });
-
-        afterEach(() => {
-            warnSpy?.restore();
-        });
+        before(() => (warnSpy = stub(console, "warn")));
+        afterEach(() => warnSpy?.resetHistory());
+        after(() => warnSpy?.restore());
 
         it("logs a warning when used outside of HotkeysProvider context", () => {
             render(<TestComponentContainer />);
