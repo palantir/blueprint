@@ -163,7 +163,7 @@ describe("useHotkeys", () => {
 
         before(() => (warnSpy = stub(console, "warn")));
         afterEach(() => warnSpy?.resetHistory());
-        after(() => warnSpy?.restore());
+        after(() => (console.warn as SinonStub).restore());
 
         it("logs a warning when used outside of HotkeysProvider context", () => {
             render(<TestComponentContainer />);
