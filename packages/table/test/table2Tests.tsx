@@ -753,7 +753,6 @@ describe("<Table2>", function (this) {
             it("doesn't print a warning with default (0) frozen", () => {
                 const table = mount(<Table2 />);
                 expect(table.state("numFrozenRowsClamped")).to.equal(0, "clamped state");
-                expect(consoleWarn?.callCount).to.equal(0, "console.warn calls");
                 expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.false;
             });
 
