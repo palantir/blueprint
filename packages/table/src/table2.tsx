@@ -221,7 +221,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         columnHeader: (ref: HTMLElement | null) => {
             this.columnHeaderElement = ref;
             if (ref != null) {
-                this.columnHeaderHeight = ref.clientHeight;
+                this.columnHeaderHeight = Math.max(ref.clientHeight, Grid.MIN_COLUMN_HEADER_HEIGHT);
             }
         },
         quadrantStack: (ref: TableQuadrantStack) => (this.quadrantStackInstance = ref),
@@ -669,11 +669,11 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             return false;
         }
 
-        const rowIndices = this.grid.getRowIndicesInRect(
-            viewportRect,
-            enableGhostCells!,
-            this.columnHeaderHeight || Grid.MIN_COLUMN_HEADER_HEIGHT,
-        );
+        const rowIndices = this.grid.getRowIndicesInRect({
+            columnHeaderHeight: this.columnHeaderHeight,
+            includeGhostCells: enableGhostCells!,
+            rect: viewportRect,
+        });
 
         const isViewportUnscrolledVertically = viewportRect != null && viewportRect.top === 0;
         const areRowHeadersLoading = hasLoadingOption(this.props.loadingOptions, TableLoadingOption.ROW_HEADERS);
@@ -884,7 +884,10 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         // if we have vertical overflow, no need to render ghost rows
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
         const hasVerticalOverflow = this.locator.hasVerticalOverflow(this.columnHeaderHeight, viewportRect);
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, hasVerticalOverflow ? false : enableGhostCells);
+        const rowIndices = this.grid.getRowIndicesInRect({
+            includeGhostCells: hasVerticalOverflow ? false : enableGhostCells,
+            rect: viewportRect,
+        });
 
         const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
         const rowIndexEnd = showFrozenRowsOnly ? this.getMaxFrozenRowIndex() : rowIndices.rowIndexEnd;
@@ -974,7 +977,10 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
         const hasVerticalOverflow = this.locator.hasVerticalOverflow(this.columnHeaderHeight, viewportRect);
         const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(this.rowHeaderWidth, viewportRect);
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, hasVerticalOverflow ? false : enableGhostCells);
+        const rowIndices = this.grid.getRowIndicesInRect({
+            includeGhostCells: hasVerticalOverflow ? false : enableGhostCells,
+            rect: viewportRect,
+        });
         const columnIndices = this.grid.getColumnIndicesInRect(
             viewportRect,
             hasHorizontalOverflow ? false : enableGhostCells,
@@ -1438,7 +1444,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             return;
         }
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect);
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect);
+        const rowIndices = this.grid.getRowIndicesInRect({ rect: viewportRect });
         this.props.onVisibleCellsChange?.(rowIndices, columnIndices);
     }
 
