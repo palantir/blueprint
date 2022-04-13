@@ -264,7 +264,7 @@ export class Grid {
      * `Rect` argument.
      */
     public getRowIndicesInRect(options: GetRowIndicesInRectOptions): RowIndices {
-        const { rect, includeGhostCells = false, columnHeaderHeight = 0, limit = 0 } = options;
+        const { rect, includeGhostCells = false, columnHeaderHeight = 0, limit = Grid.DEFAULT_MAX_ROWS } = options;
         if (rect == null) {
             return { rowIndexEnd: 0, rowIndexStart: 0 };
         }

@@ -695,8 +695,7 @@ ReactDOM.render(
 
 function renderName() {
     return (
-        <div style={{ lineHeight: "50px" }}>
-            <div className={Classes.TEXT_LARGE}>Large header Cell</div>
+        <div style={{ lineHeight: "100px" }}>
             <div className={Classes.TEXT_LARGE}>Large header Cell</div>
         </div>
     );
