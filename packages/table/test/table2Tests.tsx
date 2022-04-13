@@ -20,7 +20,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as sinon from "sinon";
 
-import { Keys, Utils as CoreUtils } from "@blueprintjs/core";
+import { HotkeysProvider, Keys, Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Cell, Column, TableProps, RegionCardinality, Table2, TableLoadingOption } from "../src";
@@ -719,59 +719,67 @@ describe("<Table2>", function (this) {
     });
 
     describe("Freezing", () => {
-        let consoleWarn: sinon.SinonStub;
+        let consoleWarn: sinon.SinonStub | undefined;
 
         before(() => (consoleWarn = sinon.stub(console, "warn")));
-        afterEach(() => consoleWarn.resetHistory());
-        after(() => (console.warn as sinon.SinonStub).restore());
+        afterEach(() => consoleWarn?.resetHistory());
+        after(() => consoleWarn?.restore());
 
         describe("columns validation", () => {
             it("doesn't print a warning with default (0) frozen", () => {
-                const table = mount(<Table2 />);
-                expect(table.state("numFrozenColumnsClamped")).to.equal(0);
-                expect(consoleWarn.callCount).to.equal(0);
+                const table = mountWithHotkeys(<Table2 />);
+                expect(table.state("numFrozenColumnsClamped")).to.equal(0, "clamped state");
+                expect(consoleWarn?.callCount).to.equal(0, "console.warn calls");
             });
 
             it("prints a warning and clamps numFrozenColumns with 0 columns, 1 frozen", () => {
-                const table = mount(<Table2 numFrozenColumns={1} />);
-                expect(table.state("numFrozenColumnsClamped")).to.equal(0);
-                expect(consoleWarn.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.true;
+                const table = mountWithHotkeys(<Table2 numFrozenColumns={1} />);
+                expect(table.state("numFrozenColumnsClamped")).to.equal(0, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.true;
             });
 
             it("prints a warning and clamps numFrozenColumns with 1 column, 2 frozen", () => {
-                const table = mount(
+                const table = mountWithHotkeys(
                     <Table2 numFrozenColumns={2}>
                         <Column />
                     </Table2>,
                 );
-                expect(table.state("numFrozenColumnsClamped")).to.equal(1, "third table numFrozenColumnsClamped state");
-                expect(consoleWarn.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.true;
+                expect(table.state("numFrozenColumnsClamped")).to.equal(1, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.true;
             });
         });
 
         describe("rows validation", () => {
             it("doesn't print a warning with default (0) frozen", () => {
-                const table = mount(<Table2 />);
-                expect(table.state("numFrozenRowsClamped")).to.equal(0);
-                expect(consoleWarn.callCount).to.equal(0);
+                const table = mountWithHotkeys(<Table2 />);
+                expect(table.state("numFrozenRowsClamped")).to.equal(0, "clamped state");
+                expect(consoleWarn?.callCount).to.equal(0, "console.warn calls");
             });
 
             it("prints a warning and clamps numFrozenRows with 0 rows, 1 frozen", () => {
-                const table = mount(<Table2 numFrozenRows={1} numRows={0} />);
-                expect(table.state("numFrozenRowsClamped")).to.equal(0, "second table numFrozenColumnsClamped state");
-                expect(consoleWarn.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.true;
+                const table = mountWithHotkeys(<Table2 numFrozenRows={1} numRows={0} />);
+                expect(table.state("numFrozenRowsClamped")).to.equal(0, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.true;
             });
 
             it("prints a warning and clamps numFrozenRows with 1 row, 2 frozen", () => {
-                const table = mount(
+                const table = mountWithHotkeys(
                     <Table2 numFrozenRows={2} numRows={1}>
                         <Column />
                     </Table2>,
                 );
-                expect(table.state("numFrozenRowsClamped")).to.equal(1, "clamped");
-                expect(consoleWarn.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.true;
+                expect(table.state("numFrozenRowsClamped")).to.equal(1, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.true;
             });
         });
+
+        /**
+         * `console.warn` will be called if we don't wrap the table in a hotkeys provider,
+         * so we must ensure that we do this to get a clean console before testing console warnings.
+         */
+        function mountWithHotkeys(table: JSX.Element) {
+            return mount(<HotkeysProvider>{table}</HotkeysProvider>);
+        }
 
         const NUM_ROWS = 4;
         const NUM_COLUMNS = 3;
