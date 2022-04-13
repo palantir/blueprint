@@ -36,6 +36,9 @@ export const HOTKEYS_WARN_DECORATOR_NO_METHOD = ns + ` @HotkeysTarget-decorated 
 export const HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT =
     ns + ` "@HotkeysTarget-decorated components must return a single JSX.Element or an empty render.`;
 
+export const HOTKEYS_PROVIDER_NOT_FOUND =
+    ns +
+    ` useHotkeys() was used outside of a <HotkeysProvider> context. These hotkeys will not be shown in the hotkeys help dialog.`;
 export const HOTKEYS_TARGET2_CHILDREN_LOCAL_HOTKEYS =
     ns +
     ` <HotkeysTarget2> was configured with local hotkeys, but you did not use the generated event handlers to bind their event handlers. Try using a render function as the child of this component.`;

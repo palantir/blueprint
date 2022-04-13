@@ -102,6 +102,8 @@ jobs:
   dist:
     docker: *docker-node-image
     resource_class: large
+    environment:
+      NODE_ENV: test
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
@@ -135,6 +137,7 @@ jobs:
     docker: *docker-node-browsers-image
     environment:
       JUNIT_REPORT_PATH: reports
+      NODE_ENV: test
     parallelism: 7
     steps:
       - checkout
