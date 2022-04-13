@@ -25,6 +25,7 @@ import {
     FocusStyleManager,
     H4,
     H6,
+    HotkeysProvider,
     HTMLSelect,
     ButtonProps,
     Intent,
@@ -336,19 +337,21 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     public render() {
         const layoutBoundary = this.state.enableLayoutBoundary;
         return (
-            <div className="container">
-                <SlowLayoutStack
-                    depth={SLOW_LAYOUT_STACK_DEPTH}
-                    enabled={this.state.enableSlowLayout}
-                    rootClassName={classNames("table", { "is-inline": this.state.showInline })}
-                    branchClassName={"layout-passthrough-fill"}
-                >
-                    <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
-                        {this.renderTable()}
-                    </div>
-                </SlowLayoutStack>
-                {this.renderSidebar()}
-            </div>
+            <HotkeysProvider>
+                <div className="container">
+                    <SlowLayoutStack
+                        depth={SLOW_LAYOUT_STACK_DEPTH}
+                        enabled={this.state.enableSlowLayout}
+                        rootClassName={classNames("table", { "is-inline": this.state.showInline })}
+                        branchClassName="layout-passthrough-fill"
+                    >
+                        <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
+                            {this.renderTable()}
+                        </div>
+                    </SlowLayoutStack>
+                    {this.renderSidebar()}
+                </div>
+            </HotkeysProvider>
         );
     }
 
