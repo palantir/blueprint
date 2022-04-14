@@ -786,11 +786,15 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             return false;
         }
 
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
+        const rowIndices = this.grid.getRowIndicesInRect({
+            columnHeaderHeight: this.columnHeaderElement?.clientHeight ?? Grid.MIN_COLUMN_HEADER_HEIGHT,
+            includeGhostCells: enableGhostCells,
+            rect: viewportRect,
+        });
 
         const isViewportUnscrolledVertically = viewportRect != null && viewportRect.top === 0;
         const areRowHeadersLoading = hasLoadingOption(this.props.loadingOptions, TableLoadingOption.ROW_HEADERS);
-        const areGhostRowsVisible = enableGhostCells && this.grid.isGhostIndex(rowIndices.rowIndexEnd - 1, 0);
+        const areGhostRowsVisible = enableGhostCells && this.grid.isGhostIndex(rowIndices.rowIndexEnd, 0);
 
         return areGhostRowsVisible && (isViewportUnscrolledVertically || areRowHeadersLoading);
     }
@@ -983,7 +987,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             ),
         });
 
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
+        const rowIndices = this.grid.getRowIndicesInRect({ rect: viewportRect, includeGhostCells: enableGhostCells });
         const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
         const rowIndexEnd = showFrozenRowsOnly ? this.getMaxFrozenRowIndex() : rowIndices.rowIndexEnd;
 
@@ -1074,7 +1078,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             return undefined;
         }
 
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
+        const rowIndices = this.grid.getRowIndicesInRect({ rect: viewportRect, includeGhostCells: enableGhostCells });
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
 
         // start beyond the frozen area if rendering unrelated quadrants, so we
@@ -1509,7 +1513,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             return;
         }
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect);
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect);
+        const rowIndices = this.grid.getRowIndicesInRect({ rect: viewportRect });
         this.props.onVisibleCellsChange?.(rowIndices, columnIndices);
     }
 

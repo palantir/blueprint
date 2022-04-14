@@ -35,6 +35,16 @@ export interface ColumnIndices {
     columnIndexEnd: number;
 }
 
+interface GetRowIndicesInRectOptions {
+    rect: Rect;
+    /**
+     * height to subtract from the rect height, as rows hidden behind the columnHeader should not be returned.
+     */
+    columnHeaderHeight?: number;
+    limit?: number;
+    includeGhostCells?: boolean;
+}
+
 /**
  * This class manages the sizes of grid cells using arrays of individual row/column sizes.
  */
@@ -203,7 +213,7 @@ export class Grid {
             return results;
         }
 
-        const { rowIndexStart, rowIndexEnd } = this.getRowIndicesInRect(rect);
+        const { rowIndexStart, rowIndexEnd } = this.getRowIndicesInRect({ rect });
         const { columnIndexStart, columnIndexEnd } = this.getColumnIndicesInRect(rect);
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
@@ -224,7 +234,7 @@ export class Grid {
             return results;
         }
 
-        const { rowIndexStart, rowIndexEnd } = this.getRowIndicesInRect(rect);
+        const { rowIndexStart, rowIndexEnd } = this.getRowIndicesInRect({ rect });
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             results.push(callback(rowIndex));
         }
@@ -253,7 +263,8 @@ export class Grid {
      * Returns the start and end indices of rows that intersect with the given
      * `Rect` argument.
      */
-    public getRowIndicesInRect(rect: Rect, includeGhostCells = false, limit = Grid.DEFAULT_MAX_ROWS): RowIndices {
+    public getRowIndicesInRect(options: GetRowIndicesInRectOptions): RowIndices {
+        const { rect, includeGhostCells = false, columnHeaderHeight = 0, limit = Grid.DEFAULT_MAX_ROWS } = options;
         if (rect == null) {
             return { rowIndexEnd: 0, rowIndexStart: 0 };
         }
@@ -262,7 +273,7 @@ export class Grid {
         const { top = 0, height } = rect;
         const { start, end } = this.getIndicesInInterval(
             top,
-            top + height,
+            top + (height - columnHeaderHeight),
             searchEnd,
             !includeGhostCells,
             this.getCumulativeHeightAt,
