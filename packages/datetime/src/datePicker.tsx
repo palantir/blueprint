@@ -35,6 +35,7 @@ export type DatePickerProps = IDatePickerProps;
 export interface IDatePickerProps extends IDatePickerBaseProps, Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
+     * If disabled, the "Clear" Button in the Actions Bar will also be disabled.
      *
      * @default true
      */
@@ -262,12 +263,17 @@ export class DatePicker extends AbstractPureComponent2<DatePickerProps, IDatePic
     );
 
     private renderOptionsBar() {
-        const { clearButtonText, todayButtonText } = this.props;
+        const { clearButtonText, todayButtonText, canClearSelection } = this.props;
         return [
             <Divider key="div" />,
             <div className={Classes.DATEPICKER_FOOTER} key="footer">
                 <Button minimal={true} onClick={this.handleTodayClick} text={todayButtonText} />
-                <Button minimal={true} onClick={this.handleClearClick} text={clearButtonText} />
+                <Button
+                    disabled={!canClearSelection}
+                    minimal={true}
+                    onClick={this.handleClearClick}
+                    text={clearButtonText}
+                />
             </div>,
         ];
     }
