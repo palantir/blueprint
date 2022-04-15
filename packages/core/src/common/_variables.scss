@@ -6,8 +6,9 @@
 @import "mixins";
 
 // Namespace appended to the beginning of each CSS class: `.#{$ns}-button`.
-// Do not quote this value, for Less consumers.
-$ns: bp4 !default;
+// N.B. No quotes around this string value, for Less syntax compatibility. Also, this cannot be overriden
+// (the JS components have this class prefix hard-coded), so it does not have the `! default` modifier.
+$ns: bp4;
 // Alias for BP users outside this repo
 $bp-ns: $ns;
 
