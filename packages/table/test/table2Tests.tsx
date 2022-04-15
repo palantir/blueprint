@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import { mount as untypedMount, MountRendererProps, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -32,7 +32,7 @@ import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
-import { IRegion, Regions } from "../src/regions";
+import { Region, Regions } from "../src/regions";
 import { TableState } from "../src/tableState";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
@@ -45,11 +45,6 @@ import { createStringOfLength, createTableOfSize } from "./mocks/table";
 const mount = (el: React.ReactElement<TableProps>, options?: MountRendererProps) => untypedMount<Table2>(el, options);
 
 describe("<Table2>", function (this) {
-    if (React.version.startsWith("15")) {
-        it("skipped tests for backwards-incompatible component", () => assert(true));
-        return;
-    }
-
     // allow retrying failed tests here to reduce flakes.
     this.retries(2);
 
@@ -495,7 +490,7 @@ describe("<Table2>", function (this) {
                 checkInstanceMethod(Regions.table(), 0, 0);
             });
 
-            function checkInstanceMethod(region: IRegion, expectedScrollLeft: number, expectedScrollTop: number) {
+            function checkInstanceMethod(region: Region, expectedScrollLeft: number, expectedScrollTop: number) {
                 // cast as `any` to access private members
                 const spy = sinon.spy((tableInstance as any).quadrantStackInstance, "scrollToPosition");
                 tableInstance.scrollToRegion(region);
@@ -724,47 +719,58 @@ describe("<Table2>", function (this) {
     });
 
     describe("Freezing", () => {
-        let consoleWarn: sinon.SinonSpy;
+        let consoleWarn: sinon.SinonStub | undefined;
 
         before(() => (consoleWarn = sinon.stub(console, "warn")));
-        afterEach(() => consoleWarn.resetHistory());
-        after(() => consoleWarn.restore());
+        afterEach(() => consoleWarn?.resetHistory());
+        after(() => consoleWarn?.restore());
 
-        // HACKHACK(https://github.com/palantir/blueprint/issues/3755): skip assertions for console warnings
-        it("prints a warning and clamps out-of-bounds numFrozenColumns if > number of columns", () => {
-            const table1 = mount(<Table2 />);
-            expect(table1.state("numFrozenColumnsClamped")).to.equal(0);
-            expect(consoleWarn.callCount).to.equal(0);
+        describe("columns validation", () => {
+            it("doesn't print a warning with default (0) frozen", () => {
+                const table = mount(<Table2 />);
+                expect(table.state("numFrozenColumnsClamped")).to.equal(0, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.false;
+            });
 
-            const table2 = mount(<Table2 numFrozenColumns={1} />);
-            expect(table2.state("numFrozenColumnsClamped")).to.equal(0);
-            // expect(consoleWarn.callCount).to.equal(1, "warned 1");
+            it("prints a warning and clamps numFrozenColumns with 0 columns, 1 frozen", () => {
+                const table = mount(<Table2 numFrozenColumns={1} />);
+                expect(table.state("numFrozenColumnsClamped")).to.equal(0, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.true;
+            });
 
-            const table3 = mount(
-                <Table2 numFrozenColumns={2}>
-                    <Column />
-                </Table2>,
-            );
-            expect(table3.state("numFrozenColumnsClamped")).to.equal(1, "clamped");
-            // expect(consoleWarn.callCount).to.equal(2, "warned 2");
+            it("prints a warning and clamps numFrozenColumns with 1 column, 2 frozen", () => {
+                const table = mount(
+                    <Table2 numFrozenColumns={2}>
+                        <Column />
+                    </Table2>,
+                );
+                expect(table.state("numFrozenColumnsClamped")).to.equal(1, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.true;
+            });
         });
 
-        it("prints a warning and clamps out-of-bounds numFrozenRows if > numRows", () => {
-            const table1 = mount(<Table2 />);
-            expect(table1.state("numFrozenRowsClamped")).to.equal(0);
-            expect(consoleWarn.callCount).to.equal(0);
+        describe("rows validation", () => {
+            it("doesn't print a warning with default (0) frozen", () => {
+                const table = mount(<Table2 />);
+                expect(table.state("numFrozenRowsClamped")).to.equal(0, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.false;
+            });
 
-            const table2 = mount(<Table2 numFrozenRows={1} numRows={0} />);
-            expect(table2.state("numFrozenRowsClamped")).to.equal(0);
-            // expect(consoleWarn.callCount).to.equal(1, "warned 1");
+            it("prints a warning and clamps numFrozenRows with 0 rows, 1 frozen", () => {
+                const table = mount(<Table2 numFrozenRows={1} numRows={0} />);
+                expect(table.state("numFrozenRowsClamped")).to.equal(0, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.true;
+            });
 
-            const table3 = mount(
-                <Table2 numFrozenRows={2} numRows={1}>
-                    <Column />
-                </Table2>,
-            );
-            expect(table3.state("numFrozenRowsClamped")).to.equal(1, "clamped");
-            // expect(consoleWarn.callCount).to.equal(2, "warned 3");
+            it("prints a warning and clamps numFrozenRows with 1 row, 2 frozen", () => {
+                const table = mount(
+                    <Table2 numFrozenRows={2} numRows={1}>
+                        <Column />
+                    </Table2>,
+                );
+                expect(table.state("numFrozenRowsClamped")).to.equal(1, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.true;
+            });
         });
 
         const NUM_ROWS = 4;
@@ -1253,7 +1259,7 @@ describe("<Table2>", function (this) {
                 expectedCoords: IFocusedCellCoordinates,
             ) {
                 it(name, () => {
-                    const selectedRegions: IRegion[] = [
+                    const selectedRegions: Region[] = [
                         { cols: [0, 1], rows: [0, 1] },
                         { cols: [2, 2], rows: [2, 2] },
                     ];

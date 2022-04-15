@@ -725,6 +725,16 @@ describe("<DatePicker>", () => {
         assert.isNull(onChange.secondCall.args[0]);
     });
 
+    it("Clear button disabled when canClearSelection is false", () => {
+        const { getClearButton } = wrap(<DatePicker canClearSelection={false} showActionsBar={true} />);
+        assert.isTrue(getClearButton().props().disabled);
+    });
+
+    it("Clear button enabled when canClearSelection is true", () => {
+        const { getClearButton } = wrap(<DatePicker canClearSelection={true} showActionsBar={true} />);
+        assert.isFalse(getClearButton().props().disabled);
+    });
+
     it("selects the current day when Today is clicked", () => {
         const { root } = wrap(<DatePicker showActionsBar={true} />);
         root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).first().simulate("click");
@@ -757,6 +767,7 @@ describe("<DatePicker>", () => {
             clickShortcut: (index = 0) => {
                 wrapper.find(`.${Classes.DATERANGEPICKER_SHORTCUTS}`).hostNodes().find("a").at(index).simulate("click");
             },
+            getClearButton: () => wrapper.find(`.${Classes.DATEPICKER_FOOTER}`).find(Button).last(),
             getDay: (dayNumber = 1) =>
                 wrapper
                     .find(`.${Classes.DATEPICKER_DAY}`)

@@ -127,51 +127,46 @@ describe("<AsyncControllableInput>", () => {
             assert.strictEqual(wrapper.find("input").prop("value"), "bye");
         });
 
-        // this test only seems to work in React 16, where we don't rely on the react-lifecycles-compat polyfill
-        if (React.version.startsWith("16")) {
-            it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
-                class TestComponent extends React.PureComponent<{ initialValue: string }, { value: string }> {
-                    public state = { value: this.props.initialValue };
+        it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
+            class TestComponent extends React.PureComponent<{ initialValue: string }, { value: string }> {
+                public state = { value: this.props.initialValue };
 
-                    public render() {
-                        return (
-                            <AsyncControllableInput type="text" value={this.state.value} onChange={this.handleChange} />
-                        );
-                    }
-
-                    private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-                        const newValue = e.target.value;
-                        window.setTimeout(() => this.setState({ value: newValue }), 10);
-                    };
+                public render() {
+                    return <AsyncControllableInput type="text" value={this.state.value} onChange={this.handleChange} />;
                 }
 
-                const wrapper = mount(<TestComponent initialValue="hi" />);
-                assert.strictEqual(wrapper.find("input").prop("value"), "hi");
+                private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                    const newValue = e.target.value;
+                    window.setTimeout(() => this.setState({ value: newValue }), 10);
+                };
+            }
 
-                wrapper.find("input").simulate("change", { target: { value: "hi " } });
-                wrapper.update();
+            const wrapper = mount(<TestComponent initialValue="hi" />);
+            assert.strictEqual(wrapper.find("input").prop("value"), "hi");
 
-                assert.strictEqual(
-                    wrapper.find(AsyncControllableInput).prop("value"),
-                    "hi",
-                    "local state should still have initial value",
-                );
-                // but rendered input should optimistically show new value
-                assert.strictEqual(
-                    wrapper.find("input").prop("value"),
-                    "hi ",
-                    "rendered <input> should optimistically show new value",
-                );
+            wrapper.find("input").simulate("change", { target: { value: "hi " } });
+            wrapper.update();
 
-                // after async delay, confirm the update
-                await sleep(20);
-                assert.strictEqual(
-                    wrapper.find("input").prop("value"),
-                    "hi ",
-                    "rendered <input> should still show new value",
-                );
-                return;
-            });
-        }
+            assert.strictEqual(
+                wrapper.find(AsyncControllableInput).prop("value"),
+                "hi",
+                "local state should still have initial value",
+            );
+            // but rendered input should optimistically show new value
+            assert.strictEqual(
+                wrapper.find("input").prop("value"),
+                "hi ",
+                "rendered <input> should optimistically show new value",
+            );
+
+            // after async delay, confirm the update
+            await sleep(20);
+            assert.strictEqual(
+                wrapper.find("input").prop("value"),
+                "hi ",
+                "rendered <input> should still show new value",
+            );
+            return;
+        });
     });
 });

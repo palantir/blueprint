@@ -683,3 +683,20 @@ class ReorderableTableExample extends React.Component<{}, IReorderableTableExamp
 }
 
 ReactDOM.render(<ReorderableTableExample />, document.getElementById("table-10"));
+
+ReactDOM.render(
+    <div style={{ height: 335, width: 300 }}>
+        <Table2 numRows={10} defaultRowHeight={30} enableGhostCells={true}>
+            <Column columnHeaderCellRenderer={() => <ColumnHeaderCell nameRenderer={renderName} />} />
+        </Table2>
+    </div>,
+    document.getElementById("table-11"),
+);
+
+function renderName() {
+    return (
+        <div style={{ lineHeight: "100px" }}>
+            <div className={Classes.TEXT_LARGE}>Large header Cell</div>
+        </div>
+    );
+}
