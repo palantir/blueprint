@@ -23,7 +23,7 @@ import * as Utils from "../../common/utils";
 import { TabProps, Tab, TabId } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
-export const Expander: React.FunctionComponent = () => <div className={Classes.FLEX_EXPANDER} />;
+export const Expander: React.FC = () => <div className={Classes.FLEX_EXPANDER} />;
 
 type TabElement = React.ReactElement<TabProps & { children: React.ReactNode }>;
 

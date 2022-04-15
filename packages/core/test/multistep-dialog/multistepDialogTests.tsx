@@ -243,4 +243,4 @@ describe("<MultistepDialog>", () => {
     });
 });
 
-const Panel: React.FunctionComponent = () => <strong> panel</strong>;
+const Panel: React.FC = () => <strong> panel</strong>;

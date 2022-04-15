@@ -29,7 +29,7 @@ import { argMin, fillValues, formatPercentage } from "./sliderUtils";
  * SFC used to pass slider handle props to a `MultiSlider`.
  * This element is not rendered directly.
  */
-const MultiSliderHandle: React.FunctionComponent<HandleProps> = () => null;
+const MultiSliderHandle: React.FC<HandleProps> = () => null;
 MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 
 export interface ISliderBaseProps extends Props, IntentProps {
