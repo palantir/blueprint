@@ -34,7 +34,6 @@ export const DATEPICKER_DAY_IS_TODAY = `${DATEPICKER_DAY}--isToday`;
 export const DATEPICKER_DAY_WRAPPER = `${DATEPICKER}-day-wrapper`;
 export const DATEPICKER_FOOTER = `${DATEPICKER}-footer`;
 export const DATEPICKER_MONTH_SELECT = `${DATEPICKER}-month-select`;
-export const DATEPICKER_TODAY_BUTTON_DISABLED = `${NS}-disabled`;
 export const DATEPICKER_YEAR_SELECT = `${DATEPICKER}-year-select`;
 export const DATEPICKER_NAVBAR = `${DATEPICKER}-navbar`;
 export const DATEPICKER_NAVBUTTON = `DayPicker-NavButton`;
