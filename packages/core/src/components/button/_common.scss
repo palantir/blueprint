@@ -149,6 +149,11 @@ $button-intents: (
   &:disabled,
   &.#{$ns}-disabled {
     @include pt-button-disabled();
+
+    &.#{$ns}-active,
+    &.#{$ns}-active:hover {
+      background: $button-background-color-active-disabled;
+    }
   }
 }
 
@@ -171,11 +176,6 @@ $button-intents: (
   color: $button-color-disabled;
   cursor: not-allowed;
   outline: none;
-
-  &.#{$ns}-active,
-  &.#{$ns}-active:hover {
-    background: $button-background-color-active-disabled;
-  }
 }
 
 @mixin pt-button-intent($default-color, $hover-color, $active-color) {
@@ -240,6 +240,10 @@ $button-intents: (
   &:disabled,
   &.#{$ns}-disabled {
     @include pt-dark-button-disabled();
+
+    &.#{$ns}-active {
+      background: $dark-button-background-color-active-disabled;
+    }
   }
 
   .#{$ns}-button-spinner .#{$ns}-spinner-head {
@@ -264,10 +268,6 @@ $button-intents: (
   background-image: none;
   box-shadow: none;
   color: $dark-button-color-disabled;
-
-  &.#{$ns}-active {
-    background: $dark-button-background-color-active-disabled;
-  }
 }
 
 @mixin pt-dark-button-intent() {
