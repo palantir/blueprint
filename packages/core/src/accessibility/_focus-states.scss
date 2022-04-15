@@ -6,7 +6,7 @@
 }
 
 // override any focus outline anywhere unless specifically ignored
-.#{$ns}-focus-disabled :focus:not(.#{$ns}-focus-manager-ignore *) {
+.#{$ns}-focus-disabled :focus:not(.#{$ns}-focus-style-manager-ignore *) {
   /* stylelint-disable declaration-no-important */
   outline: none !important;
 
