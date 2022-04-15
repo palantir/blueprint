@@ -223,7 +223,7 @@ const filterFilm: ItemPredicate<IFilm> = (query, film) => {
     return film.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
 };
 
-const renderFilm: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
+const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifiers }) => {
     if (!modifiers.matchesPredicate) {
         return null;
     }
@@ -233,6 +233,7 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
             key={film.title}
             label={film.year}
             onClick={handleClick}
+            onFocus={handleFocus}
             text={film.title}
         />
     );

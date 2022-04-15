@@ -211,7 +211,7 @@ export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, 
         return items.filter(item => expr.test(item.text + item.label));
     };
 
-    private renderItem: ItemRenderer<TimezoneItem> = (item, { handleClick, modifiers }) => {
+    private renderItem: ItemRenderer<TimezoneItem> = (item, { handleClick, handleFocus, modifiers }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
@@ -223,6 +223,7 @@ export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, 
                 text={item.text}
                 label={item.label}
                 onClick={handleClick}
+                onFocus={handleFocus}
                 shouldDismissPopover={false}
             />
         );

@@ -35,6 +35,9 @@ export interface IItemRendererProps {
     /** Click event handler to select this item. */
     handleClick: MouseEventHandler<HTMLElement>;
 
+    /** Focus event handler to set this as the "active" item */
+    handleFocus: () => void;
+
     index?: number;
 
     /** Modifiers that describe how to render this item, such as `active` or `disabled`. */
