@@ -72,7 +72,7 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: 
     // `props.panel.renderPanel` is simply a function that returns a JSX.Element. It may be an FC which
     // uses hooks. In order to avoid React errors due to inconsistent hook calls, we must encapsulate
     // those hooks with their own lifecycle through a very simple wrapper component.
-    const PanelWrapper: React.FunctionComponent = React.useMemo(
+    const PanelWrapper: React.FC = React.useMemo(
         () => () =>
             // N.B. A type cast is required because of error TS2345, where technically `panel.props` could be
             // instantiated with a type unrelated to our generic constraint `T` here. We know

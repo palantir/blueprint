@@ -7,9 +7,7 @@ const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
 module.exports = function (config) {
     const baseConfig = createKarmaConfig({
         dirname: __dirname,
-        coverageExcludes: [
-            // excludes go here
-        ],
+        coverageExcludes: ["src/popover2Arrow.tsx"],
     });
     config.set(baseConfig);
     config.set({

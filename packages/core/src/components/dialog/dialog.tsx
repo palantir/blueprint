@@ -30,6 +30,9 @@ import { IBackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
 export type DialogProps = IDialogProps;
 /** @deprecated use DialogProps */
 export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
+    /** Dialog contents. */
+    children?: React.ReactNode;
+
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.

@@ -202,7 +202,7 @@ export interface ISelectPanelProps {
     onChange: (event: React.FormEvent<HTMLInputElement>) => void;
 }
 
-const SelectPanel: React.FunctionComponent<ISelectPanelProps> = props => (
+const SelectPanel: React.FC<ISelectPanelProps> = props => (
     <div className={classNames(Classes.DIALOG_BODY, "docs-multistep-dialog-example-step")}>
         <p>Use this dialog to divide content into multiple sequential steps.</p>
         <p>Select one of the options below in order to proceed to the next step:</p>
@@ -218,7 +218,7 @@ export interface IConfirmPanelProps {
     selectedValue: string;
 }
 
-const ConfirmPanel: React.FunctionComponent<IConfirmPanelProps> = props => {
+const ConfirmPanel: React.FC<IConfirmPanelProps> = props => {
     return (
         <div className={classNames(Classes.DIALOG_BODY, "docs-multistep-dialog-example-step")}>
             <p>

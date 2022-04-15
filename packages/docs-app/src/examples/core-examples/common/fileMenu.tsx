@@ -22,7 +22,7 @@ export interface IFileMenuProps extends Props {
     shouldDismissPopover?: boolean;
 }
 
-export const FileMenu: React.FunctionComponent<IFileMenuProps> = props => (
+export const FileMenu: React.FC<IFileMenuProps> = props => (
     <Menu className={props.className}>
         <MenuItem text="New" icon="document" {...props} />
         <MenuItem text="Open" icon="folder-shared" {...props} />

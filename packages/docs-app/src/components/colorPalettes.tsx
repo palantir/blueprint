@@ -50,7 +50,7 @@ function getLuminance(hex: string) {
 const DARK_LUMA_CUTOFF = 111;
 
 // a single swatch of color, name on left & hex on right. click to copy hex.
-const ColorSwatch: React.FunctionComponent<{ colorName: string; hexCode: string }> = ({ colorName, hexCode }) => {
+const ColorSwatch: React.FC<{ colorName: string; hexCode: string }> = ({ colorName, hexCode }) => {
     const style = {
         backgroundColor: hexCode,
         color: getLuminance(hexCode) < DARK_LUMA_CUTOFF ? Colors.WHITE : Colors.BLACK,
@@ -65,7 +65,7 @@ const ColorSwatch: React.FunctionComponent<{ colorName: string; hexCode: string 
 };
 
 // vertical list of swatches for each color
-const ColorPalette: React.FunctionComponent<{ colors: string[] }> = ({ colors }) => (
+const ColorPalette: React.FC<{ colors: string[] }> = ({ colors }) => (
     <div
         className={classNames("docs-color-palette", {
             "docs-color-palette-single": colors.length === 1,
@@ -79,7 +79,7 @@ const ColorPalette: React.FunctionComponent<{ colors: string[] }> = ({ colors })
 
 // horizontal list of swatches for each color
 // no text in swatch; display all hex codes underneath
-export const ColorBar: React.FunctionComponent<{ colors: string[] }> = ({ colors }) => {
+export const ColorBar: React.FC<{ colors: string[] }> = ({ colors }) => {
     const hexString = colors.map(getHexCode).join(", ");
     const jsonString = `[${colors.map(c => `"${getHexCode(c)}"`).join(", ")}]`;
 
@@ -104,7 +104,7 @@ export const ColorBar: React.FunctionComponent<{ colors: string[] }> = ({ colors
 };
 
 // a group of ColorPalettes, arranged by default in two columns
-function createPaletteBook(palettes: string[][], className?: string): React.FunctionComponent {
+function createPaletteBook(palettes: string[][], className?: string): React.FC {
     return () => (
         <section className={classNames("docs-color-book", className)}>
             {palettes.map((palette, index) => (

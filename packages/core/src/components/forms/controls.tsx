@@ -101,7 +101,7 @@ interface IControlInternalProps extends ControlProps {
  * Renders common control elements, with additional props to customize appearance.
  * This component is not exported and is only used in this file for `Checkbox`, `Radio`, and `Switch` below.
  */
-const Control: React.FunctionComponent<IControlInternalProps> = ({
+const Control: React.FC<IControlInternalProps> = ({
     alignIndicator,
     children,
     className,

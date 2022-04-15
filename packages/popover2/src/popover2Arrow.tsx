@@ -78,10 +78,7 @@ export interface IPopoverArrowProps {
     placement: Placement;
 }
 
-export const Popover2Arrow: React.FunctionComponent<IPopoverArrowProps> = ({
-    arrowProps: { ref, style },
-    placement,
-}) => (
+export const Popover2Arrow: React.FC<IPopoverArrowProps> = ({ arrowProps: { ref, style }, placement }) => (
     // data attribute allows popper.js to position the arrow
     <div
         className={Classes.POPOVER2_ARROW}
