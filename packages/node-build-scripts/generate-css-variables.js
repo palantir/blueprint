@@ -142,7 +142,7 @@ function generateScssVariables(parsedInput, outputFilename, retainDefault) {
         const variablesArray = Object.entries(parsedVars)
             .filter(([varName, _value]) => varsInBlock.has(varName))
             .map(([varName, value]) => {
-                const defaultFlag = varsWithDefaultFlag.has(varName) ? "!default" : "";
+                const defaultFlag = retainDefault && varsWithDefaultFlag.has(varName) ? "!default" : "";
                 return `${varName}: ${convertParsedValueToOutput(value, "scss")} ${defaultFlag};`;
             });
 
