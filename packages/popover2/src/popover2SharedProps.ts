@@ -15,6 +15,7 @@
  */
 
 import { Boundary, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
+import * as React from "react";
 import { StrictModifier } from "react-popper";
 
 import { OverlayableProps, Props, PopoverPosition, IRef } from "@blueprintjs/core";
@@ -45,6 +46,8 @@ export type Popover2SharedProps<T> = IPopover2SharedProps<T>;
  * @deprecated use Popover2SharedProps
  */
 export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
+    children?: React.ReactNode;
+
     /**
      * A boundary element supplied to the "flip" and "preventOverflow" modifiers.
      * This is a shorthand for overriding Popper.js modifier options with the `modifiers` prop.
