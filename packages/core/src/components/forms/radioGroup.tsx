@@ -26,7 +26,9 @@ import { RadioProps, Radio } from "./controls";
 export type RadioGroupProps = IRadioGroupProps;
 /** @deprecated use RadioGroupProps */
 export interface IRadioGroupProps extends Props {
-    /** Drawer contents. */
+    /**
+     * Radio elements. This prop is mutually exclusive with `options`.
+     */
     children?: React.ReactNode;
 
     /**

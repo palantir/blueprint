@@ -15,6 +15,7 @@
  */
 
 import { Boundary as PopperBoundary, Modifiers as PopperModifiers, Placement } from "popper.js";
+import * as React from "react";
 
 import { Position } from "../../common/position";
 import { Props } from "../../common/props";
@@ -35,6 +36,8 @@ export type PopoverPosition = typeof PopoverPosition[keyof typeof PopoverPositio
 
 /** Props shared between `Popover` and `Tooltip`. */
 export interface IPopoverSharedProps extends OverlayableProps, Props {
+    children?: React.ReactNode;
+
     /**
      * Determines the boundary element used by Popper for its `flip` and
      * `preventOverflow` modifiers. Three shorthand keywords are supported;
