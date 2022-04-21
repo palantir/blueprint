@@ -125,7 +125,7 @@ function assertContextMenuWasRendered(expectedLength = MENU_ITEMS.length) {
 
 // eslint-disable-next-line deprecation/deprecation
 @ContextMenuTarget
-class RightClickMe extends React.Component<{ children: React.ReactNode; items?: JSX.Element[] }> {
+class RightClickMe extends React.Component<{ children?: React.ReactNode; items?: JSX.Element[] }> {
     public static defaultProps = {
         items: MENU_ITEMS,
     };
