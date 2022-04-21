@@ -98,7 +98,7 @@ interface SizeProps {
     height?: number;
 }
 
-type ResizeTesterProps = ResizeSensorProps & SizeProps;
+type ResizeTesterProps = Omit<ResizeSensorProps, "children"> & SizeProps;
 const ResizeTester: React.FC<ResizeTesterProps> = ({ id, width, height, ...resizeProps }) => (
     <ResizeSensor {...resizeProps}>
         <div key={id} style={{ width, height }} />

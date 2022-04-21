@@ -57,6 +57,8 @@ export interface ITagInputProps extends IntentProps, Props {
      */
     addOnPaste?: boolean;
 
+    children?: React.ReactNode;
+
     /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's `rightElement`,

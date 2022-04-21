@@ -22,7 +22,9 @@ import { Props, Utils as CoreUtils } from "@blueprintjs/core";
 import { DragEvents } from "./dragEvents";
 import { IDragHandler } from "./dragTypes";
 
-export interface IDraggableProps extends Props, IDragHandler {}
+export interface IDraggableProps extends Props, IDragHandler {
+    children?: React.ReactNode;
+}
 
 const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof IDraggableProps>;
 

@@ -33,6 +33,8 @@ const MultiSliderHandle: React.FC<HandleProps> = () => null;
 MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 
 export interface ISliderBaseProps extends Props, IntentProps {
+    children?: React.ReactNode;
+
     /**
      * Whether the slider is non-interactive.
      *
@@ -487,10 +489,7 @@ function getSortedInteractiveHandleProps(props: React.PropsWithChildren<MultiSli
     return getSortedHandleProps(props, childProps => childProps.interactionKind !== HandleInteractionKind.NONE);
 }
 
-function getSortedHandleProps(
-    { children }: React.PropsWithChildren<MultiSliderProps>,
-    predicate: (props: HandleProps) => boolean = () => true,
-) {
+function getSortedHandleProps({ children }: MultiSliderProps, predicate: (props: HandleProps) => boolean = () => true) {
     const maybeHandles = React.Children.map(children, child =>
         Utils.isElementOfType(child, MultiSlider.Handle) && predicate(child.props) ? child.props : null,
     );

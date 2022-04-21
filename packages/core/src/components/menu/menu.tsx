@@ -24,6 +24,9 @@ import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 export type MenuProps = IMenuProps;
 /** @deprecated use MenuProps */
 export interface IMenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
+    /** Menu items. */
+    children?: React.ReactNode;
+
     /** Whether the menu items in this menu should use a large appearance. */
     large?: boolean;
 

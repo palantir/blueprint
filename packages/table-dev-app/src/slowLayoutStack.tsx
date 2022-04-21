@@ -19,6 +19,8 @@ import * as React from "react";
 import { Utils } from "@blueprintjs/table/src";
 
 export interface ISlowLayoutStackProps {
+    children?: React.ReactNode;
+
     /**
      * The number of levels in the stack
      */

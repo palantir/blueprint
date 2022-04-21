@@ -27,6 +27,11 @@ export type RadioGroupProps = IRadioGroupProps;
 /** @deprecated use RadioGroupProps */
 export interface IRadioGroupProps extends Props {
     /**
+     * Radio elements. This prop is mutually exclusive with `options`.
+     */
+    children?: React.ReactNode;
+
+    /**
      * Whether the group and _all_ its radios are disabled.
      * Individual radios can be disabled using their `disabled` prop.
      */

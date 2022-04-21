@@ -54,6 +54,9 @@ export interface IAlertProps extends IOverlayLifecycleProps, Props {
      */
     cancelButtonText?: string;
 
+    /** Dialog contents. */
+    children?: React.ReactNode;
+
     /**
      * The text for the confirm (right-most) button.
      * This button will always appear, and uses the value of the `intent` prop below.

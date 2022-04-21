@@ -46,6 +46,7 @@ export type Popover2SharedProps<T> = IPopover2SharedProps<T>;
  * @deprecated use Popover2SharedProps
  */
 export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
+    /** Interactive element which will trigger the popover. */
     children?: React.ReactNode;
 
     /**

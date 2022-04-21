@@ -24,6 +24,9 @@ import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 export type FormGroupProps = IFormGroupProps;
 /** @deprecated use FormGroupProps */
 export interface IFormGroupProps extends IntentProps, Props {
+    /** Group contents. */
+    children?: React.ReactNode;
+
     /**
      * A space-delimited list of class names to pass along to the
      * `Classes.FORM_CONTENT` element that contains `children`.

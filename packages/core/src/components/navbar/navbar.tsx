@@ -30,6 +30,8 @@ export { INavbarDividerProps, NavbarDividerProps } from "./navbarDivider";
 export type NavbarProps = INavbarProps;
 /** @deprecated use NavbarProps */
 export interface INavbarProps extends Props, HTMLDivProps {
+    children?: React.ReactNode;
+
     /**
      * Whether this navbar should be fixed to the top of the viewport (using CSS `position: fixed`).
      */

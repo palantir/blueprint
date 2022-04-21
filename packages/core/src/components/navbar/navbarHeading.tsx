@@ -24,7 +24,7 @@ import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 export type NavbarHeadingProps = INavbarHeadingProps;
 /** @deprecated use NavbarHeadingProps */
 export interface INavbarHeadingProps extends Props, HTMLDivProps {
-    // allow the empty interface so we can label it clearly in the docs
+    children?: React.ReactNode;
 }
 
 // this component is simple enough that tests would be purely tautological.
