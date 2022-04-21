@@ -21,6 +21,8 @@ import { HTMLDivProps, Props, Keys, removeNonHTMLProps } from "@blueprintjs/core
 import { createKeyEventHandler } from "@blueprintjs/docs-theme";
 
 export interface IClickToCopyProps extends Props, HTMLDivProps {
+    children?: React.ReactNode;
+
     /**
      * Additional class names to apply after value has been copied
      *

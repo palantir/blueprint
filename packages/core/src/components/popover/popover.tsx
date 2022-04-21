@@ -45,6 +45,8 @@ export interface IPopoverProps extends IPopoverSharedProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
+    children?: React.ReactNode;
+
     /**
      * The content displayed inside the popover. This can instead be provided as
      * the _second_ element in `children` (first is `target`).

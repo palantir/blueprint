@@ -31,6 +31,8 @@ export interface INavbarGroupProps extends Props, HTMLDivProps {
      * @default Alignment.LEFT
      */
     align?: Alignment;
+
+    children?: React.ReactNode;
 }
 
 // this component is simple enough that tests would be purely tautological.

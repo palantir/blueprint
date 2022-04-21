@@ -75,6 +75,9 @@ export interface IToasterProps extends Props {
      */
     canEscapeKeyClear?: boolean;
 
+    /** Optional toast elements. */
+    children?: React.ReactNode;
+
     /**
      * Whether the toaster should be rendered into a new element attached to `document.body`.
      * If `false`, then positioning will be relative to the parent element.

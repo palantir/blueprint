@@ -47,6 +47,8 @@ export interface ITagProps
      */
     active?: boolean;
 
+    children?: React.ReactNode;
+
     /**
      * Whether the tag should take up the full width of its container.
      *

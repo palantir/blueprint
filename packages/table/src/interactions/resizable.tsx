@@ -25,6 +25,9 @@ export type IIndexedResizeCallback = (index: number, size: number) => void;
 export type IndexedResizeCallback = IIndexedResizeCallback;
 
 export interface IResizableProps extends Props, ILockableLayout {
+    /** Element to resize. */
+    children: React.ReactNode;
+
     /**
      * Enables/disables the resize interaction for the column.
      *

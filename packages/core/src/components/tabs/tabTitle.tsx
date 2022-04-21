@@ -25,6 +25,9 @@ import { TabProps, TabId } from "./tab";
 export type TabTitleProps = ITabTitleProps;
 /** @deprecated use TabTitleProps */
 export interface ITabTitleProps extends TabProps {
+    /** Optional contents. */
+    children?: React.ReactNode;
+
     /** Handler invoked when this tab is clicked. */
     onClick: (id: TabId, event: React.MouseEvent<HTMLElement>) => void;
 

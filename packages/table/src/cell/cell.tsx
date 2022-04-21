@@ -34,6 +34,8 @@ export type CellProps = ICellProps;
 export interface ICellProps extends IntentProps, Props {
     key?: string;
 
+    children?: React.ReactNode;
+
     style?: React.CSSProperties;
 
     /**

@@ -18,6 +18,7 @@ import * as React from "react";
 import { Card, Classes, H4, H5 } from "@blueprintjs/core";
 
 export interface ExampleCardProps {
+    children: React.ReactNode;
     label: string;
     subLabel?: string;
     width?: number;

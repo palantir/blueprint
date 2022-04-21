@@ -55,6 +55,9 @@ export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = 
      */
     alignText?: Alignment;
 
+    /** Button contents. */
+    children?: React.ReactNode;
+
     /** Whether this button should expand to fill its container. */
     fill?: boolean;
 

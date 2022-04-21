@@ -26,6 +26,9 @@ import { RadioProps, Radio } from "./controls";
 export type RadioGroupProps = IRadioGroupProps;
 /** @deprecated use RadioGroupProps */
 export interface IRadioGroupProps extends Props {
+    /** Drawer contents. */
+    children?: React.ReactNode;
+
     /**
      * Whether the group and _all_ its radios are disabled.
      * Individual radios can be disabled using their `disabled` prop.

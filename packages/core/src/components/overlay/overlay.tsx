@@ -177,6 +177,9 @@ export interface IBackdropProps {
 export type OverlayProps = IOverlayProps;
 /** @deprecated use OverlayProps */
 export interface IOverlayProps extends OverlayableProps, IBackdropProps, Props {
+    /** Element to overlay. */
+    children?: React.ReactNode;
+
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.

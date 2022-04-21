@@ -36,6 +36,9 @@ export enum DrawerSize {
 export type DrawerProps = IDrawerProps;
 /** @deprecated use DrawerProps */
 export interface IDrawerProps extends OverlayableProps, IBackdropProps, Props {
+    /** Drawer contents. */
+    children?: React.ReactNode;
+
     /**
      * Name of a Blueprint UI icon (or an icon element) to render in the
      * drawer's header. Note that the header will only be rendered if `title` is

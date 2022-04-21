@@ -34,6 +34,9 @@ import { Icon, IconName, IconSize } from "../icon/icon";
 export type CalloutProps = ICalloutProps;
 /** @deprecated use CalloutProps */
 export interface ICalloutProps extends IntentProps, Props, HTMLDivProps {
+    /** Callout contents. */
+    children?: React.ReactNode;
+
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side.
      *

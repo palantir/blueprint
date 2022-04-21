@@ -24,6 +24,9 @@ import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 export type ControlGroupProps = IControlGroupProps;
 /** @deprecated use ControlGroupProps */
 export interface IControlGroupProps extends Props, HTMLDivProps {
+    /** Group contents. */
+    children?: React.ReactNode;
+
     /**
      * Whether the control group should take up the full width of its container.
      *

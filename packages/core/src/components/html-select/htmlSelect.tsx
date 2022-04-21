@@ -29,6 +29,8 @@ export interface IHTMLSelectProps
     // eslint-disable-next-line deprecation/deprecation
     extends IElementRefProps<HTMLSelectElement>,
         React.SelectHTMLAttributes<HTMLSelectElement> {
+    children?: React.ReactNode;
+
     /** Whether this element is non-interactive. */
     disabled?: boolean;
 

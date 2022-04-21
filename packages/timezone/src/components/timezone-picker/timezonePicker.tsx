@@ -41,6 +41,8 @@ export { TimezoneDisplayFormat };
 export type TimezonePickerProps = ITimezonePickerProps;
 /** @deprecated use TimezonePickerProps */
 export interface ITimezonePickerProps extends Props {
+    children?: React.ReactNode;
+
     /**
      * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
      * See https://www.iana.org/time-zones for more information.

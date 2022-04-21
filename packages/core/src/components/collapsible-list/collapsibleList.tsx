@@ -33,6 +33,9 @@ type CollapsibleItem = React.ReactElement<MenuItemProps>;
 export type CollapsibleListProps = ICollapsibleListProps;
 /** @deprecated use CollapsibleListProps */
 export interface ICollapsibleListProps extends Props {
+    /** Contents to collapse. */
+    children: React.ReactNode;
+
     /**
      * Element to render as dropdown target with `CLICK` interaction to show collapsed menu.
      */

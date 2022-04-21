@@ -25,6 +25,9 @@ import { DISPLAYNAME_PREFIX } from "../../common/props";
 export type ResizeSensorProps = IResizeSensorProps;
 /** @deprecated use ResizeSensorProps */
 export interface IResizeSensorProps {
+    /** Contents to observe for size changes. */
+    children: React.ReactNode;
+
     /**
      * Callback invoked when the wrapped element resizes.
      *
