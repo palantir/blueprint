@@ -4,7 +4,7 @@
 @import "../forms/common";
 
 %pt-select {
-  @include pt-button-base();
+  @include pt-button-layout();
   @include pt-button();
 
   /* stylelint-disable property-no-vendor-prefix */

@@ -27,7 +27,7 @@ Markup:
 Styleguide button
 */
 .#{$ns}-button {
-  @include pt-button-base();
+  @include pt-button-layout();
   @include pt-button-height($pt-button-height);
 
   &:empty {
