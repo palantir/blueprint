@@ -33,8 +33,8 @@ function main() {
         }).argv;
 
     const outputFilename = args["outputFileName"];
-    const parsedInput = getParsedVars(args["_"], args["retainDefault"]);
-    generateScssVariables(parsedInput, outputFilename);
+    const parsedInput = getParsedVars(args["_"]);
+    generateScssVariables(parsedInput, outputFilename, args["retainDefault"]);
     generateLessVariables(parsedInput, outputFilename);
 }
 
@@ -43,10 +43,9 @@ function main() {
  * and gets compiled output from `get-sass-vars`.
  *
  * @param {string[]} inputSources
- * @param {boolean} retainDefault
- * @returns {{parsedVars: object, varsInBlocks: Set<string>[]}} output compiled variable values and grouped variable blocks
+ * @returns {{parsedVars: object, varsInBlocks: Set<string>[], varsWithDefaultFlag: Set<string>}} output compiled variable values and grouped variable blocks
  */
-function getParsedVars(inputSources, retainDefault) {
+function getParsedVars(inputSources) {
     // concatenate sources
     let cleanedInput = inputSources.reduce((str, currentFilename) => {
         return str + fs.readFileSync(`${SRC_DIR}/${currentFilename}`).toString();
@@ -58,9 +57,6 @@ function getParsedVars(inputSources, retainDefault) {
         .replace(/@use "sass:math";\n/g, "")
         .replace(/border-shadow\((.+)\)/g, "0 0 0 1px rgba($black, $1)")
         .replace(/\n{3,}/g, "\n\n");
-    if (!retainDefault) {
-        cleanedInput = cleanedInput.replace(/\ \!default/g, "");
-    }
     cleanedInput = [USE_MATH_RULE, cleanedInput].join("\n");
 
     // @ts-ignore, issues with types in `get-sass-vars`
@@ -77,7 +73,17 @@ function getParsedVars(inputSources, retainDefault) {
             block =>
                 new Set([...block.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)/g)].map(match => match.groups.varName)),
         );
-    return { parsedVars, varsInBlocks };
+
+    // `getSassVarsSync` strips `!default` flags from the output, so we need to determine which
+    // variables had those flags set here and pass it on
+    const varsWithDefaultFlag = new Set(
+        [...cleanedInput.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)(?<varValue>[\s\S]+?);/gm)]
+            .map(match => [match.groups.varName, match.groups.varValue.trim()])
+            .filter(([, varValue]) => varValue.endsWith("!default"))
+            .map(([varName]) => varName),
+    );
+
+    return { parsedVars, varsInBlocks, varsWithDefaultFlag };
 }
 
 function isPrimitive(value) {
@@ -123,20 +129,24 @@ function convertParsedValueToOutput(value, outputType) {
  * Pulls together variables from the specified Sass source files, sanitizes them for consumption,
  * and writes to an output file.
  *
- * @param {{parsedVars: object, varsInBlocks: Set<string>[]}} parsedInput
+ * @param {{parsedVars: object, varsInBlocks: Set<string>[], varsWithDefaultFlag: Set<string>}} parsedInput
  * @param {string} outputFilename
+ * @param {boolean} retainDefault whether to retain `!default` flags on variables
  * @returns {string} output Sass contents
  */
-function generateScssVariables(parsedInput, outputFilename) {
-    const { parsedVars, varsInBlocks } = parsedInput;
+function generateScssVariables(parsedInput, outputFilename, retainDefault) {
+    const { parsedVars, varsInBlocks, varsWithDefaultFlag } = parsedInput;
 
     let variablesScss = COPYRIGHT_HEADER + "\n";
     for (const varsInBlock of varsInBlocks) {
         const variablesArray = Object.entries(parsedVars)
             .filter(([varName, _value]) => varsInBlock.has(varName))
-            .map(([varName, value]) => `${varName}: ${convertParsedValueToOutput(value, "scss")};`);
+            .map(([varName, value]) => {
+                const defaultFlag = retainDefault && varsWithDefaultFlag.has(varName) ? "!default" : "";
+                return `${varName}: ${convertParsedValueToOutput(value, "scss")} ${defaultFlag};`;
+            });
 
-            variablesScss = `${variablesScss}${variablesArray.join("\n")}\n\n`;
+        variablesScss = `${variablesScss}${variablesArray.join("\n")}\n\n`;
     }
 
     const formattedVariablesScss = prettier.format(variablesScss, { parser: "less" });
