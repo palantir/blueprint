@@ -16,19 +16,19 @@ Licensed under the Apache License, Version 2.0.
 @import "dark-theme";
 
 // Button variables and overrides
-$button-active-minimal-intent-text-modern: (
-  "primary": $blue1,
-  "success": $green1,
-  "warning": $orange1,
-  "danger": $red1
-);
+// $button-active-minimal-intent-text-modern: (
+//   "primary": $blue1,
+//   "success": $green1,
+//   "warning": $orange1,
+//   "danger": $red1
+// );
 
-$dark-minimal-button-intents-modern: (
-  "primary": (rgba($blue3, 0.2), $blue5, rgba($blue3, 0.3), $blue6),
-  "success": (rgba($green3, 0.2), $green5, rgba($green3, 0.3), $green6),
-  "warning": (rgba($orange3, 0.2), $orange5, rgba($orange3, 0.3), $orange6),
-  "danger": (rgba($red3, 0.2), $red5, rgba($red3, 0.3), $red6)
-);
+// $dark-minimal-button-intents-modern: (
+//   "primary": (rgba($blue3, 0.2), $blue5, rgba($blue3, 0.3), $blue6),
+//   "success": (rgba($green3, 0.2), $green5, rgba($green3, 0.3), $green6),
+//   "warning": (rgba($orange3, 0.2), $orange5, rgba($orange3, 0.3), $orange6),
+//   "danger": (rgba($red3, 0.2), $red5, rgba($red3, 0.3), $red6)
+// );
 
 // Editable text variable overrides
 $input-placeholder-color: $gray1;
@@ -86,126 +86,54 @@ $tree-intent-icon-colors-modern: (
 @import "components/index";
 
 // Mixin helpers used across multiple components
-@mixin pt-button-minimal-dark-intent-modern(
-  $hover-color,
-  $hover-text,
-  $active-color,
-  $active-text
-) {
-  &:hover:not(:disabled):not(.#{$ns}-disabled) {
-    background: $hover-color;
-    color: $hover-text;
-  }
+// @mixin pt-button-minimal-dark-intent-modern(
+//   $hover-color,
+//   $hover-text,
+//   $active-color,
+//   $active-text
+// ) {
+//   &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//     background: $hover-color;
+//     color: $hover-text;
+//   }
 
-  &:active:not(:disabled):not(.#{$ns}-disabled) {
-    background: $active-color;
-    color: $active-text;
-  }
-}
+//   &:active:not(:disabled):not(.#{$ns}-disabled) {
+//     background: $active-color;
+//     color: $active-text;
+//   }
+// }
 
-// Contrast for breadcrumbs
-.#{$ns}-breadcrumbs-collapsed {
-  background: rgba($gray3, 0.15);
-
-  &:hover {
-    background: rgba($gray3, 0.3);
-  }
-}
-
-
-.#{$ns}-dark {
-  .#{$ns}-breadcrumbs {
-    > li::after {
-      background: svg-icon("16px/chevron-right.svg", (path: (fill: $pt-dark-icon-color)));
-    }
-  }
-  .#{$ns}-breadcrumbs-collapsed {
-    background: rgba($gray3, 0.2);
-
-    &::before {
-      background: svg-icon("16px/more.svg", (circle: (fill: $pt-dark-icon-color))) center no-repeat;
-    }
-
-    &:hover {
-      background: rgba($gray3, 0.3);
-    }
-  }
-}
 
 // Contrast for buttons
-.#{$ns}-button {
-  // Use dark text for warning intent
-  &.#{$ns}-intent-warning {
-    background: $orange5;
-    color: $pt-text-color;
+// .#{$ns}-button {
+//   &.#{$ns}-minimal {
+//     // @mixin pt-button-minimal-intent-modern($active-text-color) {
+//     //   &:active:not(:disabled):not(.#{$ns}-disabled) {
+//     //     color: $active-text-color;
+//     //   }
+//     // }
 
-    &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-      fill: rgba($dark-gray1, 0.7);
-    }
+//     // @each $intent, $colors in $button-intents {
+//     //   &.#{$ns}-intent-#{$intent} {
+//     //     @include pt-button-minimal-intent-modern(
+//     //       map-get($button-active-minimal-intent-text-modern, $intent),
+//     //     );
+//     //   }
+//     // }
 
-    &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
-      &:hover {
-        background: $orange4;
-        color: $pt-text-color;
-      }
+//     .#{$ns}-dark & {
+//       // &:not([class*="#{$ns}-intent-"]):not(:disabled):not(.#{$ns}-disabled) {
+//       //   color: $white;
+//       // }
 
-      &:active,
-      &.#{$ns}-active {
-        background: $orange3;
-        color: $pt-text-color;
-      }
-    }
-
-    &:disabled,
-    &.#{$ns}-disabled {
-      background: rgba($orange3, 0.5);
-      color: rgba($dark-gray1, 0.35);
-
-      .#{$ns}-dark & {
-        color: rgba($dark-gray1, 0.6);
-      }
-    }
-
-    &.#{$ns}-minimal,
-    &.#{$ns}-outlined {
-      background: none;
-
-      .#{$ns}-dark & {
-        &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-          fill: $orange5;
-        }
-      }
-    }
-  }
-
-  &.#{$ns}-minimal {
-    @mixin pt-button-minimal-intent-modern($active-text-color) {
-      &:active:not(:disabled):not(.#{$ns}-disabled) {
-        color: $active-text-color;
-      }
-    }
-
-    @each $intent, $colors in $button-intents {
-      &.#{$ns}-intent-#{$intent} {
-        @include pt-button-minimal-intent-modern(
-          map-get($button-active-minimal-intent-text-modern, $intent),
-        );
-      }
-    }
-
-    .#{$ns}-dark & {
-      &:not([class*="#{$ns}-intent-"]):not(:disabled):not(.#{$ns}-disabled) {
-        color: $white;
-      }
-
-      @each $intent, $color in $dark-minimal-button-intents-modern {
-        &.#{$ns}-intent-#{$intent} {
-          @include pt-button-minimal-dark-intent-modern($color...);
-        }
-      }
-    }
-  }
-}
+//       // @each $intent, $color in $dark-minimal-button-intents-modern {
+//       //   &.#{$ns}-intent-#{$intent} {
+//       //     @include pt-button-minimal-dark-intent-modern($color...);
+//       //   }
+//       // }
+//     }
+//   }
+// }
 
 // Contrast for callouts
 .#{$ns}-callout {
