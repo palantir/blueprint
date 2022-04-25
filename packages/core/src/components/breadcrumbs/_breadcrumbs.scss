@@ -120,8 +120,8 @@ Styleguide breadcrumbs
   }
 
   .#{$ns}-breadcrumbs > li::after {
-    color: $pt-dark-icon-color;
     background: svg-icon("16px/chevron-right.svg", (path: (fill: $pt-dark-icon-color)));
+    color: $pt-dark-icon-color;
   }
 
   .#{$ns}-breadcrumb.#{$ns}-disabled {

@@ -83,8 +83,8 @@ $tree-intent-icon-colors: (
 }
 
 .#{$ns}-tree-node-content {
-  background: none;
   align-items: center;
+  background: none;
   display: flex;
   height: $tree-row-height;
   padding-right: $pt-grid-size * 0.5;
