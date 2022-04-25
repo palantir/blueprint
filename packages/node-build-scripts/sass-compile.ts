@@ -27,7 +27,7 @@ if (args.watch) {
     const folderToWatch = path.resolve(args._[0] as string);
     console.info(`[sass-compile] Watching ${folderToWatch} for changes...`);
 
-    const watcher = watch(`${folderToWatch}/**/*.scss`, { persistent: true });
+    const watcher = watch([`${folderToWatch}/*.scss`, `${folderToWatch}/**/*.scss`], { persistent: true });
     watcher.on("change", (fileName) => {
         console.info(`[sass-compile] Detected change in ${fileName}, re-compiling.`);
 
