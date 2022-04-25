@@ -1,3 +1,4 @@
+import { watch } from "chokidar";
 import fs from "fs-extra";
 import path from "path";
 import * as sass from "sass";
@@ -21,21 +22,19 @@ const args = yargs(process.argv.slice(2))
 const functions = args.functions != null ? require(path.resolve(args.functions)) : undefined;
 
 if (args.watch) {
-    const folderToWatch = args._[0];
     compileAllFiles();
 
+    const folderToWatch = path.resolve(args._[0] as string);
     console.info(`[sass-compile] Watching ${folderToWatch} for changes...`);
-    fs.watch(folderToWatch, (eventType: "rename" | "change", fileName: string | null) => {
-        if (fileName === null) {
-            return;
-        }
 
-        if (path.extname(fileName) === ".scss") {
-            if (path.basename(fileName).startsWith("_")) {
-                compileAllFiles();
-            } else {
-                compileFile(fileName);
-            }
+    const watcher = watch(`${folderToWatch}/**/*.scss`, { persistent: true });
+    watcher.on("change", (fileName) => {
+        console.info(`[sass-compile] Detected change in ${fileName}, re-compiling.`);
+
+        if (path.basename(fileName).startsWith("_")) {
+            compileAllFiles();
+        } else {
+            compileFile(fileName);
         }
     });
 } else {
