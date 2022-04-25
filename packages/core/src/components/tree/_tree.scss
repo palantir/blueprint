@@ -43,6 +43,12 @@ Styleguide tree
 
 $tree-row-height: $pt-grid-size * 3 !default;
 $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
+$tree-intent-icon-colors: (
+  "primary": $blue5,
+  "success": $green5,
+  "warning": $orange5,
+  "danger" : $red5,
+) !default;
 
 .#{$ns}-tree {
   #{$icon-classes} {
@@ -77,6 +83,7 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
 }
 
 .#{$ns}-tree-node-content {
+  background: none;
   align-items: center;
   display: flex;
   height: $tree-row-height;
@@ -84,7 +91,11 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
   width: 100%;
 
   &:hover {
-    background-color: rgba($gray5, 0.4);
+    background-color: rgba($gray3, 0.15);
+  }
+
+  &:active {
+    background-color: rgba($gray3, 0.3);
   }
 }
 
@@ -172,17 +183,19 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
 }
 
 .#{$ns}-dark {
-  .#{$ns}-tree-node-content:hover {
-    background-color: rgba($gray1, 0.3);
+  .#{$ns}-tree-node-content {
+    &:hover {
+      background-color: rgba($gray1, 0.3);
+    }
   }
 
   .#{$ns}-tree {
     #{$icon-classes} {
       color: $pt-dark-icon-color;
 
-      @each $intent, $colors in $pt-intent-colors {
+      @each $intent, $color in $tree-intent-icon-colors {
         &.#{$ns}-intent-#{$intent} {
-          @include intent-color($intent);
+          color: $color;
         }
       }
     }
@@ -190,5 +203,9 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
 
   .#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
     background-color: $pt-intent-primary;
+
+    #{$icon-classes} {
+      color: $white;
+    }
   }
 }

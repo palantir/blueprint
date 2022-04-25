@@ -514,28 +514,28 @@ $tree-intent-icon-colors-modern: (
 // }
 
 // Contrast for trees
-.#{$ns}-tree-node-content {
-  background: none;
+// .#{$ns}-tree-node-content {
+//   background: none;
 
-  &:hover {
-    background-color: rgba($gray3, 0.15);
-  }
+//   &:hover {
+//     background-color: rgba($gray3, 0.15);
+//   }
 
-  &:active {
-    background-color: rgba($gray3, 0.3);
-  }
+//   &:active {
+//     background-color: rgba($gray3, 0.3);
+//   }
 
-  .#{$ns}-dark & .#{$ns}-icon {
-    @each $intent, $color in $tree-intent-icon-colors-modern {
-      &.#{$ns}-intent-#{$intent} {
-        color: $color;
-      }
-    }
-  }
+//   .#{$ns}-dark & .#{$ns}-icon {
+//     @each $intent, $color in $tree-intent-icon-colors-modern {
+//       &.#{$ns}-intent-#{$intent} {
+//         color: $color;
+//       }
+//     }
+//   }
 
-  .#{$ns}-tree-node.#{$ns}-tree-node-selected > & {
-    #{$icon-classes} {
-      color: $white;
-    }
-  }
-}
+//   .#{$ns}-tree-node.#{$ns}-tree-node-selected > & {
+//     #{$icon-classes} {
+//       color: $white;
+//     }
+//   }
+// }
