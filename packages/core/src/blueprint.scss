@@ -15,43 +15,25 @@ Licensed under the Apache License, Version 2.0.
 @import "accessibility/focus-states";
 @import "dark-theme";
 
-// Button variables and overrides
-// $button-active-minimal-intent-text-modern: (
-//   "primary": $blue1,
-//   "success": $green1,
-//   "warning": $orange1,
-//   "danger": $red1
-// );
-
-// $dark-minimal-button-intents-modern: (
-//   "primary": (rgba($blue3, 0.2), $blue5, rgba($blue3, 0.3), $blue6),
-//   "success": (rgba($green3, 0.2), $green5, rgba($green3, 0.3), $green6),
-//   "warning": (rgba($orange3, 0.2), $orange5, rgba($orange3, 0.3), $orange6),
-//   "danger": (rgba($red3, 0.2), $red5, rgba($red3, 0.3), $red6)
-// );
-
 // Editable text variable overrides
-$input-placeholder-color: $gray1;
-$dark-input-placeholder-color: $gray4;
 
 // Slider variable overrides
-$button-box-shadow-overlay:
-  0 0 0 1px rgba($black, 0.5),
-  0 1px 1px rgba($black, 0.5);
+// $button-box-shadow-overlay:
+//   0 0 0 1px rgba($black, 0.5),
+//   0 1px 1px rgba($black, 0.5);
 
 // Switch variable overrides
-$switch-indicator-background-color: rgba($gray3, 0.3);
-$switch-checked-background-color-hover: $blue2;
-$switch-checked-background-color-active: $blue1;
+// $switch-checked-background-color-hover: $blue2;
+// $switch-checked-background-color-active: $blue1;
 
 // Toast variables
 // Tree variables
-$tree-intent-icon-colors-modern: (
-  "primary": $blue5,
-  "success": $green5,
-  "warning": $orange5,
-  "danger" : $red5,
-);
+// $tree-intent-icon-colors-modern: (
+//   "primary": $blue5,
+//   "success": $green5,
+//   "warning": $orange5,
+//   "danger" : $red5,
+// );
 
 
 @import "components/index";

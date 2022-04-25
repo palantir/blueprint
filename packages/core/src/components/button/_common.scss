@@ -41,8 +41,8 @@ shadows blend with the colors beneath it.
 Switches and slider handles both use these variables.
 */
 $button-box-shadow-overlay:
-  0 0 0 $button-border-width rgba($black, 0.2),
-  0 1px 1px rgba($black, 0.2) !default;
+  0 0 0 $button-border-width rgba($black, 0.5),
+  0 1px 1px rgba($black, 0.5);
 $button-box-shadow-overlay-active:
   0 0 0 $button-border-width rgba($black, 0.2),
   inset 0 1px 1px rgba($black, 0.1) !default;
