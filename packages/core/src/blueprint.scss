@@ -161,26 +161,26 @@ $tree-intent-icon-colors-modern: (
 // Contrast for checkboxes and radio buttons - no overrides necessary, modern colors are now built-in
 
 // Contrast for HTML tables
-table.#{$ns}-html-table {
-  &.#{$ns}-html-table-striped {
-    tbody tr:nth-child(odd) td {
-      background: rgba($gray3, 0.15);
-    }
-  }
+// table.#{$ns}-html-table {
+//   &.#{$ns}-html-table-striped {
+//     tbody tr:nth-child(odd) td {
+//       background: rgba($gray3, 0.15);
+//     }
+//   }
 
-  &.#{$ns}-interactive {
-    tbody tr {
-      &:hover td {
-        background-color: rgba($gray3, 0.3);
-        cursor: pointer;
-      }
+//   &.#{$ns}-interactive {
+//     tbody tr {
+//       &:hover td {
+//         background-color: rgba($gray3, 0.3);
+//         cursor: pointer;
+//       }
 
-      &:active td {
-        background-color: rgba($gray3, 0.35);
-      }
-    }
-  }
-}
+//       &:active td {
+//         background-color: rgba($gray3, 0.35);
+//       }
+//     }
+//   }
+// }
 
 // Contrast for inputs - no overrides necessary, modern colors are now built-in
 
