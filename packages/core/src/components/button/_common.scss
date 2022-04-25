@@ -422,7 +422,7 @@ $dark-minimal-active-text-colors: (
   &:active,
   &.#{$ns}-active {
     background: rgba($intent-color, 0.3);
-    color: $text-color;
+    color: $active-text-color;
   }
 
   &:disabled,
@@ -433,10 +433,6 @@ $dark-minimal-active-text-colors: (
     &.#{$ns}-active {
       background: rgba($intent-color, 0.3);
     }
-  }
-
-  &:active:not(:disabled):not(.#{$ns}-disabled) {
-    color: $active-text-color;
   }
 
   .#{$ns}-button-spinner .#{$ns}-spinner-head {
