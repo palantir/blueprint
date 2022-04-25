@@ -28,7 +28,7 @@ if (args.watch) {
     console.info(`[sass-compile] Watching ${folderToWatch} for changes...`);
 
     const watcher = watch([`${folderToWatch}/*.scss`, `${folderToWatch}/**/*.scss`], { persistent: true });
-    watcher.on("change", (fileName) => {
+    watcher.on("change", fileName => {
         console.info(`[sass-compile] Detected change in ${fileName}, re-compiling.`);
 
         if (path.basename(fileName).startsWith("_")) {
@@ -48,7 +48,7 @@ function compileAllFiles() {
         .map(fileName => path.join(args._[0] as string, fileName));
 
     for (const inputFile of inputFiles) {
-        compileFile(inputFile)
+        compileFile(inputFile);
     }
     console.info("[sass-compile] Finished compiling all input .scss files.");
 }
