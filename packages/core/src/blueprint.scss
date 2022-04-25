@@ -187,22 +187,22 @@ $tree-intent-icon-colors-modern: (
 // Contrast for menus - no overrides necessary, modern colors are now built-in
 
 // Contrast for sliders
-.#{$ns}-slider-handle {
-  .#{$ns}-dark & {
-    background-color: $gray4;
+// .#{$ns}-slider-handle {
+//   .#{$ns}-dark & {
+//     background-color: $gray4;
 
-    &:hover {
-      background-color: $gray3;
-    }
+//     &:hover {
+//       background-color: $gray3;
+//     }
 
-    &:active,
-    &.#{$ns}-active {
-      background:
-        linear-gradient(0deg, rgba($white, 0.1), rgba($white, 0.1)),
-        linear-gradient(0deg, $gray2, $gray2);
-    }
-  }
-}
+//     &:active,
+//     &.#{$ns}-active {
+//       background:
+//         linear-gradient(0deg, rgba($white, 0.1), rgba($white, 0.1)),
+//         linear-gradient(0deg, $gray2, $gray2);
+//     }
+//   }
+// }
 
 // Contrast for switches - no overrides necessary, modern colors are now built-in
 
