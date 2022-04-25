@@ -44,28 +44,6 @@ $switch-indicator-background-color: rgba($gray3, 0.3);
 $switch-checked-background-color-hover: $blue2;
 $switch-checked-background-color-active: $blue1;
 
-// Tag variables
-$tag-intent-colors-modern: (
-  "primary": ($pt-intent-primary, $blue2, $blue1, $white, $white),
-  "success": ($pt-intent-success, $green2, $green1, $white, $white),
-  "warning": ($orange5, $orange4, $orange3, $pt-text-color, $pt-text-color),
-  "danger": ($pt-intent-danger, $red2, $red1, $white, $white)
-);
-
-$minimal-tag-intent-colors-modern: (
-  "primary": ($pt-intent-primary, $blue2, $blue1, $blue1),
-  "success": ($pt-intent-success, $green2, $green1, $green1),
-  "warning": ($pt-intent-warning, $orange2, $orange1, $orange1),
-  "danger": ($pt-intent-danger, $red2, $red1, $red1)
-);
-
-$minimal-dark-tag-intent-colors-modern: (
-  "primary": ($pt-intent-primary, $blue5, $blue6, $blue6),
-  "success": ($pt-intent-success, $green5, $green6, $green6),
-  "warning": ($pt-intent-warning, $orange5, $orange6, $orange6),
-  "danger": ($pt-intent-danger, $red5, $red6, $red6)
-);
-
 // Toast variables
 $toast-intent-button-colors-modern: (
   "primary": ($pt-intent-primary, $white, $blue2, $blue1, rgba($white, 0.7)),
@@ -206,250 +184,272 @@ $tree-intent-icon-colors-modern: (
 
 // Contrast for switches - no overrides necessary, modern colors are now built-in
 
+// Tag variables
+// $tag-intent-colors-modern: (
+//   "primary": ($pt-intent-primary, $blue2, $blue1, $white, $white),
+//   "success": ($pt-intent-success, $green2, $green1, $white, $white),
+//   "warning": ($orange5, $orange4, $orange3, $pt-text-color, $pt-text-color),
+//   "danger": ($pt-intent-danger, $red2, $red1, $white, $white)
+// );
+
+// $minimal-tag-intent-colors-modern: (
+//   "primary": ($pt-intent-primary, $blue2, $blue1, $blue1),
+//   "success": ($pt-intent-success, $green2, $green1, $green1),
+//   "warning": ($pt-intent-warning, $orange2, $orange1, $orange1),
+//   "danger": ($pt-intent-danger, $red2, $red1, $red1)
+// );
+
+// $minimal-dark-tag-intent-colors-modern: (
+//   "primary": ($pt-intent-primary, $blue5, $blue6, $blue6),
+//   "success": ($pt-intent-success, $green5, $green6, $green6),
+//   "warning": ($pt-intent-warning, $orange5, $orange6, $orange6),
+//   "danger": ($pt-intent-danger, $red5, $red6, $red6)
+// );
+
 // Contrast for tags
 .#{$ns}-tag {
-  @mixin pt-tag-modern(
-    $background-color,
-    $hover-color,
-    $active-color,
-    $text-color,
-    $cross-button-color
-  ) {
-    background: $background-color;
-    color: $text-color;
+  // @mixin pt-tag-modern(
+  //   $background-color,
+  //   $hover-color,
+  //   $active-color,
+  //   $text-color,
+  //   $cross-button-color
+  // ) {
+  //   background: $background-color;
+  //   color: $text-color;
 
-    &.#{$ns}-interactive {
-      &:hover {
-        background-color: $hover-color;
-      }
+  //   &.#{$ns}-interactive {
+  //     &:hover {
+  //       background-color: $hover-color;
+  //     }
 
-      &:active {
-        background-color: $active-color;
-      }
-    }
+  //     &:active {
+  //       background-color: $active-color;
+  //     }
+  //   }
 
-    .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
-      color: rgba($cross-button-color, 0.7);
+  //   .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
+  //     color: rgba($cross-button-color, 0.7);
 
-      &:hover {
-        color: $cross-button-color;
-      }
+  //     &:hover {
+  //       color: $cross-button-color;
+  //     }
 
-      &:active {
-        color: $cross-button-color;
-      }
-    }
-  }
+  //     &:active {
+  //       color: $cross-button-color;
+  //     }
+  //   }
+  // }
 
-  @mixin pt-tag-minimal-intent-modern(
-    $background-color,
-    $text-color,
-    $hover-text-color,
-    $active-text-color
-  ) {
-    background-color: rgba($background-color, 0.1);
-    color: $text-color;
+  // @mixin pt-tag-minimal-intent-modern(
+  //   $background-color,
+  //   $text-color,
+  //   $hover-text-color,
+  //   $active-text-color
+  // ) {
+  //   background-color: rgba($background-color, 0.1);
+  //   color: $text-color;
 
-    &.#{$ns}-interactive {
-      &:hover {
-        background-color: rgba($background-color, 0.2);
-        color: $hover-text-color;
-      }
+  //   &.#{$ns}-interactive {
+  //     &:hover {
+  //       background-color: rgba($background-color, 0.2);
+  //       color: $hover-text-color;
+  //     }
 
-      &:active {
-        background-color: rgba($background-color, 0.3);
-        color: $active-text-color;
-      }
-    }
+  //     &:active {
+  //       background-color: rgba($background-color, 0.3);
+  //       color: $active-text-color;
+  //     }
+  //   }
 
-    .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
-      color: $text-color;
+  //   .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
+  //     color: $text-color;
 
-      &:hover {
-        color: $hover-text-color;
-      }
+  //     &:hover {
+  //       color: $hover-text-color;
+  //     }
 
-      &:active {
-        color: $active-text-color;
-      }
-    }
-  }
+  //     &:active {
+  //       color: $active-text-color;
+  //     }
+  //   }
+  // }
 
-  @mixin pt-tag-minimal-dark-intent-modern (
-    $background-color,
-    $text-color,
-    $hover-text-color,
-    $active-text-color,
-  ) {
-    .#{$ns}-dark & {
-      background-color: rgba($background-color, 0.2);
-      color: $text-color;
+  // @mixin pt-tag-minimal-dark-intent-modern (
+  //   $background-color,
+  //   $text-color,
+  //   $hover-text-color,
+  //   $active-text-color,
+  // ) {
+  //   .#{$ns}-dark & {
+  //     background-color: rgba($background-color, 0.2);
+  //     color: $text-color;
 
-      &.#{$ns}-interactive {
-        &:hover {
-          background-color: rgba($background-color, 0.3);
-          color: $hover-text-color;
-        }
+  //     &.#{$ns}-interactive {
+  //       &:hover {
+  //         background-color: rgba($background-color, 0.3);
+  //         color: $hover-text-color;
+  //       }
 
-        &:active {
-          background-color: rgba($background-color, 0.35);
-          color: $active-text-color;
-        }
-      }
+  //       &:active {
+  //         background-color: rgba($background-color, 0.35);
+  //         color: $active-text-color;
+  //       }
+  //     }
 
-      .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
-        color: $text-color;
+  //     .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
+  //       color: $text-color;
 
-        &:hover {
-          color: $hover-text-color;
-        }
+  //       &:hover {
+  //         color: $hover-text-color;
+  //       }
 
-        &:active {
-          color: $active-text-color;
-        }
-      }
-    }
-  }
+  //       &:active {
+  //         color: $active-text-color;
+  //       }
+  //     }
+  //   }
+  // }
 
   // Contrast for default intent
-  color: $white;
+  // color: $white;
 
-  .#{$ns}-tag-remove {
-    &,
-    &:hover,
-    &:active {
-      opacity: 1;
-    }
-  }
+  // .#{$ns}-tag-remove {
+  //   &,
+  //   &:hover,
+  //   &:active {
+  //     opacity: 1;
+  //   }
+  // }
 
-  &.#{$ns}-interactive {
-    &:hover {
-      background: $dark-gray5;
-    }
+  // &.#{$ns}-interactive {
+  //   &:hover {
+  //     background: $dark-gray5;
+  //   }
 
-    &:active {
-      background: $dark-gray4;
-    }
-  }
+  //   &:active {
+  //     background: $dark-gray4;
+  //   }
+  // }
 
-  .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
-    color: rgba($white, 0.7);
+  // .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
+  //   color: rgba($white, 0.7);
 
-    &:hover {
-      color: $white;
-    }
+  //   &:hover {
+  //     color: $white;
+  //   }
 
-    &:active {
-      color: $white;
-    }
-  }
+  //   &:active {
+  //     color: $white;
+  //   }
+  // }
 
   // Dark mode contrast for default intent
-  .#{$ns}-dark &:not([class*="#{$ns}-intent-"]) {
-    background: $gray5;
-    color: $pt-text-color;
+  // .#{$ns}-dark &:not([class*="#{$ns}-intent-"]) {
+    // background: $gray5;
+    // color: $pt-text-color;
 
-    &.#{$ns}-interactive {
-      &:hover {
-        background: $gray4;
-      }
+    // &.#{$ns}-interactive {
+    //   &:hover {
+    //     background: $gray4;
+    //   }
 
-      &:active {
-        background: $gray3;
-      }
-    }
+    //   &:active {
+    //     background: $gray3;
+    //   }
+    // }
 
-    .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
-      color: rgba($dark-gray1, 0.7);
+    // .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
+    //   color: rgba($dark-gray1, 0.7);
 
-      &:hover {
-        color: $dark-gray1;
-      }
+    //   &:hover {
+    //     color: $dark-gray1;
+    //   }
 
-      &:active {
-        color: $dark-gray1;
-      }
-    }
-  }
+    //   &:active {
+    //     color: $dark-gray1;
+    //   }
+    // }
+  // }
 
   // Light mode contrast for intents
-  @each $intent, $color in $tag-intent-colors-modern {
-    &.#{$ns}-intent-#{$intent} {
-      @include pt-tag-modern($color...);
-    }
-  }
+  // @each $intent, $color in $tag-intent-colors-modern {
+  //   &.#{$ns}-intent-#{$intent} {
+  //     @include pt-tag-modern($color...);
+  //   }
+  // }
 
   // Minimal style contrast
   &.#{$ns}-minimal {
     // Minimal style for default intent
-    background-color: rgba($gray3, 0.15);
-    color: $pt-text-color;
+    // background-color: rgba($gray3, 0.15);
+    // color: $pt-text-color;
 
-    &.#{$ns}-interactive {
-      &:hover {
-        background-color: rgba($gray3, 0.3);
-        color: $black;
-      }
+    // &.#{$ns}-interactive {
+    //   &:hover {
+    //     background-color: rgba($gray3, 0.3);
+    //     color: $black;
+    //   }
 
-      &:active {
-        background-color: rgba($gray3, 0.35);
-        color: $black;
-      }
-    }
+    //   &:active {
+    //     background-color: rgba($gray3, 0.35);
+    //     color: $black;
+    //   }
+    // }
 
-    .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
-      color: $gray1;
+    // .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
+    //   color: $gray1;
 
-      &:hover {
-        color: $dark-gray5;
-      }
+    //   &:hover {
+    //     color: $dark-gray5;
+    //   }
 
-      &:active {
-        color: $dark-gray5;
-      }
-    }
+    //   &:active {
+    //     color: $dark-gray5;
+    //   }
+    // }
 
     // Minimal dark style for default intent
     .#{$ns}-dark & {
-      background-color: rgba($gray3, 0.15);
-      color: $light-gray1;
+      // background-color: rgba($gray3, 0.15);
+      // color: $light-gray1;
 
-      &.#{$ns}-interactive {
-        &:hover {
-          background-color: rgba($gray3, 0.3);
-          color: $white;
-        }
+      // &.#{$ns}-interactive {
+      //   &:hover {
+      //     background-color: rgba($gray3, 0.3);
+      //     color: $white;
+      //   }
 
-        &:active {
-          background-color: rgba($gray3, 0.35);
-          color: $white;
-        }
-      }
+      //   &:active {
+      //     background-color: rgba($gray3, 0.35);
+      //     color: $white;
+      //   }
+      // }
 
-      .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
-        color: $gray4;
+      // .#{$ns}-tag-remove > .#{$ns}-icon:first-child {
+      //   color: $gray4;
 
-        &:hover {
-          color: $light-gray1;
-        }
+      //   &:hover {
+      //     color: $light-gray1;
+      //   }
 
-        &:active {
-          color: $light-gray1;
-        }
-      }
+      //   &:active {
+      //     color: $light-gray1;
+      //   }
+      // }
     }
 
-    @each $intent, $color in $minimal-tag-intent-colors-modern {
-      &.#{$ns}-intent-#{$intent} {
-        @include pt-tag-minimal-intent-modern($color...);
-      }
-    }
+    // @each $intent, $color in $minimal-tag-intent-colors-modern {
+    //   &.#{$ns}-intent-#{$intent} {
+    //     @include pt-tag-minimal-intent-modern($color...);
+    //   }
+    // }
 
-    @each $intent, $color in $minimal-dark-tag-intent-colors-modern {
-      &.#{$ns}-intent-#{$intent} {
-        @include pt-tag-minimal-dark-intent-modern($color...);
-      }
-    }
+    // @each $intent, $color in $minimal-dark-tag-intent-colors-modern {
+    //   &.#{$ns}-intent-#{$intent} {
+    //     @include pt-tag-minimal-dark-intent-modern($color...);
+    //   }
+    // }
   }
 }
 
