@@ -72,50 +72,6 @@ Styleguide button
     stroke: $white;
   }
 
-  // special case: use dark text for warning intent
-  &.#{$ns}-intent-warning {
-    background: $orange5;
-    color: $pt-text-color;
-
-    &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-      fill: rgba($dark-gray1, 0.7);
-    }
-
-    &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
-      &:hover {
-        background: $orange4;
-        color: $pt-text-color;
-      }
-
-      &:active,
-      &.#{$ns}-active {
-        background: $orange3;
-        color: $pt-text-color;
-      }
-    }
-
-    &:disabled,
-    &.#{$ns}-disabled {
-      background: rgba($orange3, 0.5);
-      color: rgba($dark-gray1, 0.35);
-
-      .#{$ns}-dark & {
-        color: rgba($dark-gray1, 0.6);
-      }
-    }
-
-    &.#{$ns}-minimal,
-    &.#{$ns}-outlined {
-      background: none;
-
-      .#{$ns}-dark & {
-        &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-          fill: $orange5;
-        }
-      }
-    }
-  }
-
   // size modifiers
   &.#{$ns}-large,
   .#{$ns}-large & {
@@ -215,6 +171,50 @@ Styleguide button
   &.#{$ns}-outlined {
     @include pt-button-minimal();
     @include pt-button-outlined();
+  }
+
+  // special case override: use dark text for warning intent
+  &.#{$ns}-intent-warning {
+    background: $orange5;
+    color: $pt-text-color;
+
+    &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+      fill: rgba($dark-gray1, 0.7);
+    }
+
+    &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
+      &:hover {
+        background: $orange4;
+        color: $pt-text-color;
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        background: $orange3;
+        color: $pt-text-color;
+      }
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      background: rgba($orange3, 0.5);
+      color: rgba($dark-gray1, 0.35);
+
+      .#{$ns}-dark & {
+        color: rgba($dark-gray1, 0.6);
+      }
+    }
+
+    &.#{$ns}-minimal,
+    &.#{$ns}-outlined {
+      background: none;
+
+      .#{$ns}-dark & {
+        &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+          fill: $orange5;
+        }
+      }
+    }
   }
 }
 
