@@ -45,13 +45,6 @@ $switch-checked-background-color-hover: $blue2;
 $switch-checked-background-color-active: $blue1;
 
 // Toast variables
-$toast-intent-button-colors-modern: (
-  "primary": ($pt-intent-primary, $white, $blue2, $blue1, rgba($white, 0.7)),
-  "success": ($pt-intent-success, $white, $green2, $green1, rgba($white, 0.7)),
-  "warning": ($orange5, $dark-gray1, $orange4, $orange3, rgba($dark-gray1, 0.7)),
-  "danger": ($pt-intent-danger, $white, $red2, $red1, rgba($white, 0.7))
-);
-
 // Tree variables
 $tree-intent-icon-colors-modern: (
   "primary": $blue5,
@@ -453,65 +446,72 @@ $tree-intent-icon-colors-modern: (
   }
 }
 
+// $toast-intent-button-colors-modern: (
+//   "primary": ($pt-intent-primary, $white, $blue2, $blue1, rgba($white, 0.7)),
+//   "success": ($pt-intent-success, $white, $green2, $green1, rgba($white, 0.7)),
+//   "warning": ($orange5, $dark-gray1, $orange4, $orange3, rgba($dark-gray1, 0.7)),
+//   "danger": ($pt-intent-danger, $white, $red2, $red1, rgba($white, 0.7))
+// );
+
 // Contrast for toasts
-.#{$ns}-toast {
-  // HACK needs !important to override the existing hack
-  /* stylelint-disable declaration-no-important */
-  @mixin pt-toast-intent-button-colors-modern (
-    $background-color,
-    $text-color,
-    $hover-color,
-    $active-color,
-    $icon-color,
-  ) {
-    .#{$ns}-icon:first-child {
-      color: $icon-color;
-    }
+// .#{$ns}-toast {
+//   // HACK needs !important to override the existing hack
+//   /* stylelint-disable declaration-no-important */
+//   @mixin pt-toast-intent-button-colors-modern (
+//     $background-color,
+//     $text-color,
+//     $hover-color,
+//     $active-color,
+//     $icon-color,
+//   ) {
+//     .#{$ns}-icon:first-child {
+//       color: $icon-color;
+//     }
 
-    .#{$ns}-button {
-      background-color: $background-color !important;
-      color: $text-color !important;
+//     .#{$ns}-button {
+//       background-color: $background-color !important;
+//       color: $text-color !important;
 
-      &:hover {
-        background-color: $hover-color !important;
-        color: $text-color !important;
-      }
+//       &:hover {
+//         background-color: $hover-color !important;
+//         color: $text-color !important;
+//       }
 
-      &:active {
-        background-color: $active-color !important;
-        color: $text-color !important;
-      }
+//       &:active {
+//         background-color: $active-color !important;
+//         color: $text-color !important;
+//       }
 
-      &:last-child > .#{$ns}-icon-cross {
-        color: rgba($text-color, 0.7) !important;
-      }
-    }
-  }
-  /* stylelint-enable declaration-no-important */
+//       &:last-child > .#{$ns}-icon-cross {
+//         color: rgba($text-color, 0.7) !important;
+//       }
+//     }
+//   }
+//   /* stylelint-enable declaration-no-important */
 
 
-  // Contrast for default intent
-  &:not([class*="#{$ns}-intent-"]) {
-    // Contrast for default intent in dark mode
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
-      .#{$ns}-button .#{$ns}-icon {
-        color: rgba($white, 0.7);
-      }
-    }
-  }
+//   // Contrast for default intent
+//   // &:not([class*="#{$ns}-intent-"]) {
+//   //   // Contrast for default intent in dark mode
+//   //   &.#{$ns}-dark,
+//   //   .#{$ns}-dark & {
+//   //     .#{$ns}-button .#{$ns}-icon {
+//   //       color: rgba($white, 0.7);
+//   //     }
+//   //   }
+//   // }
 
-  &.#{$ns}-intent-warning {
-    background-color: $orange5;
-    color: $dark-gray1;
-  }
+//   // &.#{$ns}-intent-warning {
+//   //   background-color: $orange5;
+//   //   color: $dark-gray1;
+//   // }
 
-  @each $intent, $color in $toast-intent-button-colors-modern {
-    &.#{$ns}-intent-#{$intent} {
-      @include pt-toast-intent-button-colors-modern($color...);
-    }
-  }
-}
+//   // @each $intent, $color in $toast-intent-button-colors-modern {
+//   //   &.#{$ns}-intent-#{$intent} {
+//   //     @include pt-toast-intent-button-colors-modern($color...);
+//   //   }
+//   // }
+// }
 
 // Contrast for trees
 .#{$ns}-tree-node-content {
