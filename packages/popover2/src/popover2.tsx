@@ -337,7 +337,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 [CoreClasses.ACTIVE]: !isControlled && isOpen && !isHoverInteractionKind,
             }),
             ref,
-            ...((targetEventHandlers as unknown) as T),
+            ...(targetEventHandlers as unknown as T),
         };
 
         let target: JSX.Element | undefined;
@@ -526,7 +526,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 // lost focus (e.g. due to switching tabs).
                 return;
             }
-            this.handleMouseEnter((e as unknown) as React.MouseEvent<HTMLElement>);
+            this.handleMouseEnter(e as unknown as React.MouseEvent<HTMLElement>);
         }
     };
 
@@ -539,10 +539,10 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                     e.relatedTarget !== this.popoverElement &&
                     !this.isElementInPopover(e.relatedTarget as HTMLElement)
                 ) {
-                    this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+                    this.handleMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
                 }
             } else {
-                this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+                this.handleMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;

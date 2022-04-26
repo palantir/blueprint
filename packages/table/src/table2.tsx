@@ -95,7 +95,8 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         selectionModes: SelectionModes.ALL,
     };
 
-    public static childContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
+    public static childContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> =
+        columnInteractionBarContextTypes;
 
     public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState) {
         const {
@@ -447,14 +448,8 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     }
 
     private renderTableContents = ({ handleKeyDown, handleKeyUp }: UseHotkeysReturnValue) => {
-        const {
-            children,
-            className,
-            enableRowHeader,
-            loadingOptions,
-            numRows,
-            enableColumnInteractionBar,
-        } = this.props;
+        const { children, className, enableRowHeader, loadingOptions, numRows, enableColumnInteractionBar } =
+            this.props;
         const { horizontalGuides, numFrozenColumnsClamped, numFrozenRowsClamped, verticalGuides } = this.state;
         if (!this.gridDimensionsMatchProps()) {
             // Ensure we're rendering the correct number of rows & columns

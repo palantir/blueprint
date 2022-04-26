@@ -197,7 +197,7 @@ function testLoadingOptionOverrides(
             columnLoadingOptions != null
         ) {
             // cast is safe because cellType is guaranteed to not be TableLoadingOption.ROW_HEADERS
-            const loading = columnLoadingOptions.indexOf((cellType as any) as ColumnLoadingOption) >= 0;
+            const loading = columnLoadingOptions.indexOf(cellType as any as ColumnLoadingOption) >= 0;
             // HACKHACK: see https://github.com/palantir/blueprint/issues/5114
             console.debug(`Skipped test assertion for '${cellType}' @ index ${i}, expecting loading=${loading}`);
             // expectCellLoading(cell, cellType, loading);

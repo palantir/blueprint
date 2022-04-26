@@ -130,11 +130,9 @@ export type Region = IRegion;
 /**
  * A fully-defined cells `Region`, with both column and row bounds.
  */
-export type NonNullRegion = Required<
-    {
-        [P in keyof Region]: NonNullable<Region[P]>;
-    }
->;
+export type NonNullRegion = Required<{
+    [P in keyof Region]: NonNullable<Region[P]>;
+}>;
 
 export class Regions {
     /**
