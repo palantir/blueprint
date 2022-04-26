@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Intent, Props, MaybeElement } from "../../common";
+import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Intent, MaybeElement, Props } from "../../common";
 import {
     ALERT_WARN_CANCEL_ESCAPE_KEY,
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,

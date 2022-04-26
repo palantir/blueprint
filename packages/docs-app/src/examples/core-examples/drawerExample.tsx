@@ -25,8 +25,8 @@ import {
     DrawerSize,
     H5,
     HTMLSelect,
-    OptionProps,
     Label,
+    OptionProps,
     Position,
     Switch,
 } from "@blueprintjs/core";

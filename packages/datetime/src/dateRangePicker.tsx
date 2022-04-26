@@ -28,11 +28,11 @@ import { MonthAndYear } from "./common/monthAndYear";
 import { DatePickerCaption } from "./datePickerCaption";
 import {
     combineModifiers,
+    DatePickerModifiers,
     getDefaultMaxDate,
     getDefaultMinDate,
     HOVERED_RANGE_MODIFIER,
     IDatePickerBaseProps,
-    DatePickerModifiers,
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
 import { DatePickerNavbar } from "./datePickerNavbar";

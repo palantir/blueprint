@@ -17,12 +17,12 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    Utils as CoreUtils,
     DISPLAYNAME_PREFIX,
     EditableText,
+    EditableTextProps,
     HotkeyConfig,
     HotkeysTarget2,
-    EditableTextProps,
-    Utils as CoreUtils,
     UseHotkeysReturnValue,
 } from "@blueprintjs/core";
 

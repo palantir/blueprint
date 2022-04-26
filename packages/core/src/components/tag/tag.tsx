@@ -23,8 +23,8 @@ import {
     DISPLAYNAME_PREFIX,
     IElementRefProps,
     IntentProps,
-    Props,
     MaybeElement,
+    Props,
     Utils,
 } from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";

@@ -20,11 +20,11 @@ import * as React from "react";
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
-import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon, IconName, IconSize } from "../icon/icon";
-import { IBackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
+import { IBackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
 
 export enum DrawerSize {
     SMALL = "360px",

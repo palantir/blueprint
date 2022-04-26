@@ -22,10 +22,10 @@ import {
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
-    IntentProps,
     Intent,
-    Props,
+    IntentProps,
     MaybeElement,
+    Props,
 } from "../../common";
 import { H4 } from "../html/html";
 import { Icon, IconName, IconSize } from "../icon/icon";

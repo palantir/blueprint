@@ -23,14 +23,14 @@ import {
     Boundary,
     Classes,
     DISPLAYNAME_PREFIX,
-    InputGroupProps2,
     InputGroup,
+    InputGroupProps2,
     Intent,
     IPopoverProps,
-    Props,
     Keys,
     Popover,
     Position,
+    Props,
     refHandler,
     setRef,
 } from "@blueprintjs/core";
@@ -38,7 +38,7 @@ import {
 import { DateRange } from "./common/dateRange";
 import { areSameTime, isDateValid, isDayInRange } from "./common/dateUtils";
 import * as Errors from "./common/errors";
-import { getFormattedDateString, DateFormatProps } from "./dateFormat";
+import { DateFormatProps, getFormattedDateString } from "./dateFormat";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateRangePicker } from "./dateRangePicker";
 import { DateRangeShortcut } from "./shortcuts";

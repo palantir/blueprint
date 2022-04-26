@@ -24,7 +24,7 @@ import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
 import { NonNullRegion, Region, RegionCardinality, Regions } from "./regions";
 import type { TableProps } from "./tableProps";
-import type { TableState, TableSnapshot } from "./tableState";
+import type { TableSnapshot, TableState } from "./tableState";
 
 export interface TableHandlers {
     handleSelection: (selectedRegions: Region[]) => void;

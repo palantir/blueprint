@@ -17,7 +17,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
 import * as React from "react";
-import { spy, stub, SinonStub } from "sinon";
+import { SinonStub, spy, stub } from "sinon";
 
 import { InputGroup } from "@blueprintjs/core";
 // N.B. { fireEvent } from "@testing-library/react" does not generate "real" enough events which

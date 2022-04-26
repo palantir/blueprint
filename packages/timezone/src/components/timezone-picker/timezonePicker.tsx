@@ -20,13 +20,13 @@ import * as React from "react";
 import {
     AbstractPureComponent2,
     Button,
+    ButtonProps,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
-    ButtonProps,
     InputGroupProps2,
     IPopoverProps,
-    Props,
     MenuItem,
+    Props,
 } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 

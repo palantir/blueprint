@@ -19,9 +19,9 @@ import * as React from "react";
 
 import {
     AbstractPureComponent2,
+    ActionProps,
     Alignment,
     Classes,
-    ActionProps,
     IElementRefProps,
     Keys,
     MaybeElement,

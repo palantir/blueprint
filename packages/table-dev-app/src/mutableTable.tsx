@@ -21,13 +21,13 @@ import * as React from "react";
 
 import {
     Button,
+    ButtonProps,
     Classes,
     FocusStyleManager,
     H4,
     H6,
     HotkeysProvider,
     HTMLSelect,
-    ButtonProps,
     Intent,
     Menu,
     MenuDivider,
@@ -40,12 +40,12 @@ import {
     ColumnHeaderCell,
     EditableCell2,
     EditableName,
-    StyledRegionGroup,
     JSONFormat,
     Region,
     RegionCardinality,
     Regions,
     RowHeaderCell,
+    StyledRegionGroup,
     Table2,
     TableLoadingOption,
     TruncatedFormat,
@@ -482,7 +482,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     };
 
     private renderColumnMenu = (columnIndex: number) => {
-        // tslint:disable:jsx-no-multiline-js jsx-no-lambda
         const menu = (
             <Menu>
                 <MenuItem

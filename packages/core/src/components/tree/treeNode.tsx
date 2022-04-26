@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
 

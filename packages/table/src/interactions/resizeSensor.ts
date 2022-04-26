@@ -16,6 +16,8 @@
 
 import * as Classes from "../common/classes";
 
+/* eslint-disable @typescript-eslint/no-extraneous-class */
+
 /**
  * Efficiently detect when an HTMLElement is resized.
  *

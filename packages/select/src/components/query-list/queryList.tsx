@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { AbstractComponent2, DISPLAYNAME_PREFIX, Props, Keys, Menu, Utils } from "@blueprintjs/core";
+import { AbstractComponent2, DISPLAYNAME_PREFIX, Keys, Menu, Props, Utils } from "@blueprintjs/core";
 
 import {
     executeItemsEqual,

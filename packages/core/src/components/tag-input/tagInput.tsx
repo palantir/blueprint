@@ -18,9 +18,9 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent2, Classes, IRef, Keys, refHandler, setRef, Utils } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, Props, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, MaybeElement, Props } from "../../common/props";
 import { Icon, IconName, IconSize } from "../icon/icon";
-import { TagProps, Tag } from "../tag/tag";
+import { Tag, TagProps } from "../tag/tag";
 
 /**
  * The method in which a `TagInput` value was added.

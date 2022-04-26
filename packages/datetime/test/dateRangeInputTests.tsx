@@ -37,7 +37,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src";
 import { Months } from "../src/common/months";
-import { DATETIME_FORMAT, DATE_FORMAT } from "./common/dateFormat";
+import { DATE_FORMAT, DATETIME_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
 type WrappedComponentRoot = ReactWrapper<any>;

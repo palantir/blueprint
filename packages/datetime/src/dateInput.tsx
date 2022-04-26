@@ -21,21 +21,21 @@ import type { DayPickerProps } from "react-day-picker";
 import {
     AbstractPureComponent2,
     DISPLAYNAME_PREFIX,
-    InputGroupProps2,
     InputGroup,
+    InputGroupProps2,
     Intent,
     IPopoverProps,
-    Props,
     IRef,
     Keys,
     Popover,
+    Props,
     refHandler,
     setRef,
 } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import { isDateValid, isDayInRange } from "./common/dateUtils";
-import { getFormattedDateString, DateFormatProps } from "./dateFormat";
+import { DateFormatProps, getFormattedDateString } from "./dateFormat";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DatePickerShortcut } from "./shortcuts";

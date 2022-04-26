@@ -15,15 +15,15 @@
  */
 
 import { expect } from "chai";
-import { mount as untypedMount, MountRendererProps, ReactWrapper } from "enzyme";
+import { MountRendererProps, ReactWrapper, mount as untypedMount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as sinon from "sinon";
 
-import { Keys, Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils, Keys } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Cell, Column, TableProps, RegionCardinality, Table, TableLoadingOption } from "../src";
+import { Cell, Column, RegionCardinality, Table, TableLoadingOption, TableProps } from "../src";
 import type { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cellTypes";
 import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
@@ -40,7 +40,6 @@ import { createStringOfLength, createTableOfSize } from "./mocks/table";
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
-// tslint:disable-next-line no-unnecessary-callback-wrapper
 const mount = (el: React.ReactElement<TableProps>, options?: MountRendererProps) => untypedMount<Table>(el, options);
 
 describe("<Table>", function (this) {

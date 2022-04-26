@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes, MultistepDialog, DialogStep } from "../../src";
+import { Classes, DialogStep, MultistepDialog } from "../../src";
 
 const NEXT_BUTTON = "[text='Next']";
 const BACK_BUTTON = "[text='Back']";

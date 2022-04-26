@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, Props, Keys } from "@blueprintjs/core";
+import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, Keys, Props } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";

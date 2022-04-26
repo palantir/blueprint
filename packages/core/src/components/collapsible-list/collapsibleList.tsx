@@ -24,7 +24,7 @@ import { Position } from "../../common/position";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
 import { Menu } from "../menu/menu";
-import { MenuItemProps, MenuItem } from "../menu/menuItem";
+import { MenuItem, MenuItemProps } from "../menu/menuItem";
 import { IPopoverProps, Popover } from "../popover/popover";
 
 type CollapsibleItem = React.ReactElement<MenuItemProps>;

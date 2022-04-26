@@ -18,11 +18,11 @@ import * as React from "react";
 
 import {
     Classes as CoreClasses,
+    Utils as CoreUtils,
     DISPLAYNAME_PREFIX,
     IntentProps,
-    Props,
     IRef,
-    Utils as CoreUtils,
+    Props,
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";

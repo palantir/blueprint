@@ -134,6 +134,7 @@ export type NonNullRegion = Required<{
     [P in keyof Region]: NonNullable<Region[P]>;
 }>;
 
+/* eslint-disable-next-line @typescript-eslint/no-extraneous-class */
 export class Regions {
     /**
      * Determines the cardinality of a region. We use null values to indicate

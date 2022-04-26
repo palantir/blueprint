@@ -23,7 +23,7 @@
 
 import * as React from "react";
 
-import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack2, Switch, UL } from "@blueprintjs/core";
+import { Button, H5, Intent, NumericInput, Panel, PanelProps, PanelStack2, Switch, UL } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

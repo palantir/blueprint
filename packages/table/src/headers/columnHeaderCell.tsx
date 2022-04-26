@@ -19,12 +19,12 @@ import * as React from "react";
 
 import {
     AbstractPureComponent2,
+    Utils as CoreUtils,
     Icon,
     IconName,
-    Props,
     Popover,
     Position,
-    Utils as CoreUtils,
+    Props,
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";

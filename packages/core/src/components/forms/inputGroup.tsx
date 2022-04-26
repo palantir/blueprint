@@ -20,13 +20,13 @@ import * as React from "react";
 import { AbstractPureComponent2, Classes, IRef } from "../../common";
 import * as Errors from "../../common/errors";
 import {
+    ControlledProps2,
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IControlledProps,
-    ControlledProps2,
     IntentProps,
-    Props,
     MaybeElement,
+    Props,
     removeNonHTMLProps,
 } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";

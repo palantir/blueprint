@@ -21,11 +21,11 @@ import type { FocusedCellCoordinates } from "./common/cellTypes";
 import type { ColumnIndices, RowIndices } from "./common/grid";
 import type { RenderMode } from "./common/renderMode";
 import type { IColumnWidths } from "./headers/columnHeader";
-import type { RowHeaderRenderer, IRowHeights } from "./headers/rowHeader";
+import type { IRowHeights, RowHeaderRenderer } from "./headers/rowHeader";
 import type { IContextMenuRenderer } from "./interactions/menus";
 import type { IIndexedResizeCallback } from "./interactions/resizable";
 import type { ISelectedRegionTransform } from "./interactions/selectable";
-import type { Region, StyledRegionGroup, RegionCardinality, TableLoadingOption } from "./regions";
+import type { Region, RegionCardinality, StyledRegionGroup, TableLoadingOption } from "./regions";
 
 // eslint-disable-next-line deprecation/deprecation
 export type TableProps = ITableProps;
