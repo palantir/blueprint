@@ -398,14 +398,8 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     };
 
     private maybeRenderBackdrop() {
-        const {
-            backdropClassName,
-            backdropProps,
-            hasBackdrop,
-            isOpen,
-            transitionDuration,
-            transitionName,
-        } = this.props;
+        const { backdropClassName, backdropProps, hasBackdrop, isOpen, transitionDuration, transitionName } =
+            this.props;
 
         if (hasBackdrop && isOpen) {
             return (

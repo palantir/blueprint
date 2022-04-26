@@ -477,7 +477,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 // lost focus (e.g. due to switching tabs).
                 return;
             }
-            this.handleMouseEnter((e as unknown) as React.MouseEvent<HTMLElement>);
+            this.handleMouseEnter(e as unknown as React.MouseEvent<HTMLElement>);
         }
         this.props.targetProps?.onFocus?.(e);
     };
@@ -490,7 +490,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             // it won't be set. So, we filter those out here and assume that a click handler somewhere else will
             // close the popover if necessary.
             if (e.relatedTarget != null && !this.isElementInPopover(e.relatedTarget as HTMLElement)) {
-                this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+                this.handleMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;

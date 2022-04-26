@@ -88,7 +88,8 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         selectionModes: SelectionModes.ALL,
     };
 
-    public static childContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
+    public static childContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> =
+        columnInteractionBarContextTypes;
 
     public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState) {
         const {
@@ -414,14 +415,8 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     }
 
     public render() {
-        const {
-            children,
-            className,
-            enableRowHeader,
-            loadingOptions,
-            numRows,
-            enableColumnInteractionBar,
-        } = this.props;
+        const { children, className, enableRowHeader, loadingOptions, numRows, enableColumnInteractionBar } =
+            this.props;
         const { horizontalGuides, numFrozenColumnsClamped, numFrozenRowsClamped, verticalGuides } = this.state;
         if (!this.gridDimensionsMatchProps()) {
             // Ensure we're rendering the correct number of rows & columns
@@ -1028,15 +1023,8 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             return undefined;
         }
 
-        const {
-            id,
-            loadingOptions,
-            cellRenderer,
-            columnHeaderCellRenderer,
-            name,
-            nameRenderer,
-            ...restColumnProps
-        } = columnProps;
+        const { id, loadingOptions, cellRenderer, columnHeaderCellRenderer, name, nameRenderer, ...restColumnProps } =
+            columnProps;
 
         // HACKHACK: cellRenderer prop has a default value, so we can assert non-null
         const cell = cellRenderer!(rowIndex, columnIndex);

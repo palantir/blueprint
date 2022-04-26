@@ -143,11 +143,9 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
      *
      * @see https://popper.js.org/docs/v2/modifiers/
      */
-    modifiers?: Partial<
-        {
-            [M in StrictModifierNames]: Partial<Omit<StrictModifier<M>, "name">>;
-        }
-    >;
+    modifiers?: Partial<{
+        [M in StrictModifierNames]: Partial<Omit<StrictModifier<M>, "name">>;
+    }>;
 
     /**
      * Callback invoked in controlled mode when the popover open state *would*

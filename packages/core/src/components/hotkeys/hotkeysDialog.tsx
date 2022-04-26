@@ -38,9 +38,9 @@ export interface IHotkeysDialogProps extends DialogProps {
 const DELAY_IN_MS = 10;
 
 class HotkeysDialog {
-    public componentProps = ({
+    public componentProps = {
         globalHotkeysGroup: "Global hotkeys",
-    } as any) as IHotkeysDialogProps;
+    } as any as IHotkeysDialogProps;
 
     private container: HTMLElement | null = null;
 

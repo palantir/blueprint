@@ -119,13 +119,8 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
     public state: IMultistepDialogState = this.getInitialIndexFromProps(this.props);
 
     public render() {
-        const {
-            className,
-            navigationPosition,
-            showCloseButtonInFooter,
-            isCloseButtonShown,
-            ...otherProps
-        } = this.props;
+        const { className, navigationPosition, showCloseButtonInFooter, isCloseButtonShown, ...otherProps } =
+            this.props;
 
         // Only one close button should be displayed. If the footer close button
         // is shown, we need to ensure the dialog close button is not displayed.

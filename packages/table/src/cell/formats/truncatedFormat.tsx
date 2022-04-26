@@ -279,12 +279,8 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
                     return false;
                 }
 
-                const {
-                    approximateCharWidth,
-                    approximateLineHeight,
-                    cellHorizontalPadding,
-                    numBufferLines,
-                } = measureByApproxOptions!;
+                const { approximateCharWidth, approximateLineHeight, cellHorizontalPadding, numBufferLines } =
+                    measureByApproxOptions!;
 
                 const cellWidth = this.props.parentCellWidth;
                 const approxCellHeight = Utils.getApproxCellHeight(

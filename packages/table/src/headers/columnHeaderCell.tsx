@@ -88,7 +88,8 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         menuIcon: "chevron-down",
     };
 
-    public static contextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
+    public static contextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> =
+        columnInteractionBarContextTypes;
 
     /**
      * This method determines if a `MouseEvent` was triggered on a target that

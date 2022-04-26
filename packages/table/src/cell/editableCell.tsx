@@ -133,15 +133,8 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     }
 
     public render() {
-        const {
-            onCancel,
-            onChange,
-            onConfirm,
-            truncated,
-            wrapText,
-            editableTextProps,
-            ...spreadableProps
-        } = this.props;
+        const { onCancel, onChange, onConfirm, truncated, wrapText, editableTextProps, ...spreadableProps } =
+            this.props;
 
         const { isEditing, dirtyValue, savedValue } = this.state;
         const interactive = spreadableProps.interactive || isEditing;

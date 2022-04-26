@@ -92,5 +92,5 @@ function throttleImpl<T extends Function>(
             isRunning = false;
         });
     };
-    return (func as any) as T;
+    return func as any as T;
 }

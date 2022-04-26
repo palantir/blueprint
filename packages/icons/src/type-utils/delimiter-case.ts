@@ -14,7 +14,7 @@ export type SplitIncludingDelimiters<Source extends string, Delimiter extends st
                 ? [
                       ...SplitIncludingDelimiters<FirstPart, Delimiter>,
                       UsedDelimiter,
-                      ...SplitIncludingDelimiters<SecondPart, Delimiter>
+                      ...SplitIncludingDelimiters<SecondPart, Delimiter>,
                   ]
                 : never
             : never
@@ -30,7 +30,7 @@ type StringPartToDelimiterCase<
     StringPart extends string,
     UsedWordSeparators extends string,
     UsedUpperCaseCharacters extends string,
-    Delimiter extends string
+    Delimiter extends string,
 > = StringPart extends UsedWordSeparators
     ? Delimiter
     : StringPart extends UsedUpperCaseCharacters
@@ -48,7 +48,7 @@ type StringArrayToDelimiterCase<
     Parts extends any[],
     UsedWordSeparators extends string,
     UsedUpperCaseCharacters extends string,
-    Delimiter extends string
+    Delimiter extends string,
 > = Parts extends [`${infer FirstPart}`, ...infer RemainingParts]
     ? `${StringPartToDelimiterCase<
           FirstPart,

@@ -10,7 +10,7 @@ Only to be used by `CamelCaseStringArray<>`.
 */
 type InnerCamelCaseStringArray<Parts extends any[], PreviousPart> = Parts extends [
     `${infer FirstPart}`,
-    ...infer RemainingParts
+    ...infer RemainingParts,
 ]
     ? FirstPart extends undefined
         ? ""
