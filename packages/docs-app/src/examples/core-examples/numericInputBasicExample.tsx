@@ -19,10 +19,10 @@ import {
     H5,
     HTMLSelect,
     Intent,
-    NumericInputProps,
-    OptionProps,
     Label,
     NumericInput,
+    NumericInputProps,
+    OptionProps,
     Position,
     Switch,
 } from "@blueprintjs/core";

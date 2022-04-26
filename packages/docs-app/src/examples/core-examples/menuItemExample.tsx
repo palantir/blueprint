@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Classes, H5, Intent, Menu, MenuItem, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 

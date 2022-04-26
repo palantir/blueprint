@@ -20,7 +20,7 @@ import * as React from "react";
 
 import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
 import { IDocsCompleteData } from "@blueprintjs/docs-data";
-import { Documentation, IDocumentationProps, NavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
+import { Documentation, IDocumentationProps, NavMenuItem, NavMenuItemProps } from "@blueprintjs/docs-theme";
 
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
