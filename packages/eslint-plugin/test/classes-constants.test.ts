@@ -17,7 +17,7 @@
 // tslint:disable object-literal-sort-keys
 /* eslint-disable no-template-curly-in-string */
 
-import { TSESLint } from "@typescript-eslint/experimental-utils";
+import { TSESLint } from "@typescript-eslint/utils";
 import dedent from "dedent";
 
 import { classesConstantsRule } from "../src/rules/classes-constants";

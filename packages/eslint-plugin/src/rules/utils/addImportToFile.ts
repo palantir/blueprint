@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
-import { ReportFixFunction } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
+import { AST_NODE_TYPES, TSESLint, TSESTree } from "@typescript-eslint/utils";
 
 /**
  * Return a function which when provided with a fixer will produce a RuleFix to add the
@@ -25,7 +24,7 @@ export const addImportToFile = (
     program: TSESTree.Program,
     imports: string[],
     packageName: string,
-): ReportFixFunction => fixer => {
+): TSESLint.ReportFixFunction => fixer => {
     const fileImports = program.body.filter(
         node => node.type === AST_NODE_TYPES.ImportDeclaration,
     ) as TSESTree.ImportDeclaration[];
