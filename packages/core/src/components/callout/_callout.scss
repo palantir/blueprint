@@ -66,14 +66,15 @@ Styleguide callout
   .#{$ns}-dark & {
     background-color: rgba($gray3, 0.2);
 
-    &[class*="#{$ns}-icon-"]::before {
+    &[class*="#{$ns}-icon-"]::before,
+    &.#{$ns}-callout-icon > .#{$ns}-icon:first-child {
       color: $pt-dark-icon-color;
     }
   }
 
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      background-color: rgba($color, 0.15);
+      background-color: rgba($color, 0.1);
 
       &[class*="#{$ns}-icon-"]::before,
       > .#{$ns}-icon:first-child,
@@ -82,7 +83,7 @@ Styleguide callout
       }
 
       .#{$ns}-dark & {
-        background-color: rgba($color, 0.25);
+        background-color: rgba($color, 0.2);
 
         &[class*="#{$ns}-icon-"]::before,
         > .#{$ns}-icon:first-child,

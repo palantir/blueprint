@@ -100,14 +100,17 @@ $track-height: $track-size !default;
 
   .#{$ns}-dark & {
     @include pt-dark-button();
+    background-color: $gray4;
 
-    &,
     &:hover {
-      background-color: $dark-gray5;
+      background-color: $gray3;
     }
 
+    &:active,
     &.#{$ns}-active {
-      background-color: $dark-gray3;
+      background:
+        linear-gradient(0deg, rgba($white, 0.1), rgba($white, 0.1)),
+        linear-gradient(0deg, $gray2, $gray2);
     }
   }
 

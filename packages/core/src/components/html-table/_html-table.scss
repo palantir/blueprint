@@ -124,7 +124,7 @@ table.#{$ns}-html-table {
 
   &.#{$ns}-html-table-striped {
     tbody tr:nth-child(odd) td {
-      background: rgba($gray5, 0.15);
+      background: rgba($gray3, 0.15);
     }
   }
 
@@ -157,12 +157,12 @@ table.#{$ns}-html-table {
   &.#{$ns}-interactive {
     tbody tr {
       &:hover td {
-        background-color: rgba($gray5, 0.3);
+        background-color: rgba($gray3, 0.3);
         cursor: pointer;
       }
 
       &:active td {
-        background-color: rgba($gray5, 0.4);
+        background-color: rgba($gray3, 0.35);
       }
     }
   }

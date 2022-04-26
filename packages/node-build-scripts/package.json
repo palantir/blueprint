@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "autoprefixer": "^10.4.4",
+        "chokidar": "^3.5.3",
         "cross-spawn": "^7.0.3",
         "eslint": "^7.15.0",
         "fs-extra": "^10.0.1",

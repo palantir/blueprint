@@ -25,6 +25,13 @@ $pt-intent-text-colors: (
   "danger" : $red2,
 ) !default;
 
+$pt-intent-active-text-colors: (
+  "primary": $blue1,
+  "success": $green1,
+  "warning": $orange1,
+  "danger": $red1
+) !default;
+
 $pt-dark-intent-text-colors: (
   "primary": $blue5,
   "success": $green5,

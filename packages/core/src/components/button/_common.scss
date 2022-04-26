@@ -41,8 +41,8 @@ shadows blend with the colors beneath it.
 Switches and slider handles both use these variables.
 */
 $button-box-shadow-overlay:
-  0 0 0 $button-border-width rgba($black, 0.2),
-  0 1px 1px rgba($black, 0.2) !default;
+  0 0 0 $button-border-width rgba($black, 0.5),
+  0 1px 1px rgba($black, 0.5);
 $button-box-shadow-overlay-active:
   0 0 0 $button-border-width rgba($black, 0.2),
   inset 0 1px 1px rgba($black, 0.1) !default;
@@ -341,11 +341,7 @@ $button-intents: (
 
   @each $intent, $colors in $button-intents {
     &.#{$ns}-intent-#{$intent} {
-      @include pt-button-minimal-intent(
-        map-get($pt-intent-colors, $intent),
-        map-get($pt-intent-text-colors, $intent),
-        map-get($pt-dark-intent-text-colors, $intent)
-      );
+      @include pt-button-minimal-intent($intent);
     }
   }
 }
@@ -353,13 +349,14 @@ $button-intents: (
 @mixin pt-dark-button-minimal() {
   background: $dark-minimal-button-background-color;
   box-shadow: none;
-  color: inherit;
+  color: $white;
 
   &:hover,
   &:active,
   &.#{$ns}-active {
     background: none;
     box-shadow: none;
+    color: $white;
   }
 
   &:hover {
@@ -369,7 +366,6 @@ $button-intents: (
   &:active,
   &.#{$ns}-active {
     background: $dark-minimal-button-background-color-active;
-    color: $pt-dark-text-color;
   }
 
   &:disabled,
@@ -386,7 +382,28 @@ $button-intents: (
   }
 }
 
-@mixin pt-button-minimal-intent($intent-color, $text-color, $dark-text-color) {
+$dark-minimal-hover-text-colors: (
+  "primary": $blue5,
+  "success": $green5,
+  "warning": $orange5,
+  "danger": $red5,
+);
+
+$dark-minimal-active-text-colors: (
+  "primary": $blue6,
+  "success": $green6,
+  "warning": $orange6,
+  "danger": $red6,
+);
+
+@mixin pt-button-minimal-intent($intent) {
+  $intent-color: map-get($pt-intent-colors, $intent);
+  $text-color: map-get($pt-intent-text-colors, $intent);
+  $active-text-color: map-get($pt-intent-active-text-colors, $intent);
+  $dark-text-color: map-get($pt-dark-intent-text-colors, $intent);
+  $dark-active-text-color: map-get($dark-minimal-active-text-colors, $intent);
+  $dark-hover-text-color: map-get($dark-minimal-hover-text-colors, $intent);
+
   color: $text-color;
 
   &:hover,
@@ -405,7 +422,7 @@ $button-intents: (
   &:active,
   &.#{$ns}-active {
     background: rgba($intent-color, 0.3);
-    color: $text-color;
+    color: $active-text-color;
   }
 
   &:disabled,
@@ -427,13 +444,13 @@ $button-intents: (
 
     &:hover {
       background: rgba($intent-color, 0.2);
-      color: $dark-text-color;
+      color: $dark-hover-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
       background: rgba($intent-color, 0.3);
-      color: $dark-text-color;
+      color: $dark-active-text-color;
     }
 
     &:disabled,

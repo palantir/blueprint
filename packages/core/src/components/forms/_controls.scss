@@ -327,7 +327,7 @@ $control-indicator-spacing: $pt-grid-size !default;
   $dark-switch-checked-background-color-active: $control-checked-background-color-active !default;
   $dark-switch-checked-background-color-disabled: rgba($blue3, 0.5) !default;
 
-  $switch-indicator-background-color: $white !default;
+  $switch-indicator-background-color: rgba($gray3, 0.3) !default;
   $switch-indicator-box-shadow: 0 0 0 $button-border-width rgba($black, 0.5) !default;
   $switch-indicator-background-color-disabled: rgba($white, 0.8) !default;
   $switch-checked-indicator-background-color-disabled: rgba($white, 0.5) !default;
