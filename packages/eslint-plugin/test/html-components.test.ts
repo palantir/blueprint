@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { TSESLint } from "@typescript-eslint/experimental-utils";
+import { TSESLint } from "@typescript-eslint/utils";
 import dedent from "dedent";
 
 import { htmlComponentsRule } from "../src/rules/html-components";

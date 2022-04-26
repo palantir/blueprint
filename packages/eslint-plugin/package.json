@@ -13,8 +13,8 @@
         "test:jest-ci": "jest --ci --runInBand"
     },
     "dependencies": {
-        "@typescript-eslint/experimental-utils": "^4.9.1",
-        "eslint": "^7.15.0"
+        "@typescript-eslint/utils": "^5.21.0",
+        "eslint": "^8.14.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^4.0.3",

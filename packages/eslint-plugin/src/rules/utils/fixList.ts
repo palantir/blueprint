@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { RuleFix } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
+import { TSESLint } from "@typescript-eslint/utils";
+
+type RuleFix = TSESLint.RuleFix;
 
 export class FixList {
     private fixes: RuleFix[] = [];
@@ -23,7 +25,7 @@ export class FixList {
         return this.fixes;
     }
 
-    public addFixes(fixes: null | RuleFix | RuleFix[] | IterableIterator<RuleFix>) {
+    public addFixes(fixes: null | RuleFix | readonly RuleFix[] | IterableIterator<RuleFix>) {
         if (fixes == null) {
             return;
         } else if (isRuleFix(fixes)) {
@@ -34,6 +36,6 @@ export class FixList {
     }
 }
 
-function isRuleFix(fix: RuleFix | RuleFix[] | IterableIterator<RuleFix>): fix is RuleFix {
+function isRuleFix(fix: RuleFix | readonly RuleFix[] | IterableIterator<RuleFix>): fix is RuleFix {
     return (fix as RuleFix).range !== undefined && (fix as RuleFix).text !== undefined;
 }
