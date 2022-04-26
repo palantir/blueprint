@@ -21,7 +21,7 @@ import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { Button, ButtonProps } from "../button/buttons";
 import { Dialog, DialogProps } from "./dialog";
-import { DialogStep, DialogStepId, DialogStepProps, DialogStepButtonProps } from "./dialogStep";
+import { DialogStep, DialogStepButtonProps, DialogStepId, DialogStepProps } from "./dialogStep";
 
 type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.ReactNode }>;
 

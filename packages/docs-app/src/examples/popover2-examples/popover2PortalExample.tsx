@@ -78,7 +78,6 @@ export class Popover2PortalExample extends React.PureComponent<IExampleProps, IP
                             content="I am in a Portal (default)."
                             isOpen={this.state.isOpen}
                             usePortal={true}
-                            // tslint:disable-next-line jsx-no-lambda
                             renderTarget={({ isOpen, ref, ...p }) => (
                                 <Code {...p} elementRef={ref}>{`usePortal={true}`}</Code>
                             )}
@@ -99,7 +98,6 @@ export class Popover2PortalExample extends React.PureComponent<IExampleProps, IP
                             modifiers={{
                                 preventOverflow: { enabled: false },
                             }}
-                            // tslint:disable-next-line jsx-no-lambda
                             renderTarget={({ isOpen, ref, ...p }) => (
                                 <Code {...p} elementRef={ref}>{`usePortal={false}`}</Code>
                             )}

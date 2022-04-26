@@ -17,13 +17,13 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent2, Props, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent2, Utils as CoreUtils, Props } from "@blueprintjs/core";
 
-import { emptyCellRenderer, CellRenderer } from "./cell/cell";
+import { CellRenderer, emptyCellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
-import { Grid, ColumnIndices, RowIndices } from "./common/grid";
+import { ColumnIndices, Grid, RowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 

@@ -22,7 +22,7 @@ import { AbstractPureComponent2, DISPLAYNAME_PREFIX, Props } from "@blueprintjs/
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import { DatePicker, DatePickerProps } from "./datePicker";
-import { TimePickerProps, TimePicker } from "./timePicker";
+import { TimePicker, TimePickerProps } from "./timePicker";
 
 export interface IDateTimePickerProps extends Props {
     /**

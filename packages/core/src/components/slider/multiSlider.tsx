@@ -22,7 +22,7 @@ import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Handle } from "./handle";
-import { HandleInteractionKind, HandleType, HandleProps } from "./handleProps";
+import { HandleInteractionKind, HandleProps, HandleType } from "./handleProps";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";
 
 /**

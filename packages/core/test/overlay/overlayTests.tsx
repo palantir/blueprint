@@ -21,7 +21,7 @@ import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes, OverlayProps, Overlay, Portal, Utils } from "../../src";
+import { Classes, Overlay, OverlayProps, Portal, Utils } from "../../src";
 import * as Keys from "../../src/common/keys";
 import { findInPortal } from "../utils";
 

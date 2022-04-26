@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Icon, Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils, Icon } from "@blueprintjs/core";
 
 import { Grid } from "../common";
 import type { FocusedCellCoordinates } from "../common/cellTypes";

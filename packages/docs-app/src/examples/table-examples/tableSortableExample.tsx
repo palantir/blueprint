@@ -121,7 +121,6 @@ class RecordSortableColumn extends AbstractSortableColumn {
     private static WIN_LOSS_PATTERN = /^([0-9]+)(-([0-9]+))?(-([0-9]+)) ?.*/;
 
     protected renderMenu(sortColumn: ISortCallback) {
-        // tslint:disable:jsx-no-lambda
         return (
             <Menu>
                 <MenuItem

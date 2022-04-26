@@ -15,16 +15,16 @@
  */
 
 import { assert } from "chai";
-import { mount, shallow as untypedShallow, ShallowRendererProps, ShallowWrapper } from "enzyme";
+import { mount, ShallowRendererProps, ShallowWrapper, shallow as untypedShallow } from "enzyme";
 import * as moment from "moment-timezone";
 import * as React from "react";
 import * as sinon from "sinon";
 
 import {
     Button,
-    IButtonProps,
-    IInputGroupProps2,
+    ButtonProps,
     InputGroup,
+    InputGroupProps2,
     IPopoverProps,
     MenuItem,
     Popover,
@@ -32,22 +32,21 @@ import {
 } from "@blueprintjs/core";
 import { QueryList, Select } from "@blueprintjs/select";
 
-import { ITimezonePickerProps, ITimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src";
+import { ITimezonePickerState, TimezoneDisplayFormat, TimezonePicker, TimezonePickerProps } from "../src";
 import {
     getInitialTimezoneItems,
     getLocalTimezoneItem,
     getTimezoneItems,
-    ITimezoneItem,
+    TimezoneItem,
 } from "../src/components/timezone-picker/timezoneItems";
 
-type TimezonePickerShallowWrapper = ShallowWrapper<ITimezonePickerProps, ITimezonePickerState>;
+type TimezonePickerShallowWrapper = ShallowWrapper<TimezonePickerProps, ITimezonePickerState>;
 
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
-// tslint:disable-next-line no-unnecessary-callback-wrapper
 const shallow = (
-    el: React.ReactElement<ITimezonePickerProps>,
+    el: React.ReactElement<TimezonePickerProps>,
     options?: ShallowRendererProps,
 ): TimezonePickerShallowWrapper => untypedShallow<TimezonePicker>(el, options);
 
@@ -55,7 +54,7 @@ const VALUE = "America/Los_Angeles";
 
 describe("<TimezonePicker>", () => {
     const onChange = sinon.spy();
-    const DEFAULT_PROPS: ITimezonePickerProps = {
+    const DEFAULT_PROPS: TimezonePickerProps = {
         onChange,
         popoverProps: {
             isOpen: true,
@@ -200,7 +199,7 @@ describe("<TimezonePicker>", () => {
     });
 
     it("input can be controlled with input props", () => {
-        const inputProps: IInputGroupProps2 = {
+        const inputProps: InputGroupProps2 = {
             disabled: true,
             leftIcon: "airplane",
             placeholder: "test placeholder",
@@ -208,19 +207,19 @@ describe("<TimezonePicker>", () => {
         const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} inputProps={inputProps} />);
         const inputGroup = findInputGroup(timezonePicker);
         for (const key of Object.keys(inputProps)) {
-            assert.deepEqual(inputGroup.prop(key), inputProps[key as keyof IInputGroupProps2]);
+            assert.deepEqual(inputGroup.prop(key), inputProps[key as keyof InputGroupProps2]);
         }
     });
 
     it("button can be controlled with button props", () => {
-        const buttonProps: IButtonProps = {
+        const buttonProps: ButtonProps = {
             disabled: true,
             rightIcon: "airplane",
         };
         const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} buttonProps={buttonProps} />);
         const button = timezonePicker.find(Button);
         for (const key of Object.keys(buttonProps)) {
-            assert.deepEqual(button.prop(key), buttonProps[key as keyof IButtonProps]);
+            assert.deepEqual(button.prop(key), buttonProps[key as keyof ButtonProps]);
         }
     });
 
@@ -237,11 +236,11 @@ describe("<TimezonePicker>", () => {
     });
 
     function findSelect(timezonePicker: TimezonePickerShallowWrapper) {
-        return timezonePicker.find(Select.ofType<ITimezoneItem>());
+        return timezonePicker.find(Select.ofType<TimezoneItem>());
     }
 
     function findQueryList(timezonePicker: TimezonePickerShallowWrapper) {
-        return findSelect(timezonePicker).shallow().find(QueryList.ofType<ITimezoneItem>());
+        return findSelect(timezonePicker).shallow().find(QueryList.ofType<TimezoneItem>());
     }
 
     function findPopover(timezonePicker: TimezonePickerShallowWrapper) {

@@ -19,12 +19,12 @@ import * as React from "react";
 
 import {
     AbstractComponent2,
+    Utils as CoreUtils,
     DISPLAYNAME_PREFIX,
     Hotkey,
     Hotkeys,
     HotkeysTarget,
     IRef,
-    Utils as CoreUtils,
 } from "@blueprintjs/core";
 
 import { Column, IColumnProps } from "./column";
@@ -43,7 +43,7 @@ import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeader
 import { renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { GuideLayer } from "./layers/guides";
-import { RegionStyler, RegionLayer } from "./layers/regions";
+import { RegionLayer, RegionStyler } from "./layers/regions";
 import { Locator } from "./locator";
 import { QuadrantType } from "./quadrants/tableQuadrant";
 import { TableQuadrantStack } from "./quadrants/tableQuadrantStack";
@@ -56,7 +56,7 @@ import {
 import { TableBody } from "./tableBody";
 import { TableHotkeys } from "./tableHotkeys";
 import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./tableProps";
-import type { TableState, TableSnapshot } from "./tableState";
+import type { TableSnapshot, TableState } from "./tableState";
 import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./tableUtils";
 
 /* eslint-disable deprecation/deprecation */

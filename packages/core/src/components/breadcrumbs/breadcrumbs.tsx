@@ -17,10 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Boundary, Classes, Props, Position, removeNonHTMLProps } from "../../common";
+import { AbstractPureComponent2, Boundary, Classes, Position, Props, removeNonHTMLProps } from "../../common";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
-import { OverflowListProps, OverflowList } from "../overflow-list/overflowList";
+import { OverflowList, OverflowListProps } from "../overflow-list/overflowList";
 import { IPopoverProps, Popover } from "../popover/popover";
 import { Breadcrumb, BreadcrumbProps } from "./breadcrumb";
 

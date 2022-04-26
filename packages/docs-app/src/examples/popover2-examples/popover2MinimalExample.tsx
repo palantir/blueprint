@@ -33,14 +33,12 @@ export class Popover2MinimalExample extends React.PureComponent<IExampleProps> {
                 <Popover2
                     {...baseProps}
                     minimal={true}
-                    // tslint:disable-next-line jsx-no-lambda
                     renderTarget={({ isOpen, ref, ...p }) => (
                         <Button {...p} active={isOpen} elementRef={ref} intent={Intent.PRIMARY} text="Minimal" />
                     )}
                 />
                 <Popover2
                     {...baseProps}
-                    // tslint:disable-next-line jsx-no-lambda
                     renderTarget={({ isOpen, ref, ...p }) => (
                         <Button {...p} active={isOpen} elementRef={ref} text="Default" />
                     )}

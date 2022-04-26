@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { AbstractPureComponent2 } from "../../common";
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
 import { Icon, IconName, IconSize } from "../icon/icon";

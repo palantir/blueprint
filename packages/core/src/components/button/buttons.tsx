@@ -21,7 +21,7 @@ import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { IRef, refHandler, setRef } from "../../common/refs";
-import { AbstractButton, IButtonProps, IAnchorButtonProps, ButtonProps, AnchorButtonProps } from "./abstractButton";
+import { AbstractButton, AnchorButtonProps, ButtonProps, IAnchorButtonProps, IButtonProps } from "./abstractButton";
 
 // eslint-disable-next-line deprecation/deprecation
 export { IAnchorButtonProps, IButtonProps, ButtonProps, AnchorButtonProps };

@@ -19,7 +19,7 @@ import { Modifiers } from "popper.js";
 import * as React from "react";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
-import { DISPLAYNAME_PREFIX, ActionProps, LinkProps } from "../../common/props";
+import { ActionProps, DISPLAYNAME_PREFIX, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";

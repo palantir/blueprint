@@ -111,7 +111,6 @@ export class Popover2PlacementExample extends React.PureComponent<IExampleProps>
                 content={content}
                 placement={placement}
                 usePortal={false}
-                // tslint:disable-next-line jsx-no-lambda
                 renderTarget={({ isOpen, ref, ...p }) => (
                     <Button
                         {...p}

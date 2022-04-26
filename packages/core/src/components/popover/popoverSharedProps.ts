@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Boundary as PopperBoundary, Modifiers as PopperModifiers, Placement } from "popper.js";
+import { Placement, Boundary as PopperBoundary, Modifiers as PopperModifiers } from "popper.js";
 import * as React from "react";
 
 import { Position } from "../../common/position";

@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
-import { TabProps, TabId } from "./tab";
+import { TabId, TabProps } from "./tab";
 
 // eslint-disable-next-line deprecation/deprecation
 export type TabTitleProps = ITabTitleProps;

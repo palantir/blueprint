@@ -20,8 +20,8 @@ import * as React from "react";
 import {
     AbstractPureComponent2,
     DISPLAYNAME_PREFIX,
-    InputGroupProps2,
     InputGroup,
+    InputGroupProps2,
     IPopoverProps,
     IRef,
     Keys,

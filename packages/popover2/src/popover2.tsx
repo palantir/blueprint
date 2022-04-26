@@ -25,15 +25,15 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
     Keys,
-    refHandler,
     mergeRefs,
     Overlay,
+    refHandler,
     Utils,
 } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
 import * as Errors from "./errors";
-import { POPOVER_ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
+import { Popover2Arrow, POPOVER_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { positionToPlacement } from "./popover2PlacementUtils";
 import { Popover2SharedProps } from "./popover2SharedProps";
 import { ResizeSensor2 } from "./resizeSensor2";

@@ -69,7 +69,6 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
     return <Table2 {...tablePropsWithDefaults}>{columns}</Table2>;
 }
 
-// tslint:disable jsx-no-lambda
 const renderTestMenu = () => (
     /* eslint-disable no-console */
     <Menu>

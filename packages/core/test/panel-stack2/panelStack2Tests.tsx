@@ -19,7 +19,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, NumericInput, Panel, PanelProps, PanelStack2Props, PanelStack2 } from "../../src";
+import { Classes, NumericInput, Panel, PanelProps, PanelStack2, PanelStack2Props } from "../../src";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type TestPanelInfo = {};
