@@ -3,10 +3,14 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-// Submits a comment to the change PR or commit with links to artifacts that
-// show the results of the code change being applied.
+/**
+ * @fileoverview Submits a comment to the change PR or commit with links to artifacts
+ * that show the results of the code change being applied.
+ */
 
-const bot = require("circle-github-bot").create();
+import BotFactory from "circle-github-bot";
+
+const bot = BotFactory.create();
 
 /**
  * @type {Array<{path: string; url: string;}>}
@@ -22,7 +26,7 @@ const ARTIFACTS = {
 
 if (!process.env.GH_AUTH_TOKEN) {
     // simply log artifact URLs if auth token is missed (typical on forks)
-    Object.keys(ARTIFACTS).forEach(package => console.info(`${ARTIFACTS[package]}: ${getArtifactAnchorLink(package)}`));
+    Object.keys(ARTIFACTS).forEach(pkg => console.info(`${ARTIFACTS[pkg]}: ${getArtifactAnchorLink(pkg)}`));
     process.exit();
 }
 
@@ -35,7 +39,7 @@ Previews: <strong>${links}</strong>
 `,
 );
 
-function getArtifactAnchorLink(package) {
-    const artifactInfo = artifacts.find(a => a.path === ARTIFACTS[package]);
-    return `<a href="${artifactInfo.url}">${package}</a>`;
+function getArtifactAnchorLink(pkg) {
+    const artifactInfo = artifacts.find(a => a.path === ARTIFACTS[pkg]);
+    return `<a href="${artifactInfo.url}">${pkg}</a>`;
 }
