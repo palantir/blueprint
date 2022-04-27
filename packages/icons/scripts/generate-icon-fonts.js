@@ -17,13 +17,13 @@
  * @fileoverview Generates icon fonts and codepoints from SVG sources
  */
 
-const { generateFonts: runFantasticon, FontAssetType, OtherAssetType } = require("fantasticon");
-const { getLogger } = require("fantasticon/lib/cli/logger");
-const fs = require("fs");
-const path = require("path");
+import { generateFonts as runFantasticon, FontAssetType, OtherAssetType } from "fantasticon";
+import { getLogger } from "fantasticon/lib/cli/logger";
+import fs from "fs";
+import path from "path";
 
-const iconsMetadata = require("../icons.json");
-const { RESOURCES_DIR, GENERATED_SRC_DIR, NS } = require("./common");
+import * as iconsMetadata from "../icons.json";
+import { RESOURCES_DIR, GENERATED_SRC_DIR, NS } from "./common";
 
 const logger = getLogger();
 const codepoints = {};

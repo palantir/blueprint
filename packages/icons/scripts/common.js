@@ -13,12 +13,12 @@
  * limitations under the License.
  */
 
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
-const RESOURCES_DIR = path.resolve(__dirname, "../../../resources/icons");
-const GENERATED_SRC_DIR = path.resolve(__dirname, "../src/generated");
-const NS = "bp4";
+export const RESOURCES_DIR = path.resolve(__dirname, "../../../resources/icons");
+export const GENERATED_SRC_DIR = path.resolve(__dirname, "../src/generated");
+export const NS = "bp4";
 
 /**
  * Writes lines to given filename in GENERATED_SRC_DIR.
@@ -26,15 +26,8 @@ const NS = "bp4";
  * @param {string} filename
  * @param {Array<string>} lines
  */
-function writeLinesToFile(filename, ...lines) {
+export function writeLinesToFile(filename, ...lines) {
     const outputPath = path.join(GENERATED_SRC_DIR, filename);
     const contents = [...lines, ""].join("\n");
     fs.writeFileSync(outputPath, contents);
 }
-
-module.exports = {
-    RESOURCES_DIR,
-    GENERATED_SRC_DIR,
-    NS,
-    writeLinesToFile,
-};

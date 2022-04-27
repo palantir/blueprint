@@ -18,13 +18,13 @@
  * N.B. we expect ../src/generated/ to contain SVG definitions of all the icons already
  */
 
-const { pascalCase } = require("change-case");
-const fs = require("fs");
-const path = require("path");
+import { pascalCase } from "change-case";
+import fs from "fs";
+import path from "path";
 // Note: we had issues with this approach using svgo v2.x, so for now we stick with v1.x
 // With v2.x, some shapes within the icon SVGs would not get converted to paths correctly,
 // resulting in invalid d="..." attributes rendered by the <Icon> component.
-const SVGO = require("svgo");
+import SVGO from "svgo";
 
 /**
  * @typedef {Object} IconMetadata
@@ -36,11 +36,11 @@ const SVGO = require("svgo");
  */
 
 /** @type {IconMetadata[]} */
-const ICONS_METADATA = require("../icons.json").sort((a, b) => a.iconName.localeCompare(b.iconName));
-const { RESOURCES_DIR, writeLinesToFile } = require("./common");
+import * as ICONS_METADATA from "../icons.json";
+import { RESOURCES_DIR, writeLinesToFile } from "./common";
 
 const svgo = new SVGO({ plugins: [{ convertShapeToPath: { convertArcs: true } }] });
-const ICON_NAMES = ICONS_METADATA.map(icon => icon.iconName);
+const ICON_NAMES = ICONS_METADATA.sort((a, b) => a.iconName.localeCompare(b.iconName)).map(icon => icon.iconName);
 
 (async () => {
     for (const iconSize of [16, 20]) {
