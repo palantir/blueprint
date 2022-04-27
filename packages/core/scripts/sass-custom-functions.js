@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-const inliner = require("@vgrid/sass-inline-svg");
+import inliner from "@vgrid/sass-inline-svg";
 
-module.exports = {
+export default {
     /**
      * Sass function to inline a UI icon svg and change its path color.
      *
