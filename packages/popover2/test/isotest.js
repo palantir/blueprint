@@ -15,12 +15,12 @@
 
 // @ts-check
 
-require("@blueprintjs/test-commons/bootstrap");
-const React = require("react");
+import "@blueprintjs/test-commons/bootstrap";
+import React from "react";
 
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
+import { generateIsomorphicTests } from "@blueprintjs/test-commons";
 
-const Popover2Package = require("../lib/cjs");
+import * as Popover2Package from "../lib/cjs";
 
 const requiredChild = React.createElement("button");
 

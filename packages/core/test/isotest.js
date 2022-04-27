@@ -15,13 +15,13 @@
 
 // @ts-check
 
-require("@blueprintjs/test-commons/bootstrap");
+import "@blueprintjs/test-commons/bootstrap";
 
-const React = require("react");
+import React from "react";
 
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
+import { generateIsomorphicTests } from "@blueprintjs/test-commons";
 
-const Core = require("../lib/cjs");
+import * as Core from "../lib/cjs";
 
 const requiredChild = React.createElement("button");
 const hotkeyProps = { combo: "mod+s", global: true, label: "save" };

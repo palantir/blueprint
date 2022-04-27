@@ -14,10 +14,9 @@
  */
 
 // @ts-check
-require("@blueprintjs/test-commons/bootstrap");
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
-const React = require("react");
-const Select = require("../lib/cjs");
+import "@blueprintjs/test-commons/bootstrap";
+import { generateIsomorphicTests } from "@blueprintjs/test-commons";
+import * as Select from "../lib/cjs";
 
 describe("Select isomorphic rendering", () => {
     generateIsomorphicTests(Select, {
@@ -37,9 +36,6 @@ describe("Select isomorphic rendering", () => {
         },
         Omnibar: {
             props: { items: [], isOpen: true, overlayProps: { usePortal: false } },
-        },
-        QueryList: {
-            skip: true,
         },
     });
 });
