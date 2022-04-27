@@ -13,19 +13,23 @@
  * limitations under the License.
  */
 
-const path = require("path");
-const tsEslintRules = require("./typescript-eslint-rules.json");
-const eslintBuiltinRules = require("./eslint-builtin-rules.json");
-const eslintPluginRules = require("./eslint-plugin-rules.json");
+import path from "path";
+
+import * as eslintBuiltinRules from "./eslint-builtin-rules.json";
+import * as eslintPluginRules from "./eslint-plugin-rules.json";
+import * as tsEslintRules from "./typescript-eslint-rules.json";
 
 /**
  * Enable @blueprintjs/eslint-plugin.
  * For TS files, configure typescript-eslint, including type-aware lint rules which use the TS program.
  */
-module.exports = {
+export default {
     plugins: ["@blueprintjs", "header", "import", "jsdoc", "react"],
     extends: ["plugin:@blueprintjs/recommended", "plugin:import/typescript"],
-    parserOptions: { ecmaVersion: 2017 },
+    parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: "module",
+    },
     settings: {
         "import/internal-regex": "^@blueprintjs",
     },
@@ -42,6 +46,9 @@ module.exports = {
                 node: true,
                 es6: true,
             },
+            rules: {
+                "import/no-default-export": "off",
+            },
         },
         {
             files: ["**/*.{ts,tsx}"],
@@ -51,7 +58,6 @@ module.exports = {
             plugins: ["@typescript-eslint", "@typescript-eslint/tslint", "deprecation"],
             parser: "@typescript-eslint/parser",
             parserOptions: {
-                sourceType: "module",
                 project: ["{src,test}/tsconfig.json"],
             },
             rules: {
