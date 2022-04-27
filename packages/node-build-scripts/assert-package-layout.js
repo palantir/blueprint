@@ -5,8 +5,8 @@
  */
 
 // @ts-check
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 // asserts that all main fields in package.json reference existing files
 const PACKAGE_MAIN_FIELDS = ["main", "module", "style", "types", "typings", "unpkg"];

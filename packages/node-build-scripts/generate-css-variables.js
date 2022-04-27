@@ -4,14 +4,16 @@
  */
 
 // @ts-check
-const fs = require("fs");
-const getSassVars = require("get-sass-vars");
-const path = require("path");
-const prettier = require("prettier");
-const stripCssComments = require("strip-css-comments");
-const yargs = require("yargs/yargs");
 
-const { COPYRIGHT_HEADER, USE_MATH_RULE } = require("./constants");
+import fs from "fs";
+import getSassVars from "get-sass-vars";
+import path from "path";
+import prettier from "prettier";
+import stripCssComments from "strip-css-comments";
+import yargs from "yargs/yargs";
+
+import { COPYRIGHT_HEADER, USE_MATH_RULE } from "./constants";
+import jsonFunctions from "./node-sass-json-functions";
 
 const SRC_DIR = path.resolve(process.cwd(), "./src");
 const DEST_DIR = path.resolve(process.cwd(), "./lib");
@@ -63,7 +65,8 @@ function getParsedVars(inputSources) {
     const getSassVarsSync = getSassVars.sync;
 
     const parsedVars = getSassVarsSync(cleanedInput, {
-        sassOptions: { functions: require("./node-sass-json-functions.js") },
+        // @ts-ignore
+        sassOptions: { functions: jsonFunctions },
     });
 
     // get variable blocks for separating variables in output

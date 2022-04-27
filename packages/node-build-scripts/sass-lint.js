@@ -5,11 +5,11 @@
  */
 
 // @ts-check
-const fs = require("fs");
-const path = require("path");
-const stylelint = require("stylelint");
+import fs from "fs";
+import path from "path";
+import stylelint from "stylelint";
 
-const { junitReportPath } = require("./utils");
+import { junitReportPath } from "./utils";
 
 const emitReport = process.env.JUNIT_REPORT_PATH != null;
 

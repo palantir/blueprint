@@ -15,14 +15,12 @@
  */
 
 // @ts-check
-const path = require("path");
+import path from "path";
 
 /**
  * @param {string} dirName name of directory containing XML file.
  * @param {string} fileName name of XML file (defaults to current directory name).
  */
-function junitReportPath(dirName, fileName = path.basename(process.cwd())) {
+export function junitReportPath(dirName, fileName = path.basename(process.cwd())) {
     return path.join(__dirname, "../..", process.env.JUNIT_REPORT_PATH, dirName, `${fileName}.xml`);
 }
-
-module.exports = { junitReportPath };

@@ -5,14 +5,13 @@
  */
 
 // @ts-check
-"use strict";
 
-const { spawn } = require("cross-spawn");
-const fs = require("fs");
-const glob = require("glob");
-const path = require("path");
+import { spawn } from "cross-spawn";
+import fs from "fs";
+import glob from "glob";
+import path from "path";
 
-const { junitReportPath } = require("./utils");
+import { junitReportPath } from "./utils";
 
 let format = "codeframe";
 let out;
