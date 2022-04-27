@@ -2,13 +2,13 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const webpack = require("webpack");
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import webpack from "webpack";
 
 /**
  * This differs significantly from the base webpack config, so we don't even end up extending from it.
  */
-module.exports = {
+export default {
     bail: true,
     context: process.cwd(),
     devtool: "inline-source-map",

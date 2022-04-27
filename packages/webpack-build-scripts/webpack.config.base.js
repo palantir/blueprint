@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
-const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
-const ForkTsCheckerNotifierWebpackPlugin = require("fork-ts-checker-notifier-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const path = require("path");
-const webpack = require("webpack");
-const WebpackNotifierPlugin = require("webpack-notifier");
+import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
+import ForkTsCheckerNotifierWebpackPlugin from "fork-ts-checker-notifier-webpack-plugin";
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import path from "path";
+import webpack from "webpack";
+import WebpackNotifierPlugin from "webpack-notifier";
 
-const { getPackageName } = require("./utils");
+import { getPackageName } from "./utils";
 
 // globals
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
@@ -96,7 +96,7 @@ const scssLoaders = [
     require.resolve("sass-loader"),
 ];
 
-module.exports = {
+export default {
     // to automatically find tsconfig.json
     context: process.cwd(),
 

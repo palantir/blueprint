@@ -13,12 +13,14 @@
  * limitations under the License.
  */
 
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const path = require("path");
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import path from "path";
 
-const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
+import { baseConfig } from "@blueprintjs/webpack-build-scripts";
 
-module.exports = Object.assign({}, baseConfig, {
+export default {
+    ...baseConfig,
+
     entry: {
         "blueprint-landing": ["./src/index.tsx", "./src/index.scss"],
     },
@@ -51,4 +53,4 @@ module.exports = Object.assign({}, baseConfig, {
             ],
         }),
     ]),
-});
+};

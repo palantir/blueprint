@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-module.exports = externalize({
+export default externalize({
     "@blueprintjs/core": ["Blueprint", "Core"],
     "@blueprintjs/icons": ["Blueprint", "Icons"],
     "@blueprintjs/datetime": ["Blueprint", "Datetime"],

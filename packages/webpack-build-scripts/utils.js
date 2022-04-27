@@ -2,12 +2,12 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const path = require("path");
+import path from "path";
 
 /**
  * Read a package name from package.json.
  */
-function getPackageName() {
+export function getPackageName() {
     let name;
     try {
         name = require(path.join(process.cwd(), "package.json")).name;
@@ -21,7 +21,3 @@ function getPackageName() {
     }
     return name;
 }
-
-module.exports = {
-    getPackageName,
-};

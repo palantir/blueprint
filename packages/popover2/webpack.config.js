@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-const path = require("path");
+import path from "path";
 
-const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
+import { baseConfig, COMMON_EXTERNALS } from "@blueprintjs/webpack-build-scripts";
 
-module.exports = Object.assign({}, baseConfig, {
+export default {
+    ...baseConfig,
+
     entry: {
         popover2: "./src/index.ts",
     },
@@ -31,4 +33,4 @@ module.exports = Object.assign({}, baseConfig, {
         libraryTarget: "umd",
         path: path.resolve(__dirname, "./dist"),
     },
-});
+};

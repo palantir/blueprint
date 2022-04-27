@@ -13,11 +13,13 @@
  * limitations under the License.
  */
 
-const path = require("path");
+import path from "path";
 
-const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
+import { baseConfig, COMMON_EXTERNALS } from "@blueprintjs/webpack-build-scripts";
 
-module.exports = Object.assign({}, baseConfig, {
+export default {
+    ...baseConfig,
+
     entry: {
         icons: ["./src/index.ts"],
     },
@@ -35,4 +37,4 @@ module.exports = Object.assign({}, baseConfig, {
         maxAssetSize: 500000,
         maxEntrypointSize: 500000,
     },
-});
+};

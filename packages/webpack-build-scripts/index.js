@@ -13,12 +13,6 @@
  * limitations under the License.
  */
 
-const COMMON_EXTERNALS = require("./externals");
-const baseConfig = require("./webpack.config.base");
-const karmaConfig = require("./webpack.config.karma");
-
-module.exports = {
-    baseConfig,
-    karmaConfig,
-    COMMON_EXTERNALS,
-};
+export { default as COMMON_EXTERNALS } from "./externals";
+export { default as baseConfig } from "./webpack.config.base";
+export { default as karmaConfig } from "./webpack.config.karma";
