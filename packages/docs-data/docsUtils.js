@@ -2,8 +2,8 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const Highlights = require("highlights");
-const { marked } = require("marked");
+import Highlights from "highlights";
+import { marked } from "marked";
 
 const DEFAULT_SCOPE = "source.tsx";
 const HIGHLIGHTS_LANGUAGES = ["better-handlebars", "language-less", "tree-sitter-typescript"];
@@ -18,7 +18,7 @@ for (const lang of HIGHLIGHTS_LANGUAGES) {
 
 // highlights the given text in the given language scope. returns HTML string wrapped in <pre> tag.
 // must provide full TextMate language scope: "text.html.basic"
-function highlight(fileContents, scopeName = DEFAULT_SCOPE) {
+export function highlight(fileContents, scopeName = DEFAULT_SCOPE) {
     if (fileContents) {
         return highlighter.highlightSync({ fileContents, scopeName });
     }
@@ -39,12 +39,10 @@ markedRenderer.code = (textContent, language) => {
     return highlight(textContent, language);
 };
 
-module.exports = {
-    highlight,
+/**
+ * Render the given text as markdown, using the custom rendering logic above.
+ * code blocks are highlighted using highlight() above.
+ */
+const markdown = textContent => marked(textContent, { markedRenderer });
 
-    // render the given text as markdown, using the custom rendering logic above.
-    // code blocks are highlighted using highlight() above.
-    markdown: textContent => marked(textContent, { markedRenderer }),
-
-    markedRenderer,
-};
+export { markedRenderer, markdown };

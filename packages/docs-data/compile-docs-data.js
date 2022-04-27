@@ -5,14 +5,14 @@
  */
 
 // @ts-check
-const dm = require("@documentalist/compiler");
-const fs = require("fs");
-const path = require("path");
-const semver = require("semver");
+import dm from "@documentalist/compiler";
+import fs from "fs";
+import path from "path";
+import semver from "semver";
 
-const { Classes } = require("@blueprintjs/core/lib/cjs/common");
+import { Classes } from "@blueprintjs/core/lib/cjs/common";
 
-const docsUtils = require("./docsUtils");
+import { markedRenderer } from "./docsUtils";
 
 // assume we are running from packages/docs-app
 const ROOT_DIR = path.resolve(process.cwd(), "../../");
@@ -43,7 +43,7 @@ const DOCS_DATA_PATH = path.join(GENERATED_SRC_DIR, "docs.json");
  */
 function generateDocumentalistData() {
     return new dm.Documentalist({
-        markdown: { renderer: docsUtils.markedRenderer },
+        markdown: { renderer: markedRenderer },
         sourceBaseDir: ROOT_DIR,
         // must mark our @Decorator APIs as reserved so we can use them in code samples
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget"],
