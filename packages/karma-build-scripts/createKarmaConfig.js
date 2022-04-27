@@ -2,12 +2,12 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
-const webpackBuildScripts = require("@blueprintjs/webpack-build-scripts");
+import { karmaConfig as webpackConfig } from "@blueprintjs/webpack-build-scripts";
 
-const coreManifest = require("../core/package.json");
+import * as coreManifest from "../core/package.json";
 
 const COVERAGE_PERCENT = 80;
 const COVERAGE_PERCENT_HIGH = 90;
@@ -20,8 +20,7 @@ const KARMA_SERVER_PORT = 9876;
  * @property {string[]} coverageExcludes
  * @property {{ [glob: string]: object }} coverageOverrides
  */
-
-module.exports = function createKarmaConfig(
+export default function createKarmaConfig(
     /** @type {KarmaOptions} */ { coverage = true, dirname, coverageExcludes, coverageOverrides },
 ) {
     const packageManifest = require(`${dirname}/package.json`);
@@ -70,7 +69,7 @@ module.exports = function createKarmaConfig(
         },
         reporters: ["helpful"],
         singleRun: true,
-        webpack: webpackBuildScripts.karmaConfig,
+        webpack: webpackConfig,
         webpackMiddleware: {
             noInfo: true,
             stats: {

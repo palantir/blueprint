@@ -2,9 +2,9 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
+import { createKarmaConfig } from "@blueprintjs/karma-build-scripts";
 
-module.exports = function (config) {
+export default function (config) {
     const coverageExcludes = [
         // not worth full coverage
         "src/accessibility/*",
@@ -27,4 +27,4 @@ module.exports = function (config) {
     config.set({
         // overrides here
     });
-};
+}
