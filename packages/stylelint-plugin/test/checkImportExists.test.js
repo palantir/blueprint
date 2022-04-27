@@ -14,15 +14,15 @@
  */
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { expect } = require("chai");
-const postcss = require("postcss");
+import chai from "chai";
+import postcss from "postcss";
 
-const { checkImportExists } = require("../lib/utils/checkImportExists");
+import { checkImportExists } from "../lib/utils/checkImportExists.js";
 
 describe("checkImportExists", () => {
     it("Returns false if no imports exist", () => {
         const root = postcss.parse(`.some-class { width: 10px }`);
-        expect(checkImportExists(root, "some_path")).to.be.false;
+        chai.expect(checkImportExists(root, "some_path")).to.be.false;
     });
 
     it("Returns false if imports exist but not the one we want", () => {
@@ -34,7 +34,7 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(root, "some_path")).to.be.false;
+        chai.expect(checkImportExists(root, "some_path")).to.be.false;
     });
 
     it("Returns true if our import exists", () => {
@@ -46,7 +46,7 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(root, "some_path")).to.be.true;
+        chai.expect(checkImportExists(root, "some_path")).to.be.true;
     });
 
     it("Returns true if our import exists, and works with single quotes", () => {
@@ -58,7 +58,7 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(root, "some_path")).to.be.true;
+        chai.expect(checkImportExists(root, "some_path")).to.be.true;
     });
 
     it("Can match multiple paths", () => {
@@ -68,11 +68,11 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(root, ["some_path", "some_path.scss"])).to.be.true;
+        chai.expect(checkImportExists(root, ["some_path", "some_path.scss"])).to.be.true;
     });
 
     it("Handles less references", () => {
         const root = postcss.parse(`@import (reference) "some_path";`);
-        expect(checkImportExists(root, "some_path")).to.be.true;
+        chai.expect(checkImportExists(root, "some_path")).to.be.true;
     });
 });

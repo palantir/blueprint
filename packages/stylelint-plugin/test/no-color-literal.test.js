@@ -14,8 +14,8 @@
  */
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { expect } = require("chai");
-const stylelint = require("stylelint");
+import chai from "chai";
+import stylelint from "stylelint";
 
 const config = {
     customSyntax: "postcss-scss",
@@ -31,11 +31,11 @@ describe("no-color-literal", () => {
             files: "test/fixtures/no-color-literal/bp-hex-literal-1.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        chai.expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(1);
-        expect(warnings[0].line).to.be.eq(2, "line number");
-        expect(warnings[0].column).to.be.eq(10, "col number");
+        chai.expect(warnings).lengthOf(1);
+        chai.expect(warnings[0].line).to.be.eq(2, "line number");
+        chai.expect(warnings[0].column).to.be.eq(10, "col number");
     });
 
     it("Warns when blueprint color literal is used (2)", async () => {
@@ -43,11 +43,11 @@ describe("no-color-literal", () => {
             files: "test/fixtures/no-color-literal/bp-hex-literal-2.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        chai.expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(1);
-        expect(warnings[0].line).to.be.eq(5, "line number");
-        expect(warnings[0].column).to.be.eq(21, "col number");
+        chai.expect(warnings).lengthOf(1);
+        chai.expect(warnings[0].line).to.be.eq(5, "line number");
+        chai.expect(warnings[0].column).to.be.eq(21, "col number");
     });
 
     it("Doesn't warn when non-blueprint color literal is used", async () => {
@@ -55,8 +55,8 @@ describe("no-color-literal", () => {
             files: "test/fixtures/no-color-literal/non-bp-hex-literal.scss",
             config,
         });
-        expect(result.errored).to.be.false;
+        chai.expect(result.errored).to.be.false;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(0);
+        chai.expect(warnings).lengthOf(0);
     });
 });

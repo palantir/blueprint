@@ -14,8 +14,8 @@
  */
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { expect } = require("chai");
-const stylelint = require("stylelint");
+import chai from "chai";
+import stylelint from "stylelint";
 
 const config = {
     customSyntax: "postcss-scss",
@@ -31,11 +31,11 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        chai.expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(1);
-        expect(warnings[0].line).to.be.eq(1);
-        expect(warnings[0].column).to.be.eq(2);
+        chai.expect(warnings).lengthOf(1);
+        chai.expect(warnings[0].line).to.be.eq(1);
+        chai.expect(warnings[0].column).to.be.eq(2);
     });
 
     it("Warns when .bp3 is present (CSS modules)", async () => {
@@ -43,11 +43,11 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-bp3.module.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        chai.expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(1);
-        expect(warnings[0].line).to.be.eq(1);
-        expect(warnings[0].column).to.be.eq(10);
+        chai.expect(warnings).lengthOf(1);
+        chai.expect(warnings[0].line).to.be.eq(1);
+        chai.expect(warnings[0].column).to.be.eq(10);
     });
 
     it("Warns when nested .bp3 is present even when not first selector", async () => {
@@ -55,11 +55,11 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-nested-bp3.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        chai.expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(1);
-        expect(warnings[0].line).to.be.eq(2);
-        expect(warnings[0].column).to.be.eq(21);
+        chai.expect(warnings).lengthOf(1);
+        chai.expect(warnings[0].line).to.be.eq(2);
+        chai.expect(warnings[0].column).to.be.eq(21);
     });
 
     it("Warns when nested .bp3 is present even when not first selector (CSS modules)", async () => {
@@ -67,11 +67,11 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-nested-bp3.module.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        chai.expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(1);
-        expect(warnings[0].line).to.be.eq(2);
-        expect(warnings[0].column).to.be.eq(29);
+        chai.expect(warnings).lengthOf(1);
+        chai.expect(warnings[0].line).to.be.eq(2);
+        chai.expect(warnings[0].column).to.be.eq(29);
     });
 
     it("Doesn't warn bp3 string is present but not as a prefix", async () => {
@@ -79,7 +79,7 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-non-prefix-bp3.scss",
             config,
         });
-        expect(result.errored).to.be.false;
+        chai.expect(result.errored).to.be.false;
     });
 
     it("Doesn't warn bp3 string is present but not as a prefix (CSS modules)", async () => {
@@ -87,9 +87,9 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-non-prefix-bp3.module.scss",
             config,
         });
-        expect(result.errored).to.be.false;
+        chai.expect(result.errored).to.be.false;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(0);
+        chai.expect(warnings).lengthOf(0);
     });
 
     it("Doesn't warn when .bp3 is not present", async () => {
@@ -97,9 +97,9 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/does-not-contain-bp3.scss",
             config,
         });
-        expect(result.errored).to.be.false;
+        chai.expect(result.errored).to.be.false;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(0);
+        chai.expect(warnings).lengthOf(0);
     });
 
     it("Doesn't warn when .bp3 is not present (CSS modules)", async () => {
@@ -107,9 +107,9 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/does-not-contain-bp3.module.scss",
             config,
         });
-        expect(result.errored).to.be.false;
+        chai.expect(result.errored).to.be.false;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(0);
+        chai.expect(warnings).lengthOf(0);
     });
 
     it("Doesn't warn when .bp3 is present but lint rule is disabled", async () => {
@@ -117,9 +117,9 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-bp3-disabled.scss",
             config,
         });
-        expect(result.errored).to.be.false;
+        chai.expect(result.errored).to.be.false;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(0);
+        chai.expect(warnings).lengthOf(0);
     });
 
     it("Accepts a valid secondary config", async () => {
@@ -135,7 +135,7 @@ describe("no-prefix-literal", () => {
                 },
             },
         });
-        expect(result.results[0].invalidOptionWarnings.length).to.be.eq(0);
+        chai.expect(result.results[0].invalidOptionWarnings.length).to.be.eq(0);
     });
 
     it("Rejects an invalid secondary config", async () => {
@@ -154,7 +154,7 @@ describe("no-prefix-literal", () => {
                 },
             },
         });
-        expect(result.results[0].invalidOptionWarnings.length).to.be.eq(1);
+        chai.expect(result.results[0].invalidOptionWarnings.length).to.be.eq(1);
     });
 
     it("Works for a double bp3 selector", async () => {
@@ -162,8 +162,8 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-double-bp3-selector.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        chai.expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(2);
+        chai.expect(warnings).lengthOf(2);
     });
 });

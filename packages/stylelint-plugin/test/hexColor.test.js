@@ -13,37 +13,37 @@ See the License for the specific language governing permissions and
 limitations under the License.*/
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { expect } = require("chai");
+import chai from "chai";
 
-const { isHexColor, normalizeHexColor } = require("../lib/utils/hexColor");
+import { isHexColor, normalizeHexColor } from "../lib/utils/hexColor.js";
 
 describe("isHexColor", () => {
     it("Accepts valid colors", () => {
-        expect(isHexColor("#FFFFFF")).to.be.true;
-        expect(isHexColor("#abABab")).to.be.true;
-        expect(isHexColor("#abc")).to.be.true;
-        expect(isHexColor("#ABc")).to.be.true;
+        chai.expect(isHexColor("#FFFFFF")).to.be.true;
+        chai.expect(isHexColor("#abABab")).to.be.true;
+        chai.expect(isHexColor("#abc")).to.be.true;
+        chai.expect(isHexColor("#ABc")).to.be.true;
     });
 
     it("Rejects invalid colors", () => {
-        expect(isHexColor("FFFFFF")).to.be.false;
-        expect(isHexColor("#FFFFFX")).to.be.false;
-        expect(isHexColor("#")).to.be.false;
-        expect(isHexColor("#abcde")).to.be.false;
-        expect(isHexColor("#FFx")).to.be.false;
+        chai.expect(isHexColor("FFFFFF")).to.be.false;
+        chai.expect(isHexColor("#FFFFFX")).to.be.false;
+        chai.expect(isHexColor("#")).to.be.false;
+        chai.expect(isHexColor("#abcde")).to.be.false;
+        chai.expect(isHexColor("#FFx")).to.be.false;
     });
 });
 
 describe("normalizeHexColor", () => {
     it("Uppercases hex colors", () => {
-        expect(normalizeHexColor("#ffaabb")).to.be.eq("#FFAABB");
+        chai.expect(normalizeHexColor("#ffaabb")).to.be.eq("#FFAABB");
     });
 
     it("Converts three letter hexes into six letter hexes", () => {
-        expect(normalizeHexColor("#ABC")).to.be.eq("#AABBCC");
+        chai.expect(normalizeHexColor("#ABC")).to.be.eq("#AABBCC");
     });
 
     it("Converts lowercase three letter hexes into uppercase six letter hexes", () => {
-        expect(normalizeHexColor("#abc")).to.be.eq("#AABBCC");
+        chai.expect(normalizeHexColor("#abc")).to.be.eq("#AABBCC");
     });
 });
