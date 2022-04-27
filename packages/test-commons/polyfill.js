@@ -13,15 +13,13 @@
  * limitations under the License.
  */
 
-// Note: using CommonJS syntax here so this can be used in the isomorphic tests, which must run in a server environment.
-
 /**
  * Require the minimal set of ES2015+ polyfills from `core-js` library.
  * See "NPM Installation" section of docs homepage for more information.
  */
-require("core-js/features/array/fill");
-require("core-js/features/array/from");
-require("core-js/features/map");
-require("core-js/features/set");
-require("core-js/features/string/starts-with");
-require("core-js/proposals/object-values-entries");
+import "core-js/features/array/fill";
+import "core-js/features/array/from";
+import "core-js/features/map";
+import "core-js/features/set";
+import "core-js/features/string/starts-with";
+import "core-js/proposals/object-values-entries";
