@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:math";
 @import "~@blueprintjs/icons/lib/scss/variables";
 @import "../../common/mixins";
 @import "../../common/react-transition";
@@ -94,7 +95,7 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
   flex: 0 0 auto;
   min-height: $pt-icon-size-large + $dialog-padding;
   padding-left: $dialog-padding;
-  padding-right: $pt-grid-size / 2;
+  padding-right: math.div($pt-grid-size, 2);
   z-index: 0;
 
   .#{$ns}-icon-large,
