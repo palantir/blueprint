@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
@@ -25,6 +24,8 @@ import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 export type TextProps = ITextProps;
 /** @deprecated use TextProps */
 export interface ITextProps extends Props {
+    children?: React.ReactNode;
+
     /**
      * Indicates that this component should be truncated with an ellipsis if it overflows its container.
      * The `title` attribute will also be added when content overflows to show the full text of the children on hover.
@@ -51,13 +52,14 @@ export interface ITextState {
     isContentOverflowing: boolean;
 }
 
-@polyfill
-export class Text extends AbstractPureComponent2<TextProps, ITextState> {
+export class Text extends AbstractPureComponent2<
+    TextProps & Omit<React.HTMLAttributes<HTMLElement>, "title">,
+    ITextState
+> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Text`;
 
     public static defaultProps: Partial<TextProps> = {
         ellipsize: false,
-        tagName: "div",
     };
 
     public state: ITextState = {
@@ -76,17 +78,15 @@ export class Text extends AbstractPureComponent2<TextProps, ITextState> {
     }
 
     public render() {
-        const classes = classNames(
-            {
-                [Classes.TEXT_OVERFLOW_ELLIPSIS]: this.props.ellipsize,
-            },
-            this.props.className,
-        );
-        const { children, tagName, title } = this.props;
+        const { children, className, ellipsize, tagName = "div", title, ...htmlProps } = this.props;
+        const classes = classNames(className, {
+            [Classes.TEXT_OVERFLOW_ELLIPSIS]: ellipsize,
+        });
 
         return React.createElement(
-            tagName!,
+            tagName,
             {
+                ...htmlProps,
                 className: classes,
                 ref: (ref: HTMLElement | null) => (this.textRef = ref),
                 title: title ?? (this.state.isContentOverflowing ? this.state.textContent : undefined),

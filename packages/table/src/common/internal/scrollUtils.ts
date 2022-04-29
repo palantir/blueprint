@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { IRegion, RegionCardinality, Regions } from "../../regions";
+import { Region, RegionCardinality, Regions } from "../../regions";
 
 /**
  * Returns the scroll{Left,Top} offsets of the provided region based on its
  * cardinality.
  */
 export function getScrollPositionForRegion(
-    region: IRegion,
+    region: Region,
     currScrollLeft: number,
     currScrollTop: number,
     getLeftOffset: (columnIndex: number) => number,
@@ -42,21 +42,21 @@ export function getScrollPositionForRegion(
     switch (cardinality) {
         case RegionCardinality.CELLS: {
             // scroll to the top-left corner of the block of cells
-            const topOffset = getTopOffset(region.rows[0]);
-            const leftOffset = getLeftOffset(region.cols[0]);
+            const topOffset = getTopOffset(region.rows![0]);
+            const leftOffset = getLeftOffset(region.cols![0]);
             scrollTop = getClampedScrollPosition(topOffset, frozenRowsCumulativeHeight);
             scrollLeft = getClampedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
             break;
         }
         case RegionCardinality.FULL_ROWS: {
             // scroll to the top of the row block
-            const topOffset = getTopOffset(region.rows[0]);
+            const topOffset = getTopOffset(region.rows![0]);
             scrollTop = getClampedScrollPosition(topOffset, frozenRowsCumulativeHeight);
             break;
         }
         case RegionCardinality.FULL_COLUMNS: {
             // scroll to the left side of the column block
-            const leftOffset = getLeftOffset(region.cols[0]);
+            const leftOffset = getLeftOffset(region.cols![0]);
             scrollLeft = getClampedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
             break;
         }
@@ -76,6 +76,9 @@ export function getScrollPositionForRegion(
  * If the target scroll bar is not present, 0 is returned.
  */
 export function measureScrollBarThickness(element: HTMLElement, direction: "horizontal" | "vertical") {
+    if (element == null) {
+        return 0;
+    }
     // offset size includes the scroll bar. client size does not.
     // the difference gives the thickness of the scroll bar.
     return direction === "horizontal"

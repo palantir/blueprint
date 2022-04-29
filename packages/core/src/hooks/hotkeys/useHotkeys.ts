@@ -16,6 +16,7 @@
 
 import * as React from "react";
 
+import { HOTKEYS_PROVIDER_NOT_FOUND } from "../../common/errors";
 import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "../../components/hotkeys/hotkeyParser";
 import { HotkeysContext } from "../../context";
 import { HotkeyConfig } from "./hotkeyConfig";
@@ -48,8 +49,8 @@ export interface UseHotkeysReturnValue {
  * @param keys list of hotkeys to configure
  * @param options hook options
  */
-export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}): UseHotkeysReturnValue {
-    const { document = window.document, showDialogKeyCombo = "?" } = options;
+export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOptions = {}): UseHotkeysReturnValue {
+    const { document = getDefaultDocument(), showDialogKeyCombo = "?" } = options;
     const localKeys = React.useMemo(
         () =>
             keys
@@ -72,7 +73,13 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
     );
 
     // register keys with global context
-    const [, dispatch] = React.useContext(HotkeysContext);
+    const [state, dispatch] = React.useContext(HotkeysContext);
+
+    if (!state.hasProvider) {
+        React.useEffect(() => console.warn(HOTKEYS_PROVIDER_NOT_FOUND), []);
+    }
+
+    // we can still bind the hotkeys if there is no HotkeysProvider, they just won't show up in the dialog
     React.useEffect(() => {
         const payload = [...globalKeys.map(k => k.config), ...localKeys.map(k => k.config)];
         dispatch({ type: "ADD_HOTKEYS", payload });
@@ -138,11 +145,12 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
     );
 
     React.useEffect(() => {
-        document.addEventListener("keydown", handleGlobalKeyDown);
-        document.addEventListener("keyup", handleGlobalKeyUp);
+        // document is guaranteed to be defined inside effects
+        document!.addEventListener("keydown", handleGlobalKeyDown);
+        document!.addEventListener("keyup", handleGlobalKeyUp);
         return () => {
-            document.removeEventListener("keydown", handleGlobalKeyDown);
-            document.removeEventListener("keyup", handleGlobalKeyUp);
+            document!.removeEventListener("keydown", handleGlobalKeyDown);
+            document!.removeEventListener("keyup", handleGlobalKeyUp);
         };
     }, [handleGlobalKeyDown, handleGlobalKeyUp]);
 
@@ -180,4 +188,11 @@ function isTargetATextInput(e: KeyboardEvent) {
     }
 
     return true;
+}
+
+function getDefaultDocument(): Document | undefined {
+    if (typeof window === "undefined") {
+        return undefined;
+    }
+    return window.document;
 }

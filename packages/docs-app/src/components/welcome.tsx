@@ -39,7 +39,8 @@ export class Welcome extends React.PureComponent {
     }
 }
 
-const WelcomeCard: React.FunctionComponent<{
+const WelcomeCard: React.FC<{
+    children?: React.ReactNode;
     icon: IconName;
     title: string;
     href: string;
@@ -47,7 +48,7 @@ const WelcomeCard: React.FunctionComponent<{
 }> = props => (
     <a className="blueprint-welcome-card" href={props.href} target={props.sameTab ? "" : "_blank"}>
         <Card interactive={true}>
-            <Icon icon={props.icon} iconSize={40} />
+            <Icon icon={props.icon} size={40} />
             <H4>{props.title}</H4>
             {props.children}
         </Card>

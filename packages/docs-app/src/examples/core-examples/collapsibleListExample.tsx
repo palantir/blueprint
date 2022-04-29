@@ -22,9 +22,9 @@ import {
     Classes,
     CollapsibleList,
     H5,
-    MenuItemProps,
     Label,
     MenuItem,
+    MenuItemProps,
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";

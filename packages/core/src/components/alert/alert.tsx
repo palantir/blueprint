@@ -16,9 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Intent, Props, MaybeElement } from "../../common";
+import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Intent, MaybeElement, Props } from "../../common";
 import {
     ALERT_WARN_CANCEL_ESCAPE_KEY,
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
@@ -54,6 +53,9 @@ export interface IAlertProps extends IOverlayLifecycleProps, Props {
      * If this prop is defined, then either `onCancel` or `onClose` must also be defined.
      */
     cancelButtonText?: string;
+
+    /** Dialog contents. */
+    children?: React.ReactNode;
 
     /**
      * The text for the confirm (right-most) button.
@@ -133,7 +135,6 @@ export interface IAlertProps extends IOverlayLifecycleProps, Props {
     onClose?(confirmed: boolean, evt?: React.SyntheticEvent<HTMLElement>): void;
 }
 
-@polyfill
 export class Alert extends AbstractPureComponent2<AlertProps> {
     public static defaultProps: AlertProps = {
         canEscapeKeyCancel: false,
@@ -169,7 +170,7 @@ export class Alert extends AbstractPureComponent2<AlertProps> {
                 portalContainer={this.props.portalContainer}
             >
                 <div className={Classes.ALERT_BODY}>
-                    <Icon icon={icon} iconSize={40} intent={intent} />
+                    <Icon icon={icon} size={40} intent={intent} />
                     <div className={Classes.ALERT_CONTENTS}>{children}</div>
                 </div>
                 <div className={Classes.ALERT_FOOTER}>

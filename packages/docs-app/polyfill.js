@@ -50,3 +50,5 @@ require("core-js/features/map");
 require("core-js/features/set");
 // Support "string".startsWith()
 require("core-js/features/string/starts-with");
+// Support Object.values()
+require("core-js/proposals/object-values-entries");

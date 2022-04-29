@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 export { Cell, CellProps, ICellProps, ICellRenderer, CellRenderer } from "./cell/cell";
 
 export { EditableCell, IEditableCellProps, EditableCellProps } from "./cell/editableCell";
+
+export { EditableCell2, EditableCell2Props } from "./cell/editableCell2";
 
 export { JSONFormat, IJSONFormatProps, JSONFormatProps } from "./cell/formats/jsonFormat";
 
@@ -29,7 +33,16 @@ export {
 
 export { Column, ColumnProps, IColumnProps } from "./column";
 
-export { AnyRect, Clipboard, Grid, Rect, RenderMode, Utils } from "./common/index";
+export {
+    AnyRect,
+    CellCoordinates,
+    Clipboard,
+    FocusedCellCoordinates,
+    Grid,
+    Rect,
+    RenderMode,
+    Utils,
+} from "./common/index";
 
 export { IDraggableProps, Draggable } from "./interactions/draggable";
 
@@ -48,7 +61,9 @@ export { ILockableLayout, IResizeHandleProps, Orientation, ResizeHandle } from "
 
 export { ISelectableProps, IDragSelectableProps, DragSelectable } from "./interactions/selectable";
 
-export { IColumnHeaderRenderer } from "./headers/columnHeader";
+export { ColumnHeaderRenderer, IColumnHeaderRenderer } from "./headers/columnHeader";
+
+export { RowHeaderRenderer } from "./headers/rowHeader";
 
 export { ColumnHeaderCell, IColumnHeaderCellProps, HorizontalCellDivider } from "./headers/columnHeaderCell";
 
@@ -57,6 +72,8 @@ export { IRowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
 export { IEditableNameProps, EditableNameProps, EditableName } from "./headers/editableName";
 
 export {
+    CellInterval,
+    CellCoordinate,
     ColumnLoadingOption,
     ICellInterval,
     IRegion,
@@ -66,8 +83,12 @@ export {
     Regions,
     RowLoadingOption,
     SelectionModes,
+    StyledRegionGroup,
     TableLoadingOption,
 } from "./regions";
 
-// eslint-disable-next-line deprecation/deprecation
-export { ITableProps, TableProps, Table } from "./table";
+export { ITableProps, TableProps } from "./tableProps";
+
+export { Table } from "./table";
+
+export { Table2, Table2Props } from "./table2";

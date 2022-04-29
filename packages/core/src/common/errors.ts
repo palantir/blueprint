@@ -22,7 +22,7 @@ export const ALERT_WARN_CANCEL_PROPS = ns + ` <Alert> cancelButtonText and onCan
 export const ALERT_WARN_CANCEL_ESCAPE_KEY =
     ns + ` <Alert> canEscapeKeyCancel enabled without onCancel or onClose handler.`;
 export const ALERT_WARN_CANCEL_OUTSIDE_CLICK =
-    ns + ` <Alert> canOutsideClickCancel enbaled without onCancel or onClose handler.`;
+    ns + ` <Alert> canOutsideClickCancel enabled without onCancel or onClose handler.`;
 
 export const COLLAPSIBLE_LIST_INVALID_CHILD = ns + ` <CollapsibleList> children must be <MenuItem>s`;
 
@@ -36,6 +36,9 @@ export const HOTKEYS_WARN_DECORATOR_NO_METHOD = ns + ` @HotkeysTarget-decorated 
 export const HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT =
     ns + ` "@HotkeysTarget-decorated components must return a single JSX.Element or an empty render.`;
 
+export const HOTKEYS_PROVIDER_NOT_FOUND =
+    ns +
+    ` useHotkeys() was used outside of a <HotkeysProvider> context. These hotkeys will not be shown in the hotkeys help dialog.`;
 export const HOTKEYS_TARGET2_CHILDREN_LOCAL_HOTKEYS =
     ns +
     ` <HotkeysTarget2> was configured with local hotkeys, but you did not use the generated event handlers to bind their event handlers. Try using a render function as the child of this component.`;
@@ -106,7 +109,6 @@ export const DIALOG_WARN_NO_HEADER_ICON = ns + ` <Dialog> iconName is ignored if
 export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
     ns + ` <Dialog> isCloseButtonShown prop is ignored if title is omitted.`;
 
-export const DRAWER_VERTICAL_IS_IGNORED = ns + ` <Drawer> vertical is ignored if position is defined`;
 export const DRAWER_ANGLE_POSITIONS_ARE_CASTED =
     ns + ` <Drawer> all angle positions are casted into pure position (TOP, BOTTOM, LEFT or RIGHT)`;
 

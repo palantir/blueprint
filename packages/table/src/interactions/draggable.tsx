@@ -17,12 +17,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Props, Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils, Props } from "@blueprintjs/core";
 
 import { DragEvents } from "./dragEvents";
 import { IDragHandler } from "./dragTypes";
 
-export interface IDraggableProps extends Props, IDragHandler {}
+export interface IDraggableProps extends Props, IDragHandler {
+    children?: React.ReactNode;
+}
 
 const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof IDraggableProps>;
 
@@ -57,7 +59,7 @@ export class Draggable extends React.PureComponent<IDraggableProps> {
         stopPropagation: false,
     };
 
-    private events: DragEvents;
+    private events?: DragEvents;
 
     public render() {
         return React.Children.only(this.props.children);
@@ -65,7 +67,7 @@ export class Draggable extends React.PureComponent<IDraggableProps> {
 
     public componentDidUpdate(prevProps: IDraggableProps) {
         const propsWhitelist = { include: REATTACH_PROPS_KEYS };
-        if (this.events && !CoreUtils.shallowCompareKeys(prevProps, this.props, propsWhitelist)) {
+        if (this.events !== undefined && !CoreUtils.shallowCompareKeys(prevProps, this.props, propsWhitelist)) {
             // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
             // eslint-disable-next-line react/no-find-dom-node
             this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, this.props);
@@ -80,7 +82,7 @@ export class Draggable extends React.PureComponent<IDraggableProps> {
     }
 
     public componentWillUnmount() {
-        this.events.detach();
+        this.events?.detach();
         delete this.events;
     }
 }

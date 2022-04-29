@@ -19,11 +19,6 @@
 
 /* eslint-disable deprecation/deprecation */
 
-/** @deprecated use IKeyAllowlist */
-export type IKeyWhitelist<T> = IKeyAllowlist<T>;
-/** @deprecated use IKeyDenylist */
-export type IKeyBlacklist<T> = IKeyDenylist<T>;
-
 /** @deprecated use KeyAllowlist */
 export interface IKeyAllowlist<T> {
     include: Array<keyof T>;
@@ -60,7 +55,11 @@ export function arraysEqual(arrA: any[], arrB: any[], compare = (a: any, b: any)
  *
  * @returns true if items are equal.
  */
-export function shallowCompareKeys<T extends {}>(objA: T, objB: T, keys?: KeyDenylist<T> | KeyAllowlist<T>) {
+export function shallowCompareKeys<T extends {}>(
+    objA: T | null | undefined,
+    objB: T | null | undefined,
+    keys?: KeyDenylist<T> | KeyAllowlist<T>,
+) {
     // treat `null` and `undefined` as the same
     if (objA == null && objB == null) {
         return true;
@@ -121,8 +120,8 @@ export function deepCompareKeys(objA: any, objB: any, keys?: Array<string | numb
  * between two provided objects. Useful for debugging shouldComponentUpdate.
  */
 export function getDeepUnequalKeyValues<T extends {}>(
-    objA: T = ({} as any) as T,
-    objB: T = ({} as any) as T,
+    objA: T = {} as any as T,
+    objB: T = {} as any as T,
     keys?: Array<keyof T>,
 ) {
     const filteredKeys = keys == null ? unionKeys(objA, objB) : keys;

@@ -1,0 +1,31 @@
+{
+    "name": "@blueprintjs/colors",
+    "version": "4.1.1",
+    "description": "Blueprint color definitions",
+    "main": "lib/index.js",
+    "scripts": {
+        "clean": "rm -rf lib/*",
+        "compile": "run-p \"compile:*\"",
+        "compile:esm": "tsc -p src/",
+        "compile:css": "sass-compile ./src",
+        "compile:css-colors": "generate-css-variables --retainDefault true --outputFileName colors _colors.scss",
+        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+        "lint": "npm-run-all -p lint:scss lint:es",
+        "lint:scss": "sass-lint",
+        "lint:es": "es-lint",
+        "lint-fix": "es-lint --fix && sass-lint --fix",
+        "verify": "npm-run-all compile -p dist lint"
+    },
+    "devDependencies": {
+        "@blueprintjs/node-build-scripts": "^4.0.3",
+        "mocha": "^9.2.2",
+        "typescript": "~4.6.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/colors"
+    },
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0"
+}

@@ -19,10 +19,10 @@ import {
     H5,
     HTMLSelect,
     Intent,
-    NumericInputProps,
-    OptionProps,
     Label,
     NumericInput,
+    NumericInputProps,
+    OptionProps,
     Position,
     Switch,
 } from "@blueprintjs/core";
@@ -154,7 +154,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
                 {this.renderSelectMenu(
                     "Locale",
                     locale,
-                    [{ label: "Default", value: "" }, ...LOCALES],
+                    [{ label: "Default", value: undefined }, ...LOCALES],
                     this.handleLocaleChange,
                 )}
             </>

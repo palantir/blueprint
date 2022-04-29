@@ -24,15 +24,16 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
-    refHandler,
+    Keys,
     mergeRefs,
     Overlay,
+    refHandler,
     Utils,
 } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
 import * as Errors from "./errors";
-import { POPOVER_ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
+import { Popover2Arrow, POPOVER_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { positionToPlacement } from "./popover2PlacementUtils";
 import { Popover2SharedProps } from "./popover2SharedProps";
 import { ResizeSensor2 } from "./resizeSensor2";
@@ -53,6 +54,13 @@ export type Popover2InteractionKind = typeof Popover2InteractionKind[keyof typeo
 export type Popover2Props<TProps = React.HTMLProps<HTMLElement>> = IPopover2Props<TProps>;
 /** @deprecated use Popover2Props */
 export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends Popover2SharedProps<TProps> {
+    /**
+     * Whether the popover/tooltip should acquire application focus when it first opens.
+     *
+     * @default true for click interations, false for hover interactions
+     */
+    autoFocus?: boolean;
+
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
@@ -60,12 +68,6 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
      * The content displayed inside the popover.
      */
     content?: string | JSX.Element;
-
-    /**
-     * Whether the wrapper and target should take up the full width of their container.
-     * Note that supplying `true` for this prop will force  `targetTagName="div"`.
-     */
-    fill?: boolean;
 
     /**
      * The kind of interaction that triggers the display of the popover.
@@ -86,9 +88,18 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
     hasBackdrop?: boolean;
 
     /**
-     * Ref supplied to the `Classes.POPOVER` element.
+     * Whether the application should return focus to the last active element in the
+     * document after this popover closes.
+     *
+     * This is automatically set to `false` if this is a hover interaction popover.
+     *
+     * If you are attaching a popover _and_ a tooltip to the same target, you must take
+     * care to either disable this prop for the popover _or_ disable the tooltip's
+     * `openOnTargetFocus` prop.
+     *
+     * @default false
      */
-    popoverRef?: (ref: HTMLElement | null) => void;
+    shouldReturnFocusOnClose?: boolean;
 
     /**
      * Popper.js positioning strategy.
@@ -127,6 +138,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         // a warning in validateProps if the other prop is specified by a user of this component
         positioningStrategy: "absolute",
         renderTarget: undefined as any,
+        shouldReturnFocusOnClose: false,
         targetTagName: "span",
         transitionDuration: 300,
         usePortal: true,
@@ -307,10 +319,15 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             : {
                   // CLICK needs only one handler
                   onClick: this.handleTargetClick,
+                  // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
+                  onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>
+                      // eslint-disable-next-line deprecation/deprecation
+                      Keys.isKeyboardClick(event.keyCode) && this.handleTargetClick(event),
               };
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
         const targetProps = {
+            "aria-haspopup": "true",
             // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
             // If, instead, renderTarget is undefined and the target is provided as a child, this.props.className is
             // applied to the generated target wrapper element.
@@ -320,7 +337,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 [CoreClasses.ACTIVE]: !isControlled && isOpen && !isHoverInteractionKind,
             }),
             ref,
-            ...((targetEventHandlers as unknown) as T),
+            ...(targetEventHandlers as unknown as T),
         };
 
         let target: JSX.Element | undefined;
@@ -365,7 +382,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const { interactionKind, usePortal } = this.props;
+        const { interactionKind, shouldReturnFocusOnClose, usePortal } = this.props;
         const { isOpen } = this.state;
 
         // compute an appropriate transform origin so the scale animation points towards target
@@ -380,6 +397,9 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         const popoverHandlers: HTMLDivProps = {
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
+            // treat ENTER/SPACE keys the same as a click for accessibility
+            // eslint-disable-next-line deprecation/deprecation
+            onKeyDown: event => Keys.isKeyboardClick(event.keyCode) && this.handlePopoverClick(event),
         };
         if (
             interactionKind === Popover2InteractionKind.HOVER ||
@@ -396,14 +416,18 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 [CoreClasses.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
                 [CoreClasses.MINIMAL]: this.props.minimal,
                 [Classes.POPOVER2_CAPTURING_DISMISS]: this.props.captureDismiss,
+                [Classes.POPOVER2_REFERENCE_HIDDEN]: popperProps.isReferenceHidden === true,
+                [Classes.POPOVER2_POPPER_ESCAPED]: popperProps.hasPopperEscaped === true,
             },
             `${Classes.POPOVER2_CONTENT_PLACEMENT}-${basePlacement}`,
             this.props.popoverClassName,
         );
 
+        const defaultAutoFocus = this.isHoverInteractionKind() ? false : undefined;
+
         return (
             <Overlay
-                autoFocus={this.props.autoFocus}
+                autoFocus={this.props.autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER2_BACKDROP}
                 backdropProps={this.props.backdropProps}
                 canEscapeKeyClose={this.props.canEscapeKeyClose}
@@ -421,6 +445,8 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 usePortal={this.props.usePortal}
                 portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
+                // if hover interaciton, it doesn't make sense to take over focus control
+                shouldReturnFocusOnClose={this.isHoverInteractionKind() ? false : shouldReturnFocusOnClose}
             >
                 <div className={Classes.POPOVER2_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
                     <ResizeSensor2 onResize={this.reposition}>
@@ -500,19 +526,23 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 // lost focus (e.g. due to switching tabs).
                 return;
             }
-            this.handleMouseEnter((e as unknown) as React.MouseEvent<HTMLElement>);
+            this.handleMouseEnter(e as unknown as React.MouseEvent<HTMLElement>);
         }
     };
 
     private handleTargetBlur = (e: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
-            // if the next element to receive focus is within the popover, we'll want to leave the
-            // popover open. e.relatedTarget ought to tell us the next element to receive focus, but if the user just
-            // clicked on an element which is not focusable (either by default or with a tabIndex attribute),
-            // it won't be set. So, we filter those out here and assume that a click handler somewhere else will
-            // close the popover if necessary.
-            if (e.relatedTarget != null && !this.isElementInPopover(e.relatedTarget as HTMLElement)) {
-                this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+            if (e.relatedTarget != null) {
+                // if the next element to receive focus is within the popover, we'll want to leave the
+                // popover open.
+                if (
+                    e.relatedTarget !== this.popoverElement &&
+                    !this.isElementInPopover(e.relatedTarget as HTMLElement)
+                ) {
+                    this.handleMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
+                }
+            } else {
+                this.handleMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;
@@ -559,7 +589,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         });
     };
 
-    private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
+    private handlePopoverClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
         const eventPopover = eventTarget.closest(`.${Classes.POPOVER2}`);
         const eventPopoverV1 = eventTarget.closest(`.${CoreClasses.POPOVER}`);
@@ -576,7 +606,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         );
         // dismiss selectors from the "V1" version of Popover in the core pacakge
         // we expect these to be rendered by MenuItem, which at this point has no knowledge of Popover2
-        // this can be removed once Popover2 is merged into core in v4.0
+        // this can be removed once Popover2 is merged into core in v5.0
         const dismissElementV1 = eventTarget.closest(
             `.${CoreClasses.POPOVER_DISMISS}, .${CoreClasses.POPOVER_DISMISS_OVERRIDE}`,
         );
@@ -605,7 +635,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         }
     };
 
-    private handleTargetClick = (e: React.MouseEvent<HTMLElement>) => {
+    private handleTargetClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         // ensure click did not originate from within inline popover before closing
         if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {

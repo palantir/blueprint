@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { Boundary as PopperBoundary, Modifiers as PopperModifiers, Placement } from "popper.js";
+import { Placement, Boundary as PopperBoundary, Modifiers as PopperModifiers } from "popper.js";
+import * as React from "react";
 
 import { Position } from "../../common/position";
 import { Props } from "../../common/props";
@@ -35,6 +36,8 @@ export type PopoverPosition = typeof PopoverPosition[keyof typeof PopoverPositio
 
 /** Props shared between `Popover` and `Tooltip`. */
 export interface IPopoverSharedProps extends OverlayableProps, Props {
+    children?: React.ReactNode;
+
     /**
      * Determines the boundary element used by Popper for its `flip` and
      * `preventOverflow` modifiers. Three shorthand keywords are supported;
@@ -129,6 +132,9 @@ export interface IPopoverSharedProps extends OverlayableProps, Props {
      * Whether the popover should open when its target is focused. If `true`,
      * target will render with `tabindex="0"` to make it focusable via keyboard
      * navigation.
+     *
+     * Note that this functionality is only enabled for hover interaction
+     * popovers/tooltips.
      *
      * @default true
      */

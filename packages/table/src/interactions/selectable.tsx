@@ -18,20 +18,20 @@ import * as React from "react";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
 
-import { IFocusedCellCoordinates } from "../common/cell";
+import type { FocusedCellCoordinates } from "../common/cellTypes";
 import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
 import * as PlatformUtils from "../common/internal/platformUtils";
 import { Utils } from "../common/utils";
-import { IRegion, Regions } from "../regions";
+import { Region, Regions } from "../regions";
 import { DragEvents } from "./dragEvents";
 import { Draggable, IDraggableProps } from "./draggable";
 import { ICoordinateData } from "./dragTypes";
 
 export type ISelectedRegionTransform = (
-    region: IRegion,
+    region: Region,
     event: MouseEvent | KeyboardEvent,
     coords?: ICoordinateData,
-) => IRegion;
+) => Region;
 export type SelectedRegionTransform = ISelectedRegionTransform;
 
 export interface ISelectableProps {
@@ -47,35 +47,35 @@ export interface ISelectableProps {
     /**
      * The currently focused cell.
      */
-    focusedCell?: IFocusedCellCoordinates;
+    focusedCell?: FocusedCellCoordinates;
 
     /**
      * When the user focuses something, this callback is called with new
      * focused cell coordinates. This should be considered the new focused cell
      * state for the entire table.
      */
-    onFocusedCell: (focusedCell: IFocusedCellCoordinates) => void;
+    onFocusedCell: (focusedCell: FocusedCellCoordinates) => void;
 
     /**
      * When the user selects something, this callback is called with a new
      * array of `Region`s. This array should be considered the new selection
      * state for the entire table.
      */
-    onSelection: (regions: IRegion[]) => void;
+    onSelection: (regions: Region[]) => void;
 
     /**
      * An additional convenience callback invoked when the user releases the
      * mouse from either a click or a drag, indicating that the selection
      * interaction has ended.
      */
-    onSelectionEnd?: (regions: IRegion[]) => void;
+    onSelectionEnd?: (regions: Region[]) => void;
 
     /**
      * An array containing the table's selection Regions.
      *
      * @default []
      */
-    selectedRegions?: IRegion[];
+    selectedRegions?: Region[];
 
     /**
      * An optional transform function that will be applied to the located
@@ -89,6 +89,9 @@ export interface ISelectableProps {
 }
 
 export interface IDragSelectableProps extends ISelectableProps {
+    /** Element to make interactive. */
+    children: React.ReactNode;
+
     /**
      * A list of CSS selectors that should _not_ trigger selection when a `mousedown` occurs inside of them.
      */
@@ -105,14 +108,14 @@ export interface IDragSelectableProps extends ISelectableProps {
      * A callback that determines a `Region` for the single `MouseEvent`. If
      * no valid region can be found, `null` may be returned.
      */
-    locateClick: (event: MouseEvent) => IRegion;
+    locateClick: (event: MouseEvent) => Region;
 
     /**
      * A callback that determines a `Region` for the `MouseEvent` and
      * coordinate data representing a drag. If no valid region can be found,
      * `null` may be returned.
      */
-    locateDrag: (event: MouseEvent, coords: ICoordinateData, returnEndOnly?: boolean) => IRegion;
+    locateDrag: (event: MouseEvent, coords: ICoordinateData, returnEndOnly?: boolean) => Region | undefined;
 }
 
 export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
@@ -124,7 +127,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
 
     private didExpandSelectionOnActivate = false;
 
-    private lastEmittedSelectedRegions: IRegion[];
+    private lastEmittedSelectedRegions: Region[] | null = null;
 
     public render() {
         const draggableProps = this.getDraggableProps();
@@ -162,7 +165,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
             region = selectedRegionTransform(region, event);
         }
 
-        const foundIndex = Regions.findMatchingRegion(selectedRegions, region);
+        const foundIndex = Regions.findMatchingRegion(selectedRegions!, region);
         const matchesExistingSelection = foundIndex !== -1;
 
         if (matchesExistingSelection && DragEvents.isAdditive(event)) {
@@ -201,15 +204,15 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
             ? locateDrag(event, coords, /* returnEndOnly? */ this.didExpandSelectionOnActivate)
             : locateClick(event);
 
-        if (!Regions.isValid(region)) {
+        if (region === undefined || !Regions.isValid(region)) {
             return;
         } else if (selectedRegionTransform != null) {
             region = selectedRegionTransform(region, event, coords);
         }
 
         const nextSelectedRegions = this.didExpandSelectionOnActivate
-            ? this.expandSelectedRegions(selectedRegions, region, focusedCell)
-            : Regions.update(selectedRegions, region);
+            ? this.expandSelectedRegions(selectedRegions!, region, focusedCell)
+            : Regions.update(selectedRegions!, region);
 
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
@@ -265,7 +268,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
         const { selectedRegions } = this.props;
 
         // remove just the clicked region, leaving other selected regions in place
-        const nextSelectedRegions = selectedRegions.slice();
+        const nextSelectedRegions = selectedRegions!.slice();
         nextSelectedRegions.splice(selectedRegionIndex, 1);
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
@@ -280,18 +283,18 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
     private handleClearAllSelectionsNotAtIndex = (selectedRegionIndex: number) => {
         const { selectedRegions } = this.props;
 
-        const nextSelectedRegion = selectedRegions[selectedRegionIndex];
+        const nextSelectedRegion = selectedRegions![selectedRegionIndex];
         this.maybeInvokeSelectionCallback([nextSelectedRegion]);
         this.invokeOnFocusCallbackForRegion(nextSelectedRegion, 0);
     };
 
-    private handleExpandSelection = (region: IRegion) => {
+    private handleExpandSelection = (region: Region) => {
         const { focusedCell, selectedRegions } = this.props;
         this.didExpandSelectionOnActivate = true;
 
         // there should be only one selected region after expanding. do not
         // update the focused cell.
-        const nextSelectedRegions = this.expandSelectedRegions(selectedRegions, region, focusedCell);
+        const nextSelectedRegions = this.expandSelectedRegions(selectedRegions!, region, focusedCell);
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
         // move the focused cell into the new region if there were no selections before
@@ -300,18 +303,18 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
         }
     };
 
-    private handleAddDisjointSelection = (region: IRegion) => {
+    private handleAddDisjointSelection = (region: Region) => {
         const { selectedRegions } = this.props;
 
         // add the new region to the existing selections
-        const nextSelectedRegions = Regions.add(selectedRegions, region);
+        const nextSelectedRegions = Regions.add(selectedRegions!, region);
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
         // put the focused cell in the new region
         this.invokeOnFocusCallbackForRegion(region, nextSelectedRegions.length - 1);
     };
 
-    private handleReplaceSelection = (region: IRegion) => {
+    private handleReplaceSelection = (region: Region) => {
         // clear all selections and retain only the new one
         const nextSelectedRegions = [region];
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
@@ -323,7 +326,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
     // Callbacks
     // =========
 
-    private maybeInvokeSelectionCallback(nextSelectedRegions: IRegion[]) {
+    private maybeInvokeSelectionCallback(nextSelectedRegions: Region[]) {
         const { onSelection } = this.props;
         // invoke only if the selection changed. this is useful only on
         // mousemove; there's special handling for mousedown interactions that
@@ -337,7 +340,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
         }
     }
 
-    private invokeOnFocusCallbackForRegion = (focusRegion: IRegion, focusSelectionIndex = 0) => {
+    private invokeOnFocusCallbackForRegion = (focusRegion: Region, focusSelectionIndex = 0) => {
         const { onFocusedCell } = this.props;
         const focusedCellCoords = Regions.getFocusCellCoordinatesFromRegion(focusRegion);
         onFocusedCell(FocusedCellUtils.toFullCoordinates(focusedCellCoords, focusSelectionIndex));
@@ -347,7 +350,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
     // =====
 
     private finishInteraction = () => {
-        this.props.onSelectionEnd?.(this.props.selectedRegions);
+        this.props.onSelectionEnd?.(this.props.selectedRegions!);
         this.didExpandSelectionOnActivate = false;
         this.lastEmittedSelectedRegions = null;
     };
@@ -357,7 +360,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
      * last-selected region with the expanded region. If a focused cell is provided,
      * the focused cell will serve as an anchor for the expansion.
      */
-    private expandSelectedRegions(regions: IRegion[], region: IRegion, focusedCell?: IFocusedCellCoordinates) {
+    private expandSelectedRegions(regions: Region[], region: Region, focusedCell?: FocusedCellCoordinates) {
         if (regions.length === 0) {
             return [region];
         } else if (focusedCell != null) {

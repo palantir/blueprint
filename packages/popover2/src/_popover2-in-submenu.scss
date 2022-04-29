@@ -8,12 +8,8 @@
   .#{$ns}-popover2-target {
     display: block;
 
-    &.#{$ns}-popover2-open > .#{$ns}-menu-item {
-      // keep a trail of hovered items as submenus are opened
-      @include menu-item();
-      @include menu-item-intent();
-      color: inherit;
-    }
+    // MenuItem doesn't render Popover2, only Popover, so we don't need the styles
+    // which render open submenu items as hovered/selected as we do in _submenu.scss
   }
 
   &.#{$ns}-popover2 {

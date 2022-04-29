@@ -1,7 +1,7 @@
 // Copyright 2020 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/src/icons";
+@import "~@blueprintjs/icons/lib/scss/variables";
 @import "../../common/mixins";
 @import "../../common/react-transition";
 @import "../../common/variables";
@@ -11,6 +11,91 @@ $step-radius: $pt-border-radius * 2 !default;
 
 .#{$ns}-multistep-dialog-panels {
   display: flex;
+
+  // If title doesn't exist, this element will be the first child and top
+  // borders needs to be rounded.
+  &:first-child {
+    .#{$ns}-dialog-step-container:first-child {
+      border-radius: $dialog-border-radius 0 0 0;
+    }
+
+    .#{$ns}-multistep-dialog-right-panel {
+      border-top-right-radius: $dialog-border-radius;
+    }
+  }
+
+  .#{$ns}-multistep-dialog-nav-top & {
+    flex-direction: column;
+
+    // Handle case where title it not rendered.
+    &:first-child {
+      .#{$ns}-dialog-step-container:first-child {
+        border-radius: $dialog-border-radius 0 0 0;
+      }
+
+      .#{$ns}-dialog-step-container:last-child {
+        border-radius: 0 $dialog-border-radius 0 0;
+      }
+    }
+
+    .#{$ns}-multistep-dialog-left-panel {
+      flex-direction: row;
+    }
+
+    .#{$ns}-dialog-step-container {
+      flex-grow: 1;
+
+      &:not(:first-child) {
+        border-left: 1px solid $pt-divider-black;
+      }
+
+      .#{$ns}-dark & {
+        border-color: $pt-dark-divider-black;
+      }
+    }
+
+    .#{$ns}-multistep-dialog-right-panel {
+      border-left: none;
+    }
+
+    .#{$ns}-multistep-dialog-right-panel,
+    .#{$ns}-multistep-dialog-footer {
+      border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
+    }
+  }
+
+  .#{$ns}-multistep-dialog-nav-right & {
+    flex-direction: row-reverse;
+
+    // Handle case where title it not rendered.
+    &:first-child {
+      .#{$ns}-multistep-dialog-right-panel {
+        border-radius: $dialog-border-radius 0 0 $dialog-border-radius;
+      }
+
+      .#{$ns}-dialog-step-container:first-child {
+        border-radius: 0 $dialog-border-radius 0 0;
+      }
+    }
+
+    .#{$ns}-multistep-dialog-left-panel {
+      border-radius: 0 0 $dialog-border-radius 0;
+    }
+
+    .#{$ns}-multistep-dialog-right-panel {
+      border-left: none;
+      border-radius: $dialog-border-radius 0 0 $dialog-border-radius;
+      border-right: 1px solid $pt-divider-black;
+
+      .#{$ns}-dark & {
+        border-color: $pt-dark-divider-black;
+      }
+    }
+
+    .#{$ns}-multistep-dialog-footer {
+      border-radius: 0 0 0 $dialog-border-radius;
+    }
+  }
 }
 
 .#{$ns}-multistep-dialog-left-panel {
@@ -40,11 +125,17 @@ $step-radius: $pt-border-radius * 2 !default;
   background-color: $white;
   border-radius: 0  0 $dialog-border-radius 0;
   border-top: 1px solid $pt-divider-black;
+  display: flex;
+  justify-content: space-between;
   padding: 10px;
 
   .#{$ns}-dark & {
     background: $dark-gray4;
     border-top: 1px solid $pt-dark-divider-black;
+  }
+
+  .#{$ns}-dialog-footer-actions {
+    flex-grow: 1;
   }
 }
 

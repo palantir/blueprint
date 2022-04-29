@@ -4,10 +4,6 @@ tag: new
 
 @# Panel stack (v2)
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">This API requires React 16.8+</h4>
-</div>
-
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">
 
@@ -16,7 +12,7 @@ Migrating from [PanelStack](#core/components/panel-stack)?
 </h4>
 
 PanelStack2 is a replacement for PanelStack. It will become the standard
-API in Blueprint core v4. You are encouraged to use this new API now to ease the
+API in Blueprint core v5. You are encouraged to use this new API now to ease the
 transition to the next major version of Blueprint. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/PanelStack2-migration) on the wiki.
 
@@ -102,5 +98,7 @@ const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
 @## Props
 
 PanelStack2 can be operated as a controlled or uncontrolled component.
+
+If controlled, panels should be added to and removed from the _end_ of the `stack` array.
 
 @interface PanelStack2Props

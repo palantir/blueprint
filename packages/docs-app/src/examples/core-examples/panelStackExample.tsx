@@ -80,7 +80,7 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
     private addToPanelStack = (newPanel: IPanel) => {
         this.setState(state => ({
             // HACKHACK: https://github.com/palantir/blueprint/issues/4272
-            currentPanelStack: [(newPanel as unknown) as IPanel<IPanelExampleProps>, ...state.currentPanelStack],
+            currentPanelStack: [newPanel as unknown as IPanel<IPanelExampleProps>, ...state.currentPanelStack],
         }));
     };
 

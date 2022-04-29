@@ -40,31 +40,6 @@ describe("Utils", () => {
         assert.isFalse(Utils.isReactNodeEmpty([null, <div key="div" />]), "array");
     });
 
-    /* eslint-disable deprecation/deprecation */
-    it.skip("safeInvoke", () => {
-        assert.doesNotThrow(() => Utils.safeInvoke(undefined, 1, "2", true, 4));
-
-        // try the max number of args (4)
-        const callback = spy();
-        Utils.safeInvoke(callback, 1, "2", true, 4);
-        assert.isTrue(callback.firstCall.calledWith(1, "2", true, 4));
-    });
-
-    it.skip("safeInvokeOrValue", () => {
-        assert.doesNotThrow(() => Utils.safeInvokeOrValue(undefined, 1, "2", true, 4));
-
-        // try the max number of args (4)
-        const callback = spy();
-        Utils.safeInvokeOrValue(callback, 1, "2", true, 4);
-        assert.isTrue(callback.firstCall.calledWith(1, "2", true, 4));
-
-        // try passing a value
-        const value = "3";
-        const result = Utils.safeInvokeOrValue(value);
-        assert.strictEqual(result, value);
-    });
-    /* eslint-enable deprecation/deprecation */
-
     it("elementIsOrContains", () => {
         const child = document.createElement("span");
         const parent = document.createElement("div");
@@ -113,6 +88,15 @@ describe("Utils", () => {
         assert.equal(Utils.countDecimalPlaces(-1.1111111111), 10);
         assert.equal(Utils.countDecimalPlaces(1e-10), 10);
         assert.equal(Utils.countDecimalPlaces(NaN), 0);
+    });
+
+    it("uniqueId", () => {
+        const ns = "testNamespace";
+        const otherNs = "otherNamespace";
+        assert.equal(Utils.uniqueId(ns), `${ns}-0`);
+        assert.equal(Utils.uniqueId(ns), `${ns}-1`);
+        assert.equal(Utils.uniqueId(ns), `${ns}-2`);
+        assert.equal(Utils.uniqueId(otherNs), `${otherNs}-0`);
     });
 
     // TODO: not sure how to test this. perhaps with the help of https://github.com/alexreardon/raf-stub?

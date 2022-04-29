@@ -27,7 +27,7 @@ import {
     CopyCellsMenuItem,
     IMenuContext,
     SelectionModes,
-    Table,
+    Table2,
     Utils,
 } from "@blueprintjs/table";
 
@@ -121,7 +121,6 @@ class RecordSortableColumn extends AbstractSortableColumn {
     private static WIN_LOSS_PATTERN = /^([0-9]+)(-([0-9]+))?(-([0-9]+)) ?.*/;
 
     protected renderMenu(sortColumn: ISortCallback) {
-        // tslint:disable:jsx-no-lambda
         return (
             <Menu>
                 <MenuItem
@@ -209,13 +208,14 @@ export class TableSortableExample extends React.PureComponent<IExampleProps> {
         const columns = this.state.columns.map(col => col.getColumn(this.getCellData, this.sortColumn));
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table
+                <Table2
                     bodyContextMenuRenderer={this.renderBodyContextMenu}
                     numRows={numRows}
                     selectionModes={SelectionModes.COLUMNS_AND_CELLS}
+                    getCellClipboardData={this.getCellData}
                 >
                     {columns}
-                </Table>
+                </Table2>
             </Example>
         );
     }

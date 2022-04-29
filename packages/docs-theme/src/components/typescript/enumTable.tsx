@@ -36,7 +36,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
 
     public static displayName = "Docs2.EnumTable";
 
-    public context: IDocumentationContext;
+    public declare context: IDocumentationContext;
 
     public render() {
         const { data } = this.props;

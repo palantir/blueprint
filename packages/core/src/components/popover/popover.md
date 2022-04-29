@@ -9,7 +9,7 @@ Deprecated: use [Popover2](#popover2-package/popover2)
 
 This component is **deprecated since @blueprintjs/core v3.38.0** in favor of the new
 Popover2 component available in the `@blueprintjs/popover2` package. You should migrate
-to the new API which will become the standard in Blueprint v4.
+to the new API which will become the standard in Blueprint v5.
 
 </div>
 
@@ -135,11 +135,11 @@ The `Position` enumeration defines the full set of supported values. There are t
 These two attributes can be expressed with a single value having the following structure:
 
 <pre class="docs-popover-position-value-code-block">
-    <span class="docs-popover-position-label-side">[SIDE]</span>_<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span>
+    <span class="docs-popover-position-label-side">[SIDE]</span>-<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span>
 </pre>
 
 The following example shows all supported `Position` values and how each behaves in practice.
-Note that if <strong><code>\_<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span></code></strong> is ommitted,
+Note that if <strong><code>\-<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span></code></strong> is ommitted,
 the popover will align to the **center** of the target.
 
 @reactExample PopoverPositionExample

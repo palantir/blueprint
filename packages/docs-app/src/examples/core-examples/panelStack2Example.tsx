@@ -23,7 +23,7 @@
 
 import * as React from "react";
 
-import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack2, Switch, UL } from "@blueprintjs/core";
+import { Button, H5, Intent, NumericInput, Panel, PanelProps, PanelStack2, Switch, UL } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -113,7 +113,7 @@ const initialPanel: Panel<Panel1Info> = {
 };
 
 export const PanelStack2Example: React.FC<IExampleProps> = props => {
-    const [activePanelOnly, setActivePanelOnly] = React.useState(true);
+    const [activePanelOnly, setActivePanelOnly] = React.useState(false);
     const [showHeader, setShowHeader] = React.useState(true);
     const [currentPanelStack, setCurrentPanelStack] = React.useState<
         Array<Panel<Panel1Info | Panel2Info | Panel3Info>>
@@ -122,10 +122,10 @@ export const PanelStack2Example: React.FC<IExampleProps> = props => {
     const toggleActiveOnly = React.useCallback(handleBooleanChange(setActivePanelOnly), []);
     const toggleShowHeader = React.useCallback(handleBooleanChange(setShowHeader), []);
     const addToPanelStack = React.useCallback(
-        (newPanel: Panel<Panel1Info | Panel2Info | Panel3Info>) => setCurrentPanelStack(stack => [newPanel, ...stack]),
+        (newPanel: Panel<Panel1Info | Panel2Info | Panel3Info>) => setCurrentPanelStack(stack => [...stack, newPanel]),
         [],
     );
-    const removeFromPanelStack = React.useCallback(() => setCurrentPanelStack(stack => stack.slice(1)), []);
+    const removeFromPanelStack = React.useCallback(() => setCurrentPanelStack(stack => stack.slice(0, -1)), []);
 
     const stackList = (
         <>
@@ -143,11 +143,11 @@ export const PanelStack2Example: React.FC<IExampleProps> = props => {
         <Example options={stackList} {...props}>
             <PanelStack2
                 className="docs-panel-stack-example"
-                initialPanel={initialPanel}
                 onOpen={addToPanelStack}
                 onClose={removeFromPanelStack}
                 renderActivePanelOnly={activePanelOnly}
                 showPanelHeader={showHeader}
+                stack={currentPanelStack}
             />
         </Example>
     );

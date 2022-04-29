@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IFocusedCellCoordinates } from "./common/cell";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { Utils } from "./common/utils";
 
@@ -79,24 +79,35 @@ export enum TableLoadingOption {
     ROW_HEADERS = "row-header",
 }
 
-export type StyledRegionGroup = IStyledRegionGroup;
+/** @deprecated use StyledRegionGroup */
 export interface IStyledRegionGroup {
     className?: string;
-    regions: IRegion[];
+    regions: Region[];
 }
+// eslint-disable-next-line deprecation/deprecation
+export type StyledRegionGroup = IStyledRegionGroup;
 
 /**
  * An _inclusive_ interval of ZERO-indexed cell indices.
+ *
+ * @deprecated use CellInterval
  */
 export type ICellInterval = [number, number];
+// eslint-disable-next-line deprecation/deprecation
+export type CellInterval = ICellInterval;
 
 /**
  * Small datastructure for storing cell coordinates [row, column]
+ *
+ * @deprecated use CellCoordinate
  */
 export type ICellCoordinate = [number, number];
+// eslint-disable-next-line deprecation/deprecation
+export type CellCoordinate = ICellCoordinate;
 
 /**
  * @see Regions.getRegionCardinality for more about the format of this object.
+ * @deprecated use Region
  */
 export interface IRegion {
     /**
@@ -104,17 +115,26 @@ export interface IRegion {
      * If `rows` is `null`, then all rows are understood to be included in the
      * region.
      */
-    rows?: ICellInterval | null;
+    rows?: CellInterval | null;
 
     /**
      * The first and last column indices in the region, inclusive and
      * zero-indexed. If `cols` is `null`, then all columns are understood to be
      * included in the region.
      */
-    cols?: ICellInterval | null;
+    cols?: CellInterval | null;
 }
+// eslint-disable-next-line deprecation/deprecation
 export type Region = IRegion;
 
+/**
+ * A fully-defined cells `Region`, with both column and row bounds.
+ */
+export type NonNullRegion = Required<{
+    [P in keyof Region]: NonNullable<Region[P]>;
+}>;
+
+/* eslint-disable-next-line @typescript-eslint/no-extraneous-class */
 export class Regions {
     /**
      * Determines the cardinality of a region. We use null values to indicate
@@ -144,7 +164,7 @@ export class Regions {
      *
      * In this case, this method would return `RegionCardinality.CELLS`.
      */
-    public static getRegionCardinality(region: IRegion) {
+    public static getRegionCardinality(region: Region) {
         if (region.cols != null && region.rows != null) {
             return RegionCardinality.CELLS;
         } else if (region.cols != null) {
@@ -156,38 +176,38 @@ export class Regions {
         }
     }
 
-    public static getFocusCellCoordinatesFromRegion(region: IRegion) {
+    public static getFocusCellCoordinatesFromRegion(region: Region) {
         const regionCardinality = Regions.getRegionCardinality(region);
 
+        // HACKHACK: non-null assertions ahead, consider designing some type guards instead
         switch (regionCardinality) {
             case RegionCardinality.FULL_TABLE:
                 return { col: 0, row: 0 };
             case RegionCardinality.FULL_COLUMNS:
-                return { col: region.cols[0], row: 0 };
+                return { col: region.cols![0], row: 0 };
             case RegionCardinality.FULL_ROWS:
-                return { col: 0, row: region.rows[0] };
+                return { col: 0, row: region.rows![0] };
             case RegionCardinality.CELLS:
-                return { col: region.cols[0], row: region.rows[0] };
-            default:
-                return null;
+                return { col: region.cols![0], row: region.rows![0] };
         }
     }
 
     /**
      * Returns a deep copy of the provided region.
      */
-    public static copy(region: IRegion): IRegion {
+    public static copy(region: Region): Region {
         const cardinality = Regions.getRegionCardinality(region);
 
-        // we need to be careful not to explicitly spell out `rows: undefined`
+        // HACKHACK: non-null assertions ahead, consider designing some type guards instead
+        // N.B. we need to be careful not to explicitly spell out `rows: undefined`
         // (e.g.) if the "rows" key is completely absent, otherwise
         // deep-equality checks will fail.
         if (cardinality === RegionCardinality.CELLS) {
-            return Regions.cell(region.rows[0], region.cols[0], region.rows[1], region.cols[1]);
+            return Regions.cell(region.rows![0], region.cols![0], region.rows![1], region.cols![1]);
         } else if (cardinality === RegionCardinality.FULL_COLUMNS) {
-            return Regions.column(region.cols[0], region.cols[1]);
+            return Regions.column(region.cols![0], region.cols![1]);
         } else if (cardinality === RegionCardinality.FULL_ROWS) {
-            return Regions.row(region.rows[0], region.rows[1]);
+            return Regions.row(region.rows![0], region.rows![1]);
         } else {
             return Regions.table();
         }
@@ -196,7 +216,7 @@ export class Regions {
     /**
      * Returns a region containing one or more cells.
      */
-    public static cell(row: number, col: number, row2?: number, col2?: number): IRegion {
+    public static cell(row: number, col: number, row2?: number, col2?: number): NonNullRegion {
         return {
             cols: this.normalizeInterval(col, col2),
             rows: this.normalizeInterval(row, row2),
@@ -206,21 +226,21 @@ export class Regions {
     /**
      * Returns a region containing one or more full rows.
      */
-    public static row(row: number, row2?: number): IRegion {
+    public static row(row: number, row2?: number): Region {
         return { rows: this.normalizeInterval(row, row2) };
     }
 
     /**
      * Returns a region containing one or more full columns.
      */
-    public static column(col: number, col2?: number): IRegion {
+    public static column(col: number, col2?: number): Region {
         return { cols: this.normalizeInterval(col, col2) };
     }
 
     /**
      * Returns a region containing the entire table.
      */
-    public static table(): IRegion {
+    public static table(): Region {
         return {};
     }
 
@@ -228,7 +248,7 @@ export class Regions {
      * Adds the region to the end of a cloned copy of the supplied region
      * array.
      */
-    public static add(regions: IRegion[], region: IRegion) {
+    public static add(regions: Region[], region: Region) {
         const copy = regions.slice();
         copy.push(region);
         return copy;
@@ -238,7 +258,7 @@ export class Regions {
      * Replaces the region at the end of a cloned copy of the supplied region
      * array, or at the specific index if one is provided.
      */
-    public static update(regions: IRegion[], region: IRegion, index?: number) {
+    public static update(regions: Region[], region: Region, index?: number) {
         const copy = regions.slice();
         if (index != null) {
             copy.splice(index, 1, region);
@@ -253,15 +273,15 @@ export class Regions {
      * Clamps the region's start and end indices between 0 and the provided
      * maximum values.
      */
-    public static clampRegion(region: IRegion, maxRowIndex: number, maxColumnIndex: number) {
+    public static clampRegion(region: Region, maxRowIndex: number, maxColumnIndex: number) {
         const nextRegion = Regions.copy(region);
         if (region.rows != null) {
-            nextRegion.rows[0] = Utils.clamp(region.rows[0], 0, maxRowIndex);
-            nextRegion.rows[1] = Utils.clamp(region.rows[1], 0, maxRowIndex);
+            nextRegion.rows![0] = Utils.clamp(region.rows[0], 0, maxRowIndex);
+            nextRegion.rows![1] = Utils.clamp(region.rows[1], 0, maxRowIndex);
         }
         if (region.cols != null) {
-            nextRegion.cols[0] = Utils.clamp(region.cols[0], 0, maxColumnIndex);
-            nextRegion.cols[1] = Utils.clamp(region.cols[1], 0, maxColumnIndex);
+            nextRegion.cols![0] = Utils.clamp(region.cols[0], 0, maxColumnIndex);
+            nextRegion.cols![1] = Utils.clamp(region.cols[1], 0, maxColumnIndex);
         }
         return nextRegion;
     }
@@ -270,7 +290,7 @@ export class Regions {
      * Returns true iff the specified region is equal to the last region in
      * the region list. This allows us to avoid immediate additive re-selection.
      */
-    public static lastRegionIsEqual(regions: IRegion[], region: IRegion) {
+    public static lastRegionIsEqual(regions: Region[] | null | undefined, region: Region) {
         if (regions == null || regions.length === 0) {
             return false;
         }
@@ -282,7 +302,7 @@ export class Regions {
      * Returns the index of the region that is equal to the supplied
      * parameter. Returns -1 if no such region is found.
      */
-    public static findMatchingRegion(regions: IRegion[], region: IRegion) {
+    public static findMatchingRegion(regions: Region[] | null | undefined, region: Region) {
         if (regions == null) {
             return -1;
         }
@@ -299,7 +319,7 @@ export class Regions {
      * Returns the index of the region that wholly contains the supplied
      * parameter. Returns -1 if no such region is found.
      */
-    public static findContainingRegion(regions: IRegion[], region: IRegion) {
+    public static findContainingRegion(regions: Region[] | null | undefined, region: Region) {
         if (regions == null) {
             return -1;
         }
@@ -316,7 +336,7 @@ export class Regions {
      * Returns true if the regions contain a region that has FULL_COLUMNS
      * cardinality and contains the specified column index.
      */
-    public static hasFullColumn(regions: IRegion[], col: number) {
+    public static hasFullColumn(regions: Region[] | null | undefined, col: number) {
         if (regions == null) {
             return false;
         }
@@ -326,7 +346,7 @@ export class Regions {
             if (cardinality === RegionCardinality.FULL_TABLE) {
                 return true;
             }
-            if (cardinality === RegionCardinality.FULL_COLUMNS && Regions.intervalContainsIndex(region.cols, col)) {
+            if (cardinality === RegionCardinality.FULL_COLUMNS && Regions.intervalContainsIndex(region.cols!, col)) {
                 return true;
             }
         }
@@ -338,7 +358,7 @@ export class Regions {
      * Returns true if the regions contain a region that has FULL_ROWS
      * cardinality and contains the specified row index.
      */
-    public static hasFullRow(regions: IRegion[], row: number) {
+    public static hasFullRow(regions: Region[] | null | undefined, row: number) {
         if (regions == null) {
             return false;
         }
@@ -348,7 +368,7 @@ export class Regions {
             if (cardinality === RegionCardinality.FULL_TABLE) {
                 return true;
             }
-            if (cardinality === RegionCardinality.FULL_ROWS && Regions.intervalContainsIndex(region.rows, row)) {
+            if (cardinality === RegionCardinality.FULL_ROWS && Regions.intervalContainsIndex(region.rows!, row)) {
                 return true;
             }
         }
@@ -359,7 +379,7 @@ export class Regions {
     /**
      * Returns true if the regions contain a region that has FULL_TABLE cardinality
      */
-    public static hasFullTable(regions: IRegion[]) {
+    public static hasFullTable(regions: Region[]) {
         if (regions == null) {
             return false;
         }
@@ -377,14 +397,14 @@ export class Regions {
     /**
      * Returns true if the regions fully contain the query region.
      */
-    public static containsRegion(regions: IRegion[], query: IRegion) {
+    public static containsRegion(regions: Region[], query: Region) {
         return Regions.overlapsRegion(regions, query, false);
     }
 
     /**
      * Returns true if the regions at least partially overlap the query region.
      */
-    public static overlapsRegion(regions: IRegion[], query: IRegion, allowPartialOverlap = false) {
+    public static overlapsRegion(regions: Region[], query: Region, allowPartialOverlap = false) {
         const intervalCompareFn = allowPartialOverlap ? Regions.intervalOverlaps : Regions.intervalContains;
 
         if (regions == null || query == null) {
@@ -397,17 +417,17 @@ export class Regions {
                 case RegionCardinality.FULL_TABLE:
                     return true;
                 case RegionCardinality.FULL_COLUMNS:
-                    if (intervalCompareFn(region.cols, query.cols)) {
+                    if (intervalCompareFn(region.cols!, query.cols)) {
                         return true;
                     }
                     continue;
                 case RegionCardinality.FULL_ROWS:
-                    if (intervalCompareFn(region.rows, query.rows)) {
+                    if (intervalCompareFn(region.rows!, query.rows)) {
                         return true;
                     }
                     continue;
                 case RegionCardinality.CELLS:
-                    if (intervalCompareFn(region.cols, query.cols) && intervalCompareFn(region.rows, query.rows)) {
+                    if (intervalCompareFn(region.cols!, query.cols) && intervalCompareFn(region.rows!, query.rows)) {
                         return true;
                     }
                     continue;
@@ -419,15 +439,15 @@ export class Regions {
         return false;
     }
 
-    public static eachUniqueFullColumn(regions: IRegion[], iteratee: (col: number) => void) {
+    public static eachUniqueFullColumn(regions: Region[], iteratee: (col: number) => void) {
         if (regions == null || regions.length === 0 || iteratee == null) {
             return;
         }
 
         const seen: { [col: number]: boolean } = {};
-        regions.forEach((region: IRegion) => {
+        regions.forEach((region: Region) => {
             if (Regions.getRegionCardinality(region) === RegionCardinality.FULL_COLUMNS) {
-                const [start, end] = region.cols;
+                const [start, end] = region.cols!;
                 for (let col = start; col <= end; col++) {
                     if (!seen[col]) {
                         seen[col] = true;
@@ -438,15 +458,15 @@ export class Regions {
         });
     }
 
-    public static eachUniqueFullRow(regions: IRegion[], iteratee: (row: number) => void) {
+    public static eachUniqueFullRow(regions: Region[], iteratee: (row: number) => void) {
         if (regions == null || regions.length === 0 || iteratee == null) {
             return;
         }
 
         const seen: { [row: number]: boolean } = {};
-        regions.forEach((region: IRegion) => {
+        regions.forEach((region: Region) => {
             if (Regions.getRegionCardinality(region) === RegionCardinality.FULL_ROWS) {
-                const [start, end] = region.rows;
+                const [start, end] = region.rows!;
                 for (let row = start; row <= end; row++) {
                     if (!seen[row]) {
                         seen[row] = true;
@@ -458,17 +478,21 @@ export class Regions {
     }
 
     /**
-     * Using the supplied array of non-contiguous `IRegion`s, this method
+     * Using the supplied array of non-contiguous `Region`s, this method
      * returns an ordered array of every unique cell that exists in those
      * regions.
      */
-    public static enumerateUniqueCells(regions: IRegion[], numRows: number, numCols: number): ICellCoordinate[] {
+    public static enumerateUniqueCells(
+        regions: Region[] | null | undefined,
+        numRows: number,
+        numCols: number,
+    ): CellCoordinate[] {
         if (regions == null || regions.length === 0) {
             return [];
         }
 
         const seen: { [key: string]: boolean } = {};
-        const list: ICellCoordinate[] = [];
+        const list: CellCoordinate[] = [];
         for (const region of regions) {
             Regions.eachCellInRegion(region, numRows, numCols, (row: number, col: number) => {
                 // add to list if not seen
@@ -489,20 +513,18 @@ export class Regions {
      * Using the supplied region, returns an "equivalent" region of
      * type CELLS that define the bounds of the given region
      */
-    public static getCellRegionFromRegion(region: IRegion, numRows: number, numCols: number) {
+    public static getCellRegionFromRegion(region: Region, numRows: number, numCols: number): NonNullRegion {
         const regionCardinality = Regions.getRegionCardinality(region);
 
         switch (regionCardinality) {
             case RegionCardinality.FULL_TABLE:
                 return Regions.cell(0, 0, numRows - 1, numCols - 1);
             case RegionCardinality.FULL_COLUMNS:
-                return Regions.cell(0, region.cols[0], numRows - 1, region.cols[1]);
+                return Regions.cell(0, region.cols![0], numRows - 1, region.cols![1]);
             case RegionCardinality.FULL_ROWS:
-                return Regions.cell(region.rows[0], 0, region.rows[1], numCols - 1);
+                return Regions.cell(region.rows![0], 0, region.rows![1], numCols - 1);
             case RegionCardinality.CELLS:
-                return Regions.cell(region.rows[0], region.cols[0], region.rows[1], region.cols[1]);
-            default:
-                return null;
+                return Regions.cell(region.rows![0], region.cols![0], region.rows![1], region.cols![1]);
         }
     }
 
@@ -511,14 +533,20 @@ export class Regions {
      * of cell values.
      *
      * We create a new 2-dimensional array representing the smallest single
-     * contiguous `IRegion` that contains all cells in the supplied array. We
+     * contiguous `Region` that contains all cells in the supplied array. We
      * invoke the mapper callback only on the cells in the supplied coordinate
      * array and store the result. Returns the resulting 2-dimensional array.
+     *
+     * If there is no contiguous `Region` which contains all the cells, we
+     * return `undefined`.
      */
-    public static sparseMapCells<T>(cells: ICellCoordinate[], mapper: (row: number, col: number) => T): T[][] {
+    public static sparseMapCells<T>(
+        cells: CellCoordinate[],
+        mapper: (row: number, col: number) => T,
+    ): T[][] | undefined {
         const bounds = Regions.getBoundingRegion(cells);
-        if (bounds == null) {
-            return null;
+        if (bounds === undefined) {
+            return undefined;
         }
 
         const numRows = bounds.rows[1] + 1 - bounds.rows[0];
@@ -531,22 +559,22 @@ export class Regions {
     }
 
     /**
-     * Returns the smallest single contiguous `IRegion` that contains all cells in the
+     * Returns the smallest single contiguous `Region` that contains all cells in the
      * supplied array.
      */
-    public static getBoundingRegion(cells: ICellCoordinate[]): IRegion {
-        let minRow: number;
-        let maxRow: number;
-        let minCol: number;
-        let maxCol: number;
+    public static getBoundingRegion(cells: CellCoordinate[]): NonNullRegion | undefined {
+        let minRow: number | undefined;
+        let maxRow: number | undefined;
+        let minCol: number | undefined;
+        let maxCol: number | undefined;
         for (const [row, col] of cells) {
-            minRow = minRow == null || row < minRow ? row : minRow;
-            maxRow = maxRow == null || row > maxRow ? row : maxRow;
-            minCol = minCol == null || col < minCol ? col : minCol;
-            maxCol = maxCol == null || col > maxCol ? col : maxCol;
+            minRow = minRow === undefined || row < minRow ? row : minRow;
+            maxRow = maxRow === undefined || row > maxRow ? row : maxRow;
+            minCol = minCol === undefined || col < minCol ? col : minCol;
+            maxCol = maxCol === undefined || col > maxCol ? col : maxCol;
         }
-        if (minRow == null) {
-            return null;
+        if (minRow === undefined || maxRow === undefined || minCol === undefined || maxCol === undefined) {
+            return undefined;
         }
         return {
             cols: [minCol, maxCol],
@@ -554,7 +582,7 @@ export class Regions {
         };
     }
 
-    public static isValid(region: IRegion) {
+    public static isValid(region: Region | null | undefined) {
         if (region == null) {
             return false;
         }
@@ -567,7 +595,7 @@ export class Regions {
         return true;
     }
 
-    public static isRegionValidForTable(region: IRegion, numRows: number, numCols: number) {
+    public static isRegionValidForTable(region: Region, numRows: number, numCols: number) {
         if (numRows === 0 || numCols === 0) {
             return false;
         } else if (region.rows != null && !intervalInRangeInclusive(region.rows, 0, numRows - 1)) {
@@ -579,11 +607,11 @@ export class Regions {
     }
 
     public static joinStyledRegionGroups(
-        selectedRegions: IRegion[],
-        otherRegions: IStyledRegionGroup[],
-        focusedCell: IFocusedCellCoordinates,
+        selectedRegions: Region[],
+        otherRegions: StyledRegionGroup[],
+        focusedCell: FocusedCellCoordinates | undefined,
     ) {
-        let regionGroups: IStyledRegionGroup[] = [];
+        let regionGroups: StyledRegionGroup[] = [];
         if (otherRegions != null) {
             regionGroups = regionGroups.concat(otherRegions);
         }
@@ -594,7 +622,7 @@ export class Regions {
             });
         }
 
-        if (focusedCell != null) {
+        if (focusedCell !== undefined) {
             regionGroups.push({
                 className: Classes.TABLE_FOCUS_REGION,
                 regions: [Regions.cell(focusedCell.row, focusedCell.col)],
@@ -603,7 +631,7 @@ export class Regions {
         return regionGroups;
     }
 
-    public static regionsEqual(regionA: IRegion, regionB: IRegion) {
+    public static regionsEqual(regionA: Region, regionB: Region) {
         return Regions.intervalsEqual(regionA.rows, regionB.rows) && Regions.intervalsEqual(regionA.cols, regionB.cols);
     }
 
@@ -613,7 +641,7 @@ export class Regions {
      * region is returned. Useful for expanding a selected region on
      * shift+click, for instance.
      */
-    public static expandRegion(oldRegion: IRegion, newRegion: IRegion): IRegion {
+    public static expandRegion(oldRegion: Region, newRegion: Region): Region {
         const oldRegionCardinality = Regions.getRegionCardinality(oldRegion);
         const newRegionCardinality = Regions.getRegionCardinality(newRegion);
 
@@ -623,20 +651,20 @@ export class Regions {
 
         switch (newRegionCardinality) {
             case RegionCardinality.FULL_ROWS: {
-                const rowStart = Math.min(oldRegion.rows[0], newRegion.rows[0]);
-                const rowEnd = Math.max(oldRegion.rows[1], newRegion.rows[1]);
+                const rowStart = Math.min(oldRegion.rows![0], newRegion.rows![0]);
+                const rowEnd = Math.max(oldRegion.rows![1], newRegion.rows![1]);
                 return Regions.row(rowStart, rowEnd);
             }
             case RegionCardinality.FULL_COLUMNS: {
-                const colStart = Math.min(oldRegion.cols[0], newRegion.cols[0]);
-                const colEnd = Math.max(oldRegion.cols[1], newRegion.cols[1]);
+                const colStart = Math.min(oldRegion.cols![0], newRegion.cols![0]);
+                const colEnd = Math.max(oldRegion.cols![1], newRegion.cols![1]);
                 return Regions.column(colStart, colEnd);
             }
             case RegionCardinality.CELLS: {
-                const rowStart = Math.min(oldRegion.rows[0], newRegion.rows[0]);
-                const colStart = Math.min(oldRegion.cols[0], newRegion.cols[0]);
-                const rowEnd = Math.max(oldRegion.rows[1], newRegion.rows[1]);
-                const colEnd = Math.max(oldRegion.cols[1], newRegion.cols[1]);
+                const rowStart = Math.min(oldRegion.rows![0], newRegion.rows![0]);
+                const colStart = Math.min(oldRegion.cols![0], newRegion.cols![0]);
+                const rowEnd = Math.max(oldRegion.rows![1], newRegion.rows![1]);
+                const colEnd = Math.max(oldRegion.cols![1], newRegion.cols![1]);
                 return Regions.cell(rowStart, colStart, rowEnd, colEnd);
             }
             default:
@@ -645,11 +673,11 @@ export class Regions {
     }
 
     /**
-     * Iterates over the cells within an `IRegion`, invoking the callback with
+     * Iterates over the cells within an `Region`, invoking the callback with
      * each cell's coordinates.
      */
     private static eachCellInRegion(
-        region: IRegion,
+        region: Region,
         numRows: number,
         numCols: number,
         iteratee: (row: number, col: number) => void,
@@ -665,21 +693,21 @@ export class Regions {
                 break;
             case RegionCardinality.FULL_COLUMNS:
                 for (let row = 0; row < numRows; row++) {
-                    for (let col = region.cols[0]; col <= region.cols[1]; col++) {
+                    for (let col = region.cols![0]; col <= region.cols![1]; col++) {
                         iteratee(row, col);
                     }
                 }
                 break;
             case RegionCardinality.FULL_ROWS:
-                for (let row = region.rows[0]; row <= region.rows[1]; row++) {
+                for (let row = region.rows![0]; row <= region.rows![1]; row++) {
                     for (let col = 0; col < numCols; col++) {
                         iteratee(row, col);
                     }
                 }
                 break;
             case RegionCardinality.CELLS:
-                for (let row = region.rows[0]; row <= region.rows[1]; row++) {
-                    for (let col = region.cols[0]; col <= region.cols[1]; col++) {
+                for (let row = region.rows![0]; row <= region.rows![1]; row++) {
+                    for (let col = region.cols![0]; col <= region.cols![1]; col++) {
                         iteratee(row, col);
                     }
                 }
@@ -689,12 +717,12 @@ export class Regions {
         }
     }
 
-    private static regionContains(regionA: IRegion, regionB: IRegion) {
+    private static regionContains(regionA: Region, regionB: Region) {
         // containsRegion expects an array of regions as the first param
         return Regions.overlapsRegion([regionA], regionB, false);
     }
 
-    private static intervalsEqual(ivalA: ICellInterval, ivalB: ICellInterval) {
+    private static intervalsEqual(ivalA: CellInterval | null | undefined, ivalB: CellInterval | null | undefined) {
         if (ivalA == null) {
             return ivalB == null;
         } else if (ivalB == null) {
@@ -704,21 +732,21 @@ export class Regions {
         }
     }
 
-    private static intervalContainsIndex(interval: ICellInterval, index: number) {
+    private static intervalContainsIndex(interval: CellInterval, index: number) {
         if (interval == null) {
             return false;
         }
         return interval[0] <= index && interval[1] >= index;
     }
 
-    private static intervalContains(ivalA: ICellInterval, ivalB: ICellInterval) {
+    private static intervalContains(ivalA: CellInterval | null | undefined, ivalB: CellInterval | null | undefined) {
         if (ivalA == null || ivalB == null) {
             return false;
         }
         return ivalA[0] <= ivalB[0] && ivalB[1] <= ivalA[1];
     }
 
-    private static intervalOverlaps(ivalA: ICellInterval, ivalB: ICellInterval) {
+    private static intervalOverlaps(ivalA: CellInterval | null | undefined, ivalB: CellInterval | null | undefined) {
         if (ivalA == null || ivalB == null) {
             return false;
         }
@@ -728,7 +756,7 @@ export class Regions {
         return true;
     }
 
-    private static rowFirstComparator(a: ICellCoordinate, b: ICellCoordinate) {
+    private static rowFirstComparator(a: CellCoordinate, b: CellCoordinate) {
         const rowDiff = a[0] - b[0];
         return rowDiff === 0 ? a[1] - b[1] : rowDiff;
     }
@@ -744,11 +772,11 @@ export class Regions {
 
         const interval = [coord, coord2];
         interval.sort(Regions.numericalComparator);
-        return interval as ICellInterval;
+        return interval as CellInterval;
     }
 }
 
-function intervalInRangeInclusive(interval: ICellInterval, minInclusive: number, maxInclusive: number) {
+function intervalInRangeInclusive(interval: CellInterval, minInclusive: number, maxInclusive: number) {
     return (
         inRangeInclusive(interval[0], minInclusive, maxInclusive) &&
         inRangeInclusive(interval[1], minInclusive, maxInclusive)

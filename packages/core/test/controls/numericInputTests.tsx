@@ -15,14 +15,14 @@
 
 import { assert, expect } from "chai";
 import {
-    mount as untypedMount,
     MountRendererProps,
     ReactWrapper,
-    shallow as untypedShallow,
     ShallowRendererProps,
+    mount as untypedMount,
+    shallow as untypedShallow,
 } from "enzyme";
 import * as React from "react";
-import { spy, stub, SinonStub } from "sinon";
+import { SinonStub, spy, stub } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
@@ -33,9 +33,9 @@ import {
     HTMLInputProps,
     Icon,
     InputGroup,
-    INumericInputProps,
     Keys,
     NumericInput,
+    NumericInputProps,
     Position,
 } from "../../src";
 import * as Errors from "../../src/common/errors";
@@ -43,12 +43,10 @@ import * as Errors from "../../src/common/errors";
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
-// tslint:disable no-unnecessary-callback-wrapper
-const mount = (el: React.ReactElement<INumericInputProps>, options?: MountRendererProps) =>
+const mount = (el: React.ReactElement<NumericInputProps>, options?: MountRendererProps) =>
     untypedMount<NumericInput>(el, options);
-const shallow = (el: React.ReactElement<INumericInputProps>, options?: ShallowRendererProps) =>
+const shallow = (el: React.ReactElement<NumericInputProps>, options?: ShallowRendererProps) =>
     untypedShallow<NumericInput>(el, options);
-// tslint:enable no-unnecessary-callback-wrapper
 
 describe("<NumericInput>", () => {
     describe("Defaults", () => {
@@ -1147,7 +1145,7 @@ describe("<NumericInput>", () => {
         which?: number;
     }
 
-    function createNumericInputForInteractionSuite(overrides: Partial<HTMLInputProps & INumericInputProps> = {}) {
+    function createNumericInputForInteractionSuite(overrides: Partial<HTMLInputProps & NumericInputProps> = {}) {
         // allow `null` to override the default values here
         const majorStepSize = overrides.majorStepSize !== undefined ? overrides.majorStepSize : 20;
         const minorStepSize = overrides.minorStepSize !== undefined ? overrides.minorStepSize : 0.2;
@@ -1388,7 +1386,7 @@ describe("<NumericInput>", () => {
 /**
  * Wraps NumericInput to make it behave like a controlled component, treating props.value as a default value
  */
-class ControlledNumericInput extends React.PureComponent<INumericInputProps, { value?: string }> {
+class ControlledNumericInput extends React.PureComponent<NumericInputProps, { value?: string }> {
     public state = {
         // treat value as "defaultValue"
         value: this.props.value?.toString(),

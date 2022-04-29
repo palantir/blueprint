@@ -84,6 +84,7 @@ If `exit` phase is given then property values are animated in reverse, from fina
     transition-delay: $delay;
     transition-duration: $duration;
     transition-property: map-keys($properties);
+    /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
     transition-timing-function: $easing;
   }
 }

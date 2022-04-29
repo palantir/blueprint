@@ -19,12 +19,16 @@ import * as React from "react";
 
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 
-export class ApiHeader extends React.PureComponent<ITsDocBase> {
+interface ApiHeaderProps extends ITsDocBase {
+    children?: React.ReactNode;
+}
+
+export class ApiHeader extends React.PureComponent<ApiHeaderProps> {
     public static contextTypes = DocumentationContextTypes;
 
     public static displayName = "Docs2.ApiHeader";
 
-    public context: IDocumentationContext;
+    public declare context: IDocumentationContext;
 
     public render() {
         return (

@@ -130,7 +130,7 @@ function renderCreateFilmOption(
         <MenuItem
             icon="add"
             text={`Create "${query}"`}
-            active={active}
+            selected={active}
             onClick={handleClick}
             shouldDismissPopover={false}
         />
@@ -223,16 +223,17 @@ const filterFilm: ItemPredicate<IFilm> = (query, film) => {
     return film.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
 };
 
-const renderFilm: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
+const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifiers }) => {
     if (!modifiers.matchesPredicate) {
         return null;
     }
     return (
         <MenuItem
-            active={modifiers.active}
+            selected={modifiers.active}
             key={film.title}
             label={film.year}
             onClick={handleClick}
+            onFocus={handleFocus}
             text={film.title}
         />
     );

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { TSESLint } from "@typescript-eslint/experimental-utils";
+import { TSESLint } from "@typescript-eslint/utils";
 
 import { iconComponentsRule, OPTION_COMPONENT, OPTION_LITERAL } from "../src/rules/icon-components";
 

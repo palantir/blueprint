@@ -6,11 +6,11 @@
 @import "../progress-bar/common";
 
 $button-border-width: 1px !default;
-$button-padding: ($pt-grid-size / 2) $pt-grid-size !default;
+$button-padding: ($pt-grid-size * 0.5) $pt-grid-size !default;
 $button-padding-small: 0 ($pt-grid-size * 0.7) !default;
-$button-padding-large: ($pt-grid-size / 2) ($pt-grid-size * 1.5) !default;
-$button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
-$button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
+$button-padding-large: ($pt-grid-size * 0.5) ($pt-grid-size * 1.5) !default;
+$button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
+$button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
 
 /*
 CSS `border` property issues:
@@ -41,26 +41,24 @@ shadows blend with the colors beneath it.
 Switches and slider handles both use these variables.
 */
 $button-box-shadow-overlay:
-  0 0 0 $button-border-width rgba($black, 0.2),
-  0 1px 1px rgba($black, 0.2) !default;
+  0 0 0 $button-border-width rgba($black, 0.5),
+  0 1px 1px rgba($black, 0.5);
 $button-box-shadow-overlay-active:
   0 0 0 $button-border-width rgba($black, 0.2),
   inset 0 1px 1px rgba($black, 0.1) !default;
 
 $dark-button-box-shadow:
-  0 0 0 $button-border-width rgba($black, 0.4) !default;
+  inset 0 0 0 $button-border-width rgba($black, 0.8) !default;
 $dark-button-box-shadow-active:
-  0 0 0 $button-border-width rgba($black, 0.6),
-  inset 0 1px 2px rgba($black, 0.2) !default;
+  inset 0 0 0 $button-border-width rgba($black, 0.8) !default;
 $dark-button-intent-box-shadow:
-  0 0 0 $button-border-width rgba($black, 0.4) !default;
+  inset 0 0 0 $button-border-width rgba($black, 0.8) !default;
 $dark-button-intent-box-shadow-active:
-  0 0 0 $button-border-width rgba($black, 0.4),
-  inset 0 1px 2px rgba($black, 0.2) !default;
+  inset 0 0 0 $button-border-width rgba($black, 0.8) !default;
 
-$button-gradient: linear-gradient(to bottom, rgba($white, 0.8), rgba($white, 0)) !default;
-$button-intent-gradient: linear-gradient(to bottom, rgba($white, 0.1), rgba($white, 0)) !default;
-$dark-button-gradient: linear-gradient(to bottom, rgba($white, 0.05), rgba($white, 0)) !default;
+$button-gradient: linear-gradient(to bottom, rgba($black, 0), rgba($black, 0.05)) !default;
+$button-intent-gradient: linear-gradient(to bottom, rgba($black, 0), rgba($black, 0.05)) !default;
+$dark-button-gradient: linear-gradient(to bottom, rgba($black, 0), rgba($black, 0.05)) !default;
 
 $button-color-disabled: $pt-text-color-disabled !default;
 $button-background-color: $light-gray5 !default;
@@ -79,8 +77,8 @@ $dark-button-intent-color-disabled: rgba($white, 0.3);
 
 $minimal-button-divider-width: 1px !default;
 $minimal-button-background-color: none !default;
-$minimal-button-background-color-hover: rgba($gray4, 0.3) !default;
-$minimal-button-background-color-active: rgba($gray2, 0.3) !default;
+$minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
+$minimal-button-background-color-active: rgba($gray3, 0.3) !default;
 $dark-minimal-button-background-color: none !default;
 $dark-minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
 $dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;
@@ -97,7 +95,7 @@ $button-intents: (
   "danger": ($pt-intent-danger, $red2, $red1)
 ) !default;
 
-@mixin pt-button-base() {
+@mixin pt-button-layout() {
   @include pt-flex-container(row, $button-icon-spacing, $inline: inline);
   align-items: center;
 
@@ -133,11 +131,9 @@ $button-intents: (
   padding: $button-padding-small;
 }
 
+// N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
 @mixin pt-button() {
-  background-color: $button-background-color;
-  background-image: $button-gradient;
-  box-shadow: $button-box-shadow;
-  color: $pt-text-color;
+  @include pt-button-default-colors();
 
   &:hover {
     @include pt-button-hover();
@@ -151,7 +147,19 @@ $button-intents: (
   &:disabled,
   &.#{$ns}-disabled {
     @include pt-button-disabled();
+
+    &.#{$ns}-active,
+    &.#{$ns}-active:hover {
+      background: $button-background-color-active-disabled;
+    }
   }
+}
+
+@mixin pt-button-default-colors() {
+  background-color: $button-background-color;
+  background-image: $button-gradient;
+  box-shadow: $button-box-shadow;
+  color: $pt-text-color;
 }
 
 @mixin pt-button-hover() {
@@ -173,11 +181,6 @@ $button-intents: (
   color: $button-color-disabled;
   cursor: not-allowed;
   outline: none;
-
-  &.#{$ns}-active,
-  &.#{$ns}-active:hover {
-    background: $button-background-color-active-disabled;
-  }
 }
 
 @mixin pt-button-intent($default-color, $hover-color, $active-color) {
@@ -218,11 +221,9 @@ $button-intents: (
   color: $button-intent-color-disabled;
 }
 
+// N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
 @mixin pt-dark-button() {
-  background-color: $dark-button-background-color;
-  background-image: $dark-button-gradient;
-  box-shadow: $dark-button-box-shadow;
-  color: $pt-dark-text-color;
+  @include pt-dark-button-default-colors();
 
   &:hover,
   &:active,
@@ -242,12 +243,23 @@ $button-intents: (
   &:disabled,
   &.#{$ns}-disabled {
     @include pt-dark-button-disabled();
+
+    &.#{$ns}-active {
+      background: $dark-button-background-color-active-disabled;
+    }
   }
 
   .#{$ns}-button-spinner .#{$ns}-spinner-head {
     background: $dark-progress-track-color;
     stroke: $dark-progress-head-color;
   }
+}
+
+@mixin pt-dark-button-default-colors() {
+  background-color: $dark-button-background-color;
+  background-image: $dark-button-gradient;
+  box-shadow: $dark-button-box-shadow;
+  color: $pt-dark-text-color;
 }
 
 @mixin pt-dark-button-hover() {
@@ -266,10 +278,6 @@ $button-intents: (
   background-image: none;
   box-shadow: none;
   color: $dark-button-color-disabled;
-
-  &.#{$ns}-active {
-    background: $dark-button-background-color-active-disabled;
-  }
 }
 
 @mixin pt-dark-button-intent() {
@@ -333,11 +341,7 @@ $button-intents: (
 
   @each $intent, $colors in $button-intents {
     &.#{$ns}-intent-#{$intent} {
-      @include pt-button-minimal-intent(
-        map-get($pt-intent-colors, $intent),
-        map-get($pt-intent-text-colors, $intent),
-        map-get($pt-dark-intent-text-colors, $intent)
-      );
+      @include pt-button-minimal-intent($intent);
     }
   }
 }
@@ -345,13 +349,14 @@ $button-intents: (
 @mixin pt-dark-button-minimal() {
   background: $dark-minimal-button-background-color;
   box-shadow: none;
-  color: inherit;
+  color: $white;
 
   &:hover,
   &:active,
   &.#{$ns}-active {
     background: none;
     box-shadow: none;
+    color: $white;
   }
 
   &:hover {
@@ -361,7 +366,6 @@ $button-intents: (
   &:active,
   &.#{$ns}-active {
     background: $dark-minimal-button-background-color-active;
-    color: $pt-dark-text-color;
   }
 
   &:disabled,
@@ -378,7 +382,28 @@ $button-intents: (
   }
 }
 
-@mixin pt-button-minimal-intent($intent-color, $text-color, $dark-text-color) {
+$dark-minimal-hover-text-colors: (
+  "primary": $blue5,
+  "success": $green5,
+  "warning": $orange5,
+  "danger": $red5,
+);
+
+$dark-minimal-active-text-colors: (
+  "primary": $blue6,
+  "success": $green6,
+  "warning": $orange6,
+  "danger": $red6,
+);
+
+@mixin pt-button-minimal-intent($intent) {
+  $intent-color: map-get($pt-intent-colors, $intent);
+  $text-color: map-get($pt-intent-text-colors, $intent);
+  $active-text-color: map-get($pt-intent-active-text-colors, $intent);
+  $dark-text-color: map-get($pt-dark-intent-text-colors, $intent);
+  $dark-active-text-color: map-get($dark-minimal-active-text-colors, $intent);
+  $dark-hover-text-color: map-get($dark-minimal-hover-text-colors, $intent);
+
   color: $text-color;
 
   &:hover,
@@ -397,7 +422,7 @@ $button-intents: (
   &:active,
   &.#{$ns}-active {
     background: rgba($intent-color, 0.3);
-    color: $text-color;
+    color: $active-text-color;
   }
 
   &:disabled,
@@ -419,13 +444,13 @@ $button-intents: (
 
     &:hover {
       background: rgba($intent-color, 0.2);
-      color: $dark-text-color;
+      color: $dark-hover-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
       background: rgba($intent-color, 0.3);
-      color: $dark-text-color;
+      color: $dark-active-text-color;
     }
 
     &:disabled,
@@ -444,7 +469,7 @@ $button-intents: (
   $divider-height: $pt-grid-size * 2;
   background: $pt-divider-black;
 
-  margin: ($pt-button-height - $divider-height) / 2;
+  margin: ($pt-button-height - $divider-height) * 0.5;
   width: $minimal-button-divider-width;
 
   .#{$ns}-dark & {

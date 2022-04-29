@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, InputGroupProps2, InputGroup, OverlayProps, Overlay } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, InputGroup, InputGroupProps2, Overlay, OverlayProps } from "@blueprintjs/core";
 
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";

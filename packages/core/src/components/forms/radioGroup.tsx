@@ -15,18 +15,22 @@
  */
 
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, OptionProps, Props } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
-import { RadioProps, Radio } from "./controls";
+import { Radio, RadioProps } from "./controls";
 
 // eslint-disable-next-line deprecation/deprecation
 export type RadioGroupProps = IRadioGroupProps;
 /** @deprecated use RadioGroupProps */
 export interface IRadioGroupProps extends Props {
+    /**
+     * Radio elements. This prop is mutually exclusive with `options`.
+     */
+    children?: React.ReactNode;
+
     /**
      * Whether the group and _all_ its radios are disabled.
      * Individual radios can be disabled using their `disabled` prop.
@@ -59,7 +63,7 @@ export interface IRadioGroupProps extends Props {
      * with `children`: either provide an array of `OptionProps` objects or
      * provide `<Radio>` children elements.
      */
-    options?: OptionProps[];
+    options?: readonly OptionProps[];
 
     /** Value of the selected radio. The child with this value will be `:checked`. */
     selectedValue?: string | number;
@@ -70,7 +74,6 @@ function nextName() {
     return `${RadioGroup.displayName}-${counter++}`;
 }
 
-@polyfill
 export class RadioGroup extends AbstractPureComponent2<RadioGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.RadioGroup`;
 

@@ -17,7 +17,6 @@
 import classNames from "classnames";
 import { ModifierFn } from "popper.js";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
 import { AbstractPureComponent2, Classes, IRef, refHandler, setRef } from "../../common";
@@ -78,6 +77,20 @@ export interface IPopoverProps extends IPopoverSharedProps {
     hasBackdrop?: boolean;
 
     /**
+     * Whether the application should return focus to the last active element in the
+     * document after this popover closes.
+     *
+     * This is automatically set to `false` if this is a hover interaction popover.
+     *
+     * If you are attaching a popover _and_ a tooltip to the same target, you must take
+     * care to either disable this prop for the popover _or_ disable the tooltip's
+     * `openOnTargetFocus` prop.
+     *
+     * @default false
+     */
+    shouldReturnFocusOnClose?: boolean;
+
+    /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
     popoverRef?: IRef<HTMLElement>;
@@ -96,12 +109,12 @@ export interface IPopoverState {
 }
 
 /** @deprecated use { Popover2 } from "@blueprintjs/popover2" */
-@polyfill
+
 export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
     // eslint-disable-next-line deprecation/deprecation
-    private popoverRef = Utils.createReactRef<HTMLDivElement>();
+    private popoverRef = React.createRef<HTMLDivElement>();
 
     public static defaultProps: IPopoverProps = {
         boundary: "scrollParent",
@@ -117,6 +130,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         minimal: false,
         modifiers: {},
         openOnTargetFocus: true,
+        shouldReturnFocusOnClose: false,
         // N.B. we don't set a default for `placement` or `position` here because that would trigger
         // a warning in validateProps if the other prop is specified by a user of this component
         targetTagName: "span",
@@ -163,7 +177,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         // as JSX component instead of intrinsic element. but because of its
         // type, tsc actually recognizes that it is _any_ intrinsic element, so
         // it can typecheck the HTML props!!
-        const { className, disabled, fill, placement, position = "auto" } = this.props;
+        const { className, disabled, fill, placement, position = "auto", shouldReturnFocusOnClose } = this.props;
         const { isOpen } = this.state;
         let { wrapperTagName } = this.props;
         if (fill) {
@@ -181,12 +195,14 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             [Classes.FILL]: fill,
         });
 
+        const defaultAutoFocus = this.isHoverInteractionKind() ? false : undefined;
+
         const wrapper = React.createElement(
             wrapperTagName!,
             { className: wrapperClasses },
             <Reference innerRef={this.handleTargetRef}>{this.renderTarget}</Reference>,
             <Overlay
-                autoFocus={this.props.autoFocus}
+                autoFocus={this.props.autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
                 backdropProps={this.props.backdropProps}
                 canEscapeKeyClose={this.props.canEscapeKeyClose}
@@ -204,6 +220,8 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 transitionName={Classes.POPOVER}
                 usePortal={this.props.usePortal}
                 portalContainer={this.props.portalContainer}
+                // if hover interaciton, it doesn't make sense to take over focus control
+                shouldReturnFocusOnClose={this.isHoverInteractionKind() ? false : shouldReturnFocusOnClose}
             >
                 <Popper
                     innerRef={this.handlePopoverRef}
@@ -296,7 +314,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
     }
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const { usePortal, interactionKind } = this.props;
+        const { interactionKind, usePortal } = this.props;
         const { transformOrigin } = this.state;
 
         // Need to update our reference to this on every render as it will change.
@@ -320,6 +338,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
                 [Classes.MINIMAL]: this.props.minimal,
                 [Classes.POPOVER_CAPTURING_DISMISS]: this.props.captureDismiss,
+                [Classes.POPOVER_OUT_OF_BOUNDARIES]: popperProps.outOfBoundaries === true,
             },
             this.props.popoverClassName,
         );
@@ -365,6 +384,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                   // CLICK needs only one handler
                   onClick: this.handleTargetClick,
               };
+        finalTargetProps["aria-haspopup"] = "true";
         finalTargetProps.className = classNames(
             Classes.POPOVER_TARGET,
             { [Classes.POPOVER_OPEN]: isOpen },
@@ -457,7 +477,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 // lost focus (e.g. due to switching tabs).
                 return;
             }
-            this.handleMouseEnter((e as unknown) as React.MouseEvent<HTMLElement>);
+            this.handleMouseEnter(e as unknown as React.MouseEvent<HTMLElement>);
         }
         this.props.targetProps?.onFocus?.(e);
     };
@@ -470,7 +490,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             // it won't be set. So, we filter those out here and assume that a click handler somewhere else will
             // close the popover if necessary.
             if (e.relatedTarget != null && !this.isElementInPopover(e.relatedTarget as HTMLElement)) {
-                this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+                this.handleMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;

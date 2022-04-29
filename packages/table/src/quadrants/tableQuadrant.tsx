@@ -16,9 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractComponent2, Props, IRef } from "@blueprintjs/core";
+import { AbstractComponent2, IRef, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -90,31 +89,31 @@ export interface ITableQuadrantProps extends Props {
      * The quadrant type. Informs the values of the parameters that will be passed to the
      * `render...` callbacks, assuming an expected stacking order of the four quadrants.
      */
-    quadrantType?: QuadrantType;
+    quadrantType: QuadrantType;
 
     /**
      * A callback that renders the table menu (the rectangle in the top-left corner).
      */
-    menuRenderer?: () => JSX.Element;
+    menuRenderer?: () => JSX.Element | undefined;
 
     /**
      * A callback that renders either all of or just the frozen section of the column header.
      */
-    columnHeaderCellRenderer?: (showFrozenColumnsOnly?: boolean) => JSX.Element;
+    columnHeaderCellRenderer?: (showFrozenColumnsOnly: boolean) => JSX.Element | undefined;
 
     /**
      * A callback that renders either all of or just the frozen section of the row header.
      */
-    rowHeaderCellRenderer?: (showFrozenRowsOnly?: boolean) => JSX.Element;
+    rowHeaderCellRenderer?: (showFrozenRowsOnly: boolean) => JSX.Element | undefined;
 
     /**
      * A callback that renders either all of or just frozen sections of the table body.
      */
     bodyRenderer: (
-        quadrantType?: QuadrantType,
+        quadrantType: QuadrantType,
         showFrozenRowsOnly?: boolean,
         showFrozenColumnsOnly?: boolean,
-    ) => JSX.Element;
+    ) => JSX.Element | undefined;
 
     /**
      * A callback that receives a `ref` to the quadrant's scroll-container element.
@@ -127,7 +126,6 @@ export interface ITableQuadrantProps extends Props {
     style?: React.CSSProperties;
 }
 
-@polyfill
 export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
@@ -146,10 +144,7 @@ export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
         const maybeMenu = enableRowHeader && this.props.menuRenderer?.();
         const maybeRowHeader = enableRowHeader && this.props.rowHeaderCellRenderer?.(showFrozenRowsOnly);
         const maybeColumnHeader = this.props.columnHeaderCellRenderer?.(showFrozenColumnsOnly);
-        const body =
-            quadrantType != null
-                ? bodyRenderer(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly)
-                : bodyRenderer();
+        const body = bodyRenderer(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly);
 
         // need to set bottom container size to prevent overlay clipping on scroll
         const bottomContainerStyle = {

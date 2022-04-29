@@ -6,12 +6,11 @@
 
 "use strict";
 
+// @ts-check
+
 const cp = require("child_process");
 const path = require("path");
-
-const yargs = require("yargs")
-    .usage("$0 <commitish>")
-    .help();
+const yargs = require("yargs").usage("$0 <commitish>").help();
 
 const args = yargs.argv;
 const commitish = args._[0] || "HEAD";
@@ -50,5 +49,5 @@ cp.exec(`git tag --points-at ${commitish}`, (err, stdout) => {
         .filter(({ packageJson }) => !packageJson.private)
         .map(pkg => pkg.path);
 
-    publishablePackagePaths.forEach(pkgPath => console.log(pkgPath));
+    publishablePackagePaths.forEach(pkgPath => console.info(pkgPath));
 });

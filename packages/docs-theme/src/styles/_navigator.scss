@@ -4,7 +4,7 @@
 $navigator-width: $pt-grid-size * 40;
 
 .docs-navigator-menu {
-  left: calc(50% - #{$navigator-width / 2});
+  left: calc(50% - #{$navigator-width * 0.5});
   width: $navigator-width;
 
   .#{$ns}-menu-item small {

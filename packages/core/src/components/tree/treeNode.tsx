@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
 
@@ -141,7 +141,7 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>> {
             <li className={classes}>
                 <div className={contentClasses} ref={this.handleContentRef} {...eventHandlers}>
                     {this.maybeRenderCaret()}
-                    <Icon className={Classes.TREE_NODE_ICON} icon={icon} />
+                    <Icon className={Classes.TREE_NODE_ICON} icon={icon} aria-hidden={true} tabIndex={-1} />
                     <span className={Classes.TREE_NODE_LABEL}>{label}</span>
                     {this.maybeRenderSecondaryLabel()}
                 </div>
@@ -158,7 +158,14 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>> {
                 isExpanded ? Classes.TREE_NODE_CARET_OPEN : Classes.TREE_NODE_CARET_CLOSED,
             );
             const onClick = disabled === true ? undefined : this.handleCaretClick;
-            return <Icon className={caretClasses} onClick={onClick} icon={"chevron-right"} />;
+            return (
+                <Icon
+                    title={isExpanded ? "Collapse group" : "Expand group"}
+                    className={caretClasses}
+                    onClick={onClick}
+                    icon={"chevron-right"}
+                />
+            );
         }
         return <span className={Classes.TREE_NODE_CARET_NONE} />;
     }

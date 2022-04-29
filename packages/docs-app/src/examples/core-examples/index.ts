@@ -42,6 +42,7 @@ export * from "./hotkeyTester";
 export { HotkeysTarget2Example } from "./hotkeysTarget2Example";
 export * from "./iconExample";
 export * from "./menuExample";
+export { MenuItemExample } from "./menuItemExample";
 export * from "./multiSliderExample";
 export * from "./navbarExample";
 export * from "./numericInputBasicExample";

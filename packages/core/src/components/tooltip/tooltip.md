@@ -9,7 +9,7 @@ Deprecated: use [Tooltip2](#popover2-package/tooltip2)
 
 This component is **deprecated since @blueprintjs/core v3.38.0** in favor of the new
 Tooltip2 component available in the `@blueprintjs/popover2` package. You should migrate
-to the new API which will become the standard in Blueprint v4.
+to the new API which will become the standard in Blueprint v5.
 
 </div>
 
@@ -26,11 +26,15 @@ You must put the `Tooltip` _inside_ the `Popover` (and the target inside the
 required because the popover will disable the tooltip when it is open,
 preventing both elements from appearing at the same time.
 
+Also, you must take to either set `<Popover2 shouldReturnFocusOnClose={false}>`
+or `<Tooltip2 openOnTargetFocus={false}>` in this scenario in order to avoid undesirable
+UX where the tooltip could open automatically when a user doesn't want it to.
+
 ```tsx
 import { Button, Popover, Position, Tooltip } from "@blueprintjs/core";
 
 <Popover content={<h1>Popover!</h1>} position={Position.RIGHT}>
-    <Tooltip content="I has a popover!" position={Position.RIGHT}>
+    <Tooltip content="I have a popover!" position={Position.RIGHT} openOnTargetFocus={false}>
         <Button>Hover and click me</Button>
     </Tooltip>
 </Popover>;

@@ -1,0 +1,57 @@
+{
+    "name": "@blueprintjs/demo-app",
+    "version": "4.2.1",
+    "description": "Blueprint Demo App",
+    "private": true,
+    "scripts": {
+        "bundle": "webpack --config ./webpack.config.js",
+        "clean": "rm -rf dist/*",
+        "dev": "webpack-dev-server --config ./webpack.config.js --host 0.0.0.0",
+        "dist": "cross-env NODE_ENV=production yarn bundle",
+        "lint": "run-p lint:scss lint:es",
+        "lint:scss": "sass-lint",
+        "lint:es": "es-lint",
+        "lint-fix": "es-lint --fix && sass-lint --fix",
+        "test": "exit 0",
+        "verify": "run-p dist lint"
+    },
+    "dependencies": {
+        "@blueprintjs/core": "^4.2.1",
+        "@blueprintjs/datetime": "^4.1.4",
+        "@blueprintjs/icons": "^4.2.4",
+        "@blueprintjs/popover2": "^1.1.4",
+        "@blueprintjs/select": "^4.1.4",
+        "@blueprintjs/table": "^4.1.4",
+        "@blueprintjs/timezone": "^4.1.4",
+        "classnames": "^2.2",
+        "core-js": "^3.21.1",
+        "dom4": "^2.1.5",
+        "lodash-es": "^4.17.15",
+        "moment": "^2.29.1",
+        "normalize.css": "^8.0.1",
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0",
+        "react-transition-group": "^4.4.1",
+        "tslib": "~2.3.1"
+    },
+    "devDependencies": {
+        "@blueprintjs/node-build-scripts": "^4.0.3",
+        "@blueprintjs/webpack-build-scripts": "^3.2.1",
+        "copy-webpack-plugin": "^6.4.0",
+        "npm-run-all": "^4.1.5",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/demo-app"
+    },
+    "keywords": [
+        "palantir",
+        "blueprint",
+        "demo"
+    ],
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0"
+}

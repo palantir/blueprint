@@ -1,8 +1,9 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/src/icons";
+@import "~@blueprintjs/icons/lib/scss/variables";
 @import "~@blueprintjs/core/src/common/react-transition";
+@import "~@blueprintjs/core/src/components/icon/icon-mixins";
 
 // Generate a selector for a page ID by reference
 @function page($ref, $comparator: "$=") {
@@ -61,6 +62,10 @@
   max-width: 280px;
 }
 
+#{example("DialogExample")} .docs-example-options {
+  max-width: 260px;
+}
+
 .docs-multistep-dialog-example-step {
   min-height: 150px;
 }
@@ -93,10 +98,10 @@
     &::before {
       @include pt-icon($icon-size, 16);
       color: $white;
-      content: $pt-icon-envelope;
-      left: ($node-size - $icon-size) / 2 - $node-border-width;
+      content: map-get($blueprint-icon-codepoints, "envelope");
+      left: ($node-size - $icon-size) * 0.5 - $node-border-width;
       position: relative;
-      top: ($node-size - $icon-size) / 2 - $node-border-width;
+      top: ($node-size - $icon-size) * 0.5 - $node-border-width;
     }
 
     &.docs-context-menu-open {
@@ -134,7 +139,7 @@
       border-bottom-right-radius: 5px;
       color: $black;
       height: $pt-grid-size * 24;
-      margin-right: $pt-grid-size/2;
+      margin-right: $pt-grid-size*0.5;
       width: $pt-grid-size * 8;
     }
   }
@@ -245,7 +250,7 @@
     $pt-transition-duration * 5,
     $before: "&"
   );
-  left: calc(50vw - #{$overlay-example-width / 2});
+  left: calc(50vw - #{$overlay-example-width * 0.5});
   margin: 10vh 0;
 
   top: 0;
@@ -361,7 +366,7 @@
   .#{$ns}-popover-wrapper,
   .#{$ns}-popover2-wrapper {
     // Add a bit of space between borders of consecutive buttons.
-    margin: $pt-grid-size / 2;
+    margin: $pt-grid-size * 0.5;
   }
 
   .#{$ns}-popover-content,
@@ -391,10 +396,10 @@
 
 .docs-popover2-placement-label-side,
 .docs-popover-position-label-side {
-  color: $cobalt3;
+  color: $cerulean3;
 
   .#{$ns}-dark & {
-    color: $cobalt5;
+    color: $cerulean5;
   }
 }
 
@@ -474,7 +479,7 @@
 
 .#{$ns}-progress-bar.docs-toast-progress {
   margin-bottom: 0;
-  margin-top: $pt-grid-size / 2;
+  margin-top: $pt-grid-size * 0.5;
 }
 
 .docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
@@ -487,7 +492,7 @@
     flex-direction: column;
 
     > * {
-      margin: $pt-grid-size / 2;
+      margin: $pt-grid-size * 0.5;
     }
   }
 }
@@ -519,13 +524,13 @@
 }
 
 .docs-date-range {
-  @include pt-flex-container(row, $pt-grid-size / 2);
+  @include pt-flex-container(row, $pt-grid-size * 0.5);
   align-items: center;
 }
 
 #{example("DateInputExample")} {
   .docs-example > * {
-    margin: 0 0 20px 0;
+    margin: 0 0 20px;
   }
 }
 

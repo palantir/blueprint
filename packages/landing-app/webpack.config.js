@@ -23,12 +23,15 @@ module.exports = Object.assign({}, baseConfig, {
         "blueprint-landing": ["./src/index.tsx", "./src/index.scss"],
     },
 
-    // we override module rules since we don't want file-loader to be triggered for inline SVGs
+    // we override module rules since we don't want the asset modules loader to be triggered for inline SVGs
     module: {
         rules: baseConfig.module.rules.slice(0, 3).concat([
             {
                 test: /^((?!svgs).)*\.(eot|ttf|woff|woff2|svg|png)$/,
-                loader: require.resolve("file-loader"),
+                type: "asset/resource",
+                generator: {
+                    filename: "assets/[hash][ext][query]",
+                },
             },
         ]),
     },

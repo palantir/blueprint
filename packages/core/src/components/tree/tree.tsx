@@ -20,7 +20,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { isFunction } from "../../common/utils";
-import { TreeNodeInfo, TreeNode } from "./treeNode";
+import { TreeNode, TreeNodeInfo } from "./treeNode";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type TreeEventHandler<T = {}> = (
@@ -37,7 +37,7 @@ export interface ITreeProps<T = {}> extends Props {
     /**
      * The data specifying the contents and appearance of the tree.
      */
-    contents: Array<TreeNodeInfo<T>>;
+    contents: ReadonlyArray<TreeNodeInfo<T>>;
 
     /**
      * Invoked when a node is clicked anywhere other than the caret for expanding/collapsing the node.
@@ -85,7 +85,10 @@ export class Tree<T = {}> extends React.Component<TreeProps<T>> {
         return Tree as new (props: TreeProps<U>) => Tree<U>;
     }
 
-    public static nodeFromPath<U>(path: number[], treeNodes?: Array<TreeNodeInfo<U>>): TreeNodeInfo<U> {
+    public static nodeFromPath<U>(
+        path: readonly number[],
+        treeNodes?: ReadonlyArray<TreeNodeInfo<U>>,
+    ): TreeNodeInfo<U> {
         if (path.length === 1) {
             return treeNodes![path[0]];
         } else {
@@ -112,7 +115,11 @@ export class Tree<T = {}> extends React.Component<TreeProps<T>> {
         return this.nodeRefs[nodeId];
     }
 
-    private renderNodes(treeNodes: Array<TreeNodeInfo<T>> | undefined, currentPath?: number[], className?: string) {
+    private renderNodes(
+        treeNodes: ReadonlyArray<TreeNodeInfo<T>> | undefined,
+        currentPath?: number[],
+        className?: string,
+    ) {
         if (treeNodes == null) {
             return null;
         }

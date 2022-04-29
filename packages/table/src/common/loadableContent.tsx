@@ -19,6 +19,8 @@ import * as React from "react";
 import { Classes } from "@blueprintjs/core";
 
 export interface ILoadableContentProps {
+    children?: React.ReactNode;
+
     /**
      * If true, render a skeleton. Otherwise render the single, non-string child passed to this
      * component.
@@ -56,7 +58,7 @@ export class LoadableContent extends React.PureComponent<ILoadableContentProps> 
         return React.Children.only(this.props.children);
     }
 
-    private calculateStyle(variableLength: boolean) {
+    private calculateStyle(variableLength = false) {
         const skeletonLength = variableLength ? 75 - Math.floor(Math.random() * 11) * 5 : 100;
         return { width: `${skeletonLength}%` };
     }

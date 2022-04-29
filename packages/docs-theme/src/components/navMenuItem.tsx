@@ -24,6 +24,8 @@ import { Classes } from "@blueprintjs/core";
 export type NavMenuItemProps = INavMenuItemProps;
 /** @deprecated use NavMenuItemProps */
 export interface INavMenuItemProps {
+    children?: React.ReactNode;
+
     /** CSS classes to apply to the root element, for proper appearance in the tree. */
     className: string;
 

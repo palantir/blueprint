@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
@@ -31,6 +30,8 @@ export { INavbarDividerProps, NavbarDividerProps } from "./navbarDivider";
 export type NavbarProps = INavbarProps;
 /** @deprecated use NavbarProps */
 export interface INavbarProps extends Props, HTMLDivProps {
+    children?: React.ReactNode;
+
     /**
      * Whether this navbar should be fixed to the top of the viewport (using CSS `position: fixed`).
      */
@@ -39,7 +40,6 @@ export interface INavbarProps extends Props, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@polyfill
 export class Navbar extends AbstractPureComponent2<NavbarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Navbar`;
 

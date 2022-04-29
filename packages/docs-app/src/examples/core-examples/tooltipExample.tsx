@@ -129,6 +129,7 @@ export class TooltipExample extends React.PureComponent<IExampleProps, { isOpen:
                 >
                     <Tooltip
                         content={<span>This button also has a popover!</span>}
+                        openOnTargetFocus={false}
                         position={Position.RIGHT}
                         usePortal={false}
                     >

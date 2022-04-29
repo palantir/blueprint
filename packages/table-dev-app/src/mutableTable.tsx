@@ -21,12 +21,13 @@ import * as React from "react";
 
 import {
     Button,
+    ButtonProps,
     Classes,
     FocusStyleManager,
     H4,
     H6,
+    HotkeysProvider,
     HTMLSelect,
-    ButtonProps,
     Intent,
     Menu,
     MenuDivider,
@@ -37,23 +38,23 @@ import {
     Cell,
     Column,
     ColumnHeaderCell,
-    EditableCell,
+    EditableCell2,
     EditableName,
-    IStyledRegionGroup,
     JSONFormat,
+    Region,
     RegionCardinality,
     Regions,
     RowHeaderCell,
-    Table,
+    StyledRegionGroup,
+    Table2,
     TableLoadingOption,
     TruncatedFormat,
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
-import { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
-import { IColumnIndices, IRowIndices } from "@blueprintjs/table/src/common/grid";
+import type { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cellTypes";
+import type { ColumnIndices, RowIndices } from "@blueprintjs/table/src/common/grid";
 import { RenderMode } from "@blueprintjs/table/src/common/renderMode";
-import { IRegion } from "@blueprintjs/table/src/regions";
 
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 import { LocalStore } from "./localStore";
@@ -197,21 +198,22 @@ function getRandomInteger(min: number, max: number): number {
 function getRandomString(length: number): string {
     let str = "";
     while (str.length < length) {
-        str += Math.random().toString(36).substr(2);
+        const part = Math.random().toString(36);
+        str += part.substring(2, part.length - 1);
     }
-    return str.substr(0, length);
+    return str.substring(0, length - 1);
 }
 
 function contains(arr: any[], value: any) {
     return arr.indexOf(value) >= 0;
 }
 
-function enforceWholeColumnSelection(region: IRegion) {
+function enforceWholeColumnSelection(region: Region) {
     delete region.rows;
     return region;
 }
 
-function enforceWholeRowSelection(region: IRegion) {
+function enforceWholeRowSelection(region: Region) {
     delete region.cols;
     return region;
 }
@@ -248,7 +250,7 @@ export interface IMutableTableState {
     scrollToRowIndex?: number;
     selectedFocusStyle?: FocusStyle;
     selectedRegionTransformPreset?: SelectedRegionTransformPreset;
-    selectedRegions?: IRegion[];
+    selectedRegions?: Region[];
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
@@ -314,16 +316,17 @@ const DEFAULT_STATE: IMutableTableState = {
 export class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new DenseGridMutableStore<any>();
 
-    private tableInstance: Table;
+    private tableInstance: Table2;
 
     private stateStore: LocalStore<IMutableTableState>;
 
     private refHandlers = {
-        table: (ref: Table) => (this.tableInstance = ref),
+        table: (ref: Table2) => (this.tableInstance = ref),
     };
 
-    public constructor(props: any, context?: any) {
-        super(props, context);
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    public constructor(props: {}) {
+        super(props);
         this.stateStore = new LocalStore<IMutableTableState>("BP_TABLE_MUTABLE_TABLE_DEV_PREVIEW", true);
         this.state = this.stateStore.getWithDefaults(DEFAULT_STATE);
     }
@@ -334,19 +337,21 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     public render() {
         const layoutBoundary = this.state.enableLayoutBoundary;
         return (
-            <div className="container">
-                <SlowLayoutStack
-                    depth={SLOW_LAYOUT_STACK_DEPTH}
-                    enabled={this.state.enableSlowLayout}
-                    rootClassName={classNames("table", { "is-inline": this.state.showInline })}
-                    branchClassName={"layout-passthrough-fill"}
-                >
-                    <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
-                        {this.renderTable()}
-                    </div>
-                </SlowLayoutStack>
-                {this.renderSidebar()}
-            </div>
+            <HotkeysProvider>
+                <div className="container">
+                    <SlowLayoutStack
+                        depth={SLOW_LAYOUT_STACK_DEPTH}
+                        enabled={this.state.enableSlowLayout}
+                        rootClassName={classNames("table", { "is-inline": this.state.showInline })}
+                        branchClassName="layout-passthrough-fill"
+                    >
+                        <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
+                            {this.renderTable()}
+                        </div>
+                    </SlowLayoutStack>
+                    {this.renderSidebar()}
+                </div>
+            </HotkeysProvider>
         );
     }
 
@@ -387,7 +392,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderTable() {
         return (
-            <Table
+            <Table2
                 bodyContextMenuRenderer={this.renderBodyContextMenu}
                 enableColumnInteractionBar={this.state.showTableInteractionBar}
                 enableColumnReordering={this.state.enableColumnReordering}
@@ -421,7 +426,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 styledRegionGroups={this.getStyledRegionGroups()}
             >
                 {this.renderColumns()}
-            </Table>
+            </Table2>
         );
     }
 
@@ -477,7 +482,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     };
 
     private renderColumnMenu = (columnIndex: number) => {
-        // tslint:disable:jsx-no-multiline-js jsx-no-lambda
         const menu = (
             <Menu>
                 <MenuItem
@@ -561,7 +565,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
         if (this.state.enableCellEditing) {
             return (
-                <EditableCell
+                <EditableCell2
                     className={classes}
                     columnIndex={columnIndex}
                     loading={this.state.showCellsLoading}
@@ -881,7 +885,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.maybeLogCallback("[onCompleteRender]");
     };
 
-    private onSelection = (selectedRegions: IRegion[]) => {
+    private onSelection = (selectedRegions: Region[]) => {
         this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
         this.setState({ selectedRegions });
     };
@@ -914,7 +918,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.maybeLogCallback(`[onCopy] success = ${success}`);
     };
 
-    private onVisibleCellsChange = (rowIndices: IRowIndices, columnIndices: IColumnIndices) => {
+    private onVisibleCellsChange = (rowIndices: RowIndices, columnIndices: ColumnIndices) => {
         const { rowIndexStart, rowIndexEnd } = rowIndices;
         const { columnIndexStart, columnIndexEnd } = columnIndices;
         this.maybeLogCallback(
@@ -946,7 +950,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private handleScrollToButtonClick = () => {
         const { scrollToRowIndex, scrollToColumnIndex, scrollToRegionType } = this.state;
 
-        let region: IRegion;
+        let region: Region;
         switch (scrollToRegionType) {
             case RegionCardinality.CELLS:
                 region = Regions.cell(scrollToRowIndex, scrollToColumnIndex);
@@ -1107,7 +1111,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                       className: "tbl-styled-region-danger",
                       regions: [Regions.cell(5, 3, 7, 7)],
                   },
-              ] as IStyledRegionGroup[]);
+              ] as StyledRegionGroup[]);
     }
 }
 

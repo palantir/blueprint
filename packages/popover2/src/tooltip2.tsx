@@ -30,7 +30,7 @@ import { Tooltip2Context, Tooltip2ContextState, Tooltip2Provider } from "./toolt
 export type Tooltip2Props<TProps = React.HTMLProps<HTMLElement>> = ITooltip2Props<TProps>;
 /** @deprecated use Tooltip2Props */
 export interface ITooltip2Props<TProps = React.HTMLProps<HTMLElement>>
-    extends Popover2SharedProps<TProps>,
+    extends Omit<Popover2SharedProps<TProps>, "shouldReturnFocusOnClose">,
         IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.

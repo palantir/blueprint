@@ -19,7 +19,10 @@ import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
 
-const NS = process.env.BLUEPRINT_NAMESPACE || process.env.REACT_APP_BLUEPRINT_NAMESPACE || "bp3";
+let NS = "bp4";
+if (typeof process !== "undefined") {
+    NS = process.env?.BLUEPRINT_NAMESPACE ?? process.env?.REACT_APP_BLUEPRINT_NAMESPACE ?? NS;
+}
 
 // modifiers
 export const ACTIVE = `${NS}-active`;
@@ -38,6 +41,7 @@ export const MINIMAL = `${NS}-minimal`;
 export const OUTLINED = `${NS}-outlined`;
 export const MULTILINE = `${NS}-multiline`;
 export const ROUND = `${NS}-round`;
+export const SELECTED = `${NS}-selected`;
 export const SMALL = `${NS}-small`;
 export const VERTICAL = `${NS}-vertical`;
 export const POSITION_TOP = positionClass(Position.TOP);
@@ -57,6 +61,7 @@ export const INTENT_WARNING = intentClass(Intent.WARNING)!;
 export const INTENT_DANGER = intentClass(Intent.DANGER)!;
 
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
+export const FOCUS_STYLE_MANAGER_IGNORE = `${NS}-focus-style-manager-ignore`;
 
 // text utilities
 export const UI_TEXT = `${NS}-ui-text`;
@@ -76,13 +81,6 @@ export const HEADING = `${NS}-heading`;
 export const LIST = `${NS}-list`;
 export const LIST_UNSTYLED = `${NS}-list-unstyled`;
 export const RTL = `${NS}-rtl`;
-
-// layout utilities
-/**
- * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
- * @deprecated this is no longer needed for ContextMenu2, will be removed in v4.0
- */
-export const FIXED_POSITIONING_CONTAINING_BLOCK = `${NS}-fixed-positioning-containing-block`;
 
 // components
 export const ALERT = `${NS}-alert`;
@@ -184,11 +182,14 @@ export const LABEL = `${NS}-label`;
 export const FORM_GROUP = `${NS}-form-group`;
 export const FORM_CONTENT = `${NS}-form-content`;
 export const FORM_HELPER_TEXT = `${NS}-form-helper-text`;
+export const FORM_GROUP_SUB_LABEL = `${NS}-form-group-sub-label`;
 
 export const MENU = `${NS}-menu`;
 export const MENU_ITEM = `${MENU}-item`;
+export const MENU_ITEM_ICON = `${MENU_ITEM}-icon`;
 export const MENU_ITEM_LABEL = `${MENU_ITEM}-label`;
 export const MENU_SUBMENU = `${NS}-submenu`;
+export const MENU_SUBMENU_ICON = `${MENU_SUBMENU}-icon`;
 export const MENU_DIVIDER = `${MENU}-divider`;
 export const MENU_HEADER = `${MENU}-header`;
 
@@ -197,6 +198,8 @@ export const MULTISTEP_DIALOG_PANELS = `${MULTISTEP_DIALOG}-panels`;
 export const MULTISTEP_DIALOG_LEFT_PANEL = `${MULTISTEP_DIALOG}-left-panel`;
 export const MULTISTEP_DIALOG_RIGHT_PANEL = `${MULTISTEP_DIALOG}-right-panel`;
 export const MULTISTEP_DIALOG_FOOTER = `${MULTISTEP_DIALOG}-footer`;
+export const MULTISTEP_DIALOG_NAV_TOP = `${MULTISTEP_DIALOG}-nav-top`;
+export const MULTISTEP_DIALOG_NAV_RIGHT = `${MULTISTEP_DIALOG}-nav-right`;
 
 export const NAVBAR = `${NS}-navbar`;
 export const NAVBAR_GROUP = `${NAVBAR}-group`;
@@ -218,6 +221,8 @@ export const OVERLAY_CONTENT = `${OVERLAY}-content`;
 export const OVERLAY_INLINE = `${OVERLAY}-inline`;
 export const OVERLAY_OPEN = `${OVERLAY}-open`;
 export const OVERLAY_SCROLL_CONTAINER = `${OVERLAY}-scroll-container`;
+export const OVERLAY_START_FOCUS_TRAP = `${OVERLAY}-start-focus-trap`;
+export const OVERLAY_END_FOCUS_TRAP = `${OVERLAY}-end-focus-trap`;
 
 export const PANEL_STACK = `${NS}-panel-stack`;
 export const PANEL_STACK_HEADER = `${PANEL_STACK}-header`;
@@ -238,6 +243,7 @@ export const POPOVER_CONTENT_SIZING = `${POPOVER_CONTENT}-sizing`;
 export const POPOVER_DISMISS = `${POPOVER}-dismiss`;
 export const POPOVER_DISMISS_OVERRIDE = `${POPOVER_DISMISS}-override`;
 export const POPOVER_OPEN = `${POPOVER}-open`;
+export const POPOVER_OUT_OF_BOUNDARIES = `${POPOVER}-out-of-boundaries`;
 export const POPOVER_TARGET = `${POPOVER}-target`;
 export const POPOVER_WRAPPER = `${POPOVER}-wrapper`;
 export const TRANSITION_CONTAINER = `${NS}-transition-container`;
@@ -303,9 +309,7 @@ export const TREE_NODE_SELECTED = `${TREE_NODE}-selected`;
 export const TREE_ROOT = `${NS}-tree-root`;
 
 export const ICON = `${NS}-icon`;
-/** @deprecated use <Icon> components and iconName prop APIs instead */
 export const ICON_STANDARD = `${ICON}-standard`;
-/** @deprecated use <Icon> components and iconName prop APIs instead */
 export const ICON_LARGE = `${ICON}-large`;
 
 /**

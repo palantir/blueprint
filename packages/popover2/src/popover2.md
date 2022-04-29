@@ -7,7 +7,7 @@ Migrating from [Popover](#core/components/popover)?
 
 </h4>
 
-Popover2 is a replacement for Popover and will become the standard Popover API in Blueprint core v4.
+Popover2 is a replacement for Popover and will become the standard Popover API in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
 See the full [migration guide](https://github.com/palantir/blueprint/wiki/Popover2-migration) on the wiki.
 
@@ -123,7 +123,7 @@ each consist of two attributes:
 These two attributes can be expressed with a single value having the following structure:
 
 <pre class="docs-popover-placement-value-code-block">
-    <span class="docs-popover-placement-label-side">[SIDE]</span>_<span class="docs-popover-placement-label-alignment">[ALIGNMENT]</span>
+    <span class="docs-popover-placement-label-side">[SIDE]</span>-<span class="docs-popover-placement-label-alignment">[ALIGNMENT]</span>
 </pre>
 
 @reactExample Popover2PlacementExample
@@ -229,10 +229,10 @@ The supported values are:
     -   **Opens when:** the target is hovered
     -   **Closes when:** the cursor is no longer inside the target
 -   `CLICK`:
-    -   **Opens when:** the target is clicked
+    -   **Opens when:** the target is clicked, or when Enter key is pressed while target is focused
     -   **Closes when:** the user clicks anywhere outside of the popover (including the target)
 -   `CLICK_TARGET_ONLY`:
-    -   **Opens when:** the target is clicked
+    -   **Opens when:** the target is clicked, or when Enter key is pressed while target is focused
     -   **Closes when:** the target is clicked
 
 The following example demonstrates the various interaction kinds (note: these Popovers contain [`MenuItem`](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):

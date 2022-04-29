@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-import * as IconContents from "./generated/iconContents";
-import * as IconNames from "./generated/iconNames";
-
-export { IconContents, IconNames };
-export { IconSvgPaths16, IconSvgPaths20 } from "./generated/iconSvgPaths";
-export { IconName } from "./iconName";
+export { IconSvgPaths16, IconSvgPaths20, iconNameToPathsRecordKey } from "./iconSvgPaths";
+export { getIconContentString, IconCodepoints } from "./iconCodepoints";
+export { IconName, IconNames } from "./iconNames";

@@ -76,7 +76,7 @@ export interface IDatePickerBaseProps {
     /**
      * The latest date the user can select.
      *
-     * @default Dec. 31st of this year.
+     * @default 6 months from now.
      */
     maxDate?: Date;
 
@@ -145,8 +145,7 @@ export const DISALLOWED_MODIFIERS = [
 
 export function getDefaultMaxDate() {
     const date = new Date();
-    date.setFullYear(date.getFullYear());
-    date.setMonth(Months.DECEMBER, 31);
+    date.setMonth(date.getMonth() + 6);
     return date;
 }
 

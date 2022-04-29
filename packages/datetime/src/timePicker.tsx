@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, Props, Keys } from "@blueprintjs/core";
+import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, Keys, Props } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -169,14 +169,7 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
     public constructor(props?: TimePickerProps, context?: any) {
         super(props, context);
 
-        let value = props.minTime;
-        if (props.value != null) {
-            value = props.value;
-        } else if (props.defaultValue != null) {
-            value = props.defaultValue;
-        }
-
-        this.state = this.getFullStateFromValue(value, props.useAmPm);
+        this.state = this.getFullStateFromValue(this.getInitialValue(), props.useAmPm);
     }
 
     public render() {
@@ -222,9 +215,12 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
         const didMaxTimeChange = prevProps.maxTime !== this.props.maxTime;
         const didBoundsChange = didMinTimeChange || didMaxTimeChange;
         const didPropValueChange = prevProps.value !== this.props.value;
-        const shouldStateUpdate = didMinTimeChange || didMaxTimeChange || didBoundsChange || didPropValueChange;
+        const shouldStateUpdate = didBoundsChange || didPropValueChange;
 
         let value = this.state.value;
+        if (this.props.value == null) {
+            value = this.getInitialValue();
+        }
         if (didBoundsChange) {
             value = DateUtils.getTimeInRange(this.state.value, this.props.minTime, this.props.maxTime);
         }
@@ -248,7 +244,10 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
         // set tabIndex=-1 to ensure a valid FocusEvent relatedTarget when focused
         return (
             <span tabIndex={-1} className={classes} onClick={onClick}>
-                <Icon icon={isDirectionUp ? "chevron-up" : "chevron-down"} />
+                <Icon
+                    icon={isDirectionUp ? "chevron-up" : "chevron-down"}
+                    title={isDirectionUp ? "Increase" : "Decrease"}
+                />
             </span>
         );
     }
@@ -427,6 +426,17 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
         if (hasNewValue) {
             this.props.onChange?.(newState.value);
         }
+    }
+
+    private getInitialValue(): Date {
+        let value = this.props.minTime;
+        if (this.props.value != null) {
+            value = this.props.value;
+        } else if (this.props.defaultValue != null) {
+            value = this.props.defaultValue;
+        }
+
+        return value;
     }
 }
 

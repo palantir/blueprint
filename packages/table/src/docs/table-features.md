@@ -15,7 +15,7 @@ type, we define a different set of sort operations.
 
 In the table below, try:
 * Sorting with the menu in each column header
-* Selecting cells and copying with the right-click context menu
+* Selecting cells and copying with the right-click context menu or with Cmd/Ctrl+C hotkeys
 
 @reactExample TableSortableExample
 

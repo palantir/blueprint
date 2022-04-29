@@ -16,24 +16,25 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Intent } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Handle } from "./handle";
-import { HandleInteractionKind, HandleType, HandleProps } from "./handleProps";
+import { HandleInteractionKind, HandleProps, HandleType } from "./handleProps";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";
 
 /**
  * SFC used to pass slider handle props to a `MultiSlider`.
  * This element is not rendered directly.
  */
-const MultiSliderHandle: React.FunctionComponent<HandleProps> = () => null;
+const MultiSliderHandle: React.FC<HandleProps> = () => null;
 MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 
 export interface ISliderBaseProps extends Props, IntentProps {
+    children?: React.ReactNode;
+
     /**
      * Whether the slider is non-interactive.
      *
@@ -52,7 +53,7 @@ export interface ISliderBaseProps extends Props, IntentProps {
      * Array of specific values for the label placement. This prop is mutually exclusive with
      * `labelStepSize`.
      */
-    labelValues?: number[];
+    labelValues?: readonly number[];
 
     /**
      * Number of decimal places to use when rendering label value. Default value is the number of
@@ -134,7 +135,6 @@ export interface ISliderState {
     tickSizeRatio: number;
 }
 
-@polyfill
 export class MultiSlider extends AbstractPureComponent2<MultiSliderProps, ISliderState> {
     public static defaultSliderProps: ISliderBaseProps = {
         disabled: false,
@@ -444,7 +444,7 @@ export class MultiSlider extends AbstractPureComponent2<MultiSliderProps, ISlide
         const { labelStepSize, labelValues, min, max } = this.props;
         let values: number[] = [];
         if (labelValues !== undefined) {
-            values = labelValues;
+            values = labelValues.slice();
         } else {
             for (let i = min!; i < max! || Utils.approxEqual(i, max!); i += labelStepSize ?? 1) {
                 values.push(i);
@@ -489,10 +489,7 @@ function getSortedInteractiveHandleProps(props: React.PropsWithChildren<MultiSli
     return getSortedHandleProps(props, childProps => childProps.interactionKind !== HandleInteractionKind.NONE);
 }
 
-function getSortedHandleProps(
-    { children }: React.PropsWithChildren<MultiSliderProps>,
-    predicate: (props: HandleProps) => boolean = () => true,
-) {
+function getSortedHandleProps({ children }: MultiSliderProps, predicate: (props: HandleProps) => boolean = () => true) {
     const maybeHandles = React.Children.map(children, child =>
         Utils.isElementOfType(child, MultiSlider.Handle) && predicate(child.props) ? child.props : null,
     );

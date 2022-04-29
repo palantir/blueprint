@@ -21,8 +21,8 @@ import {
     AbstractPureComponent2,
     Button,
     DISPLAYNAME_PREFIX,
-    InputGroupProps2,
     InputGroup,
+    InputGroupProps2,
     IPopoverProps,
     IRef,
     Keys,
@@ -39,6 +39,15 @@ import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 export type SelectProps<T> = ISelectProps<T>;
 /** @deprecated use SelectProps */
 export interface ISelectProps<T> extends IListItemsProps<T> {
+    children?: React.ReactNode;
+
+    /**
+     * Whether the component should take up the full width of its container.
+     * This overrides `popoverProps.fill`. You also have to ensure that the child
+     * component has `fill` set to `true` or is styled appropriately.
+     */
+    fill?: boolean;
+
     /**
      * Whether the dropdown list can be filtered.
      * Disabling this option will remove the `InputGroup` and ignore `inputProps`.
@@ -62,6 +71,16 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * to control this input.
      */
     inputProps?: InputGroupProps2;
+
+    /**
+     * Whether the select popover should be styled so that it matches the width of the target.
+     * This is done using a popper.js modifier passed through `popoverProps`.
+     *
+     * Note that setting `matchTargetWidth={true}` will also set `popoverProps.usePortal={false}` and `popoverProps.wrapperTagName="div"`.
+     *
+     * @default false
+     */
+    matchTargetWidth?: boolean;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
@@ -129,7 +148,36 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const { filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
+        const {
+            fill,
+            filterable = true,
+            disabled = false,
+            inputProps = {},
+            popoverProps = {},
+            matchTargetWidth,
+        } = this.props;
+
+        if (fill) {
+            popoverProps.fill = true;
+        }
+
+        if (matchTargetWidth) {
+            if (popoverProps.modifiers == null) {
+                popoverProps.modifiers = {};
+            }
+
+            popoverProps.modifiers.minWidth = {
+                enabled: true,
+                fn: data => {
+                    data.styles.width = `${data.offsets.reference.width}px`;
+                    return data;
+                },
+                order: 800,
+            };
+
+            popoverProps.usePortal = false;
+            popoverProps.wrapperTagName = "div";
+        }
 
         const input = (
             <InputGroup
@@ -155,7 +203,9 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName, {
+                    [Classes.SELECT_MATCH_TARGET_WIDTH]: matchTargetWidth,
+                })}
                 onOpening={this.handlePopoverOpening}
                 onOpened={this.handlePopoverOpened}
                 onClosing={this.handlePopoverClosing}
@@ -194,9 +244,9 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
         this.props.onItemSelect?.(item, event);
     };
 
-    private handlePopoverInteraction = (isOpen: boolean) => {
+    private handlePopoverInteraction = (isOpen: boolean, event?: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen });
-        this.props.popoverProps?.onInteraction?.(isOpen);
+        this.props.popoverProps?.onInteraction?.(isOpen, event);
     };
 
     private handlePopoverOpening = (node: HTMLElement) => {

@@ -27,7 +27,5 @@ export function directionToDelta(direction: Direction): IMovementDelta {
             return { rows: 0, cols: -1 };
         case Direction.RIGHT:
             return { rows: 0, cols: +1 };
-        default:
-            return undefined;
     }
 }

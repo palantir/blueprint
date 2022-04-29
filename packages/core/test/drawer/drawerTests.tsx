@@ -15,17 +15,40 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import { spy, stub } from "sinon";
+import { spy } from "sinon";
 
-import { Button, Classes, Drawer, Position } from "../../src";
-import { DRAWER_ANGLE_POSITIONS_ARE_CASTED, DRAWER_VERTICAL_IS_IGNORED } from "../../src/common/errors";
+import { Button, Classes, Drawer, DrawerProps, Position } from "../../src";
 import * as Keys from "../../src/common/keys";
 
 describe("<Drawer>", () => {
+    let drawer: ReactWrapper<DrawerProps, any>;
+    let isMounted = false;
+    const testsContainerElement = document.createElement("div");
+    document.documentElement.appendChild(testsContainerElement);
+
+    /**
+     * Mount the `content` into `testsContainerElement` and assign to local `wrapper` variable.
+     * Use this method in this suite instead of Enzyme's `mount` method.
+     */
+    function mountDrawer(content: JSX.Element) {
+        drawer = mount(content, { attachTo: testsContainerElement });
+        isMounted = true;
+        return drawer;
+    }
+
+    afterEach(() => {
+        if (isMounted) {
+            // clean up wrapper after each test, if it was used
+            drawer?.unmount();
+            drawer?.detach();
+            isMounted = false;
+        }
+    });
+
     it("renders its content correctly", () => {
-        const drawer = mount(
+        mountDrawer(
             <Drawer isOpen={true} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
@@ -36,94 +59,9 @@ describe("<Drawer>", () => {
     });
 
     describe("position", () => {
-        it("casts angle positions into pure positions (with console warning)", () => {
-            const warnSpy = stub(console, "warn");
-
-            const drawerTop = mount(
-                <Drawer isOpen={true} usePortal={false} position={Position.TOP} size={100}>
-                    {createDrawerContents()}
-                </Drawer>,
-            );
-            const drawerLeft = mount(
-                <Drawer isOpen={true} usePortal={false} position={Position.LEFT} size={100}>
-                    {createDrawerContents()}
-                </Drawer>,
-            );
-            const drawerTopRight = mount(
-                <Drawer isOpen={true} usePortal={false} position={Position.TOP_RIGHT} size={100}>
-                    {createDrawerContents()}
-                </Drawer>,
-            );
-            const drawerTopLeft = mount(
-                <Drawer isOpen={true} usePortal={false} position={Position.TOP_LEFT} size={100}>
-                    {createDrawerContents()}
-                </Drawer>,
-            );
-            const drawerLeftTop = mount(
-                <Drawer isOpen={true} usePortal={false} position={Position.LEFT_TOP} size={100}>
-                    {createDrawerContents()}
-                </Drawer>,
-            );
-
-            assert.isTrue(
-                drawerTop.find(`.${Classes.DRAWER}`).equals(drawerTopRight.find(`.${Classes.DRAWER}`).getElement()),
-            );
-            assert.isTrue(
-                drawerTop.find(`.${Classes.DRAWER}`).equals(drawerTopLeft.find(`.${Classes.DRAWER}`).getElement()),
-            );
-            assert.isFalse(
-                drawerTop.find(`.${Classes.DRAWER}`).equals(drawerLeftTop.find(`.${Classes.DRAWER}`).getElement()),
-            );
-            assert.isTrue(
-                drawerLeft.find(`.${Classes.DRAWER}`).equals(drawerLeftTop.find(`.${Classes.DRAWER}`).getElement()),
-            );
-
-            assert.isTrue(warnSpy.alwaysCalledWith(DRAWER_ANGLE_POSITIONS_ARE_CASTED));
-            warnSpy.restore();
-        });
-
-        it("overrides vertical (with console warning)", () => {
-            const warnSpy = stub(console, "warn");
-
-            const drawerLeft = mount(
-                <Drawer isOpen={true} usePortal={false} vertical={true} position={Position.LEFT} size={100}>
-                    {createDrawerContents()}
-                </Drawer>,
-            );
-
-            // vertical size becomes height (opposite test)
-            assert.equal(drawerLeft.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
-            // vertical adds class (opposite test)
-            assert.isFalse(drawerLeft.find(`.${Classes.VERTICAL}`).exists());
-
-            assert.isTrue(warnSpy.alwaysCalledWith(DRAWER_VERTICAL_IS_IGNORED));
-            warnSpy.restore();
-        });
-
         describe("RIGHT", () => {
-            it("position right is default", () => {
-                const drawerDefault = mount(
-                    <Drawer isOpen={true} usePortal={false} size={100}>
-                        {createDrawerContents()}
-                    </Drawer>,
-                );
-                const drawerRight = mount(
-                    <Drawer isOpen={true} usePortal={false} position={Position.RIGHT} size={100}>
-                        {createDrawerContents()}
-                    </Drawer>,
-                );
-                assert.equal(
-                    drawerDefault.find(`.${Classes.DRAWER}`).prop("style")?.width,
-                    drawerRight.find(`.${Classes.DRAWER}`).prop("style")?.width,
-                );
-                assert.equal(
-                    drawerDefault.find(`.${Classes.DRAWER}`).prop("style")?.height,
-                    drawerRight.find(`.${Classes.DRAWER}`).prop("style")?.height,
-                );
-            });
-
             it("position right, size becomes width", () => {
-                const drawer = mount(
+                mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.RIGHT} size={100}>
                         {createDrawerContents()}
                     </Drawer>,
@@ -132,7 +70,7 @@ describe("<Drawer>", () => {
             });
 
             it("position right, adds appropriate classes (default behavior)", () => {
-                const drawer = mount(
+                mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.RIGHT}>
                         {createDrawerContents()}
                     </Drawer>,
@@ -143,7 +81,7 @@ describe("<Drawer>", () => {
 
         describe("TOP", () => {
             it("position top, size becomes height", () => {
-                const drawer = mount(
+                mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.TOP} size={100}>
                         {createDrawerContents()}
                     </Drawer>,
@@ -152,7 +90,7 @@ describe("<Drawer>", () => {
             });
 
             it("position top, adds appropriate classes (vertical, reverse)", () => {
-                const drawer = mount(
+                mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.TOP}>
                         {createDrawerContents()}
                     </Drawer>,
@@ -163,7 +101,7 @@ describe("<Drawer>", () => {
 
         describe("BOTTOM", () => {
             it("position bottom, size becomes height", () => {
-                const drawer = mount(
+                mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.BOTTOM} size={100}>
                         {createDrawerContents()}
                     </Drawer>,
@@ -172,7 +110,7 @@ describe("<Drawer>", () => {
             });
 
             it("position bottom, adds appropriate classes (vertical)", () => {
-                const drawer = mount(
+                mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.BOTTOM}>
                         {createDrawerContents()}
                     </Drawer>,
@@ -183,7 +121,7 @@ describe("<Drawer>", () => {
 
         describe("LEFT", () => {
             it("position left, size becomes width", () => {
-                const drawer = mount(
+                mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.LEFT} size={100}>
                         {createDrawerContents()}
                     </Drawer>,
@@ -192,7 +130,7 @@ describe("<Drawer>", () => {
             });
 
             it("position left, adds appropriate classes (reverse)", () => {
-                const drawer = mount(
+                mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.LEFT}>
                         {createDrawerContents()}
                     </Drawer>,
@@ -203,7 +141,7 @@ describe("<Drawer>", () => {
     });
 
     it("size becomes width", () => {
-        const drawer = mount(
+        mountDrawer(
             <Drawer isOpen={true} usePortal={false} size={100}>
                 {createDrawerContents()}
             </Drawer>,
@@ -211,46 +149,28 @@ describe("<Drawer>", () => {
         assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
     });
 
-    it("vertical size becomes height", () => {
-        const drawer = mount(
-            <Drawer isOpen={true} usePortal={false} size={100} vertical={true}>
-                {createDrawerContents()}
-            </Drawer>,
-        );
-        assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height, 100);
-    });
-
-    it("vertical adds class", () => {
-        const drawer = mount(
-            <Drawer isOpen={true} usePortal={false} vertical={true}>
-                {createDrawerContents()}
-            </Drawer>,
-        );
-        assert.isTrue(drawer.find(`.${Classes.VERTICAL}`).exists());
-    });
-
     it("portalClassName appears on Portal", () => {
         const TEST_CLASS = "test-class";
-        const drawer = mount(
+        mountDrawer(
             <Drawer isOpen={true} portalClassName={TEST_CLASS}>
                 {createDrawerContents()}
             </Drawer>,
         );
         assert.isDefined(document.querySelector(`.${Classes.PORTAL}.${TEST_CLASS}`));
-        drawer.unmount();
     });
 
     it("renders contents to specified container correctly", () => {
         const container = document.createElement("div");
         document.body.appendChild(container);
-        mount(
+        mountDrawer(
             <Drawer isOpen={true} portalContainer={container}>
                 {createDrawerContents()}
             </Drawer>,
         );
+        drawer.unmount();
         document.body.removeChild(container);
         const onClose = spy();
-        const drawer = mount(
+        mountDrawer(
             <Drawer isOpen={true} onClose={onClose} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
@@ -261,7 +181,7 @@ describe("<Drawer>", () => {
 
     it("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
         const onClose = spy();
-        const drawer = mount(
+        mountDrawer(
             <Drawer canOutsideClickClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
@@ -272,7 +192,7 @@ describe("<Drawer>", () => {
 
     it("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
         const onClose = spy();
-        const drawer = mount(
+        mountDrawer(
             <Drawer canEscapeKeyClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
@@ -283,7 +203,7 @@ describe("<Drawer>", () => {
 
     it("supports overlay lifecycle props", () => {
         const onOpening = spy();
-        mount(
+        mountDrawer(
             <Drawer isOpen={true} onOpening={onOpening}>
                 body
             </Drawer>,
@@ -293,7 +213,7 @@ describe("<Drawer>", () => {
 
     describe("header", () => {
         it(`does not render .${Classes.DRAWER_HEADER} if title omitted`, () => {
-            const drawer = mount(
+            mountDrawer(
                 <Drawer isOpen={true} usePortal={false}>
                     drawer body
                 </Drawer>,
@@ -302,7 +222,7 @@ describe("<Drawer>", () => {
         });
 
         it(`renders .${Classes.DRAWER_HEADER} if title prop is given`, () => {
-            const drawer = mount(
+            mountDrawer(
                 <Drawer isOpen={true} title="Hello!" usePortal={false}>
                     drawer body
                 </Drawer>,
@@ -311,7 +231,7 @@ describe("<Drawer>", () => {
         });
 
         it(`renders close button if isCloseButtonShown={true}`, () => {
-            const drawer = mount(
+            mountDrawer(
                 <Drawer isCloseButtonShown={true} isOpen={true} title="Hello!" usePortal={false}>
                     drawer body
                 </Drawer>,
@@ -324,7 +244,7 @@ describe("<Drawer>", () => {
 
         it("clicking close button triggers onClose", () => {
             const onClose = spy();
-            const drawer = mount(
+            mountDrawer(
                 <Drawer isCloseButtonShown={true} isOpen={true} onClose={onClose} title="Hello!" usePortal={false}>
                     drawer body
                 </Drawer>,
@@ -335,7 +255,7 @@ describe("<Drawer>", () => {
     });
 
     it("only adds its className in one location", () => {
-        const drawer = mount(<Drawer className="foo" isOpen={true} title="title" usePortal={false} />);
+        mountDrawer(<Drawer className="foo" isOpen={true} title="title" usePortal={false} />);
         assert.lengthOf(drawer.find(".foo").hostNodes(), 1);
     });
 

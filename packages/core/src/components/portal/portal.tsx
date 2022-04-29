@@ -26,8 +26,13 @@ import { isFunction } from "../../common/utils";
 /** Detect if `React.createPortal()` API method does not exist. */
 const cannotCreatePortal = !isFunction(ReactDOM.createPortal);
 
+// eslint-disable-next-line deprecation/deprecation
 export type PortalProps = IPortalProps;
+/** @deprecated use PortalProps */
 export interface IPortalProps extends Props {
+    /** Contents to send through the portal. */
+    children: React.ReactNode;
+
     /**
      * Callback invoked when the children of this `Portal` have been added to the DOM.
      */
@@ -64,12 +69,12 @@ const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
  * Any class names passed to this element will be propagated to the new container element on document.body.
  */
-export class Portal extends React.Component<IPortalProps, IPortalState> {
+export class Portal extends React.Component<PortalProps, IPortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
 
     public static contextTypes = REACT_CONTEXT_TYPES;
 
-    public static defaultProps: IPortalProps = {
+    public static defaultProps: Partial<PortalProps> = {
         container: typeof document !== "undefined" ? document.body : undefined,
     };
 
@@ -108,7 +113,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         }
     }
 
-    public componentDidUpdate(prevProps: IPortalProps) {
+    public componentDidUpdate(prevProps: PortalProps) {
         // update className prop on portal DOM element
         if (this.portalElement != null && prevProps.className !== this.props.className) {
             maybeRemoveClass(this.portalElement.classList, prevProps.className);

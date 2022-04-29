@@ -6,7 +6,7 @@
 label.#{$ns}-label {
   .#{$ns}-popover2-target {
     display: block;
-    margin-top: $pt-grid-size / 2;
+    margin-top: $pt-grid-size * 0.5;
     text-transform: none;
   }
 }

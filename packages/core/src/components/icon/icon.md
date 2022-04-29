@@ -6,8 +6,8 @@ See the [**Icons package**](#icons) for a searchable list of all available UI ic
 
 </div>
 
-This section describes two ways of using the UI icon font: via React `Icon`
-component to render SVG images or via CSS classes to use the icon font.
+This section describes two ways of using Blueprint's UI icons:
+via the `Icon` component to render SVG images or via CSS classes to use the icon font.
 
 Many Blueprint components provide an `icon` prop which accepts an icon name
 (such as `"history"`) or a JSX element to use as the icon. When you specify
@@ -19,7 +19,7 @@ the name as a string, these components render `<Icon icon="..." />` under the ho
 
 Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon`
 prop is typed such that editors can offer autocomplete for known icon names. The
-optional `iconSize` prop determines the exact width and height of the icon
+optional `size` prop determines the exact width and height of the icon
 image; the icon element itself can be sized separately using CSS.
 
 The HTML element rendered by `<Icon>` can be customized with the `tagName` prop
@@ -27,30 +27,39 @@ The HTML element rendered by `<Icon>` can be customized with the `tagName` prop
 
 Data files in the __@blueprintjs/icons__ package provide SVG path information
 for Blueprint's 300+ icons for 16px and 20px grids. The `icon` prop dictates
-which SVG is rendered and `iconSize` determines which pixel grid is used:
-`iconSize >= 20` will use the 20px grid and smaller icons will use the 16px
+which SVG is rendered and `size` determines which pixel grid is used:
+`size >= 20` will use the 20px grid and smaller icons will use the 16px
 grid.
+
+If `title` is not provided to an Icon, `aria-hidden` will be set to true as
+it will be assumed that the icon is decorative if not labeled.
 
 ```tsx
 import { Icon, IconSize } from "@blueprintjs/core";
 
-// string literals are supported through IconName union type
+// icon name string literals are type checked
 <Icon icon="cross" />
-<Icon icon="globe" iconSize={20} />
+<Icon icon="globe" size={20} />
 
 // constants are provided for name and size
-<Icon icon="graph" iconSize={IconSize.LARGE} intent="primary" />
+<Icon icon="graph" size={IconSize.LARGE} intent="primary" />
 
-// can pass all valid HTML props
+// you can also pass all valid HTML props
 <Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys} />
 ```
 
-```html
+Custom sizes are supported. The following React component:
+
+```tsx
 <Icon icon="globe" iconSize={30} />
-<!-- renders the following HTML markup: -->
+```
+
+...renders this HTML markup:
+
+```html
 <svg class="@ns-icon" data-icon="globe" width="30" height="30" viewBox="0 0 20 20">
     <title>globe</title>
-    <path ... />
+    <path d="..."></path>
 </svg>
 ```
 
@@ -60,15 +69,10 @@ import { Icon, IconSize } from "@blueprintjs/core";
 
 @## CSS
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Some icons are missing in the icon font in 3.x</h4>
-
-Blueprint icons added after `@blueprintjs/icons@3.14.0` do not have icon font support.
-Support for the icon font for these icons will be restored in Blueprint v4.0.
-
-</div>
-
 The CSS-only icons API uses the __icon fonts__ from the __@blueprintjs/icons__ package.
+Note that _none of Blueprint's React components use the icon font_; it is only provided
+for convenience to Blueprint consumers for rare situations where an icon font may be
+preferred over icon SVGs.
 
 To use Blueprint UI icons via CSS, you must apply two classes to a `<span>` element:
 - a __sizing class__, either `@ns-icon-standard` (16px) or `@ns-icon-large` (20px)

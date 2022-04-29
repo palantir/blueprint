@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
@@ -47,7 +46,7 @@ export interface IHandleState {
 const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
 /** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
-@polyfill
+
 export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandleState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.SliderHandle`;
 

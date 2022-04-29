@@ -21,13 +21,15 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     IPopoverProps,
-    TagInputProps,
     Keys,
     Popover,
     PopoverInteractionKind,
     Position,
+    refHandler,
+    setRef,
     TagInput,
     TagInputAddMethod,
+    TagInputProps,
 } from "@blueprintjs/core";
 
 import { Classes, IListItemsProps } from "../../common";
@@ -113,17 +115,25 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
 
     private TypedQueryList = QueryList.ofType<T>();
 
-    private input: HTMLInputElement | null = null;
+    public input: HTMLInputElement | null = null;
 
-    private queryList: QueryList<T> | null = null;
+    public queryList: QueryList<T> | null = null;
 
-    private refHandlers = {
-        input: (ref: HTMLInputElement | null) => {
-            this.input = ref;
-            this.props.tagInputProps?.inputRef?.(ref);
-        },
+    private refHandlers: {
+        input: React.RefCallback<HTMLInputElement>;
+        queryList: React.RefCallback<QueryList<T>>;
+    } = {
+        input: refHandler(this, "input", this.props.tagInputProps?.inputRef),
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
+
+    public componentDidUpdate(prevProps: MultiSelectProps<T>) {
+        if (prevProps.tagInputProps?.inputRef !== this.props.tagInputProps?.inputRef) {
+            setRef(prevProps.tagInputProps?.inputRef, null);
+            this.refHandlers.input = refHandler(this, "input", this.props.tagInputProps?.inputRef);
+            setRef(this.props.tagInputProps?.inputRef, this.input);
+        }
+    }
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -216,7 +226,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
 
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
-    private handlePopoverInteraction = (nextOpenState: boolean) =>
+    private handlePopoverInteraction = (nextOpenState: boolean, evt?: React.SyntheticEvent<HTMLElement>) =>
         this.requestAnimationFrame(() => {
             const isInputFocused = this.input === document.activeElement;
 
@@ -228,7 +238,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
                 this.setState({ isOpen: true });
             }
 
-            this.props.popoverProps?.onInteraction?.(nextOpenState);
+            this.props.popoverProps?.onInteraction?.(nextOpenState, evt);
         });
 
     private handlePopoverOpened = (node: HTMLElement) => {

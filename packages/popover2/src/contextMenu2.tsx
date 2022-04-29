@@ -19,15 +19,15 @@ import * as React from "react";
 
 import {
     Classes as CoreClasses,
+    Utils as CoreUtils,
     IOverlayLifecycleProps,
+    mergeRefs,
     Portal,
     Props,
-    Utils as CoreUtils,
-    mergeRefs,
 } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
-import { Popover2Props, Popover2 } from "./popover2";
+import { Popover2, Popover2Props } from "./popover2";
 import { Popover2TargetProps } from "./popover2SharedProps";
 import { Tooltip2Context, Tooltip2Provider } from "./tooltip2Context";
 

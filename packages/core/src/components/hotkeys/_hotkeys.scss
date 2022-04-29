@@ -4,7 +4,7 @@
 @import "../../common/mixins";
 
 .#{$ns}-key-combo {
-  @include pt-flex-container(row, $pt-grid-size / 2);
+  @include pt-flex-container(row, $pt-grid-size * 0.5);
   align-items: center;
 }
 

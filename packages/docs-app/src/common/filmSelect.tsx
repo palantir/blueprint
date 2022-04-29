@@ -46,7 +46,7 @@ type Props = Omit<
 };
 
 // eslint-disable-next-line import/no-default-export
-export default function ({ allowCreate = false, ...restProps }: Props) {
+export default function ({ allowCreate = false, fill, ...restProps }: Props) {
     const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
     const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 
@@ -72,6 +72,7 @@ export default function ({ allowCreate = false, ...restProps }: Props) {
             noResults={<MenuItem disabled={true} text="No results." />}
             onItemSelect={handleItemSelect}
             items={items}
+            fill={fill}
             {...restProps}
         >
             <Button
@@ -79,6 +80,7 @@ export default function ({ allowCreate = false, ...restProps }: Props) {
                 rightIcon="caret-down"
                 text={film ? `${film.title} (${film.year})` : "(No selection)"}
                 disabled={restProps.disabled}
+                fill={fill}
             />
         </FilmSelect>
     );

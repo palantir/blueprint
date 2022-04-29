@@ -67,7 +67,7 @@ export interface PanelStack2Props<T extends Panel<object>> extends Props {
      * The full stack of panels in controlled mode. The last panel in the stack
      * will be displayed.
      */
-    stack?: T[];
+    stack?: readonly T[];
 }
 
 interface PanelStack2Component {
@@ -84,23 +84,29 @@ interface PanelStack2Component {
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props: PanelStack2Props<T>) => {
-    const { renderActivePanelOnly = true, showPanelHeader = true } = props;
+    const { renderActivePanelOnly = true, showPanelHeader = true, stack: propsStack } = props;
     const [direction, setDirection] = React.useState("push");
 
     const [localStack, setLocalStack] = React.useState<T[]>(
         props.initialPanel !== undefined ? [props.initialPanel] : [],
     );
-    const stack = props.stack != null ? props.stack.slice().reverse() : localStack;
-
-    if (stack.length === 0) {
-        return null;
-    }
+    const stack = React.useMemo(
+        () => (propsStack != null ? propsStack.slice().reverse() : localStack),
+        [localStack, propsStack],
+    );
+    const stackLength = React.useRef<number>(stack.length);
+    React.useEffect(() => {
+        if (stack.length !== stackLength.current) {
+            // Adjust the direction in case the stack size has changed, controlled or uncontrolled
+            setDirection(stack.length - stackLength.current < 0 ? "pop" : "push");
+        }
+        stackLength.current = stack.length;
+    }, [stack]);
 
     const handlePanelOpen = React.useCallback(
         (panel: T) => {
             props.onOpen?.(panel);
             if (props.stack == null) {
-                setDirection("push");
                 setLocalStack(prevStack => [panel, ...prevStack]);
             }
         },
@@ -114,12 +120,16 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
             }
             props.onClose?.(panel);
             if (props.stack == null) {
-                setDirection("pop");
                 setLocalStack(prevStack => prevStack.slice(1));
             }
         },
         [stack, props.onClose],
     );
+
+    // early return, after all hooks are called
+    if (stack.length === 0) {
+        return null;
+    }
 
     const panelsToRender = renderActivePanelOnly ? [stack[0]] : stack;
     const panels = panelsToRender

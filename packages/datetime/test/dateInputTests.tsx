@@ -92,7 +92,11 @@ describe("<DateInput>", () => {
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
-    it("Popover closes when tabbing on first day of the month", () => {
+    // Skipping because simulate just invokes the function passed to React's "on<EventName>" prop
+    // and doesn't actually simulate anything. Properly testing would require running with an actual
+    // browser and focusing specific elements via the DOM API. This would require changing the Karma
+    // config to run with Chrome instead of ChromeHeadless.
+    it.skip("Popover closes when tabbing on first day of the month", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
         const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
         wrapper.find("input").simulate("focus").simulate("blur");

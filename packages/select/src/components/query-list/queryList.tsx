@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { AbstractComponent2, DISPLAYNAME_PREFIX, Props, Keys, Menu, Utils } from "@blueprintjs/core";
+import { AbstractComponent2, DISPLAYNAME_PREFIX, Keys, Menu, Props, Utils } from "@blueprintjs/core";
 
 import {
     executeItemsEqual,
@@ -374,6 +374,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
             };
             return this.props.itemRenderer(item, {
                 handleClick: e => this.handleItemSelect(item, e),
+                handleFocus: () => this.setActiveItem(item),
                 index,
                 modifiers,
                 query,

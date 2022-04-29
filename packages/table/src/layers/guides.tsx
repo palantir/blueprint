@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Props, Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 
@@ -25,12 +25,12 @@ export interface IGuideLayerProps extends Props {
     /**
      *  The left-offset location of the vertical guides
      */
-    verticalGuides?: number[];
+    verticalGuides: number[];
 
     /**
      *  The top-offset location of the horizontal guides
      */
-    horizontalGuides?: number[];
+    horizontalGuides: number[];
 }
 
 export class GuideLayer extends React.Component<IGuideLayerProps> {

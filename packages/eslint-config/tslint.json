@@ -7,16 +7,9 @@
                 "react-dom",
                 "@blueprintjs/table/src",
                 "@blueprintjs/test-commons/bootstrap",
-                "tsutils",
-                "@typescript-eslint/experimental-utils"
+                "tsutils"
             ]
         },
-        "object-literal-sort-keys": true,
-        "only-arrow-functions": {
-            "options": ["allow-declarations", "allow-named-functions"]
-        },
-        "variable-name": {
-            "options": ["allow-leading-underscore", "allow-pascal-case", "ban-keywords", "check-format"]
-        }
+        "object-literal-sort-keys": true
     }
 }

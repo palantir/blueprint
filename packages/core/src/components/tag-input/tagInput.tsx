@@ -16,12 +16,11 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, IRef, Keys, refHandler, setRef, Utils } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, Props, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, MaybeElement, Props } from "../../common/props";
 import { Icon, IconName, IconSize } from "../icon/icon";
-import { TagProps, Tag } from "../tag/tag";
+import { Tag, TagProps } from "../tag/tag";
 
 /**
  * The method in which a `TagInput` value was added.
@@ -58,6 +57,8 @@ export interface ITagInputProps extends IntentProps, Props {
      */
     addOnPaste?: boolean;
 
+    children?: React.ReactNode;
+
     /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's `rightElement`,
@@ -77,7 +78,7 @@ export interface ITagInputProps extends IntentProps, Props {
     inputProps?: HTMLInputProps;
 
     /** Ref handler for the `<input>` element. */
-    inputRef?: (input: HTMLInputElement | null) => void;
+    inputRef?: IRef<HTMLInputElement>;
 
     /** Controlled value of the `<input>` element. This is shorthand for `inputProps={{ value }}`. */
     inputValue?: string;
@@ -181,7 +182,7 @@ export interface ITagInputProps extends IntentProps, Props {
      * subtype, such as `string` or `ReactChild`, you can use that type on all your handlers
      * to simplify type logic.
      */
-    values: React.ReactNode[];
+    values: readonly React.ReactNode[];
 }
 
 export interface ITagInputState {
@@ -194,7 +195,6 @@ export interface ITagInputState {
 /** special value for absence of active tag */
 const NONE = -1;
 
-@polyfill
 export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
@@ -255,7 +255,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
                 <Icon
                     className={Classes.TAG_INPUT_ICON}
                     icon={leftIcon}
-                    iconSize={isLarge ? IconSize.LARGE : IconSize.STANDARD}
+                    size={isLarge ? IconSize.LARGE : IconSize.STANDARD}
                 />
                 <div className={Classes.TAG_INPUT_VALUES}>
                     {values.map(this.maybeRenderTag)}
@@ -467,9 +467,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
     private removeIndexFromValues(index: number) {
         const { onChange, onRemove, values } = this.props;
         onRemove?.(values[index], index);
-        if (Utils.isFunction(onChange)) {
-            onChange(values.filter((_, i) => i !== index));
-        }
+        onChange?.(values.filter((_, i) => i !== index));
     }
 
     private invokeKeyPressCallback(

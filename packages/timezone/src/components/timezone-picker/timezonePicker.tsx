@@ -16,18 +16,17 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
     AbstractPureComponent2,
     Button,
+    ButtonProps,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
-    ButtonProps,
     InputGroupProps2,
     IPopoverProps,
-    Props,
     MenuItem,
+    Props,
 } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 
@@ -42,6 +41,8 @@ export { TimezoneDisplayFormat };
 export type TimezonePickerProps = ITimezonePickerProps;
 /** @deprecated use TimezonePickerProps */
 export interface ITimezonePickerProps extends Props {
+    children?: React.ReactNode;
+
     /**
      * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
      * See https://www.iana.org/time-zones for more information.
@@ -116,7 +117,6 @@ export interface ITimezonePickerState {
 
 const TypedSelect = Select.ofType<TimezoneItem>();
 
-@polyfill
 export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, ITimezonePickerState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 
@@ -213,18 +213,19 @@ export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, 
         return items.filter(item => expr.test(item.text + item.label));
     };
 
-    private renderItem: ItemRenderer<TimezoneItem> = (item, { handleClick, modifiers }) => {
+    private renderItem: ItemRenderer<TimezoneItem> = (item, { handleClick, handleFocus, modifiers }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
         return (
             <MenuItem
                 key={item.key}
-                active={modifiers.active}
+                selected={modifiers.active}
                 icon={item.iconName}
                 text={item.text}
                 label={item.label}
                 onClick={handleClick}
+                onFocus={handleFocus}
                 shouldDismissPopover={false}
             />
         );

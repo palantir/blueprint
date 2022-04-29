@@ -25,17 +25,17 @@ import { isNodeEnv } from "./utils";
 // eslint-disable-next-line @typescript-eslint/ban-types
 export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Component<P, S, SS> {
     // unsafe lifecycle methods
-    public componentWillUpdate: never;
+    public componentWillUpdate!: never;
 
-    public componentWillReceiveProps: never;
+    public componentWillReceiveProps!: never;
 
-    public componentWillMount: never;
+    public componentWillMount!: never;
 
     // this should be static, not an instance method
-    public getDerivedStateFromProps: never;
+    public getDerivedStateFromProps!: never;
 
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
-    protected displayName: never;
+    protected displayName!: never;
 
     // Not bothering to remove entries when their timeouts finish because clearing invalid ID is a no-op
     private timeoutIds: number[] = [];

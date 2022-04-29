@@ -20,7 +20,7 @@ import * as React from "react";
 
 import { Classes, Props } from "@blueprintjs/core";
 
-import { NavMenuItemProps, NavMenuItem } from "./navMenuItem";
+import { NavMenuItem, NavMenuItemProps } from "./navMenuItem";
 
 export interface INavMenuProps extends Props {
     activePageId: string;

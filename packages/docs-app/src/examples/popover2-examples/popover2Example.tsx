@@ -19,8 +19,8 @@ import * as React from "react";
 import {
     AnchorButton,
     Button,
-    Classes as CoreClasses,
     Code,
+    Classes as CoreClasses,
     FormGroup,
     H5,
     HTMLSelect,
@@ -42,11 +42,11 @@ import {
 } from "@blueprintjs/docs-theme";
 import {
     Classes,
-    Popover2SharedProps,
     Placement,
     PlacementOptions,
     Popover2,
     Popover2InteractionKind,
+    Popover2SharedProps,
     StrictModifierNames,
 } from "@blueprintjs/popover2";
 
@@ -151,6 +151,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
 
     public render() {
         const { boundary, exampleIndex, sliderValue, ...popoverProps } = this.state;
+        console.info(popoverProps);
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover2-example-scroll" ref={this.centerScroll}>
@@ -169,7 +170,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                         isOpen={this.state.isControlled ? this.state.isOpen : undefined}
                         content={this.getContents(exampleIndex)}
                     >
-                        <Button intent={Intent.PRIMARY} text="Popover target" />
+                        <Button intent={Intent.PRIMARY} text="Popover target" tabIndex={0} />
                     </Popover2>
                     <p>
                         Scroll around this container to experiment

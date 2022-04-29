@@ -18,9 +18,9 @@ import * as React from "react";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
 
-import { IFocusedCellCoordinates } from "../common/cell";
+import type { FocusedCellCoordinates } from "../common/cellTypes";
 import { Utils } from "../common/utils";
-import { IRegion, RegionCardinality, Regions } from "../regions";
+import { Region, RegionCardinality, Regions } from "../regions";
 import { Draggable, IDraggableProps } from "./draggable";
 import { ICoordinateData } from "./dragTypes";
 
@@ -48,23 +48,26 @@ export interface IReorderableProps {
      * array of `Region`s. This array should be considered the new selection
      * state for the entire table.
      */
-    onSelection: (regions: IRegion[]) => void;
+    onSelection: (regions: Region[]) => void;
 
     /**
      * When the user reorders something, this callback is called with the new
      * focus cell for the newly selected set of regions.
      */
-    onFocusedCell: (focusedCell: IFocusedCellCoordinates) => void;
+    onFocusedCell: (focusedCell: FocusedCellCoordinates) => void;
 
     /**
      * An array containing the table's selection Regions.
      *
      * @default []
      */
-    selectedRegions?: IRegion[];
+    selectedRegions?: Region[];
 }
 
 export interface IDragReorderable extends IReorderableProps {
+    /** Element to drag & reorder. */
+    children: React.ReactNode;
+
     /**
      * Whether the reordering behavior is disabled.
      *
@@ -76,20 +79,20 @@ export interface IDragReorderable extends IReorderableProps {
      * A callback that determines a `Region` for the single `MouseEvent`. If
      * no valid region can be found, `null` may be returned.
      */
-    locateClick: (event: MouseEvent) => IRegion;
+    locateClick: (event: MouseEvent) => Region;
 
     /**
      * A callback that determines the index at which to show the preview guide.
      * This is equivalent to the absolute index in the old ordering where the
      * reordered element will move.
      */
-    locateDrag: (event: MouseEvent, coords: ICoordinateData) => number;
+    locateDrag: (event: MouseEvent, coords: ICoordinateData) => number | undefined;
 
     /**
      * A callback that converts the provided index into a region. The returned
      * region will be used to update the current selection after drag-reordering.
      */
-    toRegion: (index1: number, index2?: number) => IRegion;
+    toRegion: (index1: number, index2?: number) => Region;
 }
 
 export class DragReorderable extends React.PureComponent<IDragReorderable> {
@@ -97,9 +100,9 @@ export class DragReorderable extends React.PureComponent<IDragReorderable> {
         selectedRegions: [],
     };
 
-    private selectedRegionStartIndex: number;
+    private selectedRegionStartIndex?: number;
 
-    private selectedRegionLength: number;
+    private selectedRegionLength: number = 0;
 
     public render() {
         const draggableProps = this.getDraggableProps();
@@ -138,7 +141,7 @@ export class DragReorderable extends React.PureComponent<IDragReorderable> {
             return false;
         }
 
-        const { selectedRegions } = this.props;
+        const { selectedRegions = [] } = this.props;
 
         const selectedRegionIndex = Regions.findContainingRegion(selectedRegions, region);
         if (selectedRegionIndex >= 0) {
@@ -149,7 +152,7 @@ export class DragReorderable extends React.PureComponent<IDragReorderable> {
             }
 
             // cache for easy access later in the lifecycle
-            const selectedInterval = isRowHeader ? selectedRegion.rows : selectedRegion.cols;
+            const selectedInterval = isRowHeader ? selectedRegion.rows! : selectedRegion.cols!;
             this.selectedRegionStartIndex = selectedInterval[0];
             // add 1 because the selected interval is inclusive, which simple subtraction doesn't
             // account for (e.g. in a FULL_COLUMNS range from 3 to 6, 6 - 3 = 3, but the selection
@@ -159,7 +162,7 @@ export class DragReorderable extends React.PureComponent<IDragReorderable> {
             // select the new region to avoid complex and unintuitive UX w/r/t the existing selection
             this.maybeSelectRegion(region);
 
-            const regionRange = isRowHeader ? region.rows : region.cols;
+            const regionRange = isRowHeader ? region.rows! : region.cols!;
             this.selectedRegionStartIndex = regionRange[0];
             this.selectedRegionLength = regionRange[1] - regionRange[0] + 1;
         }
@@ -170,6 +173,9 @@ export class DragReorderable extends React.PureComponent<IDragReorderable> {
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
         const oldIndex = this.selectedRegionStartIndex;
         const guideIndex = this.props.locateDrag(event, coords);
+        if (oldIndex === undefined || guideIndex === undefined) {
+            return;
+        }
         const length = this.selectedRegionLength;
         const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
         this.props.onReordering(oldIndex, reorderedIndex, length);
@@ -178,8 +184,10 @@ export class DragReorderable extends React.PureComponent<IDragReorderable> {
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
         const oldIndex = this.selectedRegionStartIndex;
         const guideIndex = this.props.locateDrag(event, coords);
+        if (oldIndex === undefined || guideIndex === undefined) {
+            return;
+        }
         const length = this.selectedRegionLength;
-
         const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
         this.props.onReordered(oldIndex, reorderedIndex, length);
 
@@ -189,7 +197,7 @@ export class DragReorderable extends React.PureComponent<IDragReorderable> {
 
         // resetting is not strictly required, but it's cleaner
         this.selectedRegionStartIndex = undefined;
-        this.selectedRegionLength = undefined;
+        this.selectedRegionLength = 0;
     };
 
     private shouldIgnoreMouseDown(event: MouseEvent) {
@@ -198,7 +206,7 @@ export class DragReorderable extends React.PureComponent<IDragReorderable> {
         return !Utils.isLeftClick(event) || isDisabled;
     }
 
-    private maybeSelectRegion(region: IRegion) {
+    private maybeSelectRegion(region: Region) {
         const nextSelectedRegions = [region];
 
         if (!CoreUtils.deepCompareKeys(nextSelectedRegions, this.props.selectedRegions)) {

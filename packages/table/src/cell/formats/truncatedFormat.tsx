@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, Icon, Props, Popover, Position } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, Icon, Popover, Position, Props } from "@blueprintjs/core";
 
 import * as Classes from "../../common/classes";
 import { Utils } from "../../common/utils";
@@ -172,7 +172,9 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
         isTruncated: false,
     };
 
-    private contentDiv: HTMLDivElement;
+    private contentDiv: HTMLDivElement | null | undefined;
+
+    private handleContentDivRef = (ref: HTMLDivElement | null) => (this.contentDiv = ref);
 
     public componentDidMount() {
         this.setTruncationState();
@@ -187,7 +189,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
         const content = "" + children;
 
         let cellContent = content;
-        if (!detectTruncation && truncateLength > 0 && cellContent.length > truncateLength) {
+        if (!detectTruncation && truncateLength! > 0 && cellContent.length > truncateLength!) {
             cellContent = cellContent.substring(0, truncateLength) + truncationSuffix;
         }
 
@@ -249,8 +251,6 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
         }
     }
 
-    private handleContentDivRef = (ref: HTMLDivElement) => (this.contentDiv = ref);
-
     private handlePopoverOpen = () => {
         this.setState({ isPopoverOpen: true });
     };
@@ -270,21 +270,17 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
             case TruncatedPopoverMode.WHEN_TRUNCATED:
                 return detectTruncation
                     ? this.state.isTruncated
-                    : truncateLength > 0 && content.length > truncateLength;
+                    : truncateLength! > 0 && content.length > truncateLength!;
             case TruncatedPopoverMode.WHEN_TRUNCATED_APPROX:
                 if (!detectTruncation) {
-                    return truncateLength > 0 && content.length > truncateLength;
+                    return truncateLength! > 0 && content.length > truncateLength!;
                 }
                 if (this.props.parentCellHeight == null || this.props.parentCellWidth == null) {
                     return false;
                 }
 
-                const {
-                    approximateCharWidth,
-                    approximateLineHeight,
-                    cellHorizontalPadding,
-                    numBufferLines,
-                } = measureByApproxOptions;
+                const { approximateCharWidth, approximateLineHeight, cellHorizontalPadding, numBufferLines } =
+                    measureByApproxOptions!;
 
                 const cellWidth = this.props.parentCellWidth;
                 const approxCellHeight = Utils.getApproxCellHeight(
@@ -308,7 +304,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
             return;
         }
 
-        if (this.contentDiv === undefined) {
+        if (this.contentDiv == null) {
             this.setState({ isTruncated: false });
             return;
         }

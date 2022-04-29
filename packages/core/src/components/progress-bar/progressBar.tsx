@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
@@ -48,7 +47,6 @@ export interface IProgressBarProps extends Props, IntentProps {
     value?: number;
 }
 
-@polyfill
 export class ProgressBar extends AbstractPureComponent2<ProgressBarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ProgressBar`;
 
@@ -60,11 +58,18 @@ export class ProgressBar extends AbstractPureComponent2<ProgressBarProps> {
             { [Classes.PROGRESS_NO_ANIMATION]: !animate, [Classes.PROGRESS_NO_STRIPES]: !stripes },
             className,
         );
+        const percent = value == null ? undefined : 100 * clamp(value, 0, 1);
         // don't set width if value is null (rely on default CSS value)
-        const width = value == null ? undefined : 100 * clamp(value, 0, 1) + "%";
+        const width = percent == null ? undefined : percent + "%";
 
         return (
-            <div className={classes}>
+            <div
+                aria-valuemax={100}
+                aria-valuemin={0}
+                aria-valuenow={percent == null ? undefined : Math.round(percent)}
+                className={classes}
+                role="progressbar"
+            >
                 <div className={Classes.PROGRESS_METER} style={{ width }} />
             </div>
         );

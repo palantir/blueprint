@@ -16,13 +16,12 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
+import { IconName, iconNameToPathsRecordKey, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
+import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props } from "../../common";
 
-export { IconName };
+export type { IconName };
 
 export enum IconSize {
     STANDARD = 16,
@@ -68,12 +67,17 @@ export interface IIconProps extends IntentProps, Props {
     icon: IconName | MaybeElement;
 
     /**
+     * @deprecated use size prop instead
+     */
+    iconSize?: number;
+
+    /**
      * Size of the icon, in pixels. Blueprint contains 16px and 20px SVG icon
      * images, and chooses the appropriate resolution based on this prop.
      *
      * @default IconSize.STANDARD = 16
      */
-    iconSize?: number;
+    size?: number;
 
     /** CSS style properties. */
     style?: React.CSSProperties;
@@ -88,21 +92,18 @@ export interface IIconProps extends IntentProps, Props {
     /**
      * Description string. This string does not appear in normal browsers, but
      * it increases accessibility. For instance, screen readers will use it for
-     * aural feedback. By default, this is set to the icon's name. Pass an
-     * explicit falsy value to disable.
+     * aural feedback.
+     *
+     * If this value is nullish, `false`, or an empty string, the component will assume
+     * that the icon is decorative and `aria-hidden="true"` will be applied.
+     *
+     * @see https://www.w3.org/WAI/tutorials/images/decorative/
      */
     title?: string | false | null;
 }
 
-@polyfill
 export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
-
-    /** @deprecated use IconSize.STANDARD */
-    public static readonly SIZE_STANDARD = IconSize.STANDARD;
-
-    /** @deprecated use IconSize.LARGE */
-    public static readonly SIZE_LARGE = IconSize.LARGE;
 
     public render(): JSX.Element | null {
         const { icon } = this.props;
@@ -116,19 +117,20 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
             className,
             color,
             htmlTitle,
-            iconSize = IconSize.STANDARD,
+            // eslint-disable-next-line deprecation/deprecation
+            iconSize,
             intent,
-            title = icon,
+            size = iconSize ?? IconSize.STANDARD,
+            title,
             tagName = "span",
             ...htmlprops
         } = this.props;
 
         // choose which pixel grid is most appropriate for given icon size
-        const pixelGridSize = iconSize >= IconSize.LARGE ? IconSize.LARGE : IconSize.STANDARD;
+        const pixelGridSize = size >= IconSize.LARGE ? IconSize.LARGE : IconSize.STANDARD;
         // render path elements, or nothing if icon name is unknown.
         const paths = this.renderSvgPaths(pixelGridSize, icon);
 
-        // eslint-disable-next-line deprecation/deprecation
         const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
@@ -136,10 +138,11 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
             tagName,
             {
                 ...htmlprops,
+                "aria-hidden": title ? undefined : true,
                 className: classes,
                 title: htmlTitle,
             },
-            <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
+            <svg fill={color} data-icon={icon} width={size} height={size} viewBox={viewBox}>
                 {title && <desc>{title}</desc>}
                 {paths}
             </svg>,
@@ -149,10 +152,10 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
     /** Render `<path>` elements for the given icon name. Returns `null` if name is unknown. */
     private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element[] | null {
         const svgPathsRecord = pathsSize === IconSize.STANDARD ? IconSvgPaths16 : IconSvgPaths20;
-        const pathStrings = svgPathsRecord[iconName];
-        if (pathStrings == null) {
+        const paths = svgPathsRecord[iconNameToPathsRecordKey(iconName)];
+        if (paths == null) {
             return null;
         }
-        return pathStrings.map((d, i) => <path key={i} d={d} fillRule="evenodd" />);
+        return paths.map((path, i) => <path key={i} d={path} fillRule="evenodd" />);
     }
 }

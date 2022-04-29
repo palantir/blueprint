@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes, MultistepDialog, DialogStep } from "../../src";
+import { Classes, DialogStep, MultistepDialog } from "../../src";
 
 const NEXT_BUTTON = "[text='Next']";
 const BACK_BUTTON = "[text='Back']";
@@ -163,20 +163,24 @@ describe("<MultistepDialog>", () => {
     });
 
     it("gets by without children", () => {
-        assert.doesNotThrow(() => mount(<MultistepDialog isOpen={true} />));
+        assert.doesNotThrow(() => {
+            const dialog = mount(<MultistepDialog isOpen={true} />);
+            dialog.unmount();
+        });
     });
 
     it("supports non-existent children", () => {
-        assert.doesNotThrow(() =>
-            mount(
+        assert.doesNotThrow(() => {
+            const dialog = mount(
                 <MultistepDialog>
                     {null}
                     <DialogStep id="one" panel={<Panel />} />
                     {undefined}
                     <DialogStep id="two" panel={<Panel />} />
                 </MultistepDialog>,
-            ),
-        );
+            );
+            dialog.unmount();
+        });
     });
 
     it("enables next by default", () => {
@@ -239,4 +243,4 @@ describe("<MultistepDialog>", () => {
     });
 });
 
-const Panel: React.FunctionComponent = () => <strong> panel</strong>;
+const Panel: React.FC = () => <strong> panel</strong>;

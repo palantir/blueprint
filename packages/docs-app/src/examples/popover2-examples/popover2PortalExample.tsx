@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Button, Code, H5, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Popover2Props, Popover2 } from "@blueprintjs/popover2";
+import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 const POPOVER2_PROPS: Partial<Popover2Props> = {
     autoFocus: false,
@@ -78,7 +78,6 @@ export class Popover2PortalExample extends React.PureComponent<IExampleProps, IP
                             content="I am in a Portal (default)."
                             isOpen={this.state.isOpen}
                             usePortal={true}
-                            // tslint:disable-next-line jsx-no-lambda
                             renderTarget={({ isOpen, ref, ...p }) => (
                                 <Code {...p} elementRef={ref}>{`usePortal={true}`}</Code>
                             )}
@@ -99,7 +98,6 @@ export class Popover2PortalExample extends React.PureComponent<IExampleProps, IP
                             modifiers={{
                                 preventOverflow: { enabled: false },
                             }}
-                            // tslint:disable-next-line jsx-no-lambda
                             renderTarget={({ isOpen, ref, ...p }) => (
                                 <Code {...p} elementRef={ref}>{`usePortal={false}`}</Code>
                             )}

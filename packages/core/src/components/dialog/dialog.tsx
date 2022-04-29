@@ -16,20 +16,23 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
+import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon, IconName, IconSize } from "../icon/icon";
-import { IBackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
+import { IBackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
 
 // eslint-disable-next-line deprecation/deprecation
 export type DialogProps = IDialogProps;
 /** @deprecated use DialogProps */
 export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
+    /** Dialog contents. */
+    children?: React.ReactNode;
+
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
@@ -76,22 +79,49 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
      * name here will require defining new CSS transition properties.
      */
     transitionName?: string;
+
+    /**
+     * ID of the element that contains title or label text for this dialog.
+     *
+     * By default, if the `title` prop is supplied, this component will generate
+     * a unique ID for the `<H4>` title element and use that ID here.
+     */
+    "aria-labelledby"?: string;
+
+    /**
+     * ID of an element that contains description text inside this dialog.
+     */
+    "aria-describedby"?: string;
 }
 
-@polyfill
 export class Dialog extends AbstractPureComponent2<DialogProps> {
     public static defaultProps: DialogProps = {
         canOutsideClickClose: true,
         isOpen: false,
     };
 
+    private titleId: string;
+
     public static displayName = `${DISPLAYNAME_PREFIX}.Dialog`;
+
+    public constructor(props: DialogProps) {
+        super(props);
+
+        const id = uniqueId("bp-dialog");
+        this.titleId = `title-${id}`;
+    }
 
     public render() {
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
                 <div className={Classes.DIALOG_CONTAINER}>
-                    <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
+                    <div
+                        className={classNames(Classes.DIALOG, this.props.className)}
+                        role="dialog"
+                        aria-labelledby={this.props["aria-labelledby"] || (this.props.title ? this.titleId : undefined)}
+                        aria-describedby={this.props["aria-describedby"]}
+                        style={this.props.style}
+                    >
                         {this.maybeRenderHeader()}
                         {this.props.children}
                     </div>
@@ -119,7 +149,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<Icon icon="small-cross" iconSize={IconSize.LARGE} />}
+                    icon={<Icon icon="small-cross" size={IconSize.LARGE} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -136,8 +166,8 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
-                <Icon icon={icon} iconSize={IconSize.LARGE} />
-                <H4>{title}</H4>
+                <Icon icon={icon} size={IconSize.LARGE} aria-hidden={true} tabIndex={-1} />
+                <H4 id={this.titleId}>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>
         );

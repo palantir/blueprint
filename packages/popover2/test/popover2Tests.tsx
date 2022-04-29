@@ -22,7 +22,7 @@ import * as sinon from "sinon";
 import { Classes as CoreClasses, Keys, Menu, MenuItem, Overlay, Portal } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Errors, Classes } from "../src";
+import { Classes, Errors } from "../src";
 import { IPopover2Props, IPopover2State, Popover2, Popover2InteractionKind } from "../src/popover2";
 import { Popover2Arrow } from "../src/popover2Arrow";
 import { Tooltip2 } from "../src/tooltip2";
@@ -186,6 +186,11 @@ describe("<Popover2>", () => {
                 usePortal: false,
             });
             assert.isNotNull(popoverElement.matches(`.${CoreClasses.DARK}`));
+        });
+
+        it("renders with aria-haspopup attr", () => {
+            wrapper = renderPopover({ isOpen: true });
+            assert.isTrue(wrapper.find("[aria-haspopup='true']").exists());
         });
     });
 
@@ -747,7 +752,7 @@ describe("<Popover2>", () => {
         });
     });
 
-    // these tests can be removed once Popover2 is merged into core in v4.0
+    // these tests can be removed once Popover2 is merged into core in v5.0
     describe("compatibility", () => {
         it("MenuItem from core package is able to dismiss open Popover2", () => {
             wrapper = renderPopover(

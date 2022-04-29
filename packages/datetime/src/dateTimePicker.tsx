@@ -16,14 +16,13 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, DISPLAYNAME_PREFIX, Props } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import { DatePicker, DatePickerProps } from "./datePicker";
-import { TimePickerProps, TimePicker } from "./timePicker";
+import { TimePicker, TimePickerProps } from "./timePicker";
 
 export interface IDateTimePickerProps extends Props {
     /**
@@ -71,7 +70,6 @@ export interface IDateTimePickerState {
 }
 
 /** @deprecated since 3.4.0. Prefer `<DatePicker>` with `timePrecision` and `timePickerProps`. */
-@polyfill
 export class DateTimePicker extends AbstractPureComponent2<IDateTimePickerProps, IDateTimePickerState> {
     public static defaultProps: IDateTimePickerProps = {
         canClearSelection: true,
@@ -100,7 +98,11 @@ export class DateTimePicker extends AbstractPureComponent2<IDateTimePickerProps,
                     onChange={this.handleDateChange}
                     value={value}
                 />
-                <TimePicker {...this.props.timePickerProps} onChange={this.handleTimeChange} value={value} />
+                <TimePicker
+                    {...this.props.timePickerProps}
+                    onChange={this.handleTimeChange}
+                    value={this.state.timeValue}
+                />
             </div>
         );
     }
