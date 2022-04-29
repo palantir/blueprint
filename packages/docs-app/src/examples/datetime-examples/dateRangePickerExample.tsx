@@ -40,7 +40,7 @@ export interface IDateRangePickerExampleState {
     reverseMonthAndYearMenus?: boolean;
     shortcuts?: boolean;
     timePrecision?: TimePrecision;
-    ignoreRange: boolean;
+    ignoreBounds: boolean;
 }
 
 interface IDateOption {
@@ -77,7 +77,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dateRange: [null, null],
-        ignoreRange: false,
+        ignoreBounds: false,
         maxDateIndex: 0,
         minDateIndex: 0,
         reverseMonthAndYearMenus: false,
@@ -97,7 +97,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
         this.setState({ reverseMonthAndYearMenus }),
     );
 
-    private toggleIgnoreRange = handleBooleanChange(ignoreRange => this.setState({ ignoreRange }));
+    private toggleIgnoreBounds = handleBooleanChange(ignoreBounds => this.setState({ ignoreBounds }));
 
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
 
@@ -154,9 +154,9 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
                         onChange={this.toggleReverseMonthAndYearMenus}
                     />
                     <Switch
-                        checked={this.state.ignoreRange}
-                        label="Ignore max and min date range"
-                        onChange={this.toggleIgnoreRange}
+                        checked={this.state.ignoreBounds}
+                        label="Ignore max and min date bounds"
+                        onChange={this.toggleIgnoreBounds}
                     />
                 </div>
                 <div>

@@ -116,13 +116,13 @@ describe("<DatePicker>", () => {
             assertDayDisabled(getDay(21), false);
         });
 
-        it("enable out-of-range min dates if ignoreRange is true", () => {
+        it("enable out-of-bounds min dates if ignoreBounds is true", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const { getDay, clickPreviousMonth } = wrap(
                 <DatePicker
                     defaultValue={defaultValue}
                     minDate={new Date(2017, Months.AUGUST, 20)}
-                    ignoreRange={true}
+                    ignoreBounds={true}
                 />,
             );
             clickPreviousMonth();
@@ -130,13 +130,13 @@ describe("<DatePicker>", () => {
             assertDayDisabled(getDay(21), false);
         });
 
-        it("enable out-of-range max dates if ignoreRange is true", () => {
+        it("enable out-of-bounds max dates if ignoreBounds is true", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const { getDay } = wrap(
                 <DatePicker
                     defaultValue={defaultValue}
                     maxDate={new Date(2017, Months.SEPTEMBER, 20)}
-                    ignoreRange={true}
+                    ignoreBounds={true}
                 />,
             );
             assertDayDisabled(getDay(10), false);

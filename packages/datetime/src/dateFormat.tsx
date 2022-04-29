@@ -65,13 +65,13 @@ export interface IDateFormatProps {
 export function getFormattedDateString(
     date: Date | false | null,
     props: DateFormatProps & IDatePickerBaseProps,
-    ignoreRange: boolean = false,
+    ignoreBounds: boolean = false,
 ) {
     if (date == null) {
         return "";
     } else if (!isDateValid(date)) {
         return props.invalidDateMessage;
-    } else if (props.ignoreRange || ignoreRange || isDayInRange(date, [props.minDate, props.maxDate])) {
+    } else if (props.ignoreBounds || ignoreBounds || isDayInRange(date, [props.minDate, props.maxDate])) {
         return props.formatDate(date, props.locale);
     } else {
         return props.outOfRangeMessage;

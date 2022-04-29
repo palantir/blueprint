@@ -31,7 +31,7 @@ export interface IDatePickerExampleState {
     showActionsBar: boolean;
     timePrecision: TimePrecision | undefined;
     showTimeArrowButtons: boolean;
-    ignoreRange: boolean;
+    ignoreBounds: boolean;
     useAmPm?: boolean;
 }
 
@@ -39,7 +39,7 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
     public state: IDatePickerExampleState = {
         date: null,
         highlightCurrentDay: false,
-        ignoreRange: false,
+        ignoreBounds: false,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: false,
@@ -64,7 +64,7 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
         this.setState({ showTimeArrowButtons }),
     );
 
-    private toggleIgnoreRange = handleBooleanChange(ignoreRange => this.setState({ ignoreRange }));
+    private toggleIgnoreBounds = handleBooleanChange(ignoreBounds => this.setState({ ignoreBounds }));
 
     private toggleUseAmPm = handleBooleanChange(useAmPm => this.setState({ useAmPm }));
 
@@ -88,9 +88,9 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                     onChange={this.toggleReverseMenus}
                 />
                 <Switch
-                    checked={this.state.ignoreRange}
+                    checked={this.state.ignoreBounds}
                     label="Ignore max and min date range"
-                    onChange={this.toggleIgnoreRange}
+                    onChange={this.toggleIgnoreBounds}
                 />
                 <PrecisionSelect
                     allowNone={true}

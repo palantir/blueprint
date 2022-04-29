@@ -489,7 +489,7 @@ describe("<DateInput>", () => {
             assertDateEquals(onError.args[0][0], new Date(value));
         });
 
-        it("Typing in a date out of range does not display an error message if ignoreRange is set to true", () => {
+        it("Typing in a date out of bounds does not display an error message if ignoreBounds is set to true", () => {
             const rangeMessage = "RANGE ERROR";
             const onError = sinon.spy();
             const wrapper = mount(
@@ -499,7 +499,7 @@ describe("<DateInput>", () => {
                     minDate={new Date(2015, Months.MARCH, 1)}
                     onError={onError}
                     outOfRangeMessage={rangeMessage}
-                    ignoreRange={true}
+                    ignoreBounds={true}
                 />,
             );
             const value = "2/1/2030";

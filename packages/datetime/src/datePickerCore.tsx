@@ -126,7 +126,7 @@ export interface IDatePickerBaseProps {
      *
      * @default false
      */
-    ignoreRange?: boolean;
+    ignoreBounds?: boolean;
 }
 
 export const DISABLED_MODIFIER = "disabled";
