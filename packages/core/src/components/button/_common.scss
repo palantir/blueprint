@@ -28,19 +28,6 @@ $button-box-shadow-active:
   inset 0 0 0 $button-border-width rgba($black, 0.2),
   0 1px 2px rgba($black, 0.2) !default;
 
-/*
-Overlay shadows are used for default buttons
-floating on top of other elements. This way, the
-shadows blend with the colors beneath it.
-Switches and slider handles both use these variables.
-*/
-$button-box-shadow-overlay:
-  0 0 0 $button-border-width rgba($black, 0.5),
-  0 1px 1px rgba($black, 0.5);
-$button-box-shadow-overlay-active:
-  0 0 0 $button-border-width rgba($black, 0.2),
-  inset 0 1px 1px rgba($black, 0.1) !default;
-
 $dark-button-box-shadow:
   inset 0 0 0 $button-border-width rgba($white, 0.1),
   0 1px 2px rgba($black, 0.2) !default;
@@ -157,13 +144,11 @@ $button-intents: (
 
 @mixin pt-button-active() {
   background-color: $button-background-color-active;
-  background-image: none;
   box-shadow: $button-box-shadow-active;
 }
 
 @mixin pt-button-disabled() {
   background-color: $button-background-color-disabled;
-  background-image: none;
   box-shadow: none;
   color: $button-color-disabled;
   cursor: not-allowed;
@@ -189,7 +174,6 @@ $button-intents: (
   &:active,
   &.#{$ns}-active {
     background-color: $active-color;
-    background-image: none;
     box-shadow: $button-box-shadow-active;
   }
 
@@ -201,7 +185,6 @@ $button-intents: (
 
 @mixin pt-button-intent-disabled($default-color) {
   background-color: rgba($default-color, 0.5);
-  background-image: none;
   border-color: transparent;
   box-shadow: none;
   color: $button-intent-color-disabled;
@@ -254,13 +237,11 @@ $button-intents: (
 
 @mixin pt-dark-button-active() {
   background-color: $dark-button-background-color-active;
-  background-image: none;
   box-shadow: $dark-button-box-shadow-active;
 }
 
 @mixin pt-dark-button-disabled() {
   background-color: $dark-button-background-color-disabled;
-  background-image: none;
   box-shadow: none;
   color: $dark-button-color-disabled;
 }
@@ -284,7 +265,6 @@ $button-intents: (
 }
 
 @mixin pt-dark-button-intent-disabled() {
-  background-image: none;
   box-shadow: none;
   color: $dark-button-intent-color-disabled;
 }
