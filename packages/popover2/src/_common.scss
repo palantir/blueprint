@@ -9,8 +9,8 @@
 $pt-popover2-background-color: $white !default;
 $pt-popover2-box-shadow: $pt-elevation-shadow-3 !default;
 $pt-tooltip2-box-shadow: $pt-popover-box-shadow !default;
-$pt-dark-popover2-background-color: $dark-gray4 !default;
-$pt-dark-popover2-box-shadow: $pt-dark-elevation-shadow-3 !default;
+$pt-dark-popover2-background-color: $dark-gray3 !default;
+$pt-dark-popover2-box-shadow: 0 0 0 1px $pt-dark-popover-border-color, $pt-dark-elevation-shadow-3 !default;
 $pt-dark-tooltip2-box-shadow: $pt-dark-popover-box-shadow !default;
 
 // $arrow-offset: amount to shift arrow along edge of popover2
@@ -51,8 +51,8 @@ $pt-dark-tooltip2-box-shadow: $pt-dark-popover-box-shadow !default;
   $background-color,
   $text-color,
   $shadows,
-  $arrow-drop-shadow-opacity,
-  $arrow-border-shadow-opacity
+  $arrow-box-shadow,
+  $arrow-border-fill-opacity
 ) {
   box-shadow: $shadows;
 
@@ -69,12 +69,12 @@ $pt-dark-tooltip2-box-shadow: $pt-dark-popover-box-shadow !default;
   }
 
   .#{$ns}-popover2-arrow::before {
-    box-shadow: 1px 1px 6px rgba($black, $arrow-drop-shadow-opacity);
+    box-shadow: $arrow-box-shadow;
   }
 
   .#{$ns}-popover2-arrow-border {
     fill: $black;
-    fill-opacity: $arrow-border-shadow-opacity;
+    fill-opacity: $arrow-border-fill-opacity;
   }
 
   .#{$ns}-popover2-arrow-fill {
