@@ -119,7 +119,7 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
 
   .#{$ns}-dark & {
     background: $dark-gray3;
-    box-shadow: 0 1px 0 $pt-dark-divider-white;
+    box-shadow: inset 0 0 0 1px $pt-dark-divider-white;
 
     .#{$ns}-icon-large,
     .#{$ns}-icon {
