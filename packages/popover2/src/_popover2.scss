@@ -9,8 +9,9 @@ $popover2-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !d
 // Extra border shadow added here to match the one in $pt-dark-popover-box-shadow.
 // We can't use a transparent color here because it is outset and will overlay other lines/borders underneath.
 // Also, it needs to have slightly increased lightness because its apparent width makes it look darker otherwise.
-$dark-popover2-arrow-box-shadow: 0 0 0 1px color.adjust($pt-dark-popover-border-color, $lightness: 10%),
-                                 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+$dark-popover2-arrow-box-shadow:
+  0 0 0 1px color.adjust($pt-dark-popover-border-color, $lightness: 10%),
+  1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
 .#{$ns}-popover2 {
   @include popover2-sizing(

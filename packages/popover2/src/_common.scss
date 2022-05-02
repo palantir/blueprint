@@ -10,7 +10,9 @@ $pt-popover2-background-color: $white !default;
 $pt-popover2-box-shadow: $pt-elevation-shadow-3 !default;
 $pt-tooltip2-box-shadow: $pt-popover-box-shadow !default;
 $pt-dark-popover2-background-color: $dark-gray3 !default;
-$pt-dark-popover2-box-shadow: 0 0 0 1px $pt-dark-popover-border-color, $pt-dark-elevation-shadow-3 !default;
+$pt-dark-popover2-box-shadow:
+  0 0 0 1px $pt-dark-popover-border-color,
+  $pt-dark-elevation-shadow-3 !default;
 $pt-dark-tooltip2-box-shadow: $pt-dark-tooltip-box-shadow !default;
 
 // $arrow-offset: amount to shift arrow along edge of popover2
