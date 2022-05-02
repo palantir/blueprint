@@ -46,6 +46,24 @@ $dark-tooltip2-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-o
   &.#{$ns}-popover2-placement-bottom .#{$ns}-popover2-arrow { transform: translateY(3px); }
   &.#{$ns}-popover2-placement-right .#{$ns}-popover2-arrow { transform: translateX(3px); }
 
+  // override typography because we use a dark background
+  a,
+  a:hover {
+    color: $pt-dark-link-color;
+  }
+
+  .#{$ns}-heading {
+    color: $pt-dark-heading-color;
+  }
+
+  .#{$ns}-text-muted {
+    color: $pt-dark-text-color-muted;
+  }
+
+  .#{$ns}-text-disabled {
+    color: $pt-dark-text-color-disabled;
+  }
+
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     @include popover2-appearance(
@@ -55,6 +73,24 @@ $dark-tooltip2-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-o
       $dark-tooltip2-arrow-box-shadow,
       $pt-dark-border-shadow-opacity
     );
+
+    // override typography because we use a light background
+    a,
+    a:hover {
+      color: $pt-link-color;
+    }
+
+    .#{$ns}-heading {
+      color: $pt-heading-color;
+    }
+
+    .#{$ns}-text-muted {
+      color: $pt-text-color-muted;
+    }
+
+    .#{$ns}-text-disabled {
+      color: $pt-text-color-disabled;
+    }
   }
 
   @each $intent, $color in $pt-intent-colors {
