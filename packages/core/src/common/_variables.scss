@@ -128,8 +128,9 @@ $pt-dark-dialog-box-shadow: $pt-dark-elevation-shadow-3 !default;
 // Dark popover borders are outset, so they can't use rgba($white, 0.3).
 // They also can't use $gray1 because its blue tint is noticeably different from other white borders in dark theme.
 // Instead, we create a new color tuned to match semi-transparent white borders on a dark theme background.
-$pt-dark-popover-border-color: hsl(215, 3%, 38%) !default;
-$pt-dark-popover-box-shadow: 0 0 0 1px $pt-dark-popover-border-color, $pt-dark-elevation-shadow-3 !default;
+$pt-dark-popover-border-color: hsl(215deg, 3%, 38%) !default;
+$pt-dark-popover-box-shadow: 0 0 0 1px $pt-dark-popover-border-color,
+                             $pt-dark-elevation-shadow-3 !default;
 $pt-dark-tooltip-box-shadow: $pt-dark-popover-box-shadow !default;
 $pt-dark-input-intent-box-shadow-colors: (
   "primary": $blue4,

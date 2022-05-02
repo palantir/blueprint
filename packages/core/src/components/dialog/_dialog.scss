@@ -102,8 +102,8 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
   .#{$ns}-icon {
     color: $pt-icon-color;
     flex: 0 0 auto;
-    margin-right: $dialog-padding * 0.5;
     margin-left: -3px;
+    margin-right: $dialog-padding * 0.5;
   }
 
   .#{$ns}-heading {
