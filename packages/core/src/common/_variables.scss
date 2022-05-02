@@ -131,7 +131,9 @@ $pt-dark-dialog-box-shadow: $pt-dark-elevation-shadow-3 !default;
 $pt-dark-popover-border-color: hsl(215deg, 3%, 38%) !default;
 $pt-dark-popover-box-shadow: 0 0 0 1px $pt-dark-popover-border-color,
                              $pt-dark-elevation-shadow-3 !default;
-$pt-dark-tooltip-box-shadow: $pt-dark-popover-box-shadow !default;
+// Equivalent to $pt-dark-elevation-shadow-3 without the inset border
+$pt-dark-tooltip-box-shadow: 0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity),
+                             0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 $pt-dark-input-intent-box-shadow-colors: (
   "primary": $blue4,
   "success": $green4,

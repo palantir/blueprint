@@ -5,6 +5,9 @@
 @import "../popover/common";
 @import "./common";
 
+$tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
+$dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+
 .#{$ns}-tooltip {
   @include popover-sizing(
     $arrow-square-size: 22px,
@@ -15,7 +18,7 @@
     $tooltip-background-color,
     $tooltip-text-color,
     $pt-tooltip-box-shadow,
-    $pt-drop-shadow-opacity,
+    $tooltip-arrow-box-shadow,
     $pt-border-shadow-opacity
   );
   // lightweight scale for tooltips
@@ -36,7 +39,7 @@
       $dark-tooltip-background-color,
       $dark-tooltip-text-color,
       $pt-dark-tooltip-box-shadow,
-      $pt-dark-drop-shadow-opacity,
+      $dark-tooltip-arrow-box-shadow,
       $pt-dark-border-shadow-opacity
     );
   }
