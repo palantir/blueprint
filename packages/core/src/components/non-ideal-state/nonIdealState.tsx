@@ -24,6 +24,12 @@ import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
 import { Icon, IconName, IconSize } from "../icon/icon";
 
+export enum NonIdealStateIconSize {
+    STANDARD = IconSize.STANDARD * 3,
+    SMALL = IconSize.STANDARD * 2,
+    EXTRA_SMALL = IconSize.LARGE,
+}
+
 // eslint-disable-next-line deprecation/deprecation
 export type NonIdealStateProps = INonIdealStateProps;
 /** @deprecated use NonIdealStateProps */
@@ -46,12 +52,23 @@ export interface INonIdealStateProps extends Props {
     /** The name of a Blueprint icon or a JSX Element (such as `<Spinner/>`) to render above the title. */
     icon?: IconName | MaybeElement;
 
+    /**
+     * How large the icon visual should be.
+     *
+     * @default NonIdealStateIconSize.STANDARD
+     */
+    iconSize?: NonIdealStateIconSize;
+
     /** The title of the non-ideal state. */
     title?: React.ReactNode;
 }
 
 export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
+
+    public static defaultProps: Partial<NonIdealStateProps> = {
+        iconSize: NonIdealStateIconSize.STANDARD,
+    };
 
     public render() {
         const { action, children, className, description, title } = this.props;
@@ -67,13 +84,13 @@ export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
     }
 
     private maybeRenderVisual() {
-        const { icon } = this.props;
+        const { icon, iconSize } = this.props;
         if (icon == null) {
             return null;
         } else {
             return (
                 <div className={Classes.NON_IDEAL_STATE_VISUAL}>
-                    <Icon icon={icon} size={IconSize.LARGE * 3} aria-hidden={true} tabIndex={-1} />
+                    <Icon icon={icon} size={iconSize} aria-hidden={true} tabIndex={-1} />
                 </div>
             );
         }

@@ -23,6 +23,7 @@ Styleguide non-ideal-state
 .#{$ns}-non-ideal-state {
   @include pt-flex-container(column, $pt-grid-size * 2);
   align-items: center;
+  color: $pt-text-color-muted;
   height: 100%;
   justify-content: center;
   text-align: center;
@@ -31,13 +32,39 @@ Styleguide non-ideal-state
   > * {
     max-width: $pt-grid-size * 40;
   }
+
+  .#{$ns}-heading {
+    line-height: 20px;
+    color: $pt-text-color-muted;
+  }
+
+  .#{$ns}-dark & {
+    color: $pt-dark-text-color-muted;
+
+    .#{$ns}-heading {
+      color: $pt-dark-text-color-muted;
+    }
+  }
 }
 
 .#{$ns}-non-ideal-state-visual {
-  color: $pt-icon-color-disabled;
-  font-size: $pt-icon-size-large * 3;
+  color: $gray3;
+
+  svg {
+    // need to show overflow for some strokes on paths that reach the edge of the icon bounding box
+    overflow: visible;
+    fill-opacity: 0.15;
+
+    path {
+      stroke: $gray3;
+      stroke-width: 0.5px;
+      stroke-opacity: 0.5;
+    }
+  }
 
   .#{$ns}-dark & {
-    color: $pt-dark-icon-color-disabled;
+    svg {
+      fill-opacity: 0.2;
+    }
   }
 }
