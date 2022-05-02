@@ -59,6 +59,13 @@ export interface INonIdealStateProps extends Props {
      */
     iconSize?: NonIdealStateIconSize;
 
+    /**
+     * Component layout, either vertical or horizontal.
+     *
+     * @default "vertical"
+     */
+    layout?: "vertical" | "horizontal";
+
     /** The title of the non-ideal state. */
     title?: React.ReactNode;
 }
@@ -68,15 +75,18 @@ export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
 
     public static defaultProps: Partial<NonIdealStateProps> = {
         iconSize: NonIdealStateIconSize.STANDARD,
+        layout: "vertical",
     };
 
     public render() {
-        const { action, children, className, description, title } = this.props;
+        const { action, children, className, description, layout, title } = this.props;
         return (
-            <div className={classNames(Classes.NON_IDEAL_STATE, className)}>
+            <div className={classNames(Classes.NON_IDEAL_STATE, `${Classes.NON_IDEAL_STATE}-${layout}`, className)}>
                 {this.maybeRenderVisual()}
-                {title && <H4>{title}</H4>}
-                {description && ensureElement(description, "div")}
+                <div className={Classes.NON_IDEAL_STATE_TEXT}>
+                    {title && <H4>{title}</H4>}
+                    {description && ensureElement(description, "div")}
+                </div>
                 {action}
                 {children}
             </div>

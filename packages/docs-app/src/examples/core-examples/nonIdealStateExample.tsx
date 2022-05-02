@@ -21,6 +21,7 @@ import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-t
 import { IconName } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
+import { Layout, LayoutSelect } from "./common/layoutSelect";
 import { Size, SizeSelect } from "./common/sizeSelect";
 
 const sizeToNonIdealStateIconSize: Record<Size, NonIdealStateIconSize> = {
@@ -40,6 +41,7 @@ export interface INonIdealStateExampleState {
     description: boolean;
     icon: IconName | null;
     iconSize: NonIdealStateIconSize;
+    layout: Layout;
 }
 
 export class NonIdealStateExample extends React.PureComponent<IExampleProps, INonIdealStateExampleState> {
@@ -48,6 +50,7 @@ export class NonIdealStateExample extends React.PureComponent<IExampleProps, INo
         description: true,
         icon: defaultIcon,
         iconSize: NonIdealStateIconSize.STANDARD,
+        layout: "vertical",
     };
 
     private toggleAction = handleBooleanChange(action => this.setState({ action }));
@@ -58,12 +61,15 @@ export class NonIdealStateExample extends React.PureComponent<IExampleProps, INo
 
     private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 
+    private handleLayoutChange = (layout: Layout) => this.setState({ layout });
+
     private handleSizeChange = (size: Size) => this.setState({ iconSize: sizeToNonIdealStateIconSize[size] });
 
     public render() {
         const options = (
             <>
                 <H5>Props</H5>
+                <LayoutSelect layout={this.state.layout} onChange={this.handleLayoutChange} />
                 <Switch label="Show icon" checked={this.state.icon !== null} onChange={this.toggleIcon} />
                 <IconSelect
                     disabled={this.state.icon === null}
@@ -98,6 +104,7 @@ export class NonIdealStateExample extends React.PureComponent<IExampleProps, INo
                     title="No search results"
                     description={this.state.description ? description : undefined}
                     action={this.state.action ? action : undefined}
+                    layout={this.state.layout}
                 />
             </Example>
         );

@@ -12,8 +12,10 @@ Markup:
   <div class="#{$ns}-non-ideal-state-visual">
     <span class="#{$ns}-icon #{$ns}-icon-folder-open"></span>
   </div>
-  <h4 class="#{$ns}-heading">This folder is empty</h4>
-  <div>Create a new file to populate the folder.</div>
+  <div class="#{$ns}-non-ideal-state-text">
+    <h4 class="#{$ns}-heading">This folder is empty</h4>
+    <div>Create a new file to populate the folder.</div>
+  </div>
   <button class="#{$ns}-button #{$ns}-intent-primary">Create</button>
 </div>
 
@@ -34,8 +36,25 @@ Styleguide non-ideal-state
   }
 
   .#{$ns}-heading {
-    line-height: 20px;
     color: $pt-text-color-muted;
+    line-height: $pt-grid-size * 2;
+    margin-bottom: $pt-grid-size;
+
+    &:only-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.#{$ns}-non-ideal-state-horizontal {
+    @include pt-flex-container(row, $pt-grid-size * 2);
+    text-align: left;
+
+    // We need to override the pt-flex-container() styles on the default vertical layout of this
+    // component with this universal selector. A better approach would be to only apply pt-flex-container(column, ...)
+    // on the .#{$ns}-non-ideal-state-vertical class, but we cannot do that without a CSS breaking change.
+    > * {
+      margin-bottom: 0;
+    }
   }
 
   .#{$ns}-dark & {
@@ -51,14 +70,14 @@ Styleguide non-ideal-state
   color: $gray3;
 
   svg {
+    fill-opacity: 0.15;
     // need to show overflow for some strokes on paths that reach the edge of the icon bounding box
     overflow: visible;
-    fill-opacity: 0.15;
 
     path {
       stroke: $gray3;
-      stroke-width: 0.5px;
       stroke-opacity: 0.5;
+      stroke-width: 0.5px;
     }
   }
 
