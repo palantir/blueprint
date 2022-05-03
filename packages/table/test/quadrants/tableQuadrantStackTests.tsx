@@ -216,6 +216,20 @@ describe("TableQuadrantStack", () => {
             expect(columnHeaderRenderer.callCount).to.equal(4);
         });
 
+        it("does not invoke columnHeaderRenderer once for each quadrant on mount", () => {
+            const bodyRenderer = sinon.spy();
+            const columnHeaderRenderer = sinon.spy();
+            mount(
+                <TableQuadrantStack
+                    grid={grid}
+                    bodyRenderer={bodyRenderer}
+                    enableColumnHeader={false}
+                    columnHeaderRenderer={columnHeaderRenderer}
+                />,
+            );
+            expect(columnHeaderRenderer.callCount).to.equal(0);
+        });
+
         it("invokes rowHeaderRenderer once for each quadrant on mount", () => {
             const bodyRenderer = sinon.spy();
             const rowHeaderRenderer = sinon.spy();
