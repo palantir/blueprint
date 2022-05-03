@@ -306,6 +306,13 @@ export interface ITableProps extends Props, Partial<IRowHeights>, Partial<IColum
      * marked with their own `className` for custom styling.
      */
     styledRegionGroups?: StyledRegionGroup[];
+
+    /**
+     * If `false`, hides the column headers.
+     *
+     * @default true
+     */
+    enableColumnHeader?: boolean;
 }
 
 export type TablePropsDefaults = Required<
@@ -330,6 +337,7 @@ export type TablePropsDefaults = Required<
         | "renderMode"
         | "rowHeaderCellRenderer"
         | "selectionModes"
+        | "enableColumnHeader"
     >
 >;
 export type TablePropsWithDefaults = Omit<TableProps, keyof TablePropsDefaults> & TablePropsDefaults;

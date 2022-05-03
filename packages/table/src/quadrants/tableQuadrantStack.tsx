@@ -241,6 +241,17 @@ export interface ITableQuadrantStackProps extends Props {
      * custom renderers which may affect quadrant layout measurements.
      */
     didHeadersMount: boolean;
+
+    /**
+     * If `false`, hides the column headers. Affects the layout
+     * of the table, so we need to know when this changes in order to
+     * synchronize quadrant sizes properly.
+     *
+     * REQUIRES QUADRANT RESYNC
+     *
+     * @default true
+     */
+    enableColumnHeader?: boolean;
 }
 
 // Used on first render of the top-left and top quadrants to avoid collapsing
@@ -271,12 +282,14 @@ const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
     "numRows",
     "enableColumnInteractionBar",
     "didHeadersMount",
+    "enableColumnHeader",
 ];
 
 export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
     public static defaultProps: Partial<ITableQuadrantStackProps> = {
+        enableColumnHeader: true,
         enableColumnInteractionBar: undefined,
         enableRowHeader: true,
         isHorizontalScrollDisabled: false,
@@ -387,7 +400,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     }
 
     public render() {
-        const { grid, enableRowHeader, bodyRenderer, throttleScrolling } = this.props;
+        const { grid, enableRowHeader, bodyRenderer, throttleScrolling, enableColumnHeader } = this.props;
 
         // use the more generic "scroll" event for the main quadrant to capture
         // *both* scrollbar interactions and trackpad/mousewheel gestures.
@@ -398,6 +411,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
 
         const baseProps = {
             bodyRenderer,
+            enableColumnHeader,
             enableRowHeader,
             grid,
             onWheel,
@@ -961,7 +975,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             this.props.numFrozenColumns > 0 &&
             this.props.grid !== prevProps.grid &&
             this.props.grid.getCumulativeWidthAt(this.props.numFrozenColumns - 1) !==
-                prevProps.grid.getCumulativeWidthAt(prevProps.numFrozenColumns - 1)
+            prevProps.grid.getCumulativeWidthAt(prevProps.numFrozenColumns - 1)
         );
     }
 
@@ -971,7 +985,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             this.props.numFrozenRows > 0 &&
             this.props.grid !== prevProps.grid &&
             this.props.grid.getCumulativeHeightAt(this.props.numFrozenRows - 1) !==
-                prevProps.grid.getCumulativeHeightAt(prevProps.numFrozenRows - 1)
+            prevProps.grid.getCumulativeHeightAt(prevProps.numFrozenRows - 1)
         );
     }
 

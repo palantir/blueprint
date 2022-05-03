@@ -69,6 +69,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     public static defaultProps: TablePropsDefaults = {
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
+        enableColumnHeader: true,
         enableColumnInteractionBar: false,
         enableFocusedCell: false,
         enableGhostCells: false,
@@ -415,8 +416,15 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     }
 
     public render() {
-        const { children, className, enableRowHeader, loadingOptions, numRows, enableColumnInteractionBar } =
-            this.props;
+        const {
+            children,
+            className,
+            enableRowHeader,
+            loadingOptions,
+            numRows,
+            enableColumnInteractionBar,
+            enableColumnHeader,
+        } = this.props;
         const { horizontalGuides, numFrozenColumnsClamped, numFrozenRowsClamped, verticalGuides } = this.state;
         if (!this.gridDimensionsMatchProps()) {
             // Ensure we're rendering the correct number of rows & columns
@@ -467,6 +475,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
                     rowHeaderRenderer={this.renderRowHeader}
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
+                    enableColumnHeader={enableColumnHeader}
                 />
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, Classes.TABLE_OVERLAY_REORDERING_CURSOR)} />
                 <GuideLayer
@@ -530,13 +539,13 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         const nextScrollTop =
             tableBottom < viewportRect.top + viewportRect.height
                 ? // scroll the last row into view
-                  Math.max(0, tableBottom - viewportRect.height)
+                Math.max(0, tableBottom - viewportRect.height)
                 : undefined;
 
         const nextScrollLeft =
             tableRight < viewportRect.left + viewportRect.width
                 ? // scroll the last column into view
-                  Math.max(0, tableRight - viewportRect.width)
+                Math.max(0, tableRight - viewportRect.width)
                 : undefined;
 
         // these will only be defined if they differ from viewportRect

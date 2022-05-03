@@ -76,6 +76,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     public static defaultProps: TablePropsDefaults = {
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
+        enableColumnHeader: true,
         enableColumnInteractionBar: false,
         enableFocusedCell: false,
         enableGhostCells: false,
@@ -274,6 +275,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             numRows,
             rowHeights,
             selectedRegions = [] as Region[],
+            enableColumnHeader,
         } = props;
 
         const childrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
@@ -324,6 +326,10 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
 
         if (enableRowHeader === false) {
             this.didRowHeaderMount = true;
+        }
+
+        if (enableColumnHeader === false) {
+            this.didColumnHeaderMount = true;
         }
     }
 
@@ -448,8 +454,15 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     }
 
     private renderTableContents = ({ handleKeyDown, handleKeyUp }: UseHotkeysReturnValue) => {
-        const { children, className, enableRowHeader, loadingOptions, numRows, enableColumnInteractionBar } =
-            this.props;
+        const {
+            children,
+            className,
+            enableRowHeader,
+            loadingOptions,
+            numRows,
+            enableColumnInteractionBar,
+            enableColumnHeader,
+        } = this.props;
         const { horizontalGuides, numFrozenColumnsClamped, numFrozenRowsClamped, verticalGuides } = this.state;
         if (!this.gridDimensionsMatchProps()) {
             // Ensure we're rendering the correct number of rows & columns
@@ -508,6 +521,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
                     rowHeaderRenderer={this.renderRowHeader}
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
+                    enableColumnHeader={enableColumnHeader}
                 />
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, Classes.TABLE_OVERLAY_REORDERING_CURSOR)} />
                 <GuideLayer
