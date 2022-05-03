@@ -68,6 +68,8 @@ Styleguide non-ideal-state
 
 .#{$ns}-non-ideal-state-visual {
   color: $gray3;
+  // font-size set for CSS API only; the React component renders resized SVG.
+  font-size: $pt-icon-size-standard * 3;
 
   svg {
     fill-opacity: 0.15;
