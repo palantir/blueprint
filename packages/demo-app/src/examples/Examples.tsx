@@ -30,6 +30,7 @@ import { HtmlTableExample } from "./HtmlTableExample";
 import { IconExample } from "./IconExample";
 import { InputExample } from "./InputExample";
 import { MenuExample } from "./MenuExample";
+import { NonIdealStateExample } from "./NonIdealStateExample";
 import { PopoverExample } from "./Popover2Example";
 import { SliderExample } from "./SliderExample";
 import { SwitchExample } from "./SwitchExample";
@@ -59,6 +60,7 @@ export class Examples extends React.PureComponent {
                 <IconExample />
                 <InputExample />
                 <MenuExample />
+                <NonIdealStateExample />
                 <PopoverExample />
                 <SliderExample />
                 <SwitchExample />

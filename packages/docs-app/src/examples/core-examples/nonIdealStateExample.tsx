@@ -87,13 +87,13 @@ export class NonIdealStateExample extends React.PureComponent<IExampleProps, INo
             </>
         );
 
-        const action = <Button outlined={true} text="Add file" icon="plus" intent="primary" />;
+        const action = <Button outlined={true} text="New file" icon="plus" intent="primary" />;
         const description = (
-            <>
+            <div>
                 Your search didn't match any files.
                 <br />
-                Try searching for something else, or add a new file.
-            </>
+                Try searching for something else, or create a new file.
+            </div>
         );
 
         return (
