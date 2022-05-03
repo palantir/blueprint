@@ -539,13 +539,13 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         const nextScrollTop =
             tableBottom < viewportRect.top + viewportRect.height
                 ? // scroll the last row into view
-                Math.max(0, tableBottom - viewportRect.height)
+                  Math.max(0, tableBottom - viewportRect.height)
                 : undefined;
 
         const nextScrollLeft =
             tableRight < viewportRect.left + viewportRect.width
                 ? // scroll the last column into view
-                Math.max(0, tableRight - viewportRect.width)
+                  Math.max(0, tableRight - viewportRect.width)
                 : undefined;
 
         // these will only be defined if they differ from viewportRect

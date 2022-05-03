@@ -975,7 +975,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             this.props.numFrozenColumns > 0 &&
             this.props.grid !== prevProps.grid &&
             this.props.grid.getCumulativeWidthAt(this.props.numFrozenColumns - 1) !==
-            prevProps.grid.getCumulativeWidthAt(prevProps.numFrozenColumns - 1)
+                prevProps.grid.getCumulativeWidthAt(prevProps.numFrozenColumns - 1)
         );
     }
 
@@ -985,7 +985,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             this.props.numFrozenRows > 0 &&
             this.props.grid !== prevProps.grid &&
             this.props.grid.getCumulativeHeightAt(this.props.numFrozenRows - 1) !==
-            prevProps.grid.getCumulativeHeightAt(prevProps.numFrozenRows - 1)
+                prevProps.grid.getCumulativeHeightAt(prevProps.numFrozenRows - 1)
         );
     }
 
