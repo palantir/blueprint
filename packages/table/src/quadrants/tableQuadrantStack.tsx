@@ -871,8 +871,8 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     };
 
     private maybeSetQuadrantSizes = (width: number, height: number) => {
-        const leftWidth = this.props.enableRowHeader ? Utils.clamp(width, Grid.MIN_ROW_HEADER_WIDTH) : 0;
-        const topHeight = this.props.enableColumnHeader ? Utils.clamp(height, Grid.MIN_COLUMN_HEADER_HEIGHT) : 0;
+        const leftWidth = Utils.clamp(width, this.props.enableRowHeader ? Grid.MIN_ROW_HEADER_WIDTH : 0);
+        const topHeight = Utils.clamp(height, this.props.enableColumnHeader ? Grid.MIN_COLUMN_HEADER_HEIGHT : 0);
         this.maybesSetQuadrantSize(QuadrantType.LEFT, "width", leftWidth);
         this.maybesSetQuadrantSize(QuadrantType.TOP, "height", topHeight);
         this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "width", leftWidth);
@@ -894,7 +894,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     };
 
     private maybesSetQuadrantRowHeaderSizes = (width: number) => {
-        const rowHeaderWidth = this.props.enableRowHeader ? Utils.clamp(width, Grid.MIN_ROW_HEADER_WIDTH) : 0;
+        const rowHeaderWidth = Utils.clamp(width, this.props.enableRowHeader ? Grid.MIN_ROW_HEADER_WIDTH : 0);
         this.maybeSetQuadrantRowHeaderSize(QuadrantType.MAIN, rowHeaderWidth);
         this.maybeSetQuadrantRowHeaderSize(QuadrantType.TOP, rowHeaderWidth);
         this.maybeSetQuadrantRowHeaderSize(QuadrantType.LEFT, rowHeaderWidth);
@@ -909,7 +909,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     };
 
     private maybeSetQuadrantMenuElementSizes = (width: number, height: number) => {
-        const rowHeaderWidth = this.props.enableRowHeader ? Utils.clamp(width, Grid.MIN_ROW_HEADER_WIDTH) : 0;
+        const rowHeaderWidth = Utils.clamp(width, this.props.enableRowHeader ? Grid.MIN_ROW_HEADER_WIDTH : 0);
         this.maybeSetQuadrantMenuElementSize(QuadrantType.MAIN, rowHeaderWidth, height);
         this.maybeSetQuadrantMenuElementSize(QuadrantType.TOP, rowHeaderWidth, height);
         this.maybeSetQuadrantMenuElementSize(QuadrantType.LEFT, rowHeaderWidth, height);

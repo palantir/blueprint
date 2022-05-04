@@ -378,8 +378,7 @@ describe("TableQuadrantStack", () => {
 
     describe("Size syncing", () => {
         describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/1794
-            it.skip("syncs initial quadrant sizes properly", () => {
+            it("syncs initial quadrant sizes properly", () => {
                 assertDefaultQuadrantSizesCorrect(0, 0);
             });
 
@@ -389,8 +388,7 @@ describe("TableQuadrantStack", () => {
         });
 
         describe("if numFrozenRows > 0 && numFrozenColumns == 0", () => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/1794
-            it.skip("syncs initial quadrant sizes properly", () => {
+            it("syncs initial quadrant sizes properly", () => {
                 assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, 0);
             });
 
@@ -400,8 +398,7 @@ describe("TableQuadrantStack", () => {
         });
 
         describe("if numFrozenRows == 0 && numFrozenColumns > 0", () => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/1794
-            it.skip("syncs initial quadrant sizes properly", () => {
+            it("syncs initial quadrant sizes properly", () => {
                 assertDefaultQuadrantSizesCorrect(0, NUM_FROZEN_COLUMNS);
             });
 
@@ -411,8 +408,7 @@ describe("TableQuadrantStack", () => {
         });
 
         describe("if numFrozenRows > 0 && numFrozenColumns > 0", () => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/1794
-            it.skip("syncs initial quadrant sizes properly", () => {
+            it("syncs initial quadrant sizes properly", () => {
                 assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
             });
 
