@@ -8,6 +8,18 @@ $handle-size: $pt-icon-size-standard !default;
 $track-size: $handle-size - $pt-grid-size !default;
 $label-offset: $handle-size + 4px !default;
 
+$handle-border-shadow: 0 0 0 $button-border-width rgba($black, 0.5);
+$handle-box-shadow:
+  $handle-border-shadow,
+  0 1px 1px rgba($black, 0.5) !default;
+$handle-box-shadow-hover:
+  $handle-border-shadow,
+  0 1px 2px rgba($black, 0.6) !default;
+$handle-box-shadow-active:
+  inset 0 1px 1px rgba($black, 0.1),
+  $handle-border-shadow,
+  0 1px 2px rgba($black, 0.2) !default;
+
 // retain legacy variable aliases so as to not break consumers
 $handle-height: $handle-size !default;
 $track-height: $track-size !default;
@@ -65,7 +77,7 @@ $track-height: $track-size !default;
 .#{$ns}-slider-handle {
   @include pt-button();
   border-radius: $pt-border-radius;
-  box-shadow: $button-box-shadow-overlay;
+  box-shadow: $handle-box-shadow;
   cursor: pointer;
   height: $handle-size;
   left: 0;
@@ -80,14 +92,14 @@ $track-height: $track-size !default;
 
   &:hover {
     @include pt-button-hover();
-    box-shadow: $button-box-shadow-overlay;
+    box-shadow: $handle-box-shadow-hover;
     cursor: grab;
     z-index: 2;
   }
 
   &.#{$ns}-active {
     @include pt-button-active();
-    box-shadow: $button-box-shadow-overlay-active;
+    box-shadow: $handle-box-shadow-active;
     cursor: grabbing;
   }
 
@@ -99,18 +111,18 @@ $track-height: $track-size !default;
   }
 
   .#{$ns}-dark & {
-    @include pt-dark-button();
+    // don't use pt-dark-button() here, since we want to appear more like a light theme button
     background-color: $gray4;
+    box-shadow: $dark-button-box-shadow;
 
     &:hover {
       background-color: $gray3;
+      box-shadow: $dark-button-box-shadow-active;
     }
 
-    &:active,
     &.#{$ns}-active {
-      background:
-        linear-gradient(0deg, rgba($white, 0.1), rgba($white, 0.1)),
-        linear-gradient(0deg, $gray2, $gray2);
+      background-color: $gray2;
+      box-shadow: inset 0 1px 1px rgba($black, 0.1), $dark-button-box-shadow-active;
     }
   }
 

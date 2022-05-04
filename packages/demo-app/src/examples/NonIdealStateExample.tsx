@@ -1,6 +1,5 @@
 /*
- * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
- *
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,17 +15,27 @@
 
 import * as React from "react";
 
-import { Classes } from "@blueprintjs/core";
-import { DatePicker } from "@blueprintjs/datetime";
+import { Button, NonIdealState } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-const WIDTH = 300;
-export const DatePickerExample = React.memo(() => {
+export function NonIdealStateExample() {
+    const description = (
+        <div>
+            Your search didn't match any files.
+            <br />
+            Try searching for something else, or create a new file.
+        </div>
+    );
+
     return (
-        <ExampleCard width={WIDTH} horizontal={true} label="Date picker">
-            <DatePicker className={Classes.ELEVATION_1} />
+        <ExampleCard label="NonIdealState">
+            <NonIdealState
+                title="No search results"
+                icon="search"
+                description={description}
+                action={<Button text="New file" icon="plus" outlined={true} intent="primary" />}
+            />
         </ExampleCard>
     );
-});
-DatePickerExample.displayName = "DatePickerExample";
+}
