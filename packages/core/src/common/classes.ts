@@ -208,6 +208,7 @@ export const NAVBAR_DIVIDER = `${NAVBAR}-divider`;
 
 export const NON_IDEAL_STATE = `${NS}-non-ideal-state`;
 export const NON_IDEAL_STATE_VISUAL = `${NON_IDEAL_STATE}-visual`;
+export const NON_IDEAL_STATE_TEXT = `${NON_IDEAL_STATE}-text`;
 
 export const NUMERIC_INPUT = `${NS}-numeric-input`;
 

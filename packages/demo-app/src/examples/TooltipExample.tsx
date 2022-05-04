@@ -20,11 +20,10 @@ import { Classes, Tooltip2 } from "@blueprintjs/popover2";
 
 import { ExampleCard } from "./ExampleCard";
 
-const WIDTH = 200;
 export class TooltipExample extends React.PureComponent {
     public render() {
         return (
-            <ExampleCard label="Tooltip" width={WIDTH}>
+            <ExampleCard label="Tooltip" width={200}>
                 <Tooltip2
                     className={Classes.TOOLTIP2_INDICATOR}
                     content={<span>Always open tooltip</span>}
