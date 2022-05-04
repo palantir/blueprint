@@ -1,9 +1,17 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:color";
 @import "./common";
 
 $popover-width: $pt-grid-size * 35 !default;
+$popover-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
+// Extra border shadow added here to match the one in $pt-dark-popover-box-shadow.
+// We can't use a transparent color here because it is outset and will overlay other lines/borders underneath.
+// Also, it needs to have slightly increased lightness because its apparent width makes it look darker otherwise.
+$dark-popover-arrow-box-shadow:
+  0 0 0 1px color.adjust($pt-dark-popover-border-color, $lightness: 10%),
+  1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
 .#{$ns}-popover {
   @include popover-sizing(
@@ -15,7 +23,7 @@ $popover-width: $pt-grid-size * 35 !default;
     $popover-background-color,
     inherit,
     $pt-popover-box-shadow,
-    $pt-drop-shadow-opacity,
+    $popover-arrow-box-shadow,
     $pt-border-shadow-opacity
   );
   @include scale-transition();
@@ -67,7 +75,7 @@ $popover-width: $pt-grid-size * 35 !default;
       $dark-popover-background-color,
       inherit,
       $pt-dark-popover-box-shadow,
-      $pt-dark-drop-shadow-opacity,
+      $dark-popover-arrow-box-shadow,
       $pt-dark-border-shadow-opacity
     );
   }

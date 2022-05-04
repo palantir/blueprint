@@ -37,6 +37,7 @@
 
     &--hovered-range {
       border-radius: 0;
+      color: $blue2;
 
       // need to disable hover styles for all variants of selected dates
 
@@ -50,9 +51,11 @@
     &--selected-range {
       background-color: $daterangepicker-range-background-color-selected;
       border-radius: 0;
+      color: $blue2;
 
       &:hover {
         background-color: $daterangepicker-range-background-color-selected-hover;
+        color: $blue2;
       }
     }
 
@@ -84,7 +87,7 @@
   .#{$ns}-dark & {
     .DayPicker-Day {
       &--hovered-range {
-        // same for dark theme
+        color: $light-gray5;
 
         /* stylelint-disable max-line-length */
         &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
@@ -95,6 +98,7 @@
 
       &--selected-range {
         background-color: $dark-daterangepicker-range-background-color-selected;
+        color: $light-gray5;
 
         &:hover {
           background-color: $dark-daterangepicker-range-background-color-selected-hover;

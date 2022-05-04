@@ -12,8 +12,7 @@ $divider-margin: $pt-grid-size * 0.5 !default;
   border-right: 1px solid $pt-divider-black;
   margin: $divider-margin;
 
-
   .#{$ns}-dark & {
-    border-color: $pt-dark-divider-black;
+    border-color: $pt-dark-divider-white;
   }
 }
