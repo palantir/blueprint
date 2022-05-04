@@ -669,7 +669,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     // =============
 
     private shouldDisableVerticalScroll() {
-        const { enableGhostCells } = this.props;
+        const { enableColumnHeader, enableGhostCells } = this.props;
         const { viewportRect } = this.state;
 
         if (this.grid === null || viewportRect === undefined) {
@@ -677,7 +677,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         }
 
         const rowIndices = this.grid.getRowIndicesInRect({
-            columnHeaderHeight: this.columnHeaderHeight,
+            columnHeaderHeight: enableColumnHeader ? this.columnHeaderHeight : 0,
             includeGhostCells: enableGhostCells!,
             rect: viewportRect,
         });
@@ -790,6 +790,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             enableGhostCells,
             enableColumnReordering,
             enableColumnResizing,
+            enableRowHeader,
             loadingOptions,
             maxColumnWidth,
             minColumnWidth,
@@ -811,7 +812,10 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
 
         // if we have horizontal overflow, no need to render ghost columns
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
-        const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(this.rowHeaderWidth, viewportRect);
+        const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(
+            enableRowHeader ? this.rowHeaderWidth : 0,
+            viewportRect,
+        );
         const columnIndices = this.grid.getColumnIndicesInRect(
             viewportRect,
             hasHorizontalOverflow ? false : enableGhostCells,
@@ -864,6 +868,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
             defaultRowHeight,
+            enableColumnHeader,
             enableMultipleSelection,
             enableGhostCells,
             enableRowReordering,
@@ -890,7 +895,10 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
 
         // if we have vertical overflow, no need to render ghost rows
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
-        const hasVerticalOverflow = this.locator.hasVerticalOverflow(this.columnHeaderHeight, viewportRect);
+        const hasVerticalOverflow = this.locator.hasVerticalOverflow(
+            enableColumnHeader ? this.columnHeaderHeight : 0,
+            viewportRect,
+        );
         const rowIndices = this.grid.getRowIndicesInRect({
             includeGhostCells: hasVerticalOverflow ? false : enableGhostCells,
             rect: viewportRect,
@@ -970,7 +978,9 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         } = this.state;
         const {
             enableMultipleSelection,
+            enableColumnHeader,
             enableGhostCells,
+            enableRowHeader,
             loadingOptions,
             bodyContextMenuRenderer,
             selectedRegionTransform,
@@ -982,8 +992,14 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
 
         // if we have vertical/horizontal overflow, no need to render ghost rows/columns (respectively)
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
-        const hasVerticalOverflow = this.locator.hasVerticalOverflow(this.columnHeaderHeight, viewportRect);
-        const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(this.rowHeaderWidth, viewportRect);
+        const hasVerticalOverflow = this.locator.hasVerticalOverflow(
+            enableColumnHeader ? this.columnHeaderHeight : 0,
+            viewportRect,
+        );
+        const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(
+            enableRowHeader ? this.rowHeaderWidth : 0,
+            viewportRect,
+        );
         const rowIndices = this.grid.getRowIndicesInRect({
             includeGhostCells: hasVerticalOverflow ? false : enableGhostCells,
             rect: viewportRect,

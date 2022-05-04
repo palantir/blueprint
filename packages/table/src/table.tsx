@@ -783,15 +783,18 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     // =============
 
     private shouldDisableVerticalScroll() {
-        const { enableGhostCells } = this.props;
+        const { enableColumnHeader, enableGhostCells } = this.props;
         const { viewportRect } = this.state;
 
         if (this.grid === null || viewportRect === undefined) {
             return false;
         }
 
+        const columnHeaderHeight = enableColumnHeader
+            ? this.columnHeaderElement?.clientHeight ?? Grid.MIN_COLUMN_HEADER_HEIGHT
+            : 0;
         const rowIndices = this.grid.getRowIndicesInRect({
-            columnHeaderHeight: this.columnHeaderElement?.clientHeight ?? Grid.MIN_COLUMN_HEADER_HEIGHT,
+            columnHeaderHeight,
             includeGhostCells: enableGhostCells,
             rect: viewportRect,
         });

@@ -254,14 +254,6 @@ export interface ITableQuadrantStackProps extends Props {
     enableColumnHeader?: boolean;
 }
 
-// Used on first render of the top-left and top quadrants to avoid collapsing
-// their heights to 0. originally defined in headers/_common.scss
-const MIN_COL_HEADER_HEIGHT = 30;
-
-// Used on first render of the top-left and left quadrants to avoid collapsing
-// their widths to 0. originally defined in headers/_common.scss
-const MIN_ROW_HEADER_WIDTH = 30;
-
 // the debounce delay for updating the view on scroll. elements will be resized
 // and rejiggered once scroll has ceased for at least this long, but not before.
 const DEFAULT_VIEW_SYNC_DELAY = 500;
@@ -843,7 +835,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         const rightScrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer!, "vertical");
         const bottomScrollBarHeight = ScrollUtils.measureScrollBarThickness(mainScrollContainer!, "horizontal");
 
-        // ensure neither of these measurements confusingly clamps to zero height.
+        // if columnHeader is enabled, ensure neither of these measurements confusingly clamps to zero height.
         const adjustedColumnHeaderHeight = this.maybeIncreaseToMinColHeaderHeight(columnHeaderHeight);
         const adjustedTopQuadrantHeight = this.maybeIncreaseToMinColHeaderHeight(topQuadrantHeight);
 
@@ -879,10 +871,12 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     };
 
     private maybeSetQuadrantSizes = (width: number, height: number) => {
-        this.maybesSetQuadrantSize(QuadrantType.LEFT, "width", Utils.clamp(width, MIN_ROW_HEADER_WIDTH));
-        this.maybesSetQuadrantSize(QuadrantType.TOP, "height", Utils.clamp(height, MIN_COL_HEADER_HEIGHT));
-        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "width", Utils.clamp(width, MIN_ROW_HEADER_WIDTH));
-        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "height", Utils.clamp(height, MIN_COL_HEADER_HEIGHT));
+        const leftWidth = this.props.enableRowHeader ? Utils.clamp(width, Grid.MIN_ROW_HEADER_WIDTH) : 0;
+        const topHeight = this.props.enableColumnHeader ? Utils.clamp(height, Grid.MIN_COLUMN_HEADER_HEIGHT) : 0;
+        this.maybesSetQuadrantSize(QuadrantType.LEFT, "width", leftWidth);
+        this.maybesSetQuadrantSize(QuadrantType.TOP, "height", topHeight);
+        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "width", leftWidth);
+        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "height", topHeight);
     };
 
     private maybesSetQuadrantSize = (quadrantType: QuadrantType, dimension: "width" | "height", value: number) => {
@@ -900,11 +894,11 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     };
 
     private maybesSetQuadrantRowHeaderSizes = (width: number) => {
-        const clampedWidth = Utils.clamp(width, MIN_ROW_HEADER_WIDTH);
-        this.maybeSetQuadrantRowHeaderSize(QuadrantType.MAIN, clampedWidth);
-        this.maybeSetQuadrantRowHeaderSize(QuadrantType.TOP, clampedWidth);
-        this.maybeSetQuadrantRowHeaderSize(QuadrantType.LEFT, clampedWidth);
-        this.maybeSetQuadrantRowHeaderSize(QuadrantType.TOP_LEFT, clampedWidth);
+        const rowHeaderWidth = this.props.enableRowHeader ? Utils.clamp(width, Grid.MIN_ROW_HEADER_WIDTH) : 0;
+        this.maybeSetQuadrantRowHeaderSize(QuadrantType.MAIN, rowHeaderWidth);
+        this.maybeSetQuadrantRowHeaderSize(QuadrantType.TOP, rowHeaderWidth);
+        this.maybeSetQuadrantRowHeaderSize(QuadrantType.LEFT, rowHeaderWidth);
+        this.maybeSetQuadrantRowHeaderSize(QuadrantType.TOP_LEFT, rowHeaderWidth);
     };
 
     private maybeSetQuadrantRowHeaderSize = (quadrantType: QuadrantType, width: number) => {
@@ -915,11 +909,11 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     };
 
     private maybeSetQuadrantMenuElementSizes = (width: number, height: number) => {
-        const clampedWidth = Utils.clamp(width, MIN_ROW_HEADER_WIDTH);
-        this.maybeSetQuadrantMenuElementSize(QuadrantType.MAIN, clampedWidth, height);
-        this.maybeSetQuadrantMenuElementSize(QuadrantType.TOP, clampedWidth, height);
-        this.maybeSetQuadrantMenuElementSize(QuadrantType.LEFT, clampedWidth, height);
-        this.maybeSetQuadrantMenuElementSize(QuadrantType.TOP_LEFT, clampedWidth, height);
+        const rowHeaderWidth = this.props.enableRowHeader ? Utils.clamp(width, Grid.MIN_ROW_HEADER_WIDTH) : 0;
+        this.maybeSetQuadrantMenuElementSize(QuadrantType.MAIN, rowHeaderWidth, height);
+        this.maybeSetQuadrantMenuElementSize(QuadrantType.TOP, rowHeaderWidth, height);
+        this.maybeSetQuadrantMenuElementSize(QuadrantType.LEFT, rowHeaderWidth, height);
+        this.maybeSetQuadrantMenuElementSize(QuadrantType.TOP_LEFT, rowHeaderWidth, height);
     };
 
     private maybeSetQuadrantMenuElementSize = (quadrantType: QuadrantType, width: number, height: number) => {
@@ -963,7 +957,11 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     }
 
     private maybeIncreaseToMinColHeaderHeight(height: number) {
-        return height <= QUADRANT_MIN_SIZE ? MIN_COL_HEADER_HEIGHT : height;
+        if (this.props.enableColumnHeader) {
+            return height <= QUADRANT_MIN_SIZE ? Grid.MIN_COLUMN_HEADER_HEIGHT : height;
+        } else {
+            return height;
+        }
     }
 
     // Helpers
@@ -1017,7 +1015,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             // (alas, we must force a reflow to measure the row header's "desired" width)
             mainRowHeader.style.width = "auto";
 
-            return Utils.clamp(mainRowHeader.clientWidth, MIN_ROW_HEADER_WIDTH);
+            return Utils.clamp(mainRowHeader.clientWidth, Grid.MIN_ROW_HEADER_WIDTH);
         }
     }
 
@@ -1030,7 +1028,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         // layout and are not actually bound by any fixed `height` that we set,
         // so they'll grow freely to their necessary size. makes measuring easy!
         const mainColumnHeader = this.quadrantRefs[QuadrantType.MAIN].columnHeader;
-        return mainColumnHeader == null ? 0 : Utils.clamp(mainColumnHeader.clientHeight, MIN_COL_HEADER_HEIGHT);
+        return mainColumnHeader == null ? 0 : Utils.clamp(mainColumnHeader.clientHeight, Grid.MIN_COLUMN_HEADER_HEIGHT);
     }
 
     private shouldRenderLeftQuadrants(props: ITableQuadrantStackProps = this.props) {
