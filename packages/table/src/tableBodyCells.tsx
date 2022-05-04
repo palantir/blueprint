@@ -118,6 +118,7 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
         });
         if (shouldResetBatcher) {
             this.batcher.reset();
+            this.forceUpdate();
         }
         this.maybeInvokeOnCompleteRender();
     }
