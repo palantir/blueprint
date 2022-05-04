@@ -20,6 +20,11 @@ $pt-grid-size: 10px !default;
 
 $icons16-family: "blueprint-icons-16" !default;
 $icons20-family: "blueprint-icons-20" !default;
+$icon-classes: (
+  ".#{$ns}-icon",
+  ".#{$ns}-icon-standard",
+  ".#{$ns}-icon-large"
+) !default;
 
 $pt-icon-size-standard: 16px !default;
 $pt-icon-size-large: 20px !default;
