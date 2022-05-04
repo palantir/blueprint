@@ -23,6 +23,7 @@ import {
     Button,
     ButtonProps,
     Classes,
+    Divider,
     FocusStyleManager,
     H4,
     H6,
@@ -685,6 +686,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {selectedRegionTransformPresetMenu}
                 <H6>Scroll to</H6>
                 {this.renderScrollToSection()}
+                <Divider />
 
                 <H4>Columns</H4>
                 <H6>Display</H6>
@@ -699,6 +701,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Reordering", "enableColumnReordering", "enableColumnHeader", true)}
                 {this.renderSwitch("Resizing", "enableColumnResizing", "enableColumnHeader", true)}
                 {this.renderSwitch("Selection", "enableColumnSelection", "enableColumnHeader", true)}
+                <Divider />
 
                 <H4>Rows</H4>
                 <H6>Display</H6>
@@ -718,6 +721,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderButton("Resize rows by approx height", {
                     onClick: this.handleResizeRowsByApproxHeightButtonClick,
                 })}
+                <Divider />
 
                 <H4>Cells</H4>
                 <H6>Display</H6>
@@ -733,6 +737,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Fixed truncation", "enableCellTruncationFixed", "enableCellTruncation", true)}
                 <div className="sidebar-indented-group">{truncatedLengthMenu}</div>
                 {this.renderSwitch("Wrap text", "enableCellWrap")}
+                <Divider />
 
                 <H4>Page</H4>
                 <H6>Display</H6>
@@ -740,6 +745,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 <H6>Perf</H6>
                 {this.renderSwitch("Slow layout", "enableSlowLayout")}
                 {this.renderSwitch("Isolate layout boundary", "enableLayoutBoundary")}
+                <Divider />
 
                 <H4>Settings</H4>
                 {this.renderButton("Reset all", {
