@@ -216,7 +216,7 @@ describe("TableQuadrantStack", () => {
             expect(columnHeaderRenderer.callCount).to.equal(4);
         });
 
-        it("does not invoke columnHeaderRenderer once for each quadrant on mount", () => {
+        it("does not invoke columnHeaderRenderer on mount if enableColumnHeader={false}", () => {
             const bodyRenderer = sinon.spy();
             const columnHeaderRenderer = sinon.spy();
             mount(
