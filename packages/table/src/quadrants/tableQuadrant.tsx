@@ -124,17 +124,25 @@ export interface ITableQuadrantProps extends Props {
      * CSS styles to apply to the quadrant's outermost element.
      */
     style?: React.CSSProperties;
+
+    /**
+     * If `false`, hides the column headers.
+     *
+     * @default true
+     */
+    enableColumnHeader?: boolean;
 }
 
 export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
     public static defaultProps: Partial<ITableQuadrantProps> = {
+        enableColumnHeader: true,
         enableRowHeader: true,
     };
 
     public render() {
-        const { grid, enableRowHeader, quadrantType, bodyRenderer } = this.props;
+        const { grid, enableRowHeader, quadrantType, bodyRenderer, enableColumnHeader } = this.props;
 
         const showFrozenRowsOnly = quadrantType === QuadrantType.TOP || quadrantType === QuadrantType.TOP_LEFT;
         const showFrozenColumnsOnly = quadrantType === QuadrantType.LEFT || quadrantType === QuadrantType.TOP_LEFT;
@@ -143,7 +151,7 @@ export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
 
         const maybeMenu = enableRowHeader && this.props.menuRenderer?.();
         const maybeRowHeader = enableRowHeader && this.props.rowHeaderCellRenderer?.(showFrozenRowsOnly);
-        const maybeColumnHeader = this.props.columnHeaderCellRenderer?.(showFrozenColumnsOnly);
+        const maybeColumnHeader = enableColumnHeader && this.props.columnHeaderCellRenderer?.(showFrozenColumnsOnly);
         const body = bodyRenderer(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly);
 
         // need to set bottom container size to prevent overlay clipping on scroll
