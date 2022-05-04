@@ -97,6 +97,12 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
 
     private batcher = new Batcher<JSX.Element>();
 
+    /**
+     * Set this flag to true in componentDidUpdate() when we call forceUpdate() to avoid an extra
+     * unnecessary update cycle.
+     */
+    private didForceUpdate = false;
+
     public componentDidMount() {
         this.maybeInvokeOnCompleteRender();
     }
@@ -113,11 +119,22 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
     }
 
     public componentDidUpdate(prevProps: ITableBodyCellsProps) {
+        if (this.didForceUpdate) {
+            this.didForceUpdate = false;
+            return;
+        }
+
         const shouldResetBatcher = !CoreUtils.shallowCompareKeys(prevProps, this.props, {
             exclude: BATCHER_RESET_PROP_KEYS_DENYLIST,
         });
         if (shouldResetBatcher) {
             this.batcher.reset();
+            // At this point, the batcher is reset, but it doesn't have a chance to re-run since render() is not called
+            // by default after this lifecycle method. This causes issues like https://github.com/palantir/blueprint/issues/5193.
+            // We can run forceUpdate() to re-render, but must take care to set a local flag indicating that we are doing so,
+            // so that this lifecycle method doesn't get re-run as well within the same forced update cycle.
+            this.didForceUpdate = true;
+            this.forceUpdate();
         }
         this.maybeInvokeOnCompleteRender();
     }

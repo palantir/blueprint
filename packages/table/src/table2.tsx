@@ -61,8 +61,6 @@ import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./t
 
 export interface Table2Props extends TableProps {
     /**
-     * Warning: experimental feature!
-     *
      * This dependency list may be used to trigger a re-render of all cells when one of its elements changes
      * (compared using shallow equality checks). This is done by invalidating the grid, which forces
      * TableQuadrantStack to re-render.

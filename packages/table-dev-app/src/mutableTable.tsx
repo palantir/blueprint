@@ -424,6 +424,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 selectionModes={this.getEnabledSelectionModes()}
                 selectedRegions={this.state.selectedRegions}
                 styledRegionGroups={this.getStyledRegionGroups()}
+                cellRendererDependencies={[this.state.cellContent]}
             >
                 {this.renderColumns()}
             </Table2>
