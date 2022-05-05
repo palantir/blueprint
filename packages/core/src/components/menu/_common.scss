@@ -1,9 +1,11 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-$half-grid-size: $pt-grid-size * 0.5 !default;
+@import "../../common/mixins";
+@import "../../common/variables";
+@import "../../common/variables-extended";
 
-$menu-item-border-radius: $pt-border-radius - 1 !default;
+$menu-item-border-radius: $pt-border-radius !default;
 
 // Set line-height of menu items to be a multiple of the font size. This is
 // needed because if the line-height does not extend far enough past the font's

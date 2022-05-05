@@ -16,6 +16,7 @@
 
 import * as React from "react";
 
+import { Icon } from "@blueprintjs/core";
 import { Classes, Tooltip2 } from "@blueprintjs/popover2";
 
 import { ExampleCard } from "./ExampleCard";
@@ -26,7 +27,12 @@ export class TooltipExample extends React.PureComponent {
             <ExampleCard label="Tooltip" width={200}>
                 <Tooltip2
                     className={Classes.TOOLTIP2_INDICATOR}
-                    content={<span>Always open tooltip</span>}
+                    content={
+                        <span>
+                            <Icon icon="tick-circle" intent="success" style={{ marginRight: 7 }} />
+                            Always open tooltip
+                        </span>
+                    }
                     isOpen={true}
                 >
                     Always open target
