@@ -129,10 +129,6 @@ describe("TableQuadrant", () => {
             runTest(QuadrantType.TOP_LEFT, [QuadrantType.TOP_LEFT, true, true]);
         });
 
-        it("invokes with no params when quarantType not provided", () => {
-            runTest(undefined, []);
-        });
-
         function runTest(quadrantType: QuadrantType, expectedArgs: any[]) {
             mountTableQuadrant({ quadrantType });
             expect(bodyRenderer.calledOnce).to.be.true;
@@ -214,6 +210,15 @@ describe("TableQuadrant", () => {
                 });
                 expect(columnHeaderCellRenderer.called).to.be.true;
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${COLUMN_HEADER_CLASS}`).length).to.equal(1);
+            });
+
+            it("does not render column header if enableColumnHeader=false", () => {
+                const columnHeaderCellRenderer = sinon.stub().returns(<div className={COLUMN_HEADER_CLASS} />);
+                const component = mountTableQuadrant({
+                    columnHeaderCellRenderer,
+                    enableColumnHeader: false,
+                });
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children().length).to.equal(0);
             });
         });
     });

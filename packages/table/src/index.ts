@@ -33,7 +33,16 @@ export {
 
 export { Column, ColumnProps, IColumnProps } from "./column";
 
-export { AnyRect, Clipboard, Grid, Rect, RenderMode, Utils } from "./common/index";
+export {
+    AnyRect,
+    CellCoordinates,
+    Clipboard,
+    FocusedCellCoordinates,
+    Grid,
+    Rect,
+    RenderMode,
+    Utils,
+} from "./common/index";
 
 export { IDraggableProps, Draggable } from "./interactions/draggable";
 
@@ -82,4 +91,4 @@ export { ITableProps, TableProps } from "./tableProps";
 
 export { Table } from "./table";
 
-export { Table2 } from "./table2";
+export { Table2, Table2Props } from "./table2";

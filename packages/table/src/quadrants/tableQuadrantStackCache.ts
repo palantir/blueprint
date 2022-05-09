@@ -17,17 +17,17 @@
 export type ScrollKey = "scrollLeft" | "scrollTop";
 
 export class TableQuadrantStackCache {
-    private cachedRowHeaderWidth: number;
+    private cachedRowHeaderWidth: number = 0;
 
-    private cachedColumnHeaderHeight: number;
+    private cachedColumnHeaderHeight: number = 0;
 
-    private cachedScrollLeft: number;
+    private cachedScrollLeft: number = 0;
 
-    private cachedScrollTop: number;
+    private cachedScrollTop: number = 0;
 
-    private cachedScrollContainerClientWidth: number;
+    private cachedScrollContainerClientWidth: number | undefined;
 
-    private cachedScrollContainerClientHeight: number;
+    private cachedScrollContainerClientHeight: number | undefined;
 
     public constructor() {
         this.reset();

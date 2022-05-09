@@ -38,11 +38,11 @@ Styleguide form-group
   margin: 0 0 ($pt-grid-size * 1.5);
 
   label.#{$ns}-label {
-    margin-bottom: $pt-grid-size / 2;
+    margin-bottom: $pt-grid-size * 0.5;
   }
 
   .#{$ns}-control {
-    margin-top: ($pt-input-height - $control-indicator-size) / 2;
+    margin-top: ($pt-input-height - $control-indicator-size) * 0.5;
   }
 
   .#{$ns}-form-group-sub-label,
@@ -52,11 +52,11 @@ Styleguide form-group
   }
 
   .#{$ns}-form-group-sub-label {
-    margin-bottom: $pt-grid-size / 2;
+    margin-bottom: $pt-grid-size * 0.5;
   }
 
   .#{$ns}-form-helper-text {
-    margin-top: $pt-grid-size / 2;
+    margin-top: $pt-grid-size * 0.5;
   }
 
   /* stylelint-disable-next-line order/declaration-block-order */

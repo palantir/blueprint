@@ -9,6 +9,54 @@ $toast-min-width: $pt-grid-size * 30 !default;
 $toast-max-width: $pt-grid-size * 50 !default;
 $toast-margin: $pt-grid-size * 2 !default;
 
+$toast-intent-colors: (
+  "primary": ($pt-intent-primary, $white, $blue2, $blue1),
+  "success": ($pt-intent-success, $white, $green2, $green1),
+  "warning": ($orange5, $dark-gray1, $orange4, $orange3),
+  "danger": ($pt-intent-danger, $white, $red2, $red1),
+) !default;
+
+@mixin pt-toast-intent(
+  $background-color,
+  $text-color,
+  $button-hover-color,
+  $button-active-color,
+) {
+  background-color: $background-color;
+  color: $text-color;
+
+  .#{$ns}-icon:first-child {
+    color: rgba($text-color, 0.7);
+  }
+
+  // HACKHACK custom colors for buttons on intent background so they always show up nice
+  /* stylelint-disable declaration-no-important */
+  .#{$ns}-button {
+    background-color: $background-color !important;
+    color: $text-color !important;
+
+    &:hover {
+      background-color: $button-hover-color !important;
+      color: $text-color !important;
+    }
+
+    &:active {
+      background-color: $button-active-color !important;
+      color: $text-color !important;
+    }
+
+    &:focus {
+      // blue outline color shows poorly on colored bg
+      outline-color: rgba($white, 0.5);
+    }
+
+    &:last-child > .#{$ns}-icon-cross {
+      color: rgba($text-color, 0.7) !important;
+    }
+  }
+  /* stylelint-enable declaration-no-important */
+}
+
 .#{$ns}-toast {
   // toast transition properties
   $enter-translate: (transform: translateY(-$toast-height) translateY(0));
@@ -45,14 +93,14 @@ $toast-margin: $pt-grid-size * 2 !default;
     "#{$ns}-toast",
     "exit",
     $enter-translate,
-    $delay: $pt-transition-duration / 2,
+    $delay: $pt-transition-duration * 0.5,
     $before: "&",
     $after: "~ &"
   );
   align-items: flex-start;
   background-color: $white;
   border-radius: $pt-border-radius;
-  box-shadow: $pt-elevation-shadow-3;
+  box-shadow: $pt-toast-box-shadow;
   display: flex;
   margin: $toast-margin 0 0;
   max-width: $toast-max-width;
@@ -67,23 +115,28 @@ $toast-margin: $pt-grid-size * 2 !default;
 
   .#{$ns}-button-group {
     flex: 0 0 auto;
-    padding: ($toast-height - $pt-button-height) / 2;
+    padding: ($toast-height - $pt-button-height) * 0.5;
     padding-left: 0;
   }
 
   > .#{$ns}-icon {
     color: $pt-icon-color;
-    margin: ($toast-height - $pt-icon-size-standard) / 2;
+    margin: ($toast-height - $pt-icon-size-standard) * 0.5;
     margin-right: 0;
   }
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     background-color: $dark-gray5;
-    box-shadow: $pt-dark-elevation-shadow-3;
+    box-shadow: $pt-dark-toast-box-shadow;
 
     > .#{$ns}-icon {
       color: $pt-dark-icon-color;
+    }
+
+    // increase contrast for default intent in dark mode
+    .#{$ns}-button .#{$ns}-icon {
+      color: rgba($white, 0.7);
     }
   }
 
@@ -101,42 +154,9 @@ $toast-margin: $pt-grid-size * 2 !default;
     }
   }
 
-  // HACKHACK custom colors for buttons on intent background so they always show up nice
-  /* stylelint-disable declaration-no-important */
-  &[class*="#{$ns}-intent-"] .#{$ns}-button {
-    &,
-    &::before,
-    .#{$ns}-icon,
-    &:active {
-      color: rgba($white, 0.7) !important;
-    }
-
-    &:focus {
-      // blue outline color shows poorly on colored bg
-      outline-color: rgba($white, 0.5);
-    }
-
-    &:hover {
-      background-color: rgba($white, 0.15) !important;
-      color: $white !important;
-    }
-
-    &:active {
-      background-color: rgba($white, 0.3) !important;
-      color: $white !important;
-    }
-
-    &::after {
-      background: rgba($white, 0.3) !important;
-    }
-  }
-  /* stylelint-enable declaration-no-important */
-
-  // define these last so they override default dark colors above
-  @each $intent, $color in $pt-intent-colors {
+  @each $intent, $colors in $toast-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      background-color: $color;
-      color: $white;
+      @include pt-toast-intent($colors...);
     }
   }
 }

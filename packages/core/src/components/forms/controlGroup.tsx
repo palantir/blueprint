@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
@@ -25,6 +24,9 @@ import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 export type ControlGroupProps = IControlGroupProps;
 /** @deprecated use ControlGroupProps */
 export interface IControlGroupProps extends Props, HTMLDivProps {
+    /** Group contents. */
+    children?: React.ReactNode;
+
     /**
      * Whether the control group should take up the full width of its container.
      *
@@ -42,7 +44,6 @@ export interface IControlGroupProps extends Props, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@polyfill
 export class ControlGroup extends AbstractPureComponent2<ControlGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ControlGroup`;
 

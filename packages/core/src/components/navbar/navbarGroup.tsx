@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
@@ -32,11 +31,12 @@ export interface INavbarGroupProps extends Props, HTMLDivProps {
      * @default Alignment.LEFT
      */
     align?: Alignment;
+
+    children?: React.ReactNode;
 }
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@polyfill
 export class NavbarGroup extends AbstractPureComponent2<NavbarGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NavbarGroup`;
 

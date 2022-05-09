@@ -8,6 +8,22 @@ git fetch --tags
 SCRIPTS_DIR="$( dirname "$(readlink -f "$0")" )"
 
 publishable_paths=$("$SCRIPTS_DIR/get-publishable-paths-from-semver-tags" | sed -E -e '/^ *$/d')
+
+if [ -z "$publishable_paths" ]; then
+    echo "Nothing to publish."
+    exit 0
+fi
+
+if [ -z "${NPM_AUTH_TOKEN}" ]; then
+    echo "No NPM auth token available. Check the \$NPM_AUTH_TOKEN environment variable."
+    exit 1
+fi
+
+# set the auth token for this user, not just the repo
+# N.B. `npm set` doesn't work here, it complains that it doesn't work for NPM workspaces
+echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
+chmod 0600 ~/.npmrc
+
 for path in $publishable_paths; do
     pushd "$path"
     echo "Attempting to publish package at path '$path'"

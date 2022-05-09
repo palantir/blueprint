@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
@@ -48,7 +47,6 @@ export interface IProgressBarProps extends Props, IntentProps {
     value?: number;
 }
 
-@polyfill
 export class ProgressBar extends AbstractPureComponent2<ProgressBarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ProgressBar`;
 

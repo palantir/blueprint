@@ -21,8 +21,8 @@ import {
     AbstractPureComponent2,
     Button,
     DISPLAYNAME_PREFIX,
-    InputGroupProps2,
     InputGroup,
+    InputGroupProps2,
     IPopoverProps,
     IRef,
     Keys,
@@ -39,6 +39,8 @@ import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 export type SelectProps<T> = ISelectProps<T>;
 /** @deprecated use SelectProps */
 export interface ISelectProps<T> extends IListItemsProps<T> {
+    children?: React.ReactNode;
+
     /**
      * Whether the component should take up the full width of its container.
      * This overrides `popoverProps.fill`. You also have to ensure that the child

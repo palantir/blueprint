@@ -25,16 +25,15 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
     Keys,
-    refHandler,
     mergeRefs,
     Overlay,
+    refHandler,
     Utils,
-    IRef,
 } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
 import * as Errors from "./errors";
-import { POPOVER_ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
+import { Popover2Arrow, POPOVER_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { positionToPlacement } from "./popover2PlacementUtils";
 import { Popover2SharedProps } from "./popover2SharedProps";
 import { ResizeSensor2 } from "./resizeSensor2";
@@ -101,11 +100,6 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
      * @default false
      */
     shouldReturnFocusOnClose?: boolean;
-
-    /**
-     * Ref supplied to the `Classes.POPOVER` element.
-     */
-    popoverRef?: IRef<HTMLElement>;
 
     /**
      * Popper.js positioning strategy.
@@ -343,7 +337,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 [CoreClasses.ACTIVE]: !isControlled && isOpen && !isHoverInteractionKind,
             }),
             ref,
-            ...((targetEventHandlers as unknown) as T),
+            ...(targetEventHandlers as unknown as T),
         };
 
         let target: JSX.Element | undefined;
@@ -532,7 +526,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 // lost focus (e.g. due to switching tabs).
                 return;
             }
-            this.handleMouseEnter((e as unknown) as React.MouseEvent<HTMLElement>);
+            this.handleMouseEnter(e as unknown as React.MouseEvent<HTMLElement>);
         }
     };
 
@@ -545,10 +539,10 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                     e.relatedTarget !== this.popoverElement &&
                     !this.isElementInPopover(e.relatedTarget as HTMLElement)
                 ) {
-                    this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+                    this.handleMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
                 }
             } else {
-                this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+                this.handleMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;

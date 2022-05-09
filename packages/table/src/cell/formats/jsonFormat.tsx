@@ -68,7 +68,7 @@ export class JSONFormat extends React.Component<IJSONFormatProps> {
         if (omitQuotesOnStrings && typeof children === "string") {
             displayValue = children;
         } else {
-            displayValue = stringify(children);
+            displayValue = stringify!(children);
         }
 
         return (

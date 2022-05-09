@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/eslint-plugin",
-    "version": "0.3.6",
+    "version": "2.0.0",
     "description": "ESLint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
@@ -13,15 +13,15 @@
         "test:jest-ci": "jest --ci --runInBand"
     },
     "dependencies": {
-        "@typescript-eslint/experimental-utils": "^4.9.1",
-        "eslint": "^7.15.0"
+        "@typescript-eslint/utils": "^5.21.0",
+        "eslint": "^8.14.0"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^1.6.1",
+        "@blueprintjs/node-build-scripts": "^5.0.0",
         "@types/dedent": "^0.7.0",
         "dedent": "^0.7.0",
         "ts-node": "^9.1.1",
-        "typescript": "^4.1.2"
+        "typescript": "^4.6.2"
     },
     "repository": {
         "type": "git",

@@ -15,7 +15,6 @@
  */
 
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Props } from "@blueprintjs/core";
 
@@ -48,7 +47,6 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, Props {
     nameRenderer?: (name: string, index?: number) => React.ReactElement<Props>;
 }
 
-@polyfill
 export class RowHeaderCell extends AbstractPureComponent2<IRowHeaderCellProps> {
     public render() {
         const {
@@ -64,8 +62,8 @@ export class RowHeaderCell extends AbstractPureComponent2<IRowHeaderCellProps> {
         const defaultName = <div className={Classes.TABLE_ROW_NAME_TEXT}>{name}</div>;
 
         const nameComponent = (
-            <LoadableContent loading={spreadableProps.loading}>
-                {nameRenderer == null ? defaultName : nameRenderer(name, spreadableProps.index)}
+            <LoadableContent loading={spreadableProps.loading ?? false}>
+                {nameRenderer?.(name!, spreadableProps.index) ?? defaultName}
             </LoadableContent>
         );
 

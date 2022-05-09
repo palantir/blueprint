@@ -19,14 +19,17 @@ non-ideal states, including:
 
 @## Props
 
-The props are rendered in this order in the DOM, with comfortable vertical
-spacing between each child:
+The props are rendered in this order in the DOM, with comfortable spacing between each child:
 
 1. `icon`
-1. `title`
-1. `description`
+1. text (`title` + optional `description`)
 1. `action`
 1. `children`
+
+By default, a vertical layout is used, but you can make it horizontal with `layout="horizontal"`.
+
+Icons take on a muted appearance inside this component, but their shape contrast is preserved
+by adding a small stroke to the SVG paths.
 
 @interface INonIdealStateProps
 

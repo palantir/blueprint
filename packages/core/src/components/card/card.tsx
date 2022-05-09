@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Elevation } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
@@ -52,7 +51,6 @@ export interface ICardProps extends Props, HTMLDivProps {
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-@polyfill
 export class Card extends AbstractPureComponent2<CardProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Card`;
 

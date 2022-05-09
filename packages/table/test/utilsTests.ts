@@ -142,10 +142,9 @@ describe("Utils", () => {
     });
 
     describe("assignSparseValues", () => {
-        it("checks null and array length", () => {
+        it("compares array lengths", () => {
             const defaults = Utils.times(3, () => "A");
 
-            expect(Utils.assignSparseValues(defaults, null)).to.equal(defaults);
             expect(Utils.assignSparseValues(defaults, ["B"])).to.equal(defaults);
         });
 
@@ -246,11 +245,11 @@ describe("Utils", () => {
         const RIGHT_BUTTON_CODE = 1;
 
         it("returns true for left click", () => {
-            expect(Utils.isLeftClick(({ button: LEFT_BUTTON_CODE } as any) as MouseEvent)).to.be.true;
+            expect(Utils.isLeftClick({ button: LEFT_BUTTON_CODE } as any as MouseEvent)).to.be.true;
         });
 
         it("returns false for right click", () => {
-            expect(Utils.isLeftClick(({ button: RIGHT_BUTTON_CODE } as any) as MouseEvent)).to.be.false;
+            expect(Utils.isLeftClick({ button: RIGHT_BUTTON_CODE } as any as MouseEvent)).to.be.false;
         });
     });
 
@@ -327,9 +326,10 @@ describe("Utils", () => {
             });
         });
 
-        function assertArraysEqual(result: string[], expected: string) {
+        function assertArraysEqual(result: string[] | undefined, expected: string) {
+            expect(result).not.to.be.undefined;
             // use .eql to deeply compare arrays
-            expect(result).to.eql(expected.split(""));
+            expect(result!).to.eql(expected.split(""));
         }
     });
 });

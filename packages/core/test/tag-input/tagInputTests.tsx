@@ -16,26 +16,24 @@
 
 import { assert, expect } from "chai";
 import {
-    mount as untypedMount,
     MountRendererProps,
-    shallow as untypedShallow,
     ShallowRendererProps,
     ShallowWrapper,
+    mount as untypedMount,
+    shallow as untypedShallow,
 } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Button, Classes, Intent, ITagInputProps, Keys, Tag, TagInput } from "../../src";
+import { Button, Classes, Intent, Keys, Tag, TagInput, TagInputProps } from "../../src";
 
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
-// tslint:disable no-unnecessary-callback-wrapper
-const mount = (el: React.ReactElement<ITagInputProps>, options?: MountRendererProps) =>
+const mount = (el: React.ReactElement<TagInputProps>, options?: MountRendererProps) =>
     untypedMount<TagInput>(el, options);
-const shallow = (el: React.ReactElement<ITagInputProps>, options?: ShallowRendererProps) =>
+const shallow = (el: React.ReactElement<TagInputProps>, options?: ShallowRendererProps) =>
     untypedShallow<TagInput>(el, options);
-// tslint:enable no-unnecessary-callback-wrapper
 
 const VALUES = ["one", "two", "three"];
 
@@ -268,7 +266,7 @@ describe("<TagInput>", () => {
             assert.deepEqual(onAdd.args[0][0], [value]);
         });
 
-        function mountTagInput(onAdd: sinon.SinonStub, props?: Partial<ITagInputProps>) {
+        function mountTagInput(onAdd: sinon.SinonStub, props?: Partial<TagInputProps>) {
             return shallow(<TagInput onAdd={onAdd} values={VALUES} {...props} />);
         }
     });

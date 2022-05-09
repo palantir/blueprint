@@ -34,7 +34,7 @@ export interface HotkeysTarget2Props {
     children: JSX.Element | ((props: HotkeysTarget2RenderProps) => JSX.Element);
 
     /** Hotkey definitions. */
-    hotkeys: HotkeyConfig[];
+    hotkeys: readonly HotkeyConfig[];
 
     /** Hook customization options. */
     options?: UseHotkeysOptions;

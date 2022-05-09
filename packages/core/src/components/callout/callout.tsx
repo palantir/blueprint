@@ -16,17 +16,16 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
     AbstractPureComponent2,
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
-    IntentProps,
     Intent,
-    Props,
+    IntentProps,
     MaybeElement,
+    Props,
 } from "../../common";
 import { H4 } from "../html/html";
 import { Icon, IconName, IconSize } from "../icon/icon";
@@ -35,6 +34,9 @@ import { Icon, IconName, IconSize } from "../icon/icon";
 export type CalloutProps = ICalloutProps;
 /** @deprecated use CalloutProps */
 export interface ICalloutProps extends IntentProps, Props, HTMLDivProps {
+    /** Callout contents. */
+    children?: React.ReactNode;
+
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side.
      *
@@ -61,8 +63,6 @@ export interface ICalloutProps extends IntentProps, Props, HTMLDivProps {
     title?: string;
 }
 
-/** This component supports the full range of HTML `<div>` props. */
-@polyfill
 export class Callout extends AbstractPureComponent2<CalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
@@ -78,7 +78,7 @@ export class Callout extends AbstractPureComponent2<CalloutProps> {
 
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && <Icon icon={iconName} size={IconSize.LARGE} />}
+                {iconName && <Icon icon={iconName} size={IconSize.LARGE} aria-hidden={true} tabIndex={-1} />}
                 {title && <H4>{title}</H4>}
                 {children}
             </div>

@@ -16,15 +16,14 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import * as Utils from "../../common/utils";
-import { TabProps, Tab, TabId } from "./tab";
+import { Tab, TabId, TabProps } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
-export const Expander: React.FunctionComponent = () => <div className={Classes.FLEX_EXPANDER} />;
+export const Expander: React.FC = () => <div className={Classes.FLEX_EXPANDER} />;
 
 type TabElement = React.ReactElement<TabProps & { children: React.ReactNode }>;
 
@@ -40,6 +39,9 @@ export interface ITabsProps extends Props {
      * @default true
      */
     animate?: boolean;
+
+    /** Tab elements. */
+    children?: React.ReactNode;
 
     /**
      * Initial selected tab `id`, for uncontrolled usage.
@@ -98,9 +100,6 @@ export interface ITabsState {
     selectedTabId?: TabId;
 }
 
-// HACKHACK: https://github.com/palantir/blueprint/issues/4342
-// eslint-disable-next-line deprecation/deprecation
-@(polyfill as Utils.LifecycleCompatPolyfill<ITabsProps, any>)
 export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;

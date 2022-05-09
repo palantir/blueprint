@@ -16,21 +16,23 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
-import { H4 } from "../html/html";
+import { H5 } from "../html/html";
 import { Icon, IconName, IconSize } from "../icon/icon";
-import { IBackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
+import { IBackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
 
 // eslint-disable-next-line deprecation/deprecation
 export type DialogProps = IDialogProps;
 /** @deprecated use DialogProps */
 export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
+    /** Dialog contents. */
+    children?: React.ReactNode;
+
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
@@ -82,7 +84,7 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
      * ID of the element that contains title or label text for this dialog.
      *
      * By default, if the `title` prop is supplied, this component will generate
-     * a unique ID for the `<H4>` title element and use that ID here.
+     * a unique ID for the `<H5>` title element and use that ID here.
      */
     "aria-labelledby"?: string;
 
@@ -92,7 +94,6 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     "aria-describedby"?: string;
 }
 
-@polyfill
 export class Dialog extends AbstractPureComponent2<DialogProps> {
     public static defaultProps: DialogProps = {
         canOutsideClickClose: true,
@@ -148,7 +149,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<Icon icon="small-cross" size={IconSize.LARGE} />}
+                    icon={<Icon icon="cross" size={IconSize.STANDARD} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -165,8 +166,8 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
-                <Icon icon={icon} size={IconSize.LARGE} />
-                <H4 id={this.titleId}>{title}</H4>
+                <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
+                <H5 id={this.titleId}>{title}</H5>
                 {this.maybeRenderCloseButton()}
             </div>
         );

@@ -46,6 +46,8 @@ export interface IExampleProps<T = {}> extends Props {
  * Additional props will be spread to the root `<div>` element.
  */
 export interface IDocsExampleProps extends IExampleProps {
+    children?: React.ReactNode;
+
     /**
      * Options for the example, which will typically appear in a narrow column
      * to the right of the example.

@@ -96,6 +96,7 @@ Page layout elements
   padding-bottom: $content-padding * 2;
   padding-left: $content-padding * 2;
   padding-right: $container-padding;
+  /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
   padding-top: 0;
   position: relative;
 }

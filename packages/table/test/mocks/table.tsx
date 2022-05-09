@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Cell, Column, IColumnProps, TableProps, RenderMode, Table, Utils } from "../../src";
+import { Cell, Column, IColumnProps, RenderMode, Table2, TableProps, Utils } from "../../src";
 
 export function createStringOfLength(length: number) {
     return new Array(length).fill("a").join("");
@@ -50,5 +50,5 @@ export function createTableWithData(columnNames: string[], data: string[][], col
         return <Column key={index} name={name} {...columnPropsWithDefaults} />;
     });
 
-    return <Table {...tablePropsWithDefaults}>{SampleColumns}</Table>;
+    return <Table2 {...tablePropsWithDefaults}>{SampleColumns}</Table2>;
 }

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/table",
-    "version": "3.9.14",
+    "version": "4.2.0",
     "description": "Scalable interactive table component",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -35,31 +35,29 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.53.0",
+        "@blueprintjs/core": "^4.3.0",
         "classnames": "^2.2",
         "prop-types": "^15.7.2",
         "react-innertext": "^1.1.5",
-        "react-lifecycles-compat": "^3.0.4",
-        "tslib": "~1.13.0"
+        "tslib": "~2.3.1"
     },
     "peerDependencies": {
-        "react": "^15.3.0 || 16 || 17",
-        "react-dom": "^15.3.0 || 16 || 17"
+        "react": "^16.8 || 17 || 18",
+        "react-dom": "^16.8 || 17 || 18"
     },
     "devDependencies": {
-        "@blueprintjs/colors": "^4.0.0-alpha.2",
-        "@blueprintjs/node-build-scripts": "^1.6.1",
-        "@blueprintjs/test-commons": "^0.10.14",
+        "@blueprintjs/colors": "^4.1.2",
+        "@blueprintjs/node-build-scripts": "^5.0.0",
+        "@blueprintjs/test-commons": "^1.0.7",
         "enzyme": "^3.11.0",
-        "karma": "^5.2.3",
-        "mocha": "^8.2.1",
+        "karma": "^6.3.17",
+        "mocha": "^9.2.2",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
-        "typescript": "~4.1.2",
-        "webpack": "^5.21.0",
-        "webpack-dev-server": "^4.0.0-beta.0"
+        "typescript": "~4.6.2",
+        "webpack": "^5.71.0"
     },
     "repository": {
         "type": "git",

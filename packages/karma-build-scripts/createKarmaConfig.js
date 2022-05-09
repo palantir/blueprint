@@ -2,6 +2,7 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
+const fs = require("fs");
 const path = require("path");
 
 const webpackBuildScripts = require("@blueprintjs/webpack-build-scripts");
@@ -45,7 +46,7 @@ module.exports = function createKarmaConfig(
                 pattern: path.join(dirname, "resources/**/*"),
                 watched: false,
             },
-            path.join(dirname, `../core/${coreManifest.style}`),
+            getCoreStylesheetPath(dirname),
             path.join(dirname, packageManifest.style),
             path.join(dirname, "test/index.ts"),
         ],
@@ -121,3 +122,17 @@ module.exports = function createKarmaConfig(
 
     return config;
 };
+
+/**
+ * @param {string} dirname
+ * @returns string
+ */
+function getCoreStylesheetPath(dirname) {
+    const localCorePath = path.join(dirname, "../core");
+    if (fs.existsSync(localCorePath)) {
+        return path.join(localCorePath, coreManifest.style);
+    } else {
+        // resolves to "**/node_modules/@blueprintjs/core/lib/cjs/index.js"
+        return path.join(require.resolve("@blueprintjs/core"), "../../../", coreManifest.style);
+    }
+}

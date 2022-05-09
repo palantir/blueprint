@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
     AbstractPureComponent2,
@@ -24,8 +23,8 @@ import {
     DISPLAYNAME_PREFIX,
     IElementRefProps,
     IntentProps,
-    Props,
     MaybeElement,
+    Props,
     Utils,
 } from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
@@ -47,6 +46,8 @@ export interface ITagProps
      * @default false
      */
     active?: boolean;
+
+    children?: React.ReactNode;
 
     /**
      * Whether the tag should take up the full width of its container.
@@ -120,7 +121,6 @@ export interface ITagProps
     htmlTitle?: string;
 }
 
-@polyfill
 export class Tag extends AbstractPureComponent2<TagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 

@@ -2,8 +2,8 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const marked = require("marked");
 const Highlights = require("highlights");
+const { marked } = require("marked");
 
 const DEFAULT_SCOPE = "source.tsx";
 const HIGHLIGHTS_LANGUAGES = ["better-handlebars", "language-less", "tree-sitter-typescript"];
@@ -44,8 +44,7 @@ module.exports = {
 
     // render the given text as markdown, using the custom rendering logic above.
     // code blocks are highlighted using highlight() above.
-    markdown: (textContent) => marked(textContent, { markedRenderer }),
+    markdown: textContent => marked(textContent, { markedRenderer }),
 
     markedRenderer,
 };
-

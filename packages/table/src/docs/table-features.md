@@ -15,9 +15,31 @@ type, we define a different set of sort operations.
 
 In the table below, try:
 * Sorting with the menu in each column header
-* Selecting cells and copying with the right-click context menu
+* Selecting cells and copying with the right-click context menu or with Cmd/Ctrl+C hotkeys
+
+<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
+
+This example utilizes `cellRendererDependencies`; [see why in the section below](#table/features.re-rendering-cells).
+</div>
 
 @reactExample TableSortableExample
+
+@## Re-rendering cells
+
+Sometimes you may need to re-render table cells based on new data or some user interaction,
+like a sorting operation as demonstrated in the above example. In these cases, the typical
+table props which tell the component to re-render (like `children`, `numRows`, `selectedRegions`, etc)
+may not change, so the table will not re-run its `<Cell>` children render methods.
+
+To work around this problem, `Table2` supports a dependency list in its `cellRendererDependencies` prop.
+Dependency changes in this list (compared using shallow equality checks) trigger a re-render of
+all cells in the table.
+
+In the above sortable table example, we keep a `sortedIndexMap` value in state which is updated in
+the column sort callback. This "map" is referenced in the cell renderers to determine which data to
+render at each row index, so by including it as a dependency in `cellRendererDependencies`, we can
+guarantee that cell renderers will be re-triggered after a sorting operation, and those renderers
+will reference the up-to-date `sortedIndexMap` value.
 
 @## Editing
 

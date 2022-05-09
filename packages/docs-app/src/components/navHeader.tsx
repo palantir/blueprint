@@ -17,7 +17,7 @@
 import { INpmPackage } from "@documentalist/client";
 import * as React from "react";
 
-import { Classes, HotkeysTarget2, Menu, MenuItem, NavbarHeading, Tag } from "@blueprintjs/core";
+import { Classes, HotkeysTarget2, Intent, Menu, MenuItem, NavbarHeading, Tag } from "@blueprintjs/core";
 import { NavButton } from "@blueprintjs/docs-theme";
 import { Popover2 } from "@blueprintjs/popover2";
 
@@ -75,22 +75,36 @@ export class NavHeader extends React.PureComponent<INavHeaderProps> {
     }
 
     private renderVersionsMenu() {
+        const { useNextVersion } = this.props;
         const { version, nextVersion, versions } = this.props.packageData;
         if (versions.length === 1) {
             return <div className={Classes.TEXT_MUTED}>v{versions[0]}</div>;
         }
 
+        const versionFromUrl = getVersionFromUrl();
         // default to latest release if we can't find a major version in the URL
-        const [current] = /\/versions\/([0-9]+)/.exec(location.href) || [
-            this.props.useNextVersion ? nextVersion : version,
-        ];
+        const currentVersion = versionFromUrl ?? (useNextVersion ? nextVersion : version);
         const releaseItems = versions
             .filter(v => +major(v) > 0)
-            .map(v => <MenuItem href={v === current ? "/docs" : `/docs/versions/${major(v)}`} key={v} text={v} />);
+            .map(v => {
+                let href;
+                let intent: Intent | undefined;
+                // pre-release versions are not served as the default docs, they are inside the /versions/ folder
+                if (useNextVersion) {
+                    const isLatestStableMajor = +major(v) === +major(currentVersion) - 1;
+                    href = isLatestStableMajor ? "/docs" : `/docs/versions/${major(v)}`;
+                    if (isLatestStableMajor) {
+                        intent = "primary";
+                    }
+                } else {
+                    href = v === currentVersion ? "/docs" : `/docs/versions/${major(v)}`;
+                }
+                return <MenuItem href={href} intent={intent} key={v} text={v} />;
+            });
         return (
             <Popover2 content={<Menu className="docs-version-list">{releaseItems}</Menu>} placement="bottom">
                 <Tag interactive={true} minimal={true} round={true} rightIcon="caret-down">
-                    v{major(current)}
+                    v{major(currentVersion)}
                 </Tag>
             </Popover2>
         );
@@ -102,4 +116,10 @@ export class NavHeader extends React.PureComponent<INavHeaderProps> {
 /** Get major component of semver string. */
 function major(version: string) {
     return version.split(".", 1)[0];
+}
+
+function getVersionFromUrl() {
+    const urlMatch = /\/versions\/([0-9]+)/.exec(location.href);
+    // if matched, we'll get ["/versions/4", "4"]
+    return urlMatch?.[1];
 }

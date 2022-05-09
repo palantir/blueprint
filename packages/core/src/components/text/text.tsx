@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
@@ -25,6 +24,8 @@ import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 export type TextProps = ITextProps;
 /** @deprecated use TextProps */
 export interface ITextProps extends Props {
+    children?: React.ReactNode;
+
     /**
      * Indicates that this component should be truncated with an ellipsis if it overflows its container.
      * The `title` attribute will also be added when content overflows to show the full text of the children on hover.
@@ -51,7 +52,6 @@ export interface ITextState {
     isContentOverflowing: boolean;
 }
 
-@polyfill
 export class Text extends AbstractPureComponent2<
     TextProps & Omit<React.HTMLAttributes<HTMLElement>, "title">,
     ITextState

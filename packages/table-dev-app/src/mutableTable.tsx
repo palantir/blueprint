@@ -21,12 +21,14 @@ import * as React from "react";
 
 import {
     Button,
+    ButtonProps,
     Classes,
+    Divider,
     FocusStyleManager,
     H4,
     H6,
+    HotkeysProvider,
     HTMLSelect,
-    ButtonProps,
     Intent,
     Menu,
     MenuDivider,
@@ -39,20 +41,20 @@ import {
     ColumnHeaderCell,
     EditableCell2,
     EditableName,
-    StyledRegionGroup,
     JSONFormat,
     Region,
     RegionCardinality,
     Regions,
     RowHeaderCell,
+    StyledRegionGroup,
     Table2,
     TableLoadingOption,
     TruncatedFormat,
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
-import { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
-import { IColumnIndices, IRowIndices } from "@blueprintjs/table/src/common/grid";
+import type { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cellTypes";
+import type { ColumnIndices, RowIndices } from "@blueprintjs/table/src/common/grid";
 import { RenderMode } from "@blueprintjs/table/src/common/renderMode";
 
 import { DenseGridMutableStore } from "./denseGridMutableStore";
@@ -197,9 +199,10 @@ function getRandomInteger(min: number, max: number): number {
 function getRandomString(length: number): string {
     let str = "";
     while (str.length < length) {
-        str += Math.random().toString(36).substr(2);
+        const part = Math.random().toString(36);
+        str += part.substring(2, part.length - 1);
     }
-    return str.substr(0, length);
+    return str.substring(0, length - 1);
 }
 
 function contains(arr: any[], value: any) {
@@ -226,6 +229,7 @@ export interface IMutableTableState {
     enableCellTruncationFixed?: boolean;
     enableCellWrap?: boolean;
     enableColumnCustomHeaders?: boolean;
+    enableColumnHeader?: boolean;
     enableColumnNameEditing?: boolean;
     enableColumnReordering?: boolean;
     enableColumnResizing?: boolean;
@@ -234,6 +238,7 @@ export interface IMutableTableState {
     enableFullTableSelection?: boolean;
     enableLayoutBoundary?: boolean;
     enableMultiSelection?: boolean;
+    enableRowHeader?: boolean;
     enableRowReordering?: boolean;
     enableRowResizing?: boolean;
     enableRowSelection?: boolean;
@@ -257,7 +262,6 @@ export interface IMutableTableState {
     showFocusCell?: boolean;
     showGhostCells?: boolean;
     showInline?: boolean;
-    showRowHeaders?: boolean;
     showRowHeadersLoading?: boolean;
     showTableInteractionBar?: boolean;
     showZebraStriping?: boolean;
@@ -273,6 +277,7 @@ const DEFAULT_STATE: IMutableTableState = {
     enableCellTruncationFixed: false,
     enableCellWrap: false,
     enableColumnCustomHeaders: true,
+    enableColumnHeader: true,
     enableColumnNameEditing: false,
     enableColumnReordering: true,
     enableColumnResizing: true,
@@ -281,6 +286,7 @@ const DEFAULT_STATE: IMutableTableState = {
     enableFullTableSelection: true,
     enableLayoutBoundary: false,
     enableMultiSelection: true,
+    enableRowHeader: true,
     enableRowReordering: false,
     enableRowResizing: false,
     enableRowSelection: true,
@@ -304,7 +310,6 @@ const DEFAULT_STATE: IMutableTableState = {
     showFocusCell: false,
     showGhostCells: true,
     showInline: false,
-    showRowHeaders: true,
     showRowHeadersLoading: false,
     showTableInteractionBar: false,
     showZebraStriping: false,
@@ -322,8 +327,9 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         table: (ref: Table2) => (this.tableInstance = ref),
     };
 
-    public constructor(props: any, context?: any) {
-        super(props, context);
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    public constructor(props: {}) {
+        super(props);
         this.stateStore = new LocalStore<IMutableTableState>("BP_TABLE_MUTABLE_TABLE_DEV_PREVIEW", true);
         this.state = this.stateStore.getWithDefaults(DEFAULT_STATE);
     }
@@ -334,19 +340,21 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     public render() {
         const layoutBoundary = this.state.enableLayoutBoundary;
         return (
-            <div className="container">
-                <SlowLayoutStack
-                    depth={SLOW_LAYOUT_STACK_DEPTH}
-                    enabled={this.state.enableSlowLayout}
-                    rootClassName={classNames("table", { "is-inline": this.state.showInline })}
-                    branchClassName={"layout-passthrough-fill"}
-                >
-                    <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
-                        {this.renderTable()}
-                    </div>
-                </SlowLayoutStack>
-                {this.renderSidebar()}
-            </div>
+            <HotkeysProvider>
+                <div className="container">
+                    <SlowLayoutStack
+                        depth={SLOW_LAYOUT_STACK_DEPTH}
+                        enabled={this.state.enableSlowLayout}
+                        rootClassName={classNames("table", { "is-inline": this.state.showInline })}
+                        branchClassName="layout-passthrough-fill"
+                    >
+                        <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
+                            {this.renderTable()}
+                        </div>
+                    </SlowLayoutStack>
+                    {this.renderSidebar()}
+                </div>
+            </HotkeysProvider>
         );
     }
 
@@ -389,13 +397,14 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         return (
             <Table2
                 bodyContextMenuRenderer={this.renderBodyContextMenu}
+                enableColumnHeader={this.state.enableColumnHeader}
                 enableColumnInteractionBar={this.state.showTableInteractionBar}
                 enableColumnReordering={this.state.enableColumnReordering}
                 enableColumnResizing={this.state.enableColumnResizing}
                 enableFocusedCell={this.state.showFocusCell}
                 enableGhostCells={this.state.showGhostCells}
                 enableMultipleSelection={this.state.enableMultiSelection}
-                enableRowHeader={this.state.showRowHeaders}
+                enableRowHeader={this.state.enableRowHeader}
                 enableRowReordering={this.state.enableRowReordering}
                 enableRowResizing={this.state.enableRowResizing}
                 getCellClipboardData={this.getCellValue}
@@ -419,6 +428,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 selectionModes={this.getEnabledSelectionModes()}
                 selectedRegions={this.state.selectedRegions}
                 styledRegionGroups={this.getStyledRegionGroups()}
+                cellRendererDependencies={[this.state.cellContent]}
             >
                 {this.renderColumns()}
             </Table2>
@@ -477,7 +487,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     };
 
     private renderColumnMenu = (columnIndex: number) => {
-        // tslint:disable:jsx-no-multiline-js jsx-no-lambda
         const menu = (
             <Menu>
                 <MenuItem
@@ -677,31 +686,34 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {selectedRegionTransformPresetMenu}
                 <H6>Scroll to</H6>
                 {this.renderScrollToSection()}
+                <Divider />
 
                 <H4>Columns</H4>
                 <H6>Display</H6>
                 {this.renderNumberSelectMenu("Num. columns", "numCols", COLUMN_COUNTS)}
                 {this.renderNumberSelectMenu("Num. frozen columns", "numFrozenCols", FROZEN_COLUMN_COUNTS)}
-                {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
-                {this.renderSwitch("Menus", "showColumnMenus")}
-                {this.renderSwitch("Custom headers", "enableColumnCustomHeaders")}
+                {this.renderSwitch("Column headers", "enableColumnHeader")}
+                {this.renderSwitch("Column headers loading", "showColumnHeadersLoading", "enableColumnHeader", true)}
+                {this.renderSwitch("Column header menus", "showColumnMenus", "enableColumnHeader", true)}
+                {this.renderSwitch("Custom headers", "enableColumnCustomHeaders", "enableColumnHeader", true)}
                 <H6>Interactions</H6>
                 {this.renderSwitch("Editing", "enableColumnNameEditing", "enableColumnCustomHeaders", false)}
-                {this.renderSwitch("Reordering", "enableColumnReordering")}
-                {this.renderSwitch("Resizing", "enableColumnResizing")}
-                {this.renderSwitch("Selection", "enableColumnSelection")}
+                {this.renderSwitch("Reordering", "enableColumnReordering", "enableColumnHeader", true)}
+                {this.renderSwitch("Resizing", "enableColumnResizing", "enableColumnHeader", true)}
+                {this.renderSwitch("Selection", "enableColumnSelection", "enableColumnHeader", true)}
+                <Divider />
 
                 <H4>Rows</H4>
                 <H6>Display</H6>
                 {this.renderNumberSelectMenu("Num. rows", "numRows", ROW_COUNTS)}
                 {this.renderNumberSelectMenu("Num. frozen rows", "numFrozenRows", FROZEN_ROW_COUNTS)}
-                {this.renderSwitch("Headers", "showRowHeaders")}
-                {this.renderSwitch("Loading state", "showRowHeadersLoading")}
+                {this.renderSwitch("Row headers", "enableRowHeader")}
+                {this.renderSwitch("Row headers loading", "showRowHeadersLoading", "enableRowHeader", true)}
                 {this.renderSwitch("Zebra striping", "showZebraStriping")}
                 <H6>Interactions</H6>
-                {this.renderSwitch("Reordering", "enableRowReordering")}
-                {this.renderSwitch("Resizing", "enableRowResizing")}
-                {this.renderSwitch("Selection", "enableRowSelection")}
+                {this.renderSwitch("Reordering", "enableRowReordering", "enableRowHeader", true)}
+                {this.renderSwitch("Resizing", "enableRowResizing", "enableRowHeader", true)}
+                {this.renderSwitch("Selection", "enableRowSelection", "enableRowHeader", true)}
                 <H6>Instance methods</H6>
                 {this.renderButton("Resize rows by tallest cell", {
                     onClick: this.handleResizeRowsByTallestCellButtonClick,
@@ -709,6 +721,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderButton("Resize rows by approx height", {
                     onClick: this.handleResizeRowsByApproxHeightButtonClick,
                 })}
+                <Divider />
 
                 <H4>Cells</H4>
                 <H6>Display</H6>
@@ -724,6 +737,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Fixed truncation", "enableCellTruncationFixed", "enableCellTruncation", true)}
                 <div className="sidebar-indented-group">{truncatedLengthMenu}</div>
                 {this.renderSwitch("Wrap text", "enableCellWrap")}
+                <Divider />
 
                 <H4>Page</H4>
                 <H6>Display</H6>
@@ -731,6 +745,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 <H6>Perf</H6>
                 {this.renderSwitch("Slow layout", "enableSlowLayout")}
                 {this.renderSwitch("Isolate layout boundary", "enableLayoutBoundary")}
+                <Divider />
 
                 <H4>Settings</H4>
                 {this.renderButton("Reset all", {
@@ -914,7 +929,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.maybeLogCallback(`[onCopy] success = ${success}`);
     };
 
-    private onVisibleCellsChange = (rowIndices: IRowIndices, columnIndices: IColumnIndices) => {
+    private onVisibleCellsChange = (rowIndices: RowIndices, columnIndices: ColumnIndices) => {
         const { rowIndexStart, rowIndexEnd } = rowIndices;
         const { columnIndexStart, columnIndexEnd } = columnIndices;
         this.maybeLogCallback(

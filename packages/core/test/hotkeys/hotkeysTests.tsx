@@ -458,28 +458,28 @@ describe("Hotkeys", () => {
             const ignored = 16;
             tests.push(makeComboTest("shift", { shiftKey: true, which: ignored } as any));
             tests.push(
-                makeComboTest("ctrl + alt + shift", ({
+                makeComboTest("ctrl + alt + shift", {
                     altKey: true,
                     ctrlKey: true,
                     shiftKey: true,
                     which: ignored,
-                } as any) as KeyboardEvent),
+                } as any as KeyboardEvent),
             );
             tests.push(
-                makeComboTest("ctrl + meta", ({
+                makeComboTest("ctrl + meta", {
                     ctrlKey: true,
                     metaKey: true,
                     which: ignored,
-                } as any) as KeyboardEvent),
+                } as any as KeyboardEvent),
             );
             verifyCombos(tests);
         });
 
         it("adds shift to keys that imply it", () => {
             const tests = [] as IComboTest[];
-            tests.push(makeComboTest("!", ({ shiftKey: true, which: 49 } as any) as KeyboardEvent));
-            tests.push(makeComboTest("@", ({ shiftKey: true, which: 50 } as any) as KeyboardEvent));
-            tests.push(makeComboTest("{", ({ shiftKey: true, which: 219 } as any) as KeyboardEvent));
+            tests.push(makeComboTest("!", { shiftKey: true, which: 49 } as any as KeyboardEvent));
+            tests.push(makeComboTest("@", { shiftKey: true, which: 50 } as any as KeyboardEvent));
+            tests.push(makeComboTest("{", { shiftKey: true, which: 219 } as any as KeyboardEvent));
             // don't verify the strings because these will be converted to
             // `shift + 1`, etc.
             verifyCombos(tests, false);

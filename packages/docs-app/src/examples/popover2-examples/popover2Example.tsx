@@ -19,8 +19,8 @@ import * as React from "react";
 import {
     AnchorButton,
     Button,
-    Classes as CoreClasses,
     Code,
+    Classes as CoreClasses,
     FormGroup,
     H5,
     HTMLSelect,
@@ -42,11 +42,11 @@ import {
 } from "@blueprintjs/docs-theme";
 import {
     Classes,
-    Popover2SharedProps,
     Placement,
     PlacementOptions,
     Popover2,
     Popover2InteractionKind,
+    Popover2SharedProps,
     StrictModifierNames,
 } from "@blueprintjs/popover2";
 

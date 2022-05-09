@@ -21,15 +21,15 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     IPopoverProps,
-    TagInputProps,
     Keys,
     Popover,
     PopoverInteractionKind,
     Position,
-    TagInput,
-    TagInputAddMethod,
     refHandler,
     setRef,
+    TagInput,
+    TagInputAddMethod,
+    TagInputProps,
 } from "@blueprintjs/core";
 
 import { Classes, IListItemsProps } from "../../common";

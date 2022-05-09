@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Classes, Icon, IconSize, IconProps, Intent } from "../../src";
+import { Classes, Icon, IconProps, IconSize, Intent } from "../../src";
 
 describe("<Icon>", () => {
     it("tagName dictates HTML tag", () => {
@@ -48,7 +48,6 @@ describe("<Icon>", () => {
     });
 
     it("prefixed icon renders blank icon", () => {
-        // eslint-disable-next-line deprecation/deprecation
         assert.lengthOf(shallow(<Icon icon={Classes.iconClass("airplane") as any} />).find("path"), 0);
     });
 

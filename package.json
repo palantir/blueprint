@@ -1,6 +1,6 @@
 {
     "name": "blueprintjs-monorepo",
-    "version": "3.38.0",
+    "version": "4.0.0",
     "private": true,
     "description": "A React UI toolkit for the web.",
     "workspaces": [
@@ -17,12 +17,10 @@
         "dev": "lerna run dev --parallel --ignore \"@blueprintjs/{landing-app,table-dev-app}\"",
         "dev:core": "lerna run dev --parallel --scope \"@blueprintjs/{core,icons,docs-app}\"",
         "dev:docs": "lerna run dev --parallel --scope \"@blueprintjs/{core,docs-app,docs-theme}\"",
-        "dev:datetime": "lerna run dev --parallel --scope \"@blueprintjs/{core,datetime,timezone,docs-app}\"",
-        "dev:landing": "lerna run dev --parallel --scope \"@blueprintjs/{core,landing-app}\"",
+        "dev:datetime": "lerna run dev --parallel --scope \"@blueprintjs/{datetime,timezone,docs-app}\"",
         "dev:popover2": "lerna run dev --parallel --scope \"@blueprintjs/{popover2,docs-app}\"",
-        "dev:select": "lerna run dev --parallel --scope \"@blueprintjs/{core,select,docs-app}\"",
-        "dev:table": "lerna run dev --parallel --scope \"@blueprintjs/table-dev-app\"",
-        "dev:demo": "lerna run dev --parallel --scope \"@blueprintjs/demo-app\"",
+        "dev:select": "lerna run dev --parallel --scope \"@blueprintjs/{select,docs-app}\"",
+        "dev:table": "lerna run dev --parallel --scope \"@blueprintjs/{table,table-dev-app}\"",
         "dist": "run-s dist:libs dist:apps",
         "dist:libs": "lerna run dist --parallel --scope \"@blueprintjs/{colors,core,datetime,docs-theme,icons,popover2,select,table,timezone}\"",
         "dist:apps": "lerna run dist --parallel --scope \"@blueprintjs/{docs-app,landing-app,table-dev-app,demo-app}\"",
@@ -52,25 +50,26 @@
         "chai": "^4.2.0",
         "circle-github-bot": "^2.1.0",
         "cross-env": "^7.0.3",
-        "eslint": "^7.15.0",
-        "eslint-config-prettier": "^7.2.0",
-        "eslint-plugin-prettier": "^3.3.1",
+        "eslint": "^8.14.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.0.0",
         "gh-pages": "^3.1.0",
         "http-server": "^0.12.3",
-        "lerna": "^3.22.1",
+        "lerna": "^4.0.0",
         "npm-run-all": "^4.1.5",
-        "prettier": "~2.2.1",
+        "prettier": "~2.6.2",
         "sinon": "^9.2.1",
-        "stylelint-config-palantir": "^5.0.0",
-        "stylelint-scss": "^3.18.0",
-        "typescript": "~4.1.2",
-        "yarn-deduplicate": "^3.1.0"
+        "stylelint-config-palantir": "^6.0.1",
+        "stylelint-scss": "^4.2.0",
+        "typescript": "~4.6.2",
+        "yargs": "^17.4.0",
+        "yarn-deduplicate": "^4.0.0"
     },
     "resolutions": {
         "@types/react": "16.14.2"
     },
     "engines": {
-        "node": ">=12 <14"
+        "node": ">=12"
     },
     "repository": {
         "type": "git",

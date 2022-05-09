@@ -87,7 +87,7 @@ export default function AdvancedContextMenu2Example() {
                     Right click me!
                 </div>
             )}
-        </ContextMenu>
+        </ContextMenu2>
     )
 }
 ```

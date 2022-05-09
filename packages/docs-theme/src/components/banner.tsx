@@ -20,6 +20,8 @@ import * as React from "react";
 import { Classes, Intent, Props } from "@blueprintjs/core";
 
 export interface IBannerProps extends Props {
+    children?: React.ReactNode;
+
     /** Link URL. */
     href: string;
 

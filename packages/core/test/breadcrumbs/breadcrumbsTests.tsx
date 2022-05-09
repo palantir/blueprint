@@ -109,7 +109,6 @@ describe("Breadcrumbs", () => {
         mount(
             <Breadcrumbs
                 breadcrumbRenderer={spy}
-                // tslint:disable-next-line:jsx-no-lambda
                 currentBreadcrumbRenderer={() => <div />}
                 items={ITEMS}
                 minVisibleItems={ITEMS.length}

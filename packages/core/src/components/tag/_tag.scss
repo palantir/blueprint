@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
+@import "../../common/variables-extended";
 @import "./common";
 
 /*
@@ -36,6 +37,27 @@ Markup:
 Styleguide tag
 */
 
+$tag-intent-colors: (
+  "primary": ($pt-intent-primary, $blue2, $blue1, $white),
+  "success": ($pt-intent-success, $green2, $green1, $white),
+  "warning": ($orange5, $orange4, $orange3, $pt-text-color),
+  "danger": ($pt-intent-danger, $red2, $red1, $white)
+) !default;
+
+$minimal-tag-intent-colors: (
+  "primary": ($pt-intent-primary, $blue2, $blue1),
+  "success": ($pt-intent-success, $green2, $green1),
+  "warning": ($pt-intent-warning, $orange2, $orange1),
+  "danger": ($pt-intent-danger, $red2, $red1)
+) !default;
+
+$minimal-dark-tag-intent-colors: (
+  "primary": ($pt-intent-primary, $blue5, $blue6),
+  "success": ($pt-intent-success, $green5, $green6),
+  "warning": ($pt-intent-warning, $orange5, $orange6),
+  "danger": ($pt-intent-danger, $red5, $red6)
+) !default;
+
 .#{$ns}-tag {
   @include pt-tag();
 
@@ -44,9 +66,9 @@ Styleguide tag
     @include pt-tag-large();
   }
 
-  @each $intent, $color in $pt-intent-colors {
+  @each $intent, $colors in $tag-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      @include pt-tag-intent($color);
+      @include pt-tag-intent($colors...);
     }
   }
 
@@ -58,13 +80,17 @@ Styleguide tag
   &.#{$ns}-minimal {
     @include pt-tag-minimal();
 
-    @each $intent, $color in $pt-intent-colors {
+    @each $intent, $colors in $minimal-tag-intent-colors {
       &.#{$ns}-intent-#{$intent} {
-        @include pt-tag-minimal-intent(
-          $color,
-          map-get($pt-intent-text-colors, $intent),
-          map-get($pt-dark-intent-text-colors, $intent)
-        );
+        @include pt-tag-minimal-intent($colors...);
+      }
+    }
+
+    @each $intent, $colors in $minimal-dark-tag-intent-colors {
+      &.#{$ns}-intent-#{$intent} {
+        .#{$ns}-dark & {
+          @include pt-tag-minimal-dark-intent($colors...);
+        }
       }
     }
   }

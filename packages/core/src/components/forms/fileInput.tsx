@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
@@ -85,7 +84,6 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
 
 // TODO: write tests (ignoring for now to get a build passing quickly)
 /* istanbul ignore next */
-@polyfill
 export class FileInput extends AbstractPureComponent2<FileInputProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 

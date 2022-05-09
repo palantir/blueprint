@@ -62,8 +62,8 @@ export interface IEditableNameState {
 }
 
 export class EditableName extends React.PureComponent<IEditableNameProps, IEditableNameState> {
-    public constructor(props: IEditableNameProps, context?: any) {
-        super(props, context);
+    public constructor(props: IEditableNameProps) {
+        super(props);
         this.state = {
             dirtyName: props.name,
             isEditing: false,
@@ -86,7 +86,7 @@ export class EditableName extends React.PureComponent<IEditableNameProps, IEdita
                 className={classNames(className, Classes.TABLE_EDITABLE_NAME)}
                 defaultValue={name}
                 intent={intent}
-                minWidth={null}
+                minWidth={0}
                 onCancel={this.handleCancel}
                 onChange={this.handleChange}
                 onConfirm={this.handleConfirm}
@@ -105,21 +105,16 @@ export class EditableName extends React.PureComponent<IEditableNameProps, IEdita
     private handleCancel = (value: string) => {
         // don't strictly need to clear the dirtyName, but it's better hygiene
         this.setState({ isEditing: false, dirtyName: undefined });
-        this.invokeCallback(this.props.onCancel, value);
+        this.props.onCancel?.(value, this.props.index);
     };
 
     private handleChange = (value: string) => {
         this.setState({ dirtyName: value });
-        this.invokeCallback(this.props.onChange, value);
+        this.props.onChange?.(value, this.props.index);
     };
 
     private handleConfirm = (value: string) => {
         this.setState({ isEditing: false, savedName: value, dirtyName: undefined });
-        this.invokeCallback(this.props.onConfirm, value);
+        this.props.onConfirm?.(value, this.props.index);
     };
-
-    private invokeCallback(callback: (value: string, columnIndex?: number) => void, value: string) {
-        const { index } = this.props;
-        callback?.(value, index);
-    }
 }

@@ -19,7 +19,6 @@ export * from "./domUtils";
 export * from "./functionUtils";
 export * from "./jsUtils";
 export * from "./reactUtils";
-export * from "./safeInvokeMember";
 export { isDarkTheme } from "./isDarkTheme";
 
 // ref utils used to live in this folder, but got refactored and moved elsewhere.
