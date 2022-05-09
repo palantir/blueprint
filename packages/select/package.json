@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/select",
-    "version": "4.1.4",
+    "version": "4.1.5",
     "description": "Components related to selecting items from a list",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
