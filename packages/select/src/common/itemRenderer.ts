@@ -35,8 +35,12 @@ export interface IItemRendererProps {
     /** Click event handler to select this item. */
     handleClick: MouseEventHandler<HTMLElement>;
 
-    /** Focus event handler to set this as the "active" item */
-    handleFocus: () => void;
+    /**
+     * Focus event handler to set this as the "active" item.
+     *
+     * N.B. this is optional to preserve back-compat; it will become required in the next major version.
+     */
+    handleFocus?: () => void;
 
     index?: number;
 
