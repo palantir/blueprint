@@ -9,7 +9,7 @@ Non-ideal state
 
 Markup:
 <div class="#{$ns}-non-ideal-state">
-  <div class="#{$ns}-non-ideal-state-visual">
+  <div class="#{$ns}-non-ideal-state-visual" style="font-size: 48px; line-height: 48px;">
     <span class="#{$ns}-icon #{$ns}-icon-folder-open"></span>
   </div>
   <div class="#{$ns}-non-ideal-state-text">
@@ -68,10 +68,8 @@ Styleguide non-ideal-state
 
 .#{$ns}-non-ideal-state-visual {
   color: $gray3;
-  // font-size set for CSS API only; the React component renders resized SVG.
-  font-size: $pt-icon-size-standard * 3;
 
-  svg {
+  .#{$ns}-icon svg {
     fill-opacity: 0.15;
     // need to show overflow for some strokes on paths that reach the edge of the icon bounding box
     overflow: visible;
@@ -84,7 +82,7 @@ Styleguide non-ideal-state
   }
 
   .#{$ns}-dark & {
-    svg {
+    .#{$ns}-icon svg {
       fill-opacity: 0.2;
     }
   }
