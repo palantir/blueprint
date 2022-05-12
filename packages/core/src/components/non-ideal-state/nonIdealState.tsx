@@ -79,14 +79,12 @@ export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
     };
 
     public render() {
-        const { action, children, className, description, layout, title } = this.props;
+        const { action, children, className, layout } = this.props;
+
         return (
             <div className={classNames(Classes.NON_IDEAL_STATE, `${Classes.NON_IDEAL_STATE}-${layout}`, className)}>
                 {this.maybeRenderVisual()}
-                <div className={Classes.NON_IDEAL_STATE_TEXT}>
-                    {title && <H4>{title}</H4>}
-                    {description && ensureElement(description, "div")}
-                </div>
+                {this.maybeRenderText()}
                 {action}
                 {children}
             </div>
@@ -96,11 +94,28 @@ export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
     private maybeRenderVisual() {
         const { icon, iconSize } = this.props;
         if (icon == null) {
-            return null;
+            return undefined;
         } else {
             return (
-                <div className={Classes.NON_IDEAL_STATE_VISUAL}>
+                <div
+                    className={Classes.NON_IDEAL_STATE_VISUAL}
+                    style={{ fontSize: `${iconSize}px`, lineHeight: `${iconSize}px` }}
+                >
                     <Icon icon={icon} size={iconSize} aria-hidden={true} tabIndex={-1} />
+                </div>
+            );
+        }
+    }
+
+    private maybeRenderText() {
+        const { description, title } = this.props;
+        if (title == null && description == null) {
+            return undefined;
+        } else {
+            return (
+                <div className={Classes.NON_IDEAL_STATE_TEXT}>
+                    {title && <H4>{title}</H4>}
+                    {description && ensureElement(description, "div")}
                 </div>
             );
         }

@@ -16,7 +16,16 @@
 
 import * as React from "react";
 
-import { Button, H5, NonIdealState, NonIdealStateIconSize, Switch } from "@blueprintjs/core";
+import {
+    Button,
+    ButtonGroup,
+    H5,
+    Label,
+    NonIdealState,
+    NonIdealStateIconSize,
+    Spinner,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IconName } from "@blueprintjs/icons";
 
@@ -37,27 +46,31 @@ const nonIdealStateIconSizeToSize: Record<NonIdealStateIconSize, Size> = Object.
 const defaultIcon: IconName = "search";
 
 export interface INonIdealStateExampleState {
-    action: boolean;
-    description: boolean;
-    icon: IconName | null;
+    icon: IconName;
     iconSize: NonIdealStateIconSize;
     layout: Layout;
+    showAction: boolean;
+    showDescription: boolean;
+    showTitle: boolean;
+    visual: VisualKind;
 }
 
 export class NonIdealStateExample extends React.PureComponent<IExampleProps, INonIdealStateExampleState> {
     public state: INonIdealStateExampleState = {
-        action: true,
-        description: true,
         icon: defaultIcon,
         iconSize: NonIdealStateIconSize.STANDARD,
         layout: "vertical",
+        showAction: true,
+        showDescription: true,
+        showTitle: true,
+        visual: "icon",
     };
 
-    private toggleAction = handleBooleanChange(action => this.setState({ action }));
+    private toggleShowAction = handleBooleanChange(showAction => this.setState({ showAction }));
 
-    private toggleIcon = handleBooleanChange(icon => this.setState({ icon: icon ? defaultIcon : null }));
+    private toggleShowDescription = handleBooleanChange(showDescription => this.setState({ showDescription }));
 
-    private toggleDescription = handleBooleanChange(description => this.setState({ description }));
+    private toggleShowTitle = handleBooleanChange(showTitle => this.setState({ showTitle }));
 
     private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 
@@ -65,28 +78,36 @@ export class NonIdealStateExample extends React.PureComponent<IExampleProps, INo
 
     private handleSizeChange = (size: Size) => this.setState({ iconSize: sizeToNonIdealStateIconSize[size] });
 
+    private handleVisualKindChange = (visual: VisualKind) => this.setState({ visual });
+
     public render() {
         const options = (
             <>
                 <H5>Props</H5>
                 <LayoutSelect layout={this.state.layout} onChange={this.handleLayoutChange} />
-                <Switch label="Show icon" checked={this.state.icon !== null} onChange={this.toggleIcon} />
+                <VisualSelect visual={this.state.visual} onChange={this.handleVisualKindChange} />
                 <IconSelect
-                    disabled={this.state.icon === null}
+                    disabled={this.state.visual !== "icon"}
                     iconName={this.state.icon}
                     onChange={this.handleIconNameChange}
                 />
                 <SizeSelect
-                    label="Icon size"
+                    label="Visual size"
                     optionLabels={["XS", "Small", "Standard"]}
                     size={nonIdealStateIconSizeToSize[this.state.iconSize]}
                     onChange={this.handleSizeChange}
                 />
-                <Switch label="Show description" checked={this.state.description} onChange={this.toggleDescription} />
-                <Switch label="Show action" checked={this.state.action} onChange={this.toggleAction} />
+                <Switch label="Show title" checked={this.state.showTitle} onChange={this.toggleShowTitle} />
+                <Switch
+                    label="Show description"
+                    checked={this.state.showDescription}
+                    onChange={this.toggleShowDescription}
+                />
+                <Switch label="Show action" checked={this.state.showAction} onChange={this.toggleShowAction} />
             </>
         );
 
+        const visual = this.state.visual === "icon" ? this.state.icon : <Spinner size={this.state.iconSize} />;
         const action = <Button outlined={true} text="New file" icon="plus" intent="primary" />;
         const description = (
             <div>
@@ -99,14 +120,35 @@ export class NonIdealStateExample extends React.PureComponent<IExampleProps, INo
         return (
             <Example options={options} {...this.props}>
                 <NonIdealState
-                    icon={this.state.icon === null ? undefined : this.state.icon}
+                    icon={visual}
                     iconSize={this.state.iconSize}
-                    title="No search results"
-                    description={this.state.description ? description : undefined}
-                    action={this.state.action ? action : undefined}
+                    title={this.state.showTitle ? "No search results" : undefined}
+                    description={this.state.showDescription ? description : undefined}
+                    action={this.state.showAction ? action : undefined}
                     layout={this.state.layout}
                 />
             </Example>
         );
     }
 }
+
+type VisualKind = "icon" | "spinner";
+
+/** Button radio group to switch between icon and spinner visuals. */
+const VisualSelect: React.FC<{ visual: VisualKind; onChange: (option: VisualKind) => void }> = ({
+    visual,
+    onChange,
+}) => {
+    const handleIcon = React.useCallback(() => onChange("icon"), []);
+    const handleSpinner = React.useCallback(() => onChange("spinner"), []);
+
+    return (
+        <Label>
+            Visual
+            <ButtonGroup fill={true} style={{ marginTop: 5 }}>
+                <Button active={visual === "icon"} text="Icon" onClick={handleIcon} />
+                <Button active={visual === "spinner"} text="Spinner" onClick={handleSpinner} />
+            </ButtonGroup>
+        </Label>
+    );
+};
