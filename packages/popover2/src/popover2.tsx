@@ -58,7 +58,7 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
     /**
      * Whether the popover/tooltip should acquire application focus when it first opens.
      *
-     * @default true for click interations, false for hover interactions
+     * @default true for click interactions, false for hover interactions
      */
     autoFocus?: boolean;
 
@@ -117,7 +117,7 @@ export interface IPopover2State {
 }
 
 /**
- * @template T target component props inteface
+ * @template T target component props interface
  */
 export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopover2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
@@ -273,15 +273,15 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         }
 
         const childrenCount = React.Children.count(props.children);
-        const hasRenderTargetPropp = props.renderTarget !== undefined;
+        const hasRenderTargetProp = props.renderTarget !== undefined;
 
-        if (childrenCount === 0 && !hasRenderTargetPropp) {
+        if (childrenCount === 0 && !hasRenderTargetProp) {
             console.warn(Errors.POPOVER2_REQUIRES_TARGET);
         }
         if (childrenCount > 1) {
             console.warn(Errors.POPOVER2_WARN_TOO_MANY_CHILDREN);
         }
-        if (childrenCount > 0 && hasRenderTargetPropp) {
+        if (childrenCount > 0 && hasRenderTargetProp) {
             console.warn(Errors.POPOVER2_WARN_DOUBLE_TARGET);
         }
     }
@@ -448,7 +448,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 usePortal={this.props.usePortal}
                 portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
-                // if hover interaciton, it doesn't make sense to take over focus control
+                // if hover interaction, it doesn't make sense to take over focus control
                 shouldReturnFocusOnClose={this.isHoverInteractionKind() ? false : shouldReturnFocusOnClose}
             >
                 <div className={Classes.POPOVER2_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
@@ -617,7 +617,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         const dismissElement = eventTarget.closest(
             `.${Classes.POPOVER2_DISMISS}, .${Classes.POPOVER2_DISMISS_OVERRIDE}`,
         );
-        // dismiss selectors from the "V1" version of Popover in the core pacakge
+        // dismiss selectors from the "V1" version of Popover in the core package
         // we expect these to be rendered by MenuItem, which at this point has no knowledge of Popover2
         // this can be removed once Popover2 is merged into core in v5.0
         const dismissElementV1 = eventTarget.closest(
