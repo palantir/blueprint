@@ -70,16 +70,6 @@ export interface Select2Props<T> extends IListItemsProps<T> {
      */
     inputProps?: InputGroupProps2;
 
-    /**
-     * Whether the select popover should be styled so that it matches the width of the target.
-     * This is done using a popper.js modifier passed through `popoverProps`.
-     *
-     * Note that setting `matchTargetWidth={true}` will also set `popoverProps.usePortal={false}` and `popoverProps.wrapperTagName="div"`.
-     *
-     * @default false
-     */
-    matchTargetWidth?: boolean;
-
     /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
     popoverProps?: Partial<Omit<Popover2Props, "content">>;
 
@@ -145,36 +135,10 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const {
-            fill,
-            filterable = true,
-            disabled = false,
-            inputProps = {},
-            popoverProps = {},
-            matchTargetWidth,
-        } = this.props;
+        const { fill, filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
 
         if (fill) {
             popoverProps.fill = true;
-        }
-
-        if (matchTargetWidth) {
-            if (popoverProps.modifiers == null) {
-                popoverProps.modifiers = {};
-            }
-
-            // TODO(adahiya): apply custom modifier to make popper match reference width
-            // see https://codesandbox.io/s/bitter-sky-pe3z9?file=/src/index.js
-            // popoverProps.modifiers.minWidth = {
-            //     enabled: true,
-            //     fn: data => {
-            //         data.styles.width = `${data.offsets.reference.width}px`;
-            //         return data;
-            //     },
-            //     order: 800,
-            // };
-
-            popoverProps.usePortal = false;
         }
 
         const input = (
@@ -206,9 +170,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                     </div>
                 }
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName, {
-                    [Classes.SELECT_MATCH_TARGET_WIDTH]: matchTargetWidth,
-                })}
+                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpening={this.handlePopoverOpening}
                 onOpened={this.handlePopoverOpened}
                 onClosing={this.handlePopoverClosing}
