@@ -642,6 +642,18 @@ describe("<Popover2>", () => {
             wrapper = renderPopover({ minimal: true, isOpen: true });
             assert.lengthOf(wrapper.find(Popover2Arrow), 0);
         });
+
+        it("matches target width via custom modifier", () => {
+            wrapper = renderPopover({ matchTargetWidth: true, isOpen: true, placement: "bottom" });
+            const targetElement = wrapper.find("[data-testid='target-button']").getDOMNode();
+            const popoverElement = wrapper.find(`.${Classes.POPOVER2}`).getDOMNode();
+            assert.closeTo(
+                popoverElement.clientWidth,
+                targetElement.clientWidth,
+                5,
+                "content width should equal target width +/- 5px",
+            );
+        });
     });
 
     describe("closing on click", () => {
