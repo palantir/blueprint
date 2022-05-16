@@ -69,6 +69,12 @@ $dark-popover2-arrow-box-shadow:
     }
   }
 
+  &.#{$ns}-popover2-match-target-width {
+    // parent element will have width styles set by our custom popper.js modifier,
+    // so we should fill that container's width
+    width: 100%;
+  }
+
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     @include popover2-appearance(
