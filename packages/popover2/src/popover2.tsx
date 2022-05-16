@@ -17,7 +17,7 @@
 import { State as PopperState, PositioningStrategy } from "@popperjs/core";
 import classNames from "classnames";
 import * as React from "react";
-import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, StrictModifier } from "react-popper";
+import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
 import {
     AbstractPureComponent2,
@@ -32,6 +32,7 @@ import {
 } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
+import { matchReferenceWidthModifier } from "./customModifiers";
 import * as Errors from "./errors";
 import { Popover2Arrow, POPOVER_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { positionToPlacement } from "./popover2PlacementUtils";
@@ -132,6 +133,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         hoverOpenDelay: 150,
         inheritDarkTheme: true,
         interactionKind: Popover2InteractionKind.CLICK,
+        matchTargetWidth: false,
         minimal: false,
         openOnTargetFocus: true,
         // N.B. we don't set a default for `placement` or `position` here because that would trigger
@@ -416,6 +418,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 [CoreClasses.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
                 [CoreClasses.MINIMAL]: this.props.minimal,
                 [Classes.POPOVER2_CAPTURING_DISMISS]: this.props.captureDismiss,
+                [Classes.POPOVER2_MATCH_TARGET_WIDTH]: this.props.matchTargetWidth,
                 [Classes.POPOVER2_REFERENCE_HIDDEN]: popperProps.isReferenceHidden === true,
                 [Classes.POPOVER2_POPPER_ESCAPED]: popperProps.hasPopperEscaped === true,
             },
@@ -467,9 +470,9 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         );
     };
 
-    private getPopperModifiers(): StrictModifier[] {
-        const { modifiers } = this.props;
-        return [
+    private getPopperModifiers(): ReadonlyArray<Modifier<any>> {
+        const { matchTargetWidth, modifiers, modifiersCustom } = this.props;
+        const popperModifiers: Array<Modifier<any>> = [
             {
                 enabled: this.isArrowEnabled(),
                 name: "arrow",
@@ -517,6 +520,16 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 },
             },
         ];
+
+        if (matchTargetWidth) {
+            popperModifiers.push(matchReferenceWidthModifier);
+        }
+
+        if (modifiersCustom !== undefined) {
+            popperModifiers.push(...modifiersCustom);
+        }
+
+        return popperModifiers;
     }
 
     private handleTargetFocus = (e: React.FocusEvent<HTMLElement>) => {

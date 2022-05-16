@@ -63,6 +63,7 @@ const INTERACTION_KINDS = [
 
 export interface IPopover2ExampleState {
     boundary?: "scrollParent" | "body" | "clippingParents";
+    buttonText: string;
     canEscapeKeyClose?: boolean;
     exampleIndex?: number;
     hasBackdrop?: boolean;
@@ -70,6 +71,7 @@ export interface IPopover2ExampleState {
     interactionKind?: Popover2InteractionKind;
     isControlled: boolean;
     isOpen?: boolean;
+    matchTargetWidth: boolean;
     minimal?: boolean;
     modifiers?: Popover2SharedProps<HTMLElement>["modifiers"];
     placement?: Placement;
@@ -82,6 +84,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
 
     public state: IPopover2ExampleState = {
         boundary: "scrollParent",
+        buttonText: "Popover target",
         canEscapeKeyClose: true,
         exampleIndex: 0,
         hasBackdrop: false,
@@ -89,6 +92,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         interactionKind: "click",
         isControlled: false,
         isOpen: false,
+        matchTargetWidth: false,
         minimal: false,
         modifiers: {
             arrow: { enabled: true },
@@ -125,6 +129,13 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
 
     private toggleIsOpen = handleBooleanChange(isOpen => this.setState({ isOpen }));
 
+    private toggleMatchTargetWidth = handleBooleanChange(matchTargetWidth => {
+        this.setState({
+            buttonText: matchTargetWidth ? "(Slightly wider) popover target" : "Popover target",
+            matchTargetWidth,
+        });
+    });
+
     private toggleMinimal = handleBooleanChange(minimal => this.setState({ minimal }));
 
     private toggleUsePortal = handleBooleanChange(usePortal => {
@@ -150,8 +161,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     }
 
     public render() {
-        const { boundary, exampleIndex, sliderValue, ...popoverProps } = this.state;
-        console.info(popoverProps);
+        const { boundary, buttonText, exampleIndex, sliderValue, ...popoverProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover2-example-scroll" ref={this.centerScroll}>
@@ -170,7 +180,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                         isOpen={this.state.isControlled ? this.state.isOpen : undefined}
                         content={this.getContents(exampleIndex)}
                     >
-                        <Button intent={Intent.PRIMARY} text="Popover target" tabIndex={0} />
+                        <Button intent={Intent.PRIMARY} text={buttonText} tabIndex={0} />
                     </Popover2>
                     <p>
                         Scroll around this container to experiment
@@ -183,7 +193,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     }
 
     private renderOptions() {
-        const { modifiers, placement } = this.state;
+        const { matchTargetWidth, modifiers, placement } = this.state;
         const { arrow, flip, preventOverflow } = modifiers;
 
         // popper.js requires this modiifer for "auto" placement
@@ -265,6 +275,8 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                         <option value="window">window</option>
                     </HTMLSelect>
                 </Switch>
+                <Switch checked={matchTargetWidth} label="Match target width" onChange={this.toggleMatchTargetWidth} />
+
                 <Label>
                     <AnchorButton
                         href={POPPER_DOCS_URL}
