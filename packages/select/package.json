@@ -36,6 +36,7 @@
     },
     "dependencies": {
         "@blueprintjs/core": "^4.3.2",
+        "@blueprintjs/popover2": "^1.2.2",
         "classnames": "^2.2",
         "tslib": "~2.3.1"
     },

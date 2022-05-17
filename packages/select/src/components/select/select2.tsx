@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/** @fileoverview "V2" variant of Select which uses Popover2 instead of Popover */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -23,22 +25,18 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps2,
-    IPopoverProps,
     IRef,
     Keys,
-    Popover,
     Position,
     refHandler,
     setRef,
 } from "@blueprintjs/core";
+import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-// eslint-disable-next-line deprecation/deprecation
-export type SelectProps<T> = ISelectProps<T>;
-/** @deprecated use SelectProps */
-export interface ISelectProps<T> extends IListItemsProps<T> {
+export interface Select2Props<T> extends IListItemsProps<T> {
     children?: React.ReactNode;
 
     /**
@@ -72,19 +70,8 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      */
     inputProps?: InputGroupProps2;
 
-    /**
-     * Whether the select popover should be styled so that it matches the width of the target.
-     * This is done using a popper.js modifier passed through `popoverProps`.
-     *
-     * Note that setting `matchTargetWidth={true}` will also set `popoverProps.usePortal={false}` and `popoverProps.wrapperTagName="div"`.
-     *
-     * @default false
-     */
-    matchTargetWidth?: boolean;
-
-    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    popoverProps?: Partial<IPopoverProps> & object;
+    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
+    popoverProps?: Partial<Omit<Popover2Props, "content">>;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -95,18 +82,18 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     resetOnClose?: boolean;
 }
 
-export interface ISelectState {
+export interface Select2State {
     isOpen: boolean;
 }
 
-export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectState> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
+export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2State> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Select2`;
 
     public static ofType<U>() {
-        return Select as new (props: SelectProps<U>) => Select<U>;
+        return Select2 as new (props: Select2Props<U>) => Select2<U>;
     }
 
-    public state: ISelectState = { isOpen: false };
+    public state: Select2State = { isOpen: false };
 
     private TypedQueryList = QueryList.ofType<T>();
 
@@ -134,7 +121,7 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
         );
     }
 
-    public componentDidUpdate(prevProps: SelectProps<T>, prevState: ISelectState) {
+    public componentDidUpdate(prevProps: Select2Props<T>, prevState: Select2State) {
         if (prevProps.inputProps?.inputRef !== this.props.inputProps?.inputRef) {
             setRef(prevProps.inputProps?.inputRef, null);
             this.handleInputRef = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
@@ -148,35 +135,10 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const {
-            fill,
-            filterable = true,
-            disabled = false,
-            inputProps = {},
-            popoverProps = {},
-            matchTargetWidth,
-        } = this.props;
+        const { fill, filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
 
         if (fill) {
             popoverProps.fill = true;
-        }
-
-        if (matchTargetWidth) {
-            if (popoverProps.modifiers == null) {
-                popoverProps.modifiers = {};
-            }
-
-            popoverProps.modifiers.minWidth = {
-                enabled: true,
-                fn: data => {
-                    data.styles.width = `${data.offsets.reference.width}px`;
-                    return data;
-                },
-                order: 800,
-            };
-
-            popoverProps.usePortal = false;
-            popoverProps.wrapperTagName = "div";
         }
 
         const input = (
@@ -193,8 +155,7 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
 
         const { handleKeyDown, handleKeyUp } = listProps;
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
-            <Popover
+            <Popover2
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
@@ -202,10 +163,14 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
                 position={Position.BOTTOM_LEFT}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
+                content={
+                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                        {filterable ? input : undefined}
+                        {listProps.itemList}
+                    </div>
+                }
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName, {
-                    [Classes.SELECT_MATCH_TARGET_WIDTH]: matchTargetWidth,
-                })}
+                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpening={this.handlePopoverOpening}
                 onOpened={this.handlePopoverOpened}
                 onClosing={this.handlePopoverClosing}
@@ -216,12 +181,7 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
                 >
                     {this.props.children}
                 </div>
-                <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                    {filterable ? input : undefined}
-                    {listProps.itemList}
-                </div>
-                {/* eslint-disable-next-line deprecation/deprecation */}
-            </Popover>
+            </Popover2>
         );
     };
 
