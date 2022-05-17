@@ -22,6 +22,6 @@ The API for this component is nearly identical to that of Select2, except for a 
 `popoverProps` and the wrapper element(s) rendered around its children.
 Refer to the [Select2 documentation](#select/select2) for full API details.
 
-@## JavaScript API
+@## Props interface
 
 @interface ISelectProps

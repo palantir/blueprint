@@ -1,3 +1,7 @@
+---
+tag: new
+---
+
 @# Select2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
@@ -217,7 +221,7 @@ ReactDOM.render(
 );
 ```
 
-@## JavaScript API
+@## Props interface
 
 @interface Select2Props
 
