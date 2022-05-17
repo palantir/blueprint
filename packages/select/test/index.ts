@@ -10,4 +10,5 @@ import "./omnibarTests";
 import "./queryListTests";
 import "./renderFilteredItemsTests";
 import "./selectTests";
+import "./select2Tests";
 import "./suggestTests";

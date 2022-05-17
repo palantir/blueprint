@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,15 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, Keys, Popover } from "@blueprintjs/core";
+import { InputGroup, Keys } from "@blueprintjs/core";
+import { Popover2 } from "@blueprintjs/popover2";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
-import { IItemRendererProps, ISelectProps, ISelectState, Select } from "../src";
+import { IItemRendererProps, Select2, Select2Props, Select2State } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
-describe("<Select>", () => {
-    const FilmSelect = Select.ofType<IFilm>();
+describe("<Select2>", () => {
+    const FilmSelect = Select2.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
@@ -46,28 +47,25 @@ describe("<Select>", () => {
         };
     });
 
-    selectComponentSuite<ISelectProps<IFilm>, ISelectState>(props =>
-        mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
+    selectComponentSuite<Select2Props<IFilm>, Select2State>(props =>
+        mount(<Select2 {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
     );
 
-    it("renders a Popover around children that contains InputGroup and items", () => {
+    it("renders a Popover2 around children that contains InputGroup and items", () => {
         const wrapper = select();
         assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
-        /* eslint-disable-next-line deprecation/deprecation */
-        assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
+        assert.lengthOf(wrapper.find(Popover2), 1, "should render Popover2");
     });
 
     it("filterable=false hides InputGroup", () => {
         const wrapper = select({ filterable: false });
         assert.lengthOf(wrapper.find(InputGroup), 0, "should not render InputGroup");
-        /* eslint-disable-next-line deprecation/deprecation */
-        assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
+        assert.lengthOf(wrapper.find(Popover2), 1, "should render Popover2");
     });
 
-    it("disabled=true disables Popover", () => {
+    it("disabled=true disables Popover2", () => {
         const wrapper = select({ disabled: true });
-        /* eslint-disable-next-line deprecation/deprecation */
-        assert.strictEqual(wrapper.find(Popover).prop("disabled"), true);
+        assert.strictEqual(wrapper.find(Popover2).prop("disabled"), true);
     });
 
     it("disabled=true doesn't call itemRenderer", () => {
@@ -87,28 +85,27 @@ describe("<Select>", () => {
         assert.notEqual(input.prop("value"), inputProps.value);
     });
 
-    it("popover can be controlled with popoverProps", () => {
+    it("Popover2 can be controlled with popoverProps", () => {
         // Select defines its own onOpening so this ensures that the passthrough happens
         const onOpening = sinon.spy();
         const modifiers = {}; // our own instance
         const wrapper = select({ popoverProps: { onOpening, modifiers } });
         wrapper.find("[data-testid='target-button']").simulate("click");
-        /* eslint-disable-next-line deprecation/deprecation */
-        assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
+        assert.strictEqual(wrapper.find(Popover2).prop("modifiers"), modifiers);
         assert.isTrue(onOpening.calledOnce);
     });
 
     // TODO(adahiya): move into selectComponentSuite, generalize for Suggest & MultiSelect
-    it("opens popover when arrow key pressed on target while closed", () => {
+    it("opens Popover2 when arrow key pressed on target while closed", () => {
         const wrapper = select({ popoverProps: { usePortal: false } });
         // should be closed to start
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), false);
         wrapper.find("[data-testid='target-button']").simulate("keydown", { which: Keys.ARROW_DOWN });
         // ...then open after key down
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+        assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), true);
     });
 
-    function select(props: Partial<ISelectProps<IFilm>> = {}, query?: string) {
+    function select(props: Partial<Select2Props<IFilm>> = {}, query?: string) {
         const wrapper = mount(
             <FilmSelect {...defaultProps} {...handlers} {...props}>
                 <button data-testid="target-button">Target</button>
