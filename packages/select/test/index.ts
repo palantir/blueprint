@@ -12,3 +12,4 @@ import "./renderFilteredItemsTests";
 import "./selectTests";
 import "./select2Tests";
 import "./suggestTests";
+import "./suggest2Tests";

@@ -39,6 +39,9 @@ describe("Select isomorphic rendering", () => {
         Suggest: {
             props: { items: [] },
         },
+        Suggest2: {
+            props: { items: [] },
+        },
         Omnibar: {
             props: { items: [], isOpen: true, overlayProps: { usePortal: false } },
         },
