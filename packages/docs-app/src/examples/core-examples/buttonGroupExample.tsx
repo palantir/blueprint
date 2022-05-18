@@ -16,8 +16,9 @@
 
 import * as React from "react";
 
-import { Alignment, AnchorButton, Button, ButtonGroup, H5, Intent, Switch } from "@blueprintjs/core";
+import { Alignment, AnchorButton, Button, ButtonGroup, Classes, H5, Icon, Intent, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Tooltip2 } from "@blueprintjs/popover2";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
@@ -60,6 +61,22 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
         // props for every button in the group
         const buttonProps = { intent };
 
+        const intentLabelInfo = (
+            <Tooltip2
+                content={
+                    <span className={Classes.TEXT_SMALL}>
+                        Intents are set individually on each button <br />
+                        in the group, not the ButtonGroup wrapper.
+                    </span>
+                }
+                placement="top"
+                minimal={true}
+            >
+                <span>
+                    Intent <Icon className={Classes.TEXT_MUTED} icon="info-sign" size={12} />
+                </span>
+            </Tooltip2>
+        );
         const options = (
             <>
                 <H5>Props</H5>
@@ -67,7 +84,7 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
                 <Switch checked={this.state.large} label="Large" onChange={this.handleLargeChange} />
                 <Switch checked={this.state.minimal} label="Minimal" onChange={this.handleMinimalChange} />
                 <Switch checked={this.state.vertical} label="Vertical" onChange={this.handleVerticalChange} />
-                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
+                <IntentSelect intent={this.state.intent} label={intentLabelInfo} onChange={this.handleIntentChange} />
                 <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignChange} />
                 <H5>Example</H5>
                 <Switch checked={this.state.iconOnly} label="Icons only" onChange={this.handleIconOnlyChange} />
