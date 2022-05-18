@@ -73,7 +73,10 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
                 minimal={true}
             >
                 <span>
-                    Intent <Icon className={Classes.TEXT_MUTED} icon="info-sign" size={12} />
+                    Intent{" "}
+                    <span style={{ padding: 2, lineHeight: "16px", verticalAlign: "top" }}>
+                        <Icon className={Classes.TEXT_MUTED} icon="info-sign" size={12} />
+                    </span>
                 </span>
             </Tooltip2>
         );
