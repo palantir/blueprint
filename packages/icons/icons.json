@@ -3883,5 +3883,12 @@
         "tags": "open, application, new-tab, external",
         "group": "interface",
         "codepoint": 62251
+    },
+    {
+        "displayName": "Float",
+        "iconName": "float",
+        "tags": "number, float, double, decimal",
+        "group": "interface",
+        "codepoint": 62252
     }
 ]
