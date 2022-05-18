@@ -20,3 +20,4 @@ export * from "./select/multiSelect";
 export * from "./select/select";
 export * from "./select/select2";
 export * from "./select/suggest";
+export * from "./select/suggest2";

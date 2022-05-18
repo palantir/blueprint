@@ -10,7 +10,9 @@ The **@blueprintjs/select** NPM package provides React components related to sel
 
 - [Select2](#select/select2) replacement for Select, uses Popover2 instead of Popover under the hood.
 
-- [Suggest](#select/suggest) for selecting items in a list, from a text input.
+- [Suggest](#select/suggest) for selecting items in a list, from a text input (DEPRECATED).
+
+- [Suggest2](#select/suggest2) replacement for Suggest, uses Popover2 instead of Popover under the hood.
 
 - [MultiSelect](#select/multi-select) for selecting multiple items in a list.
 
