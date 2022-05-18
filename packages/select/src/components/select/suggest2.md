@@ -25,6 +25,6 @@ using `inputProps`.
 
 @reactExample SuggestExample
 
-@interface Suggest2Props
+@## Props interface
 
-@interface ISelectItemRendererProps
+@interface Suggest2Props

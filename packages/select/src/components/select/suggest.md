@@ -18,10 +18,8 @@ renders a text input as the `Popover` target instead of arbitrary children. This
 text [`InputGroup`](#core/components/text-inputs.input-group) can be customized
 using `inputProps`.
 
-Refer to the Suggest2 documentation for an interactive component demo.
+Refer to the [`Suggest2`](#select/suggest2) documentation for an interactive component demo.
 
 @## Props interface
 
 @interface ISuggestProps
-
-@interface ISelectItemRendererProps
