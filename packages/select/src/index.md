@@ -29,6 +29,7 @@ npm install --save @blueprintjs/select
 @page select-component
 @page select2
 @page suggest
+@page suggest2
 @page multi-select
 @page omnibar
 @page query-list
