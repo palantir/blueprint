@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Suggest } from "@blueprintjs/select";
+import { Suggest2 } from "@blueprintjs/select";
 
 import {
     areFilmsEqual,
@@ -31,7 +31,7 @@ import {
     TOP_100_FILMS,
 } from "./../../common/films";
 
-const FilmSuggest = Suggest.ofType<IFilm>();
+const FilmSuggest = Suggest2.ofType<IFilm>();
 
 export interface ISuggestExampleState {
     allowCreate: boolean;
