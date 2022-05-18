@@ -16,15 +16,17 @@
 
 import * as React from "react";
 
-import { Alignment, AnchorButton, Button, ButtonGroup, H5, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Alignment, AnchorButton, Button, ButtonGroup, H5, Intent, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
+import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonGroupExampleState {
     alignText: Alignment;
     fill: boolean;
     iconOnly: boolean;
+    intent: Intent;
     minimal: boolean;
     large: boolean;
     vertical: boolean;
@@ -35,6 +37,7 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
         alignText: Alignment.CENTER,
         fill: false,
         iconOnly: false,
+        intent: Intent.NONE,
         large: false,
         minimal: false,
         vertical: false,
@@ -44,6 +47,8 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
 
     private handleIconOnlyChange = handleBooleanChange(iconOnly => this.setState({ iconOnly }));
 
+    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
 
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
@@ -51,7 +56,10 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
 
     public render() {
-        const { iconOnly, ...bgProps } = this.state;
+        const { iconOnly, intent, ...bgProps } = this.state;
+        // props for every button in the group
+        const buttonProps = { intent };
+
         const options = (
             <>
                 <H5>Props</H5>
@@ -59,6 +67,7 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
                 <Switch checked={this.state.large} label="Large" onChange={this.handleLargeChange} />
                 <Switch checked={this.state.minimal} label="Minimal" onChange={this.handleMinimalChange} />
                 <Switch checked={this.state.vertical} label="Vertical" onChange={this.handleVerticalChange} />
+                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
                 <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignChange} />
                 <H5>Example</H5>
                 <Switch checked={this.state.iconOnly} label="Icons only" onChange={this.handleIconOnlyChange} />
@@ -69,11 +78,14 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
             <Example options={options} {...this.props}>
                 {/* set `minWidth` so `alignText` will have an effect when vertical */}
                 <ButtonGroup style={{ minWidth: 200 }} {...bgProps}>
-                    <Button icon="database">{!iconOnly && "Queries"}</Button>
-                    <Button icon="function">{!iconOnly && "Functions"}</Button>
-                    <AnchorButton icon="cog" rightIcon="settings">
-                        {!iconOnly && "Options"}
-                    </AnchorButton>
+                    <Button {...buttonProps} icon="database" text={iconOnly ? undefined : "Queries"} />
+                    <Button {...buttonProps} icon="function" text={iconOnly ? undefined : "Functions"} />
+                    <AnchorButton
+                        {...buttonProps}
+                        icon="cog"
+                        rightIcon="settings"
+                        text={iconOnly ? undefined : "Options"}
+                    />
                 </ButtonGroup>
             </Example>
         );
