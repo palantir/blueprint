@@ -3885,10 +3885,10 @@
         "codepoint": 62251
     },
     {
-        "displayName": "Float",
-        "iconName": "float",
+        "displayName": "Floating point number",
+        "iconName": "floating-point",
         "tags": "number, float, double, decimal",
-        "group": "interface",
+        "group": "miscellaneous",
         "codepoint": 62252
     }
 ]
