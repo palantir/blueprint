@@ -7,9 +7,11 @@ import { TSESTree } from "@typescript-eslint/utils";
 import { createRule } from "./utils/createRule";
 
 const DEPRECATED_TO_NEW_MAPPING: { [deprecated: string]: string } = {
-    AbstractComponent: "AbstractComponentV2",
-    AbstractPureComponent: "AbstractPureComponentV2",
+    AbstractComponent: "AbstractComponent2",
+    AbstractPureComponent: "AbstractPureComponent2",
     CollapsibleList: "OverflowList",
+    Popover: "Popover2",
+    Tooltip: "Tooltip2",
 };
 
 type MessageIds = "nonDeprecated" | "deprecated";
@@ -41,7 +43,7 @@ export const noDeprecatedComponentsRule = createRule<unknown[], MessageIds>({
             | { type: "function"; functionName: string; localFunctionName: string }
         > = [];
 
-        function isDeprecated(name: string) {
+        function isDeprecatedComponent(name: string) {
             if (deprecatedImports.length === 0) {
                 return false;
             }
@@ -50,6 +52,14 @@ export const noDeprecatedComponentsRule = createRule<unknown[], MessageIds>({
                 deprecatedImport =>
                     (deprecatedImport.type === "function" && deprecatedImport.localFunctionName === name) ||
                     DEPRECATED_TO_NEW_MAPPING[name] != null,
+            );
+        }
+
+        function isDeprecatedNamespacedComponent(name: string, property: string) {
+            return (
+                deprecatedImports.some(
+                    deprecatedImport => deprecatedImport.type === "namespace" && deprecatedImport.namespace === name,
+                ) && DEPRECATED_TO_NEW_MAPPING[property] != null
             );
         }
 
@@ -80,8 +90,9 @@ export const noDeprecatedComponentsRule = createRule<unknown[], MessageIds>({
                     }
                 }
             },
+            // Tests that <DeprecatedComponent /> is flagged
             "JSXElement > JSXOpeningElement > JSXIdentifier": (node: TSESTree.JSXIdentifier) => {
-                if (isDeprecated(node.name)) {
+                if (isDeprecatedComponent(node.name)) {
                     context.report({
                         data: {
                             deprecated: node.name,
@@ -89,6 +100,65 @@ export const noDeprecatedComponentsRule = createRule<unknown[], MessageIds>({
                         },
                         messageId: "nonDeprecated",
                         node,
+                    });
+                }
+            },
+            // Tests that <Blueprint.DeprecatedComponent /> is flagged
+            "JSXElement > JSXOpeningElement > JSXMemberExpression[property.type='JSXIdentifier']": (
+                node: TSESTree.JSXMemberExpression,
+            ) => {
+                if (
+                    node.object.type !== TSESTree.AST_NODE_TYPES.JSXIdentifier ||
+                    node.property.type !== TSESTree.AST_NODE_TYPES.JSXIdentifier
+                ) {
+                    return;
+                }
+
+                const namespaceIdentifier = node.object;
+                if (isDeprecatedNamespacedComponent(namespaceIdentifier.name, node.property.name)) {
+                    // Uses a blueprint namespace and a deprecated property
+                    context.report({
+                        data: {
+                            deprecated: node.property.name,
+                            nonDeprecated: DEPRECATED_TO_NEW_MAPPING[node.property.name],
+                        },
+                        messageId: "nonDeprecated",
+                        node: node.property,
+                    });
+                }
+            },
+            "ClassDeclaration[superClass.type='Identifier']": (node: TSESTree.ClassDeclaration) => {
+                const superClass = node.superClass as TSESTree.Identifier;
+                if (isDeprecatedComponent(superClass.name)) {
+                    context.report({
+                        data: {
+                            deprecated: superClass.name,
+                            nonDeprecated: DEPRECATED_TO_NEW_MAPPING[superClass.name],
+                        },
+                        messageId: "nonDeprecated",
+                        node,
+                    });
+                }
+            },
+            "ClassDeclaration[superClass.type='MemberExpression']": (node: TSESTree.ClassDeclaration) => {
+                const superClass = node.superClass as TSESTree.MemberExpression;
+                if (
+                    superClass.property.type !== TSESTree.AST_NODE_TYPES.Identifier ||
+                    superClass.object.type !== TSESTree.AST_NODE_TYPES.Identifier
+                ) {
+                    return;
+                }
+
+                const namespaceIdentifier = superClass.object;
+                if (isDeprecatedNamespacedComponent(namespaceIdentifier.name, superClass.property.name)) {
+                    // Uses a blueprint namespace and a deprecated property
+                    context.report({
+                        data: {
+                            deprecated: superClass.property.name,
+                            nonDeprecated: DEPRECATED_TO_NEW_MAPPING[superClass.property.name],
+                        },
+                        messageId: "nonDeprecated",
+                        node: superClass.property,
                     });
                 }
             },

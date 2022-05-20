@@ -45,6 +45,44 @@ ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
                 { messageId: "nonDeprecated", data: { deprecated: "CollapsibleList", nonDeprecated: "OverflowList" } },
             ],
         },
+        {
+            code: dedent`
+                import * as BP from "@blueprintjs/core";
+
+                return <BP.CollapsibleList />
+            `,
+            errors: [
+                { messageId: "nonDeprecated", data: { deprecated: "CollapsibleList", nonDeprecated: "OverflowList" } },
+            ],
+        },
+        {
+            code: dedent`
+                import { AbstractComponent } from "@blueprintjs/core";
+
+                export class MyClass extends AbstractComponent {
+                }
+            `,
+            errors: [
+                {
+                    messageId: "nonDeprecated",
+                    data: { deprecated: "AbstractComponent", nonDeprecated: "AbstractComponent2" },
+                },
+            ],
+        },
+        {
+            code: dedent`
+                import * as BP from "@blueprintjs/core";
+
+                export class MyClass extends BP.AbstractComponent {
+                }
+            `,
+            errors: [
+                {
+                    messageId: "nonDeprecated",
+                    data: { deprecated: "AbstractComponent", nonDeprecated: "AbstractComponent2" },
+                },
+            ],
+        },
     ],
     valid: [
         {
@@ -52,6 +90,20 @@ ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
                 import { Button } from "@blueprintjs/core";
 
                 return <Button />
+            `,
+        },
+        {
+            code: dedent`
+                import { OverflowList } from "@blueprintjs/core";
+
+                return <OverflowList />
+            `,
+        },
+        {
+            code: dedent`
+                import * as BP from "@blueprintjs/core";
+
+                return <BP.Button />
             `,
         },
     ],
