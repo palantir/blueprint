@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent2, Classes, IRef } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { uniqueId } from "../../common/utils";
@@ -81,6 +81,11 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     transitionName?: string;
 
     /**
+     * todo
+     */
+    dialogRef?: IRef<HTMLDivElement>;
+
+    /**
      * ID of the element that contains title or label text for this dialog.
      *
      * By default, if the `title` prop is supplied, this component will generate
@@ -114,7 +119,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
     public render() {
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
-                <div className={Classes.DIALOG_CONTAINER}>
+                <div className={Classes.DIALOG_CONTAINER} ref={this.props.dialogRef}>
                     <div
                         className={classNames(Classes.DIALOG, this.props.className)}
                         role="dialog"
