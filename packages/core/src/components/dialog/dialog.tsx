@@ -81,7 +81,7 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     transitionName?: string;
 
     /**
-     * todo
+     * Ref supplied to the `Classes.DIALOG_CONTAINER` element.
      */
     dialogRef?: IRef<HTMLDivElement>;
 
