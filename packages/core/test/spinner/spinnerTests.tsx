@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import { stub } from "sinon";
 
@@ -27,6 +27,12 @@ describe("Spinner", () => {
         const root = mount(<Spinner />);
         assert.lengthOf(root.find(`.${Classes.SPINNER}`), 1);
         assert.lengthOf(root.find("path"), 2);
+    });
+
+    it("supports HTML props", () => {
+        const LABEL = "widget loading";
+        const spinner = shallow(<Spinner aria-label={LABEL} />);
+        assert.strictEqual(spinner.prop("aria-label"), LABEL);
     });
 
     it("tagName determines both container elements", () => {
