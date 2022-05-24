@@ -177,10 +177,6 @@ export interface ITagInputProps extends IntentProps, Props {
      * Controlled tag values. Each value will be rendered inside a `Tag`, which can be customized
      * using `tagProps`. Therefore, any valid React node can be used as a `TagInput` value; falsy
      * values will not be rendered.
-     *
-     * __Note about typed usage:__ If you know your `values` will always be of a certain `ReactNode`
-     * subtype, such as `string` or `ReactChild`, you can use that type on all your handlers
-     * to simplify type logic.
      */
     values: readonly React.ReactNode[];
 }
