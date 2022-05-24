@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Colors, Icon, Intent } from "@blueprintjs/core";
+import { Classes, Colors, Icon, Intent } from "@blueprintjs/core";
 import { Tooltip2 } from "@blueprintjs/popover2";
 import { getTimezoneMetadata } from "@blueprintjs/timezone";
 
@@ -67,7 +67,7 @@ export class CustomTimezonePickerTarget extends React.PureComponent<
         return (
             <span>
                 GMT {offsetAsString}
-                <span style={{ color: Colors.GRAY4 }}>{abbreviation ? ` (${abbreviation})` : ""}</span>
+                <span className={Classes.TEXT_MUTED}>{abbreviation ? ` (${abbreviation})` : ""}</span>
             </span>
         );
     }

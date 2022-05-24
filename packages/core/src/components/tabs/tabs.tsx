@@ -41,7 +41,7 @@ export interface ITabsProps extends Props {
     animate?: boolean;
 
     /** Tab elements. */
-    children: React.ReactNode;
+    children?: React.ReactNode;
 
     /**
      * Initial selected tab `id`, for uncontrolled usage.

@@ -32,7 +32,6 @@ $control-indicator-spacing: $pt-grid-size !default;
 @mixin control-checked-colors($selector: ":checked") {
   input#{$selector} ~ .#{$ns}-control-indicator {
     background-color: $control-checked-background-color;
-    background-image: $button-intent-gradient;
     box-shadow: $control-checked-box-shadow;
     color: $white;
   }
@@ -125,7 +124,6 @@ $control-indicator-spacing: $pt-grid-size !default;
   .#{$ns}-control-indicator {
     background-clip: padding-box;
     background-color: $control-background-color;
-    background-image: $button-gradient;
     border: none;
     box-shadow: $control-box-shadow;
     cursor: pointer;
@@ -500,7 +498,6 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     .#{$ns}-control-indicator {
       background-color: $dark-control-background-color;
-      background-image: $dark-button-gradient;
       box-shadow: $dark-control-box-shadow;
     }
 

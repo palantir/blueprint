@@ -7,9 +7,9 @@ $pt-intent-warning: $orange3 !default;
 $pt-intent-danger: $red3 !default;
 
 $pt-app-background-color: $light-gray5 !default;
-$pt-dark-app-background-color: $dark-gray3 !default;
+$pt-dark-app-background-color: $dark-gray2 !default;
 
-$pt-outline-color: rgba($blue3, 0.6);
+$pt-outline-color: rgba($blue3, 0.6) !default;
 
 $pt-text-color: $dark-gray1 !default;
 $pt-text-color-muted: $gray1 !default;
@@ -35,7 +35,7 @@ $pt-dark-icon-color-selected: $pt-intent-primary !default;
 
 $pt-divider-black: rgba($black, 0.15) !default;
 $pt-dark-divider-black: rgba($black, 0.4) !default;
-$pt-dark-divider-white: rgba($white, 0.15) !default;
+$pt-dark-divider-white: rgba($white, 0.2) !default;
 
 $pt-code-text-color: $pt-text-color-muted !default;
 $pt-dark-code-text-color: $pt-dark-text-color-muted !default;

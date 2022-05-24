@@ -280,6 +280,7 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
     private handlePopoverClosing = (node: HTMLElement) => {
         // restore focus to saved element.
         // timeout allows popover to begin closing and remove focus handlers beforehand.
+        /* istanbul ignore next */
         this.requestAnimationFrame(() => {
             if (this.previousFocusedElement !== undefined) {
                 this.previousFocusedElement.focus();
