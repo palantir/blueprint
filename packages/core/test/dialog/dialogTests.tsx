@@ -192,6 +192,16 @@ describe("<Dialog>", () => {
             // test existence here because id is generated
             assert.notExists(dialog.find(".no-default-if-no-title").hostNodes().prop("aria-labelledby"));
         });
+
+        it("supports ref objects attached to container", () => {
+            const containerRef = React.createRef<HTMLDivElement>();
+            mount(
+                <Dialog containerRef={containerRef} usePortal={false}>
+                    {createDialogContents()}
+                </Dialog>,
+            );
+            assert.isTrue(containerRef.current?.classList.contains(Classes.DIALOG_CONTAINER));
+        });
     });
 
     // everything else about Dialog is tested by Overlay
