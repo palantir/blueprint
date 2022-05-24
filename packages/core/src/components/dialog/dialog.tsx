@@ -83,7 +83,7 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     /**
      * Ref supplied to the `Classes.DIALOG_CONTAINER` element.
      */
-    dialogRef?: IRef<HTMLDivElement>;
+    containerRef?: IRef<HTMLDivElement>;
 
     /**
      * ID of the element that contains title or label text for this dialog.
