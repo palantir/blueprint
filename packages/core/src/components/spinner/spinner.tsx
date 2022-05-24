@@ -85,7 +85,7 @@ export class Spinner extends AbstractPureComponent2<SpinnerProps> {
     }
 
     public render() {
-        const { className, intent, value, tagName = "div" } = this.props;
+        const { className, intent, value, tagName = "div", ...htmlProps } = this.props;
         const size = this.getSize();
 
         const classes = classNames(
@@ -107,6 +107,7 @@ export class Spinner extends AbstractPureComponent2<SpinnerProps> {
             {
                 className: classes,
                 role: "progressbar",
+                ...htmlProps,
             },
             React.createElement(
                 tagName,
