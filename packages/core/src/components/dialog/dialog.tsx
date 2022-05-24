@@ -22,7 +22,7 @@ import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
-import { H4 } from "../html/html";
+import { H5 } from "../html/html";
 import { Icon, IconName, IconSize } from "../icon/icon";
 import { IBackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
 
@@ -89,7 +89,7 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
      * ID of the element that contains title or label text for this dialog.
      *
      * By default, if the `title` prop is supplied, this component will generate
-     * a unique ID for the `<H4>` title element and use that ID here.
+     * a unique ID for the `<H5>` title element and use that ID here.
      */
     "aria-labelledby"?: string;
 
@@ -154,7 +154,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<Icon icon="small-cross" size={IconSize.LARGE} />}
+                    icon={<Icon icon="cross" size={IconSize.STANDARD} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -171,8 +171,8 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
-                <Icon icon={icon} size={IconSize.LARGE} aria-hidden={true} tabIndex={-1} />
-                <H4 id={this.titleId}>{title}</H4>
+                <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
+                <H5 id={this.titleId}>{title}</H5>
                 {this.maybeRenderCloseButton()}
             </div>
         );

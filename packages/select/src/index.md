@@ -6,15 +6,19 @@ reference: select
 
 The **@blueprintjs/select** NPM package provides React components related to selecting items from a list:
 
-- [`Select`](#select/select-component) for selecting items in a list.
+- [Select](#select/select-component) for selecting items in a list (DEPRECATED).
 
-- [`Suggest`](#select/suggest) for selecting items in a list, from a text input.
+- [Select2](#select/select2) replacement for Select, uses Popover2 instead of Popover under the hood.
 
-- [`MultiSelect`](#select/multi-select) for selecting multiple items in a list.
+- [Suggest](#select/suggest) for selecting items in a list, from a text input (DEPRECATED).
 
-- [`Omnibar`](#select/omnibar), a macOS spotlight-style typeahead component.
+- [Suggest2](#select/suggest2) replacement for Suggest, uses Popover2 instead of Popover under the hood.
 
-- [`QueryList`](#select/query-list), a higher-order component that provides interactions between a query string and a list of items.
+- [MultiSelect](#select/multi-select) for selecting multiple items in a list.
+
+- [Omnibar](#select/omnibar), a macOS spotlight-style typeahead component.
+
+- [QueryList](#select/query-list), a higher-order component that provides interactions between a query string and a list of items.
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
@@ -23,7 +27,9 @@ npm install --save @blueprintjs/select
 ```
 
 @page select-component
+@page select2
 @page suggest
+@page suggest2
 @page multi-select
 @page omnibar
 @page query-list

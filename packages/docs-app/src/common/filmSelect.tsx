@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Button, MenuItem } from "@blueprintjs/core";
-import { Select, SelectProps } from "@blueprintjs/select";
+import { Select2, Select2Props } from "@blueprintjs/select";
 
 import {
     areFilmsEqual,
@@ -30,10 +30,10 @@ import {
     TOP_100_FILMS,
 } from "./films";
 
-const FilmSelect = Select.ofType<IFilm>();
+const FilmSelect = Select2.ofType<IFilm>();
 
 type Props = Omit<
-    SelectProps<IFilm>,
+    Select2Props<IFilm>,
     | "createNewItemFromQuery"
     | "createNewItemRenderer"
     | "items"

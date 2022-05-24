@@ -9,10 +9,10 @@ components are available in the __@blueprintjs/table__ package.
 
 @## Table
 
-The top-level component of the table is `Table`. You must at least define the
+The top-level component of the table is `Table2`. You must at least define the
 number of rows (`numRows` prop) as well as a set of `Column` children.
 
-@interface ITableProps
+@interface Table2Props
 
 @### Instance methods
 

@@ -130,6 +130,10 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
       &:hover {
         background-color: $blue2;
       }
+
+      &:active {
+        background-color: $blue1;
+      }
     }
 
     // putting it last so it overrides equally specific selectors above.
@@ -231,7 +235,11 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
       background-color: $blue3;
 
       &:hover {
-        background-color: $blue4;
+        background-color: $blue2;
+      }
+
+      &:active {
+        background-color: $blue1;
       }
     }
 

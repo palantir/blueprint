@@ -1,6 +1,7 @@
 // Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@import "~@blueprintjs/core/src/common/typography-colors";
 @import "./common";
 
 $tooltip2-background-color: $dark-gray5 !default;
@@ -12,6 +13,8 @@ $dark-tooltip2-text-color: $dark-gray5 !default;
 $tooltip2-padding-vertical: $pt-grid-size !default;
 $tooltip2-padding-horizontal: 1.2 * $pt-grid-size !default;
 
+$tooltip2-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
+$dark-tooltip2-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
 .#{$ns}-tooltip2 {
   @include popover2-sizing(
@@ -23,7 +26,7 @@ $tooltip2-padding-horizontal: 1.2 * $pt-grid-size !default;
     $tooltip2-background-color,
     $tooltip2-text-color,
     $pt-tooltip2-box-shadow,
-    $pt-drop-shadow-opacity,
+    $tooltip2-arrow-box-shadow,
     $pt-border-shadow-opacity
   );
   // lightweight scale for tooltips
@@ -33,6 +36,8 @@ $tooltip2-padding-horizontal: 1.2 * $pt-grid-size !default;
     $duration: $pt-transition-duration,
     $after: "> &"
   );
+  // override typography because we use a dark background
+  @include pt-dark-typography-colors();
 
   .#{$ns}-popover2-content {
     padding: $tooltip2-padding-vertical $tooltip2-padding-horizontal;
@@ -50,9 +55,11 @@ $tooltip2-padding-horizontal: 1.2 * $pt-grid-size !default;
       $dark-tooltip2-background-color,
       $dark-tooltip2-text-color,
       $pt-dark-tooltip2-box-shadow,
-      $pt-dark-drop-shadow-opacity,
+      $dark-tooltip2-arrow-box-shadow,
       $pt-dark-border-shadow-opacity
     );
+    // override typography because we use a light background
+    @include pt-typography-colors();
   }
 
   @each $intent, $color in $pt-intent-colors {

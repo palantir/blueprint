@@ -69,6 +69,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     public static defaultProps: TablePropsDefaults = {
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
+        enableColumnHeader: true,
         enableColumnInteractionBar: false,
         enableFocusedCell: false,
         enableGhostCells: false,
@@ -415,8 +416,15 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     }
 
     public render() {
-        const { children, className, enableRowHeader, loadingOptions, numRows, enableColumnInteractionBar } =
-            this.props;
+        const {
+            children,
+            className,
+            enableRowHeader,
+            loadingOptions,
+            numRows,
+            enableColumnInteractionBar,
+            enableColumnHeader,
+        } = this.props;
         const { horizontalGuides, numFrozenColumnsClamped, numFrozenRowsClamped, verticalGuides } = this.state;
         if (!this.gridDimensionsMatchProps()) {
             // Ensure we're rendering the correct number of rows & columns
@@ -467,6 +475,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
                     rowHeaderRenderer={this.renderRowHeader}
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
+                    enableColumnHeader={enableColumnHeader}
                 />
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, Classes.TABLE_OVERLAY_REORDERING_CURSOR)} />
                 <GuideLayer
@@ -774,15 +783,18 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     // =============
 
     private shouldDisableVerticalScroll() {
-        const { enableGhostCells } = this.props;
+        const { enableColumnHeader, enableGhostCells } = this.props;
         const { viewportRect } = this.state;
 
         if (this.grid === null || viewportRect === undefined) {
             return false;
         }
 
+        const columnHeaderHeight = enableColumnHeader
+            ? this.columnHeaderElement?.clientHeight ?? Grid.MIN_COLUMN_HEADER_HEIGHT
+            : 0;
         const rowIndices = this.grid.getRowIndicesInRect({
-            columnHeaderHeight: this.columnHeaderElement?.clientHeight ?? Grid.MIN_COLUMN_HEADER_HEIGHT,
+            columnHeaderHeight,
             includeGhostCells: enableGhostCells,
             rect: viewportRect,
         });
