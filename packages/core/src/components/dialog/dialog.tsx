@@ -119,7 +119,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
     public render() {
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
-                <div className={Classes.DIALOG_CONTAINER} ref={this.props.dialogRef}>
+                <div className={Classes.DIALOG_CONTAINER} ref={this.props.containerRef}>
                     <div
                         className={classNames(Classes.DIALOG, this.props.className)}
                         role="dialog"
