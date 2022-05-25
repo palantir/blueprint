@@ -18,7 +18,8 @@ The optional `locale` argument is the value of the `locale` prop.
 A simple implementation using built-in browser methods could look like this:
 
 ```tsx
-import { DateInput, IDateFormatProps } from "@blueprintjs/datetime";
+import { IDateFormatProps } from "@blueprintjs/datetime";
+import { TimeZoneAwareDateInput } from "@blueprintjs/datetime-timezone-aware";
 
 const jsDateFormatter: IDateFormatProps = {
     // note that the native implementation of Date functions differs between browsers
@@ -27,26 +28,9 @@ const jsDateFormatter: IDateFormatProps = {
     placeholder: "M/D/YYYY",
 };
 
-<DateInput {...jsDateFormatter} />
+<TimeZoneAwareDateInput {...jsDateFormatter} />
 ```
 
-An implementation using `moment.js` could look like this:
-
-```tsx
-import { DateInput, IDateFormatProps } from "@blueprintjs/datetime";
-import moment from "moment";
-
-function getMomentFormatter(format: string): IDateFormatProps {
-    // note that locale argument comes from locale prop and may be undefined
-    return {
-        formatDate: (date, locale) => moment(date).locale(locale).format(format),
-        parseDate: (str, locale) => moment(str, format).locale(locale).toDate(),
-        placeholder: format,
-    }
-};
-
-<DateInput {...getMomentFormatter("LL")} locale="de" />
-```
 
 @## Props
 
@@ -57,11 +41,11 @@ You can control the selected date by setting the `value` prop, or use the
 component in uncontrolled mode and specify an initial date by setting
 `defaultValue`.
 
-Customize the date format with the required `formatDate` and `parseDate`
+Customize the date format in the input with the required `formatDate` and `parseDate`
 callbacks.
 
 ```tsx
-import { DateInput } from "@blueprintjs/datetime";
+import { TimeZoneAwareDateInput } from "@blueprintjs/datetime-timezone-aware";
 
 <DateInput
     formatDate={date => date.toLocaleString()}
