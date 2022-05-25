@@ -25,6 +25,7 @@ import * as Popover2Examples from "../examples/popover2-examples";
 import * as SelectExamples from "../examples/select-examples";
 import * as TableExamples from "../examples/table-examples";
 import * as TimezoneExamples from "../examples/timezone-examples";
+import * as DateTimeTimeZoneAwareExamples from "../examples/datetime-timezone-aware-examples";
 import { IBlueprintExampleData } from "./types";
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
@@ -53,5 +54,7 @@ export const reactExamples: IExampleMap = (() => {
         ...getPackageExamples("table", TableExamples as any),
         ...getPackageExamples("timezone", TimezoneExamples as any),
         ...getPackageExamples("popover2", Popover2Examples as any),
+        ...getPackageExamples("datetime-timezone-aware", DateTimeTimeZoneAwareExamples as any),
+
     };
 })();

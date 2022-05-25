@@ -33,10 +33,9 @@ export interface IDateInputExampleState {
     reverseMonthAndYearMenus: boolean;
     shortcuts: boolean;
     timePrecision: TimePrecision | undefined;
-    showTimeArrowButtons: boolean;
 }
 
-export class TimezoneAwareDateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
+export class TimeZoneAwareDateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
     public state: IDateInputExampleState = {
         closeOnSelection: true,
         date: null,
@@ -45,8 +44,7 @@ export class TimezoneAwareDateInputExample extends React.PureComponent<IExampleP
         format: FORMATS[0],
         reverseMonthAndYearMenus: false,
         shortcuts: false,
-        showTimeArrowButtons: false,
-        timePrecision: undefined,
+        timePrecision: TimePrecision.MINUTE,
     };
 
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
@@ -63,12 +61,8 @@ export class TimezoneAwareDateInputExample extends React.PureComponent<IExampleP
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
 
-    private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
-        this.setState({ showTimeArrowButtons }),
-    );
-
     public render() {
-        const { date, format, showTimeArrowButtons, timePrecision, ...spreadProps } = this.state;
+        const { date, format, timePrecision, ...spreadProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <TimeZoneAwareDateInput
@@ -76,11 +70,7 @@ export class TimezoneAwareDateInputExample extends React.PureComponent<IExampleP
                     {...format}
                     onChange={this.handleDateChange}
                     popoverProps={{ position: Position.BOTTOM }}
-                    timePickerProps={
-                        timePrecision === undefined
-                            ? undefined
-                            : { showArrowButtons: showTimeArrowButtons, precision: timePrecision }
-                    }
+                    timePrecision={timePrecision}
                 />
                 {date}
             </Example>
@@ -96,7 +86,6 @@ export class TimezoneAwareDateInputExample extends React.PureComponent<IExampleP
             format,
             timePrecision,
             shortcuts,
-            showTimeArrowButtons,
         } = this.state;
         return (
             <>
@@ -112,12 +101,6 @@ export class TimezoneAwareDateInputExample extends React.PureComponent<IExampleP
                     label="Time precision"
                     onChange={this.toggleTimePrecision}
                     value={timePrecision}
-                />
-                <Switch
-                    disabled={this.state.timePrecision === undefined}
-                    checked={showTimeArrowButtons}
-                    label="Show timepicker arrow buttons"
-                    onChange={this.toggleTimepickerArrowButtons}
                 />
             </>
         );

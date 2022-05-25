@@ -22,6 +22,7 @@ import * as React from "react";
 import { Button, Tag } from "@blueprintjs/core";
 import { DateInput, DateInputProps, TimePrecision } from "@blueprintjs/datetime";
 
+import * as Classes from "../../common/classes";
 import { getTimeZone } from "../../common/getTimeZone";
 import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "../../common/timezoneUtils";
 import { TimeZonePicker } from "../timezone-picker/timezonePicker";
@@ -59,6 +60,7 @@ export const TimeZoneAwareDateInput: React.FC<ITimezoneAwareDateInputProps> = Re
             onChange,
             timePrecision,
             disableTimeZoneSelect,
+
             hideTimeZone: hideTimeZoneProp,
             ...passThroughToDateInputProps
         } = props;
@@ -120,6 +122,7 @@ export const TimeZoneAwareDateInput: React.FC<ITimezoneAwareDateInputProps> = Re
                             onChange={handleTimeZoneUpdate}
                             date={guaranteedValidDateValue}
                             disabled={disableTimeZoneSelect}
+                            className={Classes.TIMEZONE_FOOTER}
                         />
                     )
                 }

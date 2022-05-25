@@ -21,3 +21,4 @@ const NS = Classes.getClassNamespace();
 export const TIMEZONE_PICKER = `${NS}-timezone-picker`;
 export const TIMEZONE_PICKER_POPOVER = `${TIMEZONE_PICKER}-popover`;
 export const TIMEZONE_PICKER_TARGET = `${TIMEZONE_PICKER}-target`;
+export const TIMEZONE_FOOTER = `${NS}-timezone-aware-date-input-footer`;
