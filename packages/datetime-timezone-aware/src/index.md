@@ -28,5 +28,5 @@ Import CSS with a JS bundler like webpack:
 <link href="path/to/node_modules/@blueprintjs/datetime-timezone-aware/lib/css/blueprint-datetime.css" rel="stylesheet" />
 ```
 
-@page timezone-picker
-@page timezone-aware-date-input
+@page timezone-picker-v2
+@page time-zone-aware-date-input

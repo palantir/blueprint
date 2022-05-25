@@ -18,4 +18,3 @@ npm install --save @blueprintjs/timezone
 ```
 
 @page timezone-picker
-@page timezone-aware-date-input
