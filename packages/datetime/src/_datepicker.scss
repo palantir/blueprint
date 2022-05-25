@@ -199,10 +199,10 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
 }
 
 .#{$ns}-datepicker-content {
+  align-items: center;
   display: flex;
   flex-direction: column;
   gap: 5px;
-  align-items: center;
 }
 
 .#{$ns}-datepicker-footer {

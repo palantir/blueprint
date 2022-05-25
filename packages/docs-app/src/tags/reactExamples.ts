@@ -21,11 +21,11 @@ import { IExampleMap, IExampleProps } from "@blueprintjs/docs-theme";
 import { getTheme } from "../components/blueprintDocs";
 import * as CoreExamples from "../examples/core-examples";
 import * as DateExamples from "../examples/datetime-examples";
+import * as DateTimeTimeZoneAwareExamples from "../examples/datetime-timezone-aware-examples";
 import * as Popover2Examples from "../examples/popover2-examples";
 import * as SelectExamples from "../examples/select-examples";
 import * as TableExamples from "../examples/table-examples";
 import * as TimezoneExamples from "../examples/timezone-examples";
-import * as DateTimeTimeZoneAwareExamples from "../examples/datetime-timezone-aware-examples";
 import { IBlueprintExampleData } from "./types";
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
