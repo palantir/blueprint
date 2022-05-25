@@ -72,11 +72,12 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
                 onFocus={this.clearTimeouts}
                 onMouseEnter={this.clearTimeouts}
                 onMouseLeave={this.startTimeout}
-                role="alert"
                 tabIndex={0}
             >
                 <Icon icon={icon} />
-                <span className={Classes.TOAST_MESSAGE}>{message}</span>
+                <span className={Classes.TOAST_MESSAGE} role="alert">
+                    {message}
+                </span>
                 <ButtonGroup minimal={true}>
                     {this.maybeRenderActionButton()}
                     <Button aria-label="Close" icon="cross" onClick={this.handleCloseClick} />
