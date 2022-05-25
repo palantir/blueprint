@@ -55,6 +55,5 @@ export const reactExamples: IExampleMap = (() => {
         ...getPackageExamples("timezone", TimezoneExamples as any),
         ...getPackageExamples("popover2", Popover2Examples as any),
         ...getPackageExamples("datetime-timezone-aware", DateTimeTimeZoneAwareExamples as any),
-
     };
 })();
