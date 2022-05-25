@@ -1462,17 +1462,10 @@
   resolved "https://registry.yarnpkg.com/@types/kss/-/kss-3.0.2.tgz#c9f2ff66e02ab1e0451d1f66c29744387c04d550"
   integrity sha512-krLl5EHn/Ku9zicmnC1Znume9M61Neryybvtq4JTunk7/tW0MmhakfFTVQCR3iLpz2ktnaT8+JErHZqnsF6CoA==
 
-"@types/lodash-es@^4.17.3":
+"@types/lodash-es@^4.17.3", "@types/lodash-es@~4.17.3":
   version "4.17.6"
   resolved "https://registry.yarnpkg.com/@types/lodash-es/-/lodash-es-4.17.6.tgz#c2ed4c8320ffa6f11b43eb89e9eaeec65966a0a0"
   integrity sha512-R+zTeVUKDdfoRxpAryaQNRKk3105Rrgx2CFRClIgRGaqDTdjsm8h6IYA8ir584W3ePzkZfst5xIgDwYrlh9HLg==
-  dependencies:
-    "@types/lodash" "*"
-
-"@types/lodash-es@~4.17.3":
-  version "4.17.3"
-  resolved "https://registry.yarnpkg.com/@types/lodash-es/-/lodash-es-4.17.3.tgz#87eb0b3673b076b8ee655f1890260a136af09a2d"
-  integrity sha512-iHI0i7ZAL1qepz1Y7f3EKg/zUMDwDfTzitx+AlHhJJvXwenP682ZyGbgPSc5Ej3eEAKVbNWKFuwOadCj5vBbYQ==
   dependencies:
     "@types/lodash" "*"
 
