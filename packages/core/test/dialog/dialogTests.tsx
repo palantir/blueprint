@@ -200,7 +200,9 @@ describe("<Dialog>", () => {
                     {createDialogContents()}
                 </Dialog>,
             );
-            assert.isTrue(containerRef.current?.classList.contains(Classes.DIALOG_CONTAINER));
+
+            // wait for the whole lifecycle to run
+            setTimeout(() => assert.isTrue(containerRef.current?.classList.contains(Classes.DIALOG_CONTAINER)), 0);
         });
     });
 
