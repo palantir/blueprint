@@ -107,7 +107,7 @@ export class Spinner extends AbstractPureComponent2<SpinnerProps> {
             {
                 "aria-valuemax": 100,
                 "aria-valuemin": 0,
-                "aria-valuenow": value === undefined ? "indeterminate" : value * 100,
+                "aria-valuenow": value === undefined ? undefined : value * 100,
                 className: classes,
                 role: "progressbar",
                 ...htmlProps,
