@@ -10,4 +10,5 @@ This file enumerates the exact order of root pages in the left sidebar.
 @page table
 @page timezone
 @page popover2-package
+@page datetime-timezone-aware
 @page resources

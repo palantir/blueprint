@@ -2,14 +2,13 @@
 reference: datetime-timezone-aware
 ---
 
-@# (EXPERIMENTAL) Datetime-timezone-aware
+@# Timezone2
+
 
 The [__@blueprintjs/datetime-timezone-aware__ NPM package](https://www.npmjs.com/package/@blueprintjs/datetime)
 provides components for interacting with date and time with timezones. This library is experimental and the API is likely to break in further revisions.
 
-- [`DateInput`](#datetime/dateinput), which composes a text input with a `DatePicker` and `TimeZonePicker` in
-  a `Popover`, for use in forms.
-
+- [`TimeZoneAwareDateInput`](#/time-zone-aware-date-input), which renders a `DateInput` with a `TimeZonePicker` and show's the users selected time zone.
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
@@ -30,3 +29,4 @@ Import CSS with a JS bundler like webpack:
 ```
 
 @page timezone-picker
+@page timezone-aware-date-input

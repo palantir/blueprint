@@ -2,7 +2,7 @@
 
 `TimezonePicker` allows the user to select from a list of timezones. The list of times is coded into the library itself, and it does not depend on any external packages for updating the this list of timezones.
 
-@reactExample TimezonePickerExample
+@reactExample TimezonePickerV2Example
 
 @## Props
 

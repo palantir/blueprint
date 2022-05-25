@@ -36,7 +36,7 @@ export interface IDateInputExampleState {
     showTimeArrowButtons: boolean;
 }
 
-export class DateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
+export class TimezoneAwareDateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
     public state: IDateInputExampleState = {
         closeOnSelection: true,
         date: null,

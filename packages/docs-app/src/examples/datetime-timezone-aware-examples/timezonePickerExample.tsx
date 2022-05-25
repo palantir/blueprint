@@ -27,7 +27,7 @@ export interface ITimezonePickerExampleState {
     timezone: string;
 }
 
-export class TimezonePickerExample extends React.PureComponent<IExampleProps, ITimezonePickerExampleState> {
+export class TimezonePickerV2Example extends React.PureComponent<IExampleProps, ITimezonePickerExampleState> {
     public state: ITimezonePickerExampleState = {
         disabled: false,
         showCustomTarget: false,

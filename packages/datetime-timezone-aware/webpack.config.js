@@ -19,14 +19,14 @@ const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scr
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        datetime: ["./src/index.ts"],
+        ["datetime-timezone-aware"]: ["./src/index.ts"],
     },
 
     externals: COMMON_EXTERNALS,
 
     output: {
         filename: "[name].bundle.js",
-        library: ["Blueprint", "Datetime"],
+        library: ["Blueprint", "datetime-time-zone-aware"],
         libraryTarget: "umd",
         path: path.resolve(__dirname, "./dist"),
     },
