@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Classes, H5, Switch } from "@blueprintjs/core";
+import { Callout, Classes, H5, Switch } from "@blueprintjs/core";
 import { DatePicker, TimePrecision } from "@blueprintjs/datetime";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
@@ -32,11 +32,13 @@ export interface IDatePickerExampleState {
     timePrecision: TimePrecision | undefined;
     showTimeArrowButtons: boolean;
     useAmPm?: boolean;
+    footerComponent?: JSX.Element;
 }
 
 export class DatePickerExample extends React.PureComponent<IExampleProps, IDatePickerExampleState> {
     public state: IDatePickerExampleState = {
         date: null,
+        footerComponent: undefined,
         highlightCurrentDay: false,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
@@ -49,6 +51,16 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
     private toggleHighlight = handleBooleanChange(highlightCurrentDay => this.setState({ highlightCurrentDay }));
 
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
+
+    private toggleFooterComponent = () => {
+        this.setState(prevState => {
+            const footerComponent =
+                prevState.footerComponent !== undefined ? undefined : (
+                    <Callout>This additional footer component can be displayed below the date picker</Callout>
+                );
+            return { footerComponent };
+        });
+    };
 
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
 
@@ -83,6 +95,11 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                     label="Reverse month and year menus"
                     onChange={this.toggleReverseMenus}
                 />
+                <Switch
+                    checked={this.state.footerComponent !== undefined}
+                    label="Show a footer component"
+                    onChange={this.toggleFooterComponent}
+                />
                 <PrecisionSelect
                     allowNone={true}
                     label="Time precision"
@@ -94,6 +111,12 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                     checked={showTimeArrowButtons}
                     label="Show timepicker arrow buttons"
                     onChange={this.toggleTimepickerArrowButtons}
+                />
+                <Switch
+                    disabled={!showTimePicker}
+                    checked={this.state.useAmPm}
+                    label="Use AM/PM"
+                    onChange={this.toggleUseAmPm}
                 />
                 <Switch
                     disabled={!showTimePicker}

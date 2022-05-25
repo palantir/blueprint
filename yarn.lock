@@ -1452,10 +1452,22 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
+"@types/jstimezonedetect@1.0.1":
+  version "1.0.1"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/@types/jstimezonedetect/-/jstimezonedetect-1.0.1.tgz#700a460def384df3f4a820f4aea64b7424424003"
+  integrity sha512-avQpzE9QdZBzxmkpLsTeuWPaYZJDywmC23ceo7PFq4HaPSixyzA4lxYcK8NVl1p+tFAY7CZ5cFXkpxj/pzLPpQ==
+
 "@types/kss@^3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@types/kss/-/kss-3.0.2.tgz#c9f2ff66e02ab1e0451d1f66c29744387c04d550"
   integrity sha512-krLl5EHn/Ku9zicmnC1Znume9M61Neryybvtq4JTunk7/tW0MmhakfFTVQCR3iLpz2ktnaT8+JErHZqnsF6CoA==
+
+"@types/lodash-es@^4.17.3":
+  version "4.17.6"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/@types/lodash-es/-/lodash-es-4.17.6.tgz#c2ed4c8320ffa6f11b43eb89e9eaeec65966a0a0"
+  integrity sha512-R+zTeVUKDdfoRxpAryaQNRKk3105Rrgx2CFRClIgRGaqDTdjsm8h6IYA8ir584W3ePzkZfst5xIgDwYrlh9HLg==
+  dependencies:
+    "@types/lodash" "*"
 
 "@types/lodash-es@~4.17.3":
   version "4.17.3"
@@ -3792,6 +3804,16 @@ dashdash@^1.12.0:
   integrity sha1-hTz6D3y+L+1d4gMmuN1YEDX24vA=
   dependencies:
     assert-plus "^1.0.0"
+
+date-fns-tz@1.3.4:
+  version "1.3.4"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/date-fns-tz/-/date-fns-tz-1.3.4.tgz#8b0e75beb771c7e9f1597aba467dc14431bb5403"
+  integrity sha512-O47vEyz85F2ax/ZdhMBJo187RivZGjH6V0cPjPzpm/yi6YffJg4upD/8ibezO11ezZwP3QYlBHh/t4JhRNx0Ow==
+
+date-fns@2.22.1:
+  version "2.22.1"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/date-fns/-/date-fns-2.22.1.tgz#1e5af959831ebb1d82992bf67b765052d8f0efc4"
+  integrity sha512-yUFPQjrxEmIsMqlHhAhmxkuH769baF21Kk+nZwZGyrMoyLA+LugaQtC0+Tqf9CBUUULWwUJt6Q5ySI3LJDDCGg==
 
 date-format@^4.0.5:
   version "4.0.5"
@@ -7040,6 +7062,11 @@ jsprim@^1.2.2:
     extsprintf "1.3.0"
     json-schema "0.2.3"
     verror "1.10.0"
+
+jstimezonedetect@1.0.6:
+  version "1.0.6"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/jstimezonedetect/-/jstimezonedetect-1.0.6.tgz#60d31fbacdbf57af71b064887ee040f1595adb52"
+  integrity sha1-YNMfus2/V69xsGSIfuBA8Vla21I=
 
 "jsx-ast-utils@^2.4.1 || ^3.0.0":
   version "3.1.0"
