@@ -41,7 +41,7 @@ export class Menu extends AbstractPureComponent2<MenuProps> {
         const { className, children, large, ulRef, role, ...htmlProps } = this.props;
         const classes = classNames(Classes.MENU, { [Classes.LARGE]: large }, className);
         return (
-            <ul role={role ?? "menu"} {...htmlProps} className={classes} ref={ulRef}>
+            <ul {...htmlProps} className={classes} ref={ulRef} role={role ?? "menu"}>
                 {children}
             </ul>
         );
