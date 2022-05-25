@@ -72,6 +72,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
                 onFocus={this.clearTimeouts}
                 onMouseEnter={this.clearTimeouts}
                 onMouseLeave={this.startTimeout}
+                role="alert"
                 tabIndex={0}
             >
                 <Icon icon={icon} />
