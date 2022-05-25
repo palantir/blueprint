@@ -150,7 +150,7 @@ export class DatePicker extends AbstractPureComponent2<DatePickerProps, IDatePic
         return (
             <div className={classNames(Classes.DATEPICKER, className)}>
                 {this.maybeRenderShortcuts()}
-                <div>
+                <div classname={Classes.DATEPICKER_CONTENT}>
                     <DayPicker
                         showOutsideDays={true}
                         locale={locale}

@@ -47,8 +47,8 @@ const UTC_IANA_LABEL = "Etc/UTC";
 
 const TIME_FORMAT_TO_ISO_FORMAT: Record<TimePrecision | "date", string> = {
     [TimePrecision.MILLISECOND]: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
-    [TimePrecision.SECOND]: "yyyy-MM-dd'T'HH:mm:ss.xxx",
-    [TimePrecision.MINUTE]: "yyyy-MM-dd'T'HH:mm.xxx",
+    [TimePrecision.SECOND]: "yyyy-MM-dd'T'HH:mm:ssxxx",
+    [TimePrecision.MINUTE]: "yyyy-MM-dd'T'HH:mmxxx",
     [NO_TIME_PRECISION]: "yyyy-MM-dd",
 };
 
@@ -60,7 +60,6 @@ export const TimeZoneAwareDateInput: React.FC<ITimezoneAwareDateInputProps> = Re
             onChange,
             timePrecision,
             disableTimeZoneSelect,
-
             hideTimeZone: hideTimeZoneProp,
             ...passThroughToDateInputProps
         } = props;
@@ -146,7 +145,6 @@ const getDateObjectFromIsoString = (value: string | null | undefined, timeZone: 
     }
     const date = new Date(value);
     // If the value is just a date format then we convert it to midnight in local time to avoid weird things happening
-
     if (value.length === 10) {
         // If it's just a date, we know it's interpreted as midnight UTC so we convert it to local time of that UTC time
         return convertLocalDateToTimezoneTime(date, UTC_IANA_LABEL);

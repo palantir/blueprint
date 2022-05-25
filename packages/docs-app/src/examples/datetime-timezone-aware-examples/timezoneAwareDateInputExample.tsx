@@ -71,6 +71,7 @@ export class TimeZoneAwareDateInputExample extends React.PureComponent<IExampleP
                     onChange={this.handleDateChange}
                     popoverProps={{ position: Position.BOTTOM }}
                     timePrecision={timePrecision}
+                    value={date}
                 />
                 {date}
             </Example>
