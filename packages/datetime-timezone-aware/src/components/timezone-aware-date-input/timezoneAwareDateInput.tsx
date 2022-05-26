@@ -25,7 +25,7 @@ import { DateInput, DateInputProps, TimePrecision } from "@blueprintjs/datetime"
 import * as Classes from "../../common/classes";
 import { getTimeZone } from "../../common/getTimeZone";
 import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "../../common/timezoneUtils";
-import { TimeZonePicker } from "../timezone-picker/timezonePicker";
+import { TimeZonePicker2 } from "../timezone-picker/timezonePicker";
 
 interface ITimezoneAwareDateInputProps extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {
     /** The default timezone selected. Defaults to the user local timezone */
@@ -116,7 +116,7 @@ export const TimeZoneAwareDateInput: React.FC<ITimezoneAwareDateInputProps> = Re
                 rightElement={renderRightElements()}
                 footerComponent={
                     hideTimeZone ? undefined : (
-                        <TimeZonePicker
+                        <TimeZonePicker2
                             value={timezoneValue}
                             onChange={handleTimeZoneUpdate}
                             date={guaranteedValidDateValue}

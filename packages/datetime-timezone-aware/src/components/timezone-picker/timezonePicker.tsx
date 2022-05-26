@@ -15,8 +15,6 @@
  */
 
 import classNames from "classnames";
-import { formatInTimeZone } from "date-fns-tz";
-import { partition } from "lodash-es";
 import * as React from "react";
 
 import {
@@ -33,10 +31,10 @@ import {
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 
 import * as Classes from "../../common/classes";
-import { getTimeZone } from "../../common/getTimeZone";
-import { ITimeZone, TIMEZONE_ITEMS } from "./timezoneItems";
+import { TIMEZONE_ITEMS } from "./timezoneItems";
+import { getInitialTimezoneItems, ITimeZoneWithNames, mapTimezonesWithNames } from "./timezoneNameUtils";
 
-export interface TimeZonePickerProps extends Props {
+export interface TimeZonePicker2Props extends Props {
     children?: React.ReactNode;
 
     /**
@@ -99,18 +97,16 @@ export interface TimeZonePickerProps extends Props {
     popoverProps?: Partial<IPopoverProps>;
 }
 
-export interface ITimezonePickerState {
+interface ITimezonePicker2State {
     query: string;
 }
 
-const CURRENT_DATE = Date.now();
+const TypedSelect = Select.ofType<ITimeZoneWithNames>();
 
-const TypedSelect = Select.ofType<ITimeZone>();
-
-export class TimeZonePicker extends AbstractPureComponent2<TimeZonePickerProps, ITimezonePickerState> {
+export class TimeZonePicker2 extends AbstractPureComponent2<TimeZonePicker2Props, ITimezonePicker2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 
-    public static defaultProps: Partial<TimeZonePickerProps> = {
+    public static defaultProps: Partial<TimeZonePicker2Props> = {
         date: new Date(),
         disabled: false,
         inputProps: {},
@@ -119,20 +115,22 @@ export class TimeZonePicker extends AbstractPureComponent2<TimeZonePickerProps, 
         showLocalTimezone: false,
     };
 
-    private timezoneItems: ITimeZone[];
+    private timezoneItems: ITimeZoneWithNames[];
 
-    constructor(props: TimeZonePickerProps, context?: any) {
+    private initialTimezoneItems: ITimeZoneWithNames[];
+
+    constructor(props: TimeZonePicker2Props, context?: any) {
         super(props, context);
 
-        const { showLocalTimezone, inputProps = {} } = props;
+        const { showLocalTimezone, inputProps = {}, date } = props;
         this.state = { query: inputProps.value || "" };
-        const [localTimezone, otherTimezones] = partition(TIMEZONE_ITEMS, item => item.ianaCode === getTimeZone());
-        this.timezoneItems = showLocalTimezone ? [...localTimezone, ...otherTimezones] : [...TIMEZONE_ITEMS];
+        this.timezoneItems = mapTimezonesWithNames(date, TIMEZONE_ITEMS);
+        this.initialTimezoneItems = getInitialTimezoneItems(showLocalTimezone, date);
     }
 
     public render() {
         const { children, className, disabled, inputProps, popoverProps } = this.props;
-
+        const { query } = this.state;
         const finalInputProps: InputGroupProps2 = {
             placeholder: "Search for timezones...",
             ...inputProps,
@@ -146,7 +144,7 @@ export class TimeZonePicker extends AbstractPureComponent2<TimeZonePickerProps, 
         return (
             <TypedSelect
                 className={classNames(Classes.TIMEZONE_PICKER, className)}
-                items={this.timezoneItems}
+                items={query ? this.timezoneItems : this.initialTimezoneItems}
                 itemListPredicate={this.filterItems}
                 itemRenderer={this.renderItem}
                 noResults={<MenuItem disabled={true} text="No matching timezones." />}
@@ -163,6 +161,19 @@ export class TimeZonePicker extends AbstractPureComponent2<TimeZonePickerProps, 
         );
     }
 
+    public componentDidUpdate(prevProps: TimeZonePicker2Props, prevState: ITimezonePicker2State) {
+        super.componentDidUpdate(prevProps, prevState);
+        const { date: nextDate } = this.props;
+
+        if (this.props.showLocalTimezone !== prevProps.showLocalTimezone) {
+            this.initialTimezoneItems = getInitialTimezoneItems(this.props.showLocalTimezone, nextDate);
+        }
+        if (nextDate != null && nextDate.getTime() !== prevProps.date?.getTime()) {
+            this.initialTimezoneItems = mapTimezonesWithNames(nextDate, this.initialTimezoneItems);
+            this.timezoneItems = mapTimezonesWithNames(nextDate, this.timezoneItems);
+        }
+    }
+
     private renderButton() {
         const { buttonProps = {}, disabled, placeholder, value } = this.props;
         const selectedTimezone = this.timezoneItems.find(tz => tz.ianaCode === value);
@@ -174,20 +185,14 @@ export class TimeZonePicker extends AbstractPureComponent2<TimeZonePickerProps, 
         return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} {...buttonProps} fill={true} />;
     }
 
-    private filterItems: ItemListPredicate<ITimeZone> = (query, items) => {
+    private filterItems: ItemListPredicate<ITimeZoneWithNames> = (query, items) => {
         // using list predicate so only one RegExp instance is needed
         // escape bad regex characters, let spaces act as any separator
         const expr = new RegExp(query.replace(/([[()+*?])/g, "\\$1").replace(" ", "[ _/\\(\\)]+"), "i");
-        return items.filter(
-            item =>
-                expr.test(item.ianaCode) ||
-                expr.test(item.label) ||
-                expr.test(getTimeZoneName(this.props.date, item.ianaCode)),
-        );
+        return items.filter(item => expr.test(item.ianaCode) || expr.test(item.label) || expr.test(item.longName));
     };
 
-    private renderItem: ItemRenderer<ITimeZone> = (item, { handleClick, modifiers }) => {
-        const { date } = this.props;
+    private renderItem: ItemRenderer<ITimeZoneWithNames> = (item, { handleClick, modifiers }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
@@ -195,18 +200,15 @@ export class TimeZonePicker extends AbstractPureComponent2<TimeZonePickerProps, 
             <MenuItem
                 key={item.ianaCode}
                 selected={modifiers.active}
-                text={`${item.label} ${getTimeZoneName(date, item.ianaCode)}`}
+                text={`${item.label}, ${item.longName}`}
                 onClick={handleClick}
-                label={getTimeZoneName(date, item.ianaCode, false)}
+                label={item.shortName}
                 shouldDismissPopover={false}
             />
         );
     };
 
-    private handleItemSelect = (timezone: ITimeZone) => this.props.onChange?.(timezone.ianaCode);
+    private handleItemSelect = (timezone: ITimeZoneWithNames) => this.props.onChange?.(timezone.ianaCode);
 
     private handleQueryChange = (query: string) => this.setState({ query });
 }
-
-const getTimeZoneName = (date: Date | undefined, ianaCode: string, getLongName: boolean = true) =>
-    formatInTimeZone(date ?? CURRENT_DATE, ianaCode, getLongName ? "zzzz" : "zzz");

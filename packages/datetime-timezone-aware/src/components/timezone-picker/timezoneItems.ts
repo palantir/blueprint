@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-export interface ITimeZone {
-    offset: string;
-    label: string;
-    ianaCode: string;
-}
+import { ITimeZone } from "./timezoneNameUtils";
 
-export const UTC_TIME = { offset: "+00:00", label: "Universal Standard Time", ianaCode: "Etc/UTC" };
+export const UTC_TIME: ITimeZone = { offset: "+00:00", label: "Universal Standard Time", ianaCode: "Etc/UTC" };
 
 export const TIMEZONE_ITEMS: ITimeZone[] = [
     UTC_TIME,
@@ -273,5 +269,41 @@ export const TIMEZONE_ITEMS: ITimeZone[] = [
     { offset: "+13:00", label: "Fiji", ianaCode: "Pacific/Fiji" },
     { offset: "+13:00", label: "Tongatapu", ianaCode: "Pacific/Tongatapu" },
     { offset: "+14:00", label: "Apia", ianaCode: "Pacific/Apia" },
+    { offset: "+14:00", label: "Kiritimati", ianaCode: "Pacific/Kiritimati" },
+];
+
+export const MINIMAL_TIMEZONE_ITEMS = [
+    UTC_TIME,
+    { offset: "-11:00", label: "Pago Pago", ianaCode: "Pacific/Pago_Pago" },
+    { offset: "-10:00", label: "Hawaii Time", ianaCode: "Pacific/Honolulu" },
+    { offset: "-09:30", label: "Marquesas", ianaCode: "Pacific/Marquesas" },
+    { offset: "-09:00", label: "Alaska", ianaCode: "America/Anchorage" },
+    { offset: "-08:00", label: "Los Angeles", ianaCode: "America/Los_Angeles" },
+    { offset: "-07:00", label: "Denver", ianaCode: "America/Denver" },
+    { offset: "-06:00", label: "Mexico City", ianaCode: "America/Mexico_City" },
+    { offset: "-05:00", label: "New York", ianaCode: "America/New_York" },
+    { offset: "-04:00", label: "Puerto Rico", ianaCode: "America/Puerto_Rico" },
+    { offset: "-03:30", label: "St. Johns", ianaCode: "America/St_Johns" },
+    { offset: "-03:00", label: "Buenos Aires", ianaCode: "America/Argentina/Buenos_Aires" },
+    { offset: "-02:00", label: "Sao Paulo", ianaCode: "America/Sao_Paulo" },
+    { offset: "-01:00", label: "Cape Verde", ianaCode: "Atlantic/Cape_Verde" },
+    { offset: "+01:00", label: "Paris", ianaCode: "Europe/Paris" },
+    { offset: "+02:00", label: "Cairo", ianaCode: "Africa/Cairo" },
+    { offset: "+03:00", label: "Moscow", ianaCode: "Europe/Moscow" },
+    { offset: "+03:30", label: "Tehran", ianaCode: "Asia/Tehran" },
+    { offset: "+04:00", label: "Dubai", ianaCode: "Asia/Dubai" },
+    { offset: "+05:00", label: "Karachi", ianaCode: "Asia/Karachi" },
+    { offset: "+05:30", label: "India - Kolkata", ianaCode: "Asia/Kolkata" },
+    { offset: "+05:45", label: "Kathmandu", ianaCode: "Asia/Kathmandu" },
+    { offset: "+06:00", label: "Dhaka", ianaCode: "Asia/Dhaka" },
+    { offset: "+06:30", label: "Rangoon", ianaCode: "Asia/Yangon" },
+    { offset: "+07:00", label: "Jakarta", ianaCode: "Asia/Jakarta" },
+    { offset: "+08:00", label: "Manila", ianaCode: "Asia/Manila" },
+    { offset: "+09:00", label: "Tokyo", ianaCode: "Asia/Tokyo" },
+    { offset: "+10:00", label: "Brisbane", ianaCode: "Australia/Brisbane" },
+    { offset: "+10:30", label: "Adelaide", ianaCode: "Australia/Adelaide" },
+    { offset: "+11:00", label: "Melbourne, Sydney", ianaCode: "Australia/Sydney" },
+    { offset: "+12:00", label: "Nauru", ianaCode: "Pacific/Nauru" },
+    { offset: "+13:00", label: "Auckland", ianaCode: "Pacific/Auckland" },
     { offset: "+14:00", label: "Kiritimati", ianaCode: "Pacific/Kiritimati" },
 ];
