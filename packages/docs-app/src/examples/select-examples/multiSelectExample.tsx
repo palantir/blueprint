@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Button, H5, Intent, MenuItem, Switch, TagProps } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
+import { ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
 
 import {
     areFilmsEqual,
@@ -32,7 +32,7 @@ import {
     TOP_100_FILMS,
 } from "../../common/films";
 
-const FilmMultiSelect = MultiSelect.ofType<IFilm>();
+const FilmMultiSelect = MultiSelect2.ofType<IFilm>();
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
