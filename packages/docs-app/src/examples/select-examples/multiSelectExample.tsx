@@ -18,6 +18,7 @@ import * as React from "react";
 
 import { Button, H5, Intent, MenuItem, Switch, TagProps } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Popover2 } from "@blueprintjs/popover2";
 import { ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
 
 import {
@@ -64,6 +65,8 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         resetOnSelect: true,
         tagMinimal: false,
     };
+
+    private popoverRef: React.RefObject<Popover2<any>> = React.createRef();
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
 
@@ -114,7 +117,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleFilmSelect}
                     onItemsPaste={this.handleFilmsPaste}
-                    popoverProps={{ minimal: popoverMinimal }}
+                    popoverProps={{ minimal: popoverMinimal, ref: this.popoverRef }}
                     tagRenderer={this.renderTag}
                     tagInputProps={{
                         onRemove: this.handleTagRemove,
@@ -272,5 +275,12 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         };
     }
 
-    private handleClear = () => this.setState({ films: [] });
+    private handleClear = () => {
+        this.setState({ films: [] });
+        // N.B. if MultiSelect had a "clear" button API provided out of the box, we wouldn't have to
+        // reach in to grab the Popover2 ref to reposition it... until then, we should do this to match
+        // the behavior which happens during TagInput's onRemove callback.
+        // see https://popper.js.org/docs/v2/modifiers/event-listeners/#when-the-reference-element-moves-or-changes-size
+        this.popoverRef.current?.reposition();
+    };
 }

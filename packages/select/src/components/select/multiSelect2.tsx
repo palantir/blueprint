@@ -21,6 +21,7 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     Keys,
+    mergeRefs,
     refHandler,
     setRef,
     TagInput,
@@ -72,8 +73,16 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T> {
      */
     placeholder?: string;
 
-    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<Omit<Popover2Props, "content">>;
+    /**
+     * Props to spread to `Popover2`.
+     *
+     * Note that `content` cannot be changed, but we do support attaching a ref to the Popover2 component
+     * instance (sometimes useful to reposition the popover after updating `selectedItems` in reaction to
+     * a change external to this component).
+     */
+    popoverProps?: Partial<
+        Omit<Popover2Props, "content"> & { ref: React.RefObject<Popover2<React.HTMLProps<HTMLDivElement>>> }
+    >;
 
     /** Controlled selected values. */
     selectedItems?: T[];
@@ -114,9 +123,11 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
     private refHandlers: {
         input: React.RefCallback<HTMLInputElement>;
+        popover: React.RefObject<Popover2<React.HTMLProps<HTMLDivElement>>>;
         queryList: React.RefCallback<QueryList<T>>;
     } = {
         input: refHandler(this, "input", this.props.tagInputProps?.inputRef),
+        popover: React.createRef(),
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
@@ -180,8 +191,13 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 }
                 interactionKind="click"
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpened={this.handlePopoverOpened}
+                popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
+                ref={
+                    popoverProps.ref === undefined
+                        ? this.refHandlers.popover
+                        : mergeRefs(this.refHandlers.popover, popoverProps.ref)
+                }
             >
                 <div
                     onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}
@@ -210,6 +226,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
             this.input.focus();
         }
         this.props.onItemSelect?.(item, evt);
+        this.refHandlers.popover.current?.reposition(); // reposition when size of input changes
     };
 
     private handleQueryChange = (query: string, evt?: React.ChangeEvent<HTMLInputElement>) => {
@@ -246,6 +263,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         const { selectedItems = [], onRemove, tagInputProps } = this.props;
         onRemove?.(selectedItems[index], index);
         tagInputProps?.onRemove?.(tag, index);
+        this.refHandlers.popover.current?.reposition(); // reposition when size of input changes
     };
 
     private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
