@@ -97,7 +97,7 @@ export interface TimeZonePicker2Props extends Props {
     popoverProps?: Partial<IPopoverProps>;
 }
 
-interface ITimezonePicker2State {
+export interface ITimezonePicker2State {
     query: string;
 }
 
@@ -125,7 +125,7 @@ export class TimeZonePicker2 extends AbstractPureComponent2<TimeZonePicker2Props
         const { showLocalTimezone, inputProps = {}, date } = props;
         this.state = { query: inputProps.value || "" };
         this.timezoneItems = mapTimezonesWithNames(date, TIMEZONE_ITEMS);
-        this.initialTimezoneItems = getInitialTimezoneItems(showLocalTimezone, date);
+        this.initialTimezoneItems = getInitialTimezoneItems(date, showLocalTimezone);
     }
 
     public render() {
@@ -166,7 +166,7 @@ export class TimeZonePicker2 extends AbstractPureComponent2<TimeZonePicker2Props
         const { date: nextDate } = this.props;
 
         if (this.props.showLocalTimezone !== prevProps.showLocalTimezone) {
-            this.initialTimezoneItems = getInitialTimezoneItems(this.props.showLocalTimezone, nextDate);
+            this.initialTimezoneItems = getInitialTimezoneItems(nextDate, this.props.showLocalTimezone);
         }
         if (nextDate != null && nextDate.getTime() !== prevProps.date?.getTime()) {
             this.initialTimezoneItems = mapTimezonesWithNames(nextDate, this.initialTimezoneItems);

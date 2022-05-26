@@ -1,0 +1,219 @@
+/*
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { assert } from "chai";
+import { mount, ShallowRendererProps, ShallowWrapper, shallow as untypedShallow } from "enzyme";
+import * as React from "react";
+import * as sinon from "sinon";
+
+import {
+    Button,
+    ButtonProps,
+    InputGroup,
+    InputGroupProps2,
+    IPopoverProps,
+    MenuItem,
+    Popover,
+    Position,
+} from "@blueprintjs/core";
+import { QueryList, Select } from "@blueprintjs/select";
+
+import { getTimeZone } from "../../src/common/getTimeZone";
+import { TIMEZONE_ITEMS } from "../../src/components/timezone-picker/timezoneItems";
+import { getInitialTimezoneItems, ITimeZoneWithNames } from "../../src/components/timezone-picker/timezoneNameUtils";
+import {
+    ITimezonePicker2State,
+    TimeZonePicker2,
+    TimeZonePicker2Props,
+} from "../../src/components/timezone-picker/timezonePicker";
+
+type TimezonePickerShallowWrapper = ShallowWrapper<TimeZonePicker2Props, ITimezonePicker2State>;
+
+/**
+ * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
+ */
+const shallow = (
+    el: React.ReactElement<TimeZonePicker2Props>,
+    options?: ShallowRendererProps,
+): TimezonePickerShallowWrapper => untypedShallow<TimeZonePicker2>(el, options);
+
+const VALUE = "America/Los_Angeles";
+
+describe("<TimezonePicker>", () => {
+    const onChange = sinon.spy();
+    const DEFAULT_PROPS: TimeZonePicker2Props = {
+        onChange,
+        popoverProps: {
+            isOpen: true,
+            usePortal: false,
+        },
+        value: VALUE,
+    };
+
+    afterEach(() => onChange.resetHistory());
+
+    it("clicking on button target opens popover", () => {
+        // remove isOpen from popoverProps so it's
+        const timezonePicker = mount(<TimeZonePicker2 {...DEFAULT_PROPS} popoverProps={{ usePortal: false }} />);
+        timezonePicker.find(Button).simulate("click");
+        /* eslint-disable-next-line deprecation/deprecation */
+        assert.isTrue(timezonePicker.find(Popover).prop("isOpen"));
+    });
+
+    it("if disabled=true, clicking on button target does not open popover", () => {
+        const timezonePicker = mount(
+            <TimeZonePicker2 {...DEFAULT_PROPS} disabled={true} popoverProps={{ usePortal: false }} />,
+        );
+        timezonePicker.find(Button).simulate("click");
+        /* eslint-disable-next-line deprecation/deprecation */
+        assert.isFalse(timezonePicker.find(Popover).prop("isOpen"));
+    });
+
+    it("if query is empty, shows initial items", () => {
+        const timezonePicker = shallow(<TimeZonePicker2 {...DEFAULT_PROPS} />);
+        const items = findSelect(timezonePicker).prop("items");
+        assert.deepEqual(items, getInitialTimezoneItems(new Date(), true));
+    });
+
+    it("if query is not empty, shows all items", () => {
+        const timezonePicker = shallow(<TimeZonePicker2 {...DEFAULT_PROPS} />);
+        timezonePicker.setState({ query: "not empty" });
+        timezonePicker.update();
+        const items = timezonePicker.find(Select).prop("items");
+        assert.lengthOf(items, TIMEZONE_ITEMS.length);
+    });
+
+    it("if inputProps.value is non-empty, all items are shown", () => {
+        const date = new Date();
+        const query = "test query";
+        const timezonePicker = shallow(
+            <TimeZonePicker2 {...DEFAULT_PROPS} date={date} inputProps={{ value: query }} />,
+        );
+        assert.strictEqual(timezonePicker.state("query"), query);
+        const items = findSelect(timezonePicker).prop("items");
+        assert.deepEqual(items, TIMEZONE_ITEMS);
+    });
+
+    it("if showLocalTimezone=true, the local timezone is rendered at the top of the item list", () => {
+        const timezonePicker = shallow(<TimeZonePicker2 {...DEFAULT_PROPS} showLocalTimezone={true} />);
+        const items = findSelect(timezonePicker).prop("items");
+        assert.isTrue(items.length > 0);
+        const firstItem = items[0];
+        assert.strictEqual(firstItem.ianaCode, getTimeZone());
+    });
+
+    it("if showLocalTimezone=false, the local timezone is not rendered at the top of the item list", () => {
+        const date = new Date();
+        const timezonePicker = shallow(<TimeZonePicker2 {...DEFAULT_PROPS} date={date} showLocalTimezone={false} />);
+        const items = findSelect(timezonePicker).prop("items");
+        assert.isTrue(items.length > 0);
+        const expectedFirstItem = getInitialTimezoneItems(date, false)[0];
+        assert.deepEqual(items[0], expectedFirstItem);
+    });
+
+    it("if date is non-empty, the timezone offsets will correspond to that date", () => {
+        const dateJun = new Date("2014-06-01T12:00:00Z");
+        const dateDec = new Date("2014-12-01T12:00:00Z");
+        const timezone = "America/Los_Angeles";
+        const timezonePickerJun = shallow(
+            <TimeZonePicker2 {...DEFAULT_PROPS} date={dateJun} showLocalTimezone={false} />,
+        );
+        const timezonePickerDec = shallow(
+            <TimeZonePicker2 {...DEFAULT_PROPS} date={dateDec} showLocalTimezone={false} />,
+        );
+        const selectJun = findSelect(timezonePickerJun);
+        const selectDec = findSelect(timezonePickerDec);
+        const itemsJun = selectJun.prop("items");
+        const itemsDec = selectDec.prop("items");
+        const timezoneItemJun = itemsJun.filter(item => item.ianaCode === timezone)[0];
+        const timezoneItemDec = itemsDec.filter(item => item.ianaCode === timezone)[0];
+        assert.notDeepEqual(timezoneItemJun, timezoneItemDec);
+    });
+
+    it("invokes the on change prop when a timezone is selected", () => {
+        const timezonePicker = shallow(<TimeZonePicker2 {...DEFAULT_PROPS} />);
+        clickFirstMenuItem(timezonePicker);
+        assert.isTrue(onChange.calledOnce);
+    });
+
+    it("if value is non-empty, the selected timezone will stay in sync with that value", () => {
+        const value = "Europe/Bratislava";
+        const valueLabel = TIMEZONE_ITEMS.find(tz => tz.ianaCode === value)?.label;
+        const timezonePicker = shallow(<TimeZonePicker2 value={value} onChange={onChange} />);
+        clickFirstMenuItem(timezonePicker);
+        assert.isTrue(onChange.calledOnce);
+        assert.strictEqual(timezonePicker.find(Button).prop("text"), valueLabel);
+    });
+
+    it("popover can be controlled with popover props", () => {
+        const popoverProps: IPopoverProps = {
+            isOpen: true,
+            position: Position.RIGHT,
+            usePortal: false,
+        };
+        const timezonePicker = shallow(<TimeZonePicker2 {...DEFAULT_PROPS} popoverProps={popoverProps} />);
+        const popover = findPopover(timezonePicker);
+        for (const key of Object.keys(popoverProps)) {
+            assert.deepEqual(popover.prop(key), popoverProps[key as keyof IPopoverProps]);
+        }
+    });
+
+    it("input can be controlled with input props", () => {
+        const inputProps: InputGroupProps2 = {
+            disabled: true,
+            leftIcon: "airplane",
+            placeholder: "test placeholder",
+        };
+        const timezonePicker = shallow(<TimeZonePicker2 {...DEFAULT_PROPS} inputProps={inputProps} />);
+        const inputGroup = findInputGroup(timezonePicker);
+        for (const key of Object.keys(inputProps)) {
+            assert.deepEqual(inputGroup.prop(key), inputProps[key as keyof InputGroupProps2]);
+        }
+    });
+
+    it("button can be controlled with button props", () => {
+        const buttonProps: ButtonProps = {
+            disabled: true,
+            rightIcon: "airplane",
+        };
+        const timezonePicker = shallow(<TimeZonePicker2 {...DEFAULT_PROPS} buttonProps={buttonProps} />);
+        const button = timezonePicker.find(Button);
+        for (const key of Object.keys(buttonProps)) {
+            assert.deepEqual(button.prop(key), buttonProps[key as keyof ButtonProps]);
+        }
+    });
+
+    function findSelect(timezonePicker: TimezonePickerShallowWrapper) {
+        return timezonePicker.find(Select.ofType<ITimeZoneWithNames>());
+    }
+
+    function findQueryList(timezonePicker: TimezonePickerShallowWrapper) {
+        return findSelect(timezonePicker).shallow().find(QueryList.ofType<ITimeZoneWithNames>());
+    }
+
+    function findPopover(timezonePicker: TimezonePickerShallowWrapper) {
+        /* eslint-disable-next-line deprecation/deprecation */
+        return findQueryList(timezonePicker).shallow().find(Popover);
+    }
+
+    function findInputGroup(timezonePicker: TimezonePickerShallowWrapper) {
+        return findQueryList(timezonePicker).shallow().find(InputGroup);
+    }
+
+    function clickFirstMenuItem(timezonePicker: TimezonePickerShallowWrapper): void {
+        findQueryList(timezonePicker).shallow().find(MenuItem).first().simulate("click");
+    }
+});

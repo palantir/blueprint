@@ -45,7 +45,7 @@ export const mapTimezonesWithNames = (
         shortName: getTimeZoneName(date, tz.ianaCode, false),
     }));
 
-export function getInitialTimezoneItems(showLocalTimezone: boolean, date: Date | undefined) {
+export function getInitialTimezoneItems(date: Date | undefined, showLocalTimezone: boolean) {
     const systemTimeZone = getTimeZone();
     const localTimeZone = showLocalTimezone
         ? TIMEZONE_ITEMS.find(timezone => timezone.ianaCode === systemTimeZone)
