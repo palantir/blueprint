@@ -17,13 +17,7 @@
 import { formatInTimeZone } from "date-fns-tz";
 
 import { getTimeZone } from "../../common/getTimeZone";
-import { MINIMAL_TIMEZONE_ITEMS, TIMEZONE_ITEMS } from "./timezoneItems";
-
-export interface ITimeZone {
-    offset: string;
-    label: string;
-    ianaCode: string;
-}
+import { ITimeZone, MINIMAL_TIMEZONE_ITEMS, TIMEZONE_ITEMS } from "./timezoneItems";
 
 export interface ITimeZoneWithNames extends ITimeZone {
     longName: string;

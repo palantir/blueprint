@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-import { ITimeZone } from "./timezoneNameUtils";
-
+export interface ITimeZone {
+    offset: string;
+    label: string;
+    ianaCode: string;
+}
 export const UTC_TIME: ITimeZone = { offset: "+00:00", label: "Universal Standard Time", ianaCode: "Etc/UTC" };
 
 export const TIMEZONE_ITEMS: ITimeZone[] = [
