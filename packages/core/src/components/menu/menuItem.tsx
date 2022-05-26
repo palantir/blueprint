@@ -177,7 +177,6 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const target = React.createElement(
             tagName,
             {
-                "aria-expanded": hasSubmenu,
                 role: "menuitem",
                 tabIndex: 0,
                 ...htmlProps,
