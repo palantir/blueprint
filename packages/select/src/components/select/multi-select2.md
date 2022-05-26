@@ -18,7 +18,7 @@ on the wiki.
 
 </div>
 
-MultiSelect2 renders a UI to choose multiple items from a list. The component renders a [TagInput](#core/components/tag-input) wrapped in a [Popover2](#popover2/popover2). Just like with [Select2](#select/select2), you can pass in a predicate to customize the filtering algorithm.
+MultiSelect2 renders a UI to choose multiple items from a list. The component renders a [TagInput](#core/components/tag-input) wrapped in a [Popover2](#popover2-package/popover2). Just like with [Select2](#select/select2), you can pass in a predicate to customize the filtering algorithm.
 
 Selection state of a MultiSelect2 is controlled with the `selectedItems` prop. React to user interactions with `onItemSelect` and `onRemove`.
 

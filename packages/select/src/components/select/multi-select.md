@@ -19,7 +19,7 @@ Selection state of a `MultiSelect<T>` is controlled with the `selectedItems` pro
 
 The API for this component is nearly identical to that of MultiSelect2, except for a slight change in
 `popoverProps` and the wrapper element(s) rendered around its children.
-Refer to the [MultiSelect2 documentation](#select/select2) for full API details.
+Refer to the [MultiSelect2 documentation](#select/multi-select2) for full API details.
 
 @## Props interface
 
