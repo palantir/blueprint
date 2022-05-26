@@ -31,9 +31,12 @@ import {
 } from "@blueprintjs/core";
 import { QueryList, Select } from "@blueprintjs/select";
 
-import { getTimeZone } from "../../src/common/getTimeZone";
 import { TIMEZONE_ITEMS } from "../../src/components/timezone-picker/timezoneItems";
-import { getInitialTimezoneItems, ITimeZoneWithNames } from "../../src/components/timezone-picker/timezoneNameUtils";
+import {
+    getInitialTimezoneItems,
+    ITimeZoneWithNames,
+    mapTimezonesWithNames,
+} from "../../src/components/timezone-picker/timezoneNameUtils";
 import {
     ITimezonePicker2State,
     TimeZonePicker2,
@@ -104,7 +107,7 @@ describe("<TimezonePicker>", () => {
         );
         assert.strictEqual(timezonePicker.state("query"), query);
         const items = findSelect(timezonePicker).prop("items");
-        assert.deepEqual(items, TIMEZONE_ITEMS);
+        assert.deepEqual(items, mapTimezonesWithNames(date, TIMEZONE_ITEMS));
     });
 
     it("if showLocalTimezone=true, the local timezone is rendered at the top of the item list", () => {
@@ -112,7 +115,7 @@ describe("<TimezonePicker>", () => {
         const items = findSelect(timezonePicker).prop("items");
         assert.isTrue(items.length > 0);
         const firstItem = items[0];
-        assert.strictEqual(firstItem.ianaCode, getTimeZone());
+        assert.strictEqual(firstItem.ianaCode, "Etc/UTC");
     });
 
     it("if showLocalTimezone=false, the local timezone is not rendered at the top of the item list", () => {
@@ -150,7 +153,7 @@ describe("<TimezonePicker>", () => {
     });
 
     it("if value is non-empty, the selected timezone will stay in sync with that value", () => {
-        const value = "Europe/Bratislava";
+        const value = "Europe/Oslo";
         const valueLabel = TIMEZONE_ITEMS.find(tz => tz.ianaCode === value)?.label;
         const timezonePicker = shallow(<TimeZonePicker2 value={value} onChange={onChange} />);
         clickFirstMenuItem(timezonePicker);
