@@ -115,6 +115,7 @@ export interface ITimezonePickerState {
     query: string;
 }
 
+// eslint-disable-next-line deprecation/deprecation
 const TypedSelect = Select.ofType<TimezoneItem>();
 
 export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, ITimezonePickerState> {
