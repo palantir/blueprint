@@ -13,13 +13,15 @@ You should migrate to the new API which will become the standard in Blueprint v5
 
 </div>
 
-Use `MultiSelect<T>` for choosing multiple items in a list. The component renders a [`TagInput`](#core/components/tag-input) wrapped in a `Popover`. Similarly to [`Select`](#select/select-component), you can pass in a predicate to customize the filtering algorithm.
+MultiSelect renders a UI to choose multiple items from a list. It renders a
+[TagInput](#core/components/tag-input) wrapped in a [Popover](#core/components/popover).
 
-Selection state of a `MultiSelect<T>` is controlled with the `selectedItems` prop. React to user interactions with `onItemSelect` and `onRemove`.
+The selection state of a MultiSelect is controlled with the `selectedItems` prop.
+You may react to user interactions with the `onItemSelect` and `onRemove` callback props.
 
 The API for this component is nearly identical to that of MultiSelect2, except for a slight change in
-`popoverProps` and the wrapper element(s) rendered around its children.
-Refer to the [MultiSelect2 documentation](#select/multi-select2) for full API details.
+`popoverProps` and the wrapper element(s) rendered around its children. Please refer to the
+[MultiSelect2](#select/multi-select2) documentation for full API details.
 
 @## Props interface
 

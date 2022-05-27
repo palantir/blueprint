@@ -13,12 +13,14 @@ You should migrate to the new API which will become the standard in Blueprint v5
 
 </div>
 
-`Suggest` behaves similarly to [`Select`](#select/select-component), except it
-renders a text input as the `Popover` target instead of arbitrary children. This
-text [`InputGroup`](#core/components/text-inputs.input-group) can be customized
-using `inputProps`.
+Suggest behaves similarly to [Select](#select/select-component), except it
+renders a text input as the [Popover](##core/components/popover) target instead of arbitrary children.
+This text [InputGroup](#core/components/text-inputs.input-group) can be customized
+using the `inputProps` prop.
 
-Refer to the [`Suggest2`](#select/suggest2) documentation for an interactive component demo.
+The API for this component is nearly identical to that of Suggest2, except for a slight change in
+`popoverProps` and the wrapper element(s) rendered around its InputGroup. Please refer to the
+[Suggest2](#select/suggest2) documentation for an interactive component demo.
 
 @## Props interface
 
