@@ -99,10 +99,12 @@ export interface ISelectState {
     isOpen: boolean;
 }
 
+/** @deprecated use { Select2 } from "@blueprintjs/select" */
 export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
 
     public static ofType<U>() {
+        // eslint-disable-next-line deprecation/deprecation
         return Select as new (props: SelectProps<U>) => Select<U>;
     }
 
@@ -125,6 +127,7 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
         const { filterable, inputProps, popoverProps, ...restProps } = this.props;
 
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <this.TypedQueryList
                 {...restProps}
                 onItemSelect={this.handleItemSelect}

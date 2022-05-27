@@ -277,7 +277,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
 
     private handleClear = () => {
         this.setState({ films: [] });
-        // N.B. if MultiSelect had a "clear" button API provided out of the box, we wouldn't have to
+        // N.B. if MultiSelect2 had a "clear" button API provided out of the box, we wouldn't have to
         // reach in to grab the Popover2 ref to reposition it... until then, we should do this to match
         // the behavior which happens during TagInput's onRemove callback.
         // see https://popper.js.org/docs/v2/modifiers/event-listeners/#when-the-reference-element-moves-or-changes-size
