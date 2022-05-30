@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Boundary, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
+import { Boundary, Modifier, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
 import * as React from "react";
 import { StrictModifier } from "react-popper";
 
@@ -124,6 +124,15 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
     isOpen?: boolean;
 
     /**
+     * Whether the popover content should be sized to match the width of the target.
+     * This is sometimes useful for dropdown menus. This prop is implemented using
+     * a Popper.js custom modifier.
+     *
+     * @default false
+     */
+    matchTargetWidth?: boolean;
+
+    /**
      * Whether to apply minimal styling to this popover or tooltip. Minimal popovers
      * do not have an arrow pointing to their target and use a subtler animation.
      *
@@ -146,6 +155,13 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
     modifiers?: Partial<{
         [M in StrictModifierNames]: Partial<Omit<StrictModifier<M>, "name">>;
     }>;
+
+    /**
+     * Custom modifiers to add to the popper instance.
+     *
+     * @see https://popper.js.org/docs/v2/modifiers/#custom-modifiers
+     */
+    modifiersCustom?: ReadonlyArray<Partial<Modifier<any, object>>>;
 
     /**
      * Callback invoked in controlled mode when the popover open state *would*

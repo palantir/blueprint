@@ -177,6 +177,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const target = React.createElement(
             tagName,
             {
+                role: "menuitem",
                 tabIndex: 0,
                 ...htmlProps,
                 ...(disabled ? DISABLED_PROPS : {}),
@@ -199,7 +200,11 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         );
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
-        return <li className={liClasses}>{this.maybeRenderPopover(target, children)}</li>;
+        return (
+            <li className={liClasses} role="none">
+                {this.maybeRenderPopover(target, children)}
+            </li>
+        );
     }
 
     private maybeRenderLabel(labelElement?: React.ReactNode) {

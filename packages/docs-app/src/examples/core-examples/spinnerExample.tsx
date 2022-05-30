@@ -43,7 +43,12 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
         const { size, hasValue, intent, value } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <Spinner intent={intent} size={size} value={hasValue ? value : null} />
+                <Spinner
+                    aria-label={hasValue ? `Loading ${value * 100}% complete` : "Loading..."}
+                    intent={intent}
+                    size={size}
+                    value={hasValue ? value : null}
+                />
             </Example>
         );
     }
