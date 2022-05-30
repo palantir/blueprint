@@ -27,7 +27,7 @@ import { getTimeZone } from "../../common/getTimeZone";
 import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "../../common/timezoneUtils";
 import { TimeZonePicker2 } from "../timezone-picker/timezonePicker";
 
-interface ITimezoneAwareDateInputProps extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {
+export interface ITimezoneAwareDateInputProps extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {
     /** The default timezone selected. Defaults to the user local timezone */
     defaultTimezone?: string;
     /** Callback invoked whenever the date or timezone has changed. ISO string */

@@ -72,6 +72,7 @@ describe("<TimezonePicker>", () => {
         // remove isOpen from popoverProps so it's
         const timezonePicker = mount(<TimeZonePicker2 {...DEFAULT_PROPS} popoverProps={{ usePortal: false }} />);
         timezonePicker.find(Button).simulate("click");
+
         /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(timezonePicker.find(Popover).prop("isOpen"));
     });
