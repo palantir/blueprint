@@ -25,7 +25,7 @@ import { DateInput, DateInputProps, TimePrecision } from "@blueprintjs/datetime"
 import * as Classes from "../../common/classes";
 import { getTimeZone } from "../../common/getTimeZone";
 import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "../../common/timezoneUtils";
-import { TimeZonePicker2 } from "../timezone-picker/timezonePicker";
+import { TimeZonePicker2 } from "../timezone-picker/timezonePicker2";
 
 export interface ITimezoneAwareDateInputProps extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {
     /** The default timezone selected. Defaults to the user local timezone */

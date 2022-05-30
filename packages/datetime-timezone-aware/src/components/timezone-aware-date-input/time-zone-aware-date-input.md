@@ -56,7 +56,7 @@ import { TimeZoneAwareDateInput } from "@blueprintjs/datetime-timezone-aware";
 />
 ```
 
-@interface IDateInputProps
+@interface ITimezoneAwareDateInputProps
 
 @## Localization
 

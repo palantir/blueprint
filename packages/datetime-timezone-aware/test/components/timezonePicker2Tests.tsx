@@ -41,7 +41,7 @@ import {
     ITimezonePicker2State,
     TimeZonePicker2,
     TimeZonePicker2Props,
-} from "../../src/components/timezone-picker/timezonePicker";
+} from "../../src/components/timezone-picker/timezonePicker2";
 
 type TimezonePickerShallowWrapper = ShallowWrapper<TimeZonePicker2Props, ITimezonePicker2State>;
 

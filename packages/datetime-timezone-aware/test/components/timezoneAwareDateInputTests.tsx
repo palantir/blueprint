@@ -26,7 +26,7 @@ import {
     ITimezoneAwareDateInputProps,
     TimeZoneAwareDateInput,
 } from "../../src/components/timezone-aware-date-input/timezoneAwareDateInput";
-import { TimeZonePicker2 } from "../../src/components/timezone-picker/timezonePicker";
+import { TimeZonePicker2 } from "../../src/components/timezone-picker/timezonePicker2";
 
 const VALUE = "2021-11-29T10:30:00.000z";
 

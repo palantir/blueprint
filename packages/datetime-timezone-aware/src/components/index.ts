@@ -15,4 +15,4 @@
  */
 
 export { TimeZoneAwareDateInput } from "./timezone-aware-date-input/timezoneAwareDateInput";
-export { TimeZonePicker2 } from "./timezone-picker/timezonePicker";
+export { TimeZonePicker2 } from "./timezone-picker/timezonePicker2";
