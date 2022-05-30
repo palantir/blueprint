@@ -152,12 +152,15 @@ automatically by enabling the modifiers `flip` and `preventOverflow`.
 
 @### Modifiers
 
-Modifiers allow you customize Popper.js's positioning behavior. `Popover2` configures several of Popper.js's built-in modifiers
+Modifiers allow us to customize Popper.js's positioning behavior. `Popover2` configures several of Popper.js's built-in modifiers
 to handle things such as flipping, preventing overflow from a boundary element, and positioning the arrow.
 
-You may override these default modifiers with the `modifiers` prop, which is an object with key-value pairs representing the
+You may override the default modifiers with the `modifiers` prop, which is an object with key-value pairs representing the
 modifier name and its options object, respectively. See the [Popper.js modifiers docs page](https://popper.js.org/docs/v2/modifiers/)
-for more info. It is not currently possible to add your own custom modifiers through `Popover2`.
+for more info.
+
+You may also add custom modifiers using the `modifiersCustom` prop. See the
+[Popper.js custom modifiers documentation](https://popper.js.org/docs/v2/modifiers/#custom-modifiers) for more info.
 
 @### Controlled mode
 

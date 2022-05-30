@@ -35,9 +35,22 @@ by adding a small stroke to the SVG paths.
 
 @## CSS
 
-Apply `.@ns-non-ideal-state` to the container and `.@ns-non-ideal-state-visual`
-to the icon element. The container should only have direct element children (all
-text should be wrapped in an enclosing element) for proper spacing between each
-child.
+Apply the `.@ns-non-ideal-state` class to the root container element and wrap the icon
+element with a `.@ns-non-ideal-state-visual` container.
+
+The root container should only have direct element children, no grandchildren (except
+for text, which is enclosed in a `.@ns-non-ideal-state-text` wrapper element). This
+constraint ensures proper spacing between each child.
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-heading">Limited CSS API support</h4>
+
+Note that you are required to set the `font-size` and `line-height` styles for
+the icon element to render it properly.
+
+Also, since the CSS API uses the icon font, Blueprint styles cannot adjust the icon visual
+design to have a muted appearance like it does with the React component API. This means
+NonIdealState elements rendered with this API will stand out visually within the design system.
+</div>
 
 @css non-ideal-state

@@ -38,6 +38,7 @@ export interface ISelectExampleState {
     matchTargetWidth: false;
 }
 
+/** Technically a Select2 example, since FilmSelect uses Select2. */
 export class SelectExample extends React.PureComponent<IExampleProps, ISelectExampleState> {
     public state: ISelectExampleState = {
         allowCreate: false,

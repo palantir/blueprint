@@ -1,10 +1,7 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/core/src/common/variables";
-
-$select-popover-max-height: $pt-grid-size * 30 !default;
-$select-popover-max-width: $pt-grid-size * 40 !default;
+@import "../../common/variables";
 
 .#{$ns}-select-popover {
   &.#{$ns}-select-match-target-width {
@@ -16,7 +13,8 @@ $select-popover-max-width: $pt-grid-size * 40 !default;
     }
   }
 
-  .#{$ns}-popover-content {
+  .#{$ns}-popover-content,
+  .#{$ns}-popover2-content {
     // use padding on container rather than margin on input group
     // because top margin leaves some empty space with no background color.
     padding: $pt-grid-size * 0.5;

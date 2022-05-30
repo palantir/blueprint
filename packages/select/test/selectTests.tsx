@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, Popover } from "@blueprintjs/core";
+import { InputGroup, Keys, Popover } from "@blueprintjs/core";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { IItemRendererProps, ISelectProps, ISelectState, Select } from "../src";
@@ -92,18 +92,26 @@ describe("<Select>", () => {
         const onOpening = sinon.spy();
         const modifiers = {}; // our own instance
         const wrapper = select({ popoverProps: { onOpening, modifiers } });
-        wrapper.find("article").simulate("click");
+        wrapper.find("[data-testid='target-button']").simulate("click");
         /* eslint-disable-next-line deprecation/deprecation */
         assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
         assert.isTrue(onOpening.calledOnce);
     });
 
-    it("returns focus to focusable target after popover closed");
+    // TODO(adahiya): move into selectComponentSuite, generalize for Suggest & MultiSelect
+    it("opens popover when arrow key pressed on target while closed", () => {
+        const wrapper = select({ popoverProps: { usePortal: false } });
+        // should be closed to start
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        wrapper.find("[data-testid='target-button']").simulate("keydown", { which: Keys.ARROW_DOWN });
+        // ...then open after key down
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+    });
 
     function select(props: Partial<ISelectProps<IFilm>> = {}, query?: string) {
         const wrapper = mount(
             <FilmSelect {...defaultProps} {...handlers} {...props}>
-                <article />
+                <button data-testid="target-button">Target</button>
             </FilmSelect>,
         );
         if (query !== undefined) {

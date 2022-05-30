@@ -88,6 +88,11 @@ function getJsonValueFromSassValue(value, options) {
         try {
             if (typeof value !== "undefined" && "getValue" in value) {
                 resolvedValue = value.getValue();
+                if (value instanceof sass.types.String && stringHasWrappingQuotes(value)) {
+                    // We want to preserve quotes around string elements - if we don't do this,
+                    // we lose those quotes during the JSON conversion process.
+                    resolvedValue = `"${resolvedValue}"`;
+                }
             } else {
                 resolvedValue = null;
             }
@@ -99,6 +104,20 @@ function getJsonValueFromSassValue(value, options) {
 }
 
 /**
+ * HACKHACK: the legacy Sass value API has no way of distinguishing between quoted and unquoted strings
+ * (see documentation of types.String from the "sass" package), but there's a hacky way to parse that out
+ * from the string output by the value's .toString() method. A better solution would involve migrating to
+ * the async API.
+ *
+ * @param {sass.type.String} value dart-sass legacy String value
+ * @returns {boolean} true if the string contains quotes as the first and last characters
+ */
+function stringHasWrappingQuotes(value) {
+    const strValue = value.dartValue.toString();
+    return strValue.charAt(0) === '"' && strValue.charAt(strValue.length - 1) === '"';
+}
+
+/**
  * @param {sass.types.List} list
  * @param {Options}         options
  */
@@ -106,11 +125,12 @@ function listToArray(list, options) {
     const length = list.getLength();
     /** @type {JsonArray} */
     const data = [];
+    const hasSeparator = list.getSeparator();
     for (const index of Array.from({ length }).keys()) {
         const value = getJsonValueFromSassValue(list.getValue(index), options);
         data.push(value);
     }
-    return list.getSeparator() ? data : data.join(" ");
+    return hasSeparator ? data : data.join(" ");
 }
 
 /**

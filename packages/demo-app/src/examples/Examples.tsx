@@ -21,6 +21,7 @@ import { Classes } from "@blueprintjs/core";
 
 import { BreadcrumbExample } from "./BreadcrumbExample";
 import { ButtonExample } from "./ButtonExample";
+import { ButtonGroupExample } from "./ButtonGroupExample";
 import { CalloutExample } from "./CalloutExample";
 import { CheckboxRadioExample } from "./CheckboxRadioExample";
 import { DatePickerExample } from "./DatePickerExample";
@@ -51,6 +52,7 @@ export class Examples extends React.PureComponent {
             <div className={classNames("examples-container", className)}>
                 <BreadcrumbExample />
                 <ButtonExample />
+                <ButtonGroupExample />
                 <CalloutExample />
                 <CheckboxRadioExample />
                 <DatePickerExample />
