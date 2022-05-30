@@ -83,7 +83,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         enableRowHeader: true,
         forceRerenderOnSelectionChange: false,
         getCellClipboardData: (row: number, col: number, tableState: TableState) =>
-            innerText(tableState.childrenArray[col].props.cellRenderer(row, col)),
+            innerText(tableState.childrenArray[col].props.cellRenderer?.(row, col)),
         loadingOptions: [],
         maxColumnWidth: 9999,
         maxRowHeight: 9999,

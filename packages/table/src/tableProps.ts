@@ -327,6 +327,7 @@ export type TablePropsDefaults = Required<
         | "enableMultipleSelection"
         | "enableRowHeader"
         | "forceRerenderOnSelectionChange"
+        | "getCellClipboardData"
         | "loadingOptions"
         | "maxColumnWidth"
         | "maxRowHeight"
