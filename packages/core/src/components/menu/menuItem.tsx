@@ -23,7 +23,7 @@ import { ActionProps, DISPLAYNAME_PREFIX, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
-import { Menu } from "./menu";
+import { Menu, MenuProps } from "./menu";
 
 // eslint-disable-next-line deprecation/deprecation
 export type MenuItemProps = IMenuItemProps;
@@ -78,6 +78,11 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     labelElement?: React.ReactNode;
 
     /**
+     * Props to spread to the `Menu` within the `Popover`.
+     */
+    menuProps?: Partial<MenuProps> & object;
+
+    /**
      * Whether the text should be allowed to wrap to multiple lines.
      * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
      *
@@ -126,6 +131,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
     public static defaultProps: MenuItemProps = {
         active: false,
         disabled: false,
+        menuProps: {},
         multiline: false,
         popoverProps: {},
         selected: false,
@@ -146,6 +152,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             intent,
             labelClassName,
             labelElement,
+            menuProps,
             multiline,
             popoverProps,
             selected,
@@ -219,7 +226,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         if (children == null) {
             return target;
         }
-        const { disabled, popoverProps } = this.props;
+        const { disabled, popoverProps, menuProps } = this.props;
         return (
             /* eslint-disable-next-line deprecation/deprecation */
             <Popover
@@ -233,7 +240,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 position={Position.RIGHT_TOP}
                 usePortal={false}
                 {...popoverProps}
-                content={<Menu>{children}</Menu>}
+                content={<Menu {...menuProps}>{children}</Menu>}
                 minimal={true}
                 popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
                 target={target}
