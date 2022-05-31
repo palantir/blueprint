@@ -42,7 +42,7 @@ const STROKE_WIDTH = 4;
 const MIN_STROKE_WIDTH = 16;
 
 // eslint-disable-next-line deprecation/deprecation
-export type SpinnerProps = ISpinnerProps;
+export type SpinnerProps = (ISpinnerProps & React.HTMLAttributes<any>) | (ISpinnerProps & React.SVGAttributes<any>);
 /** @deprecated use SpinnerProps */
 export interface ISpinnerProps extends Props, IntentProps {
     /**
@@ -85,7 +85,7 @@ export class Spinner extends AbstractPureComponent2<SpinnerProps> {
     }
 
     public render() {
-        const { className, intent, value, tagName = "div" } = this.props;
+        const { className, intent, value, tagName = "div", ...htmlProps } = this.props;
         const size = this.getSize();
 
         const classes = classNames(
@@ -105,8 +105,12 @@ export class Spinner extends AbstractPureComponent2<SpinnerProps> {
         return React.createElement(
             tagName,
             {
+                "aria-valuemax": 100,
+                "aria-valuemin": 0,
+                "aria-valuenow": value === undefined ? undefined : value * 100,
                 className: classes,
                 role: "progressbar",
+                ...htmlProps,
             },
             React.createElement(
                 tagName,

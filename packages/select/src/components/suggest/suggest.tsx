@@ -107,6 +107,7 @@ export interface ISuggestState<T> {
     selectedItem: T | null;
 }
 
+/** @deprecated use { Suggest2 } from "@blueprintjs/select" */
 export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggestState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
 
@@ -118,6 +119,7 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
     };
 
     public static ofType<U>() {
+        // eslint-disable-next-line deprecation/deprecation
         return Suggest as new (props: SuggestProps<U>) => Suggest<U>;
     }
 
@@ -140,6 +142,7 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
         // omit props specific to this component, spread the rest.
         const { disabled, inputProps, popoverProps, ...restProps } = this.props;
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <this.TypedQueryList
                 {...restProps}
                 initialActiveItem={this.props.selectedItem ?? undefined}
