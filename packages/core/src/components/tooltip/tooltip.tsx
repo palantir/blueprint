@@ -85,7 +85,7 @@ export class Tooltip extends AbstractPureComponent2<TooltipProps> {
     private popover: Popover | null = null;
 
     public render() {
-        const { children, intent, popoverClassName, ...restProps } = this.props;
+        const { children, content, intent, popoverClassName, ...restProps } = this.props;
         const classes = classNames(
             Classes.TOOLTIP,
             { [Classes.MINIMAL]: this.props.minimal },
@@ -101,13 +101,14 @@ export class Tooltip extends AbstractPureComponent2<TooltipProps> {
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
+                content={<div role="tooltip">{content}</div>}
                 enforceFocus={false}
                 lazy={true}
                 popoverClassName={classes}
                 portalContainer={this.props.portalContainer}
                 ref={ref => (this.popover = ref)}
             >
-                <div role="tooltip">{children}</div>
+                children
             </Popover>
         );
     }

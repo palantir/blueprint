@@ -105,7 +105,7 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
 
     // any descendant ContextMenu2s may update this ctxState
     private renderPopover = (ctxState: Tooltip2ContextState) => {
-        const { children, disabled, intent, popoverClassName, ...restProps } = this.props;
+        const { children, content, disabled, intent, popoverClassName, ...restProps } = this.props;
         const classes = classNames(
             Classes.TOOLTIP2,
             { [CoreClasses.MINIMAL]: this.props.minimal },
@@ -129,6 +129,7 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
+                content={<div role="tooltip">{content}</div>}
                 disabled={ctxState.forceDisabled ?? disabled}
                 enforceFocus={false}
                 lazy={true}
@@ -136,7 +137,7 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
                 portalContainer={this.props.portalContainer}
                 ref={ref => (this.popover = ref)}
             >
-                <div role="tooltip">{children}</div>
+                children
             </Popover2>
         );
     };
