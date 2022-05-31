@@ -696,6 +696,6 @@ function noop() {
     // no-op
 }
 
-export function isContentEmpty(content: string | JSX.Element) {
+export function isContentEmpty(content: string | null | undefined | JSX.Element) {
     return content == null || (typeof content === "string" && content.trim() === "");
 }
