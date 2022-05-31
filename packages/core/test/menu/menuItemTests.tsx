@@ -109,6 +109,18 @@ describe("MenuItem", () => {
         assert.isTrue(handleClose.notCalled);
     });
 
+    it("menuProps are forwarded to the Menu", () => {
+        const menuProps = { "aria-label": "test-menu" };
+        const wrapper = shallow(
+            <MenuItem icon="style" text="Style" menuProps={menuProps}>
+                <MenuItem text="one" />
+                <MenuItem text="two" />
+            </MenuItem>,
+        );
+        const submenu = findSubmenu(wrapper);
+        assert.strictEqual(submenu.props["aria-label"], menuProps["aria-label"]);
+    });
+
     it("popoverProps (except content) are forwarded to Popover", () => {
         // Ensures that popover props are passed to Popover component, except content property
         const popoverProps = {
