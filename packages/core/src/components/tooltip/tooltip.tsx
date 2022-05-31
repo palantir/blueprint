@@ -20,7 +20,7 @@ import * as React from "react";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps } from "../../common/props";
 // eslint-disable-next-line import/no-cycle
-import { Popover, PopoverInteractionKind } from "../popover/popover";
+import { isContentEmpty, Popover, PopoverInteractionKind } from "../popover/popover";
 import { IPopoverSharedProps } from "../popover/popoverSharedProps";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -101,7 +101,7 @@ export class Tooltip extends AbstractPureComponent2<TooltipProps> {
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
-                content={<div role="tooltip">{content}</div>}
+                content={isContentEmpty(content) ? content : <div role="tooltip">{content}</div>}
                 enforceFocus={false}
                 lazy={true}
                 popoverClassName={classes}

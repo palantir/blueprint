@@ -21,7 +21,7 @@ import { Classes as CoreClasses, DISPLAYNAME_PREFIX, IntentProps } from "@bluepr
 
 import * as Classes from "./classes";
 // eslint-disable-next-line import/no-cycle
-import { Popover2, Popover2InteractionKind } from "./popover2";
+import { isContentEmpty, Popover2, Popover2InteractionKind } from "./popover2";
 import { TOOLTIP_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { Popover2SharedProps } from "./popover2SharedProps";
 import { Tooltip2Context, Tooltip2ContextState, Tooltip2Provider } from "./tooltip2Context";
@@ -129,7 +129,7 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
-                content={<div role="tooltip">{content}</div>}
+                content={isContentEmpty(content) ? content : <div role="tooltip">{content}</div>}
                 disabled={ctxState.forceDisabled ?? disabled}
                 enforceFocus={false}
                 lazy={true}

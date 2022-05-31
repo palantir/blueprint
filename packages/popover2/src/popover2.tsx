@@ -211,8 +211,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         const { disabled, content, placement, position = "auto", positioningStrategy } = this.props;
         const { isOpen } = this.state;
 
-        const isContentEmpty = content == null || (typeof content === "string" && content.trim() === "");
-        if (isContentEmpty) {
+        if (isContentEmpty(content)) {
             // need to do this check in render(), because `isOpen` is derived from
             // state, and state can't necessarily be accessed in validateProps.
             if (!disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
@@ -695,4 +694,8 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
 
 function noop() {
     // no-op
+}
+
+export function isContentEmpty(content: string | JSX.Element) {
+    return content == null || (typeof content === "string" && content.trim() === "");
 }

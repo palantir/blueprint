@@ -183,10 +183,10 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             wrapperTagName = "div";
         }
 
-        const isContentEmpty = Utils.ensureElement(this.understandChildren().content) == null;
+        const contentEmpty = isContentEmpty(this.understandChildren().content);
         // need to do this check in render(), because `isOpen` is derived from
         // state, and state can't necessarily be accessed in validateProps.
-        if (isContentEmpty && !disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
+        if (contentEmpty && !disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
             console.warn(Errors.POPOVER_WARN_EMPTY_CONTENT);
         }
 
@@ -209,7 +209,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 className={this.props.portalClassName}
                 enforceFocus={this.props.enforceFocus}
                 hasBackdrop={this.props.hasBackdrop}
-                isOpen={isOpen && !isContentEmpty}
+                isOpen={isOpen && !contentEmpty}
                 onClose={this.handleOverlayClose}
                 onClosed={this.props.onClosed}
                 onClosing={this.props.onClosing}
@@ -613,4 +613,8 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         this.setState({ transformOrigin: getTransformOrigin(data) });
         return data;
     };
+}
+
+export function isContentEmpty(content: React.ReactNode) {
+    return Utils.ensureElement(content) == null;
 }
