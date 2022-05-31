@@ -137,7 +137,7 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
                 portalContainer={this.props.portalContainer}
                 ref={ref => (this.popover = ref)}
             >
-                children
+                {children}
             </Popover2>
         );
     };

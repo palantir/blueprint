@@ -108,7 +108,7 @@ export class Tooltip extends AbstractPureComponent2<TooltipProps> {
                 portalContainer={this.props.portalContainer}
                 ref={ref => (this.popover = ref)}
             >
-                children
+                {children}
             </Popover>
         );
     }
