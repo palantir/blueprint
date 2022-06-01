@@ -133,14 +133,14 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             // Make sure the width/height arrays have the correct length, but keep
             // as many existing widths/heights as possible. Also, apply the
             // sparse width/heights from props.
-            newColumnWidths = Utils.arrayOfLength(newColumnWidths, numCols, defaultColumnWidth);
+            newColumnWidths = Array(numCols).fill(defaultColumnWidth);
             newColumnWidths = Utils.assignSparseValues(newColumnWidths, previousColumnWidths);
             newColumnWidths = Utils.assignSparseValues(newColumnWidths, columnWidths);
         }
 
         let newRowHeights = rowHeights;
         if (rowHeights !== state.rowHeights || numRows !== state.rowHeights.length) {
-            newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
+            newColumnWidths = Array(numRows).fill(defaultRowHeight);
             newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
         }
 
