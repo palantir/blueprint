@@ -181,7 +181,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 canEscapeKeyClose={true}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
-                placement="bottom-start"
+                placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
