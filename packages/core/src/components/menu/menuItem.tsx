@@ -131,7 +131,6 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
     public static defaultProps: MenuItemProps = {
         active: false,
         disabled: false,
-        menuProps: {},
         multiline: false,
         popoverProps: {},
         selected: false,
