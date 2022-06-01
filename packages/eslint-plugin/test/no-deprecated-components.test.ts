@@ -75,6 +75,7 @@ ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
 
                 export class MyClass extends BP.AbstractComponent {
                 }
+                class MyClass2 extends BP.AbstractComponent {}
             `,
             errors: [
                 {
@@ -97,6 +98,13 @@ ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
                 import { OverflowList } from "@blueprintjs/core";
 
                 return <OverflowList />
+            `,
+        },
+        {
+            code: dedent`
+                import { OverflowList } from "@blueprintjs/core";
+
+                export class MyList extends OverflowList {}
             `,
         },
         {
