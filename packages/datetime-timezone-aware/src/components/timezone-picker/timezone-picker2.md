@@ -1,6 +1,6 @@
-@# TimezonePickerV2
+@# TimezonePicker2
 
-`TimezonePickerV2` allows the user to select from a list of timezones. The list of times is coded into the library itself, and it does not depend on any external packages for updating the this list of timezones.
+`TimezonePicker2` allows the user to select from a list of timezones. The list of times is coded into the library itself, and it does not depend on any external packages for updating the this list of timezones.
 
 @reactExample TimezonePickerV2Example
 
@@ -22,7 +22,7 @@ all button-specific props will be ignored:
 ```tsx
 <TimezonePicker value={...} onChange={...}>
     <Icon icon="globe" />
-</TimezontPicker>
+</TimezonePicker>
 ```
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
@@ -35,6 +35,7 @@ In other browsers, `Date` methods and a population heuristic are used.
 </div>
 
 ```tsx
+// TODO: update code example
 import { TimezonePicker } from "@blueprintjs/timezone";
 
 export class TimezoneExample extends React.PureComponent<{}, { timezone: string; }> {
@@ -48,4 +49,4 @@ export class TimezoneExample extends React.PureComponent<{}, { timezone: string;
 }
 ```
 
-@interface TimeZonePicker2Props
+@interface TimezonePicker2Props

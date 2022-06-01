@@ -16,44 +16,44 @@
 
 import { formatInTimeZone } from "date-fns-tz";
 
-import { getTimeZone } from "../../common/getTimeZone";
-import { ITimeZone, MINIMAL_TIMEZONE_ITEMS, TIMEZONE_ITEMS } from "./timezoneItems";
+import { getTimezone } from "../../common/getTimezone";
+import { MINIMAL_TIMEZONE_ITEMS, Timezone, TIMEZONE_ITEMS } from "./timezoneItems";
 
-export interface ITimeZoneWithNames extends ITimeZone {
+export interface TimezoneWithNames extends Timezone {
     longName: string;
     shortName: string;
 }
 
 const CURRENT_DATE = Date.now();
 
-const getTimeZoneName = (date: Date | undefined, ianaCode: string, getLongName: boolean = true) =>
+const getTimezoneName = (date: Date | undefined, ianaCode: string, getLongName: boolean = true) =>
     formatInTimeZone(date ?? CURRENT_DATE, ianaCode, getLongName ? "zzzz" : "zzz");
 
 export const mapTimezonesWithNames = (
     date: Date | undefined,
-    timezones: ITimeZone[] | ITimeZoneWithNames[],
-): ITimeZoneWithNames[] =>
+    timezones: Timezone[] | TimezoneWithNames[],
+): TimezoneWithNames[] =>
     timezones.map(tz => ({
         ...tz,
-        longName: getTimeZoneName(date, tz.ianaCode),
-        shortName: getTimeZoneName(date, tz.ianaCode, false),
+        longName: getTimezoneName(date, tz.ianaCode),
+        shortName: getTimezoneName(date, tz.ianaCode, false),
     }));
 
 export function getInitialTimezoneItems(date: Date | undefined, showLocalTimezone: boolean) {
-    const systemTimeZone = getTimeZone();
-    const localTimeZone = showLocalTimezone
-        ? TIMEZONE_ITEMS.find(timezone => timezone.ianaCode === systemTimeZone)
+    const systemTimezone = getTimezone();
+    const localTimezone = showLocalTimezone
+        ? TIMEZONE_ITEMS.find(timezone => timezone.ianaCode === systemTimezone)
         : undefined;
-    const localTimeZoneItem =
-        localTimeZone !== undefined
+    const localTimezoneItem =
+        localTimezone !== undefined
             ? {
-                  ...localTimeZone,
+                  ...localTimezone,
                   longName: "Current timezone",
-                  shortName: getTimeZoneName(date, localTimeZone.ianaCode, false),
+                  shortName: getTimezoneName(date, localTimezone.ianaCode, false),
               }
             : undefined;
-    const minimalTimeZoneItemsWithNames = mapTimezonesWithNames(date, MINIMAL_TIMEZONE_ITEMS);
-    return localTimeZoneItem === undefined
-        ? minimalTimeZoneItemsWithNames
-        : [localTimeZoneItem, ...minimalTimeZoneItemsWithNames];
+    const minimalTimezoneItemsWithNames = mapTimezonesWithNames(date, MINIMAL_TIMEZONE_ITEMS);
+    return localTimezoneItem === undefined
+        ? minimalTimezoneItemsWithNames
+        : [localTimezoneItem, ...minimalTimezoneItemsWithNames];
 }

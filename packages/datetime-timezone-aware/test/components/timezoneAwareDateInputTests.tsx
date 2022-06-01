@@ -24,9 +24,9 @@ import { DateInput, TimePrecision } from "@blueprintjs/datetime";
 
 import {
     ITimezoneAwareDateInputProps,
-    TimeZoneAwareDateInput,
+    TimezoneAwareDateInput,
 } from "../../src/components/timezone-aware-date-input/timezoneAwareDateInput";
-import { TimeZonePicker2 } from "../../src/components/timezone-picker/timezonePicker2";
+import { TimezonePicker2 } from "../../src/components/timezone-picker/timezonePicker2";
 
 const VALUE = "2021-11-29T10:30:00.000z";
 
@@ -50,20 +50,20 @@ describe("<Time zone aware date input>", () => {
     afterEach(() => onChange.resetHistory());
 
     it("handles null inputs without crashing", () => {
-        assert.doesNotThrow(() => mount(<TimeZoneAwareDateInput {...DEFAULT_PROPS} value={null} />));
+        assert.doesNotThrow(() => mount(<TimezoneAwareDateInput {...DEFAULT_PROPS} value={null} />));
     });
 
     it("Correctly passes on the default selected timezone", () => {
         const defaultTimezone = "Europe/Paris";
-        const wrapper = mount(<TimeZoneAwareDateInput {...DEFAULT_PROPS} defaultTimezone={defaultTimezone} />);
-        const timezonePicker = wrapper.find(TimeZonePicker2);
+        const wrapper = mount(<TimezoneAwareDateInput {...DEFAULT_PROPS} defaultTimezone={defaultTimezone} />);
+        const timezonePicker = wrapper.find(TimezonePicker2);
 
         assert.strictEqual(timezonePicker.prop("value"), defaultTimezone);
     });
 
     it("It updates the passed back string when timezone is changed", () => {
-        const wrapper = mount(<TimeZoneAwareDateInput {...DEFAULT_PROPS} />);
-        const timezonePicker = wrapper.find(TimeZonePicker2);
+        const wrapper = mount(<TimezoneAwareDateInput {...DEFAULT_PROPS} />);
+        const timezonePicker = wrapper.find(TimezonePicker2);
         const newTimezone = "Europe/Paris";
         timezonePicker.prop("onChange")(newTimezone);
 
@@ -72,8 +72,8 @@ describe("<Time zone aware date input>", () => {
     });
 
     it("It formats the string based on the time precision when timezone is changed", () => {
-        const wrapper = mount(<TimeZoneAwareDateInput {...DEFAULT_PROPS} timePrecision={TimePrecision.MINUTE} />);
-        const timezonePicker = wrapper.find(TimeZonePicker2);
+        const wrapper = mount(<TimezoneAwareDateInput {...DEFAULT_PROPS} timePrecision={TimePrecision.MINUTE} />);
+        const timezonePicker = wrapper.find(TimezonePicker2);
         const newTimezone = "Europe/Paris";
         timezonePicker.prop("onChange")(newTimezone);
 
@@ -82,7 +82,7 @@ describe("<Time zone aware date input>", () => {
     });
 
     it("It updates the passed back string when time is changed", () => {
-        const wrapper = mount(<TimeZoneAwareDateInput {...DEFAULT_PROPS} />);
+        const wrapper = mount(<TimezoneAwareDateInput {...DEFAULT_PROPS} />);
         const timezonePicker = wrapper.find(DateInput);
         timezonePicker.prop("onChange")(new Date("2021-11-29T11:30:00.000"), true);
 
@@ -91,19 +91,19 @@ describe("<Time zone aware date input>", () => {
     });
 
     it("Does not render a timezone picker not passed a precision", () => {
-        const wrapper = mount(<TimeZoneAwareDateInput {...DEFAULT_PROPS} timePrecision={undefined} />);
-        assert.isFalse(wrapper.find(TimeZonePicker2).exists());
+        const wrapper = mount(<TimezoneAwareDateInput {...DEFAULT_PROPS} timePrecision={undefined} />);
+        assert.isFalse(wrapper.find(TimezonePicker2).exists());
     });
 
     it("Passes the correct date in to DateInput", () => {
-        const wrapper = mount(<TimeZoneAwareDateInput {...DEFAULT_PROPS} value="2021-11-29" />);
+        const wrapper = mount(<TimezoneAwareDateInput {...DEFAULT_PROPS} value="2021-11-29" />);
         const dateInput = wrapper.find(DateInput);
         const date = new Date("2021-11-29");
         assert.strictEqual(formatDate(dateInput.prop("value")), formatDate(date));
     });
 
     it("Passes the correct timestamp in to DateInput", () => {
-        const wrapper = mount(<TimeZoneAwareDateInput {...DEFAULT_PROPS} />);
+        const wrapper = mount(<TimezoneAwareDateInput {...DEFAULT_PROPS} />);
         const dateInput = wrapper.find(DateInput);
         const date = new Date("2021-11-29");
         assert.strictEqual(formatDate(dateInput.prop("value")), formatDate(date));
@@ -127,7 +127,7 @@ describe("<Time zone aware date input>", () => {
             usePortal: false,
         };
         const wrapper = mount(
-            <TimeZoneAwareDateInput
+            <TimezoneAwareDateInput
                 {...DEFAULT_PROPS}
                 disabled={false}
                 inputProps={inputProps}

@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-export { TimeZoneAwareDateInput } from "./timezone-aware-date-input/timezoneAwareDateInput";
-export { TimeZonePicker2 } from "./timezone-picker/timezonePicker2";
+export { TimezoneAwareDateInput } from "./timezone-aware-date-input/timezoneAwareDateInput";
+export { TimezonePicker2 } from "./timezone-picker/timezonePicker2";

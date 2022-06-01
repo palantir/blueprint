@@ -16,7 +16,7 @@
 
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 
-import { getTimeZone } from "./getTimeZone";
+import { getTimezone } from "./getTimezone";
 
 /**
  * converts a date in local timezone to represent better the passed through timezone
@@ -28,7 +28,7 @@ import { getTimeZone } from "./getTimeZone";
  * @returns The date converted to match the new timezone
  */
 export function convertLocalDateToTimezoneTime(date: Date, newTimezone: string) {
-    const nowUtc = zonedTimeToUtc(date, getTimeZone());
+    const nowUtc = zonedTimeToUtc(date, getTimezone());
     return utcToZonedTime(nowUtc, newTimezone);
 }
 
@@ -43,6 +43,6 @@ export function convertLocalDateToTimezoneTime(date: Date, newTimezone: string) 
  */
 export function convertDateToLocalEquivalentOfTimezoneTime(date: Date, newTimezone: string) {
     const nowUtc = zonedTimeToUtc(date, newTimezone);
-    const utcToZoned = utcToZonedTime(nowUtc, getTimeZone());
+    const utcToZoned = utcToZonedTime(nowUtc, getTimezone());
     return utcToZoned;
 }

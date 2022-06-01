@@ -23,9 +23,9 @@ import { Button, Tag } from "@blueprintjs/core";
 import { DateInput, DateInputProps, TimePrecision } from "@blueprintjs/datetime";
 
 import * as Classes from "../../common/classes";
-import { getTimeZone } from "../../common/getTimeZone";
+import { getTimezone } from "../../common/getTimezone";
 import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "../../common/timezoneUtils";
-import { TimeZonePicker2 } from "../timezone-picker/timezonePicker2";
+import { TimezonePicker2 } from "../timezone-picker/timezonePicker2";
 
 export interface ITimezoneAwareDateInputProps extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {
     /** The default timezone selected. Defaults to the user local timezone */
@@ -38,8 +38,8 @@ export interface ITimezoneAwareDateInputProps extends Omit<DateInputProps, "onCh
     /** Whether to completely hide timezone elements,
      * if TimePrecision is undefined, this will always be true
      */
-    hideTimeZone?: boolean;
-    disableTimeZoneSelect?: boolean;
+    hideTimezone?: boolean;
+    disableTimezoneSelect?: boolean;
 }
 
 const NO_TIME_PRECISION = "date";
@@ -52,26 +52,26 @@ const TIME_FORMAT_TO_ISO_FORMAT: Record<TimePrecision | "date", string> = {
     [NO_TIME_PRECISION]: "yyyy-MM-dd",
 };
 
-export const TimeZoneAwareDateInput: React.FC<ITimezoneAwareDateInputProps> = React.memo(
-    function _TimeZoneAwareDateInput(props) {
+export const TimezoneAwareDateInput: React.FC<ITimezoneAwareDateInputProps> = React.memo(
+    function _TimezoneAwareDateInput(props) {
         const {
             defaultTimezone,
             value,
             onChange,
             timePrecision,
-            disableTimeZoneSelect,
-            hideTimeZone: hideTimeZoneProp,
+            disableTimezoneSelect,
+            hideTimezone: hideTimezoneProp,
             ...passThroughToDateInputProps
         } = props;
 
-        const [timezoneValue, updateTimezoneValue] = React.useState(defaultTimezone ?? getTimeZone());
-        const hideTimeZone = timePrecision === undefined ? true : hideTimeZoneProp;
+        const [timezoneValue, updateTimezoneValue] = React.useState(defaultTimezone ?? getTimezone());
+        const hideTimezone = timePrecision === undefined ? true : hideTimezoneProp;
         const convertedIsoStringToDate = React.useMemo(
             () => getDateObjectFromIsoString(value, timezoneValue),
             [timezoneValue, value],
         );
 
-        const handleTimeZoneUpdate = React.useCallback(
+        const handleTimezoneUpdate = React.useCallback(
             (newTimezone: string) => {
                 if (convertedIsoStringToDate != null) {
                     onChange?.(
@@ -96,7 +96,7 @@ export const TimeZoneAwareDateInput: React.FC<ITimezoneAwareDateInputProps> = Re
         const renderRightElements = () => {
             return (
                 <div>
-                    {!hideTimeZone && <Tag interactive={true}>{timezoneValue}</Tag>}
+                    {!hideTimezone && <Tag interactive={true}>{timezoneValue}</Tag>}
                     <Button icon="calendar" aria-label="Open date picker" />
                 </div>
             );
@@ -115,12 +115,12 @@ export const TimeZoneAwareDateInput: React.FC<ITimezoneAwareDateInputProps> = Re
                 timePrecision={timePrecision}
                 rightElement={renderRightElements()}
                 footerComponent={
-                    hideTimeZone ? undefined : (
-                        <TimeZonePicker2
+                    hideTimezone ? undefined : (
+                        <TimezonePicker2
                             value={timezoneValue}
-                            onChange={handleTimeZoneUpdate}
+                            onChange={handleTimezoneUpdate}
                             date={guaranteedValidDateValue}
-                            disabled={disableTimeZoneSelect}
+                            disabled={disableTimezoneSelect}
                             className={Classes.TIMEZONE_FOOTER}
                         />
                     )

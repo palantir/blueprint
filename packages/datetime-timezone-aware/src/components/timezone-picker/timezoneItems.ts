@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-export interface ITimeZone {
+export interface Timezone {
     offset: string;
     label: string;
     ianaCode: string;
 }
-export const UTC_TIME: ITimeZone = { offset: "+00:00", label: "Universal Standard Time", ianaCode: "Etc/UTC" };
+export const UTC_TIME: Timezone = { offset: "+00:00", label: "Universal Standard Time", ianaCode: "Etc/UTC" };
 
-export const TIMEZONE_ITEMS: ITimeZone[] = [
+export const TIMEZONE_ITEMS: Timezone[] = [
     UTC_TIME,
     { offset: "-11:00", label: "Niue", ianaCode: "Pacific/Niue" },
     { offset: "-11:00", label: "Pago Pago", ianaCode: "Pacific/Pago_Pago" },

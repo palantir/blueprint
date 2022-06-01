@@ -32,9 +32,9 @@ import { ItemListPredicate, ItemRenderer, Select2 } from "@blueprintjs/select";
 
 import * as Classes from "../../common/classes";
 import { TIMEZONE_ITEMS } from "./timezoneItems";
-import { getInitialTimezoneItems, ITimeZoneWithNames, mapTimezonesWithNames } from "./timezoneNameUtils";
+import { getInitialTimezoneItems, mapTimezonesWithNames, TimezoneWithNames } from "./timezoneNameUtils";
 
-export interface TimeZonePicker2Props extends Props {
+export interface TimezonePicker2Props extends Props {
     children?: React.ReactNode;
 
     /**
@@ -101,12 +101,12 @@ export interface ITimezonePicker2State {
     query: string;
 }
 
-const TypedSelect = Select2.ofType<ITimeZoneWithNames>();
+const TypedSelect = Select2.ofType<TimezoneWithNames>();
 
-export class TimeZonePicker2 extends AbstractPureComponent2<TimeZonePicker2Props, ITimezonePicker2State> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
+export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props, ITimezonePicker2State> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker2`;
 
-    public static defaultProps: Partial<TimeZonePicker2Props> = {
+    public static defaultProps: Partial<TimezonePicker2Props> = {
         date: new Date(),
         disabled: false,
         inputProps: {},
@@ -115,12 +115,12 @@ export class TimeZonePicker2 extends AbstractPureComponent2<TimeZonePicker2Props
         showLocalTimezone: false,
     };
 
-    private timezoneItems: ITimeZoneWithNames[];
+    private timezoneItems: TimezoneWithNames[];
 
-    private initialTimezoneItems: ITimeZoneWithNames[];
+    private initialTimezoneItems: TimezoneWithNames[];
 
-    constructor(props: TimeZonePicker2Props, context?: any) {
-        super(props, context);
+    constructor(props: TimezonePicker2Props) {
+        super(props);
 
         const { showLocalTimezone, inputProps = {}, date } = props;
         this.state = { query: inputProps.value || "" };
@@ -161,7 +161,7 @@ export class TimeZonePicker2 extends AbstractPureComponent2<TimeZonePicker2Props
         );
     }
 
-    public componentDidUpdate(prevProps: TimeZonePicker2Props, prevState: ITimezonePicker2State) {
+    public componentDidUpdate(prevProps: TimezonePicker2Props, prevState: ITimezonePicker2State) {
         super.componentDidUpdate(prevProps, prevState);
         const { date: nextDate } = this.props;
 
@@ -185,14 +185,14 @@ export class TimeZonePicker2 extends AbstractPureComponent2<TimeZonePicker2Props
         return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} {...buttonProps} fill={true} />;
     }
 
-    private filterItems: ItemListPredicate<ITimeZoneWithNames> = (query, items) => {
+    private filterItems: ItemListPredicate<TimezoneWithNames> = (query, items) => {
         // using list predicate so only one RegExp instance is needed
         // escape bad regex characters, let spaces act as any separator
         const expr = new RegExp(query.replace(/([[()+*?])/g, "\\$1").replace(" ", "[ _/\\(\\)]+"), "i");
         return items.filter(item => expr.test(item.ianaCode) || expr.test(item.label) || expr.test(item.longName));
     };
 
-    private renderItem: ItemRenderer<ITimeZoneWithNames> = (item, { handleClick, modifiers }) => {
+    private renderItem: ItemRenderer<TimezoneWithNames> = (item, { handleClick, modifiers }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
@@ -208,7 +208,7 @@ export class TimeZonePicker2 extends AbstractPureComponent2<TimeZonePicker2Props
         );
     };
 
-    private handleItemSelect = (timezone: ITimeZoneWithNames) => this.props.onChange?.(timezone.ianaCode);
+    private handleItemSelect = (timezone: TimezoneWithNames) => this.props.onChange?.(timezone.ianaCode);
 
     private handleQueryChange = (query: string) => this.setState({ query });
 }

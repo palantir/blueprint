@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, Position, Switch } from "@blueprintjs/core";
-import { TimeZonePicker2 } from "@blueprintjs/datetime-timezone-aware";
+import { TimezonePicker2 } from "@blueprintjs/datetime-timezone-aware";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ITimezonePickerExampleState {
@@ -53,7 +53,7 @@ export class TimezonePickerV2Example extends React.PureComponent<IExampleProps, 
 
         return (
             <Example options={options} {...this.props}>
-                <TimeZonePicker2
+                <TimezonePicker2
                     value={timezone}
                     onChange={this.handleTimezoneChange}
                     popoverProps={{ position: Position.BOTTOM }}

@@ -28,15 +28,15 @@ import { memoize } from "lodash-es";
  * the way that the Date() object is formatted. If the time zone can't be determined,
  * an empty string is returned.
  */
-export const getTimeZone: () => string = memoize(guessTimeZone);
+export const getTimezone: () => string = memoize(guessTimezone);
 
-function guessTimeZone(): string {
+function guessTimezone(): string {
     // Getting time zone from the Intl api is not supported in IE (it returns undefined)
-    let timeZone: string | undefined = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (timeZone == null) {
+    let timezone: string | undefined = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (timezone == null) {
         // Fall back to manual guessing. According to types this returns a string, but it could
         // in theory return an undefined (not very likely but we err on the side of caution here).
-        timeZone = jstz.determine().name() as string | undefined;
+        timezone = jstz.determine().name() as string | undefined;
     }
-    return timeZone != null ? timeZone : "";
+    return timezone != null ? timezone : "";
 }
