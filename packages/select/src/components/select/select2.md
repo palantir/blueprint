@@ -18,17 +18,11 @@ on the wiki.
 
 </div>
 
-Use `Select2<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover2`](#popover2-package/popover2) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select2<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
-
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Disabling a Select2</h4>
-
-Disabling the component requires setting the `disabled` prop to `true`
-and separately disabling the component's children as appropriate (because `Select2` accepts arbitrary children).
-
-For example, `<Select2 ... disabled={true}><Button ... disabled={true} /></Select2>`
-
-</div>
+The Select2 component renders a UI to choose one item from a list. Its children are wrapped in a
+[Popover2](#popover2-package/popover2) that contains the list and an optional
+[InputGroup](#core/components/text-inputs.input-group) to filter it.
+You may provide a predicate to customize the filtering algorithm. The value of a Select2
+(the currently chosen item) is uncontrolled: listen to changes with the `onItemSelect` callback prop.
 
 @reactExample SelectExample
 
@@ -70,6 +64,22 @@ See the code sample in [Item Renderer API](#select/select2.item-renderer) below 
 @### Non-ideal states
 
 If the query returns no results or `items` is empty, then `noResults` will be rendered in place of the usual list. You also have the option to provide `initialContent`, which will render in place of the item list if the query is empty.
+
+@## Disabling
+
+Since Select2 accepts arbitrary children, disabling a Select2 componet requires setting `disabled={true}`
+_and also_ disabling its children. For example:
+
+```tsx
+const FilmSelect = Select2.ofType<Films.Film>();
+
+// many props omitted here for brevity
+return (
+    <FilmSelect disabled={true}>
+        <Button disabled={true}>
+    </FilmSelect>
+);
+```
 
 @## Custom menu
 

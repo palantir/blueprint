@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,16 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, IPopoverProps, Keys, MenuItem, Popover } from "@blueprintjs/core";
+import { InputGroup, Keys, MenuItem } from "@blueprintjs/core";
+import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { IItemRendererProps, QueryList } from "../src";
-import { ISuggestProps, ISuggestState, Suggest } from "../src/components/suggest/suggest";
+import { Suggest2, Suggest2Props, Suggest2State } from "../src/components/suggest/suggest2";
 import { selectComponentSuite } from "./selectComponentSuite";
 
-describe("Suggest", () => {
-    const FilmSuggest = Suggest.ofType<IFilm>();
+describe("Suggest2", () => {
+    const FilmSuggest = Suggest2.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
@@ -49,9 +50,9 @@ describe("Suggest", () => {
         };
     });
 
-    selectComponentSuite<ISuggestProps<IFilm>, ISuggestState<IFilm>>(props =>
+    selectComponentSuite<Suggest2Props<IFilm>, Suggest2State<IFilm>>(props =>
         mount(
-            <Suggest
+            <Suggest2
                 {...props}
                 inputValueRenderer={inputValueRenderer}
                 popoverProps={{ isOpen: true, usePortal: false }}
@@ -63,9 +64,9 @@ describe("Suggest", () => {
         it("renders an input that triggers a popover containing items", () => {
             const wrapper = suggest();
             /* eslint-disable-next-line deprecation/deprecation */
-            const popover = wrapper.find(Popover);
+            const popover = wrapper.find(Popover2);
             assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
-            assert.lengthOf(popover, 1, "should render Popover");
+            assert.lengthOf(popover, 1, "should render Popover2");
             assert.lengthOf(popover.find(MenuItem), 100, "should render 100 items in popover");
         });
 
@@ -93,7 +94,7 @@ describe("Suggest", () => {
 
         it("scrolls active item into view when popover opens", () => {
             const wrapper = suggest();
-            const queryList = (wrapper.instance() as Suggest<IFilm> as any).queryList; // private ref
+            const queryList = (wrapper.instance() as Suggest2<IFilm> as any).queryList; // private ref
             const scrollActiveItemIntoViewSpy = sinon.spy(queryList, "scrollActiveItemIntoView");
             wrapper.setState({ isOpen: false });
             assert.isFalse(scrollActiveItemIntoViewSpy.called);
@@ -107,7 +108,7 @@ describe("Suggest", () => {
                 popoverProps: { transitionDuration: 5 },
                 selectedItem: TOP_100_FILMS[10],
             });
-            const queryList = (wrapper.instance() as Suggest<IFilm> as any).queryList as QueryList<IFilm>; // private ref
+            const queryList = (wrapper.instance() as Suggest2<IFilm> as any).queryList as QueryList<IFilm>; // private ref
 
             assert.deepEqual(
                 queryList.state.activeItem,
@@ -242,11 +243,11 @@ describe("Suggest", () => {
             const wrapper = suggest({ popoverProps: getPopoverProps(false, modifiers) });
             wrapper.setProps({ popoverProps: getPopoverProps(true, modifiers) }).update();
             /* eslint-disable-next-line deprecation/deprecation */
-            assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
+            assert.strictEqual(wrapper.find(Popover2).prop("modifiers"), modifiers);
             assert.isTrue(onOpening.calledOnce);
         });
 
-        function getPopoverProps(isOpen: boolean, modifiers: any): Partial<IPopoverProps> {
+        function getPopoverProps(isOpen: boolean, modifiers: any): Partial<Popover2Props> {
             return {
                 ...defaultProps.popoverProps,
                 isOpen,
@@ -326,7 +327,7 @@ describe("Suggest", () => {
         });
     });
 
-    function suggest(props: Partial<ISuggestProps<IFilm>> = {}, query?: string) {
+    function suggest(props: Partial<Suggest2Props<IFilm>> = {}, query?: string) {
         const wrapper = mount<typeof FilmSuggest>(<FilmSuggest {...defaultProps} {...handlers} {...props} />);
         if (query !== undefined) {
             wrapper.setState({ query });

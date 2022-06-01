@@ -25,6 +25,9 @@ describe("Select isomorphic rendering", () => {
         MultiSelect: {
             props: { items: [], query: "", selectedItems: [], tagRenderer: () => null },
         },
+        MultiSelect2: {
+            props: { items: [], query: "", selectedItems: [], tagRenderer: () => null },
+        },
         QueryList: {
             // needs at least one handler or it returns undefined
             props: { renderer: () => null },
@@ -37,6 +40,9 @@ describe("Select isomorphic rendering", () => {
             props: { items: [] },
         },
         Suggest: {
+            props: { items: [] },
+        },
+        Suggest2: {
             props: { items: [] },
         },
         Omnibar: {
