@@ -144,7 +144,8 @@ export interface ITableProps extends Props, Partial<IRowHeights>, Partial<IColum
      * attempts to copy a selection via `mod+c`. The returned data will be copied
      * to the clipboard and need not match the display value of the `<Cell>`.
      * The data will be invisibly added as `textContent` into the DOM before
-     * copying. If not defined, keyboard copying via `mod+c` will be disabled.
+     * copying. If not defined, a default implementation will be used that
+     * turns the rendered cell elements into strings using 'react-innertext'.
      */
     getCellClipboardData?: (row: number, col: number, tableState: TableState) => any;
 
