@@ -24,11 +24,11 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     InputGroupProps2,
-    IPopoverProps,
     MenuItem,
     Props,
 } from "@blueprintjs/core";
-import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
+import type { Popover2Props } from "@blueprintjs/popover2";
+import { ItemListPredicate, ItemRenderer, Select2 } from "@blueprintjs/select";
 
 import * as Classes from "../../common/classes";
 import { TIMEZONE_ITEMS } from "./timezoneItems";
@@ -93,15 +93,15 @@ export interface TimeZonePicker2Props extends Props {
      */
     inputProps?: InputGroupProps2;
 
-    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps>;
+    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
+    popoverProps?: Partial<Omit<Popover2Props, "content">>;
 }
 
 export interface ITimezonePicker2State {
     query: string;
 }
 
-const TypedSelect = Select.ofType<ITimeZoneWithNames>();
+const TypedSelect = Select2.ofType<ITimeZoneWithNames>();
 
 export class TimeZonePicker2 extends AbstractPureComponent2<TimeZonePicker2Props, ITimezonePicker2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
@@ -135,26 +135,26 @@ export class TimeZonePicker2 extends AbstractPureComponent2<TimeZonePicker2Props
             placeholder: "Search for timezones...",
             ...inputProps,
         };
-        const finalPopoverProps: Partial<IPopoverProps> = {
+        const finalPopoverProps: Partial<Popover2Props> = {
             ...popoverProps,
             popoverClassName: classNames(Classes.TIMEZONE_PICKER_POPOVER, popoverProps.popoverClassName),
-            targetClassName: Classes.TIMEZONE_PICKER_TARGET,
         };
 
         return (
             <TypedSelect
                 className={classNames(Classes.TIMEZONE_PICKER, className)}
-                items={query ? this.timezoneItems : this.initialTimezoneItems}
+                disabled={disabled}
+                inputProps={finalInputProps}
                 itemListPredicate={this.filterItems}
                 itemRenderer={this.renderItem}
+                items={query ? this.timezoneItems : this.initialTimezoneItems}
                 noResults={<MenuItem disabled={true} text="No matching timezones." />}
                 onItemSelect={this.handleItemSelect}
-                resetOnSelect={true}
-                resetOnClose={true}
-                popoverProps={finalPopoverProps}
-                inputProps={finalInputProps}
-                disabled={disabled}
                 onQueryChange={this.handleQueryChange}
+                popoverProps={finalPopoverProps}
+                resetOnClose={true}
+                resetOnSelect={true}
+                targetClassName={Classes.TIMEZONE_PICKER_TARGET}
             >
                 {children != null ? children : this.renderButton()}
             </TypedSelect>

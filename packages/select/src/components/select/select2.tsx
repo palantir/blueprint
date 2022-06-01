@@ -80,6 +80,9 @@ export interface Select2Props<T> extends IListItemsProps<T> {
      * @default false
      */
     resetOnClose?: boolean;
+
+    /** Optional class to apply to the target wrapper element. */
+    targetClassName?: string;
 }
 
 export interface Select2State {
@@ -176,6 +179,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 onClosing={this.handlePopoverClosing}
             >
                 <div
+                    className={this.props.targetClassName}
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
