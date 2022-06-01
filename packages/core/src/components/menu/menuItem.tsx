@@ -78,11 +78,6 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     labelElement?: React.ReactNode;
 
     /**
-     * Props to spread to the child `Menu` component if this item has a submenu.
-     */
-    menuProps?: Partial<MenuProps> & object;
-
-    /**
      * Whether the text should be allowed to wrap to multiple lines.
      * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
      *
@@ -108,6 +103,11 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      * @default true
      */
     shouldDismissPopover?: boolean;
+
+    /**
+     * Props to spread to the child `Menu` component if this item has a submenu.
+     */
+    submenuProps?: Partial<MenuProps>;
 
     /**
      * Name of the HTML tag that wraps the MenuItem.
@@ -151,11 +151,11 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             intent,
             labelClassName,
             labelElement,
-            menuProps,
             multiline,
             popoverProps,
             selected,
             shouldDismissPopover,
+            submenuProps,
             text,
             textClassName,
             tagName = "a",
@@ -230,7 +230,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         if (children == null) {
             return target;
         }
-        const { disabled, popoverProps, menuProps } = this.props;
+        const { disabled, popoverProps, submenuProps } = this.props;
         return (
             /* eslint-disable-next-line deprecation/deprecation */
             <Popover
@@ -244,7 +244,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 position={Position.RIGHT_TOP}
                 usePortal={false}
                 {...popoverProps}
-                content={<Menu {...menuProps}>{children}</Menu>}
+                content={<Menu {...submenuProps}>{children}</Menu>}
                 minimal={true}
                 popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
                 target={target}
