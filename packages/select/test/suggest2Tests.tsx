@@ -24,7 +24,7 @@ import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { IItemRendererProps, QueryList } from "../src";
-import { Suggest2, Suggest2Props, Suggest2State } from "../src/components/select/suggest2";
+import { Suggest2, Suggest2Props, Suggest2State } from "../src/components/suggest/suggest2";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("Suggest2", () => {
