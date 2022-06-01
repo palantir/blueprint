@@ -78,7 +78,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     labelElement?: React.ReactNode;
 
     /**
-     * Props to spread to the `Menu` within the `Popover`.
+     * Props to spread to the child `Menu` component if this item has a submenu.
      */
     menuProps?: Partial<MenuProps> & object;
 
