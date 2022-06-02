@@ -109,7 +109,7 @@ export const DateInput2: React.FC<IDateInput2Props> = React.memo(function _DateI
             onChange={handleTimezoneUpdate}
             date={guaranteedValidDateValue}
             disabled={disableTimezoneSelect}
-            className={Classes.TIMEZONE_FOOTER}
+            className={Classes.DATE_INPUT_TIMEZONE_PICKER}
             buttonProps={timepickerButtonProps}
         />
     );

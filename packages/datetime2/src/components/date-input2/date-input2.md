@@ -56,7 +56,7 @@ import { DateInput2 } from "@blueprintjs/datetime2";
 />
 ```
 
-@interface DateInput2Props
+@interface IDateInput2Props
 
 @## Localization
 
