@@ -33,15 +33,19 @@ export interface IDateInput2ExampleState {
     reverseMonthAndYearMenus: boolean;
     shortcuts: boolean;
     timePrecision: TimePrecision | undefined;
+    disableTimezonePicker: boolean;
+    hideTimezonePicker: boolean;
 }
 
 export class DateInput2Example extends React.PureComponent<IExampleProps, IDateInput2ExampleState> {
     public state: IDateInput2ExampleState = {
         closeOnSelection: true,
         date: null,
+        disableTimezonePicker: false,
         disabled: false,
         fill: false,
         format: FORMATS[0],
+        hideTimezonePicker: false,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         timePrecision: TimePrecision.MINUTE,
@@ -53,6 +57,12 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, IDateI
 
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
 
+    private toggleHideTimezonePicker = handleBooleanChange(hideTimezonePicker => this.setState({ hideTimezonePicker }));
+
+    private toggleDisableTimezonePicker = handleBooleanChange(disableTimezonePicker =>
+        this.setState({ disableTimezonePicker }),
+    );
+
     private toggleFill = handleBooleanChange(fill => this.setState({ fill }));
 
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
@@ -62,7 +72,7 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, IDateI
     );
 
     public render() {
-        const { date, format, timePrecision, ...spreadProps } = this.state;
+        const { date, format, timePrecision, hideTimezonePicker, disableTimezonePicker, ...spreadProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <DateInput2
@@ -72,6 +82,8 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, IDateI
                     popoverProps={{ position: Position.BOTTOM }}
                     timePrecision={timePrecision}
                     value={date}
+                    hideTimezone={hideTimezonePicker}
+                    disableTimezoneSelect={disableTimezonePicker}
                 />
                 {date}
             </Example>
@@ -87,6 +99,8 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, IDateI
             format,
             timePrecision,
             shortcuts,
+            disableTimezonePicker,
+            hideTimezonePicker,
         } = this.state;
         return (
             <>
@@ -96,6 +110,17 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, IDateI
                 <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
                 <Switch label="Fill" checked={fill} onChange={this.toggleFill} />
                 <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
+                <Switch
+                    label="Disable timezone picker"
+                    checked={disableTimezonePicker}
+                    onChange={this.toggleDisableTimezonePicker}
+                />
+                <Switch
+                    label="Hide timezone picker"
+                    checked={hideTimezonePicker}
+                    onChange={this.toggleHideTimezonePicker}
+                />
+
                 <FormatSelect format={format} onChange={this.handleFormatChange} />
                 <PrecisionSelect
                     allowNone={true}
