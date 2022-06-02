@@ -18,7 +18,7 @@
     "dependencies": {
         "@blueprintjs/core": "^4.4.0",
         "@blueprintjs/datetime": "^4.2.3",
-        "@blueprintjs/datetime-timezone-aware": "^0.1.0",
+        "@blueprintjs/datetime2": "^4.0.0",
         "@blueprintjs/docs-data": "^4.4.0",
         "@blueprintjs/docs-theme": "^4.2.3",
         "@blueprintjs/icons": "^4.3.0",

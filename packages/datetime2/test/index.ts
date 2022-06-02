@@ -5,4 +5,4 @@
 import "@blueprintjs/test-commons/bootstrap";
 import "./components/timezonePicker2Tests";
 import "./common/timeZoneUtilsTest";
-import("./components/timezoneAwareDateInputTests");
+import "./components/dateInput2Tests";

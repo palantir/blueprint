@@ -19,7 +19,6 @@ import { formatInTimeZone } from "date-fns-tz";
 import { isEmpty } from "lodash-es";
 import * as React from "react";
 
-import { Button, Tag } from "@blueprintjs/core";
 import { DateInput, DateInputProps, TimePrecision } from "@blueprintjs/datetime";
 
 import * as Classes from "../../common/classes";
@@ -27,7 +26,7 @@ import { getTimezone } from "../../common/getTimezone";
 import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "../../common/timezoneUtils";
 import { TimezonePicker2 } from "../timezone-picker/timezonePicker2";
 
-export interface ITimezoneAwareDateInputProps extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {
+export interface IDateInput2Props extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {
     /** The default timezone selected. Defaults to the user local timezone */
     defaultTimezone?: string;
     /** Callback invoked whenever the date or timezone has changed. ISO string */
@@ -52,83 +51,79 @@ const TIME_FORMAT_TO_ISO_FORMAT: Record<TimePrecision | "date", string> = {
     [NO_TIME_PRECISION]: "yyyy-MM-dd",
 };
 
-export const TimezoneAwareDateInput: React.FC<ITimezoneAwareDateInputProps> = React.memo(
-    function _TimezoneAwareDateInput(props) {
-        const {
-            defaultTimezone,
-            value,
-            onChange,
-            timePrecision,
-            disableTimezoneSelect,
-            hideTimezone: hideTimezoneProp,
-            ...passThroughToDateInputProps
-        } = props;
+const timepickerButtonProps = {
+    fill: false,
+    minimal: true,
+    outlined: true,
+};
 
-        const [timezoneValue, updateTimezoneValue] = React.useState(defaultTimezone ?? getTimezone());
-        const hideTimezone = timePrecision === undefined ? true : hideTimezoneProp;
-        const convertedIsoStringToDate = React.useMemo(
-            () => getDateObjectFromIsoString(value, timezoneValue),
-            [timezoneValue, value],
-        );
+export const DateInput2: React.FC<IDateInput2Props> = React.memo(function _DateInput2(props) {
+    const {
+        defaultTimezone,
+        value,
+        onChange,
+        timePrecision,
+        disableTimezoneSelect,
+        hideTimezone: hideTimezoneProp,
+        ...passThroughToDateInputProps
+    } = props;
 
-        const handleTimezoneUpdate = React.useCallback(
-            (newTimezone: string) => {
-                if (convertedIsoStringToDate != null) {
-                    onChange?.(
-                        getIsoEquivalentWithUpdatedTimezone(convertedIsoStringToDate, newTimezone, timePrecision),
-                    );
-                }
-                updateTimezoneValue(newTimezone);
-            },
-            [onChange, convertedIsoStringToDate, timePrecision],
-        );
+    const [timezoneValue, updateTimezoneValue] = React.useState(defaultTimezone ?? getTimezone());
+    const hideTimezone = timePrecision === undefined ? true : hideTimezoneProp;
+    const convertedIsoStringToDate = React.useMemo(
+        () => getDateObjectFromIsoString(value, timezoneValue),
+        [timezoneValue, value],
+    );
 
-        const handleChangeDateValue = React.useCallback(
-            (newDate: Date | null, isUserChange: boolean) => {
-                if (newDate == null) {
-                    return;
-                }
-                onChange?.(getIsoEquivalentWithUpdatedTimezone(newDate, timezoneValue, timePrecision), isUserChange);
-            },
-            [onChange, timezoneValue, timePrecision],
-        );
+    const handleTimezoneUpdate = React.useCallback(
+        (newTimezone: string) => {
+            if (convertedIsoStringToDate != null) {
+                onChange?.(getIsoEquivalentWithUpdatedTimezone(convertedIsoStringToDate, newTimezone, timePrecision));
+            }
+            updateTimezoneValue(newTimezone);
+        },
+        [onChange, convertedIsoStringToDate, timePrecision],
+    );
 
-        const renderRightElements = () => {
-            return (
-                <div>
-                    {!hideTimezone && <Tag interactive={true}>{timezoneValue}</Tag>}
-                    <Button icon="calendar" aria-label="Open date picker" />
-                </div>
-            );
-        };
+    const handleChangeDateValue = React.useCallback(
+        (newDate: Date | null, isUserChange: boolean) => {
+            if (newDate == null) {
+                return;
+            }
+            onChange?.(getIsoEquivalentWithUpdatedTimezone(newDate, timezoneValue, timePrecision), isUserChange);
+        },
+        [onChange, timezoneValue, timePrecision],
+    );
 
-        const guaranteedValidDateValue =
+    const guaranteedValidDateValue = React.useMemo(
+        () =>
             convertedIsoStringToDate != null && isValid(convertedIsoStringToDate)
                 ? convertedIsoStringToDate
-                : convertLocalDateToTimezoneTime(new Date(), timezoneValue);
+                : convertLocalDateToTimezoneTime(new Date(), timezoneValue),
+        [timezoneValue, convertedIsoStringToDate],
+    );
 
-        return (
-            <DateInput
-                {...passThroughToDateInputProps}
-                value={convertedIsoStringToDate}
-                onChange={handleChangeDateValue}
-                timePrecision={timePrecision}
-                rightElement={renderRightElements()}
-                footerComponent={
-                    hideTimezone ? undefined : (
-                        <TimezonePicker2
-                            value={timezoneValue}
-                            onChange={handleTimezoneUpdate}
-                            date={guaranteedValidDateValue}
-                            disabled={disableTimezoneSelect}
-                            className={Classes.TIMEZONE_FOOTER}
-                        />
-                    )
-                }
-            />
-        );
-    },
-);
+    const maybeTimezonePicker = hideTimezone ? undefined : (
+        <TimezonePicker2
+            value={timezoneValue}
+            onChange={handleTimezoneUpdate}
+            date={guaranteedValidDateValue}
+            disabled={disableTimezoneSelect}
+            className={Classes.TIMEZONE_FOOTER}
+            buttonProps={timepickerButtonProps}
+        />
+    );
+
+    return (
+        <DateInput
+            {...passThroughToDateInputProps}
+            value={convertedIsoStringToDate}
+            onChange={handleChangeDateValue}
+            timePrecision={timePrecision}
+            rightElement={maybeTimezonePicker}
+        />
+    );
+});
 
 function getIsoEquivalentWithUpdatedTimezone(date: Date, timezone: string, timePrecision: TimePrecision | undefined) {
     const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(date, timezone);

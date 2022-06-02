@@ -15,6 +15,7 @@
  */
 
 import classNames from "classnames";
+import { formatInTimeZone } from "date-fns-tz";
 import * as React from "react";
 
 import {
@@ -178,11 +179,11 @@ export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props
         const { buttonProps = {}, disabled, placeholder, value } = this.props;
         const selectedTimezone = this.timezoneItems.find(tz => tz.ianaCode === value);
         const buttonContent = selectedTimezone ? (
-            selectedTimezone.label
+            `${selectedTimezone.label}  ${formatInTimeZone(this.props.date, selectedTimezone.ianaCode, "xxx")}`
         ) : (
             <span className={CoreClasses.TEXT_MUTED}>{placeholder}</span>
         );
-        return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} {...buttonProps} fill={true} />;
+        return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} {...buttonProps} />;
     }
 
     private filterItems: ItemListPredicate<TimezoneWithNames> = (query, items) => {

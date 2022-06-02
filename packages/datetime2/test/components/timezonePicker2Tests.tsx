@@ -19,16 +19,8 @@ import { mount, ShallowRendererProps, ShallowWrapper, shallow as untypedShallow 
 import * as React from "react";
 import * as sinon from "sinon";
 
-import {
-    Button,
-    ButtonProps,
-    InputGroup,
-    InputGroupProps2,
-    IPopoverProps,
-    MenuItem,
-    Popover,
-    Position,
-} from "@blueprintjs/core";
+import { Button, ButtonProps, InputGroup, InputGroupProps2, MenuItem, Popover } from "@blueprintjs/core";
+import { Popover2Props } from "@blueprintjs/popover2";
 import { QueryList, Select } from "@blueprintjs/select";
 
 import { TIMEZONE_ITEMS } from "../../src/components/timezone-picker/timezoneItems";
@@ -163,15 +155,14 @@ describe("<TimezonePicker>", () => {
     });
 
     it("popover can be controlled with popover props", () => {
-        const popoverProps: IPopoverProps = {
+        const popoverProps: Popover2Props = {
             isOpen: true,
-            position: Position.RIGHT,
             usePortal: false,
         };
         const timezonePicker = shallow(<TimezonePicker2 {...DEFAULT_PROPS} popoverProps={popoverProps} />);
         const popover = findPopover(timezonePicker);
         for (const key of Object.keys(popoverProps)) {
-            assert.deepEqual(popover.prop(key), popoverProps[key as keyof IPopoverProps]);
+            assert.deepEqual(popover.prop(key), popoverProps[key as keyof Popover2Props]);
         }
     });
 

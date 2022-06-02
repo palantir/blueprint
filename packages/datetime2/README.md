@@ -12,7 +12,7 @@ to render calendars.
 ## Installation
 
 ```
-npm install --save @blueprintjs/datetime-timezone-aware
+npm install --save @blueprintjs/datetime2
 ```
 
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

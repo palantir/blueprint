@@ -1,13 +1,13 @@
 {
-    "name": "@blueprintjs/datetime-timezone-aware",
-    "version": "0.1.0",
+    "name": "@blueprintjs/datetime2",
+    "version": "4.0.0",
     "description": "Components for interacting with dates and times with timezones",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
     "esnext": "lib/esnext/index.js",
     "typings": "lib/esm/index.d.ts",
-    "style": "lib/css/blueprint-datetime-timezone-aware.css",
-    "unpkg": "dist/datetime-timezone-aware.bundle.js",
+    "style": "lib/css/blueprint-datetime2.css",
+    "unpkg": "dist/datetime2.bundle.js",
     "sideEffects": [
         "**/*.css"
     ],
@@ -69,7 +69,7 @@
     "repository": {
         "type": "git",
         "url": "git@github.com:palantir/blueprint.git",
-        "directory": "packages/datetime-timezone-aware"
+        "directory": "packages/datetime2"
     },
     "keywords": [
         "palantir",

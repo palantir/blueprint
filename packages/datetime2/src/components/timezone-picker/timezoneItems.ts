@@ -19,7 +19,7 @@ export interface Timezone {
     label: string;
     ianaCode: string;
 }
-export const UTC_TIME: Timezone = { offset: "+00:00", label: "Universal Standard Time", ianaCode: "Etc/UTC" };
+export const UTC_TIME: Timezone = { offset: "+00:00", label: "UTC", ianaCode: "Etc/UTC" };
 
 export const TIMEZONE_ITEMS: Timezone[] = [
     UTC_TIME,

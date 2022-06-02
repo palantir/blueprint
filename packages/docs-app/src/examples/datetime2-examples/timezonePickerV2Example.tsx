@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, Position, Switch } from "@blueprintjs/core";
-import { TimezonePicker2 } from "@blueprintjs/datetime-timezone-aware";
+import { TimezonePicker2 } from "@blueprintjs/datetime2";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ITimezonePickerExampleState {

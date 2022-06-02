@@ -40,11 +40,11 @@ export interface IDatePickerExampleState {
 export class DatePickerExample extends React.PureComponent<IExampleProps, IDatePickerExampleState> {
     public state: IDatePickerExampleState = {
         date: null,
-        showFooterElement: boolean,
         highlightCurrentDay: false,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: false,
+        showFooterElement: false,
         showTimeArrowButtons: false,
         timePrecision: undefined,
         useAmPm: false,

@@ -18,13 +18,13 @@ import * as React from "react";
 
 import { H5, Position, Switch } from "@blueprintjs/core";
 import { DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
-import { TimezoneAwareDateInput } from "@blueprintjs/datetime-timezone-aware";
+import { DateInput2 } from "@blueprintjs/datetime2";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { FORMATS, FormatSelect } from "../datetime-examples/common/formatSelect";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 
-export interface IDateInputExampleState {
+export interface IDateInput2ExampleState {
     closeOnSelection: boolean;
     date: string | null;
     disabled: boolean;
@@ -35,8 +35,8 @@ export interface IDateInputExampleState {
     timePrecision: TimePrecision | undefined;
 }
 
-export class TimezoneAwareDateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
-    public state: IDateInputExampleState = {
+export class DateInput2Example extends React.PureComponent<IExampleProps, IDateInput2ExampleState> {
+    public state: IDateInput2ExampleState = {
         closeOnSelection: true,
         date: null,
         disabled: false,
@@ -65,7 +65,7 @@ export class TimezoneAwareDateInputExample extends React.PureComponent<IExampleP
         const { date, format, timePrecision, ...spreadProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <TimezoneAwareDateInput
+                <DateInput2
                     {...spreadProps}
                     {...format}
                     onChange={this.handleDateChange}

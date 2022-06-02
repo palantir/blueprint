@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-export { TimezoneAwareDateInput } from "./timezone-aware-date-input/timezoneAwareDateInput";
-export { TimezonePicker2 } from "./timezone-picker/timezonePicker2";
+export * from "./timezonePickerV2Example";
+export * from "./dateInput2Example";
