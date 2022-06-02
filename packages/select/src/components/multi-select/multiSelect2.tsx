@@ -167,6 +167,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         const inputProps = {
             ...tagInputProps.inputProps,
             className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT),
+            role: "combobox",
         };
 
         const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {

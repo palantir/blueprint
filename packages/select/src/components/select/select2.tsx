@@ -178,6 +178,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 <div
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
+                    role="combobox"
                 >
                     {this.props.children}
                 </div>
