@@ -73,12 +73,15 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T> {
      */
     placeholder?: string;
 
+    /** Props to spread to `Popover2` popover content. */
+    popoverContentProps?: React.HTMLAttributes<HTMLDivElement>;
+
     /**
      * Props to spread to `Popover2`.
      *
-     * Note that `content` cannot be changed, but we do support attaching a ref to the Popover2 component
-     * instance (sometimes useful to reposition the popover after updating `selectedItems` in reaction to
-     * a change external to this component).
+     * Note that `content` cannot be changed aside from utilizing `popoverContentProps`, but we do support
+     * attaching a ref to the Popover2 component instance (sometimes useful to reposition the popover after
+     * updating `selectedItems` in reaction to a change external to this component).
      */
     popoverProps?: Partial<
         Omit<Popover2Props, "content"> & { ref: React.RefObject<Popover2<React.HTMLProps<HTMLDivElement>>> }
@@ -155,7 +158,14 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { fill, tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
+        const {
+            fill,
+            tagInputProps = {},
+            popoverContentProps = {},
+            popoverProps = {},
+            selectedItems = [],
+            placeholder,
+        } = this.props;
         const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
 
         if (fill) {
@@ -185,7 +195,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
-                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                    <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         {listProps.itemList}
                     </div>
                 }
