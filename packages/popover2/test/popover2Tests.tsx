@@ -23,8 +23,9 @@ import { Classes as CoreClasses, Keys, Menu, MenuItem, Overlay, Portal } from "@
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes, Errors } from "../src";
-import { IPopover2Props, IPopover2State, Popover2, Popover2InteractionKind, Popover2PopupKind } from "../src/popover2";
+import { IPopover2Props, IPopover2State, Popover2, Popover2InteractionKind } from "../src/popover2";
 import { Popover2Arrow } from "../src/popover2Arrow";
+import { PopupKind } from "../src/popupKind";
 import { Tooltip2 } from "../src/tooltip2";
 
 describe("<Popover2>", () => {
@@ -194,7 +195,7 @@ describe("<Popover2>", () => {
         });
 
         it("sets aria-haspopup attr base on popupKind", () => {
-            wrapper = renderPopover({ isOpen: true, popupKind: Popover2PopupKind.DIALOG });
+            wrapper = renderPopover({ isOpen: true, popupKind: PopupKind.DIALOG });
             assert.isTrue(wrapper.find("[aria-haspopup='dialog']").exists());
         });
 

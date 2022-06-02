@@ -37,6 +37,7 @@ import * as Errors from "./errors";
 import { Popover2Arrow, POPOVER_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { positionToPlacement } from "./popover2PlacementUtils";
 import { Popover2SharedProps } from "./popover2SharedProps";
+import { PopupKind } from "./popupKind";
 import { ResizeSensor2 } from "./resizeSensor2";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip2 } from "./tooltip2";
@@ -50,20 +51,6 @@ export const Popover2InteractionKind = {
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Popover2InteractionKind = typeof Popover2InteractionKind[keyof typeof Popover2InteractionKind];
-
-/** Specifies the popup kind for aria-haspopup. */
-export enum Popover2PopupKind {
-    /** The popup is a menu. */
-    MENU = "menu",
-    /** The popup is a listbox. */
-    LISTBOX = "listbox",
-    /** The popup is a tree. */
-    TREE = "tree",
-    /** The popup is a grid. */
-    GRID = "grid",
-    /** The popup is a dialog. */
-    DIALOG = "dialog",
-}
 
 // eslint-disable-next-line deprecation/deprecation
 export type Popover2Props<TProps = React.HTMLProps<HTMLElement>> = IPopover2Props<TProps>;
@@ -100,7 +87,7 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
      *
      * @default "menu" or undefined
      */
-    popupKind?: Popover2PopupKind;
+    popupKind?: PopupKind;
 
     /**
      * Enables an invisible overlay beneath the popover that captures clicks and
