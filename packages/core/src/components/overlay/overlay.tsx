@@ -659,6 +659,8 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         const { canEscapeKeyClose, onClose } = this.props;
         if (e.key === "Escape" && canEscapeKeyClose) {
             onClose?.(e);
+            // prevent other overlays from closing
+            e.stopPropagation();
             // prevent browser-specific escape key behavior (Safari exits fullscreen)
             e.preventDefault();
         }
