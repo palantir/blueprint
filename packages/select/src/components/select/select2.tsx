@@ -70,7 +70,10 @@ export interface Select2Props<T> extends IListItemsProps<T> {
      */
     inputProps?: InputGroupProps2;
 
-    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
+    /** Props to spread to `Popover2` popover content. */
+    popoverContentProps?: React.HTMLAttributes<HTMLDivElement>;
+
+    /** Props to spread to `Popover2`. Note that `content` cannot be changed aside from utilizing `popoverContentProps`. */
     popoverProps?: Partial<Omit<Popover2Props, "content">>;
 
     /**
@@ -135,7 +138,14 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const { fill, filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
+        const {
+            fill,
+            filterable = true,
+            disabled = false,
+            inputProps = {},
+            popoverContentProps = {},
+            popoverProps = {},
+        } = this.props;
 
         if (fill) {
             popoverProps.fill = true;
@@ -164,7 +174,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
-                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                    <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         {filterable ? input : undefined}
                         {listProps.itemList}
                     </div>
