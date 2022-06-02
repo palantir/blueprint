@@ -52,7 +52,9 @@ export function getInitialTimezoneItems(date: Date | undefined, showLocalTimezon
                   shortName: getTimezoneName(date, localTimezone.ianaCode, false),
               }
             : undefined;
-    const minimalTimezoneItemsWithNames = mapTimezonesWithNames(date, MINIMAL_TIMEZONE_ITEMS);
+    const minimalTimezoneItemsWithNames = mapTimezonesWithNames(date, MINIMAL_TIMEZONE_ITEMS).filter(
+        tz => tz.ianaCode !== localTimezoneItem?.ianaCode,
+    );
     return localTimezoneItem === undefined
         ? minimalTimezoneItemsWithNames
         : [localTimezoneItem, ...minimalTimezoneItemsWithNames];
