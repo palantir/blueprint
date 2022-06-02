@@ -145,7 +145,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
 
         let newRowHeights = rowHeights;
         if (rowHeights !== state.rowHeights || numRows !== state.rowHeights.length) {
-            newColumnWidths = Array(numRows).fill(defaultRowHeight);
+            newRowHeights = Array(numRows).fill(defaultRowHeight);
             newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
         }
 
