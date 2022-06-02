@@ -97,7 +97,7 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                 />
                 <Switch
                     checked={this.state.footerComponent !== undefined}
-                    label="Show a footer component"
+                    label="Show custom footer element"
                     onChange={this.toggleFooterComponent}
                 />
                 <PrecisionSelect
@@ -111,12 +111,6 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                     checked={showTimeArrowButtons}
                     label="Show timepicker arrow buttons"
                     onChange={this.toggleTimepickerArrowButtons}
-                />
-                <Switch
-                    disabled={!showTimePicker}
-                    checked={this.state.useAmPm}
-                    label="Use AM/PM"
-                    onChange={this.toggleUseAmPm}
                 />
                 <Switch
                     disabled={!showTimePicker}

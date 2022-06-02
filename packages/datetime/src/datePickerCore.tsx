@@ -53,7 +53,7 @@ export interface IDatePickerBaseProps {
     /**
      * An additional component to show below the date picker
      */
-    footerComponent?: JSX.Element;
+    footerElement?: JSX.Element;
 
     /**
      * Whether the current day should be highlighted in the calendar.
