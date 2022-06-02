@@ -80,10 +80,10 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
 
     /**
      * The kind of popup displayed by the popover. This property is ignored if
-     * `interactionKind` is a hover interaction. This controls the
-     * `aria-haspopup` attribute of the target element. The default is "menu"
-     * (technically, `aria-haspopup` will be set to "true", which is the same
-     * as "menu", for backwards compatibility).
+     * `interactionKind` is {@link Popover2InteractionKind.HOVER_TARGET_ONLY}.
+     * This controls the `aria-haspopup` attribute of the target element. The
+     * default is "menu" (technically, `aria-haspopup` will be set to "true",
+     * which is the same as "menu", for backwards compatibility).
      *
      * @default "menu" or undefined
      */
@@ -341,7 +341,9 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
         const targetProps = {
-            "aria-haspopup": this.props.popupKind ?? (isHoverInteractionKind ? undefined : "true"),
+            "aria-haspopup":
+                this.props.popupKind ??
+                (this.props.interactionKind === Popover2InteractionKind.HOVER_TARGET_ONLY ? undefined : "true"),
             // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
             // If, instead, renderTarget is undefined and the target is provided as a child, this.props.className is
             // applied to the generated target wrapper element.

@@ -200,7 +200,7 @@ describe("<Popover2>", () => {
         });
 
         it("renders without aria-haspopup attr for hover interaction", () => {
-            wrapper = renderPopover({ isOpen: true, interactionKind: Popover2InteractionKind.HOVER });
+            wrapper = renderPopover({ isOpen: true, interactionKind: Popover2InteractionKind.HOVER_TARGET_ONLY });
             assert.isFalse(wrapper.find("[aria-haspopup]").exists());
         });
     });
