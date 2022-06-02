@@ -23,6 +23,8 @@ import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "
 import { MomentDate } from "./common/momentDate";
 import { PrecisionSelect } from "./common/precisionSelect";
 
+const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
+
 export interface IDatePickerExampleState {
     date: Date | null;
     highlightCurrentDay: boolean;
@@ -32,13 +34,13 @@ export interface IDatePickerExampleState {
     timePrecision: TimePrecision | undefined;
     showTimeArrowButtons: boolean;
     useAmPm?: boolean;
-    footerComponent?: JSX.Element;
+    showFooterElement: boolean;
 }
 
 export class DatePickerExample extends React.PureComponent<IExampleProps, IDatePickerExampleState> {
     public state: IDatePickerExampleState = {
         date: null,
-        footerComponent: undefined,
+        showFooterElement: boolean,
         highlightCurrentDay: false,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
@@ -52,13 +54,10 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
 
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
 
-    private toggleFooterComponent = () => {
+    private toggleShowFooterElement = () => {
         this.setState(prevState => {
-            const footerComponent =
-                prevState.footerComponent !== undefined ? undefined : (
-                    <Callout>This additional footer component can be displayed below the date picker</Callout>
-                );
-            return { footerComponent };
+            const showFooterElement = !prevState.showFooterElement;
+            return { showFooterElement };
         });
     };
 
@@ -96,9 +95,9 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                     onChange={this.toggleReverseMenus}
                 />
                 <Switch
-                    checked={this.state.footerComponent !== undefined}
+                    checked={this.state.showFooterElement}
                     label="Show custom footer element"
-                    onChange={this.toggleFooterComponent}
+                    onChange={this.toggleShowFooterElement}
                 />
                 <PrecisionSelect
                     allowNone={true}
@@ -134,6 +133,7 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                     className={Classes.ELEVATION_1}
                     onChange={this.handleDateChange}
                     timePickerProps={timePickerProps}
+                    footerElement={this.state.showFooterElement ? exampleFooterElement : undefined}
                     {...props}
                 />
                 <MomentDate date={date} withTime={props.timePrecision !== undefined} />

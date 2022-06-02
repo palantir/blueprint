@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as jstz from "jstimezonedetect";
 import { memoize } from "lodash-es";
 
 /**
@@ -22,21 +21,11 @@ import { memoize } from "lodash-es";
  *
  * At the time of this writing, this is backed by the browser or user computer's currently
  * configured time zone information,
- * but may be changed in the future to account for Foundry user or deployment settings.
- *
- * For browsers which don't support the Internationalization API the time zone is guessed from
- * the way that the Date() object is formatted. If the time zone can't be determined,
- * an empty string is returned.
  */
 export const getTimezone: () => string = memoize(guessTimezone);
 
 function guessTimezone(): string {
     // Getting time zone from the Intl api is not supported in IE (it returns undefined)
-    let timezone: string | undefined = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (timezone == null) {
-        // Fall back to manual guessing. According to types this returns a string, but it could
-        // in theory return an undefined (not very likely but we err on the side of caution here).
-        timezone = jstz.determine().name() as string | undefined;
-    }
+    const timezone: string | undefined = Intl.DateTimeFormat().resolvedOptions().timeZone;
     return timezone != null ? timezone : "";
 }

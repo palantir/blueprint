@@ -1,6 +1,6 @@
 @# TimezonePicker2
 
-`TimezonePicker2` allows the user to select from a list of timezones. The list of times is coded into the library itself, and it does not depend on any external packages for updating the this list of timezones.
+`TimezonePicker2` allows the user to select from a list of timezones. The list is coded into the library itself, so it does not depend on any external packages for the list of timezones.
 
 @reactExample TimezonePickerV2Example
 
@@ -29,9 +29,7 @@ all button-specific props will be ignored:
     <h4 class="@ns-heading">Local timezone detection</h4>
 
 We detect the local timezone when the `showLocalTimezone` prop is enabled and cannot guarantee correctness in all browsers.
-In supported browsers, the [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions) is used.
-In other browsers, `Date` methods and a population heuristic are used.
-
+We use the [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions) is used.
 </div>
 
 ```tsx

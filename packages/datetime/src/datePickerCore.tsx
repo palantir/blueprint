@@ -51,7 +51,7 @@ export interface IDatePickerBaseProps {
     dayPickerProps?: DayPickerProps;
 
     /**
-     * An additional component to show below the date picker
+     * An additional element to show below the date picker
      */
     footerElement?: JSX.Element;
 
