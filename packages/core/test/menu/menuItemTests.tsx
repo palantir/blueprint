@@ -109,16 +109,16 @@ describe("MenuItem", () => {
         assert.isTrue(handleClose.notCalled);
     });
 
-    it("menuProps are forwarded to the Menu", () => {
-        const menuProps = { "aria-label": "test-menu" };
+    it("submenuProps are forwarded to the Menu", () => {
+        const submenuProps = { "aria-label": "test-menu" };
         const wrapper = shallow(
-            <MenuItem icon="style" text="Style" menuProps={menuProps}>
+            <MenuItem icon="style" text="Style" submenuProps={submenuProps}>
                 <MenuItem text="one" />
                 <MenuItem text="two" />
             </MenuItem>,
         );
         const submenu = findSubmenu(wrapper);
-        assert.strictEqual(submenu.props["aria-label"], menuProps["aria-label"]);
+        assert.strictEqual(submenu.props["aria-label"], submenuProps["aria-label"]);
     });
 
     it("popoverProps (except content) are forwarded to Popover", () => {
