@@ -23,7 +23,7 @@ import { ActionProps, DISPLAYNAME_PREFIX, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
-import { Menu } from "./menu";
+import { Menu, MenuProps } from "./menu";
 
 // eslint-disable-next-line deprecation/deprecation
 export type MenuItemProps = IMenuItemProps;
@@ -105,6 +105,11 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     shouldDismissPopover?: boolean;
 
     /**
+     * Props to spread to the child `Menu` component if this item has a submenu.
+     */
+    submenuProps?: Partial<MenuProps>;
+
+    /**
      * Name of the HTML tag that wraps the MenuItem.
      *
      * @default "a"
@@ -150,6 +155,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             popoverProps,
             selected,
             shouldDismissPopover,
+            submenuProps,
             text,
             textClassName,
             tagName = "a",
@@ -224,7 +230,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         if (children == null) {
             return target;
         }
-        const { disabled, popoverProps } = this.props;
+        const { disabled, popoverProps, submenuProps } = this.props;
         return (
             /* eslint-disable-next-line deprecation/deprecation */
             <Popover
@@ -238,7 +244,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 position={Position.RIGHT_TOP}
                 usePortal={false}
                 {...popoverProps}
-                content={<Menu>{children}</Menu>}
+                content={<Menu {...submenuProps}>{children}</Menu>}
                 minimal={true}
                 popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
                 target={target}
