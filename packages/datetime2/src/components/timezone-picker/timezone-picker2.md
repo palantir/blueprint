@@ -20,7 +20,7 @@ You can show a custom element instead of the default button by passing a single-
 all button-specific props will be ignored:
 
 ```tsx
-<TimezonePicker value={...} onChange={...}>
+<TimezonePicker2 value={...} onChange={...}>
     <Icon icon="globe" />
 </TimezonePicker>
 ```
@@ -33,14 +33,13 @@ We use the [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Re
 </div>
 
 ```tsx
-// TODO: update code example
-import { TimezonePicker } from "@blueprintjs/timezone";
+import { TimezonePicker2 } from "@blueprintjs/datetime2";
 
 export class TimezoneExample extends React.PureComponent<{}, { timezone: string; }> {
     public state = { timezone: "" };
 
     public render() {
-        return <TimezonePicker value={this.state.timezone} onChange={this.handleTimezoneChange} />;
+        return <TimezonePicker2 value={this.state.timezone} onChange={this.handleTimezoneChange} />;
     }
 
     private handleTimezoneChange = (timezone: string) => this.setState({ timezone });
