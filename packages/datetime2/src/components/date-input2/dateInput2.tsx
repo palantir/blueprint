@@ -32,8 +32,8 @@ export interface IDateInput2Props extends Omit<DateInputProps, "onChange" | "val
     /** Callback invoked whenever the date or timezone has changed. ISO string */
     onChange: (newDate: string, isUserChange?: boolean) => void;
 
-    /** An ISO string mapping to the initial selected time. */
-    value?: string | null;
+    /** An ISO string mapping to the selected time. */
+    value: string | null;
     /** Whether to completely hide timezone elements,
      * if TimePrecision is undefined, this will always be true
      */
