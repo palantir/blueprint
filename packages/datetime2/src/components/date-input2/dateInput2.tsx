@@ -19,10 +19,12 @@ import { formatInTimeZone } from "date-fns-tz";
 import { isEmpty } from "lodash-es";
 import * as React from "react";
 
+import { Tag } from "@blueprintjs/core";
 import { DateInput, DateInputProps, TimePrecision } from "@blueprintjs/datetime";
 
 import * as Classes from "../../common/classes";
 import { getTimezone } from "../../common/getTimezone";
+import { getTimezoneName } from "../../common/timezoneNameUtils";
 import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "../../common/timezoneUtils";
 import { TimezonePicker2 } from "../timezone-picker/timezonePicker2";
 
@@ -111,7 +113,11 @@ export const DateInput2: React.FC<IDateInput2Props> = React.memo(function _DateI
             disabled={disableTimezoneSelect}
             className={Classes.DATE_INPUT_TIMEZONE_PICKER}
             buttonProps={timepickerButtonProps}
-        />
+        >
+            <Tag rightIcon="caret-down" interactive={true} minimal={true}>
+                {getTimezoneName(guaranteedValidDateValue, timezoneValue, false)}
+            </Tag>
+        </TimezonePicker2>
     );
 
     return (

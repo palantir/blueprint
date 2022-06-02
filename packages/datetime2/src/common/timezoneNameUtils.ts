@@ -16,7 +16,7 @@
 
 import { formatInTimeZone } from "date-fns-tz";
 
-import { getTimezone } from "../../common/getTimezone";
+import { getTimezone } from "./getTimezone";
 import { MINIMAL_TIMEZONE_ITEMS, Timezone, TIMEZONE_ITEMS } from "./timezoneItems";
 
 export interface TimezoneWithNames extends Timezone {
@@ -26,7 +26,7 @@ export interface TimezoneWithNames extends Timezone {
 
 const CURRENT_DATE = Date.now();
 
-const getTimezoneName = (date: Date | undefined, ianaCode: string, getLongName: boolean = true) =>
+export const getTimezoneName = (date: Date | undefined, ianaCode: string, getLongName: boolean = true) =>
     formatInTimeZone(date ?? CURRENT_DATE, ianaCode, getLongName ? "zzzz" : "zzz");
 
 export const mapTimezonesWithNames = (

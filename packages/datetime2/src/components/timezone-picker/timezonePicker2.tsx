@@ -32,8 +32,8 @@ import type { Popover2Props } from "@blueprintjs/popover2";
 import { ItemListPredicate, ItemRenderer, Select2 } from "@blueprintjs/select";
 
 import * as Classes from "../../common/classes";
-import { TIMEZONE_ITEMS } from "./timezoneItems";
-import { getInitialTimezoneItems, mapTimezonesWithNames, TimezoneWithNames } from "./timezoneNameUtils";
+import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
+import { getInitialTimezoneItems, mapTimezonesWithNames, TimezoneWithNames } from "../../common/timezoneNameUtils";
 
 export interface TimezonePicker2Props extends Props {
     children?: React.ReactNode;
