@@ -29,7 +29,7 @@ import {
     TagInputProps,
 } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
-import type { PopupKind } from "@blueprintjs/popover2/popupKind";
+import { PopupKind } from "@blueprintjs/popover2/popupKind";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
