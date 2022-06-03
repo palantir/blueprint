@@ -22,6 +22,7 @@ import * as React from "react";
 import {
     AbstractPureComponent2,
     Button,
+    Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps2,
@@ -31,7 +32,7 @@ import {
     refHandler,
     setRef,
 } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import { Popover2, Popover2TargetProps } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -180,29 +181,56 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 ref={popoverRef}
-            >
+                renderTarget={this.getPopoverTargetRenderer(listProps)}
+            />
+        );
+    };
+
+    // we use the renderTarget API to flatten the rendered DOM and make it easier to implement features like
+    // the "fill" prop
+    private getPopoverTargetRenderer =
+        (listProps: IQueryListRendererProps<T>) =>
+        // N.B. pull out `isOpen` so that it's not forwarded to the DOM
+        // eslint-disable-next-line react/display-name
+        ({ isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
+            const { handleKeyDown, handleKeyUp } = listProps;
+            return (
                 <div
+                    {...targetProps}
+                    // Note that we must set FILL here in addition to children to get the wrapper element to full width
+                    className={classNames(targetProps.className, {
+                        [CoreClasses.FILL]: this.props.fill,
+                    })}
+                    // Normally, Popover2 would also need to attach its own `onKeyDown` handler via `targetProps`,
+                    // but in our case we fully manage that interaction and listen for key events to open/close
+                    // the popover, so we elide it from the DOM.
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
+                    ref={ref}
                 >
                     {this.props.children}
                 </div>
-            </Popover2>
-        );
-    };
+            );
+        };
 
     private maybeRenderClearButton(query: string) {
         return query.length > 0 ? <Button icon="cross" minimal={true} onClick={this.resetQuery} /> : undefined;
     }
 
+    /**
+     * Target wrapper element "keydown" handler while the popover is closed.
+     */
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         // open popover when arrow key pressed on target while closed
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        // eslint-disable-next-line deprecation/deprecation
+        /* eslint-disable deprecation/deprecation */
         if (event.which === Keys.ARROW_UP || event.which === Keys.ARROW_DOWN) {
             event.preventDefault();
             this.setState({ isOpen: true });
+        } else if (Keys.isKeyboardClick(event.keyCode)) {
+            this.setState({ isOpen: true });
         }
+        /* eslint-enable deprecation/deprecation */
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {

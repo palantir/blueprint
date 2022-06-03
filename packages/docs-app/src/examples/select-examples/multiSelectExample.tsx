@@ -40,11 +40,13 @@ const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Int
 export interface IMultiSelectExampleState {
     allowCreate: boolean;
     createdItems: IFilm[];
+    disabled: boolean;
     fill: boolean;
     films: IFilm[];
     hasInitialContent: boolean;
     intent: boolean;
     items: IFilm[];
+    matchTargetWidth: boolean;
     openOnKeyDown: boolean;
     popoverMinimal: boolean;
     resetOnSelect: boolean;
@@ -55,11 +57,13 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     public state: IMultiSelectExampleState = {
         allowCreate: false,
         createdItems: [],
+        disabled: false,
         fill: false,
         films: [],
         hasInitialContent: false,
         intent: false,
         items: filmSelectProps.items,
+        matchTargetWidth: false,
         openOnKeyDown: false,
         popoverMinimal: true,
         resetOnSelect: true,
@@ -70,22 +74,27 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
 
-    private handleKeyDownChange = this.handleSwitchChange("openOnKeyDown");
-
-    private handleResetChange = this.handleSwitchChange("resetOnSelect");
-
-    private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
-
-    private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
+    private handleDisabledChange = this.handleSwitchChange("disabled");
 
     private handleFillChange = this.handleSwitchChange("fill");
 
-    private handleIntentChange = this.handleSwitchChange("intent");
-
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
 
+    private handleIntentChange = this.handleSwitchChange("intent");
+
+    private handleKeyDownChange = this.handleSwitchChange("openOnKeyDown");
+
+    private handleMatchTargetWidthChange = this.handleSwitchChange("matchTargetWidth");
+
+    private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
+
+    private handleResetChange = this.handleSwitchChange("resetOnSelect");
+
+    private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
+
     public render() {
-        const { allowCreate, films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
+        const { allowCreate, films, hasInitialContent, tagMinimal, popoverMinimal, matchTargetWidth, ...flags } =
+            this.state;
         const getTagProps = (_value: React.ReactNode, index: number): TagProps => ({
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
             minimal: tagMinimal,
@@ -117,7 +126,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleFilmSelect}
                     onItemsPaste={this.handleFilmsPaste}
-                    popoverProps={{ minimal: popoverMinimal }}
+                    popoverProps={{ matchTargetWidth, minimal: popoverMinimal }}
                     popoverRef={this.popoverRef}
                     tagRenderer={this.renderTag}
                     tagInputProps={{
@@ -155,6 +164,8 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     checked={this.state.allowCreate}
                     onChange={this.handleAllowCreateChange}
                 />
+                <H5>Appearance props</H5>
+                <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
                 <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
                 <H5>Tag props</H5>
                 <Switch
@@ -168,6 +179,11 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     onChange={this.handleIntentChange}
                 />
                 <H5>Popover props</H5>
+                <Switch
+                    label="Match target width"
+                    checked={this.state.matchTargetWidth}
+                    onChange={this.handleMatchTargetWidthChange}
+                />
                 <Switch
                     label="Minimal popover style"
                     checked={this.state.popoverMinimal}

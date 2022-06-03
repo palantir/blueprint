@@ -209,7 +209,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                     className={classNames(targetProps.className, {
                         [CoreClasses.FILL]: fill,
                     })}
-                    // Normally, Popover2 would also need to attach its own `onKeyDown` handler,
+                    // Normally, Popover2 would also need to attach its own `onKeyDown` handler via `targetProps`,
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
                     onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}
