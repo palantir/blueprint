@@ -190,6 +190,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 onInteraction={this.handlePopoverInteraction}
                 onOpened={this.handlePopoverOpened}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
+                popoverKind="listbox"
                 ref={
                     popoverRef === undefined
                         ? this.refHandlers.popover
@@ -204,7 +205,6 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                         placeholder={placeholder}
                         {...tagInputProps}
                         aria-expanded={this.state.isOpen}
-                        aria-haspopup="listbox"
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         inputRef={this.refHandlers.input}
                         inputProps={inputProps}

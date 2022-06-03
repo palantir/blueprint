@@ -186,12 +186,12 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 onOpened={this.handlePopoverOpened}
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                popoverKind="listbox"
                 ref={popoverRef}
             >
                 <div
                     {...wrapperProps}
                     aria-expanded={this.state.isOpen}
-                    aria-haspopup="listbox"
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                     role="combobox"
