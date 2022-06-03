@@ -31,12 +31,12 @@ import {
     refHandler,
     setRef,
 } from "@blueprintjs/core";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
+import { Popover2 } from "@blueprintjs/popover2";
 
-import { Classes, IListItemsProps } from "../../common";
+import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface Select2Props<T> extends IListItemsProps<T> {
+export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
     children?: React.ReactNode;
 
     /**
@@ -69,12 +69,6 @@ export interface Select2Props<T> extends IListItemsProps<T> {
      * to control this input.
      */
     inputProps?: InputGroupProps2;
-
-    /** Props to spread to `Popover2` popover content. */
-    popoverContentProps?: React.HTMLAttributes<HTMLDivElement>;
-
-    /** Props to spread to `Popover2`. Note that `content` cannot be changed aside from utilizing `popoverContentProps`. */
-    popoverProps?: Partial<Omit<Popover2Props, "content">>;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -145,6 +139,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
             inputProps = {},
             popoverContentProps = {},
             popoverProps = {},
+            popoverRef,
         } = this.props;
 
         if (fill) {
@@ -179,11 +174,12 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                         {listProps.itemList}
                     </div>
                 }
-                onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
-                onOpening={this.handlePopoverOpening}
-                onOpened={this.handlePopoverOpened}
                 onClosing={this.handlePopoverClosing}
+                onInteraction={this.handlePopoverInteraction}
+                onOpened={this.handlePopoverOpened}
+                onOpening={this.handlePopoverOpening}
+                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                ref={popoverRef}
             >
                 <div
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}

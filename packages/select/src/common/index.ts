@@ -22,3 +22,4 @@ export * from "./itemRenderer";
 export * from "./listItemsProps";
 export * from "./listItemsUtils";
 export * from "./predicate";
+export type { SelectPopoverProps } from "./selectPopoverProps";
