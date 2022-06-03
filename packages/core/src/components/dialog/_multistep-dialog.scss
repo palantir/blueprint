@@ -105,6 +105,9 @@ $step-radius: $pt-border-radius * 2 !default;
 
   .#{$ns}-dark & {
     background: $dark-gray2;
+    border-bottom: 1px solid $pt-dark-divider-white;
+    border-bottom-left-radius: $dialog-border-radius;
+    border-left: 1px solid $pt-dark-divider-white;
   }
 }
 
@@ -117,7 +120,10 @@ $step-radius: $pt-border-radius * 2 !default;
 
   .#{$ns}-dark & {
     background-color: $dark-gray3;
-    border-left: 1px solid $pt-dark-divider-black;
+    border-bottom: 1px solid $pt-dark-divider-white;
+    border-bottom-right-radius: $dialog-border-radius;
+    border-left: 1px solid $pt-dark-divider-white;
+    border-right: 1px solid $pt-dark-divider-white;
   }
 }
 
@@ -131,7 +137,7 @@ $step-radius: $pt-border-radius * 2 !default;
 
   .#{$ns}-dark & {
     background: $dark-gray4;
-    border-top: 1px solid $pt-dark-divider-black;
+    border-top: 1px solid $pt-dark-divider-white;
   }
 
   .#{$ns}-dialog-footer-actions {
@@ -145,7 +151,7 @@ $step-radius: $pt-border-radius * 2 !default;
 
   .#{$ns}-dark & {
     background: $dark-gray3;
-    border-bottom: 1px solid $pt-dark-divider-black;
+    border-bottom: 1px solid $pt-dark-divider-white;
   }
 
   &.#{$ns}-dialog-step-viewed {
