@@ -51,9 +51,10 @@ $dark-popover2-arrow-box-shadow:
   }
 
   &.#{$ns}-minimal {
-    // popover2s with no obvious trigger will never have margin because the arrow
-    // is hidden so it is safe to remove in all cases always
-    margin: 0 !important; /* stylelint-disable-line declaration-no-important */
+    // Popover2 with no obvious trigger will never have margin because the arrow is hidden,
+    // so it is safe to remove. However, we give a 0.5px top margin to create a gap from
+    // the target to allow input focus borders to show.
+    margin: 0.5px 0 0 !important; /* stylelint-disable-line declaration-no-important */
 
     .#{$ns}-popover2-arrow {
       display: none;
@@ -130,4 +131,10 @@ span.#{$ns}-popover2-target {
 
   // this is important for span tag as default inline display height only includes text.
   // div tag can be used for display: block, which works fine.
+}
+
+.#{$ns}-popover2-target {
+  &.#{$ns}-fill {
+    width: 100%;
+  }
 }

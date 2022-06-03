@@ -28,7 +28,7 @@ import {
     TagInputAddMethod,
     TagInputProps,
 } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import { Popover2, Popover2TargetProps } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -144,34 +144,15 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const {
-            fill,
-            tagInputProps = {},
-            popoverContentProps = {},
-            popoverProps = {},
-            popoverRef,
-            selectedItems = [],
-            placeholder,
-        } = this.props;
-        const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
+        const { popoverContentProps = {}, popoverProps = {} } = this.props;
+        const { handleKeyDown, handleKeyUp } = listProps;
 
-        if (fill) {
-            popoverProps.fill = true;
-            tagInputProps.fill = true;
-        }
+        const popoverRef =
+            this.props.popoverRef === undefined
+                ? this.refHandlers.popover
+                : mergeRefs(this.refHandlers.popover, this.props.popoverRef);
 
-        // add our own inputProps.className so that we can reference it in event handlers
-        const inputProps = {
-            ...tagInputProps.inputProps,
-            className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT),
-        };
-
-        const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {
-            if (method === "paste") {
-                handlePaste(values);
-            }
-        };
-
+        // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
             <Popover2
                 autoFocus={false}
@@ -190,15 +171,50 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 onInteraction={this.handlePopoverInteraction}
                 onOpened={this.handlePopoverOpened}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
-                ref={
-                    popoverRef === undefined
-                        ? this.refHandlers.popover
-                        : mergeRefs(this.refHandlers.popover, popoverRef)
+                ref={popoverRef}
+                renderTarget={this.getPopoverTargetRenderer(listProps)}
+            />
+        );
+    };
+
+    // we use the renderTarget API to flatten the rendered DOM and make it easier to implement features like
+    // the "fill" prop
+    private getPopoverTargetRenderer =
+        (listProps: IQueryListRendererProps<T>) =>
+        // N.B. pull out `isOpen` so that it's not forwarded to the DOM
+        // eslint-disable-next-line react/display-name
+        ({ isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
+            const { fill, tagInputProps = {}, selectedItems = [], placeholder } = this.props;
+            const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
+
+            if (fill) {
+                tagInputProps.fill = true;
+            }
+
+            // add our own inputProps.className so that we can reference it in event handlers
+            const inputProps = {
+                ...tagInputProps.inputProps,
+                className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT),
+            };
+
+            const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {
+                if (method === "paste") {
+                    handlePaste(values);
                 }
-            >
+            };
+            return (
                 <div
+                    {...targetProps}
+                    // Note that we must set FILL here in addition to TagInput to get the wrapper element to full width
+                    className={classNames(targetProps.className, {
+                        [CoreClasses.FILL]: fill,
+                    })}
+                    // Normally, Popover2 would also need to attach its own `onKeyDown` handler,
+                    // but in our case we fully manage that interaction and listen for key events to open/close
+                    // the popover, so we elide it from the DOM.
                     onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTagInputKeyUpHandler(handleKeyUp)}
+                    ref={ref}
                 >
                     <TagInput
                         placeholder={placeholder}
@@ -214,9 +230,8 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                         values={selectedItems.map(this.props.tagRenderer)}
                     />
                 </div>
-            </Popover2>
-        );
-    };
+            );
+        };
 
     private handleItemSelect = (item: T, evt?: React.SyntheticEvent<HTMLElement>) => {
         if (this.input != null) {
