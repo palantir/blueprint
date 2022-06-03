@@ -83,6 +83,11 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
 
     /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;
+
+    /**
+     * Props to add to the `div` that wraps the TagInput
+     */
+    wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 export interface MultiSelect2State {
@@ -153,6 +158,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
             popoverRef,
             selectedItems = [],
             placeholder,
+            wrapperProps = {},
         } = this.props;
         const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
 
@@ -199,13 +205,15 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 }
             >
                 <div
+                    {...wrapperProps}
+                    aria-expanded={this.state.isOpen}
                     onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTagInputKeyUpHandler(handleKeyUp)}
+                    role="combobox"
                 >
                     <TagInput
                         placeholder={placeholder}
                         {...tagInputProps}
-                        aria-expanded={this.state.isOpen}
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         inputRef={this.refHandlers.input}
                         inputProps={inputProps}
@@ -214,7 +222,6 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                         onAdd={handleTagInputAdd}
                         onInputChange={listProps.handleQueryChange}
                         onRemove={this.handleTagRemove}
-                        role="combobox"
                         values={selectedItems.map(this.props.tagRenderer)}
                     />
                 </div>
