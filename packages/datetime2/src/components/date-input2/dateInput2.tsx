@@ -67,6 +67,7 @@ export const DateInput2: React.FC<IDateInput2Props> = React.memo(function _DateI
         timePrecision,
         disableTimezoneSelect,
         hideTimezone: hideTimezoneProp,
+        disabled,
         ...passThroughToDateInputProps
     } = props;
 
@@ -110,7 +111,7 @@ export const DateInput2: React.FC<IDateInput2Props> = React.memo(function _DateI
             value={timezoneValue}
             onChange={handleTimezoneUpdate}
             date={guaranteedValidDateValue}
-            disabled={disableTimezoneSelect}
+            disabled={disabled || disableTimezoneSelect}
             className={Classes.DATE_INPUT_TIMEZONE_PICKER}
             buttonProps={timepickerButtonProps}
         >
@@ -127,6 +128,7 @@ export const DateInput2: React.FC<IDateInput2Props> = React.memo(function _DateI
             onChange={handleChangeDateValue}
             timePrecision={timePrecision}
             rightElement={maybeTimezonePicker}
+            disabled={disabled}
         />
     );
 });
