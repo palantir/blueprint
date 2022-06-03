@@ -37,9 +37,7 @@ import { IQueryListRendererProps, QueryList, QueryListProps } from "../query-lis
 
 export interface MultiSelect2Props<T>
     extends IListItemsProps<T>,
-        Partial<
-            Omit<QueryListProps<T>, "items" | "onItemSelect" | "onQueryChange" | "ref" | "itemRenderer" | "renderer">
-        >,
+        Pick<QueryListProps<T>, "menuProps">,
         SelectPopoverProps {
     /**
      * Whether the component should take up the full width of its container.

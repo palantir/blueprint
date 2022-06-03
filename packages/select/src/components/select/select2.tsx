@@ -36,12 +36,7 @@ import { Popover2, PopupKind } from "@blueprintjs/popover2";
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList, QueryListProps } from "../query-list/queryList";
 
-export interface Select2Props<T>
-    extends IListItemsProps<T>,
-        Partial<
-            Omit<QueryListProps<T>, "items" | "onItemSelect" | "onQueryChange" | "ref" | "itemRenderer" | "renderer">
-        >,
-        SelectPopoverProps {
+export interface Select2Props<T> extends IListItemsProps<T>, Pick<QueryListProps<T>, "menuProps">, SelectPopoverProps {
     children?: React.ReactNode;
 
     /**
