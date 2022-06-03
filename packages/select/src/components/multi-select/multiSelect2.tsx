@@ -43,6 +43,12 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
     fill?: boolean;
 
     /**
+     * Adds `id={listboxId}` to the list Menu and `aria-controls={listboxId}` to the
+     * combobox element that opens it
+     */
+    listboxId?: string;
+
+    /**
      * Callback invoked when an item is removed from the selection by
      * removing its tag in the TagInput. This is generally more useful than
      * `tagInputProps.onRemove`  because it receives the removed value instead of
@@ -135,11 +141,17 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
+        const { listboxId, openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
+
+        const queryListMenuProps = {
+            id: listboxId,
+            ...restProps.menuProps,
+        };
 
         return (
             <this.TypedQueryList
                 {...restProps}
+                menuProps={queryListMenuProps}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
@@ -151,6 +163,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const {
             fill,
+            listboxId,
             tagInputProps = {},
             popoverContentProps = {},
             popoverProps = {},
@@ -204,6 +217,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 }
             >
                 <div
+                    aria-controls={listboxId}
                     {...popoverTargetProps}
                     aria-expanded={this.state.isOpen}
                     onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}

@@ -69,6 +69,12 @@ export interface Suggest2Props<T> extends IListItemsProps<T>, SelectPopoverProps
     defaultSelectedItem?: T;
 
     /**
+     * Adds `id={listboxId}` to the list Menu and `aria-controls={listboxId}` to the
+     * combobox element that opens it
+     */
+    listboxId?: string;
+
+    /**
      * The currently selected item, or `null` to indicate that no item is selected.
      * If omitted or `undefined`, this prop will be uncontrolled (managed by the component's state).
      * Use `onItemSelect` to listen for updates.
@@ -131,10 +137,17 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { disabled, inputProps, popoverProps, ...restProps } = this.props;
+        const { disabled, inputProps, listboxId, popoverProps, ...restProps } = this.props;
+
+        const queryListMenuProps = {
+            id: listboxId,
+            ...restProps.menuProps,
+        };
+
         return (
             <this.TypedQueryList
                 {...restProps}
+                menuProps={queryListMenuProps}
                 initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
@@ -169,7 +182,14 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { fill, inputProps = {}, popoverContentProps = {}, popoverProps = {}, popoverRef } = this.props;
+        const {
+            fill,
+            inputProps = {},
+            listboxId,
+            popoverContentProps = {},
+            popoverProps = {},
+            popoverRef,
+        } = this.props;
         const { isOpen, selectedItem } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
         const { autoComplete = "off", placeholder = "Search..." } = inputProps;
@@ -212,6 +232,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                 <InputGroup
                     autoComplete={autoComplete}
                     disabled={this.props.disabled}
+                    aria-controls={listboxId}
                     {...inputProps}
                     aria-autocomplete="list"
                     aria-expanded={this.state.isOpen}

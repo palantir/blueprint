@@ -71,6 +71,12 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
     inputProps?: InputGroupProps2;
 
     /**
+     * Adds `id={listboxId}` to the list Menu and `aria-controls={listboxId}` to the
+     * combobox element that opens it
+     */
+    listboxId?: string;
+
+    /**
      * Props to add to the popover target wrapper element.
      */
     popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
@@ -111,11 +117,17 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { filterable, inputProps, popoverProps, ...restProps } = this.props;
+        const { filterable, inputProps, listboxId, popoverProps, ...restProps } = this.props;
+
+        const queryListMenuProps = {
+            id: listboxId,
+            ...restProps.menuProps,
+        };
 
         return (
             <this.TypedQueryList
                 {...restProps}
+                menuProps={queryListMenuProps}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
@@ -142,6 +154,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
             filterable = true,
             disabled = false,
             inputProps = {},
+            listboxId,
             popoverContentProps = {},
             popoverProps = {},
             popoverTargetProps = {},
@@ -189,6 +202,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 ref={popoverRef}
             >
                 <div
+                    aria-controls={listboxId}
                     {...popoverTargetProps}
                     aria-expanded={this.state.isOpen}
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
