@@ -157,7 +157,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
             popoverRef,
             selectedItems = [],
             placeholder,
-            wrapperProps = {},
+            popoverTargetProps = {},
         } = this.props;
         const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
 
