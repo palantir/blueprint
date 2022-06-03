@@ -73,6 +73,11 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
      */
     placeholder?: string;
 
+    /**
+     * Props to add to the `div` that wraps the TagInput
+     */
+    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
+
     /** Controlled selected values. */
     selectedItems?: T[];
 
@@ -82,11 +87,6 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
 
     /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;
-
-    /**
-     * Props to add to the `div` that wraps the TagInput
-     */
-    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 export interface MultiSelect2State {

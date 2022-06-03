@@ -71,17 +71,17 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
     inputProps?: InputGroupProps2;
 
     /**
+     * Props to add to the popover target wrapper element.
+     */
+    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
+
+    /**
      * Whether the active item should be reset to the first matching item _when
      * the popover closes_. The query will also be reset to the empty string.
      *
      * @default false
      */
     resetOnClose?: boolean;
-
-    /**
-     * Props to add to the popover target wrapper element.
-     */
-    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 export interface Select2State {
