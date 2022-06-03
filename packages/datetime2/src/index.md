@@ -2,7 +2,7 @@
 reference: datetime2
 ---
 
-@# Timezone2
+@# Datetime2
 
 
 The [__@blueprintjs/datetime2__ NPM package](https://www.npmjs.com/package/@blueprintjs/datetime)
