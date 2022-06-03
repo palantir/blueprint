@@ -214,7 +214,6 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                     {...inputProps}
                     aria-autocomplete="list"
                     aria-expanded={this.state.isOpen}
-                    aria-haspopup="listbox"
                     inputRef={this.handleInputRef}
                     onChange={listProps.handleQueryChange}
                     onFocus={this.handleInputFocus}
