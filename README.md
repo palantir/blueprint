@@ -43,7 +43,7 @@ These are hosted on GitHub Pages as static web applications:
 
 These are used as development playground environments:
 
--   `table-dev-app` &ndash; demo page that supports manual testing of all table features
+-   `table-dev-app` &ndash; demo page that supports manual testing of table features
 
 ### Build tooling
 
