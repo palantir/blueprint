@@ -31,12 +31,12 @@ import {
     refHandler,
     setRef,
 } from "@blueprintjs/core";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
+import { Popover2 } from "@blueprintjs/popover2";
 
-import { Classes, IListItemsProps } from "../../common";
+import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface Select2Props<T> extends IListItemsProps<T> {
+export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
     children?: React.ReactNode;
 
     /**
@@ -69,9 +69,6 @@ export interface Select2Props<T> extends IListItemsProps<T> {
      * to control this input.
      */
     inputProps?: InputGroupProps2;
-
-    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<Omit<Popover2Props, "content">>;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -138,7 +135,15 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const { fill, filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
+        const {
+            fill,
+            filterable = true,
+            disabled = false,
+            inputProps = {},
+            popoverContentProps = {},
+            popoverProps = {},
+            popoverRef,
+        } = this.props;
 
         if (fill) {
             popoverProps.fill = true;
@@ -167,16 +172,17 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
-                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                    <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         {filterable ? input : undefined}
                         {listProps.itemList}
                     </div>
                 }
-                onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
-                onOpening={this.handlePopoverOpening}
-                onOpened={this.handlePopoverOpened}
                 onClosing={this.handlePopoverClosing}
+                onInteraction={this.handlePopoverInteraction}
+                onOpened={this.handlePopoverOpened}
+                onOpening={this.handlePopoverOpening}
+                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                ref={popoverRef}
             >
                 <div
                     className={this.props.targetClassName}
