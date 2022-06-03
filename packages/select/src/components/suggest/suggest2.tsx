@@ -206,6 +206,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                 onOpened={this.handlePopoverOpened}
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                popupKind="listbox"
                 ref={popoverRef}
             >
                 <InputGroup

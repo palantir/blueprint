@@ -190,7 +190,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 onInteraction={this.handlePopoverInteraction}
                 onOpened={this.handlePopoverOpened}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
-                popoverKind="listbox"
+                popupKind="listbox"
                 ref={
                     popoverRef === undefined
                         ? this.refHandlers.popover

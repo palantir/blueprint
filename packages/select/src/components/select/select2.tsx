@@ -186,7 +186,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 onOpened={this.handlePopoverOpened}
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
-                popoverKind="listbox"
+                popupKind="listbox"
                 ref={popoverRef}
             >
                 <div
