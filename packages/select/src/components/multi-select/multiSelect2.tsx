@@ -28,8 +28,7 @@ import {
     TagInputAddMethod,
     TagInputProps,
 } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
-import { PopupKind } from "@blueprintjs/popover2/src/popupKind";
+import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
