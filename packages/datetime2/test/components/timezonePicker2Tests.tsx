@@ -23,12 +23,8 @@ import { Button, ButtonProps, InputGroup, InputGroupProps2, MenuItem, Popover } 
 import { Popover2Props } from "@blueprintjs/popover2";
 import { QueryList, Select } from "@blueprintjs/select";
 
-import { TIMEZONE_ITEMS } from "../../src/components/timezone-picker/timezoneItems";
-import {
-    getInitialTimezoneItems,
-    mapTimezonesWithNames,
-    TimezoneWithNames,
-} from "../../src/components/timezone-picker/timezoneNameUtils";
+import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
+import { getInitialTimezoneItems, mapTimezonesWithNames, TimezoneWithNames } from "../../src/common/timezoneNameUtils";
 import {
     ITimezonePicker2State,
     TimezonePicker2,
