@@ -30,7 +30,7 @@ export interface SelectPopoverProps {
      */
     popoverProps?: Partial<Omit<Popover2Props, "content">>;
 
-    /*
+    /**
      * Optional ref for the Popover2 component instance.
      * This is sometimes useful to reposition the popover.
      */
