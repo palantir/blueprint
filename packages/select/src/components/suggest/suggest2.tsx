@@ -146,7 +146,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
         const queryListMenuProps = {
             id: listboxId,
-            ...(restProps.hasOwnProperty("menuProps") ? restProps.menuProps : {}),
+            ...(restProps.menuProps ?? {}),
         };
 
         return (

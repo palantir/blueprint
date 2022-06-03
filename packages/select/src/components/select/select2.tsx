@@ -126,7 +126,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
         const queryListMenuProps = {
             id: listboxId,
-            ...(restProps.hasOwnProperty("menuProps") ? restProps.menuProps : {}),
+            ...(restProps.menuProps ?? {}),
         };
 
         return (
