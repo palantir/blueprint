@@ -145,7 +145,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
         const queryListMenuProps = {
             id: listboxId,
-            ...restProps.menuProps,
+            ...(restProps.menuProps ?? {}),
         };
 
         return (
