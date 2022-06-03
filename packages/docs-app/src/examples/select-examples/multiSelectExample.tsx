@@ -117,7 +117,8 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleFilmSelect}
                     onItemsPaste={this.handleFilmsPaste}
-                    popoverProps={{ minimal: popoverMinimal, ref: this.popoverRef }}
+                    popoverProps={{ minimal: popoverMinimal }}
+                    popoverRef={this.popoverRef}
                     tagRenderer={this.renderTag}
                     tagInputProps={{
                         onRemove: this.handleTagRemove,

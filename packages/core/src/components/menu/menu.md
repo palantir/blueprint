@@ -18,7 +18,7 @@ The Menu API includes three React components:
     <MenuDivider />
     <MenuItem text="Settings..." icon="cog" intent="primary">
         <MenuItem icon="tick" text="Save on edit" />
-        <Menu.Item icon="blank" text="Compile on edit" />
+        <MenuItem icon="blank" text="Compile on edit" />
     </MenuItem>
 </Menu>
 ```

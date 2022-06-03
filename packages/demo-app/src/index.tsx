@@ -21,4 +21,10 @@ import { FocusStyleManager } from "@blueprintjs/core";
 import { Examples } from "./examples/Examples";
 
 FocusStyleManager.onlyShowFocusOnTabs();
-ReactDOM.render(<Examples />, document.querySelector("#blueprint-demo-app"));
+
+(async () => {
+    // Wait until CSS is loaded before rendering components because some of them (like Table)
+    // rely on those styles to take accurate DOM measurements.
+    await import("./index.scss");
+    ReactDOM.render(<Examples />, document.querySelector("#blueprint-demo-app"));
+})();

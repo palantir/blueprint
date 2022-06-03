@@ -28,14 +28,14 @@ import {
     TagInputAddMethod,
     TagInputProps,
 } from "@blueprintjs/core";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
+import { Popover2 } from "@blueprintjs/popover2";
 
-import { Classes, IListItemsProps } from "../../common";
+import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 // N.B. selectedItems should really be a required prop, but is left optional for backwards compatibility
 
-export interface MultiSelect2Props<T> extends IListItemsProps<T> {
+export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
     /**
      * Whether the component should take up the full width of its container.
      * This overrides `popoverProps.fill` and `tagInputProps.fill`.
@@ -72,17 +72,6 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T> {
      * @default "Search..."
      */
     placeholder?: string;
-
-    /**
-     * Props to spread to `Popover2`.
-     *
-     * Note that `content` cannot be changed, but we do support attaching a ref to the Popover2 component
-     * instance (sometimes useful to reposition the popover after updating `selectedItems` in reaction to
-     * a change external to this component).
-     */
-    popoverProps?: Partial<
-        Omit<Popover2Props, "content"> & { ref: React.RefObject<Popover2<React.HTMLProps<HTMLDivElement>>> }
-    >;
 
     /** Controlled selected values. */
     selectedItems?: T[];
@@ -155,7 +144,15 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { fill, tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
+        const {
+            fill,
+            tagInputProps = {},
+            popoverContentProps = {},
+            popoverProps = {},
+            popoverRef,
+            selectedItems = [],
+            placeholder,
+        } = this.props;
         const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
 
         if (fill) {
@@ -181,11 +178,11 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 canEscapeKeyClose={true}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
-                placement="bottom-start"
+                placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
-                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                    <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         {listProps.itemList}
                     </div>
                 }
@@ -194,9 +191,9 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 onOpened={this.handlePopoverOpened}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
                 ref={
-                    popoverProps.ref === undefined
+                    popoverRef === undefined
                         ? this.refHandlers.popover
-                        : mergeRefs(this.refHandlers.popover, popoverProps.ref)
+                        : mergeRefs(this.refHandlers.popover, popoverRef)
                 }
             >
                 <div

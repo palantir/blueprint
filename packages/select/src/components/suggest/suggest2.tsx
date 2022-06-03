@@ -30,12 +30,12 @@ import {
     refHandler,
     setRef,
 } from "@blueprintjs/core";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
+import { Popover2 } from "@blueprintjs/popover2";
 
-import { Classes, IListItemsProps } from "../../common";
+import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface Suggest2Props<T> extends IListItemsProps<T> {
+export interface Suggest2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
     /**
      * Whether the popover should close after selecting an item.
      *
@@ -85,9 +85,6 @@ export interface Suggest2Props<T> extends IListItemsProps<T> {
      * @default false
      */
     openOnKeyDown?: boolean;
-
-    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<Omit<Popover2Props, "content">>;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -172,7 +169,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { fill, inputProps = {}, popoverProps = {} } = this.props;
+        const { fill, inputProps = {}, popoverContentProps = {}, popoverProps = {}, popoverRef } = this.props;
         const { isOpen, selectedItem } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
         const { autoComplete = "off", placeholder = "Search..." } = inputProps;
@@ -200,15 +197,16 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
-                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                    <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         {listProps.itemList}
                     </div>
                 }
                 interactionKind="click"
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
-                onOpening={this.handlePopoverOpening}
                 onOpened={this.handlePopoverOpened}
+                onOpening={this.handlePopoverOpening}
+                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                ref={popoverRef}
             >
                 <InputGroup
                     autoComplete={autoComplete}
