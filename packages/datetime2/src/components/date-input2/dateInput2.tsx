@@ -106,16 +106,18 @@ export const DateInput2: React.FC<IDateInput2Props> = React.memo(function _DateI
         [timezoneValue, convertedIsoStringToDate],
     );
 
+    const isTimezoneSelectDisabled = disabled || disableTimezoneSelect;
+
     const maybeTimezonePicker = hideTimezone ? undefined : (
         <TimezonePicker2
             value={timezoneValue}
             onChange={handleTimezoneUpdate}
             date={guaranteedValidDateValue}
-            disabled={disabled || disableTimezoneSelect}
+            disabled={isTimezoneSelectDisabled}
             className={Classes.DATE_INPUT_TIMEZONE_PICKER}
             buttonProps={timepickerButtonProps}
         >
-            <Tag rightIcon="caret-down" interactive={true} minimal={true}>
+            <Tag rightIcon="caret-down" interactive={!isTimezoneSelectDisabled} minimal={true}>
                 {getTimezoneName(guaranteedValidDateValue, timezoneValue, false)}
             </Tag>
         </TimezonePicker2>
