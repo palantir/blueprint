@@ -32,6 +32,7 @@ import {
     setRef,
 } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
+import type { PopupKind } from "@blueprintjs/popover2/popupKind";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -186,7 +187,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 onOpened={this.handlePopoverOpened}
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
-                popupKind="listbox"
+                popupKind={PopupKind.LISTBOX}
                 ref={popoverRef}
             >
                 <div

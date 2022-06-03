@@ -29,6 +29,7 @@ import {
     TagInputProps,
 } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
+import type { PopupKind } from "@blueprintjs/popover2/popupKind";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -190,7 +191,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 onInteraction={this.handlePopoverInteraction}
                 onOpened={this.handlePopoverOpened}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
-                popupKind="listbox"
+                popupKind={PopupKind.LISTBOX}
                 ref={
                     popoverRef === undefined
                         ? this.refHandlers.popover
