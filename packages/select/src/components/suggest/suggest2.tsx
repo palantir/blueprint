@@ -214,12 +214,17 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                     autoComplete={autoComplete}
                     disabled={this.props.disabled}
                     {...inputProps}
+                    aria-autocomplete="list"
+                    aria-expanded={this.state.isOpen}
+                    aria-haspopup="listbox"
                     inputRef={this.handleInputRef}
                     onChange={listProps.handleQueryChange}
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
                     placeholder={inputPlaceholder}
+                    role="combobox"
+                    type="text"
                     value={inputValue}
                 />
             </Popover2>

@@ -80,6 +80,12 @@ export interface Select2Props<T> extends IListItemsProps<T> {
      * @default false
      */
     resetOnClose?: boolean;
+
+    /**
+     * Props to add to the `div` that wraps the element that is clicked to display
+     * the select popover
+     */
+    wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 export interface Select2State {
@@ -135,7 +141,14 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const { fill, filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
+        const {
+            fill,
+            filterable = true,
+            disabled = false,
+            inputProps = {},
+            popoverProps = {},
+            wrapperProps = {},
+        } = this.props;
 
         if (fill) {
             popoverProps.fill = true;
@@ -176,6 +189,9 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 onClosing={this.handlePopoverClosing}
             >
                 <div
+                    {...wrapperProps}
+                    aria-expanded={this.state.isOpen}
+                    aria-haspopup="listbox"
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                     role="combobox"
