@@ -190,7 +190,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 ref={popoverRef}
             >
                 <div
-                    {...wrapperProps}
+                    {...popoverTargetProps}
                     aria-expanded={this.state.isOpen}
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
