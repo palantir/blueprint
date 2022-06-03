@@ -11,6 +11,7 @@
 }
 .#{$ns}-timezone-picker-target {
   width: 100%;
+  user-select: none;
 }
 
 .#{$ns}-date-input-timezone-picker {
