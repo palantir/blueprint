@@ -79,8 +79,7 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
     resetOnClose?: boolean;
 
     /**
-     * Props to add to the `div` that wraps the element that is clicked to display
-     * the select popover
+     * Props to add to the popover target wrapper element.
      */
     popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
 }
