@@ -41,7 +41,7 @@ export interface ISuggestExampleState {
     fill: boolean;
     film: IFilm;
     items: IFilm[];
-    matchTargetWidth: false;
+    matchTargetWidth: boolean;
     minimal: boolean;
     openOnKeyDown: boolean;
     resetOnClose: boolean;
