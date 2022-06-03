@@ -166,10 +166,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         // add our own inputProps.className so that we can reference it in event handlers
         const inputProps = {
             ...tagInputProps.inputProps,
-            "aria-expanded": this.state.isOpen,
-            "aria-haspopup": "listbox",
             className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT),
-            role: "combobox",
         };
 
         const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {
@@ -209,6 +206,8 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                     <TagInput
                         placeholder={placeholder}
                         {...tagInputProps}
+                        aria-expanded={this.state.isOpen}
+                        aria-haspopup="listbox"
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         inputRef={this.refHandlers.input}
                         inputProps={inputProps}
@@ -217,6 +216,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                         onAdd={handleTagInputAdd}
                         onInputChange={listProps.handleQueryChange}
                         onRemove={this.handleTagRemove}
+                        role="combobox"
                         values={selectedItems.map(this.props.tagRenderer)}
                     />
                 </div>
