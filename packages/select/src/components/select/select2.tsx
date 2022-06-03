@@ -33,10 +33,10 @@ import {
 } from "@blueprintjs/core";
 import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
-import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { Classes, SelectPopoverProps } from "../../common";
+import { IQueryListRendererProps, QueryList, QueryListProps } from "../query-list/queryList";
 
-export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
+export interface Select2Props<T> extends QueryListProps<T>, SelectPopoverProps {
     children?: React.ReactNode;
 
     /**
