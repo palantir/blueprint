@@ -204,7 +204,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 }
             >
                 <div
-                    {...wrapperProps}
+                    {...popoverTargetProps}
                     aria-expanded={this.state.isOpen}
                     onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTagInputKeyUpHandler(handleKeyUp)}
