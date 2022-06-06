@@ -38,7 +38,20 @@ import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
+    /**
+     * Element which triggers the select popover. In most cases, you should display
+     * the name or label of the curently selected item here.
+     */
     children?: React.ReactNode;
+
+    /**
+     * Whether the component is non-interactive.
+     * If true, the list's item renderer will not be called.
+     * Note that you'll also need to disable the component's children, if appropriate.
+     *
+     * @default false
+     */
+    disabled?: boolean;
 
     /**
      * Whether the component should take up the full width of its container.
@@ -54,15 +67,6 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
      * @default true
      */
     filterable?: boolean;
-
-    /**
-     * Whether the component is non-interactive.
-     * If true, the list's item renderer will not be called.
-     * Note that you'll also need to disable the component's children, if appropriate.
-     *
-     * @default false
-     */
-    disabled?: boolean;
 
     /**
      * Props to spread to the query `InputGroup`. Use `query` and

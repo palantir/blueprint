@@ -108,7 +108,9 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 
         const clearButton =
-            films.length > 0 ? <Button icon="cross" minimal={true} onClick={this.handleClear} /> : undefined;
+            films.length > 0 ? (
+                <Button disabled={flags.disabled} icon="cross" minimal={true} onClick={this.handleClear} />
+            ) : undefined;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>

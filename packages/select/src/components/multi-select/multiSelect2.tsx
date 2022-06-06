@@ -37,6 +37,14 @@ import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
     /**
+     * Whether the component is non-interactive.
+     * If true, the list's item renderer will not be called.
+     *
+     * @default false
+     */
+    disabled?: boolean;
+
+    /**
      * Whether the component should take up the full width of its container.
      * This overrides `popoverProps.fill` and `tagInputProps.fill`.
      */
@@ -76,9 +84,14 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
     /** Controlled selected values. */
     selectedItems?: T[];
 
-    /** Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input. */
+    /**
+     * Props to spread to `TagInput`.
+     * If you wish to control the value of the input, use `query` and `onQueryChange` instead.
+     * Note that you are responsible for disabling any elements you may render in `tagInputProps.rightElement`
+     * when the overall `MultiSelect2` is disabled.
+     */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    tagInputProps?: Partial<TagInputProps> & object;
+    tagInputProps?: Partial<TagInputProps>;
 
     /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;
@@ -92,6 +105,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect2`;
 
     public static defaultProps = {
+        disabled: false,
         fill: false,
         placeholder: "Search...",
     };
@@ -144,7 +158,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { popoverContentProps = {}, popoverProps = {} } = this.props;
+        const { disabled, popoverContentProps = {}, popoverProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
 
         const popoverRef =
@@ -157,6 +171,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
             <Popover2
                 autoFocus={false}
                 canEscapeKeyClose={true}
+                disabled={disabled}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
@@ -185,9 +200,12 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
         ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
-            const { fill, tagInputProps = {}, selectedItems = [], placeholder } = this.props;
+            const { disabled, fill, tagInputProps = {}, selectedItems = [], placeholder } = this.props;
             const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
 
+            if (disabled) {
+                tagInputProps.disabled = true;
+            }
             if (fill) {
                 tagInputProps.fill = true;
             }
