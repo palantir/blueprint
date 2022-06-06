@@ -27,8 +27,9 @@ import {
     TagInput,
     TagInputAddMethod,
     TagInputProps,
+    Utils,
 } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -73,6 +74,11 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
      */
     placeholder?: string;
 
+    /**
+     * Props to add to the `div` that wraps the TagInput
+     */
+    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
+
     /** Controlled selected values. */
     selectedItems?: T[];
 
@@ -90,6 +96,8 @@ export interface MultiSelect2State {
 
 export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>, MultiSelect2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect2`;
+
+    private listboxId = Utils.uniqueId("listbox");
 
     public static defaultProps = {
         fill: false,
@@ -135,6 +143,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         return (
             <this.TypedQueryList
                 {...restProps}
+                menuProps={{ id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
@@ -152,6 +161,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
             popoverRef,
             selectedItems = [],
             placeholder,
+            popoverTargetProps = {},
         } = this.props;
         const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
 
@@ -190,6 +200,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 onInteraction={this.handlePopoverInteraction}
                 onOpened={this.handlePopoverOpened}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
+                popupKind={PopupKind.LISTBOX}
                 ref={
                     popoverRef === undefined
                         ? this.refHandlers.popover
@@ -197,8 +208,12 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 }
             >
                 <div
+                    aria-controls={this.listboxId}
+                    {...popoverTargetProps}
+                    aria-expanded={this.state.isOpen}
                     onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTagInputKeyUpHandler(handleKeyUp)}
+                    role="combobox"
                 >
                     <TagInput
                         placeholder={placeholder}

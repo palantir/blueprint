@@ -29,8 +29,9 @@ import {
     Position,
     refHandler,
     setRef,
+    Utils,
 } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -103,6 +104,8 @@ export interface Suggest2State<T> {
 export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Suggest2State<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest2`;
 
+    private listboxId = Utils.uniqueId("listbox");
+
     public static defaultProps: Partial<Suggest2Props<any>> = {
         closeOnSelect: true,
         fill: false,
@@ -132,9 +135,11 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
     public render() {
         // omit props specific to this component, spread the rest.
         const { disabled, inputProps, popoverProps, ...restProps } = this.props;
+
         return (
             <this.TypedQueryList
                 {...restProps}
+                menuProps={{ id: this.listboxId }}
                 initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
@@ -206,18 +211,24 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                 onOpened={this.handlePopoverOpened}
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                popupKind={PopupKind.LISTBOX}
                 ref={popoverRef}
             >
                 <InputGroup
                     autoComplete={autoComplete}
                     disabled={this.props.disabled}
+                    aria-controls={this.listboxId}
                     {...inputProps}
+                    aria-autocomplete="list"
+                    aria-expanded={this.state.isOpen}
                     inputRef={this.handleInputRef}
                     onChange={listProps.handleQueryChange}
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
                     placeholder={inputPlaceholder}
+                    role="combobox"
+                    type="text"
                     value={inputValue}
                 />
             </Popover2>

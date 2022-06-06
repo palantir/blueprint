@@ -30,8 +30,9 @@ import {
     Position,
     refHandler,
     setRef,
+    Utils,
 } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -71,6 +72,11 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
     inputProps?: InputGroupProps2;
 
     /**
+     * Props to add to the popover target wrapper element.
+     */
+    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
+
+    /**
      * Whether the active item should be reset to the first matching item _when
      * the popover closes_. The query will also be reset to the empty string.
      *
@@ -85,6 +91,8 @@ export interface Select2State {
 
 export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select2`;
+
+    private listboxId = Utils.uniqueId("listbox");
 
     public static ofType<U>() {
         return Select2 as new (props: Select2Props<U>) => Select2<U>;
@@ -111,6 +119,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         return (
             <this.TypedQueryList
                 {...restProps}
+                menuProps={{ id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
@@ -139,6 +148,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
             inputProps = {},
             popoverContentProps = {},
             popoverProps = {},
+            popoverTargetProps = {},
             popoverRef,
         } = this.props;
 
@@ -179,11 +189,16 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 onOpened={this.handlePopoverOpened}
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                popupKind={PopupKind.LISTBOX}
                 ref={popoverRef}
             >
                 <div
+                    aria-controls={this.listboxId}
+                    {...popoverTargetProps}
+                    aria-expanded={this.state.isOpen}
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
+                    role="combobox"
                 >
                     {this.props.children}
                 </div>
