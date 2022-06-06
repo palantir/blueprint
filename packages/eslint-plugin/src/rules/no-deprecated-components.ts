@@ -19,25 +19,31 @@ const DEPRECATED_TO_NEW_MAPPING: { [deprecated: string]: string } = {
 };
 const PACKAGES_WITH_DEPRECATED_IMPORTS = ["@blueprintjs/core", "@blueprintjs/select"];
 
-type MessageIds = "nonDeprecated" | "deprecated";
+type MessageIds = "nonDeprecated";
 
+/**
+ * This rule checks a hardcoded list of components that Blueprint is actively migrating to a newer version (e.g. v1 -> v2)
+ * If deprecated versions (v1) are detected, it will recommend using the replacement component (e.g. the v2) instead.
+ * Note that this does not rely on the @deprecated JSDoc annotation, and is thus distinct/very different from the
+ * deprecated/deprecated ESLint rule
+ */
 // tslint:disable object-literal-sort-keys
 export const noDeprecatedComponentsRule = createRule<unknown[], MessageIds>({
     name: "no-deprecated-components",
     meta: {
         type: "suggestion",
         docs: {
-            description: "Recommends using non-deprecated versions of the component or constant instead",
+            description:
+                "Reports on usage of deprecated Blueprint components and recommends migrating to their corresponding newer non-deprecated API alternatives.",
             requiresTypeChecking: false,
             recommended: "error",
         },
         messages: {
-            nonDeprecated: "Replace deprecated component {{ deprecated }} with {{ nonDeprecated }}",
-            deprecated: "This component or constant is deprecated with no replacement.",
+            nonDeprecated: "Replace usage of deprecated component {{ deprecated }} with {{ nonDeprecated }}",
         },
         schema: [
             {
-                enum: ["nonDeprecated", "deprecated"],
+                enum: ["nonDeprecated"],
             },
         ],
     },
