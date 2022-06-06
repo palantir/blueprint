@@ -248,7 +248,6 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                     onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
                     placeholder={inputPlaceholder}
                     role="combobox"
-                    type="text"
                     value={inputValue}
                 />
             );
