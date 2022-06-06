@@ -34,9 +34,9 @@ import {
 import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
-import { IQueryListRendererProps, QueryList, QueryListProps } from "../query-list/queryList";
+import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface Suggest2Props<T> extends IListItemsProps<T>, Pick<QueryListProps<T>, "menuProps">, SelectPopoverProps {
+export interface Suggest2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
     /**
      * Whether the popover should close after selecting an item.
      *
@@ -136,15 +136,10 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         // omit props specific to this component, spread the rest.
         const { disabled, inputProps, popoverProps, ...restProps } = this.props;
 
-        const queryListMenuProps = {
-            id: this.listboxId,
-            ...(restProps.menuProps ?? {}),
-        };
-
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={queryListMenuProps}
+                menuProps={{ id: this.listboxId }}
                 initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}

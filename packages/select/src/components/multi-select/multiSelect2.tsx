@@ -32,14 +32,11 @@ import {
 import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
-import { IQueryListRendererProps, QueryList, QueryListProps } from "../query-list/queryList";
+import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 // N.B. selectedItems should really be a required prop, but is left optional for backwards compatibility
 
-export interface MultiSelect2Props<T>
-    extends IListItemsProps<T>,
-        Pick<QueryListProps<T>, "menuProps">,
-        SelectPopoverProps {
+export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
     /**
      * Whether the component should take up the full width of its container.
      * This overrides `popoverProps.fill` and `tagInputProps.fill`.
@@ -143,15 +140,10 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         // omit props specific to this component, spread the rest.
         const { openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
 
-        const queryListMenuProps = {
-            id: this.listboxId,
-            ...(restProps.menuProps ?? {}),
-        };
-
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={queryListMenuProps}
+                menuProps={{ id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
