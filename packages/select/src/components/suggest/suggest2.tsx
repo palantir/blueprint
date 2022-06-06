@@ -30,6 +30,7 @@ import {
     refHandler,
     setRef,
 } from "@blueprintjs/core";
+import { uniqueId } from "@blueprintjs/core/src/common/utils";
 import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
@@ -69,12 +70,6 @@ export interface Suggest2Props<T> extends IListItemsProps<T>, Pick<QueryListProp
     defaultSelectedItem?: T;
 
     /**
-     * Adds `id={listboxId}` to the list Menu and `aria-controls={listboxId}` to the
-     * combobox element that opens it
-     */
-    listboxId?: string;
-
-    /**
      * The currently selected item, or `null` to indicate that no item is selected.
      * If omitted or `undefined`, this prop will be uncontrolled (managed by the component's state).
      * Use `onItemSelect` to listen for updates.
@@ -109,6 +104,8 @@ export interface Suggest2State<T> {
 export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Suggest2State<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest2`;
 
+    private listboxId = uniqueId("listbox");
+
     public static defaultProps: Partial<Suggest2Props<any>> = {
         closeOnSelect: true,
         fill: false,
@@ -137,10 +134,10 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { disabled, inputProps, listboxId, popoverProps, ...restProps } = this.props;
+        const { disabled, inputProps, popoverProps, ...restProps } = this.props;
 
         const queryListMenuProps = {
-            id: listboxId,
+            id: this.listboxId,
             ...(restProps.menuProps ?? {}),
         };
 
@@ -182,14 +179,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const {
-            fill,
-            inputProps = {},
-            listboxId,
-            popoverContentProps = {},
-            popoverProps = {},
-            popoverRef,
-        } = this.props;
+        const { fill, inputProps = {}, popoverContentProps = {}, popoverProps = {}, popoverRef } = this.props;
         const { isOpen, selectedItem } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
         const { autoComplete = "off", placeholder = "Search..." } = inputProps;
@@ -232,7 +222,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                 <InputGroup
                     autoComplete={autoComplete}
                     disabled={this.props.disabled}
-                    aria-controls={listboxId}
+                    aria-controls={this.listboxId}
                     {...inputProps}
                     aria-autocomplete="list"
                     aria-expanded={this.state.isOpen}

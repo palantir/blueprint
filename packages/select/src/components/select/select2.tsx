@@ -31,6 +31,7 @@ import {
     refHandler,
     setRef,
 } from "@blueprintjs/core";
+import { uniqueId } from "@blueprintjs/core/src/common/utils";
 import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
@@ -71,12 +72,6 @@ export interface Select2Props<T> extends IListItemsProps<T>, Pick<QueryListProps
     inputProps?: InputGroupProps2;
 
     /**
-     * Adds `id={listboxId}` to the list Menu and `aria-controls={listboxId}` to the
-     * combobox element that opens it
-     */
-    listboxId?: string;
-
-    /**
      * Props to add to the popover target wrapper element.
      */
     popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
@@ -96,6 +91,8 @@ export interface Select2State {
 
 export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select2`;
+
+    private listboxId = uniqueId("listbox");
 
     public static ofType<U>() {
         return Select2 as new (props: Select2Props<U>) => Select2<U>;
@@ -117,10 +114,10 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { filterable, inputProps, listboxId, popoverProps, ...restProps } = this.props;
+        const { filterable, inputProps, popoverProps, ...restProps } = this.props;
 
         const queryListMenuProps = {
-            id: listboxId,
+            id: this.listboxId,
             ...(restProps.menuProps ?? {}),
         };
 
@@ -154,7 +151,6 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
             filterable = true,
             disabled = false,
             inputProps = {},
-            listboxId,
             popoverContentProps = {},
             popoverProps = {},
             popoverTargetProps = {},
@@ -202,7 +198,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 ref={popoverRef}
             >
                 <div
-                    aria-controls={listboxId}
+                    aria-controls={this.listboxId}
                     {...popoverTargetProps}
                     aria-expanded={this.state.isOpen}
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}

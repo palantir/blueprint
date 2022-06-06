@@ -28,6 +28,7 @@ import {
     TagInputAddMethod,
     TagInputProps,
 } from "@blueprintjs/core";
+import { uniqueId } from "@blueprintjs/core/src/common/utils";
 import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
@@ -44,12 +45,6 @@ export interface MultiSelect2Props<T>
      * This overrides `popoverProps.fill` and `tagInputProps.fill`.
      */
     fill?: boolean;
-
-    /**
-     * Adds `id={listboxId}` to the list Menu and `aria-controls={listboxId}` to the
-     * combobox element that opens it
-     */
-    listboxId?: string;
 
     /**
      * Callback invoked when an item is removed from the selection by
@@ -105,6 +100,8 @@ export interface MultiSelect2State {
 export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>, MultiSelect2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect2`;
 
+    private listboxId = uniqueId("listbox");
+
     public static defaultProps = {
         fill: false,
         placeholder: "Search...",
@@ -144,10 +141,10 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { listboxId, openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
+        const { openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
 
         const queryListMenuProps = {
-            id: listboxId,
+            id: this.listboxId,
             ...(restProps.menuProps ?? {}),
         };
 
@@ -166,7 +163,6 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const {
             fill,
-            listboxId,
             tagInputProps = {},
             popoverContentProps = {},
             popoverProps = {},
@@ -220,7 +216,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 }
             >
                 <div
-                    aria-controls={listboxId}
+                    aria-controls={this.listboxId}
                     {...popoverTargetProps}
                     aria-expanded={this.state.isOpen}
                     onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}
