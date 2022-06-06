@@ -207,7 +207,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
     // We use the renderTarget API to flatten the rendered DOM and make it easier to implement features like
     // the "fill" prop. Note that we must take `isOpen` as an argument to force this render function to be called
-    // again after that state changes (it will produce a new renderTarget function).
+    // again after that state changes.
     private getPopoverTargetRenderer =
         (listProps: IQueryListRendererProps<T>, isOpen: boolean) =>
         // eslint-disable-next-line react/display-name

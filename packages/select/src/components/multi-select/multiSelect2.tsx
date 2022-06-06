@@ -197,15 +197,16 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
                 popupKind={PopupKind.LISTBOX}
                 ref={popoverRef}
-                renderTarget={this.getPopoverTargetRenderer(listProps)}
+                renderTarget={this.getPopoverTargetRenderer(listProps, this.state.isOpen)}
             />
         );
     };
 
-    // we use the renderTarget API to flatten the rendered DOM and make it easier to implement features like
-    // the "fill" prop
+    // We use the renderTarget API to flatten the rendered DOM and make it easier to implement features like
+    // the "fill" prop. Note that we must take `isOpen` as an argument to force this render function to be called
+    // again after that state changes.
     private getPopoverTargetRenderer =
-        (listProps: IQueryListRendererProps<T>) =>
+        (listProps: IQueryListRendererProps<T>, isOpen: boolean) =>
         // N.B. pull out `isOpen` so that it's not forwarded to the DOM, but remember not to use it directly
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
@@ -243,7 +244,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                     aria-controls={this.listboxId}
                     {...popoverTargetProps}
                     {...targetProps}
-                    aria-expanded={this.state.isOpen}
+                    aria-expanded={isOpen}
                     // Note that we must set FILL here in addition to TagInput to get the wrapper element to full width
                     className={classNames(targetProps.className, popoverTargetProps.className, {
                         [CoreClasses.FILL]: fill,
