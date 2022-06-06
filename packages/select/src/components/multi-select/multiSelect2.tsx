@@ -27,7 +27,7 @@ import {
     TagInput,
     TagInputAddMethod,
     TagInputProps,
-    uniqueId,
+    Utils,
 } from "@blueprintjs/core";
 import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
@@ -100,7 +100,7 @@ export interface MultiSelect2State {
 export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>, MultiSelect2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect2`;
 
-    private listboxId = uniqueId("listbox");
+    private listboxId = Utils.uniqueId("listbox");
 
     public static defaultProps = {
         fill: false,

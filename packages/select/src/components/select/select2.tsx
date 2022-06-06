@@ -30,7 +30,7 @@ import {
     Position,
     refHandler,
     setRef,
-    uniqueId,
+    Utils,
 } from "@blueprintjs/core";
 import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
@@ -92,7 +92,7 @@ export interface Select2State {
 export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select2`;
 
-    private listboxId = uniqueId("listbox");
+    private listboxId = Utils.uniqueId("listbox");
 
     public static ofType<U>() {
         return Select2 as new (props: Select2Props<U>) => Select2<U>;

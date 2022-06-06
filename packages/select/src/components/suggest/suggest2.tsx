@@ -29,7 +29,7 @@ import {
     Position,
     refHandler,
     setRef,
-    uniqueId,
+    Utils,
 } from "@blueprintjs/core";
 import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
@@ -104,7 +104,7 @@ export interface Suggest2State<T> {
 export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Suggest2State<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest2`;
 
-    private listboxId = uniqueId("listbox");
+    private listboxId = Utils.uniqueId("listbox");
 
     public static defaultProps: Partial<Suggest2Props<any>> = {
         closeOnSelect: true,
