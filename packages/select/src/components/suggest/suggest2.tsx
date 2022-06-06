@@ -194,37 +194,42 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 ref={popoverRef}
-                renderTarget={this.getPopoverTargetRenderer(listProps)}
+                renderTarget={this.getPopoverTargetRenderer(listProps, isOpen)}
             />
         );
     };
 
-    // we use the renderTarget API to flatten the rendered DOM and make it easier to implement features like
-    // the "fill" prop
+    // We use the renderTarget API to flatten the rendered DOM and make it easier to implement features like
+    // the "fill" prop. Note that we must take `isOpen` as an argument to force this render function to be called
+    // again after that state changes (it will produce a new renderTarget function).
     private getPopoverTargetRenderer =
-        (listProps: IQueryListRendererProps<T>) =>
-        // N.B. pull out `isOpen` so that it's not forwarded to the DOM. Also pull out `defaultValue` due to
-        // type incompatibility with InputGroup.
+        (listProps: IQueryListRendererProps<T>, isOpen: boolean) =>
         // eslint-disable-next-line react/display-name
-        ({ isOpen, defaultValue, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLInputElement>) => {
-            const { fill, inputProps = {} } = this.props;
+        ({
+            // pull out `isOpen` so that it's not forwarded to the DOM
+            isOpen: _isOpen,
+            // pull out `defaultValue` due to type incompatibility with InputGroup.
+            defaultValue,
+            ref,
+            ...targetProps
+        }: Popover2TargetProps & React.HTMLProps<HTMLInputElement>) => {
+            const { disabled, fill, inputProps = {}, inputValueRenderer, resetOnClose } = this.props;
             const { selectedItem } = this.state;
             const { handleKeyDown, handleKeyUp } = listProps;
 
-            const selectedItemText = selectedItem ? this.props.inputValueRenderer(selectedItem) : "";
+            const selectedItemText = selectedItem == null ? "" : inputValueRenderer(selectedItem);
             const { autoComplete = "off", placeholder = "Search..." } = inputProps;
             // placeholder shows selected item while open.
             const inputPlaceholder = isOpen && selectedItemText ? selectedItemText : placeholder;
             // value shows query when open, and query remains when closed if nothing is selected.
             // if resetOnClose is enabled, then hide query when not open. (see handlePopoverOpening)
-            const inputValue = isOpen
-                ? listProps.query
-                : selectedItemText || (this.props.resetOnClose ? "" : listProps.query);
+            const inputValue = isOpen ? listProps.query : selectedItemText ?? (resetOnClose ? "" : listProps.query);
+            console.info(`rendering InputGroup, isOpen: ${isOpen}, selectedItemText: ${selectedItemText}`);
 
             return (
                 <InputGroup
                     autoComplete={autoComplete}
-                    disabled={this.props.disabled}
+                    disabled={disabled}
                     {...targetProps}
                     {...inputProps}
                     fill={fill}
@@ -302,6 +307,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
             if (this.inputElement != null && !isInputFocused) {
                 // the input is no longer focused, we should close the popover
+                console.info("handlePopoverInteraction next frame");
                 this.setState({ isOpen: false });
             }
             this.props.popoverProps?.onInteraction?.(nextOpenState, event);

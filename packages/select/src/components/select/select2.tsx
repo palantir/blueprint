@@ -190,9 +190,10 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
     // the "fill" prop
     private getPopoverTargetRenderer =
         (listProps: IQueryListRendererProps<T>) =>
-        // N.B. pull out `isOpen` so that it's not forwarded to the DOM
+        // N.B. pull out `isOpen` so that it's not forwarded to the DOM, but remember not to use it directly
+        // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
-        ({ isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
+        ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
             const { handleKeyDown, handleKeyUp } = listProps;
             return (
                 <div
