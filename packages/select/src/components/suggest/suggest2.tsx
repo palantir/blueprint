@@ -230,7 +230,6 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
             // value shows query when open, and query remains when closed if nothing is selected.
             // if resetOnClose is enabled, then hide query when not open. (see handlePopoverOpening)
             const inputValue = isOpen ? listProps.query : selectedItemText ?? (resetOnClose ? "" : listProps.query);
-            console.info(`rendering InputGroup, isOpen: ${isOpen}, selectedItemText: ${selectedItemText}`);
 
             return (
                 <InputGroup
@@ -318,7 +317,6 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
             if (this.inputElement != null && !isInputFocused) {
                 // the input is no longer focused, we should close the popover
-                console.info("handlePopoverInteraction next frame");
                 this.setState({ isOpen: false });
             }
             this.props.popoverProps?.onInteraction?.(nextOpenState, event);
