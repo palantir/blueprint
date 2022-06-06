@@ -33,7 +33,7 @@ const ITEMS: ITestItem[] = IDS.map(id => ({ id }));
 const TestItem: React.FC<ITestItem> = () => <div style={{ width: 10, flex: "0 0 auto" }} />;
 const TestOverflow: React.FC<{ items: ITestItem[] }> = () => <div />;
 
-describe.skip("<OverflowList>", function (this) {
+describe("<OverflowList>", function (this) {
     // these tests rely on DOM measurement which can be flaky, so we allow some retries
     this.retries(3);
 
@@ -64,6 +64,10 @@ describe.skip("<OverflowList>", function (this) {
 
     it("overflows correctly on initial mount", () => {
         overflowList().assertVisibleItemSplit(4);
+    });
+
+    it("overflows correctly on initial mount with large number of items", () => {
+        overflowList(45, { items: new Array(10000).fill(0).map((_, i) => ({ id: i })) }).assertVisibleItemSplit(4);
     });
 
     it("shows more after growing", async () => {
@@ -221,9 +225,10 @@ describe.skip("<OverflowList>", function (this) {
          * overflow IDs assuming `collapseFrom="start"`.
          */
         wrapper.assertVisibleItemSplit = (visibleCount: number) => {
+            const ids = (props.items ?? ITEMS).map(it => it.id);
             return wrapper
-                .assertOverflowItems(...IDS.slice(0, -visibleCount))
-                .assertVisibleItems(...IDS.slice(-visibleCount));
+                .assertOverflowItems(...ids.slice(0, -visibleCount))
+                .assertVisibleItems(...ids.slice(-visibleCount));
         };
 
         /** Assert ordered IDs of overflow items. */
