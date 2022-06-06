@@ -27,8 +27,9 @@ import {
     TagInput,
     TagInputAddMethod,
     TagInputProps,
+    Utils,
 } from "@blueprintjs/core";
-import { Popover2, Popover2TargetProps } from "@blueprintjs/popover2";
+import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -81,6 +82,11 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
      */
     placeholder?: string;
 
+    /**
+     * Props to add to the `div` that wraps the TagInput
+     */
+    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
+
     /** Controlled selected values. */
     selectedItems?: T[];
 
@@ -103,6 +109,8 @@ export interface MultiSelect2State {
 
 export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>, MultiSelect2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect2`;
+
+    private listboxId = Utils.uniqueId("listbox");
 
     public static defaultProps = {
         disabled: false,
@@ -149,6 +157,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         return (
             <this.TypedQueryList
                 {...restProps}
+                menuProps={{ id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
@@ -186,6 +195,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 onInteraction={this.handlePopoverInteraction}
                 onOpened={this.handlePopoverOpened}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
+                popupKind={PopupKind.LISTBOX}
                 ref={popoverRef}
                 renderTarget={this.getPopoverTargetRenderer(listProps)}
             />
@@ -200,7 +210,14 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
         ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
-            const { disabled, fill, tagInputProps = {}, selectedItems = [], placeholder } = this.props;
+            const {
+                disabled,
+                fill,
+                tagInputProps = {},
+                selectedItems = [],
+                placeholder,
+                popoverTargetProps = {},
+            } = this.props;
             const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
 
             if (disabled) {
@@ -223,9 +240,12 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
             };
             return (
                 <div
+                    aria-controls={this.listboxId}
+                    {...popoverTargetProps}
                     {...targetProps}
+                    aria-expanded={this.state.isOpen}
                     // Note that we must set FILL here in addition to TagInput to get the wrapper element to full width
-                    className={classNames(targetProps.className, {
+                    className={classNames(targetProps.className, popoverTargetProps.className, {
                         [CoreClasses.FILL]: fill,
                     })}
                     // Normally, Popover2 would also need to attach its own `onKeyDown` handler via `targetProps`,
@@ -234,6 +254,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                     onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTagInputKeyUpHandler(handleKeyUp)}
                     ref={ref}
+                    role="combobox"
                 >
                     <TagInput
                         placeholder={placeholder}

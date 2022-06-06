@@ -30,8 +30,9 @@ import {
     Position,
     refHandler,
     setRef,
+    Utils,
 } from "@blueprintjs/core";
-import { Popover2, Popover2TargetProps } from "@blueprintjs/popover2";
+import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -130,12 +131,16 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
     private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 
+    private listboxId = Utils.uniqueId("listbox");
+
     public render() {
         // omit props specific to this component, spread the rest.
         const { disabled, inputProps, popoverProps, ...restProps } = this.props;
+
         return (
             <this.TypedQueryList
                 {...restProps}
+                menuProps={{ id: this.listboxId }}
                 initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
@@ -193,6 +198,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                 onOpened={this.handlePopoverOpened}
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                popupKind={PopupKind.LISTBOX}
                 ref={popoverRef}
                 renderTarget={this.getPopoverTargetRenderer(listProps, isOpen)}
             />
@@ -230,8 +236,11 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                 <InputGroup
                     autoComplete={autoComplete}
                     disabled={disabled}
+                    aria-controls={this.listboxId}
                     {...targetProps}
                     {...inputProps}
+                    aria-autocomplete="list"
+                    aria-expanded={isOpen}
                     fill={fill}
                     inputRef={mergeRefs(this.handleInputRef, ref)}
                     onChange={listProps.handleQueryChange}
@@ -239,6 +248,8 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
                     placeholder={inputPlaceholder}
+                    role="combobox"
+                    type="text"
                     value={inputValue}
                 />
             );

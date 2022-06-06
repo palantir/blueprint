@@ -31,8 +31,9 @@ import {
     Position,
     refHandler,
     setRef,
+    Utils,
 } from "@blueprintjs/core";
-import { Popover2, Popover2TargetProps } from "@blueprintjs/popover2";
+import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -76,6 +77,11 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
     inputProps?: InputGroupProps2;
 
     /**
+     * Props to add to the popover target wrapper element.
+     */
+    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
+
+    /**
      * Whether the active item should be reset to the first matching item _when
      * the popover closes_. The query will also be reset to the empty string.
      *
@@ -97,9 +103,9 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     public state: Select2State = { isOpen: false };
 
-    private TypedQueryList = QueryList.ofType<T>();
-
     public inputElement: HTMLInputElement | null = null;
+
+    private TypedQueryList = QueryList.ofType<T>();
 
     private queryList: QueryList<T> | null = null;
 
@@ -109,6 +115,8 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 
+    private listboxId = Utils.uniqueId("listbox");
+
     public render() {
         // omit props specific to this component, spread the rest.
         const { filterable, inputProps, popoverProps, ...restProps } = this.props;
@@ -116,6 +124,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         return (
             <this.TypedQueryList
                 {...restProps}
+                menuProps={{ id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
@@ -184,6 +193,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 onOpened={this.handlePopoverOpened}
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                popupKind={PopupKind.LISTBOX}
                 ref={popoverRef}
                 renderTarget={this.getPopoverTargetRenderer(listProps)}
             />
@@ -198,10 +208,14 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
         ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
+            const { popoverTargetProps } = this.props;
             const { handleKeyDown, handleKeyUp } = listProps;
             return (
                 <div
+                    aria-controls={this.listboxId}
+                    {...popoverTargetProps}
                     {...targetProps}
+                    aria-expanded={this.state.isOpen}
                     // Note that we must set FILL here in addition to children to get the wrapper element to full width
                     className={classNames(targetProps.className, {
                         [CoreClasses.FILL]: this.props.fill,
@@ -212,6 +226,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                     ref={ref}
+                    role="combobox"
                 >
                     {this.props.children}
                 </div>
