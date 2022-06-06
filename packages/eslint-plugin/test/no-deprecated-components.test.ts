@@ -82,6 +82,10 @@ ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
                     messageId: "nonDeprecated",
                     data: { deprecated: "AbstractComponent", nonDeprecated: "AbstractComponent2" },
                 },
+                {
+                    messageId: "nonDeprecated",
+                    data: { deprecated: "AbstractComponent", nonDeprecated: "AbstractComponent2" },
+                },
             ],
         },
     ],

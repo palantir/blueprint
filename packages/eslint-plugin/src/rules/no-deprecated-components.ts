@@ -10,9 +10,14 @@ const DEPRECATED_TO_NEW_MAPPING: { [deprecated: string]: string } = {
     AbstractComponent: "AbstractComponent2",
     AbstractPureComponent: "AbstractPureComponent2",
     CollapsibleList: "OverflowList",
+    MultiSelect: "MultiSelect2",
+    PanelStack: "PanelStack2",
     Popover: "Popover2",
+    Select: "Select2",
+    Suggest: "Suggest2",
     Tooltip: "Tooltip2",
 };
+const PACKAGES_WITH_DEPRECATED_IMPORTS = ["@blueprintjs/core", "@blueprintjs/select"];
 
 type MessageIds = "nonDeprecated" | "deprecated";
 
@@ -66,7 +71,7 @@ export const noDeprecatedComponentsRule = createRule<unknown[], MessageIds>({
         // Get the list of all deprecated imports from blueprint
         return {
             "Program > ImportDeclaration": (node: TSESTree.ImportDeclaration) => {
-                if (node.source.value !== "@blueprintjs/core") {
+                if (!PACKAGES_WITH_DEPRECATED_IMPORTS.includes(node.source.value)) {
                     return;
                 }
                 for (const importClause of node.specifiers) {
