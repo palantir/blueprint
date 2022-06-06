@@ -30,6 +30,7 @@ import {
     refHandler,
     setRef,
 } from "@blueprintjs/core";
+// tslint:disable-next-line:no-submodule-imports
 import { uniqueId } from "@blueprintjs/core/src/common/utils";
 import { Popover2, PopupKind } from "@blueprintjs/popover2";
 
