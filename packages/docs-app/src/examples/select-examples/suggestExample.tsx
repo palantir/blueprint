@@ -37,9 +37,11 @@ export interface ISuggestExampleState {
     allowCreate: boolean;
     closeOnSelect: boolean;
     createdItems: IFilm[];
+    disabled: boolean;
     fill: boolean;
     film: IFilm;
     items: IFilm[];
+    matchTargetWidth: boolean;
     minimal: boolean;
     openOnKeyDown: boolean;
     resetOnClose: boolean;
@@ -52,9 +54,11 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
         allowCreate: false,
         closeOnSelect: true,
         createdItems: [],
+        disabled: false,
         fill: false,
         film: TOP_100_FILMS[0],
         items: filmSelectProps.items,
+        matchTargetWidth: false,
         minimal: true,
         openOnKeyDown: false,
         resetOnClose: false,
@@ -66,11 +70,15 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
 
     private handleCloseOnSelectChange = this.handleSwitchChange("closeOnSelect");
 
-    private handleOpenOnKeyDownChange = this.handleSwitchChange("openOnKeyDown");
+    private handleDisabledChange = this.handleSwitchChange("disabled");
+
+    private handleFillChange = this.handleSwitchChange("fill");
+
+    private handleMatchTargetWidthChange = this.handleSwitchChange("matchTargetWidth");
 
     private handleMinimalChange = this.handleSwitchChange("minimal");
 
-    private handleFillChange = this.handleSwitchChange("fill");
+    private handleOpenOnKeyDownChange = this.handleSwitchChange("openOnKeyDown");
 
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
 
@@ -79,7 +87,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
     public render() {
-        const { allowCreate, film, minimal, ...flags } = this.state;
+        const { allowCreate, film, matchTargetWidth, minimal, ...flags } = this.state;
 
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
         const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
@@ -98,7 +106,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
                     items={this.state.items}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleValueChange}
-                    popoverProps={{ minimal }}
+                    popoverProps={{ matchTargetWidth, minimal }}
                 />
             </Example>
         );
@@ -138,8 +146,15 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
                     checked={this.state.allowCreate}
                     onChange={this.handleAllowCreateChange}
                 />
+                <H5>Appearance props</H5>
+                <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
                 <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
                 <H5>Popover props</H5>
+                <Switch
+                    label="Match target width"
+                    checked={this.state.matchTargetWidth}
+                    onChange={this.handleMatchTargetWidthChange}
+                />
                 <Switch
                     label="Minimal popover style"
                     checked={this.state.minimal}

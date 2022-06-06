@@ -29,7 +29,7 @@ import {
     TagInputProps,
     Utils,
 } from "@blueprintjs/core";
-import { Popover2, PopupKind } from "@blueprintjs/popover2";
+import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -37,6 +37,14 @@ import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 // N.B. selectedItems should really be a required prop, but is left optional for backwards compatibility
 
 export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
+    /**
+     * Whether the component is non-interactive.
+     * If true, the list's item renderer will not be called.
+     *
+     * @default false
+     */
+    disabled?: boolean;
+
     /**
      * Whether the component should take up the full width of its container.
      * This overrides `popoverProps.fill` and `tagInputProps.fill`.
@@ -82,9 +90,14 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
     /** Controlled selected values. */
     selectedItems?: T[];
 
-    /** Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input. */
+    /**
+     * Props to spread to `TagInput`.
+     * If you wish to control the value of the input, use `query` and `onQueryChange` instead.
+     * Note that you are responsible for disabling any elements you may render in `tagInputProps.rightElement`
+     * when the overall `MultiSelect2` is disabled.
+     */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    tagInputProps?: Partial<TagInputProps> & object;
+    tagInputProps?: Partial<TagInputProps>;
 
     /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;
@@ -100,6 +113,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     private listboxId = Utils.uniqueId("listbox");
 
     public static defaultProps = {
+        disabled: false,
         fill: false,
         placeholder: "Search...",
     };
@@ -153,39 +167,20 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const {
-            fill,
-            tagInputProps = {},
-            popoverContentProps = {},
-            popoverProps = {},
-            popoverRef,
-            selectedItems = [],
-            placeholder,
-            popoverTargetProps = {},
-        } = this.props;
-        const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
+        const { disabled, popoverContentProps = {}, popoverProps = {} } = this.props;
+        const { handleKeyDown, handleKeyUp } = listProps;
 
-        if (fill) {
-            popoverProps.fill = true;
-            tagInputProps.fill = true;
-        }
+        const popoverRef =
+            this.props.popoverRef === undefined
+                ? this.refHandlers.popover
+                : mergeRefs(this.refHandlers.popover, this.props.popoverRef);
 
-        // add our own inputProps.className so that we can reference it in event handlers
-        const inputProps = {
-            ...tagInputProps.inputProps,
-            className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT),
-        };
-
-        const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {
-            if (method === "paste") {
-                handlePaste(values);
-            }
-        };
-
+        // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
             <Popover2
                 autoFocus={false}
                 canEscapeKeyClose={true}
+                disabled={disabled}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
@@ -201,18 +196,65 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 onOpened={this.handlePopoverOpened}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
                 popupKind={PopupKind.LISTBOX}
-                ref={
-                    popoverRef === undefined
-                        ? this.refHandlers.popover
-                        : mergeRefs(this.refHandlers.popover, popoverRef)
+                ref={popoverRef}
+                renderTarget={this.getPopoverTargetRenderer(listProps, this.state.isOpen)}
+            />
+        );
+    };
+
+    // We use the renderTarget API to flatten the rendered DOM and make it easier to implement features like
+    // the "fill" prop. Note that we must take `isOpen` as an argument to force this render function to be called
+    // again after that state changes.
+    private getPopoverTargetRenderer =
+        (listProps: IQueryListRendererProps<T>, isOpen: boolean) =>
+        // N.B. pull out `isOpen` so that it's not forwarded to the DOM, but remember not to use it directly
+        // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
+        // eslint-disable-next-line react/display-name
+        ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
+            const {
+                disabled,
+                fill,
+                tagInputProps = {},
+                selectedItems = [],
+                placeholder,
+                popoverTargetProps = {},
+            } = this.props;
+            const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
+
+            if (disabled) {
+                tagInputProps.disabled = true;
+            }
+            if (fill) {
+                tagInputProps.fill = true;
+            }
+
+            // add our own inputProps.className so that we can reference it in event handlers
+            const inputProps = {
+                ...tagInputProps.inputProps,
+                className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT),
+            };
+
+            const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {
+                if (method === "paste") {
+                    handlePaste(values);
                 }
-            >
+            };
+            return (
                 <div
                     aria-controls={this.listboxId}
                     {...popoverTargetProps}
-                    aria-expanded={this.state.isOpen}
+                    {...targetProps}
+                    aria-expanded={isOpen}
+                    // Note that we must set FILL here in addition to TagInput to get the wrapper element to full width
+                    className={classNames(targetProps.className, popoverTargetProps.className, {
+                        [CoreClasses.FILL]: fill,
+                    })}
+                    // Normally, Popover2 would also need to attach its own `onKeyDown` handler via `targetProps`,
+                    // but in our case we fully manage that interaction and listen for key events to open/close
+                    // the popover, so we elide it from the DOM.
                     onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTagInputKeyUpHandler(handleKeyUp)}
+                    ref={ref}
                     role="combobox"
                 >
                     <TagInput
@@ -229,9 +271,8 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                         values={selectedItems.map(this.props.tagRenderer)}
                     />
                 </div>
-            </Popover2>
-        );
-    };
+            );
+        };
 
     private handleItemSelect = (item: T, evt?: React.SyntheticEvent<HTMLElement>) => {
         if (this.input != null) {

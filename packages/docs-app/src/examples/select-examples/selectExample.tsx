@@ -26,16 +26,16 @@ export interface ISelectExampleState {
     allowCreate: boolean;
     createFirst: boolean;
     createdItems: IFilm[];
+    disableItems: boolean;
+    disabled: boolean;
     fill: boolean;
     filterable: boolean;
     hasInitialContent: boolean;
+    matchTargetWidth: boolean;
     minimal: boolean;
     resetOnClose: boolean;
     resetOnQuery: boolean;
     resetOnSelect: boolean;
-    disableItems: boolean;
-    disabled: boolean;
-    matchTargetWidth: false;
 }
 
 /** Technically a Select2 example, since FilmSelect uses Select2. */
@@ -70,6 +70,8 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
 
     private handleItemDisabledChange = this.handleSwitchChange("disableItems");
 
+    private handleMatchTargetWidthChange = this.handleSwitchChange("matchTargetWidth");
+
     private handleMinimalChange = this.handleSwitchChange("minimal");
 
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
@@ -78,10 +80,8 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
 
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
-    private handleMatchTargetWidthChange = this.handleSwitchChange("matchTargetWidth");
-
     public render() {
-        const { allowCreate, disabled, disableItems, minimal, ...flags } = this.state;
+        const { allowCreate, disabled, disableItems, matchTargetWidth, minimal, ...flags } = this.state;
 
         const initialContent = this.state.hasInitialContent ? (
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
@@ -96,7 +96,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     disabled={disabled}
                     itemDisabled={this.isItemDisabled}
                     initialContent={initialContent}
-                    popoverProps={{ minimal }}
+                    popoverProps={{ matchTargetWidth, minimal }}
                 />
             </Example>
         );
@@ -106,7 +106,6 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         return (
             <>
                 <H5>Props</H5>
-                <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
                 <Switch label="Filterable" checked={this.state.filterable} onChange={this.handleFilterableChange} />
                 <Switch
                     label="Reset on close"
@@ -123,7 +122,6 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     checked={this.state.resetOnSelect}
                     onChange={this.handleResetOnSelectChange}
                 />
-                <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
                 <Switch
                     label="Use initial content"
                     checked={this.state.hasInitialContent}
@@ -133,11 +131,6 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     label="Disable films before 2000"
                     checked={this.state.disableItems}
                     onChange={this.handleItemDisabledChange}
-                />
-                <Switch
-                    label="Match target width"
-                    checked={this.state.matchTargetWidth}
-                    onChange={this.handleMatchTargetWidthChange}
                 />
                 <Switch
                     label="Allow creating new items"
@@ -150,7 +143,15 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     checked={this.state.createFirst}
                     onChange={this.handleCreateFirstChange}
                 />
+                <H5>Appearance props</H5>
+                <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
+                <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
                 <H5>Popover props</H5>
+                <Switch
+                    label="Match target width"
+                    checked={this.state.matchTargetWidth}
+                    onChange={this.handleMatchTargetWidthChange}
+                />
                 <Switch
                     label="Minimal popover style"
                     checked={this.state.minimal}
