@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2 } from "../../common";
+import { AbstractPureComponent2, removeNonHTMLProps } from "../../common";
 import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { ensureElement } from "../../common/utils";
@@ -79,10 +79,15 @@ export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
     };
 
     public render() {
-        const { action, children, className, layout } = this.props;
+        const { action, children, className, layout, ...restProps } = this.props;
+
+        const htmlProps = removeNonHTMLProps(restProps);
 
         return (
-            <div className={classNames(Classes.NON_IDEAL_STATE, `${Classes.NON_IDEAL_STATE}-${layout}`, className)}>
+            <div
+                {...htmlProps}
+                className={classNames(Classes.NON_IDEAL_STATE, `${Classes.NON_IDEAL_STATE}-${layout}`, className)}
+            >
                 {this.maybeRenderVisual()}
                 {this.maybeRenderText()}
                 {action}
