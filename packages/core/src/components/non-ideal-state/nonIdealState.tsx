@@ -33,7 +33,7 @@ export enum NonIdealStateIconSize {
 // eslint-disable-next-line deprecation/deprecation
 export type NonIdealStateProps = INonIdealStateProps;
 /** @deprecated use NonIdealStateProps */
-export interface INonIdealStateProps extends Props {
+export interface INonIdealStateProps extends Props, Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
     /** An action to resolve the non-ideal state which appears after `description`. */
     action?: JSX.Element;
 
