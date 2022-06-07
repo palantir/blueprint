@@ -22,6 +22,7 @@ import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-t
 
 export interface ITimezonePickerExampleState {
     disabled: boolean;
+    fill: boolean;
     showCustomTarget: boolean;
     showLocalTimezone: boolean;
     timezone: string;
@@ -30,6 +31,7 @@ export interface ITimezonePickerExampleState {
 export class TimezonePickerV2Example extends React.PureComponent<IExampleProps, ITimezonePickerExampleState> {
     public state: ITimezonePickerExampleState = {
         disabled: false,
+        fill: false,
         showCustomTarget: false,
         showLocalTimezone: true,
         timezone: "",
@@ -37,28 +39,31 @@ export class TimezonePickerV2Example extends React.PureComponent<IExampleProps, 
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
 
+    private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
+
     private handleShowLocalChange = handleBooleanChange(showLocalTimezone => this.setState({ showLocalTimezone }));
 
     public render() {
-        const { timezone, disabled, showLocalTimezone } = this.state;
+        const { timezone, disabled, fill, showLocalTimezone } = this.state;
 
         const options = (
             <>
                 <H5>Props</H5>
                 <Switch checked={showLocalTimezone} label="Show local timezone" onChange={this.handleShowLocalChange} />
                 <Switch checked={disabled} label="Disabled" onChange={this.handleDisabledChange} />
-                <H5>Example</H5>
+                <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
             </>
         );
 
         return (
             <Example options={options} {...this.props}>
                 <TimezonePicker2
-                    value={timezone}
+                    disabled={disabled}
+                    fill={fill}
                     onChange={this.handleTimezoneChange}
                     popoverProps={{ position: Position.BOTTOM }}
                     showLocalTimezone={showLocalTimezone}
-                    disabled={disabled}
+                    value={timezone}
                 />
             </Example>
         );

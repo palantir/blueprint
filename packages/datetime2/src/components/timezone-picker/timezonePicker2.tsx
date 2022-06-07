@@ -58,6 +58,12 @@ export interface TimezonePicker2Props extends Props {
     date?: Date;
 
     /**
+     * Whether the component should take up the full width of its container.
+     * This overrides `popoverProps.fill` and `buttonProps.fill`.
+     */
+    fill?: boolean;
+
+    /**
      * Whether this component is non-interactive.
      * This prop will be ignored if `children` is provided.
      *
@@ -110,6 +116,7 @@ export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props
     public static defaultProps: Partial<TimezonePicker2Props> = {
         date: new Date(),
         disabled: false,
+        fill: false,
         inputProps: {},
         placeholder: "Select timezone...",
         popoverProps: {},
@@ -130,7 +137,7 @@ export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props
     }
 
     public render() {
-        const { children, className, disabled, inputProps, popoverProps } = this.props;
+        const { children, className, disabled, fill, inputProps, popoverProps } = this.props;
         const { query } = this.state;
         const finalInputProps: InputGroupProps2 = {
             placeholder: "Search for timezones...",
@@ -145,6 +152,7 @@ export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props
             <TypedSelect
                 className={classNames(Classes.TIMEZONE_PICKER, className)}
                 disabled={disabled}
+                fill={fill}
                 inputProps={finalInputProps}
                 itemListPredicate={this.filterItems}
                 itemRenderer={this.renderItem}
@@ -176,14 +184,14 @@ export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props
     }
 
     private renderButton() {
-        const { buttonProps = {}, disabled, placeholder, value } = this.props;
+        const { buttonProps = {}, disabled, fill, placeholder, value } = this.props;
         const selectedTimezone = this.timezoneItems.find(tz => tz.ianaCode === value);
         const buttonContent = selectedTimezone ? (
             `${selectedTimezone.label}  ${formatInTimeZone(this.props.date, selectedTimezone.ianaCode, "xxx")}`
         ) : (
             <span className={CoreClasses.TEXT_MUTED}>{placeholder}</span>
         );
-        return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} {...buttonProps} />;
+        return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} fill={fill} {...buttonProps} />;
     }
 
     private filterItems: ItemListPredicate<TimezoneWithNames> = (query, items) => {
