@@ -104,7 +104,7 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
         ));
 
         return (
-            <Menu className={DATERANGEPICKER_SHORTCUTS} tabIndex={0}>
+            <Menu aria-label="datepicker shortcuts" className={DATERANGEPICKER_SHORTCUTS} tabIndex={0}>
                 {shortcutElements}
             </Menu>
         );
