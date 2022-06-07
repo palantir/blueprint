@@ -18,6 +18,7 @@ import * as React from "react";
 
 import {
     AbstractPureComponent2,
+    Button,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     Keys,
@@ -50,6 +51,12 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
      * This overrides `popoverProps.fill` and `tagInputProps.fill`.
      */
     fill?: boolean;
+
+    /**
+     * If provided, this component will render a "clear" button inside its TagInput.
+     * Clicking that button will invoke this callback to clear all items from the current selection.
+     */
+    onClear?: () => void;
 
     /**
      * Callback invoked when an item is removed from the selection by
@@ -93,10 +100,13 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
     /**
      * Props to spread to `TagInput`.
      * If you wish to control the value of the input, use `query` and `onQueryChange` instead.
-     * Note that you are responsible for disabling any elements you may render in `tagInputProps.rightElement`
-     * when the overall `MultiSelect2` is disabled.
+     *
+     * Notes for `tagInputProps.rightElement`:
+     * - you are responsible for disabling any elements you may render here when the overall
+     *   `MultiSelect2` is disabled.
+     * - if the `onClear` prop is defined, this element will override/replace the default rightElement,
+     *   which is a "clear" button that removes all items from the current selection.
      */
-    // eslint-disable-next-line @typescript-eslint/ban-types
     tagInputProps?: Partial<TagInputProps>;
 
     /** Custom renderer to transform an item into tag content. */
@@ -147,6 +157,12 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
             setRef(prevProps.tagInputProps?.inputRef, null);
             this.refHandlers.input = refHandler(this, "input", this.props.tagInputProps?.inputRef);
             setRef(this.props.tagInputProps?.inputRef, this.input);
+        }
+        if (
+            (prevProps.onClear === undefined && this.props.onClear !== undefined) ||
+            (prevProps.onClear !== undefined && this.props.onClear === undefined)
+        ) {
+            this.forceUpdate();
         }
     }
 
@@ -214,12 +230,13 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
             const {
                 disabled,
                 fill,
-                tagInputProps = {},
-                selectedItems = [],
+                onClear,
                 placeholder,
                 popoverTargetProps = {},
+                selectedItems = [],
+                tagInputProps = {},
             } = this.props;
-            const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
+            const { handleKeyDown, handleKeyUp } = listProps;
 
             if (disabled) {
                 tagInputProps.disabled = true;
@@ -234,11 +251,11 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT),
             };
 
-            const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {
-                if (method === "paste") {
-                    handlePaste(values);
-                }
-            };
+            const maybeClearButton =
+                onClear !== undefined && selectedItems.length > 0 ? (
+                    <Button disabled={disabled} icon="cross" minimal={true} onClick={this.handleClearButtonClick} />
+                ) : undefined;
+
             return (
                 <div
                     aria-controls={this.listboxId}
@@ -259,13 +276,13 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 >
                     <TagInput
                         placeholder={placeholder}
+                        rightElement={maybeClearButton}
                         {...tagInputProps}
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         inputRef={this.refHandlers.input}
                         inputProps={inputProps}
                         inputValue={listProps.query}
-                        /* eslint-disable-next-line react/jsx-no-bind */
-                        onAdd={handleTagInputAdd}
+                        onAdd={this.getTagInputAddHandler(listProps)}
                         onInputChange={listProps.handleQueryChange}
                         onRemove={this.handleTagRemove}
                         values={selectedItems.map(this.props.tagRenderer)}
@@ -319,6 +336,13 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         this.refHandlers.popover.current?.reposition(); // reposition when size of input changes
     };
 
+    private getTagInputAddHandler =
+        (listProps: IQueryListRendererProps<T>) => (values: any[], method: TagInputAddMethod) => {
+            if (method === "paste") {
+                listProps.handlePaste(values);
+            }
+        };
+
     private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
             // HACKHACK: https://github.com/palantir/blueprint/issues/4165
@@ -354,5 +378,10 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 handleQueryListKeyUp?.(e);
             }
         };
+    };
+
+    private handleClearButtonClick = () => {
+        this.props.onClear?.();
+        this.refHandlers.popover.current?.reposition(); // reposition when size of input changes
     };
 }
