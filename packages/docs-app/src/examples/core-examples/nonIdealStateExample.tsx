@@ -126,6 +126,7 @@ export class NonIdealStateExample extends React.PureComponent<IExampleProps, INo
                     description={this.state.showDescription ? description : undefined}
                     action={this.state.showAction ? action : undefined}
                     layout={this.state.layout}
+                    role="alert"
                 />
             </Example>
         );
