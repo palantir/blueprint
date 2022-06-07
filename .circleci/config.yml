@@ -33,7 +33,8 @@ aliases:
     key: v4-yarn-cache
 
 references:
-  reports_path: &reports_path
+  reports_path:
+    &reports_path
     path: ./reports
 
 jobs:
@@ -51,7 +52,7 @@ jobs:
       - save_cache: *save-yarn-cache
       - persist_to_workspace:
           root: "."
-          paths: [packages/*/node_modules]
+          paths: [ packages/*/node_modules ]
 
   clean-lockfile:
     docker: *docker-node-image
@@ -70,7 +71,7 @@ jobs:
       - run: yarn compile
       - persist_to_workspace:
           root: "."
-          paths: [packages/*/lib, packages/*/src/generated]
+          paths: [ packages/*/lib, packages/*/src/generated ]
 
   format-check:
     docker: *docker-node-image
@@ -111,7 +112,7 @@ jobs:
       - run: yarn dist
       - persist_to_workspace:
           root: "."
-          paths: [packages/*/lib, packages/*/dist]
+          paths: [ packages/*/lib, packages/*/dist ]
 
   test-node-libs:
     docker: *docker-node-image
@@ -133,7 +134,8 @@ jobs:
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
-  test-react-16: &test-react
+  test-react-16:
+    &test-react
     docker: *docker-node-browsers-image
     environment:
       JUNIT_REPORT_PATH: reports
@@ -169,7 +171,8 @@ jobs:
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
-  test-iso-react-16: &test-iso
+  test-iso-react-16:
+    &test-iso
     docker: *docker-node-image
     environment:
       JUNIT_REPORT_PATH: reports
@@ -198,6 +201,8 @@ jobs:
             artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" -H "Accept: application/json" -u "$CIRCLE_AUTH_TOKEN:")
             echo $artifacts > ./scripts/artifacts.json
             node ./scripts/preview.js
+    # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass
+    resource_class: large
 
   deploy-npm:
     docker: *docker-node-image
@@ -213,23 +218,23 @@ workflows:
     jobs:
       - checkout-code
       - clean-lockfile:
-          requires: [checkout-code]
+          requires: [ checkout-code ]
       - compile:
-          requires: [checkout-code]
+          requires: [ checkout-code ]
       - format-check:
-          requires: [checkout-code]
+          requires: [ checkout-code ]
       - lint:
-          requires: [compile]
+          requires: [ compile ]
       - dist:
-          requires: [compile]
+          requires: [ compile ]
       - test-node-libs:
-          requires: [compile]
+          requires: [ compile ]
       - test-react-16:
-          requires: [compile]
+          requires: [ compile ]
       - test-iso-react-16:
-          requires: [compile]
+          requires: [ compile ]
       - deploy-preview:
-          requires: [dist]
+          requires: [ dist ]
       - deploy-npm:
           requires:
             [
@@ -237,7 +242,7 @@ workflows:
               lint,
               test-node-libs,
               test-react-16,
-              test-iso-react-16,
+              test-iso-react-16
             ]
           filters:
             branches:
