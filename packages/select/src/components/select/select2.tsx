@@ -22,6 +22,7 @@ import * as React from "react";
 import {
     AbstractPureComponent2,
     Button,
+    Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps2,
@@ -30,14 +31,28 @@ import {
     Position,
     refHandler,
     setRef,
+    Utils,
 } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
+    /**
+     * Element which triggers the select popover. In most cases, you should display
+     * the name or label of the curently selected item here.
+     */
     children?: React.ReactNode;
+
+    /**
+     * Whether the component is non-interactive.
+     * If true, the list's item renderer will not be called.
+     * Note that you'll also need to disable the component's children, if appropriate.
+     *
+     * @default false
+     */
+    disabled?: boolean;
 
     /**
      * Whether the component should take up the full width of its container.
@@ -55,20 +70,16 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
     filterable?: boolean;
 
     /**
-     * Whether the component is non-interactive.
-     * If true, the list's item renderer will not be called.
-     * Note that you'll also need to disable the component's children, if appropriate.
-     *
-     * @default false
-     */
-    disabled?: boolean;
-
-    /**
      * Props to spread to the query `InputGroup`. Use `query` and
      * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
      * to control this input.
      */
     inputProps?: InputGroupProps2;
+
+    /**
+     * Props to add to the popover target wrapper element.
+     */
+    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -77,9 +88,6 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
      * @default false
      */
     resetOnClose?: boolean;
-
-    /** Optional class to apply to the target wrapper element. */
-    targetClassName?: string;
 }
 
 export interface Select2State {
@@ -95,9 +103,9 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     public state: Select2State = { isOpen: false };
 
-    private TypedQueryList = QueryList.ofType<T>();
-
     public inputElement: HTMLInputElement | null = null;
+
+    private TypedQueryList = QueryList.ofType<T>();
 
     private queryList: QueryList<T> | null = null;
 
@@ -107,6 +115,8 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 
+    private listboxId = Utils.uniqueId("listbox");
+
     public render() {
         // omit props specific to this component, spread the rest.
         const { filterable, inputProps, popoverProps, ...restProps } = this.props;
@@ -114,6 +124,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         return (
             <this.TypedQueryList
                 {...restProps}
+                menuProps={{ id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
@@ -151,6 +162,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
         const input = (
             <InputGroup
+                aria-autocomplete="list"
                 leftIcon="search"
                 placeholder="Filter..."
                 rightElement={this.maybeRenderClearButton(listProps.query)}
@@ -182,31 +194,65 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 onOpened={this.handlePopoverOpened}
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                popupKind={PopupKind.LISTBOX}
                 ref={popoverRef}
-            >
+                renderTarget={this.getPopoverTargetRenderer(listProps, this.state.isOpen)}
+            />
+        );
+    };
+
+    // We use the renderTarget API to flatten the rendered DOM and make it easier to implement features like
+    // the "fill" prop. Note that we must take `isOpen` as an argument to force this render function to be called
+    // again after that state changes.
+    private getPopoverTargetRenderer =
+        (listProps: IQueryListRendererProps<T>, isOpen: boolean) =>
+        // N.B. pull out `isOpen` so that it's not forwarded to the DOM, but remember not to use it directly
+        // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
+        // eslint-disable-next-line react/display-name
+        ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
+            const { popoverTargetProps } = this.props;
+            const { handleKeyDown, handleKeyUp } = listProps;
+            return (
                 <div
-                    className={this.props.targetClassName}
-                    onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
-                    onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
+                    aria-controls={this.listboxId}
+                    {...popoverTargetProps}
+                    {...targetProps}
+                    aria-expanded={isOpen}
+                    // Note that we must set FILL here in addition to children to get the wrapper element to full width
+                    className={classNames(targetProps.className, popoverTargetProps?.className, {
+                        [CoreClasses.FILL]: this.props.fill,
+                    })}
+                    // Normally, Popover2 would also need to attach its own `onKeyDown` handler via `targetProps`,
+                    // but in our case we fully manage that interaction and listen for key events to open/close
+                    // the popover, so we elide it from the DOM.
+                    onKeyDown={isOpen ? handleKeyDown : this.handleTargetKeyDown}
+                    onKeyUp={isOpen ? handleKeyUp : undefined}
+                    ref={ref}
+                    role="combobox"
                 >
                     {this.props.children}
                 </div>
-            </Popover2>
-        );
-    };
+            );
+        };
 
     private maybeRenderClearButton(query: string) {
         return query.length > 0 ? <Button icon="cross" minimal={true} onClick={this.resetQuery} /> : undefined;
     }
 
+    /**
+     * Target wrapper element "keydown" handler while the popover is closed.
+     */
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         // open popover when arrow key pressed on target while closed
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        // eslint-disable-next-line deprecation/deprecation
+        /* eslint-disable deprecation/deprecation */
         if (event.which === Keys.ARROW_UP || event.which === Keys.ARROW_DOWN) {
             event.preventDefault();
             this.setState({ isOpen: true });
+        } else if (Keys.isKeyboardClick(event.keyCode)) {
+            this.setState({ isOpen: true });
         }
+        /* eslint-enable deprecation/deprecation */
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {

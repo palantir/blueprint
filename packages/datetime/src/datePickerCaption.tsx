@@ -75,6 +75,7 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
 
         const monthSelect = (
             <HTMLSelect
+                aria-label="Month"
                 iconProps={{ style: { right: this.state.monthRightOffset } }}
                 className={Classes.DATEPICKER_MONTH_SELECT}
                 key="month"
@@ -86,6 +87,7 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
         );
         const yearSelect = (
             <HTMLSelect
+                aria-label="Year"
                 className={Classes.DATEPICKER_YEAR_SELECT}
                 key="year"
                 minimal={true}

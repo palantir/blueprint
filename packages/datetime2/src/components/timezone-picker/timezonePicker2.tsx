@@ -153,9 +153,9 @@ export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 popoverProps={finalPopoverProps}
+                popoverTargetProps={{ className: Classes.TIMEZONE_PICKER_TARGET }}
                 resetOnClose={true}
                 resetOnSelect={true}
-                targetClassName={Classes.TIMEZONE_PICKER_TARGET}
             >
                 {children != null ? children : this.renderButton()}
             </TypedSelect>

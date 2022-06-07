@@ -36,5 +36,6 @@ export {
     StrictModifierNames,
 } from "./popover2SharedProps";
 export { IPopover2Props, Popover2Props, Popover2, Popover2InteractionKind } from "./popover2";
+export { PopupKind } from "./popupKind";
 export { ResizeSensor2, ResizeSensor2Props } from "./resizeSensor2";
 export { ITooltip2Props, Tooltip2Props, Tooltip2 } from "./tooltip2";

@@ -13,4 +13,13 @@
     max-width: $select-popover-max-width;
     overflow: auto;
   }
+
+  &.#{$ns}-popover2-match-target-width {
+    width: 100%;
+
+    .#{$ns}-menu {
+      max-width: none;
+      min-width: 0;
+    }
+  }
 }
