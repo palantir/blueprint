@@ -30,6 +30,7 @@ export type Popover2TargetProps = IPopover2TargetProps;
  * @deprecated use Popover2TargetProps
  */
 export interface IPopover2TargetProps {
+    /** Target ref. */
     ref: React.Ref<any>;
 
     /** Whether the popover or tooltip is currently open. */
