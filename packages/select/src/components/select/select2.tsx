@@ -162,6 +162,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
         const input = (
             <InputGroup
+                aria-autocomplete="list"
                 leftIcon="search"
                 placeholder="Filter..."
                 rightElement={this.maybeRenderClearButton(listProps.query)}
