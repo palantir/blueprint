@@ -173,7 +173,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={{ id: this.listboxId }}
+                menuProps={{ "aria-multiselectable": true, id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
@@ -258,6 +258,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
             return (
                 <div
+                    aria-autocomplete="list"
                     aria-controls={this.listboxId}
                     {...popoverTargetProps}
                     {...targetProps}
