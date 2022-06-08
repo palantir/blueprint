@@ -29,7 +29,7 @@ const VALUE = "2021-11-29T10:30:00.000z";
 const formatDate = (date: Date) => [date.getMonth() + 1, date.getDate(), date.getFullYear()].join("/");
 const parseDate = (str: string) => new Date(str);
 
-describe("<Time zone aware date input>", () => {
+describe("<DateInput2>", () => {
     const onChange = sinon.spy();
     const DEFAULT_PROPS: DateInput2Props = {
         formatDate,

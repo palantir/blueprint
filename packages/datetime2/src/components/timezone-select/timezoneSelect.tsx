@@ -193,7 +193,7 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
         const { buttonProps = {}, disabled, fill, placeholder, value } = this.props;
         const selectedTimezone = this.timezoneItems.find(tz => tz.ianaCode === value);
         const buttonContent = selectedTimezone ? (
-            `${selectedTimezone.label}  ${formatInTimeZone(this.props.date, selectedTimezone.ianaCode, "xxx")}`
+            `${selectedTimezone.label} ${formatInTimeZone(this.props.date, selectedTimezone.ianaCode, "xxx")}`
         ) : (
             <span className={CoreClasses.TEXT_MUTED}>{placeholder}</span>
         );
