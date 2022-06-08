@@ -1,27 +1,31 @@
+---
+tag: new
+---
+
 @# DateInput2
 
-The `DateInput2` component is a [date input](#core/datetime/date-input) with an additional time zone selector.
+The `DateInput2` component is a [date input](#core/datetime/date-input) with
+an embedded time zone selector.
 
 @reactExample DateInput2Example
 
 @## Date formatting
 
-`DateInput2` requires as `DateInput` two props for parsing and formatting dates in the `DateInput`.
+`DateInput2` requires two props for parsing and formatting dates:
 
 - `formatDate(date, locale?)` receives the current `Date` and returns a string representation of it. The result of this function becomes the input value when it is not being edited.
 - `parseDate(str, locale?)` receives text inputted by the user and converts it to a `Date` object. The returned `Date` becomes the next value of the component.
 
-Unlike the `DateInput` component, this component uses ISO strings to represent time and also returns that in the change handler.
+Unlike the `DateInput` component, this component uses ISO strings to represent time and also returns that type in the `onChange` callback.
 
 The optional `locale` argument is the value of the `locale` prop.
 
 A simple implementation using built-in browser methods could look like this:
 
 ```tsx
-import { IDateFormatProps } from "@blueprintjs/datetime";
-import { DateInput2 } from "@blueprintjs/datetime2";
+import { DateFormatProps DateInput2 } from "@blueprintjs/datetime2";
 
-const jsDateFormatter: IDateFormatProps = {
+const jsDateFormatter: DateFormatProps = {
     // note that the native implementation of Date functions differs between browsers
     formatDate: date => date.toLocaleDateString(),
     parseDate: str => new Date(str),
@@ -47,7 +51,7 @@ callbacks.
 ```tsx
 import { DateInput2 } from "@blueprintjs/datetime2";
 
-<DateInput
+<DateInput2
     formatDate={date => date.toLocaleString()}
     onChange={this.handleDateChange}
     parseDate={str => new Date(str)}
@@ -56,7 +60,7 @@ import { DateInput2 } from "@blueprintjs/datetime2";
 />
 ```
 
-@interface IDateInput2Props
+@interface DateInput2Props
 
 @## Localization
 

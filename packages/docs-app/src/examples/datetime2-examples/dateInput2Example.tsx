@@ -24,7 +24,7 @@ import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "
 import { FORMATS, FormatSelect } from "../datetime-examples/common/formatSelect";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 
-export interface IDateInput2ExampleState {
+export interface DateInput2ExampleState {
     closeOnSelection: boolean;
     date: string | null;
     disabled: boolean;
@@ -37,8 +37,8 @@ export interface IDateInput2ExampleState {
     hideTimezonePicker: boolean;
 }
 
-export class DateInput2Example extends React.PureComponent<IExampleProps, IDateInput2ExampleState> {
-    public state: IDateInput2ExampleState = {
+export class DateInput2Example extends React.PureComponent<IExampleProps, DateInput2ExampleState> {
+    public state: DateInput2ExampleState = {
         closeOnSelection: true,
         date: null,
         disableTimezonePicker: false,

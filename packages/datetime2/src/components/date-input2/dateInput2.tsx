@@ -19,7 +19,7 @@ import { formatInTimeZone } from "date-fns-tz";
 import { isEmpty } from "lodash-es";
 import * as React from "react";
 
-import { Tag } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, Tag } from "@blueprintjs/core";
 import { DateInput, DateInputProps, TimePrecision } from "@blueprintjs/datetime";
 
 import * as Classes from "../../common/classes";
@@ -28,18 +28,27 @@ import { getTimezoneName } from "../../common/timezoneNameUtils";
 import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "../../common/timezoneUtils";
 import { TimezonePicker2 } from "../timezone-picker/timezonePicker2";
 
-export interface IDateInput2Props extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {
+export interface DateInput2Props extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {
     /** The default timezone selected. Defaults to the user local timezone */
     defaultTimezone?: string;
+
     /** Callback invoked whenever the date or timezone has changed. ISO string */
     onChange: (newDate: string, isUserChange?: boolean) => void;
 
     /** An ISO string mapping to the selected time. */
     value: string | null;
-    /** Whether to completely hide timezone elements,
-     * if TimePrecision is undefined, this will always be true
+
+    /**
+     * Whether to completely hide timezone elements.
+     * If `timePrecision` is undefined, this will always be true.
      */
     hideTimezone?: boolean;
+
+    /**
+     * Whether to disable the timezone picker.
+     *
+     * @default false
+     */
     disableTimezoneSelect?: boolean;
 }
 
@@ -59,7 +68,7 @@ const timepickerButtonProps = {
     outlined: true,
 };
 
-export const DateInput2: React.FC<IDateInput2Props> = React.memo(function _DateInput2(props) {
+export const DateInput2: React.FC<DateInput2Props> = React.memo(function (props) {
     const {
         defaultTimezone,
         value,
@@ -138,6 +147,7 @@ export const DateInput2: React.FC<IDateInput2Props> = React.memo(function _DateI
         />
     );
 });
+DateInput2.displayName = `${DISPLAYNAME_PREFIX}.DateInput2`;
 
 function getIsoEquivalentWithUpdatedTimezone(date: Date, timezone: string, timePrecision: TimePrecision | undefined) {
     const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(date, timezone);

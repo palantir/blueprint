@@ -14,5 +14,7 @@
  * limitations under the License.
  */
 
-export { DateInput2 } from "./date-input2/dateInput2";
-export { TimezonePicker2 } from "./timezone-picker/timezonePicker2";
+export type { DateFormatProps } from "@blueprintjs/datetime";
+
+export { DateInput2, DateInput2Props } from "./date-input2/dateInput2";
+export { TimezonePicker2, TimezonePicker2Props } from "./timezone-picker/timezonePicker2";

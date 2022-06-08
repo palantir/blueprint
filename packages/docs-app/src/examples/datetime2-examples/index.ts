@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-export * from "./timezonePickerV2Example";
-export * from "./dateInput2Example";
+export { TimezonePicker2Example } from "./timezonePicker2Example";
+export { DateInput2Example } from "./dateInput2Example";
