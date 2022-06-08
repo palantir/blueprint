@@ -22,7 +22,7 @@ import * as sinon from "sinon";
 import { Position } from "@blueprintjs/core";
 import { DateInput, TimePrecision } from "@blueprintjs/datetime";
 
-import { DateInput2, DateInput2Props, TimezonePicker2 } from "../../src";
+import { DateInput2, DateInput2Props, TimezoneSelect } from "../../src";
 
 const VALUE = "2021-11-29T10:30:00.000z";
 
@@ -52,14 +52,14 @@ describe("<Time zone aware date input>", () => {
     it("Correctly passes on the default selected timezone", () => {
         const defaultTimezone = "Europe/Paris";
         const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} defaultTimezone={defaultTimezone} />);
-        const timezonePicker = wrapper.find(TimezonePicker2);
+        const timezonePicker = wrapper.find(TimezoneSelect);
 
         assert.strictEqual(timezonePicker.prop("value"), defaultTimezone);
     });
 
     it("It updates the passed back string when timezone is changed", () => {
         const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />);
-        const timezonePicker = wrapper.find(TimezonePicker2);
+        const timezonePicker = wrapper.find(TimezoneSelect);
         const newTimezone = "Europe/Paris";
         timezonePicker.prop("onChange")(newTimezone);
 
@@ -69,7 +69,7 @@ describe("<Time zone aware date input>", () => {
 
     it("It formats the string based on the time precision when timezone is changed", () => {
         const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} timePrecision={TimePrecision.MINUTE} />);
-        const timezonePicker = wrapper.find(TimezonePicker2);
+        const timezonePicker = wrapper.find(TimezoneSelect);
         const newTimezone = "Europe/Paris";
         timezonePicker.prop("onChange")(newTimezone);
 
@@ -88,7 +88,7 @@ describe("<Time zone aware date input>", () => {
 
     it("Does not render a timezone picker not passed a precision", () => {
         const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} timePrecision={undefined} />);
-        assert.isFalse(wrapper.find(TimezonePicker2).exists());
+        assert.isFalse(wrapper.find(TimezoneSelect).exists());
     });
 
     it("Passes the correct date in to DateInput", () => {

@@ -2,11 +2,11 @@
 tag: new
 ---
 
-@# TimezonePicker2
+@# TimezoneSelect
 
-`TimezonePicker2` allows the user to select from a list of timezones. The list is coded into the library itself, so it does not depend on any external packages for the list of timezones.
+`TimezoneSelect` allows the user to select from a list of timezones. The list is coded into the library itself, so it does not depend on any external packages for the list of timezones.
 
-@reactExample TimezonePicker2Example
+@reactExample TimezoneSelectExample
 
 @## Props
 
@@ -24,7 +24,7 @@ You can show a custom element instead of the default button by passing a single-
 all button-specific props will be ignored:
 
 ```tsx
-<TimezonePicker2 value={...} onChange={...}>
+<TimezoneSelect value={...} onChange={...}>
     <Icon icon="globe" />
 </TimezonePicker>
 ```
@@ -39,17 +39,17 @@ in all browsers.
 </div>
 
 ```tsx
-import { TimezonePicker2 } from "@blueprintjs/datetime2";
+import { TimezoneSelect } from "@blueprintjs/datetime2";
 
 export class TimezoneExample extends React.PureComponent<{}, { timezone: string; }> {
     public state = { timezone: "" };
 
     public render() {
-        return <TimezonePicker2 value={this.state.timezone} onChange={this.handleTimezoneChange} />;
+        return <TimezoneSelect value={this.state.timezone} onChange={this.handleTimezoneChange} />;
     }
 
     private handleTimezoneChange = (timezone: string) => this.setState({ timezone });
 }
 ```
 
-@interface TimezonePicker2Props
+@interface TimezoneSelectProps

@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { mount, ShallowRendererProps, ShallowWrapper, shallow as untypedShallow } from "enzyme";
+import { mount, ReactWrapper, ShallowRendererProps, ShallowWrapper, shallow as untypedShallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
@@ -26,12 +26,13 @@ import { QueryList, Select2 } from "@blueprintjs/select";
 import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames, TimezoneWithNames } from "../../src/common/timezoneNameUtils";
 import {
-    TimezonePicker2,
-    TimezonePicker2Props,
-    TimezonePicker2State,
-} from "../../src/components/timezone-picker/timezonePicker2";
+    TimezoneSelect,
+    TimezoneSelectProps,
+    TimezoneSelectState,
+} from "../../src/components/timezone-select/timezoneSelect";
 
-type TimezonePickerShallowWrapper = ShallowWrapper<TimezonePicker2Props, TimezonePicker2State>;
+const TypedSelect = Select2.ofType<TimezoneWithNames>();
+type TimezoneSelectShallowWrapper = ShallowWrapper<TimezoneSelectProps, TimezoneSelectState>;
 
 /**
  * HACKHACK: type cast for enzyme
@@ -39,15 +40,15 @@ type TimezonePickerShallowWrapper = ShallowWrapper<TimezonePicker2Props, Timezon
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
 const shallow = (
-    el: React.ReactElement<TimezonePicker2Props>,
+    el: React.ReactElement<TimezoneSelectProps>,
     options?: ShallowRendererProps,
-): TimezonePickerShallowWrapper => untypedShallow<TimezonePicker2>(el, options);
+): TimezoneSelectShallowWrapper => untypedShallow<TimezoneSelect>(el, options);
 
 const VALUE = "America/Los_Angeles";
 
-describe("<TimezonePicker2>", () => {
+describe("<TimezoneSelect>", () => {
     const onChange = sinon.spy();
-    const DEFAULT_PROPS: TimezonePicker2Props = {
+    const DEFAULT_PROPS: TimezoneSelectProps = {
         onChange,
         popoverProps: {
             isOpen: true,
@@ -60,7 +61,7 @@ describe("<TimezonePicker2>", () => {
 
     it("clicking on button target opens popover", () => {
         // remove isOpen from popoverProps
-        const timezonePicker = mount(<TimezonePicker2 {...DEFAULT_PROPS} popoverProps={{ usePortal: false }} />);
+        const timezonePicker = mount(<TimezoneSelect {...DEFAULT_PROPS} popoverProps={{ usePortal: false }} />);
         timezonePicker.find(Button).simulate("click");
 
         assert.isTrue(timezonePicker.find(Popover2).prop("isOpen"));
@@ -68,20 +69,20 @@ describe("<TimezonePicker2>", () => {
 
     it("if disabled=true, clicking on button target does not open popover", () => {
         const timezonePicker = mount(
-            <TimezonePicker2 {...DEFAULT_PROPS} disabled={true} popoverProps={{ usePortal: false }} />,
+            <TimezoneSelect {...DEFAULT_PROPS} disabled={true} popoverProps={{ usePortal: false }} />,
         );
         timezonePicker.find(Button).simulate("click");
         assert.isFalse(timezonePicker.find(Popover2).prop("isOpen"));
     });
 
     it("if query is empty, shows initial items", () => {
-        const timezonePicker = shallow(<TimezonePicker2 {...DEFAULT_PROPS} />);
+        const timezonePicker = shallow(<TimezoneSelect {...DEFAULT_PROPS} />);
         const items = findSelect(timezonePicker).prop("items");
         assert.deepEqual(items, getInitialTimezoneItems(new Date(), true));
     });
 
     it("if query is not empty, shows all items", () => {
-        const timezonePicker = shallow(<TimezonePicker2 {...DEFAULT_PROPS} />);
+        const timezonePicker = shallow(<TimezoneSelect {...DEFAULT_PROPS} />);
         timezonePicker.setState({ query: "not empty" });
         timezonePicker.update();
         const items = timezonePicker.find(Select2).prop("items");
@@ -91,16 +92,14 @@ describe("<TimezonePicker2>", () => {
     it("if inputProps.value is non-empty, all items are shown", () => {
         const date = new Date();
         const query = "test query";
-        const timezonePicker = shallow(
-            <TimezonePicker2 {...DEFAULT_PROPS} date={date} inputProps={{ value: query }} />,
-        );
+        const timezonePicker = shallow(<TimezoneSelect {...DEFAULT_PROPS} date={date} inputProps={{ value: query }} />);
         assert.strictEqual(timezonePicker.state("query"), query);
         const items = findSelect(timezonePicker).prop("items");
         assert.deepEqual(items, mapTimezonesWithNames(date, TIMEZONE_ITEMS));
     });
 
     it("if showLocalTimezone=true, the local timezone is rendered at the top of the item list", () => {
-        const timezonePicker = shallow(<TimezonePicker2 {...DEFAULT_PROPS} showLocalTimezone={true} />);
+        const timezonePicker = shallow(<TimezoneSelect {...DEFAULT_PROPS} showLocalTimezone={true} />);
         const items = findSelect(timezonePicker).prop("items");
         assert.isTrue(items.length > 0);
         const firstItem = items[0];
@@ -109,7 +108,7 @@ describe("<TimezonePicker2>", () => {
 
     it("if showLocalTimezone=false, the local timezone is not rendered at the top of the item list", () => {
         const date = new Date();
-        const timezonePicker = shallow(<TimezonePicker2 {...DEFAULT_PROPS} date={date} showLocalTimezone={false} />);
+        const timezonePicker = shallow(<TimezoneSelect {...DEFAULT_PROPS} date={date} showLocalTimezone={false} />);
         const items = findSelect(timezonePicker).prop("items");
         assert.isTrue(items.length > 0);
         const expectedFirstItem = getInitialTimezoneItems(date, false)[0];
@@ -121,10 +120,10 @@ describe("<TimezonePicker2>", () => {
         const dateDec = new Date("2014-12-01T12:00:00Z");
         const timezone = "America/Los_Angeles";
         const timezonePickerJun = shallow(
-            <TimezonePicker2 {...DEFAULT_PROPS} date={dateJun} showLocalTimezone={false} />,
+            <TimezoneSelect {...DEFAULT_PROPS} date={dateJun} showLocalTimezone={false} />,
         );
         const timezonePickerDec = shallow(
-            <TimezonePicker2 {...DEFAULT_PROPS} date={dateDec} showLocalTimezone={false} />,
+            <TimezoneSelect {...DEFAULT_PROPS} date={dateDec} showLocalTimezone={false} />,
         );
         const selectJun = findSelect(timezonePickerJun);
         const selectDec = findSelect(timezonePickerDec);
@@ -135,8 +134,8 @@ describe("<TimezonePicker2>", () => {
         assert.notDeepEqual(timezoneItemJun, timezoneItemDec);
     });
 
-    it("invokes the on change prop when a timezone is selected", () => {
-        const timezonePicker = shallow(<TimezonePicker2 {...DEFAULT_PROPS} />);
+    it("invokes onChange callback when a timezone is selected", () => {
+        const timezonePicker = mount(<TimezoneSelect {...DEFAULT_PROPS} />);
         clickFirstMenuItem(timezonePicker);
         assert.isTrue(onChange.calledOnce);
     });
@@ -144,7 +143,7 @@ describe("<TimezonePicker2>", () => {
     it("if value is non-empty, the selected timezone will stay in sync with that value", () => {
         const value = "Europe/Oslo";
         const valueLabel = TIMEZONE_ITEMS.find(tz => tz.ianaCode === value)?.label;
-        const timezonePicker = shallow(<TimezonePicker2 value={value} onChange={onChange} />);
+        const timezonePicker = mount(<TimezoneSelect value={value} onChange={onChange} />);
         clickFirstMenuItem(timezonePicker);
         assert.isTrue(onChange.calledOnce);
         assert.strictEqual(timezonePicker.find(Button).prop("text"), valueLabel);
@@ -155,7 +154,7 @@ describe("<TimezonePicker2>", () => {
             isOpen: true,
             usePortal: false,
         };
-        const timezonePicker = shallow(<TimezonePicker2 {...DEFAULT_PROPS} popoverProps={popoverProps} />);
+        const timezonePicker = shallow(<TimezoneSelect {...DEFAULT_PROPS} popoverProps={popoverProps} />);
         const popover = findPopover2(timezonePicker);
         for (const key of Object.keys(popoverProps)) {
             assert.deepEqual(popover.prop(key), popoverProps[key as keyof Popover2Props]);
@@ -168,7 +167,7 @@ describe("<TimezonePicker2>", () => {
             leftIcon: "airplane",
             placeholder: "test placeholder",
         };
-        const timezonePicker = shallow(<TimezonePicker2 {...DEFAULT_PROPS} inputProps={inputProps} />);
+        const timezonePicker = shallow(<TimezoneSelect {...DEFAULT_PROPS} inputProps={inputProps} />);
         const inputGroup = findInputGroup(timezonePicker);
         for (const key of Object.keys(inputProps)) {
             assert.deepEqual(inputGroup.prop(key), inputProps[key as keyof InputGroupProps2]);
@@ -180,30 +179,30 @@ describe("<TimezonePicker2>", () => {
             disabled: true,
             rightIcon: "airplane",
         };
-        const timezonePicker = shallow(<TimezonePicker2 {...DEFAULT_PROPS} buttonProps={buttonProps} />);
+        const timezonePicker = shallow(<TimezoneSelect {...DEFAULT_PROPS} buttonProps={buttonProps} />);
         const button = timezonePicker.find(Button);
         for (const key of Object.keys(buttonProps)) {
             assert.deepEqual(button.prop(key), buttonProps[key as keyof ButtonProps]);
         }
     });
 
-    function findSelect(timezonePicker: TimezonePickerShallowWrapper) {
-        return timezonePicker.find(Select2.ofType<TimezoneWithNames>());
+    function findSelect(timezonePicker: TimezoneSelectShallowWrapper) {
+        return timezonePicker.find(TypedSelect);
     }
 
-    function findQueryList(timezonePicker: TimezonePickerShallowWrapper) {
+    function findQueryList(timezonePicker: TimezoneSelectShallowWrapper) {
         return findSelect(timezonePicker).shallow().find(QueryList.ofType<TimezoneWithNames>());
     }
 
-    function findPopover2(timezonePicker: TimezonePickerShallowWrapper) {
+    function findPopover2(timezonePicker: TimezoneSelectShallowWrapper) {
         return findQueryList(timezonePicker).shallow().find(Popover2);
     }
 
-    function findInputGroup(timezonePicker: TimezonePickerShallowWrapper) {
+    function findInputGroup(timezonePicker: TimezoneSelectShallowWrapper) {
         return findQueryList(timezonePicker).shallow().find(InputGroup);
     }
 
-    function clickFirstMenuItem(timezonePicker: TimezonePickerShallowWrapper): void {
-        findQueryList(timezonePicker).shallow().find(MenuItem).first().simulate("click");
+    function clickFirstMenuItem(timezonePicker: ReactWrapper): void {
+        timezonePicker.find(TypedSelect).find(MenuItem).first().simulate("click");
     }
 });

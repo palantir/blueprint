@@ -3,6 +3,7 @@
  */
 
 import "@blueprintjs/test-commons/bootstrap";
-import "./components/timezonePicker2Tests";
-import "./common/timeZoneUtilsTest";
+
+import "./common/timezoneUtilsTest";
 import "./components/dateInput2Tests";
+import "./components/timezoneSelectTests";

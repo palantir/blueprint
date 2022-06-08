@@ -35,12 +35,18 @@ import * as Classes from "../../common/classes";
 import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames, TimezoneWithNames } from "../../common/timezoneNameUtils";
 
-export interface TimezonePicker2Props extends Props {
+export interface TimezoneSelectProps extends Props {
+    /**
+     * Element which triggers the timezone select popover. If this is undefined,
+     * by default the component will render a `<Button>` which shows the currently
+     * selected timezone.
+     */
     children?: React.ReactNode;
 
     /**
      * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
-     * See https://www.iana.org/time-zones for more information.
+     *
+     * @see https://www.iana.org/time-zones
      */
     value: string | undefined;
 
@@ -60,6 +66,8 @@ export interface TimezonePicker2Props extends Props {
     /**
      * Whether the component should take up the full width of its container.
      * This overrides `popoverProps.fill` and `buttonProps.fill`.
+     *
+     * @default false
      */
     fill?: boolean;
 
@@ -104,16 +112,16 @@ export interface TimezonePicker2Props extends Props {
     popoverProps?: Partial<Omit<Popover2Props, "content">>;
 }
 
-export interface TimezonePicker2State {
+export interface TimezoneSelectState {
     query: string;
 }
 
 const TypedSelect = Select2.ofType<TimezoneWithNames>();
 
-export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props, TimezonePicker2State> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker2`;
+export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, TimezoneSelectState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.TimezoneSelect`;
 
-    public static defaultProps: Partial<TimezonePicker2Props> = {
+    public static defaultProps: Partial<TimezoneSelectProps> = {
         date: new Date(),
         disabled: false,
         fill: false,
@@ -127,7 +135,7 @@ export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props
 
     private initialTimezoneItems: TimezoneWithNames[];
 
-    constructor(props: TimezonePicker2Props) {
+    constructor(props: TimezoneSelectProps) {
         super(props);
 
         const { showLocalTimezone, inputProps = {}, date } = props;
@@ -139,38 +147,36 @@ export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props
     public render() {
         const { children, className, disabled, fill, inputProps, popoverProps } = this.props;
         const { query } = this.state;
-        const finalInputProps: InputGroupProps2 = {
-            placeholder: "Search for timezones...",
-            ...inputProps,
-        };
-        const finalPopoverProps: Partial<Popover2Props> = {
-            ...popoverProps,
-            popoverClassName: classNames(Classes.TIMEZONE_PICKER_POPOVER, popoverProps.popoverClassName),
-        };
 
         return (
             <TypedSelect
-                className={classNames(Classes.TIMEZONE_PICKER, className)}
+                className={classNames(Classes.TIMEZONE_SELECT, className)}
                 disabled={disabled}
                 fill={fill}
-                inputProps={finalInputProps}
+                inputProps={{
+                    placeholder: "Search for timezones...",
+                    ...inputProps,
+                }}
                 itemListPredicate={this.filterItems}
                 itemRenderer={this.renderItem}
                 items={query ? this.timezoneItems : this.initialTimezoneItems}
                 noResults={<MenuItem disabled={true} text="No matching timezones." />}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
-                popoverProps={finalPopoverProps}
-                popoverTargetProps={{ className: Classes.TIMEZONE_PICKER_TARGET }}
+                popoverProps={{
+                    ...popoverProps,
+                    popoverClassName: classNames(Classes.TIMEZONE_SELECT_POPOVER, popoverProps.popoverClassName),
+                }}
+                popoverTargetProps={{ className: Classes.TIMEZONE_SELECT_TARGET }}
                 resetOnClose={true}
                 resetOnSelect={true}
             >
-                {children != null ? children : this.renderButton()}
+                {children ?? this.renderButton()}
             </TypedSelect>
         );
     }
 
-    public componentDidUpdate(prevProps: TimezonePicker2Props, prevState: TimezonePicker2State) {
+    public componentDidUpdate(prevProps: TimezoneSelectProps, prevState: TimezoneSelectState) {
         super.componentDidUpdate(prevProps, prevState);
         const { date: nextDate } = this.props;
 

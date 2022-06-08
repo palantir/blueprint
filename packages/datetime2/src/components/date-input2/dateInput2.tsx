@@ -26,7 +26,7 @@ import * as Classes from "../../common/classes";
 import { getTimezone } from "../../common/getTimezone";
 import { getTimezoneName } from "../../common/timezoneNameUtils";
 import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "../../common/timezoneUtils";
-import { TimezonePicker2 } from "../timezone-picker/timezonePicker2";
+import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
 export interface DateInput2Props extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {
     /** The default timezone selected. Defaults to the user local timezone */
@@ -118,12 +118,12 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     const isTimezoneSelectDisabled = disabled || disableTimezoneSelect;
 
     const maybeTimezonePicker = hideTimezone ? undefined : (
-        <TimezonePicker2
+        <TimezoneSelect
             value={timezoneValue}
             onChange={handleTimezoneUpdate}
             date={guaranteedValidDateValue}
             disabled={isTimezoneSelectDisabled}
-            className={Classes.DATE_INPUT_TIMEZONE_PICKER}
+            className={Classes.DATE_INPUT_TIMEZONE_SELECT}
             buttonProps={timepickerButtonProps}
         >
             <Tag
@@ -133,7 +133,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             >
                 {getTimezoneName(guaranteedValidDateValue, timezoneValue, false)}
             </Tag>
-        </TimezonePicker2>
+        </TimezoneSelect>
     );
 
     return (

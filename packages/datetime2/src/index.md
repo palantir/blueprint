@@ -13,8 +13,8 @@ The [__@blueprintjs/datetime2__ package](https://www.npmjs.com/package/@blueprin
 provides components for interacting with dates, times, and timezones:
 
 - [DateInput2](#datetime2/date-input2) renders a [DateInput](#datetime/dateinput)
-  with an embedded [TimezonePicker2](#datetime2/timezone-picker2).
-- [TimezonePicker2](#datetime2/timezone-picker2) renders a [Select2](#select/select2)
+  with an embedded [TimezoneSelect](#datetime2/timezone-select).
+- [TimezoneSelect](#datetime2/timezone-select) renders a [Select2](#select/select2)
   with a list of timezones for the user to choose from.
 
 ### Motivation
@@ -43,14 +43,14 @@ npm install --save @blueprintjs/datetime2
 Import CSS with a JS bundler like webpack:
 
 ```js
-@import "~@blueprintjs/datetime2/lib/css/blueprint-datetime.css";
+@import "~@blueprintjs/datetime2/lib/css/blueprint-datetime2.css";
 ```
 
 ...or in plain HTML:
 
 ```html
-<link href="path/to/node_modules/@blueprintjs/datetime2/lib/css/blueprint-datetime.css" rel="stylesheet" />
+<link href="path/to/node_modules/@blueprintjs/datetime2/lib/css/blueprint-datetime2.css" rel="stylesheet" />
 ```
 
 @page date-input2
-@page timezone-picker2
+@page timezone-select

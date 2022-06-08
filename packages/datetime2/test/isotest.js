@@ -34,7 +34,7 @@ describe("DateTime2 isomorphic rendering", () => {
     //             onChange: noop,
     //         },
     //     },
-    //     TimezonePicker2: {
+    //     TimezoneSelect: {
     //         props: {
     //             value: "Etc/UTC",
     //             onChange: noop,
