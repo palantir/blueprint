@@ -69,7 +69,7 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
     /**
      * The content displayed inside the popover.
      */
-    content?: string | JSX.Element;
+    content?: string | React.ReactNode;
 
     /**
      * The kind of interaction that triggers the display of the popover.
