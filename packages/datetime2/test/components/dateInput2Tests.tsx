@@ -22,8 +22,7 @@ import * as sinon from "sinon";
 import { Position } from "@blueprintjs/core";
 import { DateInput, TimePrecision } from "@blueprintjs/datetime";
 
-import { DateInput2, IDateInput2Props } from "../../src/components/date-input2/dateInput2";
-import { TimezonePicker2 } from "../../src/components/timezone-picker/timezonePicker2";
+import { DateInput2, DateInput2Props, TimezonePicker2 } from "../../src";
 
 const VALUE = "2021-11-29T10:30:00.000z";
 
@@ -32,7 +31,7 @@ const parseDate = (str: string) => new Date(str);
 
 describe("<Time zone aware date input>", () => {
     const onChange = sinon.spy();
-    const DEFAULT_PROPS: IDateInput2Props = {
+    const DEFAULT_PROPS: DateInput2Props = {
         formatDate,
         onChange,
         parseDate,

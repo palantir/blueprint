@@ -26,14 +26,16 @@ import { QueryList, Select2 } from "@blueprintjs/select";
 import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames, TimezoneWithNames } from "../../src/common/timezoneNameUtils";
 import {
-    ITimezonePicker2State,
     TimezonePicker2,
     TimezonePicker2Props,
+    TimezonePicker2State,
 } from "../../src/components/timezone-picker/timezonePicker2";
 
-type TimezonePickerShallowWrapper = ShallowWrapper<TimezonePicker2Props, ITimezonePicker2State>;
+type TimezonePickerShallowWrapper = ShallowWrapper<TimezonePicker2Props, TimezonePicker2State>;
 
 /**
+ * HACKHACK: type cast for enzyme
+ *
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
 const shallow = (
@@ -61,7 +63,6 @@ describe("<TimezonePicker2>", () => {
         const timezonePicker = mount(<TimezonePicker2 {...DEFAULT_PROPS} popoverProps={{ usePortal: false }} />);
         timezonePicker.find(Button).simulate("click");
 
-        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(timezonePicker.find(Popover2).prop("isOpen"));
     });
 
@@ -70,7 +71,6 @@ describe("<TimezonePicker2>", () => {
             <TimezonePicker2 {...DEFAULT_PROPS} disabled={true} popoverProps={{ usePortal: false }} />,
         );
         timezonePicker.find(Button).simulate("click");
-        /* eslint-disable-next-line deprecation/deprecation */
         assert.isFalse(timezonePicker.find(Popover2).prop("isOpen"));
     });
 
@@ -196,7 +196,6 @@ describe("<TimezonePicker2>", () => {
     }
 
     function findPopover2(timezonePicker: TimezonePickerShallowWrapper) {
-        /* eslint-disable-next-line deprecation/deprecation */
         return findQueryList(timezonePicker).shallow().find(Popover2);
     }
 

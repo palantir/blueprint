@@ -16,7 +16,7 @@ Compared to their "V1" counterparts, these components:
   the list of available timezones
 - no longer use the deprecated moment.js library
 
-At the moment, [`@blueprintjs/datetime`](#datetime) is a dependency of this
+At the moment, `@blueprintjs/datetime` is a dependency of this
 package, as it delegates to the `<DatePicker>` and `<DateRangePicker>`
 implementation exported from there. When these "V2" components graduate
 to become the standard API, all Blueprint date/time components will

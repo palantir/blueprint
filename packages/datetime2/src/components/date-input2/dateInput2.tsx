@@ -68,7 +68,7 @@ const timepickerButtonProps = {
     outlined: true,
 };
 
-export const DateInput2: React.FC<DateInput2Props> = React.memo(function (props) {
+export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateInput2(props) {
     const {
         defaultTimezone,
         value,

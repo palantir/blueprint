@@ -104,13 +104,13 @@ export interface TimezonePicker2Props extends Props {
     popoverProps?: Partial<Omit<Popover2Props, "content">>;
 }
 
-export interface ITimezonePicker2State {
+export interface TimezonePicker2State {
     query: string;
 }
 
 const TypedSelect = Select2.ofType<TimezoneWithNames>();
 
-export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props, ITimezonePicker2State> {
+export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props, TimezonePicker2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker2`;
 
     public static defaultProps: Partial<TimezonePicker2Props> = {
@@ -170,7 +170,7 @@ export class TimezonePicker2 extends AbstractPureComponent2<TimezonePicker2Props
         );
     }
 
-    public componentDidUpdate(prevProps: TimezonePicker2Props, prevState: ITimezonePicker2State) {
+    public componentDidUpdate(prevProps: TimezonePicker2Props, prevState: TimezonePicker2State) {
         super.componentDidUpdate(prevProps, prevState);
         const { date: nextDate } = this.props;
 
