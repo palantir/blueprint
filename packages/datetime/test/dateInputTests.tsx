@@ -489,6 +489,28 @@ describe("<DateInput>", () => {
             assertDateEquals(onError.args[0][0], new Date(value));
         });
 
+        it("Typing in a date out of bounds does not display an error message if ignoreBounds is set to true", () => {
+            const rangeMessage = "RANGE ERROR";
+            const onError = sinon.spy();
+            const wrapper = mount(
+                <DateInput
+                    {...DATE_FORMAT}
+                    defaultValue={new Date(2015, Months.MAY, 1)}
+                    minDate={new Date(2015, Months.MARCH, 1)}
+                    onError={onError}
+                    outOfRangeMessage={rangeMessage}
+                    ignoreBounds={true}
+                />,
+            );
+            const value = "2/1/2030";
+            wrapper.find("input").simulate("change", { target: { value } }).simulate("blur");
+
+            assert.strictEqual(wrapper.find(InputGroup).prop("intent"), Intent.NONE);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), "2/1/2030");
+
+            assert.isTrue(onError.notCalled);
+        });
+
         it("Typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
             const invalidDateMessage = "INVALID DATE";
             const onError = sinon.spy();
