@@ -1,7 +1,18 @@
 @# Date input
 
-The `DateInput` component is an [input group](#core/components/text-inputs.input-group)
-that shows a [`DatePicker`](#datetime/datepicker) in a [`Popover`](#core/components/popover)
+<div class="@ns-callout @ns-intent-success @ns-icon-star">
+    <h4 class="@ns-heading">Newer API available</h4>
+
+There is an updated version of this component available in the new
+[__@blueprintjs/datetime2__ package](#datetime2) called
+[DateInput2](#datetime2/date-input2). Its API is currently in development,
+but you are encouraged to try it out and provide feedback for the next
+version of the Blueprint date input.
+
+</div>
+
+The DateInput component is an [InputGroup](#core/components/text-inputs.input-group)
+that shows a [DatePicker](#datetime/datepicker) in a [Popover](#core/components/popover)
 on focus. Use it in forms where the user must enter a date.
 
 @reactExample DateInputExample

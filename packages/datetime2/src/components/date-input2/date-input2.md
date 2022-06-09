@@ -4,6 +4,21 @@ tag: new
 
 @# DateInput2
 
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h4 class="@ns-heading">
+
+Migrating from [DateInput](#datetime/dateinput)?
+
+</h4>
+
+DateInput2 is a replacement for the [DateInput component](#datetime/dateinput) from
+[__@blueprintjs/datetime__ package](#datetime) and will replace it in Blueprint v5.
+You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
+See the [migration guide](https://github.com/palantir/blueprint/wiki/DateInput2,-TimezonePicker2-migration)
+on the wiki.
+
+</div>
+
 The `DateInput2` component is a [date input](#core/datetime/date-input) with
 an embedded time zone selector.
 

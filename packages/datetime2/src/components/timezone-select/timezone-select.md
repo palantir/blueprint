@@ -4,6 +4,21 @@ tag: new
 
 @# TimezoneSelect
 
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h4 class="@ns-heading">
+
+Migrating from [TimezonePicker](#timezone/timezone-picker)?
+
+</h4>
+
+TimezoneSelect is a replacement for [TimezonePicker component](#timezone/timezone-picker) from
+the [__@blueprintjs/timezone__ package](#timezone) and will replace it in Blueprint v5.
+You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
+See the [migration guide](https://github.com/palantir/blueprint/wiki/DateInput2,-TimezonePicker2-migration)
+on the wiki.
+
+</div>
+
 `TimezoneSelect` allows the user to select from a list of timezones. The list is coded into the library itself, so it does not depend on any external packages for the list of timezones.
 
 @reactExample TimezoneSelectExample
