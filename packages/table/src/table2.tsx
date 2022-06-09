@@ -27,6 +27,7 @@ import {
     UseHotkeysReturnValue,
 } from "@blueprintjs/core";
 
+import { CellRenderer } from "./cell/cell";
 import { Column, ColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
@@ -82,8 +83,8 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         enableMultipleSelection: true,
         enableRowHeader: true,
         forceRerenderOnSelectionChange: false,
-        getCellClipboardData: (row: number, col: number, tableState: TableState) =>
-            innerText(tableState.childrenArray[col].props.cellRenderer?.(row, col)),
+        getCellClipboardData: (row: number, col: number, cellRenderer: CellRenderer) =>
+            innerText(cellRenderer(row, col)),
         loadingOptions: [],
         maxColumnWidth: 9999,
         maxRowHeight: 9999,

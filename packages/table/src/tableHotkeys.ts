@@ -416,7 +416,11 @@ export class TableHotkeys {
         e.stopPropagation();
 
         const cells = Regions.enumerateUniqueCells(selectedRegions, this.grid.numRows, this.grid.numCols);
-        const sparse = Regions.sparseMapCells(cells, (row, col) => getCellClipboardData(row, col, this.state));
+        // non-null assertion because Column.defaultProps.cellRenderer is defined
+        const sparse = Regions.sparseMapCells(cells, (row, col) =>
+            getCellClipboardData(row, col, this.state.childrenArray[col].props.cellRenderer!),
+        );
+
         if (sparse != null) {
             Clipboard.copyCells(sparse)
                 .then(() => onCopy?.(true))

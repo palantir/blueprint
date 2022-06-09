@@ -16,6 +16,7 @@
 
 import type { Props } from "@blueprintjs/core";
 
+import type { CellRenderer } from "./cell/cell";
 import type { IColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import type { ColumnIndices, RowIndices } from "./common/grid";
@@ -26,7 +27,6 @@ import type { IContextMenuRenderer } from "./interactions/menus";
 import type { IIndexedResizeCallback } from "./interactions/resizable";
 import type { ISelectedRegionTransform } from "./interactions/selectable";
 import type { Region, RegionCardinality, StyledRegionGroup, TableLoadingOption } from "./regions";
-import type { TableState } from "./tableState";
 
 // eslint-disable-next-line deprecation/deprecation
 export type TableProps = ITableProps;
@@ -146,8 +146,12 @@ export interface ITableProps extends Props, Partial<IRowHeights>, Partial<IColum
      * The data will be invisibly added as `textContent` into the DOM before
      * copying. If not defined, a default implementation will be used that
      * turns the rendered cell elements into strings using 'react-innertext'.
+     *
+     * @param row the row index coordinate of the cell to get data for
+     * @param col the col index coordinate of the cell to get data for
+     * @param cellRenderer the cell renderer for this row, col coordinate in the table
      */
-    getCellClipboardData?: (row: number, col: number, tableState: TableState) => any;
+    getCellClipboardData?: (row: number, col: number, celRenderer: CellRenderer) => any;
 
     /**
      * A list of `TableLoadingOption`. Set this prop to specify whether to
