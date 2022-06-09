@@ -521,6 +521,10 @@
     flex-direction: column;
     justify-content: center;
   }
+
+  #{example("TimezonePickerV2Example")} .docs-example {
+    flex-direction: row;
+  }
 }
 
 .docs-date-range {

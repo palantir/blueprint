@@ -1,5 +1,6 @@
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,20 +14,5 @@
  * limitations under the License.
  */
 
-require("@blueprintjs/test-commons/bootstrap");
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
-
-const DateTime = require("../lib/cjs");
-
-describe("DateTime isomorphic rendering", () => {
-    const formatProps = {
-        formatDate: date => date.toLocaleString(),
-        parseDate: str => new Date(Date.parse(str)),
-        placeholder: "enter date",
-    };
-
-    generateIsomorphicTests(DateTime, {
-        DateInput: { props: formatProps },
-        DateRangeInput: { props: formatProps },
-    });
-});
+export { DateInput2Example } from "./dateInput2Example";
+export { TimezoneSelectExample } from "./timezoneSelectExample";

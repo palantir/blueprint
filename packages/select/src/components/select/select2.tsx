@@ -219,7 +219,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                     {...targetProps}
                     aria-expanded={isOpen}
                     // Note that we must set FILL here in addition to children to get the wrapper element to full width
-                    className={classNames(targetProps.className, {
+                    className={classNames(targetProps.className, popoverTargetProps?.className, {
                         [CoreClasses.FILL]: this.props.fill,
                     })}
                     // Normally, Popover2 would also need to attach its own `onKeyDown` handler via `targetProps`,

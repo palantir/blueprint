@@ -45,7 +45,8 @@ export interface ITimezonePickerProps extends Props {
 
     /**
      * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
-     * See https://www.iana.org/time-zones for more information.
+     *
+     * @see https://www.iana.org/time-zones
      */
     value: string | undefined;
 

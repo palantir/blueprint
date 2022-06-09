@@ -198,6 +198,13 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   padding-left: $datepicker-padding;
 }
 
+.#{$ns}-datepicker-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .#{$ns}-datepicker-footer {
   display: flex;
   justify-content: space-between;
