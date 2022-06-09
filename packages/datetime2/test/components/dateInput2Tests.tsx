@@ -26,7 +26,8 @@ import { DateInput2, DateInput2Props, TimezoneSelect } from "../../src";
 
 const VALUE = "2021-11-29T10:30:00.000z";
 
-const formatDate = (date: Date) => [date.getMonth() + 1, date.getDate(), date.getFullYear()].join("/");
+const formatDate = (date: Date | null | undefined) =>
+    date == null ? "" : [date.getMonth() + 1, date.getDate(), date.getFullYear()].join("/");
 const parseDate = (str: string) => new Date(str);
 
 describe("<DateInput2>", () => {
@@ -80,7 +81,7 @@ describe("<DateInput2>", () => {
     it("It updates the passed back string when time is changed", () => {
         const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />);
         const timezonePicker = wrapper.find(DateInput);
-        timezonePicker.prop("onChange")(new Date("2021-11-29T11:30:00.000"), true);
+        timezonePicker.prop("onChange")!(new Date("2021-11-29T11:30:00.000"), true);
 
         assert.isTrue(onChange.calledOnce);
         assert.deepEqual(onChange.firstCall.args, ["2021-11-29T11:30:00.000+00:00", true]);

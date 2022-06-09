@@ -17,15 +17,12 @@
 import { memoize } from "lodash-es";
 
 /**
- * Gets the users current time zone, such as `"Europe/Oslo"`.
- *
- * At the time of this writing, this is backed by the browser or user computer's currently
- * configured time zone information,
+ * Gets the users current time zone, for example "Europe/Oslo".
+ * This is currently backed by the browser or computer's locale setting.
  */
-export const getTimezone: () => string = memoize(guessTimezone);
+export const getCurrentTimezone: () => string = memoize(guessTimezone);
 
 function guessTimezone(): string {
-    // Getting time zone from the Intl api is not supported in IE (it returns undefined)
-    const timezone: string | undefined = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    return timezone != null ? timezone : "";
+    // N.B. getting time zone from the Intl api is not supported in IE (it returns undefined)
+    return Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
 }

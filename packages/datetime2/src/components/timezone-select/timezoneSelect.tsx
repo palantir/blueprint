@@ -52,6 +52,8 @@ export interface TimezoneSelectProps extends Props {
 
     /**
      * Callback invoked when the user selects a timezone.
+     *
+     * @param timezone the new timezone's IANA code
      */
     onChange: (timezone: string) => void;
 
@@ -141,7 +143,7 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
         const { showLocalTimezone, inputProps = {}, date } = props;
         this.state = { query: inputProps.value || "" };
         this.timezoneItems = mapTimezonesWithNames(date, TIMEZONE_ITEMS);
-        this.initialTimezoneItems = getInitialTimezoneItems(date, showLocalTimezone);
+        this.initialTimezoneItems = getInitialTimezoneItems(date, showLocalTimezone!);
     }
 
     public render() {
@@ -165,7 +167,7 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
                 onQueryChange={this.handleQueryChange}
                 popoverProps={{
                     ...popoverProps,
-                    popoverClassName: classNames(Classes.TIMEZONE_SELECT_POPOVER, popoverProps.popoverClassName),
+                    popoverClassName: classNames(Classes.TIMEZONE_SELECT_POPOVER, popoverProps?.popoverClassName),
                 }}
                 popoverTargetProps={{ className: Classes.TIMEZONE_SELECT_TARGET }}
                 resetOnClose={true}
@@ -181,7 +183,7 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
         const { date: nextDate } = this.props;
 
         if (this.props.showLocalTimezone !== prevProps.showLocalTimezone) {
-            this.initialTimezoneItems = getInitialTimezoneItems(nextDate, this.props.showLocalTimezone);
+            this.initialTimezoneItems = getInitialTimezoneItems(nextDate, this.props.showLocalTimezone!);
         }
         if (nextDate != null && nextDate.getTime() !== prevProps.date?.getTime()) {
             this.initialTimezoneItems = mapTimezonesWithNames(nextDate, this.initialTimezoneItems);
@@ -193,7 +195,7 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
         const { buttonProps = {}, disabled, fill, placeholder, value } = this.props;
         const selectedTimezone = this.timezoneItems.find(tz => tz.ianaCode === value);
         const buttonContent = selectedTimezone ? (
-            `${selectedTimezone.label} ${formatInTimeZone(this.props.date, selectedTimezone.ianaCode, "xxx")}`
+            `${selectedTimezone.label} ${formatInTimeZone(this.props.date!, selectedTimezone.ianaCode, "xxx")}`
         ) : (
             <span className={CoreClasses.TEXT_MUTED}>{placeholder}</span>
         );

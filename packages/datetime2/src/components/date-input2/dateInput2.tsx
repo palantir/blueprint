@@ -15,17 +15,16 @@
  */
 
 import { isValid } from "date-fns";
-import { formatInTimeZone } from "date-fns-tz";
-import { isEmpty } from "lodash-es";
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, Tag } from "@blueprintjs/core";
-import { DateInput, DateInputProps, TimePrecision } from "@blueprintjs/datetime";
+import { ButtonProps, DISPLAYNAME_PREFIX, Tag } from "@blueprintjs/core";
+import { DateInput, DateInputProps } from "@blueprintjs/datetime";
 
 import * as Classes from "../../common/classes";
-import { getTimezone } from "../../common/getTimezone";
+import { getDateObjectFromIsoString, getIsoEquivalentWithUpdatedTimezone } from "../../common/dateUtils";
+import { getCurrentTimezone } from "../../common/getTimezone";
 import { getTimezoneName } from "../../common/timezoneNameUtils";
-import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "../../common/timezoneUtils";
+import { convertLocalDateToTimezoneTime } from "../../common/timezoneUtils";
 import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
 export interface DateInput2Props extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {
@@ -52,17 +51,7 @@ export interface DateInput2Props extends Omit<DateInputProps, "onChange" | "valu
     disableTimezoneSelect?: boolean;
 }
 
-const NO_TIME_PRECISION = "date";
-const UTC_IANA_LABEL = "Etc/UTC";
-
-const TIME_FORMAT_TO_ISO_FORMAT: Record<TimePrecision | "date", string> = {
-    [TimePrecision.MILLISECOND]: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
-    [TimePrecision.SECOND]: "yyyy-MM-dd'T'HH:mm:ssxxx",
-    [TimePrecision.MINUTE]: "yyyy-MM-dd'T'HH:mmxxx",
-    [NO_TIME_PRECISION]: "yyyy-MM-dd",
-};
-
-const timepickerButtonProps = {
+const timezoneSelectButtonProps: Partial<ButtonProps> = {
     fill: false,
     minimal: true,
     outlined: true,
@@ -80,24 +69,21 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
         ...passThroughToDateInputProps
     } = props;
 
-    const [timezoneValue, updateTimezoneValue] = React.useState(defaultTimezone ?? getTimezone());
+    const [timezoneValue, updateTimezoneValue] = React.useState(defaultTimezone ?? getCurrentTimezone());
     const hideTimezone = timePrecision === undefined ? true : hideTimezoneProp;
-    const convertedIsoStringToDate = React.useMemo(
-        () => getDateObjectFromIsoString(value, timezoneValue),
-        [timezoneValue, value],
-    );
+    const dateValue = React.useMemo(() => getDateObjectFromIsoString(value, timezoneValue), [timezoneValue, value]);
 
-    const handleTimezoneUpdate = React.useCallback(
+    const handleTimezoneChange = React.useCallback(
         (newTimezone: string) => {
-            if (convertedIsoStringToDate != null) {
-                onChange?.(getIsoEquivalentWithUpdatedTimezone(convertedIsoStringToDate, newTimezone, timePrecision));
+            if (dateValue != null) {
+                onChange?.(getIsoEquivalentWithUpdatedTimezone(dateValue, newTimezone, timePrecision));
             }
             updateTimezoneValue(newTimezone);
         },
-        [onChange, convertedIsoStringToDate, timePrecision],
+        [onChange, dateValue, timePrecision],
     );
 
-    const handleChangeDateValue = React.useCallback(
+    const handleDateChange = React.useCallback(
         (newDate: Date | null, isUserChange: boolean) => {
             if (newDate == null) {
                 return;
@@ -107,12 +93,14 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
         [onChange, timezoneValue, timePrecision],
     );
 
-    const guaranteedValidDateValue = React.useMemo(
+    // we need a date which is guaranteed to be non-null here; if necessary, we use today's date and shift
+    // it to the desired/current timezone
+    const tzSelectDate = React.useMemo(
         () =>
-            convertedIsoStringToDate != null && isValid(convertedIsoStringToDate)
-                ? convertedIsoStringToDate
+            dateValue != null && isValid(dateValue)
+                ? dateValue
                 : convertLocalDateToTimezoneTime(new Date(), timezoneValue),
-        [timezoneValue, convertedIsoStringToDate],
+        [timezoneValue, dateValue],
     );
 
     const isTimezoneSelectDisabled = disabled || disableTimezoneSelect;
@@ -120,18 +108,18 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     const maybeTimezonePicker = hideTimezone ? undefined : (
         <TimezoneSelect
             value={timezoneValue}
-            onChange={handleTimezoneUpdate}
-            date={guaranteedValidDateValue}
+            onChange={handleTimezoneChange}
+            date={tzSelectDate}
             disabled={isTimezoneSelectDisabled}
             className={Classes.DATE_INPUT_TIMEZONE_SELECT}
-            buttonProps={timepickerButtonProps}
+            buttonProps={timezoneSelectButtonProps}
         >
             <Tag
                 rightIcon={isTimezoneSelectDisabled ? undefined : "caret-down"}
                 interactive={!isTimezoneSelectDisabled}
                 minimal={true}
             >
-                {getTimezoneName(guaranteedValidDateValue, timezoneValue, false)}
+                {getTimezoneName(tzSelectDate, timezoneValue, false)}
             </Tag>
         </TimezoneSelect>
     );
@@ -139,8 +127,8 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     return (
         <DateInput
             {...passThroughToDateInputProps}
-            value={convertedIsoStringToDate}
-            onChange={handleChangeDateValue}
+            value={dateValue}
+            onChange={handleDateChange}
             timePrecision={timePrecision}
             rightElement={maybeTimezonePicker}
             disabled={disabled}
@@ -148,25 +136,3 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     );
 });
 DateInput2.displayName = `${DISPLAYNAME_PREFIX}.DateInput2`;
-
-function getIsoEquivalentWithUpdatedTimezone(date: Date, timezone: string, timePrecision: TimePrecision | undefined) {
-    const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(date, timezone);
-    const formattedDateInTimezone = formatInTimeZone(convertedDate, timezone, getTimePrecision(timePrecision));
-    return formattedDateInTimezone;
-}
-
-const getTimePrecision = (timePrecision: TimePrecision | undefined): string =>
-    TIME_FORMAT_TO_ISO_FORMAT[timePrecision ?? NO_TIME_PRECISION];
-
-const getDateObjectFromIsoString = (value: string | null | undefined, timeZone: string) => {
-    if (value == null || isEmpty(value)) {
-        return null;
-    }
-    const date = new Date(value);
-    // If the value is just a date format then we convert it to midnight in local time to avoid weird things happening
-    if (value.length === 10) {
-        // If it's just a date, we know it's interpreted as midnight UTC so we convert it to local time of that UTC time
-        return convertLocalDateToTimezoneTime(date, UTC_IANA_LABEL);
-    }
-    return convertLocalDateToTimezoneTime(date, timeZone);
-};

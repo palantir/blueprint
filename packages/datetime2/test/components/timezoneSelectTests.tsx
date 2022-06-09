@@ -123,8 +123,8 @@ describe("<TimezoneSelect>", () => {
         const valueLabel = TIMEZONE_ITEMS.find(tz => tz.ianaCode === value)?.label;
         const timezoneSelect = mountTS({ value, onChange });
         clickFirstMenuItem(timezoneSelect);
-        const buttonText = timezoneSelect.find(Button).prop("text").toString();
-        assert.isTrue(buttonText.includes(valueLabel), `Expected '${buttonText}' to contain '${valueLabel}'`);
+        const buttonText = timezoneSelect.find(Button).prop("text")?.toString();
+        assert.isTrue(buttonText?.includes(valueLabel!), `Expected '${buttonText}' to contain '${valueLabel}'`);
     });
 
     it("popover can be controlled with popover props", () => {

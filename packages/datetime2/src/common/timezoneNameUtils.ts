@@ -16,7 +16,7 @@
 
 import { formatInTimeZone } from "date-fns-tz";
 
-import { getTimezone } from "./getTimezone";
+import { getCurrentTimezone } from "./getTimezone";
 import { MINIMAL_TIMEZONE_ITEMS, Timezone, TIMEZONE_ITEMS } from "./timezoneItems";
 
 export interface TimezoneWithNames extends Timezone {
@@ -40,7 +40,7 @@ export const mapTimezonesWithNames = (
     }));
 
 export function getInitialTimezoneItems(date: Date | undefined, showLocalTimezone: boolean) {
-    const systemTimezone = getTimezone();
+    const systemTimezone = getCurrentTimezone();
     const localTimezone = showLocalTimezone
         ? TIMEZONE_ITEMS.find(timezone => timezone.ianaCode === systemTimezone)
         : undefined;
