@@ -26,7 +26,6 @@ module.exports = Object.assign({}, baseConfig, {
             "./polyfill.js",
             // bundle entry points
             "./src/index.tsx",
-            "./src/index.scss",
         ],
     },
 

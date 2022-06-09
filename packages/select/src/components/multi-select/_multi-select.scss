@@ -1,8 +1,7 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/core/src/common/variables";
-@import "../select/select";
+@import "../../common/variables";
 
 .#{$ns}-multi-select {
   min-width: $pt-grid-size * 15;
@@ -13,5 +12,14 @@
     max-height: $select-popover-max-height;
     max-width: $select-popover-max-width;
     overflow: auto;
+  }
+
+  &.#{$ns}-popover2-match-target-width {
+    width: 100%;
+
+    .#{$ns}-menu {
+      max-width: none;
+      min-width: 0;
+    }
   }
 }

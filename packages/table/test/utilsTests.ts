@@ -115,6 +115,7 @@ describe("Utils", () => {
     });
 
     describe("arrayOfLength", () => {
+        /* eslint-disable deprecation/deprecation */
         it("truncates if too long", () => {
             const original = Utils.times(5, () => "A");
             const result = Utils.arrayOfLength(original, 2, "B");
@@ -139,6 +140,7 @@ describe("Utils", () => {
             expect(result).to.have.lengthOf(5);
             expect(result).to.deep.equal(["A", "A", "A", "A", "A"]);
         });
+        /* eslint-enable deprecation/deprecation */
     });
 
     describe("assignSparseValues", () => {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-export * from "./multi-select/multiSelect";
-export * from "./multi-select/multiSelect2";
-export * from "./omnibar/omnibar";
-export * from "./query-list/queryList";
-export * from "./select/select";
-export * from "./select/select2";
-export * from "./suggest/suggest";
-export * from "./suggest/suggest2";
+/**
+ * Specifies the popup kind for [aria-haspopup](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-haspopup).
+ */
+export enum PopupKind {
+    /** The popup is a menu. */
+    MENU = "menu",
+    /** The popup is a listbox. */
+    LISTBOX = "listbox",
+    /** The popup is a tree. */
+    TREE = "tree",
+    /** The popup is a grid. */
+    GRID = "grid",
+    /** The popup is a dialog. */
+    DIALOG = "dialog",
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/** @fileoverview "V2" variant of Suggest which uses Popover2 instead of Popover2 */
-
 import classNames from "classnames";
 import * as React from "react";
 
@@ -24,18 +22,23 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps2,
+    IPopoverProps,
     IRef,
     Keys,
+    Popover,
+    PopoverInteractionKind,
     Position,
     refHandler,
     setRef,
 } from "@blueprintjs/core";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface Suggest2Props<T> extends IListItemsProps<T> {
+// eslint-disable-next-line deprecation/deprecation
+export type SuggestProps<T> = ISuggestProps<T>;
+/** @deprecated use SuggestProps */
+export interface ISuggestProps<T> extends IListItemsProps<T> {
     /**
      * Whether the popover should close after selecting an item.
      *
@@ -86,8 +89,9 @@ export interface Suggest2Props<T> extends IListItemsProps<T> {
      */
     openOnKeyDown?: boolean;
 
-    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<Omit<Popover2Props, "content">>;
+    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -98,15 +102,16 @@ export interface Suggest2Props<T> extends IListItemsProps<T> {
     resetOnClose?: boolean;
 }
 
-export interface Suggest2State<T> {
+export interface ISuggestState<T> {
     isOpen: boolean;
     selectedItem: T | null;
 }
 
-export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Suggest2State<T>> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Suggest2`;
+/** @deprecated use { Suggest2 } from "@blueprintjs/select" */
+export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggestState<T>> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
 
-    public static defaultProps: Partial<Suggest2Props<any>> = {
+    public static defaultProps: Partial<SuggestProps<any>> = {
         closeOnSelect: true,
         fill: false,
         openOnKeyDown: false,
@@ -114,10 +119,11 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
     };
 
     public static ofType<U>() {
-        return Suggest2 as new (props: Suggest2Props<U>) => Suggest2<U>;
+        // eslint-disable-next-line deprecation/deprecation
+        return Suggest as new (props: SuggestProps<U>) => Suggest<U>;
     }
 
-    public state: Suggest2State<T> = {
+    public state: ISuggestState<T> = {
         isOpen: (this.props.popoverProps != null && this.props.popoverProps.isOpen) || false,
         selectedItem: this.getInitialSelectedItem(),
     };
@@ -136,6 +142,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         // omit props specific to this component, spread the rest.
         const { disabled, inputProps, popoverProps, ...restProps } = this.props;
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <this.TypedQueryList
                 {...restProps}
                 initialActiveItem={this.props.selectedItem ?? undefined}
@@ -146,7 +153,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         );
     }
 
-    public componentDidUpdate(prevProps: Suggest2Props<T>, prevState: Suggest2State<T>) {
+    public componentDidUpdate(prevProps: SuggestProps<T>, prevState: ISuggestState<T>) {
         if (prevProps.inputProps?.inputRef !== this.props.inputProps?.inputRef) {
             setRef(prevProps.inputProps?.inputRef, null);
             this.handleInputRef = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
@@ -162,7 +169,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
             // just closed, likely by keyboard interaction
             // wait until the transition ends so there isn't a flash of content in the popover
             /* eslint-disable-next-line deprecation/deprecation */
-            const timeout = this.props.popoverProps?.transitionDuration ?? Popover2.defaultProps.transitionDuration;
+            const timeout = this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration;
             setTimeout(() => this.maybeResetActiveItemToSelectedItem(), timeout);
         }
 
@@ -192,19 +199,15 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         }
 
         return (
-            <Popover2
+            /* eslint-disable-next-line deprecation/deprecation */
+            <Popover
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={isOpen}
                 position={Position.BOTTOM_LEFT}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
-                content={
-                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                        {listProps.itemList}
-                    </div>
-                }
-                interactionKind="click"
+                interactionKind={PopoverInteractionKind.CLICK}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpening={this.handlePopoverOpening}
@@ -222,7 +225,11 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                     placeholder={inputPlaceholder}
                     value={inputValue}
                 />
-            </Popover2>
+                <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                    {listProps.itemList}
+                </div>
+                {/* eslint-disable-next-line deprecation/deprecation */}
+            </Popover>
         );
     };
 
@@ -236,7 +243,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
     private handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
         this.selectText();
 
-        // TODO can we leverage Popover2.openOnTargetFocus for this?
+        // TODO can we leverage Popover.openOnTargetFocus for this?
         if (!this.props.openOnKeyDown) {
             this.setState({ isOpen: true });
         }
@@ -281,7 +288,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         }
     }
 
-    // Popover2 interaction kind is CLICK, so this only handles click events.
+    // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean, event?: React.SyntheticEvent<HTMLElement>) =>
         this.requestAnimationFrame(() => {
@@ -296,7 +303,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
     private handlePopoverOpening = (node: HTMLElement) => {
         // reset query before opening instead of when closing to prevent flash of unfiltered items.
-        // this is a limitation of the interactions between QueryList state and Popover2 transitions.
+        // this is a limitation of the interactions between QueryList state and Popover transitions.
         if (this.props.resetOnClose && this.queryList) {
             this.queryList.setQuery("", true);
         }

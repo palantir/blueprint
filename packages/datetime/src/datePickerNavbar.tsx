@@ -39,6 +39,7 @@ export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps
             <div className={classNames(Classes.DATEPICKER_NAVBAR, classes.navBar)}>
                 {this.props.hideLeftNavButton || (
                     <Button
+                        aria-label="Go to previous month"
                         className={classes.navButtonPrev}
                         disabled={areSameMonth(month, minDate)}
                         icon="chevron-left"
@@ -48,6 +49,7 @@ export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps
                 )}
                 {this.props.hideRightNavButton || (
                     <Button
+                        aria-label="Go to next month"
                         className={classes.navButtonNext}
                         disabled={areSameMonth(month, maxDate)}
                         icon="chevron-right"

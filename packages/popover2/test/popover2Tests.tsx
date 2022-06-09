@@ -25,6 +25,7 @@ import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 import { Classes, Errors } from "../src";
 import { IPopover2Props, IPopover2State, Popover2, Popover2InteractionKind } from "../src/popover2";
 import { Popover2Arrow } from "../src/popover2Arrow";
+import { PopupKind } from "../src/popupKind";
 import { Tooltip2 } from "../src/tooltip2";
 
 describe("<Popover2>", () => {
@@ -191,6 +192,16 @@ describe("<Popover2>", () => {
         it("renders with aria-haspopup attr", () => {
             wrapper = renderPopover({ isOpen: true });
             assert.isTrue(wrapper.find("[aria-haspopup='true']").exists());
+        });
+
+        it("sets aria-haspopup attr base on popupKind", () => {
+            wrapper = renderPopover({ isOpen: true, popupKind: PopupKind.DIALOG });
+            assert.isTrue(wrapper.find("[aria-haspopup='dialog']").exists());
+        });
+
+        it("renders without aria-haspopup attr for hover interaction", () => {
+            wrapper = renderPopover({ isOpen: true, interactionKind: Popover2InteractionKind.HOVER_TARGET_ONLY });
+            assert.isFalse(wrapper.find("[aria-haspopup]").exists());
         });
     });
 

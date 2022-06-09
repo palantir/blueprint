@@ -14,7 +14,9 @@ The **@blueprintjs/select** NPM package provides React components related to sel
 
 - [Suggest2](#select/suggest2) replacement for Suggest, uses Popover2 instead of Popover under the hood.
 
-- [MultiSelect](#select/multi-select) for selecting multiple items in a list.
+- [MultiSelect](#select/multi-select) for selecting multiple items in a list (DEPRECATED).
+
+- [MultiSelect2](#select/multi-select2) replacement for MultiSelect, uses Popover2 instead of Popover under the hood.
 
 - [Omnibar](#select/omnibar), a macOS spotlight-style typeahead component.
 
@@ -31,5 +33,6 @@ npm install --save @blueprintjs/select
 @page suggest
 @page suggest2
 @page multi-select
+@page multi-select2
 @page omnibar
 @page query-list

@@ -80,7 +80,7 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin focus-outline($offset: 2px) {
-  outline: $pt-outline-color auto 2px;
+  outline: $pt-outline-color solid 2px;
   outline-offset: $offset;
   -moz-outline-radius: 6px;
 }
