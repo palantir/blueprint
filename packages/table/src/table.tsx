@@ -16,6 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import innerText from "react-innertext";
 
 import {
     AbstractComponent2,
@@ -27,6 +28,7 @@ import {
     IRef,
 } from "@blueprintjs/core";
 
+import { CellRenderer } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
 import type { IFocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
@@ -76,6 +78,8 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         enableMultipleSelection: true,
         enableRowHeader: true,
         forceRerenderOnSelectionChange: false,
+        getCellClipboardData: (row: number, col: number, cellRenderer: CellRenderer) =>
+            innerText(cellRenderer?.(row, col)),
         loadingOptions: [],
         maxColumnWidth: 9999,
         maxRowHeight: 9999,
