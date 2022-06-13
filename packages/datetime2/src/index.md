@@ -19,11 +19,11 @@ provides components for interacting with dates, times, and timezones:
 
 ### Motivation
 
-These are modern "V2" variants of the components available in the
-[__@blueprintjs/datetime__ package](#datetime). They will become the standard date & time
-components in a future major version of Blueprint in 2022. You are encouraged to try out
-the new APIs, provide feedback, and set yourself up for forward compatibility in the Blueprint
-ecosystem.
+These are modern "V2" variants of components available in the
+[__@blueprintjs/datetime__](#datetime) and [__@blueprintjs/timezone__](#timezone) packages.
+They will become the standard date & time components in a future major version of Blueprint
+in 2022. You are encouraged to try out the new APIs, provide feedback, and set yourself up
+for forward compatibility in the Blueprint ecosystem.
 
 Compared to their "V1" counterparts, these components:
 - use [Popover2](#popover2-package/popover2) instead of [Popover](#core/components/popover)
