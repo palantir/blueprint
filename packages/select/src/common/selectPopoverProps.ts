@@ -28,7 +28,9 @@ export interface SelectPopoverProps {
      * Props to spread to `Popover2`.
      * Note that `content` cannot be changed aside from utilizing `popoverContentProps`.
      */
-    popoverProps?: Partial<Omit<Popover2Props, "content">>;
+    popoverProps?: Partial<
+        Omit<Popover2Props, "content" | "defaultIsOpen" | "disabled" | "fill" | "renderTarget" | "targetTagName">
+    >;
 
     /**
      * Optional ref for the Popover2 component instance.

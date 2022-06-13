@@ -28,7 +28,6 @@ import {
     InputGroupProps2,
     IRef,
     Keys,
-    Position,
     refHandler,
     setRef,
     Utils,
@@ -147,7 +146,6 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const {
-            fill,
             filterable = true,
             disabled = false,
             inputProps = {},
@@ -155,10 +153,6 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
             popoverProps = {},
             popoverRef,
         } = this.props;
-
-        if (fill) {
-            popoverProps.fill = true;
-        }
 
         const input = (
             <InputGroup
@@ -174,13 +168,15 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         );
 
         const { handleKeyDown, handleKeyUp } = listProps;
+
+        // N.B. no need to set `fill` since that is unused with the `renderTarget` API
         return (
             <Popover2
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 disabled={disabled}
-                position={Position.BOTTOM_LEFT}
+                position={popoverProps.placement !== undefined ? undefined : "bottom-left"}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
