@@ -109,7 +109,6 @@ export interface IPopoverState {
 }
 
 /** @deprecated use { Popover2 } from "@blueprintjs/popover2" */
-
 export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 

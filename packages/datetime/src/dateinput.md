@@ -1,7 +1,18 @@
 @# Date input
 
-The `DateInput` component is an [input group](#core/components/text-inputs.input-group)
-that shows a [`DatePicker`](#datetime/datepicker) in a [`Popover`](#core/components/popover)
+<div class="@ns-callout @ns-intent-success @ns-icon-star">
+    <h4 class="@ns-heading">Newer API available</h4>
+
+There is an updated version of this component available in the new
+[__@blueprintjs/datetime2__ package](#datetime2) called
+[DateInput2](#datetime2/date-input2). Its API is currently in development,
+but you are encouraged to try it out and provide feedback for the next
+version of the Blueprint date input.
+
+</div>
+
+The DateInput component is an [InputGroup](#core/components/text-inputs.input-group)
+that shows a [DatePicker](#datetime/datepicker) in a [Popover](#core/components/popover)
 on focus. Use it in forms where the user must enter a date.
 
 @reactExample DateInputExample
@@ -18,9 +29,9 @@ The optional `locale` argument is the value of the `locale` prop.
 A simple implementation using built-in browser methods could look like this:
 
 ```tsx
-import { DateInput, IDateFormatProps } from "@blueprintjs/datetime";
+import { DateInput, DateFormatProps } from "@blueprintjs/datetime";
 
-const jsDateFormatter: IDateFormatProps = {
+const jsDateFormatter: DateFormatProps = {
     // note that the native implementation of Date functions differs between browsers
     formatDate: date => date.toLocaleDateString(),
     parseDate: str => new Date(str),
@@ -33,10 +44,10 @@ const jsDateFormatter: IDateFormatProps = {
 An implementation using `moment.js` could look like this:
 
 ```tsx
-import { DateInput, IDateFormatProps } from "@blueprintjs/datetime";
+import { DateInput, DateFormatProps } from "@blueprintjs/datetime";
 import moment from "moment";
 
-function getMomentFormatter(format: string): IDateFormatProps {
+function getMomentFormatter(format: string): DateFormatProps {
     // note that locale argument comes from locale prop and may be undefined
     return {
         formatDate: (date, locale) => moment(date).locale(locale).format(format),

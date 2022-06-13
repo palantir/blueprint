@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { Alignment, Button, Classes, MenuItem } from "@blueprintjs/core";
 import { IconName } from "@blueprintjs/icons";
-import { ItemRenderer, Select } from "@blueprintjs/select";
+import { ItemRenderer, Select2 } from "@blueprintjs/select";
 
 import { getIconNames, IconNameOrNone, NONE } from "./iconNames";
 
@@ -31,7 +31,7 @@ export interface IIconSelectProps {
     onChange: (iconName?: IconName) => void;
 }
 
-const TypedSelect = Select.ofType<IconNameOrNone>();
+const TypedSelect = Select2.ofType<IconNameOrNone>();
 
 export class IconSelect extends React.PureComponent<IIconSelectProps> {
     public render() {

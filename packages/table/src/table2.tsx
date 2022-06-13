@@ -15,6 +15,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import innerText from "react-innertext";
 
 import {
     AbstractComponent2,
@@ -26,6 +27,7 @@ import {
     UseHotkeysReturnValue,
 } from "@blueprintjs/core";
 
+import { CellRenderer } from "./cell/cell";
 import { Column, ColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
@@ -81,6 +83,8 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         enableMultipleSelection: true,
         enableRowHeader: true,
         forceRerenderOnSelectionChange: false,
+        getCellClipboardData: (row: number, col: number, cellRenderer: CellRenderer) =>
+            innerText(cellRenderer(row, col)),
         loadingOptions: [],
         maxColumnWidth: 9999,
         maxRowHeight: 9999,
@@ -138,14 +142,14 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             // Make sure the width/height arrays have the correct length, but keep
             // as many existing widths/heights as possible. Also, apply the
             // sparse width/heights from props.
-            newColumnWidths = Utils.arrayOfLength(newColumnWidths, numCols, defaultColumnWidth);
+            newColumnWidths = Array(numCols).fill(defaultColumnWidth);
             newColumnWidths = Utils.assignSparseValues(newColumnWidths, previousColumnWidths);
             newColumnWidths = Utils.assignSparseValues(newColumnWidths, columnWidths);
         }
 
         let newRowHeights = rowHeights;
         if (rowHeights !== state.rowHeights || numRows !== state.rowHeights.length) {
-            newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
+            newRowHeights = Array(numRows).fill(defaultRowHeight);
             newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
         }
 

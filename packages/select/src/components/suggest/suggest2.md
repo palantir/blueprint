@@ -18,10 +18,9 @@ on the wiki.
 
 </div>
 
-`Suggest2` behaves similarly to [`Select2`](#select/select2), except it
-renders a text input as the `Popover2` target instead of arbitrary children. This
-text [`InputGroup`](#core/components/text-inputs.input-group) can be customized
-using `inputProps`.
+Suggest2 behaves similarly to [Select2](#select/select2), except it
+renders a text input as the [Popover2](#popover2-package/popover2) target instead of arbitrary children.
+This text [InputGroup](#core/components/text-inputs.input-group) can be customized using the `inputProps` prop.
 
 @reactExample SuggestExample
 

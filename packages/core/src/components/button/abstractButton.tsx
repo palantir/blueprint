@@ -120,8 +120,8 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
     public abstract render(): JSX.Element;
 
     protected getCommonButtonProps() {
-        const { active, alignText, fill, large, loading, outlined, minimal, small, tabIndex } = this.props;
-        const disabled = this.props.disabled || loading;
+        const { active, alignText, fill, large, loading = false, outlined, minimal, small, tabIndex } = this.props;
+        const disabled = this.props.disabled ?? loading;
 
         const className = classNames(
             Classes.BUTTON,

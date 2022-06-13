@@ -6,6 +6,7 @@ import "@blueprintjs/test-commons/bootstrap";
 
 import "./listItemsPropsTests";
 import "./multiSelectTests";
+import "./multiSelect2Tests";
 import "./omnibarTests";
 import "./queryListTests";
 import "./renderFilteredItemsTests";

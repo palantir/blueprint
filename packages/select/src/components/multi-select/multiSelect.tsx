@@ -97,6 +97,7 @@ export interface IMultiSelectState {
     isOpen: boolean;
 }
 
+/** @deprecated use { MultiSelect2 } from "@blueprintjs/select" */
 export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, IMultiSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
 
@@ -106,6 +107,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
     };
 
     public static ofType<U>() {
+        // eslint-disable-next-line deprecation/deprecation
         return MultiSelect as new (props: MultiSelectProps<U>) => MultiSelect<U>;
     }
 
@@ -140,6 +142,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
         const { openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
 
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <this.TypedQueryList
                 {...restProps}
                 onItemSelect={this.handleItemSelect}

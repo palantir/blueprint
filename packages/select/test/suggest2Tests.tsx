@@ -24,7 +24,7 @@ import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { IItemRendererProps, QueryList } from "../src";
-import { Suggest2, Suggest2Props, Suggest2State } from "../src/components/select/suggest2";
+import { Suggest2, Suggest2Props, Suggest2State } from "../src/components/suggest/suggest2";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("Suggest2", () => {
@@ -202,12 +202,12 @@ describe("Suggest2", () => {
             const ITEM_INDEX = 4;
             const wrapper = suggest();
 
-            assert.isFalse(handlers.inputValueRenderer.called, "should not call inputValueRenderer before selection");
+            assert.isFalse(handlers.inputValueRenderer.called, "should not call inputValueRenderer before selection");
             selectItem(wrapper, ITEM_INDEX);
             const selectedItem = TOP_100_FILMS[ITEM_INDEX];
             const expectedValue = inputValueRenderer(selectedItem);
 
-            assert.isTrue(handlers.inputValueRenderer.called, "should call inputValueRenderer after selection");
+            assert.isTrue(handlers.inputValueRenderer.called, "should call inputValueRenderer after selection");
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), expectedValue);
         });
     });

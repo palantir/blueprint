@@ -45,7 +45,8 @@ export interface ITimezonePickerProps extends Props {
 
     /**
      * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
-     * See https://www.iana.org/time-zones for more information.
+     *
+     * @see https://www.iana.org/time-zones
      */
     value: string | undefined;
 
@@ -115,6 +116,7 @@ export interface ITimezonePickerState {
     query: string;
 }
 
+// eslint-disable-next-line deprecation/deprecation
 const TypedSelect = Select.ofType<TimezoneItem>();
 
 export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, ITimezonePickerState> {
