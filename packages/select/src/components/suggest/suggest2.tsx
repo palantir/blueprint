@@ -27,7 +27,6 @@ import {
     IRef,
     Keys,
     mergeRefs,
-    Position,
     refHandler,
     setRef,
     Utils,
@@ -185,7 +184,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={isOpen}
-                position={popoverProps.placement !== undefined ? undefined : "bottom-left"}
+                placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={

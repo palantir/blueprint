@@ -176,7 +176,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 disabled={disabled}
-                position={popoverProps.placement !== undefined ? undefined : "bottom-left"}
+                placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
