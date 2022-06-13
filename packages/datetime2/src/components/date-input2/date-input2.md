@@ -14,7 +14,7 @@ Migrating from [DateInput](#datetime/dateinput)?
 DateInput2 is a replacement for the [DateInput component](#datetime/dateinput) from
 [__@blueprintjs/datetime__ package](#datetime) and will replace it in Blueprint v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
-See the [migration guide](https://github.com/palantir/blueprint/wiki/DateInput2,-TimezonePicker2-migration)
+See the [migration guide](https://github.com/palantir/blueprint/wiki/datetime2-component-migration)
 on the wiki.
 
 </div>
@@ -31,7 +31,7 @@ an embedded time zone selector.
 - `formatDate(date, locale?)` receives the current `Date` and returns a string representation of it. The result of this function becomes the input value when it is not being edited.
 - `parseDate(str, locale?)` receives text inputted by the user and converts it to a `Date` object. The returned `Date` becomes the next value of the component.
 
-Unlike the `DateInput` component, this component uses ISO strings to represent time and also returns that type in the `onChange` callback.
+Unlike the `DateInput` component, this component uses ISO strings to represent timestamps. This data type is used in the `value` prop and the `onChange` callback.
 
 The optional `locale` argument is the value of the `locale` prop.
 

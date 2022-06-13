@@ -13,7 +13,7 @@ Migrating from [Select](#select/select-component)?
 
 Select2 is a replacement for Select and will replace it in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
-See the [migration guide](https://github.com/palantir/blueprint/wiki/Select2,-Suggest2,-MultiSelect2-migration)
+See the [migration guide](https://github.com/palantir/blueprint/wiki/select-component-migration)
 on the wiki.
 
 </div>
