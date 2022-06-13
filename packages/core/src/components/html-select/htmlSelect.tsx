@@ -91,19 +91,12 @@ export class HTMLSelect extends AbstractPureComponent2<HTMLSelectProps> {
 
         const optionChildren = options.map(option => {
             const props: OptionProps = typeof option === "object" ? option : { value: option };
-            return (
-                <option
-                    {...props}
-                    key={props.value}
-                    children={props.label || props.value}
-                    selected={this.props.value === props.value}
-                />
-            );
+            return <option {...props} key={props.value} children={props.label || props.value} />;
         });
 
         return (
             <div className={classes}>
-                <select disabled={disabled} ref={elementRef} {...htmlProps} multiple={false}>
+                <select disabled={disabled} ref={elementRef} value={this.props.value} {...htmlProps} multiple={false}>
                     {optionChildren}
                     {htmlProps.children}
                 </select>
