@@ -35,8 +35,6 @@ import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2"
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-// N.B. selectedItems should really be a required prop, but is left optional for backwards compatibility
-
 export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
     /**
      * Whether the component is non-interactive.
@@ -95,7 +93,7 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
     popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
 
     /** Controlled selected values. */
-    selectedItems?: T[];
+    selectedItems: T[];
 
     /**
      * Props to spread to `TagInput`.
@@ -233,7 +231,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 onClear,
                 placeholder,
                 popoverTargetProps = {},
-                selectedItems = [],
+                selectedItems,
                 tagInputProps = {},
             } = this.props;
             const { handleKeyDown, handleKeyUp } = listProps;
@@ -331,7 +329,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     };
 
     private handleTagRemove = (tag: React.ReactNode, index: number) => {
-        const { selectedItems = [], onRemove, tagInputProps } = this.props;
+        const { selectedItems, onRemove, tagInputProps } = this.props;
         onRemove?.(selectedItems[index], index);
         tagInputProps?.onRemove?.(tag, index);
         this.refHandlers.popover.current?.reposition(); // reposition when size of input changes
