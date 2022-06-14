@@ -22,4 +22,3 @@ export const DATE_INPUT_TIMEZONE_SELECT = `${NS}-date-input-timezone-select`;
 
 export const TIMEZONE_SELECT = `${NS}-timezone-select`;
 export const TIMEZONE_SELECT_POPOVER = `${TIMEZONE_SELECT}-popover`;
-export const TIMEZONE_SELECT_TARGET = `${TIMEZONE_SELECT}-target`;
