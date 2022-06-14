@@ -53,16 +53,16 @@ describe("<DateInput2>", () => {
     it("Correctly passes on the default selected timezone", () => {
         const defaultTimezone = "Europe/Paris";
         const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} defaultTimezone={defaultTimezone} />);
-        const timezonePicker = wrapper.find(TimezoneSelect);
+        const timezoneSelect = wrapper.find(TimezoneSelect);
 
-        assert.strictEqual(timezonePicker.prop("value"), defaultTimezone);
+        assert.strictEqual(timezoneSelect.prop("value"), defaultTimezone);
     });
 
     it("It updates the passed back string when timezone is changed", () => {
         const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />);
-        const timezonePicker = wrapper.find(TimezoneSelect);
+        const timezoneSelect = wrapper.find(TimezoneSelect);
         const newTimezone = "Europe/Paris";
-        timezonePicker.prop("onChange")(newTimezone);
+        timezoneSelect.prop("onChange")(newTimezone);
 
         assert.isTrue(onChange.calledOnce);
         assert.deepEqual(onChange.firstCall.args, ["2021-11-29T10:30:00.000+01:00"]);
@@ -70,9 +70,9 @@ describe("<DateInput2>", () => {
 
     it("It formats the string based on the time precision when timezone is changed", () => {
         const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} timePrecision={TimePrecision.MINUTE} />);
-        const timezonePicker = wrapper.find(TimezoneSelect);
+        const timezoneSelect = wrapper.find(TimezoneSelect);
         const newTimezone = "Europe/Paris";
-        timezonePicker.prop("onChange")(newTimezone);
+        timezoneSelect.prop("onChange")(newTimezone);
 
         assert.isTrue(onChange.calledOnce);
         assert.deepEqual(onChange.firstCall.args, ["2021-11-29T10:30+01:00"]);
@@ -80,14 +80,14 @@ describe("<DateInput2>", () => {
 
     it("It updates the passed back string when time is changed", () => {
         const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />);
-        const timezonePicker = wrapper.find(DateInput);
-        timezonePicker.prop("onChange")!(new Date("2021-11-29T11:30:00.000"), true);
+        const timezoneSelect = wrapper.find(DateInput);
+        timezoneSelect.prop("onChange")!(new Date("2021-11-29T11:30:00.000"), true);
 
         assert.isTrue(onChange.calledOnce);
         assert.deepEqual(onChange.firstCall.args, ["2021-11-29T11:30:00.000+00:00", true]);
     });
 
-    it("Does not render a timezone picker not passed a precision", () => {
+    it("Does not render a timezone select if timePrecision is undefined", () => {
         const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} timePrecision={undefined} />);
         assert.isFalse(wrapper.find(TimezoneSelect).exists());
     });

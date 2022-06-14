@@ -46,7 +46,7 @@ export interface DateInput2Props extends Omit<DateInputProps, "onChange" | "valu
     showTimezoneSelect?: boolean;
 
     /**
-     * Whether to disable the timezone picker.
+     * Whether to disable the timezone select.
      *
      * @default false
      */
