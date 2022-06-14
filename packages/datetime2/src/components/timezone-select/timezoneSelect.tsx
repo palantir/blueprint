@@ -28,8 +28,7 @@ import {
     MenuItem,
     Props,
 } from "@blueprintjs/core";
-import type { Popover2Props } from "@blueprintjs/popover2";
-import { ItemListPredicate, ItemRenderer, Select2 } from "@blueprintjs/select";
+import { ItemListPredicate, ItemRenderer, Select2, SelectPopoverProps } from "@blueprintjs/select";
 
 import * as Classes from "../../common/classes";
 import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
@@ -111,7 +110,7 @@ export interface TimezoneSelectProps extends Props {
     inputProps?: InputGroupProps2;
 
     /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<Omit<Popover2Props, "content">>;
+    popoverProps?: SelectPopoverProps["popoverProps"];
 }
 
 export interface TimezoneSelectState {
