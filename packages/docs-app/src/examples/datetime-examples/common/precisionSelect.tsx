@@ -19,7 +19,7 @@ import * as React from "react";
 import { Classes, HTMLSelect } from "@blueprintjs/core";
 import { TimePrecision } from "@blueprintjs/datetime";
 
-export interface IPrecisionSelectProps {
+export interface PrecisionSelectProps {
     /**
      * The precision-string option to display as selected.
      */
@@ -43,9 +43,9 @@ export interface IPrecisionSelectProps {
     label?: string;
 }
 
-export const PrecisionSelect: React.FC<IPrecisionSelectProps> = props => (
+export const PrecisionSelect: React.FC<PrecisionSelectProps> = props => (
     <label className={Classes.LABEL}>
-        {props.label || "Precision"}
+        {props.label ?? "Precision"}
         <HTMLSelect value={props.value} onChange={props.onChange}>
             {props.allowNone && <option value="none">None</option>}
             <option value={TimePrecision.MINUTE}>Minute</option>
