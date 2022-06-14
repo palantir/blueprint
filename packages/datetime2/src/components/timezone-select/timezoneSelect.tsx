@@ -169,7 +169,6 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
                     ...popoverProps,
                     popoverClassName: classNames(Classes.TIMEZONE_SELECT_POPOVER, popoverProps?.popoverClassName),
                 }}
-                popoverTargetProps={{ className: Classes.TIMEZONE_SELECT_TARGET }}
                 resetOnClose={true}
                 resetOnSelect={true}
             >
