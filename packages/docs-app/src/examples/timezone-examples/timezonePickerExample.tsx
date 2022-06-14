@@ -72,6 +72,7 @@ export class TimezonePickerExample extends React.PureComponent<IExampleProps, IT
             </>
         );
 
+        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={options} {...this.props}>
                 <TimezonePicker
@@ -86,6 +87,7 @@ export class TimezonePickerExample extends React.PureComponent<IExampleProps, IT
                 </TimezonePicker>
             </Example>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
     private renderCustomTarget() {
