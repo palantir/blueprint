@@ -20,8 +20,8 @@ import { H5, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateRange, DateRangeInput, TimePrecision } from "@blueprintjs/datetime";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
-import { MOMENT_FORMATS, MomentFormatSelector } from "./common/momentFormats";
 import { MomentDateRange } from "./common/momentDate";
+import { MOMENT_FORMATS, MomentFormatSelector } from "./common/momentFormats";
 
 export interface IDateRangeInputExampleState {
     allowSingleDayRange: boolean;
