@@ -57,7 +57,7 @@ export interface IItemListRendererProps<T> {
     itemsParentRef: IRef<HTMLUListElement>;
 
     /**
-     * Additional props to apply to the `Menu` that is created within the `QueryList`
+     * Props to apply to the `Menu` created within the `itemListRenderer`
      */
     menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
