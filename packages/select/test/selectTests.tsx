@@ -25,7 +25,7 @@ import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/film
 import { IItemRendererProps, ISelectProps, ISelectState, Select } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
-describe.only("<Select>", () => {
+describe("<Select>", () => {
     const FilmSelect = Select.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
@@ -115,14 +115,18 @@ describe.only("<Select>", () => {
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
     });
 
-    it.only("matchTargetWidth={true} makes popover same width as target", () => {
+    it("matchTargetWidth={true} makes popover same width as target", done => {
         const wrapper = select({ matchTargetWidth: true });
-        const popoverWidth = wrapper.find(`.${Classes.POPOVER}`).hostNodes().getDOMNode().clientWidth;
-        const targetWidth = wrapper.find(`.${Classes.POPOVER_TARGET}`).hostNodes().getDOMNode().clientWidth;
-        assert.notEqual(popoverWidth, 0, "popover width should be > 0");
-        assert.notEqual(targetWidth, 0, "target width should be > 0");
-        assert.closeTo(targetWidth, popoverWidth, 1, "popover width should be close to target width");
-        wrapper.detach();
+        // wait one frame for popper.js v1 to position the popover and apply our custom modifier
+        setTimeout(() => {
+            const popoverWidth = wrapper.find(`.${Classes.POPOVER}`).hostNodes().getDOMNode().clientWidth;
+            const targetWidth = wrapper.find(`.${Classes.POPOVER_TARGET}`).hostNodes().getDOMNode().clientWidth;
+            assert.notEqual(popoverWidth, 0, "popover width should be > 0");
+            assert.notEqual(targetWidth, 0, "target width should be > 0");
+            assert.closeTo(targetWidth, popoverWidth, 1, "popover width should be close to target width");
+            wrapper.detach();
+            done();
+        });
     });
 
     function select(props: Partial<ISelectProps<IFilm>> = {}, query?: string) {
