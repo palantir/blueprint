@@ -22,7 +22,17 @@ import { DateFormatProps } from "@blueprintjs/datetime";
 import { DateFormatSelector, DateFormatSelectorProps } from "../../../common/dateFormatSelector";
 
 export const MomentFormatSelector: React.FC<Omit<DateFormatSelectorProps, "formatOptions">> = props => {
-    return <DateFormatSelector formatOptions={MOMENT_FORMATS} {...props} />;
+    return (
+        <DateFormatSelector
+            formatOptions={MOMENT_FORMATS}
+            label={
+                <span>
+                    <a href="https://momentjs.com/">Moment.js</a> format
+                </span>
+            }
+            {...props}
+        />
+    );
 };
 
 export const MOMENT_FORMATS: DateFormatProps[] = [
@@ -40,6 +50,6 @@ function getMomentFormatter(format: string): DateFormatProps {
     return {
         formatDate: date => moment(date).format(format),
         parseDate: str => moment(str, format).toDate(),
-        placeholder: `${format} (moment)`,
+        placeholder: `${format}`,
     };
 }

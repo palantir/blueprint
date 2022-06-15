@@ -27,6 +27,13 @@ export interface DateFormatSelectorProps {
     /** Selected formatter. */
     format: DateFormatProps;
 
+    /**
+     * Optional label for the RadioGroup
+     *
+     * @default "Date format"
+     */
+    label?: React.ReactNode;
+
     /** The callback to fire when a new formatter is chosen. */
     onChange: (format: DateFormatProps) => void;
 }
@@ -36,7 +43,7 @@ export const DateFormatSelector: React.FC<DateFormatSelectorProps> = props => {
     const value = props.formatOptions.indexOf(props.format);
 
     return (
-        <RadioGroup label="Date format" onChange={handleChange} selectedValue={value}>
+        <RadioGroup label={props.label ?? "Date format"} onChange={handleChange} selectedValue={value}>
             {props.formatOptions.map((format, index) => (
                 <Radio key={index} label={format.placeholder} value={index} />
             ))}

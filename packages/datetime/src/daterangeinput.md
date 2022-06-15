@@ -1,36 +1,28 @@
 @# Date range input
 
-The `DateRangeInput` component is a [control group](#core/components/control-group) composed of two
-[input groups](#core/components/text-inputs.input-group). It shows a
-[`DateRangePicker`](#datetime/daterangepicker) in a [`Popover`](#core/components/popover) on focus.
+The DateRangeInput component is a [ControlGroup](#core/components/control-group) composed
+of two [InputGroups](#core/components/text-inputs.input-group). It shows a
+[DateRangePicker](#datetime/daterangepicker) in a [Popover](#core/components/popover) on focus.
 
 Use this component in forms where the user must enter a date range.
 
 @reactExample DateRangeInputExample
 
-@## Props
+@## Usage
 
-Use the `onChange` function to listen for changes to the selected date. Use
-`onError` to listen for invalid entered dates or date ranges.
+DateRangeInput supports both controlled and uncontrolled usage. You can control
+the selected date range by setting the `value` prop, or use the component in
+uncontrolled mode and specify an initial date range by setting `defaultValue`.
+Use the `onChange` prop callback to listen for changes to the selected range and
+the `onError` prop to react to invalid dates entered in the text inputs.
 
-You can control the selected date by setting the `value` prop, or use the
-component in uncontrolled mode and specify an initial date by setting
-`defaultValue`.
+@## Date formatting
 
 Customize the date format with the required `formatDate` and `parseDate`
 callbacks. See [date formatting](#datetime/dateinput.date-formatting) for more
 information on these props.
 
-```tsx
-import { DateRangeInput } from "@blueprintjs/datetime";
-
-<DateRangeInput
-    formatDate={date => date.toLocaleString()}
-    onChange={this.handleRangeChange}
-    parseDate={str => new Date(str)}
-    value={[this.state.startDate, this.state.endDate]}
-/>
-```
+@## Props interface
 
 @interface IDateRangeInputProps
 

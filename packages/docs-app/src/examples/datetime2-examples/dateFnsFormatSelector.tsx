@@ -25,7 +25,17 @@ import { DateFormatSelector, DateFormatSelectorProps } from "../../common/dateFo
 const locales: { [localeCode: string]: Locale } = require("date-fns/locale");
 
 export const DateFnsFormatSelector: React.FC<Omit<DateFormatSelectorProps, "formatOptions">> = props => {
-    return <DateFormatSelector formatOptions={DATE_FNS_FORMATS} {...props} />;
+    return (
+        <DateFormatSelector
+            formatOptions={DATE_FNS_FORMATS}
+            label={
+                <span>
+                    <a href="https://date-fns.org/">date-fns</a> format
+                </span>
+            }
+            {...props}
+        />
+    );
 };
 
 export const DATE_FNS_FORMATS: DateFormatProps[] = [
@@ -39,7 +49,7 @@ function getDateFnsFormatter(formatStr: string): DateFormatProps {
     return {
         formatDate: (date, localeCode) => format(date, formatStr, maybeGetLocaleOptions(localeCode)),
         parseDate: (str, localeCode) => parse(str, formatStr, new Date(), maybeGetLocaleOptions(localeCode)),
-        placeholder: `${formatStr} (date-fns)`,
+        placeholder: `${formatStr}`,
     };
 }
 
