@@ -279,10 +279,10 @@ If provided, the `itemListRenderer` prop will be called to render the contents o
 ```tsx
 import { ItemListRenderer } from "@blueprintjs/select";
 
-const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, renderItem }) => {
+const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, renderItem, menuProps }) => {
     const renderedItems = items.map(renderItem).filter(item => item != null);
     return (
-        <Menu ulRef={itemsParentRef}>
+        <Menu role="listbox" ulRef={itemsParentRef} {...menuProps}>
             <MenuItem
                 disabled={true}
                 text={`Found ${renderedItems.length} items matching "${query}"`}
