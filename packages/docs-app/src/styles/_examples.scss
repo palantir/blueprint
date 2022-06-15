@@ -539,6 +539,16 @@
 }
 
 //
+// DATETIME2
+//
+
+#{example("DateInput2Example")} {
+  .#{$ns}-input-group {
+    min-width: 300px;
+  }
+}
+
+//
 // TABLE
 //
 

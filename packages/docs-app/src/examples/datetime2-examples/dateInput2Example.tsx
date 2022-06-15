@@ -21,8 +21,8 @@ import { DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
 import { DateInput2 } from "@blueprintjs/datetime2";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
-import { FORMATS, FormatSelect } from "../datetime-examples/common/formatSelect";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
+import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "./dateFnsFormatSelector";
 
 export interface DateInput2ExampleState {
     closeOnSelection: boolean;
@@ -44,7 +44,7 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
         disableTimezoneSelect: false,
         disabled: false,
         fill: false,
-        format: FORMATS[0],
+        format: DATE_FNS_FORMATS[0],
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showTimezoneSelect: true,
@@ -116,7 +116,7 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
                 <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
                 <Switch label="Fill" checked={fill} onChange={this.toggleFill} />
                 <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
-                <FormatSelect format={format} onChange={this.handleFormatChange} />
+                <DateFnsFormatSelector format={format} onChange={this.handleFormatChange} />
 
                 <H5>Timezone props</H5>
                 <Switch
