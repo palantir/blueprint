@@ -211,7 +211,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     }
 
     public render() {
-        const { className, items, renderer, itemListRenderer = this.renderItemList } = this.props;
+        const { className, items, renderer, itemListRenderer = this.renderItemList, menuProps } = this.props;
         const { createNewItem, ...spreadableState } = this.state;
         return renderer({
             ...spreadableState,
@@ -225,6 +225,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
                 ...spreadableState,
                 items,
                 itemsParentRef: this.refHandlers.itemsParent,
+                menuProps,
                 renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,
             }),
@@ -348,7 +349,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
 
     /** default `itemListRenderer` implementation */
     private renderItemList = (listProps: IItemListRendererProps<T>) => {
-        const { initialContent, noResults, menuProps } = this.props;
+        const { initialContent, noResults } = this.props;
 
         // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
         const createItemView = listProps.renderCreateItem();
@@ -359,7 +360,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
         }
         const createFirst = this.isCreateItemFirst();
         return (
-            <Menu role="listbox" {...menuProps} ulRef={listProps.itemsParentRef}>
+            <Menu role="listbox" {...listProps.menuProps} ulRef={listProps.itemsParentRef}>
                 {createFirst && createItemView}
                 {menuContent}
                 {!createFirst && createItemView}
