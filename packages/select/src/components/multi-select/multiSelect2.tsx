@@ -251,7 +251,16 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
             const maybeClearButton =
                 onClear !== undefined && selectedItems.length > 0 ? (
-                    <Button disabled={disabled} icon="cross" minimal={true} onClick={this.handleClearButtonClick} />
+                    // use both aria-label and title a11y attributes here, for screen readers
+                    // and mouseover interactions respectively
+                    <Button
+                        aria-label="Clear selected items"
+                        disabled={disabled}
+                        icon="cross"
+                        minimal={true}
+                        onClick={this.handleClearButtonClick}
+                        title="Clear selected items"
+                    />
                 ) : undefined;
 
             return (
