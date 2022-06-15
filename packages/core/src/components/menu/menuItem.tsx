@@ -78,6 +78,13 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     labelElement?: React.ReactNode;
 
     /**
+     * Props to spread to the `li` element that wraps the MenuItem.
+     *
+     * @default {}
+     */
+    liProps?: string;
+
+    /**
      * Whether the text should be allowed to wrap to multiple lines.
      * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
      *
@@ -151,6 +158,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             intent,
             labelClassName,
             labelElement,
+            liProps = {},
             multiline,
             popoverProps,
             selected,
@@ -207,7 +215,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li className={liClasses} role="none">
+            <li role="none" {...liProps} className={liClasses}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );
