@@ -25,6 +25,7 @@ import { Popover2 } from "@blueprintjs/popover2";
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { IItemRendererProps, Select2, Select2Props, Select2State } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
+import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("<Select2>", () => {
     const FilmSelect = Select2.ofType<IFilm>();
@@ -38,6 +39,7 @@ describe("<Select2>", () => {
         itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
+    let testsContainerElement: HTMLElement | undefined;
 
     beforeEach(() => {
         handlers = {
@@ -45,16 +47,23 @@ describe("<Select2>", () => {
             itemRenderer: sinon.spy(renderFilm),
             onItemSelect: sinon.spy(),
         };
+        testsContainerElement = document.createElement("div");
+        document.body.appendChild(testsContainerElement);
     });
 
     afterEach(() => {
         for (const spy of Object.values(handlers)) {
             spy.resetHistory();
         }
+        testsContainerElement?.remove();
     });
 
     selectComponentSuite<Select2Props<IFilm>, Select2State>(props =>
         mount(<Select2 {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
+    );
+
+    selectPopoverTestSuite<Select2Props<IFilm>, Select2State>(props =>
+        mount(<Select2 {...props} />, { attachTo: testsContainerElement }),
     );
 
     it("renders a Popover2 around children that contains InputGroup and items", () => {
