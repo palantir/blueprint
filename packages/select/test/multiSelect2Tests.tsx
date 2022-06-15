@@ -26,6 +26,7 @@ import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { IItemRendererProps, MultiSelect2, MultiSelect2Props, MultiSelect2State } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
+import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("<MultiSelect2>", () => {
     const FilmMultiSelect = MultiSelect2.ofType<IFilm>();
@@ -41,6 +42,7 @@ describe("<MultiSelect2>", () => {
         itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
+    let testsContainerElement: HTMLElement | undefined;
 
     beforeEach(() => {
         handlers = {
@@ -48,6 +50,12 @@ describe("<MultiSelect2>", () => {
             itemRenderer: sinon.spy(renderFilm),
             onItemSelect: sinon.spy(),
         };
+        testsContainerElement = document.createElement("div");
+        document.body.appendChild(testsContainerElement);
+    });
+
+    afterEach(() => {
+        testsContainerElement?.remove();
     });
 
     selectComponentSuite<MultiSelect2Props<IFilm>, MultiSelect2State>(props =>
@@ -59,6 +67,12 @@ describe("<MultiSelect2>", () => {
                 tagRenderer={renderTag}
             />,
         ),
+    );
+
+    selectPopoverTestSuite<MultiSelect2Props<IFilm>, MultiSelect2State>(props =>
+        mount(<MultiSelect2 {...props} selectedItems={[]} tagRenderer={renderTag} />, {
+            attachTo: testsContainerElement,
+        }),
     );
 
     it("placeholder can be controlled with placeholder prop", () => {
