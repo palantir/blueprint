@@ -121,7 +121,14 @@ export interface INumericInputProps extends IntentProps, Props {
     large?: boolean;
 
     /**
-     * Name of a Blueprint UI icon (or an icon element) to render on the left side of input.
+     * Element to render on the left side of input. This prop is mutually exclusive
+     * with `leftIcon`.
+     */
+    leftElement?: JSX.Element;
+
+    /**
+     * Name of a Blueprint UI icon (or an icon element) to render on the left side of input. This prop is mutually exclusive with `leftElement`.
+     * Usage with content is deprecated.  Use `leftElement` for elements.
      */
     leftIcon?: IconName | MaybeElement;
 
@@ -456,6 +463,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                 intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
                 inputRef={this.inputRef}
                 large={this.props.large}
+                leftElement={this.props.leftElement}
                 leftIcon={this.props.leftIcon}
                 onFocus={this.handleInputFocus}
                 onBlur={this.handleInputBlur}

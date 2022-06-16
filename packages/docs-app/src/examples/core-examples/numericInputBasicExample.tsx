@@ -16,10 +16,13 @@
 import * as React from "react";
 
 import {
+    Button,
     H5,
     HTMLSelect,
     Intent,
     Label,
+    Menu,
+    MenuItem,
     NumericInput,
     NumericInputProps,
     OptionProps,
@@ -34,6 +37,8 @@ import {
     handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
+import { Popover2 } from "@blueprintjs/popover2";
 
 import { IntentSelect } from "./common/intentSelect";
 import { LOCALES } from "./common/locales";
@@ -94,6 +99,25 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
         this.setState({ leftIcon: leftIcon ? "dollar" : undefined }),
     );
 
+    private toggleLeftElement = handleBooleanChange(leftElement =>
+        this.setState({
+            leftElement: leftElement ? (
+                <Popover2
+                    position="bottom"
+                    content={
+                        <Menu>
+                            <MenuItem icon={IconNames.Equals} text={"Equals"} />
+                            <MenuItem icon={IconNames.LessThan} text={"Less than"} />
+                            <MenuItem icon={IconNames.GreaterThan} text={"Greater than"} />
+                        </Menu>
+                    }
+                >
+                    <Button minimal={true} icon={IconNames.Filter} />
+                </Popover2>
+            ) : undefined,
+        }),
+    );
+
     private toggleFullWidth = handleBooleanChange(fill => this.setState({ fill }));
 
     private toggleLargeSize = handleBooleanChange(large => this.setState({ large }));
@@ -129,6 +153,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
             fill,
             large,
             leftIcon,
+            leftElement,
             locale,
         } = this.state;
 
@@ -139,6 +164,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
                 {this.renderSwitch("Fill", fill, this.toggleFullWidth)}
                 {this.renderSwitch("Large", large, this.toggleLargeSize)}
                 {this.renderSwitch("Left icon", leftIcon != null, this.toggleLeftIcon)}
+                {this.renderSwitch("Left element", leftElement != null, this.toggleLeftElement)}
                 {this.renderSwitch("Numeric characters only", allowNumericCharactersOnly, this.toggleNumericCharsOnly)}
                 {this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus)}
                 {this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement)}
