@@ -17,20 +17,15 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import type { IconName } from "@blueprintjs/icons";
-
 import {
     AbstractPureComponent2,
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     Intent,
-    IntentProps,
     IRef,
     Keys,
-    MaybeElement,
     Position,
-    Props,
     refHandler,
     removeNonHTMLProps,
     setRef,
@@ -41,6 +36,7 @@ import { ButtonGroup } from "../button/buttonGroup";
 import { Button } from "../button/buttons";
 import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
+import type { InputSharedProps } from "./inputSharedProps";
 import {
     clampValue,
     getValueOrEmptyValue,
@@ -55,7 +51,7 @@ import {
 // eslint-disable-next-line deprecation/deprecation
 export type NumericInputProps = INumericInputProps;
 /** @deprecated use NumericInputProps */
-export interface INumericInputProps extends IntentProps, Props {
+export interface INumericInputProps extends InputSharedProps {
     /**
      * Whether to allow only floating-point number characters in the field,
      * mimicking the native `input[type="number"]`.
@@ -97,21 +93,6 @@ export interface INumericInputProps extends IntentProps, Props {
     defaultValue?: number | string;
 
     /**
-     * Whether the input is non-interactive.
-     *
-     * @default false
-     */
-    disabled?: boolean;
-
-    /** Whether the numeric input should take up the full width of its container. */
-    fill?: boolean;
-
-    /**
-     * Ref handler that receives HTML `<input>` element backing this component.
-     */
-    inputRef?: IRef<HTMLInputElement>;
-
-    /**
      * If set to `true`, the input will display with larger styling.
      * This is equivalent to setting `Classes.LARGE` via className on the
      * parent control group and on the child input group.
@@ -119,18 +100,6 @@ export interface INumericInputProps extends IntentProps, Props {
      * @default false
      */
     large?: boolean;
-
-    /**
-     * Element to render on the left side of input. This prop is mutually exclusive
-     * with `leftIcon`.
-     */
-    leftElement?: JSX.Element;
-
-    /**
-     * Name of a Blueprint UI icon (or an icon element) to render on the left side of input. This prop is mutually exclusive with `leftElement`.
-     * Usage with content is deprecated.  Use `leftElement` for elements.
-     */
-    leftIcon?: IconName | MaybeElement;
 
     /**
      * The locale name, which is passed to the component to format the number and allowing to type the number in the specific locale.
@@ -161,15 +130,6 @@ export interface INumericInputProps extends IntentProps, Props {
      * @default 0.1
      */
     minorStepSize?: number | null;
-
-    /** The placeholder text in the absence of any value. */
-    placeholder?: string;
-
-    /**
-     * Element to render on right side of input.
-     * For best results, use a minimal button, tag, or small spinner.
-     */
-    rightElement?: JSX.Element;
 
     /**
      * Whether the entire text field should be selected on focus.
