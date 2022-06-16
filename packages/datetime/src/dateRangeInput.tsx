@@ -251,8 +251,8 @@ export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, 
         this.props.endInputProps?.inputRef,
     );
 
-    public constructor(props: DateRangeInputProps, context?: any) {
-        super(props, context);
+    public constructor(props: DateRangeInputProps) {
+        super(props);
         this.reset(props);
     }
 

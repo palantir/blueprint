@@ -108,4 +108,4 @@ function Example() {
 
 @## Localization
 
-See the [Date picker localization docs](#datetime/datepicker.localization).
+See the [DatePicker localization docs](#datetime/datepicker.localization).
