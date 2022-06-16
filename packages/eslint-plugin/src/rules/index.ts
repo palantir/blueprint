@@ -17,10 +17,12 @@
 import { classesConstantsRule } from "./classes-constants";
 import { htmlComponentsRule } from "./html-components";
 import { iconComponentsRule } from "./icon-components";
+import { noDeprecatedComponentsRule } from "./no-deprecated-components";
 
 // eslint-disable-next-line import/no-default-export
 export default {
     "classes-constants": classesConstantsRule,
     "html-components": htmlComponentsRule,
     "icon-components": iconComponentsRule,
+    "no-deprecated-components": noDeprecatedComponentsRule,
 };

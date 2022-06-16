@@ -13,7 +13,7 @@ Migrating from [Select](#select/select-component)?
 
 Select2 is a replacement for Select and will replace it in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
-See the [migration guide](https://github.com/palantir/blueprint/wiki/Select2,-Suggest2,-MultiSelect2-migration)
+See the [migration guide](https://github.com/palantir/blueprint/wiki/select-component-migration)
 on the wiki.
 
 </div>
@@ -279,10 +279,10 @@ If provided, the `itemListRenderer` prop will be called to render the contents o
 ```tsx
 import { ItemListRenderer } from "@blueprintjs/select";
 
-const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, renderItem }) => {
+const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, renderItem, menuProps }) => {
     const renderedItems = items.map(renderItem).filter(item => item != null);
     return (
-        <Menu ulRef={itemsParentRef}>
+        <Menu role="listbox" ulRef={itemsParentRef} {...menuProps}>
             <MenuItem
                 disabled={true}
                 text={`Found ${renderedItems.length} items matching "${query}"`}

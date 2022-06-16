@@ -14,7 +14,7 @@ Migrating from [TimezonePicker](#timezone/timezone-picker)?
 TimezoneSelect is a replacement for [TimezonePicker component](#timezone/timezone-picker) from
 the [__@blueprintjs/timezone__ package](#timezone) and will replace it in Blueprint v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
-See the [migration guide](https://github.com/palantir/blueprint/wiki/DateInput2,-TimezonePicker2-migration)
+See the [migration guide](https://github.com/palantir/blueprint/wiki/datetime2-component-migration)
 on the wiki.
 
 </div>

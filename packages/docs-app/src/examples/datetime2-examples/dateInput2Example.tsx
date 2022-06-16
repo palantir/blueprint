@@ -21,33 +21,33 @@ import { DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
 import { DateInput2 } from "@blueprintjs/datetime2";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
-import { FORMATS, FormatSelect } from "../datetime-examples/common/formatSelect";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
+import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "./dateFnsFormatSelector";
 
 export interface DateInput2ExampleState {
     closeOnSelection: boolean;
     date: string | null;
     disabled: boolean;
+    disableTimezoneSelect: boolean;
     fill: boolean;
     format: DateFormatProps;
     reverseMonthAndYearMenus: boolean;
     shortcuts: boolean;
+    showTimezoneSelect: boolean;
     timePrecision: TimePrecision | undefined;
-    disableTimezonePicker: boolean;
-    hideTimezonePicker: boolean;
 }
 
 export class DateInput2Example extends React.PureComponent<IExampleProps, DateInput2ExampleState> {
     public state: DateInput2ExampleState = {
         closeOnSelection: true,
         date: null,
-        disableTimezonePicker: false,
+        disableTimezoneSelect: false,
         disabled: false,
         fill: false,
-        format: FORMATS[0],
-        hideTimezonePicker: false,
+        format: DATE_FNS_FORMATS[0],
         reverseMonthAndYearMenus: false,
         shortcuts: false,
+        showTimezoneSelect: true,
         timePrecision: TimePrecision.MINUTE,
     };
 
@@ -57,22 +57,22 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
 
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
 
-    private toggleHideTimezonePicker = handleBooleanChange(hideTimezonePicker => this.setState({ hideTimezonePicker }));
+    private toggleShowTimezoneSelect = handleBooleanChange(showTimezoneSelect => this.setState({ showTimezoneSelect }));
 
-    private toggleDisableTimezonePicker = handleBooleanChange(disableTimezonePicker =>
-        this.setState({ disableTimezonePicker }),
+    private toggleDisableTimezoneSelect = handleBooleanChange(disableTimezoneSelect =>
+        this.setState({ disableTimezoneSelect }),
     );
 
     private toggleFill = handleBooleanChange(fill => this.setState({ fill }));
 
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
 
-    private toggleTimePrecision = handleValueChange((timePrecision: TimePrecision | "none") =>
+    private handleTimePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
 
     public render() {
-        const { date, format, timePrecision, hideTimezonePicker, disableTimezonePicker, ...spreadProps } = this.state;
+        const { date, format, timePrecision, ...spreadProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <DateInput2
@@ -82,8 +82,6 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
                     popoverProps={{ position: Position.BOTTOM }}
                     timePrecision={timePrecision}
                     value={date}
-                    hideTimezone={hideTimezonePicker}
-                    disableTimezoneSelect={disableTimezonePicker}
                 />
                 {date}
             </Example>
@@ -99,34 +97,37 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
             format,
             timePrecision,
             shortcuts,
-            disableTimezonePicker,
-            hideTimezonePicker,
+            disableTimezoneSelect,
+            showTimezoneSelect,
         } = this.state;
         return (
             <>
                 <H5>Props</H5>
                 <Switch label="Close on selection" checked={closeOnSelection} onChange={this.toggleSelection} />
                 <Switch checked={shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
-                <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
-                <Switch label="Fill" checked={fill} onChange={this.toggleFill} />
-                <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
-                <Switch
-                    label="Disable timezone picker"
-                    checked={disableTimezonePicker}
-                    onChange={this.toggleDisableTimezonePicker}
-                />
-                <Switch
-                    label="Hide timezone picker"
-                    checked={hideTimezonePicker}
-                    onChange={this.toggleHideTimezonePicker}
-                />
-
-                <FormatSelect format={format} onChange={this.handleFormatChange} />
                 <PrecisionSelect
                     allowNone={true}
                     label="Time precision"
-                    onChange={this.toggleTimePrecision}
+                    onChange={this.handleTimePrecisionChange}
                     value={timePrecision}
+                />
+
+                <H5>Appearance props</H5>
+                <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
+                <Switch label="Fill" checked={fill} onChange={this.toggleFill} />
+                <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
+                <DateFnsFormatSelector format={format} onChange={this.handleFormatChange} />
+
+                <H5>Timezone props</H5>
+                <Switch
+                    label="Disable timezone select"
+                    checked={disableTimezoneSelect}
+                    onChange={this.toggleDisableTimezoneSelect}
+                />
+                <Switch
+                    label="Show timezone select"
+                    checked={showTimezoneSelect}
+                    onChange={this.toggleShowTimezoneSelect}
                 />
             </>
         );

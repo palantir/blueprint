@@ -38,13 +38,15 @@ export interface DateInput2Props extends Omit<DateInputProps, "onChange" | "valu
     value: string | null;
 
     /**
-     * Whether to completely hide timezone elements.
-     * If `timePrecision` is undefined, this will always be true.
+     * Whether to show the timezone select dropdown on the right side of the input.
+     * If `timePrecision` is undefined, this will always be false.
+     *
+     * @default false
      */
-    hideTimezone?: boolean;
+    showTimezoneSelect?: boolean;
 
     /**
-     * Whether to disable the timezone picker.
+     * Whether to disable the timezone select.
      *
      * @default false
      */
@@ -60,23 +62,23 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
 export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateInput2(props) {
     const {
         defaultTimezone,
-        value,
-        onChange,
-        timePrecision,
-        disableTimezoneSelect,
-        hideTimezone: hideTimezoneProp,
         disabled,
-        ...passThroughToDateInputProps
+        disableTimezoneSelect,
+        onChange,
+        showTimezoneSelect,
+        timePrecision,
+        value,
+        ...dateInputProps
     } = props;
 
     const [timezoneValue, updateTimezoneValue] = React.useState(defaultTimezone ?? getCurrentTimezone());
-    const hideTimezone = timePrecision === undefined ? true : hideTimezoneProp;
     const dateValue = React.useMemo(() => getDateObjectFromIsoString(value, timezoneValue), [timezoneValue, value]);
 
     const handleTimezoneChange = React.useCallback(
         (newTimezone: string) => {
             if (dateValue != null) {
-                onChange?.(getIsoEquivalentWithUpdatedTimezone(dateValue, newTimezone, timePrecision));
+                const newDateString = getIsoEquivalentWithUpdatedTimezone(dateValue, newTimezone, timePrecision);
+                onChange?.(newDateString);
             }
             updateTimezoneValue(newTimezone);
         },
@@ -88,7 +90,8 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             if (newDate == null) {
                 return;
             }
-            onChange?.(getIsoEquivalentWithUpdatedTimezone(newDate, timezoneValue, timePrecision), isUserChange);
+            const newDateString = getIsoEquivalentWithUpdatedTimezone(newDate, timezoneValue, timePrecision);
+            onChange?.(newDateString, isUserChange);
         },
         [onChange, timezoneValue, timePrecision],
     );
@@ -103,9 +106,10 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
         [timezoneValue, dateValue],
     );
 
+    const isTimezoneSelectHidden = timePrecision === undefined || showTimezoneSelect === false;
     const isTimezoneSelectDisabled = disabled || disableTimezoneSelect;
 
-    const maybeTimezonePicker = hideTimezone ? undefined : (
+    const maybeTimezonePicker = isTimezoneSelectHidden ? undefined : (
         <TimezoneSelect
             value={timezoneValue}
             onChange={handleTimezoneChange}
@@ -126,7 +130,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
 
     return (
         <DateInput
-            {...passThroughToDateInputProps}
+            {...dateInputProps}
             value={dateValue}
             onChange={handleDateChange}
             timePrecision={timePrecision}

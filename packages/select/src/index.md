@@ -4,7 +4,8 @@ reference: select
 
 @# Select
 
-The **@blueprintjs/select** NPM package provides React components related to selecting items from a list:
+The [__@blueprintjs/select__ package](https://www.npmjs.com/package/@blueprintjs/select)
+provides React components for to selecting items from a list:
 
 - [Select](#select/select-component) for selecting items in a list (DEPRECATED).
 
@@ -26,6 +27,18 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 
 ```sh
 npm install --save @blueprintjs/select
+```
+
+Import CSS with a JS bundler like webpack:
+
+```js
+@import "~@blueprintjs/select/lib/css/blueprint-select.css";
+```
+
+...or in plain HTML:
+
+```html
+<link href="path/to/node_modules/@blueprintjs/select/lib/css/blueprint-select.css" rel="stylesheet" />
 ```
 
 @page select-component

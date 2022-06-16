@@ -522,7 +522,7 @@
     justify-content: center;
   }
 
-  #{example("TimezonePickerV2Example")} .docs-example {
+  #{example("TimezoneSelectExample")} .docs-example {
     flex-direction: row;
   }
 }
@@ -535,6 +535,16 @@
 #{example("DateInputExample")} {
   .docs-example > * {
     margin: 0 0 20px;
+  }
+}
+
+//
+// DATETIME2
+//
+
+#{example("DateInput2Example")} {
+  .#{$ns}-input-group {
+    min-width: 300px;
   }
 }
 
