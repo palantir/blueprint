@@ -82,6 +82,7 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
 
     public render() {
         const { enableTimePicker, format, range, showTimeArrowButtons, ...spreadProps } = this.state;
+        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <DateRangeInput
@@ -97,6 +98,7 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
                 <MomentDateRange range={range} />
             </Example>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
     protected renderOptions() {

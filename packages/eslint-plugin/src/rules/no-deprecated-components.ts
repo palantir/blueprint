@@ -10,6 +10,7 @@ const DEPRECATED_TO_NEW_MAPPING: { [deprecated: string]: string } = {
     AbstractComponent: "AbstractComponent2",
     AbstractPureComponent: "AbstractPureComponent2",
     CollapsibleList: "OverflowList",
+    DateRangeInput: "DateRangeInput2",
     MultiSelect: "MultiSelect2",
     PanelStack: "PanelStack2",
     Popover: "Popover2",

@@ -219,6 +219,7 @@ interface IStateKeysAndValuesObject {
     };
 }
 
+/** @deprecated use { DateRangeInput2 } from "@blueprintjs/datetime2" */
 export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: Partial<DateRangeInputProps> = {
         allowSingleDayRange: false,
@@ -989,6 +990,7 @@ export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, 
     // the constructor and componentDidUpdate.
     private getFormattedMinMaxDateString(props: IDateRangeInputProps, propName: "minDate" | "maxDate") {
         const date = props[propName];
+        // eslint-disable-next-line deprecation/deprecation
         const defaultDate = DateRangeInput.defaultProps[propName];
         // default values are applied only if a prop is strictly `undefined`
         // See: https://facebook.github.io/react/docs/react-component.html#defaultprops

@@ -56,6 +56,8 @@ type InvalidDateTestFunction = (
     otherInputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
 ) => void;
 
+/* eslint-disable deprecation/deprecation */
+
 // Change the default for testability
 DateRangeInput.defaultProps.popoverProps = { usePortal: false };
 
