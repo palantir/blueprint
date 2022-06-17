@@ -38,7 +38,7 @@ export interface DateRangeInput2ExampleState {
     showTimeArrowButtons: boolean;
 }
 
-export class DateRangeInputExample extends React.PureComponent<IExampleProps, DateRangeInput2ExampleState> {
+export class DateRangeInput2Example extends React.PureComponent<IExampleProps, DateRangeInput2ExampleState> {
     public state: DateRangeInput2ExampleState = {
         allowSingleDayRange: false,
         closeOnSelection: false,

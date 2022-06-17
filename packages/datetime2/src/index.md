@@ -46,9 +46,9 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 npm install --save @blueprintjs/datetime2
 ```
 
-Import CSS with a JS bundler like webpack:
+Import the package stylesheet in Sass:
 
-```js
+```scss
 @import "~@blueprintjs/datetime2/lib/css/blueprint-datetime2.css";
 ```
 
@@ -57,6 +57,17 @@ Import CSS with a JS bundler like webpack:
 ```html
 <link href="path/to/node_modules/@blueprintjs/datetime2/lib/css/blueprint-datetime2.css" rel="stylesheet" />
 ```
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-heading">Additional CSS required</h4>
+
+This library still relies on some components from `@blueprintjs/datetime`, so you will need to pull in that
+package's CSS as well. Make sure to add this import:
+
+```scss
+@import "~@blueprintjs/datetime/lib/css/blueprint-datetime.css"`;
+```
+</div>
 
 @page date-input2
 @page date-range-input2
