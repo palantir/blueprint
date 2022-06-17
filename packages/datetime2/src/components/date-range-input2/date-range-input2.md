@@ -22,8 +22,13 @@ on the wiki.
 The DateRangeInput2 component is an [ControlGroup](#core/components/control-group) composed
 of two [InputGroups](#core/components/text-inputs.input-group). It shows a
 [DateRangePicker](#datetime/daterangepicker) in a [Popover2](#popover2-package/popover2)
-on focus. It optionally shows a [TimezoneSelect](#datetime2/timezone-select) as the third
-element in the ControlGroup, allowing the user to change the timezone of the selected date range.
+on focus.
+
+Unlike [DateInput2](#datetime2/date-input2), this component does _not_ yet have support for
+a built-in [TimezoneSelect](#datetime2/timezone-select). This functionality will be coming soon.
+
+<!-- It optionally shows a [TimezoneSelect](#datetime2/timezone-select) as the third
+element in the ControlGroup, allowing the user to change the timezone of the selected date range. -->
 
 @reactExample DateRangeInput2Example
 
