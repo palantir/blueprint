@@ -17,7 +17,8 @@
 import * as React from "react";
 
 import { H5, Switch } from "@blueprintjs/core";
-import { DateFormatProps, DateRange, DateRangeInput, TimePrecision } from "@blueprintjs/datetime";
+import { DateFormatProps, DateRange, TimePrecision } from "@blueprintjs/datetime";
+import { DateRangeInput2 } from "@blueprintjs/datetime2";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { DateFnsDateRange } from "./dateFnsDate";
@@ -84,7 +85,7 @@ export class DateRangeInput2Example extends React.PureComponent<IExampleProps, D
         const { enableTimePicker, format, range, showTimeArrowButtons, ...spreadProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <DateRangeInput
+                <DateRangeInput2
                     {...spreadProps}
                     {...format}
                     onChange={this.handleRangeChange}
