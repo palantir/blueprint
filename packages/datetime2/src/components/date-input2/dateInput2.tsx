@@ -21,10 +21,13 @@ import { ButtonProps, DISPLAYNAME_PREFIX, Tag } from "@blueprintjs/core";
 import { DateInput, DateInputProps } from "@blueprintjs/datetime";
 
 import * as Classes from "../../common/classes";
-import { getDateObjectFromIsoString, getIsoEquivalentWithUpdatedTimezone } from "../../common/dateUtils";
 import { getCurrentTimezone } from "../../common/getTimezone";
 import { getTimezoneName } from "../../common/timezoneNameUtils";
-import { convertLocalDateToTimezoneTime } from "../../common/timezoneUtils";
+import {
+    convertLocalDateToTimezoneTime,
+    getDateObjectFromIsoString,
+    getIsoEquivalentWithUpdatedTimezone,
+} from "../../common/timezoneUtils";
 import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
 export interface DateInput2Props extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangeInput2 in the datetime2
+ * package instead.
+ */
+
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker from "react-day-picker";
@@ -39,7 +45,7 @@ import { DateRange } from "./common/dateRange";
 import { areSameTime, isDateValid, isDayInRange } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { DateFormatProps, getFormattedDateString } from "./dateFormat";
-import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
+import { DatePickerBaseProps, getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
 import { DateRangePicker } from "./dateRangePicker";
 import { DateRangeShortcut } from "./shortcuts";
 
@@ -53,7 +59,7 @@ type InputEvent =
 // eslint-disable-next-line deprecation/deprecation
 export type DateRangeInputProps = IDateRangeInputProps;
 /** @deprecated use DateRangeInputProps */
-export interface IDateRangeInputProps extends IDatePickerBaseProps, DateFormatProps, Props {
+export interface IDateRangeInputProps extends DatePickerBaseProps, DateFormatProps, Props {
     /**
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
