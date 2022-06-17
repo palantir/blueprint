@@ -20,8 +20,8 @@ import { H5, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateRange, DateRangeInput, TimePrecision } from "@blueprintjs/datetime";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
-import { MomentDateRange } from "../datetime-examples/common/momentDate";
-import { MOMENT_FORMATS, MomentFormatSelector } from "../datetime-examples/common/momentFormats";
+import { DateFnsDateRange } from "./dateFnsDate";
+import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "./dateFnsFormatSelector";
 
 export interface DateRangeInput2ExampleState {
     allowSingleDayRange: boolean;
@@ -45,7 +45,7 @@ export class DateRangeInput2Example extends React.PureComponent<IExampleProps, D
         contiguousCalendarMonths: true,
         disabled: false,
         enableTimePicker: false,
-        format: MOMENT_FORMATS[0],
+        format: DATE_FNS_FORMATS[0],
         range: [null, null],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
@@ -84,7 +84,6 @@ export class DateRangeInput2Example extends React.PureComponent<IExampleProps, D
         const { enableTimePicker, format, range, showTimeArrowButtons, ...spreadProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <span>TODO: use DateRangeInput2</span>
                 <DateRangeInput
                     {...spreadProps}
                     {...format}
@@ -95,7 +94,7 @@ export class DateRangeInput2Example extends React.PureComponent<IExampleProps, D
                             : undefined
                     }
                 />
-                <MomentDateRange range={range} />
+                <DateFnsDateRange range={range} />
             </Example>
         );
     }
@@ -147,7 +146,7 @@ export class DateRangeInput2Example extends React.PureComponent<IExampleProps, D
                     label="Show timepicker arrow buttons"
                     onChange={this.toggleTimepickerArrowButtons}
                 />
-                <MomentFormatSelector key="Format" format={this.state.format} onChange={this.handleFormatChange} />
+                <DateFnsFormatSelector key="Format" format={this.state.format} onChange={this.handleFormatChange} />
             </>
         );
     }

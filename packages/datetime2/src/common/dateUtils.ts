@@ -22,7 +22,7 @@ export function clone(d: Date) {
     return new Date(d.getTime());
 }
 
-export function isSameTime(d1: Date, d2: Date) {
+export function isSameTime(d1: Date | null, d2: Date | null) {
     return (
         d1 != null &&
         d2 != null &&
@@ -33,7 +33,7 @@ export function isSameTime(d1: Date, d2: Date) {
     );
 }
 
-export function isDayInRange(date: Date, dateRange: DateRange, exclusive = false) {
+export function isDayInRange(date: Date | null, dateRange: DateRange, exclusive = false) {
     if (date == null || !isNonNullRange(dateRange)) {
         return false;
     }
