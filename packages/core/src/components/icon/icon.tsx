@@ -154,7 +154,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
                 aria-labelledby={title ? titleId : undefined}
                 role="img"
             >
-                {title && <desc id={titleId}>{title}</desc>}
+                {title && <title id={titleId}>{title}</title>}
                 {paths}
             </svg>,
         );
