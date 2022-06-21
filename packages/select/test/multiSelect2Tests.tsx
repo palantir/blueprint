@@ -26,6 +26,7 @@ import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { IItemRendererProps, MultiSelect2, MultiSelect2Props, MultiSelect2State } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
+import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("<MultiSelect2>", () => {
     const FilmMultiSelect = MultiSelect2.ofType<IFilm>();
@@ -41,6 +42,7 @@ describe("<MultiSelect2>", () => {
         itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
+    let testsContainerElement: HTMLElement | undefined;
 
     beforeEach(() => {
         handlers = {
@@ -48,10 +50,29 @@ describe("<MultiSelect2>", () => {
             itemRenderer: sinon.spy(renderFilm),
             onItemSelect: sinon.spy(),
         };
+        testsContainerElement = document.createElement("div");
+        document.body.appendChild(testsContainerElement);
+    });
+
+    afterEach(() => {
+        testsContainerElement?.remove();
     });
 
     selectComponentSuite<MultiSelect2Props<IFilm>, MultiSelect2State>(props =>
-        mount(<MultiSelect2 {...props} popoverProps={{ isOpen: true, usePortal: false }} tagRenderer={renderTag} />),
+        mount(
+            <MultiSelect2
+                selectedItems={[]}
+                {...props}
+                popoverProps={{ isOpen: true, usePortal: false }}
+                tagRenderer={renderTag}
+            />,
+        ),
+    );
+
+    selectPopoverTestSuite<MultiSelect2Props<IFilm>, MultiSelect2State>(props =>
+        mount(<MultiSelect2 {...props} selectedItems={[]} tagRenderer={renderTag} />, {
+            attachTo: testsContainerElement,
+        }),
     );
 
     it("placeholder can be controlled with placeholder prop", () => {
@@ -74,12 +95,6 @@ describe("<MultiSelect2>", () => {
             tagRenderer: film => <strong>{film.title}</strong>,
         });
         assert.equal(wrapper.find(Tag).find("strong").length, 1);
-    });
-
-    // N.B. this is not good behavior, we shouldn't support this since the component is controlled.
-    // we keep it around for backcompat but expect that nobody actually uses the component this way.
-    it("selectedItems is optional", () => {
-        assert.doesNotThrow(() => multiselect({ selectedItems: undefined }));
     });
 
     it("only triggers QueryList key up events when focus is on TagInput's <input>", () => {

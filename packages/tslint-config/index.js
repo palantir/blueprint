@@ -51,6 +51,7 @@ module.exports = {
         "no-submodule-imports": {
             options: [
                 "core-js",
+                "date-fns",
                 "lodash",
                 "react-dom",
                 "@blueprintjs/table/src",

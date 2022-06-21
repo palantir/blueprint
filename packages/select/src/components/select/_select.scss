@@ -27,7 +27,8 @@
     }
   }
 
-  &.#{$ns}-popover2-match-target-width {
+  &.#{$ns}-popover2-match-target-width,
+  &.#{$ns}-select-match-target-width { // deprecated: this class is only used by <Select>
     width: 100%;
 
     .#{$ns}-menu {

@@ -521,6 +521,10 @@
     flex-direction: column;
     justify-content: center;
   }
+
+  #{example("TimezoneSelectExample")} .docs-example {
+    flex-direction: row;
+  }
 }
 
 .docs-date-range {
@@ -531,6 +535,16 @@
 #{example("DateInputExample")} {
   .docs-example > * {
     margin: 0 0 20px;
+  }
+}
+
+//
+// DATETIME2
+//
+
+#{example("DateInput2Example")} {
+  .#{$ns}-input-group {
+    min-width: 300px;
   }
 }
 
