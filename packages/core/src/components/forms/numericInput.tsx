@@ -202,6 +202,8 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
 
     public static VALUE_ZERO = "0";
 
+    private numericInputId = Utils.uniqueId("numericInput");
+
     public static defaultProps: NumericInputProps = {
         allowNumericCharactersOnly: true,
         buttonPosition: Position.RIGHT,
@@ -397,6 +399,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
                 <Button
                     aria-label="increment"
+                    aria-controls={this.numericInputId}
                     disabled={disabled || isIncrementDisabled}
                     icon="chevron-up"
                     intent={intent}
@@ -404,6 +407,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                 />
                 <Button
                     aria-label="decrement"
+                    aria-controls={this.numericInputId}
                     disabled={disabled || isDecrementDisabled}
                     icon="chevron-down"
                     intent={intent}
@@ -419,6 +423,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
             <InputGroup
                 asyncControl={this.props.asyncControl}
                 autoComplete="off"
+                id={this.numericInputId}
                 {...inputGroupHtmlProps}
                 intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
                 inputRef={this.inputRef}
