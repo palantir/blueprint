@@ -15,11 +15,12 @@ const DEPRECATED_TO_NEW_MAPPING: { [deprecated: string]: string } = {
     Popover: "Popover2",
     Select: "Select2",
     Suggest: "Suggest2",
+    TimezonePicker: "TimezoneSelect",
     Tooltip: "Tooltip2",
 };
-const PACKAGES_WITH_DEPRECATED_IMPORTS = ["@blueprintjs/core", "@blueprintjs/select"];
+const PACKAGES_WITH_DEPRECATED_IMPORTS = ["@blueprintjs/core", "@blueprintjs/select", "@blueprintjs/timezone"];
 
-type MessageIds = "nonDeprecated";
+type MessageIds = "migration";
 
 /**
  * This rule checks a hardcoded list of components that Blueprint is actively migrating to a newer version (e.g. v1 -> v2)
@@ -39,11 +40,11 @@ export const noDeprecatedComponentsRule = createRule<unknown[], MessageIds>({
             recommended: "error",
         },
         messages: {
-            nonDeprecated: "Replace usage of deprecated component {{ deprecated }} with {{ nonDeprecated }}",
+            migration: "{{ deprecatedComponentName }} is deprecated, migrate to {{ newComponentName }} instead",
         },
         schema: [
             {
-                enum: ["nonDeprecated"],
+                enum: ["migration"],
             },
         ],
     },
@@ -106,10 +107,10 @@ export const noDeprecatedComponentsRule = createRule<unknown[], MessageIds>({
                 if (isDeprecatedComponent(node.name)) {
                     context.report({
                         data: {
-                            deprecated: node.name,
-                            nonDeprecated: DEPRECATED_TO_NEW_MAPPING[node.name],
+                            deprecatedComponentName: node.name,
+                            newComponentName: DEPRECATED_TO_NEW_MAPPING[node.name],
                         },
-                        messageId: "nonDeprecated",
+                        messageId: "migration",
                         node,
                     });
                 }
@@ -130,10 +131,10 @@ export const noDeprecatedComponentsRule = createRule<unknown[], MessageIds>({
                     // Uses a blueprint namespace and a deprecated property
                     context.report({
                         data: {
-                            deprecated: node.property.name,
-                            nonDeprecated: DEPRECATED_TO_NEW_MAPPING[node.property.name],
+                            deprecatedComponentName: node.property.name,
+                            newComponentName: DEPRECATED_TO_NEW_MAPPING[node.property.name],
                         },
-                        messageId: "nonDeprecated",
+                        messageId: "migration",
                         node: node.property,
                     });
                 }
@@ -143,10 +144,10 @@ export const noDeprecatedComponentsRule = createRule<unknown[], MessageIds>({
                 if (isDeprecatedComponent(superClass.name)) {
                     context.report({
                         data: {
-                            deprecated: superClass.name,
-                            nonDeprecated: DEPRECATED_TO_NEW_MAPPING[superClass.name],
+                            deprecatedComponentName: superClass.name,
+                            newComponentName: DEPRECATED_TO_NEW_MAPPING[superClass.name],
                         },
-                        messageId: "nonDeprecated",
+                        messageId: "migration",
                         node,
                     });
                 }
@@ -165,10 +166,10 @@ export const noDeprecatedComponentsRule = createRule<unknown[], MessageIds>({
                     // Uses a blueprint namespace and a deprecated property
                     context.report({
                         data: {
-                            deprecated: superClass.property.name,
-                            nonDeprecated: DEPRECATED_TO_NEW_MAPPING[superClass.property.name],
+                            deprecatedComponentName: superClass.property.name,
+                            newComponentName: DEPRECATED_TO_NEW_MAPPING[superClass.property.name],
                         },
-                        messageId: "nonDeprecated",
+                        messageId: "migration",
                         node: superClass.property,
                     });
                 }
