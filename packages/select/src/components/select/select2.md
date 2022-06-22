@@ -285,8 +285,8 @@ const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, rend
         <Menu role="listbox" ulRef={itemsParentRef} {...menuProps}>
             <MenuItem
                 disabled={true}
-                liProps={role : "option"}
-                role={undefined}
+                liProps={{ role: "option" }} // "option" role on `li` item, per ARIA select examples
+                role={undefined} // no role on `a` item
                 text={`Found ${renderedItems.length} items matching "${query}"`}
             />
             {renderedItems}
