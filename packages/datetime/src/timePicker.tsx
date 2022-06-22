@@ -17,7 +17,16 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, Keys, Props } from "@blueprintjs/core";
+import {
+    Classes as CoreClasses,
+    Utils as CoreUtils,
+    DISPLAYNAME_PREFIX,
+    HTMLSelect,
+    Icon,
+    Intent,
+    Keys,
+    Props,
+} from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -172,6 +181,14 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
         this.state = this.getFullStateFromValue(this.getInitialValue(), props.useAmPm);
     }
 
+    private timeInputIds: { [key in TimeUnit]: string } = {
+        [TimeUnit.HOUR_24]: CoreUtils.uniqueId(TimeUnit.HOUR_24 + "-input"),
+        [TimeUnit.HOUR_12]: CoreUtils.uniqueId(TimeUnit.HOUR_12 + "-input"),
+        [TimeUnit.MINUTE]: CoreUtils.uniqueId(TimeUnit.MINUTE + "-input"),
+        [TimeUnit.SECOND]: CoreUtils.uniqueId(TimeUnit.SECOND + "-input"),
+        [TimeUnit.MS]: CoreUtils.uniqueId(TimeUnit.MS + "-input"),
+    };
+
     public render() {
         const shouldRenderMilliseconds = this.props.precision === TimePrecision.MILLISECOND;
         const shouldRenderSeconds = shouldRenderMilliseconds || this.props.precision === TimePrecision.SECOND;
@@ -243,7 +260,13 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
         const onClick = () => (isDirectionUp ? this.incrementTime : this.decrementTime)(timeUnit);
         // set tabIndex=-1 to ensure a valid FocusEvent relatedTarget when focused
         return (
-            <span tabIndex={-1} className={classes} onClick={onClick}>
+            <span
+                aria-controls={this.timeInputIds[timeUnit]}
+                aria-label={`${isDirectionUp ? "Increase" : "Decrease"} ${timeUnit}`}
+                tabIndex={-1}
+                className={classes}
+                onClick={onClick}
+            >
                 <Icon
                     icon={isDirectionUp ? "chevron-up" : "chevron-down"}
                     title={isDirectionUp ? "Increase" : "Decrease"}
@@ -257,21 +280,26 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
     }
 
     private renderInput(className: string, unit: TimeUnit, value: string) {
-        const isValid = isTimeUnitValid(unit, parseInt(value, 10));
+        const valueNumber = parseInt(value, 10);
+        const isValid = isTimeUnitValid(unit, valueNumber);
         const isHour = unit === TimeUnit.HOUR_12 || unit === TimeUnit.HOUR_24;
 
         return (
             <input
+                aria-valuenow={valueNumber}
                 className={classNames(
                     Classes.TIMEPICKER_INPUT,
                     { [CoreClasses.intentClass(Intent.DANGER)]: !isValid },
                     className,
                 )}
+                id={this.timeInputIds[unit]}
                 onBlur={this.getInputBlurHandler(unit)}
                 onChange={this.getInputChangeHandler(unit)}
                 onFocus={this.getInputFocusHandler(unit)}
                 onKeyDown={this.getInputKeyDownHandler(unit)}
                 onKeyUp={this.getInputKeyUpHandler(unit)}
+                role={this.props.showArrowButtons ? "spinbutton" : "textinput"}
+                type="number"
                 value={value}
                 disabled={this.props.disabled}
                 autoFocus={isHour && this.props.autoFocus}
