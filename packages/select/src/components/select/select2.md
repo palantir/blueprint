@@ -116,7 +116,6 @@ data sets.
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
 To control the active item when a "Create Item" option is present, See [Controlling the active item](#select/select2.controlling-the-active-item) in the "Creating new items" section below.
-
 </div>
 
 @## Creating new items
@@ -124,10 +123,9 @@ To control the active item when a "Create Item" option is present, See [Controll
 If you wish, you can allow users to select a brand new item that doesn't appear
 in the list, based on the current query string. Use `createNewItemFromQuery` and
 `createNewItemRenderer` to enable this:
-
--   `createNewItemFromQuery`: Specifies how to convert a user-entered query string
+- `createNewItemFromQuery`: Specifies how to convert a user-entered query string
     into an item of type `<T>` that `Select2` understands.
--   `createNewItemRenderer`: Renders a custom "Create Item" element that will be
+- `createNewItemRenderer`: Renders a custom "Create Item" element that will be
     shown at the bottom of the list. When selected via click or `Enter`, this element
     will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
 
