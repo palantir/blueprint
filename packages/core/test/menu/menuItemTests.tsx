@@ -59,13 +59,13 @@ describe("MenuItem", () => {
     });
 
     it("default role prop structure is correct for a menuitem that is a an item of a ul with role=menu", () => {
-        const wrapper = shallow(<MenuItem text="Roles" />);
+        const wrapper = mount(<MenuItem text="Roles" />);
         assert.equal(wrapper.find("li").prop("role"), "none");
         assert.equal(wrapper.find("a").prop("role"), "menuitem");
     });
 
     it("can set roleConfig to change role prop structure to that of a listbox or select item", () => {
-        const wrapper = shallow(<MenuItem text="Roles" roleConfig="listoption" />);
+        const wrapper = mount(<MenuItem text="Roles" roleConfig="listoption" />);
         assert.equal(wrapper.find("li").prop("role"), "option");
         assert.equal(wrapper.find("a").prop("role"), undefined);
     });
