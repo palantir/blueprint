@@ -428,7 +428,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                 autoComplete="off"
                 id={this.numericInputId}
                 role={hasSpinButtons ? "spinbutton" : "textbox"}
-                type="number"
                 {...inputGroupHtmlProps}
                 aria-valuemax={this.props.max}
                 aria-valuemin={this.props.min}
