@@ -223,7 +223,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li role={isListOption ? "option" : "none"} className={liClasses}>
+            <li className={liClasses} role={isListOption ? "option" : "none"}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );
