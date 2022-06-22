@@ -40,7 +40,7 @@ ReactDOM.render(
         items={Films.items}
         itemPredicate={Films.itemPredicate}
         itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true} text="No results." />}
+        noResults={<MenuItem disabled={true} text="No results." isListOption={true}/>}
         onItemSelect={...}
     >
         {/* children become the popover target; render value here */}
@@ -157,11 +157,12 @@ function renderCreateFilmOption(
     return (
         <MenuItem
             icon="add"
-			isListOption={true}
             text={`Create "${query}"`}
+            isListOption={true}
             selected={active}
             onClick={handleClick}
             shouldDismissPopover={false}
+            isListOption={true}
         />
     )
 }
@@ -173,7 +174,7 @@ ReactDOM.render(
         items={Films.items}
         itemPredicate={Films.itemPredicate}
         itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true}  isListOption={true} text="No results." />}
+        noResults={<MenuItem disabled={true}  isListOption={true} text="No results." isListOption={true}/>}
         onItemSelect={...}
     />,
     document.querySelector("#root")
@@ -260,6 +261,7 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
         <MenuItem
 		    isListOption={true}
             selected={modifiers.active}
+            isListOption={true}
             key={film.title}
             label={film.year}
             onClick={handleClick}

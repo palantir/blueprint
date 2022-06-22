@@ -253,12 +253,12 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                 aria-selected={this.isFilmSelected(film)}
                 selected={modifiers.active}
                 icon={this.isFilmSelected(film) ? "tick" : "blank"}
+                isListOption={true}
                 key={film.rank}
                 label={film.year.toString()}
                 onClick={handleClick}
                 text={`${film.rank}. ${film.title}`}
                 shouldDismissPopover={false}
-                isListOption={true}
             />
         );
     };

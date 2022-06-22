@@ -104,7 +104,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
                     // we may customize the default filmSelectProps.items by
                     // adding newly created items to the list, so pass our own.
                     items={this.state.items}
-                    noResults={<MenuItem disabled={true} text="No results." />}
+                    noResults={<MenuItem disabled={true} text="No results." isListOption={true} />}
                     onItemSelect={this.handleValueChange}
                     popoverProps={{ matchTargetWidth, minimal }}
                 />

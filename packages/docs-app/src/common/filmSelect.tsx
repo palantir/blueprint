@@ -69,7 +69,7 @@ export default function ({ allowCreate = false, fill, ...restProps }: Props) {
             createNewItemFromQuery={maybeCreateNewItemFromQuery}
             createNewItemRenderer={maybeCreateNewItemRenderer}
             itemsEqual={areFilmsEqual}
-            noResults={<MenuItem disabled={true} text="No results." />}
+            noResults={<MenuItem disabled={true} text="No results." isListOption={true} />}
             onItemSelect={handleItemSelect}
             items={items}
             fill={fill}
