@@ -78,19 +78,26 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     labelElement?: React.ReactNode;
 
     /**
-     * Set to true if making this MenuItem an item of a `listbox` or `select` element.
-     * Setting to true changes the `role` property structure of this MenuItem from
-     * `<li role="none"`
-     *     `<a role="menuitem"
+     * Changes the ARIA `role` property structure of this MenuItem to accomodate for various
+     * different `role`s of the parent Menu `ul` element.
      *
-     * to
+     * If `menuitem`, role structure becomes:
+     *
+     * `<li role="none"`
+     *     `<a role="menuitem"`
+     *
+     * which is proper role structure for a `<ul role="menu"` parent (this is the default `role` of a `Menu`).
+     *
+     * If `listoption`, `role` structure becomes:
      *
      * `<li role="option"`
      *     `<a role=undefined`
      *
-     * @default false
+     *  which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
+     *
+     * @default "menuitem"
      */
-    isListOption?: boolean;
+    roleConfig?: "menuitem" | "listoption";
 
     /**
      * Whether the text should be allowed to wrap to multiple lines.
@@ -166,9 +173,9 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             intent,
             labelClassName,
             labelElement,
-            isListOption = false,
             multiline,
             popoverProps,
+            roleConfig = "menuitem",
             selected,
             shouldDismissPopover,
             submenuProps,
@@ -199,7 +206,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const target = React.createElement(
             tagName,
             {
-                role: isListOption ? undefined : "menuitem",
+                role: roleConfig === "listoption" ? undefined : "menuitem",
                 tabIndex: 0,
                 ...htmlProps,
                 ...(disabled ? DISABLED_PROPS : {}),
@@ -223,7 +230,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li className={liClasses} role={isListOption ? "option" : "none"}>
+            <li className={liClasses} role={roleConfig === "listoption" ? "option" : "none"}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );
