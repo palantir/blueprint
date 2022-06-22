@@ -78,11 +78,19 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     labelElement?: React.ReactNode;
 
     /**
-     * Props to spread to the `li` element that wraps the MenuItem.
+     * Set to true if making this MenuItem an item of a `listbox` or `select` element.
+     * Setting to true changes the `role` property structure of this MenuItem from
+     * `<li role="none"`
+     *     `<a role="menuitem"
      *
-     * @default {}
+     * to
+     *
+     * `<li role="option"`
+     *     `<a role=undefined`
+     *
+     * @default false
      */
-    liProps?: React.HTMLAttributes<HTMLLIElement>;
+    isListOption?: boolean;
 
     /**
      * Whether the text should be allowed to wrap to multiple lines.
@@ -158,7 +166,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             intent,
             labelClassName,
             labelElement,
-            liProps = {},
+            isListOption = false,
             multiline,
             popoverProps,
             selected,
@@ -191,7 +199,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const target = React.createElement(
             tagName,
             {
-                role: "menuitem",
+                role: isListOption ? undefined : "menuitem",
                 tabIndex: 0,
                 ...htmlProps,
                 ...(disabled ? DISABLED_PROPS : {}),
@@ -215,7 +223,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li role="none" {...liProps} className={liClasses}>
+            <li role={isListOption ? "option" : "none"} className={liClasses}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );

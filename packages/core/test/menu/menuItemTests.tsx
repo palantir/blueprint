@@ -58,16 +58,16 @@ describe("MenuItem", () => {
         assert.lengthOf(submenu.props.children, 3);
     });
 
-    it("can remove role props using liProps", () => {
-        const wrapper = shallow(<MenuItem icon="style" text="Style" liProps={{ role: undefined }} role={undefined} />);
-        assert.notProperty(wrapper.find("li"), "role");
-        assert.notProperty(wrapper.find("a"), "role");
+    it("default role prop structure is correct for a menuitem that is a an item of a menu", () => {
+        const wrapper = shallow(<MenuItem text="Roles" />);
+        assert.propertyVal(wrapper.find("li"), "role", "none");
+        assert.propertyVal(wrapper.find("a"), "role", "menuitem");
     });
 
-    it("can change role props using liProps", () => {
-        const wrapper = shallow(<MenuItem icon="style" text="Style" liProps={{ role: "option" }} role={"link"} />);
+    it("can set isListOption to change role prop structure to that of a listbox or select item", () => {
+        const wrapper = shallow(<MenuItem text="Roles" isListOption={true} />);
         assert.propertyVal(wrapper.find("li"), "role", "option");
-        assert.propertyVal(wrapper.find("a"), "role", "link");
+        assert.notProperty(wrapper.find("a"), "role");
     });
 
     it("disabled MenuItem will not show its submenu", () => {

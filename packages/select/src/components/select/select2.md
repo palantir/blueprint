@@ -116,6 +116,7 @@ data sets.
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
 To control the active item when a "Create Item" option is present, See [Controlling the active item](#select/select2.controlling-the-active-item) in the "Creating new items" section below.
+
 </div>
 
 @## Creating new items
@@ -123,11 +124,12 @@ To control the active item when a "Create Item" option is present, See [Controll
 If you wish, you can allow users to select a brand new item that doesn't appear
 in the list, based on the current query string. Use `createNewItemFromQuery` and
 `createNewItemRenderer` to enable this:
-- `createNewItemFromQuery`: Specifies how to convert a user-entered query string
-into an item of type `<T>` that `Select2` understands.
-- `createNewItemRenderer`: Renders a custom "Create Item" element that will be
-shown at the bottom of the list. When selected via click or `Enter`, this element
-will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
+
+-   `createNewItemFromQuery`: Specifies how to convert a user-entered query string
+    into an item of type `<T>` that `Select2` understands.
+-   `createNewItemRenderer`: Renders a custom "Create Item" element that will be
+    shown at the bottom of the list. When selected via click or `Enter`, this element
+    will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
     <h4 class="@ns-heading">Avoiding type conflicts</h4>
@@ -285,8 +287,7 @@ const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, rend
         <Menu role="listbox" ulRef={itemsParentRef} {...menuProps}>
             <MenuItem
                 disabled={true}
-                liProps={{ role: "option" }} // "option" role on `li` item, per ARIA select examples
-                role={undefined} // no role on `a` item
+                isListOption={true}
                 text={`Found ${renderedItems.length} items matching "${query}"`}
             />
             {renderedItems}
