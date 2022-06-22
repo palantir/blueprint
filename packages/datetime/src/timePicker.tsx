@@ -299,7 +299,6 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
                 onKeyDown={this.getInputKeyDownHandler(unit)}
                 onKeyUp={this.getInputKeyUpHandler(unit)}
                 role={this.props.showArrowButtons ? "spinbutton" : "textinput"}
-                type="number"
                 value={value}
                 disabled={this.props.disabled}
                 autoFocus={isHour && this.props.autoFocus}
