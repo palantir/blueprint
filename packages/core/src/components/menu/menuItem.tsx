@@ -82,7 +82,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      *
      * @default {}
      */
-    liProps?: string;
+    liProps?: React.HTMLAttributes<HTMLLIElement>;
 
     /**
      * Whether the text should be allowed to wrap to multiple lines.
