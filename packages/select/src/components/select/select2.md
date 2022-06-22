@@ -162,7 +162,6 @@ function renderCreateFilmOption(
             selected={active}
             onClick={handleClick}
             shouldDismissPopover={false}
-            isListOption={true}
         />
     )
 }
@@ -174,7 +173,7 @@ ReactDOM.render(
         items={Films.items}
         itemPredicate={Films.itemPredicate}
         itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true}  isListOption={true} text="No results." isListOption={true}/>}
+        noResults={<MenuItem disabled={true} text="No results." isListOption={true}/>}
         onItemSelect={...}
     />,
     document.querySelector("#root")
