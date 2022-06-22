@@ -60,14 +60,14 @@ describe("MenuItem", () => {
 
     it("default role prop structure is correct for a menuitem that is a an item of a menu", () => {
         const wrapper = shallow(<MenuItem text="Roles" />);
-        assert.propertyVal(wrapper.find("li"), "role", "none");
-        assert.propertyVal(wrapper.find("a"), "role", "menuitem");
+        assert.equal(wrapper.find("li").prop("role"), "none");
+        assert.equal(wrapper.find("a").prop("role"), "menuitem");
     });
 
     it("can set isListOption to change role prop structure to that of a listbox or select item", () => {
         const wrapper = shallow(<MenuItem text="Roles" isListOption={true} />);
-        assert.propertyVal(wrapper.find("li"), "role", "option");
-        assert.notProperty(wrapper.find("a"), "role");
+        assert.equal(wrapper.find("li").prop("role"), "option");
+        assert.equal(wrapper.find("a").prop("role"), undefined);
     });
 
     it("disabled MenuItem will not show its submenu", () => {
