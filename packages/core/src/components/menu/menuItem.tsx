@@ -189,6 +189,11 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const hasIcon = icon != null;
         const hasSubmenu = children != null;
 
+        const [liRole, targetRole] =
+            roleConfig === "listoption"
+                ? ["option", undefined] // for when is item of a listbox role parent, or a select parent
+                : ["none", "menuitem"]; // for when is item of a menu role parent
+
         const intentClass = Classes.intentClass(intent);
         const anchorClasses = classNames(
             Classes.MENU_ITEM,
@@ -206,7 +211,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const target = React.createElement(
             tagName,
             {
-                role: roleConfig === "listoption" ? undefined : "menuitem",
+                role: targetRole,
                 tabIndex: 0,
                 ...htmlProps,
                 ...(disabled ? DISABLED_PROPS : {}),
@@ -230,7 +235,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li className={liClasses} role={roleConfig === "listoption" ? "option" : "none"}>
+            <li className={liClasses} role={liRole}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );
