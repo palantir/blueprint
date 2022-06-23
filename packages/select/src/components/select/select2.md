@@ -158,7 +158,7 @@ function renderCreateFilmOption(
         <MenuItem
             icon="add"
             text={`Create "${query}"`}
-             roleConfig="listoption"
+            roleConfig="listoption"
             selected={active}
             onClick={handleClick}
             shouldDismissPopover={false}
@@ -260,7 +260,7 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
         <MenuItem
             text={film.title}
             label={film.year}
-             roleConfig="listoption"
+            roleConfig="listoption"
             selected={modifiers.active}
             key={film.title}
             onClick={handleClick}
@@ -288,7 +288,7 @@ const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, rend
             <MenuItem
                 disabled={true}
                 text={`Found ${renderedItems.length} items matching "${query}"`}
-				 roleConfig="listoption"
+				roleConfig="listoption"
             />
             {renderedItems}
         </Menu>
