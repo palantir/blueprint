@@ -35,6 +35,7 @@ import {
     getDefaultMinTime,
     getTimeUnit,
     getTimeUnitClassName,
+    getTimeUnitPrintStr,
     isTimeUnitValid,
     setTimeUnit,
     TimeUnit,
@@ -258,19 +259,18 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
         }
         const classes = classNames(Classes.TIMEPICKER_ARROW_BUTTON, getTimeUnitClassName(timeUnit));
         const onClick = () => (isDirectionUp ? this.incrementTime : this.decrementTime)(timeUnit);
+        const label = `${isDirectionUp ? "Increase" : "Decrease"} ${getTimeUnitPrintStr(timeUnit)}`;
+
         // set tabIndex=-1 to ensure a valid FocusEvent relatedTarget when focused
         return (
             <span
                 aria-controls={this.timeInputIds[timeUnit]}
-                aria-label={`${isDirectionUp ? "Increase" : "Decrease"} ${timeUnit}`}
+                aria-label={label}
                 tabIndex={-1}
                 className={classes}
                 onClick={onClick}
             >
-                <Icon
-                    icon={isDirectionUp ? "chevron-up" : "chevron-down"}
-                    title={isDirectionUp ? "Increase" : "Decrease"}
-                />
+                <Icon icon={isDirectionUp ? "chevron-up" : "chevron-down"} title={label} />
             </span>
         );
     }
