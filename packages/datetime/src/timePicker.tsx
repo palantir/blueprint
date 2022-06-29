@@ -35,6 +35,7 @@ import {
     getDefaultMinTime,
     getTimeUnit,
     getTimeUnitClassName,
+    getTimeUnitMax,
     getTimeUnitPrintStr,
     isTimeUnitValid,
     setTimeUnit,
