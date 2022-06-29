@@ -65,9 +65,9 @@ describe("<Icon>", () => {
         assert.isTrue(icon.isEmptyRender());
     });
 
-    it("title sets content of <desc> element", () => {
+    it("title sets content of <title> element", () => {
         const icon = shallow(<Icon icon="airplane" title="bird" />);
-        assert.equal(icon.find("desc").text(), "bird");
+        assert.equal(icon.find("title").text(), "bird");
     });
 
     it("does not add desc if title is not provided", () => {
