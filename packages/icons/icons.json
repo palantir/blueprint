@@ -3890,5 +3890,19 @@
         "tags": "number, float, double, decimal",
         "group": "miscellaneous",
         "codepoint": 62252
+    },
+    {
+        "displayName": "Floating point array",
+        "iconName": "array-floating-point",
+        "tags": "number, float, double, decimal, array",
+        "group": "miscellaneous",
+        "codepoint": 62253
+    },
+    {
+        "displayName": "Cube: edit",
+        "iconName": "cube-edit",
+        "tags": "shape, 3d, object",
+        "group": "miscellaneous",
+        "codepoint": 62254
     }
 ]
