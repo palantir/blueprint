@@ -88,7 +88,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      *
      * which is proper role structure for a `<ul role="menu"` parent (this is the default `role` of a `Menu`).
      *
-     * If `listoption`, `role` structure becomes:
+     * If `listoption`, role structure becomes:
      *
      * `<li role="option"`
      *     `<a role=undefined`
