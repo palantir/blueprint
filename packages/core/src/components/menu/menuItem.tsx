@@ -189,10 +189,10 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const hasIcon = icon != null;
         const hasSubmenu = children != null;
 
-        const [liRole, targetRole] =
+        const [liRole, targetRole, ariaSelected] =
             roleConfig === "listoption"
-                ? ["option", undefined] // for when is item of a listbox role parent, or a select parent
-                : ["none", "menuitem"]; // for when is item of a menu role parent
+                ? ["option", undefined, active || selected] // for when is item of a listbox role parent, or a select parent
+                : ["none", "menuitem", undefined]; // for when is item of a menu role parent
 
         const intentClass = Classes.intentClass(intent);
         const anchorClasses = classNames(
@@ -235,7 +235,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li className={liClasses} role={liRole}>
+            <li className={liClasses} role={liRole} aria-selected={ariaSelected}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );
