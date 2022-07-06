@@ -3,6 +3,7 @@ import fs from "fs-extra";
 import path from "path";
 import * as sass from "sass";
 import nodeSassPackageImporter from "node-sass-package-importer";
+import { RawSourceMap } from "source-map";
 import yargs from "yargs";
 
 const args = yargs(process.argv.slice(2))
@@ -42,7 +43,7 @@ if (args.watch) {
 }
 
 function compileAllFiles() {
-    const files = fs.readdirSync(args._[0]);
+    const files = fs.readdirSync(args._[0] as string);
     const inputFiles = files
         .filter(file => path.extname(file) === ".scss" && !path.basename(file).startsWith("_"))
         .map(fileName => path.join(args._[0] as string, fileName));
@@ -66,5 +67,25 @@ function compileFile(inputFile: string) {
         charset: true,
     });
     fs.outputFileSync(outFile, result.css, { flag: "w" });
-    fs.outputFileSync(outputMapFile, result.map, { flag: "w" });
+    if (result.map != null) {
+        fs.outputFileSync(outputMapFile, fixSourcePathsInSourceMap({ outputMapFile, sourceMapBuffer: result.map }), {
+            flag: "w",
+        });
+    }
+}
+
+function fixSourcePathsInSourceMap({
+    outputMapFile,
+    sourceMapBuffer,
+}: {
+    outputMapFile: string;
+    sourceMapBuffer: Buffer;
+}): string {
+    const parsedMap = JSON.parse(sourceMapBuffer.toString()) as RawSourceMap;
+    parsedMap.sources = parsedMap.sources.map(source => {
+        const outputDirectory = path.dirname(outputMapFile)
+        const pathToSourceWithoutProtocol = source.replace("file://", "");
+        return path.relative(outputDirectory, pathToSourceWithoutProtocol);
+    })
+    return JSON.stringify(parsedMap);
 }
