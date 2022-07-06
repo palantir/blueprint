@@ -250,7 +250,6 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         }
         return (
             <MenuItem
-                aria-selected={this.isFilmSelected(film)}
                 selected={modifiers.active}
                 icon={this.isFilmSelected(film) ? "tick" : "blank"}
                 roleConfig="listoption"
