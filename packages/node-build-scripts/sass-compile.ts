@@ -83,9 +83,9 @@ function fixSourcePathsInSourceMap({
 }): string {
     const parsedMap = JSON.parse(sourceMapBuffer.toString()) as RawSourceMap;
     parsedMap.sources = parsedMap.sources.map(source => {
-        const outputDirectory = path.dirname(outputMapFile)
+        const outputDirectory = path.dirname(outputMapFile);
         const pathToSourceWithoutProtocol = source.replace("file://", "");
         return path.relative(outputDirectory, pathToSourceWithoutProtocol);
-    })
+    });
     return JSON.stringify(parsedMap);
 }
