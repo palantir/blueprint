@@ -232,7 +232,15 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         };
 
     private maybeRenderClearButton(query: string) {
-        return query.length > 0 ? <Button icon="cross" minimal={true} onClick={this.resetQuery} /> : undefined;
+        return query.length > 0 ? (
+            <Button
+                aria-label="Clear selected item"
+                icon="cross"
+                minimal={true}
+                onClick={this.resetQuery}
+                title="Clear selected item"
+            />
+        ) : undefined;
     }
 
     /**
