@@ -62,6 +62,7 @@ function compileFile(inputFile: string) {
         file: inputFile,
         importer: nodeSassPackageImporter(),
         sourceMap: true,
+        sourceMapContents: true,
         outFile,
         functions,
         charset: true,
