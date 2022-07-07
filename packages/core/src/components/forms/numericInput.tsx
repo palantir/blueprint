@@ -298,6 +298,8 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
 
     private decrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.DOWN);
 
+    private getCurrentValueAsNumber = () => Number(parseStringToStringNumber(this.state.value, this.props.locale));
+
     public render() {
         const { buttonPosition, className, fill, large } = this.props;
         const containerClasses = classNames(Classes.NUMERIC_INPUT, { [Classes.LARGE]: large }, className);
@@ -419,7 +421,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
 
     private renderInput() {
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, NON_HTML_PROPS, true);
-        const valueAsNumber = Number(parseStringToStringNumber(this.state.value, this.props.locale));
+        const valueAsNumber = this.getCurrentValueAsNumber();
         const hasSpinButtons = this.props.buttonPosition !== undefined && this.props.buttonPosition !== "none";
 
         return (
@@ -505,7 +507,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
         if (this.props.min !== undefined || this.props.max !== undefined) {
             const min = this.props.min ?? -Infinity;
             const max = this.props.max ?? Infinity;
-            const valueAsNumber = Number(parseStringToStringNumber(this.state.value, this.props.locale));
+            const valueAsNumber = this.getCurrentValueAsNumber();
             if (valueAsNumber <= min || valueAsNumber >= max) {
                 this.stopContinuousChange();
                 return;
