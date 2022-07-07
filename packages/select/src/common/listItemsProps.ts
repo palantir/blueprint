@@ -126,6 +126,8 @@ export interface IListItemsProps<T> extends Props {
      * If omitted, nothing will be rendered in this case.
      *
      * This prop is ignored if a custom `itemListRenderer` is supplied.
+     *
+     * NOTE: if passing a `MenuItem`, ensure it has `roleStructure="listoption"` prop.
      */
     noResults?: React.ReactNode;
 
