@@ -288,7 +288,7 @@ const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, rend
             <MenuItem
                 disabled={true}
                 text={`Found ${renderedItems.length} items matching "${query}"`}
-				roleStructure="listoption"
+                roleStructure="listoption"
             />
             {renderedItems}
         </Menu>
