@@ -84,7 +84,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         const { allowCreate, disabled, disableItems, matchTargetWidth, minimal, ...flags } = this.state;
 
         const initialContent = this.state.hasInitialContent ? (
-            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleKind="listoption" />
+            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
         ) : undefined;
 
         return (

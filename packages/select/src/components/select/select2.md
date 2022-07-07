@@ -40,7 +40,7 @@ ReactDOM.render(
         items={Films.items}
         itemPredicate={Films.itemPredicate}
         itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true} text="No results."  roleKind="listoption" />}
+        noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
         onItemSelect={...}
     >
         {/* children become the popover target; render value here */}
@@ -158,7 +158,7 @@ function renderCreateFilmOption(
         <MenuItem
             icon="add"
             text={`Create "${query}"`}
-            roleKind="listoption"
+            roleStructure="listoption"
             selected={active}
             onClick={handleClick}
             shouldDismissPopover={false}
@@ -173,7 +173,7 @@ ReactDOM.render(
         items={Films.items}
         itemPredicate={Films.itemPredicate}
         itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true} text="No results."  roleKind="listoption" />}
+        noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
         onItemSelect={...}
     />,
     document.querySelector("#root")
@@ -260,7 +260,7 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
         <MenuItem
             text={film.title}
             label={film.year}
-            roleKind="listoption"
+            roleStructure="listoption"
             selected={modifiers.active}
             key={film.title}
             onClick={handleClick}
@@ -288,7 +288,7 @@ const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, rend
             <MenuItem
                 disabled={true}
                 text={`Found ${renderedItems.length} items matching "${query}"`}
-				roleKind="listoption"
+				roleStructure="listoption"
             />
             {renderedItems}
         </Menu>
