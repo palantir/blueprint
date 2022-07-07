@@ -20,6 +20,7 @@ import * as React from "react";
 import { IconName, iconNameToPathsRecordKey, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
 
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props } from "../../common";
+import { uniqueId } from "../../common/utils";
 
 export type { IconName };
 
@@ -134,6 +135,8 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
         const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
+        const titleId = uniqueId("iconTitle");
+
         return React.createElement(
             tagName,
             {
@@ -142,8 +145,16 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
                 className: classes,
                 title: htmlTitle,
             },
-            <svg fill={color} data-icon={icon} width={size} height={size} viewBox={viewBox}>
-                {title && <desc>{title}</desc>}
+            <svg
+                fill={color}
+                data-icon={icon}
+                width={size}
+                height={size}
+                viewBox={viewBox}
+                aria-labelledby={title ? titleId : undefined}
+                role="img"
+            >
+                {title && <title id={titleId}>{title}</title>}
                 {paths}
             </svg>,
         );

@@ -34,10 +34,16 @@ export interface DateInput2Props extends Omit<DateInputProps, "onChange" | "valu
     /** The default timezone selected. Defaults to the user local timezone */
     defaultTimezone?: string;
 
-    /** Callback invoked whenever the date or timezone has changed. ISO string */
-    onChange: (newDate: string, isUserChange?: boolean) => void;
+    /**
+     * Callback invoked whenever the date or timezone has changed.
+     *
+     * @param newDate ISO string or `null` (if the date is invalid or text input has been cleared)
+     * @param isUserChange `true` if the user clicked on a date in the calendar, changed the input value,
+     *     or cleared the selection; `false` if the date was changed by changing the month or year.
+     */
+    onChange: (newDate: string | null, isUserChange?: boolean) => void;
 
-    /** An ISO string mapping to the selected time. */
+    /** An ISO string representing the selected time. */
     value: string | null;
 
     /**
@@ -91,6 +97,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     const handleDateChange = React.useCallback(
         (newDate: Date | null, isUserChange: boolean) => {
             if (newDate == null) {
+                onChange?.(newDate, isUserChange);
                 return;
             }
             const newDateString = getIsoEquivalentWithUpdatedTimezone(newDate, timezoneValue, timePrecision);

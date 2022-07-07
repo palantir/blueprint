@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Position } from "@blueprintjs/core";
+import { InputGroup, Position } from "@blueprintjs/core";
 import { DateInput, TimePrecision } from "@blueprintjs/datetime";
 
 import { DateInput2, DateInput2Props, TimezoneSelect } from "../../src";
@@ -131,5 +131,14 @@ describe("<DateInput2>", () => {
         assert.isFalse(dateinput.prop("disabled"), "disabled comes from DateInput props");
         assert.strictEqual(dateinput.prop("inputProps"), inputProps);
         assert.strictEqual(dateinput.prop("popoverProps"), popoverProps);
+    });
+
+    it("Clearing the input invokes onChange with null", () => {
+        const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />);
+        wrapper
+            .find(InputGroup)
+            .find("input")
+            .simulate("change", { target: { value: "" } });
+        assert.isTrue(onChange.calledOnceWithExactly(null, true));
     });
 });
