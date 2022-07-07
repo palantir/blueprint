@@ -97,7 +97,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      *
      * @default "menuitem"
      */
-    roleConfig?: "menuitem" | "listoption";
+    roleKind?: "menuitem" | "listoption";
 
     /**
      * Whether the text should be allowed to wrap to multiple lines.
@@ -175,7 +175,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             labelElement,
             multiline,
             popoverProps,
-            roleConfig = "menuitem",
+            roleKind = "menuitem",
             selected,
             shouldDismissPopover,
             submenuProps,
@@ -204,7 +204,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         );
 
         const [liRole, targetRole, ariaSelected] =
-            roleConfig === "listoption"
+            roleKind === "listoption"
                 ? ["option", undefined, active || selected] // for when is item of a listbox role parent, or a select parent
                 : ["none", "menuitem", undefined]; // for when is item of a menu role parent
 

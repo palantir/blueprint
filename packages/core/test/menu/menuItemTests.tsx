@@ -64,8 +64,8 @@ describe("MenuItem", () => {
         assert.equal(wrapper.find("a").prop("role"), "menuitem");
     });
 
-    it("can set roleConfig to change role prop structure to that of a listbox or select item", () => {
-        const wrapper = mount(<MenuItem text="Roles" roleConfig="listoption" />);
+    it("can set roleKind to change role prop structure to that of a listbox or select item", () => {
+        const wrapper = mount(<MenuItem text="Roles" roleKind="listoption" />);
         assert.equal(wrapper.find("li").prop("role"), "option");
         assert.equal(wrapper.find("a").prop("role"), undefined);
     });

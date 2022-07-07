@@ -142,7 +142,7 @@ export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, handleFocus
             active={modifiers.active}
             disabled={modifiers.disabled}
             label={film.year.toString()}
-            roleConfig="listoption"
+            roleKind="listoption"
             key={film.rank}
             onClick={handleClick}
             onFocus={handleFocus}
@@ -159,7 +159,7 @@ export const renderCreateFilmOption = (
     <MenuItem
         icon="add"
         text={`Create "${query}"`}
-        roleConfig="listoption"
+        roleKind="listoption"
         active={active}
         onClick={handleClick}
         shouldDismissPopover={false}

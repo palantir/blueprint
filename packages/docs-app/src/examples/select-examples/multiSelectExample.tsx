@@ -105,7 +105,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         });
 
         const initialContent = this.state.hasInitialContent ? (
-            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleConfig="listoption" />
+            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleKind="listoption" />
         ) : // explicit undefined (not null) for default behavior (show full list)
         undefined;
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
@@ -124,7 +124,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     // we may customize the default filmSelectProps.items by
                     // adding newly created items to the list, so pass our own
                     items={this.state.items}
-                    noResults={<MenuItem disabled={true} text="No results." roleConfig="listoption" />}
+                    noResults={<MenuItem disabled={true} text="No results." roleKind="listoption" />}
                     onClear={this.state.showClearButton ? this.handleClear : undefined}
                     onItemSelect={this.handleFilmSelect}
                     onItemsPaste={this.handleFilmsPaste}
@@ -252,7 +252,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
             <MenuItem
                 selected={modifiers.active}
                 icon={this.isFilmSelected(film) ? "tick" : "blank"}
-                roleConfig="listoption"
+                roleKind="listoption"
                 key={film.rank}
                 label={film.year.toString()}
                 onClick={handleClick}
