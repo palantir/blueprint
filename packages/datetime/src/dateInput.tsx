@@ -92,12 +92,14 @@ export interface IDateInputProps extends IDatePickerBaseProps, DateFormatProps, 
     inputProps?: InputGroupProps2;
 
     /**
-     * Called when the user selects a new valid date through the `DatePicker` or by typing
-     * in the input. The second argument is true if the user clicked on a date in the
-     * calendar, changed the input value, or cleared the selection; it will be false if the date
-     * was changed by choosing a new month or year.
+     * Called when the user selects a new valid date through the DatePicker or by typing
+     * in the input.
+     *
+     * @param newDate Date or `null` (if the date is invalid or text input has been cleared)
+     * @param isUserChange `true` if the user clicked on a date in the calendar, changed the input value,
+     *     or cleared the selection; `false` if the date was changed by changing the month or year.
      */
-    onChange?: (selectedDate: Date, isUserChange: boolean) => void;
+    onChange?: (selectedDate: Date | null, isUserChange: boolean) => void;
 
     /**
      * Called when the user finishes typing in a new date and the date causes an error state.
@@ -365,7 +367,7 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         const { valueString } = this.state;
-        const date = this.parseDate(valueString);
+        const date: Date = this.parseDate(valueString);
         if (
             valueString.length > 0 &&
             valueString !== getFormattedDateString(this.state.value, this.props) &&
