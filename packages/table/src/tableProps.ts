@@ -16,6 +16,7 @@
 
 import type { Props } from "@blueprintjs/core";
 
+import type { CellRenderer } from "./cell/cell";
 import type { IColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import type { ColumnIndices, RowIndices } from "./common/grid";
@@ -143,9 +144,14 @@ export interface ITableProps extends Props, Partial<IRowHeights>, Partial<IColum
      * attempts to copy a selection via `mod+c`. The returned data will be copied
      * to the clipboard and need not match the display value of the `<Cell>`.
      * The data will be invisibly added as `textContent` into the DOM before
-     * copying. If not defined, keyboard copying via `mod+c` will be disabled.
+     * copying. If not defined, a default implementation will be used that
+     * turns the rendered cell elements into strings using 'react-innertext'.
+     *
+     * @param row the row index coordinate of the cell to get data for
+     * @param col the col index coordinate of the cell to get data for
+     * @param cellRenderer the cell renderer for this row, col coordinate in the table
      */
-    getCellClipboardData?: (row: number, col: number) => any;
+    getCellClipboardData?: (row: number, col: number, celRenderer: CellRenderer) => any;
 
     /**
      * A list of `TableLoadingOption`. Set this prop to specify whether to
@@ -326,6 +332,7 @@ export type TablePropsDefaults = Required<
         | "enableMultipleSelection"
         | "enableRowHeader"
         | "forceRerenderOnSelectionChange"
+        | "getCellClipboardData"
         | "loadingOptions"
         | "maxColumnWidth"
         | "maxRowHeight"

@@ -143,13 +143,14 @@ export class DatePicker extends AbstractPureComponent2<DatePickerProps, IDatePic
     }
 
     public render() {
-        const { className, dayPickerProps, locale, localeUtils, maxDate, minDate, showActionsBar } = this.props;
+        const { className, dayPickerProps, footerElement, locale, localeUtils, maxDate, minDate, showActionsBar } =
+            this.props;
         const { displayMonth, displayYear } = this.state;
 
         return (
             <div className={classNames(Classes.DATEPICKER, className)}>
                 {this.maybeRenderShortcuts()}
-                <div>
+                <div className={Classes.DATEPICKER_CONTENT}>
                     <DayPicker
                         showOutsideDays={true}
                         locale={locale}
@@ -170,6 +171,7 @@ export class DatePicker extends AbstractPureComponent2<DatePickerProps, IDatePic
                     />
                     {this.maybeRenderTimePicker()}
                     {showActionsBar && this.renderOptionsBar()}
+                    {footerElement}
                 </div>
             </div>
         );

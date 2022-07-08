@@ -96,7 +96,7 @@ export class HTMLSelect extends AbstractPureComponent2<HTMLSelectProps> {
 
         return (
             <div className={classes}>
-                <select disabled={disabled} ref={elementRef} {...htmlProps} multiple={false}>
+                <select disabled={disabled} ref={elementRef} value={this.props.value} {...htmlProps} multiple={false}>
                     {optionChildren}
                     {htmlProps.children}
                 </select>

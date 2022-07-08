@@ -50,7 +50,7 @@ const shallow = (
     options?: ShallowRendererProps,
 ): TimezonePickerShallowWrapper => untypedShallow<TimezonePicker>(el, options);
 
-const VALUE = "America/Los_Angeles";
+/* eslint-disable deprecation/deprecation */
 
 describe("<TimezonePicker>", () => {
     const onChange = sinon.spy();
@@ -60,7 +60,7 @@ describe("<TimezonePicker>", () => {
             isOpen: true,
             usePortal: false,
         },
-        value: VALUE,
+        value: "America/Los_Angeles",
     };
 
     afterEach(() => onChange.resetHistory());
@@ -69,7 +69,6 @@ describe("<TimezonePicker>", () => {
         // remove isOpen from popoverProps so it's
         const timezonePicker = mount(<TimezonePicker {...DEFAULT_PROPS} popoverProps={{ usePortal: false }} />);
         timezonePicker.find(Button).simulate("click");
-        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(timezonePicker.find(Popover).prop("isOpen"));
     });
 
@@ -78,7 +77,6 @@ describe("<TimezonePicker>", () => {
             <TimezonePicker {...DEFAULT_PROPS} disabled={true} popoverProps={{ usePortal: false }} />,
         );
         timezonePicker.find(Button).simulate("click");
-        /* eslint-disable-next-line deprecation/deprecation */
         assert.isFalse(timezonePicker.find(Popover).prop("isOpen"));
     });
 
@@ -244,7 +242,6 @@ describe("<TimezonePicker>", () => {
     }
 
     function findPopover(timezonePicker: TimezonePickerShallowWrapper) {
-        /* eslint-disable-next-line deprecation/deprecation */
         return findQueryList(timezonePicker).shallow().find(Popover);
     }
 

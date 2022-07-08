@@ -20,8 +20,8 @@ import { H5, Position, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateInput, TimePrecision } from "@blueprintjs/datetime";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
-import { FORMATS, FormatSelect } from "./common/formatSelect";
 import { MomentDate } from "./common/momentDate";
+import { MOMENT_FORMATS, MomentFormatSelector } from "./common/momentFormats";
 import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface IDateInputExampleState {
@@ -42,7 +42,7 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
         date: null,
         disabled: false,
         fill: false,
-        format: FORMATS[0],
+        format: MOMENT_FORMATS[0],
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showTimeArrowButtons: false,
@@ -57,7 +57,9 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
 
     private toggleFill = handleBooleanChange(fill => this.setState({ fill }));
 
-    private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
+    private toggleReverseMenus = handleBooleanChange(reverseMonthAndYearMenus =>
+        this.setState({ reverseMonthAndYearMenus }),
+    );
 
     private toggleTimePrecision = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
@@ -93,7 +95,7 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
             closeOnSelection,
             disabled,
             fill,
-            reverseMonthAndYearMenus: reverse,
+            reverseMonthAndYearMenus,
             format,
             timePrecision,
             shortcuts,
@@ -106,8 +108,12 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
                 <Switch checked={shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
                 <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
                 <Switch label="Fill" checked={fill} onChange={this.toggleFill} />
-                <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
-                <FormatSelect format={format} onChange={this.handleFormatChange} />
+                <Switch
+                    label="Reverse month and year menus"
+                    checked={reverseMonthAndYearMenus}
+                    onChange={this.toggleReverseMenus}
+                />
+                <MomentFormatSelector format={format} onChange={this.handleFormatChange} />
                 <PrecisionSelect
                     allowNone={true}
                     label="Time precision"

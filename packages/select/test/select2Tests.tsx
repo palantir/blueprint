@@ -19,12 +19,13 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, Keys } from "@blueprintjs/core";
+import { InputGroup, Keys, MenuItem } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { IItemRendererProps, Select2, Select2Props, Select2State } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
+import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("<Select2>", () => {
     const FilmSelect = Select2.ofType<IFilm>();
@@ -38,6 +39,7 @@ describe("<Select2>", () => {
         itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
+    let testsContainerElement: HTMLElement | undefined;
 
     beforeEach(() => {
         handlers = {
@@ -45,10 +47,23 @@ describe("<Select2>", () => {
             itemRenderer: sinon.spy(renderFilm),
             onItemSelect: sinon.spy(),
         };
+        testsContainerElement = document.createElement("div");
+        document.body.appendChild(testsContainerElement);
+    });
+
+    afterEach(() => {
+        for (const spy of Object.values(handlers)) {
+            spy.resetHistory();
+        }
+        testsContainerElement?.remove();
     });
 
     selectComponentSuite<Select2Props<IFilm>, Select2State>(props =>
         mount(<Select2 {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
+    );
+
+    selectPopoverTestSuite<Select2Props<IFilm>, Select2State>(props =>
+        mount(<Select2 {...props} />, { attachTo: testsContainerElement }),
     );
 
     it("renders a Popover2 around children that contains InputGroup and items", () => {
@@ -97,12 +112,20 @@ describe("<Select2>", () => {
 
     // TODO(adahiya): move into selectComponentSuite, generalize for Suggest & MultiSelect
     it("opens Popover2 when arrow key pressed on target while closed", () => {
+        // override isOpen in defaultProps
         const wrapper = select({ popoverProps: { usePortal: false } });
         // should be closed to start
         assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), false);
         wrapper.find("[data-testid='target-button']").simulate("keydown", { which: Keys.ARROW_DOWN });
         // ...then open after key down
         assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), true);
+    });
+
+    // HACKHACK: see https://github.com/palantir/blueprint/issues/5364
+    it.skip("invokes onItemSelect when clicking first MenuItem", () => {
+        const wrapper = select();
+        wrapper.find(Popover2).find(MenuItem).first().simulate("click");
+        assert.isTrue(handlers.onItemSelect.calledOnce);
     });
 
     function select(props: Partial<Select2Props<IFilm>> = {}, query?: string) {

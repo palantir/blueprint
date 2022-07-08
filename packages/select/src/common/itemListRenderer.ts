@@ -57,6 +57,11 @@ export interface IItemListRendererProps<T> {
     itemsParentRef: IRef<HTMLUListElement>;
 
     /**
+     * Props to apply to the `Menu` created within the `itemListRenderer`
+     */
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
+
+    /**
      * Call this function to render an item.
      * This retrieves the modifiers for the item and delegates actual rendering
      * to the owner component's `itemRenderer` prop.

@@ -23,7 +23,8 @@ import { TimePickerProps, TimePrecision } from "./timePicker";
 // also we need an interface for the dictionary without `today` and `outside` injected by r-d-p.
 /**
  * Collection of functions that determine which modifier classes get applied to which days.
- * See the [**react-day-picker** documentation](http://react-day-picker.js.org/api/ModifiersUtils) to learn more.
+ * See the [**react-day-picker** documentation](https://react-day-picker-v7.netlify.app/api/ModifiersUtils)
+ * to learn more.
  *
  * @deprecated use DatePickerModifiers
  */
@@ -36,7 +37,7 @@ export type DatePickerModifiers = IDatePickerModifiers;
 export interface IDatePickerBaseProps {
     /**
      * Props to pass to ReactDayPicker. See API documentation
-     * [here](http://react-day-picker.js.org/api/DayPicker).
+     * [here](https://react-day-picker-v7.netlify.app/api/DayPicker).
      *
      * The following props are managed by the component and cannot be configured:
      * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
@@ -49,6 +50,11 @@ export interface IDatePickerBaseProps {
      *
      */
     dayPickerProps?: DayPickerProps;
+
+    /**
+     * An additional element to show below the date picker
+     */
+    footerElement?: JSX.Element;
 
     /**
      * Whether the current day should be highlighted in the calendar.
@@ -90,7 +96,8 @@ export interface IDatePickerBaseProps {
     /**
      * Collection of functions that determine which modifier classes get applied to which days.
      * Each function should accept a `Date` and return a boolean.
-     * See the [**react-day-picker** documentation](http://react-day-picker.js.org/api/ModifiersUtils) to learn more.
+     * See the [**react-day-picker** documentation](https://react-day-picker-v7.netlify.app/api/ModifiersUtils)
+     * to learn more.
      */
     modifiers?: DatePickerModifiers;
 

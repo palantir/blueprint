@@ -26,6 +26,7 @@ import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/film
 import { IItemRendererProps, QueryList } from "../src";
 import { Suggest2, Suggest2Props, Suggest2State } from "../src/components/suggest/suggest2";
 import { selectComponentSuite } from "./selectComponentSuite";
+import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("Suggest2", () => {
     const FilmSuggest = Suggest2.ofType<IFilm>();
@@ -40,6 +41,7 @@ describe("Suggest2", () => {
         itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
+    let testsContainerElement: HTMLElement | undefined;
 
     beforeEach(() => {
         handlers = {
@@ -48,6 +50,12 @@ describe("Suggest2", () => {
             itemRenderer: sinon.spy(renderFilm),
             onItemSelect: sinon.spy(),
         };
+        testsContainerElement = document.createElement("div");
+        document.body.appendChild(testsContainerElement);
+    });
+
+    afterEach(() => {
+        testsContainerElement?.remove();
     });
 
     selectComponentSuite<Suggest2Props<IFilm>, Suggest2State<IFilm>>(props =>
@@ -58,6 +66,10 @@ describe("Suggest2", () => {
                 popoverProps={{ isOpen: true, usePortal: false }}
             />,
         ),
+    );
+
+    selectPopoverTestSuite<Suggest2Props<IFilm>, Suggest2State<IFilm>>(props =>
+        mount(<Suggest2 {...props} inputValueRenderer={inputValueRenderer} />, { attachTo: testsContainerElement }),
     );
 
     describe("Basic behavior", () => {
@@ -202,12 +214,12 @@ describe("Suggest2", () => {
             const ITEM_INDEX = 4;
             const wrapper = suggest();
 
-            assert.isFalse(handlers.inputValueRenderer.called, "should not call inputValueRenderer before selection");
+            assert.isFalse(handlers.inputValueRenderer.called, "should not call inputValueRenderer before selection");
             selectItem(wrapper, ITEM_INDEX);
             const selectedItem = TOP_100_FILMS[ITEM_INDEX];
             const expectedValue = inputValueRenderer(selectedItem);
 
-            assert.isTrue(handlers.inputValueRenderer.called, "should call inputValueRenderer after selection");
+            assert.isTrue(handlers.inputValueRenderer.called, "should call inputValueRenderer after selection");
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), expectedValue);
         });
     });

@@ -17,20 +17,15 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import type { IconName } from "@blueprintjs/icons";
-
 import {
     AbstractPureComponent2,
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     Intent,
-    IntentProps,
     IRef,
     Keys,
-    MaybeElement,
     Position,
-    Props,
     refHandler,
     removeNonHTMLProps,
     setRef,
@@ -41,6 +36,7 @@ import { ButtonGroup } from "../button/buttonGroup";
 import { Button } from "../button/buttons";
 import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
+import type { InputSharedProps } from "./inputSharedProps";
 import {
     clampValue,
     getValueOrEmptyValue,
@@ -55,7 +51,7 @@ import {
 // eslint-disable-next-line deprecation/deprecation
 export type NumericInputProps = INumericInputProps;
 /** @deprecated use NumericInputProps */
-export interface INumericInputProps extends IntentProps, Props {
+export interface INumericInputProps extends InputSharedProps {
     /**
      * Whether to allow only floating-point number characters in the field,
      * mimicking the native `input[type="number"]`.
@@ -97,21 +93,6 @@ export interface INumericInputProps extends IntentProps, Props {
     defaultValue?: number | string;
 
     /**
-     * Whether the input is non-interactive.
-     *
-     * @default false
-     */
-    disabled?: boolean;
-
-    /** Whether the numeric input should take up the full width of its container. */
-    fill?: boolean;
-
-    /**
-     * Ref handler that receives HTML `<input>` element backing this component.
-     */
-    inputRef?: IRef<HTMLInputElement>;
-
-    /**
      * If set to `true`, the input will display with larger styling.
      * This is equivalent to setting `Classes.LARGE` via className on the
      * parent control group and on the child input group.
@@ -119,11 +100,6 @@ export interface INumericInputProps extends IntentProps, Props {
      * @default false
      */
     large?: boolean;
-
-    /**
-     * Name of a Blueprint UI icon (or an icon element) to render on the left side of input.
-     */
-    leftIcon?: IconName | MaybeElement;
 
     /**
      * The locale name, which is passed to the component to format the number and allowing to type the number in the specific locale.
@@ -154,15 +130,6 @@ export interface INumericInputProps extends IntentProps, Props {
      * @default 0.1
      */
     minorStepSize?: number | null;
-
-    /** The placeholder text in the absence of any value. */
-    placeholder?: string;
-
-    /**
-     * Element to render on right side of input.
-     * For best results, use a minimal button, tag, or small spinner.
-     */
-    rightElement?: JSX.Element;
 
     /**
      * Whether the entire text field should be selected on focus.
@@ -234,6 +201,8 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
     public static VALUE_EMPTY = "";
 
     public static VALUE_ZERO = "0";
+
+    private numericInputId = Utils.uniqueId("numericInput");
 
     public static defaultProps: NumericInputProps = {
         allowNumericCharactersOnly: true,
@@ -328,6 +297,8 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
     private incrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.UP);
 
     private decrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.DOWN);
+
+    private getCurrentValueAsNumber = () => Number(parseStringToStringNumber(this.state.value, this.props.locale));
 
     public render() {
         const { buttonPosition, className, fill, large } = this.props;
@@ -430,6 +401,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
                 <Button
                     aria-label="increment"
+                    aria-controls={this.numericInputId}
                     disabled={disabled || isIncrementDisabled}
                     icon="chevron-up"
                     intent={intent}
@@ -437,6 +409,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                 />
                 <Button
                     aria-label="decrement"
+                    aria-controls={this.numericInputId}
                     disabled={disabled || isDecrementDisabled}
                     icon="chevron-down"
                     intent={intent}
@@ -448,14 +421,23 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
 
     private renderInput() {
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, NON_HTML_PROPS, true);
+        const valueAsNumber = this.getCurrentValueAsNumber();
+        const hasSpinButtons = this.props.buttonPosition !== undefined && this.props.buttonPosition !== "none";
+
         return (
             <InputGroup
                 asyncControl={this.props.asyncControl}
                 autoComplete="off"
+                id={this.numericInputId}
+                role={hasSpinButtons ? "spinbutton" : "textbox"}
                 {...inputGroupHtmlProps}
+                aria-valuemax={this.props.max}
+                aria-valuemin={this.props.min}
+                aria-valuenow={valueAsNumber}
                 intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
                 inputRef={this.inputRef}
                 large={this.props.large}
+                leftElement={this.props.leftElement}
                 leftIcon={this.props.leftIcon}
                 onFocus={this.handleInputFocus}
                 onBlur={this.handleInputBlur}
@@ -525,7 +507,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
         if (this.props.min !== undefined || this.props.max !== undefined) {
             const min = this.props.min ?? -Infinity;
             const max = this.props.max ?? Infinity;
-            const valueAsNumber = Number(parseStringToStringNumber(this.state.value, this.props.locale));
+            const valueAsNumber = this.getCurrentValueAsNumber();
             if (valueAsNumber <= min || valueAsNumber >= max) {
                 this.stopContinuousChange();
                 return;

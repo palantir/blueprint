@@ -16,9 +16,9 @@
 
 import * as React from "react";
 
-import { Button, H5, Intent, MenuItem, Switch, TagProps } from "@blueprintjs/core";
+import { Code, H5, Intent, MenuItem, Switch, TagProps } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Popover2 } from "@blueprintjs/popover2";
+import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 import { ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
 
 import {
@@ -40,14 +40,17 @@ const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Int
 export interface IMultiSelectExampleState {
     allowCreate: boolean;
     createdItems: IFilm[];
+    disabled: boolean;
     fill: boolean;
     films: IFilm[];
     hasInitialContent: boolean;
     intent: boolean;
     items: IFilm[];
+    matchTargetWidth: boolean;
     openOnKeyDown: boolean;
     popoverMinimal: boolean;
     resetOnSelect: boolean;
+    showClearButton: boolean;
     tagMinimal: boolean;
 }
 
@@ -55,14 +58,17 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     public state: IMultiSelectExampleState = {
         allowCreate: false,
         createdItems: [],
+        disabled: false,
         fill: false,
         films: [],
         hasInitialContent: false,
         intent: false,
         items: filmSelectProps.items,
+        matchTargetWidth: false,
         openOnKeyDown: false,
         popoverMinimal: true,
         resetOnSelect: true,
+        showClearButton: true,
         tagMinimal: false,
     };
 
@@ -70,36 +76,40 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
 
-    private handleKeyDownChange = this.handleSwitchChange("openOnKeyDown");
-
-    private handleResetChange = this.handleSwitchChange("resetOnSelect");
-
-    private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
-
-    private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
+    private handleDisabledChange = this.handleSwitchChange("disabled");
 
     private handleFillChange = this.handleSwitchChange("fill");
 
-    private handleIntentChange = this.handleSwitchChange("intent");
-
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
 
+    private handleIntentChange = this.handleSwitchChange("intent");
+
+    private handleKeyDownChange = this.handleSwitchChange("openOnKeyDown");
+
+    private handleMatchTargetWidthChange = this.handleSwitchChange("matchTargetWidth");
+
+    private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
+
+    private handleResetChange = this.handleSwitchChange("resetOnSelect");
+
+    private handleShowClearButtonChange = this.handleSwitchChange("showClearButton");
+
+    private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
+
     public render() {
-        const { allowCreate, films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
+        const { allowCreate, films, hasInitialContent, tagMinimal, popoverMinimal, matchTargetWidth, ...flags } =
+            this.state;
         const getTagProps = (_value: React.ReactNode, index: number): TagProps => ({
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
             minimal: tagMinimal,
         });
 
         const initialContent = this.state.hasInitialContent ? (
-            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
+            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
         ) : // explicit undefined (not null) for default behavior (show full list)
         undefined;
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
         const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
-
-        const clearButton =
-            films.length > 0 ? <Button icon="cross" minimal={true} onClick={this.handleClear} /> : undefined;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
@@ -114,14 +124,15 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     // we may customize the default filmSelectProps.items by
                     // adding newly created items to the list, so pass our own
                     items={this.state.items}
-                    noResults={<MenuItem disabled={true} text="No results." />}
+                    noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
+                    onClear={this.state.showClearButton ? this.handleClear : undefined}
                     onItemSelect={this.handleFilmSelect}
                     onItemsPaste={this.handleFilmsPaste}
-                    popoverProps={{ minimal: popoverMinimal, ref: this.popoverRef }}
+                    popoverProps={{ matchTargetWidth, minimal: popoverMinimal }}
+                    popoverRef={this.popoverRef}
                     tagRenderer={this.renderTag}
                     tagInputProps={{
                         onRemove: this.handleTagRemove,
-                        rightElement: clearButton,
                         tagProps: getTagProps,
                     }}
                     selectedItems={this.state.films}
@@ -149,12 +160,42 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     checked={this.state.hasInitialContent}
                     onChange={this.handleInitialContentChange}
                 />
-                <Switch
-                    label="Allow creating new films"
-                    checked={this.state.allowCreate}
-                    onChange={this.handleAllowCreateChange}
-                />
-                <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
+                <Tooltip2
+                    content={
+                        <>
+                            <Code>createNewItemFromQuery</Code> and <Code>createNewItemRenderer</Code> are{" "}
+                            {this.state.allowCreate ? "defined" : "undefined"}
+                        </>
+                    }
+                    placement="left"
+                >
+                    <Switch
+                        label="Allow creating new films"
+                        checked={this.state.allowCreate}
+                        onChange={this.handleAllowCreateChange}
+                    />
+                </Tooltip2>
+                <Tooltip2
+                    content={
+                        <>
+                            <Code>onClear</Code> is {this.state.showClearButton ? "defined" : "undefined"}
+                        </>
+                    }
+                    placement="left"
+                >
+                    <Switch
+                        label="Show clear button"
+                        checked={this.state.showClearButton}
+                        onChange={this.handleShowClearButtonChange}
+                    />
+                </Tooltip2>
+                <H5>Appearance props</H5>
+                <Tooltip2 content={<Code>disabled=&#123;{this.state.disabled.toString()}&#125;</Code>} placement="left">
+                    <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
+                </Tooltip2>
+                <Tooltip2 content={<Code>fill=&#123;{this.state.fill.toString()}&#125;</Code>} placement="left">
+                    <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
+                </Tooltip2>
                 <H5>Tag props</H5>
                 <Switch
                     label="Minimal tag style"
@@ -167,11 +208,35 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     onChange={this.handleIntentChange}
                 />
                 <H5>Popover props</H5>
-                <Switch
-                    label="Minimal popover style"
-                    checked={this.state.popoverMinimal}
-                    onChange={this.handlePopoverMinimalChange}
-                />
+                <Tooltip2
+                    content={
+                        <Code>
+                            popoverProps=&#123;&#123; matchTargetWidth: {this.state.matchTargetWidth.toString()}{" "}
+                            &#125;&#125;
+                        </Code>
+                    }
+                    placement="left"
+                >
+                    <Switch
+                        label="Match target width"
+                        checked={this.state.matchTargetWidth}
+                        onChange={this.handleMatchTargetWidthChange}
+                    />
+                </Tooltip2>
+                <Tooltip2
+                    content={
+                        <Code>
+                            popoverProps=&#123;&#123; minimal: {this.state.popoverMinimal.toString()} &#125;&#125;
+                        </Code>
+                    }
+                    placement="left"
+                >
+                    <Switch
+                        label="Minimal popover style"
+                        checked={this.state.popoverMinimal}
+                        onChange={this.handlePopoverMinimalChange}
+                    />
+                </Tooltip2>
             </>
         );
     }
@@ -187,6 +252,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
             <MenuItem
                 selected={modifiers.active}
                 icon={this.isFilmSelected(film) ? "tick" : "blank"}
+                roleStructure="listoption"
                 key={film.rank}
                 label={film.year.toString()}
                 onClick={handleClick}
@@ -277,10 +343,5 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
 
     private handleClear = () => {
         this.setState({ films: [] });
-        // N.B. if MultiSelect2 had a "clear" button API provided out of the box, we wouldn't have to
-        // reach in to grab the Popover2 ref to reposition it... until then, we should do this to match
-        // the behavior which happens during TagInput's onRemove callback.
-        // see https://popper.js.org/docs/v2/modifiers/event-listeners/#when-the-reference-element-moves-or-changes-size
-        this.popoverRef.current?.reposition();
     };
 }

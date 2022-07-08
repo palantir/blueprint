@@ -41,6 +41,11 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
     initialActiveItem?: T;
 
     /**
+     * Additional props to apply to the `Menu` that is created within the `QueryList`
+     */
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
+
+    /**
      * Callback invoked when user presses a key, after processing `QueryList`'s own key events
      * (up/down to navigate active item). This callback is passed to `renderer` and (along with
      * `onKeyUp`) can be attached to arbitrary content elements to support keyboard selection.
@@ -206,7 +211,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     }
 
     public render() {
-        const { className, items, renderer, itemListRenderer = this.renderItemList } = this.props;
+        const { className, items, renderer, itemListRenderer = this.renderItemList, menuProps } = this.props;
         const { createNewItem, ...spreadableState } = this.state;
         return renderer({
             ...spreadableState,
@@ -220,6 +225,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
                 ...spreadableState,
                 items,
                 itemsParentRef: this.refHandlers.itemsParent,
+                menuProps,
                 renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,
             }),
@@ -354,7 +360,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
         }
         const createFirst = this.isCreateItemFirst();
         return (
-            <Menu ulRef={listProps.itemsParentRef}>
+            <Menu role="listbox" {...listProps.menuProps} ulRef={listProps.itemsParentRef}>
                 {createFirst && createItemView}
                 {menuContent}
                 {!createFirst && createItemView}

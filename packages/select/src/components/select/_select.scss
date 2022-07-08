@@ -4,15 +4,6 @@
 @import "../../common/variables";
 
 .#{$ns}-select-popover {
-  &.#{$ns}-select-match-target-width {
-    width: 100%;
-
-    .#{$ns}-menu {
-      max-width: none;
-      min-width: 0;
-    }
-  }
-
   .#{$ns}-popover-content,
   .#{$ns}-popover2-content {
     // use padding on container rather than margin on input group
@@ -33,6 +24,16 @@
     &:not(:first-child) {
       // adjust padding to account for that on .#{$ns}-popover-content above
       padding-top: $pt-grid-size * 0.5;
+    }
+  }
+
+  &.#{$ns}-popover2-match-target-width,
+  &.#{$ns}-select-match-target-width { // deprecated: this class is only used by <Select>
+    width: 100%;
+
+    .#{$ns}-menu {
+      max-width: none;
+      min-width: 0;
     }
   }
 }

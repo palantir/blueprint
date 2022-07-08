@@ -82,7 +82,7 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
     buttonText?: string;
 }
 
-// TODO: write tests (ignoring for now to get a build passing quickly)
+// this is a simple component, unit tests would be mostly tautological
 /* istanbul ignore next */
 export class FileInput extends AbstractPureComponent2<FileInputProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;

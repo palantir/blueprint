@@ -30,6 +30,7 @@ export type Popover2TargetProps = IPopover2TargetProps;
  * @deprecated use Popover2TargetProps
  */
 export interface IPopover2TargetProps {
+    /** Target ref. */
     ref: React.Ref<any>;
 
     /** Whether the popover or tooltip is currently open. */
@@ -190,7 +191,7 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
      * Target renderer which receives props injected by Popover2 which should be spread onto
      * the rendered element. This function should return a single React node.
      *
-     * Mutually exclusive with children, targetClassName, and targetTagName.
+     * Mutually exclusive with `children` and `targetTagName` props.
      */
     renderTarget?: (props: Popover2TargetProps & TProps) => JSX.Element;
 

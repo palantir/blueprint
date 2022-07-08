@@ -13,7 +13,7 @@ Migrating from [Select](#select/select-component)?
 
 Select2 is a replacement for Select and will replace it in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
-See the [migration guide](https://github.com/palantir/blueprint/wiki/Select2,-Suggest2,-MultiSelect2-migration)
+See the [migration guide](https://github.com/palantir/blueprint/wiki/select-component-migration)
 on the wiki.
 
 </div>
@@ -40,7 +40,7 @@ ReactDOM.render(
         items={Films.items}
         itemPredicate={Films.itemPredicate}
         itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true} text="No results." />}
+        noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
         onItemSelect={...}
     >
         {/* children become the popover target; render value here */}
@@ -124,10 +124,10 @@ If you wish, you can allow users to select a brand new item that doesn't appear
 in the list, based on the current query string. Use `createNewItemFromQuery` and
 `createNewItemRenderer` to enable this:
 - `createNewItemFromQuery`: Specifies how to convert a user-entered query string
-into an item of type `<T>` that `Select2` understands.
+    into an item of type `<T>` that `Select2` understands.
 - `createNewItemRenderer`: Renders a custom "Create Item" element that will be
-shown at the bottom of the list. When selected via click or `Enter`, this element
-will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
+    shown at the bottom of the list. When selected via click or `Enter`, this element
+    will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
     <h4 class="@ns-heading">Avoiding type conflicts</h4>
@@ -158,6 +158,7 @@ function renderCreateFilmOption(
         <MenuItem
             icon="add"
             text={`Create "${query}"`}
+            roleStructure="listoption"
             selected={active}
             onClick={handleClick}
             shouldDismissPopover={false}
@@ -172,7 +173,7 @@ ReactDOM.render(
         items={Films.items}
         itemPredicate={Films.itemPredicate}
         itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true} text="No results." />}
+        noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
         onItemSelect={...}
     />,
     document.querySelector("#root")
@@ -257,12 +258,13 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
     }
     return (
         <MenuItem
+            text={film.title}
+            label={film.year}
+            roleStructure="listoption"
             selected={modifiers.active}
             key={film.title}
-            label={film.year}
             onClick={handleClick}
             onFocus={handleFocus}
-            text={film.title}
         />
     );
 };
@@ -279,13 +281,14 @@ If provided, the `itemListRenderer` prop will be called to render the contents o
 ```tsx
 import { ItemListRenderer } from "@blueprintjs/select";
 
-const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, renderItem }) => {
+const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, renderItem, menuProps }) => {
     const renderedItems = items.map(renderItem).filter(item => item != null);
     return (
-        <Menu ulRef={itemsParentRef}>
+        <Menu role="listbox" ulRef={itemsParentRef} {...menuProps}>
             <MenuItem
                 disabled={true}
                 text={`Found ${renderedItems.length} items matching "${query}"`}
+                roleStructure="listoption"
             />
             {renderedItems}
         </Menu>

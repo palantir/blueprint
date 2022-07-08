@@ -54,12 +54,22 @@ const ICON_CONTENTS: Record<string, JSX.Element> = {
         </g>
     ),
 
+    datetime2: (
+        <g fillRule="evenodd">
+            <path d="M6 10h12v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-6z" opacity={OPACITY} />
+            <path d="M8 6h8a2 2 0 0 1 2 2v1H6V8a2 2 0 0 1 2-2z" />
+        </g>
+    ),
+
     icons: (
         <g fillRule="evenodd">
             <path d="M11.657 5l2.058 4.168 4.6.669-3.329 3.245.786 4.581-4.115-2.163V5z" opacity={OPACITY} />
             <path d="M11.657 5v10.5l-4.114 2.163.786-4.581L5 9.837l4.6-.669L11.657 5z" />
         </g>
     ),
+
+    // empty box, placeholder icon
+    "popover2-package": <g fillRule="evenodd" />,
 
     resources: (
         <g fillRule="evenodd">
