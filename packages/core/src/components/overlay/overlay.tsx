@@ -657,10 +657,10 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         const { canEscapeKeyClose, onClose } = this.props;
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable-next-line deprecation/deprecation */
-        if (e.which === Keys.ESCAPE && canEscapeKeyClose) {
+        if (e.key === "Escape" && canEscapeKeyClose) {
             onClose?.(e);
+            // prevent other overlays from closing
+            e.stopPropagation();
             // prevent browser-specific escape key behavior (Safari exits fullscreen)
             e.preventDefault();
         }

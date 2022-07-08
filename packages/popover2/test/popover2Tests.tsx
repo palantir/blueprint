@@ -19,7 +19,7 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses, Keys, Menu, MenuItem, Overlay, Portal } from "@blueprintjs/core";
+import { Classes as CoreClasses, Menu, MenuItem, Overlay, Portal } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes, Errors } from "../src";
@@ -843,8 +843,8 @@ describe("<Popover2>", () => {
         };
         wrapper.sendEscapeKey = () => {
             wrapper!.findClass(CoreClasses.OVERLAY_OPEN).simulate("keydown", {
+                key: "Escape",
                 nativeEvent: new KeyboardEvent("keydown"),
-                which: Keys.ESCAPE,
             });
             return wrapper!;
         };

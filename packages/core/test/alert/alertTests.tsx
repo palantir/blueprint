@@ -19,7 +19,7 @@ import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import { SinonStub, spy, stub } from "sinon";
 
-import { Alert, Button, Classes, IAlertProps, IButtonProps, Icon, Intent, Keys } from "../../src";
+import { Alert, Button, Classes, IAlertProps, IButtonProps, Icon, Intent } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { findInPortal } from "../utils";
 
@@ -175,11 +175,11 @@ describe("<Alert>", () => {
             );
             const overlay = findInPortal(alert, "." + Classes.OVERLAY).first();
 
-            overlay.simulate("keydown", { which: Keys.ESCAPE });
+            overlay.simulate("keydown", { key: "Escape" });
             assert.isTrue(onCancel.notCalled);
 
             alert.setProps({ canEscapeKeyCancel: true });
-            overlay.simulate("keydown", { which: Keys.ESCAPE });
+            overlay.simulate("keydown", { key: "Escape" });
             assert.isTrue(onCancel.calledOnce);
 
             alert.unmount();

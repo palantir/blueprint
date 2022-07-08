@@ -20,7 +20,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes as CoreClasses, Keys, Menu, MenuItem } from "@blueprintjs/core";
+import { Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
 
 import {
     Classes,
@@ -80,8 +80,8 @@ describe("ContextMenu2", () => {
                 .find(`.${CoreClasses.OVERLAY_OPEN}`)
                 .hostNodes()
                 .simulate("keydown", {
+                    key: "Escape",
                     nativeEvent: new KeyboardEvent("keydown"),
-                    which: Keys.ESCAPE,
                 });
             assert.isFalse(ctxMenu.find(Popover2).prop("isOpen"));
         });
