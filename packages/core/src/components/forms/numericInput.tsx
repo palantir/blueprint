@@ -421,6 +421,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
 
     private renderInput() {
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, NON_HTML_PROPS, true);
+        const valueAsNumber = this.getCurrentValueAsNumber();
 
         return (
             <InputGroup
@@ -429,6 +430,9 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                 id={this.numericInputId}
                 role={this.props.allowNumericCharactersOnly ? "spinbutton" : undefined}
                 {...inputGroupHtmlProps}
+                aria-valuemax={this.props.max}
+                aria-valuemin={this.props.min}
+                aria-valuenow={valueAsNumber}
                 intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
                 inputRef={this.inputRef}
                 large={this.props.large}
