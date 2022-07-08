@@ -5255,7 +5255,7 @@ first-mate@^7.0.2:
     event-kit "^2.2.0"
     fs-plus "^3.0.0"
     grim "^2.0.1"
-    oniguruma "7.2.1"
+    oniguruma "7.2.3"
     season "^6.0.2"
     underscore-plus "^1"
 
@@ -8753,10 +8753,10 @@ onetime@^5.1.0, onetime@^5.1.2:
   dependencies:
     mimic-fn "^2.1.0"
 
-oniguruma@7.2.1:
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/oniguruma/-/oniguruma-7.2.1.tgz#51775834f7819b6e31aa878706aa7f65ad16b07f"
-  integrity sha512-WPS/e1uzhswPtJSe+Zls/kAj27+lEqZjCmRSjnYk/Z4L2Mu+lJC2JWtkZhPJe4kZeTQfz7ClcLyXlI4J68MG2w==
+oniguruma@7.2.3:
+  version "7.2.3"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/oniguruma/-/oniguruma-7.2.3.tgz#e0b0b415302de8cdd6564e57a1a822ac0ab57012"
+  integrity sha512-PZZcE0yfg8Q1IvaJImh21RUTHl8ep0zwwyoE912KqlWVrsGByjjj29sdACcD1BFyX2bLkfuOJeP+POzAGVWtbA==
   dependencies:
     nan "^2.14.0"
 

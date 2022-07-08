@@ -143,6 +143,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
 
         const { isEditing, dirtyValue, savedValue } = this.state;
         const interactive = spreadableProps.interactive || isEditing;
+        const hasValue = this.props.value != null && this.props.value !== "";
 
         let cellContents: JSX.Element | undefined;
         if (isEditing) {
@@ -169,7 +170,12 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
                 [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
             });
 
-            cellContents = <div className={textClasses}>{savedValue}</div>;
+            if (hasValue) {
+                cellContents = <div className={textClasses}>{savedValue}</div>;
+            } else {
+                const placeholderClasses = classNames(textClasses, Classes.TABLE_EDITABLE_TEXT_PLACEHOLDER);
+                cellContents = <div className={placeholderClasses}>{this.props.editableTextProps?.placeholder}</div>;
+            }
         }
 
         return (
