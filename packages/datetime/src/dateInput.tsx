@@ -95,11 +95,13 @@ export interface IDateInputProps extends IDatePickerBaseProps, DateFormatProps, 
      * Called when the user selects a new valid date through the DatePicker or by typing
      * in the input.
      *
-     * @param newDate Date or `null` (if the date is invalid or text input has been cleared)
+     * @param newDate Date or `null` (if the date is invalid or text input has been cleared).
+     *     Note that we do not include `| null` in the type definition, to avoid breaking backcompat.
+     *     Users will be required to handle that type when migrating to DateInput2.
      * @param isUserChange `true` if the user clicked on a date in the calendar, changed the input value,
      *     or cleared the selection; `false` if the date was changed by changing the month or year.
      */
-    onChange?: (selectedDate: Date | null, isUserChange: boolean) => void;
+    onChange?: (selectedDate: Date, isUserChange: boolean) => void;
 
     /**
      * Called when the user finishes typing in a new date and the date causes an error state.
