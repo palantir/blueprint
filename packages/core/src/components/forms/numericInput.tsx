@@ -427,7 +427,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                 asyncControl={this.props.asyncControl}
                 autoComplete="off"
                 id={this.numericInputId}
-                type={this.props.allowNumericCharactersOnly ? "number" : "text"}
+                role={this.props.allowNumericCharactersOnly ? "spinbutton" : "textbox"}
                 {...inputGroupHtmlProps}
                 intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
                 inputRef={this.inputRef}
