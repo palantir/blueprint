@@ -3897,12 +3897,5 @@
         "tags": "number, float, double, decimal, array",
         "group": "miscellaneous",
         "codepoint": 62253
-    },
-    {
-        "displayName": "Cube: edit",
-        "iconName": "cube-edit",
-        "tags": "shape, 3d, object",
-        "group": "miscellaneous",
-        "codepoint": 62254
     }
 ]
