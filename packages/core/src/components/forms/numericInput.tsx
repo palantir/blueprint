@@ -422,14 +422,14 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
     private renderInput() {
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, NON_HTML_PROPS, true);
         const valueAsNumber = this.getCurrentValueAsNumber();
-        const hasSpinButtons = this.props.buttonPosition !== undefined && this.props.buttonPosition !== "none";
 
         return (
             <InputGroup
                 asyncControl={this.props.asyncControl}
                 autoComplete="off"
                 id={this.numericInputId}
-                role={hasSpinButtons ? "spinbutton" : "textbox"}
+                role={this.props.allowNumericCharactersOnly ? "spinbutton" : "textbox"}
+                type={this.props.allowNumericCharactersOnly ? "number" : "text"}
                 {...inputGroupHtmlProps}
                 aria-valuemax={this.props.max}
                 aria-valuemin={this.props.min}
