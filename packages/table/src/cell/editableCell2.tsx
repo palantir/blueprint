@@ -168,14 +168,12 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
             const textClasses = classNames(Classes.TABLE_EDITABLE_TEXT, {
                 [Classes.TABLE_TRUNCATED_TEXT]: truncated,
                 [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
+                [Classes.TABLE_CELL_TEXT_PLACEHOLDER]: !hasValue,
             });
 
-            if (hasValue) {
-                cellContents = <div className={textClasses}>{savedValue}</div>;
-            } else {
-                const placeholderClasses = classNames(textClasses, Classes.TABLE_EDITABLE_TEXT_PLACEHOLDER);
-                cellContents = <div className={placeholderClasses}>{this.props.editableTextProps?.placeholder}</div>;
-            }
+            cellContents = (
+                <div className={textClasses}>{hasValue ? savedValue : this.props.editableTextProps?.placeholder}</div>
+            );
         }
 
         return (

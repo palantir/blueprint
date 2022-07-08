@@ -67,7 +67,6 @@ export class TableEditableExample extends React.PureComponent<IExampleProps, ITa
                 onCancel={this.cellValidator(rowIndex, columnIndex)}
                 onChange={this.cellValidator(rowIndex, columnIndex)}
                 onConfirm={this.cellSetter(rowIndex, columnIndex)}
-                editableTextProps={{ placeholder: "" }}
             />
         );
     };
