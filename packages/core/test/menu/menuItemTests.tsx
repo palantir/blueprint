@@ -58,6 +58,18 @@ describe("MenuItem", () => {
         assert.lengthOf(submenu.props.children, 3);
     });
 
+    it("default role prop structure is correct for a menuitem that is a an item of a ul with role=menu", () => {
+        const wrapper = mount(<MenuItem text="Roles" />);
+        assert.equal(wrapper.find("li").prop("role"), "none");
+        assert.equal(wrapper.find("a").prop("role"), "menuitem");
+    });
+
+    it("can set roleStructure to change role prop structure to that of a listbox or select item", () => {
+        const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" />);
+        assert.equal(wrapper.find("li").prop("role"), "option");
+        assert.equal(wrapper.find("a").prop("role"), undefined);
+    });
+
     it("disabled MenuItem will not show its submenu", () => {
         const wrapper = shallow(
             <MenuItem disabled={true} icon="style" text="Style">

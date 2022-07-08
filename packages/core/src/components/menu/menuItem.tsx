@@ -78,6 +78,28 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     labelElement?: React.ReactNode;
 
     /**
+     * Changes the ARIA `role` property structure of this MenuItem to accomodate for various
+     * different `role`s of the parent Menu `ul` element.
+     *
+     * If `menuitem`, role structure becomes:
+     *
+     * `<li role="none"`
+     *     `<a role="menuitem"`
+     *
+     * which is proper role structure for a `<ul role="menu"` parent (this is the default `role` of a `Menu`).
+     *
+     * If `listoption`, role structure becomes:
+     *
+     * `<li role="option"`
+     *     `<a role=undefined`
+     *
+     *  which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
+     *
+     * @default "menuitem"
+     */
+    roleStructure?: "menuitem" | "listoption";
+
+    /**
      * Whether the text should be allowed to wrap to multiple lines.
      * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
      *
@@ -153,6 +175,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             labelElement,
             multiline,
             popoverProps,
+            roleStructure = "menuitem",
             selected,
             shouldDismissPopover,
             submenuProps,
@@ -180,10 +203,15 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             className,
         );
 
+        const [liRole, targetRole, ariaSelected] =
+            roleStructure === "listoption"
+                ? ["option", undefined, active || selected] // parent has listbox role, or is a <select>
+                : ["none", "menuitem", undefined]; // parent has menu role
+
         const target = React.createElement(
             tagName,
             {
-                role: "menuitem",
+                role: targetRole,
                 tabIndex: 0,
                 ...htmlProps,
                 ...(disabled ? DISABLED_PROPS : {}),
@@ -205,7 +233,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li className={liClasses} role="none">
+            <li className={liClasses} role={liRole} aria-selected={ariaSelected}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );
