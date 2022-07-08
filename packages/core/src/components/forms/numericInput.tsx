@@ -202,6 +202,8 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
 
     public static VALUE_ZERO = "0";
 
+    private numericInputId = Utils.uniqueId("numericInput");
+
     public static defaultProps: NumericInputProps = {
         allowNumericCharactersOnly: true,
         buttonPosition: Position.RIGHT,
@@ -295,6 +297,8 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
     private incrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.UP);
 
     private decrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.DOWN);
+
+    private getCurrentValueAsNumber = () => Number(parseStringToStringNumber(this.state.value, this.props.locale));
 
     public render() {
         const { buttonPosition, className, fill, large } = this.props;
@@ -397,6 +401,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
                 <Button
                     aria-label="increment"
+                    aria-controls={this.numericInputId}
                     disabled={disabled || isIncrementDisabled}
                     icon="chevron-up"
                     intent={intent}
@@ -404,6 +409,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                 />
                 <Button
                     aria-label="decrement"
+                    aria-controls={this.numericInputId}
                     disabled={disabled || isDecrementDisabled}
                     icon="chevron-down"
                     intent={intent}
@@ -415,11 +421,19 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
 
     private renderInput() {
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, NON_HTML_PROPS, true);
+        const valueAsNumber = this.getCurrentValueAsNumber();
+        const hasSpinButtons = this.props.buttonPosition !== undefined && this.props.buttonPosition !== "none";
+
         return (
             <InputGroup
                 asyncControl={this.props.asyncControl}
                 autoComplete="off"
+                id={this.numericInputId}
+                role={hasSpinButtons ? "spinbutton" : "textbox"}
                 {...inputGroupHtmlProps}
+                aria-valuemax={this.props.max}
+                aria-valuemin={this.props.min}
+                aria-valuenow={valueAsNumber}
                 intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
                 inputRef={this.inputRef}
                 large={this.props.large}
@@ -493,7 +507,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
         if (this.props.min !== undefined || this.props.max !== undefined) {
             const min = this.props.min ?? -Infinity;
             const max = this.props.max ?? Infinity;
-            const valueAsNumber = Number(parseStringToStringNumber(this.state.value, this.props.locale));
+            const valueAsNumber = this.getCurrentValueAsNumber();
             if (valueAsNumber <= min || valueAsNumber >= max) {
                 this.stopContinuousChange();
                 return;
