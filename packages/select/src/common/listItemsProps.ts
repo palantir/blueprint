@@ -173,7 +173,7 @@ export interface ListItemsProps<T> extends Props {
      * created, either by pressing the `Enter` key or by clicking on the "Create
      * Item" option. It transforms a query string into an item type.
      */
-    createNewItemFromQuery?: (query: string) => T;
+    createNewItemFromQuery?: (query: string) => T | T[];
 
     /**
      * Custom renderer to transform the current query string into a selectable

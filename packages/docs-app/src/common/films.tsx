@@ -178,6 +178,27 @@ export const renderCreateFilmOption = (
     />
 );
 
+export const renderCreateFilmOptions = (
+    query: string,
+    active: boolean,
+    handleClick: React.MouseEventHandler<HTMLElement>,
+) => (
+    <MenuItem
+        icon="add"
+        text={`Create ${query
+            .split(", ")
+            .map((title, index, titles) => {
+                const separator = index > 0 ? (index === titles.length - 1 ? " and " : ", ") : "";
+                return `${separator}"${title}"`;
+            })
+            .join("")}`}
+        roleStructure="listoption"
+        active={active}
+        onClick={handleClick}
+        shouldDismissPopover={false}
+    />
+);
+
 export const filterFilm: ItemPredicate<IFilm> = (query, film, _index, exactMatch) => {
     const normalizedTitle = film.title.toLowerCase();
     const normalizedQuery = query.toLowerCase();
@@ -230,6 +251,15 @@ export function createFilm(title: string): IFilm {
         title,
         year: new Date().getFullYear(),
     };
+}
+
+export function createFilms(query: string): IFilm[] {
+    const titles = query.split(", ");
+    return titles.map((title, index) => ({
+        rank: 100 + Math.floor(Math.random() * 100 + index),
+        title,
+        year: new Date().getFullYear(),
+    }));
 }
 
 export function areFilmsEqual(filmA: IFilm, filmB: IFilm) {

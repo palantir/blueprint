@@ -24,6 +24,7 @@ import { Classes, HTMLInputProps, Keys } from "@blueprintjs/core";
 import {
     areFilmsEqual,
     createFilm,
+    createFilms,
     filterFilm,
     IFilm,
     renderFilm,
@@ -212,6 +213,19 @@ export function selectComponentSuite<P extends ListItemsProps<IFilm>, S>(
             });
             findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
             assert.equal(testCreateProps.createNewItemFromQuery.args[0][0], "non-existent film name");
+        });
+
+        it("when createNewItemFromQuery returns an array, it should invoke onItemSelect once per each item in the array", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                createNewItemFromQuery: createFilms,
+                query: "non-existent film name, second film name",
+            });
+            assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
+            findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
+            assert.equal(testCreateProps.onItemSelect.calledTwice, true, "should invoke onItemSelect twice");
+            assert.equal((testCreateProps.onItemSelect.args[0][0] as IFilm).title, "non-existent film name", "should create and select first item");
+            assert.equal((testCreateProps.onItemSelect.args[1][0] as IFilm).title, "second film name", "should create and select second item");
         });
 
         it("when create item is rendered, arrow down invokes onActiveItemChange with activeItem=null and isCreateNewItem=true", () => {

@@ -24,13 +24,13 @@ import { ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
 import {
     areFilmsEqual,
     arrayContainsFilm,
-    createFilm,
+    createFilms,
     filterFilm,
     getFilmItemProps,
     IFilm,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
-    renderCreateFilmOption,
+    renderCreateFilmOptions,
     TOP_100_FILMS,
 } from "../../common/films";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
@@ -110,8 +110,8 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
         ) : // explicit undefined (not null) for default behavior (show full list)
         undefined;
-        const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
-        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
+        const maybeCreateNewItemFromQuery = allowCreate ? createFilms : undefined;
+        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOptions : null;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
@@ -261,26 +261,25 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
     }
 
     private selectFilms(filmsToSelect: IFilm[]) {
-        const { createdItems, films, items } = this.state;
+        this.setState(({ createdItems, films, items }) => {
+            let nextCreatedItems = createdItems.slice();
+            let nextFilms = films.slice();
+            let nextItems = items.slice();
 
-        let nextCreatedItems = createdItems.slice();
-        let nextFilms = films.slice();
-        let nextItems = items.slice();
-
-        filmsToSelect.forEach(film => {
-            const results = maybeAddCreatedFilmToArrays(nextItems, nextCreatedItems, film);
-            nextItems = results.items;
-            nextCreatedItems = results.createdItems;
-            // Avoid re-creating an item that is already selected (the "Create
-            // Item" option will be shown even if it matches an already selected
-            // item).
-            nextFilms = !arrayContainsFilm(nextFilms, film) ? [...nextFilms, film] : nextFilms;
-        });
-
-        this.setState({
-            createdItems: nextCreatedItems,
-            films: nextFilms,
-            items: nextItems,
+            filmsToSelect.forEach(film => {
+                const results = maybeAddCreatedFilmToArrays(nextItems, nextCreatedItems, film);
+                nextItems = results.items;
+                nextCreatedItems = results.createdItems;
+                // Avoid re-creating an item that is already selected (the "Create
+                // Item" option will be shown even if it matches an already selected
+                // item).
+                nextFilms = !arrayContainsFilm(nextFilms, film) ? [...nextFilms, film] : nextFilms;
+            });
+            return {
+                createdItems: nextCreatedItems,
+                films: nextFilms,
+                items: nextItems,
+            };
         });
     }
 
