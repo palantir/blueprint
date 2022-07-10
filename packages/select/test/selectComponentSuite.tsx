@@ -224,8 +224,16 @@ export function selectComponentSuite<P extends ListItemsProps<IFilm>, S>(
             assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
             findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
             assert.equal(testCreateProps.onItemSelect.calledTwice, true, "should invoke onItemSelect twice");
-            assert.equal((testCreateProps.onItemSelect.args[0][0] as IFilm).title, "non-existent film name", "should create and select first item");
-            assert.equal((testCreateProps.onItemSelect.args[1][0] as IFilm).title, "second film name", "should create and select second item");
+            assert.equal(
+                (testCreateProps.onItemSelect.args[0][0] as IFilm).title,
+                "non-existent film name",
+                "should create and select first item",
+            );
+            assert.equal(
+                (testCreateProps.onItemSelect.args[1][0] as IFilm).title,
+                "second film name",
+                "should create and select second item",
+            );
         });
 
         it("when create item is rendered, arrow down invokes onActiveItemChange with activeItem=null and isCreateNewItem=true", () => {
