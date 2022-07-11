@@ -26,7 +26,7 @@ describe("DateUtils", () => {
         const d2 = new Date(2022, Months.JULY, 8);
         const d3 = new Date(2022, Months.JULY, 9);
         expect(isSameTime(d1, d2), "same day, same time").to.be.true;
-        expect(isSameTime(d1, d3), "different day, same time").to.be.false;
+        expect(isSameTime(d1, d3), "different day, same time").to.be.true;
     });
 
     it("isDayInRange", () => {
