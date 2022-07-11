@@ -59,7 +59,7 @@ type InvalidDateTestFunction = (
 // Change the default for testability
 DateRangeInput2.defaultProps.popoverProps = { usePortal: false };
 
-describe.only("<DateRangeInput2>", () => {
+describe("<DateRangeInput2>", () => {
     const START_DAY = 22;
     const START_DATE = new Date(2022, Months.JANUARY, START_DAY);
     const START_STR = DATE_FORMAT.formatDate(START_DATE);
