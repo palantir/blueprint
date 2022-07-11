@@ -246,6 +246,7 @@ describe("Suggest", () => {
             assert.isTrue(onOpening.calledOnce);
         });
 
+        // eslint-disable-next-line deprecation/deprecation
         function getPopoverProps(isOpen: boolean, modifiers: any): Partial<IPopoverProps> {
             return {
                 ...defaultProps.popoverProps,

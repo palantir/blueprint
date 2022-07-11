@@ -112,7 +112,7 @@ export interface IDateInputProps extends DatePickerBaseProps, DateFormatProps, P
      * Props to pass to the `Popover`.
      * Note that `content`, `autoFocus`, and `enforceFocus` cannot be changed.
      */
-    // eslint-disable-next-line @typescript-eslint/ban-types
+    // eslint-disable-next-line @typescript-eslint/ban-types, deprecation/deprecation
     popoverProps?: Partial<IPopoverProps> & object;
 
     /**

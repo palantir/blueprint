@@ -133,6 +133,7 @@ export interface IDateRangeInputProps extends DatePickerBaseProps, DateFormatPro
      * The props to pass to the popover.
      * `autoFocus`, `content`, and `enforceFocus` will be ignored to avoid compromising usability.
      */
+    // eslint-disable-next-line deprecation/deprecation
     popoverProps?: Partial<IPopoverProps>;
 
     /**

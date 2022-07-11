@@ -44,6 +44,7 @@ export interface ICollapsibleListProps extends Props {
     /**
      * Props to pass to the dropdown.
      */
+    // eslint-disable-next-line deprecation/deprecation
     dropdownProps?: IPopoverProps;
 
     /**
