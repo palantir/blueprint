@@ -378,6 +378,8 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
 
     protected validateProps(props: DateRangeInput2Props) {
         if (props.value === null) {
+            // throw a blocking error here because we don't handle a null value gracefully across this component
+            // (it's not allowed by TS under strict null checks anyway)
             throw new Error(Errors.DATERANGEINPUT_NULL_VALUE);
         }
     }
@@ -804,10 +806,7 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
             const [selectedStart, selectedEnd] = this.getSelectedRange([fallbackDate, fallbackDate]);
 
             // case to check if the user has changed TimePicker values
-            if (
-                isSameTime(selectedStart, nextSelectedStart) === true &&
-                isSameTime(selectedEnd, nextSelectedEnd) === true
-            ) {
+            if (isSameTime(selectedStart, nextSelectedStart) && isSameTime(selectedEnd, nextSelectedEnd)) {
                 return false;
             }
             return true;

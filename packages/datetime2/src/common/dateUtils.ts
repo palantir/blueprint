@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { isSameDay, isSameHour, isSameMinute, isSameSecond, isWithinInterval } from "date-fns";
+import { isSameDay, isWithinInterval } from "date-fns";
 
 import { DateRange, isNonNullRange } from "./dateRange";
 
@@ -23,12 +23,13 @@ export function clone(d: Date) {
 }
 
 export function isSameTime(d1: Date | null, d2: Date | null) {
+    // N.B. do not use date-fns helper fns here, since we don't want to return false when the month/day/year is different
     return (
         d1 != null &&
         d2 != null &&
-        isSameHour(d1, d2) &&
-        isSameMinute(d1, d2) &&
-        isSameSecond(d1, d2) &&
+        d1.getHours() === d2.getHours() &&
+        d1.getMinutes() === d2.getMinutes() &&
+        d1.getSeconds() === d2.getSeconds() &&
         d1.getMilliseconds() === d2.getMilliseconds()
     );
 }
