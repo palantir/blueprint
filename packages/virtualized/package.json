@@ -1,0 +1,22 @@
+{
+    "name": "@blueprintjs/virtualized",
+    "version": "1.0.0",
+    "description": "Virtualized Components",
+    "style": "lib/css/blueprint-virtualized.css",
+    "unpkg": "dist/virtualized.bundle.js",
+    "sideEffects": [
+        "**/*.css"
+    ],
+    "keywords": [
+        "palantir",
+        "blueprint",
+        "components",
+        "virtualized"
+    ],
+    "dependencies": {
+        "@blueprintjs/core": "^4.5.0",
+        "tslib": "~2.3.1"
+    },
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0"
+}
