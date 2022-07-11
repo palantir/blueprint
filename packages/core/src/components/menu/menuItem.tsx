@@ -60,6 +60,11 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     disabled?: boolean;
 
     /**
+     * Props to spread to `li` element wrapper
+     */
+    liProps?: React.HTMLProps<HTMLLIElement>;
+
+    /**
      * Right-aligned label text content, useful for displaying hotkeys.
      *
      * This prop actually supports JSX elements, but TypeScript will throw an error because
@@ -76,6 +81,22 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      * Right-aligned label content, useful for displaying hotkeys.
      */
     labelElement?: React.ReactNode;
+
+    /**
+     * Whether the text should be allowed to wrap to multiple lines.
+     * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
+     *
+     * @default false
+     */
+    multiline?: boolean;
+
+    /**
+     * Props to spread to `Popover`. Note that `content` and `minimal` cannot be
+     * changed and `usePortal` defaults to `false` so all submenus will live in
+     * the same container.
+     */
+    // eslint-disable-next-line deprecation/deprecation
+    popoverProps?: Partial<IPopoverProps>;
 
     /**
      * Changes the ARIA `role` property structure of this MenuItem to accomodate for various
@@ -98,22 +119,6 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      * @default "menuitem"
      */
     roleStructure?: "menuitem" | "listoption";
-
-    /**
-     * Whether the text should be allowed to wrap to multiple lines.
-     * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
-     *
-     * @default false
-     */
-    multiline?: boolean;
-
-    /**
-     * Props to spread to `Popover`. Note that `content` and `minimal` cannot be
-     * changed and `usePortal` defaults to `false` so all submenus will live in
-     * the same container.
-     */
-    // eslint-disable-next-line deprecation/deprecation
-    popoverProps?: Partial<IPopoverProps>;
 
     /**
      * Whether this item should appear selected.
@@ -174,6 +179,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             intent,
             labelClassName,
             labelElement,
+            liProps,
             multiline,
             popoverProps,
             roleStructure = "menuitem",
@@ -204,10 +210,10 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             className,
         );
 
-        const [liRole, targetRole, ariaSelected] =
+        const [liRole, targetRole] =
             roleStructure === "listoption"
-                ? ["option", undefined, active || selected] // parent has listbox role, or is a <select>
-                : ["none", "menuitem", undefined]; // parent has menu role
+                ? ["option", undefined] // parent has listbox role, or is a <select>
+                : ["none", "menuitem"]; // parent has menu role
 
         const target = React.createElement(
             tagName,
@@ -234,7 +240,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li className={liClasses} role={liRole} aria-selected={ariaSelected}>
+            <li className={liClasses} role={liRole} {...liProps}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );

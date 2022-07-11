@@ -248,10 +248,14 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         if (!modifiers.matchesPredicate) {
             return null;
         }
+
+        const filmSelected = this.isFilmSelected(film);
+
         return (
             <MenuItem
                 selected={modifiers.active}
-                icon={this.isFilmSelected(film) ? "tick" : "blank"}
+                icon={filmSelected ? "tick" : "blank"}
+                liProps={{ "aria-selected": filmSelected }}
                 roleStructure="listoption"
                 key={film.rank}
                 label={film.year.toString()}
