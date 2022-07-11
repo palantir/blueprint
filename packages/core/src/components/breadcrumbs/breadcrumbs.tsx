@@ -76,6 +76,7 @@ export interface IBreadcrumbsProps extends Props {
     /**
      * Props to spread to the `Popover` showing the overflow menu.
      */
+    // eslint-disable-next-line deprecation/deprecation
     popoverProps?: IPopoverProps;
 }
 

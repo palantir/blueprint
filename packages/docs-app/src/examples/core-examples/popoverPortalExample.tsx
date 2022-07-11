@@ -121,6 +121,7 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
     }
 }
 
+// eslint-disable-next-line deprecation/deprecation
 const POPOVER_PROPS: IPopoverProps = {
     autoFocus: false,
     boundary: "window",

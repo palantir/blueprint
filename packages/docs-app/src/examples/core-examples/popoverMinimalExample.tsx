@@ -23,9 +23,9 @@ import { FileMenu } from "./common/fileMenu";
 
 export class PopoverMinimalExample extends React.PureComponent<IExampleProps> {
     public render() {
+        /* eslint-disable deprecation/deprecation */
         const baseProps: IPopoverProps = { content: <FileMenu />, position: Position.BOTTOM_LEFT };
 
-        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={false} {...this.props}>
                 <Popover {...baseProps} minimal={true}>

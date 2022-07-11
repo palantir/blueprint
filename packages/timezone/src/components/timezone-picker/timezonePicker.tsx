@@ -109,6 +109,7 @@ export interface ITimezonePickerProps extends Props {
     inputProps?: InputGroupProps2;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    // eslint-disable-next-line deprecation/deprecation
     popoverProps?: Partial<IPopoverProps>;
 }
 
@@ -155,6 +156,7 @@ export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, 
             placeholder: "Search for timezones...",
             ...inputProps,
         };
+        // eslint-disable-next-line deprecation/deprecation
         const finalPopoverProps: Partial<IPopoverProps> = {
             ...popoverProps,
             popoverClassName: classNames(Classes.TIMEZONE_PICKER_POPOVER, popoverProps.popoverClassName),
@@ -192,7 +194,7 @@ export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, 
         }
     }
 
-    protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
+    protected validateProps(props: TimezonePickerProps & { children?: React.ReactNode }) {
         const childrenCount = React.Children.count(props.children);
         if (childrenCount > 1) {
             console.warn(Errors.TIMEZONE_PICKER_WARN_TOO_MANY_CHILDREN);

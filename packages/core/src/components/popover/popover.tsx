@@ -41,6 +41,7 @@ export const PopoverInteractionKind = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type PopoverInteractionKind = typeof PopoverInteractionKind[keyof typeof PopoverInteractionKind];
 
+/** @deprecated migrate to Popover2, use Popover2Props */
 export interface IPopoverProps extends IPopoverSharedProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
@@ -109,12 +110,13 @@ export interface IPopoverState {
 }
 
 /** @deprecated use { Popover2 } from "@blueprintjs/popover2" */
+// eslint-disable-next-line deprecation/deprecation
 export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
-    // eslint-disable-next-line deprecation/deprecation
     private popoverRef = React.createRef<HTMLDivElement>();
 
+    // eslint-disable-next-line deprecation/deprecation
     public static defaultProps: IPopoverProps = {
         boundary: "scrollParent",
         captureDismiss: false,
@@ -239,6 +241,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         this.updateDarkParent();
     }
 
+    // eslint-disable-next-line deprecation/deprecation
     public componentDidUpdate(prevProps: IPopoverProps, prevState: IPopoverState) {
         super.componentDidUpdate(prevProps, prevState);
 
@@ -273,6 +276,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
      */
     public reposition = () => this.popperScheduleUpdate?.();
 
+    // eslint-disable-next-line deprecation/deprecation
     protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
         if (props.isOpen == null && props.onInteraction != null) {
             console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
@@ -438,6 +442,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
 
     private isControlled = () => this.props.isOpen !== undefined;
 
+    // eslint-disable-next-line deprecation/deprecation
     private getIsOpen(props: IPopoverProps) {
         // disabled popovers should never be allowed to open.
         if (props.disabled) {

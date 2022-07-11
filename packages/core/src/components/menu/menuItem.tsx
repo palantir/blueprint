@@ -112,6 +112,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      * changed and `usePortal` defaults to `false` so all submenus will live in
      * the same container.
      */
+    // eslint-disable-next-line deprecation/deprecation
     popoverProps?: Partial<IPopoverProps>;
 
     /**
