@@ -12,8 +12,10 @@ reference: datetime2
 The [__@blueprintjs/datetime2__ package](https://www.npmjs.com/package/@blueprintjs/datetime2)
 provides components for interacting with dates, times, and timezones:
 
-- [DateInput2](#datetime2/date-input2) renders a [DateInput](#datetime/dateinput)
-  with an optional embedded [TimezoneSelect](#datetime2/timezone-select).
+- [DateInput2](#datetime2/date-input2) renders a date input with
+    an optional embedded [TimezoneSelect](#datetime2/timezone-select).
+- [DateRangeInput2](#datetime2/date-range-input2) renders a date range input with
+    an optional [TimezoneSelect](#datetime2/timezone-select).
 - [TimezoneSelect](#datetime2/timezone-select) renders a [Select2](#select/select2)
   with a list of timezones for the user to choose from.
 
@@ -44,9 +46,9 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 npm install --save @blueprintjs/datetime2
 ```
 
-Import CSS with a JS bundler like webpack:
+Import the package stylesheet in Sass:
 
-```js
+```scss
 @import "~@blueprintjs/datetime2/lib/css/blueprint-datetime2.css";
 ```
 
@@ -56,5 +58,17 @@ Import CSS with a JS bundler like webpack:
 <link href="path/to/node_modules/@blueprintjs/datetime2/lib/css/blueprint-datetime2.css" rel="stylesheet" />
 ```
 
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-heading">Additional CSS required</h4>
+
+This library still relies on some components from `@blueprintjs/datetime`, so you will need to pull in that
+package's CSS as well. Make sure to add this import:
+
+```scss
+@import "~@blueprintjs/datetime/lib/css/blueprint-datetime.css"`;
+```
+</div>
+
 @page date-input2
+@page date-range-input2
 @page timezone-select

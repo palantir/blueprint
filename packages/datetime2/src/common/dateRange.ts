@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import * as Classes from "./classes";
-import * as DateUtils from "./dateUtils";
+export type DateRange = [Date | null, Date | null];
+export type NonNullDateRange = [Date, Date];
 
-export { Classes, DateUtils };
-export { DateRange, NonNullDateRange } from "./dateRange";
+/* istanbul ignore next */
+export function isNonNullRange(range: DateRange): range is NonNullDateRange {
+    return range[0] != null && range[1] != null;
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,14 @@
 import * as React from "react";
 
 import { H5, Switch } from "@blueprintjs/core";
-import { DateFormatProps, DateRange, DateRangeInput, TimePrecision } from "@blueprintjs/datetime";
+import { DateFormatProps, DateRange, TimePrecision } from "@blueprintjs/datetime";
+import { DateRangeInput2 } from "@blueprintjs/datetime2";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
-import { MomentDateRange } from "./common/momentDate";
-import { MOMENT_FORMATS, MomentFormatSelector } from "./common/momentFormats";
+import { DateFnsDateRange } from "./dateFnsDate";
+import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "./dateFnsFormatSelector";
 
-export interface IDateRangeInputExampleState {
+export interface DateRangeInput2ExampleState {
     allowSingleDayRange: boolean;
     closeOnSelection: boolean;
     contiguousCalendarMonths: boolean;
@@ -38,14 +39,14 @@ export interface IDateRangeInputExampleState {
     showTimeArrowButtons: boolean;
 }
 
-export class DateRangeInputExample extends React.PureComponent<IExampleProps, IDateRangeInputExampleState> {
-    public state: IDateRangeInputExampleState = {
+export class DateRangeInput2Example extends React.PureComponent<IExampleProps, DateRangeInput2ExampleState> {
+    public state: DateRangeInput2ExampleState = {
         allowSingleDayRange: false,
         closeOnSelection: false,
         contiguousCalendarMonths: true,
         disabled: false,
         enableTimePicker: false,
-        format: MOMENT_FORMATS[0],
+        format: DATE_FNS_FORMATS[0],
         range: [null, null],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
@@ -82,10 +83,9 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
 
     public render() {
         const { enableTimePicker, format, range, showTimeArrowButtons, ...spreadProps } = this.state;
-        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <DateRangeInput
+                <DateRangeInput2
                     {...spreadProps}
                     {...format}
                     onChange={this.handleRangeChange}
@@ -95,10 +95,9 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
                             : undefined
                     }
                 />
-                <MomentDateRange range={range} />
+                <DateFnsDateRange range={range} />
             </Example>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 
     protected renderOptions() {
@@ -148,7 +147,7 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
                     label="Show timepicker arrow buttons"
                     onChange={this.toggleTimepickerArrowButtons}
                 />
-                <MomentFormatSelector key="Format" format={this.state.format} onChange={this.handleFormatChange} />
+                <DateFnsFormatSelector key="Format" format={this.state.format} onChange={this.handleFormatChange} />
             </>
         );
     }

@@ -18,9 +18,9 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 npm install --save @blueprintjs/popover2
 ```
 
-Import CSS with a bundler like webpack:
+Import the package stylesheet in Sass:
 
-```js
+```scss
 @import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 ```
 

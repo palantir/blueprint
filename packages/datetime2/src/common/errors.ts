@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as Classes from "./classes";
-import * as DateUtils from "./dateUtils";
+const ns = "[Blueprint]";
 
-export { Classes, DateUtils };
-export { DateRange, NonNullDateRange } from "./dateRange";
+export const DATERANGEINPUT_NULL_VALUE =
+    `${ns} <DateRangeInput2> value cannot be null. Pass undefined to clear the value and operate in` +
+    " uncontrolled mode, or pass [null, null] to clear the value and continue operating in controlled mode.";

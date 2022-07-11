@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-import * as Classes from "./classes";
-import * as DateUtils from "./dateUtils";
+import { getFormattedDateString } from "./dateFormat";
+import { getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
 
-export { Classes, DateUtils };
-export { DateRange, NonNullDateRange } from "./dateRange";
+/**
+ * DatePicker-related utility functions which may be useful outside this package to
+ * build date/time components. Initially created for use in @blueprintjs/datetime2.
+ */
+export const DatePickerUtils = {
+    getDefaultMaxDate,
+    getDefaultMinDate,
+    getFormattedDateString,
+};

@@ -37,13 +37,13 @@ import * as Classes from "./common/classes";
 import { isDateValid, isDayInRange } from "./common/dateUtils";
 import { DateFormatProps, getFormattedDateString } from "./dateFormat";
 import { DatePicker } from "./datePicker";
-import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
+import { DatePickerBaseProps, getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
 import { DatePickerShortcut } from "./shortcuts";
 
 // eslint-disable-next-line deprecation/deprecation
 export type DateInputProps = IDateInputProps;
 /** @deprecated use DateInputProps */
-export interface IDateInputProps extends IDatePickerBaseProps, DateFormatProps, Props {
+export interface IDateInputProps extends DatePickerBaseProps, DateFormatProps, Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * Passed to `DatePicker` component.

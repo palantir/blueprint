@@ -28,11 +28,11 @@ import { MonthAndYear } from "./common/monthAndYear";
 import { DatePickerCaption } from "./datePickerCaption";
 import {
     combineModifiers,
+    DatePickerBaseProps,
     DatePickerModifiers,
     getDefaultMaxDate,
     getDefaultMinDate,
     HOVERED_RANGE_MODIFIER,
-    IDatePickerBaseProps,
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
 import { DatePickerNavbar } from "./datePickerNavbar";
@@ -43,7 +43,7 @@ import { TimePicker } from "./timePicker";
 // eslint-disable-next-line deprecation/deprecation
 export type DateRangePickerProps = IDateRangePickerProps;
 /** @deprecated use DateRangePickerProps */
-export interface IDateRangePickerProps extends IDatePickerBaseProps, Props {
+export interface IDateRangePickerProps extends DatePickerBaseProps, Props {
     /**
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
