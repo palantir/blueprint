@@ -17,6 +17,11 @@
   .#{$ns}-daterangepicker-timepickers {
     display: flex;
     justify-content: space-around;
+
+    .#{$ns}-timepicker-arrow-row:empty + .#{$ns}-timepicker-input-row {
+      // when timepicker arrows are not displayed in the daterangepicker, we need a bit of extra margin
+      margin: $datepicker-padding 0;
+    }
   }
 
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
