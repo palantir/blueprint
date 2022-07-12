@@ -51,6 +51,11 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
     fill?: boolean;
 
     /**
+     * Applied to the `aria-label` prop of the `listbox` `ul`
+     */
+    menuLabel?: string;
+
+    /**
      * If provided, this component will render a "clear" button inside its TagInput.
      * Clicking that button will invoke this callback to clear all items from the current selection.
      */
@@ -166,12 +171,12 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
+        const { menuLabel, openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={{ "aria-multiselectable": true, id: this.listboxId }}
+                menuProps={{ "aria-label": menuLabel, "aria-multiselectable": true, id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}

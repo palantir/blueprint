@@ -77,6 +77,11 @@ export interface Suggest2Props<T> extends IListItemsProps<T>, SelectPopoverProps
     selectedItem?: T | null;
 
     /**
+     * Applied to the `aria-label` prop of the `listbox` `ul`
+     */
+    menuLabel?: string;
+
+    /**
      * If true, the component waits until a keydown event in the TagInput
      * before opening its popover.
      *
@@ -134,12 +139,12 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { disabled, inputProps, popoverProps, ...restProps } = this.props;
+        const { disabled, inputProps, menuLabel, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={{ id: this.listboxId }}
+                menuProps={{ "aria-label": menuLabel, id: this.listboxId }}
                 initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
