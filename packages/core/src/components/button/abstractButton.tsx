@@ -85,6 +85,12 @@ export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = 
     small?: boolean;
 
     /**
+     * String for the `title` attribute on the rendered element, which will appear
+     * on hover as a native browser tooltip.
+     */
+    title?: string;
+
+    /**
      * HTML `type` attribute of button. Accepted values are `"button"`, `"submit"`, and `"reset"`.
      * Note that this prop has no effect on `AnchorButton`; it only affects `Button`.
      *
