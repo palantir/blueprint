@@ -124,6 +124,8 @@ export interface ITagProps
 export class Tag extends AbstractPureComponent2<TagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 
+    private tagId = Utils.uniqueId("tag");
+
     public render() {
         const {
             active,
@@ -172,10 +174,22 @@ export class Tag extends AbstractPureComponent2<TagProps> {
         ) : null;
 
         return (
-            <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={elementRef}>
+            <span
+                {...htmlProps}
+                aria-labelledby={this.tagId}
+                className={tagClasses}
+                tabIndex={interactive ? tabIndex : undefined}
+                ref={elementRef}
+            >
                 <Icon icon={icon} />
                 {!isReactNodeEmpty(children) && (
-                    <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
+                    <Text
+                        className={Classes.FILL}
+                        ellipsize={!multiline}
+                        id={this.tagId}
+                        tagName="span"
+                        title={htmlTitle}
+                    >
                         {children}
                     </Text>
                 )}
