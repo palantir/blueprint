@@ -30,9 +30,14 @@ import {
 } from "../../common/timezoneUtils";
 import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
-export interface DateInput2Props extends Omit<DateInputProps, "onChange" | "value" | "rightElement"> {
+export interface DateInput2Props extends Omit<DateInputProps, "defaultValue" | "onChange" | "value" | "rightElement"> {
     /** The default timezone selected. Defaults to the user local timezone */
     defaultTimezone?: string;
+
+    /**
+     * The default date to be used in the component when uncontrolled, represented as an ISO string.
+     */
+    defaultValue?: string;
 
     /**
      * Callback invoked whenever the date or timezone has changed.
@@ -41,10 +46,10 @@ export interface DateInput2Props extends Omit<DateInputProps, "onChange" | "valu
      * @param isUserChange `true` if the user clicked on a date in the calendar, changed the input value,
      *     or cleared the selection; `false` if the date was changed by changing the month or year.
      */
-    onChange: (newDate: string | null, isUserChange?: boolean) => void;
+    onChange?: (newDate: string | null, isUserChange?: boolean) => void;
 
     /** An ISO string representing the selected time. */
-    value: string | null;
+    value?: string | null;
 
     /**
      * Whether to show the timezone select dropdown on the right side of the input.
@@ -71,6 +76,7 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
 export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateInput2(props) {
     const {
         defaultTimezone,
+        defaultValue,
         disabled,
         disableTimezoneSelect,
         onChange,
@@ -80,18 +86,33 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
         ...dateInputProps
     } = props;
 
-    const [timezoneValue, updateTimezoneValue] = React.useState(defaultTimezone ?? getCurrentTimezone());
-    const dateValue = React.useMemo(() => getDateObjectFromIsoString(value, timezoneValue), [timezoneValue, value]);
+    const [timezoneValue, setTimezoneValue] = React.useState(defaultTimezone ?? getCurrentTimezone());
+    const valueAsDate = React.useMemo(() => getDateObjectFromIsoString(value, timezoneValue), [timezoneValue, value]);
+    const defaultValueAsDate = React.useMemo(
+        () => getDateObjectFromIsoString(defaultValue, timezoneValue),
+        [defaultValue, defaultTimezone],
+    );
+    // when uncontrolled, we need to keep local state for the date value so that we can send it to the consumer when
+    // handling timezone changes
+    const [uncontrolledValue, setUncontrolledValue] = React.useState(defaultValueAsDate);
 
     const handleTimezoneChange = React.useCallback(
         (newTimezone: string) => {
-            if (dateValue != null) {
-                const newDateString = getIsoEquivalentWithUpdatedTimezone(dateValue, newTimezone, timePrecision);
+            setTimezoneValue(newTimezone);
+            if (valueAsDate === undefined && uncontrolledValue !== undefined) {
+                // uncontrolled
+                const newDateString = getIsoEquivalentWithUpdatedTimezone(
+                    uncontrolledValue,
+                    newTimezone,
+                    timePrecision,
+                );
+                onChange?.(newDateString);
+            } else if (valueAsDate != null) {
+                const newDateString = getIsoEquivalentWithUpdatedTimezone(valueAsDate, newTimezone, timePrecision);
                 onChange?.(newDateString);
             }
-            updateTimezoneValue(newTimezone);
         },
-        [onChange, dateValue, timePrecision],
+        [onChange, valueAsDate, timePrecision, uncontrolledValue],
     );
 
     const handleDateChange = React.useCallback(
@@ -99,6 +120,10 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             if (newDate == null) {
                 onChange?.(newDate, isUserChange);
                 return;
+            }
+            if (valueAsDate === undefined) {
+                // uncontrolled
+                setUncontrolledValue(newDate);
             }
             const newDateString = getIsoEquivalentWithUpdatedTimezone(newDate, timezoneValue, timePrecision);
             onChange?.(newDateString, isUserChange);
@@ -110,10 +135,10 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     // it to the desired/current timezone
     const tzSelectDate = React.useMemo(
         () =>
-            dateValue != null && isValid(dateValue)
-                ? dateValue
+            valueAsDate != null && isValid(valueAsDate)
+                ? valueAsDate
                 : convertLocalDateToTimezoneTime(new Date(), timezoneValue),
-        [timezoneValue, dateValue],
+        [timezoneValue, valueAsDate],
     );
 
     const isTimezoneSelectHidden = timePrecision === undefined || showTimezoneSelect === false;
@@ -141,7 +166,8 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     return (
         <DateInput
             {...dateInputProps}
-            value={dateValue}
+            defaultValue={defaultValueAsDate}
+            value={valueAsDate}
             onChange={handleDateChange}
             timePrecision={timePrecision}
             rightElement={maybeTimezonePicker}
