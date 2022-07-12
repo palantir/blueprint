@@ -58,6 +58,7 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
                     onChange={this.handleChangeCount}
                     showTrackFill={false}
                     value={this.state.visibleItemCount}
+                    handleAriaLabel="number of visible items"
                 />
                 <RadioGroup
                     name="collapseFrom"

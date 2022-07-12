@@ -44,6 +44,9 @@ export interface IRangeSliderProps extends ISliderBaseProps {
 
     /** Callback invoked when a handle is released. */
     onRelease?(value: NumberRange): void;
+
+    /** Applied to `aria-label` props of the slider Handles */
+    handleAriaLabels?: { startAriaLabel: string; endAriaLabel: string };
 }
 
 export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
@@ -56,11 +59,20 @@ export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.RangeSlider`;
 
     public render() {
-        const { value, ...props } = this.props;
+        const { value, handleAriaLabels, ...props } = this.props;
         return (
             <MultiSlider {...props}>
-                <MultiSlider.Handle value={value![RangeIndex.START]} type="start" intentAfter={props.intent} />
-                <MultiSlider.Handle value={value![RangeIndex.END]} type="end" />
+                <MultiSlider.Handle
+                    value={value![RangeIndex.START]}
+                    type="start"
+                    intentAfter={props.intent}
+                    ariaLabel={handleAriaLabels ? handleAriaLabels.startAriaLabel : undefined}
+                />
+                <MultiSlider.Handle
+                    value={value![RangeIndex.END]}
+                    type="end"
+                    ariaLabel={handleAriaLabels ? handleAriaLabels.endAriaLabel : undefined}
+                />
             </MultiSlider>
         );
     }

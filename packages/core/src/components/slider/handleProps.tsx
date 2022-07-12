@@ -89,4 +89,7 @@ export interface IHandleProps extends Props {
      * @default "full"
      */
     type?: HandleType;
+
+    /** Applied to `aria-label` prop of the handle `span` element */
+    ariaLabel?: string;
 }

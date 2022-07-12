@@ -103,6 +103,7 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
                     onChange={this.handleChangeWidth}
                     showTrackFill={false}
                     value={this.state.width}
+                    handleAriaLabel="breadcrumb width"
                 />
             </>
         );

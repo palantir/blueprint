@@ -55,8 +55,17 @@ elements, each with their own `value` and other properties.
 ```tsx
 // RangeSlider looks roughly like this:
 <MultiSlider onChange={...}>
-    <MultiSlider.Handle value={startValue} type="start" intentAfter={Intent.PRIMARY} />
-    <MultiSlider.Handle value={endValue} type="end" />
+    <MultiSlider.Handle
+        value={startValue}
+        type="start"
+        intentAfter={Intent.PRIMARY}
+        ariaLabel={handleAriaLabels.startAriaLabel}
+    />
+    <MultiSlider.Handle
+        value={endValue}
+        type="end"
+        ariaLabel={handleAriaLabels.endAriaLabel}
+    />
 </MultiSlider>
 ```
 

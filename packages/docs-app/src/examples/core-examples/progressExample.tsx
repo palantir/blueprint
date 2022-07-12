@@ -55,6 +55,7 @@ export class ProgressExample extends React.PureComponent<IExampleProps, IProgres
                     stepSize={0.1}
                     showTrackFill={false}
                     value={value}
+                    handleAriaLabel="progressbar value"
                 />
             </>
         );

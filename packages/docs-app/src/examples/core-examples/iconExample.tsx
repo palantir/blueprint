@@ -58,6 +58,7 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
                     showTrackFill={false}
                     value={iconSize}
                     onChange={this.handleIconSizeChange}
+                    handleAriaLabel="icon size"
                 />
             </>
         );

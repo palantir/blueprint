@@ -68,6 +68,7 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
                     stepSize={5}
                     value={size}
                     onChange={this.handleSizeChange}
+                    handleAriaLabel="spinner size"
                 />
                 <Switch checked={hasValue} label="Known value" onChange={this.handleIndeterminateChange} />
                 <Slider
@@ -80,6 +81,7 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
                     stepSize={0.1}
                     showTrackFill={false}
                     value={value}
+                    handleAriaLabel="spinner value"
                 />
             </>
         );

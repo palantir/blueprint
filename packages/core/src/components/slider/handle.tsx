@@ -67,7 +67,7 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
     }
 
     public render() {
-        const { className, disabled, label } = this.props;
+        const { className, disabled, label, min, max, value, vertical, ariaLabel } = this.props;
         const { isMoving } = this.state;
 
         return (
@@ -80,6 +80,12 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
                 ref={this.refHandlers.handle}
                 style={this.getStyleProperties()}
                 tabIndex={0}
+                role="slider"
+                aria-valuemin={min}
+                aria-valuemax={max}
+                aria-valuenow={value}
+                aria-label={ariaLabel}
+                aria-orientation={vertical ? "vertical" : "horizontal"}
             >
                 {label == null ? null : <span className={Classes.SLIDER_LABEL}>{label}</span>}
             </span>
