@@ -76,9 +76,10 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
     inputProps?: InputGroupProps2;
 
     /**
-     * Applied to the `aria-label` prop of the `listbox` `ul`
+     * Props that get spread to the menu popover's listbox `ul` element
+     * that contains the selectable options.
      */
-    menuLabel?: string;
+    menuProps?: React.HTMLProps<HTMLUListElement>;
 
     /**
      * Props to add to the popover target wrapper element.
@@ -123,12 +124,12 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { filterable, inputProps, menuLabel, popoverProps, ...restProps } = this.props;
+        const { filterable, inputProps, menuProps = {}, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={{ "aria-label": menuLabel, id: this.listboxId }}
+                menuProps={{ ...menuProps, id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}

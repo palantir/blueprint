@@ -69,7 +69,7 @@ export default function ({ allowCreate = false, fill, ...restProps }: Props) {
             createNewItemFromQuery={maybeCreateNewItemFromQuery}
             createNewItemRenderer={maybeCreateNewItemRenderer}
             itemsEqual={areFilmsEqual}
-            menuLabel="films"
+            menuProps={{ "aria-label": "films" }}
             noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
             onItemSelect={handleItemSelect}
             items={items}

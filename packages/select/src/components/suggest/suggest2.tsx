@@ -77,9 +77,10 @@ export interface Suggest2Props<T> extends IListItemsProps<T>, SelectPopoverProps
     selectedItem?: T | null;
 
     /**
-     * Applied to the `aria-label` prop of the `listbox` `ul`
+     * Props that get spread to the menu popover's listbox `ul` element
+     * that contains the selectable options.
      */
-    menuLabel?: string;
+    menuProps?: React.HTMLProps<HTMLUListElement>;
 
     /**
      * If true, the component waits until a keydown event in the TagInput
@@ -139,12 +140,12 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { disabled, inputProps, menuLabel, popoverProps, ...restProps } = this.props;
+        const { disabled, inputProps, menuProps = {}, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={{ "aria-label": menuLabel, id: this.listboxId }}
+                menuProps={{ ...menuProps, id: this.listboxId }}
                 initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}

@@ -51,9 +51,10 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
     fill?: boolean;
 
     /**
-     * Applied to the `aria-label` prop of the `listbox` `ul`
+     * Props that get spread to the menu popover's listbox `ul` element
+     * that contains the selectable options.
      */
-    menuLabel?: string;
+    menuProps?: React.HTMLProps<HTMLUListElement>;
 
     /**
      * If provided, this component will render a "clear" button inside its TagInput.
@@ -171,12 +172,12 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { menuLabel, openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
+        const { menuProps = {}, openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={{ "aria-label": menuLabel, "aria-multiselectable": true, id: this.listboxId }}
+                menuProps={{ ...menuProps, "aria-multiselectable": true, id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
