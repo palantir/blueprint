@@ -188,14 +188,18 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
     outlined: true,
 };
 
+const DEFAULT_MAX_DATE = DatePickerUtils.getDefaultMaxDate();
+const DEFAULT_MIN_DATE = DatePickerUtils.getDefaultMinDate();
+
 export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateInput2(props) {
     const {
         defaultTimezone,
         defaultValue,
         disableTimezoneSelect,
         inputProps = {},
-        minDate = null,
-        maxDate = null,
+        // defaults duplicated here for TypeScript convenience
+        maxDate = DEFAULT_MAX_DATE,
+        minDate = DEFAULT_MIN_DATE,
         placeholder,
         popoverProps = {},
         showTimezoneSelect,
@@ -280,7 +284,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
                 !props.closeOnSelection ||
                 (prevDate != null &&
                     (hasMonthChanged(prevDate, newDate) ||
-                        (props.timePrecision !== undefined && hasTimeChanged(prevDate, newDate))));
+                        (timePrecision !== undefined && hasTimeChanged(prevDate, newDate))));
 
             // if selecting a date via click or Tab, the input will already be
             // blurred by now, so sync isInputFocused to false. if selecting via
@@ -348,10 +352,13 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             <DatePicker
                 {...datePickerProps}
                 dayPickerProps={dayPickerProps}
+                maxDate={maxDate}
+                minDate={minDate}
                 onChange={handleDateChange}
-                value={valueAsDate}
                 onShortcutChange={handleShortcutChange}
                 selectedShortcutIndex={selectedShortcutIndex}
+                timePrecision={timePrecision}
+                value={valueAsDate}
             />
             <div onFocus={handleEndFocusBoundaryFocusIn} tabIndex={0} />
         </div>
@@ -539,7 +546,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             fill={props.fill}
             {...popoverProps}
             autoFocus={false}
-            className={classNames(popoverProps.className, props.className)}
+            className={classNames(Classes.DATE_INPUT, popoverProps.className, props.className)}
             content={popoverContent}
             enforceFocus={false}
             onClose={handlePopoverClose}
@@ -552,7 +559,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
                 rightElement={
                     <>
                         {maybeTimezonePicker}
-                        {props.inputProps?.rightElement}
+                        {props.rightElement}
                     </>
                 }
                 type="text"
@@ -574,8 +581,8 @@ DateInput2.defaultProps = {
     closeOnSelection: true,
     disabled: false,
     invalidDateMessage: "Invalid date",
-    maxDate: DatePickerUtils.getDefaultMaxDate(),
-    minDate: DatePickerUtils.getDefaultMinDate(),
+    maxDate: DEFAULT_MAX_DATE,
+    minDate: DEFAULT_MIN_DATE,
     outOfRangeMessage: "Out of range",
     reverseMonthAndYearMenus: false,
 };
