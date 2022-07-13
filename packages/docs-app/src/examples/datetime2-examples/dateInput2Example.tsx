@@ -95,7 +95,11 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
                     {...format}
                     onChange={this.handleDateChange}
                     popoverProps={{ position: Position.BOTTOM }}
-                    rightElement={showRightElement && <Icon icon="globe" />}
+                    rightElement={
+                        showRightElement && (
+                            <Icon icon="globe" intent="primary" style={{ padding: 7, marginLeft: -5 }} />
+                        )
+                    }
                     timePickerProps={
                         this.state.timePrecision === undefined ? undefined : { showArrowButtons: showTimePickerArrows }
                     }

@@ -24,7 +24,6 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps2,
-    Intent,
     mergeRefs,
     Props,
     Tag,
@@ -554,7 +553,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
         >
             <InputGroup
                 autoComplete="off"
-                intent={isErrorState ? Intent.DANGER : Intent.NONE}
+                intent={isErrorState ? "danger" : "none"}
                 placeholder={placeholder}
                 rightElement={
                     <>
