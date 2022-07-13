@@ -15,14 +15,14 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses, InputGroup, Position } from "@blueprintjs/core";
-import { DateInput, Classes as DatetimeClasses, TimePrecision } from "@blueprintjs/datetime";
+import { Classes as CoreClasses, InputGroup } from "@blueprintjs/core";
+import { Classes as DatetimeClasses, TimePrecision, TimeUnit } from "@blueprintjs/datetime";
 
-import { Classes, DateInput2, TimezoneSelect } from "../../src";
+import { Classes, DateInput2, DateInput2Props, TimezoneSelect } from "../../src";
 
 const VALUE = "2021-11-29T10:30:00.000z";
 
@@ -42,8 +42,16 @@ const DEFAULT_PROPS = {
 
 describe("<DateInput2>", () => {
     const onChange = sinon.spy();
+    let containerElement: HTMLElement | undefined;
 
-    afterEach(() => onChange.resetHistory());
+    beforeEach(() => {
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+    });
+    afterEach(() => {
+        containerElement?.remove();
+        onChange.resetHistory();
+    });
 
     describe("controlled usage", () => {
         const DEFAULT_PROPS_CONTROLLED = {
@@ -66,29 +74,21 @@ describe("<DateInput2>", () => {
 
         it("It updates the passed back string when timezone is changed", () => {
             const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
-            const timezoneSelect = wrapper.find(TimezoneSelect);
-            const newTimezone = "Europe/Paris";
-            timezoneSelect.prop("onChange")(newTimezone);
-
+            clickTimezoneItem(wrapper, "Paris");
             assert.isTrue(onChange.calledOnce);
             assert.deepEqual(onChange.firstCall.args, ["2021-11-29T10:30:00.000+01:00"]);
         });
 
         it("It formats the string based on the time precision when timezone is changed", () => {
             const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} timePrecision={TimePrecision.MINUTE} />);
-            const timezoneSelect = wrapper.find(TimezoneSelect);
-            const newTimezone = "Europe/Paris";
-            timezoneSelect.prop("onChange")(newTimezone);
-
+            clickTimezoneItem(wrapper, "Paris");
             assert.isTrue(onChange.calledOnce);
             assert.deepEqual(onChange.firstCall.args, ["2021-11-29T10:30+01:00"]);
         });
 
         it("It updates the passed back string when time is changed", () => {
-            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
-            const timezoneSelect = wrapper.find(DateInput);
-            timezoneSelect.prop("onChange")!(new Date("2021-11-29T11:30:00.000"), true);
-
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
+            setTimeUnit(wrapper, TimeUnit.HOUR_24, 11);
             assert.isTrue(onChange.calledOnce);
             assert.deepEqual(onChange.firstCall.args, ["2021-11-29T11:30:00.000+00:00", true]);
         });
@@ -96,52 +96,6 @@ describe("<DateInput2>", () => {
         it("Does not render a timezone select if timePrecision is undefined", () => {
             const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} timePrecision={undefined} />);
             assert.isFalse(wrapper.find(TimezoneSelect).exists());
-        });
-
-        it("Passes the correct date in to DateInput", () => {
-            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} value="2021-11-29" />);
-            const dateInput = wrapper.find(DateInput);
-            const date = new Date("2021-11-29");
-            assert.strictEqual(formatDate(dateInput.prop("value")), formatDate(date));
-        });
-
-        it("Passes the correct timestamp in to DateInput", () => {
-            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
-            const dateInput = wrapper.find(DateInput);
-            const date = new Date("2021-11-29");
-            assert.strictEqual(formatDate(dateInput.prop("value")), formatDate(date));
-        });
-
-        it("passes props on to date input", () => {
-            const inputRef = sinon.spy();
-            const onFocus = sinon.spy();
-            const inputProps = {
-                disabled: true,
-                inputRef,
-                onFocus,
-                required: true,
-            };
-            const popoverProps = {
-                autoFocus: true,
-                content: "fail",
-                fill: true,
-                isOpen: true,
-                position: Position.TOP,
-                usePortal: false,
-            };
-            const wrapper = mount(
-                <DateInput2
-                    {...DEFAULT_PROPS_CONTROLLED}
-                    disabled={false}
-                    inputProps={inputProps}
-                    popoverProps={popoverProps}
-                />,
-            );
-            const dateinput = wrapper.find(DateInput);
-
-            assert.isFalse(dateinput.prop("disabled"), "disabled comes from DateInput props");
-            assert.strictEqual(dateinput.prop("inputProps"), inputProps);
-            assert.strictEqual(dateinput.prop("popoverProps"), popoverProps);
         });
 
         it("Clearing the input invokes onChange with null", () => {
@@ -161,14 +115,6 @@ describe("<DateInput2>", () => {
             onChange,
         };
 
-        let containerElement: HTMLElement | undefined;
-
-        beforeEach(() => {
-            containerElement = document.createElement("div");
-            document.body.appendChild(containerElement);
-        });
-        afterEach(() => containerElement?.remove());
-
         it("calls onChange on date changes", () => {
             const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
             wrapper
@@ -184,14 +130,7 @@ describe("<DateInput2>", () => {
 
         it("calls onChange on timezone changes", () => {
             const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
-            wrapper.find(`.${Classes.TIMEZONE_SELECT}`).hostNodes().simulate("click");
-            wrapper
-                .find(`.${Classes.TIMEZONE_SELECT_POPOVER}`)
-                .find(`.${CoreClasses.MENU_ITEM}`)
-                .hostNodes()
-                .findWhere(item => item.text().includes("New York"))
-                .first()
-                .simulate("click");
+            clickTimezoneItem(wrapper, "New York");
             assert.isTrue(onChange.calledOnce);
             console.info(onChange.firstCall.args);
             // New York is UTC-5
@@ -199,4 +138,38 @@ describe("<DateInput2>", () => {
             wrapper.unmount();
         });
     });
+
+    function clickTimezoneItem(wrapper: ReactWrapper<DateInput2Props>, searchQuery: string) {
+        wrapper.find(`.${Classes.TIMEZONE_SELECT}`).hostNodes().simulate("click");
+        wrapper
+            .find(`.${Classes.TIMEZONE_SELECT_POPOVER}`)
+            .find(`.${CoreClasses.MENU_ITEM}`)
+            .hostNodes()
+            .findWhere(item => item.text().includes(searchQuery))
+            .first()
+            .simulate("click");
+    }
+
+    function setTimeUnit(wrapper: ReactWrapper<DateInput2Props>, unit: TimeUnit, value: number) {
+        wrapper.find(`.${CoreClasses.INPUT_GROUP}`).hostNodes().simulate("focus");
+        let inputClass: string;
+        switch (unit) {
+            case TimeUnit.HOUR_12:
+            case TimeUnit.HOUR_24:
+                inputClass = DatetimeClasses.TIMEPICKER_HOUR;
+                break;
+            case TimeUnit.MINUTE:
+                inputClass = DatetimeClasses.TIMEPICKER_MINUTE;
+                break;
+            case TimeUnit.SECOND:
+                inputClass = DatetimeClasses.TIMEPICKER_SECOND;
+                break;
+            case TimeUnit.MS:
+                inputClass = DatetimeClasses.TIMEPICKER_MILLISECOND;
+                break;
+        }
+        const input = wrapper.find(`.${inputClass}`).first();
+        input.simulate("change", { target: { value } });
+        input.simulate("blur");
+    }
 });
