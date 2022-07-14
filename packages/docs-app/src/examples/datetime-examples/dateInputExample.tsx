@@ -73,6 +73,7 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
         const { date, format, showTimeArrowButtons, timePrecision, ...spreadProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
+                {/* eslint-disable-next-line deprecation/deprecation */}
                 <DateInput
                     {...spreadProps}
                     {...format}
