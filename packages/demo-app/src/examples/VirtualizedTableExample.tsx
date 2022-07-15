@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-/*
-import * as React from "react";
-import { VirtualizedTable } from "@blueprintjs/virtualized";
-import { ExampleCard } from "./ExampleCard";
 
-const WIDTH = 600;
+import * as React from "react";
+// import { VirtualizedTable } from "@blueprintjs/virtualized";
+
+// import { ExampleCard } from "./ExampleCard";
+
+// const WIDTH = 600;
 export const VirtualizedTableExample = React.memo(() => {
-    return (
-        <ExampleCard width={WIDTH} horizontal={true} label="Table">
+    return (<div>Example Virtualized Table ! </div>
+        /*<ExampleCard width={WIDTH} horizontal={true} label="Table">
             <VirtualizedTable title={"test title"}>
             </VirtualizedTable>
-        </ExampleCard>
+        </ExampleCard>*/
     );
 });
-VirtualizedTableExample.displayName = "TableExample";
-*/
+VirtualizedTableExample.displayName = "VirtualizedTableExample";
+

@@ -17,7 +17,15 @@
 import * as React from "react";
 
 // import { H5, Position, Radio, RadioGroup, Switch } from "@blueprintjs/core";
-//import { IExampleProps } from "@blueprintjs/docs-theme";
+import { IExampleProps } from "@blueprintjs/docs-theme";
 // import { someWidget } from "@blueprintjs/virtualized";
 
-//export class Virtualized extends React.PureComponent<IExampleProps> {}
+export class Virtualized extends React.PureComponent<IExampleProps> {}
+
+export class VirtualizedTableExample extends React.PureComponent<IExampleProps> {
+    public render() {
+        return (
+            <div>This is an example for virtualized table ! </div>
+        );
+    }
+}
