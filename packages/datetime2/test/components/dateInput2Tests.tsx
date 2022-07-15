@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { isEqual, parseISO } from "date-fns";
-import { zonedTimeToUtc } from "date-fns-tz";
+import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
@@ -28,7 +28,7 @@ import { Popover2, Classes as Popover2Classes } from "@blueprintjs/popover2";
 import { Classes, DateInput2, DateInput2Props, TimezoneSelect } from "../../src";
 import { getCurrentTimezone } from "../../src/common/getTimezone";
 
-const VALUE = "2021-11-29T10:30:00.000z";
+const VALUE = "2021-11-29T10:30:00z";
 
 const formatDate = (date: Date | null | undefined) =>
     date == null ? "" : [date.getMonth() + 1, date.getDate(), date.getFullYear()].join("/");
@@ -40,7 +40,7 @@ const DEFAULT_PROPS = {
     popoverProps: {
         usePortal: false,
     },
-    timePrecision: TimePrecision.MILLISECOND,
+    timePrecision: TimePrecision.SECOND,
 };
 
 describe("<DateInput2>", () => {
@@ -197,7 +197,7 @@ describe("<DateInput2>", () => {
                 .update();
             assert.isTrue(onChange.calledOnce);
             // first non-outside day should be the November 1st
-            assert.strictEqual(onChange.firstCall.args[0], "2021-11-01T10:30:00.000+00:00");
+            assert.strictEqual(onChange.firstCall.args[0], "2021-11-01T10:30:00+00:00");
         });
 
         it("calls onChange on timezone changes", () => {
@@ -206,7 +206,7 @@ describe("<DateInput2>", () => {
             assert.isTrue(onChange.calledOnce);
             console.info(onChange.firstCall.args);
             // New York is UTC-5
-            assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00.000-05:00");
+            assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00-05:00");
         });
 
         // HACKHACK: this test ported from DateInput doesn't seem to match any real UX, since pressing Shift+Tab
@@ -296,7 +296,7 @@ describe("<DateInput2>", () => {
         it("clicking a date in the same month closes the popover when there is already a default value", () => {
             const DAY = 15;
             const PREV_DAY = DAY - 1;
-            const defaultValue = `2022-07-${DAY}T15:00:00.000z`; // include an arbitrary non-zero hour
+            const defaultValue = `2022-07-${DAY}T15:00:00z`; // include an arbitrary non-zero hour
             const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} defaultValue={defaultValue} />, {
                 attachTo: containerElement,
             });
@@ -350,22 +350,18 @@ describe("<DateInput2>", () => {
             focusInput(wrapper);
 
             // try typing a new time
-            setTimeUnit(wrapper, TimeUnit.MS, 1);
+            setTimeUnit(wrapper, TimeUnit.SECOND, 1);
             assertPopoverIsOpen(wrapper);
 
             // try keyboard-incrementing to a new time
-            wrapper
-                .find(`.${DatetimeClasses.TIMEPICKER_MILLISECOND}`)
-                .first()
-                .simulate("keydown", { which: Keys.ARROW_UP });
+            wrapper.find(`.${DatetimeClasses.TIMEPICKER_SECOND}`).first().simulate("keydown", { which: Keys.ARROW_UP });
             assertPopoverIsOpen(wrapper);
         });
 
         it("clicking a day in a different month sets input value but keeps popover open", () => {
-            const wrapper = mount(
-                <DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} defaultValue="2016-04-03T00:00:00.000z" />,
-                { attachTo: containerElement },
-            );
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} defaultValue="2016-04-03T00:00:00z" />, {
+                attachTo: containerElement,
+            });
             focusInput(wrapper);
             assert.equal(wrapper.find(InputGroup).prop("value"), "4/3/2016");
 
@@ -460,6 +456,7 @@ describe("<DateInput2>", () => {
     describe("controlled usage", () => {
         const DEFAULT_PROPS_CONTROLLED = {
             ...DEFAULT_PROPS,
+            defaultTimezone: "Etc/UTC",
             onChange,
             value: VALUE,
         };
@@ -473,7 +470,7 @@ describe("<DateInput2>", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
                 clickTimezoneItem(wrapper, "Paris");
                 assert.isTrue(onChange.calledOnce);
-                assert.deepEqual(onChange.firstCall.args, ["2021-11-29T10:30:00.000+01:00"]);
+                assert.deepEqual(onChange.firstCall.args, ["2021-11-29T10:30:00+01:00"]);
             });
 
             it("formats the returned ISO string according to timePrecision", () => {
@@ -491,7 +488,7 @@ describe("<DateInput2>", () => {
             focusInput(wrapper);
             setTimeUnit(wrapper, TimeUnit.HOUR_24, 11);
             assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.firstCall.args, ["2021-11-29T11:30:00.000+00:00", true]);
+            assert.deepEqual(onChange.firstCall.args, ["2021-11-29T11:30:00+00:00", true]);
         });
 
         it("clearing the input invokes onChange with null", () => {
@@ -501,6 +498,46 @@ describe("<DateInput2>", () => {
                 .find("input")
                 .simulate("change", { target: { value: "" } });
             assert.isTrue(onChange.calledOnceWithExactly(null, true));
+        });
+
+        // tests ported from DateInput
+        const DATE1 = "2016-04-04";
+        const DATE2 = "2015-02-01";
+
+        // HACKHACK: DATE2 gets interpreted in the local timezone when typed into the input, even though
+        // we've set defaultTimezone to UTC and specified the initial controlled value with a UTC offset.
+        // This results in the onChange callback getting the previous day (Jan 31), since the local timezone
+        // for most Blueprint development is before UTC time (negative offset). This is buggy and needs to be
+        // fixed.
+        it.skip("pressing Enter saves the inputted date and closes the popover", () => {
+            const onKeyDown = sinon.spy();
+            const wrapper = mount(
+                <DateInput2
+                    {...DEFAULT_PROPS_CONTROLLED}
+                    value={`${DATE1}T00:00:00+00:00`}
+                    inputProps={{ onKeyDown }}
+                />,
+                {
+                    attachTo: containerElement,
+                },
+            );
+            focusInput(wrapper);
+            changeInput(wrapper, DATE2);
+            submitInput(wrapper);
+
+            // onChange is called once on change, once on Enter
+            assert.isTrue(onChange.calledTwice, "onChange called twice");
+            assert.strictEqual(
+                onChange.args[1][0],
+                formatInTimeZone(parseISO(DATE2), "Etc/UTC", "yyyy-MM-dd'T'HH:mm:ssxxx"),
+            );
+            assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
+            assert.strictEqual(
+                document.activeElement,
+                wrapper.find(InputGroup).find("input").getDOMNode(),
+                "input should remain focused",
+            );
+            assertPopoverIsOpen(wrapper, false);
         });
     });
 
@@ -514,6 +551,10 @@ describe("<DateInput2>", () => {
 
     function blurInput(wrapper: ReactWrapper<DateInput2Props>) {
         wrapper.find(InputGroup).find("input").simulate("blur");
+    }
+
+    function submitInput(wrapper: ReactWrapper<DateInput2Props>) {
+        wrapper.find(InputGroup).find("input").simulate("keydown", { key: "Enter" });
     }
 
     function clickTimezoneItem(wrapper: ReactWrapper<DateInput2Props>, searchQuery: string) {
@@ -581,6 +622,14 @@ describe("<DateInput2>", () => {
     }
 });
 
+/**
+ * When we construct a Date() object in this test file, it sets it to the local timezone.
+ * Use this helper function to reset the date's timezone to UTC instead.
+ */
+function localDateToUtcDate(date: Date) {
+    return zonedTimeToUtc(date, getCurrentTimezone());
+}
+
 function dateToIsoString(date: Date) {
-    return zonedTimeToUtc(date, getCurrentTimezone()).toISOString();
+    return localDateToUtcDate(date).toISOString();
 }

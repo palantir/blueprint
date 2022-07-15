@@ -176,7 +176,10 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
         );
     }
 
-    private handleDateChange = (date: string | null) => this.setState({ date });
+    private handleDateChange = (date: string | null) => {
+        console.info(date);
+        this.setState({ date });
+    };
 
     private handleFormatChange = (format: DateFormatProps) => this.setState({ format });
 }

@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import { isValid } from "date-fns";
 import * as React from "react";
 import type { DayPickerProps } from "react-day-picker";
 
@@ -374,7 +373,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     // we use today's date and shift it to the desired/current timezone
     const tzSelectDate = React.useMemo(
         () =>
-            valueAsDate != null && isValid(valueAsDate)
+            valueAsDate != null && isDateValid(valueAsDate)
                 ? valueAsDate
                 : convertLocalDateToTimezoneTime(new Date(), timezoneValue),
         [timezoneValue, valueAsDate],
@@ -532,7 +531,9 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
                 inputRef.current?.blur();
             } else if (e.key === "Enter" && inputValue != null) {
                 const nextDate = parseDate(inputValue);
-                handleDateChange(nextDate, true, true);
+                if (isDateValid(nextDate)) {
+                    handleDateChange(nextDate, true, true);
+                }
             }
 
             props.inputProps?.onKeyDown?.(e);
