@@ -269,6 +269,10 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     const handleDateChange = React.useCallback(
         (newDate: Date | null, isUserChange: boolean, didSubmitWithEnter = false) => {
             if (newDate === null) {
+                if (!didSubmitWithEnter) {
+                    // user clicked on current day in the calendar, so we should clear the input
+                    setInputValue("");
+                }
                 props.onChange?.(null, isUserChange);
                 return;
             }

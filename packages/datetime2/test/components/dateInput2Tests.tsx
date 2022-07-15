@@ -15,15 +15,18 @@
  */
 
 import { assert } from "chai";
+import { isEqual, parseISO } from "date-fns";
+import { zonedTimeToUtc } from "date-fns-tz";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses, InputGroup } from "@blueprintjs/core";
+import { Classes as CoreClasses, InputGroup, Keys } from "@blueprintjs/core";
 import { DatePicker, Classes as DatetimeClasses, Months, TimePrecision, TimeUnit } from "@blueprintjs/datetime";
 import { Popover2, Classes as Popover2Classes } from "@blueprintjs/popover2";
 
 import { Classes, DateInput2, DateInput2Props, TimezoneSelect } from "../../src";
+import { getCurrentTimezone } from "../../src/common/getTimezone";
 
 const VALUE = "2021-11-29T10:30:00.000z";
 
@@ -37,7 +40,6 @@ const DEFAULT_PROPS = {
     popoverProps: {
         usePortal: false,
     },
-    timePickerProps: { showArrowButtons: true },
     timePrecision: TimePrecision.MILLISECOND,
 };
 
@@ -209,6 +211,7 @@ describe("<DateInput2>", () => {
 
         it("changing the time calls onChange with the updated ISO string", () => {
             const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
+            focusInput(wrapper);
             setTimeUnit(wrapper, TimeUnit.HOUR_24, 11);
             assert.isTrue(onChange.calledOnce);
             assert.deepEqual(onChange.firstCall.args, ["2021-11-29T11:30:00.000+00:00", true]);
@@ -293,7 +296,10 @@ describe("<DateInput2>", () => {
         });
 
         it("popover should not close when time picker arrows are clicked after selecting a month", () => {
-            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            const wrapper = mount(
+                <DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} timePickerProps={{ showArrowButtons: true }} />,
+                { attachTo: containerElement },
+            );
             focusInput(wrapper);
             changeSelectDropdown(wrapper, DatetimeClasses.DATEPICKER_MONTH_SELECT, Months.OCTOBER);
             wrapper
@@ -321,17 +327,189 @@ describe("<DateInput2>", () => {
         });
 
         it("clicking a date puts it in the input box and closes the popover", () => {
-            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />, { attachTo: containerElement });
+            focusInput(wrapper);
+            assert.equal(wrapper.find(InputGroup).prop("value"), "");
+            const dayToClick = 12;
+            clickCalendarDay(wrapper, dayToClick);
+            const today = new Date();
+            assert.equal(
+                wrapper.find(InputGroup).prop("value"),
+                `${today.getMonth() + 1}/${dayToClick}/${today.getFullYear()}`,
+            );
+            assertPopoverIsOpen(wrapper, false);
+        });
+
+        it("clicking a date in the same month closes the popover when there is already a default value", () => {
+            const DAY = 15;
+            const PREV_DAY = DAY - 1;
+            const defaultValue = `2022-07-${DAY}T15:00:00.000z`; // include an arbitrary non-zero hour
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} defaultValue={defaultValue} />, {
+                attachTo: containerElement,
+            });
+            focusInput(wrapper);
+            clickCalendarDay(wrapper, PREV_DAY);
+            assertPopoverIsOpen(wrapper, false);
+        });
+
+        it("clearing the date in the DatePicker clears the input, and calls onChange with null", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} />, {
+                attachTo: containerElement,
+            });
             focusInput(wrapper);
             assert.equal(wrapper.find(InputGroup).prop("value"), "11/29/2021");
-            clickCalendarDay(wrapper, 12);
-            assert.equal(wrapper.find(InputGroup).prop("value"), "11/12/2021");
-            assertPopoverIsOpen(wrapper, false);
+            // default value is 29th day of November
+            clickCalendarDay(wrapper, 29);
+            wrapper.update();
+            assert.equal(wrapper.find(InputGroup).prop("value"), "");
+            assert.isTrue(onChange.calledWith(null));
+        });
+
+        it("clearing the date in the input clears the selection and invokes onChange with null", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            wrapper
+                .find(InputGroup)
+                .find("input")
+                .simulate("change", { target: { value: "" } });
+
+            assert.lengthOf(wrapper.find(`.${DatetimeClasses.DATEPICKER_DAY_SELECTED}`), 0);
+            assert.isTrue(onChange.calledWith(null));
+        });
+
+        it("popover stays open on date click if closeOnSelection=false", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} closeOnSelection={false} />, {
+                attachTo: containerElement,
+            });
+            focusInput(wrapper);
+            wrapper.find(`.${DatetimeClasses.DATEPICKER_DAY}`).first().simulate("click").update();
+            assertPopoverIsOpen(wrapper);
+        });
+
+        it("popover stays open when month changes", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            focusInput(wrapper);
+            changeSelectDropdown(wrapper, DatetimeClasses.DATEPICKER_MONTH_SELECT, Months.DECEMBER);
+            assertPopoverIsOpen(wrapper);
+        });
+
+        it("popover stays open when time changes", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            focusInput(wrapper);
+
+            // try typing a new time
+            setTimeUnit(wrapper, TimeUnit.MS, 1);
+            assertPopoverIsOpen(wrapper);
+
+            // try keyboard-incrementing to a new time
+            wrapper
+                .find(`.${DatetimeClasses.TIMEPICKER_MILLISECOND}`)
+                .first()
+                .simulate("keydown", { which: Keys.ARROW_UP });
+            assertPopoverIsOpen(wrapper);
+        });
+
+        it("clicking a day in a different month sets input value but keeps popover open", () => {
+            const wrapper = mount(
+                <DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} defaultValue="2016-04-03T00:00:00.000z" />,
+                { attachTo: containerElement },
+            );
+            focusInput(wrapper);
+            assert.equal(wrapper.find(InputGroup).prop("value"), "4/3/2016");
+
+            wrapper
+                .find(`.${DatetimeClasses.DATEPICKER_DAY}`)
+                .filterWhere(day => day.text() === "27")
+                .first()
+                .simulate("click");
+
+            assertPopoverIsOpen(wrapper);
+            assert.equal(wrapper.find(InputGroup).prop("value"), "3/27/2016");
+        });
+
+        it("typing in a valid date invokes onChange and inputProps.onChange", () => {
+            const date = "2/10/2015";
+            const onInputChange = sinon.spy();
+            const wrapper = mount(
+                <DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} inputProps={{ onChange: onInputChange }} />,
+                { attachTo: containerElement },
+            );
+            changeInput(wrapper, date);
+
+            assert.isTrue(onChange.calledOnce);
+            assert.strictEqual(onChange.args[0][0], formatDate(new Date(date)));
+            assert.isTrue(onInputChange.calledOnce);
+            assert.strictEqual(onInputChange.args[0][0].type, "change", "inputProps.onChange expects change event");
+        });
+
+        it("typing in a date out of range displays the error message and calls onError with invalid date", () => {
+            const rangeMessage = "RANGE ERROR";
+            const onError = sinon.spy();
+            const wrapper = mount(
+                <DateInput2
+                    {...DEFAULT_PROPS_UNCONTROLLED}
+                    defaultValue={new Date(2015, Months.MAY, 1).toISOString()}
+                    minDate={new Date(2015, Months.MARCH, 1)}
+                    onError={onError}
+                    outOfRangeMessage={rangeMessage}
+                />,
+            );
+            const value = "2/1/2030";
+            wrapper.find("input").simulate("change", { target: { value } }).simulate("blur");
+
+            assert.strictEqual(wrapper.find(InputGroup).prop("intent"), "danger");
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), rangeMessage);
+
+            assert.isTrue(onError.calledOnce);
+            assert.strictEqual(formatDate(onError.args[0][0]), formatDate(new Date(value)));
+        });
+
+        it("typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
+            const invalidDateMessage = "INVALID DATE";
+            const onError = sinon.spy();
+            const wrapper = mount(
+                <DateInput2
+                    {...DEFAULT_PROPS_UNCONTROLLED}
+                    defaultValue={new Date(2015, Months.MAY, 1).toISOString()}
+                    onError={onError}
+                    invalidDateMessage={invalidDateMessage}
+                />,
+            );
+            wrapper
+                .find("input")
+                .simulate("change", { target: { value: "not a date" } })
+                .simulate("blur");
+
+            assert.strictEqual(wrapper.find(InputGroup).prop("intent"), "danger");
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), invalidDateMessage);
+
+            assert.isTrue(onError.calledOnce);
+            assert.isNaN((onError.args[0][0] as Date).valueOf());
+        });
+
+        it("clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
+            const DATE = new Date(2016, Months.APRIL, 4);
+            const wrapper = mount(
+                <DateInput2
+                    {...DEFAULT_PROPS_UNCONTROLLED}
+                    canClearSelection={false}
+                    defaultValue={dateToIsoString(DATE)}
+                    timePrecision={TimePrecision.SECOND}
+                />,
+                { attachTo: containerElement },
+            );
+            focusInput(wrapper);
+            clickCalendarDay(wrapper, DATE.getDate());
+            assert.isTrue(onChange.calledOnce);
+            assert.isTrue(isEqual(parseISO(onChange.firstCall.args[0]), DATE));
         });
     });
 
     function focusInput(wrapper: ReactWrapper<DateInput2Props>) {
         wrapper.find(InputGroup).find("input").simulate("focus");
+    }
+
+    function changeInput(wrapper: ReactWrapper<DateInput2Props>, value: string) {
+        wrapper.find(InputGroup).find("input").simulate("change", { target: { value } });
     }
 
     function blurInput(wrapper: ReactWrapper<DateInput2Props>) {
@@ -375,6 +553,7 @@ describe("<DateInput2>", () => {
                 break;
         }
         const input = wrapper.find(`.${inputClass}`).first();
+        input.simulate("focus");
         input.simulate("change", { target: { value } });
         input.simulate("blur");
     }
@@ -401,3 +580,7 @@ describe("<DateInput2>", () => {
         }
     }
 });
+
+function dateToIsoString(date: Date) {
+    return zonedTimeToUtc(date, getCurrentTimezone()).toISOString();
+}
