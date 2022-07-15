@@ -180,53 +180,6 @@ describe("<DateInput2>", () => {
         });
     });
 
-    describe("controlled usage", () => {
-        const DEFAULT_PROPS_CONTROLLED = {
-            ...DEFAULT_PROPS,
-            onChange,
-            value: VALUE,
-        };
-
-        it("handles null inputs without crashing", () => {
-            assert.doesNotThrow(() => mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} value={null} />));
-        });
-
-        describe("when changing timezone", () => {
-            it("calls onChange with the updated ISO string", () => {
-                const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
-                clickTimezoneItem(wrapper, "Paris");
-                assert.isTrue(onChange.calledOnce);
-                assert.deepEqual(onChange.firstCall.args, ["2021-11-29T10:30:00.000+01:00"]);
-            });
-
-            it("formats the returned ISO string according to timePrecision", () => {
-                const wrapper = mount(
-                    <DateInput2 {...DEFAULT_PROPS_CONTROLLED} timePrecision={TimePrecision.MINUTE} />,
-                );
-                clickTimezoneItem(wrapper, "Paris");
-                assert.isTrue(onChange.calledOnce);
-                assert.deepEqual(onChange.firstCall.args, ["2021-11-29T10:30+01:00"]);
-            });
-        });
-
-        it("changing the time calls onChange with the updated ISO string", () => {
-            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
-            focusInput(wrapper);
-            setTimeUnit(wrapper, TimeUnit.HOUR_24, 11);
-            assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.firstCall.args, ["2021-11-29T11:30:00.000+00:00", true]);
-        });
-
-        it("clearing the input invokes onChange with null", () => {
-            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
-            wrapper
-                .find(InputGroup)
-                .find("input")
-                .simulate("change", { target: { value: "" } });
-            assert.isTrue(onChange.calledOnceWithExactly(null, true));
-        });
-    });
-
     describe("uncontrolled usage", () => {
         const DEFAULT_PROPS_UNCONTROLLED = {
             ...DEFAULT_PROPS,
@@ -501,6 +454,53 @@ describe("<DateInput2>", () => {
             clickCalendarDay(wrapper, DATE.getDate());
             assert.isTrue(onChange.calledOnce);
             assert.isTrue(isEqual(parseISO(onChange.firstCall.args[0]), DATE));
+        });
+    });
+
+    describe("controlled usage", () => {
+        const DEFAULT_PROPS_CONTROLLED = {
+            ...DEFAULT_PROPS,
+            onChange,
+            value: VALUE,
+        };
+
+        it("handles null inputs without crashing", () => {
+            assert.doesNotThrow(() => mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} value={null} />));
+        });
+
+        describe("when changing timezone", () => {
+            it("calls onChange with the updated ISO string", () => {
+                const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
+                clickTimezoneItem(wrapper, "Paris");
+                assert.isTrue(onChange.calledOnce);
+                assert.deepEqual(onChange.firstCall.args, ["2021-11-29T10:30:00.000+01:00"]);
+            });
+
+            it("formats the returned ISO string according to timePrecision", () => {
+                const wrapper = mount(
+                    <DateInput2 {...DEFAULT_PROPS_CONTROLLED} timePrecision={TimePrecision.MINUTE} />,
+                );
+                clickTimezoneItem(wrapper, "Paris");
+                assert.isTrue(onChange.calledOnce);
+                assert.deepEqual(onChange.firstCall.args, ["2021-11-29T10:30+01:00"]);
+            });
+        });
+
+        it("changing the time calls onChange with the updated ISO string", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
+            focusInput(wrapper);
+            setTimeUnit(wrapper, TimeUnit.HOUR_24, 11);
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.firstCall.args, ["2021-11-29T11:30:00.000+00:00", true]);
+        });
+
+        it("clearing the input invokes onChange with null", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
+            wrapper
+                .find(InputGroup)
+                .find("input")
+                .simulate("change", { target: { value: "" } });
+            assert.isTrue(onChange.calledOnceWithExactly(null, true));
         });
     });
 
