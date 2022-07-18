@@ -30,28 +30,26 @@ import { getCurrentTimezone } from "../../src/common/getTimezone";
 
 const VALUE = "2021-11-29T10:30:00z";
 
-const formatDate = (date: Date | null | undefined, locale?: string) => {
-    if (date == null) {
-        return "";
-    } else if (locale === "de") {
-        return intlFormat(
-            date,
-            {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-            },
-            { locale: "de-DE" },
-        );
-    } else {
-        return [date.getMonth() + 1, date.getDate(), date.getFullYear()].join("/");
-    }
-};
-const parseDate = (str: string) => new Date(str);
 const DEFAULT_PROPS = {
     defaultTimezone: "Etc/UTC",
-    formatDate,
-    parseDate,
+    formatDate: (date: Date | null | undefined, locale?: string) => {
+        if (date == null) {
+            return "";
+        } else if (locale === "de") {
+            return intlFormat(
+                date,
+                {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                },
+                { locale: "de-DE" },
+            );
+        } else {
+            return [date.getMonth() + 1, date.getDate(), date.getFullYear()].join("/");
+        }
+    },
+    parseDate: (str: string) => new Date(str),
     popoverProps: {
         usePortal: false,
     },
@@ -391,16 +389,17 @@ describe("<DateInput2>", () => {
         });
 
         it("typing in a valid date invokes onChange and inputProps.onChange", () => {
-            const date = "2/10/2015";
+            const DATE_VALUE = "2015-02-10T00:00:00+00:00";
+            const DATE_STR = "2/10/2015";
             const onInputChange = sinon.spy();
             const wrapper = mount(
                 <DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} inputProps={{ onChange: onInputChange }} />,
                 { attachTo: containerElement },
             );
-            changeInput(wrapper, date);
+            changeInput(wrapper, DATE_STR);
 
             assert.isTrue(onChange.calledOnce);
-            assert.strictEqual(onChange.args[0][0], formatDate(new Date(date)));
+            assert.strictEqual(onChange.args[0][0], DATE_VALUE);
             assert.isTrue(onInputChange.calledOnce);
             assert.strictEqual(onInputChange.args[0][0].type, "change", "inputProps.onChange expects change event");
         });
@@ -424,7 +423,7 @@ describe("<DateInput2>", () => {
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), rangeMessage);
 
             assert.isTrue(onError.calledOnce);
-            assert.strictEqual(formatDate(onError.args[0][0]), formatDate(new Date(value)));
+            assert.strictEqual(DEFAULT_PROPS.formatDate(onError.args[0][0]), DEFAULT_PROPS.formatDate(new Date(value)));
         });
 
         it("typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
@@ -641,6 +640,49 @@ describe("<DateInput2>", () => {
         it("formats locale-specific format strings properly", () => {
             const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} locale="de" value={DATE2_VALUE} />);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_UI_STR_DE);
+        });
+    });
+
+    describe("date formatting", () => {
+        const today = new Date();
+        const todayIsoString = dateToIsoString(today);
+        const formatDate = sinon.stub().returns("custom date");
+        const parseDate = sinon.stub().returns(today);
+        const locale = "LOCALE";
+        const FORMATTING_PROPS: DateInput2Props = { formatDate, locale, parseDate };
+
+        beforeEach(() => {
+            formatDate.resetHistory();
+            parseDate.resetHistory();
+        });
+
+        it("formatDate called on render with locale prop", () => {
+            mount(<DateInput2 {...FORMATTING_PROPS} value={todayIsoString} />, { attachTo: containerElement });
+            assert.isTrue(formatDate.calledWith(today, locale));
+        });
+
+        it("formatDate result becomes input value", () => {
+            const wrapper = mount(<DateInput2 {...FORMATTING_PROPS} value={todayIsoString} />, {
+                attachTo: containerElement,
+            });
+            assert.strictEqual(wrapper.find("input").prop("value"), "custom date");
+        });
+
+        it("parseDate called on change with locale prop", () => {
+            const value = "new date";
+            const wrapper = mount(<DateInput2 {...FORMATTING_PROPS} />, { attachTo: containerElement });
+            changeInput(wrapper, value);
+            assert.isTrue(parseDate.calledWith(value, locale));
+        });
+
+        it("parseDate returns false renders invalid date", () => {
+            const invalidParse = sinon.stub().returns(false);
+            const wrapper = mount(<DateInput2 {...FORMATTING_PROPS} parseDate={invalidParse} />, {
+                attachTo: containerElement,
+            });
+            changeInput(wrapper, "invalid");
+            blurInput(wrapper);
+            assert.strictEqual(wrapper.find("input").prop("value"), DateInput2.defaultProps?.invalidDateMessage);
         });
     });
 

@@ -186,6 +186,7 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
     outlined: true,
 };
 
+const INVALID_DATE = new Date(undefined!);
 const DEFAULT_MAX_DATE = DatePickerUtils.getDefaultMaxDate();
 const DEFAULT_MIN_DATE = DatePickerUtils.getDefaultMinDate();
 
@@ -429,7 +430,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
                 return null;
             }
             const newDate = props.parseDate(dateString, props.locale);
-            return newDate === false ? new Date() : newDate;
+            return newDate === false ? INVALID_DATE : newDate;
         },
         // HACKHACK: ESLint false positive
         // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -483,7 +484,16 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             }
             props.inputProps?.onBlur?.(e);
         },
-        [inputValue, valueAsDate, minDate, maxDate, props.onChange, props.onError, props.inputProps?.onBlur],
+        [
+            formattedDateString,
+            inputValue,
+            valueAsDate,
+            minDate,
+            maxDate,
+            props.onChange,
+            props.onError,
+            props.inputProps?.onBlur,
+        ],
     );
 
     const handleInputChange = React.useCallback(
@@ -507,6 +517,10 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             } else {
                 if (valueString.length === 0) {
                     props.onChange?.(null, true);
+                }
+                if (!isControlled) {
+                    // update this state when the date is invalid to update formattedDateString
+                    setValue(inputValueAsDate);
                 }
                 setInputValue(valueString);
             }
