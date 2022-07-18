@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { isEqual, parseISO } from "date-fns";
+import { intlFormat, isEqual, parseISO } from "date-fns";
 import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -30,8 +30,23 @@ import { getCurrentTimezone } from "../../src/common/getTimezone";
 
 const VALUE = "2021-11-29T10:30:00z";
 
-const formatDate = (date: Date | null | undefined) =>
-    date == null ? "" : [date.getMonth() + 1, date.getDate(), date.getFullYear()].join("/");
+const formatDate = (date: Date | null | undefined, locale?: string) => {
+    if (date == null) {
+        return "";
+    } else if (locale === "de") {
+        return intlFormat(
+            date,
+            {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+            },
+            { locale: "de-DE" },
+        );
+    } else {
+        return [date.getMonth() + 1, date.getDate(), date.getFullYear()].join("/");
+    }
+};
 const parseDate = (str: string) => new Date(str);
 const DEFAULT_PROPS = {
     defaultTimezone: "Etc/UTC",
@@ -501,8 +516,11 @@ describe("<DateInput2>", () => {
         });
 
         // tests ported from DateInput
-        const DATE1 = "2016-04-04";
-        const DATE2 = "2015-02-01";
+        const DATE1_VALUE = "2016-04-04T00:00:00+00:00";
+        const DATE1_UI_STR = "4/4/2016";
+        const DATE2_VALUE = "2015-02-01T00:00:00+00:00";
+        const DATE2_UI_STR = "2/1/2015";
+        const DATE2_UI_STR_DE = "01.02.2015";
 
         // HACKHACK: DATE2 gets interpreted in the local timezone when typed into the input, even though
         // we've set defaultTimezone to UTC and specified the initial controlled value with a UTC offset.
@@ -512,24 +530,18 @@ describe("<DateInput2>", () => {
         it.skip("pressing Enter saves the inputted date and closes the popover", () => {
             const onKeyDown = sinon.spy();
             const wrapper = mount(
-                <DateInput2
-                    {...DEFAULT_PROPS_CONTROLLED}
-                    value={`${DATE1}T00:00:00+00:00`}
-                    inputProps={{ onKeyDown }}
-                />,
-                {
-                    attachTo: containerElement,
-                },
+                <DateInput2 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} inputProps={{ onKeyDown }} />,
+                { attachTo: containerElement },
             );
             focusInput(wrapper);
-            changeInput(wrapper, DATE2);
+            changeInput(wrapper, DATE2_UI_STR);
             submitInput(wrapper);
 
             // onChange is called once on change, once on Enter
             assert.isTrue(onChange.calledTwice, "onChange called twice");
             assert.strictEqual(
                 onChange.args[1][0],
-                formatInTimeZone(parseISO(DATE2), "Etc/UTC", "yyyy-MM-dd'T'HH:mm:ssxxx"),
+                formatInTimeZone(parseISO(DATE2_VALUE), "Etc/UTC", "yyyy-MM-dd'T'HH:mm:ssxxx"),
             );
             assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
             assert.strictEqual(
@@ -538,6 +550,97 @@ describe("<DateInput2>", () => {
                 "input should remain focused",
             );
             assertPopoverIsOpen(wrapper, false);
+        });
+
+        it("clicking a date invokes onChange callback with that date", () => {
+            const wrapper = mount(
+                <DateInput2 {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />,
+                { attachTo: containerElement },
+            );
+            focusInput(wrapper);
+            clickCalendarDay(wrapper, 27);
+
+            assert.isTrue(onChange.calledOnce);
+            assert.strictEqual(onChange.args[0][0], "2016-04-27T00:00:00+00:00");
+            assert.isTrue(onChange.args[0][1], "expected isUserChange to be true");
+        });
+
+        it("clearing the date in the DatePicker invokes onChange with null but doesn't change UI", () => {
+            const wrapper = mount(
+                <DateInput2 {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />,
+                { attachTo: containerElement },
+            );
+            focusInput(wrapper);
+            clickCalendarDay(wrapper, 4);
+            assert.equal(wrapper.find(InputGroup).prop("value"), "4/4/2016");
+            assert.isTrue(onChange.calledWith(null, true));
+        });
+
+        it("updating controlled value updates the text input", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+                attachTo: containerElement,
+            });
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE1_UI_STR);
+            wrapper.setProps({ value: DATE2_VALUE });
+            wrapper.update();
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_UI_STR);
+        });
+
+        it("typing in a date invokes onChange and inputProps.onChange", () => {
+            const onInputChange = sinon.spy();
+            const wrapper = mount(
+                <DateInput2
+                    {...DEFAULT_PROPS_CONTROLLED}
+                    inputProps={{ onChange: onInputChange }}
+                    onChange={onChange}
+                    value={DATE1_VALUE}
+                />,
+                { attachTo: containerElement },
+            );
+            changeInput(wrapper, DATE2_UI_STR);
+            assert.isTrue(onChange.calledOnce);
+            assert.strictEqual(onChange.args[0][0], DATE2_VALUE);
+            assert.isTrue(onInputChange.calledOnce);
+            assert.strictEqual(onInputChange.args[0][0].type, "change", "inputProps.onChange expects change event");
+        });
+
+        it("clearing the date in the input invokes onChange with null", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+                attachTo: containerElement,
+            });
+            changeInput(wrapper, "");
+            assert.isTrue(onChange.calledWith(null, true));
+        });
+
+        it("Clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
+            const wrapper = mount(
+                <DateInput2
+                    {...DEFAULT_PROPS_CONTROLLED}
+                    canClearSelection={false}
+                    timePrecision="second"
+                    value={DATE1_VALUE}
+                />,
+                { attachTo: containerElement },
+            );
+            focusInput(wrapper);
+            clickCalendarDay(wrapper, 4);
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.firstCall.args, [DATE1_VALUE, true]);
+        });
+
+        it("isUserChange is false when month changes", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+                attachTo: containerElement,
+            });
+            focusInput(wrapper);
+            changeSelectDropdown(wrapper, DatetimeClasses.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
+            assert.isTrue(onChange.calledOnce);
+            assert.isFalse(onChange.args[0][1], "expected isUserChange to be false");
+        });
+
+        it("formats locale-specific format strings properly", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} locale="de" value={DATE2_VALUE} />);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_UI_STR_DE);
         });
     });
 

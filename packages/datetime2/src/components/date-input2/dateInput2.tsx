@@ -221,17 +221,15 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
         () => getDateObjectFromIsoString(value, timezoneValue),
         [timezoneValue, value],
     );
+    const isControlled = valueFromProps !== undefined;
     const defaultValueFromProps = React.useMemo(
         () => getDateObjectFromIsoString(defaultValue, timezoneValue),
         [defaultValue, defaultTimezone],
     );
-    const [valueAsDate, setValue] = React.useState<Date | null>(
-        valueFromProps !== undefined ? valueFromProps : defaultValueFromProps!,
-    );
+    const [valueAsDate, setValue] = React.useState<Date | null>(isControlled ? valueFromProps : defaultValueFromProps!);
 
     const [selectedShortcutIndex, setSelectedShortcutIndex] = React.useState<number | undefined>(undefined);
     const [isInputFocused, setIsInputFocused] = React.useState(false);
-    const [inputValue, setInputValue] = React.useState(value ?? undefined);
 
     // rendered as the text input's value
     const formattedDateString = React.useMemo(() => {
@@ -247,15 +245,22 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
         props.invalidDateMessage,
         props.outOfRangeMessage,
     ]);
+    const [inputValue, setInputValue] = React.useState(formattedDateString ?? undefined);
 
     // Effects
     // ------------------------------------------------------------------------
 
     React.useEffect(() => {
-        if (valueFromProps !== undefined) {
+        if (isControlled) {
             setValue(valueFromProps);
         }
     }, [valueFromProps]);
+
+    React.useEffect(() => {
+        if (isControlled) {
+            setInputValue(formattedDateString);
+        }
+    }, [formattedDateString]);
 
     // Popover contents (date picker)
     // ------------------------------------------------------------------------
@@ -267,16 +272,16 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
 
     const handleDateChange = React.useCallback(
         (newDate: Date | null, isUserChange: boolean, didSubmitWithEnter = false) => {
+            const prevDate = valueAsDate;
+
             if (newDate === null) {
-                if (!didSubmitWithEnter) {
-                    // user clicked on current day in the calendar, so we should clear the input
+                if (!isControlled && !didSubmitWithEnter) {
+                    // user clicked on current day in the calendar, so we should clear the input when uncontrolled
                     setInputValue("");
                 }
                 props.onChange?.(null, isUserChange);
                 return;
             }
-
-            const prevDate = valueAsDate;
 
             // this change handler was triggered by a change in month, day, or (if
             // enabled) time. for UX purposes, we want to close the popover only if
@@ -295,15 +300,15 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             // (note: spelling out the ternary explicitly reads more clearly.)
             const newIsInputFocused = didSubmitWithEnter ? true : false;
 
-            if (valueFromProps === undefined) {
+            if (isControlled) {
+                setIsInputFocused(newIsInputFocused);
+                setIsOpen(newIsOpen);
+            } else {
                 const newFormattedDateString = DatePickerUtils.getFormattedDateString(newDate, props);
                 setIsInputFocused(newIsInputFocused);
                 setIsOpen(newIsOpen);
                 setValue(newDate);
                 setInputValue(newFormattedDateString);
-            } else {
-                setIsInputFocused(newIsInputFocused);
-                setIsOpen(newIsOpen);
             }
 
             const newIsoDateString = getIsoEquivalentWithUpdatedTimezone(newDate, timezoneValue, timePrecision);
@@ -454,13 +459,12 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
                 inputValue !== formattedDateString &&
                 (!isDateValid(date) || !isDayInRange(date, [minDate, maxDate]))
             ) {
-                if (value === undefined) {
-                    // uncontrolled
+                if (isControlled) {
+                    setIsInputFocused(false);
+                } else {
                     setIsInputFocused(false);
                     setValue(date);
                     setInputValue(undefined);
-                } else {
-                    setIsInputFocused(false);
                 }
 
                 if (date === null) {
@@ -488,14 +492,18 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             const inputValueAsDate = parseDate(valueString);
 
             if (isDateValid(inputValueAsDate) && isDayInRange(inputValueAsDate, [minDate, maxDate])) {
-                if (value === undefined) {
-                    // uncontrolled
-                    setValue(inputValueAsDate);
+                if (isControlled) {
                     setInputValue(valueString);
                 } else {
+                    setValue(inputValueAsDate);
                     setInputValue(valueString);
                 }
-                props.onChange?.(valueString, true);
+                const newIsoDateString = getIsoEquivalentWithUpdatedTimezone(
+                    inputValueAsDate,
+                    timezoneValue,
+                    timePrecision,
+                );
+                props.onChange?.(newIsoDateString, true);
             } else {
                 if (valueString.length === 0) {
                     props.onChange?.(null, true);
@@ -504,7 +512,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             }
             props.inputProps?.onChange?.(e);
         },
-        [minDate, maxDate, props.onChange, props.inputProps?.onChange],
+        [minDate, maxDate, timezoneValue, timePrecision, props.onChange, props.inputProps?.onChange],
     );
 
     const handleInputClick = React.useCallback(
