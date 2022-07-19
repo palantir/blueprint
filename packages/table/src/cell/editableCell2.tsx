@@ -38,7 +38,7 @@ export interface EditableCell2Props extends Omit<ICellProps, "onKeyDown" | "onKe
 
     /**
      * Optional placeholder value for when the cell is empty (overrides the
-     * placeholder in editableTextProps)
+     * placeholder in {@link EditableTextProps})
      */
     placeholder?: string;
 
