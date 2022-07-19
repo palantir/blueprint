@@ -172,12 +172,17 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { menuProps = {}, openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
+        const { menuProps, openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={{ ...menuProps, "aria-multiselectable": true, id: this.listboxId }}
+                menuProps={{
+                    "aria-label": "selectable options",
+                    ...menuProps,
+                    "aria-multiselectable": true,
+                    id: this.listboxId,
+                }}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}

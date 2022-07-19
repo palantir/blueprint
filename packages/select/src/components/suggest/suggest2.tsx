@@ -140,12 +140,12 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { disabled, inputProps, menuProps = {}, popoverProps, ...restProps } = this.props;
+        const { disabled, inputProps, menuProps, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={{ ...menuProps, id: this.listboxId }}
+                menuProps={{ "aria-label": "selectable options", ...menuProps, id: this.listboxId }}
                 initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}

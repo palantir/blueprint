@@ -124,12 +124,12 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { filterable, inputProps, menuProps = {}, popoverProps, ...restProps } = this.props;
+        const { filterable, inputProps, menuProps, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={{ ...menuProps, id: this.listboxId }}
+                menuProps={{ "aria-label": "selectable options", ...menuProps, id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
