@@ -24,7 +24,6 @@ import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 import { Portal } from "../../src";
 import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
-import * as Keys from "../../src/common/keys";
 import { Overlay } from "../../src/components/overlay/overlay";
 import { IPopoverProps, IPopoverState, Popover, PopoverInteractionKind } from "../../src/components/popover/popover";
 import { PopoverArrow } from "../../src/components/popover/popoverArrow";
@@ -833,8 +832,8 @@ describe("<Popover>", () => {
         };
         wrapper.sendEscapeKey = () => {
             wrapper!.findClass(Classes.OVERLAY_OPEN).simulate("keydown", {
+                key: "Escape",
                 nativeEvent: new KeyboardEvent("keydown"),
-                which: Keys.ESCAPE,
             });
             return wrapper!;
         };

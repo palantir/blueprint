@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/node-build-scripts",
-    "version": "5.0.1",
+    "version": "5.0.2",
     "description": "Node.js build scripts for @blueprintjs packages",
     "scripts": {
         "test": "exit 0"
@@ -14,6 +14,7 @@
         "sass-lint": "./sass-lint.js"
     },
     "dependencies": {
+        "@types/fs-extra": "^9.0.13",
         "autoprefixer": "^10.4.4",
         "chokidar": "^3.5.3",
         "cross-spawn": "^7.0.3",
@@ -30,6 +31,7 @@
         "postcss-scss": "^4.0.3",
         "prettier": "~2.6.2",
         "sass": "^1.49.10",
+        "source-map": "^0.7.4",
         "strip-css-comments": "^4.1.0",
         "stylelint": "^14.6.1",
         "stylelint-junit-formatter": "^0.2.2",

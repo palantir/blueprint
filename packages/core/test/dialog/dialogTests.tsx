@@ -20,7 +20,6 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { Button, Classes, Dialog, DialogProps, H4, Icon, IconSize } from "../../src";
-import * as Keys from "../../src/common/keys";
 
 describe("<Dialog>", () => {
     it("renders its content correctly", () => {
@@ -93,7 +92,7 @@ describe("<Dialog>", () => {
                 {createDialogContents()}
             </Dialog>,
         );
-        dialog.simulate("keydown", { which: Keys.ESCAPE });
+        dialog.simulate("keydown", { key: "Escape" });
         assert.isTrue(onClose.notCalled);
     });
 
