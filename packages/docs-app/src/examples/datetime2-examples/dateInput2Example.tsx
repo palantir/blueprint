@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { H5, Icon, Position, Switch } from "@blueprintjs/core";
+import { H5, Icon, Switch } from "@blueprintjs/core";
 import { DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
 import { DateInput2 } from "@blueprintjs/datetime2";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
@@ -94,7 +94,7 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
                     {...spreadProps}
                     {...format}
                     onChange={this.handleDateChange}
-                    popoverProps={{ position: Position.BOTTOM }}
+                    popoverProps={{ placement: "bottom" }}
                     rightElement={
                         showRightElement && (
                             <Icon icon="globe" intent="primary" style={{ padding: 7, marginLeft: -5 }} />
@@ -177,9 +177,10 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
     }
 
     private handleDateChange = (date: string | null) => {
-        console.info(date);
         this.setState({ date });
     };
 
-    private handleFormatChange = (format: DateFormatProps) => this.setState({ format });
+    private handleFormatChange = (format: DateFormatProps) => {
+        this.setState({ format });
+    };
 }

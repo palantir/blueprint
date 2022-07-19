@@ -603,6 +603,27 @@ describe("<DateInput2>", () => {
             assert.strictEqual(onInputChange.args[0][0].type, "change", "inputProps.onChange expects change event");
         });
 
+        it("typing an invalid date updates the text input with the 'invalid date' message", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+                attachTo: containerElement,
+            });
+            focusInput(wrapper);
+            changeInput(wrapper, "4/77/2016");
+            blurInput(wrapper);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DateInput2.defaultProps?.invalidDateMessage);
+        });
+
+        it("text input does not show error styling until user is done typing and blurs the input", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+                attachTo: containerElement,
+            });
+            focusInput(wrapper);
+            changeInput(wrapper, "4/77/201");
+            assert.notEqual(wrapper.find(InputGroup).prop("intent"), "danger");
+            blurInput(wrapper);
+            assert.strictEqual(wrapper.find(InputGroup).prop("intent"), "danger");
+        });
+
         it("clearing the date in the input invokes onChange with null", () => {
             const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
                 attachTo: containerElement,
@@ -611,7 +632,7 @@ describe("<DateInput2>", () => {
             assert.isTrue(onChange.calledWith(null, true));
         });
 
-        it("Clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
+        it("clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
             const wrapper = mount(
                 <DateInput2
                     {...DEFAULT_PROPS_CONTROLLED}

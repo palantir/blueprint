@@ -248,6 +248,9 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     ]);
     const [inputValue, setInputValue] = React.useState(formattedDateString ?? undefined);
 
+    const isErrorState =
+        valueAsDate != null && (!isDateValid(valueAsDate) || !isDayInRange(valueAsDate, [minDate, maxDate]));
+
     // Effects
     // ------------------------------------------------------------------------
 
@@ -258,7 +261,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     }, [valueFromProps]);
 
     React.useEffect(() => {
-        if (isControlled) {
+        if (isControlled && !isInputFocused) {
             setInputValue(formattedDateString);
         }
     }, [formattedDateString]);
@@ -366,7 +369,9 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
                 onShortcutChange={handleShortcutChange}
                 selectedShortcutIndex={selectedShortcutIndex}
                 timePrecision={timePrecision}
-                value={valueAsDate}
+                // the rest of this component handles invalid dates gracefully (to show error messages),
+                // but DatePicker does not, so we must take care to filter those out
+                value={isErrorState ? null : valueAsDate}
             />
             <div onFocus={handleEndFocusBoundaryFocusIn} tabIndex={0} />
         </div>
@@ -420,9 +425,6 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
 
     // Text input
     // ------------------------------------------------------------------------
-
-    const isErrorState =
-        valueAsDate != null && (!isDateValid(valueAsDate) || !isDayInRange(valueAsDate, [minDate, maxDate]));
 
     const parseDate = React.useCallback(
         (dateString: string) => {
@@ -485,6 +487,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             props.inputProps?.onBlur?.(e);
         },
         [
+            parseDate,
             formattedDateString,
             inputValue,
             valueAsDate,
@@ -518,15 +521,12 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
                 if (valueString.length === 0) {
                     props.onChange?.(null, true);
                 }
-                if (!isControlled) {
-                    // update this state when the date is invalid to update formattedDateString
-                    setValue(inputValueAsDate);
-                }
+                setValue(inputValueAsDate);
                 setInputValue(valueString);
             }
             props.inputProps?.onChange?.(e);
         },
-        [minDate, maxDate, timezoneValue, timePrecision, props.onChange, props.inputProps?.onChange],
+        [minDate, maxDate, timezoneValue, timePrecision, parseDate, props.onChange, props.inputProps?.onChange],
     );
 
     const handleInputClick = React.useCallback(
@@ -560,7 +560,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
 
             props.inputProps?.onKeyDown?.(e);
         },
-        [inputValue, props.inputProps?.onKeyDown],
+        [inputValue, parseDate, props.inputProps?.onKeyDown],
     );
 
     // Main render
@@ -580,7 +580,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
         >
             <InputGroup
                 autoComplete="off"
-                intent={isErrorState ? "danger" : "none"}
+                intent={!isInputFocused && isErrorState ? "danger" : "none"}
                 placeholder={placeholder}
                 rightElement={
                     <>
