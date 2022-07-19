@@ -18,6 +18,7 @@ import * as React from "react";
 
 import { AbstractPureComponent2, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { HandleHtmlProps, HandleProps } from "./handleProps";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -45,8 +46,7 @@ export interface ISliderProps extends ISliderBaseProps {
     /** Callback invoked when the handle is released. */
     onRelease?(value: number): void;
 
-    /** Applied to `aria-label` prop of the slider Handle. */
-    handleAriaLabel?: string;
+    handleHtmlProps?: HandleHtmlProps;
 }
 
 export class Slider extends AbstractPureComponent2<SliderProps> {
@@ -60,7 +60,7 @@ export class Slider extends AbstractPureComponent2<SliderProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Slider`;
 
     public render() {
-        const { initialValue, intent, value, onChange, onRelease, handleAriaLabel, ...props } = this.props;
+        const { initialValue, intent, value, onChange, onRelease, handleHtmlProps, ...props } = this.props;
         return (
             <MultiSlider {...props}>
                 <MultiSlider.Handle
@@ -69,7 +69,7 @@ export class Slider extends AbstractPureComponent2<SliderProps> {
                     intentBefore={value! >= initialValue! ? intent : undefined}
                     onChange={onChange}
                     onRelease={onRelease}
-                    ariaLabel={handleAriaLabel}
+                    handleHtmlProps={handleHtmlProps}
                 />
                 <MultiSlider.Handle value={initialValue!} interactionKind="none" />
             </MultiSlider>

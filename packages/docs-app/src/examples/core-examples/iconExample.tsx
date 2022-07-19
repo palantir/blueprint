@@ -42,6 +42,8 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
 
     private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 
+    private iconSizeLabelId = "icon-size-label";
+
     public render() {
         const { icon, iconSize, intent } = this.state;
 
@@ -50,7 +52,7 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
                 <H5>Props</H5>
                 <IconSelect iconName={icon} onChange={this.handleIconNameChange} />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
-                <Label>Icon size</Label>
+                <Label id={this.iconSizeLabelId}>Icon size</Label>
                 <Slider
                     labelStepSize={MAX_ICON_SIZE / 5}
                     min={0}
@@ -58,7 +60,7 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
                     showTrackFill={false}
                     value={iconSize}
                     onChange={this.handleIconSizeChange}
-                    handleAriaLabel="icon size"
+                    handleHtmlProps={{ "aria-labelledby": this.iconSizeLabelId }}
                 />
             </>
         );

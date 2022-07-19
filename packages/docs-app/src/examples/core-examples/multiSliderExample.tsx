@@ -87,7 +87,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                             value={values.dangerStart}
                             intentBefore="danger"
                             interactionKind={interactionKind}
-                            ariaLabel="danger start"
+                            handleHtmlProps={{ "aria-label": "danger start" }}
                         />
                     )}
                     {showWarning && (
@@ -96,7 +96,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                             value={values.warningStart}
                             intentBefore="warning"
                             interactionKind={interactionKind}
-                            ariaLabel="warning start"
+                            handleHtmlProps={{ "aria-label": "warning start" }}
                         />
                     )}
                     {showWarning && (
@@ -105,7 +105,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                             value={values.warningEnd}
                             intentAfter="warning"
                             interactionKind={interactionKind}
-                            ariaLabel="warning end"
+                            handleHtmlProps={{ "aria-label": "warning end" }}
                         />
                     )}
                     {showDanger && (
@@ -114,7 +114,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                             value={values.dangerEnd}
                             intentAfter="danger"
                             interactionKind={interactionKind}
-                            ariaLabel="danger end"
+                            handleHtmlProps={{ "aria-label": "danger end" }}
                         />
                     )}
                 </MultiSlider>

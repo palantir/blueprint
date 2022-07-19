@@ -47,6 +47,8 @@ export const HandleInteractionKind = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type HandleInteractionKind = typeof HandleInteractionKind[keyof typeof HandleInteractionKind];
 
+export type HandleHtmlProps = React.HTMLProps<HTMLSpanElement>;
+
 // eslint-disable-next-line deprecation/deprecation
 export type HandleProps = IHandleProps;
 /** @deprecated use HandleProps */
@@ -90,6 +92,8 @@ export interface IHandleProps extends Props {
      */
     type?: HandleType;
 
-    /** Accessible label text for this handle element. */
-    ariaLabel?: string;
+    /**
+     * HTML props to apply to the Handle
+     */
+    handleHtmlProps?: HandleHtmlProps;
 }

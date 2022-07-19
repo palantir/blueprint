@@ -19,6 +19,7 @@ import * as React from "react";
 import { AbstractPureComponent2, Intent } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { HandleHtmlProps } from "./handleProps";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
 export type NumberRange = [number, number];
@@ -46,7 +47,7 @@ export interface IRangeSliderProps extends ISliderBaseProps {
     onRelease?(value: NumberRange): void;
 
     /** Applied to `aria-label` props of the slider Handles */
-    handleAriaLabels?: { startAriaLabel: string; endAriaLabel: string };
+    handleHtmlProps?: { start: HandleHtmlProps; end: HandleHtmlProps };
 }
 
 export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
@@ -59,19 +60,19 @@ export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.RangeSlider`;
 
     public render() {
-        const { value, handleAriaLabels, ...props } = this.props;
+        const { value, handleHtmlProps, ...props } = this.props;
         return (
             <MultiSlider {...props}>
                 <MultiSlider.Handle
                     value={value![RangeIndex.START]}
                     type="start"
                     intentAfter={props.intent}
-                    ariaLabel={handleAriaLabels ? handleAriaLabels.startAriaLabel : undefined}
+                    handleHtmlProps={handleHtmlProps ? handleHtmlProps.start : undefined}
                 />
                 <MultiSlider.Handle
                     value={value![RangeIndex.END]}
                     type="end"
-                    ariaLabel={handleAriaLabels ? handleAriaLabels.endAriaLabel : undefined}
+                    handleHtmlProps={handleHtmlProps ? handleHtmlProps.end : undefined}
                 />
             </MultiSlider>
         );

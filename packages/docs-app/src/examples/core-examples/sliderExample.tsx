@@ -55,7 +55,7 @@ export class SliderExample extends React.PureComponent<IExampleProps, ISliderExa
                     onChange={this.getChangeHandler("value2")}
                     value={this.state.value2}
                     vertical={vertical}
-                    handleAriaLabel="example 1"
+                    handleHtmlProps={{ "aria-label": "example 1" }}
                 />
                 <Slider
                     min={0}
@@ -66,7 +66,7 @@ export class SliderExample extends React.PureComponent<IExampleProps, ISliderExa
                     labelRenderer={this.renderLabel2}
                     value={this.state.value1}
                     vertical={vertical}
-                    handleAriaLabel="example 2"
+                    handleHtmlProps={{ "aria-label": "example 2" }}
                 />
                 <Slider
                     min={-12}
@@ -78,7 +78,7 @@ export class SliderExample extends React.PureComponent<IExampleProps, ISliderExa
                     showTrackFill={false}
                     value={this.state.value3}
                     vertical={vertical}
-                    handleAriaLabel="example 3"
+                    handleHtmlProps={{ "aria-label": "example 3" }}
                 />
             </Example>
         );

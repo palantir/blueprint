@@ -51,7 +51,7 @@ export class RangeSliderExample extends React.PureComponent<IExampleProps, IRang
                     onChange={this.handleValueChange}
                     value={range}
                     vertical={vertical}
-                    handleAriaLabels={{ startAriaLabel: "example start", endAriaLabel: "example end" }}
+                    handleHtmlProps={{ start: { "aria-label": "example start" }, end: { "aria-label": "example end" } }}
                 />
             </Example>
         );

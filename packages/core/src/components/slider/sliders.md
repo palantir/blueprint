@@ -59,12 +59,12 @@ elements, each with their own `value` and other properties.
         value={startValue}
         type="start"
         intentAfter={Intent.PRIMARY}
-        ariaLabel={handleAriaLabels.startAriaLabel}
+        handleHtmlProps={handleHtmlProps.start}
     />
     <MultiSlider.Handle
         value={endValue}
         type="end"
-        ariaLabel={handleAriaLabels.endAriaLabel}
+        handleHtmlProps={handleHtmlProps.end}
     />
 </MultiSlider>
 ```
