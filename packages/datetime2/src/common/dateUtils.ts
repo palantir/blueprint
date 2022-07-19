@@ -22,6 +22,10 @@ export function clone(d: Date) {
     return new Date(d.getTime());
 }
 
+export function isDateValid(date: Date | false | null): date is Date {
+    return date instanceof Date && !isNaN(date.valueOf());
+}
+
 export function isSameTime(d1: Date | null, d2: Date | null) {
     // N.B. do not use date-fns helper fns here, since we don't want to return false when the month/day/year is different
     return (

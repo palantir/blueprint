@@ -12,6 +12,13 @@
   user-select: none;
 }
 
+.#{$ns}-date-input {
+  .#{$ns}-input-action {
+    // we need these elements to lay out next to each other if there are multiple
+    display: flex;
+  }
+}
+
 .#{$ns}-date-input-timezone-select {
   width: 100%;
 }

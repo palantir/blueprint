@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { H5, Position, Switch } from "@blueprintjs/core";
+import { H5, Icon, Switch } from "@blueprintjs/core";
 import { DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
 import { DateInput2 } from "@blueprintjs/datetime2";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
@@ -33,6 +33,9 @@ export interface DateInput2ExampleState {
     format: DateFormatProps;
     reverseMonthAndYearMenus: boolean;
     shortcuts: boolean;
+    showActionsBar: boolean;
+    showRightElement: boolean;
+    showTimePickerArrows: boolean;
     showTimezoneSelect: boolean;
     timePrecision: TimePrecision | undefined;
 }
@@ -47,9 +50,14 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
         format: DATE_FNS_FORMATS[0],
         reverseMonthAndYearMenus: false,
         shortcuts: false,
+        showActionsBar: false,
+        showRightElement: false,
+        showTimePickerArrows: false,
         showTimezoneSelect: true,
         timePrecision: TimePrecision.MINUTE,
     };
+
+    private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
 
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
 
@@ -67,20 +75,34 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
 
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
 
+    private toggleRightElement = handleBooleanChange(showRightElement => this.setState({ showRightElement }));
+
+    private toggleTimePickerArrows = handleBooleanChange(showTimePickerArrows =>
+        this.setState({ showTimePickerArrows }),
+    );
+
     private handleTimePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
 
     public render() {
-        const { date, format, timePrecision, ...spreadProps } = this.state;
+        const { date, format, showRightElement, showTimePickerArrows, ...spreadProps } = this.state;
+
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <DateInput2
                     {...spreadProps}
                     {...format}
                     onChange={this.handleDateChange}
-                    popoverProps={{ position: Position.BOTTOM }}
-                    timePrecision={timePrecision}
+                    popoverProps={{ placement: "bottom" }}
+                    rightElement={
+                        showRightElement && (
+                            <Icon icon="globe" intent="primary" style={{ padding: 7, marginLeft: -5 }} />
+                        )
+                    }
+                    timePickerProps={
+                        this.state.timePrecision === undefined ? undefined : { showArrowButtons: showTimePickerArrows }
+                    }
                     value={date}
                 />
                 {date}
@@ -92,19 +114,33 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
         const {
             closeOnSelection,
             disabled,
-            fill,
-            reverseMonthAndYearMenus: reverse,
-            format,
-            timePrecision,
-            shortcuts,
             disableTimezoneSelect,
+            fill,
+            format,
+            reverseMonthAndYearMenus: reverse,
+            shortcuts,
+            showActionsBar,
+            showRightElement,
+            showTimePickerArrows,
             showTimezoneSelect,
+            timePrecision,
         } = this.state;
         return (
             <>
                 <H5>Props</H5>
                 <Switch label="Close on selection" checked={closeOnSelection} onChange={this.toggleSelection} />
-                <Switch checked={shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
+                <Switch
+                    checked={shortcuts}
+                    disabled={showActionsBar}
+                    label="Show shortcuts"
+                    onChange={this.toggleShortcuts}
+                />
+                <Switch
+                    checked={showActionsBar}
+                    disabled={shortcuts}
+                    label="Show actions bar"
+                    onChange={this.toggleActionsBar}
+                />
                 <PrecisionSelect
                     allowNone={true}
                     label="Time precision"
@@ -116,6 +152,13 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
                 <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
                 <Switch label="Fill" checked={fill} onChange={this.toggleFill} />
                 <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
+                <Switch
+                    label="Show time picker arrows"
+                    checked={showTimePickerArrows}
+                    disabled={timePrecision === undefined}
+                    onChange={this.toggleTimePickerArrows}
+                />
+                <Switch label="Show right element" checked={showRightElement} onChange={this.toggleRightElement} />
                 <DateFnsFormatSelector format={format} onChange={this.handleFormatChange} />
 
                 <H5>Timezone props</H5>
@@ -133,7 +176,11 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
         );
     }
 
-    private handleDateChange = (date: string | null) => this.setState({ date });
+    private handleDateChange = (date: string | null) => {
+        this.setState({ date });
+    };
 
-    private handleFormatChange = (format: DateFormatProps) => this.setState({ format });
+    private handleFormatChange = (format: DateFormatProps) => {
+        this.setState({ format });
+    };
 }
