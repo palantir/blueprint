@@ -90,6 +90,6 @@ export interface IHandleProps extends Props {
      */
     type?: HandleType;
 
-    /** Applied to `aria-label` prop of the handle `span` element */
+    /** Accessible label text for this handle element. */
     ariaLabel?: string;
 }
