@@ -566,6 +566,9 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     // Main render
     // ------------------------------------------------------------------------
 
+    const shouldShowErrorStyling =
+        !isInputFocused || inputValue === props.outOfRangeMessage || inputValue === props.invalidDateMessage;
+
     return (
         <Popover2
             isOpen={isOpen && !props.disabled}
@@ -580,7 +583,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
         >
             <InputGroup
                 autoComplete="off"
-                intent={!isInputFocused && isErrorState ? "danger" : "none"}
+                intent={shouldShowErrorStyling && isErrorState ? "danger" : "none"}
                 placeholder={placeholder}
                 rightElement={
                     <>
