@@ -37,6 +37,12 @@ export interface EditableCell2Props extends Omit<ICellProps, "onKeyDown" | "onKe
     isFocused?: boolean;
 
     /**
+     * Optional placeholder value for when the cell is empty (overrides the
+     * placeholder in editableTextProps)
+     */
+    placeholder?: string;
+
+    /**
      * The value displayed in the text box. Be sure to update this value when
      * rendering this component after a confirmed change.
      */
@@ -171,9 +177,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
                 [Classes.TABLE_CELL_TEXT_PLACEHOLDER]: !hasValue,
             });
 
-            cellContents = (
-                <div className={textClasses}>{hasValue ? savedValue : this.props.editableTextProps?.placeholder}</div>
-            );
+            cellContents = <div className={textClasses}>{hasValue ? savedValue : this.props.placeholder}</div>;
         }
 
         return (

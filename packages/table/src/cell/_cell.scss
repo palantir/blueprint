@@ -66,5 +66,9 @@
 }
 
 .#{$ns}-table-cell-text-placeholder {
-  color: $input-placeholder-color;
+  color: $pt-text-color-muted;
+
+  .#{$ns}-dark & {
+    color: $pt-dark-text-color-muted;
+  }
 }
