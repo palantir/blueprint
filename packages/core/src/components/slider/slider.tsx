@@ -46,6 +46,7 @@ export interface ISliderProps extends ISliderBaseProps {
     /** Callback invoked when the handle is released. */
     onRelease?(value: number): void;
 
+    /** HTML props to apply to the slider Handle */
     handleHtmlProps?: HandleHtmlProps;
 }
 

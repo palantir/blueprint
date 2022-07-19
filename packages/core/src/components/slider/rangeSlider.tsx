@@ -46,7 +46,7 @@ export interface IRangeSliderProps extends ISliderBaseProps {
     /** Callback invoked when a handle is released. */
     onRelease?(value: NumberRange): void;
 
-    /** Applied to `aria-label` props of the slider Handles */
+    /** HTML props to apply to the slider Handles */
     handleHtmlProps?: { start: HandleHtmlProps; end: HandleHtmlProps };
 }
 
