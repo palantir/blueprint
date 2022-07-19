@@ -129,12 +129,10 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
         content,
         disabled = false,
         onContextMenu,
-        popoverProps = {},
+        popoverProps,
         tagName = "div",
         ...restProps
     } = props;
-
-    const { rootBoundary = "viewport", ...popoverPropsRest } = popoverProps;
 
     // ancestor Tooltip2Context state doesn't affect us since we don't care about parent ContextMenu2s, we only want to
     // force disable parent Tooltip2s in certain cases through dispatching actions
@@ -187,7 +185,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
     const maybePopover =
         menu === undefined ? undefined : (
             <Popover2
-                {...popoverPropsRest}
+                {...popoverProps}
                 content={
                     // this prevents right-clicking inside our context menu
                     <div onContextMenu={cancelContextMenu}>{menu}</div>
@@ -206,7 +204,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
                 })}
                 placement="right-start"
                 positioningStrategy="fixed"
-                rootBoundary={rootBoundary}
+                rootBoundary={popoverProps?.rootBoundary ?? "viewport"}
                 renderTarget={renderTarget}
                 transitionDuration={popoverProps?.transitionDuration ?? 100}
             />
