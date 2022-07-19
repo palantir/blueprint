@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { AbstractPureComponent2, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { HandleHtmlProps, HandleProps } from "./handleProps";
+import { HandleHtmlProps } from "./handleProps";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
 // eslint-disable-next-line deprecation/deprecation
