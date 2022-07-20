@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { MenuItem } from "@blueprintjs/core";
-import { ItemPredicate, ItemRenderer } from "@blueprintjs/select";
+import { IItemModifiers, ItemPredicate, ItemRenderer } from "@blueprintjs/select";
 
 export interface IFilm {
     /** Title of film. */
@@ -132,7 +132,20 @@ export const TOP_100_FILMS: IFilm[] = [
     { title: "Monty Python and the Holy Grail", year: 1975 },
 ].map((m, index) => ({ ...m, rank: index + 1 }));
 
-export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, handleFocus, modifiers, query }) => {
+export const renderFilm: ItemRenderer<IFilm> = (
+    film: IFilm,
+    {
+        handleClick,
+        handleFocus,
+        modifiers,
+        query,
+    }: {
+        handleClick: () => void;
+        handleFocus: () => void;
+        modifiers: IItemModifiers;
+        query: string;
+    },
+) => {
     if (!modifiers.matchesPredicate) {
         return null;
     }
@@ -140,7 +153,6 @@ export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, handleFocus
         <MenuItem
             text={highlightText(`${film.rank}. ${film.title}`, query)}
             active={modifiers.active}
-            // selected={modifiers.selected} // TODO: add selected prop to modifiers? or does this need to be handled outside of QueryList?
             disabled={modifiers.disabled}
             label={film.year.toString()}
             roleStructure="listoption"
@@ -166,7 +178,7 @@ export const renderCreateFilmOption = (
     />
 );
 
-export const filterFilm: ItemPredicate<IFilm> = (query, film, _index, exactMatch) => {
+export const filterFilm: ItemPredicate<IFilm> = (query: string, film: IFilm, _index: number, exactMatch: boolean) => {
     const normalizedTitle = film.title.toLowerCase();
     const normalizedQuery = query.toLowerCase();
 
