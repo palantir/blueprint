@@ -20,7 +20,6 @@ import { IconNames } from "@blueprintjs/icons";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { Button } from "../button/buttons";
-import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
 import { IPanel } from "./panelProps";
 
