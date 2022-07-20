@@ -37,7 +37,7 @@ export interface IMultistepDialogProps extends DialogProps {
     backButtonProps?: DialogStepButtonProps;
 
     /** Dialog steps. */
-    children: React.ReactNode;
+    children?: React.ReactNode;
 
     /**
      * Props for the close button that appears in the footer when there is no
