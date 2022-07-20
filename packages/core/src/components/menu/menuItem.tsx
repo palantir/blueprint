@@ -213,7 +213,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 [Classes.DISABLED]: disabled,
                 // prevent popover from closing when clicking on submenu trigger or disabled item
                 [Classes.POPOVER_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
-                [Classes.SELECTED]: selected || (active && intentClass === undefined),
+                [Classes.SELECTED]: active && intentClass === undefined,
             },
             className,
         );
