@@ -165,7 +165,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             className,
             children,
             disabled,
-            icon: passedIcon,
+            icon,
             intent,
             labelClassName,
             labelElement,
@@ -182,26 +182,24 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             ...htmlProps
         } = this.props;
 
-        const [liRole, targetRole, icon, ariaSelected] =
+        const [liRole, targetRole, itemIcon, ariaSelected] =
             roleStructure === "listoption"
                 ? // "listoption": parent has listbox role, or is a <select>
                   [
                       "option",
                       undefined, // target should have no role
-                      selected
-                          ? passedIcon ?? IconNames.SMALL_TICK // if selected, set icon to check by default
-                          : IconNames.BLANK, // if not selected, no icon
-                      selected,
+                      icon ?? (selected ? IconNames.SMALL_TICK : IconNames.BLANK),
+                      selected, // aria-selected prop
                   ]
                 : // "menuitem": parent has menu role
                   [
                       "none",
                       "menuitem",
-                      passedIcon, // always set icon to passed icon
+                      icon, // always set icon to passed icon
                       undefined, // don't set aria-selected prop
                   ];
 
-        const hasIcon = icon != null;
+        const hasIcon = itemIcon != null;
         const hasSubmenu = children != null;
 
         const intentClass = Classes.intentClass(intent);
@@ -231,7 +229,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
                 // so that we always render this class
                 <span className={Classes.MENU_ITEM_ICON}>
-                    <Icon icon={icon} aria-hidden={true} tabIndex={-1} />
+                    <Icon icon={itemIcon} aria-hidden={true} tabIndex={-1} />
                 </span>
             ) : undefined,
             <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline} title={htmlTitle}>
