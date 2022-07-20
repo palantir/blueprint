@@ -62,7 +62,7 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: 
             <Button
                 aria-label="Back"
                 className={Classes.PANEL_STACK_HEADER_BACK}
-                icon={IconNames.CHEVERON_LEFT}
+                icon={IconNames.CHEVRON_LEFT}
                 minimal={true}
                 onClick={handleClose}
                 small={true}

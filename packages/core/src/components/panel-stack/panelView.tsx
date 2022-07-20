@@ -85,7 +85,7 @@ export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
             <Button
                 aria-label="Back"
                 className={Classes.PANEL_STACK_HEADER_BACK}
-                icon={IconNames.CHEVERON_LEFT}
+                icon={IconNames.CHEVRON_LEFT}
                 minimal={true}
                 onClick={this.handleClose}
                 small={true}
