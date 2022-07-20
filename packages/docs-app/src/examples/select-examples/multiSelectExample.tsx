@@ -233,7 +233,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     // NOTE: not using Films.itemRenderer here so we can set icons.
     private renderFilm: ItemRenderer<IFilm> = (
         film: IFilm,
-        { modifiers, handleClick }: { modifiers: IItemModifiers; handleClick: () => void },
+        { modifiers, handleClick }: { modifiers: IItemModifiers; handleClick: React.MouseEventHandler<HTMLElement> },
     ) => {
         if (!modifiers.matchesPredicate) {
             return null;

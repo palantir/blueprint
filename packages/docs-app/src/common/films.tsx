@@ -140,7 +140,7 @@ export const renderFilm: ItemRenderer<IFilm> = (
         modifiers,
         query,
     }: {
-        handleClick: () => void;
+        handleClick: React.MouseEventHandler<HTMLElement>;
         handleFocus: () => void;
         modifiers: IItemModifiers;
         query: string;
