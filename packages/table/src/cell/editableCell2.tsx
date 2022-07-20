@@ -165,7 +165,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
                     onChange={this.handleChange}
                     onConfirm={this.handleConfirm}
                     onEdit={this.handleEdit}
-                    placeholder=""
+                    placeholder={this.props.placeholder}
                     selectAllOnFocus={false}
                     value={dirtyValue}
                 />
