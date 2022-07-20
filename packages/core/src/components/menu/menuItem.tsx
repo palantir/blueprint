@@ -18,6 +18,8 @@ import classNames from "classnames";
 import { Modifiers } from "popper.js";
 import * as React from "react";
 
+import { IconNames } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { ActionProps, DISPLAYNAME_PREFIX, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
@@ -33,15 +35,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     text: React.ReactNode;
 
     /**
-     * Whether this item should render with an active appearance.
-     * This is the same styling as the `:active` CSS element state.
-     *
-     * Note: in Blueprint 3.x, this prop was conflated with a "selected" appearance
-     * when `intent` was undefined. For legacy purposes, we emulate this behavior in
-     * Blueprint 4.x, so setting `active={true} intent={undefined}` is the same as
-     * `selected={true}`. This prop will be removed in a future major version.
-     *
-     * @deprecated use `selected` prop
+     * Whether this item should render with an active appearance. Used to indicate keyboard focus.
      */
     active?: boolean;
 
@@ -60,11 +54,6 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     disabled?: boolean;
 
     /**
-     * Props to spread to `li` element wrapper
-     */
-    liProps?: React.HTMLProps<HTMLLIElement>;
-
-    /**
      * Right-aligned label text content, useful for displaying hotkeys.
      *
      * This prop actually supports JSX elements, but TypeScript will throw an error because
@@ -81,22 +70,6 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      * Right-aligned label content, useful for displaying hotkeys.
      */
     labelElement?: React.ReactNode;
-
-    /**
-     * Whether the text should be allowed to wrap to multiple lines.
-     * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
-     *
-     * @default false
-     */
-    multiline?: boolean;
-
-    /**
-     * Props to spread to `Popover`. Note that `content` and `minimal` cannot be
-     * changed and `usePortal` defaults to `false` so all submenus will live in
-     * the same container.
-     */
-    // eslint-disable-next-line deprecation/deprecation
-    popoverProps?: Partial<IPopoverProps>;
 
     /**
      * Changes the ARIA `role` property structure of this MenuItem to accomodate for various
@@ -121,7 +94,24 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     roleStructure?: "menuitem" | "listoption";
 
     /**
-     * Whether this item should appear selected.
+     * Whether the text should be allowed to wrap to multiple lines.
+     * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
+     *
+     * @default false
+     */
+    multiline?: boolean;
+
+    /**
+     * Props to spread to `Popover`. Note that `content` and `minimal` cannot be
+     * changed and `usePortal` defaults to `false` so all submenus will live in
+     * the same container.
+     */
+    // eslint-disable-next-line deprecation/deprecation
+    popoverProps?: Partial<IPopoverProps>;
+
+    /**
+     * Whether this item is selected. Will set `aria-selected` to true, and apply a check icon next to the
+     * item (unless a different icon is specified).
      */
     selected?: boolean;
 
@@ -175,11 +165,10 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             className,
             children,
             disabled,
-            icon,
+            icon: passedIcon,
             intent,
             labelClassName,
             labelElement,
-            liProps,
             multiline,
             popoverProps,
             roleStructure = "menuitem",
@@ -192,6 +181,25 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             htmlTitle,
             ...htmlProps
         } = this.props;
+
+        const [liRole, targetRole, icon, ariaSelected] =
+            roleStructure === "listoption"
+                ? // "listoption": parent has listbox role, or is a <select>
+                  [
+                      "option",
+                      undefined, // target should have no role
+                      selected
+                          ? passedIcon ?? IconNames.SMALL_TICK // if selected, set icon to check by default
+                          : IconNames.BLANK, // if not selected, no icon
+                      selected,
+                  ]
+                : // "menuitem": parent has menu role
+                  [
+                      "none",
+                      "menuitem",
+                      passedIcon, // always set icon to passed icon
+                      undefined, // don't set aria-selected prop
+                  ];
 
         const hasIcon = icon != null;
         const hasSubmenu = children != null;
@@ -209,11 +217,6 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             },
             className,
         );
-
-        const [liRole, targetRole] =
-            roleStructure === "listoption"
-                ? ["option", undefined] // parent has listbox role, or is a <select>
-                : ["none", "menuitem"]; // parent has menu role
 
         const target = React.createElement(
             tagName,
@@ -240,7 +243,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li className={liClasses} role={liRole} {...liProps}>
+            <li className={liClasses} role={liRole} aria-selected={ariaSelected}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );

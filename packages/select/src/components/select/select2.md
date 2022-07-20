@@ -159,7 +159,7 @@ function renderCreateFilmOption(
             icon="add"
             text={`Create "${query}"`}
             roleStructure="listoption"
-            selected={active}
+            active={active}
             onClick={handleClick}
             shouldDismissPopover={false}
         />
@@ -261,7 +261,8 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
             text={film.title}
             label={film.year}
             roleStructure="listoption"
-            selected={modifiers.active}
+            active={modifiers.active}
+            selected={modifiers.selected}
             key={film.title}
             onClick={handleClick}
             onFocus={handleFocus}

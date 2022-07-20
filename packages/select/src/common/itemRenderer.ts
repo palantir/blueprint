@@ -20,6 +20,9 @@ export interface IItemModifiers {
     /** Whether this is the "active" (focused) item, meaning keyboard interactions will act upon it. */
     active: boolean;
 
+    /** Whether this is item is a selected option. */
+    selected: boolean;
+
     /** Whether this item is disabled and should ignore interactions. */
     disabled: boolean;
 

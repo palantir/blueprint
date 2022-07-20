@@ -136,17 +136,17 @@ export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, handleFocus
     if (!modifiers.matchesPredicate) {
         return null;
     }
-    const text = `${film.rank}. ${film.title}`;
     return (
         <MenuItem
+            text={highlightText(`${film.rank}. ${film.title}`, query)}
             active={modifiers.active}
+            selected={modifiers.selected}
             disabled={modifiers.disabled}
             label={film.year.toString()}
             roleStructure="listoption"
             key={film.rank}
             onClick={handleClick}
             onFocus={handleFocus}
-            text={highlightText(text, query)}
         />
     );
 };

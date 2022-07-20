@@ -371,12 +371,13 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     /** wrapper around `itemRenderer` to inject props */
     private renderItem = (item: T, index: number) => {
         if (this.props.disabled !== true) {
-            const { activeItem, query } = this.state;
-            const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
+            const { activeItem, query, filteredItems } = this.state;
+
             const modifiers: IItemModifiers = {
                 active: executeItemsEqual(this.props.itemsEqual, getActiveItem(activeItem), item),
+                selected: this.props.selectedItems.indexOf(item) >= 0,
                 disabled: isItemDisabled(item, index, this.props.itemDisabled),
-                matchesPredicate,
+                matchesPredicate: filteredItems.indexOf(item) >= 0,
             };
             return this.props.itemRenderer(item, {
                 handleClick: e => this.handleItemSelect(item, e),
