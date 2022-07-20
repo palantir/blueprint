@@ -66,7 +66,7 @@ export interface IReorderableProps {
 
 export interface IDragReorderable extends IReorderableProps {
     /** Element to drag & reorder. */
-    children: React.ReactNode;
+    children?: React.ReactNode;
 
     /**
      * Whether the reordering behavior is disabled.

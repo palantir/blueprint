@@ -25,7 +25,7 @@ export type CollapseProps = ICollapseProps;
 /** @deprecated use CollapseProps */
 export interface ICollapseProps extends Props {
     /** Contents to collapse. */
-    children: React.ReactNode;
+    children?: React.ReactNode;
 
     /**
      * Component to render as the root element.
