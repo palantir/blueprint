@@ -178,12 +178,7 @@ export const renderCreateFilmOption = (
     />
 );
 
-export const filterFilm: ItemPredicate<IFilm> = (
-    query: string,
-    film: IFilm,
-    _index: number | undefined,
-    exactMatch: boolean,
-) => {
+export const filterFilm: ItemPredicate<IFilm> = (query: string, film: IFilm, _index?: number, exactMatch?: boolean) => {
     const normalizedTitle = film.title.toLowerCase();
     const normalizedQuery = query.toLowerCase();
 
