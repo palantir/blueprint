@@ -140,7 +140,7 @@ export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, handleFocus
         <MenuItem
             text={highlightText(`${film.rank}. ${film.title}`, query)}
             active={modifiers.active}
-            selected={modifiers.selected}
+            // selected={modifiers.selected} // TODO: add selected prop to modifiers? or does this need to be handled outside of QueryList?
             disabled={modifiers.disabled}
             label={film.year.toString()}
             roleStructure="listoption"

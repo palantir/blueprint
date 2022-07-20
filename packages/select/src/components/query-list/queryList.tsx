@@ -375,7 +375,6 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
 
             const modifiers: IItemModifiers = {
                 active: executeItemsEqual(this.props.itemsEqual, getActiveItem(activeItem), item),
-                selected: this.props.selectedItems.indexOf(item) >= 0,
                 disabled: isItemDisabled(item, index, this.props.itemDisabled),
                 matchesPredicate: filteredItems.indexOf(item) >= 0,
             };

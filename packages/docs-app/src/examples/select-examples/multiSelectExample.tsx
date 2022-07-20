@@ -252,7 +252,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         return (
             <MenuItem
                 active={modifiers.active}
-                selected={modifiers.selected}
+                selected={this.isFilmSelected(film)}
                 roleStructure="listoption"
                 key={film.rank}
                 label={film.year.toString()}

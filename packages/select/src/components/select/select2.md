@@ -262,7 +262,6 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
             label={film.year}
             roleStructure="listoption"
             active={modifiers.active}
-            selected={modifiers.selected}
             key={film.title}
             onClick={handleClick}
             onFocus={handleFocus}
