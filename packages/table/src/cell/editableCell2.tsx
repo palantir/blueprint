@@ -28,9 +28,9 @@ import {
 
 import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
-import { Cell, ICellProps } from "./cell";
+import { Cell, CellProps } from "./cell";
 
-export interface EditableCell2Props extends Omit<ICellProps, "onKeyDown" | "onKeyUp"> {
+export interface EditableCell2Props extends Omit<CellProps, "onKeyDown" | "onKeyUp"> {
     /**
      * Whether the given cell is the current active/focused cell.
      */

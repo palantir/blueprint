@@ -43,7 +43,7 @@ will reference the up-to-date `sortedIndexMap` value.
 
 @## Editing
 
-To make your table editable, use the `EditableCell` and
+To make your table editable, use the [`EditableCell2`](#table/table2.editablecell2) and
 `EditableName` components to create editable table cells and column names.
 
 To further extend the interactivity of the column headers, you can
