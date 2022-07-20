@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
-import { H5, Icon, Switch } from "@blueprintjs/core";
+import { Classes, H5, Icon, Switch } from "@blueprintjs/core";
 import { DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
 import { DateInput2 } from "@blueprintjs/datetime2";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
@@ -161,15 +162,19 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
                 <Switch label="Show right element" checked={showRightElement} onChange={this.toggleRightElement} />
                 <DateFnsFormatSelector format={format} onChange={this.handleFormatChange} />
 
-                <H5>Timezone props</H5>
+                <H5 className={classNames({ [Classes.TEXT_DISABLED]: timePrecision === undefined })}>
+                    TimezoneSelect props
+                </H5>
                 <Switch
                     label="Disable timezone select"
                     checked={disableTimezoneSelect}
+                    disabled={timePrecision === undefined}
                     onChange={this.toggleDisableTimezoneSelect}
                 />
                 <Switch
                     label="Show timezone select"
                     checked={showTimezoneSelect}
+                    disabled={timePrecision === undefined}
                     onChange={this.toggleShowTimezoneSelect}
                 />
             </>
