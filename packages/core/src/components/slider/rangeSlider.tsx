@@ -47,7 +47,7 @@ export interface IRangeSliderProps extends ISliderBaseProps {
     onRelease?(value: NumberRange): void;
 
     /** HTML props to apply to the slider Handles */
-    handleHtmlProps?: { start: HandleHtmlProps; end: HandleHtmlProps };
+    handleHtmlProps?: { start?: HandleHtmlProps; end?: HandleHtmlProps };
 }
 
 export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
@@ -67,12 +67,12 @@ export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
                     value={value![RangeIndex.START]}
                     type="start"
                     intentAfter={props.intent}
-                    htmlProps={handleHtmlProps ? handleHtmlProps.start : undefined}
+                    htmlProps={handleHtmlProps?.start}
                 />
                 <MultiSlider.Handle
                     value={value![RangeIndex.END]}
                     type="end"
-                    htmlProps={handleHtmlProps ? handleHtmlProps.end : undefined}
+                    htmlProps={handleHtmlProps?.end}
                 />
             </MultiSlider>
         );
