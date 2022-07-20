@@ -189,7 +189,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                       "option",
                       undefined, // target should have no role
                       icon ?? (selected ? IconNames.SMALL_TICK : IconNames.BLANK),
-                      selected, // aria-selected prop
+                      Boolean(selected), // aria-selected prop
                   ]
                 : // "menuitem": parent has menu role
                   [
