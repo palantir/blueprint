@@ -141,7 +141,7 @@ export const renderFilm: ItemRenderer<IFilm> = (
         query,
     }: {
         handleClick: React.MouseEventHandler<HTMLElement>;
-        handleFocus: () => void;
+        handleFocus: (() => void) | undefined;
         modifiers: IItemModifiers;
         query: string;
     },
@@ -178,7 +178,12 @@ export const renderCreateFilmOption = (
     />
 );
 
-export const filterFilm: ItemPredicate<IFilm> = (query: string, film: IFilm, _index: number, exactMatch: boolean) => {
+export const filterFilm: ItemPredicate<IFilm> = (
+    query: string,
+    film: IFilm,
+    _index: number | undefined,
+    exactMatch: boolean,
+) => {
     const normalizedTitle = film.title.toLowerCase();
     const normalizedQuery = query.toLowerCase();
 
