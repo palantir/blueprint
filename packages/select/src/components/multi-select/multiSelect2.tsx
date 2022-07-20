@@ -30,6 +30,7 @@ import {
     TagInputProps,
     Utils,
 } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
@@ -266,7 +267,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                     <Button
                         aria-label="Clear selected items"
                         disabled={disabled}
-                        icon="cross"
+                        icon={IconNames.CROSS}
                         minimal={true}
                         onClick={this.handleClearButtonClick}
                         title="Clear selected items"

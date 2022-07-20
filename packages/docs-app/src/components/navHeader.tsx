@@ -19,6 +19,7 @@ import * as React from "react";
 
 import { Classes, HotkeysTarget2, Intent, Menu, MenuItem, NavbarHeading, Tag } from "@blueprintjs/core";
 import { NavButton } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 import { Popover2 } from "@blueprintjs/popover2";
 
 import { Logo } from "./logo";
@@ -103,7 +104,7 @@ export class NavHeader extends React.PureComponent<INavHeaderProps> {
             });
         return (
             <Popover2 content={<Menu className="docs-version-list">{releaseItems}</Menu>} placement="bottom">
-                <Tag interactive={true} minimal={true} round={true} rightIcon="caret-down">
+                <Tag interactive={true} minimal={true} round={true} rightIcon={IconNames.CARET_DOWN}>
                     v{major(currentVersion)}
                 </Tag>
             </Popover2>

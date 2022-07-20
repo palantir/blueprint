@@ -17,21 +17,31 @@
 import * as React from "react";
 
 import { Card, H4, Icon, IconName } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 
 export class Welcome extends React.PureComponent {
     public render() {
         return (
             <div className="blueprint-welcome">
-                <WelcomeCard href="#blueprint/getting-started" icon="star" title="Getting started" sameTab={true} />
-                <WelcomeCard href="https://github.com/palantir/blueprint" icon="git-repo" title="Git repository" />
+                <WelcomeCard
+                    href="#blueprint/getting-started"
+                    icon={IconNames.STAR}
+                    title="Getting started"
+                    sameTab={true}
+                />
+                <WelcomeCard
+                    href="https://github.com/palantir/blueprint"
+                    icon={IconNames.GIT_REPO}
+                    title="Git repository"
+                />
                 <WelcomeCard
                     href="https://codesandbox.io/s/blueprint-sandbox-et9xy"
-                    icon="code-block"
+                    icon={IconNames.CODE_BLOCK}
                     title="Code Sandbox"
                 />
                 <WelcomeCard
                     href="https://github.com/palantir/blueprint#contributing"
-                    icon="git-merge"
+                    icon={IconNames.GIT_MERGE}
                     title="Contributing"
                 />
             </div>

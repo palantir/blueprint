@@ -18,6 +18,7 @@ import { ITag } from "@documentalist/client";
 import * as React from "react";
 
 import { AnchorButton, Intent } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 
 import { IExampleProps } from "../components/example";
 
@@ -56,7 +57,7 @@ export class ReactExampleTagRenderer {
                     className="docs-example-view-source"
                     fill={true}
                     href={example.sourceUrl}
-                    icon="code"
+                    icon={IconNames.CODE}
                     intent={Intent.PRIMARY}
                     minimal={true}
                     target="_blank"

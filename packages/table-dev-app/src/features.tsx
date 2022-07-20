@@ -21,6 +21,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { Button, Classes, H4, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import {
     Cell,
     Column,
@@ -72,10 +73,18 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
 const renderTestMenu = () => (
     /* eslint-disable no-console */
     <Menu>
-        <MenuItem icon="export" onClick={() => console.log("Beam me up!")} text="Teleport" />
-        <MenuItem icon="sort-alphabetical-desc" onClick={() => console.log("ZA is the worst")} text="Down with ZA!" />
+        <MenuItem icon={IconNames.EXPORT} onClick={() => console.log("Beam me up!")} text="Teleport" />
+        <MenuItem
+            icon={IconNames.SORT_ALPHABETICAL_DESC}
+            onClick={() => console.log("ZA is the worst")}
+            text="Down with ZA!"
+        />
         <MenuDivider />
-        <MenuItem icon="curved-range-chart" onClick={() => console.log("You clicked the trident!")} text="Psi" />
+        <MenuItem
+            icon={IconNames.CURVED_RANGE_CHART}
+            onClick={() => console.log("You clicked the trident!")}
+            text="Psi"
+        />
     </Menu>
 );
 

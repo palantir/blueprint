@@ -17,6 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { IconNames } from "@blueprintjs/icons";
+
 import {
     AbstractPureComponent2,
     Classes,
@@ -403,7 +405,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                     aria-label="increment"
                     aria-controls={this.numericInputId}
                     disabled={disabled || isIncrementDisabled}
-                    icon="chevron-up"
+                    icon={IconNames.CHEVRON_UP}
                     intent={intent}
                     {...this.incrementButtonHandlers}
                 />
@@ -411,7 +413,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                     aria-label="decrement"
                     aria-controls={this.numericInputId}
                     disabled={disabled || isDecrementDisabled}
-                    icon="chevron-down"
+                    icon={IconNames.CHEVRON_DOWN}
                     intent={intent}
                     {...this.decrementButtonHandlers}
                 />

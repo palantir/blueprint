@@ -19,6 +19,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Icon } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 
 export const Heading: React.FC<IHeadingTag> = ({ level, route, value }) =>
     // use createElement so we can dynamically choose tag based on depth
@@ -27,7 +28,7 @@ export const Heading: React.FC<IHeadingTag> = ({ level, route, value }) =>
         { className: classNames(Classes.HEADING, "docs-title") },
         <a className="docs-anchor" data-route={route} key="anchor" />,
         <a className="docs-anchor-link" href={"#" + route} key="link">
-            <Icon icon="link" />
+            <Icon icon={IconNames.LINK} />
         </a>,
         value,
     );

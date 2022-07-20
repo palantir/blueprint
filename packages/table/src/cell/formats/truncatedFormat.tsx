@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, Icon, Popover, Position, Props } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 
 import * as Classes from "../../common/classes";
 import { Utils } from "../../common/utils";
@@ -236,7 +237,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
                     isOpen={true}
                     onClose={this.handlePopoverClose}
                 >
-                    <Icon icon="more" />
+                    <Icon icon={IconNames.MORE} />
                     {/* eslint-disable-next-line deprecation/deprecation */}
                 </Popover>
             );
@@ -245,7 +246,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
             // `<Popover>` changes, this must be updated.
             return (
                 <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
-                    <Icon icon="more" />
+                    <Icon icon={IconNames.MORE} />
                 </span>
             );
         }

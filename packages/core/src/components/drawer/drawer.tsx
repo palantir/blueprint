@@ -17,6 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { IconNames } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
@@ -164,7 +166,7 @@ export class Drawer extends AbstractPureComponent2<DrawerProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<Icon icon="small-cross" size={IconSize.LARGE} />}
+                    icon={<Icon icon={IconNames.SMALL_CROSS} size={IconSize.LARGE} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />

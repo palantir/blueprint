@@ -17,6 +17,7 @@
 import * as React from "react";
 
 import { Button, MenuItem } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { Select2, Select2Props } from "@blueprintjs/select";
 
 import {
@@ -77,8 +78,8 @@ export default function ({ allowCreate = false, fill, ...restProps }: Props) {
             {...restProps}
         >
             <Button
-                icon="film"
-                rightIcon="caret-down"
+                icon={IconNames.FILM}
+                rightIcon={IconNames.CARET_DOWN}
                 text={film ? `${film.title} (${film.year})` : "(No selection)"}
                 disabled={restProps.disabled}
                 fill={fill}

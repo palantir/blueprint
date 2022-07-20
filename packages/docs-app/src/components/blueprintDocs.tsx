@@ -21,6 +21,7 @@ import * as React from "react";
 import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
 import { IDocsCompleteData } from "@blueprintjs/docs-data";
 import { Documentation, IDocumentationProps, NavMenuItem, NavMenuItemProps } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
@@ -127,7 +128,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         return (
             <AnchorButton
                 href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
-                icon="edit"
+                icon={IconNames.EDIT}
                 minimal={true}
                 target="_blank"
                 text="Edit this page"

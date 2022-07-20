@@ -17,6 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { IconNames } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import { ActionProps, DISPLAYNAME_PREFIX, IntentProps, LinkProps, MaybeElement, Props } from "../../common/props";
 import { ButtonGroup } from "../button/buttonGroup";
@@ -80,7 +82,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
                 </span>
                 <ButtonGroup minimal={true}>
                     {this.maybeRenderActionButton()}
-                    <Button aria-label="Close" icon="cross" onClick={this.handleCloseClick} />
+                    <Button aria-label="Close" icon={IconNames.CROSS} onClick={this.handleCloseClick} />
                 </ButtonGroup>
             </div>
         );

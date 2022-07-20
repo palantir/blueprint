@@ -32,6 +32,7 @@ import {
     setRef,
     Utils,
 } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
@@ -162,7 +163,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         const input = (
             <InputGroup
                 aria-autocomplete="list"
-                leftIcon="search"
+                leftIcon={IconNames.SEARCH}
                 placeholder="Filter..."
                 rightElement={this.maybeRenderClearButton(listProps.query)}
                 {...inputProps}
@@ -240,7 +241,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         return query.length > 0 ? (
             <Button
                 aria-label="Clear filter query"
-                icon="cross"
+                icon={IconNames.CROSS}
                 minimal={true}
                 onClick={this.resetQuery}
                 title="Clear filter query"

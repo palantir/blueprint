@@ -17,6 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { IconNames } from "@blueprintjs/icons";
+
 import {
     AbstractPureComponent2,
     Classes,
@@ -169,7 +171,7 @@ export class Tag extends AbstractPureComponent2<TagProps> {
                 onClick={this.onRemoveClick}
                 tabIndex={interactive ? tabIndex : undefined}
             >
-                <Icon icon="small-cross" size={isLarge ? IconSize.LARGE : IconSize.STANDARD} />
+                <Icon icon={IconNames.SMALL_CROSS} size={isLarge ? IconSize.LARGE : IconSize.STANDARD} />
             </button>
         ) : null;
 

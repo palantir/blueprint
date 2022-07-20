@@ -18,6 +18,8 @@ import classNames from "classnames";
 import { Modifiers } from "popper.js";
 import * as React from "react";
 
+import { IconNames } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { ActionProps, DISPLAYNAME_PREFIX, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
@@ -229,7 +231,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 {text}
             </Text>,
             this.maybeRenderLabel(labelElement),
-            hasSubmenu ? <Icon className={Classes.MENU_SUBMENU_ICON} icon="caret-right" /> : undefined,
+            hasSubmenu ? <Icon className={Classes.MENU_SUBMENU_ICON} icon={IconNames.CARET_RIGHT} /> : undefined,
         );
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });

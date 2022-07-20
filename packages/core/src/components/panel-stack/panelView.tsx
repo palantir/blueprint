@@ -16,8 +16,11 @@
 
 import * as React from "react";
 
+import { IconNames } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import { Button } from "../button/buttons";
+import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
 import { IPanel } from "./panelProps";
 
@@ -82,7 +85,7 @@ export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
             <Button
                 aria-label="Back"
                 className={Classes.PANEL_STACK_HEADER_BACK}
-                icon="chevron-left"
+                icon={IconNames.CHEVERON_LEFT}
                 minimal={true}
                 onClick={this.handleClose}
                 small={true}

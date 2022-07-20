@@ -16,6 +16,8 @@
 
 import * as React from "react";
 
+import { IconNames } from "@blueprintjs/icons";
+
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Button } from "../button/buttons";
 import { Text } from "../text/text";
@@ -60,7 +62,7 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: 
             <Button
                 aria-label="Back"
                 className={Classes.PANEL_STACK_HEADER_BACK}
-                icon="chevron-left"
+                icon={IconNames.CHEVERON_LEFT}
                 minimal={true}
                 onClick={handleClose}
                 small={true}

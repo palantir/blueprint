@@ -17,6 +17,7 @@
 import * as React from "react";
 
 import { MenuItem } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { ItemPredicate, ItemRenderer } from "@blueprintjs/select";
 
 export interface IFilm {
@@ -157,7 +158,7 @@ export const renderCreateFilmOption = (
     handleClick: React.MouseEventHandler<HTMLElement>,
 ) => (
     <MenuItem
-        icon="add"
+        icon={IconNames.ADD}
         text={`Create "${query}"`}
         roleStructure="listoption"
         active={active}

@@ -17,6 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { IconNames } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2 } from "../../common";
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
 import { IElementRefProps, OptionProps } from "../../common/props";
@@ -100,7 +102,7 @@ export class HTMLSelect extends AbstractPureComponent2<HTMLSelectProps> {
                     {optionChildren}
                     {htmlProps.children}
                 </select>
-                <Icon icon="double-caret-vertical" title="Open dropdown" {...iconProps} />
+                <Icon icon={IconNames.DOUBLE_CARET_VERTICAL} title="Open dropdown" {...iconProps} />
             </div>
         );
     }

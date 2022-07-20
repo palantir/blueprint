@@ -17,6 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { IconNames } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2, Classes, IRef } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
@@ -154,7 +156,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<Icon icon="cross" size={IconSize.STANDARD} />}
+                    icon={<Icon icon={IconNames.CROSS} size={IconSize.STANDARD} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />

@@ -19,6 +19,7 @@ import * as React from "react";
 import { NavbarElementProps } from "react-day-picker";
 
 import { Button } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 
 import * as Classes from "./common/classes";
 import { areSameMonth } from "./common/dateUtils";
@@ -42,7 +43,7 @@ export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps
                         aria-label="Go to previous month"
                         className={classes.navButtonPrev}
                         disabled={areSameMonth(month, minDate)}
-                        icon="chevron-left"
+                        icon={IconNames.CHEVERON_LEFT}
                         minimal={true}
                         onClick={this.handlePreviousClick}
                     />
@@ -52,7 +53,7 @@ export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps
                         aria-label="Go to next month"
                         className={classes.navButtonNext}
                         disabled={areSameMonth(month, maxDate)}
-                        icon="chevron-right"
+                        icon={IconNames.CHEVRON_RIGHT}
                         minimal={true}
                         onClick={this.handleNextClick}
                     />

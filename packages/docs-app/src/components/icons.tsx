@@ -18,6 +18,7 @@ import * as React from "react";
 
 import { Classes, H3, InputGroup, NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 
 import { DocsIcon, IDocsIconProps as IIcon } from "./docsIcon";
 
@@ -58,7 +59,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
                     autoFocus={true}
                     className={Classes.FILL}
                     large={true}
-                    leftIcon="search"
+                    leftIcon={IconNames.SEARCH}
                     placeholder="Search for icons..."
                     onChange={this.handleFilterChange}
                     type="search"
@@ -89,7 +90,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
     };
 
     private renderZeroState() {
-        return <NonIdealState className={Classes.TEXT_MUTED} icon="zoom-out" description="No icons found" />;
+        return <NonIdealState className={Classes.TEXT_MUTED} icon={IconNames.ZOOM_OUT} description="No icons found" />;
     }
 
     private getFilteredIcons(groupName: string) {
