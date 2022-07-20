@@ -214,6 +214,7 @@ export class TableSortableExample extends React.PureComponent<IExampleProps> {
                     selectionModes={SelectionModes.COLUMNS_AND_CELLS}
                     getCellClipboardData={this.getCellData}
                     cellRendererDependencies={[this.state.sortedIndexMap]}
+                    enableFocusedCell={true}
                 >
                     {columns}
                 </Table2>

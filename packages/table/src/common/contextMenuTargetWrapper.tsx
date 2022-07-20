@@ -21,7 +21,7 @@ import * as React from "react";
 import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 
 export interface IContextMenuTargetWrapper extends IProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element | undefined;
     style: React.CSSProperties;
 }

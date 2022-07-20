@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateInput2 in the datetime2
+ * package instead.
+ */
+
 import classNames from "classnames";
 import * as React from "react";
 import type { DayPickerProps } from "react-day-picker";
@@ -161,6 +167,7 @@ export interface IDateInputState {
     selectedShortcutIndex?: number;
 }
 
+/** @deprecated use { DateInput2 } from "@blueprintjs/datetime2" */
 export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
 

@@ -13,6 +13,11 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to EditableCell2 instead.
+ */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -80,7 +85,7 @@ export interface IEditableCellState {
     dirtyValue?: string;
 }
 
-// HACKHACK(adahiya): fix for Blueprint 4.0
+/** @deprecated use { EditableCell2, Table2 } from "@blueprintjs/table" */
 // eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
 export class EditableCell extends React.Component<IEditableCellProps, IEditableCellState> {

@@ -53,13 +53,15 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
         );
     }
 
+    private spinnerSizeLabelId = "spinner-size-label";
+
     private renderOptions() {
         const { size, hasValue, intent, value } = this.state;
         return (
             <>
                 <H5>Props</H5>
                 <IntentSelect intent={intent} onChange={this.handleModifierChange} />
-                <Label>Size</Label>
+                <Label id={this.spinnerSizeLabelId}>Size</Label>
                 <Slider
                     labelStepSize={50}
                     min={0}
@@ -68,6 +70,7 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
                     stepSize={5}
                     value={size}
                     onChange={this.handleSizeChange}
+                    handleHtmlProps={{ "aria-labelledby": this.spinnerSizeLabelId }}
                 />
                 <Switch checked={hasValue} label="Known value" onChange={this.handleIndeterminateChange} />
                 <Slider
@@ -80,6 +83,7 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
                     stepSize={0.1}
                     showTrackFill={false}
                     value={value}
+                    handleHtmlProps={{ "aria-label": "spinner value" }}
                 />
             </>
         );

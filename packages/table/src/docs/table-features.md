@@ -41,9 +41,18 @@ render at each row index, so by including it as a dependency in `cellRendererDep
 guarantee that cell renderers will be re-triggered after a sorting operation, and those renderers
 will reference the up-to-date `sortedIndexMap` value.
 
+@## Focused cell
+
+You may allow users to focus on a single cell and navigate around the table with arrow keys
+by setting `enableFocusedCell={true}`. Try out this interaction in the table above &mdash; the table
+container will also scroll around if you move focus outside the current viewport. You can expand
+and shrink the selected cell range using <kbd>Shift</kbd> + arrow keys. For a full reference of
+enabled keyboard hotkeys, press <kbd>?</kbd> to bring up the hotkeys dialog after you have clicked
+into the table once.
+
 @## Editing
 
-To make your table editable, use the `EditableCell` and
+To make your table editable, use the [`EditableCell2`](#table/table2.editablecell2) and
 `EditableName` components to create editable table cells and column names.
 
 To further extend the interactivity of the column headers, you can

@@ -48,16 +48,19 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
 
     private handleChangeCollapse = handleValueChange((collapseFrom: Boundary) => this.setState({ collapseFrom }));
 
+    private numVisibleItemsLabelId = "num-visible-items-label";
+
     public render() {
         const options = (
             <>
                 <H5>Props</H5>
-                <Label>Visible items</Label>
+                <Label id={this.numVisibleItemsLabelId}>Visible items</Label>
                 <Slider
                     max={6}
                     onChange={this.handleChangeCount}
                     showTrackFill={false}
                     value={this.state.visibleItemCount}
+                    handleHtmlProps={{ "aria-labelledby": this.numVisibleItemsLabelId }}
                 />
                 <RadioGroup
                     name="collapseFrom"

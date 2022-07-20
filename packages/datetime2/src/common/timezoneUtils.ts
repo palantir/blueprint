@@ -59,8 +59,16 @@ export function getIsoEquivalentWithUpdatedTimezone(
  * @param value ISO string representation of a date
  * @param timezone target timezone IANA code
  */
-export function getDateObjectFromIsoString(value: string | null | undefined, timezone: string): Date | null {
-    if (value == null || isEmpty(value)) {
+export function getDateObjectFromIsoString(value: string | undefined, timezone: string): Date | undefined;
+export function getDateObjectFromIsoString(value: string | null | undefined, timezone: string): Date | null | undefined;
+export function getDateObjectFromIsoString(
+    value: string | null | undefined,
+    timezone: string,
+): Date | null | undefined {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null || isEmpty(value)) {
         return null;
     }
     const date = new Date(value);

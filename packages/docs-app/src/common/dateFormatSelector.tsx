@@ -39,7 +39,9 @@ export interface DateFormatSelectorProps {
 }
 
 export const DateFormatSelector: React.FC<DateFormatSelectorProps> = props => {
-    const handleChange = handleNumberChange(index => props.onChange(props.formatOptions[index]));
+    const handleChange = handleNumberChange(index => {
+        props.onChange(props.formatOptions[index]);
+    });
     const value = props.formatOptions.indexOf(props.format);
 
     return (
