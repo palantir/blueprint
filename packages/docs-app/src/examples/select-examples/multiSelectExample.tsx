@@ -124,6 +124,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     // we may customize the default filmSelectProps.items by
                     // adding newly created items to the list, so pass our own
                     items={this.state.items}
+                    menuProps={{ "aria-label": "films" }}
                     noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
                     onClear={this.state.showClearButton ? this.handleClear : undefined}
                     onItemSelect={this.handleFilmSelect}
