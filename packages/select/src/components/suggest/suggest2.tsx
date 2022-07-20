@@ -77,8 +77,7 @@ export interface Suggest2Props<T> extends IListItemsProps<T>, SelectPopoverProps
     selectedItem?: T | null;
 
     /**
-     * Props that get spread to the menu popover's listbox `ul` element
-     * that contains the selectable options.
+     * Props to spread to the `Menu` listbox containing the selectable options.
      */
     menuProps?: React.HTMLProps<HTMLUListElement>;
 
