@@ -43,7 +43,7 @@ export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps
                         aria-label="Go to previous month"
                         className={classes.navButtonPrev}
                         disabled={areSameMonth(month, minDate)}
-                        icon={IconNames.CHEVERON_LEFT}
+                        icon={IconNames.CHEVRON_LEFT}
                         minimal={true}
                         onClick={this.handlePreviousClick}
                     />
