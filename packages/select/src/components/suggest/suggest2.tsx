@@ -79,7 +79,7 @@ export interface Suggest2Props<T> extends IListItemsProps<T>, SelectPopoverProps
     /**
      * Props to spread to the `Menu` listbox containing the selectable options.
      */
-    menuProps?: React.HTMLProps<HTMLUListElement>;
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
     /**
      * If true, the component waits until a keydown event in the TagInput

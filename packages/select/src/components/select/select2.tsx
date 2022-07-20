@@ -78,7 +78,7 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
     /**
      * Props to spread to the `Menu` listbox containing the selectable options.
      */
-    menuProps?: React.HTMLProps<HTMLUListElement>;
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
     /**
      * Props to add to the popover target wrapper element.
