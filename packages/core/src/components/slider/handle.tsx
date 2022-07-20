@@ -67,14 +67,14 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
     }
 
     public render() {
-        const { className, disabled, label, min, max, value, vertical, handleHtmlProps } = this.props;
+        const { className, disabled, label, min, max, value, vertical, htmlProps } = this.props;
         const { isMoving } = this.state;
 
         return (
             <span
                 role="slider"
                 tabIndex={0}
-                {...handleHtmlProps}
+                {...htmlProps}
                 className={classNames(Classes.SLIDER_HANDLE, { [Classes.ACTIVE]: isMoving }, className)}
                 onKeyDown={disabled ? undefined : this.handleKeyDown}
                 onKeyUp={disabled ? undefined : this.handleKeyUp}

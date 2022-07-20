@@ -93,7 +93,7 @@ export interface IHandleProps extends Props {
     type?: HandleType;
 
     /**
-     * HTML props to apply to the Handle
+     * A limited subset of HTML props to apply to the rendered `<span>` element.
      */
-    handleHtmlProps?: HandleHtmlProps;
+    htmlProps?: HandleHtmlProps;
 }

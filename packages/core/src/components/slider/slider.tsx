@@ -46,7 +46,7 @@ export interface ISliderProps extends ISliderBaseProps {
     /** Callback invoked when the handle is released. */
     onRelease?(value: number): void;
 
-    /** HTML props to apply to the slider Handle */
+    /** A limited subset of HTML props to apply to the slider Handle */
     handleHtmlProps?: HandleHtmlProps;
 }
 
@@ -70,7 +70,7 @@ export class Slider extends AbstractPureComponent2<SliderProps> {
                     intentBefore={value! >= initialValue! ? intent : undefined}
                     onChange={onChange}
                     onRelease={onRelease}
-                    handleHtmlProps={handleHtmlProps}
+                    htmlProps={handleHtmlProps}
                 />
                 <MultiSlider.Handle value={initialValue!} interactionKind="none" />
             </MultiSlider>

@@ -67,12 +67,12 @@ export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
                     value={value![RangeIndex.START]}
                     type="start"
                     intentAfter={props.intent}
-                    handleHtmlProps={handleHtmlProps ? handleHtmlProps.start : undefined}
+                    htmlProps={handleHtmlProps ? handleHtmlProps.start : undefined}
                 />
                 <MultiSlider.Handle
                     value={value![RangeIndex.END]}
                     type="end"
-                    handleHtmlProps={handleHtmlProps ? handleHtmlProps.end : undefined}
+                    htmlProps={handleHtmlProps ? handleHtmlProps.end : undefined}
                 />
             </MultiSlider>
         );
