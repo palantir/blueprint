@@ -51,8 +51,7 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
     fill?: boolean;
 
     /**
-     * Props that get spread to the menu popover's listbox `ul` element
-     * that contains the selectable options.
+     * Props to spread to the `Menu` listbox containing the selectable options.
      */
     menuProps?: React.HTMLProps<HTMLUListElement>;
 
