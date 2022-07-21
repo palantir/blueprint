@@ -231,10 +231,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     private renderTag = (film: IFilm) => film.title;
 
     // NOTE: not using Films.itemRenderer here so we can set icons.
-    private renderFilm: ItemRenderer<IFilm> = (
-        film: IFilm,
-        { modifiers, handleClick }: { modifiers: IItemModifiers; handleClick: React.MouseEventHandler<HTMLElement> },
-    ) => {
+    private renderFilm: ItemRenderer<IFilm> = (film: IFilm, { modifiers, handleClick }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
