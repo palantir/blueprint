@@ -19,7 +19,7 @@ import * as React from "react";
 import { Code, H5, Intent, MenuItem, Switch, TagProps } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Popover2 } from "@blueprintjs/popover2";
-import { IItemModifiers, ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
+import { ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
 
 import {
     areFilmsEqual,
