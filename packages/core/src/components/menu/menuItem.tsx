@@ -18,8 +18,6 @@ import classNames from "classnames";
 import { Modifiers } from "popper.js";
 import * as React from "react";
 
-import { IconNames } from "@blueprintjs/icons";
-
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { ActionProps, DISPLAYNAME_PREFIX, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
@@ -188,7 +186,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                   [
                       "option",
                       undefined, // target should have no role
-                      icon ?? (selected ? IconNames.SMALL_TICK : IconNames.BLANK),
+                      icon ?? (selected ? "small-tick" : "blank"),
                       Boolean(selected), // aria-selected prop
                   ]
                 : // "menuitem": parent has menu role
