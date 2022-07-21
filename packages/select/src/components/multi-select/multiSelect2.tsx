@@ -53,7 +53,7 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
     /**
      * Props to spread to the `Menu` listbox containing the selectable options.
      */
-    menuProps?: React.HTMLProps<HTMLUListElement>;
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
     /**
      * If provided, this component will render a "clear" button inside its TagInput.
