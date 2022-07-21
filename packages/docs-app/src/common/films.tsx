@@ -132,20 +132,7 @@ export const TOP_100_FILMS: IFilm[] = [
     { title: "Monty Python and the Holy Grail", year: 1975 },
 ].map((m, index) => ({ ...m, rank: index + 1 }));
 
-export const renderFilm: ItemRenderer<IFilm> = (
-    film: IFilm,
-    {
-        handleClick,
-        handleFocus,
-        modifiers,
-        query,
-    }: {
-        handleClick: React.MouseEventHandler<HTMLElement>;
-        handleFocus?: () => void;
-        modifiers: IItemModifiers;
-        query: string;
-    },
-) => {
+export const renderFilm: ItemRenderer<IFilm> = (film: IFilm, { handleClick, handleFocus, modifiers, query }) => {
     if (!modifiers.matchesPredicate) {
         return null;
     }
