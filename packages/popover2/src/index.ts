@@ -18,6 +18,7 @@
 
 export * as Classes from "./classes";
 export * as Errors from "./errors";
+export { Breadcrumbs2, Breadcrumbs2Props } from "./breadcrumbs2";
 export {
     ContextMenu2,
     ContextMenu2Props,
