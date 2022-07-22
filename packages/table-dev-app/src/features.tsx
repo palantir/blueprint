@@ -699,3 +699,12 @@ function renderName() {
         </div>
     );
 }
+
+ReactDOM.render(
+    <div style={{ height: "auto", width: "180px" }}>
+        <Table2 numRows={5} defaultRowHeight={30} enableGhostCells={true}>
+            <Column name="Test" />
+        </Table2>
+    </div>,
+    document.getElementById("table-12"),
+);
