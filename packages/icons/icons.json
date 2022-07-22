@@ -9,28 +9,28 @@
     {
         "displayName": "Style",
         "iconName": "style",
-        "tags": "visual style, editor, paint, paintbrush, color, add color, compose, edit, create new, draw, canvas",
+        "tags": "visual style, editor, paint, paintbrush, color, add color, compose, draw, canvas",
         "group": "editor",
         "codepoint": 62164
     },
     {
         "displayName": "Align: left",
         "iconName": "align-left",
-        "tags": "text flow, alignment, justification, range, flush left, left align, rows, left aligned, document",
+        "tags": "text flow, alignment, justification, range, flush left, rows, document",
         "group": "editor",
         "codepoint": 61709
     },
     {
         "displayName": "Align: center",
         "iconName": "align-center",
-        "tags": "text flow, alignment, justification, range, centered, text, lines, filing",
+        "tags": "text flow, alignment, justification, range, centered, text, lines",
         "group": "editor",
         "codepoint": 61707
     },
     {
         "displayName": "Align: right",
         "iconName": "align-right",
-        "tags": "text flow, alignment, justification, range, flush right, right align, align, text align",
+        "tags": "text flow, alignment, justification, range, flush right",
         "group": "editor",
         "codepoint": 61710
     },
@@ -240,21 +240,21 @@
     {
         "displayName": "Bar chart",
         "iconName": "timeline-bar-chart",
-        "tags": "graph, bar, chart, horizontal histogram, bar chart",
+        "tags": "graph, bar, chart, histogram",
         "group": "data",
         "codepoint": 62194
     },
     {
         "displayName": "Applications",
         "iconName": "applications",
-        "tags": "application, browser, windows, platforms, pages, duplicate, copy, page, window, website, files",
+        "tags": "application, browser, windows, platforms, pages, duplicate, copy, page, website, files",
         "group": "interface",
         "codepoint": 61721
     },
     {
         "displayName": "Projects",
         "iconName": "projects",
-        "tags": "drawer, sections, files, open, directory, folder, ebulliant, briefcase, filing",
+        "tags": "drawer, sections, files, open, directory, folder, filing",
         "group": "interface",
         "codepoint": 62080
     },
@@ -268,7 +268,7 @@
     {
         "displayName": "Notifications",
         "iconName": "notifications",
-        "tags": "bell, alarm, notice, warning, notification, alert",
+        "tags": "bell, alarm, notice, warning, alert",
         "group": "interface",
         "codepoint": 62046
     },
@@ -3117,7 +3117,7 @@
     {
         "displayName": "Notifications: updated",
         "iconName": "notifications-updated",
-        "tags": "notifications, bell, alarm, notice, warning, resolve alert, approve alert, notification, confirm, check, clear notification alert, check bell, notification read, notification (read), alert actioned, alert configured, resolve page, new alarm, acknowledge, ack, anw",
+        "tags": "notifications, bell, alarm, notice, warning, resolve alert, approve alert, confirm, check, clear notification alert, check bell, notification read, notification (read), alert actioned, alert configured, resolve page, new alarm, acknowledge, ack, anw",
         "group": "interface",
         "codepoint": 62045
     },
