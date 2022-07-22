@@ -247,7 +247,7 @@
     {
         "displayName": "Applications",
         "iconName": "applications",
-        "tags": "application, browser, windows, platforms, pages, duplicate, copy, page, website, files",
+        "tags": "application, browser, windows, platforms, pages, duplicate, copy, page, website",
         "group": "interface",
         "codepoint": 61721
     },
