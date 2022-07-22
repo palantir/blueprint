@@ -22,7 +22,8 @@ import * as sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
+import { Classes, MultiSlider, MultiSliderProps } from "../../src";
+import * as Errors from "../../src/common/errors";
 import { Handle } from "../../src/components/slider/handle";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 
@@ -319,24 +320,31 @@ describe("<MultiSlider>", () => {
     });
 
     describe("validation", () => {
-        it("throws an error if a child is not a slider handle", () => {
-            expectPropValidationError(MultiSlider, { children: (<span>Bad</span>) as any });
+        let errorSpy: sinon.SinonSpy | undefined;
+
+        before(() => (errorSpy = sinon.spy(console, "error")));
+        afterEach(() => errorSpy?.resetHistory());
+        after(() => errorSpy?.restore());
+
+        it("logs an error if a child is not a slider handle", () => {
+            mount(
+                <MultiSlider>
+                    <span>Bad</span>
+                </MultiSlider>,
+            );
+            assert.isTrue(errorSpy?.calledWith(Errors.MULTISLIDER_INVALID_CHILD));
         });
 
         it("throws error if stepSize <= 0", () => {
-            [0, -10].forEach(stepSize => {
-                expectPropValidationError(MultiSlider, { stepSize }, "greater than zero");
-            });
+            expectPropValidationError(MultiSlider, { stepSize: -5 }, "greater than zero");
         });
 
         it("throws error if labelStepSize <= 0", () => {
-            [0, -10].forEach(labelStepSize => {
-                expectPropValidationError(MultiSlider, { labelStepSize }, "greater than zero");
-            });
+            expectPropValidationError(MultiSlider, { labelStepSize: -5 }, "greater than zero");
         });
     });
 
-    function renderSlider(joinedProps: IMultiSliderProps & { values?: [number, number, number] } = {}) {
+    function renderSlider(joinedProps: MultiSliderProps & { values?: [number, number, number] } = {}) {
         const { values = [0, 5, 10], ...props } = joinedProps;
         return mount(
             <MultiSlider {...props}>
