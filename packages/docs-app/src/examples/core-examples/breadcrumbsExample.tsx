@@ -114,6 +114,7 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
         return (
             <Example options={options} {...this.props}>
                 <Card elevation={0} style={{ width: `${width}%` }}>
+                    {/* eslint-disable-next-line deprecation/deprecation */}
                     <Breadcrumbs
                         collapseFrom={collapseFrom}
                         items={alwaysRenderOverflow ? ITEMS_FOR_ALWAYS_RENDER : ITEMS}
