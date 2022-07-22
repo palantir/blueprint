@@ -33,6 +33,7 @@ import {
 
 import { Popover2, Popover2Props } from "./popover2";
 
+export { BreadcrumbProps };
 export interface Breadcrumbs2Props extends Props {
     /**
      * Callback invoked to render visible breadcrumbs. Best practice is to
