@@ -323,10 +323,10 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     };
 
     // Popover interaction kind is CLICK, so this only handles click events.
-    // Note that we defer to the next animation frame in order to get the latest document.activeElement
+    // Note that we defer to the next animation frame in order to get the latest activeElement
     private handlePopoverInteraction = (nextOpenState: boolean, evt?: React.SyntheticEvent<HTMLElement>) =>
         this.requestAnimationFrame(() => {
-            const isInputFocused = this.input === document.activeElement;
+            const isInputFocused = this.input === Utils.getActiveElement(this.input);
 
             if (this.input != null && !isInputFocused) {
                 // input is no longer focused, we should close the popover
