@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-/* eslint-disable max-classes-per-file */
-
 import * as React from "react";
 
 import {
     Boundary,
     BreadcrumbProps,
-    Breadcrumbs,
     Card,
     Checkbox,
     H5,
@@ -31,8 +28,9 @@ import {
     Slider,
 } from "@blueprintjs/core";
 import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Breadcrumbs2 } from "@blueprintjs/popover2";
 
-export interface IBreadcrumbsExampleState {
+export interface Breadcrumbs2ExampleState {
     collapseFrom: Boundary;
     renderCurrentAsInput: boolean;
     alwaysRenderOverflow: boolean;
@@ -58,8 +56,8 @@ const ITEMS_FOR_ALWAYS_RENDER: BreadcrumbProps[] = [
     { icon: "document", text: "image.jpg", current: true },
 ];
 
-export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBreadcrumbsExampleState> {
-    public state: IBreadcrumbsExampleState = {
+export class Breadcrumbs2Example extends React.PureComponent<IExampleProps, Breadcrumbs2ExampleState> {
+    public state: Breadcrumbs2ExampleState = {
         alwaysRenderOverflow: false,
         collapseFrom: Boundary.START,
         renderCurrentAsInput: false,
@@ -114,8 +112,7 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
         return (
             <Example options={options} {...this.props}>
                 <Card elevation={0} style={{ width: `${width}%` }}>
-                    {/* eslint-disable-next-line deprecation/deprecation */}
-                    <Breadcrumbs
+                    <Breadcrumbs2
                         collapseFrom={collapseFrom}
                         items={alwaysRenderOverflow ? ITEMS_FOR_ALWAYS_RENDER : ITEMS}
                         currentBreadcrumbRenderer={renderCurrentAsInput ? this.renderBreadcrumbInput : undefined}
@@ -143,19 +140,10 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
     };
 }
 
-class BreadcrumbInput extends React.PureComponent<BreadcrumbProps & { defaultValue: string | undefined }> {
-    public state = {
-        text: this.props.defaultValue ?? "",
-    };
-
-    public render() {
-        const { text } = this.state;
-        return <InputGroup placeholder="rename me" value={text} onChange={this.handleChange} />;
-    }
-
-    private handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({
-            text: (event.target as HTMLInputElement).value,
-        });
-    };
-}
+const BreadcrumbInput: React.FC<BreadcrumbProps & { defaultValue: string | undefined }> = props => {
+    const [text, setText] = React.useState(props.defaultValue ?? "");
+    const handleChange = React.useCallback((event: React.FormEvent<HTMLInputElement>) => {
+        setText((event.target as HTMLInputElement).value);
+    }, []);
+    return <InputGroup placeholder="rename me" value={text} onChange={handleChange} />;
+};
