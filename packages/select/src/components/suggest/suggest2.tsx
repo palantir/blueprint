@@ -316,7 +316,8 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean, event?: React.SyntheticEvent<HTMLElement>) =>
         this.requestAnimationFrame(() => {
-            const isInputFocused = this.inputElement === document.activeElement;
+            const rootNode = (this.inputElement?.getRootNode?.() ?? document) as DocumentOrShadowRoot & Node;
+            const isInputFocused = this.inputElement === rootNode.activeElement;
 
             if (this.inputElement != null && !isInputFocused) {
                 // the input is no longer focused, we should close the popover
