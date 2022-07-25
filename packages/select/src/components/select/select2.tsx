@@ -276,7 +276,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private handlePopoverOpening = (node: HTMLElement) => {
         // save currently focused element before popover steals focus, so we can restore it when closing.
-        this.previousFocusedElement = document.activeElement as HTMLElement;
+        this.previousFocusedElement = (Utils.getActiveElement(this.inputElement) as HTMLElement | null) ?? undefined;
 
         if (this.props.resetOnClose) {
             this.resetQuery();

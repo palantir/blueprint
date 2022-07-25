@@ -30,6 +30,7 @@ import {
     Props,
     refHandler,
     setRef,
+    Utils,
 } from "@blueprintjs/core";
 import {
     DateFormatProps,
@@ -792,7 +793,7 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
     // =======
 
     private shouldFocusInputRef(isFocused: boolean, inputRef: HTMLInputElement | null) {
-        return isFocused && inputRef != null && document.activeElement !== inputRef;
+        return isFocused && inputRef != null && Utils.getActiveElement(this.startInputElement) !== inputRef;
     }
 
     private getIsOpenValueWhenDateChanges = (nextSelectedStart: Date, nextSelectedEnd: Date): boolean => {
