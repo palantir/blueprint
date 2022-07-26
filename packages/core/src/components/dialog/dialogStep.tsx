@@ -57,6 +57,10 @@ export interface IDialogStepProps extends Props, Omit<HTMLDivProps, "id" | "titl
      * Props for the next button.
      */
     nextButtonProps?: DialogStepButtonProps;
+    /**
+     * Disable panel for side navigation
+     */
+    panelDisabled?: boolean;
 }
 
 export class DialogStep extends AbstractPureComponent2<DialogStepProps> {
