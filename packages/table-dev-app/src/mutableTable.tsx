@@ -200,9 +200,9 @@ function getRandomString(length: number): string {
     let str = "";
     while (str.length < length) {
         const part = Math.random().toString(36);
-        str += part.substring(2, part.length - 1);
+        str += part.substring(2);
     }
-    return str.substring(0, length - 1);
+    return str.substring(0);
 }
 
 function contains(arr: any[], value: any) {

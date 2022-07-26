@@ -6,9 +6,9 @@ Menus display lists of interactive items.
 
 The Menu API includes three React components:
 
-* [`Menu`](#core/components/menu.menu)
-* [`MenuItem`](#core/components/menu.menu-item)
-* [`MenuDivider`](#core/components/menu.menu-divider)
+* [Menu](#core/components/menu.menu)
+* [MenuItem](#core/components/menu.menu-item) (DEPRECATED)
+* [MenuDivider](#core/components/menu.menu-divider)
 
 ```tsx
 <Menu>
@@ -30,6 +30,19 @@ A `Menu` is a `<ul>` container for menu items and dividers.
 @interface IMenuProps
 
 @## Menu item
+
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h4 class="@ns-heading">
+
+Deprecated: use [MenuItem2](#popover2-package/menu-item2)
+
+</h4>
+
+This component is **deprecated since @blueprintjs/core v4.7.0** in favor of the new
+MenuItem2 component, which uses Popover2 instead of Popover under the hood.
+You should migrate to the new API which will become the standard in Blueprint v5.
+
+</div>
 
 A `MenuItem` is a single interactive item in a `Menu`.
 

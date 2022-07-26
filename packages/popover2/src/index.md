@@ -37,3 +37,4 @@ Import the package stylesheet in Sass:
 @page context-menu2
 @page resize-sensor2
 @page breadcrumbs2
+@page menu-item2
