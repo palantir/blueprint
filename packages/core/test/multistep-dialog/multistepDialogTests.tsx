@@ -161,6 +161,28 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(steps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
         dialog.unmount();
     });
+    it("selecting visited step with prop disabled should not navigate to it", () => {
+        const dialog = mount(
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panelDisabled={true} panel={<Panel />} />
+                <DialogStep id="two" title="Step 3" panel={<Panel />} />
+            </MultistepDialog>,
+        );
+        assert.strictEqual(dialog.state("selectedIndex"), 0);
+        dialog.find(NEXT_BUTTON).simulate("click");
+        assert.strictEqual(dialog.state("selectedIndex"), 1);
+        dialog.find(NEXT_BUTTON).simulate("click");
+        assert.strictEqual(dialog.state("selectedIndex"), 2);
+        const step = dialog.find(`.${Classes.DIALOG_STEP_DISABLED}`);
+        step.at(0).simulate("click");
+        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
+        assert.strictEqual(dialog.state("selectedIndex"), 2);
+        assert.strictEqual(steps.at(0).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
+        assert.strictEqual(steps.at(1).find(`.${Classes.DIALOG_STEP_DISABLED}`).length, 1);
+        assert.strictEqual(steps.at(2).find(`.${Classes.ACTIVE}`).length, 1);
+        dialog.unmount();
+    });
 
     it("gets by without children", () => {
         assert.doesNotThrow(() => {
