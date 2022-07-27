@@ -28,8 +28,8 @@ Menu items may have submenus when nested MenuItem2 `children` are defined. These
 be displayed inside a popover next to the active menu item on hover. Here's a code example:
 
 ```tsx
-// N.B. the popover2 package re-exports { Menu } from "@blueprintjs/core" for convenience
-import { Menu, MenuItem2 } from "@blueprintjs/popover2";
+import { Menu } from "@blueprintjs/core";
+import { MenuItem2 } from "@blueprintjs/popover2";
 
 function Example() {
     return (

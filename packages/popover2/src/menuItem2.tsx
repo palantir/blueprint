@@ -32,8 +32,6 @@ import {
 import * as Classes from "./classes";
 import { Popover2, Popover2Props } from "./popover2";
 
-export { Menu, MenuProps };
-
 export interface MenuItem2Props extends ActionProps, LinkProps {
     /** Item text, required for usability. */
     text: React.ReactNode;
