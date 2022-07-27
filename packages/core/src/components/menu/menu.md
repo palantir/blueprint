@@ -7,7 +7,7 @@ Menus display lists of interactive items.
 The Menu API includes three React components:
 
 * [Menu](#core/components/menu.menu)
-* [MenuItem](#core/components/menu.menu-item) (DEPRECATED)
+* [MenuItem](#core/components/menu.menu-item) (DEPRECATED, use [MenuItem2](#popover2-package/menu-item2))
 * [MenuDivider](#core/components/menu.menu-divider)
 
 ```tsx

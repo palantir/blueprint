@@ -287,10 +287,10 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
 
 const SUBMENU_POPOVER_MODIFIERS: Popover2Props["modifiers"] = {
     // 20px padding - scrollbar width + a bit
-    flip: { options: { rootBoundary: "viewport", padding: 20 } },
+    flip: { options: { rootBoundary: "viewport", padding: 20 }, enabled: true },
     // shift popover up 5px so MenuItems align
-    offset: { options: { offset: [-5, 0] } },
-    preventOverflow: { options: { rootBoundary: "viewport", padding: 20 } },
+    offset: { options: { offset: [-5, 0] }, enabled: true },
+    preventOverflow: { options: { rootBoundary: "viewport", padding: 20 }, enabled: true },
 };
 
 // props to ignore when disabled

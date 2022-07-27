@@ -28,7 +28,7 @@ export function MenuItem2Example(props: IExampleProps) {
     const [selected, setSelected] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>("none");
     const [iconEnabled, setIconEnabled] = React.useState(true);
-    const [submenuEnabled, setSubmenuEnabled] = React.useState(false);
+    const [submenuEnabled, setSubmenuEnabled] = React.useState(true);
 
     const options = (
         <>
