@@ -25,17 +25,17 @@ interaction handlers.
 Create a context menu using the simple function component:
 
 ```tsx
-import { Menu, MenuItem } from "@blueprintjs/core";
-import { ContextMenu2 } from "@blueprintjs/popover2";
+import { Menu } from "@blueprintjs/core";
+import { ContextMenu2, MenuItem2 } from "@blueprintjs/popover2";
 
 export default function ContextMenuExample() {
     return (
         <ContextMenu2
             content={
                 <Menu>
-                    <MenuItem text="Save" />
-                    <MenuItem text="Save as..." />
-                    <MenuItem text="Delete..." intent="danger" />
+                    <MenuItem2 text="Save" />
+                    <MenuItem2 text="Save as..." />
+                    <MenuItem2 text="Delete..." intent="danger" />
                 </Menu>
             }
         >
@@ -63,17 +63,17 @@ all the render props supplied to the `children()` function:
 
 ```tsx
 import classNames from "classnames";
-import { Menu, MenuItem } from "@blueprintjs/core";
-import { ContextMenu2, ContextMenu2ChildrenProps } from "@blueprintjs/popover2";
+import { Menu } from "@blueprintjs/core";
+import { ContextMenu2, ContextMenu2ChildrenProps, MenuItem2 } from "@blueprintjs/popover2";
 
 export default function AdvancedContextMenu2Example() {
     return (
         <ContextMenu2
             content={
                 <Menu>
-                    <MenuItem text="Save" />
-                    <MenuItem text="Save as..." />
-                    <MenuItem text="Delete..." intent="danger" />
+                    <MenuItem2 text="Save" />
+                    <MenuItem2 text="Save as..." />
+                    <MenuItem2 text="Delete..." intent="danger" />
                 </Menu>
             }
         >

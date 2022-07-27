@@ -16,8 +16,9 @@
 
 import * as React from "react";
 
-import { Button, H5, HotkeysTarget2, KeyCombo, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
+import { Button, H5, HotkeysTarget2, KeyCombo, Position, Switch, Toaster } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { MenuItem2 } from "@blueprintjs/popover2";
 import { Omnibar } from "@blueprintjs/select";
 
 import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption } from "./../../common/films";
@@ -79,7 +80,7 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
                         createNewItemFromQuery={maybeCreateNewItemFromQuery}
                         createNewItemRenderer={maybeCreateNewItemRenderer}
                         itemsEqual={areFilmsEqual}
-                        noResults={<MenuItem disabled={true} text="No results." />}
+                        noResults={<MenuItem2 disabled={true} text="No results." />}
                         onItemSelect={this.handleItemSelect}
                         onClose={this.handleClose}
                     />

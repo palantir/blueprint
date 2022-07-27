@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { MenuItem } from "@blueprintjs/core";
+import { MenuItem2 } from "@blueprintjs/popover2";
 import { ItemPredicate, ItemRenderer } from "@blueprintjs/select";
 
 export interface IFilm {
@@ -138,7 +138,7 @@ export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, handleFocus
     }
     const text = `${film.rank}. ${film.title}`;
     return (
-        <MenuItem
+        <MenuItem2
             active={modifiers.active}
             disabled={modifiers.disabled}
             label={film.year.toString()}
@@ -156,7 +156,7 @@ export const renderCreateFilmOption = (
     active: boolean,
     handleClick: React.MouseEventHandler<HTMLElement>,
 ) => (
-    <MenuItem
+    <MenuItem2
         icon="add"
         text={`Create "${query}"`}
         roleStructure="listoption"

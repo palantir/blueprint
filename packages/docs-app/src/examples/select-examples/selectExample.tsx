@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 import * as React from "react";
 
 import { H5, MenuItem, Switch } from "@blueprintjs/core";

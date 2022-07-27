@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to OverflowList instead.
+ */
+
+/* eslint-disable deprecation/deprecation */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -73,7 +80,6 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
             </>
         );
 
-        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={options} {...this.props}>
                 <CollapsibleList
@@ -91,7 +97,6 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
                 </CollapsibleList>
             </Example>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 
     private renderBreadcrumb = (props: MenuItemProps) => {

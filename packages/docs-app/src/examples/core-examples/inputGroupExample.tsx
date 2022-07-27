@@ -16,21 +16,9 @@
 
 import * as React from "react";
 
-import {
-    Button,
-    H5,
-    Icon,
-    IconSize,
-    InputGroup,
-    Intent,
-    Menu,
-    MenuItem,
-    Spinner,
-    Switch,
-    Tag,
-} from "@blueprintjs/core";
+import { Button, H5, Icon, IconSize, InputGroup, Intent, Menu, Spinner, Switch, Tag } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
-import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
+import { MenuItem2, Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
 export interface IInputGroupExampleState {
     disabled: boolean;
@@ -84,8 +72,8 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
             <Popover2
                 content={
                     <Menu>
-                        <MenuItem text="can edit" />
-                        <MenuItem text="can view" />
+                        <MenuItem2 text="can edit" />
+                        <MenuItem2 text="can view" />
                     </Menu>
                 }
                 disabled={disabled}

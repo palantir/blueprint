@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,40 +14,25 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to MenuItem2 instead.
- */
-
-/* eslint-disable deprecation/deprecation */
-
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import {
-    Button,
-    Classes,
-    Icon,
-    IMenuItemProps,
-    IMenuProps,
-    MenuItem,
-    Popover,
-    PopoverInteractionKind,
-    Text,
-} from "../../src";
+import { Button, Classes, Icon, MenuProps, Text } from "@blueprintjs/core";
 
-describe("MenuItem", () => {
-    it("React renders MenuItem", () => {
-        const wrapper = shallow(<MenuItem icon="graph" text="Graph" />);
+import { MenuItem2, MenuItem2Props, Popover2, Popover2InteractionKind } from "../src";
+
+describe("MenuItem2", () => {
+    it("basic rendering", () => {
+        const wrapper = shallow(<MenuItem2 icon="graph" text="Graph" />);
         assert.isTrue(wrapper.find(Icon).exists());
         assert.strictEqual(findText(wrapper).text(), "Graph");
     });
 
     it("supports HTML props", () => {
         const func = () => false;
-        const item = shallow(<MenuItem text="text" onClick={func} onKeyDown={func} onMouseMove={func} />).find("a");
+        const item = shallow(<MenuItem2 text="text" onClick={func} onKeyDown={func} onMouseMove={func} />).find("a");
         assert.strictEqual(item.prop("onClick"), func);
         assert.strictEqual(item.prop("onKeyDown"), func);
         assert.strictEqual(item.prop("onMouseMove"), func);
@@ -55,117 +40,112 @@ describe("MenuItem", () => {
 
     it("children appear in submenu", () => {
         const wrapper = shallow(
-            <MenuItem icon="style" text="Style">
-                <MenuItem icon="bold" text="Bold" />
-                <MenuItem icon="italic" text="Italic" />
-                <MenuItem icon="underline" text="Underline" />
-            </MenuItem>,
+            <MenuItem2 icon="style" text="Style">
+                <MenuItem2 icon="bold" text="Bold" />
+                <MenuItem2 icon="italic" text="Italic" />
+                <MenuItem2 icon="underline" text="Underline" />
+            </MenuItem2>,
         );
         const submenu = findSubmenu(wrapper);
         assert.lengthOf(submenu.props.children, 3);
     });
 
     it("default role prop structure is correct for a menuitem that is a an item of a ul with role=menu", () => {
-        const wrapper = mount(<MenuItem text="Roles" />);
+        const wrapper = mount(<MenuItem2 text="Roles" />);
         assert.equal(wrapper.find("li").prop("role"), "none");
         assert.equal(wrapper.find("a").prop("role"), "menuitem");
     });
 
     it("can set roleStructure to change role prop structure to that of a listbox or select item", () => {
-        const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" />);
+        const wrapper = mount(<MenuItem2 text="Roles" roleStructure="listoption" />);
         assert.equal(wrapper.find("li").prop("role"), "option");
         assert.equal(wrapper.find("a").prop("role"), undefined);
     });
 
-    it("disabled MenuItem will not show its submenu", () => {
+    it("disabled MenuItem2 will not show its submenu", () => {
         const wrapper = shallow(
-            <MenuItem disabled={true} icon="style" text="Style">
-                <MenuItem icon="bold" text="Bold" />
-                <MenuItem icon="italic" text="Italic" />
-                <MenuItem icon="underline" text="Underline" />
-            </MenuItem>,
+            <MenuItem2 disabled={true} icon="style" text="Style">
+                <MenuItem2 icon="bold" text="Bold" />
+                <MenuItem2 icon="italic" text="Italic" />
+                <MenuItem2 icon="underline" text="Underline" />
+            </MenuItem2>,
         );
-        /* eslint-disable-next-line deprecation/deprecation */
-        assert.isTrue(wrapper.find(Popover).prop("disabled"));
+        assert.isTrue(wrapper.find(Popover2).prop("disabled"));
     });
 
-    it("disabled MenuItem blocks mouse listeners", () => {
+    it("disabled MenuItem2 blocks mouse listeners", () => {
         const mouseSpy = spy();
-        mount(<MenuItem disabled={true} text="disabled" onClick={mouseSpy} onMouseEnter={mouseSpy} />)
+        mount(<MenuItem2 disabled={true} text="disabled" onClick={mouseSpy} onMouseEnter={mouseSpy} />)
             .simulate("click")
             .simulate("mouseenter")
             .simulate("click");
         assert.strictEqual(mouseSpy.callCount, 0);
     });
 
-    it("Clicking MenuItem triggers onClick prop", () => {
+    it("clicking MenuItem2 triggers onClick prop", () => {
         const onClick = spy();
-        shallow(<MenuItem text="Graph" onClick={onClick} />)
+        shallow(<MenuItem2 text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("click");
         assert.isTrue(onClick.calledOnce);
     });
 
-    it("Clicking disabled MenuItem does not trigger onClick prop", () => {
+    it("clicking disabled MenuItem2 does not trigger onClick prop", () => {
         const onClick = spy();
-        shallow(<MenuItem disabled={true} text="Graph" onClick={onClick} />)
+        shallow(<MenuItem2 disabled={true} text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("click");
         assert.isTrue(onClick.notCalled);
     });
 
-    it("shouldDismissPopover=false prevents a clicked MenuItem from closing the Popover automatically", () => {
+    it("shouldDismissPopover=false prevents a clicked MenuItem2 from closing the Popover2 automatically", () => {
         const handleClose = spy();
-        const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
-        /* eslint-disable deprecation/deprecation */
+        const menu = <MenuItem2 text="Graph" shouldDismissPopover={false} />;
         const wrapper = mount(
-            <Popover content={menu} isOpen={true} onInteraction={handleClose} usePortal={false}>
+            <Popover2 content={menu} isOpen={true} onInteraction={handleClose} usePortal={false}>
                 <Button />
-            </Popover>,
+            </Popover2>,
         );
-        /* eslint-enable deprecation/deprecation */
-        wrapper.find(MenuItem).find("a").simulate("click");
+        wrapper.find(MenuItem2).find("a").simulate("click");
         assert.isTrue(handleClose.notCalled);
     });
 
     it("submenuProps are forwarded to the Menu", () => {
         const submenuProps = { "aria-label": "test-menu" };
         const wrapper = shallow(
-            <MenuItem icon="style" text="Style" submenuProps={submenuProps}>
-                <MenuItem text="one" />
-                <MenuItem text="two" />
-            </MenuItem>,
+            <MenuItem2 icon="style" text="Style" submenuProps={submenuProps}>
+                <MenuItem2 text="one" />
+                <MenuItem2 text="two" />
+            </MenuItem2>,
         );
         const submenu = findSubmenu(wrapper);
         assert.strictEqual(submenu.props["aria-label"], submenuProps["aria-label"]);
     });
 
-    it("popoverProps (except content) are forwarded to Popover", () => {
-        // Ensures that popover props are passed to Popover component, except content property
+    it("popoverProps (except content) are forwarded to Popover2", () => {
+        // Ensures that popover props are passed to Popover2 component, except content property
         const popoverProps = {
             content: "CUSTOM_CONTENT",
-            interactionKind: PopoverInteractionKind.CLICK,
+            interactionKind: Popover2InteractionKind.CLICK,
             popoverClassName: "CUSTOM_POPOVER_CLASS_NAME",
         };
         const wrapper = shallow(
-            <MenuItem icon="style" text="Style" popoverProps={popoverProps}>
-                <MenuItem text="one" />
-                <MenuItem text="two" />
-            </MenuItem>,
+            <MenuItem2 icon="style" text="Style" popoverProps={popoverProps}>
+                <MenuItem2 text="one" />
+                <MenuItem2 text="two" />
+            </MenuItem2>,
         );
-        /* eslint-disable deprecation/deprecation */
-        assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
+        assert.strictEqual(wrapper.find(Popover2).prop("interactionKind"), popoverProps.interactionKind);
         assert.notStrictEqual(
-            wrapper.find(Popover).prop("popoverClassName")!.indexOf(popoverProps.popoverClassName),
+            wrapper.find(Popover2).prop("popoverClassName")!.indexOf(popoverProps.popoverClassName),
             0,
         );
-        assert.notStrictEqual(wrapper.find(Popover).prop("content"), popoverProps.content);
-        /* eslint-enable deprecation/deprecation */
+        assert.notStrictEqual(wrapper.find(Popover2).prop("content"), popoverProps.content);
     });
 
     it("multiline prop determines if long content is ellipsized", () => {
         const wrapper = mount(
-            <MenuItem multiline={false} text="multiline prop determines if long content is ellipsized." />,
+            <MenuItem2 multiline={false} text="multiline prop determines if long content is ellipsized." />,
         );
         function assertOverflow(expected: boolean) {
             assert.strictEqual(findText(wrapper).hasClass(Classes.TEXT_OVERFLOW_ELLIPSIS), expected);
@@ -178,7 +158,7 @@ describe("MenuItem", () => {
 
     it(`label and labelElement are rendered in .${Classes.MENU_ITEM_LABEL}`, () => {
         const wrapper = shallow(
-            <MenuItem text="text" label="label text" labelElement={<article>label element</article>} />,
+            <MenuItem2 text="text" label="label text" labelElement={<article>label element</article>} />,
         );
         const label = wrapper.find(`.${Classes.MENU_ITEM_LABEL}`);
         assert.match(label.text(), /^label text/);
@@ -187,9 +167,8 @@ describe("MenuItem", () => {
 });
 
 function findSubmenu(wrapper: ShallowWrapper<any, any>) {
-    /* eslint-disable-next-line deprecation/deprecation */
-    return wrapper.find(Popover).prop("content") as React.ReactElement<
-        IMenuProps & { children: Array<React.ReactElement<IMenuItemProps>> }
+    return wrapper.find(Popover2).prop("content") as React.ReactElement<
+        MenuProps & { children: Array<React.ReactElement<MenuItem2Props>> }
     >;
 }
 

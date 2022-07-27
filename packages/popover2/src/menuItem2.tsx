@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation */
-
 import classNames from "classnames";
-import { Modifiers } from "popper.js";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, Position } from "../../common";
-import { ActionProps, DISPLAYNAME_PREFIX, LinkProps } from "../../common/props";
-import { Icon } from "../icon/icon";
-import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
-import { Text } from "../text/text";
-import { Menu, MenuProps } from "./menu";
+import {
+    AbstractPureComponent2,
+    ActionProps,
+    Classes as CoreClasses,
+    DISPLAYNAME_PREFIX,
+    Icon,
+    LinkProps,
+    Menu,
+    MenuProps,
+    Text,
+} from "@blueprintjs/core";
 
-/** @deprecated use { MenuItem2Props } from "@blueprintjs/popover2" */
-export type MenuItemProps = IMenuItemProps;
-/** @deprecated use { MenuItem2Props } from "@blueprintjs/popover2" */
-export interface IMenuItemProps extends ActionProps, LinkProps {
+import * as Classes from "./classes";
+import { Popover2, Popover2Props } from "./popover2";
+
+export interface MenuItem2Props extends ActionProps, LinkProps {
     /** Item text, required for usability. */
     text: React.ReactNode;
 
@@ -110,11 +112,11 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     multiline?: boolean;
 
     /**
-     * Props to spread to `Popover`. Note that `content` and `minimal` cannot be
+     * Props to spread to the submenu popover. Note that `content` and `minimal` cannot be
      * changed and `usePortal` defaults to `false` so all submenus will live in
      * the same container.
      */
-    popoverProps?: Partial<IPopoverProps>;
+    popoverProps?: Partial<Omit<Popover2Props, "content" | "minimal">>;
 
     /**
      * Whether this item should appear selected.
@@ -151,9 +153,8 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     htmlTitle?: string;
 }
 
-/** @deprecated use { MenuItem2 } from "@blueprintjs/popover2" instead */
-export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
-    public static defaultProps: MenuItemProps = {
+export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
+    public static defaultProps: MenuItem2Props = {
         active: false,
         disabled: false,
         multiline: false,
@@ -163,7 +164,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         text: "",
     };
 
-    public static displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
+    public static displayName = `${DISPLAYNAME_PREFIX}.MenuItem2`;
 
     public render() {
         const {
@@ -192,16 +193,16 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const hasIcon = icon != null;
         const hasSubmenu = children != null;
 
-        const intentClass = Classes.intentClass(intent);
+        const intentClass = CoreClasses.intentClass(intent);
         const anchorClasses = classNames(
-            Classes.MENU_ITEM,
+            CoreClasses.MENU_ITEM,
             intentClass,
             {
-                [Classes.ACTIVE]: active,
-                [Classes.DISABLED]: disabled,
+                [CoreClasses.ACTIVE]: active,
+                [CoreClasses.DISABLED]: disabled,
+                [CoreClasses.SELECTED]: selected || (active && intentClass === undefined),
                 // prevent popover from closing when clicking on submenu trigger or disabled item
-                [Classes.POPOVER_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
-                [Classes.SELECTED]: selected || (active && intentClass === undefined),
+                [Classes.POPOVER2_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
             },
             className,
         );
@@ -223,18 +224,18 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             hasIcon ? (
                 // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
                 // so that we always render this class
-                <span className={Classes.MENU_ITEM_ICON}>
+                <span className={CoreClasses.MENU_ITEM_ICON}>
                     <Icon icon={icon} aria-hidden={true} tabIndex={-1} />
                 </span>
             ) : undefined,
-            <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline} title={htmlTitle}>
+            <Text className={classNames(CoreClasses.FILL, textClassName)} ellipsize={!multiline} title={htmlTitle}>
                 {text}
             </Text>,
             this.maybeRenderLabel(labelElement),
-            hasSubmenu ? <Icon className={Classes.MENU_SUBMENU_ICON} icon="caret-right" /> : undefined,
+            hasSubmenu ? <Icon className={CoreClasses.MENU_SUBMENU_ICON} icon="caret-right" /> : undefined,
         );
 
-        const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
+        const liClasses = classNames({ [CoreClasses.MENU_SUBMENU]: hasSubmenu });
         return (
             <li className={liClasses} role={liRole} aria-selected={ariaSelected}>
                 {this.maybeRenderPopover(target, children)}
@@ -248,7 +249,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             return null;
         }
         return (
-            <span className={classNames(Classes.MENU_ITEM_LABEL, labelClassName)}>
+            <span className={classNames(CoreClasses.MENU_ITEM_LABEL, labelClassName)}>
                 {label}
                 {labelElement}
             </span>
@@ -261,32 +262,33 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         }
         const { disabled, popoverProps, submenuProps } = this.props;
         return (
-            <Popover
+            <Popover2
                 autoFocus={false}
                 captureDismiss={false}
                 disabled={disabled}
                 enforceFocus={false}
                 hoverCloseDelay={0}
-                interactionKind={PopoverInteractionKind.HOVER}
+                interactionKind="hover"
                 modifiers={SUBMENU_POPOVER_MODIFIERS}
-                position={Position.RIGHT_TOP}
+                placement="right-start"
                 usePortal={false}
                 {...popoverProps}
                 content={<Menu {...submenuProps}>{children}</Menu>}
                 minimal={true}
-                popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
-                target={target}
-            />
+                popoverClassName={classNames(CoreClasses.MENU_SUBMENU, popoverProps?.popoverClassName)}
+            >
+                {target}
+            </Popover2>
         );
     }
 }
 
-const SUBMENU_POPOVER_MODIFIERS: Modifiers = {
+const SUBMENU_POPOVER_MODIFIERS: Popover2Props["modifiers"] = {
     // 20px padding - scrollbar width + a bit
-    flip: { boundariesElement: "viewport", padding: 20 },
+    flip: { options: { rootBoundary: "viewport", padding: 20 }, enabled: true },
     // shift popover up 5px so MenuItems align
-    offset: { offset: -5 },
-    preventOverflow: { boundariesElement: "viewport", padding: 20 },
+    offset: { options: { offset: [-5, 0] }, enabled: true },
+    preventOverflow: { options: { rootBoundary: "viewport", padding: 20 }, enabled: true },
 };
 
 // props to ignore when disabled

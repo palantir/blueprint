@@ -22,7 +22,6 @@ import {
     Intent,
     Label,
     Menu,
-    MenuItem,
     NumericInput,
     NumericInputProps,
     OptionProps,
@@ -38,7 +37,7 @@ import {
     IExampleProps,
 } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
-import { Popover2 } from "@blueprintjs/popover2";
+import { MenuItem2, Popover2 } from "@blueprintjs/popover2";
 
 import { IntentSelect } from "./common/intentSelect";
 import { LOCALES } from "./common/locales";
@@ -106,9 +105,9 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
                     position="bottom"
                     content={
                         <Menu>
-                            <MenuItem icon={IconNames.Equals} text={"Equals"} />
-                            <MenuItem icon={IconNames.LessThan} text={"Less than"} />
-                            <MenuItem icon={IconNames.GreaterThan} text={"Greater than"} />
+                            <MenuItem2 icon={IconNames.Equals} text={"Equals"} />
+                            <MenuItem2 icon={IconNames.LessThan} text={"Less than"} />
+                            <MenuItem2 icon={IconNames.GreaterThan} text={"Greater than"} />
                         </Menu>
                     }
                 >
