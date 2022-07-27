@@ -20,7 +20,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Button, Classes, H4, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Button, Classes, H4, Intent, Menu, MenuDivider } from "@blueprintjs/core";
+import { MenuItem2 } from "@blueprintjs/popover2";
 import {
     Cell,
     Column,
@@ -38,7 +39,7 @@ import {
     SelectionModes,
     Table2,
     Utils,
-} from "@blueprintjs/table/src";
+} from "@blueprintjs/table";
 
 import { Nav } from "./nav";
 ReactDOM.render(<Nav selected="features" />, document.getElementById("nav"));
@@ -72,10 +73,10 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
 const renderTestMenu = () => (
     /* eslint-disable no-console */
     <Menu>
-        <MenuItem icon="export" onClick={() => console.log("Beam me up!")} text="Teleport" />
-        <MenuItem icon="sort-alphabetical-desc" onClick={() => console.log("ZA is the worst")} text="Down with ZA!" />
+        <MenuItem2 icon="export" onClick={() => console.log("Beam me up!")} text="Teleport" />
+        <MenuItem2 icon="sort-alphabetical-desc" onClick={() => console.log("ZA is the worst")} text="Down with ZA!" />
         <MenuDivider />
-        <MenuItem icon="curved-range-chart" onClick={() => console.log("You clicked the trident!")} text="Psi" />
+        <MenuItem2 icon="curved-range-chart" onClick={() => console.log("You clicked the trident!")} text="Psi" />
     </Menu>
 );
 

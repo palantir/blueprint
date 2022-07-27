@@ -36,6 +36,7 @@
     },
     "dependencies": {
         "@blueprintjs/core": "^4.6.1",
+        "@blueprintjs/popover2": "^1.4.3",
         "classnames": "^2.2",
         "prop-types": "^15.7.2",
         "react-innertext": "^1.1.5",

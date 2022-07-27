@@ -16,9 +16,9 @@
 
 import * as React from "react";
 
-import { Code, H5, Intent, MenuItem, Switch, TagProps } from "@blueprintjs/core";
+import { Code, H5, Intent, Switch, TagProps } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Popover2 } from "@blueprintjs/popover2";
+import { MenuItem2, Popover2 } from "@blueprintjs/popover2";
 import { ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
 
 import {
@@ -106,7 +106,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         });
 
         const initialContent = this.state.hasInitialContent ? (
-            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
+            <MenuItem2 disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
         ) : // explicit undefined (not null) for default behavior (show full list)
         undefined;
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
@@ -126,7 +126,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     // adding newly created items to the list, so pass our own
                     items={this.state.items}
                     menuProps={{ "aria-label": "films" }}
-                    noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
+                    noResults={<MenuItem2 disabled={true} text="No results." roleStructure="listoption" />}
                     onClear={this.state.showClearButton ? this.handleClear : undefined}
                     onItemSelect={this.handleFilmSelect}
                     onItemsPaste={this.handleFilmsPaste}
@@ -236,7 +236,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
             return null;
         }
         return (
-            <MenuItem
+            <MenuItem2
                 selected={modifiers.active}
                 icon={this.isFilmSelected(film) ? "tick" : "blank"}
                 roleStructure="listoption"

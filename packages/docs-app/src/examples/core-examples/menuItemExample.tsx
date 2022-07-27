@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Popover2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation */
+
 import * as React from "react";
 
 import { Classes, H5, Intent, Menu, MenuItem, Switch } from "@blueprintjs/core";

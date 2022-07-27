@@ -24,13 +24,13 @@ import {
     BreadcrumbProps,
     Classes as CoreClasses,
     Menu,
-    MenuItem,
     OverflowList,
     OverflowListProps,
     Props,
     removeNonHTMLProps,
 } from "@blueprintjs/core";
 
+import { MenuItem2 } from "./menuItem2";
 import { Popover2, Popover2Props } from "./popover2";
 
 export { BreadcrumbProps };
@@ -140,7 +140,7 @@ export class Breadcrumbs2 extends AbstractPureComponent2<Breadcrumbs2Props> {
     private renderOverflowBreadcrumb = (props: BreadcrumbProps, index: number) => {
         const isClickable = props.href != null || props.onClick != null;
         const htmlProps = removeNonHTMLProps(props);
-        return <MenuItem disabled={!isClickable} {...htmlProps} text={props.text} key={index} />;
+        return <MenuItem2 disabled={!isClickable} {...htmlProps} text={props.text} key={index} />;
     };
 
     private renderBreadcrumbWrapper = (props: BreadcrumbProps, index: number) => {

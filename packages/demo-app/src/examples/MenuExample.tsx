@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 import * as React from "react";
 
 import { Classes, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";

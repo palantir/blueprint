@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to OverflowList instead.
+ */
+
 /* eslint-disable deprecation/deprecation */
 
 import classNames from "classnames";
@@ -31,8 +36,9 @@ import { IPopoverProps, Popover } from "../popover/popover";
 
 type CollapsibleItem = React.ReactElement<MenuItemProps>;
 
+/** @deprecated use OverflowList */
 export type CollapsibleListProps = ICollapsibleListProps;
-/** @deprecated use CollapsibleListProps */
+/** @deprecated use OverflowList */
 export interface ICollapsibleListProps extends Props {
     /** Contents to collapse. */
     children?: React.ReactNode;

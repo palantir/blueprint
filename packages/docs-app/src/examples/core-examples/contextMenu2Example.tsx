@@ -17,29 +17,35 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Classes, Menu, MenuDivider } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { ContextMenu2, ContextMenu2ChildrenProps, ContextMenu2ContentProps, Tooltip2 } from "@blueprintjs/popover2";
+import {
+    ContextMenu2,
+    ContextMenu2ChildrenProps,
+    ContextMenu2ContentProps,
+    MenuItem2,
+    Tooltip2,
+} from "@blueprintjs/popover2";
 
 export const ContextMenu2Example: React.FC<IExampleProps> = props => {
     const renderContent = React.useCallback(
         ({ targetOffset }: ContextMenu2ContentProps) => (
             <Menu>
-                <MenuItem icon="select" text="Select all" />
-                <MenuItem icon="insert" text="Insert...">
-                    <MenuItem icon="new-object" text="Object" />
-                    <MenuItem icon="new-text-box" text="Text box" />
-                    <MenuItem icon="star" text="Astral body" />
-                </MenuItem>
-                <MenuItem icon="layout" text="Layout...">
-                    <MenuItem icon="layout-auto" text="Auto" />
-                    <MenuItem icon="layout-circle" text="Circle" />
-                    <MenuItem icon="layout-grid" text="Grid" />
-                </MenuItem>
+                <MenuItem2 icon="select" text="Select all" />
+                <MenuItem2 icon="insert" text="Insert...">
+                    <MenuItem2 icon="new-object" text="Object" />
+                    <MenuItem2 icon="new-text-box" text="Text box" />
+                    <MenuItem2 icon="star" text="Astral body" />
+                </MenuItem2>
+                <MenuItem2 icon="layout" text="Layout...">
+                    <MenuItem2 icon="layout-auto" text="Auto" />
+                    <MenuItem2 icon="layout-circle" text="Circle" />
+                    <MenuItem2 icon="layout-grid" text="Grid" />
+                </MenuItem2>
                 {targetOffset === undefined ? undefined : (
                     <>
                         <MenuDivider />
-                        <MenuItem
+                        <MenuItem2
                             disabled={true}
                             text={`Clicked at (${Math.round(targetOffset.left)}, ${Math.round(targetOffset.top)})`}
                         />
@@ -88,12 +94,12 @@ const GraphNode: React.FC = () => {
         <ContextMenu2
             content={
                 <Menu>
-                    <MenuItem icon="search-around" text="Search around..." />
-                    <MenuItem icon="search" text="Object viewer" />
-                    <MenuItem icon="graph-remove" text="Remove" />
-                    <MenuItem icon="group-objects" text="Group" />
+                    <MenuItem2 icon="search-around" text="Search around..." />
+                    <MenuItem2 icon="search" text="Object viewer" />
+                    <MenuItem2 icon="graph-remove" text="Remove" />
+                    <MenuItem2 icon="group-objects" text="Group" />
                     <MenuDivider />
-                    <MenuItem disabled={true} text="Clicked on node" />
+                    <MenuItem2 disabled={true} text="Clicked on node" />
                 </Menu>
             }
         >

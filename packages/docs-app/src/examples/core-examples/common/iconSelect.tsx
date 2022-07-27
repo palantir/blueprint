@@ -17,8 +17,9 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Alignment, Button, Classes, MenuItem } from "@blueprintjs/core";
+import { Alignment, Button, Classes } from "@blueprintjs/core";
 import { IconName } from "@blueprintjs/icons";
+import { MenuItem2 } from "@blueprintjs/popover2";
 import { ItemRenderer, Select2 } from "@blueprintjs/select";
 
 import { getIconNames, IconNameOrNone, NONE } from "./iconNames";
@@ -44,7 +45,7 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
                     items={ICON_NAMES}
                     itemPredicate={this.filterIconName}
                     itemRenderer={this.renderIconItem}
-                    noResults={<MenuItem disabled={true} text="No results" />}
+                    noResults={<MenuItem2 disabled={true} text="No results" />}
                     onItemSelect={this.handleIconChange}
                     popoverProps={{ minimal: true }}
                 >
@@ -67,7 +68,7 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
             return null;
         }
         return (
-            <MenuItem
+            <MenuItem2
                 selected={modifiers.active}
                 icon={icon === NONE ? undefined : icon}
                 key={icon}
