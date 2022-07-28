@@ -13,6 +13,11 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to MultiSelect2 instead.
+ */
+
 import classNames from "classnames";
 import * as React from "react";
 

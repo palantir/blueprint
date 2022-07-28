@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation */
-
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Boundary, Classes, Position, Props, removeNonHTMLProps } from "../../common";
-import { Menu } from "../menu/menu";
-import { MenuItem } from "../menu/menuItem";
-import { OverflowList, OverflowListProps } from "../overflow-list/overflowList";
-import { IPopoverProps, Popover } from "../popover/popover";
-import { Breadcrumb, BreadcrumbProps } from "./breadcrumb";
+import {
+    AbstractPureComponent2,
+    Boundary,
+    Breadcrumb,
+    BreadcrumbProps,
+    Classes as CoreClasses,
+    Menu,
+    OverflowList,
+    OverflowListProps,
+    Props,
+    removeNonHTMLProps,
+} from "@blueprintjs/core";
 
-export type BreadcrumbsProps = IBreadcrumbsProps;
-/** @deprecated use BreadcrumbsProps */
-export interface IBreadcrumbsProps extends Props {
+import { MenuItem2 } from "./menuItem2";
+import { Popover2, Popover2Props } from "./popover2";
+
+export { BreadcrumbProps };
+export interface Breadcrumbs2Props extends Props {
     /**
      * Callback invoked to render visible breadcrumbs. Best practice is to
      * render a `<Breadcrumb>` element. If `currentBreadcrumbRenderer` is also
@@ -72,17 +78,20 @@ export interface IBreadcrumbsProps extends Props {
      * Props to spread to `OverflowList`. Note that `items`,
      * `overflowRenderer`, and `visibleItemRenderer` cannot be changed.
      */
-    overflowListProps?: Partial<OverflowListProps<BreadcrumbProps>>;
+    overflowListProps?: Partial<
+        Omit<OverflowListProps<BreadcrumbProps>, "items" | "overflowRenderer" | "visibleItemRenderer">
+    >;
 
     /**
-     * Props to spread to the `Popover` showing the overflow menu.
+     * Props to spread to the popover showing the overflow menu.
      */
-    popoverProps?: IPopoverProps;
+    popoverProps?: Partial<
+        Omit<Popover2Props, "content" | "defaultIsOpen" | "disabled" | "fill" | "renderTarget" | "targetTagName">
+    >;
 }
 
-/** @deprecated use { Breadcrumbs2 } from "@blueprintjs/popover2" */
-export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
-    public static defaultProps: Partial<BreadcrumbsProps> = {
+export class Breadcrumbs2 extends AbstractPureComponent2<Breadcrumbs2Props> {
+    public static defaultProps: Partial<Breadcrumbs2Props> = {
         collapseFrom: Boundary.START,
     };
 
@@ -94,7 +103,7 @@ export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
                 minVisibleItems={minVisibleItems}
                 tagName="ul"
                 {...overflowListProps}
-                className={classNames(Classes.BREADCRUMBS, overflowListProps.className, className)}
+                className={classNames(CoreClasses.BREADCRUMBS, overflowListProps.className, className)}
                 items={items}
                 overflowRenderer={this.renderOverflow}
                 visibleItemRenderer={this.renderBreadcrumbWrapper}
@@ -103,8 +112,8 @@ export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
     }
 
     private renderOverflow = (items: readonly BreadcrumbProps[]) => {
-        const { collapseFrom } = this.props;
-        const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
+        const { collapseFrom, popoverProps } = this.props;
+
         let orderedItems = items;
         if (collapseFrom === Boundary.START) {
             // If we're collapsing from the start, the menu should be read from the bottom to the
@@ -116,14 +125,14 @@ export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
 
         return (
             <li>
-                <Popover
-                    position={position}
+                <Popover2
+                    placement={collapseFrom === Boundary.END ? "bottom-end" : "bottom-start"}
                     disabled={orderedItems.length === 0}
                     content={<Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>}
-                    {...this.props.popoverProps}
+                    {...popoverProps}
                 >
-                    <span className={Classes.BREADCRUMBS_COLLAPSED} />
-                </Popover>
+                    <span className={CoreClasses.BREADCRUMBS_COLLAPSED} />
+                </Popover2>
             </li>
         );
     };
@@ -131,7 +140,7 @@ export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
     private renderOverflowBreadcrumb = (props: BreadcrumbProps, index: number) => {
         const isClickable = props.href != null || props.onClick != null;
         const htmlProps = removeNonHTMLProps(props);
-        return <MenuItem disabled={!isClickable} {...htmlProps} text={props.text} key={index} />;
+        return <MenuItem2 disabled={!isClickable} {...htmlProps} text={props.text} key={index} />;
     };
 
     private renderBreadcrumbWrapper = (props: BreadcrumbProps, index: number) => {

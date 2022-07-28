@@ -814,15 +814,15 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             return <div className={classes} ref={refHandler} />;
         }
 
-        // if we have horizontal overflow, no need to render ghost columns
+        // if we have horizontal overflow or exact fit, no need to render ghost columns
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
-        const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(
+        const hasHorizontalOverflowOrExactFit = this.locator.hasHorizontalOverflowOrExactFit(
             enableRowHeader ? this.rowHeaderWidth : 0,
             viewportRect,
         );
         const columnIndices = this.grid.getColumnIndicesInRect(
             viewportRect,
-            hasHorizontalOverflow ? false : enableGhostCells,
+            hasHorizontalOverflowOrExactFit ? false : enableGhostCells,
         );
 
         const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
@@ -897,14 +897,14 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             return <div className={classes} ref={refHandler} />;
         }
 
-        // if we have vertical overflow, no need to render ghost rows
+        // if we have vertical overflow or exact fit, no need to render ghost rows
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
-        const hasVerticalOverflow = this.locator.hasVerticalOverflow(
+        const hasVerticalOverflowOrExactFit = this.locator.hasVerticalOverflowOrExactFit(
             enableColumnHeader ? this.columnHeaderHeight : 0,
             viewportRect,
         );
         const rowIndices = this.grid.getRowIndicesInRect({
-            includeGhostCells: hasVerticalOverflow ? false : enableGhostCells,
+            includeGhostCells: hasVerticalOverflowOrExactFit ? false : enableGhostCells,
             rect: viewportRect,
         });
 
@@ -994,23 +994,23 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             return undefined;
         }
 
-        // if we have vertical/horizontal overflow, no need to render ghost rows/columns (respectively)
+        // if we have vertical/horizontal overflow or exact fit, no need to render ghost rows/columns (respectively)
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
-        const hasVerticalOverflow = this.locator.hasVerticalOverflow(
+        const hasVerticalOverflowOrExactFit = this.locator.hasVerticalOverflowOrExactFit(
             enableColumnHeader ? this.columnHeaderHeight : 0,
             viewportRect,
         );
-        const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(
+        const hasHorizontalOverflowOrExactFit = this.locator.hasHorizontalOverflowOrExactFit(
             enableRowHeader ? this.rowHeaderWidth : 0,
             viewportRect,
         );
         const rowIndices = this.grid.getRowIndicesInRect({
-            includeGhostCells: hasVerticalOverflow ? false : enableGhostCells,
+            includeGhostCells: hasVerticalOverflowOrExactFit ? false : enableGhostCells,
             rect: viewportRect,
         });
         const columnIndices = this.grid.getColumnIndicesInRect(
             viewportRect,
-            hasHorizontalOverflow ? false : enableGhostCells,
+            hasHorizontalOverflowOrExactFit ? false : enableGhostCells,
         );
 
         // start beyond the frozen area if rendering unrelated quadrants, so we

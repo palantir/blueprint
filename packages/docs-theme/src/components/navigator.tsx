@@ -18,7 +18,8 @@ import { IHeadingNode, IPageNode } from "@documentalist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as React from "react";
 
-import { Classes, Icon, InputGroupProps2, MenuItem } from "@blueprintjs/core";
+import { Classes, Icon, InputGroupProps2 } from "@blueprintjs/core";
+import { MenuItem2 } from "@blueprintjs/popover2";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import { eachLayoutNode } from "../common/utils";
@@ -112,7 +113,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
             </>
         );
         return (
-            <MenuItem
+            <MenuItem2
                 selected={props.modifiers.active}
                 href={"#" + section.route}
                 key={section.route}

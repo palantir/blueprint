@@ -16,14 +16,14 @@
 
 import * as React from "react";
 
-import { MenuItem, MenuItemProps } from "@blueprintjs/core";
+import { MenuItem2, MenuItem2Props } from "@blueprintjs/popover2";
 
 import { Clipboard } from "../../common/clipboard";
 import { TABLE_COPY_FAILED } from "../../common/errors";
 import { Regions } from "../../regions";
 import { IMenuContext } from "./menuContext";
 
-export interface ICopyCellsMenuItemProps extends MenuItemProps {
+export interface ICopyCellsMenuItemProps extends MenuItem2Props {
     /**
      * The `IMenuContext` that launched the menu.
      */
@@ -51,7 +51,7 @@ export interface ICopyCellsMenuItemProps extends MenuItemProps {
 export class CopyCellsMenuItem extends React.PureComponent<ICopyCellsMenuItemProps> {
     public render() {
         const { context, getCellData, onCopy, ...menuItemProps } = this.props;
-        return <MenuItem {...menuItemProps} onClick={this.handleClick} />;
+        return <MenuItem2 {...menuItemProps} onClick={this.handleClick} />;
     }
 
     private handleClick = () => {

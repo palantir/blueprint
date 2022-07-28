@@ -25,9 +25,9 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     InputGroupProps2,
-    MenuItem,
     Props,
 } from "@blueprintjs/core";
+import { MenuItem2 } from "@blueprintjs/popover2";
 import { ItemListPredicate, ItemRenderer, Select2, SelectPopoverProps } from "@blueprintjs/select";
 
 import * as Classes from "../../common/classes";
@@ -161,7 +161,7 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
                 itemListPredicate={this.filterItems}
                 itemRenderer={this.renderItem}
                 items={query ? this.timezoneItems : this.initialTimezoneItems}
-                noResults={<MenuItem disabled={true} text="No matching timezones." />}
+                noResults={<MenuItem2 disabled={true} text="No matching timezones." />}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 popoverProps={{
@@ -212,7 +212,7 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
             return null;
         }
         return (
-            <MenuItem
+            <MenuItem2
                 key={item.ianaCode}
                 selected={modifiers.active}
                 text={`${item.label}, ${item.longName}`}

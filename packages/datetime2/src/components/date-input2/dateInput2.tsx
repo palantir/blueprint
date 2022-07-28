@@ -26,6 +26,7 @@ import {
     mergeRefs,
     Props,
     Tag,
+    Utils,
 } from "@blueprintjs/core";
 import {
     DateFormatProps,
@@ -617,7 +618,7 @@ DateInput2.defaultProps = {
 };
 
 function getRelatedTargetWithFallback(e: React.FocusEvent<HTMLElement>) {
-    return (e.relatedTarget ?? document.activeElement) as HTMLElement;
+    return (e.relatedTarget ?? Utils.getActiveElement(e.currentTarget)) as HTMLElement;
 }
 
 function getKeyboardFocusableElements(popoverContentRef: React.MutableRefObject<HTMLDivElement | null>) {

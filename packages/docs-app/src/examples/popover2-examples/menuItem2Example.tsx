@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,21 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to Popover2 instead.
- */
-
-/* eslint-disable deprecation/deprecation */
-
 import * as React from "react";
 
-import { Classes, H5, Intent, Menu, MenuItem, Switch } from "@blueprintjs/core";
+import { Classes, H5, Intent, Menu, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { MenuItem2 } from "@blueprintjs/popover2";
 
-import { IntentSelect } from "./common/intentSelect";
+import { IntentSelect } from "../core-examples/common/intentSelect";
 
-export function MenuItemExample(props: IExampleProps) {
+export function MenuItem2Example(props: IExampleProps) {
     const [large, setLarge] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [selected, setSelected] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>("none");
     const [iconEnabled, setIconEnabled] = React.useState(true);
-    const [submenuEnabled, setSubmenuEnabled] = React.useState(false);
+    const [submenuEnabled, setSubmenuEnabled] = React.useState(true);
 
     const options = (
         <>
@@ -51,7 +45,7 @@ export function MenuItemExample(props: IExampleProps) {
     return (
         <Example className="docs-menu-example" options={options} {...props}>
             <Menu className={Classes.ELEVATION_1} large={large}>
-                <MenuItem
+                <MenuItem2
                     disabled={disabled}
                     selected={selected}
                     text="Settings"
@@ -61,8 +55,8 @@ export function MenuItemExample(props: IExampleProps) {
                     children={
                         submenuEnabled ? (
                             <>
-                                <MenuItem icon="add" text="Add new application" />
-                                <MenuItem icon="remove" text="Remove application" />
+                                <MenuItem2 icon="add" text="Add new application" />
+                                <MenuItem2 icon="remove" text="Remove application" />
                             </>
                         ) : undefined
                     }

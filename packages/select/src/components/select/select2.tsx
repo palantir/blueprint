@@ -78,7 +78,7 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
     /**
      * Props to spread to the `Menu` listbox containing the selectable options.
      */
-    menuProps?: React.HTMLProps<HTMLUListElement>;
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
     /**
      * Props to add to the popover target wrapper element.
@@ -276,7 +276,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private handlePopoverOpening = (node: HTMLElement) => {
         // save currently focused element before popover steals focus, so we can restore it when closing.
-        this.previousFocusedElement = document.activeElement as HTMLElement;
+        this.previousFocusedElement = (Utils.getActiveElement(this.inputElement) as HTMLElement | null) ?? undefined;
 
         if (this.props.resetOnClose) {
             this.resetQuery();

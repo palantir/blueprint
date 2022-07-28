@@ -16,7 +16,8 @@
 
 import * as React from "react";
 
-import { Button, MenuItem } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core";
+import { MenuItem2 } from "@blueprintjs/popover2";
 import { Select2, Select2Props } from "@blueprintjs/select";
 
 import {
@@ -70,7 +71,7 @@ export default function ({ allowCreate = false, fill, ...restProps }: Props) {
             createNewItemRenderer={maybeCreateNewItemRenderer}
             itemsEqual={areFilmsEqual}
             menuProps={{ "aria-label": "films" }}
-            noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
+            noResults={<MenuItem2 disabled={true} text="No results." roleStructure="listoption" />}
             onItemSelect={handleItemSelect}
             items={items}
             fill={fill}
