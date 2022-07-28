@@ -24,6 +24,7 @@ import { Omnibar } from "@blueprintjs/select";
 import {
     areFilmsEqual,
     createFilm,
+    filterFilm,
     IFilm,
     renderCreateFilmOption,
     renderFilm,
@@ -85,6 +86,7 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
                         {...this.state}
                         createNewItemFromQuery={maybeCreateNewItemFromQuery}
                         createNewItemRenderer={maybeCreateNewItemRenderer}
+                        itemPredicate={filterFilm}
                         itemRenderer={renderFilm}
                         items={TOP_100_FILMS}
                         itemsEqual={areFilmsEqual}

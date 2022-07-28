@@ -25,6 +25,7 @@ import {
     areFilmsEqual,
     arrayContainsFilm,
     createFilm,
+    filterFilm,
     getFilmItemProps,
     IFilm,
     maybeAddCreatedFilmToArrays,
@@ -119,9 +120,10 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     createNewItemFromQuery={maybeCreateNewItemFromQuery}
                     createNewItemRenderer={maybeCreateNewItemRenderer}
                     initialContent={initialContent}
+                    itemPredicate={filterFilm}
                     itemRenderer={this.renderFilm}
-                    itemsEqual={areFilmsEqual}
                     items={this.state.items}
+                    itemsEqual={areFilmsEqual}
                     menuProps={{ "aria-label": "films" }}
                     noResults={<MenuItem2 disabled={true} text="No results." roleStructure="listoption" />}
                     onClear={this.state.showClearButton ? this.handleClear : undefined}

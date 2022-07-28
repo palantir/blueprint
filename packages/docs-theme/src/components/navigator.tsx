@@ -114,12 +114,13 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
         );
         return (
             <MenuItem2
-                selected={props.modifiers.active}
-                href={"#" + section.route}
+                active={props.modifiers.active}
+                href={`#${section.route}`}
                 key={section.route}
                 multiline={true}
                 onClick={props.handleClick}
                 onFocus={props.handleFocus}
+                roleStructure="listoption"
                 text={text}
             />
         );

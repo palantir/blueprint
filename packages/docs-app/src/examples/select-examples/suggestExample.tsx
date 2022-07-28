@@ -24,6 +24,7 @@ import { Suggest2 } from "@blueprintjs/select";
 import {
     areFilmsEqual,
     createFilm,
+    filterFilm,
     IFilm,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
@@ -102,6 +103,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
                     inputValueRenderer={this.renderInputValue}
                     items={this.state.items}
                     itemsEqual={areFilmsEqual}
+                    itemPredicate={filterFilm}
                     itemRenderer={renderFilm}
                     noResults={<MenuItem2 disabled={true} text="No results." roleStructure="listoption" />}
                     onItemSelect={this.handleValueChange}
