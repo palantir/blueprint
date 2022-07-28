@@ -21,7 +21,14 @@ import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-t
 import { MenuItem2 } from "@blueprintjs/popover2";
 import { Omnibar } from "@blueprintjs/select";
 
-import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption } from "./../../common/films";
+import {
+    areFilmsEqual,
+    createFilm,
+    IFilm,
+    renderCreateFilmOption,
+    renderFilm,
+    TOP_100_FILMS,
+} from "./../../common/films";
 
 const FilmOmnibar = Omnibar.ofType<IFilm>();
 
@@ -75,14 +82,15 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
                     </span>
 
                     <FilmOmnibar
-                        {...filmSelectProps}
                         {...this.state}
                         createNewItemFromQuery={maybeCreateNewItemFromQuery}
                         createNewItemRenderer={maybeCreateNewItemRenderer}
+                        itemRenderer={renderFilm}
+                        items={TOP_100_FILMS}
                         itemsEqual={areFilmsEqual}
                         noResults={<MenuItem2 disabled={true} text="No results." />}
-                        onItemSelect={this.handleItemSelect}
                         onClose={this.handleClose}
+                        onItemSelect={this.handleItemSelect}
                     />
                     <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
                 </Example>

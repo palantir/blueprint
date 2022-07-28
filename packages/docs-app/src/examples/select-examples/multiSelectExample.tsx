@@ -25,7 +25,7 @@ import {
     areFilmsEqual,
     arrayContainsFilm,
     createFilm,
-    filmSelectProps,
+    getFilmItemProps,
     IFilm,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
@@ -64,7 +64,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         films: [],
         hasInitialContent: false,
         intent: false,
-        items: filmSelectProps.items,
+        items: TOP_100_FILMS,
         matchTargetWidth: false,
         openOnKeyDown: false,
         popoverMinimal: true,
@@ -115,15 +115,12 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <FilmMultiSelect
-                    {...filmSelectProps}
                     {...flags}
                     createNewItemFromQuery={maybeCreateNewItemFromQuery}
                     createNewItemRenderer={maybeCreateNewItemRenderer}
                     initialContent={initialContent}
                     itemRenderer={this.renderFilm}
                     itemsEqual={areFilmsEqual}
-                    // we may customize the default filmSelectProps.items by
-                    // adding newly created items to the list, so pass our own
                     items={this.state.items}
                     menuProps={{ "aria-label": "films" }}
                     noResults={<MenuItem2 disabled={true} text="No results." roleStructure="listoption" />}
@@ -230,18 +227,14 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
 
     private renderTag = (film: IFilm) => film.title;
 
-    private renderFilm: ItemRenderer<IFilm> = (film: IFilm, { modifiers, handleClick }) => {
-        if (!modifiers.matchesPredicate) {
+    private renderFilm: ItemRenderer<IFilm> = (film, props) => {
+        if (!props.modifiers.matchesPredicate) {
             return null;
         }
 
         return (
             <MenuItem2
-                active={modifiers.active}
-                key={film.rank}
-                label={film.year.toString()}
-                onClick={handleClick}
-                roleStructure="listoption"
+                {...getFilmItemProps(film, props)}
                 selected={this.isFilmSelected(film)}
                 shouldDismissPopover={false}
                 text={`${film.rank}. ${film.title}`}
