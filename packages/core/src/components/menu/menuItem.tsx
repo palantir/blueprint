@@ -182,24 +182,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             ...htmlProps
         } = this.props;
 
-        const [liRole, targetRole, itemIcon, ariaSelected] =
-            roleStructure === "listoption"
-                ? // "listoption": parent has listbox role, or is a <select>
-                  [
-                      "option",
-                      undefined, // target should have no role
-                      icon ?? (selected ? "small-tick" : "blank"),
-                      Boolean(selected), // aria-selected prop
-                  ]
-                : // "menuitem": parent has menu role
-                  [
-                      "none",
-                      "menuitem",
-                      icon, // always set icon to passed icon
-                      undefined, // don't set aria-selected prop
-                  ];
-
-        const hasIcon = itemIcon != null;
+        const hasIcon = icon != null;
         const hasSubmenu = children != null;
 
         const intentClass = Classes.intentClass(intent);
@@ -211,10 +194,15 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 [Classes.DISABLED]: disabled,
                 // prevent popover from closing when clicking on submenu trigger or disabled item
                 [Classes.POPOVER_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
-                [Classes.SELECTED]: active && intentClass === undefined,
+                [Classes.SELECTED]: selected || (active && intentClass === undefined),
             },
             className,
         );
+
+        const [liRole, targetRole, ariaSelected] =
+            roleStructure === "listoption"
+                ? ["option", undefined, active || selected] // parent has listbox role, or is a <select>
+                : ["none", "menuitem", undefined]; // parent has menu role
 
         const target = React.createElement(
             tagName,
@@ -229,7 +217,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
                 // so that we always render this class
                 <span className={Classes.MENU_ITEM_ICON}>
-                    <Icon icon={itemIcon} aria-hidden={true} tabIndex={-1} />
+                    <Icon icon={icon} aria-hidden={true} tabIndex={-1} />
                 </span>
             ) : undefined,
             <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline} title={htmlTitle}>
