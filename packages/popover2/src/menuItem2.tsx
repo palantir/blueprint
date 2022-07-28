@@ -37,21 +37,15 @@ export interface MenuItem2Props extends ActionProps, LinkProps {
     text: React.ReactNode;
 
     /**
-     * Whether this item should render with an active appearance.
-     * This is the same styling as the `:active` CSS element state.
-     *
-     * Note: in Blueprint 3.x, this prop was conflated with a "selected" appearance
-     * when `intent` was undefined. For legacy purposes, we emulate this behavior in
-     * Blueprint 4.x, so setting `active={true} intent={undefined}` is the same as
-     * `selected={true}`. This prop will be removed in a future major version.
-     *
-     * @deprecated use `selected` prop
+     * Whether this item should appear _active_, often useful to
+     * indicate keyboard focus. Note that this is distinct from _selected_
+     * appearance, which has its own prop.
      */
     active?: boolean;
 
     /**
-     * Children of this component will be rendered in a __submenu__ that appears when hovering or
-     * clicking on this menu item.
+     * Children of this component will be rendered in a _submenu_
+     * that appears in a popover when hovering or clicking on this item.
      *
      * Use `text` prop for the content of the menu item itself.
      */
@@ -120,6 +114,11 @@ export interface MenuItem2Props extends ActionProps, LinkProps {
 
     /**
      * Whether this item should appear selected.
+     * Defining this  will set the `aria-selected` attribute and apply a
+     * "check" or "blank" icon on the item (unless the `icon` prop is set,
+     * which always takes precedence).
+     *
+     * @default undefined
      */
     selected?: boolean;
 
@@ -159,7 +158,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
         disabled: false,
         multiline: false,
         popoverProps: {},
-        selected: false,
+        selected: undefined,
         shouldDismissPopover: true,
         text: "",
     };
@@ -168,12 +167,10 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
 
     public render() {
         const {
-            // eslint-disable-next-line deprecation/deprecation
             active,
             className,
             children,
             disabled,
-            icon,
             intent,
             labelClassName,
             labelElement,
@@ -190,6 +187,23 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
             ...htmlProps
         } = this.props;
 
+        const [liRole, targetRole, icon, ariaSelected] =
+            roleStructure === "listoption"
+                ? // "listoption": parent has listbox role, or is a <select>
+                  [
+                      "option",
+                      undefined, // target should have no role
+                      this.props.icon ?? (selected === undefined ? undefined : selected ? "small-tick" : "blank"),
+                      Boolean(selected), // aria-selected prop
+                  ]
+                : // "menuitem": parent has menu role
+                  [
+                      "none",
+                      "menuitem",
+                      this.props.icon,
+                      undefined, // don't set aria-selected prop
+                  ];
+
         const hasIcon = icon != null;
         const hasSubmenu = children != null;
 
@@ -200,17 +214,12 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
             {
                 [CoreClasses.ACTIVE]: active,
                 [CoreClasses.DISABLED]: disabled,
-                [CoreClasses.SELECTED]: selected || (active && intentClass === undefined),
                 // prevent popover from closing when clicking on submenu trigger or disabled item
                 [Classes.POPOVER2_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
+                [CoreClasses.SELECTED]: active && intentClass === undefined,
             },
             className,
         );
-
-        const [liRole, targetRole, ariaSelected] =
-            roleStructure === "listoption"
-                ? ["option", undefined, active || selected] // parent has listbox role, or is a <select>
-                : ["none", "menuitem", undefined]; // parent has menu role
 
         const target = React.createElement(
             tagName,

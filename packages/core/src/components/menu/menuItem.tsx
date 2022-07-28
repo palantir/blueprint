@@ -35,15 +35,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     text: React.ReactNode;
 
     /**
-     * Whether this item should render with an active appearance.
-     * This is the same styling as the `:active` CSS element state.
-     *
-     * Note: in Blueprint 3.x, this prop was conflated with a "selected" appearance
-     * when `intent` was undefined. For legacy purposes, we emulate this behavior in
-     * Blueprint 4.x, so setting `active={true} intent={undefined}` is the same as
-     * `selected={true}`. This prop will be removed in a future major version.
-     *
-     * @deprecated use `selected` prop
+     * Whether this item should render with an active appearance. Used to indicate keyboard focus.
      */
     active?: boolean;
 
@@ -117,7 +109,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     popoverProps?: Partial<IPopoverProps>;
 
     /**
-     * Whether this item should appear selected.
+     * Whether this item is selected. This will set the `aria-selected` attribute.
      */
     selected?: boolean;
 

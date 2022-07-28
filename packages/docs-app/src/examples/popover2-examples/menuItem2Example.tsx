@@ -16,29 +16,58 @@
 
 import * as React from "react";
 
-import { Classes, H5, Intent, Menu, Switch } from "@blueprintjs/core";
+import { Classes, Code, H5, HTMLSelect, Intent, Label, Menu, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
-import { MenuItem2 } from "@blueprintjs/popover2";
+import { MenuItem2, MenuItem2Props } from "@blueprintjs/popover2";
 
+import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { IntentSelect } from "../core-examples/common/intentSelect";
+import { BooleanOrUndefinedSelect } from "./booleanOrUndefinedSelect";
 
 export function MenuItem2Example(props: IExampleProps) {
     const [large, setLarge] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
-    const [selected, setSelected] = React.useState(false);
+    const [selected, setSelected] = React.useState<boolean | undefined>(undefined);
     const [intent, setIntent] = React.useState<Intent>("none");
     const [iconEnabled, setIconEnabled] = React.useState(true);
     const [submenuEnabled, setSubmenuEnabled] = React.useState(true);
+    const [roleStructure, setRoleStructure] = React.useState<MenuItem2Props["roleStructure"]>("menuitem");
+
+    const isSelectedOptionAvailable = roleStructure === "listoption" && !iconEnabled;
 
     const options = (
         <>
             <H5>Props</H5>
             <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
             <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
-            <Switch label="Selected" checked={selected} onChange={handleBooleanChange(setSelected)} />
+            <PropCodeTooltip
+                content={
+                    isSelectedOptionAvailable ? undefined : (
+                        <>
+                            <Code>selected</Code> prop has no effect when <br />
+                            <Code>roleStructure="menuitem"</Code> or when an icon is set
+                        </>
+                    )
+                }
+            >
+                <BooleanOrUndefinedSelect
+                    disabled={!isSelectedOptionAvailable}
+                    label="Selected"
+                    value={selected}
+                    onChange={setSelected}
+                />
+            </PropCodeTooltip>
             <Switch label="Enable icon" checked={iconEnabled} onChange={handleBooleanChange(setIconEnabled)} />
             <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
             <IntentSelect intent={intent} onChange={handleValueChange(setIntent)} />
+            <Label>
+                Role structure
+                <HTMLSelect
+                    options={["menuitem", "listoption"]}
+                    value={roleStructure}
+                    onChange={handleValueChange(setRoleStructure)}
+                />
+            </Label>
         </>
     );
 
@@ -47,11 +76,12 @@ export function MenuItem2Example(props: IExampleProps) {
             <Menu className={Classes.ELEVATION_1} large={large}>
                 <MenuItem2
                     disabled={disabled}
-                    selected={selected}
-                    text="Settings"
                     icon={iconEnabled ? "cog" : undefined}
                     intent={intent}
                     labelElement={submenuEnabled ? undefined : "⌘,"}
+                    roleStructure={roleStructure}
+                    selected={selected}
+                    text="Settings"
                     children={
                         submenuEnabled ? (
                             <>
