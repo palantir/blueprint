@@ -59,7 +59,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
         disabled: false,
         fill: false,
         film: TOP_100_FILMS[0],
-        items: TOP_100_FILMS,
+        items: [...TOP_100_FILMS],
         matchTargetWidth: false,
         minimal: true,
         openOnKeyDown: false,

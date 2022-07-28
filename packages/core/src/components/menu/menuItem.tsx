@@ -109,8 +109,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     popoverProps?: Partial<IPopoverProps>;
 
     /**
-     * Whether this item is selected. Will set `aria-selected` to true, and apply a check icon next to the
-     * item (unless a different icon is specified).
+     * Whether this item is selected. This will set the `aria-selected` attribute.
      */
     selected?: boolean;
 
