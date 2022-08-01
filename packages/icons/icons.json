@@ -310,7 +310,7 @@
     {
         "displayName": "More",
         "iconName": "more",
-        "tags": "dots, three, extra, new, options, ellipses, break, pause, elipse, dot dot dot, suspense, see more, loading",
+        "tags": "dots, three, extra, new, options, ellipses, break, pause, suspense, see more, loading",
         "group": "interface",
         "codepoint": 62026
     },
