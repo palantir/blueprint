@@ -39,7 +39,7 @@ import {
     DateRangePicker,
     DateRangeShortcut,
 } from "@blueprintjs/datetime";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
+import { Popover2, Popover2Props, Popover2TargetProps } from "@blueprintjs/popover2";
 
 import { DateRange, NonNullDateRange } from "../../common/dateRange";
 import { isDayInRange, isSameTime } from "../../common/dateUtils";
@@ -368,12 +368,8 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
                 content={popoverContent}
                 enforceFocus={false}
                 onClose={this.handlePopoverClose}
-            >
-                <div className={Classes.CONTROL_GROUP}>
-                    {this.renderInputGroup(Boundary.START)}
-                    {this.renderInputGroup(Boundary.END)}
-                </div>
-            </Popover2>
+                renderTarget={this.renderTarget}
+            />
         );
     }
 
@@ -384,6 +380,19 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
             throw new Error(Errors.DATERANGEINPUT_NULL_VALUE);
         }
     }
+
+    // We use the renderTarget API to flatten the rendered DOM and make it easier to implement features like
+    // the "fill" prop.
+    private renderTarget =
+        // N.B. pull out `isOpen` so that it's not forwarded to the DOM.
+        ({ isOpen, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
+            return (
+                <div {...targetProps} className={classNames(Classes.CONTROL_GROUP, targetProps.className)}>
+                    {this.renderInputGroup(Boundary.START)}
+                    {this.renderInputGroup(Boundary.END)}
+                </div>
+            );
+        };
 
     private renderInputGroup = (boundary: Boundary) => {
         const inputProps = this.getInputProps(boundary);
