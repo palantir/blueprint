@@ -1290,7 +1290,7 @@
     {
         "displayName": "Chevron: down",
         "iconName": "chevron-down",
-        "tags": "arrow, direction, carrot down, arrow down, below, palantir, down, chevron",
+        "tags": "arrow, direction, below",
         "group": "interface",
         "codepoint": 61770
     },
