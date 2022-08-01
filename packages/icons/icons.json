@@ -352,7 +352,7 @@
     {
         "displayName": "Download",
         "iconName": "download",
-        "tags": "circle, arrow, down, downloading, down arrow",
+        "tags": "circle, arrow, down, downloading",
         "group": "action",
         "codepoint": 61834
     },
@@ -373,7 +373,7 @@
     {
         "displayName": "Import",
         "iconName": "import",
-        "tags": "arrow, down, importing, , download",
+        "tags": "arrow, down, importing, download",
         "group": "action",
         "codepoint": 61946
     },
@@ -394,28 +394,28 @@
     {
         "displayName": "Maximize",
         "iconName": "maximize",
-        "tags": "arrows, increase, bigger, expand, opposite diagonal arrows, diagonal bidirectional arrows, double diagonal arrows",
+        "tags": "arrows, increase, bigger, expand, opposite, diagonal, bidirectional",
         "group": "action",
         "codepoint": 62012
     },
     {
         "displayName": "Tick",
         "iconName": "tick",
-        "tags": "mark, sign, ok, approved, success, check, verizon, done, complete, confirm",
+        "tags": "mark, sign, ok, approved, success, check, done, complete, confirm",
         "group": "action",
         "codepoint": 62191
     },
     {
         "displayName": "Cross",
         "iconName": "cross",
-        "tags": "cross mark, fail, delete, no, close, remove, not available, wrong/incorrect, cancel, x",
+        "tags": "cross mark, fail, delete, no, close, remove, not, available, unavailable, wrong, incorrect, cancel",
         "group": "action",
         "codepoint": 61801
     },
     {
         "displayName": "Plus",
         "iconName": "plus",
-        "tags": "sign, add, maximize, zoom in, add or append, enlarge or zoom-in, increase",
+        "tags": "sign, add, maximize, zoom in, append, enlarge, increase",
         "group": "action",
         "codepoint": 62073
     },
@@ -429,14 +429,14 @@
     {
         "displayName": "Arrow: left",
         "iconName": "arrow-left",
-        "tags": "arrow, direction, left, left arrow, backspace, undo, back",
+        "tags": "arrow, direction, left, backspace, back",
         "group": "interface",
         "codepoint": 61733
     },
     {
         "displayName": "Arrow: right",
         "iconName": "arrow-right",
-        "tags": "arrow, direction, right, next, right arrow",
+        "tags": "arrow, direction, right, next",
         "group": "interface",
         "codepoint": 61734
     },
@@ -457,7 +457,7 @@
     {
         "displayName": "List",
         "iconName": "list",
-        "tags": "agenda, four lines, table, menu, rows, hamburger, document, writing, justified, hamburger menu, block text, horizontal bars",
+        "tags": "agenda, four lines, table, rows, document, writing, block text, horizontal bars",
         "group": "table",
         "codepoint": 62000
     },
@@ -555,14 +555,14 @@
     {
         "displayName": "Cog",
         "iconName": "cog",
-        "tags": "settings, circle, , wheel, mechanical, tools, gear",
+        "tags": "settings, circle, wheel, mechanical, tools, gear",
         "group": "interface",
         "codepoint": 61789
     },
     {
         "displayName": "Flag",
         "iconName": "flag",
-        "tags": "map, position, country, nationality, flagpole, flag pole",
+        "tags": "map, position, country, nationality, pole",
         "group": "interface",
         "codepoint": 61870
     },
@@ -583,7 +583,7 @@
     {
         "displayName": "Error",
         "iconName": "error",
-        "tags": "notification, failure, circle, exclamation mark, sign, contour, warning, attention, look out",
+        "tags": "notification, failure, circle, exclamation mark, sign, warning, attention",
         "group": "interface",
         "codepoint": 61851
     },
@@ -597,7 +597,7 @@
     {
         "displayName": "Credit card",
         "iconName": "credit-card",
-        "tags": "payment, bank, transaction, webpage, document, \"i dont know",
+        "tags": "payment, bank, transaction",
         "group": "action",
         "codepoint": 61800
     },
@@ -625,7 +625,7 @@
     {
         "displayName": "Logout",
         "iconName": "log-out",
-        "tags": "arrow, leave, next, share, open in new tab, exit",
+        "tags": "arrow, leave, next, exit, sign out, auth, authentication",
         "group": "action",
         "codepoint": 62004
     },
@@ -639,28 +639,28 @@
     {
         "displayName": "Star: empty",
         "iconName": "star-empty",
-        "tags": "shape, unpin, mark, star, favorite, like, empty star, goal, accomplishment",
+        "tags": "shape, unpin, mark, star, favorite, like, goal, accomplishment",
         "group": "interface",
         "codepoint": 62156
     },
     {
         "displayName": "Sort: alphabetical",
         "iconName": "sort-alphabetical",
-        "tags": "ascending, array, arrange, sort, alphabetize, sort ascending, sort descending, string sort, sort alphabetically",
+        "tags": "ascending, array, arrange, sort, alphabetize, alphabetical, string, compare",
         "group": "action",
         "codepoint": 62146
     },
     {
         "displayName": "Sort: numerical",
         "iconName": "sort-numerical",
-        "tags": "ascending, array, arrange, asc, sort, numbers, dropdown, range",
+        "tags": "ascending, array, arrange, sort, numbers, range",
         "group": "action",
         "codepoint": 62150
     },
     {
         "displayName": "Sort",
         "iconName": "sort",
-        "tags": "ascending, array, arrange, descending list, sort list, scroll down, menu, scroll, hamburger, descending, decrease, justified",
+        "tags": "ascending, array, arrange, sort, list, descending, scroll down, menu, scroll, decrease",
         "group": "action",
         "codepoint": 62151
     },
@@ -688,21 +688,21 @@
     {
         "displayName": "Caret: up",
         "iconName": "caret-up",
-        "tags": "direction, order, up, chevron, arrow, back, pointer left, position marker",
+        "tags": "direction, order, up, chevron, triangle, arrow",
         "group": "interface",
         "codepoint": 61763
     },
     {
         "displayName": "Caret: right",
         "iconName": "caret-right",
-        "tags": "direction, order, right, play, run, execute, triangle, arrow, arrow right, triangle right",
+        "tags": "direction, order, right, triangle, arrow",
         "group": "interface",
         "codepoint": 61762
     },
     {
         "displayName": "Caret: down",
         "iconName": "caret-down",
-        "tags": "direction, order, down, down arrow, arrow, solid triangle down",
+        "tags": "direction, order, down, triangle, arrow",
         "group": "interface",
         "codepoint": 61760
     },
@@ -716,21 +716,21 @@
     {
         "displayName": "Menu: opened",
         "iconName": "menu-open",
-        "tags": "show, navigation, menu right, menu, open menu, right, expand, indent",
+        "tags": "show, navigation, menu, open, right, expand, indent",
         "group": "interface",
         "codepoint": 62015
     },
     {
         "displayName": "Menu: closed",
         "iconName": "menu-closed",
-        "tags": "hide, navigation, list",
+        "tags": "hide, navigation, list, left, dedent",
         "group": "interface",
         "codepoint": 62014
     },
     {
         "displayName": "Feed",
         "iconName": "feed",
-        "tags": "rss, wifi, signal, radio, network, rss feed",
+        "tags": "rss, wifi, signal, radio, network",
         "group": "interface",
         "codepoint": 61863
     },
@@ -744,7 +744,7 @@
     {
         "displayName": "One column",
         "iconName": "one-column",
-        "tags": "layout, columns, switch, change, one, left, exit, minimiz, eject wherever, wall moves this way, collapse left",
+        "tags": "layout, columns, switch, change, one, left, exit, collapse",
         "group": "action",
         "codepoint": 62052
     },
@@ -772,14 +772,14 @@
     {
         "displayName": "Disable",
         "iconName": "disable",
-        "tags": "off, circle, remove, not, do not enter, no, anti, cancel, exit, no selection, do not",
+        "tags": "off, circle, remove, do not enter, no, anti, cancel, exit, no selection",
         "group": "action",
         "codepoint": 61821
     },
     {
         "displayName": "Unpin",
         "iconName": "unpin",
-        "tags": "map, position, safety pin, detach, branch, git, version, pushpin, pin, thumbtack",
+        "tags": "map, position, safety pin, detach, version, pushpin, pin, thumbtack",
         "group": "action",
         "codepoint": 62214
     },
@@ -800,21 +800,21 @@
     {
         "displayName": "New link",
         "iconName": "new-link",
-        "tags": "create, add, plus, links, add link, add to chain, insert, addevent",
+        "tags": "create, add, plus, link, chain, insert",
         "group": "action",
         "codepoint": 62037
     },
     {
         "displayName": "New object",
         "iconName": "new-object",
-        "tags": "create, add, plus, objects, circle, add object, add element, new entity",
+        "tags": "create, add, plus, objects, circle, element, entity",
         "group": "action",
         "codepoint": 62038
     },
     {
         "displayName": "Path search",
         "iconName": "path-search",
-        "tags": "map, magnifying glass, position, location, search, map search, locate",
+        "tags": "map, magnifying glass, position, location, locate",
         "group": "action",
         "codepoint": 62061
     },
@@ -835,7 +835,7 @@
     {
         "displayName": "Code",
         "iconName": "code",
-        "tags": "markup, language, tag, idk lol",
+        "tags": "markup, language, tag",
         "group": "action",
         "codepoint": 61788
     },
@@ -849,7 +849,7 @@
     {
         "displayName": "Search text",
         "iconName": "search-text",
-        "tags": "magnifying glass, exploration, see text, text, text zoom, search, finder, examine, text search",
+        "tags": "magnifying glass, exploration, see, zoom, finder, examine",
         "group": "action",
         "codepoint": 62113
     },
@@ -863,14 +863,14 @@
     {
         "displayName": "Paperclip",
         "iconName": "paperclip",
-        "tags": "attachments, add, paper clip, attach, attachment, clippy",
+        "tags": "attachment, add, paper clip, attach, clippy",
         "group": "action",
         "codepoint": 62059
     },
     {
         "displayName": "Label",
         "iconName": "label",
-        "tags": "text, tag, ticket, file, document, mail, print, paper, edit",
+        "tags": "text, tag, ticket, file, document, mail, print, paper",
         "group": "interface",
         "codepoint": 61976
     },
@@ -898,14 +898,14 @@
     {
         "displayName": "Table: list",
         "iconName": "th-list",
-        "tags": "index, rows, list, order, series, calendar, table",
+        "tags": "index, rows, list, order, series, table",
         "group": "table",
         "codepoint": 62185
     },
     {
         "displayName": "Table: derived",
         "iconName": "th-derived",
-        "tags": "get, obtain, take, acquire, index, rows, columns, list, monocle, table row, row, table, add to dataset, go to dataset",
+        "tags": "get, obtain, take, acquire, index, rows, columns, list, table, row, add to dataset, go to dataset, provenance",
         "group": "table",
         "codepoint": 62182
     },
@@ -940,7 +940,7 @@
     {
         "displayName": "Send to",
         "iconName": "send-to",
-        "tags": "circle, export, arrow, outside, external, pop out, open object, open item, ellipses, array",
+        "tags": "circle, export, arrow, outside, external, pop out, open object, open item",
         "group": "action",
         "codepoint": 62121
     },
@@ -968,28 +968,28 @@
     {
         "displayName": "Arrow: up",
         "iconName": "arrow-up",
-        "tags": "direction, north, up arrow, arrow, up, upwards",
+        "tags": "direction, north, upwards",
         "group": "interface",
         "codepoint": 61737
     },
     {
         "displayName": "Arrow: down",
         "iconName": "arrow-down",
-        "tags": "direction, south, down, down arrow, please see below, descend, scroll down",
+        "tags": "direction, south, see below, descend, scroll down",
         "group": "interface",
         "codepoint": 61732
     },
     {
         "displayName": "Arrows: horizontal",
         "iconName": "arrows-horizontal",
-        "tags": "direction, level, arrows, bidirectional, left-right, resize, move horizontally, swap, arrow, switch, link, reaction, alternate",
+        "tags": "direction, level, bidirectional, left-right, resize, move horizontally, swap, switch, link, reaction, alternate",
         "group": "interface",
         "codepoint": 61738
     },
     {
         "displayName": "Arrows: vertical",
         "iconName": "arrows-vertical",
-        "tags": "direction, level, arrows, two way, up down, drag up or down, expand, collaps, open, up and down, up down arrow",
+        "tags": "direction, level, two way, up down, drag up or down, expand, collapse, open",
         "group": "interface",
         "codepoint": 61739
     },
@@ -1010,7 +1010,7 @@
     {
         "displayName": "Briefcase",
         "iconName": "briefcase",
-        "tags": "suitcase, business, case, baggage, , work, kit, toolbox",
+        "tags": "suitcase, business, case, baggage, work, kit, toolbox",
         "group": "miscellaneous",
         "codepoint": 61753
     },
@@ -1031,14 +1031,14 @@
     {
         "displayName": "Delta",
         "iconName": "delta",
-        "tags": "alt j, symbol, triangle, diff",
+        "tags": "symbol, triangle, diff, change, formula, greek, alphabet",
         "group": "miscellaneous",
         "codepoint": 61814
     },
     {
         "displayName": "Barcode",
         "iconName": "barcode",
-        "tags": "product, scan, ",
+        "tags": "product, scan, identifier, code",
         "group": "miscellaneous",
         "codepoint": 61746
     },
@@ -1052,14 +1052,14 @@
     {
         "displayName": "Widget",
         "iconName": "widget",
-        "tags": "square, corners, text box, fence, highlight area, select area, the \"draw a rectangle tool\" in preview, sqaure, grid, connection",
+        "tags": "square, corners, text box, fence, highlight area, select area, draw rectangle, grid, connection",
         "group": "interface",
         "codepoint": 62235
     },
     {
         "displayName": "Unresolve",
         "iconName": "unresolve",
-        "tags": "split, divide, disconnect, separate, sets, substraction, pancakes, union, group, join, venn diagram, overlap, circles",
+        "tags": "split, divide, disconnect, separate, sets, subtraction, pancakes, union, group, join, venn diagram, overlap, circles",
         "group": "action",
         "codepoint": 62215
     },
@@ -1080,7 +1080,7 @@
     {
         "displayName": "Add to artifact",
         "iconName": "add-to-artifact",
-        "tags": "list, plus, text, add, create, add item, add to list, menu, more, hamburger, add section, add page",
+        "tags": "list, plus, text, add, create, add item, add to list, add section, add page",
         "group": "action",
         "codepoint": 61703
     },
@@ -1094,7 +1094,7 @@
     {
         "displayName": "Chart",
         "iconName": "chart",
-        "tags": "arrow, increase, up, line, bar, graph, trend, growth, ?, stonks, increasing trend, trendline, upward",
+        "tags": "arrow, increase, up, line, bar, graph, trend, growth, increasing trend, trendline, upward",
         "group": "data",
         "codepoint": 61767
     },
@@ -1143,7 +1143,7 @@
     {
         "displayName": "Full circle",
         "iconName": "full-circle",
-        "tags": "dot, point, orb, black",
+        "tags": "dot, point, orb, filled",
         "group": "miscellaneous",
         "codepoint": 61890
     },
@@ -1185,35 +1185,35 @@
     {
         "displayName": "Comment",
         "iconName": "comment",
-        "tags": "statement, discussion, opinion, view, chat",
+        "tags": "statement, discussion, opinion, view, chat, message, typing",
         "group": "action",
         "codepoint": 61792
     },
     {
         "displayName": "Circle arrow: right",
         "iconName": "circle-arrow-right",
-        "tags": "direction, east, go, monocle, next, submit, right arrow",
+        "tags": "direction, east, go, next, submit, right arrow",
         "group": "interface",
         "codepoint": 61777
     },
     {
         "displayName": "Circle arrow: left",
         "iconName": "circle-arrow-left",
-        "tags": "direction, west, return, backspace, back, left arrow circle, arrow, left, go left",
+        "tags": "direction, west, return, backspace, back, go left",
         "group": "interface",
         "codepoint": 61776
     },
     {
         "displayName": "Circle arrow: up",
         "iconName": "circle-arrow-up",
-        "tags": "direction, north, upload, upward, above, push, promote, publish, up, arrow, sort",
+        "tags": "direction, north, upload, upward, above, push, promote, publish",
         "group": "interface",
         "codepoint": 61778
     },
     {
         "displayName": "Circle arrow: down",
         "iconName": "circle-arrow-down",
-        "tags": "direction, south, down arrow, arrow down, below, download, save to device, keep offline, down, next (if the next step is below)",
+        "tags": "direction, south, below, download, save to device, keep offline, next",
         "group": "interface",
         "codepoint": 61775
     },
@@ -1241,14 +1241,14 @@
     {
         "displayName": "Cloud: download",
         "iconName": "cloud-download",
-        "tags": "file, storage, transfer, download, cloud",
+        "tags": "file, storage, transfer",
         "group": "file",
         "codepoint": 61784
     },
     {
         "displayName": "Cloud: upload",
         "iconName": "cloud-upload",
-        "tags": "file, storage, transfer, export, upload, upload to cloud",
+        "tags": "file, storage, transfer, export",
         "group": "file",
         "codepoint": 61785
     },
@@ -1262,28 +1262,28 @@
     {
         "displayName": "Move",
         "iconName": "move",
-        "tags": "arrows, directions, position, location, fractal, drag",
+        "tags": "arrows, directions, position, location, drag, cursor",
         "group": "action",
         "codepoint": 62028
     },
     {
         "displayName": "Chevron: left",
         "iconName": "chevron-left",
-        "tags": "arrow, direction, left chevron, open angle bracket, open tag",
+        "tags": "arrow, direction, open angle bracket, open tag",
         "group": "interface",
         "codepoint": 61772
     },
     {
         "displayName": "Chevron: right",
         "iconName": "chevron-right",
-        "tags": "arrow, direction, next, right arrow, forward",
+        "tags": "arrow, direction, next, forward, close angle bracket, close tag",
         "group": "interface",
         "codepoint": 61773
     },
     {
         "displayName": "Chevron: up",
         "iconName": "chevron-up",
-        "tags": "arrow, direction, up, collapse, see here, exponent, icons are expensive so look at this key from my keyboard",
+        "tags": "arrow, direction, collapse, see here, exponent",
         "group": "interface",
         "codepoint": 61774
     },
@@ -1297,7 +1297,7 @@
     {
         "displayName": "Random",
         "iconName": "random",
-        "tags": "arrows, aim, direction, arrow, change",
+        "tags": "arrows, aim, direction, change, shuffle, mix, swap",
         "group": "interface",
         "codepoint": 62086
     },
@@ -1339,7 +1339,7 @@
     {
         "displayName": "Ban circle",
         "iconName": "ban-circle",
-        "tags": "circle, refusal, do not enter, inaccessible, screw head, pause, slow, null, subtract, minus, delete",
+        "tags": "circle, refusal, do not enter, inaccessible, screw head, flathead, slow, null, subtract, minus, delete",
         "group": "action",
         "codepoint": 61744
     },
@@ -1353,7 +1353,7 @@
     {
         "displayName": "Mobile video",
         "iconName": "mobile-video",
-        "tags": "film, broadcast, television, video, recording, video call, video camera, triangle enter rectangle",
+        "tags": "film, broadcast, television, video, recording, video call, camera, camcorder",
         "group": "media",
         "codepoint": 62022
     },
@@ -1381,21 +1381,21 @@
     {
         "displayName": "Volume: off",
         "iconName": "volume-off",
-        "tags": "audio, video, speaker, music, sound, low, volume",
+        "tags": "audio, video, speaker, music, sound, low, mute, silence",
         "group": "media",
         "codepoint": 62226
     },
     {
         "displayName": "Volume: down",
         "iconName": "volume-down",
-        "tags": "audio, video, speaker, music, sound, volume, low voume, quiet, small-sound",
+        "tags": "audio, video, speaker, music, sound, quiet, lower",
         "group": "media",
         "codepoint": 62225
     },
     {
         "displayName": "Volume: up",
         "iconName": "volume-up",
-        "tags": "audio, video, speaker, music, sound, high, sound on",
+        "tags": "audio, video, speaker, music, sound, high, on, increase, loud",
         "group": "media",
         "codepoint": 62227
     },
@@ -1430,7 +1430,7 @@
     {
         "displayName": "Stop",
         "iconName": "stop",
-        "tags": "player, media, controls, digital, analogue, film, audio, video, box, square, error, not possible, blocked, black square, shape",
+        "tags": "player, media, controls, digital, analogue, film, audio, video, box, square, error, not possible, blocked, shape, filled",
         "group": "media",
         "codepoint": 62161
     },
@@ -1458,7 +1458,7 @@
     {
         "displayName": "Eject",
         "iconName": "eject",
-        "tags": "player, media, controls, digital, analogue, film, audio, video, triangle, rectangle, up triangle, up, arrow, upload",
+        "tags": "player, media, controls, digital, analogue, film, audio, video",
         "group": "media",
         "codepoint": 61845
     },
@@ -1493,7 +1493,7 @@
     {
         "displayName": "Glass",
         "iconName": "glass",
-        "tags": "glassware, drink, cheers, cup, wine glass, wine, chalice, goblet",
+        "tags": "glassware, drink, cheers, cup, wine, chalice, goblet",
         "group": "miscellaneous",
         "codepoint": 61905
     },
@@ -1507,14 +1507,14 @@
     {
         "displayName": "Flash",
         "iconName": "flash",
-        "tags": "light, contrast, photograph, picture, sun, star, illuminate, examine, brighten",
+        "tags": "light, contrast, photograph, picture, sun, star, illuminate, examine, brighten, brightness, exposure",
         "group": "media",
         "codepoint": 61872
     },
     {
         "displayName": "Font",
         "iconName": "font",
-        "tags": "scale, typography, size, a, letter, alphabet, letter a, area",
+        "tags": "scale, typography, size, letter, alphabet",
         "group": "editor",
         "codepoint": 61887
     },
@@ -1528,7 +1528,7 @@
     {
         "displayName": "Saved",
         "iconName": "saved",
-        "tags": "document, check mark, tick, approval, document ready, checks complete, checklist, approved document, completed document, verified document, confirm, valid, save, upload finished, confirmation, validation, checked, approved, done document, completed, certificate",
+        "tags": "document, check mark, tick, approval, checks complete, checklist, approved, verified, confirm, valid, save, finished, confirmation, validation, checked, approved, done, ready, completed, certificate",
         "group": "file",
         "codepoint": 62109
     },
@@ -1549,28 +1549,28 @@
     {
         "displayName": "Hand: right",
         "iconName": "hand-right",
-        "tags": "gesture, direction, hand, point right, finger, tip, attention",
+        "tags": "gesture, direction, point, pointer, pointing, finger, tip, attention",
         "group": "interface",
         "codepoint": 61918
     },
     {
         "displayName": "Hand: up",
         "iconName": "hand-up",
-        "tags": "gesture, direction, pointer, forefinger, right hand, click, point, cursor",
+        "tags": "gesture, direction, point, pointer, pointing, finger, forefinger, click, cursor",
         "group": "interface",
         "codepoint": 61919
     },
     {
         "displayName": "Hand: down",
         "iconName": "hand-down",
-        "tags": "gesture, direction, point down, hand, pointer finger, hand pointing down, select, down",
+        "tags": "gesture, direction, point, pointer, pointing, finger, select",
         "group": "interface",
         "codepoint": 61916
     },
     {
         "displayName": "Hand: left",
         "iconName": "hand-left",
-        "tags": "gesture, direction, point, finger, this, here, click",
+        "tags": "gesture, direction, point, pointer, pointing, finger, this, here, click",
         "group": "interface",
         "codepoint": 61917
     },
@@ -1584,7 +1584,7 @@
     {
         "displayName": "Thumbs: down",
         "iconName": "thumbs-down",
-        "tags": "hand, dislike, bad, thumb down",
+        "tags": "hand, dislike, bad",
         "group": "interface",
         "codepoint": 62188
     },
