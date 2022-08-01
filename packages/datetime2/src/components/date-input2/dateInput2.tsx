@@ -612,14 +612,18 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             );
         },
         [
-            isOpen,
             fill,
+            formattedDateString,
+            inputValue,
+            isInputFocused,
+            isOpen,
+            isTimezoneSelectDisabled,
+            isTimezoneSelectHidden,
             placeholder,
-            props.rightElement,
+            shouldShowErrorStyling,
             props.disabled,
             props.inputProps,
-            inputValue,
-            formattedDateString,
+            props.rightElement,
         ],
     );
 
