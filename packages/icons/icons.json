@@ -331,7 +331,7 @@
     {
         "displayName": "Media",
         "iconName": "media",
-        "tags": "audio, video, picture, image, drawing, illustration, mountain, photo",
+        "tags": "audio, video, picture, image, drawing, illustration, landscape, photo",
         "group": "media",
         "codepoint": 62013
     },
