@@ -519,8 +519,8 @@
 #{page("datetime", "^=")} {
   .docs-example {
     flex-direction: column;
-    justify-content: center;
     gap: $pt-grid-size;
+    justify-content: center;
   }
 
   #{example("TimezoneSelectExample")} .docs-example {
@@ -545,10 +545,10 @@
 
 #{example("DateInput2Example")} {
   .#{$ns}-date-input {
-    margin: 0;
-    min-width: 300px;
     // should not grow in vertical direction when fill={true}
     flex-grow: 0;
+    margin: 0;
+    min-width: 300px;
   }
 }
 
