@@ -1290,7 +1290,7 @@
     {
         "displayName": "Chevron: down",
         "iconName": "chevron-down",
-        "tags": "arrow, direction, carrot down, arrow down, below, palantir, down, chevron",
+        "tags": "arrow, direction, below",
         "group": "interface",
         "codepoint": 61770
     },
@@ -1311,7 +1311,7 @@
     {
         "displayName": "Login",
         "iconName": "log-in",
-        "tags": "arrow, sign in, save, exit, logout",
+        "tags": "arrow, sign in, auth, authentication",
         "group": "action",
         "codepoint": 62003
     },
