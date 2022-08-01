@@ -338,7 +338,7 @@
     {
         "displayName": "Link",
         "iconName": "link",
-        "tags": "connection, network, paperclip, attach",
+        "tags": "connection, network, chain, attach",
         "group": "interface",
         "codepoint": 61997
     },
