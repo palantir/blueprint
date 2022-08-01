@@ -520,6 +520,7 @@
   .docs-example {
     flex-direction: column;
     justify-content: center;
+    gap: $pt-grid-size;
   }
 
   #{example("TimezoneSelectExample")} .docs-example {
@@ -543,8 +544,11 @@
 //
 
 #{example("DateInput2Example")} {
-  .#{$ns}-input-group {
+  .#{$ns}-date-input {
+    margin: 0;
     min-width: 300px;
+    // should not grow in vertical direction when fill={true}
+    flex-grow: 0;
   }
 }
 
