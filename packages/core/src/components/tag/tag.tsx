@@ -124,8 +124,6 @@ export interface ITagProps
 export class Tag extends AbstractPureComponent2<TagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 
-    private tagId = Utils.uniqueId("tag");
-
     public render() {
         const {
             active,
@@ -147,7 +145,6 @@ export class Tag extends AbstractPureComponent2<TagProps> {
             ...htmlProps
         } = this.props;
         const isRemovable = Utils.isFunction(onRemove);
-        const hasChildren = !isReactNodeEmpty(children);
         const tagClasses = classNames(
             Classes.TAG,
             Classes.intentClass(intent),
@@ -164,7 +161,7 @@ export class Tag extends AbstractPureComponent2<TagProps> {
         const isLarge = large || tagClasses.indexOf(Classes.LARGE) >= 0;
         const removeButton = isRemovable ? (
             <button
-                aria-label="Remove"
+                aria-label="Remove Tag"
                 type="button"
                 className={Classes.TAG_REMOVE}
                 onClick={this.onRemoveClick}
@@ -175,22 +172,10 @@ export class Tag extends AbstractPureComponent2<TagProps> {
         ) : null;
 
         return (
-            <span
-                aria-labelledby={hasChildren ? this.tagId : undefined}
-                {...htmlProps}
-                className={tagClasses}
-                tabIndex={interactive ? tabIndex : undefined}
-                ref={elementRef}
-            >
+            <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={elementRef}>
                 <Icon icon={icon} />
-                {hasChildren && (
-                    <Text
-                        className={Classes.FILL}
-                        ellipsize={!multiline}
-                        id={this.tagId}
-                        tagName="span"
-                        title={htmlTitle}
-                    >
+                {!isReactNodeEmpty(children) && (
+                    <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
                         {children}
                     </Text>
                 )}
