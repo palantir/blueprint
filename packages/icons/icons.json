@@ -345,7 +345,7 @@
     {
         "displayName": "Share",
         "iconName": "share",
-        "tags": "square, arrow, export, maximize, enlarge, fit screen, open new tab, open new page, link, open new window, open, new tab",
+        "tags": "square, arrow, export, open, new page, link, new window, new tab",
         "group": "action",
         "codepoint": 62129
     },
