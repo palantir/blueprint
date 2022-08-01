@@ -147,6 +147,7 @@ export class Tag extends AbstractPureComponent2<TagProps> {
             ...htmlProps
         } = this.props;
         const isRemovable = Utils.isFunction(onRemove);
+        const hasChildren = !isReactNodeEmpty(children);
         const tagClasses = classNames(
             Classes.TAG,
             Classes.intentClass(intent),
@@ -175,14 +176,14 @@ export class Tag extends AbstractPureComponent2<TagProps> {
 
         return (
             <span
+                aria-labelledby={hasChildren ? this.tagId : undefined}
                 {...htmlProps}
-                aria-labelledby={this.tagId}
                 className={tagClasses}
                 tabIndex={interactive ? tabIndex : undefined}
                 ref={elementRef}
             >
                 <Icon icon={icon} />
-                {!isReactNodeEmpty(children) && (
+                {hasChildren && (
                     <Text
                         className={Classes.FILL}
                         ellipsize={!multiline}
