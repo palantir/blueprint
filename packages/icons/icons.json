@@ -1115,14 +1115,14 @@
     {
         "displayName": "Direction: left",
         "iconName": "direction-left",
-        "tags": "pointer, west, direction, space, arrow left, back, pointer left",
+        "tags": "pointer, west, direction, arrow left, back, pointer left, aircraft, plane",
         "group": "interface",
         "codepoint": 61819
     },
     {
         "displayName": "Direction: right",
         "iconName": "direction-right",
-        "tags": "pointer, east, arrow, bullet, tag, send, location",
+        "tags": "pointer, east, arrow, bullet, tag, send, location, aircraft, plane",
         "group": "interface",
         "codepoint": 61820
     },
