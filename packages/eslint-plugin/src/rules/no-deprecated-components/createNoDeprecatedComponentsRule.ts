@@ -12,7 +12,7 @@ type MessageIds = "migration";
 
 /**
  * Higher-order function to create an ESLint rule which checks for usage of deprecated React components
- * used in JSX syntax.
+ * in JSX syntax.
  *
  * Only components imported from `packagesToCheck` will be flagged. The lint violation will include
  * a recommendation to migrate to the newer, non-deprecated component (this must be specified for each
@@ -25,13 +25,14 @@ export function createNoDeprecatedComponentsRule(
         [deprecated: string]: string;
     },
 ): TSESLint.RuleModule<MessageIds, unknown[]> {
+    const descriptionFromClause = packagesToCheck.length === 1 ? ` from ${packagesToCheck[0]}` : "";
+
     return createRule<unknown[], MessageIds>({
         name: ruleName,
         meta: {
             type: "suggestion",
             docs: {
-                description:
-                    "Reports on usage of deprecated Blueprint components and recommends migrating to their corresponding newer non-deprecated API alternatives.",
+                description: `Reports on usage of deprecated Blueprint components${descriptionFromClause} and recommends migrating to their corresponding non-deprecated API alternatives.`,
                 requiresTypeChecking: false,
                 recommended: "error",
             },
@@ -99,7 +100,8 @@ export function createNoDeprecatedComponentsRule(
                         }
                     }
                 },
-                // Tests that <DeprecatedComponent /> is flagged
+
+                // check <DeprecatedComponent /> syntax
                 "JSXElement > JSXOpeningElement > JSXIdentifier": (node: TSESTree.JSXIdentifier) => {
                     if (isDeprecatedComponent(node.name)) {
                         context.report({
@@ -112,7 +114,8 @@ export function createNoDeprecatedComponentsRule(
                         });
                     }
                 },
-                // Tests that <Blueprint.DeprecatedComponent /> is flagged
+
+                // check <Blueprint.DeprecatedComponent /> syntax
                 "JSXElement > JSXOpeningElement > JSXMemberExpression[property.type='JSXIdentifier']": (
                     node: TSESTree.JSXMemberExpression,
                 ) => {
@@ -136,6 +139,8 @@ export function createNoDeprecatedComponentsRule(
                         });
                     }
                 },
+
+                // check `class Foo extends DeprecatedComponent` syntax
                 "ClassDeclaration[superClass.type='Identifier']": (node: TSESTree.ClassDeclaration) => {
                     const superClass = node.superClass as TSESTree.Identifier;
                     if (isDeprecatedComponent(superClass.name)) {
@@ -149,6 +154,8 @@ export function createNoDeprecatedComponentsRule(
                         });
                     }
                 },
+
+                // check `class Foo extends Blueprint.DeprecatedComponent` syntax
                 "ClassDeclaration[superClass.type='MemberExpression']": (node: TSESTree.ClassDeclaration) => {
                     const superClass = node.superClass as TSESTree.MemberExpression;
                     if (
