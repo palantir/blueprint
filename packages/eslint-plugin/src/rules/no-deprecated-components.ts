@@ -11,7 +11,10 @@ const DEPRECATED_TO_NEW_MAPPING: { [deprecated: string]: string } = {
     AbstractPureComponent: "AbstractPureComponent2",
     Breadcrumbs: "Breadcrumbs2",
     CollapsibleList: "OverflowList",
+    DateInput: "DateInput2",
     DateRangeInput: "DateRangeInput2",
+    DateTimePicker: "DatePicker",
+    MenuItem: "MenuItem2",
     MultiSelect: "MultiSelect2",
     PanelStack: "PanelStack2",
     Popover: "Popover2",
@@ -20,7 +23,12 @@ const DEPRECATED_TO_NEW_MAPPING: { [deprecated: string]: string } = {
     TimezonePicker: "TimezoneSelect",
     Tooltip: "Tooltip2",
 };
-const PACKAGES_WITH_DEPRECATED_IMPORTS = ["@blueprintjs/core", "@blueprintjs/select", "@blueprintjs/timezone"];
+const PACKAGES_WITH_DEPRECATED_IMPORTS = [
+    "@blueprintjs/core",
+    "@blueprintjs/datetime",
+    "@blueprintjs/select",
+    "@blueprintjs/timezone",
+];
 
 type MessageIds = "migration";
 
