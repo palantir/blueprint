@@ -4,6 +4,10 @@
 
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
+export const timezoneComponentsMigrationMapping = {
+    TimezonePicker: "TimezoneSelect",
+};
+
 /**
  * This rule is similar to "@blueprintjs/no-deprecated-components", but it only checks for usage
  * of deprecated components from @blueprintjs/timezone. This is useful for incremental migration to
@@ -12,7 +16,5 @@ import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponents
 export const noDeprecatedTimezoneComponentsRule = createNoDeprecatedComponentsRule(
     "no-deprecated-timezone-components",
     ["@blueprintjs/timezone"],
-    {
-        TimezonePicker: "TimezoneSelect",
-    },
+    timezoneComponentsMigrationMapping,
 );

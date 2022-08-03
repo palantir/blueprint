@@ -4,6 +4,12 @@
 
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
+export const selectComponentsMigrationMapping = {
+    MultiSelect: "MultiSelect2",
+    Select: "Select2",
+    Suggest: "Suggest2",
+};
+
 /**
  * This rule is similar to "@blueprintjs/no-deprecated-components", but it only checks for usage
  * of deprecated components from @blueprintjs/select. This is useful for incremental migration to
@@ -12,9 +18,5 @@ import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponents
 export const noDeprecatedSelectComponentsRule = createNoDeprecatedComponentsRule(
     "no-deprecated-select-components",
     ["@blueprintjs/select"],
-    {
-        MultiSelect: "MultiSelect2",
-        Select: "Select2",
-        Suggest: "Suggest2",
-    },
+    selectComponentsMigrationMapping,
 );
