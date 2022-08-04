@@ -19,8 +19,8 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses, H4, Menu } from "@blueprintjs/core";
-import { MenuItem2 } from "@blueprintjs/popover2";
+import { H4, Menu } from "@blueprintjs/core";
+import { MenuItem2, Classes as Popover2Classes } from "@blueprintjs/popover2";
 
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";
@@ -130,7 +130,7 @@ describe("<ColumnHeaderCell>", () => {
 
         function expectMenuToOpen(table: ElementHarness, menuClickSpy: sinon.SinonSpy) {
             table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!.mouse("mousemove");
-            table.find(`.${Classes.TABLE_TH_MENU} .${CoreClasses.POPOVER_TARGET}`)!.mouse("click");
+            table.find(`.${Classes.TABLE_TH_MENU}.${Popover2Classes.POPOVER2_TARGET}`)!.mouse("click");
             ElementHarness.document().find('[data-icon="export"]')!.mouse("click");
             expect(menuClickSpy.called).to.be.true;
         }
