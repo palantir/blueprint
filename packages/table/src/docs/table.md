@@ -1,11 +1,12 @@
 @# Table
 
-A highly interactive table component.
+The [__@blueprintjs/table__ package](https://www.npmjs.com/package/@blueprintjs/select) provides components
+to build a highly interactive table or spreadsheet UI.
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
 
-If you are looking instead for the Blueprint-styled HTML `<table>`, see
-[`HTMLTable` in **@blueprintjs/core**](#core/components/html-table).
+If you are looking instead for the simpler Blueprint-styled HTML `<table>`, see
+[the `HTMLTable` component in **@blueprintjs/core**](#core/components/html-table).
 </div>
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
@@ -14,23 +15,20 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 npm install --save @blueprintjs/table
 ```
 
-Do not forget to include `table.css` and `blueprint-popover2.css` on your page.
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-
-As of @blueprintjs/table v4.6.0, @blueprintjs/popover2 is a direct dependency and its styles must be imported
-in order for some table features to display properly.
-</div>
+Do not forget to include `table.css` on your page:
 
 ```scss
 @import "~@blueprintjs/table/lib/css/table.css";
-@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 ```
 
-<div class="@ns-callout @ns-large @ns-intent-success @ns-icon-star">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
 
-There is an updated version of the table component with some new features and compatibility with the
-[new hotkeys API](#core/components/hotkeys-target2): see [Table2](#table/table2).
+`ColumnHeaderCell2` and `TruncatedFormat2` (available since @blueprintjs/table v4.6.0) depend on
+@blueprintjs/popover2 styles, so you must also import this CSS file for those components to display properly:
+
+```scss
+@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+```
 </div>
 
 ### Features
@@ -44,6 +42,12 @@ There is an updated version of the table component with some new features and co
 * Integrated header and context menus
 
 @## Basic usage
+
+<div class="@ns-callout @ns-large @ns-intent-success @ns-icon-star">
+
+There is an updated version of the table component with some new features and compatibility with the
+[new hotkeys API](#core/components/hotkeys-target2): see [Table2](#table/table2).
+</div>
 
 To create a table, you must define the rows and columns. Add children to the `Table` to create columns,
 and change the `numRows` prop on the `Table` to set the number of rows.
