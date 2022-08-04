@@ -31,6 +31,8 @@ export {
     ITruncatedFormatProps,
 } from "./cell/formats/truncatedFormat";
 
+export { TruncatedFormat2 } from "./cell/formats/truncatedFormat2";
+
 export { Column, ColumnProps, IColumnProps } from "./column";
 
 export {
