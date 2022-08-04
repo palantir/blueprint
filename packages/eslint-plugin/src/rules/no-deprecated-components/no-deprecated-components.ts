@@ -17,7 +17,13 @@ import { timezoneComponentsMigrationMapping } from "./no-deprecated-timezone-com
  */
 export const noDeprecatedComponentsRule = createNoDeprecatedComponentsRule(
     "no-deprecated-components",
-    ["@blueprintjs/core", "@blueprintjs/datetime", "@blueprintjs/select", "@blueprintjs/timezone"],
+    [
+        "@blueprintjs/core",
+        "@blueprintjs/datetime",
+        "@blueprintjs/select",
+        "@blueprintjs/table",
+        "@blueprintjs/timezone",
+    ],
     {
         ...coreComponentsMigrationMapping,
         ...datetimeComponentsMigrationMapping,
