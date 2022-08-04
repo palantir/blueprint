@@ -186,11 +186,11 @@ return <Cell><TruncatedFormat2>{content}</TruncatedFormat2></Cell>
 
 @## JSONFormat
 
-Wrap your JavaScript object cell contents with a `JSONFormat` component like so:
+Wrap your JavaScript object cell contents with a `JSONFormat2` component like so:
 
 ```tsx
 const content = { any: "javascript variable", even: [null, "is", "okay", "too"] };
-return <Cell><JSONFormat>{content}</JSONFormat></Cell>
+return <Cell><JSONFormat2>{content}</JSONFormat2></Cell>
 ```
 
 @interface IJSONFormatProps

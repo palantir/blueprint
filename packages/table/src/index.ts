@@ -24,6 +24,8 @@ export { EditableCell2, EditableCell2Props } from "./cell/editableCell2";
 
 export { JSONFormat, IJSONFormatProps, JSONFormatProps } from "./cell/formats/jsonFormat";
 
+export { JSONFormat2 } from "./cell/formats/jsonFormat2";
+
 export {
     TruncatedPopoverMode,
     TruncatedFormat,

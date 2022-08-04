@@ -42,7 +42,7 @@ import {
     EditableCell2,
     EditableName,
     FocusedCellCoordinates,
-    JSONFormat,
+    JSONFormat2,
     Region,
     RegionCardinality,
     Regions,
@@ -582,14 +582,14 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         } else if (this.state.cellContent === CellContent.LARGE_JSON) {
             return (
                 <Cell className={classes} wrapText={this.state.enableCellWrap}>
-                    <JSONFormat
+                    <JSONFormat2
                         detectTruncation={this.state.enableCellTruncation}
                         preformatted={true}
                         showPopover={this.state.cellTruncatedPopoverMode}
                         truncateLength={1e10}
                     >
                         {valueAsString}
-                    </JSONFormat>
+                    </JSONFormat2>
                 </Cell>
             );
         } else if (this.state.enableCellTruncation) {

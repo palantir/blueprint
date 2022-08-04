@@ -40,7 +40,7 @@ import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
 import { ColumnHeader } from "./headers/columnHeader";
-import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
+import { ColumnHeaderCell2, ColumnHeaderCellProps } from "./headers/columnHeaderCell2";
 import { renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { GuideLayer } from "./layers/guides";
@@ -768,16 +768,16 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             }
         }
 
-        const baseProps: IColumnHeaderCellProps = {
+        const baseProps: ColumnHeaderCellProps = {
             index: columnIndex,
             loading: columnLoading,
             ...spreadableProps,
         };
 
         if (columnProps.name != null) {
-            return <ColumnHeaderCell {...baseProps} />;
+            return <ColumnHeaderCell2 {...baseProps} />;
         } else {
-            return <ColumnHeaderCell {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
+            return <ColumnHeaderCell2 {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
         }
     };
 

@@ -31,7 +31,7 @@ import {
     EditableCell2,
     EditableName,
     IMenuContext,
-    JSONFormat,
+    JSONFormat2,
     Region,
     RegionCardinality,
     Regions,
@@ -153,19 +153,19 @@ class FormatsTable extends React.Component {
 
     private renderJSONCell = (row: number) => (
         <Cell>
-            <JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat>
+            <JSONFormat2 preformatted={true}>{this.objects[row]}</JSONFormat2>
         </Cell>
     );
 
     private renderJSONCellWrappedText = (row: number) => (
         <Cell wrapText={true}>
-            <JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat>
+            <JSONFormat2 preformatted={true}>{this.objects[row]}</JSONFormat2>
         </Cell>
     );
 
     private renderJSONWrappedCell = (row: number) => (
         <Cell>
-            <JSONFormat preformatted={false}>{this.objects[row]}</JSONFormat>
+            <JSONFormat2 preformatted={false}>{this.objects[row]}</JSONFormat2>
         </Cell>
     );
 }

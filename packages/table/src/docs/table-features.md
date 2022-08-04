@@ -153,12 +153,12 @@ configuration.
 @## Formatting
 
 To display long strings or native JavaScript objects, we provide
-`<TruncatedFormat2>` and `<JSONFormat>` components, which are designed to be used
-within a `<Cell>`.
+`<TruncatedFormat2>` and `<JSONFormat2>` components. These are designed to be used within a `<Cell>`,
+where they will render a popover to show the full cell contents on click.
 
 Below is a table of timezones including the local time when this page was
 rendered. It uses a `<TruncatedFormat2>` component to show the long date string
-and a `<JSONFormat>` component to show the timezone info object.
+and a `<JSONFormat2>` component to show the timezone info object.
 
 @reactExample TableFormatsExample
 
