@@ -17,15 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import {
-    AbstractPureComponent2,
-    Utils as CoreUtils,
-    Icon,
-    IconName,
-    Popover,
-    Position,
-    Props,
-} from "@blueprintjs/core";
+import { AbstractPureComponent2, Utils as CoreUtils, Icon, IconName, Props } from "@blueprintjs/core";
+import { Popover2 } from "@blueprintjs/popover2";
 
 import * as Classes from "../common/classes";
 import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "../common/context";
@@ -205,18 +198,16 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         return (
             <div className={classes}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
-                {/* eslint-disable-next-line deprecation/deprecation */}
-                <Popover
-                    content={menuRenderer(index)}
-                    position={Position.BOTTOM}
+                <Popover2
                     className={Classes.TABLE_TH_MENU}
-                    modifiers={{ preventOverflow: { boundariesElement: "window" } }}
-                    onOpened={this.handlePopoverOpened}
+                    content={menuRenderer(index)}
                     onClosing={this.handlePopoverClosing}
+                    onOpened={this.handlePopoverOpened}
+                    placement="bottom"
+                    rootBoundary="document"
                 >
                     <Icon icon={menuIcon} />
-                    {/* eslint-disable-next-line deprecation/deprecation */}
-                </Popover>
+                </Popover2>
             </div>
         );
     }

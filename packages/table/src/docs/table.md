@@ -14,10 +14,17 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 npm install --save @blueprintjs/table
 ```
 
-Do not forget to include `table.css` on your page:
+Do not forget to include `table.css` and `blueprint-popover2.css` on your page.
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+
+As of @blueprintjs/table v4.6.0, @blueprintjs/popover2 is a direct dependency and its styles must be imported
+in order for some table features to display properly.
+</div>
 
 ```scss
 @import "~@blueprintjs/table/lib/css/table.css";
+@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 ```
 
 <div class="@ns-callout @ns-large @ns-intent-success @ns-icon-star">
