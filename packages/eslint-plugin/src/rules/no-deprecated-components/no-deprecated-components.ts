@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2022 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -6,6 +6,7 @@ import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponents
 import { coreComponentsMigrationMapping } from "./no-deprecated-core-components";
 import { datetimeComponentsMigrationMapping } from "./no-deprecated-datetime-components";
 import { selectComponentsMigrationMapping } from "./no-deprecated-select-components";
+import { tableComponentsMigrationMapping } from "./no-deprecated-table-components";
 import { timezoneComponentsMigrationMapping } from "./no-deprecated-timezone-components";
 
 /**
@@ -21,6 +22,7 @@ export const noDeprecatedComponentsRule = createNoDeprecatedComponentsRule(
         ...coreComponentsMigrationMapping,
         ...datetimeComponentsMigrationMapping,
         ...selectComponentsMigrationMapping,
+        ...tableComponentsMigrationMapping,
         ...timezoneComponentsMigrationMapping,
     },
 );
