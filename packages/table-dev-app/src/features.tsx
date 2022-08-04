@@ -25,13 +25,13 @@ import { MenuItem2 } from "@blueprintjs/popover2";
 import {
     Cell,
     Column,
-    ColumnHeaderCell,
+    ColumnHeaderCell2,
+    ColumnHeaderCellProps,
     CopyCellsMenuItem,
     EditableCell2,
     EditableName,
-    IColumnHeaderCellProps,
     IMenuContext,
-    JSONFormat,
+    JSONFormat2,
     Region,
     RegionCardinality,
     Regions,
@@ -153,19 +153,19 @@ class FormatsTable extends React.Component {
 
     private renderJSONCell = (row: number) => (
         <Cell>
-            <JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat>
+            <JSONFormat2 preformatted={true}>{this.objects[row]}</JSONFormat2>
         </Cell>
     );
 
     private renderJSONCellWrappedText = (row: number) => (
         <Cell wrapText={true}>
-            <JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat>
+            <JSONFormat2 preformatted={true}>{this.objects[row]}</JSONFormat2>
         </Cell>
     );
 
     private renderJSONWrappedCell = (row: number) => (
         <Cell>
-            <JSONFormat preformatted={false}>{this.objects[row]}</JSONFormat>
+            <JSONFormat2 preformatted={false}>{this.objects[row]}</JSONFormat2>
         </Cell>
     );
 }
@@ -238,7 +238,7 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
             );
         };
         return (
-            <ColumnHeaderCell
+            <ColumnHeaderCell2
                 menuRenderer={renderTestMenu}
                 name={this.state.names[columnIndex]}
                 nameRenderer={nameRenderer}
@@ -512,7 +512,7 @@ ReactDOM.render(
         7,
         {
             columnHeaderCellRenderer: (columnIndex: number) => {
-                return <ColumnHeaderCell name={Utils.toBase26Alpha(columnIndex)} isActive={columnIndex % 3 === 0} />;
+                return <ColumnHeaderCell2 name={Utils.toBase26Alpha(columnIndex)} isActive={columnIndex % 3 === 0} />;
             },
         },
         {
@@ -535,13 +535,13 @@ ReactDOM.render(
             columnHeaderCellRenderer: (columnIndex: number) => {
                 const alpha = Utils.toBase26Alpha(columnIndex);
                 return (
-                    <ColumnHeaderCell
+                    <ColumnHeaderCell2
                         name={`${alpha} Column with a substantially long header name`}
                         menuRenderer={renderTestMenu}
                     >
                         <H4>Header {alpha}</H4>
                         <p>Whatever interactive header content goes here lorem ipsum.</p>
-                    </ColumnHeaderCell>
+                    </ColumnHeaderCell2>
                 );
             },
         },
@@ -554,9 +554,9 @@ ReactDOM.render(
     document.getElementById("table-6"),
 );
 
-class CustomHeaderCell extends React.Component<IColumnHeaderCellProps> {
+class CustomHeaderCell extends React.Component<ColumnHeaderCellProps> {
     public render() {
-        return <ColumnHeaderCell {...this.props}>Hey dawg.</ColumnHeaderCell>;
+        return <ColumnHeaderCell2 {...this.props}>Hey dawg.</ColumnHeaderCell2>;
     }
 }
 
@@ -687,7 +687,7 @@ ReactDOM.render(<ReorderableTableExample />, document.getElementById("table-10")
 ReactDOM.render(
     <div style={{ height: 335, width: 300 }}>
         <Table2 numRows={10} defaultRowHeight={30} enableGhostCells={true}>
-            <Column columnHeaderCellRenderer={() => <ColumnHeaderCell nameRenderer={renderName} />} />
+            <Column columnHeaderCellRenderer={() => <ColumnHeaderCell2 nameRenderer={renderName} />} />
         </Table2>
     </div>,
     document.getElementById("table-11"),

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,47 +14,21 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to JSONFormat2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import classNames from "classnames";
 import * as React from "react";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
 import * as Classes from "../../common/classes";
-import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
-
-export type JSONFormatProps = IJSONFormatProps;
-export interface IJSONFormatProps extends ITruncatedFormatProps {
-    children?: any;
-
-    /**
-     * By default, we omit stringifying native JavaScript strings since
-     * `JSON.stringify` awkwardly adds double-quotes to the display value.
-     * This behavior can be turned off by setting this boolean to `false`.
-     *
-     * @default true
-     */
-    omitQuotesOnStrings?: boolean;
-
-    /**
-     * Optionally specify the stringify method. Default is `JSON.stringify`
-     * with 2-space indentation.
-     */
-    stringify?: (obj: any) => string;
-}
+import type { JSONFormatProps } from "./jsonFormat";
+import { TruncatedPopoverMode } from "./truncatedFormat";
+import { TruncatedFormat2 } from "./truncatedFormat2";
 
 /* istanbul ignore next */
-/** @deprecated use JSONFormat2 */
-export class JSONFormat extends React.Component<IJSONFormatProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat`;
+export class JSONFormat2 extends React.Component<JSONFormatProps> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat2`;
 
-    public static defaultProps: IJSONFormatProps = {
+    public static defaultProps: JSONFormatProps = {
         omitQuotesOnStrings: true,
         stringify: (obj: any) => JSON.stringify(obj, null, 2),
     };
@@ -80,9 +54,9 @@ export class JSONFormat extends React.Component<IJSONFormatProps> {
         }
 
         return (
-            <TruncatedFormat {...this.props} className={className} showPopover={showPopover}>
+            <TruncatedFormat2 {...this.props} className={className} showPopover={showPopover}>
                 {displayValue}
-            </TruncatedFormat>
+            </TruncatedFormat2>
         );
     }
 }

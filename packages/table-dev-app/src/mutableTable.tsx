@@ -38,11 +38,11 @@ import { MenuItem2 } from "@blueprintjs/popover2";
 import {
     Cell,
     Column,
-    ColumnHeaderCell,
+    ColumnHeaderCell2,
     EditableCell2,
     EditableName,
     FocusedCellCoordinates,
-    JSONFormat,
+    JSONFormat2,
     Region,
     RegionCardinality,
     Regions,
@@ -51,7 +51,7 @@ import {
     StyledRegionGroup,
     Table2,
     TableLoadingOption,
-    TruncatedFormat,
+    TruncatedFormat2,
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
@@ -449,7 +449,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderColumnHeaderCell = (columnIndex: number) => {
         return (
-            <ColumnHeaderCell
+            <ColumnHeaderCell2
                 index={columnIndex}
                 name={this.store.getColumnName(columnIndex)}
                 menuRenderer={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
@@ -582,20 +582,20 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         } else if (this.state.cellContent === CellContent.LARGE_JSON) {
             return (
                 <Cell className={classes} wrapText={this.state.enableCellWrap}>
-                    <JSONFormat
+                    <JSONFormat2
                         detectTruncation={this.state.enableCellTruncation}
                         preformatted={true}
                         showPopover={this.state.cellTruncatedPopoverMode}
                         truncateLength={1e10}
                     >
                         {valueAsString}
-                    </JSONFormat>
+                    </JSONFormat2>
                 </Cell>
             );
         } else if (this.state.enableCellTruncation) {
             return (
                 <Cell className={classes} wrapText={this.state.enableCellWrap}>
-                    <TruncatedFormat
+                    <TruncatedFormat2
                         detectTruncation={!this.state.enableCellTruncationFixed}
                         preformatted={false}
                         showPopover={this.state.cellTruncatedPopoverMode}
@@ -603,7 +603,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                         truncationSuffix="..."
                     >
                         {valueAsString}
-                    </TruncatedFormat>
+                    </TruncatedFormat2>
                 </Cell>
             );
         } else {

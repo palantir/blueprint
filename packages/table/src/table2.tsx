@@ -31,7 +31,7 @@ import { CellRenderer } from "./cell/cell";
 import { Column, ColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
-import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "./common/context";
+import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "./common/context";
 import * as Errors from "./common/errors";
 import { Grid, ICellMapper } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
@@ -40,7 +40,7 @@ import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
 import { ColumnHeader } from "./headers/columnHeader";
-import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
+import { ColumnHeaderCell2, ColumnHeaderCellProps } from "./headers/columnHeaderCell2";
 import { renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { GuideLayer } from "./layers/guides";
@@ -98,7 +98,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         selectionModes: SelectionModes.ALL,
     };
 
-    public static childContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> =
+    public static childContextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> =
         columnInteractionBarContextTypes;
 
     public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState) {
@@ -433,7 +433,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     // React lifecycle
     // ===============
 
-    public getChildContext(): IColumnInteractionBarContextTypes {
+    public getChildContext(): ColumnInteractionBarContextTypes {
         return {
             enableColumnInteractionBar: this.props.enableColumnInteractionBar!,
         };
@@ -768,16 +768,16 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             }
         }
 
-        const baseProps: IColumnHeaderCellProps = {
+        const baseProps: ColumnHeaderCellProps = {
             index: columnIndex,
             loading: columnLoading,
             ...spreadableProps,
         };
 
         if (columnProps.name != null) {
-            return <ColumnHeaderCell {...baseProps} />;
+            return <ColumnHeaderCell2 {...baseProps} />;
         } else {
-            return <ColumnHeaderCell {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
+            return <ColumnHeaderCell2 {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
         }
     };
 

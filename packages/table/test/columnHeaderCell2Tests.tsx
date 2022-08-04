@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,20 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to ColumnHeaderCell2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses, H4, Menu } from "@blueprintjs/core";
-import { MenuItem2 } from "@blueprintjs/popover2";
+import { H4, Menu } from "@blueprintjs/core";
+import { MenuItem2, Classes as Popover2Classes } from "@blueprintjs/popover2";
 
-import { ColumnHeaderCell, IColumnHeaderCellProps } from "../src";
+import { ColumnHeaderCell2, ColumnHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 
-describe("<ColumnHeaderCell>", () => {
+describe("<ColumnHeaderCell2>", () => {
     const harness = new ReactHarness();
 
     afterEach(() => {
@@ -53,7 +46,7 @@ describe("<ColumnHeaderCell>", () => {
 
     it("renders with custom className if provided", () => {
         const CLASS_NAME = "my-custom-class-name";
-        const table = harness.mount(<ColumnHeaderCell className={CLASS_NAME} />);
+        const table = harness.mount(<ColumnHeaderCell2 className={CLASS_NAME} />);
         const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0)!.hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
@@ -63,14 +56,14 @@ describe("<ColumnHeaderCell>", () => {
         renderNameStub.returns("string");
         const NAME = "my-name";
         const INDEX = 17;
-        shallow(<ColumnHeaderCell index={INDEX} name={NAME} nameRenderer={renderNameStub} />);
+        shallow(<ColumnHeaderCell2 index={INDEX} name={NAME} nameRenderer={renderNameStub} />);
         expect(renderNameStub.firstCall.args).to.deep.equal([NAME, INDEX]);
     });
 
     describe("Custom renderer", () => {
         it("renders custom name", () => {
             const columnHeaderCellRenderer = (columnIndex: number) => {
-                return <ColumnHeaderCell name={`COLUMN-${columnIndex}`} />;
+                return <ColumnHeaderCell2 name={`COLUMN-${columnIndex}`} />;
             };
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
             const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.text();
@@ -80,9 +73,9 @@ describe("<ColumnHeaderCell>", () => {
         it("renders custom content", () => {
             const columnHeaderCellRenderer = (columnIndex: number) => {
                 return (
-                    <ColumnHeaderCell name={`COLUMN-${columnIndex}`}>
+                    <ColumnHeaderCell2 name={`COLUMN-${columnIndex}`}>
                         <H4>Header of {columnIndex}</H4>
-                    </ColumnHeaderCell>
+                    </ColumnHeaderCell2>
                 );
             };
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
@@ -96,7 +89,7 @@ describe("<ColumnHeaderCell>", () => {
             const renderMenuFn = () => menu;
 
             const columnHeaderCellRenderer = (columnIndex: number) => {
-                return <ColumnHeaderCell name={`COL-${columnIndex}`} menuRenderer={renderMenuFn} />;
+                return <ColumnHeaderCell2 name={`COL-${columnIndex}`} menuRenderer={renderMenuFn} />;
             };
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
             expectMenuToOpen(table, menuClickSpy);
@@ -108,7 +101,7 @@ describe("<ColumnHeaderCell>", () => {
             const menuRenderer = sinon.stub().returns(menu);
 
             const columnHeaderCellRenderer = (columnIndex: number) => (
-                <ColumnHeaderCell name={`COL-${columnIndex}`} menuRenderer={menuRenderer} />
+                <ColumnHeaderCell2 name={`COL-${columnIndex}`} menuRenderer={menuRenderer} />
             );
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
             expectMenuToOpen(table, menuClickSpy);
@@ -116,7 +109,7 @@ describe("<ColumnHeaderCell>", () => {
 
         it("renders loading state properly", () => {
             const columnHeaderCellRenderer = (columnIndex: number) => {
-                return <ColumnHeaderCell loading={columnIndex === 0} name="Column Header" />;
+                return <ColumnHeaderCell2 loading={columnIndex === 0} name="Column Header" />;
             };
             const table = harness.mount(createTableOfSize(2, 1, { columnHeaderCellRenderer }));
             expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0)!.text()).to.equal("");
@@ -137,7 +130,7 @@ describe("<ColumnHeaderCell>", () => {
 
         function expectMenuToOpen(table: ElementHarness, menuClickSpy: sinon.SinonSpy) {
             table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!.mouse("mousemove");
-            table.find(`.${Classes.TABLE_TH_MENU} .${CoreClasses.POPOVER_TARGET}`)!.mouse("click");
+            table.find(`.${Classes.TABLE_TH_MENU}.${Popover2Classes.POPOVER2_TARGET}`)!.mouse("click");
             ElementHarness.document().find('[data-icon="export"]')!.mouse("click");
             expect(menuClickSpy.called).to.be.true;
         }
@@ -159,9 +152,9 @@ describe("<ColumnHeaderCell>", () => {
             expect(element.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
         });
 
-        function mount(props: Partial<IColumnHeaderCellProps>) {
+        function mount(props: Partial<ColumnHeaderCellProps>) {
             const element = harness.mount(
-                <ColumnHeaderCell
+                <ColumnHeaderCell2
                     enableColumnReordering={props.enableColumnReordering}
                     reorderHandle={<div className={REORDER_HANDLE_CLASS} />}
                 />,

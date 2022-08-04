@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Table2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 import innerText from "react-innertext";
@@ -32,7 +39,7 @@ import { CellRenderer } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
 import type { IFocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
-import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "./common/context";
+import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "./common/context";
 import * as Errors from "./common/errors";
 import { Grid, ICellMapper } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
@@ -60,8 +67,6 @@ import { TableHotkeys } from "./tableHotkeys";
 import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./tableProps";
 import type { TableSnapshot, TableState } from "./tableState";
 import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./tableUtils";
-
-/* eslint-disable deprecation/deprecation */
 
 /** @deprecated use Table2, which supports usage of the new hotkeys API in the same application */
 @HotkeysTarget
@@ -93,7 +98,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         selectionModes: SelectionModes.ALL,
     };
 
-    public static childContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> =
+    public static childContextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> =
         columnInteractionBarContextTypes;
 
     public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState) {
@@ -401,7 +406,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     // React lifecycle
     // ===============
 
-    public getChildContext(): IColumnInteractionBarContextTypes {
+    public getChildContext(): ColumnInteractionBarContextTypes {
         return {
             enableColumnInteractionBar: this.props.enableColumnInteractionBar,
         };

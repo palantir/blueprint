@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,88 +14,26 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to ColumnHeaderCell2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import classNames from "classnames";
 import * as React from "react";
 
-import {
-    AbstractPureComponent2,
-    Utils as CoreUtils,
-    DISPLAYNAME_PREFIX,
-    Icon,
-    IconName,
-    Popover,
-    Position,
-    Props,
-} from "@blueprintjs/core";
+import { AbstractPureComponent2, Utils as CoreUtils, DISPLAYNAME_PREFIX, Icon } from "@blueprintjs/core";
+import { Popover2 } from "@blueprintjs/popover2";
 
 import * as Classes from "../common/classes";
 import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "../common/context";
 import { LoadableContent } from "../common/loadableContent";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
-import { HeaderCell, IHeaderCellProps } from "./headerCell";
+import { HorizontalCellDivider, IColumnHeaderCellProps, IColumnHeaderCellState } from "./columnHeaderCell";
+import { HeaderCell } from "./headerCell";
 
-export interface IColumnNameProps {
-    /**
-     * The name displayed in the header of the column.
-     */
-    name?: string;
+// eslint-disable-next-line deprecation/deprecation
+export type ColumnHeaderCellProps = IColumnHeaderCellProps;
 
-    /**
-     * A callback to override the default name rendering behavior. The default
-     * behavior is to simply use the `ColumnHeaderCell2`s name prop.
-     *
-     * This render callback can be used, for example, to provide a
-     * `EditableName` component for editing column names.
-     *
-     * If you define this callback, we recommend you also set
-     * `<Table enableColumnInteractionBar={true}>` to avoid issues with menus or selection.
-     *
-     * The callback will also receive the column index if an `index` was originally
-     * provided via props.
-     */
-    nameRenderer?: (name: string, index?: number) => React.ReactElement<Props>;
-}
+export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCellProps, IColumnHeaderCellState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.ColumnHeaderCell2`;
 
-/** @deprecated use ColumnHeaderCellProps */
-export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNameProps {
-    /**
-     * Specifies if the column is reorderable.
-     */
-    enableColumnReordering?: boolean;
-
-    /**
-     * Specifies if the full column is part of a selection.
-     */
-    isColumnSelected?: boolean;
-
-    /**
-     * The icon name or element for the header's menu button.
-     *
-     * @default "chevron-down"
-     */
-    menuIcon?: IconName | JSX.Element;
-}
-
-export interface IColumnHeaderCellState {
-    isActive?: boolean;
-}
-
-export function HorizontalCellDivider(): JSX.Element {
-    return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER} />;
-}
-
-/** @deprecated use ColumnHeaderCell2 instead */
-export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellProps, IColumnHeaderCellState> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.ColumnHeaderCell`;
-
-    public static defaultProps: IColumnHeaderCellProps = {
+    public static defaultProps: ColumnHeaderCellProps = {
         isActive: false,
         menuIcon: "chevron-down",
     };
@@ -217,16 +155,16 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         return (
             <div className={classes}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
-                <Popover
-                    content={menuRenderer(index)}
-                    position={Position.BOTTOM}
+                <Popover2
                     className={Classes.TABLE_TH_MENU}
-                    modifiers={{ preventOverflow: { boundariesElement: "window" } }}
-                    onOpened={this.handlePopoverOpened}
+                    content={menuRenderer(index)}
                     onClosing={this.handlePopoverClosing}
+                    onOpened={this.handlePopoverOpened}
+                    placement="bottom"
+                    rootBoundary="document"
                 >
                     <Icon icon={menuIcon} />
-                </Popover>
+                </Popover2>
             </div>
         );
     }

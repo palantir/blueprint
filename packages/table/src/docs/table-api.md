@@ -4,7 +4,7 @@ reference: api
 
 @# JavaScript API
 
-The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell`
+The `Table`, `Column`, `Cell`, `ColumnHeaderCell2`, `EditableName`, and `EditableCell`
 components are available in the __@blueprintjs/table__ package.
 
 @## Table
@@ -53,21 +53,33 @@ returned from the `cellRenderer` method of each `Column`.
 
 @interface ICellProps
 
-@## ColumnHeaderCell
+@## ColumnHeaderCell2
 
 Customize how each column header is displayed.
 
 The `columnHeaderCellRenderer` method on each `Column` should return a
-`ColumnHeaderCell`. Children of a `ColumnHeaderCell` are rendered below
+`ColumnHeaderCell2`. Children of a `ColumnHeaderCell2` are rendered below
 the name of the column. If you want to override the render behavior of the
-name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell`.
+name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell2`.
+
+<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
+
+<h4 class="@ns-heading">Additional CSS required</h4>
+
+__ColumnHeaderCell2__ depends on @blueprintjs/popover2 styles, so you must remember to import
+that package's stylesheet in your application in addition to `table.css`:
+
+```scss
+@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+```
+</div>
 
 @interface IColumnHeaderCellProps
 
 @## EditableName
 
 Return a `EditableName` component from the `nameRenderer` prop on a
-`ColumnHeaderCell` to enable click-to-edit functionality in the column
+`ColumnHeaderCell2` to enable click-to-edit functionality in the column
 header.
 
 @interface IEditableNameProps
@@ -173,24 +185,24 @@ const cardinalities = [
 
 @method Regions.getRegionCardinality
 
-@## TruncatedFormat
+@## TruncatedFormat2
 
-Wrap your cell contents with a `TruncatedFormat` component like so:
+Wrap your cell contents with a `TruncatedFormat2` component like so:
 
 ```tsx
 const content = "A very long string...";
-return <Cell><TruncatedFormat>{content}</TruncatedFormat></Cell>
+return <Cell><TruncatedFormat2>{content}</TruncatedFormat2></Cell>
 ```
 
 @interface ITruncatedFormatProps
 
 @## JSONFormat
 
-Wrap your JavaScript object cell contents with a `JSONFormat` component like so:
+Wrap your JavaScript object cell contents with a `JSONFormat2` component like so:
 
 ```tsx
 const content = { any: "javascript variable", even: [null, "is", "okay", "too"] };
-return <Cell><JSONFormat>{content}</JSONFormat></Cell>
+return <Cell><JSONFormat2>{content}</JSONFormat2></Cell>
 ```
 
 @interface IJSONFormatProps
