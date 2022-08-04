@@ -52,20 +52,16 @@ Import the package stylesheet in Sass:
 @import "~@blueprintjs/datetime2/lib/css/blueprint-datetime2.css";
 ```
 
-...or in plain HTML:
-
-```html
-<link href="path/to/node_modules/@blueprintjs/datetime2/lib/css/blueprint-datetime2.css" rel="stylesheet" />
-```
-
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Additional CSS required</h4>
 
-This library still relies on some components from `@blueprintjs/datetime`, so you will need to pull in that
-package's CSS as well. Make sure to add this import:
+This library relies on some components from other Blueprint packages, so you will need to pull in those
+packages' CSS files as well in your application (if you are not doing this already):
 
 ```scss
 @import "~@blueprintjs/datetime/lib/css/blueprint-datetime.css"`;
+@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css"`;
+@import "~@blueprintjs/select/lib/css/blueprint-select.css"`;
 ```
 </div>
 
