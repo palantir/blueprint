@@ -4,7 +4,7 @@ reference: api
 
 @# JavaScript API
 
-The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell`
+The `Table`, `Column`, `Cell`, `ColumnHeaderCell2`, `EditableName`, and `EditableCell`
 components are available in the __@blueprintjs/table__ package.
 
 @## Table
@@ -58,16 +58,16 @@ returned from the `cellRenderer` method of each `Column`.
 Customize how each column header is displayed.
 
 The `columnHeaderCellRenderer` method on each `Column` should return a
-`ColumnHeaderCell`. Children of a `ColumnHeaderCell` are rendered below
+`ColumnHeaderCell2`. Children of a `ColumnHeaderCell2` are rendered below
 the name of the column. If you want to override the render behavior of the
-name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell`.
+name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell2`.
 
 @interface IColumnHeaderCellProps
 
 @## EditableName
 
 Return a `EditableName` component from the `nameRenderer` prop on a
-`ColumnHeaderCell` to enable click-to-edit functionality in the column
+`ColumnHeaderCell2` to enable click-to-edit functionality in the column
 header.
 
 @interface IEditableNameProps
@@ -173,13 +173,13 @@ const cardinalities = [
 
 @method Regions.getRegionCardinality
 
-@## TruncatedFormat
+@## TruncatedFormat2
 
-Wrap your cell contents with a `TruncatedFormat` component like so:
+Wrap your cell contents with a `TruncatedFormat2` component like so:
 
 ```tsx
 const content = "A very long string...";
-return <Cell><TruncatedFormat>{content}</TruncatedFormat></Cell>
+return <Cell><TruncatedFormat2>{content}</TruncatedFormat2></Cell>
 ```
 
 @interface ITruncatedFormatProps

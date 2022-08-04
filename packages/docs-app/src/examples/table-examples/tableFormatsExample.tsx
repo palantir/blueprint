@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Cell, Column, JSONFormat, Table2, TruncatedFormat } from "@blueprintjs/table";
+import { Cell, Column, JSONFormat, Table2, TruncatedFormat2 } from "@blueprintjs/table";
 
 interface ITimezone {
     name: string;
@@ -113,7 +113,7 @@ export class TableFormatsExample extends React.PureComponent<IExampleProps> {
         });
         return (
             <Cell>
-                <TruncatedFormat>{formattedDateTime}</TruncatedFormat>
+                <TruncatedFormat2>{formattedDateTime}</TruncatedFormat2>
             </Cell>
         );
     };

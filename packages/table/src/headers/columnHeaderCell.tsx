@@ -49,7 +49,7 @@ export interface IColumnNameProps {
 
     /**
      * A callback to override the default name rendering behavior. The default
-     * behavior is to simply use the `ColumnHeaderCell`s name prop.
+     * behavior is to simply use the `ColumnHeaderCell2`s name prop.
      *
      * This render callback can be used, for example, to provide a
      * `EditableName` component for editing column names.

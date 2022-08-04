@@ -56,7 +56,7 @@ To make your table editable, use the [`EditableCell2`](#table/table2.editablecel
 `EditableName` components to create editable table cells and column names.
 
 To further extend the interactivity of the column headers, you can
-add children components to each `ColumnHeaderCell` defined in the
+add children components to each `ColumnHeaderCell2` defined in the
 `columnHeaderCellRenderer` prop of `Column`.
 
 The following example renders a table with editable column names (single
@@ -144,7 +144,7 @@ individual column's header and body cells. Try selecting a different column in t
 
 @### Cells
 
-`Cell`, `EditableCell`, `ColumnHeaderCell`, and `RowHeaderCell` expose a `loading` prop for granular
+`Cell`, `EditableCell`, `ColumnHeaderCell2`, and `RowHeaderCell` expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading
 configuration.
 
@@ -153,11 +153,11 @@ configuration.
 @## Formatting
 
 To display long strings or native JavaScript objects, we provide
-`<TruncatedFormat>` and `<JSONFormat>` components, which are designed to be used
+`<TruncatedFormat2>` and `<JSONFormat>` components, which are designed to be used
 within a `<Cell>`.
 
 Below is a table of timezones including the local time when this page was
-rendered. It uses a `<TruncatedFormat>` component to show the long date string
+rendered. It uses a `<TruncatedFormat2>` component to show the long date string
 and a `<JSONFormat>` component to show the timezone info object.
 
 @reactExample TableFormatsExample
