@@ -781,6 +781,7 @@ describe("<Popover2>", () => {
             wrapper = renderPopover(
                 { defaultIsOpen: true, usePortal: false },
                 <Menu>
+                    {/* eslint-disable-next-line @blueprintjs/no-deprecated-components */}
                     <MenuItem text="Close" />
                 </Menu>,
             );

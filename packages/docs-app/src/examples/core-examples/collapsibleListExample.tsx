@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to OverflowList instead.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
 
 import classNames from "classnames";
 import * as React from "react";

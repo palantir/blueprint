@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
 
 import * as React from "react";
 

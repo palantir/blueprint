@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangeInput2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { H5, Switch } from "@blueprintjs/core";
@@ -82,7 +89,6 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
 
     public render() {
         const { enableTimePicker, format, range, showTimeArrowButtons, ...spreadProps } = this.state;
-        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <DateRangeInput
@@ -98,7 +104,6 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
                 <MomentDateRange range={range} />
             </Example>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 
     protected renderOptions() {
