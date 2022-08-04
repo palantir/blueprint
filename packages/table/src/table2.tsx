@@ -31,7 +31,7 @@ import { CellRenderer } from "./cell/cell";
 import { Column, ColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
-import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "./common/context";
+import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "./common/context";
 import * as Errors from "./common/errors";
 import { Grid, ICellMapper } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
@@ -98,7 +98,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         selectionModes: SelectionModes.ALL,
     };
 
-    public static childContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> =
+    public static childContextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> =
         columnInteractionBarContextTypes;
 
     public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState) {
@@ -433,7 +433,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     // React lifecycle
     // ===============
 
-    public getChildContext(): IColumnInteractionBarContextTypes {
+    public getChildContext(): ColumnInteractionBarContextTypes {
         return {
             enableColumnInteractionBar: this.props.enableColumnInteractionBar!,
         };

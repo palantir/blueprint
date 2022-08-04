@@ -67,6 +67,8 @@ export { RowHeaderRenderer } from "./headers/rowHeader";
 
 export { ColumnHeaderCell, IColumnHeaderCellProps, HorizontalCellDivider } from "./headers/columnHeaderCell";
 
+export { ColumnHeaderCell2, ColumnHeaderCellProps } from "./headers/columnHeaderCell2";
+
 export { IRowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
 
 export { IEditableNameProps, EditableNameProps, EditableName } from "./headers/editableName";
