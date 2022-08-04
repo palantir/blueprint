@@ -5,7 +5,7 @@ reference: datetime2
 @# Datetime2
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Experimental Library</h4>
+    <h4 class="@ns-heading">Incubating component library</h4>
     <p>This package is currently in the v0.x version range, which means its API is unstable.</p>
 </div>
 
@@ -46,7 +46,7 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 npm install --save @blueprintjs/datetime2
 ```
 
-Import the package stylesheet in Sass:
+Import the package stylesheet (for example, in Sass):
 
 ```scss
 @import "~@blueprintjs/datetime2/lib/css/blueprint-datetime2.css";
@@ -56,12 +56,12 @@ Import the package stylesheet in Sass:
     <h4 class="@ns-heading">Additional CSS required</h4>
 
 This library relies on some components from other Blueprint packages, so you will need to pull in those
-packages' CSS files as well in your application (if you are not doing this already):
+packages' CSS files as well (if you are not doing this already):
 
 ```scss
-@import "~@blueprintjs/datetime/lib/css/blueprint-datetime.css"`;
-@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css"`;
-@import "~@blueprintjs/select/lib/css/blueprint-select.css"`;
+@import "~@blueprintjs/datetime/lib/css/blueprint-datetime.css";
+@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+@import "~@blueprintjs/select/lib/css/blueprint-select.css";
 ```
 </div>
 
