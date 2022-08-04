@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-/* eslint-disable max-classes-per-file */
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Breadcrumbs2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, max-classes-per-file, @blueprintjs/no-deprecated-components */
 
 import * as React from "react";
 
@@ -114,7 +119,6 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
         return (
             <Example options={options} {...this.props}>
                 <Card elevation={0} style={{ width: `${width}%` }}>
-                    {/* eslint-disable-next-line deprecation/deprecation */}
                     <Breadcrumbs
                         collapseFrom={collapseFrom}
                         items={alwaysRenderOverflow ? ITEMS_FOR_ALWAYS_RENDER : ITEMS}
