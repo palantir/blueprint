@@ -157,10 +157,12 @@ To display long strings or native JavaScript objects, we provide
 where they will render a popover to show the full cell contents on click.
 
 Below is a table of timezones including the local time when this page was
-rendered. It uses a `<TruncatedFormat2>` component to show the long date string
-and a `<JSONFormat2>` component to show the timezone info object.
+rendered. It uses a `<TruncatedFormat2 detectTruncation={true}>` component to show the long date string
+and a `<JSONFormat2 detectTruncation={true}>` component to show the timezone info object.
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
+
+<h4 class="@ns-heading">Additional CSS required</h4>
 
 These cell formatting components depend on @blueprintjs/popover2 styles, so you must remember to import
 that package's stylesheet in your application in addition to `table.css`:

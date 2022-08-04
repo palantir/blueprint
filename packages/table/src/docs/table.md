@@ -5,7 +5,7 @@ to build a highly interactive table or spreadsheet UI.
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
 
-If you are looking instead for the simpler Blueprint-styled HTML `<table>`, see
+If you are looking for the simpler Blueprint-styled HTML `<table>` instead, see
 [the `HTMLTable` component in **@blueprintjs/core**](#core/components/html-table).
 </div>
 
@@ -23,7 +23,9 @@ Do not forget to include `table.css` on your page:
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
 
-`ColumnHeaderCell2`, `JSONFormat2`, and `TruncatedFormat2` (available since @blueprintjs/table v4.6.0)
+<h4 class="@ns-heading">Additional CSS required</h4>
+
+__ColumnHeaderCell2__, __JSONFormat2__, and __TruncatedFormat2__ (available since @blueprintjs/table v4.6.0)
 depend on @blueprintjs/popover2 styles, so you must also import this CSS file for those components
 to display properly:
 

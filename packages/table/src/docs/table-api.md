@@ -64,7 +64,9 @@ name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell2`.
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
 
-`ColumnHeaderCell2` depends on @blueprintjs/popover2 styles, so you must remember to import
+<h4 class="@ns-heading">Additional CSS required</h4>
+
+__ColumnHeaderCell2__ depends on @blueprintjs/popover2 styles, so you must remember to import
 that package's stylesheet in your application in addition to `table.css`:
 
 ```scss

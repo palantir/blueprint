@@ -113,14 +113,14 @@ export class TableFormatsExample extends React.PureComponent<IExampleProps> {
         });
         return (
             <Cell>
-                <TruncatedFormat2>{formattedDateTime}</TruncatedFormat2>
+                <TruncatedFormat2 detectTruncation={true}>{formattedDateTime}</TruncatedFormat2>
             </Cell>
         );
     };
 
     private renderJSON = (row: number) => (
         <Cell>
-            <JSONFormat2>{this.data[row]}</JSONFormat2>
+            <JSONFormat2 detectTruncation={true}>{this.data[row]}</JSONFormat2>
         </Cell>
     );
 }
