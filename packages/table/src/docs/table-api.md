@@ -53,7 +53,7 @@ returned from the `cellRenderer` method of each `Column`.
 
 @interface ICellProps
 
-@## ColumnHeaderCell
+@## ColumnHeaderCell2
 
 Customize how each column header is displayed.
 
@@ -61,6 +61,16 @@ The `columnHeaderCellRenderer` method on each `Column` should return a
 `ColumnHeaderCell2`. Children of a `ColumnHeaderCell2` are rendered below
 the name of the column. If you want to override the render behavior of the
 name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell2`.
+
+<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
+
+`ColumnHeaderCell2` depends on @blueprintjs/popover2 styles, so you must remember to import
+that package's stylesheet in your application in addition to `table.css`:
+
+```scss
+@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+```
+</div>
 
 @interface IColumnHeaderCellProps
 

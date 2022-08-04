@@ -160,6 +160,16 @@ Below is a table of timezones including the local time when this page was
 rendered. It uses a `<TruncatedFormat2>` component to show the long date string
 and a `<JSONFormat2>` component to show the timezone info object.
 
+<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
+
+These cell formatting components depend on @blueprintjs/popover2 styles, so you must remember to import
+that package's stylesheet in your application in addition to `table.css`:
+
+```scss
+@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+```
+</div>
+
 @reactExample TableFormatsExample
 
 @## Freezing
