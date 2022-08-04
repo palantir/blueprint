@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2022 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -6,6 +6,7 @@ import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponents
 import { coreComponentsMigrationMapping } from "./no-deprecated-core-components";
 import { datetimeComponentsMigrationMapping } from "./no-deprecated-datetime-components";
 import { selectComponentsMigrationMapping } from "./no-deprecated-select-components";
+import { tableComponentsMigrationMapping } from "./no-deprecated-table-components";
 import { timezoneComponentsMigrationMapping } from "./no-deprecated-timezone-components";
 
 /**
@@ -16,11 +17,18 @@ import { timezoneComponentsMigrationMapping } from "./no-deprecated-timezone-com
  */
 export const noDeprecatedComponentsRule = createNoDeprecatedComponentsRule(
     "no-deprecated-components",
-    ["@blueprintjs/core", "@blueprintjs/datetime", "@blueprintjs/select", "@blueprintjs/timezone"],
+    [
+        "@blueprintjs/core",
+        "@blueprintjs/datetime",
+        "@blueprintjs/select",
+        "@blueprintjs/table",
+        "@blueprintjs/timezone",
+    ],
     {
         ...coreComponentsMigrationMapping,
         ...datetimeComponentsMigrationMapping,
         ...selectComponentsMigrationMapping,
+        ...tableComponentsMigrationMapping,
         ...timezoneComponentsMigrationMapping,
     },
 );
