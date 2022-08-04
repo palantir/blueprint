@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Popover2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { Button, Classes, Code, Popover, Position } from "@blueprintjs/core";
@@ -103,12 +110,10 @@ export class PopoverPositionExample extends React.PureComponent<IExampleProps> {
             </div>
         );
 
-        /* eslint-disable deprecation/deprecation */
         return (
             <Popover content={content} position={position} usePortal={false}>
                 <Button className={Classes.MONOSPACE_TEXT}>{buttonLabel}</Button>
             </Popover>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 }

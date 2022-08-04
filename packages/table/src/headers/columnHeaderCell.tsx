@@ -205,7 +205,8 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         return (
             <div className={classes}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
-                {/* eslint-disable-next-line deprecation/deprecation */}
+                {/* HACKHACK: need to migrate to Popover2, see https://github.com/palantir/blueprint/issues/5480 */}
+                {/* eslint-disable-next-line deprecation/deprecation, @blueprintjs/no-deprecated-components */}
                 <Popover
                     content={menuRenderer(index)}
                     position={Position.BOTTOM}
@@ -215,7 +216,7 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
                     onClosing={this.handlePopoverClosing}
                 >
                     <Icon icon={menuIcon} />
-                    {/* eslint-disable-next-line deprecation/deprecation */}
+                    {/* eslint-disable-next-line deprecation/deprecation, @blueprintjs/no-deprecated-components */}
                 </Popover>
             </div>
         );

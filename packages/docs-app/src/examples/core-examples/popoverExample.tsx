@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to Popover2 instead.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
 
 import * as React from "react";
 

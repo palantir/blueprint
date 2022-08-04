@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateInput2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { H5, Position, Switch } from "@blueprintjs/core";
@@ -73,7 +80,6 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
         const { date, format, showTimeArrowButtons, timePrecision, ...spreadProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                {/* eslint-disable-next-line deprecation/deprecation */}
                 <DateInput
                     {...spreadProps}
                     {...format}

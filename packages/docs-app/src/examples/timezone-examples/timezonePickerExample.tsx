@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to TimezoneSelect instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { H5, Position, Radio, RadioGroup, Switch } from "@blueprintjs/core";
@@ -72,7 +79,6 @@ export class TimezonePickerExample extends React.PureComponent<IExampleProps, IT
             </>
         );
 
-        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={options} {...this.props}>
                 <TimezonePicker
@@ -87,7 +93,6 @@ export class TimezonePickerExample extends React.PureComponent<IExampleProps, IT
                 </TimezonePicker>
             </Example>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 
     private renderCustomTarget() {

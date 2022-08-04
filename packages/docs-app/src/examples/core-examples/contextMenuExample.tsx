@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to ContextMenu2 instead.
  */
 
-/* eslint-disable deprecation/deprecation, max-classes-per-file */
+/* eslint-disable deprecation/deprecation, max-classes-per-file, @blueprintjs/no-deprecated-components */
 
 import classNames from "classnames";
 import * as React from "react";

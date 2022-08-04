@@ -20,6 +20,8 @@
  * package instead.
  */
 
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker from "react-day-picker";
@@ -56,7 +58,6 @@ type InputEvent =
     | React.FocusEvent<HTMLInputElement>
     | React.ChangeEvent<HTMLInputElement>;
 
-// eslint-disable-next-line deprecation/deprecation
 export type DateRangeInputProps = IDateRangeInputProps;
 /** @deprecated use DateRangeInputProps */
 export interface IDateRangeInputProps extends DatePickerBaseProps, DateFormatProps, Props {
@@ -133,7 +134,6 @@ export interface IDateRangeInputProps extends DatePickerBaseProps, DateFormatPro
      * The props to pass to the popover.
      * `autoFocus`, `content`, and `enforceFocus` will be ignored to avoid compromising usability.
      */
-    // eslint-disable-next-line deprecation/deprecation
     popoverProps?: Partial<IPopoverProps>;
 
     /**
@@ -350,7 +350,6 @@ export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, 
         // allow custom props for the popover and each input group, but pass them in an order that
         // guarantees only some props are overridable.
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
@@ -365,7 +364,6 @@ export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, 
                     {this.renderInputGroup(Boundary.START)}
                     {this.renderInputGroup(Boundary.END)}
                 </div>
-                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     }
@@ -597,7 +595,6 @@ export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, 
     // - if focused in end field, Shift+Tab moves focus to start field
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable deprecation/deprecation */
         const isTabPressed = e.which === Keys.TAB;
         const isEnterPressed = e.which === Keys.ENTER;
         const isShiftPressed = e.shiftKey;
@@ -991,7 +988,6 @@ export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, 
     // the constructor and componentDidUpdate.
     private getFormattedMinMaxDateString(props: IDateRangeInputProps, propName: "minDate" | "maxDate") {
         const date = props[propName];
-        // eslint-disable-next-line deprecation/deprecation
         const defaultDate = DateRangeInput.defaultProps[propName];
         // default values are applied only if a prop is strictly `undefined`
         // See: https://facebook.github.io/react/docs/react-component.html#defaultprops
