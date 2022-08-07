@@ -1605,7 +1605,7 @@
     {
         "displayName": "Shopping cart",
         "iconName": "shopping-cart",
-        "tags": "trolley, mall, online, store, business, cart, shopping",
+        "tags": "trolley, mall, online, store, business",
         "group": "miscellaneous",
         "codepoint": 62134
     },
@@ -1619,14 +1619,14 @@
     {
         "displayName": "Layout: linear",
         "iconName": "layout-linear",
-        "tags": "dots, connection, line, pipeline, three dots in a line, line of circles, beads, three dots, dot dot dot, more, daisy, connect, graph",
+        "tags": "dot, three, dots, connection, line, pipeline, line of circles, beads, more, daisy, connect, graph",
         "group": "data",
         "codepoint": 61986
     },
     {
         "displayName": "Undo",
         "iconName": "undo",
-        "tags": "back, cancel, reverse, revoke, , rollback, revert",
+        "tags": "back, cancel, reverse, revoke, rollback, revert",
         "group": "action",
         "codepoint": 62210
     },
@@ -1647,14 +1647,14 @@
     {
         "displayName": "Double caret: vertical",
         "iconName": "double-caret-vertical",
-        "tags": "sort, arrow, list, up and down arrows, vertical arrows, elevator, scroll, navigate, expand, up, down, arrows",
+        "tags": "sort, arrow, list, elevator, scroll, navigate, expand, up, down, vertical, arrows",
         "group": "interface",
         "codepoint": 61828
     },
     {
         "displayName": "Double caret: horizontal",
         "iconName": "double-caret-horizontal",
-        "tags": "sort, arrow, list, music, play, navigate, expand, slider, left right, arrows",
+        "tags": "sort, arrow, list, navigate, expand, slider, left, right, arrows",
         "group": "interface",
         "codepoint": 61827
     },
@@ -1668,7 +1668,7 @@
     {
         "displayName": "Sort: numerical descending",
         "iconName": "sort-numerical-desc",
-        "tags": "order, list, array, arrange, descending, descending order, sort descending, sort, descending sort",
+        "tags": "order, list, array, arrange, descending",
         "group": "action",
         "codepoint": 62149
     },
@@ -1682,7 +1682,7 @@
     {
         "displayName": "Contrast",
         "iconName": "contrast",
-        "tags": "color, brightness, settings, light mode/dark mode, cog, light/dark mode",
+        "tags": "color, brightness, settings, light, dark, mode, theme, cog",
         "group": "media",
         "codepoint": 61798
     },
@@ -1703,7 +1703,7 @@
     {
         "displayName": "Doughnut chart",
         "iconName": "doughnut-chart",
-        "tags": "circle, section, part, graph, quarter, pie chart, storage space, usage, statistics",
+        "tags": "circle, section, part, graph, quarter, pie chart, storage space, usage, statistics, donut, visualization",
         "group": "data",
         "codepoint": 61833
     },
@@ -1731,7 +1731,7 @@
     {
         "displayName": "Add to folder",
         "iconName": "add-to-folder",
-        "tags": "file, portfolio, case, import, folder, open folder, open",
+        "tags": "file, portfolio, case, import, open",
         "group": "file",
         "codepoint": 61704
     },
@@ -1752,35 +1752,35 @@
     {
         "displayName": "Sort: ascending",
         "iconName": "sort-asc",
-        "tags": "order, list, array, arrange, ascending order, increasing order, histogram, ascending, queue",
+        "tags": "order, list, array, arrange, ascending, increasing, histogram, queue",
         "group": "action",
         "codepoint": 62147
     },
     {
         "displayName": "Sort: descending",
         "iconName": "sort-desc",
-        "tags": "order, list, array, arrange, sort, decreasing",
+        "tags": "order, list, array, arrange, descending, decreasing",
         "group": "action",
         "codepoint": 62148
     },
     {
         "displayName": "Small cross",
         "iconName": "small-cross",
-        "tags": "cross mark, fail, delete, no, close, remove, x, cross, cancel, exit",
+        "tags": "cross mark, fail, delete, no, close, remove, x, cancel, exit",
         "group": "action",
         "codepoint": 62138
     },
     {
         "displayName": "Small tick",
         "iconName": "small-tick",
-        "tags": "mark, sign, ok, approved, success, check, complete, agree, verify, yes, correct, tick",
+        "tags": "mark, sign, ok, approved, success, check, complete, agree, verify, yes, correct",
         "group": "action",
         "codepoint": 62142
     },
     {
         "displayName": "Power",
         "iconName": "power",
-        "tags": "button, on, off, power on, power off",
+        "tags": "button, on, off, toggle",
         "group": "media",
         "codepoint": 62075
     },
@@ -1794,7 +1794,7 @@
     {
         "displayName": "Arrow: top left",
         "iconName": "arrow-top-left",
-        "tags": "direction, north west, arrow, up left arrow, top left arrow, cursor, up left, arrow up left",
+        "tags": "direction, north west, cursor, up left",
         "group": "interface",
         "codepoint": 61735
     },
@@ -1808,21 +1808,21 @@
     {
         "displayName": "Arrow: bottom right",
         "iconName": "arrow-bottom-right",
-        "tags": "direction, south east, arrow down right, down left arrow, diagonal arrow, diagonal down left arrow",
+        "tags": "direction, south east, diagonal, down right",
         "group": "interface",
         "codepoint": 61731
     },
     {
         "displayName": "Arrow: bottom left",
         "iconName": "arrow-bottom-left",
-        "tags": "direction, south west, arrow, bottom left direction, point, minimize, collapse, go to, here, this, down and to the left, right down arrow, diagonal",
+        "tags": "direction, south west, arrow, diagonal, down left",
         "group": "interface",
         "codepoint": 61730
     },
     {
         "displayName": "Mugshot",
         "iconName": "mugshot",
-        "tags": "person, photograph, picture, portrait, profile picture, mark zuckerberg, user",
+        "tags": "person, photograph, picture, portrait, profile, user",
         "group": "interface",
         "codepoint": 62029
     },
@@ -1836,7 +1836,7 @@
     {
         "displayName": "Text highlight",
         "iconName": "text-highlight",
-        "tags": "selector, content, type, input, text insert, select, highlight, text input, text box, input text, search, enter text, text area",
+        "tags": "selector, content, type, input, insert, select, box, search, text area, textarea",
         "group": "editor",
         "codepoint": 62181
     },
@@ -1871,14 +1871,14 @@
     {
         "displayName": "Rotate: page",
         "iconName": "rotate-page",
-        "tags": "turn, anti clockwise, rotate, rotate counterclockwise, rotate left",
+        "tags": "turn, anti clockwise, counterclockwise, left",
         "group": "editor",
         "codepoint": 62106
     },
     {
         "displayName": "Badge",
         "iconName": "badge",
-        "tags": "emblem, symbol, identification, insignia, marker, protect, privacy, shield, law enforcement, police, sheriff, rule enforcement, shield or protection, security",
+        "tags": "emblem, symbol, identification, insignia, marker, protect, privacy, shield, law enforcement, police, sheriff, rule enforcement, security",
         "group": "miscellaneous",
         "codepoint": 61743
     },
@@ -1892,14 +1892,14 @@
     {
         "displayName": "Function",
         "iconName": "function",
-        "tags": "math, calculation, logic, fx",
+        "tags": "math, calculation, logic, fx, formula, spreadsheet",
         "group": "table",
         "codepoint": 61893
     },
     {
         "displayName": "Waterfall chart",
         "iconName": "waterfall-chart",
-        "tags": "graph, diagram, waterfall, chart, bar chart, yield",
+        "tags": "graph, diagram, bar chart, yield",
         "group": "data",
         "codepoint": 62230
     },
@@ -1920,7 +1920,7 @@
     {
         "displayName": "New person",
         "iconName": "new-person",
-        "tags": "person, human, male, female, character, customer, individual, add, add user, new user, additional user, add person",
+        "tags": "person, human, male, female, character, customer, individual, add, user, additional",
         "group": "interface",
         "codepoint": 62039
     },
@@ -1934,14 +1934,14 @@
     {
         "displayName": "Pivot table",
         "iconName": "pivot-table",
-        "tags": "rotate, axis, hinge, corner, pivot, lift, open, lever",
+        "tags": "rotate, axis, hinge, corner, lift, open, lever",
         "group": "table",
         "codepoint": 62070
     },
     {
         "displayName": "Segmented control",
         "iconName": "segmented-control",
-        "tags": "button, switch, option, switch button toggle, toggle, progress bar",
+        "tags": "button, switch, option, toggle, progress bar",
         "group": "interface",
         "codepoint": 62115
     },
@@ -1955,7 +1955,7 @@
     {
         "displayName": "Filter: list",
         "iconName": "filter-list",
-        "tags": "filtering, funnel, tube, pipe, filter",
+        "tags": "filtering, funnel, tube, pipe",
         "group": "action",
         "codepoint": 61866
     },
@@ -1983,14 +1983,14 @@
     {
         "displayName": "Ring",
         "iconName": "ring",
-        "tags": "empty, circle, selection, hollow circle, empty circle, hole, disc",
+        "tags": "empty, circle, selection, hollow, empty, hole, disc, donut",
         "group": "miscellaneous",
         "codepoint": 62102
     },
     {
         "displayName": "Heat grid",
         "iconName": "heat-grid",
-        "tags": "chart, grid, heat map, squares, black and white",
+        "tags": "chart, map, squares, black and white",
         "group": "data",
         "codepoint": 61929
     },
@@ -2004,7 +2004,7 @@
     {
         "displayName": "Variable",
         "iconName": "variable",
-        "tags": "math, calculation, function input, variable input, parentheses, function, parameter, input",
+        "tags": "math, calculation, function, input, parentheses, parameter",
         "group": "table",
         "codepoint": 62219
     },
@@ -2032,7 +2032,7 @@
     {
         "displayName": "Add column: left",
         "iconName": "add-column-left",
-        "tags": "table, attach, join, add tab, add tab left, add window, add column, add right",
+        "tags": "table, attach, join, tab, window, section",
         "group": "table",
         "codepoint": 61698
     },
@@ -2095,7 +2095,7 @@
     {
         "displayName": "Double chevron: down",
         "iconName": "double-chevron-down",
-        "tags": "arrows, multiple, direction, down, downward, downgrade",
+        "tags": "arrows, multiple, direction, downward, downgrade",
         "group": "interface",
         "codepoint": 61829
     },
