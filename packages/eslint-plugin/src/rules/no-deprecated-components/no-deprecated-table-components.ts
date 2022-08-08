@@ -8,6 +8,7 @@ export const tableComponentsMigrationMapping = {
     ColumnHeaderCell: "ColumnHeaderCell2",
     EditableCell: "EditableCell2",
     JSONFormat: "JSONFormat2",
+    RowHeaderCell: "RowHeaderCell2",
     Table: "Table2",
     TruncatedFormat: "TruncatedFormat2",
 };
