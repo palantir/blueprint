@@ -26,11 +26,11 @@ import { IClientCoordinates } from "../interactions/dragTypes";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
-import { ColumnHeaderCell2, ColumnHeaderCellProps } from "./columnHeaderCell2";
+import { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./columnHeaderCell2";
 import { Header, IHeaderProps } from "./header";
 
 /** @deprecated use ColumnHeaderRenderer */
-export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<ColumnHeaderCellProps> | null;
+export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<ColumnHeaderCell2Props> | null;
 // eslint-disable-next-line deprecation/deprecation
 export type ColumnHeaderRenderer = IColumnHeaderRenderer;
 
