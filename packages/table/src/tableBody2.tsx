@@ -79,6 +79,7 @@ export class TableBody2 extends AbstractComponent2<TableBodyProps> {
                     className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
                     content={this.renderContextMenu}
                     disabled={this.props.bodyContextMenuRenderer === undefined}
+                    onContextMenu={this.handleContextMenu}
                     style={style}
                 >
                     <TableBodyCells
@@ -100,7 +101,7 @@ export class TableBody2 extends AbstractComponent2<TableBodyProps> {
     }
 
     public renderContextMenu = ({ mouseEvent }: ContextMenu2ContentProps) => {
-        const { grid, onFocusedCell, onSelection, bodyContextMenuRenderer, selectedRegions = [] } = this.props;
+        const { grid, bodyContextMenuRenderer, selectedRegions = [] } = this.props;
         const { numRows, numCols } = grid;
 
         if (bodyContextMenuRenderer === undefined || mouseEvent === undefined) {
@@ -108,7 +109,29 @@ export class TableBody2 extends AbstractComponent2<TableBodyProps> {
         }
 
         const targetRegion = this.locateClick(mouseEvent.nativeEvent as MouseEvent);
+        let nextSelectedRegions: Region[] = selectedRegions;
 
+        // if the event did not happen within a selected region, clear all
+        // selections and select the right-clicked cell.
+        const foundIndex = Regions.findContainingRegion(selectedRegions, targetRegion);
+        if (foundIndex < 0) {
+            nextSelectedRegions = [targetRegion];
+        }
+
+        const menuContext = new MenuContext(targetRegion, nextSelectedRegions, numRows, numCols);
+        const contextMenu = bodyContextMenuRenderer(menuContext);
+
+        return contextMenu == null ? undefined : contextMenu;
+    };
+
+    // Callbacks
+    // =========
+
+    // state updates cannot happen in renderContextMenu() during the render phase, so we must handle them separately
+    private handleContextMenu = (e: React.MouseEvent) => {
+        const { onFocusedCell, onSelection, selectedRegions = [] } = this.props;
+
+        const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
         let nextSelectedRegions: Region[] = selectedRegions;
 
         // if the event did not happen within a selected region, clear all
@@ -125,15 +148,7 @@ export class TableBody2 extends AbstractComponent2<TableBodyProps> {
             };
             onFocusedCell(nextFocusedCell);
         }
-
-        const menuContext = new MenuContext(targetRegion, nextSelectedRegions, numRows, numCols);
-        const contextMenu = bodyContextMenuRenderer(menuContext);
-
-        return contextMenu == null ? undefined : contextMenu;
     };
-
-    // Callbacks
-    // =========
 
     private handleSelectionEnd = () => {
         this.activationCell = null; // not strictly required, but good practice
