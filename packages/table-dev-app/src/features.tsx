@@ -35,7 +35,7 @@ import {
     Region,
     RegionCardinality,
     Regions,
-    RowHeaderCell,
+    RowHeaderCell2,
     SelectionModes,
     Table2,
     Utils,
@@ -499,7 +499,7 @@ ReactDOM.render(
         {},
         {
             renderRowHeaderCell: (rowIndex: number) => {
-                return <RowHeaderCell name={customRowHeaders[rowIndex]} />;
+                return <RowHeaderCell2 name={customRowHeaders[rowIndex]} />;
             },
         },
     ),
@@ -547,7 +547,7 @@ ReactDOM.render(
         },
         {
             renderRowHeaderCell: (rowIndex: number) => {
-                return <RowHeaderCell name={`${rowIndex + 1}`} menuRenderer={renderTestMenu} />;
+                return <RowHeaderCell2 name={`${rowIndex + 1}`} menuRenderer={renderTestMenu} />;
             },
         },
     ),

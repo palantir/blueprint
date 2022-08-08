@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,48 +14,16 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to RowHeaderCell2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import * as React from "react";
 
-import { AbstractPureComponent2, Props } from "@blueprintjs/core";
+import { AbstractPureComponent2 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { HeaderCell, IHeaderCellProps } from "./headerCell";
+import { HeaderCell2 } from "./headerCell2";
+import type { RowHeaderCellProps } from "./rowHeaderCell";
 
-export type RowHeaderCellProps = IRowHeaderCellProps;
-export interface IRowHeaderCellProps extends IHeaderCellProps, Props {
-    /**
-     * Specifies if the row is reorderable.
-     */
-    enableRowReordering?: boolean;
-
-    /**
-     * Specifies whether the full row is part of a selection.
-     */
-    isRowSelected?: boolean;
-
-    /**
-     * A callback to override the default name rendering behavior. The default
-     * behavior is to simply use the `RowHeaderCell`s name prop.
-     *
-     * This render callback can be used, for example, to provide a
-     * `EditableName` component for editing row names.
-     *
-     * The callback will also receive the row index if an `index` was originally
-     * provided via props.
-     */
-    nameRenderer?: (name: string, index?: number) => React.ReactElement<Props>;
-}
-
-/** @deprecated use RowHeaderCell2 */
-export class RowHeaderCell extends AbstractPureComponent2<IRowHeaderCellProps> {
+export class RowHeaderCell2 extends AbstractPureComponent2<RowHeaderCellProps> {
     public render() {
         const {
             // from IRowHeaderCellProps
@@ -76,7 +44,7 @@ export class RowHeaderCell extends AbstractPureComponent2<IRowHeaderCellProps> {
         );
 
         return (
-            <HeaderCell
+            <HeaderCell2
                 isReorderable={this.props.enableRowReordering}
                 isSelected={this.props.isRowSelected}
                 {...spreadableProps}
@@ -84,7 +52,7 @@ export class RowHeaderCell extends AbstractPureComponent2<IRowHeaderCellProps> {
                 <div className={Classes.TABLE_ROW_NAME}>{nameComponent}</div>
                 {this.props.children}
                 {spreadableProps.loading ? undefined : spreadableProps.resizeHandle}
-            </HeaderCell>
+            </HeaderCell2>
         );
     }
 }
