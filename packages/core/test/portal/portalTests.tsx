@@ -18,10 +18,10 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { Classes, IPortalProps, Portal } from "../../src";
+import { Classes, Portal, PortalProps, PortalProvider } from "../../src";
 
 describe("<Portal>", () => {
-    let portal: ReactWrapper<IPortalProps>;
+    let portal: ReactWrapper<PortalProps>;
 
     afterEach(() => {
         portal?.unmount();
@@ -73,13 +73,27 @@ describe("<Portal>", () => {
         assert.exists(portal.find(".class-two"));
     });
 
-    it("respects blueprintPortalClassName on context", () => {
+    it("respects blueprintPortalClassName on legacy context", () => {
         const CLASS_TO_TEST = "bp-test-klass bp-other-class";
         portal = mount(
             <Portal>
                 <p>test</p>
             </Portal>,
             { context: { blueprintPortalClassName: CLASS_TO_TEST } },
+        );
+
+        const portalElement = document.querySelector(`.${CLASS_TO_TEST.replace(" ", ".")}`);
+        assert.isTrue(portalElement?.classList.contains(Classes.PORTAL));
+    });
+
+    it("respects portalClassName on new context API", () => {
+        const CLASS_TO_TEST = "bp-test-klass bp-other-class";
+        portal = mount(
+            <PortalProvider portalClassName={CLASS_TO_TEST}>
+                <Portal>
+                    <p>test</p>
+                </Portal>
+            </PortalProvider>,
         );
 
         const portalElement = document.querySelector(`.${CLASS_TO_TEST.replace(" ", ".")}`);

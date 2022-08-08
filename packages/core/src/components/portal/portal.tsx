@@ -21,10 +21,7 @@ import * as Classes from "../../common/classes";
 import { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
-import { isFunction } from "../../common/utils";
-
-/** Detect if `React.createPortal()` API method does not exist. */
-const cannotCreatePortal = !isFunction(ReactDOM.createPortal);
+import { PortalContext, PortalContextOptions } from "../../context";
 
 // eslint-disable-next-line deprecation/deprecation
 export type PortalProps = IPortalProps;
@@ -46,17 +43,30 @@ export interface IPortalProps extends Props {
     container?: HTMLElement;
 }
 
-export interface IPortalState {
-    hasMounted: boolean;
+/**
+ * This component detaches its contents and re-attaches them to document.body.
+ * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
+ * Any class names passed to this element will be propagated to the new container element on document.body.
+ */
+export function Portal({ children, ...props }: PortalProps) {
+    const context = React.useContext(PortalContext);
+    return (
+        <PortalLegacy {...context} {...props}>
+            {children}
+        </PortalLegacy>
+    );
 }
+Portal.displayName = `${DISPLAYNAME_PREFIX}.Portal`;
 
-export interface IPortalContext {
+/** @deprecated use PortalProvider */
+export type IPortalContext = PortalLegacyContext;
+export interface PortalLegacyContext {
     /** Additional CSS classes to add to all `Portal` elements in this React context. */
     blueprintPortalClassName?: string;
 }
 
-const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
-    blueprintPortalClassName: (obj: IPortalContext, key: keyof IPortalContext) => {
+const REACT_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
+    blueprintPortalClassName: (obj: PortalLegacyContext, key: keyof PortalLegacyContext) => {
         if (obj[key] != null && typeof obj[key] !== "string") {
             return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
         }
@@ -64,13 +74,18 @@ const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
     },
 };
 
+export interface PortalLegacyState {
+    hasMounted: boolean;
+}
+
+type PortalLegacyProps = PortalProps & PortalContextOptions;
+
 /**
- * This component detaches its contents and re-attaches them to document.body.
- * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
- * Any class names passed to this element will be propagated to the new container element on document.body.
+ * Old implementation of Portal which relies on the legacy React context API. We need to keep this
+ * around in Blueprint v4.x for backwards-compatibility.
  */
-export class Portal extends React.Component<PortalProps, IPortalState> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
+class PortalLegacy extends React.Component<PortalLegacyProps, PortalLegacyState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.PortalLegacy`;
 
     public static contextTypes = REACT_CONTEXT_TYPES;
 
@@ -78,9 +93,9 @@ export class Portal extends React.Component<PortalProps, IPortalState> {
         container: typeof document !== "undefined" ? document.body : undefined,
     };
 
-    public context: IPortalContext = {};
+    public context: PortalLegacyContext = {};
 
-    public state: IPortalState = { hasMounted: false };
+    public state: PortalLegacyState = { hasMounted: false };
 
     private portalElement: HTMLElement | null = null;
 
@@ -88,12 +103,7 @@ export class Portal extends React.Component<PortalProps, IPortalState> {
         // Only render `children` once this component has mounted in a browser environment, so they are
         // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
         // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
-        if (
-            cannotCreatePortal ||
-            typeof document === "undefined" ||
-            !this.state.hasMounted ||
-            this.portalElement === null
-        ) {
+        if (typeof document === "undefined" || !this.state.hasMounted || this.portalElement === null) {
             return null;
         } else {
             return ReactDOM.createPortal(this.props.children, this.portalElement);
@@ -101,16 +111,13 @@ export class Portal extends React.Component<PortalProps, IPortalState> {
     }
 
     public componentDidMount() {
-        if (!this.props.container) {
+        if (this.props.container == null) {
             return;
         }
         this.portalElement = this.createContainerElement();
         this.props.container.appendChild(this.portalElement);
         /* eslint-disable-next-line react/no-did-mount-set-state */
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
-        if (cannotCreatePortal) {
-            this.unstableRenderNoPortal();
-        }
     }
 
     public componentDidUpdate(prevProps: PortalProps) {
@@ -119,40 +126,25 @@ export class Portal extends React.Component<PortalProps, IPortalState> {
             maybeRemoveClass(this.portalElement.classList, prevProps.className);
             maybeAddClass(this.portalElement.classList, this.props.className);
         }
-
-        if (cannotCreatePortal) {
-            this.unstableRenderNoPortal();
-        }
     }
 
     public componentWillUnmount() {
-        if (this.portalElement != null) {
-            if (cannotCreatePortal) {
-                ReactDOM.unmountComponentAtNode(this.portalElement);
-            }
-            this.portalElement.remove();
-        }
+        this.portalElement?.remove();
     }
 
     private createContainerElement() {
         const container = document.createElement("div");
         container.classList.add(Classes.PORTAL);
-        maybeAddClass(container.classList, this.props.className);
-        if (this.context != null) {
-            maybeAddClass(container.classList, this.context.blueprintPortalClassName);
-        }
-        return container;
-    }
+        maybeAddClass(container.classList, this.props.className); // directly added to this portal element
+        maybeAddClass(container.classList, this.props.portalClassName); // added via PortalProvider context
 
-    private unstableRenderNoPortal() {
-        if (this.portalElement === null) {
-            return;
+        const { blueprintPortalClassName } = this.context;
+        if (blueprintPortalClassName != null && blueprintPortalClassName !== "") {
+            console.error(Errors.PORTAL_LEGACY_CONTEXT_API);
+            maybeAddClass(container.classList, this.context?.blueprintPortalClassName); // added via legacy context
         }
-        ReactDOM.unstable_renderSubtreeIntoContainer(
-            /* parentComponent */ this,
-            <div>{this.props.children}</div>,
-            this.portalElement,
-        );
+
+        return container;
     }
 }
 
