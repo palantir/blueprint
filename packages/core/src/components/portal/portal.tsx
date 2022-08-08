@@ -21,7 +21,7 @@ import * as Classes from "../../common/classes";
 import { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
-import { PortalContext, PortalContextOptions } from "../../context";
+import { PortalContext, PortalContextOptions } from "../../context/portal/portalProvider";
 
 // eslint-disable-next-line deprecation/deprecation
 export type PortalProps = IPortalProps;
