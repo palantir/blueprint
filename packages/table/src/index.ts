@@ -71,7 +71,7 @@ export { RowHeaderRenderer } from "./headers/rowHeader";
 
 export { ColumnHeaderCell, IColumnHeaderCellProps, HorizontalCellDivider } from "./headers/columnHeaderCell";
 
-export { ColumnHeaderCell2, ColumnHeaderCellProps } from "./headers/columnHeaderCell2";
+export { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./headers/columnHeaderCell2";
 
 export { IRowHeaderCellProps, RowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
 

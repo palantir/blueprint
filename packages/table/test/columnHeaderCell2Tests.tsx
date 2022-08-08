@@ -15,14 +15,14 @@
  */
 
 import { expect } from "chai";
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
 import { H4, Menu } from "@blueprintjs/core";
 import { MenuItem2, Classes as Popover2Classes } from "@blueprintjs/popover2";
 
-import { ColumnHeaderCell2, ColumnHeaderCellProps } from "../src";
+import { ColumnHeaderCell2, ColumnHeaderCell2Props } from "../src";
 import * as Classes from "../src/common/classes";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
@@ -56,7 +56,7 @@ describe("<ColumnHeaderCell2>", () => {
         renderNameStub.returns("string");
         const NAME = "my-name";
         const INDEX = 17;
-        shallow(<ColumnHeaderCell2 index={INDEX} name={NAME} nameRenderer={renderNameStub} />);
+        mount(<ColumnHeaderCell2 index={INDEX} name={NAME} nameRenderer={renderNameStub} />);
         expect(renderNameStub.firstCall.args).to.deep.equal([NAME, INDEX]);
     });
 
@@ -136,30 +136,28 @@ describe("<ColumnHeaderCell2>", () => {
         }
     });
 
-    // TODO: re-enable these tests when we switch to enzyme's testing harness instead of our own,
-    // so that we can supply a react context with enableColumnInteractionBar: true
-    // see https://github.com/palantir/blueprint/issues/2076
-    describe.skip("Reorder handle", () => {
+    describe("Reorder handle", () => {
         const REORDER_HANDLE_CLASS = Classes.TABLE_REORDER_HANDLE_TARGET;
 
         it("shows reorder handle in interaction bar if reordering and interaction bar are enabled", () => {
-            const element = mount({ enableColumnReordering: true });
-            expect(element.find(`.${Classes.TABLE_INTERACTION_BAR} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
+            const wrapper = mountHeaderCell();
+            expect(wrapper.find(`.${Classes.TABLE_INTERACTION_BAR} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
         });
 
         it("shows reorder handle next to column name if reordering enabled but interaction bar disabled", () => {
-            const element = mount({ enableColumnReordering: true });
-            expect(element.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
+            const wrapper = mountHeaderCell({ enableColumnInteractionBar: false });
+            expect(wrapper.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
         });
 
-        function mount(props: Partial<ColumnHeaderCellProps>) {
-            const element = harness.mount(
+        function mountHeaderCell(props?: Partial<ColumnHeaderCell2Props>) {
+            return mount(
                 <ColumnHeaderCell2
-                    enableColumnReordering={props.enableColumnReordering}
+                    enableColumnInteractionBar={true}
                     reorderHandle={<div className={REORDER_HANDLE_CLASS} />}
+                    enableColumnReordering={true}
+                    {...props}
                 />,
             );
-            return element;
         }
     });
 });

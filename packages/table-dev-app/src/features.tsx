@@ -26,7 +26,7 @@ import {
     Cell,
     Column,
     ColumnHeaderCell2,
-    ColumnHeaderCellProps,
+    ColumnHeaderCell2Props,
     CopyCellsMenuItem,
     EditableCell2,
     EditableName,
@@ -554,7 +554,7 @@ ReactDOM.render(
     document.getElementById("table-6"),
 );
 
-class CustomHeaderCell extends React.Component<ColumnHeaderCellProps> {
+class CustomHeaderCell extends React.Component<ColumnHeaderCell2Props> {
     public render() {
         return <ColumnHeaderCell2 {...this.props}>Hey dawg.</ColumnHeaderCell2>;
     }
