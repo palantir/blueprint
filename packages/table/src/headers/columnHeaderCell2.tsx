@@ -25,7 +25,7 @@ import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } fr
 import { LoadableContent } from "../common/loadableContent";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { HorizontalCellDivider, IColumnHeaderCellProps, IColumnHeaderCellState } from "./columnHeaderCell";
-import { HeaderCell } from "./headerCell";
+import { HeaderCell2 } from "./headerCell2";
 
 // eslint-disable-next-line deprecation/deprecation
 export type ColumnHeaderCellProps = IColumnHeaderCellProps;
@@ -86,7 +86,7 @@ export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCellPr
         });
 
         return (
-            <HeaderCell
+            <HeaderCell2
                 isReorderable={this.props.enableColumnReordering}
                 isSelected={this.props.isColumnSelected}
                 {...spreadableProps}
@@ -95,7 +95,7 @@ export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCellPr
                 {this.renderName()}
                 {this.maybeRenderContent()}
                 {this.props.loading ? undefined : this.props.resizeHandle}
-            </HeaderCell>
+            </HeaderCell2>
         );
     }
 

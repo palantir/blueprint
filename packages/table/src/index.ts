@@ -73,7 +73,9 @@ export { ColumnHeaderCell, IColumnHeaderCellProps, HorizontalCellDivider } from 
 
 export { ColumnHeaderCell2, ColumnHeaderCellProps } from "./headers/columnHeaderCell2";
 
-export { IRowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
+export { IRowHeaderCellProps, RowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
+
+export { RowHeaderCell2 } from "./headers/rowHeaderCell2";
 
 export { IEditableNameProps, EditableNameProps, EditableName } from "./headers/editableName";
 
