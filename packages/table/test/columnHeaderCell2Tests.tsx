@@ -53,7 +53,7 @@ describe("<ColumnHeaderCell2>", () => {
 
     it("passes index prop to nameRenderer callback if index was provided", () => {
         const renderNameStub = sinon.stub();
-        renderNameStub.returns("string");
+        renderNameStub.returns(<span>name</span>);
         const NAME = "my-name";
         const INDEX = 17;
         mount(<ColumnHeaderCell2 index={INDEX} name={NAME} nameRenderer={renderNameStub} />);
