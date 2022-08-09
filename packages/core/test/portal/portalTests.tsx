@@ -21,10 +21,16 @@ import * as React from "react";
 import { Classes, Portal, PortalProps, PortalProvider } from "../../src";
 
 describe("<Portal>", () => {
+    let rootElement: HTMLElement | undefined;
     let portal: ReactWrapper<PortalProps>;
 
+    beforeEach(() => {
+        rootElement = document.createElement("div");
+        document.body.appendChild(rootElement);
+    });
     afterEach(() => {
         portal?.unmount();
+        rootElement?.remove();
     });
 
     it("attaches contents to document.body", () => {
@@ -33,6 +39,7 @@ describe("<Portal>", () => {
             <Portal>
                 <p className={CLASS_TO_TEST}>test</p>
             </Portal>,
+            { attachTo: rootElement },
         );
         assert.lengthOf(document.getElementsByClassName(CLASS_TO_TEST), 1);
     });
@@ -45,6 +52,7 @@ describe("<Portal>", () => {
             <Portal container={container}>
                 <p className={CLASS_TO_TEST}>test</p>
             </Portal>,
+            { attachTo: rootElement },
         );
         assert.lengthOf(container.getElementsByClassName(CLASS_TO_TEST), 1);
         document.body.removeChild(container);
@@ -56,6 +64,7 @@ describe("<Portal>", () => {
             <Portal className={CLASS_TO_TEST}>
                 <p>test</p>
             </Portal>,
+            { attachTo: rootElement },
         );
 
         const portalChild = document.querySelector(`.${Classes.PORTAL}.${CLASS_TO_TEST}`);
@@ -67,6 +76,7 @@ describe("<Portal>", () => {
             <Portal className="class-one">
                 <p>test</p>
             </Portal>,
+            { attachTo: rootElement },
         );
         assert.exists(portal.find(".class-one"));
         portal.setProps({ className: "class-two" });
@@ -79,7 +89,7 @@ describe("<Portal>", () => {
             <Portal>
                 <p>test</p>
             </Portal>,
-            { context: { blueprintPortalClassName: CLASS_TO_TEST } },
+            { attachTo: rootElement, context: { blueprintPortalClassName: CLASS_TO_TEST } },
         );
 
         const portalElement = document.querySelector(`.${CLASS_TO_TEST.replace(" ", ".")}`);
@@ -94,6 +104,7 @@ describe("<Portal>", () => {
                     <p>test</p>
                 </Portal>
             </PortalProvider>,
+            { attachTo: rootElement },
         );
 
         const portalElement = document.querySelector(`.${CLASS_TO_TEST.replace(" ", ".")}`);
@@ -105,6 +116,7 @@ describe("<Portal>", () => {
             <Portal className="class-one class-two">
                 <p>test</p>
             </Portal>,
+            { attachTo: rootElement },
         );
         portal.setProps({ className: undefined });
         // no assertion necessary - will crash on incorrect code
@@ -115,21 +127,23 @@ describe("<Portal>", () => {
             <Portal className="">
                 <p>test</p>
             </Portal>,
+            { attachTo: rootElement },
         );
         portal.setProps({ className: "class-one" });
         // no assertion necessary - will crash on incorrect code
     });
 
     it("children mount before onChildrenMount invoked", done => {
-        function spy() {
-            // can't use `portal` in here as `mount()` has not finished, so query DOM directly
+        function handleChildrenMount() {
+            // can't use `portal` in here as `mount()` has not finished, so we query DOM directly instead
             assert.exists(document.querySelector("p"));
             done();
         }
         portal = mount(
-            <Portal onChildrenMount={spy}>
+            <Portal onChildrenMount={handleChildrenMount}>
                 <p>test</p>
             </Portal>,
+            { attachTo: rootElement },
         );
     });
 });
