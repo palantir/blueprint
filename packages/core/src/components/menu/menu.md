@@ -7,7 +7,7 @@ Menus display lists of interactive items.
 The Menu API includes three React components:
 
 * [Menu](#core/components/menu.menu)
-* [MenuItem](#core/components/menu.menu-item) (DEPRECATED, use [MenuItem2](#popover2-package/menu-item2))
+* [MenuItem](#core/components/menu.menu-item)
 * [MenuDivider](#core/components/menu.menu-divider)
 
 ```tsx
@@ -95,7 +95,8 @@ Deprecated prop `popoverProps`: use [MenuItem2](#popover2-package/menu-item2)
 
 Usage of `<MenuItem popoverProps={...}>` is **deprecated since @blueprintjs/core v4.7.0**
 in favor of the new MenuItem2 component, which uses Popover2 instead of Popover under the hood.
-You should migrate to the new API which will become the standard in Blueprint v5.
+If you use customize the layout of submenus using this prop, you should migrate to the new API
+which will become the standard in Blueprint v5.
 
 </div>
 
