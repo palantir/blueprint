@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to MenuItem2 instead.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable deprecation/deprecation @blueprintjs/no-deprecated-components */
 
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
