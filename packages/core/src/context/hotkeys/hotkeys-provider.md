@@ -12,7 +12,7 @@ Migrating from [HotkeysTarget](#core/components/hotkeys)?
 </h4>
 
 HotkeysProvider and `useHotkeys`, used together, are a replacement for HotkeysTarget.
-You are encouraged to use this new API, as it will become the standard APIs in Blueprint v5.
+You are encouraged to use this new API, as it will become the standard APIs in a future major version of Blueprint.
 See the full [migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration)
 on the wiki.
 
