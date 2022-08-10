@@ -27,7 +27,8 @@ You may provide a predicate to customize the filtering algorithm. The value of a
 @reactExample SelectExample
 
 ```tsx
-import { Button, MenuItem } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core";
+import { MenuItem2 } from "@blueprintjs/popover2";
 import { Select2 } from "@blueprintjs/select";
 import * as Films from "./films";
 
@@ -40,7 +41,7 @@ ReactDOM.render(
         items={Films.items}
         itemPredicate={Films.itemPredicate}
         itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
+        noResults={<MenuItem2 disabled={true} text="No results."  roleStructure="listoption" />}
         onItemSelect={...}
     >
         {/* children become the popover target; render value here */}
@@ -155,11 +156,11 @@ function renderCreateFilmOption(
     handleClick: React.MouseEventHandler<HTMLElement>,
 ) {
     return (
-        <MenuItem
+        <MenuItem2
             icon="add"
             text={`Create "${query}"`}
             roleStructure="listoption"
-            selected={active}
+            active={active}
             onClick={handleClick}
             shouldDismissPopover={false}
         />
@@ -173,7 +174,7 @@ ReactDOM.render(
         items={Films.items}
         itemPredicate={Films.itemPredicate}
         itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
+        noResults={<MenuItem2 disabled={true} text="No results."  roleStructure="listoption" />}
         onItemSelect={...}
     />,
     document.querySelector("#root")
@@ -243,7 +244,8 @@ to rendering this item in this frame. The renderer is called for all items, so d
 `modifiers.matchesPredicate` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item, or face React's console wrath!
 
 ```tsx
-import { Classes, MenuItem } from "@blueprintjs/core";
+import { Classes } from "@blueprintjs/core";
+import { MenuItem2 } from "@blueprintjs/popover2";
 import { ItemRenderer, ItemPredicate, Select2 } from "@blueprintjs/select";
 
 const FilmSelect = Select2.ofType<Film>();
@@ -257,11 +259,11 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
         return null;
     }
     return (
-        <MenuItem
+        <MenuItem2
             text={film.title}
             label={film.year}
             roleStructure="listoption"
-            selected={modifiers.active}
+            active={modifiers.active}
             key={film.title}
             onClick={handleClick}
             onFocus={handleFocus}
@@ -285,7 +287,7 @@ const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, rend
     const renderedItems = items.map(renderItem).filter(item => item != null);
     return (
         <Menu role="listbox" ulRef={itemsParentRef} {...menuProps}>
-            <MenuItem
+            <MenuItem2
                 disabled={true}
                 text={`Found ${renderedItems.length} items matching "${query}"`}
                 roleStructure="listoption"

@@ -310,8 +310,9 @@ export class MultiSlider extends AbstractPureComponent2<MultiSliderProps, ISlide
             return null;
         }
 
-        return handleProps.map(({ value, type, className }, index) => (
+        return handleProps.map(({ value, type, className, htmlProps }, index) => (
             <Handle
+                htmlProps={htmlProps}
                 className={classNames(
                     {
                         [Classes.START]: type === HandleType.START,

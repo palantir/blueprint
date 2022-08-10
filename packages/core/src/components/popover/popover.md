@@ -272,7 +272,8 @@ The supported values are:
     -   **Opens when:** the target is clicked
     -   **Closes when:** the target is clicked
 
-The following example demonstrates the various interaction kinds (note: these Popovers contain [`MenuItem`](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
+The following example demonstrates the various interaction kinds (note: these Popovers contain
+[MenuItem](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
 
 @reactExample PopoverInteractionKindExample
 

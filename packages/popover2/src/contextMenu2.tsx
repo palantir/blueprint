@@ -217,10 +217,12 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
                 return;
             }
 
-            // If disabled, we should avoid this extra work. Otherwise: if using the child function API,
-            // we need to make sure contentProps is up to date for correctness, so we handle the event regardless
-            // of whether the consumer returned an undefined menu.
-            const shouldHandleEvent = !disabled && (CoreUtils.isFunction(children) || maybePopover !== undefined);
+            // If disabled, we should avoid this extra work.
+            // Otherwise: if using the child or content function APIs, we need to make sure contentProps gets updated,
+            // so we handle the event regardless of whether the consumer returned an undefined menu.
+            const shouldHandleEvent =
+                !disabled &&
+                (CoreUtils.isFunction(children) || CoreUtils.isFunction(content) || maybePopover !== undefined);
 
             if (shouldHandleEvent) {
                 e.preventDefault();

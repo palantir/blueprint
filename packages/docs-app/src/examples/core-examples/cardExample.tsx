@@ -42,6 +42,7 @@ export class CardExample extends React.PureComponent<IExampleProps, ICardExample
                         showTrackFill={false}
                         value={this.state.elevation}
                         onChange={this.handleElevationChange}
+                        handleHtmlProps={{ "aria-label": "card elevation" }}
                     />
                 </Label>
             </>

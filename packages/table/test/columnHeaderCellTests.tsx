@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to ColumnHeaderCell2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
+import { Classes as CoreClasses, H4, Menu } from "@blueprintjs/core";
+import { MenuItem2 } from "@blueprintjs/popover2";
 
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";
@@ -120,9 +128,9 @@ describe("<ColumnHeaderCell>", () => {
         function getMenuComponent(menuClickSpy: sinon.SinonSpy) {
             return (
                 <Menu>
-                    <MenuItem icon="export" onClick={menuClickSpy} text="Teleport" />
-                    <MenuItem icon="sort-alphabetical-desc" onClick={menuClickSpy} text="Down with ZA!" />
-                    <MenuItem icon="curved-range-chart" onClick={menuClickSpy} text="Psi" />
+                    <MenuItem2 icon="export" onClick={menuClickSpy} text="Teleport" />
+                    <MenuItem2 icon="sort-alphabetical-desc" onClick={menuClickSpy} text="Down with ZA!" />
+                    <MenuItem2 icon="curved-range-chart" onClick={menuClickSpy} text="Psi" />
                 </Menu>
             );
         }

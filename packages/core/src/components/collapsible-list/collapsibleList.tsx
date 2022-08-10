@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to OverflowList instead.
+ */
+
+/* eslint-disable deprecation/deprecation */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -29,12 +36,12 @@ import { IPopoverProps, Popover } from "../popover/popover";
 
 type CollapsibleItem = React.ReactElement<MenuItemProps>;
 
-// eslint-disable-next-line deprecation/deprecation
+/** @deprecated use OverflowList */
 export type CollapsibleListProps = ICollapsibleListProps;
-/** @deprecated use CollapsibleListProps */
+/** @deprecated use OverflowList */
 export interface ICollapsibleListProps extends Props {
     /** Contents to collapse. */
-    children: React.ReactNode;
+    children?: React.ReactNode;
 
     /**
      * Element to render as dropdown target with `CLICK` interaction to show collapsed menu.
@@ -103,7 +110,6 @@ export class CollapsibleList extends React.Component<CollapsibleListProps> {
         let collapsedPopover: JSX.Element | undefined;
         if (collapsedChildren.length > 0) {
             const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
-            /* eslint-disable deprecation/deprecation */
             collapsedPopover = (
                 <li className={this.props.visibleItemClassName}>
                     <Popover
@@ -115,7 +121,6 @@ export class CollapsibleList extends React.Component<CollapsibleListProps> {
                     </Popover>
                 </li>
             );
-            /* eslint-enable deprecation/deprecation */
         }
 
         return (

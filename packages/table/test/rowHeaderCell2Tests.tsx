@@ -21,12 +21,12 @@ import * as sinon from "sinon";
 
 import { H4 } from "@blueprintjs/core";
 
-import { IRowHeaderCellProps, RowHeaderCell } from "../src";
+import { RowHeaderCell2, RowHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";
 import { ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 
-describe("<RowHeaderCell>", () => {
+describe("<RowHeaderCell2>", () => {
     const harness = new ReactHarness();
 
     afterEach(() => {
@@ -45,7 +45,7 @@ describe("<RowHeaderCell>", () => {
 
     it("renders with custom className if provided", () => {
         const CLASS_NAME = "my-custom-class-name";
-        const table = harness.mount(<RowHeaderCell className={CLASS_NAME} />);
+        const table = harness.mount(<RowHeaderCell2 className={CLASS_NAME} />);
         const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0)!.hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
@@ -55,14 +55,14 @@ describe("<RowHeaderCell>", () => {
         renderNameStub.returns("string");
         const NAME = "my-name";
         const INDEX = 17;
-        shallow(<RowHeaderCell index={INDEX} name={NAME} nameRenderer={renderNameStub} />);
+        shallow(<RowHeaderCell2 index={INDEX} name={NAME} nameRenderer={renderNameStub} />);
         expect(renderNameStub.firstCall.args).to.deep.equal([NAME, INDEX]);
     });
 
     describe("Custom renderer", () => {
         it("renders custom name", () => {
             const rowHeaderCellRenderer = (rowIndex: number) => {
-                return <RowHeaderCell name={`ROW-${rowIndex}`} />;
+                return <RowHeaderCell2 name={`ROW-${rowIndex}`} />;
             };
             const table = harness.mount(createTableOfSize(3, 2, null, { rowHeaderCellRenderer }));
             const text = table.find(`.${Classes.TABLE_ROW_NAME_TEXT}`, 1)!.text();
@@ -72,9 +72,9 @@ describe("<RowHeaderCell>", () => {
         it("renders custom content", () => {
             const rowHeaderCellRenderer = (rowIndex: number) => {
                 return (
-                    <RowHeaderCell name={`ROW-${rowIndex}`}>
+                    <RowHeaderCell2 name={`ROW-${rowIndex}`}>
                         <H4>Header of {rowIndex}</H4>
-                    </RowHeaderCell>
+                    </RowHeaderCell2>
                 );
             };
             const table = harness.mount(createTableOfSize(3, 2, null, { rowHeaderCellRenderer }));
@@ -84,7 +84,7 @@ describe("<RowHeaderCell>", () => {
 
         it("renders loading state properly", () => {
             const rowHeaderCellRenderer = (rowIndex: number) => {
-                return <RowHeaderCell loading={rowIndex === 0} name="Row Header" />;
+                return <RowHeaderCell2 loading={rowIndex === 0} name="Row Header" />;
             };
             const table = harness.mount(createTableOfSize(2, 2, null, { rowHeaderCellRenderer }));
             expect(table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`, 0)!.text()).to.equal("");
@@ -110,9 +110,9 @@ describe("<RowHeaderCell>", () => {
             expect(element.find(`.${Classes.TABLE_ROW_NAME} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
         });
 
-        function mount(props: Partial<IRowHeaderCellProps>) {
+        function mount(props: Partial<RowHeaderCellProps>) {
             const element = harness.mount(
-                <RowHeaderCell
+                <RowHeaderCell2
                     enableRowReordering={props.enableRowReordering}
                     reorderHandle={<div className={REORDER_HANDLE_CLASS} />}
                 />,

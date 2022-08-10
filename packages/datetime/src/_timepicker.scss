@@ -120,13 +120,3 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     color: $pt-dark-text-color;
   }
 }
-
-.#{$ns}-datepicker .#{$ns}-timepicker {
-  margin-bottom: $datepicker-padding * 2;
-  margin-top: $datepicker-padding;
-
-  // adjust margin when actions bar is hidden
-  &:last-child {
-    margin-bottom: $datepicker-padding;
-  }
-}

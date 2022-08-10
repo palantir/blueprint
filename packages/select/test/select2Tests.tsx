@@ -19,8 +19,8 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, Keys, MenuItem } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import { InputGroup, Keys } from "@blueprintjs/core";
+import { MenuItem2, Popover2 } from "@blueprintjs/popover2";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { IItemRendererProps, Select2, Select2Props, Select2State } from "../src";
@@ -122,9 +122,9 @@ describe("<Select2>", () => {
     });
 
     // HACKHACK: see https://github.com/palantir/blueprint/issues/5364
-    it.skip("invokes onItemSelect when clicking first MenuItem", () => {
+    it.skip("invokes onItemSelect when clicking first MenuItem2", () => {
         const wrapper = select();
-        wrapper.find(Popover2).find(MenuItem).first().simulate("click");
+        wrapper.find(Popover2).find(MenuItem2).first().simulate("click");
         assert.isTrue(handlers.onItemSelect.calledOnce);
     });
 

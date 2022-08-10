@@ -18,7 +18,12 @@ import { Classes } from "@blueprintjs/core";
 
 const NS = Classes.getClassNamespace();
 
+export const DATE_INPUT = `${NS}-date-input`;
+export const DATE_INPUT_POPOVER = `${NS}-date-input-popover`;
 export const DATE_INPUT_TIMEZONE_SELECT = `${NS}-date-input-timezone-select`;
+
+export const DATE_RANGE_INPUT = `${NS}-date-range-input`;
+export const DATE_RANGE_INPUT_POPOVER = `${NS}-date-range-input-popover`;
 
 export const TIMEZONE_SELECT = `${NS}-timezone-select`;
 export const TIMEZONE_SELECT_POPOVER = `${TIMEZONE_SELECT}-popover`;

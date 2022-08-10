@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Tooltip2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { Button, Classes, H1, Intent, Popover, Position, Switch, Tooltip } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-
-/* eslint-disable deprecation/deprecation */
 
 export class TooltipExample extends React.PureComponent<IExampleProps, { isOpen: boolean }> {
     public state = {

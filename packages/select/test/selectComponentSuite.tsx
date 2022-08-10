@@ -19,7 +19,7 @@ import { ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { HTMLInputProps, Keys, MenuItem } from "@blueprintjs/core";
+import { Classes, HTMLInputProps, Keys } from "@blueprintjs/core";
 
 import {
     areFilmsEqual,
@@ -59,10 +59,10 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
         it("itemRenderer is called for each child", () => {
             const wrapper = render(testProps);
             // each item is rendered once
-            assert.equal(wrapper.find(MenuItem).length, 15, "re-render");
+            assert.equal(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes().length, 15, "re-render");
             wrapper.setProps({ query: "1999" });
             wrapper.update();
-            assert.equal(wrapper.find(MenuItem).length, 2, "re-render");
+            assert.equal(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes().length, 2, "re-render");
         });
 
         it("renders noResults when given empty list", () => {

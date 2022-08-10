@@ -51,26 +51,26 @@
         "chai": "^4.2.0",
         "circle-github-bot": "^2.1.0",
         "cross-env": "^7.0.3",
-        "eslint": "^8.14.0",
+        "eslint": "^8.21.0",
         "eslint-config-prettier": "^8.5.0",
-        "eslint-plugin-prettier": "^4.0.0",
-        "gh-pages": "^3.1.0",
-        "http-server": "^0.12.3",
-        "lerna": "^4.0.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "gh-pages": "^4.0.0",
+        "http-server": "^14.1.1",
+        "lerna": "^5.1.8",
         "npm-run-all": "^4.1.5",
-        "prettier": "~2.6.2",
+        "prettier": "~2.7.1",
         "sinon": "^9.2.1",
         "stylelint-config-palantir": "^6.0.1",
         "stylelint-scss": "^4.2.0",
         "typescript": "~4.6.2",
-        "yargs": "^17.4.0",
-        "yarn-deduplicate": "^4.0.0"
+        "yargs": "^17.5.1",
+        "yarn-deduplicate": "^5.0.0"
     },
     "resolutions": {
         "@types/react": "16.14.2"
     },
     "engines": {
-        "node": ">=12"
+        "node": ">=16"
     },
     "repository": {
         "type": "git",

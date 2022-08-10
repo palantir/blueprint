@@ -16,8 +16,9 @@
 
 import * as React from "react";
 
-import { H5, MenuItem, Switch } from "@blueprintjs/core";
+import { H5, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { MenuItem2 } from "@blueprintjs/popover2";
 
 import { IFilm, TOP_100_FILMS } from "../../common/films";
 import FilmSelect from "../../common/filmSelect";
@@ -84,7 +85,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         const { allowCreate, disabled, disableItems, matchTargetWidth, minimal, ...flags } = this.state;
 
         const initialContent = this.state.hasInitialContent ? (
-            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
+            <MenuItem2 disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
         ) : undefined;
 
         return (

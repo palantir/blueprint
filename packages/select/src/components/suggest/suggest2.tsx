@@ -77,6 +77,11 @@ export interface Suggest2Props<T> extends IListItemsProps<T>, SelectPopoverProps
     selectedItem?: T | null;
 
     /**
+     * Props to spread to the `Menu` listbox containing the selectable options.
+     */
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
+
+    /**
      * If true, the component waits until a keydown event in the TagInput
      * before opening its popover.
      *
@@ -134,12 +139,12 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { disabled, inputProps, popoverProps, ...restProps } = this.props;
+        const { disabled, inputProps, menuProps, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={{ id: this.listboxId }}
+                menuProps={{ "aria-label": "selectable options", ...menuProps, id: this.listboxId }}
                 initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
@@ -308,11 +313,10 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
     }
 
     // Popover2 interaction kind is CLICK, so this only handles click events.
-    // Note that we defer to the next animation frame in order to get the latest document.activeElement
+    // Note that we defer to the next animation frame in order to get the latest activeElement
     private handlePopoverInteraction = (nextOpenState: boolean, event?: React.SyntheticEvent<HTMLElement>) =>
         this.requestAnimationFrame(() => {
-            const isInputFocused = this.inputElement === document.activeElement;
-
+            const isInputFocused = this.inputElement === Utils.getActiveElement(this.inputElement);
             if (this.inputElement != null && !isInputFocused) {
                 // the input is no longer focused, we should close the popover
                 this.setState({ isOpen: false });

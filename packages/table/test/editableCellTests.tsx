@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to EditableCell2 instead.
+ */
+
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
 import { Classes } from "@blueprintjs/core";
+
+/* eslint-disable deprecation/deprecation */
 
 import { Cell, EditableCell } from "../src";
 import * as TableClasses from "../src/common/classes";

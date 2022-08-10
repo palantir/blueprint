@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DatePicker instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
@@ -28,7 +35,6 @@ export class DateTimePickerExample extends React.PureComponent<IExampleProps, { 
     public render() {
         return (
             <Example options={false} {...this.props}>
-                {/* eslint-disable-next-line deprecation/deprecation */}
                 <DateTimePicker
                     className={Classes.ELEVATION_1}
                     value={this.state.date}

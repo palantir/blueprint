@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to MenuItem2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation */
+
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
@@ -65,8 +72,9 @@ describe("MenuItem", () => {
     });
 
     it("can set roleStructure to change role prop structure to that of a listbox or select item", () => {
-        const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" />);
+        const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" selected={true} />);
         assert.equal(wrapper.find("li").prop("role"), "option");
+        assert.equal(wrapper.find("li").prop("aria-selected"), true);
         assert.equal(wrapper.find("a").prop("role"), undefined);
     });
 

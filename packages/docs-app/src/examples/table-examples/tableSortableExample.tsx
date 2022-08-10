@@ -18,12 +18,13 @@
 
 import * as React from "react";
 
-import { Menu, MenuItem } from "@blueprintjs/core";
+import { Menu } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { MenuItem2 } from "@blueprintjs/popover2";
 import {
     Cell,
     Column,
-    ColumnHeaderCell,
+    ColumnHeaderCell2,
     CopyCellsMenuItem,
     IMenuContext,
     SelectionModes,
@@ -49,7 +50,7 @@ abstract class AbstractSortableColumn implements ISortableColumn {
             <Cell>{getCellData(rowIndex, columnIndex)}</Cell>
         );
         const menuRenderer = this.renderMenu.bind(this, sortColumn);
-        const columnHeaderCellRenderer = () => <ColumnHeaderCell name={this.name} menuRenderer={menuRenderer} />;
+        const columnHeaderCellRenderer = () => <ColumnHeaderCell2 name={this.name} menuRenderer={menuRenderer} />;
         return (
             <Column
                 cellRenderer={cellRenderer}
@@ -69,8 +70,8 @@ class TextSortableColumn extends AbstractSortableColumn {
         const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
         return (
             <Menu>
-                <MenuItem icon="sort-asc" onClick={sortAsc} text="Sort Asc" />
-                <MenuItem icon="sort-desc" onClick={sortDesc} text="Sort Desc" />
+                <MenuItem2 icon="sort-asc" onClick={sortAsc} text="Sort Asc" />
+                <MenuItem2 icon="sort-desc" onClick={sortDesc} text="Sort Desc" />
             </Menu>
         );
     }
@@ -97,8 +98,8 @@ class RankSortableColumn extends AbstractSortableColumn {
         const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
         return (
             <Menu>
-                <MenuItem icon="sort-asc" onClick={sortAsc} text="Sort Rank Asc" />
-                <MenuItem icon="sort-desc" onClick={sortDesc} text="Sort Rank Desc" />
+                <MenuItem2 icon="sort-asc" onClick={sortAsc} text="Sort Rank Asc" />
+                <MenuItem2 icon="sort-desc" onClick={sortDesc} text="Sort Rank Desc" />
             </Menu>
         );
     }
@@ -123,32 +124,32 @@ class RecordSortableColumn extends AbstractSortableColumn {
     protected renderMenu(sortColumn: ISortCallback) {
         return (
             <Menu>
-                <MenuItem
+                <MenuItem2
                     icon="sort-asc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toWins, false))}
                     text="Sort Wins Asc"
                 />
-                <MenuItem
+                <MenuItem2
                     icon="sort-desc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toWins, true))}
                     text="Sort Wins Desc"
                 />
-                <MenuItem
+                <MenuItem2
                     icon="sort-asc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toLosses, false))}
                     text="Sort Losses Asc"
                 />
-                <MenuItem
+                <MenuItem2
                     icon="sort-desc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toLosses, true))}
                     text="Sort Losses Desc"
                 />
-                <MenuItem
+                <MenuItem2
                     icon="sort-asc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toTies, false))}
                     text="Sort Ties Asc"
                 />
-                <MenuItem
+                <MenuItem2
                     icon="sort-desc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toTies, true))}
                     text="Sort Ties Desc"
@@ -214,6 +215,7 @@ export class TableSortableExample extends React.PureComponent<IExampleProps> {
                     selectionModes={SelectionModes.COLUMNS_AND_CELLS}
                     getCellClipboardData={this.getCellData}
                     cellRendererDependencies={[this.state.sortedIndexMap]}
+                    enableFocusedCell={true}
                 >
                     {columns}
                 </Table2>

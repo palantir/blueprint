@@ -16,22 +16,24 @@
 
 import * as React from "react";
 
-import { Code, H5, Intent, MenuItem, Switch, TagProps } from "@blueprintjs/core";
+import { Code, H5, Intent, Switch, TagProps } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
+import { MenuItem2, Popover2 } from "@blueprintjs/popover2";
 import { ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
 
 import {
     areFilmsEqual,
     arrayContainsFilm,
     createFilm,
-    filmSelectProps,
+    filterFilm,
+    getFilmItemProps,
     IFilm,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
     renderCreateFilmOption,
     TOP_100_FILMS,
 } from "../../common/films";
+import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 const FilmMultiSelect = MultiSelect2.ofType<IFilm>();
 
@@ -63,7 +65,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         films: [],
         hasInitialContent: false,
         intent: false,
-        items: filmSelectProps.items,
+        items: TOP_100_FILMS,
         matchTargetWidth: false,
         openOnKeyDown: false,
         popoverMinimal: true,
@@ -105,7 +107,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         });
 
         const initialContent = this.state.hasInitialContent ? (
-            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
+            <MenuItem2 disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
         ) : // explicit undefined (not null) for default behavior (show full list)
         undefined;
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
@@ -114,17 +116,16 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <FilmMultiSelect
-                    {...filmSelectProps}
                     {...flags}
                     createNewItemFromQuery={maybeCreateNewItemFromQuery}
                     createNewItemRenderer={maybeCreateNewItemRenderer}
                     initialContent={initialContent}
+                    itemPredicate={filterFilm}
                     itemRenderer={this.renderFilm}
-                    itemsEqual={areFilmsEqual}
-                    // we may customize the default filmSelectProps.items by
-                    // adding newly created items to the list, so pass our own
                     items={this.state.items}
-                    noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
+                    itemsEqual={areFilmsEqual}
+                    menuProps={{ "aria-label": "films" }}
+                    noResults={<MenuItem2 disabled={true} text="No results." roleStructure="listoption" />}
                     onClear={this.state.showClearButton ? this.handleClear : undefined}
                     onItemSelect={this.handleFilmSelect}
                     onItemsPaste={this.handleFilmsPaste}
@@ -160,42 +161,40 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     checked={this.state.hasInitialContent}
                     onChange={this.handleInitialContentChange}
                 />
-                <Tooltip2
+                <PropCodeTooltip
                     content={
                         <>
                             <Code>createNewItemFromQuery</Code> and <Code>createNewItemRenderer</Code> are{" "}
                             {this.state.allowCreate ? "defined" : "undefined"}
                         </>
                     }
-                    placement="left"
                 >
                     <Switch
                         label="Allow creating new films"
                         checked={this.state.allowCreate}
                         onChange={this.handleAllowCreateChange}
                     />
-                </Tooltip2>
-                <Tooltip2
+                </PropCodeTooltip>
+                <PropCodeTooltip
                     content={
                         <>
                             <Code>onClear</Code> is {this.state.showClearButton ? "defined" : "undefined"}
                         </>
                     }
-                    placement="left"
                 >
                     <Switch
                         label="Show clear button"
                         checked={this.state.showClearButton}
                         onChange={this.handleShowClearButtonChange}
                     />
-                </Tooltip2>
+                </PropCodeTooltip>
                 <H5>Appearance props</H5>
-                <Tooltip2 content={<Code>disabled=&#123;{this.state.disabled.toString()}&#125;</Code>} placement="left">
+                <PropCodeTooltip snippet={`disabled={${this.state.disabled.toString()}}`}>
                     <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
-                </Tooltip2>
-                <Tooltip2 content={<Code>fill=&#123;{this.state.fill.toString()}&#125;</Code>} placement="left">
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`fill={${this.state.fill.toString()}}`}>
                     <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
-                </Tooltip2>
+                </PropCodeTooltip>
                 <H5>Tag props</H5>
                 <Switch
                     label="Minimal tag style"
@@ -208,56 +207,39 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     onChange={this.handleIntentChange}
                 />
                 <H5>Popover props</H5>
-                <Tooltip2
-                    content={
-                        <Code>
-                            popoverProps=&#123;&#123; matchTargetWidth: {this.state.matchTargetWidth.toString()}{" "}
-                            &#125;&#125;
-                        </Code>
-                    }
-                    placement="left"
+                <PropCodeTooltip
+                    snippet={`popoverProps={{ matchTargetWidth: ${this.state.matchTargetWidth.toString()} }}`}
                 >
                     <Switch
                         label="Match target width"
                         checked={this.state.matchTargetWidth}
                         onChange={this.handleMatchTargetWidthChange}
                     />
-                </Tooltip2>
-                <Tooltip2
-                    content={
-                        <Code>
-                            popoverProps=&#123;&#123; minimal: {this.state.popoverMinimal.toString()} &#125;&#125;
-                        </Code>
-                    }
-                    placement="left"
-                >
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`popoverProps={{ minimal: ${this.state.popoverMinimal.toString()} }}`}>
                     <Switch
                         label="Minimal popover style"
                         checked={this.state.popoverMinimal}
                         onChange={this.handlePopoverMinimalChange}
                     />
-                </Tooltip2>
+                </PropCodeTooltip>
             </>
         );
     }
 
     private renderTag = (film: IFilm) => film.title;
 
-    // NOTE: not using Films.itemRenderer here so we can set icons.
-    private renderFilm: ItemRenderer<IFilm> = (film, { modifiers, handleClick }) => {
-        if (!modifiers.matchesPredicate) {
+    private renderFilm: ItemRenderer<IFilm> = (film, props) => {
+        if (!props.modifiers.matchesPredicate) {
             return null;
         }
+
         return (
-            <MenuItem
-                selected={modifiers.active}
-                icon={this.isFilmSelected(film) ? "tick" : "blank"}
-                roleStructure="listoption"
-                key={film.rank}
-                label={film.year.toString()}
-                onClick={handleClick}
-                text={`${film.rank}. ${film.title}`}
+            <MenuItem2
+                {...getFilmItemProps(film, props)}
+                selected={this.isFilmSelected(film)}
                 shouldDismissPopover={false}
+                text={`${film.rank}. ${film.title}`}
             />
         );
     };

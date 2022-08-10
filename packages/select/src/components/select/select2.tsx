@@ -76,6 +76,11 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
     inputProps?: InputGroupProps2;
 
     /**
+     * Props to spread to the `Menu` listbox containing the selectable options.
+     */
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
+
+    /**
      * Props to add to the popover target wrapper element.
      */
     popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
@@ -118,12 +123,12 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { filterable, inputProps, popoverProps, ...restProps } = this.props;
+        const { filterable, inputProps, menuProps, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
                 {...restProps}
-                menuProps={{ id: this.listboxId }}
+                menuProps={{ "aria-label": "selectable options", ...menuProps, id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
@@ -271,7 +276,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private handlePopoverOpening = (node: HTMLElement) => {
         // save currently focused element before popover steals focus, so we can restore it when closing.
-        this.previousFocusedElement = document.activeElement as HTMLElement;
+        this.previousFocusedElement = (Utils.getActiveElement(this.inputElement) as HTMLElement | null) ?? undefined;
 
         if (this.props.resetOnClose) {
             this.resetQuery();

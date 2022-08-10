@@ -47,6 +47,8 @@ export const HandleInteractionKind = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type HandleInteractionKind = typeof HandleInteractionKind[keyof typeof HandleInteractionKind];
 
+export type HandleHtmlProps = Pick<React.HTMLProps<HTMLSpanElement>, "aria-label" | "aria-labelledby">;
+
 // eslint-disable-next-line deprecation/deprecation
 export type HandleProps = IHandleProps;
 /** @deprecated use HandleProps */
@@ -89,4 +91,9 @@ export interface IHandleProps extends Props {
      * @default "full"
      */
     type?: HandleType;
+
+    /**
+     * A limited subset of HTML props to apply to the rendered `<span>` element.
+     */
+    htmlProps?: HandleHtmlProps;
 }

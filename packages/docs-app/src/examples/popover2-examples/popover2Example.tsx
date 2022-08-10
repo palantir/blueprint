@@ -28,7 +28,6 @@ import {
     Label,
     Menu,
     MenuDivider,
-    MenuItem,
     RadioGroup,
     Slider,
     Switch,
@@ -42,6 +41,7 @@ import {
 } from "@blueprintjs/docs-theme";
 import {
     Classes,
+    MenuItem2,
     Placement,
     PlacementOptions,
     Popover2,
@@ -317,21 +317,21 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
             <Slider key="slider" min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />,
             <Menu key="menu">
                 <MenuDivider title="Edit" />
-                <MenuItem icon="cut" text="Cut" label="⌘X" />
-                <MenuItem icon="duplicate" text="Copy" label="⌘C" />
-                <MenuItem icon="clipboard" text="Paste" label="⌘V" disabled={true} />
+                <MenuItem2 icon="cut" text="Cut" label="⌘X" />
+                <MenuItem2 icon="duplicate" text="Copy" label="⌘C" />
+                <MenuItem2 icon="clipboard" text="Paste" label="⌘V" disabled={true} />
                 <MenuDivider title="Text" />
-                <MenuItem icon="align-left" text="Alignment">
-                    <MenuItem icon="align-left" text="Left" />
-                    <MenuItem icon="align-center" text="Center" />
-                    <MenuItem icon="align-right" text="Right" />
-                    <MenuItem icon="align-justify" text="Justify" />
-                </MenuItem>
-                <MenuItem icon="style" text="Style">
-                    <MenuItem icon="bold" text="Bold" />
-                    <MenuItem icon="italic" text="Italic" />
-                    <MenuItem icon="underline" text="Underline" />
-                </MenuItem>
+                <MenuItem2 icon="align-left" text="Alignment">
+                    <MenuItem2 icon="align-left" text="Left" />
+                    <MenuItem2 icon="align-center" text="Center" />
+                    <MenuItem2 icon="align-right" text="Right" />
+                    <MenuItem2 icon="align-justify" text="Justify" />
+                </MenuItem2>
+                <MenuItem2 icon="style" text="Style">
+                    <MenuItem2 icon="bold" text="Bold" />
+                    <MenuItem2 icon="italic" text="Italic" />
+                    <MenuItem2 icon="underline" text="Underline" />
+                </MenuItem2>
             </Menu>,
             <div key="filmselect" style={{ padding: 20 }}>
                 <FilmSelect popoverProps={{ captureDismiss: true }} />

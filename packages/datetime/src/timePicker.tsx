@@ -287,7 +287,8 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
 
         return (
             <input
-                // we use a type="text" input here, so we must set some a11y attributes
+                aria-label={getTimeUnitPrintStr(unit)}
+                // we use a type="text" input here, so we must set these a11y attributes
                 // which we would otherwise get for free with a type="number" input
                 aria-valuemin={0}
                 aria-valuenow={valueNumber}

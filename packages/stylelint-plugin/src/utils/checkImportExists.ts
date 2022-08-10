@@ -36,7 +36,7 @@ export function checkImportExists(root: Root, importPath: string | string[]): bo
 function stripLessReference(str: string): string {
     const LESS_REFERENCE = "(reference)";
     if (str.startsWith(`${LESS_REFERENCE} `)) {
-        return str.substring(LESS_REFERENCE.length + 1, str.length);
+        return str.substring(LESS_REFERENCE.length + 1);
     }
     return str;
 }
@@ -46,6 +46,7 @@ function stripQuotes(str: string): string {
         (str.charAt(0) === '"' && str.charAt(str.length - 1) === '"') ||
         (str.charAt(0) === "'" && str.charAt(str.length - 1) === "'")
     ) {
+        // omit first and last character
         return str.substring(1, str.length - 1);
     }
     return str;

@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-/* eslint-disable max-classes-per-file */
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Breadcrumbs2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, max-classes-per-file, @blueprintjs/no-deprecated-components */
 
 import * as React from "react";
 
@@ -70,6 +75,8 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
         this.setState({ collapseFrom: collapseFrom as Boundary }),
     );
 
+    private breadcrumbWidthLabelId = "num-visible-items-label";
+
     public render() {
         const options = (
             <>
@@ -95,7 +102,7 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
                     checked={this.state.renderCurrentAsInput}
                 />
                 <H5>Example</H5>
-                <Label>Width</Label>
+                <Label id={this.breadcrumbWidthLabelId}>Width</Label>
                 <Slider
                     labelRenderer={this.renderLabel}
                     labelStepSize={50}
@@ -103,6 +110,7 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
                     onChange={this.handleChangeWidth}
                     showTrackFill={false}
                     value={this.state.width}
+                    handleHtmlProps={{ "aria-labelledby": this.breadcrumbWidthLabelId }}
                 />
             </>
         );

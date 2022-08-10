@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Popover2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { Button, Intent, IPopoverProps, Popover, Position } from "@blueprintjs/core";
@@ -25,7 +32,6 @@ export class PopoverMinimalExample extends React.PureComponent<IExampleProps> {
     public render() {
         const baseProps: IPopoverProps = { content: <FileMenu />, position: Position.BOTTOM_LEFT };
 
-        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={false} {...this.props}>
                 <Popover {...baseProps} minimal={true}>
@@ -36,6 +42,5 @@ export class PopoverMinimalExample extends React.PureComponent<IExampleProps> {
                 </Popover>
             </Example>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 }

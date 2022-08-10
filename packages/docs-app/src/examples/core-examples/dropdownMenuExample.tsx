@@ -16,23 +16,23 @@
 
 import * as React from "react";
 
-import { Button, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Button, Menu, MenuDivider } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Popover2 } from "@blueprintjs/popover2";
+import { MenuItem2, Popover2 } from "@blueprintjs/popover2";
 
 export class DropdownMenuExample extends React.PureComponent<IExampleProps> {
     public render() {
         const exampleMenu = (
             <Menu>
-                <MenuItem icon="graph" text="Graph" />
-                <MenuItem icon="map" text="Map" />
-                <MenuItem icon="th" text="Table" shouldDismissPopover={false} />
-                <MenuItem icon="zoom-to-fit" text="Nucleus" disabled={true} />
+                <MenuItem2 icon="graph" text="Graph" />
+                <MenuItem2 icon="map" text="Map" />
+                <MenuItem2 icon="th" text="Table" shouldDismissPopover={false} />
+                <MenuItem2 icon="zoom-to-fit" text="Nucleus" disabled={true} />
                 <MenuDivider />
-                <MenuItem icon="cog" text="Settings...">
-                    <MenuItem icon="add" text="Add new application" disabled={true} />
-                    <MenuItem icon="remove" text="Remove application" />
-                </MenuItem>
+                <MenuItem2 icon="cog" text="Settings...">
+                    <MenuItem2 icon="add" text="Add new application" disabled={true} />
+                    <MenuItem2 icon="remove" text="Remove application" />
+                </MenuItem2>
             </Menu>
         );
         return (

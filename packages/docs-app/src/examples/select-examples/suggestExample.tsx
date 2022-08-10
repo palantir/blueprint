@@ -16,18 +16,20 @@
 
 import * as React from "react";
 
-import { H5, MenuItem, Switch } from "@blueprintjs/core";
+import { H5, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { MenuItem2 } from "@blueprintjs/popover2";
 import { Suggest2 } from "@blueprintjs/select";
 
 import {
     areFilmsEqual,
     createFilm,
-    filmSelectProps,
+    filterFilm,
     IFilm,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
     renderCreateFilmOption,
+    renderFilm,
     TOP_100_FILMS,
 } from "./../../common/films";
 
@@ -57,7 +59,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
         disabled: false,
         fill: false,
         film: TOP_100_FILMS[0],
-        items: filmSelectProps.items,
+        items: [...TOP_100_FILMS],
         matchTargetWidth: false,
         minimal: true,
         openOnKeyDown: false,
@@ -95,16 +97,15 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <FilmSuggest
-                    {...filmSelectProps}
                     {...flags}
                     createNewItemFromQuery={maybeCreateNewItemFromQuery}
                     createNewItemRenderer={maybeCreateNewItemRenderer}
                     inputValueRenderer={this.renderInputValue}
-                    itemsEqual={areFilmsEqual}
-                    // we may customize the default filmSelectProps.items by
-                    // adding newly created items to the list, so pass our own.
                     items={this.state.items}
-                    noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
+                    itemsEqual={areFilmsEqual}
+                    itemPredicate={filterFilm}
+                    itemRenderer={renderFilm}
+                    noResults={<MenuItem2 disabled={true} text="No results." roleStructure="listoption" />}
                     onItemSelect={this.handleValueChange}
                     popoverProps={{ matchTargetWidth, minimal }}
                 />

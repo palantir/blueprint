@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to OverflowList instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -48,16 +55,19 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
 
     private handleChangeCollapse = handleValueChange((collapseFrom: Boundary) => this.setState({ collapseFrom }));
 
+    private numVisibleItemsLabelId = "num-visible-items-label";
+
     public render() {
         const options = (
             <>
                 <H5>Props</H5>
-                <Label>Visible items</Label>
+                <Label id={this.numVisibleItemsLabelId}>Visible items</Label>
                 <Slider
                     max={6}
                     onChange={this.handleChangeCount}
                     showTrackFill={false}
                     value={this.state.visibleItemCount}
+                    handleHtmlProps={{ "aria-labelledby": this.numVisibleItemsLabelId }}
                 />
                 <RadioGroup
                     name="collapseFrom"
@@ -70,7 +80,6 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
             </>
         );
 
-        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={options} {...this.props}>
                 <CollapsibleList
@@ -88,7 +97,6 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
                 </CollapsibleList>
             </Example>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 
     private renderBreadcrumb = (props: MenuItemProps) => {

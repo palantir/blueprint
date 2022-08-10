@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
-import * as classes from "../common/classes";
+import * as Classes from "./classes";
+import * as DateUtils from "./dateUtils";
 
-export const Classes = classes;
+export { Classes, DateUtils };
+export { DateRange, NonNullDateRange } from "./dateRange";

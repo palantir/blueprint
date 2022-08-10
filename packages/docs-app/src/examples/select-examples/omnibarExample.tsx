@@ -16,11 +16,20 @@
 
 import * as React from "react";
 
-import { Button, H5, HotkeysTarget2, KeyCombo, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
+import { Button, H5, HotkeysTarget2, KeyCombo, Position, Switch, Toaster } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { MenuItem2 } from "@blueprintjs/popover2";
 import { Omnibar } from "@blueprintjs/select";
 
-import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption } from "./../../common/films";
+import {
+    areFilmsEqual,
+    createFilm,
+    filterFilm,
+    IFilm,
+    renderCreateFilmOption,
+    renderFilm,
+    TOP_100_FILMS,
+} from "./../../common/films";
 
 const FilmOmnibar = Omnibar.ofType<IFilm>();
 
@@ -74,14 +83,16 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
                     </span>
 
                     <FilmOmnibar
-                        {...filmSelectProps}
                         {...this.state}
                         createNewItemFromQuery={maybeCreateNewItemFromQuery}
                         createNewItemRenderer={maybeCreateNewItemRenderer}
+                        itemPredicate={filterFilm}
+                        itemRenderer={renderFilm}
+                        items={TOP_100_FILMS}
                         itemsEqual={areFilmsEqual}
-                        noResults={<MenuItem disabled={true} text="No results." />}
-                        onItemSelect={this.handleItemSelect}
+                        noResults={<MenuItem2 disabled={true} text="No results." />}
                         onClose={this.handleClose}
+                        onItemSelect={this.handleItemSelect}
                     />
                     <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
                 </Example>
