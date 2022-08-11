@@ -153,7 +153,7 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOver
         // The following statement prevents re-rendering only in the case where the state changes
         // identity (i.e. setState was called), but the state is still the same when
         // shallow-compared to the previous state.
-        return this.props !== nextProps || (this.state !== nextState && !shallowCompareKeys(this.state, nextState))
+        return this.props !== nextProps || (this.state !== nextState && !shallowCompareKeys(this.state, nextState));
     }
 
     public componentDidUpdate(prevProps: OverflowListProps<T>, prevState: IOverflowListState<T>) {
