@@ -30,14 +30,14 @@ import {
     MenuItem,
     OptionProps,
     Position,
-    Switch
+    Switch,
 } from "@blueprintjs/core";
 import {
     Example,
     handleBooleanChange,
     handleStringChange,
     handleValueChange,
-    IExampleProps
+    IExampleProps,
 } from "@blueprintjs/docs-theme";
 import { ContextMenu2 } from "@blueprintjs/popover2";
 
