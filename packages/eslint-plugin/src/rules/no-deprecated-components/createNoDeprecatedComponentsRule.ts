@@ -11,19 +11,23 @@ import { createRule } from "../utils/createRule";
 type MessageIds = "migration" | "migrationWithPropUsage";
 
 /**
- * Higher-order function to create an ESLint rule which checks for usage of deprecated React components
- * in JSX syntax.
+ * Higher-order function to create an ESLint rule which checks for usage of deprecated React components in JSX syntax.
  *
  * @param packagesToCheck Only components imported from these packages will be flagged.
- * @param deprecatedToNewComponentMapping Lint violations will include a recommendation to migrate to the newer,
- *  non-deprecated component specified in this mapping. Keys in this object may use
+ *
+ * @param deprecatedComponentConfig Configuration of the deprecated components to lint for. Note that this configuration
+ *  is not exposed to lint rule users, it just lives inside our rule implementations. Lint violations will include a
+ *  recommendation to migrate to the newer, non-deprecated component specified in this mapping. Keys-value pairs may use
+ *  one of two syntaxes:
+ *      - "ComponentV1": "ComponentV2" - Usage of <ComponentV1> will be flagged with a recommendation
+ *          to migrate to <ComponentV2>
+ *      - "ComponentV1.propName": "ComponentV2" - Usage of <ComponentV1 propName={...}> will be flagged with a
+ *          recommendation to migrate to <ComponentV2>
  */
 export function createNoDeprecatedComponentsRule(
     ruleName: string,
     packagesToCheck: string[],
-    deprecatedToNewComponentMapping: {
-        [deprecated: string]: string;
-    },
+    deprecatedComponentConfig: Record<string, string>,
 ): TSESLint.RuleModule<MessageIds, unknown[]> {
     const descriptionFromClause = packagesToCheck.length === 1 ? ` from ${packagesToCheck[0]}` : "";
 
@@ -56,7 +60,7 @@ export function createNoDeprecatedComponentsRule(
             > = [];
 
             // parses out additional deprecated components from entries like { "MenuItem.popoverProps": "MenuItem2" }
-            const additionalDeprecatedComponents = Object.keys(deprecatedToNewComponentMapping).reduce<string[]>(
+            const additionalDeprecatedComponents = Object.keys(deprecatedComponentConfig).reduce<string[]>(
                 (components, key) => {
                     const [componentName, propName] = key.split(".");
                     if (propName !== undefined) {
@@ -69,7 +73,7 @@ export function createNoDeprecatedComponentsRule(
 
             function isDeprecatedComponent(name: string) {
                 return (
-                    deprecatedToNewComponentMapping[name] != null &&
+                    deprecatedComponentConfig[name] != null &&
                     deprecatedImports.some(
                         deprecatedImport =>
                             deprecatedImport.type === "function" && deprecatedImport.localFunctionName === name,
@@ -79,7 +83,7 @@ export function createNoDeprecatedComponentsRule(
 
             function isDeprecatedNamespacedComponent(name: string, property: string) {
                 return (
-                    deprecatedToNewComponentMapping[property] != null &&
+                    deprecatedComponentConfig[property] != null &&
                     deprecatedImports.some(
                         deprecatedImport =>
                             deprecatedImport.type === "namespace" && deprecatedImport.namespace === name,
@@ -96,14 +100,14 @@ export function createNoDeprecatedComponentsRule(
                     attribute =>
                         attribute.type === TSESTree.AST_NODE_TYPES.JSXAttribute &&
                         attribute.name.type === TSESTree.AST_NODE_TYPES.JSXIdentifier &&
-                        deprecatedToNewComponentMapping[`${elementName}.${attribute.name.name}`] != null,
+                        deprecatedComponentConfig[`${elementName}.${attribute.name.name}`] != null,
                 );
 
                 if (deprecatedProp === undefined) {
                     return;
                 }
 
-                const deprecatedComponentKey = Object.keys(deprecatedToNewComponentMapping).find(
+                const deprecatedComponentKey = Object.keys(deprecatedComponentConfig).find(
                     key => key.includes(".") && key.split(".")[0] === elementName,
                 );
                 const deprecatedPropName = ((deprecatedProp as TSESTree.JSXAttribute).name as TSESTree.JSXIdentifier)
@@ -112,7 +116,7 @@ export function createNoDeprecatedComponentsRule(
                     data: {
                         deprecatedComponentName: elementName,
                         deprecatedPropName,
-                        newComponentName: deprecatedToNewComponentMapping[deprecatedComponentKey!],
+                        newComponentName: deprecatedComponentConfig[deprecatedComponentKey!],
                     },
                     messageId: "migrationWithPropUsage",
                     node: jsxOpeningElementChildNode,
@@ -136,7 +140,7 @@ export function createNoDeprecatedComponentsRule(
                                 break;
                             case TSESTree.AST_NODE_TYPES.ImportSpecifier:
                                 if (
-                                    deprecatedToNewComponentMapping[importClause.imported.name] != null ||
+                                    deprecatedComponentConfig[importClause.imported.name] != null ||
                                     additionalDeprecatedComponents.includes(importClause.imported.name)
                                 ) {
                                     deprecatedImports.push({
@@ -156,7 +160,7 @@ export function createNoDeprecatedComponentsRule(
                         context.report({
                             data: {
                                 deprecatedComponentName: node.name,
-                                newComponentName: deprecatedToNewComponentMapping[node.name],
+                                newComponentName: deprecatedComponentConfig[node.name],
                             },
                             messageId: "migration",
                             node,
@@ -184,7 +188,7 @@ export function createNoDeprecatedComponentsRule(
                         context.report({
                             data: {
                                 deprecatedComponentName: node.property.name,
-                                newComponentName: deprecatedToNewComponentMapping[node.property.name],
+                                newComponentName: deprecatedComponentConfig[node.property.name],
                             },
                             messageId: "migration",
                             node: node.property,
@@ -202,7 +206,7 @@ export function createNoDeprecatedComponentsRule(
                         context.report({
                             data: {
                                 deprecatedComponentName: superClass.name,
-                                newComponentName: deprecatedToNewComponentMapping[superClass.name],
+                                newComponentName: deprecatedComponentConfig[superClass.name],
                             },
                             messageId: "migration",
                             node,
@@ -226,7 +230,7 @@ export function createNoDeprecatedComponentsRule(
                         context.report({
                             data: {
                                 deprecatedComponentName: superClass.property.name,
-                                newComponentName: deprecatedToNewComponentMapping[superClass.property.name],
+                                newComponentName: deprecatedComponentConfig[superClass.property.name],
                             },
                             messageId: "migration",
                             node: superClass.property,
