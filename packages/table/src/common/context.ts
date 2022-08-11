@@ -13,13 +13,17 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
+/** @deprecated use newer React context API */
 export interface ColumnInteractionBarContextTypes {
     enableColumnInteractionBar: boolean | null | undefined;
 }
 
+/** @deprecated use newer React context API */
 export const columnInteractionBarContextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> = {
     enableColumnInteractionBar: PropTypes.bool,
 };

@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * Table components should use ContextMenu2 instead.
+ */
+
 /* eslint-disable deprecation/deprecation */
 
 import * as React from "react";
@@ -31,6 +36,8 @@ export interface IContextMenuTargetWrapper extends IProps {
  * `element.addEventListener`, the prop can be lost. This wrapper helps us
  * maintain context menu fuctionality when doing fancy React.cloneElement
  * chains.
+ *
+ * @deprecated use ContextMenu2 instead
  */
 @ContextMenuTarget
 export class ContextMenuTargetWrapper extends React.PureComponent<IContextMenuTargetWrapper> {

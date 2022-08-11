@@ -144,7 +144,7 @@ individual column's header and body cells. Try selecting a different column in t
 
 @### Cells
 
-`Cell`, `EditableCell`, `ColumnHeaderCell2`, and `RowHeaderCell` expose a `loading` prop for granular
+`Cell`, `EditableCell2`, `ColumnHeaderCell2`, and `RowHeaderCell2` expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading
 configuration.
 

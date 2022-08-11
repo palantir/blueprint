@@ -21,25 +21,30 @@ import { AbstractPureComponent2, Utils as CoreUtils, DISPLAYNAME_PREFIX, Icon } 
 import { Popover2 } from "@blueprintjs/popover2";
 
 import * as Classes from "../common/classes";
-import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "../common/context";
 import { LoadableContent } from "../common/loadableContent";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { HorizontalCellDivider, IColumnHeaderCellProps, IColumnHeaderCellState } from "./columnHeaderCell";
-import { HeaderCell } from "./headerCell";
+import { HeaderCell2 } from "./headerCell2";
 
 // eslint-disable-next-line deprecation/deprecation
-export type ColumnHeaderCellProps = IColumnHeaderCellProps;
+export interface ColumnHeaderCell2Props extends IColumnHeaderCellProps {
+    /**
+     * If `true`, adds an interaction bar on top of all column header cells, and
+     * moves interaction triggers into it.
+     *
+     * @default false
+     */
+    enableColumnInteractionBar?: boolean;
+}
 
-export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCellProps, IColumnHeaderCellState> {
+export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCell2Props, IColumnHeaderCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ColumnHeaderCell2`;
 
-    public static defaultProps: ColumnHeaderCellProps = {
+    public static defaultProps: ColumnHeaderCell2Props = {
+        enableColumnInteractionBar: false,
         isActive: false,
         menuIcon: "chevron-down",
     };
-
-    public static contextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> =
-        columnInteractionBarContextTypes;
 
     /**
      * This method determines if a `MouseEvent` was triggered on a target that
@@ -57,50 +62,42 @@ export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCellPr
         );
     }
 
-    public context: ColumnInteractionBarContextTypes = {
-        enableColumnInteractionBar: false,
-    };
-
     public state = {
         isActive: false,
     };
 
     public render() {
         const {
-            // from IColumnHeaderCellProps
+            enableColumnInteractionBar,
             enableColumnReordering,
             isColumnSelected,
             menuIcon,
-
-            // from IColumnNameProps
             name,
             nameRenderer,
-
-            // from IHeaderProps
             ...spreadableProps
         } = this.props;
 
         const classes = classNames(spreadableProps.className, Classes.TABLE_COLUMN_HEADER_CELL, {
-            [Classes.TABLE_HAS_INTERACTION_BAR]: this.context.enableColumnInteractionBar,
+            [Classes.TABLE_HAS_INTERACTION_BAR]: enableColumnInteractionBar,
             [Classes.TABLE_HAS_REORDER_HANDLE]: this.props.reorderHandle != null,
         });
 
         return (
-            <HeaderCell
-                isReorderable={this.props.enableColumnReordering}
-                isSelected={this.props.isColumnSelected}
+            <HeaderCell2
+                isReorderable={enableColumnReordering}
+                isSelected={isColumnSelected}
                 {...spreadableProps}
                 className={classes}
             >
                 {this.renderName()}
                 {this.maybeRenderContent()}
                 {this.props.loading ? undefined : this.props.resizeHandle}
-            </HeaderCell>
+            </HeaderCell2>
         );
     }
 
     private renderName() {
-        const { index, loading, name, nameRenderer, reorderHandle } = this.props;
+        const { enableColumnInteractionBar, index, loading, name, nameRenderer, reorderHandle } = this.props;
 
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
@@ -111,7 +108,7 @@ export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCellPr
             </LoadableContent>
         );
 
-        if (this.context.enableColumnInteractionBar) {
+        if (enableColumnInteractionBar) {
             return (
                 <div className={Classes.TABLE_COLUMN_NAME} title={name}>
                     <div className={Classes.TABLE_INTERACTION_BAR}>

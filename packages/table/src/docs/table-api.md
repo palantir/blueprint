@@ -4,7 +4,7 @@ reference: api
 
 @# JavaScript API
 
-The `Table`, `Column`, `Cell`, `ColumnHeaderCell2`, `EditableName`, and `EditableCell`
+The `Table`, `Column`, `Cell`, `ColumnHeaderCell2`, `EditableName`, and `EditableCell2`
 components are available in the __@blueprintjs/table__ package.
 
 @## Table
@@ -55,7 +55,7 @@ returned from the `cellRenderer` method of each `Column`.
 
 @## ColumnHeaderCell2
 
-Customize how each column header is displayed.
+Optionally customize how each column header is displayed.
 
 The `columnHeaderCellRenderer` method on each `Column` should return a
 `ColumnHeaderCell2`. Children of a `ColumnHeaderCell2` are rendered below
@@ -84,12 +84,33 @@ header.
 
 @interface IEditableNameProps
 
-@## EditableCell
+@## EditableCell2
 
-Return a `EditableCell` component from the `cellRenderer` prop on a
+Return an `EditableCell2` component from the `cellRenderer` prop on a
 `Column` to enable double-click-to-edit functionality in the table body.
 
-@interface IEditableCellProps
+@interface EditableCell2Props
+
+@## RowHeaderCell2
+
+Optionally customize how each row header is displayed.
+
+In order to use this API, supply a custom renderer function which returns a `RowHeaderCell2` to the
+`rowHeaderCellRenderer` prop on the overall `Table2`.
+
+<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
+
+<h4 class="@ns-heading">Additional CSS required</h4>
+
+__RowHeaderCell2__ depends on @blueprintjs/popover2 styles, so you must remember to import
+that package's stylesheet in your application in addition to `table.css`:
+
+```scss
+@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+```
+</div>
+
+@interface IRowHeaderCellProps
 
 @## Region
 

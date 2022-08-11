@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-export {
-    HotkeysContext,
-    HotkeysContextInstance,
-    HotkeysProvider,
-    HotkeysProviderProps,
-} from "./hotkeys/hotkeysProvider";
+import * as React from "react";
 
-export { PortalContextOptions, PortalContext, PortalProvider } from "./portal/portalProvider";
+export function usePrevious<T>(value: T) {
+    const ref = React.useRef<T>();
+    React.useEffect(() => {
+        ref.current = value; // assign the value of ref to the argument
+    }, [value]); // this code will run when the value of 'value' changes
+    return ref.current; // in the end, return the current ref value.
+}

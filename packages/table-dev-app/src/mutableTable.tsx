@@ -47,7 +47,7 @@ import {
     RegionCardinality,
     Regions,
     RenderMode,
-    RowHeaderCell,
+    RowHeaderCell2,
     StyledRegionGroup,
     Table2,
     TableLoadingOption,
@@ -520,7 +520,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     };
 
     private renderRowHeader = (rowIndex: number) => {
-        return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`} menuRenderer={this.renderRowMenu} />;
+        return <RowHeaderCell2 index={rowIndex} name={`${rowIndex + 1}`} menuRenderer={this.renderRowMenu} />;
     };
 
     private renderRowMenu = (rowIndex: number) => {

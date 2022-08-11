@@ -26,7 +26,7 @@ import {
     Cell,
     Column,
     ColumnHeaderCell2,
-    ColumnHeaderCellProps,
+    ColumnHeaderCell2Props,
     CopyCellsMenuItem,
     EditableCell2,
     EditableName,
@@ -35,7 +35,7 @@ import {
     Region,
     RegionCardinality,
     Regions,
-    RowHeaderCell,
+    RowHeaderCell2,
     SelectionModes,
     Table2,
     Utils,
@@ -499,7 +499,7 @@ ReactDOM.render(
         {},
         {
             renderRowHeaderCell: (rowIndex: number) => {
-                return <RowHeaderCell name={customRowHeaders[rowIndex]} />;
+                return <RowHeaderCell2 name={customRowHeaders[rowIndex]} />;
             },
         },
     ),
@@ -547,14 +547,14 @@ ReactDOM.render(
         },
         {
             renderRowHeaderCell: (rowIndex: number) => {
-                return <RowHeaderCell name={`${rowIndex + 1}`} menuRenderer={renderTestMenu} />;
+                return <RowHeaderCell2 name={`${rowIndex + 1}`} menuRenderer={renderTestMenu} />;
             },
         },
     ),
     document.getElementById("table-6"),
 );
 
-class CustomHeaderCell extends React.Component<ColumnHeaderCellProps> {
+class CustomHeaderCell extends React.Component<ColumnHeaderCell2Props> {
     public render() {
         return <ColumnHeaderCell2 {...this.props}>Hey dawg.</ColumnHeaderCell2>;
     }

@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to TableBody2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -33,11 +26,12 @@ import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { MenuContext } from "../src/interactions/menus/menuContext";
-import { IRegion, Regions } from "../src/regions";
-import { ITableBodyProps, TableBody } from "../src/tableBody";
+import { Region, Regions } from "../src/regions";
+import { TableBodyProps } from "../src/tableBody";
+import { TableBody2 } from "../src/tableBody2";
 import { cellClassNames } from "../src/tableBodyCells";
 
-describe("TableBody", () => {
+describe("TableBody2", () => {
     // use enough rows that batching won't render all of them in one pass.
     // and careful: if this value is too big (~100), the batcher's reliance
     // on `requestIdleCallback` may cause the tests to run multiple times.
@@ -46,6 +40,17 @@ describe("TableBody", () => {
 
     const COLUMN_WIDTH = 100;
     const ROW_HEIGHT = 20;
+
+    let containerElement: HTMLElement | undefined;
+
+    beforeEach(() => {
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+    });
+
+    afterEach(() => {
+        containerElement?.remove();
+    });
 
     it("cellClassNames", () => {
         expect(cellClassNames(0, 0)).to.deep.equal([Classes.rowCellIndexClass(0), Classes.columnCellIndexClass(0)]);
@@ -195,7 +200,7 @@ describe("TableBody", () => {
 
         function mountTableBodyForContextMenuTests(
             targetCellCoords: { row: number; col: number },
-            selectedRegions: IRegion[],
+            selectedRegions: Region[],
         ) {
             return mountTableBody({
                 bodyContextMenuRenderer,
@@ -208,13 +213,13 @@ describe("TableBody", () => {
             });
         }
 
-        function checkOnSelectionCallback(expectedSelectedRegions: IRegion[]) {
+        function checkOnSelectionCallback(expectedSelectedRegions: Region[]) {
             expect(onSelection.calledOnce).to.be.true;
             expect(onSelection.firstCall.args[0]).to.deep.equal(expectedSelectedRegions);
         }
     });
 
-    function mountTableBody(props: Partial<ITableBodyProps> = {}) {
+    function mountTableBody(props: Partial<TableBodyProps> = {}) {
         const { rowIndexEnd, columnIndexEnd, renderMode, ...spreadableProps } = props;
 
         const numRows = rowIndexEnd != null ? rowIndexEnd : LARGE_NUM_ROWS;
@@ -227,7 +232,7 @@ describe("TableBody", () => {
         const viewportRect = new Rect(0, 0, NUM_COLUMNS * COLUMN_WIDTH, LARGE_NUM_ROWS * ROW_HEIGHT);
 
         return mount(
-            <TableBody
+            <TableBody2
                 cellRenderer={cellRenderer}
                 grid={grid}
                 loading={false}
@@ -247,6 +252,7 @@ describe("TableBody", () => {
                 columnIndexEnd={numCols}
                 {...spreadableProps}
             />,
+            { attachTo: containerElement },
         );
     }
 
