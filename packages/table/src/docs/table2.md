@@ -7,7 +7,7 @@ tag: new
 As of `@blueprintjs/table` v3.9.0, there are two versions of the table component API,
 [Table](#table/api.table) and [Table2](#table/table2). All of the documentation examples
 on this site demonstrate the newer Table2 API. You are encouraged to migrate to Table2
-for forwards-compatibility with [Blueprint v5.0](https://github.com/palantir/blueprint/wiki/Blueprint-5.0).
+for forwards-compatibility with future major versions of Blueprint.
 
 @## Migration from Table
 

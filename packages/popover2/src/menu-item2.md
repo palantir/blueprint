@@ -11,10 +11,12 @@ Migrating from [MenuItem](#core/components/menu.menu-item)?
 
 </h4>
 
-MenuItem2 is a replacement for MenuItem and will replace it in Blueprint core v5.
-You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
-See the [migration guide](https://github.com/palantir/blueprint/wiki/Popover2-migration#menuitem2)
-on the wiki (the changes are minimal, it should be an easy drop-in replacement).
+MenuItem2 is a replacement for MenuItem. It uses Popover2 instead of Popover for its submenus.
+You are encouraged to migrate to MenuItem2 now in the rare case where you customize submenu layout
+using the `<MenuItem popoverProps>` API (see the
+[Popover2 migration guide](https://github.com/palantir/blueprint/wiki/Popover2-migration#menuitem2)
+on the wiki) &mdash; otherwise, you can leave MenuItem as-is and it will be seamlessly updated
+in Blueprint v5.
 
 </div>
 
