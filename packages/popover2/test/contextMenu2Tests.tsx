@@ -48,6 +48,16 @@ const COMMON_TOOLTIP_PROPS: Partial<Tooltip2Props> = {
 };
 
 describe("ContextMenu2", () => {
+    let containerElement: HTMLElement | undefined;
+
+    beforeEach(() => {
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+    });
+    afterEach(() => {
+        containerElement?.remove();
+    });
+
     describe("basic usage", () => {
         it("renders children and Popover2", () => {
             const ctxMenu = mountTestMenu();
@@ -108,6 +118,7 @@ describe("ContextMenu2", () => {
                 <ContextMenu2 content={MENU} popoverProps={{ transitionDuration: 0 }} {...props}>
                     <div className={TARGET_CLASSNAME} />
                 </ContextMenu2>,
+                { attachTo: containerElement },
             );
         }
     });
@@ -158,6 +169,7 @@ describe("ContextMenu2", () => {
                         </div>
                     )}
                 </ContextMenu2>,
+                { attachTo: containerElement },
             );
         }
     });
@@ -444,6 +456,7 @@ describe("ContextMenu2", () => {
                             <div className={TARGET_CLASSNAME} style={{ width: 20, height: 20, background: "blue" }} />
                         </ContextMenu2>
                     </Drawer>,
+                    { attachTo: containerElement },
                 );
                 const target = wrapper.find(`.${TARGET_CLASSNAME}`).hostNodes();
                 assert.isTrue(target.exists(), "target should exist");
