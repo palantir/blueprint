@@ -87,6 +87,38 @@ export function createNoDeprecatedComponentsRule(
                 );
             }
 
+            function checkDeprecatedComponentAndProp(
+                jsxOpeningElementChildNode: TSESTree.Node,
+                elementName: string,
+                openingElementNode: TSESTree.JSXOpeningElement,
+            ) {
+                const deprecatedProp = openingElementNode.attributes.find(
+                    attribute =>
+                        attribute.type === TSESTree.AST_NODE_TYPES.JSXAttribute &&
+                        attribute.name.type === TSESTree.AST_NODE_TYPES.JSXIdentifier &&
+                        deprecatedToNewComponentMapping[`${elementName}.${attribute.name.name}`] != null,
+                );
+
+                if (deprecatedProp === undefined) {
+                    return;
+                }
+
+                const deprecatedComponentKey = Object.keys(deprecatedToNewComponentMapping).find(
+                    key => key.includes(".") && key.split(".")[0] === elementName,
+                );
+                const deprecatedPropName = ((deprecatedProp as TSESTree.JSXAttribute).name as TSESTree.JSXIdentifier)
+                    .name;
+                context.report({
+                    data: {
+                        deprecatedComponentName: elementName,
+                        deprecatedPropName,
+                        newComponentName: deprecatedToNewComponentMapping[deprecatedComponentKey!],
+                    },
+                    messageId: "migrationWithPropUsage",
+                    node: jsxOpeningElementChildNode,
+                });
+            }
+
             // Get the list of all deprecated imports from packages included in the provided list
             return {
                 "Program > ImportDeclaration": (node: TSESTree.ImportDeclaration) => {
@@ -131,28 +163,7 @@ export function createNoDeprecatedComponentsRule(
                         });
                     } else if (isOpeningElement(node.parent)) {
                         // check <DeprecatedComponent withDeprecatedProp={...}> syntax
-                        const deprecatedProp = node.parent.attributes.find(
-                            attribute =>
-                                attribute.type === TSESTree.AST_NODE_TYPES.JSXAttribute &&
-                                attribute.name.type === TSESTree.AST_NODE_TYPES.JSXIdentifier &&
-                                deprecatedToNewComponentMapping[`${node.name}.${attribute.name.name}`] != null,
-                        );
-                        if (deprecatedProp !== undefined) {
-                            const deprecatedComponentKey = Object.keys(deprecatedToNewComponentMapping).find(
-                                key => key.split(".")[0] === node.name,
-                            );
-                            context.report({
-                                data: {
-                                    deprecatedComponentName: node.name,
-                                    deprecatedPropName: (
-                                        (deprecatedProp as TSESTree.JSXAttribute).name as TSESTree.JSXIdentifier
-                                    ).name,
-                                    newComponentName: deprecatedToNewComponentMapping[deprecatedComponentKey!],
-                                },
-                                messageId: "migrationWithPropUsage",
-                                node,
-                            });
-                        }
+                        checkDeprecatedComponentAndProp(node, node.name, node.parent);
                     }
                 },
 
@@ -180,28 +191,7 @@ export function createNoDeprecatedComponentsRule(
                         });
                     } else if (isOpeningElement(node.parent)) {
                         // check <Blueprint.DeprecatedComponent withDeprecatedProp={...}> syntax
-                        const deprecatedProp = node.parent.attributes.find(
-                            attribute =>
-                                attribute.type === TSESTree.AST_NODE_TYPES.JSXAttribute &&
-                                attribute.name.type === TSESTree.AST_NODE_TYPES.JSXIdentifier &&
-                                deprecatedToNewComponentMapping[`${node.property.name}.${attribute.name.name}`] != null,
-                        );
-                        if (deprecatedProp !== undefined) {
-                            const deprecatedComponentKey = Object.keys(deprecatedToNewComponentMapping).find(
-                                key => key.split(".")[0] === node.property.name,
-                            );
-                            context.report({
-                                data: {
-                                    deprecatedComponentName: node.property.name,
-                                    deprecatedPropName: (
-                                        (deprecatedProp as TSESTree.JSXAttribute).name as TSESTree.JSXIdentifier
-                                    ).name,
-                                    newComponentName: deprecatedToNewComponentMapping[deprecatedComponentKey!],
-                                },
-                                messageId: "migrationWithPropUsage",
-                                node,
-                            });
-                        }
+                        checkDeprecatedComponentAndProp(node, node.property.name, node.parent);
                     }
                 },
 
