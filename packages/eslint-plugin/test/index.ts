@@ -18,3 +18,4 @@ import "./classes-constants.test";
 import "./html-components.test";
 import "./icon-components.test";
 import "./no-deprecated-components.test";
+import "./no-deprecated-core-components.test";

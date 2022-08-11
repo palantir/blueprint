@@ -32,9 +32,9 @@ import {
     Intent,
     Menu,
     MenuDivider,
+    MenuItem,
     Switch,
 } from "@blueprintjs/core";
-import { MenuItem2 } from "@blueprintjs/popover2";
 import {
     Cell,
     Column,
@@ -489,7 +489,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderColumnMenu = (columnIndex: number) => {
         const menu = (
             <Menu>
-                <MenuItem2
+                <MenuItem
                     icon="insert"
                     onClick={() => {
                         this.store.addColumnBefore(columnIndex);
@@ -497,7 +497,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     }}
                     text="Insert column before"
                 />
-                <MenuItem2
+                <MenuItem
                     icon="insert"
                     onClick={() => {
                         this.store.addColumnAfter(columnIndex);
@@ -505,7 +505,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     }}
                     text="Insert column after"
                 />
-                <MenuItem2
+                <MenuItem
                     icon="remove"
                     onClick={() => {
                         this.store.removeColumn(columnIndex);
@@ -526,7 +526,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderRowMenu = (rowIndex: number) => {
         return (
             <Menu>
-                <MenuItem2
+                <MenuItem
                     icon="insert"
                     onClick={() => {
                         this.store.addRowBefore(rowIndex);
@@ -534,7 +534,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     }}
                     text="Insert row before"
                 />
-                <MenuItem2
+                <MenuItem
                     icon="insert"
                     onClick={() => {
                         this.store.addRowAfter(rowIndex);
@@ -542,7 +542,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     }}
                     text="Insert row after"
                 />
-                <MenuItem2
+                <MenuItem
                     icon="remove"
                     onClick={() => {
                         this.store.removeRow(rowIndex);
@@ -1047,12 +1047,12 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderBodyContextMenu = () => {
         const menu = (
             <Menu>
-                <MenuItem2 icon="search-around" text="Item 1" />
-                <MenuItem2 icon="search" text="Item 2" />
-                <MenuItem2 icon="graph-remove" text="Item 3" />
-                <MenuItem2 icon="group-objects" text="Item 4" />
+                <MenuItem icon="search-around" text="Item 1" />
+                <MenuItem icon="search" text="Item 2" />
+                <MenuItem icon="graph-remove" text="Item 3" />
+                <MenuItem icon="group-objects" text="Item 4" />
                 <MenuDivider />
-                <MenuItem2 disabled={true} text="Disabled item" />
+                <MenuItem disabled={true} text="Disabled item" />
             </Menu>
         );
         return this.state.enableContextMenu ? menu : undefined;

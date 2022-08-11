@@ -16,9 +16,8 @@
 
 import * as React from "react";
 
-import { H5, Switch } from "@blueprintjs/core";
+import { H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { MenuItem2 } from "@blueprintjs/popover2";
 import { Suggest2 } from "@blueprintjs/select";
 
 import {
@@ -105,7 +104,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
                     itemsEqual={areFilmsEqual}
                     itemPredicate={filterFilm}
                     itemRenderer={renderFilm}
-                    noResults={<MenuItem2 disabled={true} text="No results." roleStructure="listoption" />}
+                    noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
                     onItemSelect={this.handleValueChange}
                     popoverProps={{ matchTargetWidth, minimal }}
                 />

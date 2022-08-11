@@ -17,9 +17,9 @@
 import { INpmPackage } from "@documentalist/client";
 import * as React from "react";
 
-import { Classes, HotkeysTarget2, Intent, Menu, NavbarHeading, Tag } from "@blueprintjs/core";
+import { Classes, HotkeysTarget2, Intent, Menu, MenuItem, NavbarHeading, Tag } from "@blueprintjs/core";
 import { NavButton } from "@blueprintjs/docs-theme";
-import { MenuItem2, Popover2 } from "@blueprintjs/popover2";
+import { Popover2 } from "@blueprintjs/popover2";
 
 import { Logo } from "./logo";
 
@@ -99,7 +99,7 @@ export class NavHeader extends React.PureComponent<INavHeaderProps> {
                 } else {
                     href = v === currentVersion ? "/docs" : `/docs/versions/${major(v)}`;
                 }
-                return <MenuItem2 href={href} intent={intent} key={v} text={v} />;
+                return <MenuItem href={href} intent={intent} key={v} text={v} />;
             });
         return (
             <Popover2 content={<Menu className="docs-version-list">{releaseItems}</Menu>} placement="bottom">

@@ -15,29 +15,29 @@
 
 import * as React from "react";
 
-import { Button, Menu, MenuDivider } from "@blueprintjs/core";
-import { Classes, MenuItem2, Popover2 } from "@blueprintjs/popover2";
+import { Button, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Classes, Popover2 } from "@blueprintjs/popover2";
 
 import { ExampleCard } from "./ExampleCard";
 
 const textEditorMenu = (
     <Menu>
         <MenuDivider title="Edit" />
-        <MenuItem2 icon="cut" text="Cut" label="⌘X" />
-        <MenuItem2 icon="duplicate" text="Copy" label="⌘C" />
-        <MenuItem2 icon="clipboard" text="Paste" label="⌘V" />
+        <MenuItem icon="cut" text="Cut" label="⌘X" />
+        <MenuItem icon="duplicate" text="Copy" label="⌘C" />
+        <MenuItem icon="clipboard" text="Paste" label="⌘V" />
         <MenuDivider title="Text" />
-        <MenuItem2 icon="align-left" text="Alignment">
-            <MenuItem2 icon="align-left" text="Left" />
-            <MenuItem2 icon="align-center" text="Center" />
-            <MenuItem2 icon="align-right" text="Right" />
-            <MenuItem2 icon="align-justify" text="Justify" />
-        </MenuItem2>
-        <MenuItem2 icon="style" text="Style">
-            <MenuItem2 icon="bold" text="Bold" />
-            <MenuItem2 icon="italic" text="Italic" />
-            <MenuItem2 icon="underline" text="Underline" />
-        </MenuItem2>
+        <MenuItem icon="align-left" text="Alignment">
+            <MenuItem icon="align-left" text="Left" />
+            <MenuItem icon="align-center" text="Center" />
+            <MenuItem icon="align-right" text="Right" />
+            <MenuItem icon="align-justify" text="Justify" />
+        </MenuItem>
+        <MenuItem icon="style" text="Style">
+            <MenuItem icon="bold" text="Bold" />
+            <MenuItem icon="italic" text="Italic" />
+            <MenuItem icon="underline" text="Underline" />
+        </MenuItem>
     </Menu>
 );
 
