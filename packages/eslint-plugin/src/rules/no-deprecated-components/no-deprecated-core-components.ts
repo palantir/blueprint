@@ -10,7 +10,8 @@ export const coreComponentsMigrationMapping = {
     Breadcrumbs: "Breadcrumbs2",
     CollapsibleList: "OverflowList",
     "MenuItem.popoverProps": "MenuItem2",
-    PanelStack: "PanelStack2",
+    // TODO(@adidahiya): Blueprint v6
+    // PanelStack: "PanelStack2",
     Popover: "Popover2",
     Tooltip: "Tooltip2",
 };
