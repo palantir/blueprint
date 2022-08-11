@@ -39,7 +39,7 @@ export class Popover2InteractionKindExample extends React.PureComponent<IExample
     }
 
     private renderPopover(interactionKind: Popover2InteractionKind) {
-        // MenuItem2's default shouldDismissPopover={true} behavior is confusing
+        // MenuItem's default shouldDismissPopover={true} behavior is confusing
         // in this example, since it introduces an additional way popovers can
         // close. set it to false here for clarity.
         return (

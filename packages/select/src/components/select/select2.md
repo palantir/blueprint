@@ -27,8 +27,7 @@ You may provide a predicate to customize the filtering algorithm. The value of a
 @reactExample SelectExample
 
 ```tsx
-import { Button } from "@blueprintjs/core";
-import { MenuItem2 } from "@blueprintjs/popover2";
+import { Button, MenuItem } from "@blueprintjs/core";
 import { Select2 } from "@blueprintjs/select";
 import * as Films from "./films";
 
@@ -41,7 +40,7 @@ ReactDOM.render(
         items={Films.items}
         itemPredicate={Films.itemPredicate}
         itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem2 disabled={true} text="No results."  roleStructure="listoption" />}
+        noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
         onItemSelect={...}
     >
         {/* children become the popover target; render value here */}
@@ -156,7 +155,7 @@ function renderCreateFilmOption(
     handleClick: React.MouseEventHandler<HTMLElement>,
 ) {
     return (
-        <MenuItem2
+        <MenuItem
             icon="add"
             text={`Create "${query}"`}
             roleStructure="listoption"
@@ -174,7 +173,7 @@ ReactDOM.render(
         items={Films.items}
         itemPredicate={Films.itemPredicate}
         itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem2 disabled={true} text="No results."  roleStructure="listoption" />}
+        noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
         onItemSelect={...}
     />,
     document.querySelector("#root")
@@ -245,7 +244,7 @@ to rendering this item in this frame. The renderer is called for all items, so d
 
 ```tsx
 import { Classes } from "@blueprintjs/core";
-import { MenuItem2 } from "@blueprintjs/popover2";
+import { MenuItem } from "@blueprintjs/popover2";
 import { ItemRenderer, ItemPredicate, Select2 } from "@blueprintjs/select";
 
 const FilmSelect = Select2.ofType<Film>();
@@ -259,7 +258,7 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
         return null;
     }
     return (
-        <MenuItem2
+        <MenuItem
             text={film.title}
             label={film.year}
             roleStructure="listoption"
@@ -287,7 +286,7 @@ const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, rend
     const renderedItems = items.map(renderItem).filter(item => item != null);
     return (
         <Menu role="listbox" ulRef={itemsParentRef} {...menuProps}>
-            <MenuItem2
+            <MenuItem
                 disabled={true}
                 text={`Found ${renderedItems.length} items matching "${query}"`}
                 roleStructure="listoption"

@@ -27,9 +27,8 @@ import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popov
 import { Text } from "../text/text";
 import { Menu, MenuProps } from "./menu";
 
-/** @deprecated use { MenuItem2Props } from "@blueprintjs/popover2" */
 export type MenuItemProps = IMenuItemProps;
-/** @deprecated use { MenuItem2Props } from "@blueprintjs/popover2" */
+/** @deprecated use MenuItemProps */
 export interface IMenuItemProps extends ActionProps, LinkProps {
     /** Item text, required for usability. */
     text: React.ReactNode;
@@ -143,7 +142,6 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     htmlTitle?: string;
 }
 
-/** @deprecated use { MenuItem2 } from "@blueprintjs/popover2" instead */
 export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: MenuItemProps = {
         active: false,

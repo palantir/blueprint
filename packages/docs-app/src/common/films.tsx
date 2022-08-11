@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { MenuItem2, MenuItem2Props } from "@blueprintjs/popover2";
+import { MenuItem, MenuItemProps } from "@blueprintjs/core";
 import { IItemRendererProps, ItemPredicate, ItemRenderer } from "@blueprintjs/select";
 
 export interface IFilm {
@@ -140,7 +140,7 @@ export const TOP_100_FILMS: IFilm[] = [
 export function getFilmItemProps(
     film: IFilm,
     { handleClick, handleFocus, modifiers, query }: IItemRendererProps,
-): MenuItem2Props & React.Attributes & React.HTMLAttributes<HTMLAnchorElement> {
+): MenuItemProps & React.Attributes & React.HTMLAttributes<HTMLAnchorElement> {
     return {
         active: modifiers.active,
         disabled: modifiers.disabled,
@@ -160,7 +160,7 @@ export const renderFilm: ItemRenderer<IFilm> = (film, props) => {
     if (!props.modifiers.matchesPredicate) {
         return null;
     }
-    return <MenuItem2 {...getFilmItemProps(film, props)} />;
+    return <MenuItem {...getFilmItemProps(film, props)} />;
 };
 
 export const renderCreateFilmOption = (
@@ -168,7 +168,7 @@ export const renderCreateFilmOption = (
     active: boolean,
     handleClick: React.MouseEventHandler<HTMLElement>,
 ) => (
-    <MenuItem2
+    <MenuItem
         icon="add"
         text={`Create "${query}"`}
         roleStructure="listoption"

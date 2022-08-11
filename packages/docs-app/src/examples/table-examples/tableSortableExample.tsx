@@ -18,9 +18,8 @@
 
 import * as React from "react";
 
-import { Menu } from "@blueprintjs/core";
+import { Menu, MenuItem } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { MenuItem2 } from "@blueprintjs/popover2";
 import {
     Cell,
     Column,
@@ -70,8 +69,8 @@ class TextSortableColumn extends AbstractSortableColumn {
         const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
         return (
             <Menu>
-                <MenuItem2 icon="sort-asc" onClick={sortAsc} text="Sort Asc" />
-                <MenuItem2 icon="sort-desc" onClick={sortDesc} text="Sort Desc" />
+                <MenuItem icon="sort-asc" onClick={sortAsc} text="Sort Asc" />
+                <MenuItem icon="sort-desc" onClick={sortDesc} text="Sort Desc" />
             </Menu>
         );
     }
@@ -98,8 +97,8 @@ class RankSortableColumn extends AbstractSortableColumn {
         const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
         return (
             <Menu>
-                <MenuItem2 icon="sort-asc" onClick={sortAsc} text="Sort Rank Asc" />
-                <MenuItem2 icon="sort-desc" onClick={sortDesc} text="Sort Rank Desc" />
+                <MenuItem icon="sort-asc" onClick={sortAsc} text="Sort Rank Asc" />
+                <MenuItem icon="sort-desc" onClick={sortDesc} text="Sort Rank Desc" />
             </Menu>
         );
     }
@@ -124,32 +123,32 @@ class RecordSortableColumn extends AbstractSortableColumn {
     protected renderMenu(sortColumn: ISortCallback) {
         return (
             <Menu>
-                <MenuItem2
+                <MenuItem
                     icon="sort-asc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toWins, false))}
                     text="Sort Wins Asc"
                 />
-                <MenuItem2
+                <MenuItem
                     icon="sort-desc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toWins, true))}
                     text="Sort Wins Desc"
                 />
-                <MenuItem2
+                <MenuItem
                     icon="sort-asc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toLosses, false))}
                     text="Sort Losses Asc"
                 />
-                <MenuItem2
+                <MenuItem
                     icon="sort-desc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toLosses, true))}
                     text="Sort Losses Desc"
                 />
-                <MenuItem2
+                <MenuItem
                     icon="sort-asc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toTies, false))}
                     text="Sort Ties Asc"
                 />
-                <MenuItem2
+                <MenuItem
                     icon="sort-desc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toTies, true))}
                     text="Sort Ties Desc"
