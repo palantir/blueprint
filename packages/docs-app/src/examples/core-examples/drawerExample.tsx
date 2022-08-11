@@ -26,6 +26,8 @@ import {
     H5,
     HTMLSelect,
     Label,
+    Menu,
+    MenuItem,
     OptionProps,
     Position,
     Switch,
@@ -37,6 +39,7 @@ import {
     handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";
+import { ContextMenu2 } from "@blueprintjs/popover2";
 
 import { IBlueprintExampleData } from "../../tags/types";
 
@@ -119,6 +122,17 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
                                 can build upon. And the enterprise data foundation goes where the business drives it.
                             </p>
                             <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
+                            <ContextMenu2
+                                content={
+                                    <Menu>
+                                        <MenuItem text="Menu Item 1" />
+                                    </Menu>
+                                }
+                            >
+                                <Button onClick={this.handleClose}>
+                                    Right Click for a <Code>&lt;ContextMenu2 /&gt;</Code>
+                                </Button>
+                            </ContextMenu2>
                         </div>
                     </div>
                     <div className={Classes.DRAWER_FOOTER}>Footer</div>
