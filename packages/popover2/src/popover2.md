@@ -239,7 +239,7 @@ The supported values are:
     -   **Closes when:** the target is clicked
 
 The following example demonstrates the various interaction kinds (note: these Popovers contain
-[MenuItem2](#popover2-package/menu-item2)s with `shouldDismissPopover={false}`, for clarity):
+[MenuItem](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
 
 @reactExample Popover2InteractionKindExample
 
@@ -261,7 +261,7 @@ describe whether click events should dismiss the enclosing popover.
 To mark an element (and its children) as "dismiss elements", simply add the
 class `Classes.POPOVER2_DISMISS`. For example, the **Cancel** and **Delete** buttons in the
 top-level [Popover2 example](#popover2-package/popover2) have this class, and all
-MenuItem2s receive this class by default (see `shouldDismissPopover` prop). To
+MenuItems receive this class by default (see `shouldDismissPopover` prop). To
 enable this behavior on the entire popover body, pass
 `popoverClassName={Classes.POPOVER2_DISMISS}`.
 
@@ -272,7 +272,7 @@ originating inside disabled elements (either via the `disabled` attribute or
 
 Additionally, the prop `captureDismiss` (disabled by default) will prevent click
 events from dismissing _grandparent_ popovers (not the Popover2 immediately
-containing the dismiss element). MenuItem2 disables this feature such that
+containing the dismiss element). MenuItem disables this feature such that
 clicking any submenu item will close all submenus, which is desirable behavior
 for a menu tree.
 

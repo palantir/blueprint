@@ -24,12 +24,12 @@ import {
     Breadcrumb,
     BreadcrumbProps,
     Classes as CoreClasses,
+    MenuItem,
     OverflowList,
     OverflowListProps,
 } from "@blueprintjs/core";
 
 import { Breadcrumbs2 } from "../src/breadcrumbs2";
-import { MenuItem2 } from "../src/menuItem2";
 
 const ITEMS: BreadcrumbProps[] = [{ text: "1" }, { text: "2" }, { text: "3" }];
 
@@ -91,7 +91,7 @@ describe("Breadcrumbs2", () => {
             </div>,
             { attachTo: containerElement },
         );
-        const menuItems = wrapper.find(MenuItem2);
+        const menuItems = wrapper.find(MenuItem);
         assert.lengthOf(menuItems, ITEMS.length - 1);
         assert.equal(menuItems.get(0).props.text, "2");
         assert.equal(menuItems.get(1).props.text, "1");
@@ -109,7 +109,7 @@ describe("Breadcrumbs2", () => {
             </div>,
             { attachTo: containerElement },
         );
-        const menuItems = wrapper.find(MenuItem2);
+        const menuItems = wrapper.find(MenuItem);
         assert.lengthOf(menuItems, ITEMS.length - 1);
         assert.equal(menuItems.get(0).props.text, "2");
         assert.equal(menuItems.get(1).props.text, "3");
@@ -123,7 +123,7 @@ describe("Breadcrumbs2", () => {
             </div>,
             { attachTo: containerElement },
         );
-        const menuItems = wrapper.find(MenuItem2);
+        const menuItems = wrapper.find(MenuItem);
         assert.lengthOf(menuItems, ITEMS.length);
         assert.isTrue(menuItems.get(0).props.disabled);
     });
