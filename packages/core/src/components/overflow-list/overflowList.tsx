@@ -152,8 +152,9 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOver
         // changes in the renderers' behavior can be reflected.
         // The following statement prevents re-rendering only in the case where the state changes
         // identity (i.e. setState was called), but the state is still the same when
-        // shallow-compared to the previous state.
-        return this.props !== nextProps || (this.state !== nextState && !shallowCompareKeys(this.state, nextState));
+        // shallow-compared to the previous state. Original context: https://github.com/palantir/blueprint/pull/3278.
+        // We also ensure that we re-render if the props DO change (which isn't necessarily accounted for by other logic).
+        return this.props !== nextProps || !(this.state !== nextState && shallowCompareKeys(this.state, nextState));
     }
 
     public componentDidUpdate(prevProps: OverflowListProps<T>, prevState: IOverflowListState<T>) {
