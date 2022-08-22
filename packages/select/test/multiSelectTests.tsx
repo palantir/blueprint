@@ -31,7 +31,7 @@ import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
-import { ItemRendererProps, IMultiSelectProps, IMultiSelectState, MultiSelect } from "../src";
+import { IMultiSelectProps, IMultiSelectState, ItemRendererProps, MultiSelect } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<MultiSelect>", () => {

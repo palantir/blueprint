@@ -29,7 +29,7 @@ import * as sinon from "sinon";
 import { Classes, InputGroup, Keys, Popover } from "@blueprintjs/core";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
-import { ItemRendererProps, ISelectProps, ISelectState, Select } from "../src";
+import { ISelectProps, ISelectState, ItemRendererProps, Select } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<Select>", () => {
