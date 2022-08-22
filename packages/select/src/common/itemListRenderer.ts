@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import { IRef } from "@blueprintjs/core";
-
-import { CreateNewItem } from "./listItemsUtils";
+import type { CreateNewItem } from "./listItemsUtils";
 
 /** @deprecated use ItemListRendererProps */
 export type IItemListRendererProps<T> = ItemListRendererProps<T>;
@@ -57,7 +55,7 @@ export interface ItemListRendererProps<T> {
      * A ref handler that should be attached to the parent HTML element of the menu items.
      * This is required for the active item to scroll into view automatically.
      */
-    itemsParentRef: IRef<HTMLUListElement>;
+    itemsParentRef: React.Ref<HTMLUListElement>;
 
     /**
      * Props to apply to the `Menu` created within the `itemListRenderer`

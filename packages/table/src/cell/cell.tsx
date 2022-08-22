@@ -16,14 +16,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import {
-    Classes as CoreClasses,
-    Utils as CoreUtils,
-    DISPLAYNAME_PREFIX,
-    IntentProps,
-    IRef,
-    Props,
-} from "@blueprintjs/core";
+import { Classes as CoreClasses, Utils as CoreUtils, DISPLAYNAME_PREFIX, IntentProps, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
@@ -112,7 +105,7 @@ export interface ICellProps extends IntentProps, Props {
     /**
      * A ref handle to capture the outer div of this cell. Used internally.
      */
-    cellRef?: IRef<HTMLDivElement>;
+    cellRef?: React.Ref<HTMLDivElement>;
 }
 
 /** @deprecated use CellRenderer */

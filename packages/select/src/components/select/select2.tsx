@@ -26,7 +26,6 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps2,
-    IRef,
     Keys,
     refHandler,
     setRef,
@@ -115,7 +114,11 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private previousFocusedElement: HTMLElement | undefined;
 
-    private handleInputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+    private handleInputRef: React.Ref<HTMLInputElement> = refHandler(
+        this,
+        "inputElement",
+        this.props.inputProps?.inputRef,
+    );
 
     private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 

@@ -23,7 +23,6 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     Intent,
-    IRef,
     Keys,
     Position,
     refHandler,
@@ -290,7 +289,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
 
     public inputElement: HTMLInputElement | null = null;
 
-    private inputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
+    private inputRef: React.Ref<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
     private intervalId?: number;
 

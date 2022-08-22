@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent2, IRef, Props } from "@blueprintjs/core";
+import { AbstractComponent2, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -51,7 +51,7 @@ export interface ITableQuadrantProps extends Props {
      * A callback that receives a `ref` to the quadrant's body-wrapping element. Will need to be
      * provided only for the MAIN quadrant, because that quadrant contains the main table body.
      */
-    bodyRef?: IRef<HTMLDivElement>;
+    bodyRef?: React.Ref<HTMLDivElement>;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -83,7 +83,7 @@ export interface ITableQuadrantProps extends Props {
     /**
      * A callback that receives a `ref` to the quadrant's outermost element.
      */
-    quadrantRef?: IRef<HTMLDivElement>;
+    quadrantRef?: React.Ref<HTMLDivElement>;
 
     /**
      * The quadrant type. Informs the values of the parameters that will be passed to the
@@ -118,7 +118,7 @@ export interface ITableQuadrantProps extends Props {
     /**
      * A callback that receives a `ref` to the quadrant's scroll-container element.
      */
-    scrollContainerRef?: IRef<HTMLDivElement>;
+    scrollContainerRef?: React.Ref<HTMLDivElement>;
 
     /**
      * CSS styles to apply to the quadrant's outermost element.

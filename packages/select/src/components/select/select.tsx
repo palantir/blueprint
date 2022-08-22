@@ -31,7 +31,6 @@ import {
     InputGroup,
     InputGroupProps2,
     IPopoverProps,
-    IRef,
     Keys,
     Popover,
     Position,
@@ -123,7 +122,11 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
 
     private previousFocusedElement: HTMLElement | undefined;
 
-    private handleInputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+    private handleInputRef: React.Ref<HTMLInputElement> = refHandler(
+        this,
+        "inputElement",
+        this.props.inputProps?.inputRef,
+    );
 
     private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 

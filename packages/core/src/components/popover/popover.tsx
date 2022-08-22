@@ -19,7 +19,7 @@ import { ModifierFn } from "popper.js";
 import * as React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent2, Classes, IRef, refHandler, setRef } from "../../common";
+import { AbstractPureComponent2, Classes, refHandler, setRef } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -94,7 +94,7 @@ export interface IPopoverProps extends IPopoverSharedProps {
     /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
-    popoverRef?: IRef<HTMLElement>;
+    popoverRef?: React.Ref<HTMLElement>;
 
     /**
      * The target to which the popover content is attached. This can instead be
@@ -169,7 +169,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate?: () => void;
 
-    private handlePopoverRef: IRef<HTMLElement> = refHandler(this, "popoverElement", this.props.popoverRef);
+    private handlePopoverRef: React.Ref<HTMLElement> = refHandler(this, "popoverElement", this.props.popoverRef);
 
     private handleTargetRef = (ref: HTMLElement | null) => (this.targetElement = ref);
 

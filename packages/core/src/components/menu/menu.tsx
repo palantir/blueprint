@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, IRef } from "../../common";
+import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -31,7 +31,7 @@ export interface IMenuProps extends Props, React.HTMLAttributes<HTMLUListElement
     large?: boolean;
 
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
-    ulRef?: IRef<HTMLUListElement>;
+    ulRef?: React.Ref<HTMLUListElement>;
 }
 
 export class Menu extends AbstractPureComponent2<MenuProps> {
