@@ -14,8 +14,7 @@ provides components for interacting with dates, times, and timezones:
 
 - [DateInput2](#datetime2/date-input2) renders a date input with
     an optional embedded [TimezoneSelect](#datetime2/timezone-select).
-- [DateRangeInput2](#datetime2/date-range-input2) renders a date range input with
-    an optional [TimezoneSelect](#datetime2/timezone-select).
+- [DateRangeInput2](#datetime2/date-range-input2) renders a date range input.
 - [TimezoneSelect](#datetime2/timezone-select) renders a [Select2](#select/select2)
   with a list of timezones for the user to choose from.
 
