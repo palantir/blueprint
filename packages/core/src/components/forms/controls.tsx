@@ -21,7 +21,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Alignment, Classes, IRef, refHandler, setRef } from "../../common";
+import { AbstractPureComponent2, Alignment, Classes, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, Props } from "../../common/props";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -50,7 +50,7 @@ export interface IControlProps extends Props, HTMLInputProps {
     disabled?: boolean;
 
     /** Ref handler that receives HTML `<input>` element backing this component. */
-    inputRef?: IRef<HTMLInputElement>;
+    inputRef?: React.Ref<HTMLInputElement>;
 
     /** Whether the control should appear as an inline element. */
     inline?: boolean;
@@ -255,7 +255,7 @@ export class Checkbox extends AbstractPureComponent2<CheckboxProps, ICheckboxSta
     // must maintain internal reference for `indeterminate` support
     public input: HTMLInputElement | null = null;
 
-    private handleInputRef: IRef<HTMLInputElement> = refHandler(this, "input", this.props.inputRef);
+    private handleInputRef: React.Ref<HTMLInputElement> = refHandler(this, "input", this.props.inputRef);
 
     public render() {
         const { defaultIndeterminate, indeterminate, ...controlProps } = this.props;

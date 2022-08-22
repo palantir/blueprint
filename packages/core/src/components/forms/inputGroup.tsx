@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, IRef } from "../../common";
+import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import {
     ControlledProps2,
@@ -70,7 +70,7 @@ export interface IInputGroupProps
     fill?: boolean;
 
     /** Ref handler or a ref object that receives HTML `<input>` element backing this component. */
-    inputRef?: IRef<HTMLInputElement>;
+    inputRef?: React.Ref<HTMLInputElement>;
 
     /**
      * Element to render on the left side of input.  This prop is mutually exclusive

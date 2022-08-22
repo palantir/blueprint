@@ -32,7 +32,6 @@ import {
     Hotkey,
     Hotkeys,
     HotkeysTarget,
-    IRef,
 } from "@blueprintjs/core";
 
 import { CellRenderer } from "./cell/cell";
@@ -832,7 +831,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         return areGhostColumnsVisible && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
     }
 
-    private renderMenu = (refHandler: IRef<HTMLDivElement> | undefined) => {
+    private renderMenu = (refHandler: React.Ref<HTMLDivElement> | undefined) => {
         const classes = classNames(Classes.TABLE_MENU, {
             [Classes.TABLE_SELECTION_ENABLED]: Table.isSelectionModeEnabled(
                 this.props as TablePropsWithDefaults,
@@ -904,7 +903,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     };
 
     private renderColumnHeader = (
-        refHandler: IRef<HTMLDivElement>,
+        refHandler: React.Ref<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenColumnsOnly: boolean = false,
@@ -973,7 +972,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     };
 
     private renderRowHeader = (
-        refHandler: IRef<HTMLDivElement>,
+        refHandler: React.Ref<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenRowsOnly: boolean = false,

@@ -24,7 +24,6 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps2,
-    IRef,
     Keys,
     mergeRefs,
     refHandler,
@@ -131,7 +130,11 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
     private queryList: QueryList<T> | null = null;
 
-    private handleInputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+    private handleInputRef: React.Ref<HTMLInputElement> = refHandler(
+        this,
+        "inputElement",
+        this.props.inputProps?.inputRef,
+    );
 
     private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 

@@ -33,7 +33,6 @@ import {
     InputGroupProps2,
     Intent,
     IPopoverProps,
-    IRef,
     Keys,
     Popover,
     Props,
@@ -200,7 +199,7 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         this.props.inputProps?.inputRef,
     );
 
-    private handlePopoverContentRef: IRef<HTMLDivElement> = refHandler(this, "popoverContentElement");
+    private handlePopoverContentRef: React.Ref<HTMLDivElement> = refHandler(this, "popoverContentElement");
 
     public render() {
         const { value, valueString } = this.state;

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, IRef } from "../../common";
+import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { uniqueId } from "../../common/utils";
@@ -83,7 +83,7 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     /**
      * Ref supplied to the `Classes.DIALOG_CONTAINER` element.
      */
-    containerRef?: IRef<HTMLDivElement>;
+    containerRef?: React.Ref<HTMLDivElement>;
 
     /**
      * ID of the element that contains title or label text for this dialog.

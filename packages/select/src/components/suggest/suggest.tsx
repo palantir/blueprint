@@ -30,7 +30,6 @@ import {
     InputGroup,
     InputGroupProps2,
     IPopoverProps,
-    IRef,
     Keys,
     Popover,
     PopoverInteractionKind,
@@ -139,7 +138,11 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
 
     private queryList: QueryList<T> | null = null;
 
-    private handleInputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+    private handleInputRef: React.Ref<HTMLInputElement> = refHandler(
+        this,
+        "inputElement",
+        this.props.inputProps?.inputRef,
+    );
 
     private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 
