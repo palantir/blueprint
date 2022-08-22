@@ -96,9 +96,9 @@ $icons-per-row: 5;
 .docs-icon {
   align-items: center;
   border-radius: $pt-border-radius;
-  padding: ($pt-grid-size * 2) 0;
   display: flex;
   flex-direction: column;
+  padding: ($pt-grid-size * 2) 0;
   transition: background-color $hover-transition;
 
   .docs-icon-svg {
