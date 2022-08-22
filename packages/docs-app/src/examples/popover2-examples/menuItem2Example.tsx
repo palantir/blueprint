@@ -17,14 +17,14 @@
 import * as React from "react";
 
 import { Classes, Code, H5, HTMLSelect, Intent, Label, Menu, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 import { MenuItem2, MenuItem2Props } from "@blueprintjs/popover2";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { IntentSelect } from "../core-examples/common/intentSelect";
 import { BooleanOrUndefinedSelect } from "./booleanOrUndefinedSelect";
 
-export function MenuItem2Example(props: IExampleProps) {
+export function MenuItem2Example(props: ExampleProps) {
     const [large, setLarge] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [selected, setSelected] = React.useState<boolean | undefined>(undefined);

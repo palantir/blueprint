@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Suggest2 } from "@blueprintjs/select";
 
 import {
@@ -50,7 +50,7 @@ export interface ISuggestExampleState {
     resetOnSelect: boolean;
 }
 
-export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestExampleState> {
+export class SuggestExample extends React.PureComponent<ExampleProps, ISuggestExampleState> {
     public state: ISuggestExampleState = {
         allowCreate: false,
         closeOnSelect: true,

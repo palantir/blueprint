@@ -24,11 +24,11 @@
 import * as React from "react";
 
 import { Button, Popover, Position } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "./common/fileMenu";
 
-export class PopoverSizingExample extends React.PureComponent<IExampleProps> {
+export class PopoverSizingExample extends React.PureComponent<ExampleProps> {
     public render() {
         return (
             <Example options={false} {...this.props}>

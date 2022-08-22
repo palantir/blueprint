@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, HandleInteractionKind, Intent, MultiSlider, Radio, RadioGroup, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 interface ISliderValues {
     dangerStart: number;
@@ -36,7 +36,7 @@ interface IMultiSliderExampleState {
     vertical: boolean;
 }
 
-export class MultiSliderExample extends React.PureComponent<IExampleProps, IMultiSliderExampleState> {
+export class MultiSliderExample extends React.PureComponent<ExampleProps, IMultiSliderExampleState> {
     public state: IMultiSliderExampleState = {
         interactionKind: HandleInteractionKind.PUSH,
         showTrackFill: true,

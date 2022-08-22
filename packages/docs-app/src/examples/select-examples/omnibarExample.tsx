@@ -15,7 +15,7 @@
 import * as React from "react";
 
 import { Button, H5, HotkeysTarget2, KeyCombo, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 
 import {
@@ -36,7 +36,7 @@ export interface IOmnibarExampleState {
     resetOnSelect: boolean;
 }
 
-export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarExampleState> {
+export class OmnibarExample extends React.PureComponent<ExampleProps, IOmnibarExampleState> {
     public state: IOmnibarExampleState = {
         allowCreate: false,
         isOpen: false,

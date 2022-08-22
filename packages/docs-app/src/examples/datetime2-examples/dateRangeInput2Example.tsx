@@ -19,7 +19,7 @@ import * as React from "react";
 import { H5, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateRange, TimePrecision } from "@blueprintjs/datetime";
 import { DateRangeInput2 } from "@blueprintjs/datetime2";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { DateFnsDateRange } from "./dateFnsDate";
 import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "./dateFnsFormatSelector";
@@ -39,7 +39,7 @@ export interface DateRangeInput2ExampleState {
     showTimeArrowButtons: boolean;
 }
 
-export class DateRangeInput2Example extends React.PureComponent<IExampleProps, DateRangeInput2ExampleState> {
+export class DateRangeInput2Example extends React.PureComponent<ExampleProps, DateRangeInput2ExampleState> {
     public state: DateRangeInput2ExampleState = {
         allowSingleDayRange: false,
         closeOnSelection: false,

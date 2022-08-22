@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { IFilm, TOP_100_FILMS } from "../../common/films";
 import FilmSelect from "../../common/filmSelect";
@@ -39,7 +39,7 @@ export interface ISelectExampleState {
 }
 
 /** Technically a Select2 example, since FilmSelect uses Select2. */
-export class SelectExample extends React.PureComponent<IExampleProps, ISelectExampleState> {
+export class SelectExample extends React.PureComponent<ExampleProps, ISelectExampleState> {
     public state: ISelectExampleState = {
         allowCreate: false,
         createFirst: false,

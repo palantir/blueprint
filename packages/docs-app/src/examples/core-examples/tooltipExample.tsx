@@ -24,9 +24,9 @@
 import * as React from "react";
 
 import { Button, Classes, H1, Intent, Popover, Position, Switch, Tooltip } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-export class TooltipExample extends React.PureComponent<IExampleProps, { isOpen: boolean }> {
+export class TooltipExample extends React.PureComponent<ExampleProps, { isOpen: boolean }> {
     public state = {
         isOpen: false,
     };

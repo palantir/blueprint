@@ -17,11 +17,11 @@
 import * as React from "react";
 
 import { Classes, H5, Intent, Menu, MenuItem, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
-export function MenuItemExample(props: IExampleProps) {
+export function MenuItemExample(props: ExampleProps) {
     const [large, setLarge] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [selected, setSelected] = React.useState(false);

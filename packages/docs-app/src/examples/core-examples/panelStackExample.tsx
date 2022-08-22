@@ -24,7 +24,7 @@
 import * as React from "react";
 
 import { Button, H5, Intent, IPanel, IPanelProps, NumericInput, PanelStack, Switch, UL } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface IPanelStackExampleState {
     activePanelOnly: boolean;
@@ -32,7 +32,7 @@ export interface IPanelStackExampleState {
     showHeader: boolean;
 }
 
-export class PanelStackExample extends React.PureComponent<IExampleProps, IPanelStackExampleState> {
+export class PanelStackExample extends React.PureComponent<ExampleProps, IPanelStackExampleState> {
     public initialPanel: IPanel<IPanelExampleProps> = {
         component: PanelExample,
         props: {

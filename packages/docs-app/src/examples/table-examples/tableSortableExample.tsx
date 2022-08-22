@@ -19,7 +19,7 @@
 import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import {
     Cell,
     Column,
@@ -182,7 +182,7 @@ class RecordSortableColumn extends AbstractSortableColumn {
     };
 }
 
-export class TableSortableExample extends React.PureComponent<IExampleProps> {
+export class TableSortableExample extends React.PureComponent<ExampleProps> {
     public state = {
         columns: [
             new TextSortableColumn("Rikishi", 0),

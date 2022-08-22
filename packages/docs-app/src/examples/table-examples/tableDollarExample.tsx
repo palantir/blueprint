@@ -17,13 +17,13 @@
 import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, ColumnHeaderCell2, Table2 } from "@blueprintjs/table";
 
 // this will obviously get outdated, it's valid only as of August 2021
 const USD_TO_EURO_CONVERSION = 0.85;
 
-export class TableDollarExample extends React.PureComponent<IExampleProps> {
+export class TableDollarExample extends React.PureComponent<ExampleProps> {
     public render() {
         const dollarCellRenderer = (rowIndex: number) => <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>;
         const euroCellRenderer = (rowIndex: number) => (

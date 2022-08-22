@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Code, H5, Intent, MenuItem, Switch, TagProps } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Popover2 } from "@blueprintjs/popover2";
 import { ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
 
@@ -56,7 +56,7 @@ export interface IMultiSelectExampleState {
     tagMinimal: boolean;
 }
 
-export class MultiSelectExample extends React.PureComponent<IExampleProps, IMultiSelectExampleState> {
+export class MultiSelectExample extends React.PureComponent<ExampleProps, IMultiSelectExampleState> {
     public state: IMultiSelectExampleState = {
         allowCreate: false,
         createdItems: [],

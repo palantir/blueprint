@@ -29,7 +29,7 @@ import {
     Switch,
     Tag,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
 export interface IInputGroupExampleState {
@@ -41,7 +41,7 @@ export interface IInputGroupExampleState {
     tagValue: string;
 }
 
-export class InputGroupExample extends React.PureComponent<IExampleProps, IInputGroupExampleState> {
+export class InputGroupExample extends React.PureComponent<ExampleProps, IInputGroupExampleState> {
     public state: IInputGroupExampleState = {
         disabled: false,
         filterValue: "",

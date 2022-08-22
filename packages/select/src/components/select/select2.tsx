@@ -34,10 +34,10 @@ import {
 } from "@blueprintjs/core";
 import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
-import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
+import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
+export interface Select2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
     /**
      * Element which triggers the select popover. In most cases, you should display
      * the name or label of the curently selected item here.

@@ -16,7 +16,7 @@
 import * as React from "react";
 
 import { RadioGroup } from "@blueprintjs/core";
-import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
 import { Cell, Column, ColumnHeaderCell2, RowHeaderCell2, Table2 } from "@blueprintjs/table";
 
 interface IBigSpaceRock {
@@ -49,7 +49,7 @@ export interface ICellLoadingExampleState {
     randomNumbers?: number[];
 }
 
-export class CellLoadingExample extends React.PureComponent<IExampleProps, ICellLoadingExampleState> {
+export class CellLoadingExample extends React.PureComponent<ExampleProps, ICellLoadingExampleState> {
     public state: ICellLoadingExampleState = {
         configuration: CellsLoadingConfiguration.ALL,
     };

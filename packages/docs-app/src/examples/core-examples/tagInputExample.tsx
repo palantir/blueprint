@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Button, H5, Intent, Switch, TagInput, TagProps } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -47,7 +47,7 @@ export interface ITagInputExampleState {
     values: React.ReactNode[];
 }
 
-export class TagInputExample extends React.PureComponent<IExampleProps, ITagInputExampleState> {
+export class TagInputExample extends React.PureComponent<ExampleProps, ITagInputExampleState> {
     public state: ITagInputExampleState = {
         addOnBlur: false,
         addOnPaste: true,

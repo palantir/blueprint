@@ -39,12 +39,12 @@ import {
     setRef,
 } from "@blueprintjs/core";
 
-import { Classes, IListItemsProps } from "../../common";
+import { Classes, ListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export type SelectProps<T> = ISelectProps<T>;
 /** @deprecated use SelectProps */
-export interface ISelectProps<T> extends IListItemsProps<T> {
+export interface ISelectProps<T> extends ListItemsProps<T> {
     children?: React.ReactNode;
 
     /**

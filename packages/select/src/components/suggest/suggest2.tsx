@@ -33,10 +33,10 @@ import {
 } from "@blueprintjs/core";
 import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
-import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
+import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface Suggest2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
+export interface Suggest2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
     /**
      * Whether the popover should close after selecting an item.
      *

@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { MenuItem, MenuItemProps } from "@blueprintjs/core";
-import { IItemRendererProps, ItemPredicate, ItemRenderer } from "@blueprintjs/select";
+import { ItemPredicate, ItemRenderer, ItemRendererProps } from "@blueprintjs/select";
 
 export interface IFilm {
     /** Title of film. */
@@ -139,7 +139,7 @@ export const TOP_100_FILMS: IFilm[] = [
  */
 export function getFilmItemProps(
     film: IFilm,
-    { handleClick, handleFocus, modifiers, query }: IItemRendererProps,
+    { handleClick, handleFocus, modifiers, query }: ItemRendererProps,
 ): MenuItemProps & React.Attributes & React.HTMLAttributes<HTMLAnchorElement> {
     return {
         active: modifiers.active,

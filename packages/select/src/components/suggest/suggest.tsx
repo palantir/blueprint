@@ -39,12 +39,12 @@ import {
     setRef,
 } from "@blueprintjs/core";
 
-import { Classes, IListItemsProps } from "../../common";
+import { Classes, ListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export type SuggestProps<T> = ISuggestProps<T>;
 /** @deprecated use SuggestProps */
-export interface ISuggestProps<T> extends IListItemsProps<T> {
+export interface ISuggestProps<T> extends ListItemsProps<T> {
     /**
      * Whether the popover should close after selecting an item.
      *

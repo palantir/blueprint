@@ -17,14 +17,14 @@
 import * as React from "react";
 
 import { Button, Classes, Code } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Placement, Popover2 } from "@blueprintjs/popover2";
 
 const EXAMPLE_CLASS = "docs-popover2-placement-example";
 const SIDE_LABEL_CLASS = "docs-popover2-placement-label-side";
 const ALIGNMENT_LABEL_CLASS = "docs-popover2-placement-label-alignment";
 
-export class Popover2PlacementExample extends React.PureComponent<IExampleProps> {
+export class Popover2PlacementExample extends React.PureComponent<ExampleProps> {
     public static displayName = "Popover2PlacementExample";
 
     public render() {

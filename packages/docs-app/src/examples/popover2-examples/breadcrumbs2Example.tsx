@@ -27,7 +27,7 @@ import {
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";
-import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
 import { Breadcrumbs2 } from "@blueprintjs/popover2";
 
 export interface Breadcrumbs2ExampleState {
@@ -56,7 +56,7 @@ const ITEMS_FOR_ALWAYS_RENDER: BreadcrumbProps[] = [
     { icon: "document", text: "image.jpg", current: true },
 ];
 
-export class Breadcrumbs2Example extends React.PureComponent<IExampleProps, Breadcrumbs2ExampleState> {
+export class Breadcrumbs2Example extends React.PureComponent<ExampleProps, Breadcrumbs2ExampleState> {
     public state: Breadcrumbs2ExampleState = {
         alwaysRenderOverflow: false,
         collapseFrom: Boundary.START,

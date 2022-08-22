@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, JSONFormat2, Table2, TruncatedFormat2 } from "@blueprintjs/table";
 
 interface ITimezone {
@@ -77,7 +77,7 @@ const TIME_ZONES: ITimezone[] = (
     };
 });
 
-export class TableFormatsExample extends React.PureComponent<IExampleProps> {
+export class TableFormatsExample extends React.PureComponent<ExampleProps> {
     private data = TIME_ZONES;
 
     private date = new Date();
