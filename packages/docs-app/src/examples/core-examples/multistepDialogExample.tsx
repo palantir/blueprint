@@ -50,6 +50,7 @@ export interface IMultistepDialogExampleState {
     enforceFocus: boolean;
     hasTitle: boolean;
     isCloseButtonShown: boolean;
+    isMiddleStepDisabled: boolean;
     showCloseButtonInFooter: boolean;
     isOpen: boolean;
     navPosition: MultistepDialogNavPosition;
@@ -72,6 +73,7 @@ export class MultistepDialogExample extends React.PureComponent<
         hasTitle: true,
         initialStepIndex: 0,
         isCloseButtonShown: true,
+        isMiddleStepDisabled: false,
         isOpen: false,
         navPosition: "left",
         showCloseButtonInFooter: true,
@@ -89,6 +91,10 @@ export class MultistepDialogExample extends React.PureComponent<
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     private handleCloseButtonChange = handleBooleanChange(isCloseButtonShown => this.setState({ isCloseButtonShown }));
+
+    private handleMiddleStepDisabledChange = handleBooleanChange(isMiddleStepDisabled =>
+        this.setState({ isMiddleStepDisabled }),
+    );
 
     private handleFooterCloseButtonChange = handleBooleanChange(showCloseButtonInFooter =>
         this.setState({ showCloseButtonInFooter }),
@@ -122,10 +128,23 @@ export class MultistepDialogExample extends React.PureComponent<
                 >
                     <DialogStep
                         id="select"
+                        // N.B. it would make sense to disallow advancing to the middle step when it's disabled, but
+                        // this would make the example less usable, and would prevent us from testing the disabled step
+                        // appearance. A better solution would be to make MSD aware of disabled steps when rendering the
+                        // footer buttons.
+                        // nextButtonProps={{ disabled: state.isMiddleStepDisabled }}
                         panel={<SelectPanel onChange={this.handleSelectionChange} selectedValue={this.state.value} />}
                         title="Select"
                     />
                     <DialogStep
+                        disabled={state.isMiddleStepDisabled}
+                        id="middle"
+                        panel={<MiddlePanel />}
+                        title="Middle"
+                    />
+                    <DialogStep
+                        // see comment above first dialog step's nextButtonProps
+                        // backButtonProps={{ disabled: state.isMiddleStepDisabled }}
                         id="confirm"
                         panel={<ConfirmPanel selectedValue={this.state.value} />}
                         title="Confirm"
@@ -145,6 +164,7 @@ export class MultistepDialogExample extends React.PureComponent<
             hasTitle,
             initialStepIndex,
             isCloseButtonShown,
+            isMiddleStepDisabled,
             navPosition: position,
             showCloseButtonInFooter,
         } = this.state;
@@ -184,6 +204,12 @@ export class MultistepDialogExample extends React.PureComponent<
                     max={2}
                     min={-1}
                 />
+                <H5>DialogStep Props</H5>
+                <Switch
+                    checked={isMiddleStepDisabled}
+                    label="Disable middle step"
+                    onChange={this.handleMiddleStepDisabledChange}
+                />
             </>
         );
     }
@@ -213,6 +239,14 @@ const SelectPanel: React.FC<ISelectPanelProps> = props => (
         </RadioGroup>
     </div>
 );
+
+const MiddlePanel: React.FC = () => {
+    return (
+        <div className={classNames(Classes.DIALOG_BODY, "docs-multistep-dialog-example-step")}>
+            <p>A sample middle step which may be disabled by toggling "Disable middle step" in the example options.</p>
+        </div>
+    );
+};
 
 export interface IConfirmPanelProps {
     selectedValue: string;

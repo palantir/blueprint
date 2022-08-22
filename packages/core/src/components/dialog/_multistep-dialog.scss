@@ -159,11 +159,12 @@ $step-radius: $pt-border-radius * 2 !default;
     .#{$ns}-dark & {
       background: $dark-gray4;
     }
-  }
-  &.#{$ns}-dialog-step-viewed.#{$ns}-dialog-step-disabled {
-    background-color: $light-gray5;
-    .#{$ns}-dark & {
-      background: $dark-gray3;
+
+    &.#{$ns}-dialog-step-disabled {
+      background-color: $light-gray5;
+      .#{$ns}-dark & {
+        background: $dark-gray3;
+      }
     }
   }
 }
@@ -182,20 +183,21 @@ $step-radius: $pt-border-radius * 2 !default;
   }
 
   // by default, steps are inactive until they are visited or disabled
-  .#{$ns}-dialog-step-viewed.#{$ns}-dialog-step-disabled & {
-    background-color: $light-gray5;
-    cursor: not-allowed;
-
-    .#{$ns}-dark & {
-      background: $dark-gray3;
-    }
-  }
   .#{$ns}-dialog-step-viewed & {
     background-color: $white;
     cursor: pointer;
 
     .#{$ns}-dark & {
       background: $dark-gray4;
+    }
+  }
+
+  .#{$ns}-dialog-step-viewed.#{$ns}-dialog-step-disabled & {
+    background-color: $light-gray5;
+    cursor: not-allowed;
+
+    .#{$ns}-dark & {
+      background: $dark-gray3;
     }
   }
 
@@ -251,7 +253,8 @@ $step-radius: $pt-border-radius * 2 !default;
       color: $pt-dark-text-color;
     }
   }
-  .#{$ns}-dialog-step-viewed.#{$ns}-dialog-step-disabled:not(.#{$ns}-active) & {
+
+  .#{$ns}-dialog-step-viewed:not(.#{$ns}-active).#{$ns}-dialog-step-disabled & {
     color: $pt-text-color-disabled;
     .#{$ns}-dark & {
       color: $pt-dark-text-color-disabled;

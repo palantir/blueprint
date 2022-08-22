@@ -177,7 +177,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
             <div
                 className={classNames(Classes.DIALOG_STEP_CONTAINER, {
                     [Classes.ACTIVE]: currentlySelected,
-                    [Classes.DIALOG_STEP_DISABLED]: step.props.panelDisabled,
+                    [Classes.DIALOG_STEP_DISABLED]: step.props.disabled,
                     [Classes.DIALOG_STEP_VIEWED]: hasBeenViewed,
                 })}
                 key={index}
@@ -192,7 +192,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
     private handleClickDialogStep = (index: number) => {
         const steps = this.getDialogStepChildren();
-        if (index > this.state.lastViewedIndex || steps[index].props.panelDisabled) {
+        if (index > this.state.lastViewedIndex || steps[index].props.disabled) {
             return;
         }
         return this.getDialogStepChangeHandler(index);

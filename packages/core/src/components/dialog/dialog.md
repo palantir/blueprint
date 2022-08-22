@@ -22,7 +22,7 @@ Blueprint provides two types of dialogs:
 
 @reactExample DialogExample
 
-@### Props
+@### Usage
 
 `Dialog` is a stateless React component controlled by the `isOpen` prop.
 
@@ -30,6 +30,8 @@ The children you provide to this component are rendered as contents inside the
 `Classes.DIALOG` element. Typically, you will want to provide a child with
 `Classes.DIALOG_BODY` that contains the body content and a child with
 `Classes.DIALOG_FOOTER` that contains the action buttons.
+
+@### Props interface
 
 @interface IDialogProps
 
@@ -47,7 +49,7 @@ More examples of dialog content are shown below.
 
 @reactExample MultistepDialogExample
 
-@### Multistep dialog props
+@### Usage
 
 `MultistepDialog` is a wrapper around `Dialog` that displays a dialog with multiple steps, each of which maps to a specific panel.
 
@@ -57,6 +59,29 @@ The children you provide to this component are rendered as contents inside the
 
 Children of the `MultistepDialog` are filtered down to only `DialogStep` components and rendered in order.
 `DialogStep` children are managed by the component; clicking one will change selection.
+
+```tsx
+import { Classes, DialogStep, MultistepDialog } from "@blueprintjs/core";
+
+function Example() {
+    return (
+        <MultistepDialog>
+            <DialogStep
+                id="select"
+                panel={<div className={Classes.DIALOG_BODY}>...</div>}
+                title="Select"
+            />
+            <DialogStep
+                id="confirm"
+                panel={<div className={Classes.DIALOG_BODY}>...</div>}
+                title="Confirm"
+            />
+        </MultistepDialog>
+    );
+}
+```
+
+@### Props interface
 
 @interface IMultistepDialogProps
 

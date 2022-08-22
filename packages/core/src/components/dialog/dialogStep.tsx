@@ -29,6 +29,13 @@ export type DialogStepProps = IDialogStepProps;
 /** @deprecated use DialogStepProps */
 export interface IDialogStepProps extends Props, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
+     * Whether this step is disabled.
+     *
+     * Setting this to `false` will disable navigation to this step's panel via the steps list in the sidebar.
+     */
+    disabled?: boolean;
+
+    /**
      * Unique identifier used to identify which step is selected.
      */
     id: DialogStepId;
@@ -57,10 +64,6 @@ export interface IDialogStepProps extends Props, Omit<HTMLDivProps, "id" | "titl
      * Props for the next button.
      */
     nextButtonProps?: DialogStepButtonProps;
-    /**
-     * Disable panel for side navigation
-     */
-    panelDisabled?: boolean;
 }
 
 export class DialogStep extends AbstractPureComponent2<DialogStepProps> {
