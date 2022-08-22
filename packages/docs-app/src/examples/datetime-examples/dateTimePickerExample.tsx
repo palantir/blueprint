@@ -25,11 +25,11 @@ import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
 import { DateTimePicker } from "@blueprintjs/datetime";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { MomentDate } from "./common/momentDate";
 
-export class DateTimePickerExample extends React.PureComponent<IExampleProps, { date: Date }> {
+export class DateTimePickerExample extends React.PureComponent<ExampleProps, { date: Date }> {
     public state = { date: new Date() };
 
     public render() {

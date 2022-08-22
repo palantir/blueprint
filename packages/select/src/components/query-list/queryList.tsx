@@ -24,7 +24,7 @@ import {
     getCreateNewItem,
     ICreateNewItem,
     IItemListRendererProps,
-    IItemModifiers,
+    ItemModifiers,
     IListItemsProps,
     isCreateNewItem,
     renderFilteredItems,
@@ -373,7 +373,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
         if (this.props.disabled !== true) {
             const { activeItem, query, filteredItems } = this.state;
 
-            const modifiers: IItemModifiers = {
+            const modifiers: ItemModifiers = {
                 active: executeItemsEqual(this.props.itemsEqual, getActiveItem(activeItem), item),
                 disabled: isItemDisabled(item, index, this.props.itemDisabled),
                 matchesPredicate: filteredItems.indexOf(item) >= 0,

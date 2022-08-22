@@ -29,7 +29,7 @@ import * as sinon from "sinon";
 import { Classes, InputGroup, Keys, Popover } from "@blueprintjs/core";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
-import { IItemRendererProps, ISelectProps, ISelectState, Select } from "../src";
+import { ItemRendererProps, ISelectProps, ISelectState, Select } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<Select>", () => {
@@ -41,7 +41,7 @@ describe("<Select>", () => {
     };
     let handlers: {
         itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
+        itemRenderer: sinon.SinonSpy<[IFilm, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
     let testsContainerElement: HTMLElement | undefined;

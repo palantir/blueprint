@@ -19,8 +19,12 @@ import * as React from "react";
 
 import { Props } from "@blueprintjs/core";
 
+/** @deprecated use ExampleProps */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export interface IExampleProps<T = {}> extends Props {
+export type IExampleProps<T = {}> = ExampleProps<T>;
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export interface ExampleProps<T = {}> extends Props {
     /**
      * Identifier of this example.
      * This will appear as the `data-example-id` attribute on the DOM element.
@@ -45,7 +49,7 @@ export interface IExampleProps<T = {}> extends Props {
  * Props supported by the `Example` component.
  * Additional props will be spread to the root `<div>` element.
  */
-export interface IDocsExampleProps extends IExampleProps {
+export interface IDocsExampleProps extends ExampleProps {
     children?: React.ReactNode;
 
     /**
@@ -85,10 +89,10 @@ export interface IDocsExampleProps extends IExampleProps {
  * Container for an example and its options.
  *
  * ```tsx
- * import { Example, IExampleProps } from "@blueprintjs/docs-theme";
- * // use IExampleProps as your props type,
+ * import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+ * // use ExampleProps as your props type,
  * // then spread it to <Example> below
- * export class MyExample extends React.PureComponent<IExampleProps, [your state]> {
+ * export class MyExample extends React.PureComponent<ExampleProps, [your state]> {
  *     public render() {
  *         const options = (
  *             <>

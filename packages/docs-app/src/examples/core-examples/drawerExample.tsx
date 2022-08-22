@@ -37,7 +37,7 @@ import {
     handleBooleanChange,
     handleStringChange,
     handleValueChange,
-    IExampleProps,
+    ExampleProps,
 } from "@blueprintjs/docs-theme";
 import { ContextMenu2 } from "@blueprintjs/popover2";
 
@@ -54,7 +54,7 @@ export interface IDrawerExampleState {
     size: string;
     usePortal: boolean;
 }
-export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IDrawerExampleState> {
+export class DrawerExample extends React.PureComponent<ExampleProps<IBlueprintExampleData>, IDrawerExampleState> {
     public state: IDrawerExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,

@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, Slider, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface ISliderExampleState {
     value1?: number;
@@ -26,7 +26,7 @@ export interface ISliderExampleState {
     vertical?: boolean;
 }
 
-export class SliderExample extends React.PureComponent<IExampleProps, ISliderExampleState> {
+export class SliderExample extends React.PureComponent<ExampleProps, ISliderExampleState> {
     public state: ISliderExampleState = {
         value1: 0,
         value2: 2.5,

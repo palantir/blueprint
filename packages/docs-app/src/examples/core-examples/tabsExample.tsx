@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Alignment, Classes, H3, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface ITabsExampleState {
     activePanelOnly: boolean;
@@ -26,7 +26,7 @@ export interface ITabsExampleState {
     vertical: boolean;
 }
 
-export class TabsExample extends React.PureComponent<IExampleProps, ITabsExampleState> {
+export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleState> {
     public state: ITabsExampleState = {
         activePanelOnly: false,
         animate: true,

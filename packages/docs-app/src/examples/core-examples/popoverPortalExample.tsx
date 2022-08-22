@@ -24,13 +24,13 @@
 import * as React from "react";
 
 import { Button, Code, H5, IPopoverProps, Popover, Position, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IPopoverPortalExampleState {
     isOpen: boolean;
 }
 
-export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPopoverPortalExampleState> {
+export class PopoverPortalExample extends React.PureComponent<ExampleProps, IPopoverPortalExampleState> {
     public state: IPopoverPortalExampleState = {
         isOpen: true,
     };

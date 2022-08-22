@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 import { Size, SizeSelect } from "./common/sizeSelect";
@@ -34,7 +34,7 @@ export interface IButtonsExampleState {
     wiggling: boolean;
 }
 
-export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsExampleState> {
+export class ButtonsExample extends React.PureComponent<ExampleProps, IButtonsExampleState> {
     public state: IButtonsExampleState = {
         active: false,
         disabled: false,

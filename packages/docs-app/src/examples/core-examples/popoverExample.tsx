@@ -47,10 +47,10 @@ import {
 } from "@blueprintjs/core";
 import {
     Example,
+    ExampleProps,
     handleBooleanChange,
     handleNumberChange,
     handleValueChange,
-    IExampleProps,
 } from "@blueprintjs/docs-theme";
 
 const INTERACTION_KINDS = [
@@ -95,7 +95,7 @@ export interface IPopoverExampleState {
     usePortal?: boolean;
 }
 
-export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverExampleState> {
+export class PopoverExample extends React.PureComponent<ExampleProps, IPopoverExampleState> {
     public state: IPopoverExampleState = {
         boundary: "viewport",
         canEscapeKeyClose: true,

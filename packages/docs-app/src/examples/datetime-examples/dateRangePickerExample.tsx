@@ -24,7 +24,7 @@ import {
     handleBooleanChange,
     handleNumberChange,
     handleValueChange,
-    IExampleProps,
+    ExampleProps,
 } from "@blueprintjs/docs-theme";
 
 import { MomentDateRange } from "./common/momentDate";
@@ -71,7 +71,7 @@ const MAX_DATE_OPTIONS: IDateOption[] = [
     },
 ];
 
-export class DateRangePickerExample extends React.PureComponent<IExampleProps, IDateRangePickerExampleState> {
+export class DateRangePickerExample extends React.PureComponent<ExampleProps, IDateRangePickerExampleState> {
     public state: IDateRangePickerExampleState = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,

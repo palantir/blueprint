@@ -25,7 +25,7 @@ import * as React from "react";
 
 import { H5, Position, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateInput, TimePrecision } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { MomentDate } from "./common/momentDate";
 import { MOMENT_FORMATS, MomentFormatSelector } from "./common/momentFormats";
@@ -43,7 +43,7 @@ export interface IDateInputExampleState {
     showTimeArrowButtons: boolean;
 }
 
-export class DateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
+export class DateInputExample extends React.PureComponent<ExampleProps, IDateInputExampleState> {
     public state: IDateInputExampleState = {
         closeOnSelection: true,
         date: null,

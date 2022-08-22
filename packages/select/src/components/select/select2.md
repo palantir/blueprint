@@ -273,7 +273,7 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
 <FilmSelect itemPredicate={filterFilm} itemRenderer={renderFilm} items={...} onItemSelect={...} />
 ```
 
-@interface IItemRendererProps
+@interface ItemRendererProps
 
 @### Item list renderer
 
