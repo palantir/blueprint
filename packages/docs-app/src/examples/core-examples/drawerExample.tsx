@@ -34,10 +34,10 @@ import {
 } from "@blueprintjs/core";
 import {
     Example,
+    ExampleProps,
     handleBooleanChange,
     handleStringChange,
     handleValueChange,
-    ExampleProps,
 } from "@blueprintjs/docs-theme";
 import { ContextMenu2 } from "@blueprintjs/popover2";
 

@@ -24,7 +24,6 @@ import {
     HTMLSelect,
     Intent,
     IToasterProps,
-    ToastProps,
     Label,
     NumericInput,
     Position,
@@ -32,6 +31,7 @@ import {
     Switch,
     Toaster,
     ToasterPosition,
+    ToastProps,
 } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 

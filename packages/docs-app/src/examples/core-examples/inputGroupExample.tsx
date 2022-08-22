@@ -29,7 +29,7 @@ import {
     Switch,
     Tag,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
 export interface IInputGroupExampleState {

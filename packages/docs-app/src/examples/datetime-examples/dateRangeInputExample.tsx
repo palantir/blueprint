@@ -25,7 +25,7 @@ import * as React from "react";
 
 import { H5, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateRange, DateRangeInput, TimePrecision } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { MomentDateRange } from "./common/momentDate";
 import { MOMENT_FORMATS, MomentFormatSelector } from "./common/momentFormats";

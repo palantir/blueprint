@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table2, TableLoadingOption } from "@blueprintjs/table";
 
 interface IBigSpaceRock {

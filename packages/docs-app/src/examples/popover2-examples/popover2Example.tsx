@@ -35,10 +35,10 @@ import {
 } from "@blueprintjs/core";
 import {
     Example,
+    ExampleProps,
     handleBooleanChange,
     handleNumberChange,
     handleValueChange,
-    ExampleProps,
 } from "@blueprintjs/docs-theme";
 import {
     Classes,

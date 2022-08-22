@@ -27,7 +27,7 @@ import {
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";
-import { Example, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
 import { Breadcrumbs2 } from "@blueprintjs/popover2";
 
 export interface Breadcrumbs2ExampleState {

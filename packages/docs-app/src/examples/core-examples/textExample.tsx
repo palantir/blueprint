@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Text, TextArea } from "@blueprintjs/core";
-import { Example, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
 
 export interface ITextExampleState {
     textContent: string;
