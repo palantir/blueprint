@@ -11,10 +11,10 @@
 $half-grid-size: $pt-grid-size * 0.5 !default;
 
 // Extended color pallete
-$blue6: #99c4ff;
-$green6: #7cd7a2;
-$orange6: #f5c186;
-$red6: #ffa1a4;
+$blue6: #99c4ff !default;
+$green6: #7cd7a2 !default;
+$orange6: #f5c186 !default;
+$red6: #ffa1a4 !default;
 
 $icon-classes: (
   ".#{$ns}-icon",

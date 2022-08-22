@@ -19,8 +19,8 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Button, ButtonProps, InputGroup, InputGroupProps2 } from "@blueprintjs/core";
-import { MenuItem2, Popover2, Popover2Props } from "@blueprintjs/popover2";
+import { Button, ButtonProps, InputGroup, InputGroupProps2, MenuItem } from "@blueprintjs/core";
+import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 import { QueryList, Select2 } from "@blueprintjs/select";
 
 import { TimezoneSelect, TimezoneSelectProps } from "../../src";
@@ -185,6 +185,6 @@ describe("<TimezoneSelect>", () => {
     }
 
     function clickFirstMenuItem(timezoneSelect: ReactWrapper<TimezoneSelect>): void {
-        findSelect(timezoneSelect).find(MenuItem2).first().simulate("click");
+        findSelect(timezoneSelect).find(MenuItem).first().simulate("click");
     }
 });

@@ -1,7 +1,5 @@
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -16,9 +14,8 @@
 
 import * as React from "react";
 
-import { Button, H5, HotkeysTarget2, KeyCombo, Position, Switch, Toaster } from "@blueprintjs/core";
+import { Button, H5, HotkeysTarget2, KeyCombo, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
-import { MenuItem2 } from "@blueprintjs/popover2";
 import { Omnibar } from "@blueprintjs/select";
 
 import {
@@ -90,7 +87,7 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
                         itemRenderer={renderFilm}
                         items={TOP_100_FILMS}
                         itemsEqual={areFilmsEqual}
-                        noResults={<MenuItem2 disabled={true} text="No results." />}
+                        noResults={<MenuItem disabled={true} text="No results." />}
                         onClose={this.handleClose}
                         onItemSelect={this.handleItemSelect}
                     />

@@ -9,8 +9,7 @@ export const coreComponentsMigrationMapping = {
     AbstractPureComponent: "AbstractPureComponent2",
     Breadcrumbs: "Breadcrumbs2",
     CollapsibleList: "OverflowList",
-    // TODO(@adidahiya): smarter lint rule which detects <MenuItem popoverProps> usage
-    // MenuItem: "MenuItem2",
+    "MenuItem.popoverProps": "MenuItem2",
     // TODO(@adidahiya): Blueprint v6
     // PanelStack: "PanelStack2",
     Popover: "Popover2",
