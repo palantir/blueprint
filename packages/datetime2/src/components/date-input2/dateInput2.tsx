@@ -35,7 +35,7 @@ import {
     DatePickerShortcut,
     DatePickerUtils,
 } from "@blueprintjs/datetime";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
+import { Popover2, Popover2Props, Popover2TargetProps } from "@blueprintjs/popover2";
 
 import * as Classes from "../../common/classes";
 import { isDateValid, isDayInRange } from "../../common/dateUtils";
@@ -196,6 +196,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
         defaultTimezone,
         defaultValue,
         disableTimezoneSelect,
+        fill,
         inputProps = {},
         // defaults duplicated here for TypeScript convenience
         maxDate = DEFAULT_MAX_DATE,
@@ -570,10 +571,62 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     const shouldShowErrorStyling =
         !isInputFocused || inputValue === props.outOfRangeMessage || inputValue === props.invalidDateMessage;
 
+    // We use the renderTarget API to flatten the rendered DOM and make it easier to implement features like the "fill" prop.
+    const renderTarget = React.useCallback(
+        // N.B. pull out `defaultValue` so that it's not forwarded to the DOM.
+        ({
+            defaultValue: _defaultValue,
+            isOpen: targetIsOpen,
+            ref,
+            ...targetProps
+        }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
+            return (
+                <InputGroup
+                    autoComplete="off"
+                    className={classNames(targetProps.className, inputProps.className)}
+                    intent={shouldShowErrorStyling && isErrorState ? "danger" : "none"}
+                    placeholder={placeholder}
+                    rightElement={
+                        <>
+                            {maybeTimezonePicker}
+                            {props.rightElement}
+                        </>
+                    }
+                    type="text"
+                    {...targetProps}
+                    {...inputProps}
+                    aria-expanded={targetIsOpen}
+                    disabled={props.disabled}
+                    fill={fill}
+                    inputRef={mergeRefs(ref, inputRef, props.inputProps?.inputRef ?? null)}
+                    onBlur={handleInputBlur}
+                    onChange={handleInputChange}
+                    onClick={handleInputClick}
+                    onFocus={handleInputFocus}
+                    onKeyDown={handleInputKeyDown}
+                    value={(isInputFocused ? inputValue : formattedDateString) ?? ""}
+                />
+            );
+        },
+        [
+            fill,
+            formattedDateString,
+            inputValue,
+            isInputFocused,
+            isTimezoneSelectDisabled,
+            isTimezoneSelectHidden,
+            placeholder,
+            shouldShowErrorStyling,
+            props.disabled,
+            props.inputProps,
+            props.rightElement,
+        ],
+    );
+
+    // N.B. no need to set `fill` since that is unused with the `renderTarget` API
     return (
         <Popover2
             isOpen={isOpen && !props.disabled}
-            fill={props.fill}
             {...popoverProps}
             autoFocus={false}
             className={classNames(Classes.DATE_INPUT, popoverProps.className, props.className)}
@@ -581,29 +634,8 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             enforceFocus={false}
             onClose={handlePopoverClose}
             popoverClassName={classNames(Classes.DATE_INPUT_POPOVER, popoverProps.popoverClassName)}
-        >
-            <InputGroup
-                autoComplete="off"
-                intent={shouldShowErrorStyling && isErrorState ? "danger" : "none"}
-                placeholder={placeholder}
-                rightElement={
-                    <>
-                        {maybeTimezonePicker}
-                        {props.rightElement}
-                    </>
-                }
-                type="text"
-                {...inputProps}
-                disabled={props.disabled}
-                inputRef={mergeRefs(inputRef, props.inputProps?.inputRef ?? null)}
-                onBlur={handleInputBlur}
-                onChange={handleInputChange}
-                onClick={handleInputClick}
-                onFocus={handleInputFocus}
-                onKeyDown={handleInputKeyDown}
-                value={(isInputFocused ? inputValue : formattedDateString) ?? ""}
-            />
-        </Popover2>
+            renderTarget={renderTarget}
+        />
     );
 });
 DateInput2.displayName = `${DISPLAYNAME_PREFIX}.DateInput2`;

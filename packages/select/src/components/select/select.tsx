@@ -19,6 +19,8 @@
  * All changes & bugfixes should be made to Select2 instead.
  */
 
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -40,7 +42,6 @@ import {
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-// eslint-disable-next-line deprecation/deprecation
 export type SelectProps<T> = ISelectProps<T>;
 /** @deprecated use SelectProps */
 export interface ISelectProps<T> extends IListItemsProps<T> {
@@ -88,7 +89,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     matchTargetWidth?: boolean;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    // eslint-disable-next-line @typescript-eslint/ban-types, deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/ban-types
     popoverProps?: Partial<IPopoverProps> & object;
 
     /**
@@ -109,7 +110,6 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
     public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
 
     public static ofType<U>() {
-        // eslint-disable-next-line deprecation/deprecation
         return Select as new (props: SelectProps<U>) => Select<U>;
     }
 
@@ -132,7 +132,6 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
         const { filterable, inputProps, popoverProps, ...restProps } = this.props;
 
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
             <this.TypedQueryList
                 {...restProps}
                 onItemSelect={this.handleItemSelect}
@@ -201,7 +200,6 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
 
         const { handleKeyDown, handleKeyUp } = listProps;
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 enforceFocus={false}
@@ -228,7 +226,6 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
                     {filterable ? input : undefined}
                     {listProps.itemList}
                 </div>
-                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     };
@@ -240,7 +237,6 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         // open popover when arrow key pressed on target while closed
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        // eslint-disable-next-line deprecation/deprecation
         if (event.which === Keys.ARROW_UP || event.which === Keys.ARROW_DOWN) {
             event.preventDefault();
             this.setState({ isOpen: true });

@@ -42,7 +42,8 @@ export interface IItemRendererProps {
      */
     handleFocus?: () => void;
 
-    index?: number;
+    /** Index of the item in the QueryList items array. */
+    index: number;
 
     /** Modifiers that describe how to render this item, such as `active` or `disabled`. */
     modifiers: IItemModifiers;

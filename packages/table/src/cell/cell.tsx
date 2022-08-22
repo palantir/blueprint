@@ -28,7 +28,9 @@ import {
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
 import { JSONFormat } from "./formats/jsonFormat";
+import { JSONFormat2 } from "./formats/jsonFormat2";
 import { TruncatedFormat } from "./formats/truncatedFormat";
+import { TruncatedFormat2 } from "./formats/truncatedFormat2";
 
 export type CellProps = ICellProps;
 export interface ICellProps extends IntentProps, Props {
@@ -173,7 +175,12 @@ export class Cell extends React.Component<ICellProps> {
         // note: these aren't actually used by truncated format, just in shouldComponentUpdate
         const modifiedChildren = React.Children.map(this.props.children, child => {
             const isFormatElement =
-                CoreUtils.isElementOfType(child, TruncatedFormat) || CoreUtils.isElementOfType(child, JSONFormat);
+                // eslint-disable-next-line deprecation/deprecation
+                CoreUtils.isElementOfType(child, TruncatedFormat) ||
+                CoreUtils.isElementOfType(child, TruncatedFormat2) ||
+                // eslint-disable-next-line deprecation/deprecation
+                CoreUtils.isElementOfType(child, JSONFormat) ||
+                CoreUtils.isElementOfType(child, JSONFormat2);
             if (style != null && React.isValidElement(child) && isFormatElement) {
                 return React.cloneElement(child as React.ReactElement<any>, {
                     parentCellHeight: style.height === undefined ? undefined : parseInt(style.height.toString(), 10),

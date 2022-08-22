@@ -31,7 +31,6 @@ import { CellRenderer } from "./cell/cell";
 import { Column, ColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
-import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "./common/context";
 import * as Errors from "./common/errors";
 import { Grid, ICellMapper } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
@@ -40,7 +39,7 @@ import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
 import { ColumnHeader } from "./headers/columnHeader";
-import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
+import { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./headers/columnHeaderCell2";
 import { renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { GuideLayer } from "./layers/guides";
@@ -55,7 +54,7 @@ import {
     resizeRowsByTallestCell,
 } from "./resizeRows";
 import { compareChildren, getHotkeysFromProps, isSelectionModeEnabled } from "./table2Utils";
-import { TableBody } from "./tableBody";
+import { TableBody2 } from "./tableBody2";
 import { TableHotkeys } from "./tableHotkeys";
 import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./tableProps";
 import type { TableSnapshot, TableState } from "./tableState";
@@ -97,9 +96,6 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         rowHeaderCellRenderer: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
-
-    public static childContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> =
-        columnInteractionBarContextTypes;
 
     public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState) {
         const {
@@ -433,12 +429,6 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     // React lifecycle
     // ===============
 
-    public getChildContext(): IColumnInteractionBarContextTypes {
-        return {
-            enableColumnInteractionBar: this.props.enableColumnInteractionBar!,
-        };
-    }
-
     public shouldComponentUpdate(nextProps: Table2Props, nextState: TableState) {
         const propKeysDenylist = { exclude: Table2.SHALLOW_COMPARE_PROP_KEYS_DENYLIST };
         const stateKeysDenylist = { exclude: Table2.SHALLOW_COMPARE_STATE_KEYS_DENYLIST };
@@ -763,21 +753,23 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
             if (columnHeaderCell != null) {
                 return React.cloneElement(columnHeaderCell, {
+                    enableColumnInteractionBar: this.props.enableColumnInteractionBar,
                     loading: columnHeaderCell.props.loading ?? columnLoading,
                 });
             }
         }
 
-        const baseProps: IColumnHeaderCellProps = {
+        const baseProps: ColumnHeaderCell2Props = {
+            enableColumnInteractionBar: this.props.enableColumnInteractionBar,
             index: columnIndex,
             loading: columnLoading,
             ...spreadableProps,
         };
 
         if (columnProps.name != null) {
-            return <ColumnHeaderCell {...baseProps} />;
+            return <ColumnHeaderCell2 {...baseProps} />;
         } else {
-            return <ColumnHeaderCell {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
+            return <ColumnHeaderCell2 {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
         }
     };
 
@@ -1029,7 +1021,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
 
         return (
             <div>
-                <TableBody
+                <TableBody2
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
                     focusedCell={focusedCell}

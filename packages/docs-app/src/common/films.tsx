@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { MenuItem } from "@blueprintjs/core";
-import { ItemPredicate, ItemRenderer } from "@blueprintjs/select";
+import { MenuItem, MenuItemProps } from "@blueprintjs/core";
+import { IItemRendererProps, ItemPredicate, ItemRenderer } from "@blueprintjs/select";
 
 export interface IFilm {
     /** Title of film. */
@@ -132,23 +132,35 @@ export const TOP_100_FILMS: IFilm[] = [
     { title: "Monty Python and the Holy Grail", year: 1975 },
 ].map((m, index) => ({ ...m, rank: index + 1 }));
 
-export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, handleFocus, modifiers, query }) => {
-    if (!modifiers.matchesPredicate) {
+/**
+ * Takes the same arguments as `ItemRenderer<IFilm>`, but returns the common menu item
+ * props for that item instead of the rendered element itself. This is useful for implementing
+ * custom item renderers.
+ */
+export function getFilmItemProps(
+    film: IFilm,
+    { handleClick, handleFocus, modifiers, query }: IItemRendererProps,
+): MenuItemProps & React.Attributes & React.HTMLAttributes<HTMLAnchorElement> {
+    return {
+        active: modifiers.active,
+        disabled: modifiers.disabled,
+        key: film.rank,
+        label: film.year.toString(),
+        onClick: handleClick,
+        onFocus: handleFocus,
+        roleStructure: "listoption",
+        text: highlightText(`${film.rank}. ${film.title}`, query),
+    };
+}
+
+/**
+ * Simple film item renderer _without_ support for "selected" appearance.
+ */
+export const renderFilm: ItemRenderer<IFilm> = (film, props) => {
+    if (!props.modifiers.matchesPredicate) {
         return null;
     }
-    const text = `${film.rank}. ${film.title}`;
-    return (
-        <MenuItem
-            active={modifiers.active}
-            disabled={modifiers.disabled}
-            label={film.year.toString()}
-            roleStructure="listoption"
-            key={film.rank}
-            onClick={handleClick}
-            onFocus={handleFocus}
-            text={highlightText(text, query)}
-        />
-    );
+    return <MenuItem {...getFilmItemProps(film, props)} />;
 };
 
 export const renderCreateFilmOption = (
@@ -211,12 +223,6 @@ function highlightText(text: string, query: string) {
 function escapeRegExpChars(text: string) {
     return text.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 }
-
-export const filmSelectProps = {
-    itemPredicate: filterFilm,
-    itemRenderer: renderFilm,
-    items: TOP_100_FILMS,
-};
 
 export function createFilm(title: string): IFilm {
     return {

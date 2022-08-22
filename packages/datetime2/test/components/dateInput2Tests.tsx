@@ -126,12 +126,13 @@ describe("<DateInput2>", () => {
             assert.equal(datePicker.prop("todayButtonText"), "today");
         });
 
-        it("passes inputProps to InputGroup", () => {
+        it("passes fill and inputProps to InputGroup", () => {
             const inputRef = sinon.spy();
             const onFocus = sinon.spy();
             const wrapper = mount(
                 <DateInput2
                     {...DEFAULT_PROPS}
+                    fill={true}
                     inputProps={{
                         inputRef,
                         leftIcon: "star",
@@ -143,18 +144,18 @@ describe("<DateInput2>", () => {
             focusInput(wrapper);
 
             const input = wrapper.find(InputGroup);
+            assert.strictEqual(input.prop("fill"), true);
             assert.strictEqual(input.prop("leftIcon"), "star");
             assert.isTrue(input.prop("required"));
             assert.isTrue(inputRef.called, "inputRef not invoked");
             assert.isTrue(onFocus.called, "onFocus not invoked");
         });
 
-        it("passes fill and popoverProps to Popover2", () => {
+        it("passes popoverProps to Popover2", () => {
             const onOpening = sinon.spy();
             const wrapper = mount(
                 <DateInput2
                     {...DEFAULT_PROPS}
-                    fill={true}
                     popoverProps={{
                         onOpening,
                         placement: "top",
@@ -165,7 +166,6 @@ describe("<DateInput2>", () => {
             focusInput(wrapper);
 
             const popover = wrapper.find(Popover2).first();
-            assert.strictEqual(popover.prop("fill"), true);
             assert.strictEqual(popover.prop("placement"), "top");
             assert.strictEqual(popover.prop("usePortal"), false);
             assert.isTrue(onOpening.calledOnce);

@@ -25,7 +25,8 @@ import {
     areFilmsEqual,
     arrayContainsFilm,
     createFilm,
-    filmSelectProps,
+    filterFilm,
+    getFilmItemProps,
     IFilm,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
@@ -64,7 +65,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         films: [],
         hasInitialContent: false,
         intent: false,
-        items: filmSelectProps.items,
+        items: TOP_100_FILMS,
         matchTargetWidth: false,
         openOnKeyDown: false,
         popoverMinimal: true,
@@ -115,16 +116,14 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <FilmMultiSelect
-                    {...filmSelectProps}
                     {...flags}
                     createNewItemFromQuery={maybeCreateNewItemFromQuery}
                     createNewItemRenderer={maybeCreateNewItemRenderer}
                     initialContent={initialContent}
+                    itemPredicate={filterFilm}
                     itemRenderer={this.renderFilm}
-                    itemsEqual={areFilmsEqual}
-                    // we may customize the default filmSelectProps.items by
-                    // adding newly created items to the list, so pass our own
                     items={this.state.items}
+                    itemsEqual={areFilmsEqual}
                     menuProps={{ "aria-label": "films" }}
                     noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
                     onClear={this.state.showClearButton ? this.handleClear : undefined}
@@ -230,21 +229,17 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
 
     private renderTag = (film: IFilm) => film.title;
 
-    // NOTE: not using Films.itemRenderer here so we can set icons.
-    private renderFilm: ItemRenderer<IFilm> = (film, { modifiers, handleClick }) => {
-        if (!modifiers.matchesPredicate) {
+    private renderFilm: ItemRenderer<IFilm> = (film, props) => {
+        if (!props.modifiers.matchesPredicate) {
             return null;
         }
+
         return (
             <MenuItem
-                selected={modifiers.active}
-                icon={this.isFilmSelected(film) ? "tick" : "blank"}
-                roleStructure="listoption"
-                key={film.rank}
-                label={film.year.toString()}
-                onClick={handleClick}
-                text={`${film.rank}. ${film.title}`}
+                {...getFilmItemProps(film, props)}
+                selected={this.isFilmSelected(film)}
                 shouldDismissPopover={false}
+                text={`${film.rank}. ${film.title}`}
             />
         );
     };

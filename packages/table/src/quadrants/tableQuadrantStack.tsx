@@ -227,7 +227,7 @@ export interface ITableQuadrantStackProps extends Props {
      *
      * This value defaults to `undefined` so that, by default, it won't override
      * the `enableColumnInteractionBar` values that you might have provided directly to
-     * each `<ColumnHeaderCell>`.
+     * each `<ColumnHeaderCell2>`.
      *
      * REQUIRES QUADRANT RESYNC
      *

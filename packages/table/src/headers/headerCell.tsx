@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to HeaderCell2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -92,7 +99,7 @@ export interface IHeaderCellState {
     isActive: boolean;
 }
 
-// eslint-disable-next-line deprecation/deprecation
+/** @deprecated use HeaderCell2 */
 @ContextMenuTarget
 export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeaderCellState> {
     public state: IHeaderCellState = {

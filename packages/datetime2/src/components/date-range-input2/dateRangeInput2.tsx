@@ -21,7 +21,7 @@ import * as React from "react";
 import {
     AbstractPureComponent2,
     Boundary,
-    Classes,
+    Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps2,
@@ -39,9 +39,9 @@ import {
     DateRangePicker,
     DateRangeShortcut,
 } from "@blueprintjs/datetime";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
+import { Popover2, Popover2Props, Popover2TargetProps } from "@blueprintjs/popover2";
 
-import { DateRange, NonNullDateRange } from "../../common/dateRange";
+import { Classes, DateRange, NonNullDateRange } from "../../common";
 import { isDayInRange, isSameTime } from "../../common/dateUtils";
 import * as Errors from "../../common/errors";
 
@@ -354,26 +354,21 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
             />
         );
 
-        const popoverClassName = classNames(popoverProps.className, this.props.className);
-
         // allow custom props for the popover and each input group, but pass them in an order that
         // guarantees only some props are overridable.
         return (
             <Popover2
                 isOpen={this.state.isOpen}
                 placement="bottom-start"
-                {...this.props.popoverProps}
+                {...popoverProps}
                 autoFocus={false}
-                className={popoverClassName}
+                className={classNames(Classes.DATE_RANGE_INPUT, popoverProps.className, this.props.className)}
                 content={popoverContent}
                 enforceFocus={false}
                 onClose={this.handlePopoverClose}
-            >
-                <div className={Classes.CONTROL_GROUP}>
-                    {this.renderInputGroup(Boundary.START)}
-                    {this.renderInputGroup(Boundary.END)}
-                </div>
-            </Popover2>
+                popoverClassName={classNames(Classes.DATE_RANGE_INPUT_POPOVER, popoverProps.popoverClassName)}
+                renderTarget={this.renderTarget}
+            />
         );
     }
 
@@ -384,6 +379,18 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
             throw new Error(Errors.DATERANGEINPUT_NULL_VALUE);
         }
     }
+
+    // We use the renderTarget API to flatten the rendered DOM.
+    private renderTarget =
+        // N.B. pull out `isOpen` so that it's not forwarded to the DOM.
+        ({ isOpen, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
+            return (
+                <div {...targetProps} className={classNames(CoreClasses.CONTROL_GROUP, targetProps.className)}>
+                    {this.renderInputGroup(Boundary.START)}
+                    {this.renderInputGroup(Boundary.END)}
+                </div>
+            );
+        };
 
     private renderInputGroup = (boundary: Boundary) => {
         const inputProps = this.getInputProps(boundary);

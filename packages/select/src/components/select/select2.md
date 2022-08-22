@@ -159,7 +159,7 @@ function renderCreateFilmOption(
             icon="add"
             text={`Create "${query}"`}
             roleStructure="listoption"
-            selected={active}
+            active={active}
             onClick={handleClick}
             shouldDismissPopover={false}
         />
@@ -243,7 +243,8 @@ to rendering this item in this frame. The renderer is called for all items, so d
 `modifiers.matchesPredicate` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item, or face React's console wrath!
 
 ```tsx
-import { Classes, MenuItem } from "@blueprintjs/core";
+import { Classes } from "@blueprintjs/core";
+import { MenuItem } from "@blueprintjs/popover2";
 import { ItemRenderer, ItemPredicate, Select2 } from "@blueprintjs/select";
 
 const FilmSelect = Select2.ofType<Film>();
@@ -261,7 +262,7 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
             text={film.title}
             label={film.year}
             roleStructure="listoption"
-            selected={modifiers.active}
+            active={modifiers.active}
             key={film.title}
             onClick={handleClick}
             onFocus={handleFocus}

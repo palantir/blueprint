@@ -26,6 +26,7 @@ export {
     ContextMenu2ContentProps,
     ContextMenu2RenderProps,
 } from "./contextMenu2";
+export { MenuItem2, MenuItem2Props } from "./menuItem2";
 export {
     IPopover2SharedProps,
     IPopover2TargetProps,

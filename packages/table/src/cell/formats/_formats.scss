@@ -32,7 +32,7 @@
 }
 
 .#{$ns}-table-truncated-popover-target {
-  border-radius: 3px;
+  border-radius: $pt-border-radius;
   bottom: 0;
   cursor: pointer;
 
