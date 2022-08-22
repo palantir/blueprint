@@ -16,18 +16,21 @@
 
 import { IRef } from "@blueprintjs/core";
 
-import { ICreateNewItem } from "./listItemsUtils";
+import { CreateNewItem } from "./listItemsUtils";
+
+/** @deprecated use ItemListRendererProps */
+export type IItemListRendererProps<T> = ItemListRendererProps<T>;
 
 /**
  * An object describing how to render the list of items.
  * An `itemListRenderer` receives this object as its sole argument.
  */
-export interface IItemListRendererProps<T> {
+export interface ItemListRendererProps<T> {
     /**
      * The currently focused item (for keyboard interactions), or `null` to
      * indicate that no item is active.
      */
-    activeItem: T | ICreateNewItem | null;
+    activeItem: T | CreateNewItem | null;
 
     /**
      * Array of items filtered by `itemListPredicate` or `itemPredicate`.
@@ -77,7 +80,7 @@ export interface IItemListRendererProps<T> {
 }
 
 /** Type alias for a function that renders the list of items. */
-export type ItemListRenderer<T> = (itemListProps: IItemListRendererProps<T>) => JSX.Element | null;
+export type ItemListRenderer<T> = (itemListProps: ItemListRendererProps<T>) => JSX.Element | null;
 
 /**
  * `ItemListRenderer` helper method for rendering each item in `filteredItems`,
@@ -85,7 +88,7 @@ export type ItemListRenderer<T> = (itemListProps: IItemListRendererProps<T>) => 
  * and `initialContent` (when query is empty).
  */
 export function renderFilteredItems(
-    props: IItemListRendererProps<any>,
+    props: ItemListRendererProps<any>,
     noResults?: React.ReactNode,
     initialContent?: React.ReactNode | null,
 ): React.ReactNode {

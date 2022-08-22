@@ -39,14 +39,14 @@ import {
     TagInputProps,
 } from "@blueprintjs/core";
 
-import { Classes, IListItemsProps } from "../../common";
+import { Classes, ListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 // N.B. selectedItems should really be a required prop, but is left optional for backwards compatibility
 
 export type MultiSelectProps<T> = IMultiSelectProps<T>;
 /** @deprecated use MultiSelectProps */
-export interface IMultiSelectProps<T> extends IListItemsProps<T> {
+export interface IMultiSelectProps<T> extends ListItemsProps<T> {
     /**
      * Whether the component should take up the full width of its container.
      * This overrides `popoverProps.fill` and `tagInputProps.fill`.

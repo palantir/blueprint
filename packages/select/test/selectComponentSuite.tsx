@@ -29,10 +29,10 @@ import {
     renderFilm,
     TOP_100_FILMS,
 } from "../../docs-app/src/common/films";
-import { IListItemsProps } from "../src";
+import { ListItemsProps } from "../src";
 
-export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
-    render: (props: IListItemsProps<IFilm>) => ReactWrapper<P, S>,
+export function selectComponentSuite<P extends ListItemsProps<IFilm>, S>(
+    render: (props: ListItemsProps<IFilm>) => ReactWrapper<P, S>,
     findInput: (wrapper: ReactWrapper<P, S>) => ReactWrapper<HTMLInputProps> = wrapper =>
         wrapper.find("input") as ReactWrapper<HTMLInputProps>,
     findItems: (wrapper: ReactWrapper<P, S>) => ReactWrapper = wrapper => wrapper.find("a"),
@@ -227,7 +227,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             assert.equal(testProps.onActiveItemChange.lastCall.args[1], false);
         });
 
-        it("when create item is rendered, arrow up invokes onActiveItemChange with an `ICreateNewItem`", () => {
+        it("when create item is rendered, arrow up invokes onActiveItemChange with an `CreateNewItem`", () => {
             const wrapper = render({
                 ...testCreateProps,
                 query: TOP_100_FILMS[0].title,
