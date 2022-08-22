@@ -161,11 +161,12 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(steps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
         dialog.unmount();
     });
-    it("selecting visited step with prop disabled should not navigate to it", () => {
+
+    it("selecting an already-visited step with disabled={true} should not navigate to it", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
-                <DialogStep id="two" title="Step 2" panelDisabled={true} panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" disabled={true} panel={<Panel />} />
                 <DialogStep id="two" title="Step 3" panel={<Panel />} />
             </MultistepDialog>,
         );
