@@ -103,29 +103,38 @@ ruleTester.run("no-deprecated-type-references", noDeprecatedTypeReferencesRule, 
                 };
             `,
         },
+        // N.B. it is difficult to test multiple fixes, so we test those separately
         {
             code: dedent`
-                import { ISelectProps, Select } from "@blueprintjs/select";
+                import { Select } from "@blueprintjs/select";
                 import { ITimezoneItem } from "@blueprintjs/timezone";
-
                 const MySelect = Select.ofType<ITimezoneItem>();
-                const mySelectProps: ISelectProps = { items: [] };
             `,
             errors: [
                 {
                     messageId: "migration",
                     data: { deprecatedTypeName: "ITimezoneItem", newTypeName: "TimezoneItem" },
                 },
+            ],
+            output: dedent`
+                import { Select } from "@blueprintjs/select";
+                import { TimezoneItem } from "@blueprintjs/timezone";
+                const MySelect = Select.ofType<TimezoneItem>();
+            `,
+        },
+        {
+            code: dedent`
+                import { ISelectProps } from "@blueprintjs/select";
+                const mySelectProps: ISelectProps = { items: [] };
+            `,
+            errors: [
                 {
                     messageId: "migration",
                     data: { deprecatedTypeName: "ISelectProps", newTypeName: "SelectProps" },
                 },
             ],
             output: dedent`
-                import { SelectProps, Select } from "@blueprintjs/select";
-                import { TimezoneItem } from "@blueprintjs/timezone";
-
-                const MySelect = Select.ofType<TimezoneItem>();
+                import { SelectProps } from "@blueprintjs/select";
                 const mySelectProps: SelectProps = { items: [] };
             `,
         },
