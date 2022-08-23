@@ -6,7 +6,10 @@
 
 import { TSESTree } from "@typescript-eslint/utils";
 
+import { addImportToFile } from "./utils/addImportToFile";
 import { createRule } from "./utils/createRule";
+import { FixList } from "./utils/fixList";
+import { getProgram } from "./utils/getProgram";
 
 type MessageIds = "migration";
 
@@ -20,139 +23,146 @@ const PACKAGES_TO_CHECK = [
     "@blueprintjs/timezone",
 ];
 
-const DEPRECATED_TYPE_REFERENCES = [
-    // core
-    "IProps",
-    "IIntentProps",
-    "IActionProps",
-    "ILinkProps",
-    "IControlledProps",
-    "IOptionProps",
-    "IKeyAllowlist",
-    "IKeyDenylist",
-    "IAlertProps",
-    "IBreadcrumbProps",
-    "IBreadcrumbsProps",
-    "IButtonProps",
-    "IAnchorButtonProps",
-    "IButtonGroupProps",
-    "ICalloutProps",
-    "ICardProps",
-    "ICollapseProps",
-    "IDialogProps",
-    "IDialogStepProps",
-    "IMultistepDialogProps",
-    "IDrawerProps",
-    "IEditableTextProps",
-    "IControlGroupProps",
-    "IControlProps",
-    "ISwitchProps",
-    "IRadioProps",
-    "ICheckboxProps",
-    "IFileInputProps",
-    "IFormGroupProps",
-    "IInputGroupProps",
-    "INumericInputProps",
-    "IRadioGroupProps",
-    "ITextAreaProps",
-    "IKeyComboProps",
-    "IHTMLSelectProps",
-    "IHTMLTableProps",
-    "IIconProps",
-    "IMenuProps",
-    "IMenuDividerProps",
-    "IMenuItemProps",
-    "INavbarProps",
-    "INavbarGroupProps",
-    "INavbarHeadingProps",
-    "INonIdealStateProps",
-    "IOverflowListProps",
-    "IOverlayableProps",
-    "IOverlayProps",
-    "IPanel",
-    "IPanelActions",
-    "IPortalProps",
-    "IProgressBarProps",
-    "IResizeSensorProps",
-    "IHandleProps",
-    "IMultiSliderProps",
-    "IRangeSliderProps",
-    "ISliderProps",
-    "ITabProps",
-    "ITabsProps",
-    "ITabTitleProps",
-    "ITagProps",
-    "ITagInputProps",
-    "ITextProps",
-    "IToastProps",
-    "ITreeProps",
+const DEPRECATED_TYPE_REFERENCES = {
+    "@blueprintjs/core": [
+        "IProps",
+        "IIntentProps",
+        "IActionProps",
+        "ILinkProps",
+        "IControlledProps",
+        "IOptionProps",
+        "IKeyAllowlist",
+        "IKeyDenylist",
+        "IAlertProps",
+        "IBreadcrumbProps",
+        "IBreadcrumbsProps",
+        "IButtonProps",
+        "IAnchorButtonProps",
+        "IButtonGroupProps",
+        "ICalloutProps",
+        "ICardProps",
+        "ICollapseProps",
+        "IDialogProps",
+        "IDialogStepProps",
+        "IMultistepDialogProps",
+        "IDrawerProps",
+        "IEditableTextProps",
+        "IControlGroupProps",
+        "IControlProps",
+        "ISwitchProps",
+        "IRadioProps",
+        "ICheckboxProps",
+        "IFileInputProps",
+        "IFormGroupProps",
+        "IInputGroupProps",
+        "INumericInputProps",
+        "IRadioGroupProps",
+        "ITextAreaProps",
+        "IKeyComboProps",
+        "IHTMLSelectProps",
+        "IHTMLTableProps",
+        "IIconProps",
+        "IMenuProps",
+        "IMenuDividerProps",
+        "IMenuItemProps",
+        "INavbarProps",
+        "INavbarGroupProps",
+        "INavbarHeadingProps",
+        "INonIdealStateProps",
+        "IOverflowListProps",
+        "IOverlayableProps",
+        "IOverlayProps",
+        "IPanel",
+        "IPanelActions",
+        "IPortalProps",
+        "IProgressBarProps",
+        "IResizeSensorProps",
+        "IHandleProps",
+        "IMultiSliderProps",
+        "IRangeSliderProps",
+        "ISliderProps",
+        "ITabProps",
+        "ITabsProps",
+        "ITabTitleProps",
+        "ITagProps",
+        "ITagInputProps",
+        "ITextProps",
+        "IToastProps",
+        "ITreeProps",
+    ],
 
-    // datetime
-    "IDateFormatProps",
-    "IDateInputProps",
-    "IDatePickerProps",
-    "IDatePickerModifiers",
-    "IDateRangeInputProps",
-    "IDateRangeShortcut",
-    "ITimePickerProps",
+    "@blueprintjs/datetime": [
+        "IDateFormatProps",
+        "IDateInputProps",
+        "IDatePickerProps",
+        "IDatePickerModifiers",
+        "IDateRangeInputProps",
+        "IDateRangeShortcut",
+        "ITimePickerProps",
+    ],
 
-    // docs-theme
-    "IExampleProps",
-    "INavMenuItemProps",
-    "ITagRendererMap",
+    "@blueprintjs/docs-theme": ["IExampleProps", "INavMenuItemProps", "ITagRendererMap"],
 
-    // popover2
-    "IPopover2Props",
-    "IPopover2TargetProps",
-    "IPopover2SharedProps",
-    "ITooltip2Props",
+    "@blueprintjs/popover2": ["IPopover2Props", "IPopover2TargetProps", "IPopover2SharedProps", "ITooltip2Props"],
 
-    // select
-    "IItemListRendererProps",
-    "IItemModifiers",
-    "IItemRendererProps",
-    "IListItemsProps",
-    "ICreateNewItem",
-    "IMultiSelectProps",
-    "IOmnibarProps",
-    "IQueryListProps",
-    "ISelectProps",
-    "ISuggestProps",
+    "@blueprintjs/select": [
+        "IItemListRendererProps",
+        "IItemModifiers",
+        "IItemRendererProps",
+        "IListItemsProps",
+        "ICreateNewItem",
+        "IMultiSelectProps",
+        "IOmnibarProps",
+        "IQueryListProps",
+        "ISelectProps",
+        "ISuggestProps",
+    ],
 
-    // table
-    "IStyledRegionGroup",
-    "ICellInterval",
-    "ICellCoordinate",
-    "IRegion",
-    "ITableBodyProps",
-    "ITableProps",
-    "ICellRenderer",
-    "IJSONFormatProps",
-    "ITruncatedFormatProps",
-    "IColumnHeaderCellRenderer",
-    "IColumnHeaderCellProps",
-    "IRowHeaderRenderer",
-    "IRowHeaderCellProps",
+    "@blueprintjs/table": [
+        "IStyledRegionGroup",
+        "ICellInterval",
+        "ICellCoordinate",
+        "IRegion",
+        "ITableBodyProps",
+        "ITableProps",
+        "ICellRenderer",
+        "IJSONFormatProps",
+        "ITruncatedFormatProps",
+        "IColumnHeaderCellRenderer",
+        "IColumnHeaderCellProps",
+        "IRowHeaderRenderer",
+        "IRowHeaderCellProps",
+    ],
 
-    // timezone
-    "ITimezoneItem",
-    "ITimezonePickerProps",
-];
+    "@blueprintjs/timezone": ["ITimezoneItem", "ITimezonePickerProps"],
+};
 
-const DEPRECATED_TYPES_MAPPING = DEPRECATED_TYPE_REFERENCES.reduce<Record<string, string>>(
-    (mapping, deprecatedSymbol) => {
+// some extra type mappings which do not fit the simple pattern of dropping the "I" prefix,
+// these will be augmented to create the full list in the for-loop below
+const DEPRECATED_TYPES_MAPPING: Record<string, string> = {
+    IPortalContext: "PortalLegacyContext",
+    IToaster: "ToasterInstance",
+    ITreeNode: "TreeNodeInfo",
+    ContextMenu2RenderProps: "ContextMenu2ContentProps",
+};
+
+// which packages to find the new types in
+const NEW_TYPE_PACKAGE_MAPPING: Record<string, string> = {
+    PortalLegacyContext: "@blueprintjs/core",
+    ToasterInstance: "@blueprintjs/core",
+    TreeNodeInfo: "@blueprintjs/core",
+    ContextMenu2ContentProps: "@blueprintjs/popover2",
+};
+
+for (const [packageName, deprecatedTypeNames] of Object.entries(DEPRECATED_TYPE_REFERENCES)) {
+    for (const typeName of deprecatedTypeNames) {
+        const newTypeName = typeName.slice(1);
         // "IProps": "Props"
-        mapping[deprecatedSymbol] = deprecatedSymbol.slice(1);
-        return mapping;
-    },
-    {
-        // some extra type mappings which do not fit the simple pattern of dropping the "I" prefix
-        IPortalContext: "PortalLegacyContext",
-        IToaster: "ToasterInstance",
-        ITreeNode: "TreeNodeInfo",
-        ContextMenu2RenderProps: "ContextMenu2ContentProps",
-    },
-);
+        DEPRECATED_TYPES_MAPPING[typeName] = newTypeName;
+        // "Props": "@blueprintjs/core"
+        NEW_TYPE_PACKAGE_MAPPING[newTypeName] = packageName;
+    }
+}
 
 export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
     name: "no-deprecated-type-references",
@@ -164,8 +174,9 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
             requiresTypeChecking: false,
             recommended: "error",
         },
+        fixable: "code",
         messages: {
-            migration: "Usage of {{ deprecatedType }} is deprecated, migrate to {{ newType }} instead",
+            migration: "Usage of {{ deprecatedTypeName }} is deprecated, migrate to {{ newTypeName }} instead",
         },
         schema: [
             {
@@ -229,13 +240,29 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                 switch (node.typeName.type) {
                     case TSESTree.AST_NODE_TYPES.Identifier:
                         if (isDeprecatedTypeReference(node.typeName.name)) {
+                            const newTypeName = DEPRECATED_TYPES_MAPPING[node.typeName.name];
                             context.report({
                                 data: {
-                                    deprecatedType: node.typeName.name,
-                                    newType: DEPRECATED_TYPES_MAPPING[node.typeName.name],
+                                    deprecatedTypeName: node.typeName.name,
+                                    newTypeName,
                                 },
                                 messageId: "migration",
                                 node,
+                                fix: fixer => {
+                                    const fixes = new FixList();
+                                    fixes.addFixes(fixer.replaceText(node.typeName, newTypeName));
+                                    const program = getProgram(node);
+                                    if (program !== undefined) {
+                                        fixes.addFixes(
+                                            addImportToFile(
+                                                program,
+                                                [newTypeName],
+                                                NEW_TYPE_PACKAGE_MAPPING[newTypeName],
+                                            )(fixer),
+                                        );
+                                    }
+                                    return fixes.getFixes();
+                                },
                             });
                         }
                         return;
@@ -245,13 +272,16 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                             node.typeName.left.type === TSESTree.AST_NODE_TYPES.Identifier &&
                             isDeprecatedNamespacedTypeReference(node.typeName.left.name, node.typeName.right.name)
                         ) {
+                            const newTypeName = DEPRECATED_TYPES_MAPPING[node.typeName.right.name];
                             context.report({
                                 data: {
-                                    deprecatedType: node.typeName.right.name,
-                                    newType: DEPRECATED_TYPES_MAPPING[node.typeName.right.name],
+                                    deprecatedTypeName: node.typeName.right.name,
+                                    newTypeName,
                                 },
                                 messageId: "migration",
                                 node,
+                                fix: fixer =>
+                                    fixer.replaceText((node.typeName as TSESTree.TSQualifiedName).right, newTypeName),
                             });
                         }
                         return;
@@ -261,15 +291,53 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
             TSInterfaceHeritage: (node: TSESTree.TSInterfaceHeritage) => {
                 if (node.expression.type === TSESTree.AST_NODE_TYPES.Identifier) {
                     if (isDeprecatedTypeReference(node.expression.name)) {
+                        const newTypeName = DEPRECATED_TYPES_MAPPING[node.expression.name];
                         context.report({
                             data: {
-                                deprecatedType: node.expression.name,
-                                newType: DEPRECATED_TYPES_MAPPING[node.expression.name],
+                                deprecatedTypeName: node.expression.name,
+                                newTypeName,
                             },
                             messageId: "migration",
                             node,
+                            fix: fixer => {
+                                const fixes = new FixList();
+                                fixes.addFixes(fixer.replaceText(node.expression, newTypeName));
+                                const program = getProgram(node);
+                                if (program !== undefined) {
+                                    fixes.addFixes(
+                                        addImportToFile(
+                                            program,
+                                            [newTypeName],
+                                            NEW_TYPE_PACKAGE_MAPPING[newTypeName],
+                                        )(fixer),
+                                    );
+                                }
+                                return fixes.getFixes();
+                            },
                         });
                     }
+                }
+            },
+
+            "TSInterfaceHeritage MemberExpression": (node: TSESTree.MemberExpression) => {
+                if (
+                    node.property.type !== TSESTree.AST_NODE_TYPES.Identifier ||
+                    node.object.type !== TSESTree.AST_NODE_TYPES.Identifier
+                ) {
+                    return;
+                }
+
+                if (isDeprecatedNamespacedTypeReference(node.object.name, node.property.name)) {
+                    const newTypeName = DEPRECATED_TYPES_MAPPING[node.property.name];
+                    context.report({
+                        data: {
+                            deprecatedTypeName: node.property.name,
+                            newTypeName,
+                        },
+                        messageId: "migration",
+                        node,
+                        fix: fixer => fixer.replaceText(node.property, newTypeName),
+                    });
                 }
             },
         };

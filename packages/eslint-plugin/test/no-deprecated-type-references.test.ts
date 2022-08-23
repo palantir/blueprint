@@ -46,9 +46,38 @@ ruleTester.run("no-deprecated-type-references", noDeprecatedTypeReferencesRule, 
             errors: [
                 {
                     messageId: "migration",
-                    data: { deprecatedType: "IProps", newType: "Props" },
+                    data: { deprecatedTypeName: "IProps", newTypeName: "Props" },
                 },
             ],
+            output: dedent`
+                import { Props } from "@blueprintjs/core";
+
+                export interface MyInterface extends Props {
+                    foo: string;
+                }
+            `,
+        },
+        {
+            code: dedent`
+                import * as Blueprint from "@blueprintjs/core";
+
+                export interface MyInterface extends Blueprint.IProps {
+                    foo: string;
+                }
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: { deprecatedTypeName: "IProps", newTypeName: "Props" },
+                },
+            ],
+            output: dedent`
+                import * as Blueprint from "@blueprintjs/core";
+
+                export interface MyInterface extends Blueprint.Props {
+                    foo: string;
+                }
+            `,
         },
         {
             code: dedent`
@@ -62,9 +91,17 @@ ruleTester.run("no-deprecated-type-references", noDeprecatedTypeReferencesRule, 
             errors: [
                 {
                     messageId: "migration",
-                    data: { deprecatedType: "IItemRendererProps", newType: "ItemRendererProps" },
+                    data: { deprecatedTypeName: "IItemRendererProps", newTypeName: "ItemRendererProps" },
                 },
             ],
+            output: dedent`
+                import { MenuItem } from "@blueprintjs/core";
+                import { ItemRendererProps } from "@blueprintjs/select";
+
+                export const defaultRenderMenuItem = (_item: any, { handleClick, modifiers }: ItemRendererProps) => {
+                    return <MenuItem {...modifiers} onClick={handleClick} />;
+                };
+            `,
         },
         {
             code: dedent`
@@ -77,13 +114,20 @@ ruleTester.run("no-deprecated-type-references", noDeprecatedTypeReferencesRule, 
             errors: [
                 {
                     messageId: "migration",
-                    data: { deprecatedType: "ITimezoneItem", newType: "TimezoneItem" },
+                    data: { deprecatedTypeName: "ITimezoneItem", newTypeName: "TimezoneItem" },
                 },
                 {
                     messageId: "migration",
-                    data: { deprecatedType: "ISelectProps", newType: "SelectProps" },
+                    data: { deprecatedTypeName: "ISelectProps", newTypeName: "SelectProps" },
                 },
             ],
+            output: dedent`
+                import { SelectProps, Select } from "@blueprintjs/select";
+                import { TimezoneItem } from "@blueprintjs/timezone";
+
+                const MySelect = Select.ofType<TimezoneItem>();
+                const mySelectProps: SelectProps = { items: [] };
+            `,
         },
     ],
     valid: [
