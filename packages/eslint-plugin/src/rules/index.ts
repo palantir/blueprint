@@ -25,6 +25,7 @@ import {
     noDeprecatedTableComponentsRule,
     noDeprecatedTimezoneComponentsRule,
 } from "./no-deprecated-components";
+import { noDeprecatedTypeReferencesRule } from "./no-deprecated-type-references";
 
 // eslint-disable-next-line import/no-default-export
 export default {
@@ -37,4 +38,5 @@ export default {
     "no-deprecated-select-components": noDeprecatedSelectComponentsRule,
     "no-deprecated-table-components": noDeprecatedTableComponentsRule,
     "no-deprecated-timezone-components": noDeprecatedTimezoneComponentsRule,
+    "no-deprecated-type-references": noDeprecatedTypeReferencesRule,
 };
