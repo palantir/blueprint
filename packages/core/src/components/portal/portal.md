@@ -9,16 +9,16 @@ For the most part, Portal is a thin wrapper around [`ReactDOM.createPortal`](htt
 
 @## React context (legacy)
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+<div class="@ns-callout @ns-intent-danger @ns-icon-warning">
     <h4 class="@ns-heading">
 
-Deprecated: use [PortalProvider](#core/context/portal-provider)
+React legacy API
 
 </h4>
 
-This API is **deprecated since @blueprintjs/core v4.8.0** in favor of
-[PortalProvider](#core/context/portal-provider), which uses the
-[newer React context API](https://reactjs.org/docs/context.html).
+This feature uses React's legacy context API. Support for the
+[newer React context API](https://reactjs.org/docs/context.html) will be coming soon
+in Blueprint v5.x.
 
 </div>
 
@@ -27,12 +27,14 @@ To use them, supply a child context to a subtree that contains the Portals you w
 
 @interface PortalLegacyContext
 
+<!--
 @## React context
 
 Portal supports the following options on its [React context](https://reactjs.org/docs/context.html)
 via [PortalProvider](#core/context/portal-provider).
 
 @interface PortalContextOptions
+-->
 
 @## Props
 
