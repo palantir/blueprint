@@ -21,8 +21,6 @@ import * as Classes from "../../common/classes";
 import { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
-import { PortalContext } from "../../context/portal/portalProvider";
-import { usePrevious } from "../../hooks/usePrevious";
 
 // eslint-disable-next-line deprecation/deprecation
 export type PortalProps = IPortalProps;
@@ -44,7 +42,11 @@ export interface IPortalProps extends Props {
     container?: HTMLElement;
 }
 
-/** @deprecated use PortalProvider */
+export interface IPortalState {
+    hasMounted: boolean;
+}
+
+/** @deprecated use PortalLegacyContext */
 export type IPortalContext = PortalLegacyContext;
 export interface PortalLegacyContext {
     /** Additional CSS classes to add to all `Portal` elements in this React context. */
@@ -65,74 +67,64 @@ const REACT_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
  * Any class names passed to this element will be propagated to the new container element on document.body.
  */
-export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = {}) {
-    const context = React.useContext(PortalContext);
+export class Portal extends React.Component<PortalProps, IPortalState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
 
-    const [hasMounted, setHasMounted] = React.useState(false);
-    const [portalElement, setPortalElement] = React.useState<HTMLElement>();
+    public static contextTypes = REACT_CONTEXT_TYPES;
 
-    const createContainerElement = React.useCallback(() => {
-        const container = document.createElement("div");
-        container.classList.add(Classes.PORTAL);
-        maybeAddClass(container.classList, props.className); // directly added to this portal element
-        maybeAddClass(container.classList, context.portalClassName); // added via PortalProvider context
+    public static defaultProps: Partial<PortalProps> = {
+        container: typeof document !== "undefined" ? document.body : undefined,
+    };
 
-        const { blueprintPortalClassName } = legacyContext;
-        if (blueprintPortalClassName != null && blueprintPortalClassName !== "") {
-            console.error(Errors.PORTAL_LEGACY_CONTEXT_API);
-            maybeAddClass(container.classList, blueprintPortalClassName); // added via legacy context
+    public context: PortalLegacyContext = {};
+
+    public state: IPortalState = { hasMounted: false };
+
+    private portalElement: HTMLElement | null = null;
+
+    public render() {
+        // Only render `children` once this component has mounted in a browser environment, so they are
+        // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
+        // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
+        if (typeof document === "undefined" || !this.state.hasMounted || this.portalElement === null) {
+            return null;
+        } else {
+            return ReactDOM.createPortal(this.props.children, this.portalElement);
         }
+    }
 
-        return container;
-    }, [props.className, context.portalClassName]);
-
-    // create the container element & attach it to the DOM
-    React.useEffect(() => {
-        if (props.container == null) {
+    public componentDidMount() {
+        if (this.props.container == null) {
             return;
         }
-        const newPortalElement = createContainerElement();
-        props.container.appendChild(newPortalElement);
-        setPortalElement(newPortalElement);
-        setHasMounted(true);
+        this.portalElement = this.createContainerElement();
+        this.props.container.appendChild(this.portalElement);
+        /* eslint-disable-next-line react/no-did-mount-set-state */
+        this.setState({ hasMounted: true }, this.props.onChildrenMount);
+    }
 
-        return () => {
-            newPortalElement.remove();
-            setHasMounted(false);
-            setPortalElement(undefined);
-        };
-    }, [props.container, createContainerElement]);
-
-    // wait until next successful render to invoke onChildrenMount callback
-    React.useEffect(() => {
-        if (hasMounted) {
-            props.onChildrenMount?.();
+    public componentDidUpdate(prevProps: PortalProps) {
+        // update className prop on portal DOM element
+        if (this.portalElement != null && prevProps.className !== this.props.className) {
+            maybeRemoveClass(this.portalElement.classList, prevProps.className);
+            maybeAddClass(this.portalElement.classList, this.props.className);
         }
-    }, [hasMounted, props.onChildrenMount]);
+    }
 
-    // update className prop on portal DOM element when props change
-    const prevClassName = usePrevious(props.className);
-    React.useEffect(() => {
-        if (portalElement != null) {
-            maybeRemoveClass(portalElement.classList, prevClassName);
-            maybeAddClass(portalElement.classList, props.className);
+    public componentWillUnmount() {
+        this.portalElement?.remove();
+    }
+
+    private createContainerElement() {
+        const container = document.createElement("div");
+        container.classList.add(Classes.PORTAL);
+        maybeAddClass(container.classList, this.props.className);
+        if (this.context != null) {
+            maybeAddClass(container.classList, this.context.blueprintPortalClassName);
         }
-    }, [props.className]);
-
-    // Only render `children` once this component has mounted in a browser environment, so they are
-    // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
-    // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
-    if (typeof document === "undefined" || !hasMounted || portalElement == null) {
-        return null;
-    } else {
-        return ReactDOM.createPortal(props.children, portalElement);
+        return container;
     }
 }
-Portal.defaultProps = {
-    container: typeof document !== "undefined" ? document.body : undefined,
-};
-Portal.displayName = `${DISPLAYNAME_PREFIX}.Portal`;
-Portal.contextTypes = REACT_CONTEXT_TYPES;
 
 function maybeRemoveClass(classList: DOMTokenList, className?: string) {
     if (className != null && className !== "") {
