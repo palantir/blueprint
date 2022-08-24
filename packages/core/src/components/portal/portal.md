@@ -9,7 +9,7 @@ For the most part, Portal is a thin wrapper around [`ReactDOM.createPortal`](htt
 
 @## React context (legacy)
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-warning">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">
 
 React legacy API
@@ -32,9 +32,9 @@ To use them, supply a child context to a subtree that contains the Portals you w
 
 Portal supports the following options on its [React context](https://reactjs.org/docs/context.html)
 via [PortalProvider](#core/context/portal-provider).
-
-@interface PortalContextOptions
 -->
+
+<!-- @interface PortalContextOptions -->
 
 @## Props
 
@@ -45,7 +45,7 @@ child of the `<body>`.
 Portal is used inside [Overlay](#core/components/overlay) to actually overlay the content on the
 application.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-move">
     <h4 class="@ns-heading">A note about responsive layouts</h4>
 
 For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
