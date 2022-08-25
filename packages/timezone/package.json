@@ -43,8 +43,14 @@
         "tslib": "~2.3.1"
     },
     "peerDependencies": {
+        "@types/react": "^16.14.2",
         "react": "^16.8 || 17 || 18",
         "react-dom": "^16.8 || 17 || 18"
+    },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^5.1.0",
