@@ -103,7 +103,8 @@ ruleTester.run("no-deprecated-type-references", noDeprecatedTypeReferencesRule, 
                 };
             `,
         },
-        // N.B. it is difficult to test multiple fixes, so we test those separately
+        // N.B. it is unreliable/impossible to test multiple fixes with ESLint's RuleTester, so we test those separately
+        // see https://github.com/eslint/eslint/issues/11187#issuecomment-470990425
         {
             code: dedent`
                 import { Select } from "@blueprintjs/select";
