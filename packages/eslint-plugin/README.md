@@ -218,4 +218,16 @@ __Rationale__: In migrations of large code bases, it may be useful to apply more
 deprecated `@blueprintjs/timezone` component usage as errors while allowing deprecated components from other packages
 to pass as lint warnings.
 
+### `@blueprintjs/no-deprecated-type-references`
+
+Ban usage of deprecated types & interfaces. In most cases, these symbols are deprecated as a result of our new
+TypeScript interface naming convention where we've _dropped_ the "I" prefix from interface names. For example,
+`IProps` is now `Props`.
+
+__Auto-fixable__.
+
+__Rationale__: Ensure forwards-comaptibility with the next major version of Blueprint and use the auto-fixer as
+a codemod.
+
+
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

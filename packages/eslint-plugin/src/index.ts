@@ -26,6 +26,7 @@ module.exports = {
                 "@blueprintjs/classes-constants": "error",
                 "@blueprintjs/html-components": "error",
                 "@blueprintjs/no-deprecated-components": "error",
+                "@blueprintjs/no-deprecated-type-references": "error",
             },
         },
     },

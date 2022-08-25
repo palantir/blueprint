@@ -20,7 +20,6 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
-import { IQueryListProps } from "@blueprintjs/select";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import {
@@ -30,11 +29,12 @@ import {
     ItemListRenderer,
     ItemPredicate,
     QueryList,
+    QueryListProps,
 } from "../src";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 
-type FilmQueryListWrapper = ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>>;
+type FilmQueryListWrapper = ReactWrapper<QueryListProps<IFilm>, IQueryListState<IFilm>>;
 
 describe("<QueryList>", () => {
     const FilmQueryList = QueryList.ofType<IFilm>();
@@ -125,7 +125,7 @@ describe("<QueryList>", () => {
 
         it("ensure onActiveItemChange is not called updating props and query doesn't change", () => {
             const myItem = { title: "Toy Story 3", year: 2010, rank: 1 };
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<IFilm> = {
                 ...testProps,
                 activeItem: myItem,
                 items: [myItem],
@@ -137,7 +137,7 @@ describe("<QueryList>", () => {
         });
 
         it("ensure activeItem changes on query change", () => {
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<IFilm> = {
                 ...testProps,
                 items: [TOP_100_FILMS[0]],
                 query: "abc",
@@ -152,7 +152,7 @@ describe("<QueryList>", () => {
         });
 
         it("ensure activeItem changes on when no longer in new items", () => {
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<IFilm> = {
                 ...testProps,
                 items: [TOP_100_FILMS[0]],
                 query: "abc",
@@ -168,7 +168,7 @@ describe("<QueryList>", () => {
 
     describe("activeItem state initialization", () => {
         it("initializes to first filtered item when uncontrolled", () => {
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<IFilm> = {
                 ...testProps,
                 // Filter down to only item at index 11, so item at index 11 should be
                 // chosen as default activeItem
@@ -180,7 +180,7 @@ describe("<QueryList>", () => {
         });
 
         it("initializes to controlled activeItem prop (non-null)", () => {
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<IFilm> = {
                 ...testProps,
                 // List is not filtered, and item at index 11 is explicitly chosen as activeItem
                 activeItem: TOP_100_FILMS[11],
@@ -190,7 +190,7 @@ describe("<QueryList>", () => {
         });
 
         it("initializes to controlled activeItem prop (null)", () => {
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<IFilm> = {
                 ...testProps,
                 activeItem: null,
             };
@@ -199,7 +199,7 @@ describe("<QueryList>", () => {
         });
 
         it("createNewItemPosition affects position of create new item", () => {
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<IFilm> = {
                 ...testProps,
                 createNewItemFromQuery: sinon.spy(),
                 createNewItemRenderer: () => <article />,
@@ -224,11 +224,11 @@ describe("<QueryList>", () => {
             return exactMatch === true ? query.toLowerCase() === film.title.toLowerCase() : true;
         };
 
-        function mountForPasteTest(overrideProps: Partial<IQueryListProps<IFilm>> = {}) {
+        function mountForPasteTest(overrideProps: Partial<QueryListProps<IFilm>> = {}) {
             // Placeholder. This will be overwritten by the mounted component.
             let handlePaste: (queries: string[]) => void;
 
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<IFilm> = {
                 ...testProps,
                 itemPredicate,
                 onItemsPaste,

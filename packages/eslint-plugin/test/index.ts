@@ -19,3 +19,4 @@ import "./html-components.test";
 import "./icon-components.test";
 import "./no-deprecated-components.test";
 import "./no-deprecated-core-components.test";
+import "./no-deprecated-type-references.test";

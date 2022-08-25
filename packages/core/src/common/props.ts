@@ -101,7 +101,7 @@ export type LinkProps = ILinkProps;
 /**
  * Interface for a controlled input.
  *
- * @deprecated use IControlledProps2.
+ * @deprecated use ControlledProps2.
  */
 export interface IControlledProps {
     /** Initial value of the input, for uncontrolled usage. */
