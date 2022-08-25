@@ -221,7 +221,7 @@ to pass as lint warnings.
 ### `@blueprintjs/no-deprecated-type-references`
 
 Ban usage of deprecated types & interfaces. In most cases, these symbols are deprecated as a result of our new
-TypeScript interface naming convention where we've _dropped_ the "I" prefix from inteface names. For example,
+TypeScript interface naming convention where we've _dropped_ the "I" prefix from interface names. For example,
 `IProps` is now `Props`.
 
 __Auto-fixable__.

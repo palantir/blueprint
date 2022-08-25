@@ -13,16 +13,14 @@ import { replaceImportInFile } from "./utils/replaceImportInFile";
 
 type MessageIds = "migration";
 
-const PACKAGES_TO_CHECK = [
-    "@blueprintjs/core",
-    "@blueprintjs/datetime",
-    "@blueprintjs/docs-theme",
-    "@blueprintjs/popover2",
-    "@blueprintjs/select",
-    "@blueprintjs/table",
-    "@blueprintjs/timezone",
-];
-
+/**
+ * A list of deprecated types in the public API, grouped by the package they are exported in.
+ *
+ * If a type name is listed here as a string literal, it is assumed that the new non-deprecated type
+ * has the same name without the "I" prefix.
+ *
+ * If a type is listed here as a tuple, that tuple is interpreted as [deprecatedTypeName, newTypeName].
+ */
 const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
     "@blueprintjs/core": [
         "IProps",
@@ -89,6 +87,9 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "ITextProps",
         "IToastProps",
         "ITreeProps",
+        ["IPortalContext", "PortalLegacyContext"],
+        ["IToaster", "ToasterInstance"],
+        ["ITreeNode", "TreeNodeInfo"],
     ],
 
     "@blueprintjs/datetime": [
@@ -103,7 +104,13 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
 
     "@blueprintjs/docs-theme": ["IExampleProps", "INavMenuItemProps", "ITagRendererMap"],
 
-    "@blueprintjs/popover2": ["IPopover2Props", "IPopover2TargetProps", "IPopover2SharedProps", "ITooltip2Props"],
+    "@blueprintjs/popover2": [
+        "IPopover2Props",
+        "IPopover2TargetProps",
+        "IPopover2SharedProps",
+        "ITooltip2Props",
+        ["ContextMenu2RenderProps", "ContextMenu2TargetProps"],
+    ],
 
     "@blueprintjs/select": [
         "IItemListRendererProps",
@@ -137,31 +144,31 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
     "@blueprintjs/timezone": ["ITimezoneItem", "ITimezonePickerProps"],
 };
 
-// some extra type mappings which do not fit the simple pattern of dropping the "I" prefix,
-// these will be augmented to create the full list in the for-loop below
-const DEPRECATED_TYPES_MAPPING: Record<string, string> = {
-    IPortalContext: "PortalLegacyContext",
-    IToaster: "ToasterInstance",
-    ITreeNode: "TreeNodeInfo",
-    ContextMenu2RenderProps: "ContextMenu2ContentProps",
-};
+/**
+ * Returns two records which can be used to look up the replacement type for a given deprecated type name
+ * and the package from which it is exported.
+ */
+function getTypeMappings() {
+    const deprecatedToNewTypeMapping: Record<string, string> = {};
+    const newTypeToPackageNameMapping: Record<string, string> = {};
 
-// which packages to find the new types in
-const NEW_TYPE_PACKAGE_MAPPING: Record<string, string> = {
-    PortalLegacyContext: "@blueprintjs/core",
-    ToasterInstance: "@blueprintjs/core",
-    TreeNodeInfo: "@blueprintjs/core",
-    ContextMenu2ContentProps: "@blueprintjs/popover2",
-};
-
-for (const [packageName, deprecatedTypeNames] of Object.entries(DEPRECATED_TYPE_REFERENCES_BY_PACKAGE)) {
-    for (const typeName of deprecatedTypeNames) {
-        const newTypeName = typeName.slice(1);
-        // "IProps": "Props"
-        DEPRECATED_TYPES_MAPPING[typeName] = newTypeName;
-        // "Props": "@blueprintjs/core"
-        NEW_TYPE_PACKAGE_MAPPING[newTypeName] = packageName;
+    for (const [packageName, deprecatedTypeNames] of Object.entries(DEPRECATED_TYPE_REFERENCES_BY_PACKAGE)) {
+        for (const typeName of deprecatedTypeNames) {
+            if (Array.isArray(typeName)) {
+                const [deprecatedTypeName, newTypeName] = typeName;
+                deprecatedToNewTypeMapping[deprecatedTypeName] = newTypeName;
+                newTypeToPackageNameMapping[newTypeName] = packageName;
+            } else {
+                const newTypeName = typeName.slice(1);
+                // "IProps": "Props"
+                deprecatedToNewTypeMapping[typeName] = newTypeName;
+                // "Props": "@blueprintjs/core"
+                newTypeToPackageNameMapping[newTypeName] = packageName;
+            }
+        }
     }
+
+    return [deprecatedToNewTypeMapping, newTypeToPackageNameMapping];
 }
 
 export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
@@ -186,13 +193,14 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
     },
     defaultOptions: [],
     create: context => {
+        const [deprecatedToNewType, newTypeToPackageName] = getTypeMappings();
         const deprecatedImports: Array<
             { namespace: string; type: "namespace" } | { type: "symbol"; symbolName: string; localSymbolName: string }
         > = [];
 
         function isDeprecatedTypeReference(name: string) {
             return (
-                DEPRECATED_TYPES_MAPPING.hasOwnProperty(name) &&
+                deprecatedToNewType.hasOwnProperty(name) &&
                 deprecatedImports.some(
                     deprecatedImport => deprecatedImport.type === "symbol" && deprecatedImport.localSymbolName === name,
                 )
@@ -201,7 +209,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
 
         function isDeprecatedNamespacedTypeReference(name: string, property: string) {
             return (
-                DEPRECATED_TYPES_MAPPING.hasOwnProperty(property) &&
+                deprecatedToNewType.hasOwnProperty(property) &&
                 deprecatedImports.some(
                     deprecatedImport => deprecatedImport.type === "namespace" && deprecatedImport.namespace === name,
                 )
@@ -211,7 +219,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
         return {
             // get the list of all deprecated imports from packages included in the provided list
             "Program > ImportDeclaration": (node: TSESTree.ImportDeclaration) => {
-                if (!PACKAGES_TO_CHECK.includes(node.source.value)) {
+                if (!Object.keys(DEPRECATED_TYPE_REFERENCES_BY_PACKAGE).includes(node.source.value)) {
                     return;
                 }
                 for (const importClause of node.specifiers) {
@@ -224,7 +232,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                             });
                             break;
                         case TSESTree.AST_NODE_TYPES.ImportSpecifier:
-                            if (DEPRECATED_TYPES_MAPPING.hasOwnProperty(importClause.imported.name)) {
+                            if (deprecatedToNewType.hasOwnProperty(importClause.imported.name)) {
                                 deprecatedImports.push({
                                     symbolName: importClause.imported.name,
                                     localSymbolName: importClause.local.name,
@@ -241,7 +249,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                     case TSESTree.AST_NODE_TYPES.Identifier:
                         if (isDeprecatedTypeReference(node.typeName.name)) {
                             const deprecatedTypeName = node.typeName.name;
-                            const newTypeName = DEPRECATED_TYPES_MAPPING[deprecatedTypeName];
+                            const newTypeName = deprecatedToNewType[deprecatedTypeName];
                             context.report({
                                 data: { deprecatedTypeName, newTypeName },
                                 messageId: "migration",
@@ -256,7 +264,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                                                 program,
                                                 deprecatedTypeName,
                                                 newTypeName,
-                                                NEW_TYPE_PACKAGE_MAPPING[newTypeName],
+                                                newTypeToPackageName[newTypeName],
                                             )(fixer),
                                         );
                                     }
@@ -272,7 +280,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                             isDeprecatedNamespacedTypeReference(node.typeName.left.name, node.typeName.right.name)
                         ) {
                             const deprecatedTypeName = node.typeName.right.name;
-                            const newTypeName = DEPRECATED_TYPES_MAPPING[deprecatedTypeName];
+                            const newTypeName = deprecatedToNewType[deprecatedTypeName];
                             context.report({
                                 data: { deprecatedTypeName, newTypeName },
                                 messageId: "migration",
@@ -289,7 +297,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                 if (node.expression.type === TSESTree.AST_NODE_TYPES.Identifier) {
                     if (isDeprecatedTypeReference(node.expression.name)) {
                         const deprecatedTypeName = node.expression.name;
-                        const newTypeName = DEPRECATED_TYPES_MAPPING[deprecatedTypeName];
+                        const newTypeName = deprecatedToNewType[deprecatedTypeName];
                         context.report({
                             data: { deprecatedTypeName, newTypeName },
                             messageId: "migration",
@@ -304,7 +312,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                                             program,
                                             deprecatedTypeName,
                                             newTypeName,
-                                            NEW_TYPE_PACKAGE_MAPPING[newTypeName],
+                                            newTypeToPackageName[newTypeName],
                                         )(fixer),
                                     );
                                 }
@@ -325,7 +333,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
 
                 if (isDeprecatedNamespacedTypeReference(node.object.name, node.property.name)) {
                     const deprecatedTypeName = node.property.name;
-                    const newTypeName = DEPRECATED_TYPES_MAPPING[deprecatedTypeName];
+                    const newTypeName = deprecatedToNewType[deprecatedTypeName];
                     context.report({
                         data: { deprecatedTypeName, newTypeName },
                         messageId: "migration",
