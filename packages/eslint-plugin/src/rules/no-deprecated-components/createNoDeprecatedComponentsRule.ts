@@ -237,6 +237,25 @@ export function createNoDeprecatedComponentsRule(
                         });
                     }
                 },
+
+                // check `MultiSelect.ofType<T>()` syntax
+                "MemberExpression[object.type='Identifier']": (node: TSESTree.MemberExpression) => {
+                    if (node.object.type !== TSESTree.AST_NODE_TYPES.Identifier) {
+                        return;
+                    }
+
+                    if (isDeprecatedComponent(node.object.name)) {
+                        const deprecatedComponentName = node.object.name;
+                        context.report({
+                            data: {
+                                deprecatedComponentName,
+                                newComponentName: deprecatedComponentConfig[deprecatedComponentName],
+                            },
+                            messageId: "migration",
+                            node: node.object,
+                        });
+                    }
+                },
             };
         },
     });
