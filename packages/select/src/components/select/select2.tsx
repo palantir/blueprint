@@ -26,7 +26,6 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps2,
-    IRef,
     Keys,
     refHandler,
     setRef,
@@ -34,10 +33,10 @@ import {
 } from "@blueprintjs/core";
 import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
-import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
+import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
+export interface Select2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
     /**
      * Element which triggers the select popover. In most cases, you should display
      * the name or label of the curently selected item here.
@@ -78,7 +77,7 @@ export interface Select2Props<T> extends IListItemsProps<T>, SelectPopoverProps 
     /**
      * Props to spread to the `Menu` listbox containing the selectable options.
      */
-    menuProps?: React.HTMLProps<HTMLUListElement>;
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
     /**
      * Props to add to the popover target wrapper element.
@@ -115,7 +114,11 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private previousFocusedElement: HTMLElement | undefined;
 
-    private handleInputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+    private handleInputRef: React.Ref<HTMLInputElement> = refHandler(
+        this,
+        "inputElement",
+        this.props.inputProps?.inputRef,
+    );
 
     private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 
@@ -276,7 +279,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private handlePopoverOpening = (node: HTMLElement) => {
         // save currently focused element before popover steals focus, so we can restore it when closing.
-        this.previousFocusedElement = document.activeElement as HTMLElement;
+        this.previousFocusedElement = (Utils.getActiveElement(this.inputElement) as HTMLElement | null) ?? undefined;
 
         if (this.props.resetOnClose) {
             this.resetQuery();

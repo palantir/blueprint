@@ -20,7 +20,7 @@ import { Classes, H5, HTMLSelect, Switch } from "@blueprintjs/core";
 import { TimePicker, TimePrecision } from "@blueprintjs/datetime";
 // tslint:disable-next-line:no-submodule-imports
 import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/common/timeUnit";
-import { Example, handleNumberChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleNumberChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { PrecisionSelect } from "./common/precisionSelect";
 
@@ -47,7 +47,7 @@ enum MaximumHours {
     TWO_AM = 2,
 }
 
-export class TimePickerExample extends React.PureComponent<IExampleProps, ITimePickerExampleState> {
+export class TimePickerExample extends React.PureComponent<ExampleProps, ITimePickerExampleState> {
     public state = {
         autoFocus: true,
         disabled: false,

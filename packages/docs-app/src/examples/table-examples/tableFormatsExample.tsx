@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Cell, Column, JSONFormat, Table2, TruncatedFormat } from "@blueprintjs/table";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Cell, Column, JSONFormat2, Table2, TruncatedFormat2 } from "@blueprintjs/table";
 
 interface ITimezone {
     name: string;
@@ -77,7 +77,7 @@ const TIME_ZONES: ITimezone[] = (
     };
 });
 
-export class TableFormatsExample extends React.PureComponent<IExampleProps> {
+export class TableFormatsExample extends React.PureComponent<ExampleProps> {
     private data = TIME_ZONES;
 
     private date = new Date();
@@ -113,14 +113,14 @@ export class TableFormatsExample extends React.PureComponent<IExampleProps> {
         });
         return (
             <Cell>
-                <TruncatedFormat>{formattedDateTime}</TruncatedFormat>
+                <TruncatedFormat2 detectTruncation={true}>{formattedDateTime}</TruncatedFormat2>
             </Cell>
         );
     };
 
     private renderJSON = (row: number) => (
         <Cell>
-            <JSONFormat>{this.data[row]}</JSONFormat>
+            <JSONFormat2 detectTruncation={true}>{this.data[row]}</JSONFormat2>
         </Cell>
     );
 }

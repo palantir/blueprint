@@ -6,9 +6,9 @@ Menus display lists of interactive items.
 
 The Menu API includes three React components:
 
-* [`Menu`](#core/components/menu.menu)
-* [`MenuItem`](#core/components/menu.menu-item)
-* [`MenuDivider`](#core/components/menu.menu-divider)
+* [Menu](#core/components/menu.menu)
+* [MenuItem](#core/components/menu.menu-item)
+* [MenuDivider](#core/components/menu.menu-divider)
 
 ```tsx
 <Menu>
@@ -86,11 +86,17 @@ there is not enough room to the right.
 </Menu>
 ```
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">JavaScript only</h4>
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h4 class="@ns-heading">
 
-Submenus are only supported in the React components. They cannot be created with CSS alone because
-they rely on the [`Popover`](#core/components/popover) component for positioning and transitions.
+Deprecated prop `popoverProps`: use [MenuItem2](#popover2-package/menu-item2)
+
+</h4>
+
+Usage of `<MenuItem popoverProps={...}>` is **deprecated since @blueprintjs/core v4.7.0**
+in favor of the new MenuItem2 component, which uses Popover2 instead of Popover under the hood.
+If you use customize the layout of submenus using this prop, you should migrate to the new API
+which will become the standard in Blueprint v5.
 
 </div>
 

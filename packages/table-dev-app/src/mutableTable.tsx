@@ -38,24 +38,24 @@ import {
 import {
     Cell,
     Column,
-    ColumnHeaderCell,
+    ColumnHeaderCell2,
     EditableCell2,
     EditableName,
-    JSONFormat,
+    FocusedCellCoordinates,
+    JSONFormat2,
     Region,
     RegionCardinality,
     Regions,
-    RowHeaderCell,
+    RenderMode,
+    RowHeaderCell2,
     StyledRegionGroup,
     Table2,
     TableLoadingOption,
-    TruncatedFormat,
+    TruncatedFormat2,
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
-import type { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cellTypes";
 import type { ColumnIndices, RowIndices } from "@blueprintjs/table/src/common/grid";
-import { RenderMode } from "@blueprintjs/table/src/common/renderMode";
 
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 import { LocalStore } from "./localStore";
@@ -200,9 +200,9 @@ function getRandomString(length: number): string {
     let str = "";
     while (str.length < length) {
         const part = Math.random().toString(36);
-        str += part.substring(2, part.length - 1);
+        str += part.substring(2);
     }
-    return str.substring(0, length - 1);
+    return str.substring(0);
 }
 
 function contains(arr: any[], value: any) {
@@ -449,7 +449,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderColumnHeaderCell = (columnIndex: number) => {
         return (
-            <ColumnHeaderCell
+            <ColumnHeaderCell2
                 index={columnIndex}
                 name={this.store.getColumnName(columnIndex)}
                 menuRenderer={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
@@ -520,7 +520,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     };
 
     private renderRowHeader = (rowIndex: number) => {
-        return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`} menuRenderer={this.renderRowMenu} />;
+        return <RowHeaderCell2 index={rowIndex} name={`${rowIndex + 1}`} menuRenderer={this.renderRowMenu} />;
     };
 
     private renderRowMenu = (rowIndex: number) => {
@@ -582,20 +582,20 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         } else if (this.state.cellContent === CellContent.LARGE_JSON) {
             return (
                 <Cell className={classes} wrapText={this.state.enableCellWrap}>
-                    <JSONFormat
+                    <JSONFormat2
                         detectTruncation={this.state.enableCellTruncation}
                         preformatted={true}
                         showPopover={this.state.cellTruncatedPopoverMode}
                         truncateLength={1e10}
                     >
                         {valueAsString}
-                    </JSONFormat>
+                    </JSONFormat2>
                 </Cell>
             );
         } else if (this.state.enableCellTruncation) {
             return (
                 <Cell className={classes} wrapText={this.state.enableCellWrap}>
-                    <TruncatedFormat
+                    <TruncatedFormat2
                         detectTruncation={!this.state.enableCellTruncationFixed}
                         preformatted={false}
                         showPopover={this.state.cellTruncatedPopoverMode}
@@ -603,7 +603,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                         truncationSuffix="..."
                     >
                         {valueAsString}
-                    </TruncatedFormat>
+                    </TruncatedFormat2>
                 </Cell>
             );
         } else {
@@ -921,7 +921,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.maybeLogCallback(`[onRowHeightChanged] index = ${index} size = ${size}`);
     };
 
-    private onFocus = (focusedCell: IFocusedCellCoordinates) => {
+    private onFocus = (focusedCell: FocusedCellCoordinates) => {
         this.maybeLogCallback("[onFocusedCell] focusedCell =", focusedCell);
     };
 

@@ -1,7 +1,10 @@
 const config = require("./packages/eslint-config");
 
 const xtends = ["./packages/eslint-config"];
-const rules = {};
+const rules = {
+    // we have these across the codebase, it's not useful for this repo
+    "@blueprintjs/no-deprecated-type-references": "off",
+};
 
 if (process.env.LINT_SCRIPT) {
     // in CI, we don't wan to run eslint-plugin-prettier because it has a ~50% performance penalty.

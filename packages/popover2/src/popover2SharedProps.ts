@@ -18,7 +18,7 @@ import { Boundary, Modifier, Placement, placements, RootBoundary, StrictModifier
 import * as React from "react";
 import { StrictModifier } from "react-popper";
 
-import { IRef, OverlayableProps, PopoverPosition, Props } from "@blueprintjs/core";
+import { OverlayableProps, PopoverPosition, Props } from "@blueprintjs/core";
 
 export { Boundary as PopperBoundary, Placement, placements as PlacementOptions };
 // copied from @popperjs/core, where it is not exported as public
@@ -185,7 +185,7 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
     /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
-    popoverRef?: IRef<HTMLElement>;
+    popoverRef?: React.Ref<HTMLElement>;
 
     /**
      * Target renderer which receives props injected by Popover2 which should be spread onto

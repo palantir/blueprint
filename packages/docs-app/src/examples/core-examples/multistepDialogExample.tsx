@@ -35,10 +35,10 @@ import {
 } from "@blueprintjs/core";
 import {
     Example,
+    ExampleProps,
     handleBooleanChange,
     handleStringChange,
     handleValueChange,
-    IExampleProps,
 } from "@blueprintjs/docs-theme";
 
 import { IBlueprintExampleData } from "../../tags/types";
@@ -61,7 +61,7 @@ export interface IMultistepDialogExampleState {
 const NAV_POSITIONS = ["left", "top", "right"];
 
 export class MultistepDialogExample extends React.PureComponent<
-    IExampleProps<IBlueprintExampleData>,
+    ExampleProps<IBlueprintExampleData>,
     IMultistepDialogExampleState
 > {
     public state: IMultistepDialogExampleState = {

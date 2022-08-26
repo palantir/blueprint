@@ -65,8 +65,9 @@ describe("MenuItem", () => {
     });
 
     it("can set roleStructure to change role prop structure to that of a listbox or select item", () => {
-        const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" />);
+        const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" selected={true} />);
         assert.equal(wrapper.find("li").prop("role"), "option");
+        assert.equal(wrapper.find("li").prop("aria-selected"), true);
         assert.equal(wrapper.find("a").prop("role"), undefined);
     });
 
@@ -141,6 +142,7 @@ describe("MenuItem", () => {
             popoverClassName: "CUSTOM_POPOVER_CLASS_NAME",
         };
         const wrapper = shallow(
+            // eslint-disable-next-line @blueprintjs/no-deprecated-components
             <MenuItem icon="style" text="Style" popoverProps={popoverProps}>
                 <MenuItem text="one" />
                 <MenuItem text="two" />

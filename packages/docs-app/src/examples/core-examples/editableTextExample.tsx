@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Classes, EditableText, FormGroup, H1, H5, Intent, NumericInput, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -33,7 +33,7 @@ export interface IEditableTextExampleState {
     selectAllOnFocus?: boolean;
 }
 
-export class EditableTextExample extends React.PureComponent<IExampleProps, IEditableTextExampleState> {
+export class EditableTextExample extends React.PureComponent<ExampleProps, IEditableTextExampleState> {
     public state: IEditableTextExampleState = {
         alwaysRenderInput: false,
         confirmOnEnterKey: false,

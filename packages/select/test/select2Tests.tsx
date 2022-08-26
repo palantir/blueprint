@@ -23,7 +23,7 @@ import { InputGroup, Keys, MenuItem } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
-import { IItemRendererProps, Select2, Select2Props, Select2State } from "../src";
+import { ItemRendererProps, Select2, Select2Props, Select2State } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
@@ -36,7 +36,7 @@ describe("<Select2>", () => {
     };
     let handlers: {
         itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
+        itemRenderer: sinon.SinonSpy<[IFilm, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
     let testsContainerElement: HTMLElement | undefined;

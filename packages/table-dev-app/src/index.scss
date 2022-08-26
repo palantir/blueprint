@@ -4,34 +4,33 @@
 @import "~normalize.css/normalize.css";
 @import "~@blueprintjs/core/lib/css/blueprint.css";
 @import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 @import "~@blueprintjs/table/src/table";
 
-// TODO: convert below CSS to SCSS
-/* stylelint-disable */
-
 body {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
+
+  background-color: $pt-app-background-color;
   bottom: 0;
+  left: 0;
 
   margin: 0;
   padding: 0;
-
-  background-color: $pt-app-background-color;
+  position: absolute;
+  right: 0;
+  top: 0;
 
   .#{$ns}-dark {
     background-color: $pt-dark-app-background-color;
   }
 }
 
+/* stylelint-disable-next-line selector-max-id */
 #page-content {
-  position: absolute;
-  top: $pt-navbar-height;
-  left: 0;
   bottom: 0;
+  left: 0;
+  position: absolute;
   right: 0;
+  top: $pt-navbar-height;
 }
 
 /**
@@ -39,9 +38,9 @@ body {
   */
 .layout-passthrough-fill {
   display: inline-block;
-  width: 100%;
   height: 100%;
   position: relative;
+  width: 100%;
 }
 
 /**
@@ -49,27 +48,27 @@ body {
   * See: http://wilsonpage.co.uk/introducing-layout-boundaries/
   */
 .layout-boundary {
-  display: block;
-  position: absolute;
-  top: 0;
   bottom: 0;
+  display: block;
   left: 0;
-  right: 0;
   overflow: hidden;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .container {
   display: flex;
-  overflow: hidden;
   height: 100%;
+  overflow: hidden;
 }
 
 .table {
   flex: 1 1 auto;
   order: 2;
-  z-index: 2;
   overflow: hidden;
   position: relative;
+  z-index: 2;
 
   &.is-inline {
     margin-left: -12.5%;
@@ -98,7 +97,6 @@ body {
 
   h6.#{$ns}-heading {
     color: $pt-text-color-muted;
-    font-weight: normal;
     padding: 10px 0 3px;
   }
 
@@ -112,8 +110,8 @@ body {
   }
 
   .tbl-select-label {
-    margin-top: -3px;
     margin-bottom: 7px;
+    margin-top: -3px;
 
     .#{$ns}-html-select {
       float: right;
@@ -129,15 +127,16 @@ body {
   }
 
   .#{$ns}-dark & {
-    z-index: 1;
     background-color: $dark-gray2;
     color: $dark-gray2;
+    z-index: 1;
 
     h6.#{$ns}-heading {
       color: $pt-dark-text-color-muted;
     }
   }
 }
+
 .sidebar-indented-group {
   margin-left: $pt-grid-size;
 }
@@ -147,18 +146,18 @@ body {
 }
 
 .tbl-styled-region-success {
-  border: 1px solid $pt-intent-success;
   background-color: rgba($pt-intent-success, 0.1);
+  border: 1px solid $pt-intent-success;
 }
 
 .tbl-styled-region-warning {
-  border: 1px solid $pt-intent-warning;
   background-color: rgba($pt-intent-warning, 0.1);
+  border: 1px solid $pt-intent-warning;
 }
 
 .tbl-styled-region-danger {
-  border: 1px solid $pt-intent-danger;
   background-color: rgba($pt-intent-danger, 0.1);
+  border: 1px solid $pt-intent-danger;
 }
 
 .tbl-custom-column-header {

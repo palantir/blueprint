@@ -24,7 +24,6 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps2,
-    IRef,
     Keys,
     mergeRefs,
     refHandler,
@@ -33,10 +32,10 @@ import {
 } from "@blueprintjs/core";
 import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
-import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
+import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface Suggest2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
+export interface Suggest2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
     /**
      * Whether the popover should close after selecting an item.
      *
@@ -79,7 +78,7 @@ export interface Suggest2Props<T> extends IListItemsProps<T>, SelectPopoverProps
     /**
      * Props to spread to the `Menu` listbox containing the selectable options.
      */
-    menuProps?: React.HTMLProps<HTMLUListElement>;
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
     /**
      * If true, the component waits until a keydown event in the TagInput
@@ -131,7 +130,11 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
     private queryList: QueryList<T> | null = null;
 
-    private handleInputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+    private handleInputRef: React.Ref<HTMLInputElement> = refHandler(
+        this,
+        "inputElement",
+        this.props.inputProps?.inputRef,
+    );
 
     private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 
@@ -313,11 +316,10 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
     }
 
     // Popover2 interaction kind is CLICK, so this only handles click events.
-    // Note that we defer to the next animation frame in order to get the latest document.activeElement
+    // Note that we defer to the next animation frame in order to get the latest activeElement
     private handlePopoverInteraction = (nextOpenState: boolean, event?: React.SyntheticEvent<HTMLElement>) =>
         this.requestAnimationFrame(() => {
-            const isInputFocused = this.inputElement === document.activeElement;
-
+            const isInputFocused = this.inputElement === Utils.getActiveElement(this.inputElement);
             if (this.inputElement != null && !isInputFocused) {
                 // the input is no longer focused, we should close the popover
                 this.setState({ isOpen: false });

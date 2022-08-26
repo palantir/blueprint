@@ -24,7 +24,7 @@ import { Icon, IconProps } from "../icon/icon";
 
 // eslint-disable-next-line deprecation/deprecation
 export type HTMLSelectProps = IHTMLSelectProps;
-/** @deprecated use HTMLSelectPRops */
+/** @deprecated use HTMLSelectProps */
 export interface IHTMLSelectProps
     // eslint-disable-next-line deprecation/deprecation
     extends IElementRefProps<HTMLSelectElement>,

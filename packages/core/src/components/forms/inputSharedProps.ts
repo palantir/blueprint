@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import type { IRef } from "../../common";
 import type { IntentProps, MaybeElement, Props } from "../../common/props";
 import type { IconName } from "../icon/icon";
 
@@ -40,7 +39,7 @@ export interface InputSharedProps extends IntentProps, Props {
     /**
      * Ref attached to the HTML `<input>` element backing this component.
      */
-    inputRef?: IRef<HTMLInputElement>;
+    inputRef?: React.Ref<HTMLInputElement>;
 
     /**
      * Element to render on the left side of input.

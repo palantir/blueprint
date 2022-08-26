@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 import classNames from "classnames";
 import { Modifiers } from "popper.js";
 import * as React from "react";
@@ -25,7 +27,6 @@ import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popov
 import { Text } from "../text/text";
 import { Menu, MenuProps } from "./menu";
 
-// eslint-disable-next-line deprecation/deprecation
 export type MenuItemProps = IMenuItemProps;
 /** @deprecated use MenuItemProps */
 export interface IMenuItemProps extends ActionProps, LinkProps {
@@ -33,15 +34,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     text: React.ReactNode;
 
     /**
-     * Whether this item should render with an active appearance.
-     * This is the same styling as the `:active` CSS element state.
-     *
-     * Note: in Blueprint 3.x, this prop was conflated with a "selected" appearance
-     * when `intent` was undefined. For legacy purposes, we emulate this behavior in
-     * Blueprint 4.x, so setting `active={true} intent={undefined}` is the same as
-     * `selected={true}`. This prop will be removed in a future major version.
-     *
-     * @deprecated use `selected` prop
+     * Whether this item should render with an active appearance. Used to indicate keyboard focus.
      */
     active?: boolean;
 
@@ -112,11 +105,10 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      * changed and `usePortal` defaults to `false` so all submenus will live in
      * the same container.
      */
-    // eslint-disable-next-line deprecation/deprecation
     popoverProps?: Partial<IPopoverProps>;
 
     /**
-     * Whether this item should appear selected.
+     * Whether this item is selected. This will set the `aria-selected` attribute.
      */
     selected?: boolean;
 
@@ -259,7 +251,6 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         }
         const { disabled, popoverProps, submenuProps } = this.props;
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 captureDismiss={false}

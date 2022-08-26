@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -27,7 +27,7 @@ export interface IProgressExampleState {
     value: number;
 }
 
-export class ProgressExample extends React.PureComponent<IExampleProps, IProgressExampleState> {
+export class ProgressExample extends React.PureComponent<ExampleProps, IProgressExampleState> {
     public state: IProgressExampleState = {
         hasValue: false,
         value: 0.7,

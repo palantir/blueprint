@@ -20,7 +20,7 @@ import * as React from "react";
 import { Classes, H5, Icon, Switch, Tag } from "@blueprintjs/core";
 import { DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
 import { DateInput2 } from "@blueprintjs/datetime2";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
@@ -43,7 +43,7 @@ export interface DateInput2ExampleState {
     useAmPm: boolean;
 }
 
-export class DateInput2Example extends React.PureComponent<IExampleProps, DateInput2ExampleState> {
+export class DateInput2Example extends React.PureComponent<ExampleProps, DateInput2ExampleState> {
     public state: DateInput2ExampleState = {
         closeOnSelection: true,
         date: null,

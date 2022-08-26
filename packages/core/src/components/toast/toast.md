@@ -19,7 +19,7 @@ You can add one additional action button to a toast. You might use this to provi
 
 You can also apply the same visual intent styles to `Toast`s that you can to [`Button`s](#core/components/button.css).
 
-@interface IToastProps
+@interface ToastProps
 
 @### Toaster
 
@@ -30,7 +30,7 @@ horizontally aligned along the left edge, center, or right edge of its container
 
 There are three ways to use the `Toaster` component:
 
-1. `Toaster.create(props)` static method returns a new `IToaster` instance. Use the instance method `toaster.show()` to manipulate this instance. __(recommended)__
+1. `Toaster.create(props)` static method returns a new `ToasterInstance` instance. Use the instance method `toaster.show()` to manipulate this instance. __(recommended)__
 1. `<Toaster><Toast />...</Toaster>`: Render a `<Toaster>` element with React `children`.
 1. `<Toaster ref={ref => ref.show({ ...toast })} />`: Render a `<Toaster>` element and use the `ref` prop to access its instance methods.
 
@@ -62,13 +62,13 @@ element attached to `<body>`. A `Toaster` instance
 has a collection of methods to show and hide toasts in its given container.
 
 ```ts
-Toaster.create(props?: IToasterProps, container = document.body): IToaster
+Toaster.create(props?: IToasterProps, container = document.body): ToasterInstance
 ```
 
 The `Toaster` will be rendered into a new element appended to the given `container`.
 The `container` determines which element toasts are positioned relative to; the default value of `<body>` allows them to use the entire viewport.
 
-Note that the return type is `IToaster`, which is a minimal interface that exposes only the instance
+Note that the return type is `ToasterInstance`, which is a minimal interface that exposes only the instance
 methods detailed below. It can be thought of as `Toaster` minus the `React.Component` methods,
 because the `Toaster` should not be treated as a normal React component.
 
@@ -80,7 +80,7 @@ because the `Toaster` should not be treated as a normal React component.
 
 </div>
 
-@interface IToaster
+@interface ToasterInstance
 
 @### Example
 
@@ -131,7 +131,7 @@ import { Button, Position, Toast, Toaster } from "@blueprintjs/core";
 import * as React from "react";
 
 class MyComponent extends React.PureComponent {
-    public state = { toasts: [ /* IToastProps[] */ ] }
+    public state = { toasts: [ /* ToastProps[] */ ] }
 
     private toaster: Toaster;
     private refHandlers = {

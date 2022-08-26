@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to JSONFormat2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -43,6 +50,7 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
 }
 
 /* istanbul ignore next */
+/** @deprecated use JSONFormat2 */
 export class JSONFormat extends React.Component<IJSONFormatProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat`;
 

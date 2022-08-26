@@ -26,7 +26,7 @@ import {
     Spinner,
     Switch,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconName } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
@@ -55,7 +55,7 @@ export interface INonIdealStateExampleState {
     visual: VisualKind;
 }
 
-export class NonIdealStateExample extends React.PureComponent<IExampleProps, INonIdealStateExampleState> {
+export class NonIdealStateExample extends React.PureComponent<ExampleProps, INonIdealStateExampleState> {
     public state: INonIdealStateExampleState = {
         icon: defaultIcon,
         iconSize: NonIdealStateIconSize.STANDARD,

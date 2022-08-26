@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Popover2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import {
@@ -40,10 +47,10 @@ import {
 } from "@blueprintjs/core";
 import {
     Example,
+    ExampleProps,
     handleBooleanChange,
     handleNumberChange,
     handleValueChange,
-    IExampleProps,
 } from "@blueprintjs/docs-theme";
 
 const INTERACTION_KINDS = [
@@ -88,7 +95,7 @@ export interface IPopoverExampleState {
     usePortal?: boolean;
 }
 
-export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverExampleState> {
+export class PopoverExample extends React.PureComponent<ExampleProps, IPopoverExampleState> {
     public state: IPopoverExampleState = {
         boundary: "viewport",
         canEscapeKeyClose: true,
@@ -135,7 +142,6 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
 
     public render() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
-        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
@@ -157,7 +163,6 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                 </div>
             </Example>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 
     private renderOptions() {

@@ -17,13 +17,13 @@
 import * as React from "react";
 
 import { Text, TextArea } from "@blueprintjs/core";
-import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
 
 export interface ITextExampleState {
     textContent: string;
 }
 
-export class TextExample extends React.PureComponent<IExampleProps, ITextExampleState> {
+export class TextExample extends React.PureComponent<ExampleProps, ITextExampleState> {
     public state: ITextExampleState = {
         textContent:
             "You can change the text in the input below. Hover to see full text. " +

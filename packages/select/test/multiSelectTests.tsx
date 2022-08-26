@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to MultiSelect2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -24,7 +31,7 @@ import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
-import { IItemRendererProps, IMultiSelectProps, IMultiSelectState, MultiSelect } from "../src";
+import { IMultiSelectProps, IMultiSelectState, ItemRendererProps, MultiSelect } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<MultiSelect>", () => {
@@ -38,7 +45,7 @@ describe("<MultiSelect>", () => {
     };
     let handlers: {
         itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
+        itemRenderer: sinon.SinonSpy<[IFilm, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
 

@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { IExampleMap, IExampleProps } from "@blueprintjs/docs-theme";
+import { ExampleProps, IExampleMap } from "@blueprintjs/docs-theme";
 
 import { getTheme } from "../components/blueprintDocs";
 import * as CoreExamples from "../examples/core-examples";
@@ -32,7 +32,7 @@ const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packag
 
 function getPackageExamples(
     packageName: string,
-    packageExamples: { [name: string]: React.ComponentClass<IExampleProps<IBlueprintExampleData>> },
+    packageExamples: { [name: string]: React.ComponentClass<ExampleProps<IBlueprintExampleData>> },
 ) {
     const ret: IExampleMap = {};
     for (const exampleName of Object.keys(packageExamples)) {

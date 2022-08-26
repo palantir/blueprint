@@ -12,8 +12,8 @@ Migrating from [PanelStack](#core/components/panel-stack)?
 </h4>
 
 PanelStack2 is a replacement for PanelStack. It will become the standard
-API in Blueprint core v5. You are encouraged to use this new API now to ease the
-transition to the next major version of Blueprint. See the full
+API in a future major version of Blueprint. You are encouraged to use this
+new API now for forwards-compatibility. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/PanelStack2-migration) on the wiki.
 
 </div>

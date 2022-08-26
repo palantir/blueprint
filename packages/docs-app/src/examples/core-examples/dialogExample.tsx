@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { AnchorButton, Button, Classes, Code, Dialog, DialogProps, H5, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Tooltip2 } from "@blueprintjs/popover2";
 
 import { IBlueprintExampleData } from "../../tags/types";
@@ -31,7 +31,7 @@ export interface DialogExampleState {
     usePortal: boolean;
 }
 
-export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, DialogExampleState> {
+export class DialogExample extends React.PureComponent<ExampleProps<IBlueprintExampleData>, DialogExampleState> {
     public state: DialogExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,

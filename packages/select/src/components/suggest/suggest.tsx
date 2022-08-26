@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Suggest2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -23,7 +30,6 @@ import {
     InputGroup,
     InputGroupProps2,
     IPopoverProps,
-    IRef,
     Keys,
     Popover,
     PopoverInteractionKind,
@@ -32,13 +38,12 @@ import {
     setRef,
 } from "@blueprintjs/core";
 
-import { Classes, IListItemsProps } from "../../common";
+import { Classes, ListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-// eslint-disable-next-line deprecation/deprecation
 export type SuggestProps<T> = ISuggestProps<T>;
 /** @deprecated use SuggestProps */
-export interface ISuggestProps<T> extends IListItemsProps<T> {
+export interface ISuggestProps<T> extends ListItemsProps<T> {
     /**
      * Whether the popover should close after selecting an item.
      *
@@ -90,7 +95,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     openOnKeyDown?: boolean;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    // eslint-disable-next-line @typescript-eslint/ban-types, deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/ban-types
     popoverProps?: Partial<IPopoverProps> & object;
 
     /**
@@ -119,7 +124,6 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
     };
 
     public static ofType<U>() {
-        // eslint-disable-next-line deprecation/deprecation
         return Suggest as new (props: SuggestProps<U>) => Suggest<U>;
     }
 
@@ -134,7 +138,11 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
 
     private queryList: QueryList<T> | null = null;
 
-    private handleInputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+    private handleInputRef: React.Ref<HTMLInputElement> = refHandler(
+        this,
+        "inputElement",
+        this.props.inputProps?.inputRef,
+    );
 
     private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 
@@ -142,7 +150,6 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
         // omit props specific to this component, spread the rest.
         const { disabled, inputProps, popoverProps, ...restProps } = this.props;
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
             <this.TypedQueryList
                 {...restProps}
                 initialActiveItem={this.props.selectedItem ?? undefined}
@@ -168,7 +175,6 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
         if (this.state.isOpen === false && prevState.isOpen === true) {
             // just closed, likely by keyboard interaction
             // wait until the transition ends so there isn't a flash of content in the popover
-            /* eslint-disable-next-line deprecation/deprecation */
             const timeout = this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration;
             setTimeout(() => this.maybeResetActiveItemToSelectedItem(), timeout);
         }
@@ -199,7 +205,6 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
         }
 
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 enforceFocus={false}
@@ -228,7 +233,6 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {listProps.itemList}
                 </div>
-                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     };
@@ -323,7 +327,6 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
     ) => {
         return (evt: React.KeyboardEvent<HTMLInputElement>) => {
             // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-            // eslint-disable-next-line deprecation/deprecation
             const { which } = evt;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {

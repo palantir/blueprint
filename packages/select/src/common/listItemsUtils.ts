@@ -16,17 +16,20 @@
 
 /* eslint-disable no-underscore-dangle */
 
+/** @deprecated use CreateNewItem */
+export type ICreateNewItem = CreateNewItem;
+
 /**
  * The reserved type of the "Create Item" option in item lists. This is intended
  * not to conflict with any custom item type `T` that might be used in  item
  * list.
  */
-export interface ICreateNewItem {
+export interface CreateNewItem {
     __blueprintCreateNewItemBrand: "blueprint-create-new-item";
 }
 
 /** Returns an instance of a "Create Item" object. */
-export function getCreateNewItem(): ICreateNewItem {
+export function getCreateNewItem(): CreateNewItem {
     return { __blueprintCreateNewItemBrand: "blueprint-create-new-item" };
 }
 
@@ -34,18 +37,18 @@ export function getCreateNewItem(): ICreateNewItem {
  * Type guard returning `true` if the provided item (e.g. the current
  * `activeItem`) is a "Create Item" option.
  */
-export function isCreateNewItem<T>(item: T | ICreateNewItem | null | undefined): item is ICreateNewItem {
+export function isCreateNewItem<T>(item: T | CreateNewItem | null | undefined): item is CreateNewItem {
     if (item == null) {
         return false;
     }
 
-    // see if the provided item exactly matches the `ICreateNewItem` object,
+    // see if the provided item exactly matches the `CreateNewItem` object,
     // with no superfluous keys.
     const keys = Object.keys(item);
     if (keys.length !== 1 || keys[0] !== "__blueprintCreateNewItemBrand") {
         return false;
     }
-    return (item as ICreateNewItem).__blueprintCreateNewItemBrand === "blueprint-create-new-item";
+    return (item as CreateNewItem).__blueprintCreateNewItemBrand === "blueprint-create-new-item";
 }
 
 /**
@@ -53,6 +56,6 @@ export function isCreateNewItem<T>(item: T | ICreateNewItem | null | undefined):
  * the `activeItem` is `undefined` or a "Create Item" option, in which case
  * `null` will be returned instead.
  */
-export function getActiveItem<T>(activeItem: T | ICreateNewItem | null | undefined): T | null {
+export function getActiveItem<T>(activeItem: T | CreateNewItem | null | undefined): T | null {
     return activeItem == null || isCreateNewItem(activeItem) ? null : activeItem;
 }

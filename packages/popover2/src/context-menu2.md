@@ -63,8 +63,8 @@ all the render props supplied to the `children()` function:
 
 ```tsx
 import classNames from "classnames";
-import { Menu, MenuItem } from "@blueprintjs/core";
-import { ContextMenu2, ContextMenu2ChildrenProps } from "@blueprintjs/popover2";
+import { Menu } from "@blueprintjs/core";
+import { ContextMenu2, ContextMenu2ChildrenProps, MenuItem } from "@blueprintjs/popover2";
 
 export default function AdvancedContextMenu2Example() {
     return (

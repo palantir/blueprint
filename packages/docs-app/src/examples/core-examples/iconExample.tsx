@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, Icon, IconSize, Intent, Label, Slider } from "@blueprintjs/core";
-import { Example, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleValueChange } from "@blueprintjs/docs-theme";
 import { IconName } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
@@ -29,7 +29,7 @@ export interface IIconExampleState {
     intent: Intent;
 }
 
-export class IconExample extends React.PureComponent<IExampleProps, IIconExampleState> {
+export class IconExample extends React.PureComponent<ExampleProps, IIconExampleState> {
     public state: IIconExampleState = {
         icon: "calendar",
         iconSize: IconSize.STANDARD,

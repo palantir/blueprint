@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Button, ControlGroup, HTMLSelect, InputGroup, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 const FILTER_OPTIONS = ["Filter", "Name - ascending", "Name - descending", "Price - ascending", "Price - descending"];
 
@@ -26,7 +26,7 @@ export interface IControlGroupExampleState {
     vertical: boolean;
 }
 
-export class ControlGroupExample extends React.PureComponent<IExampleProps, IControlGroupExampleState> {
+export class ControlGroupExample extends React.PureComponent<ExampleProps, IControlGroupExampleState> {
     public state: IControlGroupExampleState = {
         fill: false,
         vertical: false,

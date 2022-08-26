@@ -20,6 +20,8 @@
  * package instead.
  */
 
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 import type { DayPickerProps } from "react-day-picker";
@@ -31,7 +33,6 @@ import {
     InputGroupProps2,
     Intent,
     IPopoverProps,
-    IRef,
     Keys,
     Popover,
     Props,
@@ -46,7 +47,6 @@ import { DatePicker } from "./datePicker";
 import { DatePickerBaseProps, getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
 import { DatePickerShortcut } from "./shortcuts";
 
-// eslint-disable-next-line deprecation/deprecation
 export type DateInputProps = IDateInputProps;
 /** @deprecated use DateInputProps */
 export interface IDateInputProps extends DatePickerBaseProps, DateFormatProps, Props {
@@ -118,7 +118,7 @@ export interface IDateInputProps extends DatePickerBaseProps, DateFormatProps, P
      * Props to pass to the `Popover`.
      * Note that `content`, `autoFocus`, and `enforceFocus` cannot be changed.
      */
-    // eslint-disable-next-line @typescript-eslint/ban-types, deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/ban-types
     popoverProps?: Partial<IPopoverProps> & object;
 
     /**
@@ -199,7 +199,7 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         this.props.inputProps?.inputRef,
     );
 
-    private handlePopoverContentRef: IRef<HTMLDivElement> = refHandler(this, "popoverContentElement");
+    private handlePopoverContentRef: React.Ref<HTMLDivElement> = refHandler(this, "popoverContentElement");
 
     public render() {
         const { value, valueString } = this.state;
@@ -237,7 +237,6 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         const { inputProps = {}, popoverProps = {} } = this.props;
         const isErrorState = value != null && (!isDateValid(value) || !this.isDateInRange(value));
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 isOpen={this.state.isOpen && !this.props.disabled}
                 fill={this.props.fill}
@@ -265,7 +264,6 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
                     onKeyDown={this.handleInputKeyDown}
                     value={dateString}
                 />
-                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     }
@@ -405,7 +403,6 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
 
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable deprecation/deprecation */
         if (e.which === Keys.ENTER) {
             const nextDate = this.parseDate(this.state.valueString);
             this.handleDateChange(nextDate, true, true);

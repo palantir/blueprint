@@ -19,21 +19,21 @@ import * as React from "react";
 import { AbstractComponent2, DISPLAYNAME_PREFIX, Keys, Menu, Props, Utils } from "@blueprintjs/core";
 
 import {
+    CreateNewItem,
     executeItemsEqual,
     getActiveItem,
     getCreateNewItem,
-    ICreateNewItem,
-    IItemListRendererProps,
-    IItemModifiers,
-    IListItemsProps,
     isCreateNewItem,
+    ItemListRendererProps,
+    ItemModifiers,
+    ListItemsProps,
     renderFilteredItems,
 } from "../../common";
 
 // eslint-disable-next-line deprecation/deprecation
 export type QueryListProps<T> = IQueryListProps<T>;
 /** @deprecated use QueryListProps */
-export interface IQueryListProps<T> extends IListItemsProps<T> {
+export interface IQueryListProps<T> extends ListItemsProps<T> {
     /**
      * Initial active item, useful if the parent component is controlling its selectedItem but
      * not activeItem.
@@ -128,7 +128,7 @@ export interface IQueryListRendererProps<T> // Omit `createNewItem`, because it'
 
 export interface IQueryListState<T> {
     /** The currently focused item (for keyboard interactions). */
-    activeItem: T | ICreateNewItem | null;
+    activeItem: T | CreateNewItem | null;
 
     /**
      * The item returned from `createNewItemFromQuery(this.state.query)`, cached
@@ -175,7 +175,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
      * or key interactions). When scrollToActiveItem = false, used to detect if
      * an unexpected external change to the active item has been made.
      */
-    private expectedNextActiveItem: T | ICreateNewItem | null = null;
+    private expectedNextActiveItem: T | CreateNewItem | null = null;
 
     /**
      * Flag which is set to true while in between an ENTER "keydown" event and its
@@ -332,7 +332,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
         }
     }
 
-    public setActiveItem(activeItem: T | ICreateNewItem | null) {
+    public setActiveItem(activeItem: T | CreateNewItem | null) {
         this.expectedNextActiveItem = activeItem;
         if (this.props.activeItem === undefined) {
             // indicate that the active item may need to be scrolled into view after update.
@@ -348,7 +348,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     }
 
     /** default `itemListRenderer` implementation */
-    private renderItemList = (listProps: IItemListRendererProps<T>) => {
+    private renderItemList = (listProps: ItemListRendererProps<T>) => {
         const { initialContent, noResults } = this.props;
 
         // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
@@ -371,12 +371,12 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     /** wrapper around `itemRenderer` to inject props */
     private renderItem = (item: T, index: number) => {
         if (this.props.disabled !== true) {
-            const { activeItem, query } = this.state;
-            const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
-            const modifiers: IItemModifiers = {
+            const { activeItem, query, filteredItems } = this.state;
+
+            const modifiers: ItemModifiers = {
                 active: executeItemsEqual(this.props.itemsEqual, getActiveItem(activeItem), item),
                 disabled: isItemDisabled(item, index, this.props.itemDisabled),
-                matchesPredicate,
+                matchesPredicate: filteredItems.indexOf(item) >= 0,
             };
             return this.props.itemRenderer(item, {
                 handleClick: e => this.handleItemSelect(item, e),
@@ -549,7 +549,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
      * @param direction amount to move in each iteration, typically +/-1
      * @param startIndex item to start iteration
      */
-    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | ICreateNewItem | null {
+    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | CreateNewItem | null {
         if (this.isCreateItemRendered()) {
             const reachedCreate =
                 (startIndex === 0 && direction === -1) ||
@@ -633,7 +633,7 @@ function wrapNumber(value: number, min: number, max: number) {
     return value;
 }
 
-function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: IListItemsProps<T>["itemDisabled"]) {
+function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: ListItemsProps<T>["itemDisabled"]) {
     if (itemDisabled == null || item == null) {
         return false;
     } else if (Utils.isFunction(itemDisabled)) {
@@ -656,7 +656,7 @@ export function getFirstEnabledItem<T>(
     itemDisabled?: keyof T | ((item: T, index: number) => boolean),
     direction = 1,
     startIndex = items.length - 1,
-): T | ICreateNewItem | null {
+): T | CreateNewItem | null {
     if (items.length === 0) {
         return null;
     }

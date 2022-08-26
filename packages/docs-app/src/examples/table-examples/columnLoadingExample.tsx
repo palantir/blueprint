@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { HTMLSelect, Label } from "@blueprintjs/core";
-import { Example, handleNumberChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleNumberChange } from "@blueprintjs/docs-theme";
 import { Cell, Column, ColumnLoadingOption, Table2 } from "@blueprintjs/table";
 
 interface IBigSpaceRock {
@@ -31,7 +31,7 @@ export interface IColumnLoadingExampleState {
     loadingColumn?: number;
 }
 
-export class ColumnLoadingExample extends React.PureComponent<IExampleProps, IColumnLoadingExampleState> {
+export class ColumnLoadingExample extends React.PureComponent<ExampleProps, IColumnLoadingExampleState> {
     public state: IColumnLoadingExampleState = {
         loadingColumn: 1,
     };

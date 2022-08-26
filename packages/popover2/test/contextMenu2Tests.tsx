@@ -20,7 +20,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
+import { Classes as CoreClasses, Drawer, Menu, MenuItem } from "@blueprintjs/core";
 
 import {
     Classes,
@@ -48,6 +48,16 @@ const COMMON_TOOLTIP_PROPS: Partial<Tooltip2Props> = {
 };
 
 describe("ContextMenu2", () => {
+    let containerElement: HTMLElement | undefined;
+
+    beforeEach(() => {
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+    });
+    afterEach(() => {
+        containerElement?.remove();
+    });
+
     describe("basic usage", () => {
         it("renders children and Popover2", () => {
             const ctxMenu = mountTestMenu();
@@ -108,6 +118,7 @@ describe("ContextMenu2", () => {
                 <ContextMenu2 content={MENU} popoverProps={{ transitionDuration: 0 }} {...props}>
                     <div className={TARGET_CLASSNAME} />
                 </ContextMenu2>,
+                { attachTo: containerElement },
             );
         }
     });
@@ -158,6 +169,7 @@ describe("ContextMenu2", () => {
                         </div>
                     )}
                 </ContextMenu2>,
+                { attachTo: containerElement },
             );
         }
     });
@@ -427,6 +439,44 @@ describe("ContextMenu2", () => {
                         </Tooltip2>,
                     );
                 }
+            });
+        });
+
+        describe("with Drawer as parent content", () => {
+            it("positions correctly", () => {
+                const POPOVER_CLASSNAME = "test-positions-popover";
+                const wrapper = mount(
+                    <Drawer isOpen={true} position="right" transitionDuration={0}>
+                        <ContextMenu2
+                            content={MENU}
+                            className="test-ctx-menu"
+                            popoverProps={{ transitionDuration: 0, popoverClassName: POPOVER_CLASSNAME }}
+                            style={{ padding: 20, background: "red" }}
+                        >
+                            <div className={TARGET_CLASSNAME} style={{ width: 20, height: 20, background: "blue" }} />
+                        </ContextMenu2>
+                    </Drawer>,
+                    { attachTo: containerElement },
+                );
+                const target = wrapper.find(`.${TARGET_CLASSNAME}`).hostNodes();
+                assert.isTrue(target.exists(), "target should exist");
+                const nonExistentPopover = wrapper.find(`.${POPOVER_CLASSNAME}`).hostNodes();
+                assert.isFalse(
+                    nonExistentPopover.exists(),
+                    "ContextMenu2 popover should not be open before triggering contextmenu event",
+                );
+
+                const targetRect = target.getDOMNode().getBoundingClientRect();
+                // right click on the target
+                const simulateArgs = {
+                    clientX: targetRect.left + targetRect.width / 2,
+                    clientY: targetRect.top + targetRect.height / 2,
+                    x: targetRect.left + targetRect.width / 2,
+                    y: targetRect.top + targetRect.height / 2,
+                };
+                target.simulate("contextmenu", simulateArgs);
+                const popover = wrapper.find(`.${POPOVER_CLASSNAME}`).hostNodes();
+                assert.isTrue(popover.exists(), "ContextMenu2 popover should be open");
             });
         });
 

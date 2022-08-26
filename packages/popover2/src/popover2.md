@@ -238,7 +238,8 @@ The supported values are:
     -   **Opens when:** the target is clicked, or when Enter key is pressed while target is focused
     -   **Closes when:** the target is clicked
 
-The following example demonstrates the various interaction kinds (note: these Popovers contain [`MenuItem`](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
+The following example demonstrates the various interaction kinds (note: these Popovers contain
+[MenuItem](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
 
 @reactExample Popover2InteractionKindExample
 
@@ -252,15 +253,15 @@ You can use this to style the target differently when the popover is open.
 
 @### Closing on click
 
-Sometimes it is desirable for an element inside a `Popover2`'s content to close the popover
-on click. `Popover2` supports a pair of CSS classes, `Classes.POPOVER2_DISMISS`
+Sometimes it is desirable for an element inside a Popover2's content to close the popover
+on click. Popover2 supports a pair of CSS classes, `Classes.POPOVER2_DISMISS`
 and `Classes.POPOVER2_DISMISS_OVERRIDE`, which can be added to elements to
 describe whether click events should dismiss the enclosing popover.
 
 To mark an element (and its children) as "dismiss elements", simply add the
 class `Classes.POPOVER2_DISMISS`. For example, the **Cancel** and **Delete** buttons in the
 top-level [Popover2 example](#popover2-package/popover2) have this class, and all
-`MenuItem`s receive this class by default (see `shouldDismissPopover` prop). To
+MenuItems receive this class by default (see `shouldDismissPopover` prop). To
 enable this behavior on the entire popover body, pass
 `popoverClassName={Classes.POPOVER2_DISMISS}`.
 
@@ -270,8 +271,8 @@ originating inside disabled elements (either via the `disabled` attribute or
 `Classes.DISABLED`) will never dismiss a popover.
 
 Additionally, the prop `captureDismiss` (disabled by default) will prevent click
-events from dismissing _grandparent_ popovers (not the `Popover2` immediately
-containing the dismiss element). `MenuItem` disables this feature such that
+events from dismissing _grandparent_ popovers (not the Popover2 immediately
+containing the dismiss element). MenuItem disables this feature such that
 clicking any submenu item will close all submenus, which is desirable behavior
 for a menu tree.
 

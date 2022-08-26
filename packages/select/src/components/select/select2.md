@@ -132,7 +132,7 @@ in the list, based on the current query string. Use `createNewItemFromQuery` and
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
     <h4 class="@ns-heading">Avoiding type conflicts</h4>
 
-The "Create Item" option is represented by the reserved type `ICreateNewItem`
+The "Create Item" option is represented by the reserved type `CreateNewItem`
 exported from this package. It is exceedingly unlikely but technically possible
 for your custom type `<T>` to conflict with this type. If your type conflicts,
 you may see unexpected behavior; to resolve, consider changing the schema for
@@ -159,7 +159,7 @@ function renderCreateFilmOption(
             icon="add"
             text={`Create "${query}"`}
             roleStructure="listoption"
-            selected={active}
+            active={active}
             onClick={handleClick}
             shouldDismissPopover={false}
         />
@@ -205,11 +205,11 @@ activeItem={isCreateNewItemActive ? getCreateNewItem() : activeItem}
 Altogether, the code might look something like this:
 
 ```tsx
-const currentActiveItem: Film | ICreateNewItem | null;
-const isCreateNewItemActive: Film | ICreateNewItem | null;
+const currentActiveItem: Film | CreateNewItem | null;
+const isCreateNewItemActive: Film | CreateNewItem | null;
 
 function handleActiveItemChange(
-    activeItem: Film | ICreateNewItem | null,
+    activeItem: Film | CreateNewItem | null,
     isCreateNewItem: boolean,
 ) {
     currentActiveItem = activeItem;
@@ -243,7 +243,8 @@ to rendering this item in this frame. The renderer is called for all items, so d
 `modifiers.matchesPredicate` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item, or face React's console wrath!
 
 ```tsx
-import { Classes, MenuItem } from "@blueprintjs/core";
+import { Classes } from "@blueprintjs/core";
+import { MenuItem } from "@blueprintjs/popover2";
 import { ItemRenderer, ItemPredicate, Select2 } from "@blueprintjs/select";
 
 const FilmSelect = Select2.ofType<Film>();
@@ -261,7 +262,7 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
             text={film.title}
             label={film.year}
             roleStructure="listoption"
-            selected={modifiers.active}
+            active={modifiers.active}
             key={film.title}
             onClick={handleClick}
             onFocus={handleFocus}
@@ -272,7 +273,7 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
 <FilmSelect itemPredicate={filterFilm} itemRenderer={renderFilm} items={...} onItemSelect={...} />
 ```
 
-@interface IItemRendererProps
+@interface ItemRendererProps
 
 @### Item list renderer
 
@@ -304,4 +305,4 @@ const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, rend
 />
 ```
 
-@interface IItemListRendererProps
+@interface ItemListRendererProps

@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to TimezoneSelect instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { H5, Position, Radio, RadioGroup, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 import { TimezoneDisplayFormat, TimezonePicker } from "@blueprintjs/timezone";
 
 import { CustomTimezonePickerTarget } from "./components";
@@ -30,7 +37,7 @@ export interface ITimezonePickerExampleState {
     timezone: string;
 }
 
-export class TimezonePickerExample extends React.PureComponent<IExampleProps, ITimezonePickerExampleState> {
+export class TimezonePickerExample extends React.PureComponent<ExampleProps, ITimezonePickerExampleState> {
     public state: ITimezonePickerExampleState = {
         disabled: false,
         showCustomTarget: false,
@@ -72,7 +79,6 @@ export class TimezonePickerExample extends React.PureComponent<IExampleProps, IT
             </>
         );
 
-        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={options} {...this.props}>
                 <TimezonePicker
@@ -87,7 +93,6 @@ export class TimezonePickerExample extends React.PureComponent<IExampleProps, IT
                 </TimezonePicker>
             </Example>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 
     private renderCustomTarget() {

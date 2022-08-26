@@ -16,7 +16,7 @@
 import rules from "./rules";
 
 /**
- * Enable Blueprint-specific lint rules defined in this package.
+ * Enable all Blueprint-specific lint rules defined in this package.
  */
 module.exports = {
     configs: {
@@ -25,6 +25,8 @@ module.exports = {
             rules: {
                 "@blueprintjs/classes-constants": "error",
                 "@blueprintjs/html-components": "error",
+                "@blueprintjs/no-deprecated-components": "error",
+                "@blueprintjs/no-deprecated-type-references": "error",
             },
         },
     },

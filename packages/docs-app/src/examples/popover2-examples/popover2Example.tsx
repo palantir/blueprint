@@ -35,10 +35,10 @@ import {
 } from "@blueprintjs/core";
 import {
     Example,
+    ExampleProps,
     handleBooleanChange,
     handleNumberChange,
     handleValueChange,
-    IExampleProps,
 } from "@blueprintjs/docs-theme";
 import {
     Classes,
@@ -79,7 +79,7 @@ export interface IPopover2ExampleState {
     usePortal?: boolean;
 }
 
-export class Popover2Example extends React.PureComponent<IExampleProps, IPopover2ExampleState> {
+export class Popover2Example extends React.PureComponent<ExampleProps, IPopover2ExampleState> {
     public static displayName = "Popover2Example";
 
     public state: IPopover2ExampleState = {

@@ -20,7 +20,7 @@
 import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
-import { IRef, refHandler, setRef } from "../../common/refs";
+import { refHandler, setRef } from "../../common/refs";
 import { AbstractButton, AnchorButtonProps, ButtonProps, IAnchorButtonProps, IButtonProps } from "./abstractButton";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -32,7 +32,7 @@ export class Button extends AbstractButton<HTMLButtonElement> {
     // need to keep this ref so that we can access it in AbstractButton#handleKeyUp
     public buttonRef: HTMLButtonElement | null = null;
 
-    protected handleRef: IRef<HTMLButtonElement> = refHandler(this, "buttonRef", this.props.elementRef);
+    protected handleRef: React.Ref<HTMLButtonElement> = refHandler(this, "buttonRef", this.props.elementRef);
 
     public render() {
         return (
@@ -62,7 +62,7 @@ export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
     // need to keep this ref so that we can access it in AbstractButton#handleKeyUp
     public buttonRef: HTMLAnchorElement | null = null;
 
-    protected handleRef: IRef<HTMLAnchorElement> = refHandler(this, "buttonRef", this.props.elementRef);
+    protected handleRef: React.Ref<HTMLAnchorElement> = refHandler(this, "buttonRef", this.props.elementRef);
 
     public render() {
         const { href, tabIndex = 0 } = this.props;

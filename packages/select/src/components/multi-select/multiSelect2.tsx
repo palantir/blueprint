@@ -32,10 +32,10 @@ import {
 } from "@blueprintjs/core";
 import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
-import { Classes, IListItemsProps, SelectPopoverProps } from "../../common";
+import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverProps {
+export interface MultiSelect2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
     /**
      * Whether the component is non-interactive.
      * If true, the list's item renderer will not be called.
@@ -53,7 +53,7 @@ export interface MultiSelect2Props<T> extends IListItemsProps<T>, SelectPopoverP
     /**
      * Props to spread to the `Menu` listbox containing the selectable options.
      */
-    menuProps?: React.HTMLProps<HTMLUListElement>;
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
     /**
      * If provided, this component will render a "clear" button inside its TagInput.
@@ -323,10 +323,10 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     };
 
     // Popover interaction kind is CLICK, so this only handles click events.
-    // Note that we defer to the next animation frame in order to get the latest document.activeElement
+    // Note that we defer to the next animation frame in order to get the latest activeElement
     private handlePopoverInteraction = (nextOpenState: boolean, evt?: React.SyntheticEvent<HTMLElement>) =>
         this.requestAnimationFrame(() => {
-            const isInputFocused = this.input === document.activeElement;
+            const isInputFocused = this.input === Utils.getActiveElement(this.input);
 
             if (this.input != null && !isInputFocused) {
                 // input is no longer focused, we should close the popover
