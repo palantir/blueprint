@@ -91,7 +91,7 @@ function create(
 
 function getAllMatches(className: string) {
     const ptMatches = [];
-    let currentMatch: RegExpMatchArray | null;
+    let currentMatch: RegExpExecArray | null;
     // eslint-disable-line no-cond-assign
     while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(className)) != null) {
         ptMatches.push({ match: currentMatch[1], index: currentMatch.index || 0 });
