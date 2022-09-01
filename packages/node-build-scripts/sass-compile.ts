@@ -55,6 +55,10 @@ function compileAllFiles() {
 }
 
 function compileFile(inputFile: string) {
+    if (args.output === undefined) {
+        throw new Error(`[sass-compile] Output folder must be specified with --output CLI argument.`);
+    }
+
     const outFile = path.join(args.output, `${path.parse(inputFile).name}.css`);
     const outputMapFile = `${outFile}.map`;
     // use deprecated `renderSync` because it supports legacy importers and functions
