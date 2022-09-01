@@ -9,7 +9,7 @@
         "lint": "run-p lint:es",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix",
-        "test": "ts-node test/index.ts"
+        "test": "mocha test/index.ts"
     },
     "dependencies": {
         "@typescript-eslint/utils": "^5.32.0",
@@ -19,6 +19,7 @@
         "@blueprintjs/node-build-scripts": "^5.1.0",
         "@types/dedent": "^0.7.0",
         "dedent": "^0.7.0",
+        "mocha": "^9.2.2",
         "ts-node": "^10.9.1",
         "typescript": "^4.6.2"
     },

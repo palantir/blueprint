@@ -32,7 +32,6 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-console.info("Testing no-deprecated-components rule...");
 ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
     invalid: [
         {

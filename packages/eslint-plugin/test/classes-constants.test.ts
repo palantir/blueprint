@@ -32,7 +32,6 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-console.info("Testing classes-constants rule...");
 ruleTester.run("classes-constants", classesConstantsRule, {
     invalid: [
         // literal string
