@@ -32,7 +32,6 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-console.info("Testing no-deprecated-type-references rule...");
 ruleTester.run("no-deprecated-type-references", noDeprecatedTypeReferencesRule, {
     invalid: [
         {
