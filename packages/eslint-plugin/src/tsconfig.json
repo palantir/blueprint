@@ -1,9 +1,13 @@
 {
-    "extends": "../../../config/tsconfig.base",
+    "extends": "@tsconfig/node16",
     "compilerOptions": {
-        "lib": ["es6", "dom"],
-        "module": "commonjs",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
         "outDir": "../lib",
-        "target": "ES2015"
+        "pretty": true,
+        "strict": true
     }
 }

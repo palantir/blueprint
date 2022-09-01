@@ -9,7 +9,9 @@
         "lint": "run-p lint:es",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix",
-        "test": "ts-node test/index.ts"
+        "test": "run-s test:compile test:run",
+        "test:compile": "tsc -p test/",
+        "test:run": "node build/test/index.js"
     },
     "dependencies": {
         "@typescript-eslint/utils": "^5.32.0",
@@ -17,8 +19,10 @@
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^5.1.0",
+        "@tsconfig/node16": "^1.0.3",
         "@types/dedent": "^0.7.0",
         "dedent": "^0.7.0",
+        "npm-run-all": "^4.1.5",
         "ts-node": "^10.9.1",
         "typescript": "^4.6.2"
     },

@@ -136,7 +136,7 @@ ruleTester.run("no-deprecated-type-references", noDeprecatedTypeReferencesRule, 
             ],
             output: dedent`
                 import { SelectProps } from "@blueprintjs/select";
-                const mySelectProps: SelectProps = { items: [] };
+                const mySelectProps: ISelectProps = { items: [] };
             `,
         },
     ],

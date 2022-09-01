@@ -1,13 +1,7 @@
 {
-    "extends": "ts-node/node16/tsconfig.json",
+    "extends": "../src/tsconfig.json",
     "compilerOptions": {
-        "noEmit": true,
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "pretty": true,
-        "strict": true
+        "declaration": false,
+        "outDir": "../build"
     }
 }
