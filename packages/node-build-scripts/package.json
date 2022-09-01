@@ -35,7 +35,7 @@
         "strip-css-comments": "^4.1.0",
         "stylelint": "^14.6.1",
         "stylelint-junit-formatter": "^0.2.2",
-        "ts-node": "^10.7.0",
+        "ts-node": "^10.9.1",
         "yargs": "^17.4.0"
     },
     "devDependencies": {
