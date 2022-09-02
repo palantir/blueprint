@@ -37,7 +37,7 @@ $dark-button-box-shadow-active:
   0 1px 2px rgba($black, 0.4) !default;
 // Box shadows are hidden in Windows high contrast mode, which means buttons have
 // no borders. This is bad for accessibility.
-$dark-button-high-contrast-border-color: rgba($black, 0.2);
+$button-high-contrast-border-color: rgba($black, 0.2);
 
 $button-color-disabled: $pt-text-color-disabled !default;
 $button-background-color: $light-gray5 !default;
@@ -131,6 +131,11 @@ $button-intents: (
     &.#{$ns}-active:hover {
       background: $button-background-color-active-disabled;
     }
+  }
+
+  // High contrast mode hides box-shadows, so we need to use a border instead
+  @media screen and (prefers-contrast: more) {
+    border: 1px solid $button-high-contrast-border-color;
   }
 }
 

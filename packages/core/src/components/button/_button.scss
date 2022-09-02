@@ -218,11 +218,9 @@ Styleguide button
     }
   }
 
-  // High contrast mode
+  // High contrast mode hides box-shadows, so we need to use a border instead
   @media screen and (prefers-contrast: more) {
-    &:not([class*="#{$ns}-intent-"]) {
-      border: 1px solid $dark-button-high-contrast-border-color;
-    }
+    border: 1px solid $dark-button-high-contrast-border-color;
   }
 }
 
