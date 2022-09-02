@@ -217,11 +217,6 @@ Styleguide button
       }
     }
   }
-
-  // High contrast mode hides box-shadows, so we need to use a border instead
-  @media screen and (prefers-contrast: more) {
-    border: 1px solid $dark-button-high-contrast-border-color;
-  }
 }
 
 a.#{$ns}-button {
