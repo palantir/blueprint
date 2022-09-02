@@ -217,6 +217,13 @@ Styleguide button
       }
     }
   }
+
+  // High contrast mode
+  @media screen and (prefers-contrast: more) {
+    &:not([class*="#{$ns}-intent-"]) {
+      border: 1px solid $dark-button-high-contrast-border-color;
+    }
+  }
 }
 
 a.#{$ns}-button {
