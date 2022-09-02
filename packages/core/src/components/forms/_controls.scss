@@ -361,6 +361,11 @@ $control-indicator-spacing: $pt-grid-size !default;
       input#{$selector} ~ .#{$ns}-control-indicator {
         background: $background-color;
         color: $text-color;
+
+        // High contrast mode hides box-shadows, so we need to use a border instead
+        @media screen and (prefers-contrast: more) {
+          border: 1px solid $high-contrast-control-checked-border-color;
+        }
       }
 
       &:hover input#{$selector} ~ .#{$ns}-control-indicator {

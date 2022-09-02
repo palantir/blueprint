@@ -54,6 +54,12 @@ $dark-elevation-shadows: (
     background-color: $dark-card-background-color;
     box-shadow: $pt-dark-elevation-shadow-0;
   }
+
+  // High contrast mode hides box-shadows, so we need to use a border instead
+  @media screen and (prefers-contrast: more) {
+    border: 1px solid $pt-divider-black;
+    box-shadow: none;
+  }
 }
 
 @for $index from 1 through length($elevation-shadows) {
