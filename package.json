@@ -37,6 +37,10 @@
         "verify": "npm-run-all -s compile dist:libs dist:apps -p test lint format-check"
     },
     "dependencies": {
+        "@babel/core": "^7.4.5",
+        "@babel/preset-env": "^7.4.5",
+        "@babel/polyfill": "^7.4.4",
+        "babel-loader": "^8.0.6",
         "@types/chai": "4.2.12",
         "@types/classnames": "2.2.10",
         "@types/enzyme": "3.10.8",
