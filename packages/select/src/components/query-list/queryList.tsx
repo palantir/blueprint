@@ -63,7 +63,7 @@ export interface IQueryListProps<T> extends ListItemsProps<T> {
      * Customize rendering of the component.
      * Receives an object with props that should be applied to elements as necessary.
      */
-    renderer: (listProps: IQueryListRendererProps<T>) => JSX.Element;
+    renderer: (listProps: QueryListRendererProps<T>) => JSX.Element;
 
     /**
      * Whether the list is disabled.
@@ -73,9 +73,13 @@ export interface IQueryListProps<T> extends ListItemsProps<T> {
     disabled?: boolean;
 }
 
+// eslint-disable-next-line deprecation/deprecation
+export type QueryListRendererProps<T> = IQueryListRendererProps<T>;
 /**
  * An object describing how to render a `QueryList`.
  * A `QueryList` `renderer` receives this object as its sole argument.
+ *
+ * @deprecated use QueryListRendererProps
  */
 export interface IQueryListRendererProps<T> // Omit `createNewItem`, because it's used strictly for internal tracking.
     extends Pick<IQueryListState<T>, "activeItem" | "filteredItems" | "query">,

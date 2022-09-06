@@ -82,6 +82,8 @@ export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNamePro
      */
     menuIcon?: IconName | JSX.Element;
 }
+// eslint-disable-next-line deprecation/deprecation
+export type ColumnHeaderCellProps = IColumnHeaderCellProps;
 
 export interface IColumnHeaderCellState {
     isActive?: boolean;

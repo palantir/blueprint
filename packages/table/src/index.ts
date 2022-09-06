@@ -69,7 +69,12 @@ export { ColumnHeaderRenderer, IColumnHeaderRenderer } from "./headers/columnHea
 
 export { RowHeaderRenderer } from "./headers/rowHeader";
 
-export { ColumnHeaderCell, IColumnHeaderCellProps, HorizontalCellDivider } from "./headers/columnHeaderCell";
+export {
+    ColumnHeaderCell,
+    ColumnHeaderCellProps,
+    IColumnHeaderCellProps,
+    HorizontalCellDivider,
+} from "./headers/columnHeaderCell";
 
 export { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./headers/columnHeaderCell2";
 

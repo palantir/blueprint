@@ -39,7 +39,7 @@ import {
 } from "@blueprintjs/core";
 
 import { Classes, ListItemsProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { QueryList, QueryListRendererProps } from "../query-list/queryList";
 
 export type SelectProps<T> = ISelectProps<T>;
 /** @deprecated use SelectProps */
@@ -156,7 +156,7 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
         }
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const {
             fill,

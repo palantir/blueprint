@@ -39,7 +39,7 @@ import {
 } from "@blueprintjs/core";
 
 import { Classes, ListItemsProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { QueryList, QueryListRendererProps } from "../query-list/queryList";
 
 export type SuggestProps<T> = ISuggestProps<T>;
 /** @deprecated use SuggestProps */
@@ -184,7 +184,7 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
         }
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         const { fill, inputProps = {}, popoverProps = {} } = this.props;
         const { isOpen, selectedItem } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;

@@ -34,7 +34,7 @@ import {
 import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { QueryList, QueryListRendererProps } from "../query-list/queryList";
 
 export interface Select2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
     /**
@@ -151,7 +151,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         }
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const {
             filterable = true,
@@ -209,7 +209,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
     // the "fill" prop. Note that we must take `isOpen` as an argument to force this render function to be called
     // again after that state changes.
     private getPopoverTargetRenderer =
-        (listProps: IQueryListRendererProps<T>, isOpen: boolean) =>
+        (listProps: QueryListRendererProps<T>, isOpen: boolean) =>
         // N.B. pull out `isOpen` so that it's not forwarded to the DOM, but remember not to use it directly
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
