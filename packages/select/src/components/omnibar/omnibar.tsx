@@ -20,7 +20,7 @@ import * as React from "react";
 import { DISPLAYNAME_PREFIX, InputGroup, InputGroupProps2, Overlay, OverlayProps } from "@blueprintjs/core";
 
 import { Classes, ListItemsProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { QueryList, QueryListRendererProps } from "../query-list/queryList";
 
 // eslint-disable-next-line deprecation/deprecation
 export type OmnibarProps<T> = IOmnibarProps<T>;
@@ -72,7 +72,7 @@ export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
         return <this.TypedQueryList {...restProps} initialContent={initialContent} renderer={this.renderQueryList} />;
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
         const handlers = isOpen ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};

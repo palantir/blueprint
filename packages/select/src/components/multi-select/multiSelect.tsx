@@ -40,7 +40,7 @@ import {
 } from "@blueprintjs/core";
 
 import { Classes, ListItemsProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { QueryList, QueryListRendererProps } from "../query-list/queryList";
 
 // N.B. selectedItems should really be a required prop, but is left optional for backwards compatibility
 
@@ -157,7 +157,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
         );
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         const { fill, tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
         const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
 

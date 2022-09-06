@@ -122,6 +122,7 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "IMultiSelectProps",
         "IOmnibarProps",
         "IQueryListProps",
+        "IQueryListRendererProps",
         "ISelectProps",
         "ISuggestProps",
     ],

@@ -33,7 +33,7 @@ import {
 import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { QueryList, QueryListRendererProps } from "../query-list/queryList";
 
 export interface Suggest2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
     /**
@@ -181,7 +181,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         }
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         const { popoverContentProps = {}, popoverProps = {}, popoverRef } = this.props;
         const { isOpen } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
@@ -216,7 +216,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
     // the "fill" prop. Note that we must take `isOpen` as an argument to force this render function to be called
     // again after that state changes.
     private getPopoverTargetRenderer =
-        (listProps: IQueryListRendererProps<T>, isOpen: boolean) =>
+        (listProps: QueryListRendererProps<T>, isOpen: boolean) =>
         // eslint-disable-next-line react/display-name
         ({
             // pull out `isOpen` so that it's not forwarded to the DOM
