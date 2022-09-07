@@ -9,7 +9,7 @@
         "lint": "run-p lint:es",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix",
-        "test": "mocha test/index.ts"
+        "test": "mocha"
     },
     "dependencies": {
         "@typescript-eslint/utils": "^5.32.0",

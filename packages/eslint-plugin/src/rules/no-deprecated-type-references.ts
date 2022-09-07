@@ -199,6 +199,8 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
         const deprecatedImports: Array<
             { namespace: string; type: "namespace" } | { type: "symbol"; symbolName: string; localSymbolName: string }
         > = [];
+        // keep a list of already fixed imports in the file so that we do not report overlapping fixes
+        const fixedImportNames: string[] = [];
 
         function isDeprecatedTypeReference(name: string) {
             return (
@@ -260,7 +262,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                                     const fixes = new FixList();
                                     fixes.addFixes(fixer.replaceText(node.typeName, newTypeName));
                                     const program = getProgram(node);
-                                    if (program !== undefined) {
+                                    if (program !== undefined && !fixedImportNames.includes(deprecatedTypeName)) {
                                         fixes.addFixes(
                                             replaceImportInFile(
                                                 program,
@@ -269,6 +271,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                                                 newTypeToPackageName[newTypeName],
                                             )(fixer),
                                         );
+                                        fixedImportNames.push(deprecatedTypeName);
                                     }
                                     return fixes.getFixes();
                                 },
@@ -295,6 +298,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                 }
             },
 
+            // lint syntax like `interface MyInterface extends DeprecatedInterface {...}`
             TSInterfaceHeritage: (node: TSESTree.TSInterfaceHeritage) => {
                 if (node.expression.type === TSESTree.AST_NODE_TYPES.Identifier) {
                     if (isDeprecatedTypeReference(node.expression.name)) {
@@ -308,7 +312,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                                 const fixes = new FixList();
                                 fixes.addFixes(fixer.replaceText(node.expression, newTypeName));
                                 const program = getProgram(node);
-                                if (program !== undefined) {
+                                if (program !== undefined && !fixedImportNames.includes(deprecatedTypeName)) {
                                     fixes.addFixes(
                                         replaceImportInFile(
                                             program,
@@ -317,6 +321,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                                             newTypeToPackageName[newTypeName],
                                         )(fixer),
                                     );
+                                    fixedImportNames.push(deprecatedTypeName);
                                 }
                                 return fixes.getFixes();
                             },
@@ -325,6 +330,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                 }
             },
 
+            // lint syntax like `interface MyInterface extends Blueprint.DeprecatedInterface {...}`
             "TSInterfaceHeritage MemberExpression": (node: TSESTree.MemberExpression) => {
                 if (
                     node.property.type !== TSESTree.AST_NODE_TYPES.Identifier ||
