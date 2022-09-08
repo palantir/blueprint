@@ -204,7 +204,14 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
         // using list predicate so only one RegExp instance is needed
         // escape bad regex characters, let spaces act as any separator
         const expr = new RegExp(query.replace(/([[()+*?])/g, "\\$1").replace(" ", "[ _/\\(\\)]+"), "i");
-        return items.filter(item => expr.test(item.ianaCode) || expr.test(item.label) || expr.test(item.longName));
+
+        return items.filter(
+            item =>
+                expr.test(item.ianaCode) ||
+                expr.test(item.label) ||
+                expr.test(item.longName) ||
+                expr.test(item.shortName),
+        );
     };
 
     private renderItem: ItemRenderer<TimezoneWithNames> = (item, { handleClick, modifiers }) => {
