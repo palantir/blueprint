@@ -1696,7 +1696,7 @@
     {
         "displayName": "Area chart",
         "iconName": "timeline-area-chart",
-        "tags": "graph, line, diagram, trend up, cubic, chart, area chart, growth, increasing graph",
+        "tags": "graph, line, diagram, trend up, growth, increasing",
         "group": "data",
         "codepoint": 62193
     },
@@ -1787,7 +1787,7 @@
     {
         "displayName": "Column layout",
         "iconName": "column-layout",
-        "tags": "layout, arrangement, documents, sidebar, side menu, side bar, panel, gui, table, section, columns, tables",
+        "tags": "layout, arrangement, sidebar, side menu, side bar, panel, gui, table, section, columns, tables",
         "group": "table",
         "codepoint": 61791
     },
@@ -1801,7 +1801,7 @@
     {
         "displayName": "Arrow: top right",
         "iconName": "arrow-top-right",
-        "tags": "direction, north east, top right arrow, upper right arrow, arrow, top right, pointer, up, go, arrow diagonal, open in new tab, arrow up right, upper right corner",
+        "tags": "direction, north east, top right, pointer, up, diagonal, open in new tab, corner",
         "group": "interface",
         "codepoint": 61736
     },
@@ -1857,7 +1857,7 @@
     {
         "displayName": "Chevron: forward",
         "iconName": "chevron-forward",
-        "tags": "skip, direction, skip to end, strikeout",
+        "tags": "skip, direction, end",
         "group": "interface",
         "codepoint": 61771
     },
@@ -1906,7 +1906,7 @@
     {
         "displayName": "Stacked chart",
         "iconName": "stacked-chart",
-        "tags": "bar chart, stacked bar graph, graph, sort, filter, chart, statistics, summary",
+        "tags": "bar chart, graph, statistics, summary",
         "group": "data",
         "codepoint": 62154
     },
@@ -1969,7 +1969,7 @@
     {
         "displayName": "Annotation",
         "iconName": "annotation",
-        "tags": "note, comment, edit, , edit, write",
+        "tags": "note, comment, edit, write",
         "group": "editor",
         "codepoint": 61717
     },
@@ -2018,14 +2018,14 @@
     {
         "displayName": "Add row: top",
         "iconName": "add-row-top",
-        "tags": "table, attach, join, add, add row",
+        "tags": "table, attach, join",
         "group": "table",
         "codepoint": 61702
     },
     {
         "displayName": "Add row: bottom",
         "iconName": "add-row-bottom",
-        "tags": "table, attach, join, widget, add",
+        "tags": "table, attach, join, widget",
         "group": "table",
         "codepoint": 61701
     },
@@ -2039,7 +2039,7 @@
     {
         "displayName": "Add column: right",
         "iconName": "add-column-right",
-        "tags": "table, attach, join, add section right, add, new, medicine",
+        "tags": "table, attach, join, tab, window, section",
         "group": "table",
         "codepoint": 61699
     },
@@ -2053,42 +2053,42 @@
     {
         "displayName": "Remove row: bottom",
         "iconName": "remove-row-bottom",
-        "tags": "table, detach, delete, box, files, dashboard, application, container, oven",
+        "tags": "table, detach, delete, box, files, container, oven",
         "group": "table",
         "codepoint": 62094
     },
     {
         "displayName": "Remove column: left",
         "iconName": "remove-column-left",
-        "tags": "table, detach, delete, door, open, box, application, sidebar, dashboard",
+        "tags": "table, detach, delete, sidebar, tab, window, section",
         "group": "table",
         "codepoint": 62091
     },
     {
         "displayName": "Remove column: right",
         "iconName": "remove-column-right",
-        "tags": "table, detach, delete, module, section, widget, remove panel, remove widget, divide panel, library, book, collection, drawer, sidebar, menu",
+        "tags": "table, detach, delete, sidebar, section, widget, panel",
         "group": "table",
         "codepoint": 62092
     },
     {
         "displayName": "Double chevron: left",
         "iconName": "double-chevron-left",
-        "tags": "arrows, multiple, direction, chevrons left, expand left, shift left, double left chevron, go left, inbox, new email, skip backward, quick reverse, move left, left arrows, open bracket, back",
+        "tags": "arrows, multiple, direction, expand, shift, go left, skip backward, quick reverse, move, open bracket, back",
         "group": "interface",
         "codepoint": 61830
     },
     {
         "displayName": "Double chevron: right",
         "iconName": "double-chevron-right",
-        "tags": "arrows, multiple, direction, next, fast forward, two right arrows, advance, go to end, forward, continue, right, go, double arrow right",
+        "tags": "arrows, multiple, direction, next, fast forward, advance, continue, go, end, double arrow",
         "group": "interface",
         "codepoint": 61831
     },
     {
         "displayName": "Double chevron: up",
         "iconName": "double-chevron-up",
-        "tags": "arrows, multiple, direction, skip up, increase a lot, forward, fast forward, power up, up, upload, swipe up, double up, roofs, collapse upwards",
+        "tags": "arrows, multiple, direction, skip up, increase, power up, upload, swipe up, double, roof, collapse, upwards",
         "group": "interface",
         "codepoint": 61832
     },
