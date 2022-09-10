@@ -17,8 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Tooltip2 } from "@blueprintjs/popover2";
-
+import { Tooltip2 } from "../../../../popover2/src/tooltip2";
 import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { Button, ButtonProps } from "../button/buttons";
