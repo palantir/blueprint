@@ -134,7 +134,6 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
             minimal,
             small,
             tabIndex,
-            tooltipContent,
         } = this.props;
         const disabled = this.props.disabled || loading;
 
@@ -163,7 +162,6 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
             onKeyDown: this.handleKeyDown,
             onKeyUp: this.handleKeyUp,
             tabIndex: disabled ? -1 : tabIndex,
-            title: tooltipContent ? this.props.tooltipContent : undefined,
         };
     }
 
