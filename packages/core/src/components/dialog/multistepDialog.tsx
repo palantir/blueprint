@@ -237,7 +237,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
             if (backButtonProps?.tooltipContent) {
                 buttons.push(
-                    <Tooltip2 content={backButtonProps?.tooltipContent}>
+                    <Tooltip2 content={backButtonProps?.tooltipContent} hoverOpenDelay={100}>
                         <Button
                             key="back"
                             onClick={this.getDialogStepChangeHandler(selectedIndex - 1)}
@@ -259,7 +259,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         if (selectedIndex === this.getDialogStepChildren().length - 1) {
             if (this.props.finalButtonProps?.tooltipContent) {
                 buttons.push(
-                    <Tooltip2 content={this.props.finalButtonProps?.tooltipContent}>
+                    <Tooltip2 content={this.props.finalButtonProps?.tooltipContent} hoverOpenDelay={100}>
                         <Button intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />
                     </Tooltip2>,
                 );
@@ -271,7 +271,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
             if (nextButtonProps?.tooltipContent) {
                 buttons.push(
-                    <Tooltip2 content={nextButtonProps?.tooltipContent}>
+                    <Tooltip2 content={nextButtonProps?.tooltipContent} hoverOpenDelay={100}>
                         <Button
                             intent="primary"
                             key="next"
