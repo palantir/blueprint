@@ -22,7 +22,7 @@ import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 import { ButtonProps } from "../button/buttons";
 
 export type DialogStepId = string | number;
-export type DialogStepButtonProps = Partial<Pick<ButtonProps, "disabled" | "text">>;
+export type DialogStepButtonProps = Partial<Pick<ButtonProps, "disabled" | "text" | "tooltipContent">>;
 
 // eslint-disable-next-line deprecation/deprecation
 export type DialogStepProps = IDialogStepProps;
