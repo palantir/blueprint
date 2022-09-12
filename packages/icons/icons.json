@@ -1941,7 +1941,7 @@
     {
         "displayName": "Segmented control",
         "iconName": "segmented-control",
-        "tags": "button, switch, option, toggle, progress bar",
+        "tags": "button, switch, option, toggle, progress bar, boolean, erase, half",
         "group": "interface",
         "codepoint": 62115
     },
@@ -2116,7 +2116,7 @@
     {
         "displayName": "Key: shift",
         "iconName": "key-shift",
-        "tags": "interface, shortcuts, buttons, look up, look at this, this is my tiny house",
+        "tags": "interface, shortcuts, buttons, look up, look at this",
         "group": "media",
         "codepoint": 61971
     },
@@ -2200,7 +2200,7 @@
     {
         "displayName": "Drag handle: horizontal",
         "iconName": "drag-handle-horizontal",
-        "tags": "move, pull, menu, more, options, set, multiple, handle, grab, dots",
+        "tags": "move, pull, set, multiple, handle, grab, dots",
         "group": "action",
         "codepoint": 61835
     },
@@ -2235,7 +2235,7 @@
     {
         "displayName": "Curved range chart",
         "iconName": "curved-range-chart",
-        "tags": "graph, diagram, analsysis, model, regression",
+        "tags": "graph, diagram, analysis, model, regression",
         "group": "data",
         "codepoint": 61806
     },
@@ -2249,14 +2249,14 @@
     {
         "displayName": "Horizontal bar chart: descending",
         "iconName": "horizontal-bar-chart-desc",
-        "tags": "graph, histogram, increase, menu, descending, sort, decreasing, list, left align, left indent, left align",
+        "tags": "graph, histogram, increase, descending, sort, decreasing, list",
         "group": "data",
         "codepoint": 61939
     },
     {
         "displayName": "Document: open",
         "iconName": "document-open",
-        "tags": "paper, access, arrow, file, export, download",
+        "tags": "paper, access, arrow, file, import",
         "group": "file",
         "codepoint": 61822
     },
@@ -2284,63 +2284,63 @@
     {
         "displayName": "Alignment: left",
         "iconName": "alignment-left",
-        "tags": "layout, position, bar chart, histogram",
+        "tags": "layout, position",
         "group": "editor",
         "codepoint": 61713
     },
     {
         "displayName": "Alignment: vertical center",
         "iconName": "alignment-vertical-center",
-        "tags": "layout, position, volume, bars, biplane",
+        "tags": "layout, position, bars, biplane",
         "group": "editor",
         "codepoint": 61716
     },
     {
         "displayName": "Alignment: right",
         "iconName": "alignment-right",
-        "tags": "layout, position, graph, chart",
+        "tags": "layout, position",
         "group": "editor",
         "codepoint": 61714
     },
     {
         "displayName": "Alignment: top",
         "iconName": "alignment-top",
-        "tags": "layout, position, graph, chart",
+        "tags": "layout, position",
         "group": "editor",
         "codepoint": 61715
     },
     {
         "displayName": "Alignment: horizontal center",
         "iconName": "alignment-horizontal-center",
-        "tags": "layout, position, drone, airplane, satellite, plug, statistics, shadow analysis, time-series",
+        "tags": "layout, position, drone, airplane, satellite, statistics, shadow analysis",
         "group": "editor",
         "codepoint": 61712
     },
     {
         "displayName": "Alignment: bottom",
         "iconName": "alignment-bottom",
-        "tags": "layout, position, trend, comparison, graph, bar chart, analytics, histogram, bars",
+        "tags": "layout, position, bars",
         "group": "editor",
         "codepoint": 61711
     },
     {
         "displayName": "Git: pull",
         "iconName": "git-pull",
-        "tags": "github, repository, code, command, pull request, insert, version control, merge",
+        "tags": "github, repository, code, command, pull request, branch, insert, version control, merge",
         "group": "action",
         "codepoint": 61902
     },
     {
         "displayName": "Git: merge",
         "iconName": "git-merge",
-        "tags": "github, repository, code, command, branch, git, merge, version",
+        "tags": "github, repository, code, command, branch, version control",
         "group": "action",
         "codepoint": 61900
     },
     {
         "displayName": "Git: branch",
         "iconName": "git-branch",
-        "tags": "github, repository, code, command, branch, git, version, fork",
+        "tags": "github, repository, code, command, version control, fork",
         "group": "action",
         "codepoint": 61898
     },
@@ -2368,14 +2368,14 @@
     {
         "displayName": "Symbol: circle",
         "iconName": "symbol-circle",
-        "tags": "shape, figure, dot, black, period, spot",
+        "tags": "shape, figure, dot, filled, period, spot",
         "group": "interface",
         "codepoint": 62168
     },
     {
         "displayName": "Symbol: square",
         "iconName": "symbol-square",
-        "tags": "shape, figure, record, stop, dot",
+        "tags": "shape, figure, stop",
         "group": "interface",
         "codepoint": 62171
     },
@@ -2487,7 +2487,7 @@
     {
         "displayName": "Oil field",
         "iconName": "oil-field",
-        "tags": "fuel, petroleum, gas, well, drilling, pump, wheel, hammer, engineering, refinery, well",
+        "tags": "fuel, petroleum, gas, well, drilling, pump, wheel, hammer, engineering, refinery",
         "group": "interface",
         "codepoint": 62051
     },
@@ -2501,7 +2501,7 @@
     {
         "displayName": "New map",
         "iconName": "map-create",
-        "tags": "map, location, position, geography, world, new brochure, new pamphlet, navigation, travel, gps, coalesce",
+        "tags": "map, location, position, geography, world, new brochure, new pamphlet, navigation, travel, gps",
         "group": "interface",
         "codepoint": 62009
     },
@@ -2543,14 +2543,14 @@
     {
         "displayName": "New grid item",
         "iconName": "new-grid-item",
-        "tags": "layout, arrangement, add, squares, point, target, microsoft, no idea, block",
+        "tags": "layout, arrangement, add, squares, target, microsoft, block, quadrant",
         "group": "editor",
         "codepoint": 62034
     },
     {
         "displayName": "Git: repo",
         "iconName": "git-repo",
-        "tags": "github, repository, code, command, desktop, screen, entry, no idea, bookmark, saved page, notepad, book, dictionary, notebook, file, dossier, section",
+        "tags": "github, repository, code, command, bookmark, saved page, notepad, book, dictionary, notebook, file, dossier",
         "group": "action",
         "codepoint": 61904
     },
@@ -2669,7 +2669,7 @@
     {
         "displayName": "Horizontal bar chart: ascending",
         "iconName": "horizontal-bar-chart-asc",
-        "tags": "graph, histogram, sort, ranking, stats, review",
+        "tags": "graph, histogram, sort, ranking, stats",
         "group": "data",
         "codepoint": 61938
     },
@@ -2739,7 +2739,7 @@
     {
         "displayName": "Blocked person",
         "iconName": "blocked-person",
-        "tags": "human, male, female, character, customer, individual, social, banned, prohibited, box remove, box minus",
+        "tags": "human, male, female, character, customer, individual, social, banned, prohibited",
         "group": "interface",
         "codepoint": 61748
     },
@@ -2781,7 +2781,7 @@
     {
         "displayName": "Cell tower",
         "iconName": "cell-tower",
-        "tags": "signal, communication, radio, mast, connection, aerial, radar, connectivity, cancer, internet",
+        "tags": "signal, communication, radio, mast, connection, aerial, radar, connectivity, internet, data, transmission, broadcast",
         "group": "miscellaneous",
         "codepoint": 61765
     },
@@ -2795,7 +2795,7 @@
     {
         "displayName": "IP address",
         "iconName": "ip-address",
-        "tags": "internet, protocol, number, network, geolocation, local intelectual property, isp, internet service provider, interp",
+        "tags": "internet, protocol, number, network, geolocation, local, intellectual property, isp, internet service provider",
         "group": "miscellaneous",
         "codepoint": 61958
     },
@@ -2830,7 +2830,7 @@
     {
         "displayName": "Panel: stats",
         "iconName": "panel-stats",
-        "tags": "sidebar, layout, list, window, side bar, menu, website, dashboard, tablet, report, dataset preview",
+        "tags": "sidebar, layout, list, window, side bar, drawer, menu, website, dashboard, tablet, report, dataset preview",
         "group": "table",
         "codepoint": 62057
     },
@@ -2851,7 +2851,7 @@
     {
         "displayName": "Prescription",
         "iconName": "prescription",
-        "tags": "instruction, direction, medicine, drug, medication, mixture, reaction",
+        "tags": "instruction, direction, medicine, drug, medication, mixture, reaction, pharmacy",
         "group": "miscellaneous",
         "codepoint": 62077
     },
@@ -2893,21 +2893,21 @@
     {
         "displayName": "Widget: button",
         "iconName": "widget-button",
-        "tags": "element, click, press, loading, more, details, options, breadcrumbs, additional, lego, dots, edit",
+        "tags": "element, click, press, loading, more, details, options, breadcrumbs, additional, lego, dots",
         "group": "interface",
         "codepoint": 62232
     },
     {
         "displayName": "Widget: header",
         "iconName": "widget-header",
-        "tags": "element, layout, top, refrigerator, section, div, container, split horizontal, tab, column, note",
+        "tags": "element, layout, top, refrigerator, fridge, section, div, container, split horizontal, tab, column",
         "group": "interface",
         "codepoint": 62234
     },
     {
         "displayName": "Widget: footer",
         "iconName": "widget-footer",
-        "tags": "element, layout, bottom, window, book, guillotine",
+        "tags": "element, layout, bottom, window, section, div, container, guillotine",
         "group": "interface",
         "codepoint": 62233
     },
@@ -2942,7 +2942,7 @@
     {
         "displayName": "Series: search",
         "iconName": "series-search",
-        "tags": "timeseries, plot, line, data, chart, graph, find, investiage, inspect, finder, looker, trend, analyze, expand",
+        "tags": "timeseries, plot, line, data, chart, graph, find, investigate, inspect, finder, looker, trend, analyze",
         "group": "data",
         "codepoint": 62126
     },
@@ -3012,7 +3012,7 @@
     {
         "displayName": "Join: inner",
         "iconName": "inner-join",
-        "tags": "circles, combine, connect, add, part, slice, eye, cell, intersection, overlap, option, navigate, vision, venn diagram",
+        "tags": "circles, combine, connect, add, part, slice, cell, intersection, overlap, venn diagram",
         "group": "action",
         "codepoint": 61955
     },
@@ -3082,7 +3082,7 @@
     {
         "displayName": "Tree diagram",
         "iconName": "diagram-tree",
-        "tags": "organization, chart, hierarchy, relationship, reference, eye, heirarchy, org chart",
+        "tags": "organization, chart, org, hierarchy, relationship, reference",
         "group": "data",
         "codepoint": 61818
     },
@@ -3152,7 +3152,7 @@
     {
         "displayName": "Flow: review branch",
         "iconName": "flow-review-branch",
-        "tags": "workflow, edge, node, fork, locate, axis, graph, outward, away, location, relationship, links, unknown, geolocate, map, grappling hook",
+        "tags": "workflow, edge, node, fork, axis, graph, outward, away, location, relationship, links, unknown, grappling hook",
         "group": "data",
         "codepoint": 61877
     },
@@ -3173,14 +3173,14 @@
     {
         "displayName": "Table: filtered",
         "iconName": "th-filtered",
-        "tags": "index, rows, columns, agenda, list, spreadsheet, funnel, spreadsheet, excel, sort, excel",
+        "tags": "index, rows, columns, agenda, list, spreadsheet, funnel, spreadsheet, excel, sort",
         "group": "table",
         "codepoint": 62184
     },
     {
         "displayName": "Lifesaver",
         "iconName": "lifesaver",
-        "tags": "help, support, aid, advice, poker, casino, circle",
+        "tags": "help, support, aid, advice, poker, casino, chip, circle",
         "group": "miscellaneous",
         "codepoint": 61994
     },
@@ -3215,7 +3215,7 @@
     {
         "displayName": "Inbox: geo",
         "iconName": "inbox-geo",
-        "tags": "folder, mail, file, message, geography, location, area, globe, save map, save location, add location, international mail, upload",
+        "tags": "folder, mail, file, message, geography, location, area, globe, save map, save location, add location, international",
         "group": "file",
         "codepoint": 61948
     },
@@ -3362,7 +3362,7 @@
     {
         "displayName": "Signal search",
         "iconName": "signal-search",
-        "tags": "communication, radio, mast, towers, find telecom,",
+        "tags": "communication, radio, mast, towers, find, telecom, broadcast",
         "group": "action",
         "codepoint": 62135
     },
@@ -3418,14 +3418,14 @@
     {
         "displayName": "Hat",
         "iconName": "hat",
-        "tags": "head, clothing, cap, fedora, role, level, permission, detective, inspector gadget",
+        "tags": "head, clothing, cap, fedora, role, level, permission, detective, inspector",
         "group": "miscellaneous",
         "codepoint": 61921
     },
     {
         "displayName": "Cycle",
         "iconName": "cycle",
-        "tags": "bike, cyclist, biker, rider, transportation, rossing, pedestrian, bicyclist, cyling, motorcyle",
+        "tags": "bike, cyclist, biker, rider, transportation, crossing, pedestrian, bicyclist, cycling, motorcycle",
         "group": "interface",
         "codepoint": 61808
     },
@@ -3439,14 +3439,14 @@
     {
         "displayName": "Modal",
         "iconName": "modal",
-        "tags": "application, layout, user-interface, UI, browser, window, app",
+        "tags": "application, layout, user-interface, UI, browser, window, app, dialog",
         "group": "interface",
         "codepoint": 62024
     },
     {
         "displayName": "Modal filled",
         "iconName": "modal-filled",
-        "tags": "modal, application, layout, user-interface, UI, window, computer, app",
+        "tags": "application, layout, user-interface, UI, window, app, dialog",
         "group": "interface",
         "codepoint": 62023
     },
@@ -3460,14 +3460,14 @@
     {
         "displayName": "Drawer left filled",
         "iconName": "drawer-left-filled",
-        "tags": "application, layout, user-interface, UI, right, shift right, close door, right justify, drag right, output, logout, rectangle arrow",
+        "tags": "application, layout, user-interface, UI, right, shift, close door, justify, drag, move, output, rectangle arrow",
         "group": "interface",
         "codepoint": 61838
     },
     {
         "displayName": "Drawer right",
         "iconName": "drawer-right",
-        "tags": "application, layout, user-interface, UI, left, door, arrow, move, shift, back, close, revert, return, remove, collapse",
+        "tags": "application, layout, user-interface, UI, left, door, arrow, move, shift, back, close, collapse",
         "group": "interface",
         "codepoint": 61841
     },
@@ -3488,7 +3488,7 @@
     {
         "displayName": "Send message",
         "iconName": "send-message",
-        "tags": "deliver, paper-airplane, post, next, arrow, continue",
+        "tags": "deliver, paper-airplane, post, mail",
         "group": "action",
         "codepoint": 62118
     },
@@ -3509,56 +3509,56 @@
     {
         "displayName": "Data Connection",
         "iconName": "data-connection",
-        "tags": "connectivity, database, status, health, blank, nothing, empty",
+        "tags": "connectivity, database, status, health, blank",
         "group": "interface",
         "codepoint": 61810
     },
     {
         "displayName": "Switch",
         "iconName": "switch",
-        "tags": "electrical, broken graph, off, disconnect, open, broken link, disconnected, circuit, bicycle",
+        "tags": "electrical, broken graph, off, disconnect, open, broken link, disconnected, circuit",
         "group": "miscellaneous",
         "codepoint": 62167
     },
     {
         "displayName": "Array",
         "iconName": "array",
-        "tags": "ellipses, items, list, more, dots, expand, collapse, details",
+        "tags": "data, type, list, ellipses, items, more, dots, details",
         "group": "miscellaneous",
         "codepoint": 61729
     },
     {
         "displayName": "Boolean Array",
         "iconName": "array-boolean",
-        "tags": "switch input, report, erase, half, snapshot",
+        "tags": "data, type, list, toggle, true, false",
         "group": "miscellaneous",
         "codepoint": 61724
     },
     {
         "displayName": "Date Array",
         "iconName": "array-date",
-        "tags": "array, date, calendar array, calendars, battery, date array, list of dates, calendar, dates, array of dates, calendar in brackets",
+        "tags": "data, type, list, date, time, datetime, calendar",
         "group": "miscellaneous",
         "codepoint": 61725
     },
     {
         "displayName": "Numeric Array",
         "iconName": "array-numeric",
-        "tags": "numbers, digits, set, range, count, sort descending, integer",
+        "tags": "data, type, list, numbers, digits, set, range, count, integer",
         "group": "miscellaneous",
         "codepoint": 61726
     },
     {
         "displayName": "String Array",
         "iconName": "array-string",
-        "tags": "quotes, quote, google hangouts",
+        "tags": "data, type, list, quotes, quote",
         "group": "miscellaneous",
         "codepoint": 61727
     },
     {
         "displayName": "Timestamp Array",
         "iconName": "array-timestamp",
-        "tags": "clock, delay, timespan",
+        "tags": "data, type, list, date, time, datetime, clock, delay, timespan",
         "group": "miscellaneous",
         "codepoint": 61728
     },
@@ -3593,7 +3593,7 @@
     {
         "displayName": "Add Location",
         "iconName": "add-location",
-        "tags": "location, new, plus, object object, node, circle",
+        "tags": "location, new, plus, object, node, circle",
         "group": "interface",
         "codepoint": 61700
     },
@@ -3614,7 +3614,7 @@
     {
         "displayName": "One to one",
         "iconName": "one-to-one",
-        "tags": "object, relation, ontology, link, connect, join, on, edge, nodes",
+        "tags": "object, relation, ontology, link, connect, join, edge, nodes",
         "group": "data",
         "codepoint": 62054
     },
@@ -3642,14 +3642,14 @@
     {
         "displayName": "Geometry: Stadium",
         "iconName": "stadium-geometry",
-        "tags": "shape, race track, ellipse, round, oval, loop, track, home button",
+        "tags": "shape, race track, ellipse, discorectangle, obround, round, oval, loop, track, home button",
         "group": "miscellaneous",
         "codepoint": 62155
     },
     {
         "displayName": "Area of interest",
         "iconName": "area-of-interest",
-        "tags": "marked, marker, location, region, geo, tag, locate, point, map",
+        "tags": "NAI, named area, marked, marker, location, region, geo, tag, locate, point, map",
         "group": "interface",
         "codepoint": 61723
     },
@@ -3670,7 +3670,7 @@
     {
         "displayName": "Tank",
         "iconName": "tank",
-        "tags": "automobile, vehicle, armored, military, tactic, army",
+        "tags": "automobile, vehicle, armored, military, army",
         "group": "interface",
         "codepoint": 62177
     },
@@ -3733,28 +3733,28 @@
     {
         "displayName": "Rain",
         "iconName": "rain",
-        "tags": "precipitation, storm, weather, cloud, data",
+        "tags": "precipitation, storm, weather, forecast, cloud",
         "group": "miscellaneous",
         "codepoint": 62085
     },
     {
         "displayName": "Lightning",
         "iconName": "lightning",
-        "tags": "thunder, bolt, strike, weather, quick, flash, immediate, electricity, power, high voltage, spark",
+        "tags": "thunder, bolt, strike, weather, forecast, quick, flash, immediate, electricity, power, high voltage, spark",
         "group": "miscellaneous",
         "codepoint": 61996
     },
     {
         "displayName": "Wind",
         "iconName": "wind",
-        "tags": "air, breath, draft, weather, blowing, current",
+        "tags": "air, breath, draft, weather, forecast, blowing, current",
         "group": "miscellaneous",
         "codepoint": 62236
     },
     {
         "displayName": "Hurricane",
         "iconName": "hurricane",
-        "tags": "storm, cyclone, typhoon, tropical storm, swirl, fast, razor, saw, spin, whirl pool",
+        "tags": "storm, cyclone, typhoon, tropical storm, weather, forecast, swirl, fast, razor, saw, spin, whirl pool",
         "group": "miscellaneous",
         "codepoint": 61942
     },
@@ -3768,14 +3768,14 @@
     {
         "displayName": "Target",
         "iconName": "target",
-        "tags": "location, pinpoint, scope, center, add, new, plus",
+        "tags": "location, pinpoint, scope, center",
         "group": "interface",
         "codepoint": 62178
     },
     {
         "displayName": "Small square",
         "iconName": "small-square",
-        "tags": "square, pixel",
+        "tags": "square, pixel, outline, border",
         "group": "miscellaneous",
         "codepoint": 62141
     },
@@ -3817,7 +3817,7 @@
     {
         "displayName": "Symbol: rectangle",
         "iconName": "symbol-rectangle",
-        "tags": "filled shape, grey, box",
+        "tags": "filled shape, box",
         "group": "interface",
         "codepoint": 62242
     },
@@ -3880,7 +3880,7 @@
     {
         "displayName": "Open application",
         "iconName": "open-application",
-        "tags": "new tab, external, click website, link to page, export to pdf, share, open in pop-up, upload, data, spreadsheet, screen",
+        "tags": "new tab, external, click website, link to page, export to pdf, share, open in pop-up, upload, data, window, screen",
         "group": "interface",
         "codepoint": 62251
     },
@@ -3894,7 +3894,7 @@
     {
         "displayName": "Floating point array",
         "iconName": "array-floating-point",
-        "tags": "number, float, double, decimal, array, input, format, versioning, number, tag",
+        "tags": "data, type, list, number, numeric, float, double, decimal, format, version",
         "group": "miscellaneous",
         "codepoint": 62253
     }
