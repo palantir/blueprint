@@ -3656,7 +3656,7 @@
     {
         "displayName": "Buggy",
         "iconName": "buggy",
-        "tags": "vehicle, car, transportation, empty, nothing",
+        "tags": "vehicle, car, transportation, dune, offroad",
         "group": "interface",
         "codepoint": 61755
     },
