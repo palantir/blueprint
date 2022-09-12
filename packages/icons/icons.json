@@ -2361,7 +2361,7 @@
     {
         "displayName": "Build",
         "iconName": "build",
-        "tags": "hammer, tool, force build",
+        "tags": "hammer, tool, force, work",
         "group": "action",
         "codepoint": 61756
     },
@@ -2760,7 +2760,7 @@
     {
         "displayName": "Satellite",
         "iconName": "satellite",
-        "tags": "communication, space, radar, sensor, airplane, wifi, landing",
+        "tags": "communication, space, radar, sensor, airplane, wifi, data, gps, orbit, landing",
         "group": "miscellaneous",
         "codepoint": 62108
     },
@@ -3453,7 +3453,7 @@
     {
         "displayName": "Drawer left",
         "iconName": "drawer-left",
-        "tags": "application, layout, user-interface, UI, pass, export, transform, move, sliding door, flow right block",
+        "tags": "application, layout, user-interface, UI, export, transform, move, sliding door, flow right block",
         "group": "interface",
         "codepoint": 61839
     },
