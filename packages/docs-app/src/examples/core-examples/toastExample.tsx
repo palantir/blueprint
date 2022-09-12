@@ -108,6 +108,22 @@ export class ToastExample extends React.PureComponent<ExampleProps<IBlueprintExa
             intent: Intent.WARNING,
             message: "Goodbye, old friend.",
         },
+        {
+            action: {
+                onClick: () =>
+                    this.addToast({
+                        icon: "ban-circle",
+                        intent: Intent.DANGER,
+                        message: "You can't cancel what's been done!",
+                    }),
+                text: "Cancel",
+            },
+            button: "Start loading",
+            icon: "hand",
+            intent: Intent.PRIMARY,
+            isCloseButtonShown: false,
+            message: "Loading...",
+        },
     ];
 
     private toaster: Toaster;

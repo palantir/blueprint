@@ -38,6 +38,13 @@ export interface ToastProps extends Props, IntentProps {
     /** Name of a Blueprint UI icon (or an icon element) to render before the message. */
     icon?: IconName | MaybeElement;
 
+    /**
+     * Whether to show the close button in the toast.
+     *
+     * @default true
+     */
+    isCloseButtonShown?: boolean;
+
     /** Message to display in the body of the toast. */
     message: React.ReactNode;
 
@@ -59,6 +66,7 @@ export interface ToastProps extends Props, IntentProps {
 export class Toast extends AbstractPureComponent2<ToastProps> {
     public static defaultProps: ToastProps = {
         className: "",
+        isCloseButtonShown: true,
         message: "",
         timeout: 5000,
     };
@@ -66,7 +74,7 @@ export class Toast extends AbstractPureComponent2<ToastProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Toast`;
 
     public render(): JSX.Element {
-        const { className, icon, intent, message } = this.props;
+        const { className, icon, intent, message, isCloseButtonShown } = this.props;
         return (
             <div
                 className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
@@ -82,7 +90,7 @@ export class Toast extends AbstractPureComponent2<ToastProps> {
                 </span>
                 <ButtonGroup minimal={true}>
                     {this.maybeRenderActionButton()}
-                    <Button aria-label="Close" icon="cross" onClick={this.handleCloseClick} />
+                    {isCloseButtonShown && <Button aria-label="Close" icon="cross" onClick={this.handleCloseClick} />}
                 </ButtonGroup>
             </div>
         );
