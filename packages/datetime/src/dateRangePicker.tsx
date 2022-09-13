@@ -225,7 +225,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
     }
 
     public render() {
-        const { className, contiguousCalendarMonths, singleMonthOnly, footerElement } = this.props;
+        const { className, contiguousCalendarMonths, singleMonthOnly, footerElement = <div>footer</div> } = this.props;
         const isShowingOneMonth = singleMonthOnly || DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
 
         const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
@@ -237,11 +237,10 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
         return (
             <div className={classes}>
                 {this.maybeRenderShortcuts()}
-                <div className={DateClasses.DATEPICKER_CONTENT}>
-                    <div>
-                        {this.renderCalendars(isShowingOneMonth)}
-                        {this.maybeRenderTimePickers()}
-                    </div>
+
+                <div>
+                    {this.renderCalendars(isShowingOneMonth)}
+                    {this.maybeRenderTimePickers()}
                     {footerElement}
                 </div>
             </div>
