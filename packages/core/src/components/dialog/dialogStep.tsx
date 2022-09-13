@@ -19,14 +19,9 @@ import * as React from "react";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
-import type { ButtonProps } from "../button/buttons";
+import type { DialogStepButtonProps } from "./dialogStepButton";
 
 export type DialogStepId = string | number;
-// omit "elementRef", which is the only property with a different type in ButtonProps vs. AnchorButtonProps
-export type DialogStepButtonProps = Partial<Omit<ButtonProps, "elementRef">> & {
-    /** Tooltip content to display when the button is disabled */
-    tooltipContent?: string;
-};
 
 // eslint-disable-next-line deprecation/deprecation
 export type DialogStepProps = IDialogStepProps;

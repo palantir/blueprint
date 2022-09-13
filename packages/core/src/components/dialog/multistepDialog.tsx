@@ -19,10 +19,9 @@ import * as React from "react";
 
 import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { AnchorButton } from "../button/buttons";
-import { Tooltip } from "../tooltip/tooltip";
 import { Dialog, DialogProps } from "./dialog";
-import { DialogStep, DialogStepButtonProps, DialogStepId, DialogStepProps } from "./dialogStep";
+import { DialogStep, DialogStepId, DialogStepProps } from "./dialogStep";
+import { DialogStepButton, DialogStepButtonProps } from "./dialogStepButton";
 
 type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.ReactNode }>;
 
@@ -215,7 +214,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         const { closeButtonProps, isCloseButtonShown, showCloseButtonInFooter, onClose } = this.props;
         const isFooterCloseButtonVisible = showCloseButtonInFooter && isCloseButtonShown;
         const maybeCloseButton = !isFooterCloseButtonVisible ? undefined : (
-            <AnchorButton text="Close" onClick={onClose} {...closeButtonProps} />
+            <DialogStepButton text="Close" onClick={onClose} {...closeButtonProps} />
         );
         return (
             <div className={Classes.MULTISTEP_DIALOG_FOOTER}>
@@ -232,51 +231,31 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
         if (this.state.selectedIndex > 0) {
             const backButtonProps = steps[selectedIndex].props.backButtonProps ?? this.props.backButtonProps;
-            const backButton = (
-                <AnchorButton
+            buttons.push(
+                <DialogStepButton
                     key="back"
                     onClick={this.getDialogStepChangeHandler(selectedIndex - 1)}
                     text="Back"
                     {...backButtonProps}
-                />
+                />,
             );
-
-            if (backButtonProps?.tooltipContent != null) {
-                // eslint-disable-next-line deprecation/deprecation
-                buttons.push(<Tooltip content={backButtonProps?.tooltipContent}>{backButton}</Tooltip>);
-            } else {
-                buttons.push(backButton);
-            }
         }
 
         if (selectedIndex === this.getDialogStepChildren().length - 1) {
-            const finalButton = (
-                <AnchorButton intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />
+            buttons.push(
+                <DialogStepButton intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />,
             );
-            if (this.props.finalButtonProps?.tooltipContent != null) {
-                // eslint-disable-next-line deprecation/deprecation
-                buttons.push(<Tooltip content={this.props.finalButtonProps?.tooltipContent}>{finalButton}</Tooltip>);
-            } else {
-                buttons.push(finalButton);
-            }
         } else {
             const nextButtonProps = steps[selectedIndex].props.nextButtonProps ?? this.props.nextButtonProps;
-            const nextButton = (
-                <AnchorButton
+            buttons.push(
+                <DialogStepButton
                     intent="primary"
                     key="next"
                     onClick={this.getDialogStepChangeHandler(selectedIndex + 1)}
                     text="Next"
                     {...nextButtonProps}
-                />
+                />,
             );
-
-            if (nextButtonProps?.tooltipContent != null) {
-                // eslint-disable-next-line deprecation/deprecation
-                buttons.push(<Tooltip content={nextButtonProps?.tooltipContent}>{nextButton}</Tooltip>);
-            } else {
-                buttons.push(nextButton);
-            }
         }
 
         return buttons;
