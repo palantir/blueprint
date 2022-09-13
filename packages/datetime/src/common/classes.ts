@@ -41,6 +41,7 @@ export const DATEPICKER_NAVBUTTON = `DayPicker-NavButton`;
 export const DATEPICKER_TIMEPICKER_WRAPPER = `${DATEPICKER}-timepicker-wrapper`;
 
 export const DATERANGEPICKER = `${NS}-daterangepicker`;
+export const DATERANGEPICKER_CALENDARS = `${DATERANGEPICKER}-calendars`;
 export const DATERANGEPICKER_CONTIGUOUS = `${DATERANGEPICKER}-contiguous`;
 export const DATERANGEPICKER_SINGLE_MONTH = `${DATERANGEPICKER}-single-month`;
 export const DATERANGEPICKER_DAY_SELECTED_RANGE = `${DATEPICKER_DAY}--selected-range`;

@@ -6,6 +6,7 @@
 @import "./common";
 
 $timepicker-input-row-height: $pt-grid-size * 3 !default;
+$timepicker-row-width: $pt-grid-size * 8 !default;
 // subtract two because of inset shadow
 $timepicker-input-row-inner-height: $timepicker-input-row-height - 2 !default;
 // helps focus states of inputs line up correctly
@@ -17,6 +18,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
   white-space: nowrap;
 
   .#{$ns}-timepicker-arrow-row {
+    width: $timepicker-row-width;
     padding: $timepicker-row-padding;
   }
 
@@ -42,6 +44,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     box-shadow: $pt-input-box-shadow;
     display: inline-block;
     height: $timepicker-input-row-height;
+    width: $timepicker-row-width;
     line-height: $timepicker-input-row-inner-height;
     padding: $timepicker-row-padding;
     vertical-align: middle;
