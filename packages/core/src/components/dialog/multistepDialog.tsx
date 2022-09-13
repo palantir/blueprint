@@ -17,7 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Tooltip2 } from "../../../../popover2/src/tooltip2";
+import { Tooltip } from "@blueprintjs/core";
+
 import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { Button, ButtonProps } from "../button/buttons";
@@ -233,63 +234,46 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
         if (this.state.selectedIndex > 0) {
             const backButtonProps = steps[selectedIndex].props.backButtonProps ?? this.props.backButtonProps;
-
-            if (backButtonProps?.tooltipContent) {
-                buttons.push(
-                    <Tooltip2 content={backButtonProps?.tooltipContent} hoverOpenDelay={100}>
-                        <Button
-                            key="back"
-                            onClick={this.getDialogStepChangeHandler(selectedIndex - 1)}
-                            text="Back"
-                            {...backButtonProps}
-                        />
-                    </Tooltip2>,
-                );
-            } else {
+            const backButton = (
                 <Button
                     key="back"
                     onClick={this.getDialogStepChangeHandler(selectedIndex - 1)}
                     text="Back"
                     {...backButtonProps}
-                />;
+                />
+            );
+
+            if (backButtonProps?.tooltipContent != null) {
+                // eslint-disable-next-line deprecation/deprecation
+                buttons.push(<Tooltip content={backButtonProps?.tooltipContent}>{backButton}</Tooltip>);
+            } else {
+                buttons.push(backButton);
             }
         }
 
         if (selectedIndex === this.getDialogStepChildren().length - 1) {
-            if (this.props.finalButtonProps?.tooltipContent) {
-                buttons.push(
-                    <Tooltip2 content={this.props.finalButtonProps?.tooltipContent} hoverOpenDelay={100}>
-                        <Button intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />
-                    </Tooltip2>,
-                );
+            const finalButton = <Button intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />;
+            if (this.props.finalButtonProps?.tooltipContent != null) {
+                buttons.push(<Tooltip content={this.props.finalButtonProps?.tooltipContent}>{finalButton}</Tooltip>);
             } else {
-                buttons.push(<Button intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />);
+                buttons.push(finalButton);
             }
         } else {
             const nextButtonProps = steps[selectedIndex].props.nextButtonProps ?? this.props.nextButtonProps;
+            const nextButton = (
+                <Button
+                    intent="primary"
+                    key="next"
+                    onClick={this.getDialogStepChangeHandler(selectedIndex + 1)}
+                    text="Next"
+                    {...nextButtonProps}
+                />
+            );
 
-            if (nextButtonProps?.tooltipContent) {
-                buttons.push(
-                    <Tooltip2 content={nextButtonProps?.tooltipContent} hoverOpenDelay={100}>
-                        <Button
-                            intent="primary"
-                            key="next"
-                            onClick={this.getDialogStepChangeHandler(selectedIndex + 1)}
-                            text="Next"
-                            {...nextButtonProps}
-                        />
-                    </Tooltip2>,
-                );
+            if (nextButtonProps?.tooltipContent != null) {
+                buttons.push(<Tooltip content={nextButtonProps?.tooltipContent}>{nextButton}</Tooltip>);
             } else {
-                buttons.push(
-                    <Button
-                        intent="primary"
-                        key="next"
-                        onClick={this.getDialogStepChangeHandler(selectedIndex + 1)}
-                        text="Next"
-                        {...nextButtonProps}
-                    />,
-                );
+                buttons.push(nextButton);
             }
         }
 
