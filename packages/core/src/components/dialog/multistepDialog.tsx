@@ -17,11 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Tooltip } from "@blueprintjs/core";
-
 import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { Button, ButtonProps } from "../button/buttons";
+import { AnchorButton } from "../button/buttons";
+import { Tooltip } from "../tooltip/tooltip";
 import { Dialog, DialogProps } from "./dialog";
 import { DialogStep, DialogStepButtonProps, DialogStepId, DialogStepProps } from "./dialogStep";
 
@@ -42,15 +41,14 @@ export interface IMultistepDialogProps extends DialogProps {
     children?: React.ReactNode;
 
     /**
-     * Props for the close button that appears in the footer when there is no
-     * title.
+     * Props for the close button that appears in the footer when there is no title.
      */
-    closeButtonProps?: Partial<ButtonProps>;
+    closeButtonProps?: DialogStepButtonProps;
 
     /**
      * Props for the button to display on the final step.
      */
-    finalButtonProps?: Partial<ButtonProps>;
+    finalButtonProps?: DialogStepButtonProps;
 
     /**
      * Position of the step navigation within the dialog.
@@ -217,7 +215,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         const { closeButtonProps, isCloseButtonShown, showCloseButtonInFooter, onClose } = this.props;
         const isFooterCloseButtonVisible = showCloseButtonInFooter && isCloseButtonShown;
         const maybeCloseButton = !isFooterCloseButtonVisible ? undefined : (
-            <Button text="Close" onClick={onClose} {...closeButtonProps} />
+            <AnchorButton text="Close" onClick={onClose} {...closeButtonProps} />
         );
         return (
             <div className={Classes.MULTISTEP_DIALOG_FOOTER}>
@@ -235,7 +233,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         if (this.state.selectedIndex > 0) {
             const backButtonProps = steps[selectedIndex].props.backButtonProps ?? this.props.backButtonProps;
             const backButton = (
-                <Button
+                <AnchorButton
                     key="back"
                     onClick={this.getDialogStepChangeHandler(selectedIndex - 1)}
                     text="Back"
@@ -244,6 +242,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
             );
 
             if (backButtonProps?.tooltipContent != null) {
+                // eslint-disable-next-line deprecation/deprecation
                 buttons.push(<Tooltip content={backButtonProps?.tooltipContent}>{backButton}</Tooltip>);
             } else {
                 buttons.push(backButton);
@@ -251,8 +250,11 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         }
 
         if (selectedIndex === this.getDialogStepChildren().length - 1) {
-            const finalButton = <Button intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />;
+            const finalButton = (
+                <AnchorButton intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />
+            );
             if (this.props.finalButtonProps?.tooltipContent != null) {
+                // eslint-disable-next-line deprecation/deprecation
                 buttons.push(<Tooltip content={this.props.finalButtonProps?.tooltipContent}>{finalButton}</Tooltip>);
             } else {
                 buttons.push(finalButton);
@@ -260,7 +262,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         } else {
             const nextButtonProps = steps[selectedIndex].props.nextButtonProps ?? this.props.nextButtonProps;
             const nextButton = (
-                <Button
+                <AnchorButton
                     intent="primary"
                     key="next"
                     onClick={this.getDialogStepChangeHandler(selectedIndex + 1)}
@@ -270,6 +272,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
             );
 
             if (nextButtonProps?.tooltipContent != null) {
+                // eslint-disable-next-line deprecation/deprecation
                 buttons.push(<Tooltip content={nextButtonProps?.tooltipContent}>{nextButton}</Tooltip>);
             } else {
                 buttons.push(nextButton);

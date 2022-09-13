@@ -85,9 +85,6 @@ export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = 
     /** Whether this button should use small styles. */
     small?: boolean;
 
-    /** Tooltip content to display when the button is disabled */
-    tooltipContent?: string;
-
     /**
      * HTML `type` attribute of button. Accepted values are `"button"`, `"submit"`, and `"reset"`.
      * Note that this prop has no effect on `AnchorButton`; it only affects `Button`.
