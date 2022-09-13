@@ -244,7 +244,6 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
             );
 
             if (backButtonProps?.tooltipContent != null) {
-                // eslint-disable-next-line deprecation/deprecation
                 buttons.push(<Tooltip content={backButtonProps?.tooltipContent}>{backButton}</Tooltip>);
             } else {
                 buttons.push(backButton);
