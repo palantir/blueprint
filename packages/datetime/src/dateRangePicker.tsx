@@ -18,15 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
 
-import {
-    AbstractPureComponent2,
-    Boundary,
-    Button,
-    ButtonGroup,
-    DISPLAYNAME_PREFIX,
-    Divider,
-    Props,
-} from "@blueprintjs/core";
+import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, Props } from "@blueprintjs/core";
 
 import * as DateClasses from "./common/classes";
 import { DateRange } from "./common/dateRange";
@@ -406,7 +398,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
     };
 
     private renderCalendars(isShowingOneMonth: boolean) {
-        const { dayPickerProps, locale, localeUtils, maxDate, minDate, footerElement } = this.props;
+        const { dayPickerProps, locale, localeUtils, maxDate, minDate } = this.props;
         const dayPickerBaseProps: DayPickerProps = {
             locale,
             localeUtils,
