@@ -103,17 +103,17 @@
 }
 
 .#{$ns}-daterangepicker-calendars {
-  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  width: 100%;
 }
 
 .#{$ns}-daterangepicker-timepickers {
-  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  width: 100%;
 
   .#{$ns}-timepicker-arrow-row:empty + .#{$ns}-timepicker-input-row {
     // when timepicker arrows are not displayed in the daterangepicker, we need a bit of extra margin
