@@ -18,7 +18,15 @@ import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
 
-import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, Props } from "@blueprintjs/core";
+import {
+    AbstractPureComponent2,
+    Boundary,
+    Button,
+    ButtonGroup,
+    DISPLAYNAME_PREFIX,
+    Divider,
+    Props,
+} from "@blueprintjs/core";
 
 import * as DateClasses from "./common/classes";
 import { DateRange } from "./common/dateRange";
@@ -225,7 +233,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
     }
 
     public render() {
-        const { className, contiguousCalendarMonths, singleMonthOnly } = this.props;
+        const { className, contiguousCalendarMonths, singleMonthOnly, footerElement } = this.props;
         const isShowingOneMonth = singleMonthOnly || DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
 
         const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
@@ -237,9 +245,12 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
         return (
             <div className={classes}>
                 {this.maybeRenderShortcuts()}
-                <div>
-                    {this.renderCalendars(isShowingOneMonth)}
-                    {this.maybeRenderTimePickers()}
+                <div className={DateClasses.DATEPICKER_CONTENT}>
+                    <div>
+                        {this.renderCalendars(isShowingOneMonth)}
+                        {this.maybeRenderTimePickers()}
+                    </div>
+                    {footerElement}
                 </div>
             </div>
         );
@@ -395,7 +406,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
     };
 
     private renderCalendars(isShowingOneMonth: boolean) {
-        const { dayPickerProps, locale, localeUtils, maxDate, minDate } = this.props;
+        const { dayPickerProps, locale, localeUtils, maxDate, minDate, footerElement } = this.props;
         const dayPickerBaseProps: DayPickerProps = {
             locale,
             localeUtils,
