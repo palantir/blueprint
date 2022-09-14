@@ -54,12 +54,7 @@ export class DatePickerExample extends React.PureComponent<ExampleProps, IDatePi
 
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
 
-    private toggleShowFooterElement = () => {
-        this.setState(prevState => {
-            const showFooterElement = !prevState.showFooterElement;
-            return { showFooterElement };
-        });
-    };
+    private toggleShowFooterElement = handleBooleanChange(showFooterElement => this.setState({ showFooterElement }));
 
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
 

@@ -19,9 +19,9 @@ import * as React from "react";
 
 import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { Button, ButtonProps } from "../button/buttons";
 import { Dialog, DialogProps } from "./dialog";
-import { DialogStep, DialogStepButtonProps, DialogStepId, DialogStepProps } from "./dialogStep";
+import { DialogStep, DialogStepId, DialogStepProps } from "./dialogStep";
+import { DialogStepButton, DialogStepButtonProps } from "./dialogStepButton";
 
 type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.ReactNode }>;
 
@@ -40,15 +40,14 @@ export interface IMultistepDialogProps extends DialogProps {
     children?: React.ReactNode;
 
     /**
-     * Props for the close button that appears in the footer when there is no
-     * title.
+     * Props for the close button that appears in the footer when there is no title.
      */
-    closeButtonProps?: Partial<ButtonProps>;
+    closeButtonProps?: DialogStepButtonProps;
 
     /**
      * Props for the button to display on the final step.
      */
-    finalButtonProps?: Partial<ButtonProps>;
+    finalButtonProps?: DialogStepButtonProps;
 
     /**
      * Position of the step navigation within the dialog.
@@ -215,7 +214,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         const { closeButtonProps, isCloseButtonShown, showCloseButtonInFooter, onClose } = this.props;
         const isFooterCloseButtonVisible = showCloseButtonInFooter && isCloseButtonShown;
         const maybeCloseButton = !isFooterCloseButtonVisible ? undefined : (
-            <Button text="Close" onClick={onClose} {...closeButtonProps} />
+            <DialogStepButton text="Close" onClick={onClose} {...closeButtonProps} />
         );
         return (
             <div className={Classes.MULTISTEP_DIALOG_FOOTER}>
@@ -232,9 +231,8 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
         if (this.state.selectedIndex > 0) {
             const backButtonProps = steps[selectedIndex].props.backButtonProps ?? this.props.backButtonProps;
-
             buttons.push(
-                <Button
+                <DialogStepButton
                     key="back"
                     onClick={this.getDialogStepChangeHandler(selectedIndex - 1)}
                     text="Back"
@@ -244,12 +242,13 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         }
 
         if (selectedIndex === this.getDialogStepChildren().length - 1) {
-            buttons.push(<Button intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />);
+            buttons.push(
+                <DialogStepButton intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />,
+            );
         } else {
             const nextButtonProps = steps[selectedIndex].props.nextButtonProps ?? this.props.nextButtonProps;
-
             buttons.push(
-                <Button
+                <DialogStepButton
                     intent="primary"
                     key="next"
                     onClick={this.getDialogStepChangeHandler(selectedIndex + 1)}

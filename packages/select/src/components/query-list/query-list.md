@@ -14,4 +14,4 @@ An object with the following properties will be passed to an `QueryList` `render
 
 This interface is generic, accepting a type parameter `<T>` for an item in the list.
 
-@interface IQueryListRendererProps
+@interface QueryListRendererProps

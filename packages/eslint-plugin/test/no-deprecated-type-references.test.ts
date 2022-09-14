@@ -102,7 +102,9 @@ ruleTester.run("no-deprecated-type-references", noDeprecatedTypeReferencesRule, 
                 };
             `,
         },
-        // N.B. it is unreliable/impossible to test multiple fixes with ESLint's RuleTester, so we test those separately
+
+        // N.B. it is difficult to test fixes of multiple violations with ESLint's RuleTester, so we cannot have a test
+        // case with both `ISelectProps` and `ITimezoneItem`.
         // see https://github.com/eslint/eslint/issues/11187#issuecomment-470990425
         {
             code: dedent`
@@ -136,6 +138,66 @@ ruleTester.run("no-deprecated-type-references", noDeprecatedTypeReferencesRule, 
             output: dedent`
                 import { SelectProps } from "@blueprintjs/select";
                 const mySelectProps: SelectProps = { items: [] };
+            `,
+        },
+
+        // Ensure that multiple references/uses of the _same_ deprecated type are all fixed
+        {
+            code: dedent`
+                import { ItemRenderer, IItemRendererProps } from "@blueprintjs/select";
+                const fooRenderer: ItemRenderer<any> = (item: any, props: IItemRendererProps) => {
+                    return "foo";
+                }
+                const barRenderer: ItemRenderer<any> = (item: any, props: IItemRendererProps) => {
+                    return "bar";
+                }
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: { deprecatedTypeName: "IItemRendererProps", newTypeName: "ItemRendererProps" },
+                },
+                {
+                    messageId: "migration",
+                    data: { deprecatedTypeName: "IItemRendererProps", newTypeName: "ItemRendererProps" },
+                },
+            ],
+            output: dedent`
+                import { ItemRenderer, ItemRendererProps } from "@blueprintjs/select";
+                const fooRenderer: ItemRenderer<any> = (item: any, props: ItemRendererProps) => {
+                    return "foo";
+                }
+                const barRenderer: ItemRenderer<any> = (item: any, props: ItemRendererProps) => {
+                    return "bar";
+                }
+            `,
+        },
+        {
+            code: dedent`
+                import { Button, IButtonProps } from "@blueprintjs/core";
+                const ButtonAlias = (props: IButtonProps) => <Button {...props} />;
+                interface MyButtonProps extends IButtonProps {
+                    type: string;
+                }
+                const MyButton = (props: MyButtonProps) => <Button {...props} />;
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: { deprecatedTypeName: "IButtonProps", newTypeName: "ButtonProps" },
+                },
+                {
+                    messageId: "migration",
+                    data: { deprecatedTypeName: "IButtonProps", newTypeName: "ButtonProps" },
+                },
+            ],
+            output: dedent`
+                import { Button, ButtonProps } from "@blueprintjs/core";
+                const ButtonAlias = (props: ButtonProps) => <Button {...props} />;
+                interface MyButtonProps extends ButtonProps {
+                    type: string;
+                }
+                const MyButton = (props: MyButtonProps) => <Button {...props} />;
             `,
         },
     ],

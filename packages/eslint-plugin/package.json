@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/eslint-plugin",
-    "version": "2.4.1",
+    "version": "2.4.2",
     "description": "ESLint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
@@ -9,14 +9,14 @@
         "lint": "run-p lint:es",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix",
-        "test": "mocha test/index.ts"
+        "test": "mocha"
     },
     "dependencies": {
         "@typescript-eslint/utils": "^5.32.0",
         "eslint": "^8.21.0"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^5.1.0",
+        "@blueprintjs/node-build-scripts": "^5.2.0",
         "@types/dedent": "^0.7.0",
         "dedent": "^0.7.0",
         "mocha": "^9.2.2",

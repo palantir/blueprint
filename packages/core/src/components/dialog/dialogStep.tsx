@@ -19,10 +19,9 @@ import * as React from "react";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
-import { ButtonProps } from "../button/buttons";
+import type { DialogStepButtonProps } from "./dialogStepButton";
 
 export type DialogStepId = string | number;
-export type DialogStepButtonProps = Partial<Pick<ButtonProps, "disabled" | "text">>;
 
 // eslint-disable-next-line deprecation/deprecation
 export type DialogStepProps = IDialogStepProps;

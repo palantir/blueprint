@@ -61,8 +61,8 @@ import { useCallback, useState } from "react";
 function Example() {
     const [dateValue, setDateValue] = useState<string>(null);
     const handleChange = useCallback(setDateValue, []);
-    const formatDate = useCallback((date: Date) => date.toLocaleString());
-    const parseDate = useCallback((str: string) => new Date(str));
+    const formatDate = useCallback((date: Date) => date.toLocaleString(), []);
+    const parseDate = useCallback((str: string) => new Date(str), []);
 
     return (
         <DateInput2
@@ -87,8 +87,8 @@ function Example() {
     const [dateValue, setDateValue] = useState<string>(null);
     const handleChange = useCallback(setDateValue, []);
     const dateFnsFormat = "yyyy-MM-dd HH:mm:ss";
-    const formatDate = useCallback((date: Date) => format(date, dateFnsFormat));
-    const parseDate = useCallback((str: string) => parse(date, dateFnsFormat));
+    const formatDate = useCallback((date: Date) => format(date, dateFnsFormat), []);
+    const parseDate = useCallback((str: string) => parse(date, dateFnsFormat), []);
 
     return (
         <DateInput2

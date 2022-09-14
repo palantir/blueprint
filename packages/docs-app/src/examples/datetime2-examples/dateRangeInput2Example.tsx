@@ -16,13 +16,20 @@
 
 import * as React from "react";
 
-import { H5, Switch } from "@blueprintjs/core";
+import { Callout, Code, H5, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateRange, TimePrecision } from "@blueprintjs/datetime";
 import { DateRangeInput2 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { DateFnsDateRange } from "./dateFnsDate";
 import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "./dateFnsFormatSelector";
+
+const exampleFooterElement = (
+    <Callout style={{ maxWidth: 460 }}>
+        A custom footer element may be displayed below the date range picker calendars using the{" "}
+        <Code>footerElement</Code> prop.
+    </Callout>
+);
 
 export interface DateRangeInput2ExampleState {
     allowSingleDayRange: boolean;
@@ -35,8 +42,9 @@ export interface DateRangeInput2ExampleState {
     reverseMonthAndYearMenus: boolean;
     selectAllOnFocus: boolean;
     shortcuts: boolean;
-    singleMonthOnly: boolean;
+    showFooterElement: boolean;
     showTimeArrowButtons: boolean;
+    singleMonthOnly: boolean;
 }
 
 export class DateRangeInput2Example extends React.PureComponent<ExampleProps, DateRangeInput2ExampleState> {
@@ -51,6 +59,7 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
         shortcuts: true,
+        showFooterElement: false,
         showTimeArrowButtons: false,
         singleMonthOnly: false,
     };
@@ -69,6 +78,8 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
 
     private toggleSelectAllOnFocus = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
 
+    private toggleShowFooterElement = handleBooleanChange(showFooterElement => this.setState({ showFooterElement }));
+
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
 
     private toggleSingleMonth = handleBooleanChange(singleMonthOnly => this.setState({ singleMonthOnly }));
@@ -82,13 +93,14 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
     );
 
     public render() {
-        const { enableTimePicker, format, range, showTimeArrowButtons, ...spreadProps } = this.state;
+        const { enableTimePicker, format, range, showFooterElement, showTimeArrowButtons, ...spreadProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <DateRangeInput2
                     {...spreadProps}
                     {...format}
                     onChange={this.handleRangeChange}
+                    footerElement={showFooterElement ? exampleFooterElement : undefined}
                     timePickerProps={
                         enableTimePicker
                             ? { precision: TimePrecision.MINUTE, showArrowButtons: showTimeArrowButtons }
@@ -135,6 +147,11 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
                     checked={this.state.reverseMonthAndYearMenus}
                     label="Reverse month and year menus"
                     onChange={this.toggleReverseMonthAndYearMenus}
+                />
+                <Switch
+                    checked={this.state.showFooterElement}
+                    label="Show custom footer element"
+                    onChange={this.toggleShowFooterElement}
                 />
                 <Switch
                     checked={this.state.enableTimePicker}

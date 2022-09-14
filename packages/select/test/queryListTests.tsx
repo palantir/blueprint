@@ -23,13 +23,13 @@ import { Menu } from "@blueprintjs/core";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import {
-    IQueryListRendererProps,
     IQueryListState,
     ItemListPredicate,
     ItemListRenderer,
     ItemPredicate,
     QueryList,
     QueryListProps,
+    QueryListRendererProps,
 } from "../src";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
@@ -43,7 +43,7 @@ describe("<QueryList>", () => {
         items: TOP_100_FILMS.slice(0, 20),
         onActiveItemChange: sinon.spy(),
         onItemSelect: sinon.spy(),
-        renderer: sinon.spy((props: IQueryListRendererProps<IFilm>) => <div>{props.itemList}</div>),
+        renderer: sinon.spy((props: QueryListRendererProps<IFilm>) => <div>{props.itemList}</div>),
     };
 
     beforeEach(() => {
@@ -80,7 +80,7 @@ describe("<QueryList>", () => {
             shallow(<FilmQueryList {...testProps} itemPredicate={predicate} query="1994" />);
 
             assert.equal(predicate.callCount, testProps.items.length, "called once per item");
-            const { filteredItems } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
+            const { filteredItems } = testProps.renderer.args[0][0] as QueryListRendererProps<IFilm>;
             assert.lengthOf(filteredItems, 3, "returns only films from 1994");
         });
 
@@ -89,7 +89,7 @@ describe("<QueryList>", () => {
             shallow(<FilmQueryList {...testProps} itemListPredicate={predicate} query="1994" />);
 
             assert.equal(predicate.callCount, 1, "called once for entire list");
-            const { filteredItems } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
+            const { filteredItems } = testProps.renderer.args[0][0] as QueryListRendererProps<IFilm>;
             assert.lengthOf(filteredItems, 3, "returns only films from 1994");
         });
 
@@ -111,7 +111,7 @@ describe("<QueryList>", () => {
 
         it("omitting both predicate props is supported", () => {
             shallow(<FilmQueryList {...testProps} query="1980" />);
-            const { filteredItems } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
+            const { filteredItems } = testProps.renderer.args[0][0] as QueryListRendererProps<IFilm>;
             assert.lengthOf(filteredItems, testProps.items.length, "returns all films");
         });
 
@@ -232,7 +232,7 @@ describe("<QueryList>", () => {
                 ...testProps,
                 itemPredicate,
                 onItemsPaste,
-                renderer: sinon.spy((listItemsProps: IQueryListRendererProps<IFilm>) => {
+                renderer: sinon.spy((listItemsProps: QueryListRendererProps<IFilm>) => {
                     handlePaste = listItemsProps.handlePaste;
                     return testProps.renderer(listItemsProps);
                 }),
@@ -343,8 +343,8 @@ describe("<QueryList>", () => {
             let triggerInputQueryChange: ((e: any) => void) | undefined;
             const createNewItemFromQuerySpy = sinon.spy();
             const createNewItemRendererSpy = sinon.spy();
-            // we must supply our own renderer so that we can hook into IQueryListRendererProps#handleQueryChange
-            const renderer = sinon.spy((props: IQueryListRendererProps<IFilm>) => {
+            // we must supply our own renderer so that we can hook into QueryListRendererProps#handleQueryChange
+            const renderer = sinon.spy((props: QueryListRendererProps<IFilm>) => {
                 triggerInputQueryChange = props.handleQueryChange;
                 return <div>{props.itemList}</div>;
             });
