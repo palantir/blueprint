@@ -21,6 +21,7 @@
     "no-invalid-position-at-import-rule": [true, {
         "ignoreAtRules": ["use"]
     }],
+    "scss/media-feature-value-dollar-variable": null,
     "selector-max-universal": 1
   }
 }
