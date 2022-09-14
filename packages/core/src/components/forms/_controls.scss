@@ -22,7 +22,7 @@ $control-checked-background-color-disabled: rgba($control-checked-background-col
 
 $control-box-shadow: inset 0 0 0 $button-border-width $gray2 !default;
 $control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($black, 0.2) !default;
-$high-contrast-control-checked-border-color: $button-border-width;
+$high-contrast-control-checked-border-color: rgba($black, 0.2);
 $dark-control-box-shadow: inset 0 0 0 $button-border-width $gray3 !default;
 $dark-control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($white, 0.1) !default;
 $high-contrast-dark-control-checked-border-color: rgba($white, 0.1);
