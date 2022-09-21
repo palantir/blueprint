@@ -37,7 +37,8 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      border: 1px solid ButtonBorder;
+      border: 1px solid Highlight;
+      background-color: Highlight;
     }
   }
 
@@ -237,6 +238,10 @@ $control-indicator-spacing: $pt-grid-size !default;
         // embed SVG icon image as backgroud-image above gradient.
         // the SVG image content is inlined into the CSS, so use this sparingly.
         background-image: svg-icon("16px/#{$icon}.svg", (path: (fill: $white)));
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-image: svg-icon("16px/#{$icon}.svg", (path: (fill: ButtonText)));
+        }
       }
     }
 
@@ -281,6 +286,16 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     input:checked ~ .#{$ns}-control-indicator::before {
       background-image: radial-gradient($white, $white 28%, transparent 32%);
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        background: Highlight;
+        // Subtract border on either end, and then an extra 2px for space between the border
+        height: $control-indicator-size - 4px;
+        width: $control-indicator-size - 4px;
+        margin-left: 1px;
+        margin-top: 1px;
+      }
     }
 
     input:checked:disabled ~ .#{$ns}-control-indicator::before {
