@@ -88,7 +88,7 @@ $tag-round-adjustment: 2px !default;
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: 1px solid ButtonBorder;
+    border: 1px solid $pt-high-contrast-mode-border-color;
   }
 }
 

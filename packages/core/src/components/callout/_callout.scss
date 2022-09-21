@@ -43,8 +43,8 @@ Styleguide callout
   }
 
   // High contrast mode hides backgrounds, so we need to use a border instead
-  @media screen and (prefers-contrast: more) {
-    border: 1px solid $pt-divider-black;
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
   }
 
   &.#{$ns}-callout-icon {
@@ -81,8 +81,8 @@ Styleguide callout
     &.#{$ns}-intent-#{$intent} {
       background-color: rgba($color, 0.1);
 
-      @media screen and (prefers-contrast: more) {
-        border: 1px solid rgba($color, 0.1);
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        border: 1px solid $pt-high-contrast-mode-border-color;
       }
 
       &[class*="#{$ns}-icon-"]::before,

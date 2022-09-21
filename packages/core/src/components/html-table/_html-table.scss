@@ -134,8 +134,8 @@ table.#{$ns}-html-table {
       box-shadow: inset $table-border-width 0 0 0 $table-border-color;
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        border-top: 1px solid ButtonBorder;
-        border-left: 1px solid ButtonBorder;
+        border-left: 1px solid $pt-high-contrast-mode-border-color;
+        border-top: 1px solid $pt-high-contrast-mode-border-color;
       }
     }
 
@@ -147,8 +147,8 @@ table.#{$ns}-html-table {
         box-shadow: inset $table-border-width $table-border-width 0 0 $table-border-color;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
-          border-top: 1px solid ButtonBorder;
-          border-left: 1px solid ButtonBorder;
+          border-left: 1px solid $pt-high-contrast-mode-border-color;
+          border-top: 1px solid $pt-high-contrast-mode-border-color;
         }
       }
     }

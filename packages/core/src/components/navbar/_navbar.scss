@@ -64,7 +64,7 @@ $dark-navbar-background-color: $dark-gray4 !default;
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid ButtonBorder;
+    border: 1px solid $pt-high-contrast-mode-border-color;
   }
 }
 

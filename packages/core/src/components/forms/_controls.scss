@@ -36,9 +36,9 @@ $control-indicator-spacing: $pt-grid-size !default;
     color: $white;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      background-color: $pt-high-contrast-mode-active-background-color;
       // Windows High Contrast dark theme
-      border: 1px solid Highlight;
-      background-color: Highlight;
+      border: 1px solid $pt-high-contrast-mode-active-background-color;
     }
   }
 
@@ -47,7 +47,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      background-color: Highlight;
+      background-color: $pt-high-contrast-mode-active-background-color;
     }
   }
 
@@ -67,7 +67,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         // Windows High Contrast dark theme
-        border: 1px solid ButtonBorder;
+        border: 1px solid $pt-high-contrast-mode-border-color;
       }
     }
 
@@ -164,13 +164,13 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      border: 1px solid ButtonBorder;
+      border: 1px solid $pt-high-contrast-mode-border-color;
 
       &::before {
         // Because we're using a border in high contrast mode, we need to adjust the margins
         // to compensate for the space the border takes up
-        margin-top: -1px;
         margin-left: -1px;
+        margin-top: -1px;
       }
     }
   }
@@ -294,12 +294,12 @@ $control-indicator-spacing: $pt-grid-size !default;
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         // Windows High Contrast dark theme
-        background: Highlight;
+        background: $pt-high-contrast-mode-active-background-color;
         // Subtract border on either end, and then an extra 2px for space between the border
         height: $control-indicator-size - 4px;
-        width: $control-indicator-size - 4px;
         margin-left: 1px;
         margin-top: 1px;
+        width: $control-indicator-size - 4px;
       }
     }
 
@@ -394,8 +394,8 @@ $control-indicator-spacing: $pt-grid-size !default;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // Windows High Contrast dark theme
-          border: 1px solid ButtonBorder;
           background: $high-contrast-background-color;
+          border: 1px solid $pt-high-contrast-mode-border-color;
         }
       }
 
@@ -438,7 +438,7 @@ $control-indicator-spacing: $pt-grid-size !default;
       ":checked",
       $switch-checked-text-color,
       $switch-checked-background-color,
-      Highlight, // Use the system color for selected items
+      $pt-high-contrast-mode-active-background-color, // Use the system color for selected items
       $switch-checked-background-color-hover,
       $switch-checked-background-color-active,
       $switch-checked-text-color-disabled,
@@ -471,7 +471,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // Windows High Contrast dark theme
-          border: 1px solid ButtonBorder;
+          border: 1px solid $pt-high-contrast-mode-border-color;
           // Because we're using a border for the outline, we need to decrease the top margin
           margin-top: 1px;
         }
@@ -503,7 +503,7 @@ $control-indicator-spacing: $pt-grid-size !default;
         ":checked",
         $dark-switch-checked-text-color,
         $dark-switch-checked-background-color,
-        Highlight,
+        $pt-high-contrast-mode-active-background-color,
         $dark-switch-checked-background-color-hover,
         $dark-switch-checked-background-color-active,
         $dark-switch-checked-text-color-disabled,

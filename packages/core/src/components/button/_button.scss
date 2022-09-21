@@ -196,7 +196,7 @@ Styleguide button
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // Windows High Contrast dark theme
-          background: Highlight;
+          background: $pt-high-contrast-mode-active-background-color;
         }
       }
     }

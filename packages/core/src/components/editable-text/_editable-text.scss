@@ -33,7 +33,7 @@
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     &::before {
-      border: 1px solid ButtonBorder;
+      border: 1px solid $pt-high-contrast-mode-border-color;
     }
   }
 

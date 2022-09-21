@@ -132,7 +132,7 @@ $button-intents: (
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: 1px solid ButtonBorder;
+    border: 1px solid $pt-high-contrast-mode-border-color;
   }
 }
 
@@ -154,7 +154,7 @@ $button-intents: (
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    background: Highlight;
+    background: $pt-high-contrast-mode-active-background-color;
   }
 }
 
@@ -195,7 +195,7 @@ $button-intents: (
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: 1px solid ButtonBorder;
+    border: 1px solid $pt-high-contrast-mode-border-color;
     box-shadow: none;
   }
 }
