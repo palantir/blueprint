@@ -151,6 +151,11 @@ $button-intents: (
 @mixin pt-button-active() {
   background-color: $button-background-color-active;
   box-shadow: $button-box-shadow-active;
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    background: Highlight;
+  }
 }
 
 @mixin pt-button-disabled() {
