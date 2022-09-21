@@ -361,6 +361,7 @@ $control-indicator-spacing: $pt-grid-size !default;
       $selector,
       $text-color,
       $background-color,
+      $high-contrast-background-color,
       $hover-color,
       $active-color,
       $disabled-text-color,
@@ -373,7 +374,8 @@ $control-indicator-spacing: $pt-grid-size !default;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // Windows High Contrast dark theme
-          border: 1px solid $high-contrast-control-checked-border-color;
+          border: 1px solid ButtonBorder;
+          background: $high-contrast-background-color;
         }
       }
 
@@ -400,6 +402,7 @@ $control-indicator-spacing: $pt-grid-size !default;
       "",
       $switch-text-color,
       $switch-background-color,
+      $switch-background-color,
       $switch-background-color-hover,
       $switch-background-color-active,
       $switch-text-color-disabled,
@@ -410,6 +413,7 @@ $control-indicator-spacing: $pt-grid-size !default;
       ":checked",
       $switch-checked-text-color,
       $switch-checked-background-color,
+      Highlight, // Use the system color for selected items
       $switch-checked-background-color-hover,
       $switch-checked-background-color-active,
       $switch-checked-text-color-disabled,
