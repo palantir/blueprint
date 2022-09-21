@@ -222,6 +222,7 @@ export function selectComponentSuite<P extends ListItemsProps<IFilm>, S>(
                 query: "non-existent film name, second film name",
             });
             assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ENTER });
             findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
             assert.equal(testCreateProps.onItemSelect.calledTwice, true, "should invoke onItemSelect twice");
             assert.equal(
