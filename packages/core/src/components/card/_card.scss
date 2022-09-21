@@ -70,6 +70,10 @@ $dark-elevation-shadows: (
     .#{$ns}-dark & {
       box-shadow: nth($dark-elevation-shadows, $index);
     }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border: 1px solid ButtonBorder;
+    }
   }
 }
 
