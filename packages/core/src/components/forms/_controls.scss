@@ -22,10 +22,8 @@ $control-checked-background-color-disabled: rgba($control-checked-background-col
 
 $control-box-shadow: inset 0 0 0 $button-border-width $gray2 !default;
 $control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($black, 0.2) !default;
-$high-contrast-control-checked-border-color: rgba($black, 0.2);
 $dark-control-box-shadow: inset 0 0 0 $button-border-width $gray3 !default;
 $dark-control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($white, 0.1) !default;
-$high-contrast-dark-control-checked-border-color: rgba($white, 0.1);
 
 $control-indicator-size: $pt-icon-size-standard !default;
 $control-indicator-size-large: $pt-icon-size-large !default;
@@ -37,9 +35,9 @@ $control-indicator-spacing: $pt-grid-size !default;
     box-shadow: $control-checked-box-shadow;
     color: $white;
 
-    // High contrast mode hides box-shadows, so we need to use a border instead
-    @media screen and (prefers-contrast: more) {
-      border: 1px solid $high-contrast-control-checked-border-color;
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      border: 1px solid ButtonBorder;
     }
   }
 
@@ -61,9 +59,9 @@ $control-indicator-spacing: $pt-grid-size !default;
     input#{$selector} ~ .#{$ns}-control-indicator {
       box-shadow: $dark-control-checked-box-shadow;
 
-      // High contrast mode hides box-shadows, so we need to use a border instead
-      @media screen and (prefers-contrast: more) {
-        border: 1px solid $high-contrast-dark-control-checked-border-color;
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        border: 1px solid ButtonBorder;
       }
     }
 
@@ -156,6 +154,18 @@ $control-indicator-spacing: $pt-grid-size !default;
       display: block;
       height: 1em;
       width: 1em;
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      border: 1px solid ButtonBorder;
+
+      &::before {
+        // Because we're using a border in high contrast mode, we need to adjust the margins
+        // to compensate for the space the border takes up
+        margin-top: -1px;
+        margin-left: -1px;
+      }
     }
   }
 
@@ -339,7 +349,6 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   $switch-indicator-background-color: rgba($gray3, 0.3) !default;
   $switch-indicator-box-shadow: 0 0 0 $button-border-width rgba($black, 0.5) !default;
-  $high-contrast-switch-indicator-border-color: rgba($black, 0.5);
   $switch-indicator-background-color-disabled: rgba($white, 0.8) !default;
   $switch-checked-indicator-background-color-disabled: rgba($white, 0.5) !default;
   $dark-switch-indicator-background-color: $gray4 !default;
@@ -362,8 +371,8 @@ $control-indicator-spacing: $pt-grid-size !default;
         background: $background-color;
         color: $text-color;
 
-        // High contrast mode hides box-shadows, so we need to use a border instead
-        @media screen and (prefers-contrast: more) {
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // Windows High Contrast dark theme
           border: 1px solid $high-contrast-control-checked-border-color;
         }
       }
@@ -431,9 +440,11 @@ $control-indicator-spacing: $pt-grid-size !default;
         transition: left $pt-transition-duration $pt-transition-ease;
         width: $switch-indicator-size;
 
-        // High contrast mode hides box-shadows, so we need to use a border instead
-        @media screen and (prefers-contrast: more) {
-          border: 1px solid $high-contrast-switch-indicator-border-color;
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // Windows High Contrast dark theme
+          border: 1px solid ButtonBorder;
+          // Because we're using a border for the outline, we need to decrease the top margin
+          margin-top: 1px;
         }
       }
     }

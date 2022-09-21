@@ -35,9 +35,6 @@ $dark-button-box-shadow:
 $dark-button-box-shadow-active:
   inset 0 0 0 $button-border-width rgba($white, 0.1),
   0 1px 2px rgba($black, 0.4) !default;
-// Box shadows are hidden in Windows high contrast mode, which means buttons have
-// no borders. This is bad for accessibility.
-$button-high-contrast-border-color: rgba($black, 0.2);
 
 $button-color-disabled: $pt-text-color-disabled !default;
 $button-background-color: $light-gray5 !default;
@@ -133,9 +130,9 @@ $button-intents: (
     }
   }
 
-  // High contrast mode hides box-shadows, so we need to use a border instead
-  @media screen and (prefers-contrast: more) {
-    border: 1px solid $button-high-contrast-border-color;
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid ButtonBorder;
   }
 }
 
@@ -191,9 +188,9 @@ $button-intents: (
     @include pt-button-intent-disabled($default-color);
   }
 
-  // High contrast mode hides box-shadows, so we need to use a border instead
-  @media screen and (prefers-contrast: more) {
-    border: 1px solid $button-high-contrast-border-color;
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid ButtonBorder;
     box-shadow: none;
   }
 }
