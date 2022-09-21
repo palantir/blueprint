@@ -44,6 +44,11 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   &:hover input#{$selector} ~ .#{$ns}-control-indicator {
     background-color: $control-checked-background-color-hover;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      background-color: Highlight;
+    }
   }
 
   input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
@@ -240,7 +245,7 @@ $control-indicator-spacing: $pt-grid-size !default;
         background-image: svg-icon("16px/#{$icon}.svg", (path: (fill: $white)));
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
-          background-image: svg-icon("16px/#{$icon}.svg", (path: (fill: ButtonText)));
+          background-image: svg-icon("16px/#{$icon}.svg", (path: (fill: $black)));
         }
       }
     }
@@ -396,6 +401,11 @@ $control-indicator-spacing: $pt-grid-size !default;
 
       &:hover input#{$selector} ~ .#{$ns}-control-indicator {
         background: $hover-color;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // Windows High Contrast dark theme
+          background: $high-contrast-background-color;
+        }
       }
 
       input#{$selector}:not(:disabled):active ~ .#{$ns}-control-indicator {
