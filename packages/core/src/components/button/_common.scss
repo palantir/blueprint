@@ -205,6 +205,12 @@ $button-intents: (
   border-color: transparent;
   box-shadow: none;
   color: $button-intent-color-disabled;
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border-color: $pt-high-contrast-mode-disabled-border-color;
+    color: $pt-high-contrast-mode-disabled-border-color;
+  }
 }
 
 // N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
