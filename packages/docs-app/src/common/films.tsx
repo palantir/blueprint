@@ -199,6 +199,8 @@ export const renderCreateFilmsMenuItem = (
     />
 );
 
+/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
+
 /**
  * Given a user-provided list of strings separated by commas, this helper function parses the list and
  * returns a more readable version of it.
@@ -278,23 +280,28 @@ export function createFilms(query: string): IFilm[] {
     }));
 }
 
+/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
 export function areFilmsEqual(filmA: IFilm, filmB: IFilm) {
     // Compare only the titles (ignoring case) just for simplicity.
     return filmA.title.toLowerCase() === filmB.title.toLowerCase();
 }
 
+/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
 export function doesFilmEqualQuery(film: IFilm, query: string) {
     return film.title.toLowerCase() === query.toLowerCase();
 }
 
+/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
 export function arrayContainsFilm(films: IFilm[], filmToFind: IFilm): boolean {
     return films.some((film: IFilm) => film.title === filmToFind.title);
 }
 
+/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
 export function addFilmToArray(films: IFilm[], filmToAdd: IFilm) {
     return [...films, filmToAdd];
 }
 
+/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
 export function deleteFilmFromArray(films: IFilm[], filmToDelete: IFilm) {
     return films.filter(film => film !== filmToDelete);
 }
