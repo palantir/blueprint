@@ -149,7 +149,7 @@ $pt-dark-toast-box-shadow: $pt-dark-elevation-shadow-3 !default;
 // Colors used for Windows high contrast mode
 // Because high contrast mode doesn't actually obey any colors we define, but uses system colors,
 // we define these variables in terms of System colors so that it's easier to understand the intent.
-$pt-high-contrast-mode-border-color: ButtonBorder;
-$pt-high-contrast-mode-active-background-color: Highlight;
-$pt-high-contrast-mode-disabled-border-color: GrayText;
-$pt-high-contrast-mode-disabled-text-color: GrayText;
+$pt-high-contrast-mode-border-color: buttonborder;
+$pt-high-contrast-mode-active-background-color: highlight;
+$pt-high-contrast-mode-disabled-border-color: graytext;
+$pt-high-contrast-mode-disabled-text-color: graytext;
