@@ -135,7 +135,6 @@ table.#{$ns}-html-table {
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         border-left: 1px solid $pt-high-contrast-mode-border-color;
-        border-top: 1px solid $pt-high-contrast-mode-border-color;
       }
     }
 
@@ -173,10 +172,18 @@ table.#{$ns}-html-table {
       &:hover td {
         background-color: rgba($gray3, 0.3);
         cursor: pointer;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-color: $pt-high-contrast-mode-active-background-color;
+        }
       }
 
       &:active td {
         background-color: rgba($gray3, 0.35);
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-color: $pt-high-contrast-mode-active-background-color;
+        }
       }
     }
   }
