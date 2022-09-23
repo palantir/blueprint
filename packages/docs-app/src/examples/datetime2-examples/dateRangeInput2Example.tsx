@@ -19,8 +19,9 @@ import * as React from "react";
 import { Callout, Code, H5, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateRange, TimePrecision } from "@blueprintjs/datetime";
 import { DateRangeInput2 } from "@blueprintjs/datetime2";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
+import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 import { DateFnsDateRange } from "./dateFnsDate";
 import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "./dateFnsFormatSelector";
 
@@ -45,6 +46,7 @@ export interface DateRangeInput2ExampleState {
     showFooterElement: boolean;
     showTimeArrowButtons: boolean;
     singleMonthOnly: boolean;
+    timePrecision: TimePrecision | undefined;
 }
 
 export class DateRangeInput2Example extends React.PureComponent<ExampleProps, DateRangeInput2ExampleState> {
@@ -62,6 +64,7 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
         showFooterElement: false,
         showTimeArrowButtons: false,
         singleMonthOnly: false,
+        timePrecision: TimePrecision.MINUTE,
     };
 
     private toggleContiguous = handleBooleanChange(contiguous => {
@@ -92,8 +95,20 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
         this.setState({ showTimeArrowButtons }),
     );
 
+    private handleTimePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
+        this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
+    );
+
     public render() {
-        const { enableTimePicker, format, range, showFooterElement, showTimeArrowButtons, ...spreadProps } = this.state;
+        const {
+            enableTimePicker,
+            format,
+            range,
+            showFooterElement,
+            showTimeArrowButtons,
+            timePrecision,
+            ...spreadProps
+        } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <DateRangeInput2
@@ -103,7 +118,7 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
                     footerElement={showFooterElement ? exampleFooterElement : undefined}
                     timePickerProps={
                         enableTimePicker
-                            ? { precision: TimePrecision.MINUTE, showArrowButtons: showTimeArrowButtons }
+                            ? { precision: timePrecision, showArrowButtons: showTimeArrowButtons }
                             : undefined
                     }
                 />
@@ -163,6 +178,13 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
                     checked={this.state.showTimeArrowButtons}
                     label="Show timepicker arrow buttons"
                     onChange={this.toggleTimepickerArrowButtons}
+                />
+                <PrecisionSelect
+                    allowNone={false}
+                    disabled={!this.state.enableTimePicker}
+                    label="Time precision"
+                    onChange={this.handleTimePrecisionChange}
+                    value={this.state.timePrecision}
                 />
                 <DateFnsFormatSelector key="Format" format={this.state.format} onChange={this.handleFormatChange} />
             </>
