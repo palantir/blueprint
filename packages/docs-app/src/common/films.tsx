@@ -163,7 +163,10 @@ export const renderFilm: ItemRenderer<IFilm> = (film, props) => {
     return <MenuItem {...getFilmItemProps(film, props)} />;
 };
 
-export const renderCreateFilmOption = (
+/**
+ * Renders a menu item to create a single film from a given query string.
+ */
+export const renderCreateFilmMenuItem = (
     query: string,
     active: boolean,
     handleClick: React.MouseEventHandler<HTMLElement>,
@@ -177,6 +180,42 @@ export const renderCreateFilmOption = (
         shouldDismissPopover={false}
     />
 );
+
+/**
+ * Renders a menu item to create one or more films from a given query string.
+ */
+export const renderCreateFilmsMenuItem = (
+    query: string,
+    active: boolean,
+    handleClick: React.MouseEventHandler<HTMLElement>,
+) => (
+    <MenuItem
+        icon="add"
+        text={`Create ${printReadableList(query)}`}
+        roleStructure="listoption"
+        active={active}
+        onClick={handleClick}
+        shouldDismissPopover={false}
+    />
+);
+
+/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
+
+/**
+ * Given a user-provided list of strings separated by commas, this helper function parses the list and
+ * returns a more readable version of it.
+ *
+ * For example, the input 'a, b, c' becomes '"a", "b", and "c"'.
+ */
+function printReadableList(query: string): string {
+    return query
+        .split(", ")
+        .map((title, index, titles) => {
+            const separator = index > 0 ? (index === titles.length - 1 ? " and " : ", ") : "";
+            return `${separator}"${title}"`;
+        })
+        .join("");
+}
 
 export const filterFilm: ItemPredicate<IFilm> = (query, film, _index, exactMatch) => {
     const normalizedTitle = film.title.toLowerCase();
@@ -232,23 +271,37 @@ export function createFilm(title: string): IFilm {
     };
 }
 
+export function createFilms(query: string): IFilm[] {
+    const titles = query.split(", ");
+    return titles.map((title, index) => ({
+        rank: 100 + Math.floor(Math.random() * 100 + index),
+        title,
+        year: new Date().getFullYear(),
+    }));
+}
+
+/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
 export function areFilmsEqual(filmA: IFilm, filmB: IFilm) {
     // Compare only the titles (ignoring case) just for simplicity.
     return filmA.title.toLowerCase() === filmB.title.toLowerCase();
 }
 
+/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
 export function doesFilmEqualQuery(film: IFilm, query: string) {
     return film.title.toLowerCase() === query.toLowerCase();
 }
 
+/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
 export function arrayContainsFilm(films: IFilm[], filmToFind: IFilm): boolean {
     return films.some((film: IFilm) => film.title === filmToFind.title);
 }
 
+/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
 export function addFilmToArray(films: IFilm[], filmToAdd: IFilm) {
     return [...films, filmToAdd];
 }
 
+/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
 export function deleteFilmFromArray(films: IFilm[], filmToDelete: IFilm) {
     return films.filter(film => film !== filmToDelete);
 }

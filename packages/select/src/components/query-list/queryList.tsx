@@ -140,7 +140,7 @@ export interface IQueryListState<T> {
      * this element will be used to hide the "Create Item" option if its value
      * matches the current `query`.
      */
-    createNewItem: T | undefined;
+    createNewItem: T | T[] | undefined;
 
     /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
     filteredItems: T[];
@@ -448,9 +448,13 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     private handleItemCreate = (query: string, evt?: React.SyntheticEvent<HTMLElement>) => {
         // we keep a cached createNewItem in state, but might as well recompute
         // the result just to be sure it's perfectly in sync with the query.
-        const item = this.props.createNewItemFromQuery?.(query);
-        if (item != null) {
-            this.props.onItemSelect?.(item, evt);
+        const value = this.props.createNewItemFromQuery?.(query);
+
+        if (value != null) {
+            const newItems = Array.isArray(value) ? value : [value];
+            for (const item of newItems) {
+                this.props.onItemSelect?.(item, evt);
+            }
             this.maybeResetQuery();
         }
     };
@@ -479,9 +483,10 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
                 nextActiveItem = equalItem;
                 pastedItemsToEmit.push(equalItem);
             } else if (this.canCreateItems()) {
-                const newItem = createNewItemFromQuery?.(query);
-                if (newItem !== undefined) {
-                    pastedItemsToEmit.push(newItem);
+                const value = createNewItemFromQuery?.(query);
+                if (value !== undefined) {
+                    const newItems = Array.isArray(value) ? value : [value];
+                    pastedItemsToEmit.push(...newItems);
                 }
             } else {
                 nextQueries.push(query);
@@ -587,9 +592,12 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     private wouldCreatedItemMatchSomeExistingItem() {
         // search only the filtered items, not the full items list, because we
         // only need to check items that match the current query.
-        return this.state.filteredItems.some(item =>
-            executeItemsEqual(this.props.itemsEqual, item, this.state.createNewItem),
-        );
+        return this.state.filteredItems.some(item => {
+            const newItems = Array.isArray(this.state.createNewItem)
+                ? this.state.createNewItem
+                : [this.state.createNewItem];
+            return newItems.some(newItem => executeItemsEqual(this.props.itemsEqual, item, newItem));
+        });
     }
 
     private maybeResetQuery() {

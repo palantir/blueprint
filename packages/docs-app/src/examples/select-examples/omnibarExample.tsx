@@ -23,7 +23,7 @@ import {
     createFilm,
     filterFilm,
     IFilm,
-    renderCreateFilmOption,
+    renderCreateFilmMenuItem,
     renderFilm,
     TOP_100_FILMS,
 } from "./../../common/films";
@@ -57,7 +57,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, IOmnibarEx
         const { allowCreate } = this.state;
 
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
-        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
+        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmMenuItem : null;
 
         return (
             <HotkeysTarget2

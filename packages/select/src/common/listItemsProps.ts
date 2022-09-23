@@ -169,11 +169,11 @@ export interface ListItemsProps<T> extends Props {
 
     /**
      * If provided, allows new items to be created using the current query
-     * string. This is invoked when user interaction causes a new item to be
+     * string. This is invoked when user interaction causes one or many items to be
      * created, either by pressing the `Enter` key or by clicking on the "Create
-     * Item" option. It transforms a query string into an item type.
+     * Item" option. It transforms a query string into one or many items type.
      */
-    createNewItemFromQuery?: (query: string) => T;
+    createNewItemFromQuery?: (query: string) => T | T[];
 
     /**
      * Custom renderer to transform the current query string into a selectable
