@@ -163,7 +163,10 @@ export const renderFilm: ItemRenderer<IFilm> = (film, props) => {
     return <MenuItem {...getFilmItemProps(film, props)} />;
 };
 
-export const renderCreateFilmOption = (
+/**
+ * Renders a menu item to create a single film from a given query string.
+ */
+export const renderCreateFilmMenuItem = (
     query: string,
     active: boolean,
     handleClick: React.MouseEventHandler<HTMLElement>,
@@ -178,26 +181,39 @@ export const renderCreateFilmOption = (
     />
 );
 
-export const renderCreateFilmOptions = (
+/**
+ * Renders a menu item to create one or more films from a given query string.
+ */
+export const renderCreateFilmsMenuItem = (
     query: string,
     active: boolean,
     handleClick: React.MouseEventHandler<HTMLElement>,
 ) => (
     <MenuItem
         icon="add"
-        text={`Create ${query
-            .split(", ")
-            .map((title, index, titles) => {
-                const separator = index > 0 ? (index === titles.length - 1 ? " and " : ", ") : "";
-                return `${separator}"${title}"`;
-            })
-            .join("")}`}
+        text={`Create ${printReadableList(query)}`}
         roleStructure="listoption"
         active={active}
         onClick={handleClick}
         shouldDismissPopover={false}
     />
 );
+
+/**
+ * Given a user-provided list of strings separated by commas, this helper function parses the list and
+ * returns a more readable version of it.
+ *
+ * For example, the input 'a, b, c' becomes '"a", "b", and "c"'.
+ */
+function printReadableList(query: string): string {
+    return query
+        .split(", ")
+        .map((title, index, titles) => {
+            const separator = index > 0 ? (index === titles.length - 1 ? " and " : ", ") : "";
+            return `${separator}"${title}"`;
+        })
+        .join("");
+}
 
 export const filterFilm: ItemPredicate<IFilm> = (query, film, _index, exactMatch) => {
     const normalizedTitle = film.title.toLowerCase();

@@ -27,7 +27,7 @@ import {
     IFilm,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
-    renderCreateFilmOption,
+    renderCreateFilmMenuItem,
     TOP_100_FILMS,
 } from "./films";
 
@@ -50,7 +50,7 @@ type Props = Omit<
 // eslint-disable-next-line import/no-default-export
 export default function ({ allowCreate = false, fill, ...restProps }: Props) {
     const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
-    const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
+    const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmMenuItem : null;
 
     const [items, setItems] = React.useState([...TOP_100_FILMS]);
     const [createdItems, setCreatedItems] = React.useState<IFilm[]>([]);

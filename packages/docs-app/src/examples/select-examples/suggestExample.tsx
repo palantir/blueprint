@@ -27,7 +27,7 @@ import {
     IFilm,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
-    renderCreateFilmOption,
+    renderCreateFilmMenuItem,
     renderFilm,
     TOP_100_FILMS,
 } from "./../../common/films";
@@ -91,7 +91,7 @@ export class SuggestExample extends React.PureComponent<ExampleProps, ISuggestEx
         const { allowCreate, film, matchTargetWidth, minimal, ...flags } = this.state;
 
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
-        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
+        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmMenuItem : null;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>

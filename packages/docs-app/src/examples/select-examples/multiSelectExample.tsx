@@ -30,7 +30,7 @@ import {
     IFilm,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
-    renderCreateFilmOptions,
+    renderCreateFilmsMenuItem,
     TOP_100_FILMS,
 } from "../../common/films";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
@@ -110,15 +110,13 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
         ) : // explicit undefined (not null) for default behavior (show full list)
         undefined;
-        const maybeCreateNewItemFromQuery = allowCreate ? createFilms : undefined;
-        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOptions : null;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <FilmMultiSelect
                     {...flags}
-                    createNewItemFromQuery={maybeCreateNewItemFromQuery}
-                    createNewItemRenderer={maybeCreateNewItemRenderer}
+                    createNewItemFromQuery={allowCreate ? createFilms : undefined}
+                    createNewItemRenderer={allowCreate ? renderCreateFilmsMenuItem : null}
                     initialContent={initialContent}
                     itemPredicate={filterFilm}
                     itemRenderer={this.renderFilm}
