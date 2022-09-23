@@ -3897,5 +3897,12 @@
         "tags": "data, type, list, number, numeric, float, double, decimal, format, version",
         "group": "miscellaneous",
         "codepoint": 62253
+    },
+    {
+        "displayName": "Bug",
+        "iconName": "bug",
+        "tags": "issue, error, broken, insect, code, fail, software",
+        "group": "miscellaneous",
+        "codepoint": 62254
     }
 ]
