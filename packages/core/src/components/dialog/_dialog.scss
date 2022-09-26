@@ -84,6 +84,10 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
     box-shadow: $pt-dark-dialog-box-shadow;
     color: $pt-dark-text-color;
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
 }
 
 .#{$ns}-dialog-header {
@@ -125,6 +129,10 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
     .#{$ns}-icon {
       color: $pt-dark-icon-color;
     }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border-bottom: 1px solid $pt-high-contrast-mode-border-color;
   }
 }
 
