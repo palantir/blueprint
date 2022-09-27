@@ -193,6 +193,11 @@ Styleguide button
       &.#{$ns}-active {
         background: $orange3;
         color: $pt-text-color;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // Windows High Contrast dark theme
+          background: $pt-high-contrast-mode-active-background-color;
+        }
       }
     }
 

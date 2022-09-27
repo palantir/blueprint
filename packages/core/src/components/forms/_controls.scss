@@ -34,10 +34,21 @@ $control-indicator-spacing: $pt-grid-size !default;
     background-color: $control-checked-background-color;
     box-shadow: $control-checked-box-shadow;
     color: $white;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      background-color: $pt-high-contrast-mode-active-background-color;
+      // Windows High Contrast dark theme
+      border: 1px solid $pt-high-contrast-mode-active-background-color;
+    }
   }
 
   &:hover input#{$selector} ~ .#{$ns}-control-indicator {
     background-color: $control-checked-background-color-hover;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      background-color: $pt-high-contrast-mode-active-background-color;
+    }
   }
 
   input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
@@ -48,11 +59,21 @@ $control-indicator-spacing: $pt-grid-size !default;
     background: $control-checked-background-color-disabled;
     box-shadow: none;
     color: rgba($white, 0.6);
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      background-color: $pt-high-contrast-mode-disabled-border-color;
+      border-color: $pt-high-contrast-mode-disabled-border-color;
+    }
   }
 
   .#{$ns}-dark & {
     input#{$selector} ~ .#{$ns}-control-indicator {
       box-shadow: $dark-control-checked-box-shadow;
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        border: 1px solid $pt-high-contrast-mode-border-color;
+      }
     }
 
     &:hover input#{$selector} ~ .#{$ns}-control-indicator {
@@ -145,6 +166,18 @@ $control-indicator-spacing: $pt-grid-size !default;
       height: 1em;
       width: 1em;
     }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      border: 1px solid $pt-high-contrast-mode-border-color;
+
+      &::before {
+        // Because we're using a border in high contrast mode, we need to adjust the margins
+        // to compensate for the space the border takes up
+        margin-left: -1px;
+        margin-top: -1px;
+      }
+    }
   }
 
   &:hover .#{$ns}-control-indicator {
@@ -210,11 +243,11 @@ $control-indicator-spacing: $pt-grid-size !default;
   */
 
   &.#{$ns}-checkbox {
-    @mixin indicator-inline-icon($icon) {
+    @mixin indicator-inline-icon($icon, $fill-color: $white) {
       &::before {
         // embed SVG icon image as backgroud-image above gradient.
         // the SVG image content is inlined into the CSS, so use this sparingly.
-        background-image: svg-icon("16px/#{$icon}.svg", (path: (fill: $white)));
+        background-image: svg-icon("16px/#{$icon}.svg", (path: (fill: $fill-color)));
       }
     }
 
@@ -231,6 +264,20 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     input:indeterminate ~ .#{$ns}-control-indicator {
       @include indicator-inline-icon("small-minus");
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      input:checked:not(:disabled) ~ .#{$ns}-control-indicator {
+        @include indicator-inline-icon("small-tick", $black);
+      }
+
+      input:indeterminate:not(:disabled) ~ .#{$ns}-control-indicator {
+        @include indicator-inline-icon("small-minus", $black);
+      }
+
+      input:disabled ~ .#{$ns}-control-indicator {
+        border-color: $pt-high-contrast-mode-disabled-border-color;
+      }
     }
   }
 
@@ -259,14 +306,34 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     input:checked ~ .#{$ns}-control-indicator::before {
       background-image: radial-gradient($white, $white 28%, transparent 32%);
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        background: $pt-high-contrast-mode-active-background-color;
+        // Subtract border on either end, and then an extra 2px for space between the border
+        height: $control-indicator-size - 4px;
+        margin-left: 1px;
+        margin-top: 1px;
+        width: $control-indicator-size - 4px;
+      }
     }
 
     input:checked:disabled ~ .#{$ns}-control-indicator::before {
       opacity: 0.5;
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        background: $pt-high-contrast-mode-disabled-background-color;
+      }
     }
 
     input:focus ~ .#{$ns}-control-indicator {
       -moz-outline-radius: $control-indicator-size;
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      input:disabled ~ .#{$ns}-control-indicator {
+        border-color: $pt-high-contrast-mode-disabled-border-color;
+      }
     }
   }
 
@@ -392,6 +459,30 @@ $control-indicator-spacing: $pt-grid-size !default;
     // convert em variable to px value
     @include indicator-position(math.div($switch-width, 1em) * $control-indicator-size);
 
+    // Add Windows high contrast mode styles
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      input:checked ~ .#{$ns}-control-indicator {
+        background: $pt-high-contrast-mode-active-background-color;
+        border: 1px solid $pt-high-contrast-mode-border-color;
+      }
+
+      input:checked:disabled ~ .#{$ns}-control-indicator {
+        background-color: $pt-high-contrast-mode-disabled-background-color;
+      }
+
+      input:not(:checked):disabled ~ .#{$ns}-control-indicator {
+        border-color: $pt-high-contrast-mode-disabled-border-color;
+
+        &::before {
+          border-color: $pt-high-contrast-mode-disabled-border-color;
+        }
+      }
+
+      &:hover input:checked ~ .#{$ns}-control-indicator {
+        background: $pt-high-contrast-mode-active-background-color;
+      }
+    }
+
     .#{$ns}-control-indicator {
       border: none;
       border-radius: $switch-width;
@@ -412,6 +503,13 @@ $control-indicator-spacing: $pt-grid-size !default;
         position: absolute;
         transition: left $pt-transition-duration $pt-transition-ease;
         width: $switch-indicator-size;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // Windows High Contrast dark theme
+          border: 1px solid $pt-high-contrast-mode-border-color;
+          // Because we're using a border for the outline, we need to decrease the top margin
+          margin-top: $switch-indicator-margin - 1px;
+        }
       }
     }
 

@@ -85,6 +85,11 @@ $tag-round-adjustment: 2px !default;
   > #{$icon-classes} {
     fill: $white;
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
 }
 
 @mixin pt-tag-large() {

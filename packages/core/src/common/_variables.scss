@@ -145,3 +145,13 @@ $pt-dark-popover-box-shadow: 0 0 0 1px $pt-dark-popover-border-color,
 $pt-dark-tooltip-box-shadow: 0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity),
                              0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 $pt-dark-toast-box-shadow: $pt-dark-elevation-shadow-3 !default;
+
+// Colors used for Windows high contrast mode
+// Because high contrast mode doesn't actually obey any colors we define, but uses system colors,
+// we define these variables in terms of System colors so that it's easier to understand the intent.
+// See https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/system_color_keywords for more info on system colors.
+$pt-high-contrast-mode-border-color: buttonborder;
+$pt-high-contrast-mode-active-background-color: highlight;
+$pt-high-contrast-mode-disabled-border-color: graytext;
+$pt-high-contrast-mode-disabled-text-color: graytext;
+$pt-high-contrast-mode-disabled-background-color: graytext;

@@ -81,6 +81,10 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
         }
       }
     }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border: 1px solid $pt-high-contrast-mode-border-color;
+    }
   }
 
   .#{$ns}-timepicker-ampm-select {

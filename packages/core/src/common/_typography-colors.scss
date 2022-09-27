@@ -63,6 +63,12 @@
       box-shadow: none;
       color: inherit;
     }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      border: 1px solid $pt-high-contrast-mode-border-color;
+      box-shadow: none;
+    }
   }
 
   .#{$ns}-key,

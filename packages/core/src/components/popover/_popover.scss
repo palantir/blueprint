@@ -79,6 +79,12 @@ $dark-popover-arrow-box-shadow:
       $pt-dark-border-shadow-opacity
     );
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+    // Windows High Contrast dark theme
+    box-shadow: none;
+  }
 }
 
 // the box-shadow under the arrow SVG paths

@@ -42,6 +42,11 @@ Styleguide callout
     }
   }
 
+  // High contrast mode hides backgrounds, so we need to use a border instead
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
+
   &.#{$ns}-callout-icon {
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
@@ -75,6 +80,10 @@ Styleguide callout
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
       background-color: rgba($color, 0.1);
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        border: 1px solid $pt-high-contrast-mode-border-color;
+      }
 
       &[class*="#{$ns}-icon-"]::before,
       > .#{$ns}-icon:first-child,

@@ -121,6 +121,10 @@ $control-group-stack: (
   &.#{$ns}-disabled {
     @include pt-input-disabled();
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
 }
 
 @mixin pt-input-placeholder() {

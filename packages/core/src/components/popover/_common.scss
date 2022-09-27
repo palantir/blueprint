@@ -161,6 +161,11 @@ $dark-popover-background-color: $dark-gray3 !default;
 
   .#{$ns}-popover-arrow-fill {
     fill: $background-color;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      fill: $pt-high-contrast-mode-border-color;
+    }
   }
 }
 
