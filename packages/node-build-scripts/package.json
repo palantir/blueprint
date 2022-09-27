@@ -30,7 +30,7 @@
         "postcss-discard-comments": "^5.1.1",
         "postcss-scss": "^4.0.3",
         "prettier": "~2.7.1",
-        "sass": "^1.49.10",
+        "sass": "^1.55.0",
         "source-map": "^0.7.4",
         "strip-css-comments": "^4.1.0",
         "stylelint": "^14.6.1",
