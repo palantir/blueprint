@@ -462,7 +462,7 @@ $control-indicator-spacing: $pt-grid-size !default;
     // Add Windows high contrast mode styles
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       input:checked ~ .#{$ns}-control-indicator {
-        background: $high-contrast-background-color;
+        background: $pt-high-contrast-mode-active-background-color;
         border: 1px solid $pt-high-contrast-mode-border-color;
       }
 
