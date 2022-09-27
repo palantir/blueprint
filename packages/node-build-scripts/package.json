@@ -31,7 +31,7 @@
         "prettier": "~2.7.1",
         "sass": "^1.49.10",
         "source-map": "^0.7.4",
-        "strip-css-comments": "^4.1.0",
+        "strip-css-comments": "^5.0.0",
         "stylelint": "^14.6.1",
         "stylelint-junit-formatter": "^0.2.2",
         "ts-node": "^10.9.1",
