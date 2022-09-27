@@ -8,7 +8,6 @@ const fs = require("fs");
 const getSassVars = require("get-sass-vars");
 const path = require("path");
 const prettier = require("prettier");
-const stripCssComments = require("strip-css-comments");
 const yargs = require("yargs/yargs");
 
 const { COPYRIGHT_HEADER, USE_MATH_RULE } = require("./constants");
@@ -18,7 +17,7 @@ const DEST_DIR = path.resolve(process.cwd(), "./lib");
 
 main();
 
-function main() {
+async function main() {
     const args = yargs(process.argv.slice(2))
         .option("outputFileName", {
             alias: "o",
@@ -33,7 +32,7 @@ function main() {
         }).argv;
 
     const outputFilename = args["outputFileName"];
-    const parsedInput = getParsedVars(args["_"]);
+    const parsedInput = await getParsedVars(args["_"]);
     generateScssVariables(parsedInput, outputFilename, args["retainDefault"]);
     generateLessVariables(parsedInput, outputFilename);
 }
@@ -43,9 +42,10 @@ function main() {
  * and gets compiled output from `get-sass-vars`.
  *
  * @param {string[]} inputSources
- * @returns {{parsedVars: object, varsInBlocks: Set<string>[], varsWithDefaultFlag: Set<string>}} output compiled variable values and grouped variable blocks
+ * @returns {Promise<{parsedVars: object, varsInBlocks: Set<string>[], varsWithDefaultFlag: Set<string>}>} output compiled variable values and grouped variable blocks
  */
-function getParsedVars(inputSources) {
+async function getParsedVars(inputSources) {
+    const stripCssComments = (await import("strip-css-comments")).default;
     // concatenate sources
     let cleanedInput = inputSources.reduce((str, currentFilename) => {
         return str + fs.readFileSync(`${SRC_DIR}/${currentFilename}`).toString();
@@ -160,6 +160,7 @@ function generateScssVariables(parsedInput, outputFilename, retainDefault) {
 
 /**
  * Takes in variable values from compiled sass vars, converts them to Less and writes to an output file.
+ *
  * @param {{parsedVars: object, varsInBlocks: Set<string>[]}} parsedInput
  * @param {string} outputFilename
  * @returns {void}
