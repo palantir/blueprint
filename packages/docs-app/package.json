@@ -43,7 +43,7 @@
         "react-dom": "^16.14.0",
         "react-transition-group": "^4.4.1",
         "tslib": "~2.3.1",
-        "whatwg-fetch": "^3.4.1"
+        "whatwg-fetch": "^3.6.2"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^5.2.0",
