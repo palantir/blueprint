@@ -49,7 +49,7 @@
         "@blueprintjs/colors": "^4.1.6",
         "@blueprintjs/icons": "^4.6.0",
         "@juggle/resize-observer": "^3.3.1",
-        "@types/dom4": "^2.0.1",
+        "@types/dom4": "^2.0.2",
         "classnames": "^2.2",
         "dom4": "^2.1.5",
         "normalize.css": "^8.0.1",
