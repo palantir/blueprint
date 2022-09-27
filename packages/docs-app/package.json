@@ -42,7 +42,7 @@
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-transition-group": "^4.4.1",
-        "tslib": "~2.3.1",
+        "tslib": "~2.4.0",
         "whatwg-fetch": "^3.4.1"
     },
     "devDependencies": {
