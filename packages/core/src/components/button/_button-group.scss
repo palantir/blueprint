@@ -121,8 +121,8 @@ Styleguide button-group
       // similar to how we handle non-minimal buttons
 
       &:not(:first-child) {
-        border-left: none;
         border-bottom-left-radius: 0;
+        border-left: none;
         border-top-left-radius: 0;
       }
 
