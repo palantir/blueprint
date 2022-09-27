@@ -37,7 +37,7 @@
     "dependencies": {
         "@blueprintjs/core": "^4.10.2",
         "@blueprintjs/select": "^4.7.0",
-        "classnames": "^2.2",
+        "classnames": "^2.3",
         "moment": "^2.29.0",
         "moment-timezone": "^0.5.31",
         "tslib": "~2.3.1"

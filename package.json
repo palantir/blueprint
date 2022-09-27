@@ -38,7 +38,7 @@
     },
     "dependencies": {
         "@types/chai": "4.2.12",
-        "@types/classnames": "2.2.10",
+        "@types/classnames": "2.3.1",
         "@types/enzyme": "3.10.8",
         "@types/enzyme-adapter-react-16": "1.0.6",
         "@types/mocha": "8.2.0",

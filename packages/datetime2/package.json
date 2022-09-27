@@ -39,7 +39,7 @@
         "@blueprintjs/datetime": "^4.3.13",
         "@blueprintjs/popover2": "^1.6.7",
         "@blueprintjs/select": "^4.7.0",
-        "classnames": "^2.2",
+        "classnames": "^2.3",
         "date-fns": "^2.28.0",
         "date-fns-tz": "^1.3.4",
         "lodash-es": "^4.17.15",

@@ -38,7 +38,7 @@
         "@blueprintjs/core": "^4.10.2",
         "@juggle/resize-observer": "^3.3.1",
         "@popperjs/core": "^2.5.4",
-        "classnames": "^2.2",
+        "classnames": "^2.3",
         "dom4": "^2.1.5",
         "react-popper": "^2.2.4",
         "tslib": "~2.3.1"
