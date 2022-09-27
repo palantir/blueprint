@@ -49,7 +49,7 @@
         "@blueprintjs/node-build-scripts": "^5.2.0",
         "@blueprintjs/webpack-build-scripts": "^3.2.1",
         "@types/chroma-js": "^2.1.2",
-        "@types/downloadjs": "^1.4.2",
+        "@types/downloadjs": "^1.4.3",
         "copy-webpack-plugin": "^6.4.0",
         "npm-run-all": "^4.1.5",
         "webpack-cli": "^3.3.12",
