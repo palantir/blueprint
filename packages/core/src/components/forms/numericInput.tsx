@@ -593,6 +593,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
             e.preventDefault();
         }
 
+        // eslint-disable-next-line deprecation/deprecation
         this.props.onKeyPress?.(e);
     };
 

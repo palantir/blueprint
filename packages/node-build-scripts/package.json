@@ -14,7 +14,6 @@
         "sass-lint": "./sass-lint.js"
     },
     "dependencies": {
-        "@types/fs-extra": "^9.0.13",
         "autoprefixer": "^10.4.4",
         "chokidar": "^3.5.3",
         "cross-spawn": "^7.0.3",
@@ -40,7 +39,8 @@
         "yargs": "^17.4.0"
     },
     "devDependencies": {
-        "@types/yargs": "^17.0.10"
+        "@types/fs-extra": "~9.0.13",
+        "@types/yargs": "~17.0.13"
     },
     "repository": {
         "type": "git",

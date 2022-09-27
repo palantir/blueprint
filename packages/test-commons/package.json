@@ -15,7 +15,7 @@
     },
     "dependencies": {
         "chai": "^4.2.0",
-        "core-js": "^3.21.1",
+        "core-js": "^3.25.3",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-15": "^1.4.2",
         "enzyme-adapter-react-16": "^1.15.5"

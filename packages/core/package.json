@@ -48,9 +48,9 @@
     "dependencies": {
         "@blueprintjs/colors": "^4.1.6",
         "@blueprintjs/icons": "^4.6.0",
-        "@juggle/resize-observer": "^3.3.1",
-        "@types/dom4": "^2.0.1",
-        "classnames": "^2.2",
+        "@juggle/resize-observer": "^3.4.0",
+        "@types/dom4": "^2.0.2",
+        "classnames": "^2.3.2",
         "dom4": "^2.1.5",
         "normalize.css": "^8.0.1",
         "popper.js": "^1.16.1",

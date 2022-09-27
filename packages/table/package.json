@@ -37,7 +37,7 @@
     "dependencies": {
         "@blueprintjs/core": "^4.10.2",
         "@blueprintjs/popover2": "^1.6.7",
-        "classnames": "^2.2",
+        "classnames": "^2.3.2",
         "prop-types": "^15.7.2",
         "react-innertext": "^1.1.5",
         "tslib": "~2.3.1"
@@ -53,6 +53,7 @@
         }
     },
     "devDependencies": {
+        "@types/prop-types": "~15.7.5",
         "@blueprintjs/colors": "^4.1.6",
         "@blueprintjs/node-build-scripts": "^5.2.0",
         "@blueprintjs/test-commons": "^1.0.11",
@@ -64,7 +65,7 @@
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
         "typescript": "~4.6.2",
-        "webpack": "^5.71.0"
+        "webpack": "^5.74.0"
     },
     "repository": {
         "type": "git",
