@@ -20,7 +20,7 @@
         "process": "^0.11.10",
         "react-refresh": "^0.11.0",
         "sass": "^1.49.10",
-        "sass-loader": "^12.6.0",
+        "sass-loader": "^13.0.2",
         "source-map-loader": "^3.0.1",
         "stream-browserify": "^3.0.0",
         "style-loader": "^3.3.1",
