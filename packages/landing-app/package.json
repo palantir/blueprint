@@ -18,7 +18,7 @@
     "dependencies": {
         "@blueprintjs/core": "^4.10.2",
         "@blueprintjs/icons": "^4.6.0",
-        "classnames": "^2.2",
+        "classnames": "^2.3.2",
         "react": "^16.14.0",
         "react-dom": "^16.14.0"
     },
