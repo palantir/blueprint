@@ -2,6 +2,7 @@ policy:
   approval:
     - or:
       - approved by Blueprint team member
+      - approved by Blueprint team lead
       - authored by Blueprint team lead
       - excavator only touched config files
       - bots updated package.json and lock files
@@ -16,6 +17,11 @@ approval_rules:
     requires:
       count: 1
       teams: [ "palantir/blueprint" ]
+
+  - name: approved by Blueprint team lead
+    requires:
+      count: 1
+      users: [ "adidahiya" ]
 
   - name: authored by Blueprint team lead
     requires:
