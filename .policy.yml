@@ -3,8 +3,6 @@ policy:
     - or:
       - approved by Blueprint team member
       - authored by Blueprint team lead
-      - changelog only and contributor approval
-      - fixing excavator
       - excavator only touched config files
       - bots updated package.json and lock files
   disapproval:
