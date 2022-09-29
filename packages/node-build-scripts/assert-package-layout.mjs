@@ -11,7 +11,7 @@ import path from "node:path";
 
 // asserts that all main fields in package.json reference existing files
 const PACKAGE_MAIN_FIELDS = ["main", "module", "style", "types", "typings", "unpkg"];
-const manifest = require(path.resolve(process.cwd(), "./package.json"));
+const manifest = await import(path.resolve(process.cwd(), "package.json"));
 
 for (const field of PACKAGE_MAIN_FIELDS.filter(f => manifest[f] !== undefined)) {
     if (!fs.existsSync(path.resolve(process.cwd(), manifest[field]))) {
