@@ -5,17 +5,22 @@
  */
 
 // @ts-check
-const fs = require("fs");
-const path = require("path");
-const stylelint = require("stylelint");
 
-const { junitReportPath } = require("./utils");
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import stylelint from "stylelint";
+
+import { junitReportPath } from "./utils.mjs";
 
 const emitReport = process.env.JUNIT_REPORT_PATH != null;
 
+/** Path to Stylelint config file */
+const configFile = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..", ".stylelintrc");
+
 stylelint
     .lint({
-        configFile: path.resolve(__dirname, "../..", ".stylelintrc"),
+        configFile,
         files: "src/**/*.scss",
         formatter: emitReport ? require("stylelint-junit-formatter") : "string",
         customSyntax: "postcss-scss",
@@ -26,6 +31,7 @@ stylelint
             // emit JUnit XML report to <cwd>/<reports>/<pkg>/stylelint.xml when this env variable is set
             const reportPath = junitReportPath("stylelint");
             console.info(`Stylelint report will appear in ${reportPath}`);
+            // @ts-ignore
             fs.writeFileSync(reportPath, resultObject.output);
         } else {
             console.info(resultObject.output);

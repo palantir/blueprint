@@ -5,14 +5,13 @@
  */
 
 // @ts-check
-"use strict";
 
-const { spawn } = require("cross-spawn");
-const fs = require("fs");
-const glob = require("glob");
-const path = require("path");
+import { spawn } from "cross-spawn";
+import glob from "glob";
+import fs from "node:fs";
+import path from "node:path";
 
-const { junitReportPath } = require("./utils");
+import { junitReportPath } from "./utils.mjs";
 
 let format = "codeframe";
 let out;
@@ -50,5 +49,5 @@ eslint.stdout.pipe(outputStream);
 eslint.stderr.pipe(process.stderr);
 
 eslint.on("close", code => {
-    process.exitCode = code;
+    process.exitCode = code ?? undefined;
 });

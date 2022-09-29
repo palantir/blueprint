@@ -1,3 +1,7 @@
+/**
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ */
+
 import { watch } from "chokidar";
 import fs from "fs-extra";
 import path from "path";

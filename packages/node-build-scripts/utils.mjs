@@ -15,14 +15,19 @@
  */
 
 // @ts-check
-const path = require("path");
+
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 /**
  * @param {string} dirName name of directory containing XML file.
  * @param {string} fileName name of XML file (defaults to current directory name).
  */
-function junitReportPath(dirName, fileName = path.basename(process.cwd())) {
-    return path.join(__dirname, "../..", process.env.JUNIT_REPORT_PATH, dirName, `${fileName}.xml`);
-}
+export function junitReportPath(dirName, fileName = path.basename(process.cwd())) {
+    if (process.env.JUNIT_REPORT_PATH === undefined) {
+        return undefined;
+    }
 
-module.exports = { junitReportPath };
+    const dirname = path.dirname(fileURLToPath(import.meta.url));
+    return path.join(dirname, "../..", process.env.JUNIT_REPORT_PATH, dirName, `${fileName}.xml`);
+}
