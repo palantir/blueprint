@@ -16,18 +16,31 @@
 
 // @ts-check
 
-import path from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
+import { cwd, env } from "node:process";
 import { fileURLToPath } from "node:url";
 
 /**
  * @param {string} dirName name of directory containing XML file.
  * @param {string} fileName name of XML file (defaults to current directory name).
  */
-export function junitReportPath(dirName, fileName = path.basename(process.cwd())) {
-    if (process.env.JUNIT_REPORT_PATH === undefined) {
+export function junitReportPath(dirName, fileName = basename(cwd())) {
+    if (env.JUNIT_REPORT_PATH === undefined) {
         return undefined;
     }
 
-    const dirname = path.dirname(fileURLToPath(import.meta.url));
-    return path.join(dirname, "../..", process.env.JUNIT_REPORT_PATH, dirName, `${fileName}.xml`);
+    return join(getRootDir(), env.JUNIT_REPORT_PATH, dirName, `${fileName}.xml`);
+}
+
+/**
+ * WARNING: this function only works inside the palantir/blueprint monorepo. It is currently broken for
+ * consumers who use @blueprintjs/node-build-scripts as an NPM dependency.
+ *
+ * @see https://github.com/palantir/blueprint/issues/5295
+ * @see https://github.com/palantir/blueprint/issues/4942
+ *
+ * @returns the root directory of this Blueprint monorepo
+ */
+export function getRootDir() {
+    return resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
 }

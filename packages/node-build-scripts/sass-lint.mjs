@@ -7,42 +7,40 @@
 // @ts-check
 
 import { writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
+import { argv, exit } from "node:process";
 import stylelint from "stylelint";
 import stylelintJUnitFormater from "stylelint-junit-formatter";
 
-import { junitReportPath } from "./utils.mjs";
+import { getRootDir, junitReportPath } from "./utils.mjs";
 
-const emitReport = process.env.JUNIT_REPORT_PATH != null;
+// emit JUnit XML report to <cwd>/<reports>/<pkg>/stylelint.xml when env.JUNIT_REPORT_PATH is set
+const reportPath = junitReportPath("stylelint");
 
 /** Path to Stylelint config file */
-const configFile = resolve(dirname(fileURLToPath(import.meta.url)), "../..", ".stylelintrc");
+const configFile = join(getRootDir(), ".stylelintrc");
 
 stylelint
     .lint({
         configFile,
         files: "src/**/*.scss",
-        formatter: emitReport ? stylelintJUnitFormater : "string",
+        formatter: reportPath !== undefined ? stylelintJUnitFormater : "string",
         customSyntax: "postcss-scss",
-        fix: process.argv.indexOf("--fix") > 0,
+        fix: argv.indexOf("--fix") > 0,
     })
     .then(resultObject => {
-        if (emitReport) {
-            // emit JUnit XML report to <cwd>/<reports>/<pkg>/stylelint.xml when this env variable is set
-            const reportPath = junitReportPath("stylelint");
+        if (reportPath !== undefined) {
             console.info(`Stylelint report will appear in ${reportPath}`);
-            // @ts-ignore
             writeFileSync(reportPath, resultObject.output);
         } else {
             console.info(resultObject.output);
         }
         if (resultObject.errored) {
-            process.exitCode = 2;
+            exit(2);
         }
     })
     .catch(error => {
         console.error("[node-build-scripts] sass-lint failed with error:");
         console.error(error);
-        process.exitCode = 2;
+        exit(2);
     });

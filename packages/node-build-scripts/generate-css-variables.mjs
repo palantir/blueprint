@@ -6,20 +6,21 @@
 // @ts-check
 
 import getSassVars from "get-sass-vars";
-import fs from "node:fs";
-import path from "node:path";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { argv, cwd } from "node:process";
 import prettier from "prettier";
 import yargs from "yargs/yargs";
 
 import { COPYRIGHT_HEADER, USE_MATH_RULE } from "./constants.mjs";
 
-const SRC_DIR = path.resolve(process.cwd(), "./src");
-const DEST_DIR = path.resolve(process.cwd(), "./lib");
+const SRC_DIR = resolve(cwd(), "./src");
+const DEST_DIR = resolve(cwd(), "./lib");
 
 await main();
 
 async function main() {
-    const args = yargs(process.argv.slice(2))
+    const args = yargs(argv.slice(2))
         .option("outputFileName", {
             alias: "o",
             default: "variables",
@@ -49,7 +50,7 @@ async function getParsedVars(inputSources) {
     const stripCssComments = (await import("strip-css-comments")).default;
     // concatenate sources
     let cleanedInput = inputSources.reduce((str, currentFilename) => {
-        return str + fs.readFileSync(`${SRC_DIR}/${currentFilename}`).toString();
+        return str + readFileSync(`${SRC_DIR}/${currentFilename}`).toString();
     }, "");
     // strip comments, clean up for consumption
     cleanedInput = stripCssComments(cleanedInput);
@@ -60,11 +61,9 @@ async function getParsedVars(inputSources) {
         .replace(/\n{3,}/g, "\n\n");
     cleanedInput = [USE_MATH_RULE, cleanedInput].join("\n");
 
-    // @ts-ignore, issues with types in `get-sass-vars`
-    const getSassVarsSync = getSassVars.sync;
-
     const functions = (await import("./node-sass-json-functions.mjs")).default;
-    const parsedVars = getSassVarsSync(cleanedInput, {
+    const parsedVars = await getSassVars(cleanedInput, {
+        // @ts-ignore - `get-sass-vars` types do not capture the type constraints possible with the library
         sassOptions: { functions },
     });
 
@@ -153,10 +152,10 @@ function generateScssVariables(parsedInput, outputFilename, retainDefault) {
 
     const formattedVariablesScss = prettier.format(variablesScss, { parser: "less" });
 
-    if (!fs.existsSync(`${DEST_DIR}/scss`)) {
-        fs.mkdirSync(`${DEST_DIR}/scss`, { recursive: true });
+    if (!existsSync(`${DEST_DIR}/scss`)) {
+        mkdirSync(`${DEST_DIR}/scss`, { recursive: true });
     }
-    fs.writeFileSync(`${DEST_DIR}/scss/${outputFilename}.scss`, formattedVariablesScss);
+    writeFileSync(`${DEST_DIR}/scss/${outputFilename}.scss`, formattedVariablesScss);
     return formattedVariablesScss;
 }
 
@@ -199,8 +198,8 @@ function generateLessVariables(parsedInput, outputFilename) {
 
     const formattedVariablesLess = prettier.format(variablesLess, { parser: "less" });
 
-    if (!fs.existsSync(`${DEST_DIR}/less`)) {
-        fs.mkdirSync(`${DEST_DIR}/less`, { recursive: true });
+    if (!existsSync(`${DEST_DIR}/less`)) {
+        mkdirSync(`${DEST_DIR}/less`, { recursive: true });
     }
-    fs.writeFileSync(`${DEST_DIR}/less/${outputFilename}.less`, formattedVariablesLess);
+    writeFileSync(`${DEST_DIR}/less/${outputFilename}.less`, formattedVariablesLess);
 }
