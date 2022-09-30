@@ -32,7 +32,6 @@ import {
 } from "../src";
 import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 
-
 type FilmQueryListWrapper = ReactWrapper<QueryListProps<Film>, IQueryListState<Film>>;
 
 describe("<QueryList>", () => {
