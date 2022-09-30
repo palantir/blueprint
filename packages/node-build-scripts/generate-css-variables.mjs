@@ -4,21 +4,23 @@
  */
 
 // @ts-check
-const fs = require("fs");
-const getSassVars = require("get-sass-vars");
-const path = require("path");
-const prettier = require("prettier");
-const yargs = require("yargs/yargs");
 
-const { COPYRIGHT_HEADER, USE_MATH_RULE } = require("./constants");
+import getSassVars from "get-sass-vars";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { argv, cwd } from "node:process";
+import prettier from "prettier";
+import yargs from "yargs/yargs";
 
-const SRC_DIR = path.resolve(process.cwd(), "./src");
-const DEST_DIR = path.resolve(process.cwd(), "./lib");
+import { COPYRIGHT_HEADER, USE_MATH_RULE } from "./constants.mjs";
 
-main();
+const SRC_DIR = resolve(cwd(), "./src");
+const DEST_DIR = resolve(cwd(), "./lib");
+
+await main();
 
 async function main() {
-    const args = yargs(process.argv.slice(2))
+    const args = yargs(argv.slice(2))
         .option("outputFileName", {
             alias: "o",
             default: "variables",
@@ -42,13 +44,13 @@ async function main() {
  * and gets compiled output from `get-sass-vars`.
  *
  * @param {string[]} inputSources
- * @returns {Promise<{parsedVars: object, varsInBlocks: Set<string>[], varsWithDefaultFlag: Set<string>}>} output compiled variable values and grouped variable blocks
+ * @returns {Promise<{parsedVars: object, varsInBlocks: Set<string | undefined>[], varsWithDefaultFlag: Set<string | undefined>}>} output compiled variable values and grouped variable blocks
  */
 async function getParsedVars(inputSources) {
     const stripCssComments = (await import("strip-css-comments")).default;
     // concatenate sources
     let cleanedInput = inputSources.reduce((str, currentFilename) => {
-        return str + fs.readFileSync(`${SRC_DIR}/${currentFilename}`).toString();
+        return str + readFileSync(`${SRC_DIR}/${currentFilename}`).toString();
     }, "");
     // strip comments, clean up for consumption
     cleanedInput = stripCssComments(cleanedInput);
@@ -59,11 +61,10 @@ async function getParsedVars(inputSources) {
         .replace(/\n{3,}/g, "\n\n");
     cleanedInput = [USE_MATH_RULE, cleanedInput].join("\n");
 
-    // @ts-ignore, issues with types in `get-sass-vars`
-    const getSassVarsSync = getSassVars.sync;
-
-    const parsedVars = getSassVarsSync(cleanedInput, {
-        sassOptions: { functions: require("./node-sass-json-functions.js") },
+    const functions = (await import("./node-sass-json-functions.mjs")).default;
+    const parsedVars = await getSassVars(cleanedInput, {
+        // @ts-ignore - `get-sass-vars` types do not capture the type constraints possible with the library
+        sassOptions: { functions },
     });
 
     // get variable blocks for separating variables in output
@@ -71,15 +72,15 @@ async function getParsedVars(inputSources) {
         .split("\n\n")
         .map(
             block =>
-                new Set([...block.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)/g)].map(match => match.groups.varName)),
+                new Set([...block.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)/g)].map(match => match.groups?.varName)),
         );
 
     // `getSassVarsSync` strips `!default` flags from the output, so we need to determine which
     // variables had those flags set here and pass it on
     const varsWithDefaultFlag = new Set(
         [...cleanedInput.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)(?<varValue>[\s\S]+?);/gm)]
-            .map(match => [match.groups.varName, match.groups.varValue.trim()])
-            .filter(([, varValue]) => varValue.endsWith("!default"))
+            .map(match => [match.groups?.varName, match.groups?.varValue.trim()])
+            .filter(([, varValue]) => varValue?.endsWith("!default"))
             .map(([varName]) => varName),
     );
 
@@ -106,7 +107,7 @@ function convertParsedValueToOutput(value, outputType) {
     // Objects are map variables, formatted like:
     // https://lesscss.org/features/#maps-feature
     // https://sass-lang.com/documentation/values/maps
-    if (typeof value === "object") {
+    if (value !== null && typeof value === "object") {
         return outputType === "scss"
             ? `(${Object.entries(value).reduce(
                   (str, [key, val]) => `${str}\n"${key}": ${convertParsedValueToOutput(val, outputType)},`,
@@ -129,7 +130,7 @@ function convertParsedValueToOutput(value, outputType) {
  * Pulls together variables from the specified Sass source files, sanitizes them for consumption,
  * and writes to an output file.
  *
- * @param {{parsedVars: object, varsInBlocks: Set<string>[], varsWithDefaultFlag: Set<string>}} parsedInput
+ * @param {{parsedVars: object, varsInBlocks: Set<string | undefined>[], varsWithDefaultFlag: Set<string | undefined>}} parsedInput
  * @param {string} outputFilename
  * @param {boolean} retainDefault whether to retain `!default` flags on variables
  * @returns {string} output Sass contents
@@ -151,17 +152,17 @@ function generateScssVariables(parsedInput, outputFilename, retainDefault) {
 
     const formattedVariablesScss = prettier.format(variablesScss, { parser: "less" });
 
-    if (!fs.existsSync(`${DEST_DIR}/scss`)) {
-        fs.mkdirSync(`${DEST_DIR}/scss`, { recursive: true });
+    if (!existsSync(`${DEST_DIR}/scss`)) {
+        mkdirSync(`${DEST_DIR}/scss`, { recursive: true });
     }
-    fs.writeFileSync(`${DEST_DIR}/scss/${outputFilename}.scss`, formattedVariablesScss);
+    writeFileSync(`${DEST_DIR}/scss/${outputFilename}.scss`, formattedVariablesScss);
     return formattedVariablesScss;
 }
 
 /**
  * Takes in variable values from compiled sass vars, converts them to Less and writes to an output file.
  *
- * @param {{parsedVars: object, varsInBlocks: Set<string>[]}} parsedInput
+ * @param {{parsedVars: object, varsInBlocks: Set<string | undefined>[]}} parsedInput
  * @param {string} outputFilename
  * @returns {void}
  */
@@ -197,8 +198,8 @@ function generateLessVariables(parsedInput, outputFilename) {
 
     const formattedVariablesLess = prettier.format(variablesLess, { parser: "less" });
 
-    if (!fs.existsSync(`${DEST_DIR}/less`)) {
-        fs.mkdirSync(`${DEST_DIR}/less`, { recursive: true });
+    if (!existsSync(`${DEST_DIR}/less`)) {
+        mkdirSync(`${DEST_DIR}/less`, { recursive: true });
     }
-    fs.writeFileSync(`${DEST_DIR}/less/${outputFilename}.less`, formattedVariablesLess);
+    writeFileSync(`${DEST_DIR}/less/${outputFilename}.less`, formattedVariablesLess);
 }

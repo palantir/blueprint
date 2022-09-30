@@ -5,50 +5,50 @@
  */
 
 // @ts-check
-"use strict";
 
-const { spawn } = require("cross-spawn");
-const fs = require("fs");
-const glob = require("glob");
-const path = require("path");
+import { spawn } from "cross-spawn";
+import glob from "glob";
+import { createWriteStream } from "node:fs";
+import { basename, resolve } from "node:path";
+import { argv, cwd, env, exit, stderr, stdout } from "node:process";
 
-const { junitReportPath } = require("./utils");
+import { junitReportPath } from "./utils.mjs";
 
 let format = "codeframe";
-let out;
-let outputStream = process.stdout;
-if (process.env.JUNIT_REPORT_PATH != null) {
+let outputPath;
+let outputStream = stdout;
+if (env.JUNIT_REPORT_PATH != null) {
     format = "junit";
-    out = junitReportPath("eslint");
-    console.info(`ESLint report will appear in ${out}`);
+    outputPath = junitReportPath("eslint");
+    console.info(`[node-build-scripts] ESLint report will appear in ${outputPath}`);
     // @ts-ignore
-    outputStream = fs.createWriteStream(out, { flags: "w+" });
+    outputStream = createWriteStream(outputPath, { flags: "w+" });
 }
 
 // additional args provided to es-lint script
-const additionalArgs = process.argv.filter(a => {
+const additionalArgs = argv.filter(a => {
     // exclude engine and script name
-    return ["node", "node.exe", "es-lint", "es-lint.js"].every(s => path.basename(a) !== s);
+    return ["node", "node.exe", "es-lint", "es-lint.js"].every(s => basename(a) !== s);
 });
 
 const commandLineOptions = ["--color", "-f", format, ...additionalArgs];
 
 // ESLint will fail if provided with no files, so we expand the glob before running it
 const fileGlob = "{src,test}/**/*.{ts,tsx}";
-const absoluteFileGlob = path.resolve(process.cwd(), fileGlob);
+const absoluteFileGlob = resolve(cwd(), fileGlob);
 const anyFilesToLint = glob.sync(absoluteFileGlob);
 if (anyFilesToLint.length === 0) {
     console.log(`[node-build-scripts] Not running ESLint because no files match the glob "${fileGlob}"`);
-    process.exit();
+    exit();
 }
 
-process.env.LINT_SCRIPT = "true";
+env.LINT_SCRIPT = "true";
 
 const eslint = spawn("eslint", [...commandLineOptions, absoluteFileGlob]);
 
 eslint.stdout.pipe(outputStream);
-eslint.stderr.pipe(process.stderr);
+eslint.stderr.pipe(stderr);
 
 eslint.on("close", code => {
-    process.exitCode = code;
+    exit(code ?? undefined);
 });

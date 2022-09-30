@@ -6,12 +6,12 @@
         "test": "exit 0"
     },
     "bin": {
-        "assert-package-layout": "./assert-package-layout.js",
+        "assert-package-layout": "./assert-package-layout.mjs",
         "css-dist": "./css-dist.sh",
-        "es-lint": "./es-lint.js",
-        "generate-css-variables": "./generate-css-variables.js",
+        "es-lint": "./es-lint.mjs",
+        "generate-css-variables": "./generate-css-variables.mjs",
         "sass-compile": "./sass-compile.sh",
-        "sass-lint": "./sass-lint.js"
+        "sass-lint": "./sass-lint.mjs"
     },
     "dependencies": {
         "autoprefixer": "^10.4.4",
@@ -41,6 +41,9 @@
     "devDependencies": {
         "@types/fs-extra": "~9.0.13",
         "@types/yargs": "~17.0.13"
+    },
+    "engines": {
+        "node": ">=16"
     },
     "repository": {
         "type": "git",

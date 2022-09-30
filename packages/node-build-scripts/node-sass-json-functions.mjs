@@ -23,15 +23,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-"use strict";
-
-const isPlainObject = require("is-plain-obj");
-const parseColor = require("parse-color");
-const parseUnit = require("parse-css-dimension");
-const rgbHex = require("rgb-hex");
-const round = require("round-to");
-const sass = require("sass");
-const shortHexColor = require("shorten-css-hex");
+import isPlainObject from "is-plain-obj";
+import parseColor from "parse-color";
+import parseUnit from "parse-css-dimension";
+import rgbHex from "rgb-hex";
+import round from "round-to";
+import sass from "sass";
+import shortHexColor from "shorten-css-hex";
 
 // eslint-disable-next-line no-underscore-dangle
 function _interopDefaultLegacy(e) {
@@ -283,9 +281,8 @@ function decode(value) {
 }
 
 /** @type {{ 'json-encode($value, $quotes: true, $precision: 5)': typeof encode, 'json-decode($value)': typeof decode }} */
-const api = {
+// eslint-disable-next-line import/no-default-export
+export default {
     "json-encode($value, $quotes: true, $precision: 5)": encode,
     "json-decode($value)": decode,
 };
-
-module.exports = api;
