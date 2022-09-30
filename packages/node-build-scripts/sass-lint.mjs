@@ -6,23 +6,24 @@
 
 // @ts-check
 
-import fs from "node:fs";
-import path from "node:path";
+import { writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import stylelint from "stylelint";
+import stylelintJUnitFormater from "stylelint-junit-formatter";
 
 import { junitReportPath } from "./utils.mjs";
 
 const emitReport = process.env.JUNIT_REPORT_PATH != null;
 
 /** Path to Stylelint config file */
-const configFile = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..", ".stylelintrc");
+const configFile = resolve(dirname(fileURLToPath(import.meta.url)), "../..", ".stylelintrc");
 
 stylelint
     .lint({
         configFile,
         files: "src/**/*.scss",
-        formatter: emitReport ? require("stylelint-junit-formatter") : "string",
+        formatter: emitReport ? stylelintJUnitFormater : "string",
         customSyntax: "postcss-scss",
         fix: process.argv.indexOf("--fix") > 0,
     })
@@ -32,7 +33,7 @@ stylelint
             const reportPath = junitReportPath("stylelint");
             console.info(`Stylelint report will appear in ${reportPath}`);
             // @ts-ignore
-            fs.writeFileSync(reportPath, resultObject.output);
+            writeFileSync(reportPath, resultObject.output);
         } else {
             console.info(resultObject.output);
         }
