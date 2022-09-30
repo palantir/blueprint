@@ -12,7 +12,7 @@
         "test": "mocha"
     },
     "dependencies": {
-        "@typescript-eslint/utils": "^5.32.0",
+        "@typescript-eslint/utils": "^5.38.1",
         "eslint": "^8.21.0"
     },
     "devDependencies": {
