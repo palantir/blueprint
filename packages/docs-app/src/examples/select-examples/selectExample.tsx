@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { Film, FilmSelect, TOP_100_FILMS } from "@blueprintjs/select-dev-components";
+import { Film, FilmSelect, TOP_100_FILMS } from "@blueprintjs/select/examples";
 
 export interface ISelectExampleState {
     allowCreate: boolean;

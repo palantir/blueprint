@@ -27,7 +27,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { Classes, InputGroup, Keys, Popover } from "@blueprintjs/core";
-import { Film, renderFilm, TOP_100_FILMS } from "@blueprintjs/select-dev-components";
+import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 
 import { ISelectProps, ISelectState, ItemRendererProps, Select } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";

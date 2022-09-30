@@ -27,10 +27,10 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { Classes as CoreClasses, Keys, Tag } from "@blueprintjs/core";
-import { Film, renderFilm, TOP_100_FILMS } from "@blueprintjs/select-dev-components";
 import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
 
 import { IMultiSelectProps, IMultiSelectState, ItemRendererProps, MultiSelect } from "../src";
+import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<MultiSelect>", () => {

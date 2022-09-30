@@ -19,9 +19,9 @@ import { ReactWrapper } from "enzyme";
 import * as sinon from "sinon";
 
 import { Classes as Popover2Classes } from "@blueprintjs/popover2";
-import { areFilmsEqual, Film, filterFilm, renderFilm, TOP_100_FILMS } from "@blueprintjs/select-dev-components";
 
 import { ListItemsProps, SelectPopoverProps } from "../src";
+import { areFilmsEqual, Film, filterFilm, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 
 /**
  * Common tests for popover functionality in select components which use Popover2.

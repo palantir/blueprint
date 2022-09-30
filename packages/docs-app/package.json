@@ -24,7 +24,6 @@
         "@blueprintjs/icons": "^4.6.0",
         "@blueprintjs/popover2": "^1.6.7",
         "@blueprintjs/select": "^4.7.0",
-        "@blueprintjs/select-dev-components": "^0.0.0",
         "@blueprintjs/table": "^4.6.8",
         "@blueprintjs/test-commons": "^1.0.11",
         "@blueprintjs/timezone": "^4.4.13",

@@ -20,10 +20,10 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { Classes as CoreClasses, Keys, Tag } from "@blueprintjs/core";
-import { Film, renderFilm, TOP_100_FILMS } from "@blueprintjs/select-dev-components";
 import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
 
 import { ItemRendererProps, MultiSelect2, MultiSelect2Props, MultiSelect2State } from "../src";
+import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 

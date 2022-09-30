@@ -17,8 +17,9 @@
 import * as React from "react";
 
 import { Button, MenuItem } from "@blueprintjs/core";
-import { ItemRenderer, Select2, Select2Props } from "@blueprintjs/select";
 
+import type { ItemRenderer } from "../common";
+import { Select2, Select2Props } from "../components/select/select2";
 import {
     areFilmsEqual,
     createFilm,

@@ -6,6 +6,7 @@
                 "core-js",
                 "date-fns",
                 "react-dom",
+                "@blueprintjs/select/examples",
                 "@blueprintjs/table/src",
                 "@blueprintjs/test-commons/bootstrap",
                 "tsutils"

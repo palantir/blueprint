@@ -49,7 +49,7 @@ import {
     Popover2SharedProps,
     StrictModifierNames,
 } from "@blueprintjs/popover2";
-import { FilmSelect } from "@blueprintjs/select-dev-components";
+import { FilmSelect } from "@blueprintjs/select/examples";
 
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
 

@@ -7,6 +7,7 @@ const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
 module.exports = function (config) {
     const baseConfig = createKarmaConfig({
         dirname: __dirname,
+        coverageExcludes: ["src/__examples__/*"],
     });
     config.set(baseConfig);
 };

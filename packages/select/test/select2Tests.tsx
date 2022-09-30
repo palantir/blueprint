@@ -21,9 +21,9 @@ import * as sinon from "sinon";
 
 import { InputGroup, Keys, MenuItem } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
-import { Film, renderFilm, TOP_100_FILMS } from "@blueprintjs/select-dev-components";
 
 import { ItemRendererProps, Select2, Select2Props, Select2State } from "../src";
+import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 

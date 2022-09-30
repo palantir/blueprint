@@ -29,7 +29,7 @@ import {
     renderCreateFilmMenuItem,
     renderFilm,
     TOP_100_FILMS,
-} from "@blueprintjs/select-dev-components";
+} from "@blueprintjs/select/examples";
 
 export interface SuggestExampleState {
     allowCreate: boolean;

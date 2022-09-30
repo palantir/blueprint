@@ -20,7 +20,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
-import { Film, renderFilm, TOP_100_FILMS } from "@blueprintjs/select-dev-components";
+import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 
 import {
     IQueryListState,
