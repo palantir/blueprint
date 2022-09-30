@@ -37,10 +37,14 @@ module.exports = {
     },
     overrides: [
         {
-            files: ["*.js"],
+            files: ["*.js", "*.mjs"],
             env: {
                 node: true,
                 es6: true,
+            },
+            parserOptions: {
+                ecmaVersion: 2022,
+                sourceType: "module",
             },
         },
         {

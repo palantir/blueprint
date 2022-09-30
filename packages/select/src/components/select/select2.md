@@ -28,26 +28,67 @@ You may provide a predicate to customize the filtering algorithm. The value of a
 
 ```tsx
 import { Button, MenuItem } from "@blueprintjs/core";
-import { Select2 } from "@blueprintjs/select";
-import * as Films from "./films";
+import { ItemPredicate, ItemRenderer, Select2 } from "@blueprintjs/select";
+import React from "react";
+import ReactDOM from "react-dom";
 
-// Select2<T> is a generic component to work with your data types.
-// In TypeScript, you must first obtain a non-generic reference:
-const FilmSelect = Select2.ofType<Films.Film>();
+export interface Film {
+    title: string;
+    year: number;
+    rank: number;
+}
 
-ReactDOM.render(
-    <FilmSelect
-        items={Films.items}
-        itemPredicate={Films.itemPredicate}
-        itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
-        onItemSelect={...}
-    >
-        {/* children become the popover target; render value here */}
-        <Button text={Films.items[0].title} rightIcon="double-caret-vertical" />
-    </FilmSelect>,
-    document.querySelector("#root")
-);
+const TOP_100_FILMS: Film[] = [
+    { title: "The Shawshank Redemption", year: 1994 },
+    { title: "The Godfather", year: 1972 },
+    // ...
+].map((f, index) => ({ ...f, rank: index + 1 }));
+
+const filterFilm: ItemPredicate<Film> = (query, film, _index, exactMatch) => {
+    const normalizedTitle = film.title.toLowerCase();
+    const normalizedQuery = query.toLowerCase();
+
+    if (exactMatch) {
+        return normalizedTitle === normalizedQuery;
+    } else {
+        return `${film.rank}. ${normalizedTitle} ${film.year}`.indexOf(normalizedQuery) >= 0;
+    }
+};
+
+const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifiers, query }) => {
+    if (!modifiers.matchesPredicate) {
+        return null;
+    }
+    return (
+        <MenuItem
+            active={modifiers.active}
+            disabled={modifiers.disabled}
+            key={film.rank}
+            label={film.year.toString()}
+            onClick={handleClick}
+            onFocus={handleFocus}
+            roleStructure="listoption"
+            text={`${film.rank}. ${film.title}`}
+        />
+    );
+};
+
+const FilmSelect: React.FC = () => {
+    const [selectedFilm, setSelectedFilm] = React.useState<Film | undefined>();
+    return (
+        <Select2<Film>
+            items={TOP_100_FILMS}
+            itemPredicate={filterFilm}
+            itemRenderer={renderFilm}
+            noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
+            onItemSelect={setSelectedFilm}
+        >
+            <Button text={selectedFilm?.title} rightIcon="double-caret-vertical" placeholder="Select a film" />
+        </Select2>
+    );
+};
+
+ReactDOM.render(<FilmSelect /> document.querySelector("#root"));
 ```
 
 In TypeScript, `Select2<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type (speak your language) so you can easily define handlers without transformation steps, but most props are required as a result. The static `Select2.ofType<T>()` method is available to streamline this process. (Note that this has no effect on JavaScript usage: the `Select2` export is a perfectly valid React component class.)
@@ -141,7 +182,7 @@ your items.
 </div>
 
 ```tsx
-function createFilm(title: string): IFilm {
+function createFilm(title: string): Film {
     return {
         rank: /* ... */,
         title,
@@ -249,7 +290,7 @@ import { ItemRenderer, ItemPredicate, Select2 } from "@blueprintjs/select";
 
 const FilmSelect = Select2.ofType<Film>();
 
-const filterFilm: ItemPredicate<IFilm> = (query, film) => {
+const filterFilm: ItemPredicate<Film> = (query, film) => {
     return film.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
 };
 

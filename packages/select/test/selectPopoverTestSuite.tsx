@@ -20,16 +20,16 @@ import * as sinon from "sinon";
 
 import { Classes as Popover2Classes } from "@blueprintjs/popover2";
 
-import { areFilmsEqual, filterFilm, IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { ListItemsProps, SelectPopoverProps } from "../src";
+import { areFilmsEqual, Film, filterFilm, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 
 /**
  * Common tests for popover functionality in select components which use Popover2.
  *
  * render() should ensure the component is attached to a DOM node so that we can get accurate DOM measurements.
  */
-export function selectPopoverTestSuite<P extends ListItemsProps<IFilm>, S>(
-    render: (props: ListItemsProps<IFilm> & SelectPopoverProps) => ReactWrapper<P, S>,
+export function selectPopoverTestSuite<P extends ListItemsProps<Film>, S>(
+    render: (props: ListItemsProps<Film> & SelectPopoverProps) => ReactWrapper<P, S>,
     findPopover: (wrapper: ReactWrapper<P, S>) => ReactWrapper = wrapper =>
         wrapper.find(`.${Popover2Classes.POPOVER2}`),
     findTarget: (wrapper: ReactWrapper<P, S>) => ReactWrapper = wrapper =>

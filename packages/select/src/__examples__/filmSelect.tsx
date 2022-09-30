@@ -17,24 +17,23 @@
 import * as React from "react";
 
 import { Button, MenuItem } from "@blueprintjs/core";
-import { ItemRenderer, Select2, Select2Props } from "@blueprintjs/select";
 
+import type { ItemRenderer } from "../common";
+import { Select2, Select2Props } from "../components/select/select2";
 import {
     areFilmsEqual,
     createFilm,
+    Film,
     filterFilm,
     getFilmItemProps,
-    IFilm,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
     renderCreateFilmMenuItem,
     TOP_100_FILMS,
 } from "./films";
 
-const FilmSelect = Select2.ofType<IFilm>();
-
-type Props = Omit<
-    Select2Props<IFilm>,
+type FilmSelectProps = Omit<
+    Select2Props<Film>,
     | "createNewItemFromQuery"
     | "createNewItemRenderer"
     | "itemPredicate"
@@ -47,15 +46,11 @@ type Props = Omit<
     allowCreate?: boolean;
 };
 
-// eslint-disable-next-line import/no-default-export
-export default function ({ allowCreate = false, fill, ...restProps }: Props) {
-    const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
-    const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmMenuItem : null;
-
+export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSelectProps) {
     const [items, setItems] = React.useState([...TOP_100_FILMS]);
-    const [createdItems, setCreatedItems] = React.useState<IFilm[]>([]);
+    const [createdItems, setCreatedItems] = React.useState<Film[]>([]);
     const [selectedFilm, setSelectedFilm] = React.useState(TOP_100_FILMS[0]);
-    const handleItemSelect = React.useCallback((newFilm: IFilm) => {
+    const handleItemSelect = React.useCallback((newFilm: Film) => {
         // Delete the old film from the list if it was newly created.
         const step1Result = maybeDeleteCreatedFilmFromArrays(items, createdItems, selectedFilm);
         // Add the new film to the list if it is newly created.
@@ -65,7 +60,7 @@ export default function ({ allowCreate = false, fill, ...restProps }: Props) {
         setItems(step2Result.items);
     }, []);
 
-    const itemRenderer = React.useCallback<ItemRenderer<IFilm>>(
+    const itemRenderer = React.useCallback<ItemRenderer<Film>>(
         (film, props) => {
             if (!props.modifiers.matchesPredicate) {
                 return null;
@@ -76,9 +71,9 @@ export default function ({ allowCreate = false, fill, ...restProps }: Props) {
     );
 
     return (
-        <FilmSelect
-            createNewItemFromQuery={maybeCreateNewItemFromQuery}
-            createNewItemRenderer={maybeCreateNewItemRenderer}
+        <Select2<Film>
+            createNewItemFromQuery={allowCreate ? createFilm : undefined}
+            createNewItemRenderer={allowCreate ? renderCreateFilmMenuItem : undefined}
             fill={fill}
             itemPredicate={filterFilm}
             itemRenderer={itemRenderer}
@@ -96,6 +91,6 @@ export default function ({ allowCreate = false, fill, ...restProps }: Props) {
                 rightIcon="caret-down"
                 text={selectedFilm ? `${selectedFilm.title} (${selectedFilm.year})` : "(No selection)"}
             />
-        </FilmSelect>
+        </Select2>
     );
 }
