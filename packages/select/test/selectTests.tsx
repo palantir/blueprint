@@ -33,7 +33,6 @@ import { ISelectProps, ISelectState, ItemRendererProps, Select } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<Select>", () => {
-    const FilmSelect = Select.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
@@ -134,9 +133,9 @@ describe("<Select>", () => {
 
     function select(props: Partial<ISelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
-            <FilmSelect {...defaultProps} {...handlers} {...props}>
+            <Select<Film> {...defaultProps} {...handlers} {...props}>
                 <button data-testid="target-button">Target</button>
-            </FilmSelect>,
+            </Select>,
             { attachTo: testsContainerElement },
         );
         if (query !== undefined) {

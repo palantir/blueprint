@@ -28,7 +28,6 @@ import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("<Select2>", () => {
-    const FilmSelect = Select2.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
@@ -130,9 +129,9 @@ describe("<Select2>", () => {
 
     function select(props: Partial<Select2Props<Film>> = {}, query?: string) {
         const wrapper = mount(
-            <FilmSelect {...defaultProps} {...handlers} {...props}>
+            <Select2<Film> {...defaultProps} {...handlers} {...props}>
                 <button data-testid="target-button">Target</button>
-            </FilmSelect>,
+            </Select2>,
         );
         if (query !== undefined) {
             wrapper.setState({ query });
