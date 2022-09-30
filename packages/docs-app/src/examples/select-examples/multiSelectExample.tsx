@@ -20,34 +20,34 @@ import { Code, H5, Intent, MenuItem, Switch, TagProps } from "@blueprintjs/core"
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Popover2 } from "@blueprintjs/popover2";
 import { ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
-
 import {
     areFilmsEqual,
     arrayContainsFilm,
     createFilms,
+    Film,
     filterFilm,
     getFilmItemProps,
-    IFilm,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
     renderCreateFilmsMenuItem,
     TOP_100_FILMS,
-} from "../../common/films";
+} from "@blueprintjs/select-dev-components";
+
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
-const FilmMultiSelect = MultiSelect2.ofType<IFilm>();
+const FilmMultiSelect = MultiSelect2.ofType<Film>();
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
 export interface IMultiSelectExampleState {
     allowCreate: boolean;
-    createdItems: IFilm[];
+    createdItems: Film[];
     disabled: boolean;
     fill: boolean;
-    films: IFilm[];
+    films: Film[];
     hasInitialContent: boolean;
     intent: boolean;
-    items: IFilm[];
+    items: Film[];
     matchTargetWidth: boolean;
     openOnKeyDown: boolean;
     popoverMinimal: boolean;
@@ -225,9 +225,9 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
         );
     }
 
-    private renderTag = (film: IFilm) => film.title;
+    private renderTag = (film: Film) => film.title;
 
-    private renderFilm: ItemRenderer<IFilm> = (film, props) => {
+    private renderFilm: ItemRenderer<Film> = (film, props) => {
         if (!props.modifiers.matchesPredicate) {
             return null;
         }
@@ -246,19 +246,19 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
         this.deselectFilm(index);
     };
 
-    private getSelectedFilmIndex(film: IFilm) {
+    private getSelectedFilmIndex(film: Film) {
         return this.state.films.indexOf(film);
     }
 
-    private isFilmSelected(film: IFilm) {
+    private isFilmSelected(film: Film) {
         return this.getSelectedFilmIndex(film) !== -1;
     }
 
-    private selectFilm(film: IFilm) {
+    private selectFilm(film: Film) {
         this.selectFilms([film]);
     }
 
-    private selectFilms(filmsToSelect: IFilm[]) {
+    private selectFilms(filmsToSelect: Film[]) {
         this.setState(({ createdItems, films, items }) => {
             let nextCreatedItems = createdItems.slice();
             let nextFilms = films.slice();
@@ -299,7 +299,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
         });
     }
 
-    private handleFilmSelect = (film: IFilm) => {
+    private handleFilmSelect = (film: Film) => {
         if (!this.isFilmSelected(film)) {
             this.selectFilm(film);
         } else {
@@ -307,7 +307,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
         }
     };
 
-    private handleFilmsPaste = (films: IFilm[]) => {
+    private handleFilmsPaste = (films: Film[]) => {
         // On paste, don't bother with deselecting already selected values, just
         // add the new ones.
         this.selectFilms(films);

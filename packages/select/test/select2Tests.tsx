@@ -21,22 +21,22 @@ import * as sinon from "sinon";
 
 import { InputGroup, Keys, MenuItem } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
+import { Film, renderFilm, TOP_100_FILMS } from "@blueprintjs/select-dev-components";
 
-import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { ItemRendererProps, Select2, Select2Props, Select2State } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("<Select2>", () => {
-    const FilmSelect = Select2.ofType<IFilm>();
+    const FilmSelect = Select2.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
         query: "",
     };
     let handlers: {
-        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, ItemRendererProps], JSX.Element | null>;
+        itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
     let testsContainerElement: HTMLElement | undefined;
@@ -58,11 +58,11 @@ describe("<Select2>", () => {
         testsContainerElement?.remove();
     });
 
-    selectComponentSuite<Select2Props<IFilm>, Select2State>(props =>
+    selectComponentSuite<Select2Props<Film>, Select2State>(props =>
         mount(<Select2 {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
     );
 
-    selectPopoverTestSuite<Select2Props<IFilm>, Select2State>(props =>
+    selectPopoverTestSuite<Select2Props<Film>, Select2State>(props =>
         mount(<Select2 {...props} />, { attachTo: testsContainerElement }),
     );
 
@@ -128,7 +128,7 @@ describe("<Select2>", () => {
         assert.isTrue(handlers.onItemSelect.calledOnce);
     });
 
-    function select(props: Partial<Select2Props<IFilm>> = {}, query?: string) {
+    function select(props: Partial<Select2Props<Film>> = {}, query?: string) {
         const wrapper = mount(
             <FilmSelect {...defaultProps} {...handlers} {...props}>
                 <button data-testid="target-button">Target</button>
@@ -141,6 +141,6 @@ describe("<Select2>", () => {
     }
 });
 
-function filterByYear(query: string, film: IFilm) {
+function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;
 }

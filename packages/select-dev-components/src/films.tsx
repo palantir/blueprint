@@ -17,9 +17,9 @@
 import * as React from "react";
 
 import { MenuItem, MenuItemProps } from "@blueprintjs/core";
-import { ItemPredicate, ItemRenderer, ItemRendererProps } from "@blueprintjs/select";
+import type { ItemPredicate, ItemRenderer, ItemRendererProps } from "@blueprintjs/select";
 
-export interface IFilm {
+export interface Film {
     /** Title of film. */
     title: string;
     /** Release year. */
@@ -29,7 +29,7 @@ export interface IFilm {
 }
 
 /** Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top */
-export const TOP_100_FILMS: IFilm[] = [
+export const TOP_100_FILMS: Film[] = [
     { title: "The Shawshank Redemption", year: 1994 },
     { title: "The Godfather", year: 1972 },
     { title: "The Godfather: Part II", year: 1974 },
@@ -130,15 +130,15 @@ export const TOP_100_FILMS: IFilm[] = [
     { title: "Snatch", year: 2000 },
     { title: "3 Idiots", year: 2009 },
     { title: "Monty Python and the Holy Grail", year: 1975 },
-].map((m, index) => ({ ...m, rank: index + 1 }));
+].map((f, index) => ({ ...f, rank: index + 1 }));
 
 /**
- * Takes the same arguments as `ItemRenderer<IFilm>`, but returns the common menu item
+ * Takes the same arguments as `ItemRenderer<Film>`, but returns the common menu item
  * props for that item instead of the rendered element itself. This is useful for implementing
  * custom item renderers.
  */
 export function getFilmItemProps(
-    film: IFilm,
+    film: Film,
     { handleClick, handleFocus, modifiers, query }: ItemRendererProps,
 ): MenuItemProps & React.Attributes & React.HTMLAttributes<HTMLAnchorElement> {
     return {
@@ -156,7 +156,7 @@ export function getFilmItemProps(
 /**
  * Simple film item renderer _without_ support for "selected" appearance.
  */
-export const renderFilm: ItemRenderer<IFilm> = (film, props) => {
+export const renderFilm: ItemRenderer<Film> = (film, props) => {
     if (!props.modifiers.matchesPredicate) {
         return null;
     }
@@ -199,8 +199,6 @@ export const renderCreateFilmsMenuItem = (
     />
 );
 
-/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
-
 /**
  * Given a user-provided list of strings separated by commas, this helper function parses the list and
  * returns a more readable version of it.
@@ -217,7 +215,7 @@ function printReadableList(query: string): string {
         .join("");
 }
 
-export const filterFilm: ItemPredicate<IFilm> = (query, film, _index, exactMatch) => {
+export const filterFilm: ItemPredicate<Film> = (query, film, _index, exactMatch) => {
     const normalizedTitle = film.title.toLowerCase();
     const normalizedQuery = query.toLowerCase();
 
@@ -263,7 +261,7 @@ function escapeRegExpChars(text: string) {
     return text.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 }
 
-export function createFilm(title: string): IFilm {
+export function createFilm(title: string): Film {
     return {
         rank: 100 + Math.floor(Math.random() * 100 + 1),
         title,
@@ -271,7 +269,7 @@ export function createFilm(title: string): IFilm {
     };
 }
 
-export function createFilms(query: string): IFilm[] {
+export function createFilms(query: string): Film[] {
     const titles = query.split(", ");
     return titles.map((title, index) => ({
         rank: 100 + Math.floor(Math.random() * 100 + index),
@@ -280,37 +278,32 @@ export function createFilms(query: string): IFilm[] {
     }));
 }
 
-/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
-export function areFilmsEqual(filmA: IFilm, filmB: IFilm) {
+export function areFilmsEqual(filmA: Film, filmB: Film) {
     // Compare only the titles (ignoring case) just for simplicity.
     return filmA.title.toLowerCase() === filmB.title.toLowerCase();
 }
 
-/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
-export function doesFilmEqualQuery(film: IFilm, query: string) {
+export function doesFilmEqualQuery(film: Film, query: string) {
     return film.title.toLowerCase() === query.toLowerCase();
 }
 
-/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
-export function arrayContainsFilm(films: IFilm[], filmToFind: IFilm): boolean {
-    return films.some((film: IFilm) => film.title === filmToFind.title);
+export function arrayContainsFilm(films: Film[], filmToFind: Film): boolean {
+    return films.some((film: Film) => film.title === filmToFind.title);
 }
 
-/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
-export function addFilmToArray(films: IFilm[], filmToAdd: IFilm) {
+export function addFilmToArray(films: Film[], filmToAdd: Film) {
     return [...films, filmToAdd];
 }
 
-/* istanbul ignore next - HACKHACK: this code gets tested in packages/select; it should really live somewhere else */
-export function deleteFilmFromArray(films: IFilm[], filmToDelete: IFilm) {
+export function deleteFilmFromArray(films: Film[], filmToDelete: Film) {
     return films.filter(film => film !== filmToDelete);
 }
 
 export function maybeAddCreatedFilmToArrays(
-    items: IFilm[],
-    createdItems: IFilm[],
-    film: IFilm,
-): { createdItems: IFilm[]; items: IFilm[] } {
+    items: Film[],
+    createdItems: Film[],
+    film: Film,
+): { createdItems: Film[]; items: Film[] } {
     const isNewlyCreatedItem = !arrayContainsFilm(items, film);
     return {
         createdItems: isNewlyCreatedItem ? addFilmToArray(createdItems, film) : createdItems,
@@ -320,10 +313,10 @@ export function maybeAddCreatedFilmToArrays(
 }
 
 export function maybeDeleteCreatedFilmFromArrays(
-    items: IFilm[],
-    createdItems: IFilm[],
-    film: IFilm,
-): { createdItems: IFilm[]; items: IFilm[] } {
+    items: Film[],
+    createdItems: Film[],
+    film: Film,
+): { createdItems: Film[]; items: Film[] } {
     const wasItemCreatedByUser = arrayContainsFilm(createdItems, film);
 
     // Delete the item if the user manually created it.

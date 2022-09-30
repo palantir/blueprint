@@ -27,21 +27,21 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { Classes, InputGroup, Keys, Popover } from "@blueprintjs/core";
+import { Film, renderFilm, TOP_100_FILMS } from "@blueprintjs/select-dev-components";
 
-import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { ISelectProps, ISelectState, ItemRendererProps, Select } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<Select>", () => {
-    const FilmSelect = Select.ofType<IFilm>();
+    const FilmSelect = Select.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
         query: "",
     };
     let handlers: {
-        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, ItemRendererProps], JSX.Element | null>;
+        itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
     let testsContainerElement: HTMLElement | undefined;
@@ -60,7 +60,7 @@ describe("<Select>", () => {
         testsContainerElement?.remove();
     });
 
-    selectComponentSuite<ISelectProps<IFilm>, ISelectState>(props =>
+    selectComponentSuite<ISelectProps<Film>, ISelectState>(props =>
         mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
     );
 
@@ -132,7 +132,7 @@ describe("<Select>", () => {
         });
     });
 
-    function select(props: Partial<ISelectProps<IFilm>> = {}, query?: string) {
+    function select(props: Partial<ISelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
             <FilmSelect {...defaultProps} {...handlers} {...props}>
                 <button data-testid="target-button">Target</button>
@@ -146,6 +146,6 @@ describe("<Select>", () => {
     }
 });
 
-function filterByYear(query: string, film: IFilm) {
+function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;
 }
