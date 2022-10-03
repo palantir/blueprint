@@ -21,7 +21,7 @@
         "eslint-formatter-codeframe": "^7.32.1",
         "fs-extra": "^10.0.1",
         "get-sass-vars": "^3.4.0",
-        "glob": "^7.2.0",
+        "glob": "^8.0.3",
         "node-sass-package-importer": "^5.3.2",
         "path": "^0.12.7",
         "postcss": "^8.4.17",
