@@ -14,7 +14,7 @@
         "@blueprintjs/docs-theme": "^4.4.7",
         "@documentalist/compiler": "^4.0.0",
         "better-handlebars": "github:wmeldon/better-handlebars",
-        "glob": "^7.2.0",
+        "glob": "^8.0.3",
         "highlights": "^3.1.6",
         "language-less": "github:atom/language-less",
         "marked": "^4.0.12",
