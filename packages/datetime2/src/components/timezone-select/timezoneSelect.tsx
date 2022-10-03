@@ -117,8 +117,6 @@ export interface TimezoneSelectState {
     query: string;
 }
 
-const TypedSelect = Select2.ofType<TimezoneWithNames>();
-
 export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, TimezoneSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezoneSelect`;
 
@@ -150,7 +148,7 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
         const { query } = this.state;
 
         return (
-            <TypedSelect
+            <Select2<TimezoneWithNames>
                 className={classNames(Classes.TIMEZONE_SELECT, className)}
                 disabled={disabled}
                 fill={fill}
@@ -172,7 +170,7 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
                 resetOnSelect={true}
             >
                 {children ?? this.renderButton()}
-            </TypedSelect>
+            </Select2>
         );
     }
 

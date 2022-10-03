@@ -114,8 +114,6 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
 
     public state: ISelectState = { isOpen: false };
 
-    private TypedQueryList = QueryList.ofType<T>();
-
     public inputElement: HTMLInputElement | null = null;
 
     private queryList: QueryList<T> | null = null;
@@ -135,7 +133,7 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
         const { filterable, inputProps, popoverProps, ...restProps } = this.props;
 
         return (
-            <this.TypedQueryList
+            <QueryList<T>
                 {...restProps}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}

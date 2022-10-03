@@ -34,7 +34,6 @@ import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<MultiSelect>", () => {
-    const FilmMultiSelect = MultiSelect.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
@@ -116,9 +115,9 @@ describe("<MultiSelect>", () => {
 
     function multiselect(props: Partial<IMultiSelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
-            <FilmMultiSelect {...defaultProps} {...handlers} {...props}>
+            <MultiSelect<Film> {...defaultProps} {...handlers} {...props}>
                 <article />
-            </FilmMultiSelect>,
+            </MultiSelect>,
         );
         if (query !== undefined) {
             wrapper.setState({ query });

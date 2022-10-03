@@ -46,7 +46,6 @@ export interface INavigationSection {
     title: string;
 }
 
-const NavOmnibar = Omnibar.ofType<INavigationSection>();
 export class Navigator extends React.PureComponent<INavigatorProps> {
     private sections: INavigationSection[];
 
@@ -68,7 +67,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
             return null;
         }
         return (
-            <NavOmnibar
+            <Omnibar<INavigationSection>
                 className="docs-navigator-menu"
                 inputProps={{ placeholder: "Search documentation pages and sections..." }}
                 itemListPredicate={this.filterMatches}

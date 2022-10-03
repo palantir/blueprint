@@ -105,6 +105,7 @@ export interface ITreeNodeProps<T = {}> extends TreeNodeInfo<T> {
 export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TreeNode`;
 
+    /** @deprecated no longer necessary now that the TypeScript parser supports type arguments on JSX element tags */
     public static ofType<U>() {
         return TreeNode as new (props: ITreeNodeProps<U>) => TreeNode<U>;
     }

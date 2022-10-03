@@ -120,8 +120,6 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
         isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
     };
 
-    private TypedQueryList = QueryList.ofType<T>();
-
     public input: HTMLInputElement | null = null;
 
     public queryList: QueryList<T> | null = null;
@@ -147,7 +145,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
         const { openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
 
         return (
-            <this.TypedQueryList
+            <QueryList<T>
                 {...restProps}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}

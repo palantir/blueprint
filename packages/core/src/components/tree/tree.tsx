@@ -126,9 +126,8 @@ export class Tree<T = {}> extends React.Component<TreeProps<T>> {
 
         const nodeItems = treeNodes.map((node, i) => {
             const elementPath = currentPath!.concat(i);
-            const TypedTreeNode = TreeNode.ofType<T>();
             return (
-                <TypedTreeNode
+                <TreeNode<T>
                     {...node}
                     key={node.id}
                     contentRef={this.handleContentRef}
@@ -143,7 +142,7 @@ export class Tree<T = {}> extends React.Component<TreeProps<T>> {
                     path={elementPath}
                 >
                     {this.renderNodes(node.childNodes, elementPath)}
-                </TypedTreeNode>
+                </TreeNode>
             );
         });
 

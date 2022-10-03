@@ -115,6 +115,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         resetOnClose: false,
     };
 
+    /** @deprecated no longer necessary now that the TypeScript parser supports type arguments on JSX element tags */
     public static ofType<U>() {
         return Suggest2 as new (props: Suggest2Props<U>) => Suggest2<U>;
     }
@@ -123,8 +124,6 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         isOpen: (this.props.popoverProps != null && this.props.popoverProps.isOpen) || false,
         selectedItem: this.getInitialSelectedItem(),
     };
-
-    private TypedQueryList = QueryList.ofType<T>();
 
     public inputElement: HTMLInputElement | null = null;
 
@@ -145,7 +144,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         const { disabled, inputProps, menuProps, popoverProps, ...restProps } = this.props;
 
         return (
-            <this.TypedQueryList
+            <QueryList<T>
                 {...restProps}
                 menuProps={{ "aria-label": "selectable options", ...menuProps, id: this.listboxId }}
                 initialActiveItem={this.props.selectedItem ?? undefined}

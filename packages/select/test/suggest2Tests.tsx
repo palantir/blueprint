@@ -29,7 +29,6 @@ import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("Suggest2", () => {
-    const FilmSuggest = Suggest2.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
@@ -339,12 +338,8 @@ describe("Suggest2", () => {
         });
     });
 
-    function suggest(props: Partial<Suggest2Props<Film>> = {}, query?: string) {
-        const wrapper = mount<typeof FilmSuggest>(<FilmSuggest {...defaultProps} {...handlers} {...props} />);
-        if (query !== undefined) {
-            wrapper.setState({ query });
-        }
-        return wrapper;
+    function suggest(props: Partial<Suggest2Props<Film>> = {}) {
+        return mount<Suggest2<Film>>(<Suggest2<Film> {...defaultProps} {...handlers} {...props} />);
     }
 });
 

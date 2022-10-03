@@ -100,6 +100,7 @@ export interface Select2State {
 export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select2`;
 
+    /** @deprecated no longer necessary now that the TypeScript parser supports type arguments on JSX element tags */
     public static ofType<U>() {
         return Select2 as new (props: Select2Props<U>) => Select2<U>;
     }
@@ -107,8 +108,6 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
     public state: Select2State = { isOpen: false };
 
     public inputElement: HTMLInputElement | null = null;
-
-    private TypedQueryList = QueryList.ofType<T>();
 
     private queryList: QueryList<T> | null = null;
 
@@ -129,7 +128,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         const { filterable, inputProps, menuProps, popoverProps, ...restProps } = this.props;
 
         return (
-            <this.TypedQueryList
+            <QueryList<T>
                 {...restProps}
                 menuProps={{ "aria-label": "selectable options", ...menuProps, id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
