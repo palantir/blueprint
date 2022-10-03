@@ -33,7 +33,7 @@ export const TIMEZONE_ITEMS: Timezone[] = [
     { offset: "-09:00", label: "Gambier", ianaCode: "Pacific/Gambier" },
     { offset: "-08:00", label: "Los Angeles", ianaCode: "America/Los_Angeles" },
     { offset: "-08:00", label: "Tijuana", ianaCode: "America/Tijuana" },
-    { offset: "-08:00", label: " Vancouver", ianaCode: "America/Vancouver" },
+    { offset: "-08:00", label: "Vancouver", ianaCode: "America/Vancouver" },
     { offset: "-08:00", label: "Whitehorse", ianaCode: "America/Whitehorse" },
     { offset: "-08:00", label: "Pitcairn", ianaCode: "Pacific/Pitcairn" },
     { offset: "-07:00", label: "Denver", ianaCode: "America/Denver" },
