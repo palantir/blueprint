@@ -34,7 +34,6 @@ import { ISuggestProps, ISuggestState, Suggest } from "../src/components/suggest
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("Suggest", () => {
-    const FilmSuggest = Suggest.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
@@ -331,11 +330,8 @@ describe("Suggest", () => {
         });
     });
 
-    function suggest(props: Partial<ISuggestProps<Film>> = {}, query?: string) {
-        const wrapper = mount<typeof FilmSuggest>(<FilmSuggest {...defaultProps} {...handlers} {...props} />);
-        if (query !== undefined) {
-            wrapper.setState({ query });
-        }
+    function suggest(props: Partial<ISuggestProps<Film>> = {}) {
+        const wrapper = mount<Suggest<Film>>(<Suggest<Film> {...defaultProps} {...handlers} {...props} />);
         return wrapper;
     }
 });

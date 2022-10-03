@@ -132,8 +132,6 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
         selectedItem: this.getInitialSelectedItem(),
     };
 
-    private TypedQueryList = QueryList.ofType<T>();
-
     public inputElement: HTMLInputElement | null = null;
 
     private queryList: QueryList<T> | null = null;
@@ -150,7 +148,7 @@ export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggest
         // omit props specific to this component, spread the rest.
         const { disabled, inputProps, popoverProps, ...restProps } = this.props;
         return (
-            <this.TypedQueryList
+            <QueryList<T>
                 {...restProps}
                 initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}

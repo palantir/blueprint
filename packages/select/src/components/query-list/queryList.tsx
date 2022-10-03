@@ -157,6 +157,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
         resetOnQuery: true,
     };
 
+    /** @deprecated no longer necessary now that the TypeScript parser supports type arguments on JSX element tags */
     public static ofType<U>() {
         return QueryList as new (props: QueryListProps<U>) => QueryList<U>;
     }

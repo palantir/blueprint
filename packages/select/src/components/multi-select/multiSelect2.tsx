@@ -131,6 +131,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         placeholder: "Search...",
     };
 
+    /** @deprecated no longer necessary now that the TypeScript parser supports type arguments on JSX element tags */
     public static ofType<U>() {
         return MultiSelect2 as new (props: MultiSelect2Props<U>) => MultiSelect2<U>;
     }
@@ -138,8 +139,6 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     public state: MultiSelect2State = {
         isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
     };
-
-    private TypedQueryList = QueryList.ofType<T>();
 
     public input: HTMLInputElement | null = null;
 
@@ -174,7 +173,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         const { menuProps, openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
 
         return (
-            <this.TypedQueryList
+            <QueryList<T>
                 {...restProps}
                 menuProps={{
                     "aria-label": "selectable options",

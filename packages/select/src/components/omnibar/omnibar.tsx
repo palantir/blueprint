@@ -62,14 +62,12 @@ export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
         return Omnibar as new (props: OmnibarProps<U>) => Omnibar<U>;
     }
 
-    private TypedQueryList = QueryList.ofType<T>();
-
     public render() {
         // omit props specific to this component, spread the rest.
         const { isOpen, inputProps, overlayProps, ...restProps } = this.props;
         const initialContent = "initialContent" in this.props ? this.props.initialContent : null;
 
-        return <this.TypedQueryList {...restProps} initialContent={initialContent} renderer={this.renderQueryList} />;
+        return <QueryList<T> {...restProps} initialContent={initialContent} renderer={this.renderQueryList} />;
     }
 
     private renderQueryList = (listProps: QueryListRendererProps<T>) => {

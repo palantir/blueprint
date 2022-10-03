@@ -169,11 +169,11 @@ describe("<TimezoneSelect>", () => {
     }
 
     function findSelect(timezoneSelect: ReactWrapper<TimezoneSelect>) {
-        return timezoneSelect.find(Select2.ofType<TimezoneWithNames>());
+        return timezoneSelect.find<Select2<TimezoneWithNames>>(Select2);
     }
 
     function findQueryList(timezoneSelect: ReactWrapper<TimezoneSelect>) {
-        return findSelect(timezoneSelect).find(QueryList.ofType<TimezoneWithNames>());
+        return findSelect(timezoneSelect).find<QueryList<TimezoneWithNames>>(QueryList);
     }
 
     function findPopover(timezoneSelect: ReactWrapper<TimezoneSelect>) {

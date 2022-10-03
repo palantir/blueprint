@@ -27,8 +27,6 @@ import {
     TOP_100_FILMS,
 } from "@blueprintjs/select/examples";
 
-const FilmOmnibar = Omnibar.ofType<Film>();
-
 export interface IOmnibarExampleState {
     allowCreate: boolean;
     isOpen: boolean;
@@ -78,7 +76,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, IOmnibarEx
                         <KeyCombo combo="shift + o" />
                     </span>
 
-                    <FilmOmnibar
+                    <Omnibar<Film>
                         {...this.state}
                         createNewItemFromQuery={maybeCreateNewItemFromQuery}
                         createNewItemRenderer={maybeCreateNewItemRenderer}

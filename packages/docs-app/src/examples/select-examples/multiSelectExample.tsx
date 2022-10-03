@@ -35,8 +35,6 @@ import {
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
-const FilmMultiSelect = MultiSelect2.ofType<Film>();
-
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
 export interface IMultiSelectExampleState {
@@ -113,7 +111,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <FilmMultiSelect
+                <MultiSelect2<Film>
                     {...flags}
                     createNewItemFromQuery={allowCreate ? createFilms : undefined}
                     createNewItemRenderer={allowCreate ? renderCreateFilmsMenuItem : null}

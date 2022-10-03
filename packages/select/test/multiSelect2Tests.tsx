@@ -28,7 +28,6 @@ import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("<MultiSelect2>", () => {
-    const FilmMultiSelect = MultiSelect2.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
@@ -124,9 +123,9 @@ describe("<MultiSelect2>", () => {
 
     function multiselect(props: Partial<MultiSelect2Props<Film>> = {}, query?: string) {
         const wrapper = mount(
-            <FilmMultiSelect {...defaultProps} {...handlers} {...props}>
+            <MultiSelect2<Film> {...defaultProps} {...handlers} {...props}>
                 <article />
-            </FilmMultiSelect>,
+            </MultiSelect2>,
         );
         if (query !== undefined) {
             wrapper.setState({ query });

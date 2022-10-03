@@ -91,7 +91,7 @@ const FilmSelect: React.FC = () => {
 ReactDOM.render(<FilmSelect /> document.querySelector("#root"));
 ```
 
-In TypeScript, `Select2<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type (speak your language) so you can easily define handlers without transformation steps, but most props are required as a result. The static `Select2.ofType<T>()` method is available to streamline this process. (Note that this has no effect on JavaScript usage: the `Select2` export is a perfectly valid React component class.)
+In TypeScript, `Select2<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type so you can easily define handlers without transformation steps, but most props are required as a result.
 
 @## Querying
 
@@ -112,13 +112,11 @@ Since Select2 accepts arbitrary children, disabling a Select2 componet requires 
 _and also_ disabling its children. For example:
 
 ```tsx
-const FilmSelect = Select2.ofType<Films.Film>();
-
-// many props omitted here for brevity
-return (
-    <FilmSelect disabled={true}>
+const FilmSelect: React.FC = () => (
+    // many props omitted here for brevity
+    <Select2<Film> disabled={true}>
         <Button disabled={true}>
-    </FilmSelect>
+    </Select2>
 );
 ```
 
@@ -137,17 +135,19 @@ The input value can be controlled with the `query` and `onQueryChange` props. _D
 The focused item (for keyboard interactions) can be controlled with the `activeItem` and `onActiveItemChange` props.
 
 ```tsx
-<FilmSelect
-    items={myFilter(ALL_ITEMS, this.state.myQuery)}
-    itemRenderer={...}
-    onItemSelect={...}
-    // controlled active item
-    activeItem={this.state.myActiveItem}
-    onActiveItemChange={this.handleActiveItemChange}
-    // controlled query
-    query={this.state.myQuery}
-    onQueryChange={this.handleQueryChange}
-/>
+const FilmSelect: React.FC = () => (
+    <Select2<Film>
+        items={myFilter(ALL_ITEMS, this.state.myQuery)}
+        itemRenderer={...}
+        onItemSelect={...}
+        // controlled active item
+        activeItem={this.state.myActiveItem}
+        onActiveItemChange={this.handleActiveItemChange}
+        // controlled query
+        query={this.state.myQuery}
+        onQueryChange={this.handleQueryChange}
+    />
+);
 ```
 
 This controlled usage allows you to implement all sorts of advanced behavior on
@@ -207,8 +207,8 @@ function renderCreateFilmOption(
     )
 }
 
-ReactDOM.render(
-    <FilmSelect
+const FilmSelect: React.FC = () => (
+    <Select2<Film>
         createNewItemFromQuery={createFilm}
         createNewItemRenderer={renderCreateFilmOption}
         items={Films.items}
@@ -216,8 +216,7 @@ ReactDOM.render(
         itemRenderer={Films.itemRenderer}
         noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
         onItemSelect={...}
-    />,
-    document.querySelector("#root")
+    />
 );
 ```
 
@@ -261,15 +260,14 @@ function getActiveItem() {
     return isCreateNewItemActive ? getCreateNewItem() : currentActiveItem;
 }
 
-ReactDOM.render(
-    <FilmSelect
+const FilmSelect: React.FC = () => (
+    <Select2<Film>
         {...} // Other required props (see previous examples).
         activeItem={getActiveItem()}
         createNewItemFromQuery={...}
         createNewItemRenderer={...}
         onActiveItemChange={handleActiveItemChange}
-    />,
-    document.querySelector("#root")
+    />
 );
 ```
 
@@ -287,8 +285,6 @@ to rendering this item in this frame. The renderer is called for all items, so d
 import { Classes } from "@blueprintjs/core";
 import { MenuItem } from "@blueprintjs/popover2";
 import { ItemRenderer, ItemPredicate, Select2 } from "@blueprintjs/select";
-
-const FilmSelect = Select2.ofType<Film>();
 
 const filterFilm: ItemPredicate<Film> = (query, film) => {
     return film.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
@@ -311,7 +307,14 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
     );
 };
 
-<FilmSelect itemPredicate={filterFilm} itemRenderer={renderFilm} items={...} onItemSelect={...} />
+const FilmSelect: React.FC = () => (
+    <Select2<Film>
+        itemPredicate={filterFilm}
+        itemRenderer={renderFilm}
+        items={...}
+        onItemSelect={...}
+    />
+);
 ```
 
 @interface ItemRendererProps
@@ -337,13 +340,15 @@ const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, rend
     );
 };
 
-<FilmSelect
-    itemListRenderer={renderMenu}
-    itemPredicate={filterFilm}
-    itemRenderer={renderFilm}
-    items={...}
-    onItemSelect={...}
-/>
+const FilmSelect: React.FC = () => (
+    <Select2<Film>
+        itemListRenderer={renderMenu}
+        itemPredicate={filterFilm}
+        itemRenderer={renderFilm}
+        items={...}
+        onItemSelect={...}
+    />
+);
 ```
 
 @interface ItemListRendererProps
