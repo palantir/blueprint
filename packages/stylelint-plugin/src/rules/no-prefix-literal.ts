@@ -42,8 +42,7 @@ interface Options {
     variablesImportPath?: Partial<Record<Exclude<CssSyntax, CssSyntax.OTHER>, string>>;
 }
 
-export default stylelint.createPlugin(
-    ruleName,
+const ruleImpl =
     (enabled: boolean, options: Options | undefined, context: PluginContext) => (root: Root, result: PostcssResult) => {
         if (!enabled) {
             return;
@@ -119,5 +118,9 @@ export default stylelint.createPlugin(
                 });
             }).processSync(rule.selector);
         });
-    },
-);
+    };
+
+ruleImpl.ruleName = ruleName;
+ruleImpl.messages = messages;
+
+export default stylelint.createPlugin(ruleName, ruleImpl);
