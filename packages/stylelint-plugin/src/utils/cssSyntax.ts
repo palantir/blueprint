@@ -29,13 +29,15 @@ export const BpVariablePrefixMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, st
     [CssSyntax.LESS]: "@",
 };
 
+export const BpSassNamespace = "bp";
+
 export const BpPrefixVariableMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
-    [CssSyntax.SASS]: "#{$bp-ns}",
+    [CssSyntax.SASS]: `#{${BpSassNamespace}.$bp-ns}`,
     [CssSyntax.LESS]: "@{bp-ns}",
 };
 
 export const BpVariableImportMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
-    [CssSyntax.SASS]: "~@blueprintjs/core/lib/scss/variables",
+    [CssSyntax.SASS]: "@blueprintjs/core/lib/scss/variables.scss",
     [CssSyntax.LESS]: "~@blueprintjs/core/lib/less/variables",
 };
 

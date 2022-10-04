@@ -16,17 +16,35 @@
 import postcss, { AtRule, Comment, Root } from "postcss";
 import type { PluginContext } from "stylelint";
 
+import { CssSyntax } from "./cssSyntax";
+
 /**
  * Adds an import statement to the file. The import is inserted below the existing imports, and if there are
  * no imports present then it's inserted at the top of the file (but below any copyright headers).
  */
-export function insertImport(root: Root, context: PluginContext, importPath: string): void {
+export function insertImport(
+    cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS,
+    root: Root,
+    context: PluginContext,
+    importPath: string,
+    namespace?: string,
+): void {
     const newline: string = (context as any).newline || "\n";
-    const ruleOrComment = getLastImport(root) || getCopyrightHeader(root);
+    const ruleOrComment = getLastImport(cssSyntaxType, root) || getCopyrightHeader(root);
+
+    let importOrUse = "import";
+    let params = `"${importPath}"`;
+    if (cssSyntaxType === CssSyntax.SASS) {
+        importOrUse = "use";
+        if (namespace !== undefined) {
+            params += ` as ${namespace}`;
+        }
+    }
+
     if (ruleOrComment != null) {
         const importNode = postcss.atRule({
-            name: "import",
-            params: `"${importPath}"`,
+            name: importOrUse,
+            params,
             raws: {
                 afterName: " ",
                 before: ruleOrComment.type === "comment" ? `${newline}${newline}` : newline,
@@ -36,8 +54,8 @@ export function insertImport(root: Root, context: PluginContext, importPath: str
         root.insertAfter(ruleOrComment, importNode);
     } else {
         const importNode = postcss.atRule({
-            name: "import",
-            params: `"${importPath}"`,
+            name: importOrUse,
+            params,
             raws: {
                 afterName: " ",
                 before: "",
@@ -59,9 +77,10 @@ export function insertImport(root: Root, context: PluginContext, importPath: str
 /**
  * Returns the last import node in the file, or undefined if one does not exist
  */
-function getLastImport(root: Root): AtRule | undefined {
+function getLastImport(cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS, root: Root): AtRule | undefined {
     let lastImport: AtRule | undefined;
-    root.walkAtRules(/^import$/i, atRule => {
+    const walkRegex = cssSyntaxType === CssSyntax.LESS ? /^import$/i : /^use$/i;
+    root.walkAtRules(walkRegex, atRule => {
         lastImport = atRule;
     });
     return lastImport;

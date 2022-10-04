@@ -15,17 +15,43 @@
 
 import type { Root } from "postcss";
 
+import { CssSyntax } from "./cssSyntax";
+
 /**
  * Returns true if the given import exists in the file, otherwise returns false.
  * If `importPath` is an array, any of the strings has to match in order fortrue to be returned.
  */
-export function checkImportExists(root: Root, importPath: string | string[]): boolean {
+export function checkImportExists(
+    cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS,
+    root: Root,
+    importPath: string | string[],
+    namespace?: string,
+): boolean {
     let hasBpVarsImport = false;
-    root.walkAtRules(/^import$/i, atRule => {
+    const walkRegex = cssSyntaxType === CssSyntax.LESS ? /^import$/i : /^use$/i;
+    root.walkAtRules(walkRegex, atRule => {
         for (const path of typeof importPath === "string" ? [importPath] : importPath) {
-            if (stripQuotes(stripLessReference(atRule.params)) === path) {
-                hasBpVarsImport = true;
-                return false; // Stop the iteration
+            if (cssSyntaxType === CssSyntax.LESS) {
+                if (stripQuotes(stripLessReference(atRule.params)) === path) {
+                    hasBpVarsImport = true;
+                    return false; // Stop the iteration
+                }
+                continue;
+            }
+            if (namespace === undefined) {
+                if (stripQuotes(atRule.params)) {
+                    hasBpVarsImport = true;
+                    return false; // Stop the iteration
+                }
+            } else {
+                const asText = ` as ${namespace}`;
+                if (
+                    atRule.params.endsWith(asText) &&
+                    stripQuotes(atRule.params.substring(0, atRule.params.lastIndexOf(asText))) === path
+                ) {
+                    hasBpVarsImport = true;
+                    return false; // Stop the iteration
+                }
             }
         }
         return;
