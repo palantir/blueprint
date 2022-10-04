@@ -18,11 +18,12 @@ const { expect } = require("chai");
 const postcss = require("postcss");
 
 const { checkImportExists } = require("../lib/utils/checkImportExists");
+const { CssSyntax } = require("../lib/utils/cssSyntax");
 
 describe("checkImportExists", () => {
     it("Returns false if no imports exist", () => {
         const root = postcss.parse(`.some-class { width: 10px }`);
-        expect(checkImportExists(root, "some_path")).to.be.false;
+        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).to.be.false;
     });
 
     it("Returns false if imports exist but not the one we want", () => {
@@ -34,7 +35,7 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(root, "some_path")).to.be.false;
+        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).to.be.false;
     });
 
     it("Returns true if our import exists", () => {
@@ -46,7 +47,7 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(root, "some_path")).to.be.true;
+        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).to.be.true;
     });
 
     it("Returns true if our import exists, and works with single quotes", () => {
@@ -58,21 +59,33 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(root, "some_path")).to.be.true;
+        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).to.be.true;
     });
 
-    it("Can match multiple paths", () => {
+    it("Returns true if our sass import exists, and works with single quotes", () => {
         const root = postcss.parse(`
-@import 'some_path.scss';
+@use 'some_path1';
+@use 'some_path2';
+@use 'some_path' as foo;
 .some-class {
     width: 10px;
 }
     `);
-        expect(checkImportExists(root, ["some_path", "some_path.scss"])).to.be.true;
+        expect(checkImportExists(CssSyntax.SASS, root, "some_path", "foo")).to.be.true;
+    });
+
+    it("Can match multiple paths", () => {
+        const root = postcss.parse(`
+@use 'some_path.scss';
+.some-class {
+    width: 10px;
+}
+    `);
+        expect(checkImportExists(CssSyntax.SASS, root, ["some_path", "some_path.scss"])).to.be.true;
     });
 
     it("Handles less references", () => {
         const root = postcss.parse(`@import (reference) "some_path";`);
-        expect(checkImportExists(root, "some_path")).to.be.true;
+        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).to.be.true;
     });
 });
