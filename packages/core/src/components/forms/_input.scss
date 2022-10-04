@@ -58,6 +58,16 @@ Styleguide input
   }
 }
 
+@supports (-webkit-touch-callout: none) {
+  input.#{$ns}-input {
+    &:disabled,
+    &.#{$ns}-disabled {
+      opacity: 1;
+      -webkit-text-fill-color: $input-color-disabled;
+    }
+  }
+}
+
 /*
 Search inputs
 

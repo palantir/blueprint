@@ -142,11 +142,6 @@ $control-group-stack: (
   cursor: not-allowed;
   resize: none;
 
-  @supports (-webkit-touch-callout: none) {
-    opacity: 1;
-    -webkit-text-fill-color: $input-color-disabled;
-  }
-
   &::placeholder {
     color: $input-color-disabled;
   }
