@@ -6,7 +6,7 @@
         "test": "exit 0"
     },
     "dependencies": {
-        "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
+        "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
         "assert": "^2.0.0",
         "autoprefixer": "^10.4.4",
         "css-loader": "^6.7.1",
