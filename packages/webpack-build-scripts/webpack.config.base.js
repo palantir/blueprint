@@ -45,6 +45,7 @@ const plugins = [
             : {
                   typescript: {
                       configFile: "src/tsconfig.json",
+                      memoryLimit: 4096,
                   },
               },
     ),
