@@ -5,10 +5,10 @@ orbs:
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:16.14
+    - image: cimg/node:16.17
 
   - &docker-node-browsers-image
-    - image: cimg/node:16.14-browsers
+    - image: cimg/node:16.17-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
