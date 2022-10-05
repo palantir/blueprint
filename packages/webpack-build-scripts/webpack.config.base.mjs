@@ -129,7 +129,7 @@ export default {
         },
         historyApiFallback: true,
         https: false,
-        host: "local-ip",
+        host: "0.0.0.0",
         hot: true,
         open: false,
         port: DEV_PORT,
