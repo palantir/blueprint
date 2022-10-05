@@ -66,7 +66,7 @@
         "react-test-renderer": "^16.13.1",
         "sass-inline-svg": "^1.2.3",
         "typescript": "~4.6.2",
-        "webpack-cli": "^3.3.12"
+        "webpack-cli": "^4.10.0"
     },
     "repository": {
         "type": "git",
