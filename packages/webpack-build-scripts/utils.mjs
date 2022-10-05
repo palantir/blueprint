@@ -2,15 +2,18 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const path = require("path");
+import { createRequire } from "node:module";
+import { join } from "node:path";
+import { cwd } from "node:process";
 
 /**
  * Read a package name from package.json.
  */
-function getPackageName() {
+export function getPackageName() {
+    const require = createRequire(import.meta.url);
     let name;
     try {
-        name = require(path.join(process.cwd(), "package.json")).name;
+        name = require(join(cwd(), "package.json")).name;
         // strip NPM scope, if possible
         const nameSplit = name.split("/");
         if (nameSplit.length > 1) {
@@ -21,7 +24,3 @@ function getPackageName() {
     }
     return name;
 }
-
-module.exports = {
-    getPackageName,
-};

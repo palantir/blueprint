@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,21 +13,24 @@
  * limitations under the License.
  */
 
-const path = require("path");
+// @ts-check
 
-const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
+import { resolve } from "node:path";
+import { cwd } from "node:process";
 
-module.exports = Object.assign({}, baseConfig, {
+import { baseConfig, COMMON_EXTERNALS } from "@blueprintjs/webpack-build-scripts";
+
+export default Object.assign({}, baseConfig, {
     entry: {
-        datetime: ["./src/index.ts"],
+        datetime2: ["./src/index.ts"],
     },
 
     externals: COMMON_EXTERNALS,
 
     output: {
         filename: "[name].bundle.js",
-        library: ["Blueprint", "Datetime"],
+        library: ["Blueprint", "Datetime2"],
         libraryTarget: "umd",
-        path: path.resolve(__dirname, "./dist"),
+        path: resolve(cwd(), "./dist"),
     },
 });
