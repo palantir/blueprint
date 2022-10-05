@@ -2,15 +2,23 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const webpack = require("webpack");
+// @ts-check
+
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import { createRequire } from "node:module";
+import { cwd } from "node:process";
+import webpack from "webpack";
+
+// import.meta.resolve is still experimental under a CLI flag, so we create a require fn instead
+// see https://nodejs.org/docs/latest-v16.x/api/esm.html#importmetaresolvespecifier-parent
+const require = createRequire(import.meta.url);
 
 /**
  * This differs significantly from the base webpack config, so we don't even end up extending from it.
  */
-module.exports = {
+export default {
     bail: true,
-    context: process.cwd(),
+    context: cwd(),
     devtool: "inline-source-map",
     mode: "development",
 
@@ -60,6 +68,7 @@ module.exports = {
     },
 
     plugins: [
+        // HACKHACK: we should use an alternative to `process` in frontend code
         new webpack.ProvidePlugin({
             process: "process/browser",
         }),

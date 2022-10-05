@@ -14,9 +14,10 @@
  */
 
 const path = require("path");
-const tsEslintRules = require("./typescript-eslint-rules.json");
+
 const eslintBuiltinRules = require("./eslint-builtin-rules.json");
 const eslintPluginRules = require("./eslint-plugin-rules.json");
+const tsEslintRules = require("./typescript-eslint-rules.json");
 
 /**
  * Enable @blueprintjs/eslint-plugin.
@@ -25,7 +26,7 @@ const eslintPluginRules = require("./eslint-plugin-rules.json");
 module.exports = {
     plugins: ["@blueprintjs", "header", "import", "jsdoc", "react"],
     extends: ["plugin:@blueprintjs/recommended", "plugin:import/typescript"],
-    parserOptions: { ecmaVersion: 2017 },
+    parserOptions: { ecmaVersion: 2022 },
     settings: {
         "import/internal-regex": "^@blueprintjs",
     },
@@ -37,14 +38,16 @@ module.exports = {
     },
     overrides: [
         {
-            files: ["*.js", "*.mjs"],
+            files: ["**/*.{js,mjs}"],
             env: {
                 node: true,
-                es6: true,
             },
             parserOptions: {
                 ecmaVersion: 2022,
                 sourceType: "module",
+            },
+            rules: {
+                "import/no-default-export": "off",
             },
         },
         {

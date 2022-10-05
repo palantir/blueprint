@@ -2,6 +2,8 @@
     "name": "@blueprintjs/webpack-build-scripts",
     "version": "3.2.1",
     "description": "Webpack build scripts for @blueprintjs packages",
+    "type": "module",
+    "main": "index.mjs",
     "scripts": {
         "test": "exit 0"
     },
@@ -19,6 +21,7 @@
         "postcss-loader": "^7.0.1",
         "process": "^0.11.10",
         "react-refresh": "^0.14.0",
+        "react-refresh-typescript": "^2.0.7",
         "sass": "^1.55.0",
         "sass-loader": "^13.0.2",
         "source-map-loader": "^4.0.0",

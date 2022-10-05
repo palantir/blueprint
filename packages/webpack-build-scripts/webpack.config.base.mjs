@@ -13,32 +13,40 @@
  * limitations under the License.
  */
 
-const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
-const ForkTsCheckerNotifierWebpackPlugin = require("fork-ts-checker-notifier-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const path = require("path");
-const webpack = require("webpack");
-const WebpackNotifierPlugin = require("webpack-notifier");
+// @ts-check
 
-const { getPackageName } = require("./utils");
+import ReactRefreshPlugin from "@pmmmwh/react-refresh-webpack-plugin";
+import autoprefixer from "autoprefixer";
+import cssnanoPlugin from "cssnano";
+import ForkTsCheckerNotifierPlugin from "fork-ts-checker-notifier-webpack-plugin";
+import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import { createRequire } from "node:module";
+import { resolve } from "node:path";
+import { cwd, env } from "node:process";
+import ReactRefreshTypeScript from "react-refresh-typescript";
+import webpack from "webpack";
+import WebpackNotifierPlugin from "webpack-notifier";
+
+import { getPackageName } from "./utils.mjs";
 
 // globals
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
-const DEV_PORT = process.env.PORT || 9000;
+const IS_PRODUCTION = env.NODE_ENV === "production";
+const DEV_PORT = env.PORT || 9001;
 const PACKAGE_NAME = getPackageName();
 
 /**
  * Configure plugins loaded based on environment.
+ *
+ * @type {webpack.WebpackPluginInstance[]}
  */
 const plugins = [
-    new ForkTsCheckerWebpackPlugin(
+    new ForkTsCheckerPlugin(
         IS_PRODUCTION
             ? {
                   async: false,
                   typescript: {
                       configFile: "src/tsconfig.json",
-                      useTypescriptIncrementalApi: true,
                       memoryLimit: 4096,
                   },
               }
@@ -63,11 +71,15 @@ const plugins = [
 
 if (!IS_PRODUCTION) {
     plugins.push(
-        new ReactRefreshWebpackPlugin(),
-        new ForkTsCheckerNotifierWebpackPlugin({ title: `${PACKAGE_NAME}: typescript`, excludeWarnings: false }),
+        new ReactRefreshPlugin(),
+        new ForkTsCheckerNotifierPlugin({ title: `${PACKAGE_NAME}: typescript`, excludeWarnings: false }),
         new WebpackNotifierPlugin({ title: `${PACKAGE_NAME}: webpack` }),
     );
 }
+
+// import.meta.resolve is still experimental under a CLI flag, so we create a require fn instead
+// see https://nodejs.org/docs/latest-v16.x/api/esm.html#importmetaresolvespecifier-parent
+const require = createRequire(import.meta.url);
 
 // Module loaders for .scss files, used in reverse order:
 // compile Sass, apply PostCSS, interpret CSS as modules.
@@ -89,16 +101,16 @@ const scssLoaders = [
         loader: require.resolve("postcss-loader"),
         options: {
             postcssOptions: {
-                plugins: [require("autoprefixer"), require("cssnano")({ preset: "default" })],
+                plugins: [autoprefixer, cssnanoPlugin({ preset: "default" })],
             },
         },
     },
     require.resolve("sass-loader"),
 ];
 
-module.exports = {
+export default {
     // to automatically find tsconfig.json
-    context: process.cwd(),
+    context: cwd(),
 
     devtool: IS_PRODUCTION ? false : "inline-source-map",
 
@@ -112,16 +124,17 @@ module.exports = {
             progress: true,
         },
         devMiddleware: {
-            index: path.resolve(process.cwd(), "src/index.html"),
+            index: resolve(cwd(), "src/index.html"),
             stats: "errors-only",
         },
         historyApiFallback: true,
         https: false,
+        host: "0.0.0.0",
         hot: true,
         open: false,
         port: DEV_PORT,
         static: {
-            directory: path.resolve(process.cwd(), "src"),
+            directory: resolve(cwd(), "src"),
         },
     },
 
@@ -138,7 +151,10 @@ module.exports = {
                 loader: require.resolve("ts-loader"),
                 options: {
                     configFile: "src/tsconfig.json",
-                    transpileOnly: true,
+                    getCustomTransformers: () => ({
+                        before: IS_PRODUCTION ? [] : [ReactRefreshTypeScript()],
+                    }),
+                    transpileOnly: !IS_PRODUCTION,
                 },
             },
             {
@@ -160,7 +176,4 @@ module.exports = {
     resolve: {
         extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"],
     },
-
-    // add support for IE11 (otherwise, webpack 5 uses some ES2015 syntax by default)
-    target: ["web", "es5"],
 };

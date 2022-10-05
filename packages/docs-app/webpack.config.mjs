@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,21 +13,30 @@
  * limitations under the License.
  */
 
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const path = require("path");
+// @ts-check
 
-const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import { resolve } from "node:path";
+import { cwd } from "node:process";
 
-module.exports = Object.assign({}, baseConfig, {
+import { baseConfig } from "@blueprintjs/webpack-build-scripts";
+
+export default Object.assign({}, baseConfig, {
     entry: {
-        features: ["./src/index.scss", "./src/features.tsx"],
-        index: ["./src/index.scss", "./src/index.tsx"],
+        "docs-app": [
+            // environment polyfills
+            "dom4",
+            "./polyfill.js",
+            // bundle entry points
+            "./src/index.tsx",
+            "./src/index.scss",
+        ],
     },
 
     output: {
-        filename: "[name].bundle.js",
+        filename: "[name].js",
         publicPath: "",
-        path: path.resolve(__dirname, "./dist"),
+        path: resolve(cwd(), "./dist"),
     },
 
     plugins: baseConfig.plugins.concat([
@@ -35,7 +44,7 @@ module.exports = Object.assign({}, baseConfig, {
             patterns: [
                 // to: is relative to dist/
                 { from: "src/index.html", to: "." },
-                { from: "src/features.html", to: "." },
+                { from: "src/assets/favicon.png", to: "assets" },
             ],
         }),
     ]),

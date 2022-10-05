@@ -1,6 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
- *
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,21 +13,8 @@
  * limitations under the License.
  */
 
-const path = require("path");
+// @ts-check
 
-const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
-
-module.exports = Object.assign({}, baseConfig, {
-    entry: {
-        popover2: "./src/index.ts",
-    },
-
-    externals: COMMON_EXTERNALS,
-
-    output: {
-        filename: "[name].bundle.js",
-        library: ["Blueprint", "Popover2"],
-        libraryTarget: "umd",
-        path: path.resolve(__dirname, "./dist"),
-    },
-});
+export { COMMON_EXTERNALS } from "./externals.mjs";
+export { default as baseConfig } from "./webpack.config.base.mjs";
+export { default as karmaConfig } from "./webpack.config.karma.mjs";

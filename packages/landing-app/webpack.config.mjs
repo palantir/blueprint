@@ -13,12 +13,15 @@
  * limitations under the License.
  */
 
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const path = require("path");
+// @ts-check
 
-const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import { resolve } from "node:path";
+import { cwd } from "node:process";
 
-module.exports = Object.assign({}, baseConfig, {
+import { baseConfig } from "@blueprintjs/webpack-build-scripts";
+
+export default Object.assign({}, baseConfig, {
     entry: {
         "blueprint-landing": ["./src/index.tsx", "./src/index.scss"],
     },
@@ -39,7 +42,7 @@ module.exports = Object.assign({}, baseConfig, {
     output: {
         filename: "[name].js",
         publicPath: "",
-        path: path.resolve(__dirname, "./dist"),
+        path: resolve(cwd(), "./dist"),
     },
 
     plugins: baseConfig.plugins.concat([

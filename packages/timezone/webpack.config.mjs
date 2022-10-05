@@ -13,21 +13,24 @@
  * limitations under the License.
  */
 
-const path = require("path");
+// @ts-check
 
-const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
+import { resolve } from "node:path";
+import { cwd } from "node:process";
 
-module.exports = Object.assign({}, baseConfig, {
+import { baseConfig, COMMON_EXTERNALS } from "@blueprintjs/webpack-build-scripts";
+
+export default Object.assign({}, baseConfig, {
     entry: {
-        select: ["./src/index.ts"],
+        timezone: ["./src/index.ts"],
     },
 
     externals: COMMON_EXTERNALS,
 
     output: {
         filename: "[name].bundle.js",
-        library: ["Blueprint", "Select"],
+        library: ["Blueprint", "Timezone"],
         libraryTarget: "umd",
-        path: path.resolve(__dirname, "./dist"),
+        path: resolve(cwd(), "./dist"),
     },
 });

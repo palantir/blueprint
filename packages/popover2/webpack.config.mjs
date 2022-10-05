@@ -1,5 +1,6 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,12 +14,24 @@
  * limitations under the License.
  */
 
-const COMMON_EXTERNALS = require("./externals");
-const baseConfig = require("./webpack.config.base");
-const karmaConfig = require("./webpack.config.karma");
+// @ts-check
 
-module.exports = {
-    baseConfig,
-    karmaConfig,
-    COMMON_EXTERNALS,
-};
+import { resolve } from "node:path";
+import { cwd } from "node:process";
+
+import { baseConfig, COMMON_EXTERNALS } from "@blueprintjs/webpack-build-scripts";
+
+export default Object.assign({}, baseConfig, {
+    entry: {
+        popover2: "./src/index.ts",
+    },
+
+    externals: COMMON_EXTERNALS,
+
+    output: {
+        filename: "[name].bundle.js",
+        library: ["Blueprint", "Popover2"],
+        libraryTarget: "umd",
+        path: resolve(cwd(), "./dist"),
+    },
+});
