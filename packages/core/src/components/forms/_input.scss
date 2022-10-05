@@ -58,6 +58,23 @@ Styleguide input
   }
 }
 
+// for iOS support
+@supports (-webkit-touch-callout: none) {
+  // only html input elements require a fix on iOS
+  input.#{$ns}-input {
+    &:disabled,
+    &.#{$ns}-disabled {
+      opacity: 1;
+      -webkit-text-fill-color: $input-color-disabled;
+
+      .#{$ns}-dark & {
+        -webkit-text-fill-color: $dark-input-color-disabled;
+      }
+    }
+  }
+}
+
+
 /*
 Search inputs
 
