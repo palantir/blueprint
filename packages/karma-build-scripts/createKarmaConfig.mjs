@@ -2,11 +2,16 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const fs = require("fs");
-const path = require("path");
+// @ts-check
 
-const webpackBuildScripts = require("@blueprintjs/webpack-build-scripts");
+import { existsSync } from "node:fs";
+import { createRequire } from "node:module";
+import { basename, join } from "node:path";
+import { cwd, env } from "node:process";
 
+import { karmaConfig as webpackConfig } from "@blueprintjs/webpack-build-scripts";
+
+const require = createRequire(import.meta.url);
 const coreManifest = require("../core/package.json");
 
 const COVERAGE_PERCENT = 80;
@@ -21,7 +26,7 @@ const KARMA_SERVER_PORT = 9876;
  * @property {{ [glob: string]: object }} coverageOverrides
  */
 
-module.exports = function createKarmaConfig(
+export default function createKarmaConfig(
     /** @type {KarmaOptions} */ { coverage = true, dirname, coverageExcludes, coverageOverrides },
 ) {
     const packageManifest = require(`${dirname}/package.json`);
@@ -43,12 +48,12 @@ module.exports = function createKarmaConfig(
             },
             {
                 included: false,
-                pattern: path.join(dirname, "resources/**/*"),
+                pattern: join(dirname, "resources/**/*"),
                 watched: false,
             },
             getCoreStylesheetPath(dirname),
-            path.join(dirname, packageManifest.style),
-            path.join(dirname, "test/index.ts"),
+            join(dirname, packageManifest.style),
+            join(dirname, "test/index.ts"),
         ],
         frameworks: ["mocha", "webpack"],
         mime: {
@@ -70,7 +75,7 @@ module.exports = function createKarmaConfig(
         },
         reporters: ["helpful"],
         singleRun: true,
-        webpack: webpackBuildScripts.karmaConfig,
+        webpack: webpackConfig,
         webpackMiddleware: {
             noInfo: true,
             stats: {
@@ -81,8 +86,9 @@ module.exports = function createKarmaConfig(
     };
 
     // enable JUnit reporter only if env variable is set (such as on Circle)
-    if (process.env.JUNIT_REPORT_PATH) {
-        const outputDir = path.join(__dirname, "../..", process.env.JUNIT_REPORT_PATH, path.basename(dirname));
+    if (env.JUNIT_REPORT_PATH) {
+        // HACKHACK: this path doesn't work when this package is used outside this monorepo
+        const outputDir = join(cwd(), "../..", env.JUNIT_REPORT_PATH, basename(dirname));
         console.info(`Karma report will appear in ${outputDir}`);
         // disable other reporters on circle for performance boost
         config.reporters = ["dots", "junit"];
@@ -121,18 +127,18 @@ module.exports = function createKarmaConfig(
     }
 
     return config;
-};
+}
 
 /**
  * @param {string} dirname
  * @returns string
  */
 function getCoreStylesheetPath(dirname) {
-    const localCorePath = path.join(dirname, "../core");
-    if (fs.existsSync(localCorePath)) {
-        return path.join(localCorePath, coreManifest.style);
+    const localCorePath = join(dirname, "../core");
+    if (existsSync(localCorePath)) {
+        return join(localCorePath, coreManifest.style);
     } else {
         // resolves to "**/node_modules/@blueprintjs/core/lib/cjs/index.js"
-        return path.join(require.resolve("@blueprintjs/core"), "../../../", coreManifest.style);
+        return join(require.resolve("@blueprintjs/core"), "../../../", coreManifest.style);
     }
 }
