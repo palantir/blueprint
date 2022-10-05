@@ -18,11 +18,11 @@
         "postcss-value-parser": "^4.2.0"
     },
     "peerDependencies": {
-        "stylelint": "^14.6.1"
+        "stylelint": "^14.12.1"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^5.2.0",
-        "mocha": "^9.2.2",
+        "mocha": "^10.0.0",
         "typescript": "^4.6.2"
     },
     "repository": {

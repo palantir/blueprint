@@ -45,7 +45,7 @@
         "@types/react-dom": "~16.9.10",
         "@types/react-transition-group": "~4.4.5",
         "@types/sinon": "~9.0.11",
-        "chai": "^4.2.0",
+        "chai": "^4.3.6",
         "circle-github-bot": "^2.1.0",
         "cross-env": "^7.0.3",
         "eslint": "^8.21.0",
@@ -56,12 +56,12 @@
         "lerna": "^5.5.4",
         "npm-run-all": "^4.1.5",
         "prettier": "~2.7.1",
-        "sinon": "^9.2.1",
+        "sinon": "^14.0.1",
         "stylelint-config-palantir": "^6.0.1",
         "stylelint-scss": "^4.2.0",
         "typescript": "~4.6.2",
         "yargs": "^17.5.1",
-        "yarn-deduplicate": "^5.0.0"
+        "yarn-deduplicate": "^6.0.0"
     },
     "resolutions": {
         "@types/react": "16.14.32"

@@ -45,6 +45,7 @@ const plugins = [
             : {
                   typescript: {
                       configFile: "src/tsconfig.json",
+                      memoryLimit: 4096,
                   },
               },
     ),
@@ -65,7 +66,6 @@ if (!IS_PRODUCTION) {
         new ReactRefreshWebpackPlugin(),
         new ForkTsCheckerNotifierWebpackPlugin({ title: `${PACKAGE_NAME}: typescript`, excludeWarnings: false }),
         new WebpackNotifierPlugin({ title: `${PACKAGE_NAME}: webpack` }),
-        new webpack.HotModuleReplacementPlugin(),
     );
 }
 
@@ -103,20 +103,26 @@ module.exports = {
     devtool: IS_PRODUCTION ? false : "inline-source-map",
 
     devServer: {
-        contentBase: "./src",
-        disableHostCheck: true,
+        allowedHosts: "all",
+        client: {
+            overlay: {
+                warnings: true,
+                errors: true,
+            },
+            progress: true,
+        },
+        devMiddleware: {
+            index: path.resolve(process.cwd(), "src/index.html"),
+            stats: "errors-only",
+        },
         historyApiFallback: true,
         https: false,
         hot: true,
-        index: path.resolve(__dirname, "src/index.html"),
-        inline: true,
-        stats: "errors-only",
         open: false,
-        overlay: {
-            warnings: true,
-            errors: true,
-        },
         port: DEV_PORT,
+        static: {
+            directory: path.resolve(process.cwd(), "src"),
+        },
     },
 
     mode: IS_PRODUCTION ? "production" : "development",

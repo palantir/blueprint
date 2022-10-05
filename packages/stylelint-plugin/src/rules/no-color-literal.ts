@@ -42,8 +42,7 @@ interface Options {
     variablesImportPath?: Partial<Record<Exclude<CssSyntax, CssSyntax.OTHER>, string>>;
 }
 
-export default stylelint.createPlugin(
-    ruleName,
+const ruleImpl =
     (enabled: boolean, options: Options | undefined, context: PluginContext) => (root: Root, result: PostcssResult) => {
         if (!enabled) {
             return;
@@ -124,24 +123,17 @@ export default stylelint.createPlugin(
                 decl.value = parsedValue.toString();
             }
         });
-    },
-);
+    };
+
+ruleImpl.ruleName = ruleName;
+ruleImpl.messages = messages;
+
+export default stylelint.createPlugin(ruleName, ruleImpl);
 
 function declarationValueIndex(decl: Declaration) {
     const beforeColon = decl.toString().indexOf(":");
     const afterColon = decl.raw("between").length - decl.raw("between").indexOf(":");
     return beforeColon + afterColon;
-}
-
-/**
- * Returns a CSS color variable for a given hex color, or undefined if one doesn't exist.
- */
-function getCssColorVariable(hexColor: string, cssSyntax: CssSyntax.SASS | CssSyntax.LESS): string | undefined {
-    const normalizedHex = normalizeHexColor(hexColor);
-    if (hexToColorName[normalizedHex] == null) {
-        return undefined;
-    }
-    return BpVariablePrefixMap[cssSyntax] + hexToColorName[normalizedHex].toLocaleLowerCase().split("_").join("-");
 }
 
 function getHexToColorName(): { [upperHex: string]: string } {
@@ -153,3 +145,14 @@ function getHexToColorName(): { [upperHex: string]: string } {
 }
 
 const hexToColorName = getHexToColorName();
+
+/**
+ * Returns a CSS color variable for a given hex color, or undefined if one doesn't exist.
+ */
+function getCssColorVariable(hexColor: string, cssSyntax: CssSyntax.SASS | CssSyntax.LESS): string | undefined {
+    const normalizedHex = normalizeHexColor(hexColor);
+    if (hexToColorName[normalizedHex] == null) {
+        return undefined;
+    }
+    return BpVariablePrefixMap[cssSyntax] + hexToColorName[normalizedHex].toLocaleLowerCase().split("_").join("-");
+}
