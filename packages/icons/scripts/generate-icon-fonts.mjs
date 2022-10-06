@@ -17,40 +17,45 @@
  * @fileoverview Generates icon fonts and codepoints from SVG sources
  */
 
-const { generateFonts: runFantasticon, FontAssetType, OtherAssetType } = require("fantasticon");
-const { getLogger } = require("fantasticon/lib/cli/logger");
-const fs = require("fs");
-const path = require("path");
+// @ts-check
 
-const iconsMetadata = require("../icons.json");
-const { RESOURCES_DIR, GENERATED_SRC_DIR, NS } = require("./common");
+import { FontAssetType, OtherAssetType, generateFonts as runFantasticon } from "fantasticon";
+import { getLogger } from "fantasticon/lib/cli/logger.js";
+import { mkdirSync } from "node:fs";
+import { join, resolve } from "node:path";
+
+import { generatedSrcDir, iconResourcesDir, iconsMetadata, NS, scriptsDir } from "./common.mjs";
 
 const logger = getLogger();
+
+/** @type {import("fantasticon/lib/utils/codepoints").CodepointsMap} */
 const codepoints = {};
 
-(async function () {
-    for (const icon of iconsMetadata) {
-        if (Object.values(codepoints).indexOf(icon.codepoint) !== -1) {
-            throw new Error(
-                `[generate-icon-fonts] Invalid metadata entry in icons.json: icon "${icon.iconName}" cannot have codepoint ${icon.codepoint}, it is already in use.`,
-            );
-        }
-        codepoints[icon.iconName] = icon.codepoint;
+for (const icon of iconsMetadata) {
+    if (Object.values(codepoints).indexOf(icon.codepoint) !== -1) {
+        throw new Error(
+            `[generate-icon-fonts] Invalid metadata entry in icons.json: icon "${icon.iconName}" cannot have codepoint ${icon.codepoint}, it is already in use.`,
+        );
     }
+    codepoints[icon.iconName] = icon.codepoint;
+}
 
-    logger.start();
-    await Promise.all([
-        connectToLogger(generateFonts(16, `${NS}-icon-standard`)),
-        connectToLogger(generateFonts(20, `${NS}-icon-large`)),
-    ]);
-})();
+logger.start();
+await Promise.all([
+    connectToLogger(generateFonts(16, `${NS}-icon-standard`)),
+    connectToLogger(generateFonts(20, `${NS}-icon-large`)),
+]);
 
+/**
+ * @param {number} size
+ * @param {string} prefix
+ */
 async function generateFonts(size, prefix) {
-    fs.mkdirSync(path.join(GENERATED_SRC_DIR, `${size}px/paths`), { recursive: true });
+    mkdirSync(join(generatedSrcDir, `${size}px/paths`), { recursive: true });
     return runFantasticon({
         name: `blueprint-icons-${size}`,
-        inputDir: path.join(RESOURCES_DIR, `${size}px`),
-        outputDir: path.join(GENERATED_SRC_DIR, `${size}px`),
+        inputDir: join(iconResourcesDir, `${size}px`),
+        outputDir: join(generatedSrcDir, `${size}px`),
         normalize: true,
         descent: 0,
         // N.B. Important: we need to scale up the font height so that the icons do not get visually degraded
@@ -62,11 +67,11 @@ async function generateFonts(size, prefix) {
         assetTypes: [OtherAssetType.CSS, OtherAssetType.SCSS, OtherAssetType.TS],
         templates: {
             // N.B. in icons-20, we don't generate CSS or the codepoints since we expect them to be the same as icons-16
-            scss: path.resolve(__dirname, `./icons-${size}.scss.hbs`),
-            css: path.resolve(__dirname, "./icons.css.hbs"),
+            scss: resolve(scriptsDir, `./icons-${size}.scss.hbs`),
+            css: resolve(scriptsDir, "./icons.css.hbs"),
         },
         pathOptions: {
-            scss: path.join(GENERATED_SRC_DIR, `${size}px`, "_icon-variables.scss"),
+            scss: join(generatedSrcDir, `${size}px`, "_icon-variables.scss"),
         },
         codepoints,
         tag: "i",
@@ -74,6 +79,10 @@ async function generateFonts(size, prefix) {
     });
 }
 
+/**
+ * @param {Promise<import("fantasticon/lib/core/runner").RunnerResults>} runner
+ * @returns {Promise<void>}
+ */
 function connectToLogger(runner) {
     return runner.then(results => logger.results(results)).catch(error => logger.error(error));
 }

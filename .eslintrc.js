@@ -53,7 +53,7 @@ module.exports = {
             },
         },
         {
-            files: ["**/webpack.config.{js,mjs}"],
+            files: ["**/webpack.config.{js,mjs}", "**/scripts/*.{js,mjs}"],
             env: {
                 browser: false,
                 node: true,
