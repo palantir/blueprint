@@ -19,6 +19,8 @@ approval_rules:
       teams: [ "palantir/blueprint" ]
 
   - name: approved by Blueprint team lead
+    options:
+      allow_contributor: true
     requires:
       count: 1
       users: [ "adidahiya" ]
