@@ -199,7 +199,7 @@ describe("no-prefix-literal", () => {
 
             const fixedSourceContents = fs.readFileSync(mutableFixturePath, { encoding: "utf-8" });
             expect(fixedSourceContents).to.contain(`@use "@blueprintjs/core/lib/scss/variables.scss" as bp;`);
-            expect(fixedSourceContents).to.contain(".#{bp.$bp-ns}-tag {");
+            expect(fixedSourceContents).to.contain(".#{bp.$ns}-tag {");
         });
     });
 });

@@ -32,7 +32,7 @@ export const BpVariablePrefixMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, st
 export const BpSassNamespace = "bp";
 
 export const BpPrefixVariableMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
-    [CssSyntax.SASS]: `#{${BpSassNamespace}.$bp-ns}`,
+    [CssSyntax.SASS]: `#{${BpSassNamespace}.$ns}`,
     [CssSyntax.LESS]: "@{bp-ns}",
 };
 

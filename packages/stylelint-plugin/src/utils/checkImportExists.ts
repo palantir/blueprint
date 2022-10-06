@@ -31,19 +31,11 @@ export function checkImportExists(
     const walkRegex = cssSyntaxType === CssSyntax.LESS ? /^import$/i : /^use$/i;
     root.walkAtRules(walkRegex, atRule => {
         for (const path of typeof importPath === "string" ? [importPath] : importPath) {
-            if (cssSyntaxType === CssSyntax.LESS) {
-                if (stripQuotes(stripLessReference(atRule.params)) === path) {
-                    hasBpVarsImport = true;
-                    return false; // Stop the iteration
-                }
-                continue;
+            if (stripQuotes(stripLessReference(atRule.params)) === path) {
+                hasBpVarsImport = true;
+                return false; // Stop the iteration
             }
-            if (namespace === undefined) {
-                if (stripQuotes(atRule.params)) {
-                    hasBpVarsImport = true;
-                    return false; // Stop the iteration
-                }
-            } else {
+            if (namespace !== undefined) {
                 const asText = ` as ${namespace}`;
                 if (
                     atRule.params.endsWith(asText) &&
