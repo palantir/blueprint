@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/select",
-    "version": "4.8.1",
+    "version": "4.8.2",
     "description": "Components related to selecting items from a list",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -35,8 +35,8 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.11.1",
-        "@blueprintjs/popover2": "^1.7.1",
+        "@blueprintjs/core": "^4.11.2",
+        "@blueprintjs/popover2": "^1.7.2",
         "classnames": "^2.3.2",
         "tslib": "~2.3.1"
     },
