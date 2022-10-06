@@ -8,9 +8,10 @@
 
 import { exec } from "node:child_process";
 import { join, resolve } from "node:path";
+import { argv } from "node:process";
 import yargs from "yargs";
 
-const cli = yargs.usage("$0 <commitish>").help();
+const cli = yargs(argv.slice(2)).usage("$0 <commitish>").help();
 const args = await cli.argv;
 const commitish = args._[0] || "HEAD";
 
