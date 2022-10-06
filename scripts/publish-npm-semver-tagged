@@ -7,7 +7,7 @@ git fetch --tags
 
 SCRIPTS_DIR="$( dirname "$(readlink -f "$0")" )"
 
-publishable_paths=$("$SCRIPTS_DIR/get-publishable-paths-from-semver-tags" | sed -E -e '/^ *$/d')
+publishable_paths=$(node "$SCRIPTS_DIR/get-publishable-paths-from-semver-tags.mjs" | sed -E -e '/^ *$/d')
 
 if [ -z "$publishable_paths" ]; then
     echo "Nothing to publish."
