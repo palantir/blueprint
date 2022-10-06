@@ -4,22 +4,23 @@
  * @fileoverview Finds the subset of packages which are ready to be published based on the latest Lerna publish commit.
  */
 
-"use strict";
-
 // @ts-check
 
-const cp = require("child_process");
-const path = require("path");
-const yargs = require("yargs").usage("$0 <commitish>").help();
+import { exec } from "node:child_process";
+import { join, resolve } from "node:path";
+import yargs from "yargs";
 
-const args = yargs.argv;
+const cli = yargs.usage("$0 <commitish>").help();
+const args = await cli.argv;
 const commitish = args._[0] || "HEAD";
 
-cp.exec(`git tag --points-at ${commitish}`, (err, stdout) => {
+exec(`git tag --points-at ${commitish}`, (err, stdout) => {
     if (err) {
         throw err;
     }
 
+    /** @type {string[]} */
+    // @ts-ignore
     const taggedPackageNames = stdout
         .toString()
         .split("\n")
@@ -39,10 +40,10 @@ cp.exec(`git tag --points-at ${commitish}`, (err, stdout) => {
         .map(name => {
             const nameParts = name.split("/");
             const unscopedName = nameParts[nameParts.length - 1];
-            const packagePath = path.join("packages", unscopedName);
+            const packagePath = join("packages", unscopedName);
             return {
                 // This will throw if the package name isn't also the path, which is desirable.
-                packageJson: require(path.resolve(packagePath, "package.json")),
+                packageJson: require(resolve(packagePath, "package.json")),
                 path: packagePath,
             };
         })
