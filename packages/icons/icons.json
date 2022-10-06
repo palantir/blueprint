@@ -3904,5 +3904,12 @@
         "tags": "issue, error, broken, insect, code, fail, software",
         "group": "miscellaneous",
         "codepoint": 62254
+    },
+    {
+        "displayName": "Regex",
+        "iconName": "regex",
+        "tags": "syntax, code, string, parse, parsing, regular, expression",
+        "group": "miscellaneous",
+        "codepoint": 62255
     }
 ]
