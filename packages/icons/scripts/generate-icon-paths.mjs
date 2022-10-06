@@ -15,55 +15,49 @@
 
 /**
  * @fileoverview Generates SVG paths used in <Icon> React components
- * N.B. we expect ../src/generated/ to contain SVG definitions of all the icons already
+ *
+ * Important: we expect ../src/generated/ to contain SVG definitions of all the icons already before this script runs.
  */
 
-const { pascalCase } = require("change-case");
-const fs = require("fs");
-const path = require("path");
+// @ts-check
+
+import { pascalCase } from "change-case";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 // Note: we had issues with this approach using svgo v2.x, so for now we stick with v1.x
 // With v2.x, some shapes within the icon SVGs would not get converted to paths correctly,
 // resulting in invalid d="..." attributes rendered by the <Icon> component.
-const SVGO = require("svgo");
+import SVGO from "svgo";
 
-/**
- * @typedef {Object} IconMetadata
- * @property {string} displayName - "Icon name" for display
- * @property {string} iconName - `icon-name` for IconName and CSS class
- * @property {string} tags - comma separated list of tags describing this icon
- * @property {string} group - group to which this icon belongs
- * @property {string} content - unicode character for icon glyph in font
- */
-
-/** @type {IconMetadata[]} */
-const ICONS_METADATA = require("../icons.json").sort((a, b) => a.iconName.localeCompare(b.iconName));
-const { RESOURCES_DIR, writeLinesToFile } = require("./common");
+import { iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
 
 const svgo = new SVGO({ plugins: [{ convertShapeToPath: { convertArcs: true } }] });
-const ICON_NAMES = ICONS_METADATA.map(icon => icon.iconName);
 
-(async () => {
-    for (const iconSize of [16, 20]) {
-        const iconPaths = await getIconPaths(iconSize);
+const ICON_NAMES = iconsMetadata.map(icon => icon.iconName);
 
-        for (const [iconName, pathStrings] of Object.entries(iconPaths)) {
-            const line =
-                pathStrings.length > 0
-                    ? `export default [${pathStrings.join(", ")}];`
-                    : // special case for "blank" icon - we need an explicit typedef
-                      `const p: string[] = []; export default p;`;
+/** @type {[16, 20]} */
+const ICON_SIZES = [16, 20];
 
-            writeLinesToFile(`${iconSize}px/paths/${iconName}.ts`, line);
-        }
+for (const iconSize of ICON_SIZES) {
+    const iconPaths = await getIconPaths(iconSize);
 
-        console.info(`Writing index file for ${iconSize}px icon kit paths...`);
-        writeLinesToFile(
-            `${iconSize}px/paths/index.ts`,
-            ...ICON_NAMES.map(iconName => `export { default as ${pascalCase(iconName)} } from "./${iconName}";`),
-        );
-        console.info("Done.");
+    for (const [iconName, pathStrings] of Object.entries(iconPaths)) {
+        const line =
+            pathStrings.length > 0
+                ? `export default [${pathStrings.join(", ")}];`
+                : // special case for "blank" icon - we need an explicit typedef
+                  `const p: string[] = []; export default p;`;
+
+        writeLinesToFile(`${iconSize}px/paths/${iconName}.ts`, line);
     }
-})();
+
+    console.info(`Writing index file for ${iconSize}px icon kit paths...`);
+    writeLinesToFile(
+        `${iconSize}px/paths/index.ts`,
+        ...ICON_NAMES.map(iconName => `export { default as ${pascalCase(iconName)} } from "./${iconName}";`),
+    );
+    console.info("Done.");
+}
 
 /**
  * Loads SVG file for each icon, extracts path strings `d="path-string"`,
@@ -75,8 +69,8 @@ async function getIconPaths(iconSize) {
     /** @type Record<string, string[]> */
     const iconPaths = {};
     for (const iconName of ICON_NAMES) {
-        const filepath = path.join(RESOURCES_DIR, `${iconSize}px/${iconName}.svg`);
-        const svg = fs.readFileSync(filepath, "utf-8");
+        const filepath = join(iconResourcesDir, `${iconSize}px/${iconName}.svg`);
+        const svg = readFileSync(filepath, "utf-8");
         const optimizedSvg = await svgo.optimize(svg, { path: filepath });
         const pathStrings = (optimizedSvg.data.match(/ d="[^"]+"/g) || [])
             // strip off leading 'd="'
