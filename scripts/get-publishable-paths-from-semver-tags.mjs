@@ -7,8 +7,10 @@
 // @ts-check
 
 import { exec } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { argv } from "node:process";
+import { pathToFileURL } from "node:url";
 import yargs from "yargs";
 
 const cli = yargs(argv.slice(2)).usage("$0 <commitish>").help();
@@ -44,7 +46,7 @@ exec(`git tag --points-at ${commitish}`, (err, stdout) => {
             const packagePath = join("packages", unscopedName);
             return {
                 // This will throw if the package name isn't also the path, which is desirable.
-                packageJson: require(resolve(packagePath, "package.json")),
+                packageJson: loadPackageJson(packagePath),
                 path: packagePath,
             };
         })
@@ -53,3 +55,12 @@ exec(`git tag --points-at ${commitish}`, (err, stdout) => {
 
     publishablePackagePaths.forEach(pkgPath => console.info(pkgPath));
 });
+
+/**
+ * @param {string} packagePath
+ */
+function loadPackageJson(packagePath) {
+    const packageJsonPath = resolve(packagePath, "package.json");
+    // TODO(adahiya): replace this with `await import(packageJsonPath, { assert: { type: "json" } })` in Node 17.5+
+    return JSON.parse(readFileSync(pathToFileURL(packageJsonPath), { encoding: "utf8" }));
+}
