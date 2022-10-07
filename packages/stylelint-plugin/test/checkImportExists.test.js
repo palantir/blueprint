@@ -81,7 +81,7 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(CssSyntax.SASS, root, ["some_path", "some_path.scss"])).to.be.true;
+        expect(checkImportExists(CssSyntax.SASS, root, "some_path")).to.be.true;
     });
 
     it("Handles less references", () => {
