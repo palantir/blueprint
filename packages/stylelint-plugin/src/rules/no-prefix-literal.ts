@@ -21,6 +21,7 @@ import type { PluginContext, PostcssResult } from "stylelint";
 import { checkImportExists } from "../utils/checkImportExists";
 import {
     BpPrefixVariableMap,
+    BpSassNamespace,
     BpVariableImportMap,
     CssExtensionMap,
     CssSyntax,
@@ -82,10 +83,15 @@ const ruleImpl =
             const importPath = options?.variablesImportPath?.[cssSyntaxType] ?? BpVariableImportMap[cssSyntaxType];
             const extension = CssExtensionMap[cssSyntaxType];
             if (hasBpVariablesImport == null) {
-                hasBpVariablesImport = checkImportExists(root, [importPath, `${importPath}.${extension}`]);
+                hasBpVariablesImport = checkImportExists(
+                    cssSyntaxType,
+                    root,
+                    [importPath, `${importPath}.${extension}`],
+                    BpSassNamespace,
+                );
             }
             if (!hasBpVariablesImport) {
-                insertImport(root, context, importPath);
+                insertImport(cssSyntaxType, root, context, importPath, BpSassNamespace);
                 hasBpVariablesImport = true;
             }
         }

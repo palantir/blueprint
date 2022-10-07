@@ -21,6 +21,7 @@ import { Colors } from "@blueprintjs/colors";
 
 import { checkImportExists } from "../utils/checkImportExists";
 import {
+    BpSassNamespace,
     BpVariableImportMap,
     BpVariablePrefixMap,
     CssExtensionMap,
@@ -82,10 +83,15 @@ const ruleImpl =
             const importPath = options?.variablesImportPath?.[cssSyntaxType] ?? BpVariableImportMap[cssSyntaxType];
             const extension = CssExtensionMap[cssSyntaxType];
             if (hasBpVariablesImport == null) {
-                hasBpVariablesImport = checkImportExists(root, [importPath, `${importPath}.${extension}`]);
+                hasBpVariablesImport = checkImportExists(
+                    cssSyntaxType,
+                    root,
+                    [importPath, `${importPath}.${extension}`],
+                    BpSassNamespace,
+                );
             }
             if (!hasBpVariablesImport) {
-                insertImport(root, context, importPath);
+                insertImport(cssSyntaxType, root, context, importPath, BpSassNamespace);
                 hasBpVariablesImport = true;
             }
         }
@@ -105,7 +111,7 @@ const ruleImpl =
                 }
                 if (context.fix && !disableFix) {
                     assertBpVariablesImportExists(cssSyntax);
-                    node.value = cssVar;
+                    node.value = `${BpSassNamespace}.${cssVar}`;
                     needsFix = true;
                 } else {
                     const message =
