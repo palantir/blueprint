@@ -3911,5 +3911,12 @@
         "tags": "syntax, code, string, parse, parsing, regular, expression",
         "group": "miscellaneous",
         "codepoint": 62255
+    },
+    {
+        "displayName": "Anchor",
+        "iconName": "anchor",
+        "tags": "link, ship, navy, boat, sea, ocean, attach, sink",
+        "group": "action",
+        "codepoint": 62256
     }
 ]
