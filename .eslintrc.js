@@ -19,6 +19,14 @@ const xtends = ["./packages/eslint-config"];
 const rules = {
     // we have these across the codebase, it's not useful for this repo
     "@blueprintjs/no-deprecated-type-references": "off",
+    // TODO(adahiya): remove this import restriction in Blueprint v6 after dropping CommonJS support
+    "no-restricted-imports": [
+        "error",
+        {
+            name: "lodash-es",
+            message: "lodash-es cannot be imported in CommonJS, use lodash submodules instead",
+        },
+    ],
 };
 
 if (process.env.LINT_SCRIPT) {
