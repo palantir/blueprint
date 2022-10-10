@@ -54,6 +54,24 @@ describe("insertImport", () => {
 .some-class { width: 10px }`);
     });
 
+    it("Inserts an import below a multi-line copyright header if no other imports exist", () => {
+        const root = postcss.parse(`
+/* copyright 2021
+ * and some additional licensing info here
+ */
+
+.some-class { width: 10px }`);
+        insertImport(CssSyntax.SASS, root, { newline: "\n" }, "some_path");
+        expect(root.toString()).to.be.eq(`
+/* copyright 2021
+ * and some additional licensing info here
+ */
+
+@use "some_path";
+
+.some-class { width: 10px }`);
+    });
+
     it("Inserts an import below other imports if the copyright header exists", () => {
         const root = postcss.parse(`
 /* copyright 2021 */

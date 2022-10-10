@@ -87,16 +87,34 @@ function getLastImport(cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS, root: Roo
 }
 
 /**
- * Returns the first copyright header in the file, or undefined if one does not exist
+ * Returns the first copyright header in the file, or undefined if one does not exist.
+ * If the first copyright header spans multiple lines, the last line is returned.
  */
 function getCopyrightHeader(root: Root): Comment | undefined {
-    let copyrightComment: Comment | undefined;
+    let lastCopyrightComment: Comment | undefined;
     root.walkComments(comment => {
-        if (comment.text.toLowerCase().includes("copyright")) {
-            copyrightComment = comment;
-            return false; // Stop the iteration
+        if (lastCopyrightComment) {
+            if (comment.source?.start === undefined || lastCopyrightComment.source?.end === undefined) {
+                return false;
+            }
+            if (comment.source.start.line === lastCopyrightComment.source.end.line + 1) {
+                // Copyright continues in next comment via //
+                lastCopyrightComment = comment;
+            } else {
+                // The next comment is not directly under the prior comment
+                return false;
+            }
+        } else if (comment.text.toLowerCase().includes("copyright")) {
+            lastCopyrightComment = comment;
+            if (comment.source?.start === undefined || comment.source?.end === undefined) {
+                return false;
+            }
+            if (comment.source.start.line !== comment.source.end.line) {
+                // A multi-line copyright comment such as /* */
+                return false; // Stop the iteration
+            }
         }
         return;
     });
-    return copyrightComment;
+    return lastCopyrightComment;
 }
