@@ -18,7 +18,7 @@
         "highlights": "^3.1.6",
         "language-less": "github:atom/language-less",
         "marked": "^4.1.1",
-        "semver": "^7.3.7",
+        "semver": "^7.3.8",
         "tree-sitter-typescript": "~0.20.1"
     },
     "devDependencies": {
