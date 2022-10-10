@@ -23,7 +23,7 @@
         "react-refresh": "^0.14.0",
         "react-refresh-typescript": "^2.0.7",
         "sass": "^1.55.0",
-        "sass-loader": "^13.0.2",
+        "sass-loader": "^13.1.0",
         "source-map-loader": "^4.0.0",
         "stream-browserify": "^3.0.0",
         "style-loader": "^3.3.1",
