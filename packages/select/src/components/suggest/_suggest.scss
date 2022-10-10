@@ -1,0 +1,21 @@
+// Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+.#{$ns}-suggest-popover {
+  .#{$ns}-menu {
+    max-height: $select-popover-max-height;
+    max-width: $select-popover-max-width;
+    overflow: auto;
+  }
+
+  &.#{$ns}-popover2-match-target-width {
+    width: 100%;
+
+    .#{$ns}-menu {
+      max-width: none;
+      min-width: 0;
+    }
+  }
+}
