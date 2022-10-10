@@ -23,7 +23,6 @@ import {
     BpPrefixVariableMap,
     BpSassNamespace,
     BpVariableImportMap,
-    CssExtensionMap,
     CssSyntax,
     getCssSyntax,
     isCssSyntaxToStringMap,
@@ -81,14 +80,8 @@ const ruleImpl =
         let hasBpVariablesImport: boolean | undefined; // undefined means not checked yet
         function assertBpVariablesImportExists(cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS) {
             const importPath = options?.variablesImportPath?.[cssSyntaxType] ?? BpVariableImportMap[cssSyntaxType];
-            const extension = CssExtensionMap[cssSyntaxType];
             if (hasBpVariablesImport == null) {
-                hasBpVariablesImport = checkImportExists(
-                    cssSyntaxType,
-                    root,
-                    [importPath, `${importPath}.${extension}`],
-                    BpSassNamespace,
-                );
+                hasBpVariablesImport = checkImportExists(cssSyntaxType, root, importPath, BpSassNamespace);
             }
             if (!hasBpVariablesImport) {
                 insertImport(cssSyntaxType, root, context, importPath, BpSassNamespace);

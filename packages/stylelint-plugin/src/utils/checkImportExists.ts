@@ -15,7 +15,7 @@
 
 import type { Root } from "postcss";
 
-import { CssSyntax } from "./cssSyntax";
+import { CssExtensionMap, CssSyntax } from "./cssSyntax";
 
 /**
  * Returns true if the given import exists in the file, otherwise returns false.
@@ -24,13 +24,13 @@ import { CssSyntax } from "./cssSyntax";
 export function checkImportExists(
     cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS,
     root: Root,
-    importPath: string | string[],
+    importPath: string,
     namespace?: string,
 ): boolean {
     let hasBpVarsImport = false;
     const walkRegex = cssSyntaxType === CssSyntax.LESS ? /^import$/i : /^use$/i;
     root.walkAtRules(walkRegex, atRule => {
-        for (const path of typeof importPath === "string" ? [importPath] : importPath) {
+        for (const path of [importPath, `${importPath}.${CssExtensionMap[cssSyntaxType]}`]) {
             if (stripQuotes(stripLessReference(atRule.params)) === path) {
                 hasBpVarsImport = true;
                 return false; // Stop the iteration
