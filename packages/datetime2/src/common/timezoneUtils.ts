@@ -15,7 +15,7 @@
  */
 
 import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
-import { isEmpty } from "lodash-es";
+import isEmpty from "lodash/isEmpty";
 
 import { TimePrecision } from "@blueprintjs/datetime";
 
