@@ -484,7 +484,7 @@ describe("<DateInput2>", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
                 clickTimezoneItem(wrapper, "Paris");
                 assert.isTrue(onChange.calledOnce);
-                assert.deepEqual(onChange.firstCall.args, ["2021-11-29T10:30:00+01:00"]);
+                assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00+01:00");
             });
 
             it("formats the returned ISO string according to timePrecision", () => {
@@ -493,7 +493,7 @@ describe("<DateInput2>", () => {
                 );
                 clickTimezoneItem(wrapper, "Paris");
                 assert.isTrue(onChange.calledOnce);
-                assert.deepEqual(onChange.firstCall.args, ["2021-11-29T10:30+01:00"]);
+                assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30+01:00");
             });
         });
 
