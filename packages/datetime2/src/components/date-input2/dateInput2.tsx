@@ -113,7 +113,7 @@ export interface DateInput2Props extends DatePickerBaseProps, DateFormatProps, P
      * @param isUserChange `true` if the user clicked on a date in the calendar, changed the input value,
      *     or cleared the selection; `false` if the date was changed by changing the month or year.
      */
-    onChange?: (newDate: string | null, isUserChange?: boolean) => void;
+    onChange?: (newDate: string | null, isUserChange: boolean) => void;
 
     /**
      * Called when the user finishes typing in a new date and the date causes an error state.
@@ -400,7 +400,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             if (valueAsDate !== null) {
                 setTimezoneValue(newTimezone);
                 const newDateString = getIsoEquivalentWithUpdatedTimezone(valueAsDate, newTimezone, timePrecision);
-                props.onChange?.(newDateString);
+                props.onChange?.(newDateString, true);
             }
         },
         [props.onChange, valueAsDate, timePrecision],
