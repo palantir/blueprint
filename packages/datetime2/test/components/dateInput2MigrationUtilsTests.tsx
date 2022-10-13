@@ -36,16 +36,6 @@ const controlledDateInputProps: Required<Pick<DateInputProps, "value" | "onChang
 };
 
 describe("DateInput2MigrationUtils", () => {
-    let containerElement: HTMLElement | undefined;
-
-    beforeEach(() => {
-        containerElement = document.createElement("div");
-        document.body.appendChild(containerElement);
-    });
-    afterEach(() => {
-        containerElement?.remove();
-    });
-
     it("Applying onChange + value adapters renders DateInput2 without error", () => {
         mount(
             <DateInput2
