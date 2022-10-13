@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
@@ -55,7 +56,7 @@ describe("DateInput2MigrationUtils", () => {
         );
     });
 
-    it("Value adpater accepts time precision", () => {
+    it("Value adapter accepts time precision", () => {
         const precision = TimePrecision.MINUTE;
         mount(
             <DateInput2
@@ -65,5 +66,19 @@ describe("DateInput2MigrationUtils", () => {
                 value={DateInput2MigrationUtils.valueAdapter(controlledDateInputProps.value, precision)}
             />,
         );
+    });
+
+    it("Value adapter infers time precision from Date object", () => {
+        const date = new Date();
+
+        // TimePrecision.SECOND forces the string to exclude the date's milliseconds value
+        date.setHours(0, 0, 10, 100);
+        const valueWithExplicitPrecision = DateInput2MigrationUtils.valueAdapter(date, TimePrecision.SECOND);
+
+        date.setHours(0, 0, 10, 0);
+        assert.strictEqual(DateInput2MigrationUtils.valueAdapter(date), valueWithExplicitPrecision);
+
+        date.setHours(0, 0, 10, 100);
+        assert.notStrictEqual(DateInput2MigrationUtils.valueAdapter(date), valueWithExplicitPrecision);
     });
 });

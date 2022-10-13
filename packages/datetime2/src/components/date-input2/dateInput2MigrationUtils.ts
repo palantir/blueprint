@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { DateInputProps, TimePrecision } from "@blueprintjs/datetime";
+import { DateInputProps, TimePrecision } from "@blueprintjs/datetime";
 
 import { getCurrentTimezone } from "../../common/getTimezone";
 import { getDateObjectFromIsoString, getIsoEquivalentWithUpdatedTimezone } from "../../common/timezoneUtils";
@@ -43,8 +43,21 @@ export function onChangeAdapter(handler: DateInputProps["onChange"]): DateInput2
  * @returns DateInput2 value
  */
 export function valueAdapter(value: DateInputProps["value"], timePrecision?: TimePrecision): DateInput2Props["value"] {
+    if (value == null) {
+        return null;
+    }
+
     const tz = getCurrentTimezone();
-    return value == null ? null : getIsoEquivalentWithUpdatedTimezone(value, tz, timePrecision);
+    const inferredTimePrecision =
+        value.getMilliseconds() !== 0
+            ? TimePrecision.MILLISECOND
+            : value.getSeconds() !== 0
+            ? TimePrecision.SECOND
+            : value.getMinutes() !== 0
+            ? TimePrecision.MINUTE
+            : undefined;
+
+    return getIsoEquivalentWithUpdatedTimezone(value, tz, timePrecision ?? inferredTimePrecision);
 }
 
 function noOp() {
