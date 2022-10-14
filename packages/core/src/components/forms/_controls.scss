@@ -570,6 +570,7 @@ $control-indicator-spacing: $pt-grid-size !default;
         input:not(:checked):disabled ~ .#{$ns}-control-indicator {
           border-color: $pt-high-contrast-mode-disabled-border-color;
 
+          // stylelint-disable-next-line max-nesting-depth
           &::before {
             border-color: $pt-high-contrast-mode-disabled-border-color;
           }
