@@ -122,6 +122,11 @@ $tab-indicator-width: 3px !default;
   &[aria-disabled="true"] {
     color: $pt-text-color-disabled;
     cursor: not-allowed;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      color: $pt-high-contrast-mode-disabled-text-color;
+    }
   }
 
   &[aria-selected="true"] {
@@ -192,6 +197,11 @@ $tab-indicator-width: 3px !default;
 
     &[aria-disabled="true"] {
       color: $pt-dark-text-color-disabled;
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        color: $pt-high-contrast-mode-disabled-text-color;
+      }
     }
 
     &[aria-selected="true"] {
@@ -201,6 +211,11 @@ $tab-indicator-width: 3px !default;
     &[aria-selected="true"],
     &:not([aria-disabled="true"]):hover {
       color: $dark-tab-color-selected;
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        color: $pt-high-contrast-mode-active-text-color;
+      }
     }
   }
 

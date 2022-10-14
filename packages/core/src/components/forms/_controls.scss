@@ -555,6 +555,30 @@ $control-indicator-spacing: $pt-grid-size !default;
       input:checked ~ .#{$ns}-control-indicator::before {
         background: $dark-switch-checked-indicator-background-color;
       }
+
+      // Add Windows high contrast mode styles
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        input:checked ~ .#{$ns}-control-indicator {
+          background: $pt-high-contrast-mode-active-background-color;
+          border: 1px solid $pt-high-contrast-mode-border-color;
+        }
+
+        input:checked:disabled ~ .#{$ns}-control-indicator {
+          background-color: $pt-high-contrast-mode-disabled-background-color;
+        }
+
+        input:not(:checked):disabled ~ .#{$ns}-control-indicator {
+          border-color: $pt-high-contrast-mode-disabled-border-color;
+
+          &::before {
+            border-color: $pt-high-contrast-mode-disabled-border-color;
+          }
+        }
+
+        &:hover input:checked ~ .#{$ns}-control-indicator {
+          background: $pt-high-contrast-mode-active-background-color;
+        }
+      }
     }
 
     .#{$ns}-switch-inner-text {
