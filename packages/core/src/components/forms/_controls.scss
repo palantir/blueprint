@@ -511,6 +511,10 @@ $control-indicator-spacing: $pt-grid-size !default;
           margin-top: $switch-indicator-margin - 1px;
         }
       }
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        border: 1px solid $pt-high-contrast-mode-border-color;
+      }
     }
 
     input:checked ~ .#{$ns}-control-indicator::before {
@@ -550,6 +554,31 @@ $control-indicator-spacing: $pt-grid-size !default;
 
       input:checked ~ .#{$ns}-control-indicator::before {
         background: $dark-switch-checked-indicator-background-color;
+      }
+
+      // Add Windows high contrast mode styles
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        input:checked ~ .#{$ns}-control-indicator {
+          background: $pt-high-contrast-mode-active-background-color;
+          border: 1px solid $pt-high-contrast-mode-border-color;
+        }
+
+        input:checked:disabled ~ .#{$ns}-control-indicator {
+          background-color: $pt-high-contrast-mode-disabled-background-color;
+        }
+
+        input:not(:checked):disabled ~ .#{$ns}-control-indicator {
+          border-color: $pt-high-contrast-mode-disabled-border-color;
+
+          // stylelint-disable-next-line max-nesting-depth
+          &::before {
+            border-color: $pt-high-contrast-mode-disabled-border-color;
+          }
+        }
+
+        &:hover input:checked ~ .#{$ns}-control-indicator {
+          background: $pt-high-contrast-mode-active-background-color;
+        }
       }
     }
 
