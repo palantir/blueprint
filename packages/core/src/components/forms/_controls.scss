@@ -511,6 +511,10 @@ $control-indicator-spacing: $pt-grid-size !default;
           margin-top: $switch-indicator-margin - 1px;
         }
       }
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        border: 1px solid $pt-high-contrast-mode-border-color;
+      }
     }
 
     input:checked ~ .#{$ns}-control-indicator::before {
