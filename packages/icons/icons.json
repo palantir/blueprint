@@ -3922,8 +3922,8 @@
     {
         "displayName": "At",
         "iconName": "at",
-        "tags": "email, mention",
-        "group": "file",
+        "tags": "email, mention, tag, address, asperand, rate of",
+        "group": "miscellaneous",
         "codepoint": 62257
     }
 ]
