@@ -3918,5 +3918,12 @@
         "tags": "link, ship, navy, boat, sea, ocean, attach, sink",
         "group": "action",
         "codepoint": 62256
+    },
+    {
+        "displayName": "At",
+        "iconName": "at",
+        "tags": "email, mention, tag, address, asperand, rate of",
+        "group": "miscellaneous",
+        "codepoint": 62257
     }
 ]
