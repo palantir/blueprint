@@ -44,7 +44,7 @@
         "@types/react": "~16.14.32",
         "@types/react-dom": "~16.9.10",
         "@types/react-transition-group": "~4.4.5",
-        "@types/sinon": "~9.0.11",
+        "@types/sinon": "~10.0.13",
         "@types/yargs": "~17.0.13",
         "chai": "^4.3.6",
         "circle-github-bot": "^2.1.0",
