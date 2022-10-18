@@ -10,6 +10,8 @@ module.exports = async function (config) {
             coverageExcludes: [
                 // HACKHACK: needs coverage
                 "src/components/date-range-input2/*",
+                // not worth coverage, fairly simple implementation
+                "src/common/timezoneDisplayFormat.ts",
             ],
         }),
     );

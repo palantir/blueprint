@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import { formatInTimeZone } from "date-fns-tz";
 import * as React from "react";
 
 import {
@@ -31,6 +30,7 @@ import {
 import { ItemListPredicate, ItemRenderer, Select2, SelectPopoverProps } from "@blueprintjs/select";
 
 import * as Classes from "../../common/classes";
+import { formatTimezone, TimezoneDisplayFormat } from "../../common/timezoneDisplayFormat";
 import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames, TimezoneWithNames } from "../../common/timezoneNameUtils";
 
@@ -111,6 +111,14 @@ export interface TimezoneSelectProps extends Props {
 
     /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
     popoverProps?: SelectPopoverProps["popoverProps"];
+
+    /**
+     * Format to use when displaying the selected (or default) timezone within the target element.
+     * This prop will be ignored if `children` is provided.
+     *
+     * @default TimezoneDisplayFormat.COMPOSITE
+     */
+    valueDisplayFormat?: TimezoneDisplayFormat;
 }
 
 export interface TimezoneSelectState {
@@ -188,13 +196,14 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
     }
 
     private renderButton() {
-        const { buttonProps = {}, disabled, fill, placeholder, value } = this.props;
+        const { buttonProps = {}, disabled, fill, placeholder, value, valueDisplayFormat } = this.props;
         const selectedTimezone = this.timezoneItems.find(tz => tz.ianaCode === value);
-        const buttonContent = selectedTimezone ? (
-            `${selectedTimezone.label} ${formatInTimeZone(this.props.date!, selectedTimezone.ianaCode, "xxx")}`
-        ) : (
-            <span className={CoreClasses.TEXT_MUTED}>{placeholder}</span>
-        );
+        const buttonContent =
+            selectedTimezone !== undefined ? (
+                formatTimezone(selectedTimezone, valueDisplayFormat ?? TimezoneDisplayFormat.COMPOSITE)
+            ) : (
+                <span className={CoreClasses.TEXT_MUTED}>{placeholder}</span>
+            );
         return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} fill={fill} {...buttonProps} />;
     }
 

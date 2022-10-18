@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
-import * as Classes from "./classes";
-import * as DateUtils from "./dateUtils";
+import { TIMEZONE_ITEMS } from "./timezoneItems";
+import { getTimezoneNames, TimezoneWithNames } from "./timezoneNameUtils";
 
-export { Classes, DateUtils };
-export { DateRange, NonNullDateRange } from "./dateRange";
-export { TimezoneDisplayFormat } from "./timezoneDisplayFormat";
-export { TimezoneMetadata, getTimezoneMetadata } from "./timezoneMetadata";
+export type TimezoneMetadata = TimezoneWithNames;
+
+/**
+ * Given a timezone IANA code and an optional date object, retrieve additional metadata like its common name, offset,
+ * and abbreviation.
+ */
+export function getTimezoneMetadata(timezoneIanaCode: string, date?: Date): TimezoneMetadata | undefined {
+    const timezone = TIMEZONE_ITEMS.find(tz => tz.ianaCode === timezoneIanaCode);
+    if (timezone === undefined) {
+        return undefined;
+    }
+    return getTimezoneNames(timezone, date);
+}

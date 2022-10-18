@@ -25,21 +25,30 @@ export interface TimezoneWithNames extends Timezone {
 }
 
 const CURRENT_DATE = Date.now();
+const LONG_NAME_FORMAT_STR = "zzzz";
+const SHORT_NAME_FORMAT_STR = "zzz";
 
-export const getTimezoneName = (date: Date | undefined, ianaCode: string, getLongName: boolean = true) =>
-    formatInTimeZone(date ?? CURRENT_DATE, ianaCode, getLongName ? "zzzz" : "zzz");
+export function getTimezoneShortName(tzIanaCode: string, date: Date | undefined) {
+    return formatInTimeZone(date ?? CURRENT_DATE, tzIanaCode, SHORT_NAME_FORMAT_STR);
+}
+
+/**
+ * Augments a simple {@link Timezone} metadata object with long and short names formatted by `date-fns-tz`.
+ */
+export function getTimezoneNames(tz: Timezone, date: Date | number | undefined = CURRENT_DATE): TimezoneWithNames {
+    return {
+        ...tz,
+        longName: formatInTimeZone(date, tz.ianaCode, LONG_NAME_FORMAT_STR),
+        shortName: formatInTimeZone(date, tz.ianaCode, SHORT_NAME_FORMAT_STR),
+    };
+}
 
 export const mapTimezonesWithNames = (
     date: Date | undefined,
     timezones: Timezone[] | TimezoneWithNames[],
-): TimezoneWithNames[] =>
-    timezones.map(tz => ({
-        ...tz,
-        longName: getTimezoneName(date, tz.ianaCode),
-        shortName: getTimezoneName(date, tz.ianaCode, false),
-    }));
+): TimezoneWithNames[] => timezones.map(tz => getTimezoneNames(tz, date));
 
-export function getInitialTimezoneItems(date: Date | undefined, showLocalTimezone: boolean) {
+export function getInitialTimezoneItems(date: Date | undefined, showLocalTimezone: boolean): TimezoneWithNames[] {
     const systemTimezone = getCurrentTimezone();
     const localTimezone = showLocalTimezone
         ? TIMEZONE_ITEMS.find(timezone => timezone.ianaCode === systemTimezone)
@@ -49,7 +58,7 @@ export function getInitialTimezoneItems(date: Date | undefined, showLocalTimezon
             ? {
                   ...localTimezone,
                   longName: "Current timezone",
-                  shortName: getTimezoneName(date, localTimezone.ianaCode, false),
+                  shortName: formatInTimeZone(date ?? CURRENT_DATE, localTimezone.ianaCode, SHORT_NAME_FORMAT_STR),
               }
             : undefined;
     const minimalTimezoneItemsWithNames = mapTimezonesWithNames(date, MINIMAL_TIMEZONE_ITEMS).filter(
