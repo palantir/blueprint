@@ -40,7 +40,7 @@ import { Popover2, Popover2Props, Popover2TargetProps } from "@blueprintjs/popov
 import * as Classes from "../../common/classes";
 import { isDateValid, isDayInRange } from "../../common/dateUtils";
 import { getCurrentTimezone } from "../../common/getTimezone";
-import { getTimezoneName } from "../../common/timezoneNameUtils";
+import { getTimezoneShortName } from "../../common/timezoneNameUtils";
 import {
     convertLocalDateToTimezoneTime,
     getDateObjectFromIsoString,
@@ -420,7 +420,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
                 interactive={!isTimezoneSelectDisabled}
                 minimal={true}
             >
-                {getTimezoneName(tzSelectDate, timezoneValue, false)}
+                {getTimezoneShortName(timezoneValue, tzSelectDate)}
             </Tag>
         </TimezoneSelect>
     );
