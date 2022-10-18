@@ -29,7 +29,7 @@ describe("getTimezoneMetadata", () => {
             expect(metadata).not.to.be.undefined;
             expect(metadata?.label).to.exist;
             expect(metadata?.longName).to.exist;
-            expect(metadata?.ianaCode).to.be(tzCode);
+            expect(metadata?.ianaCode).to.equal(tzCode);
         }
     });
 });
