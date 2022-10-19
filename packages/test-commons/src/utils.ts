@@ -101,7 +101,6 @@ function detectBrowser() {
 // see http://stackoverflow.com/questions/16802795/click-not-working-in-mocha-phantomjs-on-certain-elements
 // tl;dr PhantomJS sucks so we have to manually create click events
 export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) {
-
     let detailArg = 0;
 
     switch (eventType) {
@@ -125,7 +124,6 @@ export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) 
         view: window,
     });
     // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
-
 
     // HACKHACK: see https://github.com/palantir/blueprint/issues/5173
     // eslint-disable-next-line deprecation/deprecation
