@@ -155,17 +155,17 @@ export class ElementHarness {
             const y = bounds.top + bounds.height / 2 + offsetY;
 
             const event = new MouseEvent(eventType, {
+                altKey: isAltKeyDown,
                 bubbles: true,
-                button: button,
-                view: window,
+                button,
                 cancelable: true,
                 clientX: x,
                 clientY: y,
-                detail: 0,
                 ctrlKey: isCtrlKeyDown,
-                altKey: isAltKeyDown,
-                shiftKey: isShiftKeyDown,
+                detail: 0,
                 metaKey: isMetaKeyDown,
+                shiftKey: isShiftKeyDown,
+                view: window,
             });
 
             this.element!.dispatchEvent(event);
