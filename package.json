@@ -52,7 +52,6 @@
         "eslint": "^8.21.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
-        "first-mate": "^7.4.3",
         "gh-pages": "^4.0.0",
         "http-server": "^14.1.1",
         "lerna": "^5.5.4",
