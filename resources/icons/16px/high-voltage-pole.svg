@@ -1,0 +1,12 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 1C5 0.447715 5.44772 0 6 0V0C6.55228 0 7 0.447715 7 1V15C7 15.5523 6.55228 16 6 16V16C5.44772 16 5 15.5523 5 15V1Z" fill="#5F6B7C"/>
+<path d="M9 1C9 0.447715 9.44772 0 10 0V0C10.5523 0 11 0.447715 11 1V15C11 15.5523 10.5523 16 10 16V16C9.44772 16 9 15.5523 9 15V1Z" fill="#5F6B7C"/>
+<path d="M1 5C1 4.44772 1.44772 4 2 4H14C14.5523 4 15 4.44772 15 5V5C15 5.55228 14.5523 6 14 6H2C1.44772 6 1 5.55228 1 5V5Z" fill="#5F6B7C"/>
+<rect x="2" y="2" width="1" height="6" rx="0.5" fill="#5F6B7C"/>
+<rect x="13" y="2" width="1" height="6" rx="0.5" fill="#5F6B7C"/>
+<rect x="1" y="7" width="3" height="1" rx="0.5" fill="#5F6B7C"/>
+<rect x="12" y="7" width="3" height="1" rx="0.5" fill="#5F6B7C"/>
+<rect x="1" y="2" width="3" height="1" rx="0.5" fill="#5F6B7C"/>
+<rect x="12" y="2" width="3" height="1" rx="0.5" fill="#5F6B7C"/>
+<rect x="6" width="4" height="2" fill="#5F6B7C"/>
+</svg>

@@ -1,5 +1,5 @@
 [
-    {
+   {
         "displayName": "Blank",
         "iconName": "blank",
         "tags": "empty, placeholder, nothing",
@@ -3925,5 +3925,19 @@
         "tags": "email, mention, tag, address, asperand, rate of",
         "group": "miscellaneous",
         "codepoint": 62257
+    },
+    {
+        "displayName": "Low Voltage Pole",
+        "iconName": "low-voltage-pole",
+        "tags": "power pole, electricity, utilities",
+        "group": "miscellaneous",
+        "codepoint": 62258
+    },
+    {
+        "displayName": "High Voltage Pole",
+        "iconName": "high-voltage-pole",
+        "tags": "power pole, electricity, utilities",
+        "group": "miscellaneous",
+        "codepoint": 62259
     }
 ]
