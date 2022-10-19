@@ -38,7 +38,7 @@
         "moment": "^2.29.1",
         "normalize.css": "^8.0.1",
         "popper.js": "^1.16.1",
-        "promise": "^8.1.0",
+        "promise": "^8.2.0",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-transition-group": "^4.4.5",
