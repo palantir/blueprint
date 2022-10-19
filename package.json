@@ -54,7 +54,7 @@
         "eslint-plugin-prettier": "^4.2.1",
         "gh-pages": "^4.0.0",
         "http-server": "^14.1.1",
-        "lerna": "^5.5.4",
+        "lerna": "^6.0.1",
         "npm-run-all": "^4.1.5",
         "prettier": "~2.7.1",
         "sinon": "^14.0.1",
