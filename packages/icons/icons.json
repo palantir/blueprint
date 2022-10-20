@@ -3930,14 +3930,14 @@
         "displayName": "Low Voltage Pole",
         "iconName": "low-voltage-pole",
         "tags": "power pole, electricity, utilities",
-        "group": "miscellaneous",
+        "group": "utilities",
         "codepoint": 62258
     },
     {
         "displayName": "High Voltage Pole",
         "iconName": "high-voltage-pole",
         "tags": "power pole, electricity, utilities",
-        "group": "miscellaneous",
+        "group": "utilities",
         "codepoint": 62259
     }
 ]
