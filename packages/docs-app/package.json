@@ -29,7 +29,7 @@
         "@blueprintjs/timezone": "^4.5.4",
         "@documentalist/client": "^4.0.0",
         "chroma-js": "^2.1.0",
-        "classnames": "^2.3.2",
+        "classnames": "^2.3.1",
         "core-js": "^3.25.5",
         "date-fns": "^2.28.0",
         "dom4": "^2.1.5",

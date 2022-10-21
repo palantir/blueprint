@@ -23,7 +23,7 @@
         "@blueprintjs/select": "^4.8.4",
         "@blueprintjs/table": "^4.7.4",
         "@blueprintjs/timezone": "^4.5.4",
-        "classnames": "^2.3.2",
+        "classnames": "^2.3.1",
         "core-js": "^3.25.5",
         "dom4": "^2.1.5",
         "lodash": "^4.17.21",

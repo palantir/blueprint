@@ -19,7 +19,7 @@
         "@blueprintjs/core": "^4.11.4",
         "@blueprintjs/popover2": "^1.7.4",
         "@blueprintjs/table": "^4.7.4",
-        "classnames": "^2.3.2",
+        "classnames": "^2.3.1",
         "dom4": "^2.1.5",
         "lodash": "^4.17.21",
         "normalize.css": "^8.0.1",
