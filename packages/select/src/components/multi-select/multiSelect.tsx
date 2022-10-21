@@ -157,7 +157,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
 
     private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         const { fill, tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
-        const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
+        const { handlePaste, handleBlur, handleKeyDown, handleKeyUp } = listProps;
 
         if (fill) {
             popoverProps.fill = true;
@@ -173,6 +173,9 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
         const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {
             if (method === "paste") {
                 handlePaste(values);
+            }
+            if (method === "blur") {
+                handleBlur(values);
             }
         };
 

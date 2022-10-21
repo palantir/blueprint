@@ -108,6 +108,8 @@ export interface IQueryListRendererProps<T> // Omit `createNewItem`, because it'
      */
     handlePaste: (queries: string[]) => void;
 
+    handleBlur: (queries: string[]) => void;
+
     /**
      * Keyboard handler for up/down arrow keys to shift the active item.
      * Attach this handler to any element that should support this interaction.
@@ -221,6 +223,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
         return renderer({
             ...spreadableState,
             className,
+            handleBlur: this.handleBlur,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
@@ -506,6 +509,48 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
         }
 
         onItemsPaste?.(pastedItemsToEmit);
+    };
+
+    private handleBlur = (queries: string[]) => {
+        const { createNewItemFromQuery, onItemsBlur } = this.props;
+
+        let nextActiveItem: T | undefined;
+        const nextQueries = [];
+
+        // Find an exising item that exactly matches each pasted value, or
+        // create a new item if possible. Ignore unmatched values if creating
+        // items is disabled.
+        const blurredItemsToEmit = [];
+
+        for (const query of queries) {
+            const equalItem = getMatchingItem(query, this.props);
+
+            if (equalItem !== undefined) {
+                nextActiveItem = equalItem;
+                blurredItemsToEmit.push(equalItem);
+            } else if (this.canCreateItems()) {
+                const value = createNewItemFromQuery?.(query);
+                if (value !== undefined) {
+                    const newItems = Array.isArray(value) ? value : [value];
+                    blurredItemsToEmit.push(...newItems);
+                }
+            } else {
+                nextQueries.push(query);
+            }
+        }
+
+        // UX nicety: combine all unmatched queries into a single
+        // comma-separated query in the input, so we don't lose any information.
+        // And don't reset the active item; we'll do that ourselves below.
+        this.setQuery(nextQueries.join(", "), false);
+
+        // UX nicety: update the active item if we matched with at least one
+        // existing item.
+        if (nextActiveItem !== undefined) {
+            this.setActiveItem(nextActiveItem);
+        }
+
+        onItemsBlur?.(blurredItemsToEmit);
     };
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
