@@ -3939,5 +3939,12 @@
         "tags": "power pole, electricity, utilities",
         "group": "utilities",
         "codepoint": 62259
+    },
+    {
+        "displayName": "Small info sign",
+        "iconName": "small-info-sign",
+        "tags": "notification, information, circle, message, sign, info, tooltip",
+        "group": "interface",
+        "codepoint": 62260
     }
 ]
