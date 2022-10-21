@@ -24,6 +24,15 @@ export { Boundary as PopperBoundary, Placement, placements as PlacementOptions }
 // copied from @popperjs/core, where it is not exported as public
 export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
 
+/**
+ * Configuration object for customizing popper.js v2 modifiers in Popover2 and Tooltip2.
+ *
+ * @see https://popper.js.org/docs/v2/modifiers/
+ */
+export type PopperModifierOverrides = Partial<{
+    [M in StrictModifierNames]: Partial<Omit<StrictModifier<M>, "name">>;
+}>;
+
 // eslint-disable-next-line deprecation/deprecation
 export type Popover2TargetProps = IPopover2TargetProps;
 /**
@@ -153,9 +162,7 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
      *
      * @see https://popper.js.org/docs/v2/modifiers/
      */
-    modifiers?: Partial<{
-        [M in StrictModifierNames]: Partial<Omit<StrictModifier<M>, "name">>;
-    }>;
+    modifiers?: PopperModifierOverrides;
 
     /**
      * Custom modifiers to add to the popper instance.

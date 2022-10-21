@@ -46,7 +46,7 @@ import {
     PlacementOptions,
     Popover2,
     Popover2InteractionKind,
-    Popover2SharedProps,
+    PopperModifierOverrides,
     StrictModifierNames,
 } from "@blueprintjs/popover2";
 import { FilmSelect } from "@blueprintjs/select/examples";
@@ -72,7 +72,7 @@ export interface IPopover2ExampleState {
     isOpen?: boolean;
     matchTargetWidth: boolean;
     minimal?: boolean;
-    modifiers?: Popover2SharedProps<HTMLElement>["modifiers"];
+    modifiers?: PopperModifierOverrides;
     placement?: Placement;
     sliderValue?: number;
     usePortal?: boolean;
