@@ -96,7 +96,6 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
 
     private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
 
-
     public render() {
         const { allowCreate, films, hasInitialContent, tagMinimal, popoverMinimal, matchTargetWidth, ...flags } =
             this.state;
