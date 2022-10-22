@@ -174,9 +174,6 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
             if (method === "paste") {
                 handlePaste(values);
             }
-            if (method === "blur") {
-                handleBlur(values);
-            }
         };
 
         return (
