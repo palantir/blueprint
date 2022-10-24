@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/demo-app",
-    "version": "4.11.4",
+    "version": "4.11.5",
     "description": "Blueprint Demo App",
     "private": true,
     "scripts": {
@@ -16,13 +16,13 @@
         "verify": "run-p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.11.4",
-        "@blueprintjs/datetime": "^4.4.4",
-        "@blueprintjs/icons": "^4.8.0",
-        "@blueprintjs/popover2": "^1.7.4",
-        "@blueprintjs/select": "^4.8.4",
-        "@blueprintjs/table": "^4.7.4",
-        "@blueprintjs/timezone": "^4.5.4",
+        "@blueprintjs/core": "^4.11.5",
+        "@blueprintjs/datetime": "^4.4.5",
+        "@blueprintjs/icons": "^4.9.0",
+        "@blueprintjs/popover2": "^1.8.0",
+        "@blueprintjs/select": "^4.8.5",
+        "@blueprintjs/table": "^4.7.5",
+        "@blueprintjs/timezone": "^4.5.5",
         "classnames": "^2.3.1",
         "core-js": "^3.26.0",
         "dom4": "^2.1.5",
