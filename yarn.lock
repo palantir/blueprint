@@ -7305,7 +7305,8 @@ kss@^3.0.1:
 
 "language-less@github:atom/language-less":
   version "0.34.3"
-  resolved "https://codeload.github.com/atom/language-less/tar.gz/4a1426a08d40512291946e697183c9290fc59f19"
+  uid "414bc39ae53df0c9e660e110b2952e480ba11474"
+  resolved "https://codeload.github.com/atom/language-less/tar.gz/414bc39ae53df0c9e660e110b2952e480ba11474"
 
 lcid@^1.0.0:
   version "1.0.0"
