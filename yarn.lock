@@ -3248,7 +3248,7 @@ class-utils@^0.3.5:
 
 classnames@^2.3.1:
   version "2.3.2"
-  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
   integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
 
 clean-stack@^2.0.0:
@@ -7300,7 +7300,6 @@ kss@^3.0.1:
 
 "language-less@github:atom/language-less":
   version "0.34.3"
-  uid "414bc39ae53df0c9e660e110b2952e480ba11474"
   resolved "https://codeload.github.com/atom/language-less/tar.gz/414bc39ae53df0c9e660e110b2952e480ba11474"
 
 lcid@^1.0.0:
