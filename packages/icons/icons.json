@@ -3950,7 +3950,7 @@
     {
         "displayName": "Aimpoints target",
         "iconName": "aimpoints-target",
-        "tags": "target, aimpoints, aimpoint",
+        "tags": "target, aim, point, crosshair, mark",
         "group": "interface",
         "codepoint": 62261
     }
