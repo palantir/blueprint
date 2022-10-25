@@ -3946,5 +3946,12 @@
         "tags": "notification, information, circle, message, sign, info, tooltip",
         "group": "interface",
         "codepoint": 62260
+    },
+    {
+        "displayName": "Aimpoints target",
+        "iconName": "aimpoints-target",
+        "tags": "target, aim, point, crosshair, mark",
+        "group": "interface",
+        "codepoint": 62261
     }
 ]
