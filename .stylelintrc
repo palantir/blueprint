@@ -9,6 +9,9 @@
   "rules": {
     "@blueprintjs/no-prefix-literal": [true, { "disableFix": true }],
     "@blueprintjs/no-color-literal": [true, { "disableFix": true }],
+    "@blueprintjs/ban-imports": [
+        "*@blueprintjs/*/src/**/*"
+      ],
     "color-function-notation": "legacy",
     "declaration-empty-line-before": null,
     "indentation": [2, {
