@@ -5,9 +5,7 @@
         "@blueprintjs/classes-constants": "off",
         "@blueprintjs/html-components": "off",
         "@blueprintjs/icon-components": "off",
-        "@blueprintjs/ban-imports": [
-            "*@blueprintjs/*/src/**/*"
-          ]
+        "@blueprintjs/ban-imports": ["*@blueprintjs/*/src/**/*"]
     },
     "ignorePatterns": ["node_modules", "dist", "lib", "fixtures", "coverage", "__snapshots__", "generated"]
 }
