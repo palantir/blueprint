@@ -2,7 +2,6 @@
     "root": true,
     "extends": ["../../.eslintrc.js"],
     "rules": {
-        "@blueprintjs/ban-imports": ["*@blueprintjs/*/src/**/*"],
         "@blueprintjs/classes-constants": "off",
         "@blueprintjs/html-components": "off",
         "@blueprintjs/icon-components": "off"
