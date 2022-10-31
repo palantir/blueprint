@@ -31,7 +31,7 @@
         "chroma-js": "^2.1.0",
         "classnames": "^2.3.1",
         "core-js": "^3.26.0",
-        "date-fns": "^2.28.0",
+        "date-fns": "^2.29.3",
         "dom4": "^2.1.5",
         "downloadjs": "^1.4.7",
         "lodash": "^4.17.21",
