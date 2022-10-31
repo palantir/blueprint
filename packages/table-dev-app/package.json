@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/table-dev-app",
-    "version": "4.7.5",
+    "version": "4.7.6",
     "description": "Dev application for @blueprintjs/table",
     "private": true,
     "scripts": {
@@ -16,9 +16,9 @@
         "verify": "npm-run-all -p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.11.5",
-        "@blueprintjs/popover2": "^1.8.0",
-        "@blueprintjs/table": "^4.7.5",
+        "@blueprintjs/core": "^4.11.6",
+        "@blueprintjs/popover2": "^1.8.1",
+        "@blueprintjs/table": "^4.7.6",
         "classnames": "^2.3.1",
         "dom4": "^2.1.5",
         "lodash": "^4.17.21",
@@ -27,7 +27,7 @@
         "react-dom": "^16.14.0"
     },
     "devDependencies": {
-        "@blueprintjs/webpack-build-scripts": "^4.0.2",
+        "@blueprintjs/webpack-build-scripts": "^4.0.3",
         "@types/lodash": "~4.14.186",
         "copy-webpack-plugin": "^11.0.0",
         "npm-run-all": "^4.1.5",
