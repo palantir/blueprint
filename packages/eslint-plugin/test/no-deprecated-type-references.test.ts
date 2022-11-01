@@ -200,6 +200,56 @@ ruleTester.run("no-deprecated-type-references", noDeprecatedTypeReferencesRule, 
                 const MyButton = (props: MyButtonProps) => <Button {...props} />;
             `,
         },
+
+        // dealing with name conflicts which require import aliases
+        {
+            code: dedent`
+                import { IProps } from "@blueprintjs/core";
+
+                export interface Props extends IProps {
+                    foo: string;
+                }
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: { deprecatedTypeName: "IProps", newTypeName: "Props" },
+                },
+            ],
+            output: dedent`
+                import { Props as BlueprintProps } from "@blueprintjs/core";
+
+                export interface Props extends BlueprintProps {
+                    foo: string;
+                }
+            `,
+        },
+        {
+            code: dedent`
+                import { IProps } from "@blueprintjs/core";
+
+                export namespace MyComponent {
+                    export interface Props extends IProps {
+                        foo: string;
+                    }
+                }
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: { deprecatedTypeName: "IProps", newTypeName: "Props" },
+                },
+            ],
+            output: dedent`
+                import { Props as BlueprintProps } from "@blueprintjs/core";
+
+                export namespace MyComponent {
+                    export interface Props extends BlueprintProps {
+                        foo: string;
+                    }
+                }
+            `,
+        },
     ],
     valid: [
         {
