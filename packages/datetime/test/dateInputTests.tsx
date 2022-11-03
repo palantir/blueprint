@@ -479,6 +479,28 @@ describe("<DateInput>", () => {
             assert.isTrue(onError.calledOnce);
             assertDateEquals(onError.args[0][0], new Date(value));
         });
+        
+        it("Typing in a date out of range displays the error message and calls onError with invalid date on enter keydown", () => {
+            const rangeMessage = "RANGE ERROR";
+            const onError = sinon.spy();
+            const wrapper = mount(
+                <DateInput
+                    {...DATE_FORMAT}
+                    defaultValue={new Date(2015, Months.MAY, 1)}
+                    minDate={new Date(2015, Months.MARCH, 1)}
+                    onError={onError}
+                    outOfRangeMessage={rangeMessage}
+                />,
+            );
+            const value = "2/1/2030";
+            wrapper.find("input").simulate("change", { target: { value } }).simulate("keydown", { which: Keys.ENTER });
+
+            assert.strictEqual(wrapper.find(InputGroup).prop("intent"), Intent.DANGER);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), rangeMessage);
+
+            assert.isTrue(onError.calledOnce);
+            assertDateEquals(onError.args[0][0], new Date(value));
+        });
 
         it("Typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
             const invalidDateMessage = "INVALID DATE";
@@ -495,6 +517,29 @@ describe("<DateInput>", () => {
                 .find("input")
                 .simulate("change", { target: { value: "not a date" } })
                 .simulate("blur");
+
+            assert.strictEqual(wrapper.find(InputGroup).prop("intent"), Intent.DANGER);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), invalidDateMessage);
+
+            assert.isTrue(onError.calledOnce);
+            assert.isNaN((onError.args[0][0] as Date).valueOf());
+        });
+
+        it("Typing in an invalid date displays the error message and calls onError with Date(undefined) on enter keydown", () => {
+            const invalidDateMessage = "INVALID DATE";
+            const onError = sinon.spy();
+            const wrapper = mount(
+                <DateInput
+                    {...DATE_FORMAT}
+                    defaultValue={new Date(2015, Months.MAY, 1)}
+                    onError={onError}
+                    invalidDateMessage={invalidDateMessage}
+                />,
+            );
+            wrapper
+                .find("input")
+                .simulate("change", { target: { value: "not a date" } })
+                .simulate("keydown", { which: Keys.ENTER });
 
             assert.strictEqual(wrapper.find(InputGroup).prop("intent"), Intent.DANGER);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), invalidDateMessage);

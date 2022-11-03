@@ -316,7 +316,17 @@ export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInput
         } else {
             this.setState({ isInputFocused, isOpen });
         }
-        this.props.onChange?.(newDate, isUserChange);
+        if (didSubmitWithEnter) {
+            if (isNaN(newDate.valueOf())) {
+                this.props.onError?.(new Date(undefined));
+            } else if (!this.isDateInRange(newDate)) {
+                this.props.onError?.(newDate);
+            } else {
+                this.props.onChange?.(newDate, isUserChange);
+            }
+        } else {
+            this.props.onChange?.(newDate, isUserChange);
+        }
     };
 
     private hasMonthChanged(prevDate: Date | null, nextDate: Date | null) {
