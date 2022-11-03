@@ -479,7 +479,7 @@ describe("<DateInput>", () => {
             assert.isTrue(onError.calledOnce);
             assertDateEquals(onError.args[0][0], new Date(value));
         });
-        
+
         it("Typing in a date out of range displays the error message and calls onError with invalid date on enter keydown", () => {
             const rangeMessage = "RANGE ERROR";
             const onError = sinon.spy();
