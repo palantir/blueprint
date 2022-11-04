@@ -35,6 +35,13 @@ const controlledDateInputProps: Required<Pick<DateInputProps, "value" | "onChang
     value: new Date(),
 };
 
+const uncontrolledDateInputProps: Required<Pick<DateInputProps, "defaultValue" | "onChange">> = {
+    defaultValue: new Date(),
+    onChange: (_newDate: Date | null, _isUserChange: boolean) => {
+        // nothing
+    },
+};
+
 describe("DateInput2MigrationUtils", () => {
     it("Applying onChange + value adapters renders DateInput2 without error", () => {
         mount(
@@ -70,5 +77,20 @@ describe("DateInput2MigrationUtils", () => {
 
         date.setHours(0, 0, 10, 100);
         assert.notStrictEqual(DateInput2MigrationUtils.valueAdapter(date), valueWithExplicitPrecision);
+    });
+
+    it("Default value adapter works as expected", () => {
+        const precision = TimePrecision.MINUTE;
+        mount(
+            <DateInput2
+                {...dateFormattingProps}
+                timePrecision={precision}
+                onChange={DateInput2MigrationUtils.onChangeAdapter(uncontrolledDateInputProps.onChange)}
+                defaultValue={DateInput2MigrationUtils.defaultValueAdapter(
+                    uncontrolledDateInputProps.defaultValue,
+                    precision,
+                )}
+            />,
+        );
     });
 });

@@ -46,18 +46,38 @@ export function valueAdapter(value: DateInputProps["value"], timePrecision?: Tim
     if (value == null) {
         return null;
     }
+    return convertDateToDateString(value, timePrecision);
+}
 
+/**
+ * Adapter for automated DateInput -> DateInput2 migrations.
+ *
+ * @param defaultValue DateInput value
+ * @param timePrecision (optional) DateInput timePrecision
+ * @returns DateInput2 value
+ */
+export function defaultValueAdapter(
+    defaultValue: DateInputProps["defaultValue"],
+    timePrecision?: TimePrecision,
+): DateInput2Props["defaultValue"] {
+    if (defaultValue === undefined) {
+        return undefined;
+    }
+    return convertDateToDateString(defaultValue, timePrecision);
+}
+
+function convertDateToDateString(date: Date, timePrecision?: TimePrecision) {
     const tz = getCurrentTimezone();
     const inferredTimePrecision =
-        value.getMilliseconds() !== 0
+        date.getMilliseconds() !== 0
             ? TimePrecision.MILLISECOND
-            : value.getSeconds() !== 0
+            : date.getSeconds() !== 0
             ? TimePrecision.SECOND
-            : value.getMinutes() !== 0
+            : date.getMinutes() !== 0
             ? TimePrecision.MINUTE
             : undefined;
 
-    return getIsoEquivalentWithUpdatedTimezone(value, tz, timePrecision ?? inferredTimePrecision);
+    return getIsoEquivalentWithUpdatedTimezone(date, tz, timePrecision ?? inferredTimePrecision);
 }
 
 function noOp() {
