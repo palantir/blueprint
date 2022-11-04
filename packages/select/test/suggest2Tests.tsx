@@ -194,6 +194,7 @@ describe("Suggest2", () => {
             const value = "nailed it";
             const onChange = sinon.spy();
 
+            // @ts-expect-error - value and onChange are now omitted from the props type
             const input = suggest({ inputProps: { value, onChange } }).find("input");
             assert.notStrictEqual(input.prop("onChange"), onChange);
             assert.notStrictEqual(input.prop("value"), value);
