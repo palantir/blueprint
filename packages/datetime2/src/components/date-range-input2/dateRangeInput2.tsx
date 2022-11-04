@@ -93,6 +93,11 @@ export interface DateRangeInput2Props extends DatePickerBaseProps, DateFormatPro
     disabled?: boolean;
 
     /**
+     * Whether the component should take up the full width of its container.
+     */
+    fill?: boolean;
+
+    /**
      * Props to pass to the end-date [input group](#core/components/text-inputs.input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
