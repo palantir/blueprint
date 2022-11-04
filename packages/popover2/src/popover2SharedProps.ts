@@ -33,6 +33,13 @@ export type PopperModifierOverrides = Partial<{
     [M in StrictModifierNames]: Partial<Omit<StrictModifier<M>, "name">>;
 }>;
 
+/**
+ * Custom popper.js v2 modifier for Popover2 and Tooltip2.
+ *
+ * @see https://popper.js.org/docs/v2/modifiers/#custom-modifiers
+ */
+export type PopperCustomModifer = Partial<Modifier<any, object>>;
+
 // eslint-disable-next-line deprecation/deprecation
 export type Popover2TargetProps = IPopover2TargetProps;
 /**
@@ -169,7 +176,7 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
      *
      * @see https://popper.js.org/docs/v2/modifiers/#custom-modifiers
      */
-    modifiersCustom?: ReadonlyArray<Partial<Modifier<any, object>>>;
+    modifiersCustom?: readonly PopperCustomModifer[];
 
     /**
      * Callback invoked in controlled mode when the popover open state *would*
