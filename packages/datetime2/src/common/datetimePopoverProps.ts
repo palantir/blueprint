@@ -20,17 +20,16 @@ import type { Popover2, Popover2Props } from "@blueprintjs/popover2";
  * Reusable collection of props for components in this package which render a `Popover2`
  * and need to provide some degree of customization for that popover.
  */
-export interface SelectPopoverProps {
-    /** Props to spread to `Popover2` content wrapper eleemnt. */
-    popoverContentProps?: React.HTMLAttributes<HTMLDivElement>;
-
+export interface DatetimePopoverProps {
     /**
      * Props to spread to `Popover2`.
-     *
-     * Note that `content` cannot be changed, but you may apply some props to the content wrapper element
-     * with `popoverContentProps`.
      */
-    popoverProps?: Partial<Omit<Popover2Props, "content" | "defaultIsOpen" | "disabled" | "fill" | "renderTarget">>;
+    popoverProps?: Partial<
+        Omit<
+            Popover2Props,
+            "autoFocus" | "content" | "defaultIsOpen" | "disabled" | "enforceFocus" | "fill" | "renderTarget"
+        >
+    >;
 
     /**
      * Optional ref for the Popover2 component instance.
