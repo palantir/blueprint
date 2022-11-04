@@ -34,6 +34,7 @@ export {
     Popover2TargetProps,
     PopperBoundary,
     PopperModifierOverrides,
+    PopperCustomModifer,
     Placement,
     PlacementOptions,
     StrictModifierNames,
