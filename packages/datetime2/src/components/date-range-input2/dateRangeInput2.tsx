@@ -93,6 +93,11 @@ export interface DateRangeInput2Props extends DatePickerBaseProps, DateFormatPro
     disabled?: boolean;
 
     /**
+     * Whether the component should take up the full width of its container.
+     */
+    fill?: boolean;
+
+    /**
      * Props to pass to the end-date [input group](#core/components/text-inputs.input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
@@ -369,13 +374,15 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
     private renderTarget =
         // N.B. pull out `isOpen` so that it's not forwarded to the DOM.
         ({ isOpen, ...targetProps }: Popover2TargetProps & React.HTMLProps<unknown>) => {
-            const { popoverProps = {} } = this.props;
+            const { fill, popoverProps = {} } = this.props;
             const { targetTagName = "div" } = popoverProps;
             return React.createElement(
                 targetTagName,
                 {
                     ...targetProps,
-                    className: classNames(CoreClasses.CONTROL_GROUP, targetProps.className),
+                    className: classNames(CoreClasses.CONTROL_GROUP, targetProps.className, {
+                        [CoreClasses.FILL]: fill,
+                    }),
                 },
                 this.renderInputGroup(Boundary.START),
                 this.renderInputGroup(Boundary.END),
@@ -390,6 +397,7 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
             <InputGroup
                 autoComplete="off"
                 disabled={inputProps?.disabled ?? this.props.disabled}
+                fill={this.props.fill}
                 {...inputProps}
                 intent={this.isInputInErrorState(boundary) ? Intent.DANGER : inputProps?.intent}
                 inputRef={this.getInputRef(boundary)}
