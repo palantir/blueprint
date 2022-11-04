@@ -35,7 +35,7 @@ import {
     DatePickerShortcut,
     DatePickerUtils,
 } from "@blueprintjs/datetime";
-import { Popover2, Popover2Props, Popover2TargetProps } from "@blueprintjs/popover2";
+import { Popover2, Popover2TargetProps } from "@blueprintjs/popover2";
 
 import * as Classes from "../../common/classes";
 import { DatetimePopoverProps } from "../../common/datetimePopoverProps";
