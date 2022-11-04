@@ -254,9 +254,16 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
      * By default, a `<span>` tag is used so popovers appear as inline-block
      * elements and can be nested in text. Use `<div>` tag for a block element.
      *
-     * Mutually exclusive with renderTarget.
+     * If `fill` is set to `true`, this prop's default value will become `"div"`
+     * instead of `"span"`.
      *
-     * @default "span" ("div" if fill={true})
+     * Note that _not all HTML tags are supported_; you will need to make sure
+     * the tag you choose supports the HTML attributes Popover2 applies to the
+     * target element.
+     *
+     * This prop is mutually exclusive with the `renderTarget` API.
+     *
+     * @default "span" ("div" if `fill={true}`)
      */
     targetTagName?: keyof JSX.IntrinsicElements;
 

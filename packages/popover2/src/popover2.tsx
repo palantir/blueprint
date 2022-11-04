@@ -129,7 +129,7 @@ export interface IPopover2State {
 }
 
 /**
- * @template T target component props interface
+ * @template T target element props interface
  */
 export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopover2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
@@ -151,7 +151,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         // N.B. we don't set a default for `placement` or `position` here because that would trigger
         // a warning in validateProps if the other prop is specified by a user of this component
         positioningStrategy: "absolute",
-        renderTarget: undefined as any,
+        renderTarget: undefined,
         shouldReturnFocusOnClose: false,
         targetTagName: "span",
         transitionDuration: 300,

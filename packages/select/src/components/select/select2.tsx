@@ -213,28 +213,29 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
         ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
-            const { popoverTargetProps } = this.props;
+            const { popoverProps = {}, popoverTargetProps } = this.props;
             const { handleKeyDown, handleKeyUp } = listProps;
-            return (
-                <div
-                    aria-controls={this.listboxId}
-                    {...popoverTargetProps}
-                    {...targetProps}
-                    aria-expanded={isOpen}
+            const { targetTagName = "div" } = popoverProps;
+            return React.createElement(
+                targetTagName,
+                {
+                    "aria-controls": this.listboxId,
+                    ...popoverTargetProps,
+                    ...targetProps,
+                    "aria-expanded": isOpen,
                     // Note that we must set FILL here in addition to children to get the wrapper element to full width
-                    className={classNames(targetProps.className, popoverTargetProps?.className, {
+                    className: classNames(targetProps.className, popoverTargetProps?.className, {
                         [CoreClasses.FILL]: this.props.fill,
-                    })}
+                    }),
                     // Normally, Popover2 would also need to attach its own `onKeyDown` handler via `targetProps`,
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
-                    onKeyDown={isOpen ? handleKeyDown : this.handleTargetKeyDown}
-                    onKeyUp={isOpen ? handleKeyUp : undefined}
-                    ref={ref}
-                    role="combobox"
-                >
-                    {this.props.children}
-                </div>
+                    onKeyDown: isOpen ? handleKeyDown : this.handleTargetKeyDown,
+                    onKeyUp: isOpen ? handleKeyUp : undefined,
+                    ref,
+                    role: "combobox",
+                },
+                this.props.children,
             );
         };
 

@@ -239,6 +239,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 fill,
                 onClear,
                 placeholder,
+                popoverProps = {},
                 popoverTargetProps = {},
                 selectedItems,
                 tagInputProps = {},
@@ -272,39 +273,41 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                     />
                 ) : undefined;
 
-            return (
-                <div
-                    aria-autocomplete="list"
-                    aria-controls={this.listboxId}
-                    {...popoverTargetProps}
-                    {...targetProps}
-                    aria-expanded={isOpen}
+            const { targetTagName = "div" } = popoverProps;
+
+            return React.createElement(
+                targetTagName,
+                {
+                    "aria-autocomplete": "list",
+                    "aria-controls": this.listboxId,
+                    ...popoverTargetProps,
+                    ...targetProps,
+                    "aria-expanded": isOpen,
                     // Note that we must set FILL here in addition to TagInput to get the wrapper element to full width
-                    className={classNames(targetProps.className, popoverTargetProps.className, {
+                    className: classNames(targetProps.className, popoverTargetProps.className, {
                         [CoreClasses.FILL]: fill,
-                    })}
+                    }),
                     // Normally, Popover2 would also need to attach its own `onKeyDown` handler via `targetProps`,
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
-                    onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}
-                    onKeyUp={this.getTagInputKeyUpHandler(handleKeyUp)}
-                    ref={ref}
-                    role="combobox"
-                >
-                    <TagInput
-                        placeholder={placeholder}
-                        rightElement={maybeClearButton}
-                        {...tagInputProps}
-                        className={classNames(Classes.MULTISELECT, tagInputProps.className)}
-                        inputRef={this.refHandlers.input}
-                        inputProps={inputProps}
-                        inputValue={listProps.query}
-                        onAdd={this.getTagInputAddHandler(listProps)}
-                        onInputChange={listProps.handleQueryChange}
-                        onRemove={this.handleTagRemove}
-                        values={selectedItems.map(this.props.tagRenderer)}
-                    />
-                </div>
+                    onKeyDown: this.getTagInputKeyDownHandler(handleKeyDown),
+                    onKeyUp: this.getTagInputKeyUpHandler(handleKeyUp),
+                    ref,
+                    role: "combobox",
+                },
+                <TagInput
+                    placeholder={placeholder}
+                    rightElement={maybeClearButton}
+                    {...tagInputProps}
+                    className={classNames(Classes.MULTISELECT, tagInputProps.className)}
+                    inputRef={this.refHandlers.input}
+                    inputProps={inputProps}
+                    inputValue={listProps.query}
+                    onAdd={this.getTagInputAddHandler(listProps)}
+                    onInputChange={listProps.handleQueryChange}
+                    onRemove={this.handleTagRemove}
+                    values={selectedItems.map(this.props.tagRenderer)}
+                />,
             );
         };
 
