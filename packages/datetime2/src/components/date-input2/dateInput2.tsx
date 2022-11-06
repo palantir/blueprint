@@ -608,6 +608,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             isTimezoneSelectHidden,
             placeholder,
             shouldShowErrorStyling,
+            timezoneValue,
             props.disabled,
             props.inputProps,
             props.rightElement,
