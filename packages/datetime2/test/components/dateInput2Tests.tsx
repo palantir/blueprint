@@ -479,7 +479,7 @@ describe("<DateInput2>", () => {
             assert.doesNotThrow(() => mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} value={null} />));
         });
 
-        describe.only("when changing timezone", () => {
+        describe("when changing timezone", () => {
             it("calls onChange with the updated ISO string", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
                 clickTimezoneItem(wrapper, "Paris");
