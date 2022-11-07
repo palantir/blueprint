@@ -40,7 +40,7 @@
         "@popperjs/core": "^2.11.6",
         "classnames": "^2.3.1",
         "dom4": "^2.1.5",
-        "react-popper": "^2.2.4",
+        "react-popper": "^2.3.0",
         "tslib": "~2.3.1"
     },
     "peerDependencies": {
