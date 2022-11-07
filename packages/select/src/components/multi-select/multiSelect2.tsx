@@ -46,7 +46,6 @@ export interface MultiSelect2Props<T> extends ListItemsProps<T>, SelectPopoverPr
 
     /**
      * Whether the component should take up the full width of its container.
-     * This overrides `popoverProps.fill` and `tagInputProps.fill`.
      */
     fill?: boolean;
 
@@ -96,16 +95,18 @@ export interface MultiSelect2Props<T> extends ListItemsProps<T>, SelectPopoverPr
     selectedItems: T[];
 
     /**
-     * Props to spread to `TagInput`.
-     * If you wish to control the value of the input, use `query` and `onQueryChange` instead.
+     * Props to pass to the [TagInput component](##core/components/tag-input).
+     *
+     * Some properties are unavailable:
+     * - `tagInputProps.value`: use `query` instead
+     * - `tagInputProps.onChange`: use `onQueryChange` instead
      *
      * Notes for `tagInputProps.rightElement`:
-     * - you are responsible for disabling any elements you may render here when the overall
-     *   `MultiSelect2` is disabled.
+     * - you are responsible for disabling any elements you may render here when the overall `MultiSelect2` is disabled
      * - if the `onClear` prop is defined, this element will override/replace the default rightElement,
      *   which is a "clear" button that removes all items from the current selection.
      */
-    tagInputProps?: Partial<TagInputProps>;
+    tagInputProps?: Partial<Omit<TagInputProps, "value" | "onChange">>;
 
     /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;

@@ -48,7 +48,6 @@ export interface Suggest2Props<T> extends ListItemsProps<T>, Omit<SelectPopoverP
 
     /**
      * Whether the component should take up the full width of its container.
-     * This overrides `popoverProps.fill` and `inputProps.fill`.
      */
     fill?: boolean;
 
@@ -61,7 +60,9 @@ export interface Suggest2Props<T> extends ListItemsProps<T>, Omit<SelectPopoverP
      * - `inputProps.disabled`: use `disabled` instead
      * - `inputProps.fill`: use `fill` instead
      *
-     * Note that `inputProps.tagName` will override `popoverProps.targetTagName`.
+     * Other notes:
+     * - `inputProps.tagName` will override `popoverProps.targetTagName`
+     * - `inputProps.className` will work as expected, but this is redundant with the simpler `className` prop
      */
     inputProps?: Partial<Omit<InputGroupProps2, "disabled" | "fill" | "value" | "onChange">>;
 
@@ -82,7 +83,7 @@ export interface Suggest2Props<T> extends ListItemsProps<T>, Omit<SelectPopoverP
     selectedItem?: T | null;
 
     /**
-     * Props to spread to the `Menu` listbox containing the selectable options.
+     * HTML attributes to add to the `Menu` listbox containing the selectable options.
      */
     menuProps?: React.HTMLAttributes<HTMLUListElement>;
 

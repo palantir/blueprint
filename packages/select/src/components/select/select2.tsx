@@ -54,8 +54,7 @@ export interface Select2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
 
     /**
      * Whether the component should take up the full width of its container.
-     * This overrides `popoverProps.fill`. You also have to ensure that the child
-     * component has `fill` set to `true` or is styled appropriately.
+     * You also have to ensure that the child component has `fill` set to `true` or is styled appropriately.
      */
     fill?: boolean;
 
@@ -68,14 +67,16 @@ export interface Select2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
     filterable?: boolean;
 
     /**
-     * Props to spread to the query `InputGroup`. Use `query` and
-     * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
-     * to control this input.
+     * Props to pass to the query [InputGroup component](#core/components/text-inputs.input-group).
+     *
+     * Some properties are unavailable:
+     * - `inputProps.value`: use `query` instead
+     * - `inputProps.onChange`: use `onQueryChange` instead
      */
-    inputProps?: InputGroupProps2;
+    inputProps?: Partial<Omit<InputGroupProps2, "value" | "onChange">>;
 
     /**
-     * Props to spread to the `Menu` listbox containing the selectable options.
+     * HTML attributes to add to the `Menu` listbox containing the selectable options.
      */
     menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
