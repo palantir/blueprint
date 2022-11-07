@@ -92,11 +92,6 @@ export interface MultiSelect2Props<T> extends ListItemsProps<T>, SelectPopoverPr
      */
     placeholder?: string;
 
-    /**
-     * Props to add to the `div` that wraps the TagInput
-     */
-    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
-
     /** Controlled selected values. */
     selectedItems: T[];
 
@@ -385,6 +380,8 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
             if (this.state.isOpen && !isTargetingTagRemoveButton) {
                 handleQueryListKeyDown?.(e);
             }
+
+            this.props.popoverTargetProps?.onKeyDown?.(e);
         };
     };
 
@@ -397,6 +394,8 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
             if (this.state.isOpen && isTargetingInput) {
                 handleQueryListKeyUp?.(e);
             }
+
+            this.props.popoverTargetProps?.onKeyDown?.(e);
         };
     };
 

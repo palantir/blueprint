@@ -35,7 +35,7 @@ import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2"
 import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { QueryList, QueryListRendererProps } from "../query-list/queryList";
 
-export interface Suggest2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
+export interface Suggest2Props<T> extends ListItemsProps<T>, Omit<SelectPopoverProps, "popoverTargetProps"> {
     /**
      * Whether the popover should close after selecting an item.
      *
@@ -225,11 +225,11 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         ({
             // pull out `isOpen` so that it's not forwarded to the DOM
             isOpen: _isOpen,
-            // pull out `defaultValue` due to type incompatibility with InputGroup.
-            defaultValue,
+            // N.B. we don't need `React.HTMLProps` and a `{...targetProps}` spread here like most other renderTarget
+            // implementations because we don't use the default onClick & onKeyDown handlers created by Popover2;
+            // instead, we fully manage the Popover2 state with our own event handlers.
             ref,
-            ...targetProps
-        }: Popover2TargetProps & React.HTMLProps<HTMLInputElement>) => {
+        }: Popover2TargetProps) => {
             const { disabled, fill, inputProps = {}, inputValueRenderer, popoverProps = {}, resetOnClose } = this.props;
             const { selectedItem } = this.state;
             const { handleKeyDown, handleKeyUp } = listProps;
@@ -248,7 +248,6 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                     autoComplete={autoComplete}
                     disabled={disabled}
                     tagName={popoverProps.targetTagName}
-                    {...targetProps}
                     {...inputProps}
                     aria-autocomplete="list"
                     aria-expanded={isOpen}
