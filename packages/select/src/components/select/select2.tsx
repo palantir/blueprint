@@ -54,8 +54,7 @@ export interface Select2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
 
     /**
      * Whether the component should take up the full width of its container.
-     * This overrides `popoverProps.fill`. You also have to ensure that the child
-     * component has `fill` set to `true` or is styled appropriately.
+     * You also have to ensure that the child component has `fill` set to `true` or is styled appropriately.
      */
     fill?: boolean;
 
@@ -68,21 +67,18 @@ export interface Select2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
     filterable?: boolean;
 
     /**
-     * Props to spread to the query `InputGroup`. Use `query` and
-     * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
-     * to control this input.
+     * Props to pass to the query [InputGroup component](#core/components/text-inputs.input-group).
+     *
+     * Some properties are unavailable:
+     * - `inputProps.value`: use `query` instead
+     * - `inputProps.onChange`: use `onQueryChange` instead
      */
-    inputProps?: InputGroupProps2;
+    inputProps?: Partial<Omit<InputGroupProps2, "value" | "onChange">>;
 
     /**
-     * Props to spread to the `Menu` listbox containing the selectable options.
+     * HTML attributes to add to the `Menu` listbox containing the selectable options.
      */
     menuProps?: React.HTMLAttributes<HTMLUListElement>;
-
-    /**
-     * Props to add to the popover target wrapper element.
-     */
-    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -230,8 +226,11 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                     // Normally, Popover2 would also need to attach its own `onKeyDown` handler via `targetProps`,
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
-                    onKeyDown: isOpen ? handleKeyDown : this.handleTargetKeyDown,
-                    onKeyUp: isOpen ? handleKeyUp : undefined,
+                    onKeyDown: this.withPopoverTargetPropsHandler(
+                        "keydown",
+                        isOpen ? handleKeyDown : this.handleTargetKeyDown,
+                    ),
+                    onKeyUp: this.withPopoverTargetPropsHandler("keyup", isOpen ? handleKeyUp : undefined),
                     ref,
                     role: "combobox",
                 },
@@ -250,6 +249,24 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
             />
         ) : undefined;
     }
+
+    private withPopoverTargetPropsHandler = (
+        eventType: "keydown" | "keyup",
+        handler: React.KeyboardEventHandler<HTMLElement> | undefined,
+    ): React.KeyboardEventHandler<HTMLElement> => {
+        switch (eventType) {
+            case "keydown":
+                return event => {
+                    handler?.(event);
+                    this.props.popoverTargetProps?.onKeyDown?.(event);
+                };
+            case "keyup":
+                return event => {
+                    handler?.(event);
+                    this.props.popoverTargetProps?.onKeyUp?.(event);
+                };
+        }
+    };
 
     /**
      * Target wrapper element "keydown" handler while the popover is closed.

@@ -21,14 +21,17 @@ import type { Popover2, Popover2Props } from "@blueprintjs/popover2";
  * and need to provide some degree of customization for that popover.
  */
 export interface SelectPopoverProps {
-    /** Props to spread to `Popover2` content wrapper eleemnt. */
+    /**
+     * HTML attributes to spread to the popover content container element.
+     */
     popoverContentProps?: React.HTMLAttributes<HTMLDivElement>;
 
     /**
      * Props to spread to `Popover2`.
      *
      * Note that `content` cannot be changed, but you may apply some props to the content wrapper element
-     * with `popoverContentProps`.
+     * with `popoverContentProps`. Likewise, `targetProps` is no longer supported as it was in Blueprint v4, but you
+     * may use `popoverTargetProps` instead.
      */
     popoverProps?: Partial<Omit<Popover2Props, "content" | "defaultIsOpen" | "disabled" | "fill" | "renderTarget">>;
 
@@ -37,4 +40,9 @@ export interface SelectPopoverProps {
      * This is sometimes useful to reposition the popover.
      */
     popoverRef?: React.RefObject<Popover2<React.HTMLProps<unknown>>>;
+
+    /**
+     * HTML attributes to add to the popover target element.
+     */
+    popoverTargetProps?: React.HTMLAttributes<HTMLElement>;
 }

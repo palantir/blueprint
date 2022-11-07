@@ -35,7 +35,7 @@ import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2"
 import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { QueryList, QueryListRendererProps } from "../query-list/queryList";
 
-export interface Suggest2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
+export interface Suggest2Props<T> extends ListItemsProps<T>, Omit<SelectPopoverProps, "popoverTargetProps"> {
     /**
      * Whether the popover should close after selecting an item.
      *
@@ -48,7 +48,6 @@ export interface Suggest2Props<T> extends ListItemsProps<T>, SelectPopoverProps 
 
     /**
      * Whether the component should take up the full width of its container.
-     * This overrides `popoverProps.fill` and `inputProps.fill`.
      */
     fill?: boolean;
 
@@ -59,10 +58,13 @@ export interface Suggest2Props<T> extends ListItemsProps<T>, SelectPopoverProps 
      * - `inputProps.value`: use `query` instead
      * - `inputProps.onChange`: use `onQueryChange` instead
      * - `inputProps.disabled`: use `disabled` instead
+     * - `inputProps.fill`: use `fill` instead
      *
-     * Note that `inputProps.tagName` will override `popoverProps.targetTagName`.
+     * Other notes:
+     * - `inputProps.tagName` will override `popoverProps.targetTagName`
+     * - `inputProps.className` will work as expected, but this is redundant with the simpler `className` prop
      */
-    inputProps?: Partial<Omit<InputGroupProps2, "disabled" | "value" | "onChange">>;
+    inputProps?: Partial<Omit<InputGroupProps2, "disabled" | "fill" | "value" | "onChange">>;
 
     /** Custom renderer to transform an item into a string for the input value. */
     inputValueRenderer: (item: T) => string;
@@ -81,7 +83,7 @@ export interface Suggest2Props<T> extends ListItemsProps<T>, SelectPopoverProps 
     selectedItem?: T | null;
 
     /**
-     * Props to spread to the `Menu` listbox containing the selectable options.
+     * HTML attributes to add to the `Menu` listbox containing the selectable options.
      */
     menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
@@ -225,7 +227,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         ({
             // pull out `isOpen` so that it's not forwarded to the DOM
             isOpen: _isOpen,
-            // pull out `defaultValue` due to type incompatibility with InputGroup.
+            // pull out `defaultValue` due to type incompatibility with InputGroup
             defaultValue,
             ref,
             ...targetProps
@@ -252,6 +254,7 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                     {...inputProps}
                     aria-autocomplete="list"
                     aria-expanded={isOpen}
+                    className={classNames(targetProps.className, inputProps.className)}
                     fill={fill}
                     inputRef={mergeRefs(this.handleInputRef, ref)}
                     onChange={listProps.handleQueryChange}
