@@ -59,10 +59,11 @@ export interface Suggest2Props<T> extends ListItemsProps<T>, Omit<SelectPopoverP
      * - `inputProps.value`: use `query` instead
      * - `inputProps.onChange`: use `onQueryChange` instead
      * - `inputProps.disabled`: use `disabled` instead
+     * - `inputProps.fill`: use `fill` instead
      *
      * Note that `inputProps.tagName` will override `popoverProps.targetTagName`.
      */
-    inputProps?: Partial<Omit<InputGroupProps2, "disabled" | "value" | "onChange">>;
+    inputProps?: Partial<Omit<InputGroupProps2, "disabled" | "fill" | "value" | "onChange">>;
 
     /** Custom renderer to transform an item into a string for the input value. */
     inputValueRenderer: (item: T) => string;
@@ -225,11 +226,11 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         ({
             // pull out `isOpen` so that it's not forwarded to the DOM
             isOpen: _isOpen,
-            // N.B. we don't need `React.HTMLProps` and a `{...targetProps}` spread here like most other renderTarget
-            // implementations because we don't use the default onClick & onKeyDown handlers created by Popover2;
-            // instead, we fully manage the Popover2 state with our own event handlers.
+            // pull out `defaultValue` due to type incompatibility with InputGroup
+            defaultValue,
             ref,
-        }: Popover2TargetProps) => {
+            ...targetProps
+        }: Popover2TargetProps & React.HTMLProps<HTMLInputElement>) => {
             const { disabled, fill, inputProps = {}, inputValueRenderer, popoverProps = {}, resetOnClose } = this.props;
             const { selectedItem } = this.state;
             const { handleKeyDown, handleKeyUp } = listProps;
@@ -248,9 +249,11 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
                     autoComplete={autoComplete}
                     disabled={disabled}
                     tagName={popoverProps.targetTagName}
+                    {...targetProps}
                     {...inputProps}
                     aria-autocomplete="list"
                     aria-expanded={isOpen}
+                    className={classNames(targetProps.className, inputProps.className)}
                     fill={fill}
                     inputRef={mergeRefs(this.handleInputRef, ref)}
                     onChange={listProps.handleQueryChange}
