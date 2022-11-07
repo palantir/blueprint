@@ -21,3 +21,7 @@ updates:
       # deprecated dependencies
       - dependency-name: "moment"
       - dependency-name: "moment-*"
+      # we are stuck on svgo v1 for now
+      # see https://github.com/palantir/blueprint/blob/727b91ffe76f49cded1acb8240c44502f34fce48/packages/icons/scripts/generate-icon-paths.mjs#L27-L30
+      - dependency-name: "svgo"
+      - dependency-name: "@types/svgo"
