@@ -98,15 +98,20 @@ export interface MultiSelect2Props<T> extends ListItemsProps<T>, SelectPopoverPr
      * Props to pass to the [TagInput component](##core/components/tag-input).
      *
      * Some properties are unavailable:
-     * - `tagInputProps.value`: use `query` instead
-     * - `tagInputProps.onChange`: use `onQueryChange` instead
+     * - `tagInputProps.inputValue`: use `query` instead
+     * - `tagInputProps.onInputChange`: use `onQueryChange` instead
+     *
+     * Some properties are available, but discouraged. If you find yourself using these due to a bug in MultiSelect2
+     * or some edge case which is not handled by `onItemSelect`, `onItemsPaste`, `onRemove`, and `onClear`, please
+     * file a bug in the Blueprint repo:
+     * - `tagInputProps.onChange`
      *
      * Notes for `tagInputProps.rightElement`:
      * - you are responsible for disabling any elements you may render here when the overall `MultiSelect2` is disabled
      * - if the `onClear` prop is defined, this element will override/replace the default rightElement,
      *   which is a "clear" button that removes all items from the current selection.
      */
-    tagInputProps?: Partial<Omit<TagInputProps, "value" | "onChange">>;
+    tagInputProps?: Partial<Omit<TagInputProps, "inputValue" | "onInputChange">>;
 
     /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;
