@@ -129,7 +129,13 @@ export interface IPopover2State {
 }
 
 /**
- * @template T target element props interface
+ * Component to display a floating UI next to and tethered to a target element.
+ *
+ * @template T target element props interface. Note that we cannot assign a default value for this type param because it
+ * makes the type of the props supplied to `renderTarget()` cumbersome to work with when that API is used. Consumers
+ * wishing to stay in sync with Blueprint's default target HTML props interface should use the
+ * `DefaultPopover2TargetHTMLProps` type exported from @blueprintjs/popover2.
+ * @see https://blueprintjs.com/docs/#popover2-package/popover2
  */
 export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopover2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
