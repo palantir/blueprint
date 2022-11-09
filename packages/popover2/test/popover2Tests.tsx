@@ -23,14 +23,14 @@ import { Classes as CoreClasses, Menu, MenuItem, Overlay, Portal } from "@bluepr
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes, Errors } from "../src";
-import { IPopover2Props, IPopover2State, Popover2, Popover2InteractionKind } from "../src/popover2";
+import { IPopover2State, Popover2, Popover2InteractionKind, Popover2Props } from "../src/popover2";
 import { Popover2Arrow } from "../src/popover2Arrow";
 import { PopupKind } from "../src/popupKind";
 import { Tooltip2 } from "../src/tooltip2";
 
 describe("<Popover2>", () => {
     let testsContainerElement: HTMLElement;
-    let wrapper: IPopover2Wrapper | undefined;
+    let wrapper: Popover2Wrapper | undefined;
     const onInteractionSpy = sinon.spy();
 
     beforeEach(() => {
@@ -366,7 +366,7 @@ describe("<Popover2>", () => {
             assert.equal(wrapper.state("isOpen"), isOpen);
         }
 
-        function assertPopoverTargetTabIndex(shouldTabIndexExist: boolean, popoverProps: Partial<IPopover2Props>) {
+        function assertPopoverTargetTabIndex(shouldTabIndexExist: boolean, popoverProps: Partial<Popover2Props>) {
             wrapper = renderPopover({ ...popoverProps, usePortal: true });
             const targetElement = wrapper.find("[data-testid='target-button']").getDOMNode();
 
@@ -790,7 +790,7 @@ describe("<Popover2>", () => {
         });
     });
 
-    interface IPopover2Wrapper extends ReactWrapper<IPopover2Props, IPopover2State> {
+    interface Popover2Wrapper extends ReactWrapper<Popover2Props, IPopover2State> {
         popoverElement: HTMLElement;
         targetElement: HTMLElement;
         assertFindClass(className: string, expected?: boolean, msg?: string): this;
@@ -799,10 +799,10 @@ describe("<Popover2>", () => {
         simulateTarget(eventName: string): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
-        then(next: (wrap: IPopover2Wrapper) => void, done: Mocha.Done): this;
+        then(next: (wrap: Popover2Wrapper) => void, done: Mocha.Done): this;
     }
 
-    function renderPopover(props: Partial<IPopover2Props> = {}, content?: any) {
+    function renderPopover(props: Partial<Popover2Props> = {}, content?: any) {
         wrapper = mount(
             <Popover2
                 usePortal={false}
@@ -814,9 +814,9 @@ describe("<Popover2>", () => {
                 <button data-testid="target-button">Target</button>
             </Popover2>,
             { attachTo: testsContainerElement },
-        ) as IPopover2Wrapper;
+        ) as Popover2Wrapper;
 
-        const instance = wrapper.instance() as Popover2<React.HTMLProps<HTMLButtonElement>>;
+        const instance = wrapper.instance() as Popover2;
         wrapper.popoverElement = instance.popoverElement!;
         wrapper.targetElement = instance.targetElement!;
         wrapper.assertFindClass = (className: string, expected = true, msg = className) => {

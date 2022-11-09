@@ -147,7 +147,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
     private refHandlers: {
         input: React.RefCallback<HTMLInputElement>;
-        popover: React.RefObject<Popover2<React.HTMLProps<HTMLDivElement>>>;
+        popover: React.RefObject<Popover2>;
         queryList: React.RefCallback<QueryList<T>>;
     } = {
         input: refHandler(this, "input", this.props.tagInputProps?.inputRef),

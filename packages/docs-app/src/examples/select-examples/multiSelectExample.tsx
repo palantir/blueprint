@@ -72,7 +72,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
         tagMinimal: false,
     };
 
-    private popoverRef: React.RefObject<Popover2<any>> = React.createRef();
+    private popoverRef: React.RefObject<Popover2> = React.createRef();
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
 

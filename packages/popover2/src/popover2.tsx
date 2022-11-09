@@ -129,9 +129,12 @@ export interface IPopover2State {
 }
 
 /**
- * @template T target element props interface
+ * @template T target element props interface. Defaults to `React.HTMLProps<HTMLElement>`.
  */
-export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopover2State> {
+export class Popover2<T = React.HTMLProps<HTMLElement>> extends AbstractPureComponent2<
+    Popover2Props<T>,
+    IPopover2State
+> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
 
     public static defaultProps: Popover2Props = {

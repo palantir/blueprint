@@ -22,7 +22,7 @@ import type { Popover2, Popover2Props } from "@blueprintjs/popover2";
  */
 export interface DatetimePopoverProps {
     /**
-     * Props to spread to `Popover2`.
+     * Props to spread to Popover2.
      */
     popoverProps?: Partial<
         Omit<
@@ -35,5 +35,5 @@ export interface DatetimePopoverProps {
      * Optional ref for the Popover2 component instance.
      * This is sometimes useful to reposition the popover.
      */
-    popoverRef?: React.RefObject<Popover2<React.HTMLProps<unknown>>>;
+    popoverRef?: React.RefObject<Popover2>;
 }

@@ -75,7 +75,10 @@ export interface ITooltip2Props<TProps = React.HTMLProps<HTMLElement>>
     transitionDuration?: number;
 }
 
-export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
+/**
+ * @template T target element props interface. Defaults to `React.HTMLProps<HTMLElement>`.
+ */
+export class Tooltip2<T = React.HTMLProps<HTMLElement>> extends React.PureComponent<Tooltip2Props<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip2`;
 
     public static defaultProps: Partial<Tooltip2Props> = {

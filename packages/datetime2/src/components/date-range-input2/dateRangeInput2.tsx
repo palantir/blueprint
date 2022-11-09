@@ -373,7 +373,7 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
     // We use the renderTarget API to flatten the rendered DOM.
     private renderTarget =
         // N.B. pull out `isOpen` so that it's not forwarded to the DOM.
-        ({ isOpen, ...targetProps }: Popover2TargetProps & React.HTMLProps<unknown>) => {
+        ({ isOpen, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLElement>) => {
             const { fill, popoverProps = {} } = this.props;
             const { targetTagName = "div" } = popoverProps;
             return React.createElement(
