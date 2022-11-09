@@ -76,4 +76,14 @@ The **content** will be shown inside the tooltip itself. When opened, the toolti
 positioned on the page next to the target; the `position` prop determines its relative position (on
 which side of the target).
 
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-heading">Button targets</h4>
+
+Buttons make great tooltip targets, but the `disabled` attribute will prevent all
+events so the enclosing `Tooltip2` will not know when to respond.
+Use [`AnchorButton`](#core/components/button.anchor-button) instead;
+see the [callout here](#core/components/button.props) for more details.
+
+</div>
+
 @interface ITooltip2Props
