@@ -25,3 +25,19 @@ updates:
       # see https://github.com/palantir/blueprint/blob/727b91ffe76f49cded1acb8240c44502f34fce48/packages/icons/scripts/generate-icon-paths.mjs#L27-L30
       - dependency-name: "svgo"
       - dependency-name: "@types/svgo"
+      # some deps should use a "widen" versioning strategy, since overly strict constraints can lead to duplicates and large bundle sizes
+      - dependency-name: "date-fns"
+      - dependency-name: "moment"
+      - dependency-name: "lodash"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "adidahiya"
+    versioning-strategy: widen
+    allow:
+      - dependency-name: "date-fns"
+      - dependency-name: "moment"
+      - dependency-name: "lodash"
