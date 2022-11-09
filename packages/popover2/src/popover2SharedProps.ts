@@ -40,6 +40,22 @@ export type PopperModifierOverrides = Partial<{
  */
 export type PopperCustomModifer = Partial<Modifier<any, object>>;
 
+/**
+ * Default props interface for the Popover2 target element.
+ *
+ * These props are applied to the generated target element (whose tag name is customizable via `targetTagName`)
+ * or, when the `renderTarget` API is used, sent as props to that render function.
+ *
+ * This interface is generic enough to be compatible with the various HTML attributes Popover2 needs in
+ * order to function properly, including things like event handlers and ARIA accessibility attributes.
+ */
+export type DefaultPopover2TargetHTMLProps = React.HTMLProps<HTMLElement>;
+
+/**
+ * Properties injected by Popover2 when rendering custom targets via the `renderTarget` API.
+ *
+ * @see https://blueprintjs.com/docs/#popover2-package/popover2.structure
+ */
 // eslint-disable-next-line deprecation/deprecation
 export type Popover2TargetProps = IPopover2TargetProps;
 /**

@@ -30,7 +30,7 @@ import {
     TagInputProps,
     Utils,
 } from "@blueprintjs/core";
-import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
+import { DefaultPopover2TargetHTMLProps, Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { QueryList, QueryListRendererProps } from "../query-list/queryList";
@@ -147,7 +147,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
     private refHandlers: {
         input: React.RefCallback<HTMLInputElement>;
-        popover: React.RefObject<Popover2<React.HTMLProps<HTMLDivElement>>>;
+        popover: React.RefObject<Popover2<DefaultPopover2TargetHTMLProps>>;
         queryList: React.RefCallback<QueryList<T>>;
     } = {
         input: refHandler(this, "input", this.props.tagInputProps?.inputRef),

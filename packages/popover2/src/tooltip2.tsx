@@ -23,13 +23,13 @@ import * as Classes from "./classes";
 // eslint-disable-next-line import/no-cycle
 import { Popover2, Popover2InteractionKind } from "./popover2";
 import { TOOLTIP_ARROW_SVG_SIZE } from "./popover2Arrow";
-import { Popover2SharedProps } from "./popover2SharedProps";
+import { DefaultPopover2TargetHTMLProps, Popover2SharedProps } from "./popover2SharedProps";
 import { Tooltip2Context, Tooltip2ContextState, Tooltip2Provider } from "./tooltip2Context";
 
 // eslint-disable-next-line deprecation/deprecation
-export type Tooltip2Props<TProps = React.HTMLProps<HTMLElement>> = ITooltip2Props<TProps>;
+export type Tooltip2Props<TProps = DefaultPopover2TargetHTMLProps> = ITooltip2Props<TProps>;
 /** @deprecated use Tooltip2Props */
-export interface ITooltip2Props<TProps = React.HTMLProps<HTMLElement>>
+export interface ITooltip2Props<TProps = DefaultPopover2TargetHTMLProps>
     extends Omit<Popover2SharedProps<TProps>, "shouldReturnFocusOnClose">,
         IntentProps {
     /**

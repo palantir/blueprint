@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { Popover2, Popover2Props } from "@blueprintjs/popover2";
+import type { DefaultPopover2TargetHTMLProps, Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 /**
  * Reusable collection of props for components in this package which render a `Popover2`
@@ -34,6 +34,9 @@ export interface DatetimePopoverProps {
     /**
      * Optional ref for the Popover2 component instance.
      * This is sometimes useful to reposition the popover.
+     *
+     * Note that this is defined as a specific kind of Popover2 which should be compatible with
+     * most use cases, since it uses the default target props interface.
      */
-    popoverRef?: React.RefObject<Popover2<React.HTMLProps<unknown>>>;
+    popoverRef?: React.RefObject<Popover2<DefaultPopover2TargetHTMLProps>>;
 }
