@@ -21,12 +21,17 @@ import { getDateObjectFromIsoString, getIsoEquivalentWithUpdatedTimezone } from 
 import type { DateInput2Props } from "./dateInput2";
 
 /**
- * Adapter for automated DateInput -> DateInput2 migrations.
+ * `onChange` prop adapter for automated DateInput -> DateInput2 migrations.
+ *
+ * Note that we exclude `undefined` from the input & output types since we expect the callback to be defined
+ * if this adapter is used.
  *
  * @param handler DateInput onChange handler
  * @returns DateInput2 onChange handler
  */
-export function onChangeAdapter(handler: DateInputProps["onChange"]): DateInput2Props["onChange"] {
+export function onChangeAdapter(
+    handler: NonNullable<DateInputProps["onChange"]>,
+): NonNullable<DateInput2Props["onChange"]> {
     if (handler === undefined) {
         return noOp;
     }
@@ -36,7 +41,7 @@ export function onChangeAdapter(handler: DateInputProps["onChange"]): DateInput2
 }
 
 /**
- * Adapter for automated DateInput -> DateInput2 migrations.
+ * `value` prop adapter for automated DateInput -> DateInput2 migrations.
  *
  * @param value DateInput value
  * @param timePrecision (optional) DateInput timePrecision

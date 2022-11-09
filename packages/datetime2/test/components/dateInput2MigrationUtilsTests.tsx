@@ -93,4 +93,21 @@ describe("DateInput2MigrationUtils", () => {
             />,
         );
     });
+
+    it("Adapters work in common usage pattern with React.useCallback + React.useMemo", () => {
+        function TestComponent() {
+            const handleChange = React.useCallback(
+                DateInput2MigrationUtils.onChangeAdapter(controlledDateInputProps.onChange),
+                [controlledDateInputProps.onChange],
+            );
+            const value = React.useMemo(
+                () => DateInput2MigrationUtils.valueAdapter(controlledDateInputProps.value),
+                [controlledDateInputProps.value],
+            );
+
+            return <DateInput2 {...dateFormattingProps} onChange={handleChange} value={value} />;
+        }
+
+        mount(<TestComponent />);
+    });
 });
