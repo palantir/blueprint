@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/demo-app",
-    "version": "4.12.2",
+    "version": "4.12.3",
     "description": "Blueprint Demo App",
     "private": true,
     "scripts": {
@@ -19,10 +19,10 @@
         "@blueprintjs/core": "^4.12.0",
         "@blueprintjs/datetime": "^4.4.7",
         "@blueprintjs/icons": "^4.10.1",
-        "@blueprintjs/popover2": "^1.9.0",
-        "@blueprintjs/select": "^4.8.9",
-        "@blueprintjs/table": "^4.7.7",
-        "@blueprintjs/timezone": "^4.5.9",
+        "@blueprintjs/popover2": "^1.10.0",
+        "@blueprintjs/select": "^4.8.10",
+        "@blueprintjs/table": "^4.7.8",
+        "@blueprintjs/timezone": "^4.5.10",
         "classnames": "^2.3.1",
         "core-js": "^3.26.0",
         "dom4": "^2.1.5",
