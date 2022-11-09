@@ -28,6 +28,7 @@ export {
 } from "./contextMenu2";
 export { MenuItem2, MenuItem2Props } from "./menuItem2";
 export {
+    DefaultPopover2TargetHTMLProps,
     IPopover2SharedProps,
     IPopover2TargetProps,
     Popover2SharedProps,

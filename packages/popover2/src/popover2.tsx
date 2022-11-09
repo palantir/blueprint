@@ -36,7 +36,7 @@ import { matchReferenceWidthModifier } from "./customModifiers";
 import * as Errors from "./errors";
 import { Popover2Arrow, POPOVER_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { positionToPlacement } from "./popover2PlacementUtils";
-import { Popover2SharedProps } from "./popover2SharedProps";
+import { DefaultPopover2TargetHTMLProps, Popover2SharedProps } from "./popover2SharedProps";
 import { PopupKind } from "./popupKind";
 import { ResizeSensor2 } from "./resizeSensor2";
 // eslint-disable-next-line import/no-cycle
@@ -53,9 +53,9 @@ export const Popover2InteractionKind = {
 export type Popover2InteractionKind = typeof Popover2InteractionKind[keyof typeof Popover2InteractionKind];
 
 // eslint-disable-next-line deprecation/deprecation
-export type Popover2Props<TProps = React.HTMLProps<HTMLElement>> = IPopover2Props<TProps>;
+export type Popover2Props<TProps = DefaultPopover2TargetHTMLProps> = IPopover2Props<TProps>;
 /** @deprecated use Popover2Props */
-export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends Popover2SharedProps<TProps> {
+export interface IPopover2Props<TProps = DefaultPopover2TargetHTMLProps> extends Popover2SharedProps<TProps> {
     /**
      * Whether the popover/tooltip should acquire application focus when it first opens.
      *
@@ -129,7 +129,13 @@ export interface IPopover2State {
 }
 
 /**
- * @template T target element props interface
+ * Component to display a floating UI next to and tethered to a target element.
+ *
+ * @template T target element props interface. Note that we cannot assign a default value for this type param because it
+ * makes the type of the props supplied to `renderTarget()` cumbersome to work with when that API is used. Consumers
+ * wishing to stay in sync with Blueprint's default target HTML props interface should use the
+ * `DefaultPopover2TargetHTMLProps` type exported from @blueprintjs/popover2.
+ * @see https://blueprintjs.com/docs/#popover2-package/popover2
  */
 export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopover2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
