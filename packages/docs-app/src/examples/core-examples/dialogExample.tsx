@@ -138,10 +138,10 @@ function ButtonWithDialog({
             <Button onClick={handleButtonClick} text={buttonText} />
             <Dialog {...props} isOpen={isOpen} onClose={handleClose} footer={includeFooter === "fixed" ? <DialogFixedFooter handleClose={handleClose} /> : undefined }>
                 <DialogBody />
-                {includeFooter == "default" &&
+                {includeFooter === "default" &&
                     <DialogFooter handleClose={handleClose} />
                 }
-                {includeFooter == "none" &&
+                {includeFooter === "none" &&
                     <div style={{ margin: "0 20px" }}>
                         <VisitFoundryWebsiteAnchorButton fill={true} />
                     </div>
