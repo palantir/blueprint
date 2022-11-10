@@ -62,14 +62,14 @@ export class DialogExample extends React.PureComponent<ExampleProps<IBlueprintEx
                     className={this.props.data.themeName}
                     buttonText="Show dialog"
                     {...this.state}
-                    includeFooter={false}
+                    includeFooter="none"
                 />
                 <ButtonWithDialog
                     className={this.props.data.themeName}
                     icon="info-sign"
                     title="Palantir Foundry"
                     buttonText="Show dialog with title"
-                    includeFooter={false}
+                    includeFooter="none"
                     {...this.state}
                 />
                 <ButtonWithDialog
@@ -77,7 +77,15 @@ export class DialogExample extends React.PureComponent<ExampleProps<IBlueprintEx
                     icon="info-sign"
                     title="Palantir Foundry"
                     buttonText="Show dialog with title and footer"
-                    includeFooter={true}
+                    includeFooter="default"
+                    {...this.state}
+                />
+                <ButtonWithDialog
+                    className={this.props.data.themeName}
+                    icon="info-sign"
+                    title="Palantir Foundry"
+                    buttonText="Show dialog with title and fixed footer"
+                    includeFooter="fixed"
                     {...this.state}
                 />
             </Example>
@@ -121,22 +129,23 @@ function ButtonWithDialog({
     buttonText,
     includeFooter,
     ...props
-}: Omit<DialogProps, "isOpen"> & { buttonText: string; includeFooter: boolean }) {
+}: Omit<DialogProps, "isOpen"> & { buttonText: string; includeFooter: "fixed" | "default" | "none"; }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const handleButtonClick = React.useCallback(() => setIsOpen(!isOpen), []);
     const handleClose = React.useCallback(() => setIsOpen(false), []);
     return (
         <>
             <Button onClick={handleButtonClick} text={buttonText} />
-            <Dialog {...props} isOpen={isOpen} onClose={handleClose}>
+            <Dialog {...props} isOpen={isOpen} onClose={handleClose} footer={includeFooter === "fixed" ? <DialogFixedFooter handleClose={handleClose} /> : undefined }>
                 <DialogBody />
-                {includeFooter ? (
+                {includeFooter == "default" &&
                     <DialogFooter handleClose={handleClose} />
-                ) : (
+                }
+                {includeFooter == "none" &&
                     <div style={{ margin: "0 20px" }}>
                         <VisitFoundryWebsiteAnchorButton fill={true} />
                     </div>
-                )}
+                }
             </Dialog>
         </>
     );
@@ -177,12 +186,18 @@ function DialogBody() {
 function DialogFooter(props: { handleClose: (e: React.MouseEvent) => void }) {
     return (
         <div className={Classes.DIALOG_FOOTER}>
-            <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                <Tooltip2 content="This button is hooked up to close the dialog.">
-                    <Button onClick={props.handleClose}>Close</Button>
-                </Tooltip2>
-                <VisitFoundryWebsiteAnchorButton />
-            </div>
+            <DialogFixedFooter handleClose={props.handleClose} />
+        </div>
+    );
+}
+
+function DialogFixedFooter(props: { handleClose: (e: React.MouseEvent) => void }) {
+    return (
+        <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Tooltip2 content="This button is hooked up to close the dialog.">
+                <Button onClick={props.handleClose}>Close</Button>
+            </Tooltip2>
+            <VisitFoundryWebsiteAnchorButton />
         </div>
     );
 }

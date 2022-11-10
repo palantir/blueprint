@@ -22,7 +22,7 @@ import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
-import { H5 } from "../html/html";
+import { H6 } from "../html/html";
 import { Icon, IconName, IconSize } from "../icon/icon";
 import { IBackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
 
@@ -86,6 +86,11 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     containerRef?: React.Ref<HTMLDivElement>;
 
     /**
+     * Dialog footer
+     */
+     footer?: React.ReactNode;
+
+    /**
      * ID of the element that contains title or label text for this dialog.
      *
      * By default, if the `title` prop is supplied, this component will generate
@@ -121,14 +126,19 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
             <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
                 <div className={Classes.DIALOG_CONTAINER} ref={this.props.containerRef}>
                     <div
-                        className={classNames(Classes.DIALOG, this.props.className)}
+                        className={classNames(Classes.DIALOG, this.props.footer != null && Classes.DIALOG_NO_PADDING, this.props.className)}
                         role="dialog"
                         aria-labelledby={this.props["aria-labelledby"] || (this.props.title ? this.titleId : undefined)}
                         aria-describedby={this.props["aria-describedby"]}
                         style={this.props.style}
                     >
                         {this.maybeRenderHeader()}
-                        {this.props.children}
+
+                        <div className={Classes.DIALOG_BODY_SCROLL_CONTAINER}>
+                            {this.props.children}
+                        </div>
+
+                        {this.maybeRenderFixedFooter()}
                     </div>
                 </div>
             </Overlay>
@@ -172,9 +182,22 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
         return (
             <div className={Classes.DIALOG_HEADER}>
                 <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
-                <H5 id={this.titleId}>{title}</H5>
+                <H6 id={this.titleId}>{title}</H6>
                 {this.maybeRenderCloseButton()}
             </div>
         );
+    }
+
+    private maybeRenderFixedFooter() {
+        const { footer } = this.props;
+        if (footer == null) {
+            return undefined;
+        }
+
+        return (
+            <div className={Classes.DIALOG_FIXED_FOOTER}>
+                {this.props.footer}
+            </div>
+        )
     }
 }
