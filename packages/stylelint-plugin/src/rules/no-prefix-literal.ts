@@ -16,7 +16,7 @@
 import type { Root } from "postcss";
 import selectorParser from "postcss-selector-parser";
 import stylelint from "stylelint";
-import type { PluginContext, PostcssResult } from "stylelint";
+import type { PostcssResult, RuleContext } from "stylelint";
 
 import { checkImportExists } from "../utils/checkImportExists";
 import {
@@ -43,7 +43,7 @@ interface Options {
 }
 
 const ruleImpl =
-    (enabled: boolean, options: Options | undefined, context: PluginContext) => (root: Root, result: PostcssResult) => {
+    (enabled: boolean, options: Options | undefined, context: RuleContext) => (root: Root, result: PostcssResult) => {
         if (!enabled) {
             return;
         }
