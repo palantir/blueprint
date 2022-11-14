@@ -11,7 +11,7 @@
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.8",
         "assert": "^2.0.0",
         "autoprefixer": "^10.4.12",
-        "css-loader": "^6.7.1",
+        "css-loader": "^6.7.2",
         "cssnano": "^5.1.13",
         "fork-ts-checker-notifier-webpack-plugin": "^6.0.0",
         "fork-ts-checker-webpack-plugin": "^7.2.13",
