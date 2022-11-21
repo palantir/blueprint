@@ -49,7 +49,7 @@
         "chai": "^4.3.6",
         "circle-github-bot": "^2.1.0",
         "cross-env": "^7.0.3",
-        "eslint": "^8.21.0",
+        "eslint": "^8.28.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
         "gh-pages": "^4.0.0",
