@@ -65,7 +65,7 @@ in different DOM layout depending on your application's needs:
         your popover target.
 
 The **content** will be shown inside the popover itself. When opened, the popover will always be
-positioned on the page next to the target; the `position` prop determines its relative position (on
+positioned on the page next to the target; the `placement` prop determines its relative placement (on
 which side of the target).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
@@ -158,6 +158,14 @@ to handle things such as flipping, preventing overflow from a boundary element, 
 You may override the default modifiers with the `modifiers` prop, which is an object with key-value pairs representing the
 modifier name and its options object, respectively. See the [Popper.js modifiers docs page](https://popper.js.org/docs/v2/modifiers/)
 for more info.
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-heading">Auto placement requires flip modifier</h4>
+
+Be careful when disabling the "flip" modifier, since the default "auto" placement relies on it. If you _do_ decide
+to disable this modifier, be sure to also specify a placement which is not "auto".
+
+</div>
 
 You may also add custom modifiers using the `modifiersCustom` prop. See the
 [Popper.js custom modifiers documentation](https://popper.js.org/docs/v2/modifiers/#custom-modifiers) for more info.

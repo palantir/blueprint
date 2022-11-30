@@ -9,7 +9,7 @@ Deprecated: use [ContextMenu2](#popover2-package/context-menu2)
 
 This API is **deprecated since @blueprintjs/core v3.39.0** in favor of the new
 ContextMenu2 component available in the `@blueprintjs/popover2` package. You should migrate
-to the new API which will become the standard in Blueprint v5.
+to the new API which will become the standard in Blueprint v6.
 
 </div>
 
