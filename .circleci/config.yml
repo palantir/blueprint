@@ -157,7 +157,7 @@ jobs:
           # see https://github.com/palantir/blueprint/issues/3616
           command: |
             case $CIRCLE_NODE_INDEX in \
-            0) yarn lerna run --parallel test:typeCheck ;; \
+            0) yarn lerna run test:typeCheck ;; \
             1) yarn lerna run --scope "@blueprintjs/core" test:karma ;; \
             2) yarn lerna run --scope "@blueprintjs/datetime" test:karma ;; \
             3) yarn lerna run --scope "@blueprintjs/datetime2" test:karma ;; \
@@ -179,7 +179,7 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: mkdir ./reports
-      - run: yarn lerna run --parallel test:iso
+      - run: yarn lerna run test:iso
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
