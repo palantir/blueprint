@@ -571,6 +571,10 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
         return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
     }
 
+    /**
+     * @param createNewItem Checks if this item would match the current query. Cannot check this.state.createNewItem
+     *  every time since state may not have been updated yet.
+     */
     private isCreateItemRendered(createNewItem?: T | T[]): boolean {
         return (
             this.canCreateItems() &&
