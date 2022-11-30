@@ -13,7 +13,7 @@
     },
     "dependencies": {
         "@typescript-eslint/utils": "^5.38.1",
-        "eslint": "^8.24.0"
+        "eslint": "^8.28.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^6.0.1",
