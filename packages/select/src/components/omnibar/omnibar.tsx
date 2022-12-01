@@ -55,6 +55,11 @@ export interface IOmnibarProps<T> extends ListItemsProps<T> {
     overlayProps?: Partial<OverlayProps>;
 }
 
+/**
+ * Omnibar component.
+ *
+ * @see https://blueprintjs.com/docs/#select/omnibar
+ */
 export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Omnibar`;
 

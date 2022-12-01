@@ -104,7 +104,7 @@ const PADDING_BOTTOM = 0;
 const MIN_WIDTH = 800;
 
 /**
- * MultiStepDialog component.
+ * Multi-step dialog component.
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog.multistep-dialog
  */

@@ -115,6 +115,11 @@ export type CellRenderer = ICellRenderer;
 
 export const emptyCellRenderer = () => <Cell />;
 
+/**
+ * Cell component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.cell
+ */
 export class Cell extends React.Component<ICellProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Cell`;
 

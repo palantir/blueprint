@@ -59,7 +59,7 @@ export interface IDialogStepProps extends Props, Omit<HTMLDivProps, "id" | "titl
 }
 
 /**
- * DialogStep component.
+ * Dialog step component.
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog.dialogstep
  */

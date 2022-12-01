@@ -41,6 +41,11 @@ export interface IHTMLTableProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
+/**
+ * HTML table component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/html-table
+ */
 export class HTMLTable extends AbstractPureComponent2<HTMLTableProps> {
     public render() {
         // eslint-disable-next-line deprecation/deprecation

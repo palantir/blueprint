@@ -163,6 +163,11 @@ export interface ISwitchProps extends ControlProps {
     innerLabel?: string;
 }
 
+/**
+ * Switch component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/switch
+ */
 export class Switch extends AbstractPureComponent2<SwitchProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Switch`;
 
@@ -201,6 +206,11 @@ export type IRadioProps = ControlProps;
 // eslint-disable-next-line deprecation/deprecation
 export type RadioProps = IRadioProps;
 
+/**
+ * Radio component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/radio
+ */
 export class Radio extends AbstractPureComponent2<RadioProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Radio`;
 
@@ -236,6 +246,11 @@ export interface ICheckboxState {
     indeterminate: boolean;
 }
 
+/**
+ * Checkbox component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/checkbox
+ */
 export class Checkbox extends AbstractPureComponent2<CheckboxProps, ICheckboxState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Checkbox`;
 

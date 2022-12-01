@@ -75,6 +75,11 @@ export interface ITooltip2Props<TProps = DefaultPopover2TargetHTMLProps>
     transitionDuration?: number;
 }
 
+/**
+ * Tooltip (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#popover2-package/tooltip2
+ */
 export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip2`;
 

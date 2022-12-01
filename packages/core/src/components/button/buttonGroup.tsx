@@ -68,7 +68,7 @@ export interface IButtonGroupProps extends Props, HTMLDivProps {
 /* istanbul ignore next */
 
 /**
- * ButtonGroup component.
+ * Button group component.
  *
  * @see https://blueprintjs.com/docs/#core/components/button-group
  */

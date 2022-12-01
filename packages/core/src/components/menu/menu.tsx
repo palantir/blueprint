@@ -34,6 +34,11 @@ export interface IMenuProps extends Props, React.HTMLAttributes<HTMLUListElement
     ulRef?: React.Ref<HTMLUListElement>;
 }
 
+/**
+ * Menu component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/menu
+ */
 export class Menu extends AbstractPureComponent2<MenuProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
 

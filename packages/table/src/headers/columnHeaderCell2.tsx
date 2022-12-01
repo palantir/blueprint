@@ -37,6 +37,11 @@ export interface ColumnHeaderCell2Props extends IColumnHeaderCellProps {
     enableColumnInteractionBar?: boolean;
 }
 
+/**
+ * Column header cell (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.columnheadercell2
+ */
 export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCell2Props, IColumnHeaderCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ColumnHeaderCell2`;
 
