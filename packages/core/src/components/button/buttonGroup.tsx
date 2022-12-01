@@ -67,6 +67,11 @@ export interface IButtonGroupProps extends Props, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
+/**
+ * ButtonGroup component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/button-group
+ */
 export class ButtonGroup extends AbstractPureComponent2<ButtonGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;
 

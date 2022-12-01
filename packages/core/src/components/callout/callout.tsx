@@ -63,6 +63,11 @@ export interface ICalloutProps extends IntentProps, Props, HTMLDivProps {
     title?: string;
 }
 
+/**
+ * Callout component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/callout
+ */
 export class Callout extends AbstractPureComponent2<CalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 

@@ -49,7 +49,12 @@ const TRANSITION_DURATION = 100;
 type IContextMenuProps = IOverlayLifecycleProps;
 
 /* istanbul ignore next */
-/** @deprecated use ContextMenu2 */
+/**
+ * ContextMenu component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/context-menu
+ * @deprecated use ContextMenu2
+ */
 class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenuState> {
     public state: IContextMenuState = {
         isDarkTheme: false,

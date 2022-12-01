@@ -37,6 +37,11 @@ export interface IBreadcrumbProps extends ActionProps, LinkProps {
     iconTitle?: string;
 }
 
+/**
+ * Breadcrumb component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/breadcrumbs
+ */
 export const Breadcrumb: React.FC<BreadcrumbProps> = props => {
     const classes = classNames(
         Classes.BREADCRUMB,
