@@ -99,6 +99,11 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     "aria-describedby"?: string;
 }
 
+/**
+ * Dialog component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/dialog
+ */
 export class Dialog extends AbstractPureComponent2<DialogProps> {
     public static defaultProps: DialogProps = {
         canOutsideClickClose: true,

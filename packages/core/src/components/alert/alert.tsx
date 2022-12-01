@@ -135,6 +135,11 @@ export interface IAlertProps extends IOverlayLifecycleProps, Props {
     onClose?(confirmed: boolean, evt?: React.SyntheticEvent<HTMLElement>): void;
 }
 
+/**
+ * Alert component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/alert
+ */
 export class Alert extends AbstractPureComponent2<AlertProps> {
     public static defaultProps: AlertProps = {
         canEscapeKeyCancel: false,

@@ -152,6 +152,11 @@ export interface MenuItem2Props extends ActionProps, LinkProps {
     htmlTitle?: string;
 }
 
+/**
+ * Menu item (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#popover2-package/menu-item2
+ */
 export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: MenuItem2Props = {
         active: false,

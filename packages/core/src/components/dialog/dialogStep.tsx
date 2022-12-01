@@ -58,6 +58,11 @@ export interface IDialogStepProps extends Props, Omit<HTMLDivProps, "id" | "titl
     nextButtonProps?: DialogStepButtonProps;
 }
 
+/**
+ * Dialog step component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/dialog.dialogstep
+ */
 export class DialogStep extends AbstractPureComponent2<DialogStepProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DialogStep`;
 

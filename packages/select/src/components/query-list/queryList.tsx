@@ -149,6 +149,11 @@ export interface IQueryListState<T> {
     query: string;
 }
 
+/**
+ * Query list component.
+ *
+ * @see https://blueprintjs.com/docs/#select/query-list
+ */
 export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 

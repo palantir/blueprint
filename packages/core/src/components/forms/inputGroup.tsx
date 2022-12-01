@@ -156,6 +156,11 @@ export interface IInputGroupState {
     rightElementWidth?: number;
 }
 
+/**
+ * Input group component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/text-inputs.input-group
+ */
 export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 

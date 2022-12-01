@@ -103,6 +103,11 @@ const PADDING_BOTTOM = 0;
 
 const MIN_WIDTH = 800;
 
+/**
+ * Multi-step dialog component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/dialog.multistep-dialog
+ */
 export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps, IMultistepDialogState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultistepDialog`;
 

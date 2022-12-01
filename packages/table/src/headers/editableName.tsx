@@ -61,6 +61,11 @@ export interface IEditableNameState {
     dirtyName?: string;
 }
 
+/**
+ * Editable name component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.editablename
+ */
 export class EditableName extends React.PureComponent<IEditableNameProps, IEditableNameState> {
     public constructor(props: IEditableNameProps) {
         super(props);

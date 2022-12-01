@@ -112,6 +112,11 @@ export interface Suggest2State<T> {
     selectedItem: T | null;
 }
 
+/**
+ * Suggest (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#select/suggest2
+ */
 export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Suggest2State<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest2`;
 

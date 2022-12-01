@@ -135,6 +135,11 @@ export interface ISliderState {
     tickSizeRatio: number;
 }
 
+/**
+ * Multi slider component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/sliders.multi-slider
+ */
 export class MultiSlider extends AbstractPureComponent2<MultiSliderProps, ISliderState> {
     public static defaultSliderProps: ISliderBaseProps = {
         disabled: false,

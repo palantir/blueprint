@@ -74,6 +74,11 @@ export interface IFormGroupProps extends IntentProps, Props {
     subLabel?: React.ReactNode;
 }
 
+/**
+ * Form group component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/form-group
+ */
 export class FormGroup extends AbstractPureComponent2<FormGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
 

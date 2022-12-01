@@ -103,6 +103,11 @@ export interface IIconProps extends IntentProps, Props {
     title?: string | false | null;
 }
 
+/**
+ * Icon component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/icon
+ */
 export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 

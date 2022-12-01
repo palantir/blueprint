@@ -25,6 +25,11 @@ import { TruncatedPopoverMode } from "./truncatedFormat";
 import { TruncatedFormat2 } from "./truncatedFormat2";
 
 /* istanbul ignore next */
+/**
+ * JSON cell format (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.jsonformat
+ */
 export class JSONFormat2 extends React.Component<JSONFormatProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat2`;
 

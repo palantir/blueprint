@@ -93,6 +93,11 @@ export interface Select2State {
     isOpen: boolean;
 }
 
+/**
+ * Select (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#select/select2
+ */
 export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select2`;
 
