@@ -687,7 +687,15 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
 
     private handleInputFocus = (_e: React.FormEvent<HTMLInputElement>, boundary: Boundary) => {
         const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
-        const inputString = DatePickerUtils.getFormattedDateString(values.selectedValue, this.props, true);
+        const isValueControlled = this.isControlled();
+        // We may be reacting to a programmatic focus triggered by componentDidUpdate() at a point when
+        // values.selectedValue may not have been updated yet in controlled mode, so we must use values.controlledValue
+        // in that case.
+        const inputString = DatePickerUtils.getFormattedDateString(
+            isValueControlled ? values.controlledValue : values.selectedValue,
+            this.props,
+            true,
+        );
 
         // change the boundary only if the user explicitly focused in the field.
         // focus changes from hovering don't count; they're just temporary.
