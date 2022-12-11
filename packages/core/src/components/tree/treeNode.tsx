@@ -76,11 +76,11 @@ export interface ITreeNode<T = {}> extends Props {
     secondaryLabel?: string | MaybeElement;
 
     /**
-     * An optional custom user object to associate with the node.
+     * A custom user object to associate with the node.
      * This property can then be used in the `onClick`, `onContextMenu` and `onDoubleClick`
      * event handlers for doing custom logic per node.
      */
-    nodeData?: T;
+    nodeData : T;
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
