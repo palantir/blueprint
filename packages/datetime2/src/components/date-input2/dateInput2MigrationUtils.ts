@@ -21,12 +21,17 @@ import { getDateObjectFromIsoString, getIsoEquivalentWithUpdatedTimezone } from 
 import type { DateInput2Props } from "./dateInput2";
 
 /**
- * Adapter for automated DateInput -> DateInput2 migrations.
+ * `onChange` prop adapter for automated DateInput -> DateInput2 migrations.
+ *
+ * Note that we exclude `undefined` from the input & output types since we expect the callback to be defined
+ * if this adapter is used.
  *
  * @param handler DateInput onChange handler
  * @returns DateInput2 onChange handler
  */
-export function onChangeAdapter(handler: DateInputProps["onChange"]): DateInput2Props["onChange"] {
+export function onChangeAdapter(
+    handler: NonNullable<DateInputProps["onChange"]>,
+): NonNullable<DateInput2Props["onChange"]> {
     if (handler === undefined) {
         return noOp;
     }
@@ -36,7 +41,7 @@ export function onChangeAdapter(handler: DateInputProps["onChange"]): DateInput2
 }
 
 /**
- * Adapter for automated DateInput -> DateInput2 migrations.
+ * `value` prop adapter for automated DateInput -> DateInput2 migrations.
  *
  * @param value DateInput value
  * @param timePrecision (optional) DateInput timePrecision
@@ -46,18 +51,38 @@ export function valueAdapter(value: DateInputProps["value"], timePrecision?: Tim
     if (value == null) {
         return null;
     }
+    return convertDateToDateString(value, timePrecision);
+}
 
+/**
+ * Adapter for automated DateInput -> DateInput2 migrations.
+ *
+ * @param defaultValue DateInput value
+ * @param timePrecision (optional) DateInput timePrecision
+ * @returns DateInput2 value
+ */
+export function defaultValueAdapter(
+    defaultValue: DateInputProps["defaultValue"],
+    timePrecision?: TimePrecision,
+): DateInput2Props["defaultValue"] {
+    if (defaultValue === undefined) {
+        return undefined;
+    }
+    return convertDateToDateString(defaultValue, timePrecision);
+}
+
+function convertDateToDateString(date: Date, timePrecision?: TimePrecision) {
     const tz = getCurrentTimezone();
     const inferredTimePrecision =
-        value.getMilliseconds() !== 0
+        date.getMilliseconds() !== 0
             ? TimePrecision.MILLISECOND
-            : value.getSeconds() !== 0
+            : date.getSeconds() !== 0
             ? TimePrecision.SECOND
-            : value.getMinutes() !== 0
+            : date.getMinutes() !== 0
             ? TimePrecision.MINUTE
             : undefined;
 
-    return getIsoEquivalentWithUpdatedTimezone(value, tz, timePrecision ?? inferredTimePrecision);
+    return getIsoEquivalentWithUpdatedTimezone(date, tz, timePrecision ?? inferredTimePrecision);
 }
 
 function noOp() {

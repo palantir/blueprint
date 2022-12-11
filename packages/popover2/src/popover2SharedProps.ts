@@ -33,6 +33,29 @@ export type PopperModifierOverrides = Partial<{
     [M in StrictModifierNames]: Partial<Omit<StrictModifier<M>, "name">>;
 }>;
 
+/**
+ * Custom popper.js v2 modifier for Popover2 and Tooltip2.
+ *
+ * @see https://popper.js.org/docs/v2/modifiers/#custom-modifiers
+ */
+export type PopperCustomModifer = Partial<Modifier<any, object>>;
+
+/**
+ * Default props interface for the Popover2 target element.
+ *
+ * These props are applied to the generated target element (whose tag name is customizable via `targetTagName`)
+ * or, when the `renderTarget` API is used, sent as props to that render function.
+ *
+ * This interface is generic enough to be compatible with the various HTML attributes Popover2 needs in
+ * order to function properly, including things like event handlers and ARIA accessibility attributes.
+ */
+export type DefaultPopover2TargetHTMLProps = React.HTMLProps<HTMLElement>;
+
+/**
+ * Properties injected by Popover2 when rendering custom targets via the `renderTarget` API.
+ *
+ * @see https://blueprintjs.com/docs/#popover2-package/popover2.structure
+ */
 // eslint-disable-next-line deprecation/deprecation
 export type Popover2TargetProps = IPopover2TargetProps;
 /**
@@ -169,7 +192,7 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
      *
      * @see https://popper.js.org/docs/v2/modifiers/#custom-modifiers
      */
-    modifiersCustom?: ReadonlyArray<Partial<Modifier<any, object>>>;
+    modifiersCustom?: readonly PopperCustomModifer[];
 
     /**
      * Callback invoked in controlled mode when the popover open state *would*
@@ -247,9 +270,16 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
      * By default, a `<span>` tag is used so popovers appear as inline-block
      * elements and can be nested in text. Use `<div>` tag for a block element.
      *
-     * Mutually exclusive with renderTarget.
+     * If `fill` is set to `true`, this prop's default value will become `"div"`
+     * instead of `"span"`.
      *
-     * @default "span" ("div" if fill={true})
+     * Note that _not all HTML tags are supported_; you will need to make sure
+     * the tag you choose supports the HTML attributes Popover2 applies to the
+     * target element.
+     *
+     * This prop is mutually exclusive with the `renderTarget` API.
+     *
+     * @default "span" ("div" if `fill={true}`)
      */
     targetTagName?: keyof JSX.IntrinsicElements;
 

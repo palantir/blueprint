@@ -220,7 +220,12 @@ interface IStateKeysAndValuesObject {
     };
 }
 
-/** @deprecated use { DateRangeInput2 } from "@blueprintjs/datetime2" */
+/**
+ * Date range input component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime/daterangeinput
+ * @deprecated use { DateRangeInput2 } from "@blueprintjs/datetime2"
+ */
 export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: Partial<DateRangeInputProps> = {
         allowSingleDayRange: false,

@@ -35,9 +35,10 @@ import {
     DatePickerShortcut,
     DatePickerUtils,
 } from "@blueprintjs/datetime";
-import { Popover2, Popover2Props, Popover2TargetProps } from "@blueprintjs/popover2";
+import { Popover2, Popover2TargetProps } from "@blueprintjs/popover2";
 
 import * as Classes from "../../common/classes";
+import { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import { isDateValid, isDayInRange } from "../../common/dateUtils";
 import { getCurrentTimezone } from "../../common/getTimezone";
 import { getTimezoneShortName } from "../../common/timezoneNameUtils";
@@ -48,7 +49,7 @@ import {
 } from "../../common/timezoneUtils";
 import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
-export interface DateInput2Props extends DatePickerBaseProps, DateFormatProps, Props {
+export interface DateInput2Props extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * Passed to `DatePicker` component.
@@ -100,11 +101,16 @@ export interface DateInput2Props extends DatePickerBaseProps, DateFormatProps, P
     fill?: boolean;
 
     /**
-     * Props to pass to the [input group](#core/components/text-inputs.input-group).
-     * `disabled` and `value` will be ignored in favor of the top-level props on this component.
-     * `type` is fixed to "text".
+     * Props to pass to the [InputGroup component](#core/components/text-inputs.input-group).
+     *
+     * Some properties are unavailable:
+     * - `inputProps.value`: use `value` instead
+     * - `inputProps.disabled`: use `disabled` instead
+     * - `inputProps.type`: cannot be customized, always set to "text"
+     *
+     * Note that `inputProps.tagName` will override `popoverProps.targetTagName`.
      */
-    inputProps?: Omit<InputGroupProps2, "disabled" | "type" | "value">;
+    inputProps?: Partial<Omit<InputGroupProps2, "disabled" | "type" | "value">>;
 
     /**
      * Callback invoked whenever the date or timezone has changed.
@@ -121,23 +127,6 @@ export interface DateInput2Props extends DatePickerBaseProps, DateFormatProps, P
      * the out of range date will be returned (`onChange` is not called in this case).
      */
     onError?: (errorDate: Date) => void;
-
-    /**
-     * The props to pass to the popover.
-     */
-    popoverProps?: Partial<
-        Omit<
-            Popover2Props,
-            | "autoFocus"
-            | "content"
-            | "defaultIsOpen"
-            | "disabled"
-            | "enforceFocus"
-            | "fill"
-            | "renderTarget"
-            | "targetTagName"
-        >
-    >;
 
     /**
      * Element to render on right side of input.
@@ -191,6 +180,11 @@ const INVALID_DATE = new Date(undefined!);
 const DEFAULT_MAX_DATE = DatePickerUtils.getDefaultMaxDate();
 const DEFAULT_MIN_DATE = DatePickerUtils.getDefaultMinDate();
 
+/**
+ * Date input (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime2/date-input2
+ */
 export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateInput2(props) {
     const {
         defaultTimezone,
@@ -203,6 +197,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
         minDate = DEFAULT_MIN_DATE,
         placeholder,
         popoverProps = {},
+        popoverRef,
         showTimezoneSelect,
         timePrecision,
         value,
@@ -592,6 +587,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
                             {props.rightElement}
                         </>
                     }
+                    tagName={popoverProps.targetTagName}
                     type="text"
                     {...targetProps}
                     {...inputProps}
@@ -617,6 +613,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             isTimezoneSelectHidden,
             placeholder,
             shouldShowErrorStyling,
+            timezoneValue,
             props.disabled,
             props.inputProps,
             props.rightElement,
@@ -634,6 +631,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             enforceFocus={false}
             onClose={handlePopoverClose}
             popoverClassName={classNames(Classes.DATE_INPUT_POPOVER, popoverProps.popoverClassName)}
+            ref={popoverRef}
             renderTarget={renderTarget}
         />
     );

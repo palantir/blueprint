@@ -217,7 +217,7 @@ return <Cell><TruncatedFormat2>{content}</TruncatedFormat2></Cell>
 
 @interface ITruncatedFormatProps
 
-@## JSONFormat
+@## JSONFormat2
 
 Wrap your JavaScript object cell contents with a `JSONFormat2` component like so:
 

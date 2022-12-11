@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/webpack-build-scripts",
-    "version": "4.0.3",
+    "version": "4.0.5",
     "description": "Webpack build scripts for @blueprintjs packages",
     "type": "module",
     "main": "index.mjs",
@@ -8,15 +8,15 @@
         "test": "exit 0"
     },
     "dependencies": {
-        "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
+        "@pmmmwh/react-refresh-webpack-plugin": "^0.5.8",
         "assert": "^2.0.0",
         "autoprefixer": "^10.4.12",
-        "css-loader": "^6.7.1",
+        "css-loader": "^6.7.2",
         "cssnano": "^5.1.13",
         "fork-ts-checker-notifier-webpack-plugin": "^6.0.0",
         "fork-ts-checker-webpack-plugin": "^7.2.13",
         "mini-css-extract-plugin": "^2.6.1",
-        "postcss": "^8.4.17",
+        "postcss": "^8.4.19",
         "postcss-discard-comments": "^5.1.2",
         "postcss-loader": "^7.0.1",
         "process": "^0.11.10",

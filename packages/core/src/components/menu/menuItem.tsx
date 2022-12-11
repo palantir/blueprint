@@ -142,6 +142,11 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     htmlTitle?: string;
 }
 
+/**
+ * Menu item component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/menu.menu-item
+ */
 export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: MenuItemProps = {
         active: false,

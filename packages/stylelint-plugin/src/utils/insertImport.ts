@@ -14,7 +14,7 @@
  */
 
 import postcss, { AtRule, Comment, Root } from "postcss";
-import type { PluginContext } from "stylelint";
+import type { RuleContext } from "stylelint";
 
 import { CssSyntax } from "./cssSyntax";
 
@@ -25,7 +25,7 @@ import { CssSyntax } from "./cssSyntax";
 export function insertImport(
     cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS,
     root: Root,
-    context: PluginContext,
+    context: RuleContext,
     importPath: string,
     namespace?: string,
 ): void {

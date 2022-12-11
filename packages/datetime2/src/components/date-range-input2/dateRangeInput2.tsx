@@ -39,9 +39,10 @@ import {
     DateRangePicker,
     DateRangeShortcut,
 } from "@blueprintjs/datetime";
-import { Popover2, Popover2Props, Popover2TargetProps } from "@blueprintjs/popover2";
+import { Popover2, Popover2TargetProps } from "@blueprintjs/popover2";
 
 import { Classes, DateRange, NonNullDateRange } from "../../common";
+import { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import { isDayInRange, isSameTime } from "../../common/dateUtils";
 import * as Errors from "../../common/errors";
 
@@ -53,7 +54,7 @@ type InputEvent =
     | React.FocusEvent<HTMLInputElement>
     | React.ChangeEvent<HTMLInputElement>;
 
-export interface DateRangeInput2Props extends DatePickerBaseProps, DateFormatProps, Props {
+export interface DateRangeInput2Props extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {
     /**
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
@@ -92,6 +93,11 @@ export interface DateRangeInput2Props extends DatePickerBaseProps, DateFormatPro
     disabled?: boolean;
 
     /**
+     * Whether the component should take up the full width of its container.
+     */
+    fill?: boolean;
+
+    /**
      * Props to pass to the end-date [input group](#core/components/text-inputs.input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
@@ -122,23 +128,6 @@ export interface DateRangeInput2Props extends DatePickerBaseProps, DateFormatPro
      * @default "Overlapping dates"
      */
     overlappingDatesMessage?: string;
-
-    /**
-     * The props to pass to the popover.
-     */
-    popoverProps?: Partial<
-        Omit<
-            Popover2Props,
-            | "autoFocus"
-            | "content"
-            | "defaultIsOpen"
-            | "disabled"
-            | "enforceFocus"
-            | "fill"
-            | "renderTarget"
-            | "targetTagName"
-        >
-    >;
 
     /**
      * Whether the entire text field should be selected on focus.
@@ -224,6 +213,11 @@ interface StateKeysAndValuesObject {
     };
 }
 
+/**
+ * Date range input (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime2/date-range-input2
+ */
 export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props, DateRangeInput2State> {
     public static defaultProps: Partial<DateRangeInput2Props> = {
         allowSingleDayRange: false,
@@ -340,7 +334,7 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
 
     public render() {
         const { selectedShortcutIndex } = this.state;
-        const { popoverProps = {} } = this.props;
+        const { popoverProps = {}, popoverRef } = this.props;
 
         const popoverContent = (
             <DateRangePicker
@@ -367,6 +361,7 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
                 enforceFocus={false}
                 onClose={this.handlePopoverClose}
                 popoverClassName={classNames(Classes.DATE_RANGE_INPUT_POPOVER, popoverProps.popoverClassName)}
+                ref={popoverRef}
                 renderTarget={this.renderTarget}
             />
         );
@@ -383,12 +378,19 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
     // We use the renderTarget API to flatten the rendered DOM.
     private renderTarget =
         // N.B. pull out `isOpen` so that it's not forwarded to the DOM.
-        ({ isOpen, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
-            return (
-                <div {...targetProps} className={classNames(CoreClasses.CONTROL_GROUP, targetProps.className)}>
-                    {this.renderInputGroup(Boundary.START)}
-                    {this.renderInputGroup(Boundary.END)}
-                </div>
+        ({ isOpen, ...targetProps }: Popover2TargetProps & React.HTMLProps<unknown>) => {
+            const { fill, popoverProps = {} } = this.props;
+            const { targetTagName = "div" } = popoverProps;
+            return React.createElement(
+                targetTagName,
+                {
+                    ...targetProps,
+                    className: classNames(CoreClasses.CONTROL_GROUP, targetProps.className, {
+                        [CoreClasses.FILL]: fill,
+                    }),
+                },
+                this.renderInputGroup(Boundary.START),
+                this.renderInputGroup(Boundary.END),
             );
         };
 
@@ -400,6 +402,7 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
             <InputGroup
                 autoComplete="off"
                 disabled={inputProps?.disabled ?? this.props.disabled}
+                fill={this.props.fill}
                 {...inputProps}
                 intent={this.isInputInErrorState(boundary) ? Intent.DANGER : inputProps?.intent}
                 inputRef={this.getInputRef(boundary)}
@@ -684,7 +687,15 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
 
     private handleInputFocus = (_e: React.FormEvent<HTMLInputElement>, boundary: Boundary) => {
         const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
-        const inputString = DatePickerUtils.getFormattedDateString(values.selectedValue, this.props, true);
+        const isValueControlled = this.isControlled();
+        // We may be reacting to a programmatic focus triggered by componentDidUpdate() at a point when
+        // values.selectedValue may not have been updated yet in controlled mode, so we must use values.controlledValue
+        // in that case.
+        const inputString = DatePickerUtils.getFormattedDateString(
+            isValueControlled ? values.controlledValue : values.selectedValue,
+            this.props,
+            true,
+        );
 
         // change the boundary only if the user explicitly focused in the field.
         // focus changes from hovering don't count; they're just temporary.

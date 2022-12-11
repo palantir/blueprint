@@ -35,7 +35,7 @@ import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2"
 import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { QueryList, QueryListRendererProps } from "../query-list/queryList";
 
-export interface Suggest2Props<T> extends ListItemsProps<T>, SelectPopoverProps {
+export interface Suggest2Props<T> extends ListItemsProps<T>, Omit<SelectPopoverProps, "popoverTargetProps"> {
     /**
      * Whether the popover should close after selecting an item.
      *
@@ -48,16 +48,23 @@ export interface Suggest2Props<T> extends ListItemsProps<T>, SelectPopoverProps 
 
     /**
      * Whether the component should take up the full width of its container.
-     * This overrides `popoverProps.fill` and `inputProps.fill`.
      */
     fill?: boolean;
 
     /**
-     * Props to spread to the query `InputGroup`. To control this input, use
-     * `query` and `onQueryChange` instead of `inputProps.value` and
-     * `inputProps.onChange`.
+     * Props to pass to the query [InputGroup component](#core/components/text-inputs.input-group).
+     *
+     * Some properties are unavailable:
+     * - `inputProps.value`: use `query` instead
+     * - `inputProps.onChange`: use `onQueryChange` instead
+     * - `inputProps.disabled`: use `disabled` instead
+     * - `inputProps.fill`: use `fill` instead
+     *
+     * Other notes:
+     * - `inputProps.tagName` will override `popoverProps.targetTagName`
+     * - `inputProps.className` will work as expected, but this is redundant with the simpler `className` prop
      */
-    inputProps?: InputGroupProps2;
+    inputProps?: Partial<Omit<InputGroupProps2, "disabled" | "fill" | "value" | "onChange">>;
 
     /** Custom renderer to transform an item into a string for the input value. */
     inputValueRenderer: (item: T) => string;
@@ -76,7 +83,7 @@ export interface Suggest2Props<T> extends ListItemsProps<T>, SelectPopoverProps 
     selectedItem?: T | null;
 
     /**
-     * Props to spread to the `Menu` listbox containing the selectable options.
+     * HTML attributes to add to the `Menu` listbox containing the selectable options.
      */
     menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
@@ -105,6 +112,11 @@ export interface Suggest2State<T> {
     selectedItem: T | null;
 }
 
+/**
+ * Suggest (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#select/suggest2
+ */
 export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Suggest2State<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest2`;
 
@@ -220,12 +232,12 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         ({
             // pull out `isOpen` so that it's not forwarded to the DOM
             isOpen: _isOpen,
-            // pull out `defaultValue` due to type incompatibility with InputGroup.
+            // pull out `defaultValue` due to type incompatibility with InputGroup
             defaultValue,
             ref,
             ...targetProps
         }: Popover2TargetProps & React.HTMLProps<HTMLInputElement>) => {
-            const { disabled, fill, inputProps = {}, inputValueRenderer, resetOnClose } = this.props;
+            const { disabled, fill, inputProps = {}, inputValueRenderer, popoverProps = {}, resetOnClose } = this.props;
             const { selectedItem } = this.state;
             const { handleKeyDown, handleKeyUp } = listProps;
 
@@ -239,13 +251,15 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
 
             return (
                 <InputGroup
+                    aria-controls={this.listboxId}
                     autoComplete={autoComplete}
                     disabled={disabled}
-                    aria-controls={this.listboxId}
+                    tagName={popoverProps.targetTagName}
                     {...targetProps}
                     {...inputProps}
                     aria-autocomplete="list"
                     aria-expanded={isOpen}
+                    className={classNames(targetProps.className, inputProps.className)}
                     fill={fill}
                     inputRef={mergeRefs(this.handleInputRef, ref)}
                     onChange={listProps.handleQueryChange}

@@ -109,7 +109,12 @@ export interface IPopoverState {
     hasDarkParent: boolean;
 }
 
-/** @deprecated use { Popover2 } from "@blueprintjs/popover2" */
+/**
+ * Popover component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/popover
+ * @deprecated use { Popover2 } from "@blueprintjs/popover2"
+ */
 // eslint-disable-next-line deprecation/deprecation
 export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;

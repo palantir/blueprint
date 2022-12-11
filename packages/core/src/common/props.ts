@@ -177,6 +177,7 @@ const INVALID_PROPS = [
     "rightIcon",
     "round",
     "small",
+    "tagName",
     "text",
 ];
 

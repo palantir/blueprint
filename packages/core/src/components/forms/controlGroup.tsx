@@ -44,6 +44,11 @@ export interface IControlGroupProps extends Props, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
+/**
+ * Control group component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/control-group
+ */
 export class ControlGroup extends AbstractPureComponent2<ControlGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ControlGroup`;
 

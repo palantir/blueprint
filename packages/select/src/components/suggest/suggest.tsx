@@ -112,7 +112,12 @@ export interface ISuggestState<T> {
     selectedItem: T | null;
 }
 
-/** @deprecated use { Suggest2 } from "@blueprintjs/select" */
+/**
+ * Suggest component.
+ *
+ * @see https://blueprintjs.com/docs/#select/suggest
+ * @deprecated use { Suggest2 } from "@blueprintjs/select"
+ */
 export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggestState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
 

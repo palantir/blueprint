@@ -20,23 +20,16 @@ import type { DefaultPopover2TargetHTMLProps, Popover2, Popover2Props } from "@b
  * Reusable collection of props for components in this package which render a `Popover2`
  * and need to provide some degree of customization for that popover.
  */
-export interface SelectPopoverProps {
+export interface DatetimePopoverProps {
     /**
-     * HTML attributes to spread to the popover content container element.
+     * Props to spread to `Popover2`.
      */
-    popoverContentProps?: React.HTMLAttributes<HTMLDivElement>;
-
-    /**
-     * Props to spread to Popover2.
-     *
-     * Note that `content` cannot be changed, but you may apply some props to the content wrapper element
-     * with `popoverContentProps`. Likewise, `targetProps` is no longer supported as it was in Blueprint v4, but you
-     * may use `popoverTargetProps` instead.
-     *
-     * N.B. `disabled` is supported here, as this can be distinct from disabling the entire select button / input
-     * control element. There are some cases where we only want to disable the popover interaction.
-     */
-    popoverProps?: Partial<Omit<Popover2Props, "content" | "defaultIsOpen" | "fill" | "renderTarget">>;
+    popoverProps?: Partial<
+        Omit<
+            Popover2Props,
+            "autoFocus" | "content" | "defaultIsOpen" | "disabled" | "enforceFocus" | "fill" | "renderTarget"
+        >
+    >;
 
     /**
      * Optional ref for the Popover2 component instance.
@@ -46,9 +39,4 @@ export interface SelectPopoverProps {
      * most use cases, since it uses the default target props interface.
      */
     popoverRef?: React.RefObject<Popover2<DefaultPopover2TargetHTMLProps>>;
-
-    /**
-     * HTML attributes to add to the popover target element.
-     */
-    popoverTargetProps?: React.HTMLAttributes<HTMLElement>;
 }

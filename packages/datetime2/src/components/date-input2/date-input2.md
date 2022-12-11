@@ -11,8 +11,7 @@ Migrating from [DateInput](#datetime/dateinput)?
 
 </h4>
 
-DateInput2 is a replacement for the [DateInput component](#datetime/dateinput) from
-[__@blueprintjs/datetime__ package](#datetime) and will replace it in Blueprint v5.
+DateInput2 is a replacement for DateInput and will replace it in Blueprint v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
 See the [migration guide](https://github.com/palantir/blueprint/wiki/datetime2-component-migration)
 on the wiki.

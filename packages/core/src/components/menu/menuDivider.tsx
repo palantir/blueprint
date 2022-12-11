@@ -32,6 +32,11 @@ export interface IMenuDividerProps extends Props {
     title?: React.ReactNode;
 }
 
+/**
+ * Menu divider component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/menu.menu-divider
+ */
 export class MenuDivider extends React.Component<MenuDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MenuDivider`;
 

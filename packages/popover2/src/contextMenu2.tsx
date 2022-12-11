@@ -122,6 +122,11 @@ export interface ContextMenu2Props
     tagName?: keyof JSX.IntrinsicElements;
 }
 
+/**
+ * Context menu (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#popover2-package/context-menu2
+ */
 export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, ContextMenu2Props>((props, userRef) => {
     const {
         className,

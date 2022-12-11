@@ -31,6 +31,11 @@ import { ITruncatedFormatState, TruncatedFormatProps, TruncatedPopoverMode } fro
 // on the div, which comes from styles
 const CONTENT_DIV_WIDTH_DELTA = 25;
 
+/**
+ * Truncated cell format (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.truncatedformat2
+ */
 export class TruncatedFormat2 extends React.PureComponent<TruncatedFormatProps, ITruncatedFormatState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TruncatedFormat2`;
 

@@ -33,6 +33,11 @@ export interface IDividerProps extends Props, React.HTMLAttributes<HTMLElement> 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
+/**
+ * Divider component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/divider
+ */
 export class Divider extends AbstractPureComponent2<IDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Divider`;
 

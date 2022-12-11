@@ -21,7 +21,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses, InputGroup, Keys } from "@blueprintjs/core";
+import { Classes as CoreClasses, InputGroup, Keys, Tag } from "@blueprintjs/core";
 import { DatePicker, Classes as DatetimeClasses, Months, TimePrecision, TimeUnit } from "@blueprintjs/datetime";
 import { Popover2, Classes as Popover2Classes } from "@blueprintjs/popover2";
 
@@ -495,6 +495,14 @@ describe("<DateInput2>", () => {
                 assert.isTrue(onChange.calledOnce);
                 assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30+01:00");
             });
+
+            it("updates the displayed timezone", () => {
+                const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
+                clickTimezoneItem(wrapper, "New York");
+                const tzTag = wrapper.find(Tag);
+                // date-fns does not know about Daylight Saving Time in Node.js
+                assert.strictEqual(tzTag.text(), "EST");
+            });
         });
 
         it("changing the time calls onChange with the updated ISO string", () => {
@@ -725,13 +733,18 @@ describe("<DateInput2>", () => {
 
     function clickTimezoneItem(wrapper: ReactWrapper<DateInput2Props>, searchQuery: string) {
         wrapper.find(`.${Classes.TIMEZONE_SELECT}`).hostNodes().simulate("click");
-        wrapper
+        const tzItem = wrapper
             .find(`.${Classes.TIMEZONE_SELECT_POPOVER}`)
             .find(`.${CoreClasses.MENU_ITEM}`)
             .hostNodes()
             .findWhere(item => item.text().includes(searchQuery))
-            .first()
-            .simulate("click");
+            .first();
+
+        if (tzItem.exists()) {
+            tzItem.simulate("click");
+        } else {
+            assert.fail(`Could not find timezone option with query '${searchQuery}'`);
+        }
     }
 
     function clickCalendarDay(wrapper: ReactWrapper<DateInput2Props>, dayNumber: number) {

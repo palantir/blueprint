@@ -63,9 +63,13 @@ const REACT_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
 };
 
 /**
+ * Portal component.
+ *
  * This component detaches its contents and re-attaches them to document.body.
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
  * Any class names passed to this element will be propagated to the new container element on document.body.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/portal
  */
 export class Portal extends React.Component<PortalProps, IPortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;

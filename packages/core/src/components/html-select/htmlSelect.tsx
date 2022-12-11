@@ -65,6 +65,11 @@ export interface IHTMLSelectProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
+/**
+ * HTML select component
+ *
+ * @see https://blueprintjs.com/docs/#core/components/html-select
+ */
 export class HTMLSelect extends AbstractPureComponent2<HTMLSelectProps> {
     public render() {
         const {

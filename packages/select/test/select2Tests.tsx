@@ -94,6 +94,7 @@ describe("<Select2>", () => {
 
     it("inputProps value and onChange are ignored", () => {
         const inputProps = { value: "nailed it", onChange: sinon.spy() };
+        // @ts-expect-error - value and onChange are now omitted from the props type
         const input = select({ inputProps }).find("input");
         assert.notEqual(input.prop("onChange"), inputProps.onChange);
         assert.notEqual(input.prop("value"), inputProps.value);
