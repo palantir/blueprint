@@ -85,7 +85,7 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
 
     private handleMinChange = handleNumberChange(min => this.setState({ min }));
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private handleButtonPositionChange = handleValueChange((buttonPosition: NumericInputProps["buttonPosition"]) =>
         this.setState({ buttonPosition }),

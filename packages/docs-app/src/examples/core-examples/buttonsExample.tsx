@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 import { Size, SizeSelect } from "./common/sizeSelect";
@@ -61,7 +61,7 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, IButtonsEx
 
     private handleSizeChange = (size: Size) => this.setState({ size });
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private wiggleTimeoutId: number;
 
