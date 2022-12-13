@@ -398,7 +398,11 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip2) ? true : childTarget.props.disabled,
                 tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
             });
-            const wrappedTarget = React.createElement(targetTagName!, targetProps, clonedTarget);
+            const wrappedTarget = React.createElement(
+                targetTagName!,
+                { ...targetWrapperProps, ...targetProps },
+                clonedTarget,
+            );
             target = wrappedTarget;
         }
 
