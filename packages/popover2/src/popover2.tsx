@@ -292,6 +292,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
 
         const childrenCount = React.Children.count(props.children);
         const hasRenderTargetProp = props.renderTarget !== undefined;
+        const hasTargetWrapperPropsProp = props.targetWrapperProps !== undefined;
 
         if (childrenCount === 0 && !hasRenderTargetProp) {
             console.warn(Errors.POPOVER2_REQUIRES_TARGET);
@@ -301,6 +302,9 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         }
         if (childrenCount > 0 && hasRenderTargetProp) {
             console.warn(Errors.POPOVER2_WARN_DOUBLE_TARGET);
+        }
+        if (hasRenderTargetProp && hasTargetWrapperPropsProp) {
+            console.warn(Errors.POPOVER2_WARN_TARGET_WRAPPER_PROPS_INEFFECTIVE);
         }
     }
 
@@ -315,7 +319,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     public reposition = () => this.popperScheduleUpdate?.();
 
     private renderTarget = ({ ref: popperChildRef }: ReferenceChildrenProps) => {
-        const { children, className, fill, openOnTargetFocus, renderTarget } = this.props;
+        const { children, className, fill, openOnTargetFocus, renderTarget, targetWrapperProps } = this.props;
         const { isOpen } = this.state;
         const isControlled = this.isControlled();
         const isHoverInteractionKind = this.isHoverInteractionKind();
@@ -356,10 +360,18 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             className: classNames(className, Classes.POPOVER2_TARGET, {
                 [Classes.POPOVER2_OPEN]: isOpen,
                 // this class is mainly useful for button targets
-                [CoreClasses.ACTIVE]: !isControlled && isOpen && !isHoverInteractionKind,
+                [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
             }),
             ref,
             ...(targetEventHandlers as unknown as T),
+        };
+
+        const targetModifierClasses = {
+            // this class is mainly useful for Blueprint <Button> targets; we should only apply it for
+            // uncontrolled popovers when they are opened by a user interaction
+            [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
+            // similarly, this class is mainly useful for targets like <Button>, <InputGroup>, etc.
+            [CoreClasses.FILL]: fill,
         };
 
         let target: JSX.Element | undefined;
@@ -367,6 +379,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         if (renderTarget !== undefined) {
             target = renderTarget({
                 ...targetProps,
+                className: classNames(targetProps.className, targetModifierClasses),
                 // if the consumer renders a tooltip target, it's their responsibility to disable that tooltip
                 // when *this* popover is open
                 isOpen,
@@ -379,13 +392,6 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 return null;
             }
 
-            const targetModifierClasses = {
-                // this class is mainly useful for Blueprint <Button> targets; we should only apply it for
-                // uncontrolled popovers when they are opened by a user interaction
-                [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
-                // similarly, this class is mainly useful for targets like <Button>, <InputGroup>, etc.
-                [CoreClasses.FILL]: fill,
-            };
             const clonedTarget: JSX.Element = React.cloneElement(childTarget, {
                 className: classNames(childTarget.props.className, targetModifierClasses),
                 // force disable single Tooltip2 child when popover is open

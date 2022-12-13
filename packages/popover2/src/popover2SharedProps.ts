@@ -284,6 +284,13 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
     targetTagName?: keyof JSX.IntrinsicElements;
 
     /**
+     * HTML props for the target element.
+     *
+     * This prop is mutually exclusive with the `renderTarget` API.
+     */
+    targetWrapperProps?: React.HTMLProps<HTMLSpanElement> | React.HTMLProps<HTMLDivElement>;
+
+    /**
      * Whether the popover should be rendered inside a `Portal` attached to
      * `portalContainer` prop.
      *
