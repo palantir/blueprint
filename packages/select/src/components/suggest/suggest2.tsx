@@ -247,7 +247,13 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
             const inputPlaceholder = isOpen && selectedItemText ? selectedItemText : placeholder;
             // value shows query when open, and query remains when closed if nothing is selected.
             // if resetOnClose is enabled, then hide query when not open. (see handlePopoverOpening)
-            const inputValue = isOpen ? listProps.query : (selectedItemText == "" ? (resetOnClose ? "" : listProps.query) : selectedItemText);
+            const inputValue = isOpen
+                ? listProps.query
+                : selectedItemText === ""
+                ? resetOnClose
+                    ? ""
+                    : listProps.query
+                : selectedItemText;
 
             return (
                 <InputGroup
