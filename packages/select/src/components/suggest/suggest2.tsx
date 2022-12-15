@@ -228,56 +228,56 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
     // again after that state changes.
     private getPopoverTargetRenderer =
         (listProps: QueryListRendererProps<T>, isOpen: boolean) =>
-        // eslint-disable-next-line react/display-name
-        ({
-            // pull out `isOpen` so that it's not forwarded to the DOM
-            isOpen: _isOpen,
-            // pull out `defaultValue` due to type incompatibility with InputGroup
-            defaultValue,
-            ref,
-            ...targetProps
-        }: Popover2TargetProps & React.HTMLProps<HTMLInputElement>) => {
-            const { disabled, fill, inputProps = {}, inputValueRenderer, popoverProps = {}, resetOnClose } = this.props;
-            const { selectedItem } = this.state;
-            const { handleKeyDown, handleKeyUp } = listProps;
+            // eslint-disable-next-line react/display-name
+            ({
+                // pull out `isOpen` so that it's not forwarded to the DOM
+                isOpen: _isOpen,
+                // pull out `defaultValue` due to type incompatibility with InputGroup
+                defaultValue,
+                ref,
+                ...targetProps
+            }: Popover2TargetProps & React.HTMLProps<HTMLInputElement>) => {
+                const { disabled, fill, inputProps = {}, inputValueRenderer, popoverProps = {}, resetOnClose } = this.props;
+                const { selectedItem } = this.state;
+                const { handleKeyDown, handleKeyUp } = listProps;
 
-            const selectedItemText = selectedItem == null ? "" : inputValueRenderer(selectedItem);
-            const { autoComplete = "off", placeholder = "Search..." } = inputProps;
-            // placeholder shows selected item while open.
-            const inputPlaceholder = isOpen && selectedItemText ? selectedItemText : placeholder;
-            // value shows query when open, and query remains when closed if nothing is selected.
-            // if resetOnClose is enabled, then hide query when not open. (see handlePopoverOpening)
-            const inputValue = isOpen
-                ? listProps.query
-                : selectedItemText == ""
-                ? resetOnClose
-                    ? ""
-                    : listProps.query
-                : selectedItemText;
+                const selectedItemText = selectedItem == null ? "" : inputValueRenderer(selectedItem);
+                const { autoComplete = "off", placeholder = "Search..." } = inputProps;
+                // placeholder shows selected item while open.
+                const inputPlaceholder = isOpen && selectedItemText ? selectedItemText : placeholder;
+                // value shows query when open, and query remains when closed if nothing is selected.
+                // if resetOnClose is enabled, then hide query when not open. (see handlePopoverOpening)
+                const inputValue = isOpen
+                    ? listProps.query
+                    : selectedItemText == ""
+                        ? resetOnClose
+                            ? ""
+                            : listProps.query
+                        : selectedItemText;
 
-            return (
-                <InputGroup
-                    aria-controls={this.listboxId}
-                    autoComplete={autoComplete}
-                    disabled={disabled}
-                    tagName={popoverProps.targetTagName}
-                    {...targetProps}
-                    {...inputProps}
-                    aria-autocomplete="list"
-                    aria-expanded={isOpen}
-                    className={classNames(targetProps.className, inputProps.className)}
-                    fill={fill}
-                    inputRef={mergeRefs(this.handleInputRef, ref)}
-                    onChange={listProps.handleQueryChange}
-                    onFocus={this.handleInputFocus}
-                    onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
-                    onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
-                    placeholder={inputPlaceholder}
-                    role="combobox"
-                    value={inputValue}
-                />
-            );
-        };
+                return (
+                    <InputGroup
+                        aria-controls={this.listboxId}
+                        autoComplete={autoComplete}
+                        disabled={disabled}
+                        tagName={popoverProps.targetTagName}
+                        {...targetProps}
+                        {...inputProps}
+                        aria-autocomplete="list"
+                        aria-expanded={isOpen}
+                        className={classNames(targetProps.className, inputProps.className)}
+                        fill={fill}
+                        inputRef={mergeRefs(this.handleInputRef, ref)}
+                        onChange={listProps.handleQueryChange}
+                        onFocus={this.handleInputFocus}
+                        onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
+                        onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
+                        placeholder={inputPlaceholder}
+                        role="combobox"
+                        value={inputValue}
+                    />
+                );
+            };
 
     private selectText = () => {
         // wait until the input is properly focused to select the text inside of it
