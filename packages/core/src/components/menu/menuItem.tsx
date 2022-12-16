@@ -88,16 +88,9 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      *
      *  which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
      *
-     *  If `none`, role structure becomes:
-     *
-     * `<li role=undefined`
-     *     `<a role=undefined`
-     *
-     *  which can be used if this item is not within a `menu`,`listbox`, etc.
-     *
      * @default "menuitem"
      */
-    roleStructure?: "menuitem" | "listoption" | "none";
+    roleStructure?: "menuitem" | "listoption";
 
     /**
      * Whether the text should be allowed to wrap to multiple lines.
@@ -211,9 +204,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const [liRole, targetRole, ariaSelected] =
             roleStructure === "listoption"
                 ? ["option", undefined, active || selected] // parent has listbox role, or is a <select>
-                : roleStructure === "menuitem"
-                ? ["none", "menuitem", undefined] // parent has menu role
-                : [undefined, undefined, active || selected];
+                : ["none", "menuitem", undefined]; // parent has menu role
 
         const target = React.createElement(
             tagName,
