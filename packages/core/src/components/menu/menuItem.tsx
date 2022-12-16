@@ -93,7 +93,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      * `<li role=undefined`
      *     `<a role=undefined`
      *
-     *  which can be used if this item is within a `list` parent
+     *  which can be used if this item is within a basic `<ul/>` (or `role="list"`) parent.
      *
      * @default "menuitem"
      */
