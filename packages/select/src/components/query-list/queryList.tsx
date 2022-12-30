@@ -34,12 +34,6 @@ import {
 export type QueryListProps<T> = IQueryListProps<T>;
 /** @deprecated use QueryListProps */
 export interface IQueryListProps<T> extends ListItemsProps<T> {
-    /** If provided, this function will be used in place of the default implementation. */
-    getActiveElement?: (props: {
-        activeItem: CreateNewItem | T | null;
-        index: number;
-        itemsParent: HTMLElement;
-    }) => HTMLElement | undefined;
     /**
      * Initial active item, useful if the parent component is controlling its selectedItem but
      * not activeItem.

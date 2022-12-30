@@ -46,6 +46,13 @@ export interface ListItemsProps<T> extends Props {
      */
     activeItem?: T | CreateNewItem | null;
 
+    /** If provided, this function will be used in place of the default implementation. */
+    getActiveElement?: (props: {
+        activeItem: CreateNewItem | T | null;
+        index: number;
+        itemsParent: HTMLElement;
+    }) => HTMLElement | undefined;
+
     /** Array of items in the list. */
     items: T[];
 
