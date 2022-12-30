@@ -415,21 +415,21 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     };
 
     private getActiveElement() {
-        const { activeItem } = this.state;
+        const { activeItem, filteredItems } = this.state;
         if (this.itemsParentRef != null) {
             const { getActiveElement } = this.props;
             if (isCreateNewItem(activeItem)) {
-                const index = this.isCreateItemFirst() ? 0 : this.state.filteredItems.length;
+                const index = this.isCreateItemFirst() ? 0 : filteredItems.length;
                 if (typeof getActiveElement === "function") {
-                    return getActiveElement({ activeItem, index, itemsParent: this.itemsParentRef });
+                    return getActiveElement({ activeItem, filteredItems, index, itemsParent: this.itemsParentRef });
                 }
                 return this.itemsParentRef.children.item(index) as HTMLElement;
             } else {
-                const activeIndex = this.getActiveIndex();
+                const index = this.getActiveIndex();
                 if (typeof getActiveElement === "function") {
-                    return getActiveElement({ activeItem, index: activeIndex, itemsParent: this.itemsParentRef });
+                    return getActiveElement({ activeItem, filteredItems, index, itemsParent: this.itemsParentRef });
                 }
-                return this.itemsParentRef.children.item(activeIndex) as HTMLElement;
+                return this.itemsParentRef.children.item(index) as HTMLElement;
             }
         }
         return undefined;

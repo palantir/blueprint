@@ -49,6 +49,7 @@ export interface ListItemsProps<T> extends Props {
     /** If provided, this function will be used in place of the default implementation. */
     getActiveElement?: (props: {
         activeItem: CreateNewItem | T | null;
+        filteredItems: T[];
         index: number;
         itemsParent: HTMLElement;
     }) => HTMLElement | undefined;
