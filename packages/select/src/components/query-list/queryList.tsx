@@ -34,6 +34,12 @@ import {
 export type QueryListProps<T> = IQueryListProps<T>;
 /** @deprecated use QueryListProps */
 export interface IQueryListProps<T> extends ListItemsProps<T> {
+    /** If provided, this function will be used in place of the default implementation. */
+    getActiveElement?: (props: {
+        activeItem: CreateNewItem | T | null;
+        index: number;
+        itemsParent: HTMLElement;
+    }) => HTMLElement | undefined;
     /**
      * Initial active item, useful if the parent component is controlling its selectedItem but
      * not activeItem.
@@ -417,11 +423,18 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     private getActiveElement() {
         const { activeItem } = this.state;
         if (this.itemsParentRef != null) {
+            const { getActiveElement } = this.props;
             if (isCreateNewItem(activeItem)) {
                 const index = this.isCreateItemFirst() ? 0 : this.state.filteredItems.length;
+                if (typeof getActiveElement === "function") {
+                    return getActiveElement({ activeItem, index, itemsParent: this.itemsParentRef });
+                }
                 return this.itemsParentRef.children.item(index) as HTMLElement;
             } else {
                 const activeIndex = this.getActiveIndex();
+                if (typeof getActiveElement === "function") {
+                    return getActiveElement({ activeItem, index: activeIndex, itemsParent: this.itemsParentRef });
+                }
                 return this.itemsParentRef.children.item(activeIndex) as HTMLElement;
             }
         }
