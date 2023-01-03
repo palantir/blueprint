@@ -18,7 +18,7 @@
         "mini-css-extract-plugin": "^2.6.1",
         "postcss": "^8.4.20",
         "postcss-discard-comments": "^5.1.2",
-        "postcss-loader": "^7.0.1",
+        "postcss-loader": "^7.0.2",
         "process": "^0.11.10",
         "react-refresh": "^0.14.0",
         "react-refresh-typescript": "^2.0.7",
