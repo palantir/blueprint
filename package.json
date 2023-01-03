@@ -68,7 +68,7 @@
         "@types/react": "16.14.32"
     },
     "engines": {
-        "node": ">=16"
+        "node": ">=16.19"
     },
     "repository": {
         "type": "git",
