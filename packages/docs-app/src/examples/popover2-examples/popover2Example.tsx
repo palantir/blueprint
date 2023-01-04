@@ -51,6 +51,8 @@ import {
 } from "@blueprintjs/popover2";
 import { FilmSelect } from "@blueprintjs/select/examples";
 
+import { PropCodeTooltip } from "../../common/propCodeTooltip";
+
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
 
 const INTERACTION_KINDS = [
@@ -64,6 +66,7 @@ export interface IPopover2ExampleState {
     boundary?: "scrollParent" | "body" | "clippingParents";
     buttonText: string;
     canEscapeKeyClose?: boolean;
+    compact?: boolean;
     exampleIndex?: number;
     hasBackdrop?: boolean;
     inheritDarkTheme?: boolean;
@@ -85,6 +88,7 @@ export class Popover2Example extends React.PureComponent<ExampleProps, IPopover2
         boundary: "scrollParent",
         buttonText: "Popover target",
         canEscapeKeyClose: true,
+        compact: false,
         exampleIndex: 0,
         hasBackdrop: false,
         inheritDarkTheme: true,
@@ -121,6 +125,8 @@ export class Popover2Example extends React.PureComponent<ExampleProps, IPopover2
     private handleBoundaryChange = handleValueChange((boundary: IPopover2ExampleState["boundary"]) =>
         this.setState({ boundary }),
     );
+
+    private toggleCompact = handleBooleanChange(compact => this.setState({ compact }));
 
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
 
@@ -227,7 +233,15 @@ export class Popover2Example extends React.PureComponent<ExampleProps, IPopover2
                     Use <Code>Portal</Code>
                 </Switch>
                 <Switch checked={this.state.minimal} label="Minimal appearance" onChange={this.toggleMinimal} />
-
+                <PropCodeTooltip
+                    content={
+                        <span>
+                            Only effective when <Code>Classes.POPOVER2_CONTENT_SIZING</Code> is applied
+                        </span>
+                    }
+                >
+                    <Switch checked={this.state.compact} label="Compact appearance" onChange={this.toggleCompact} />
+                </PropCodeTooltip>
                 <H5>Control</H5>
                 <Switch checked={this.state.isControlled} label="Is controlled" onChange={this.toggleIsControlled} />
                 <Switch
