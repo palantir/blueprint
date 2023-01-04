@@ -21,7 +21,7 @@ import { Modifiers } from "popper.js";
 import * as React from "react";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
-import { ActionProps, DISPLAYNAME_PREFIX, LinkProps } from "../../common/props";
+import { ActionProps, DISPLAYNAME_PREFIX, IElementRefProps, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
@@ -29,7 +29,7 @@ import { Menu, MenuProps } from "./menu";
 
 export type MenuItemProps = IMenuItemProps;
 /** @deprecated use MenuItemProps */
-export interface IMenuItemProps extends ActionProps, LinkProps {
+export interface IMenuItemProps extends ActionProps, LinkProps, IElementRefProps<HTMLLIElement> {
     /** Item text, required for usability. */
     text: React.ReactNode;
 
@@ -169,11 +169,11 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
     public render() {
         const {
-            // eslint-disable-next-line deprecation/deprecation
             active,
             className,
             children,
             disabled,
+            elementRef,
             icon,
             intent,
             labelClassName,
@@ -240,7 +240,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li className={liClasses} role={liRole} aria-selected={ariaSelected}>
+            <li className={liClasses} ref={elementRef} role={liRole} aria-selected={ariaSelected}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );

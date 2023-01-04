@@ -23,6 +23,7 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     Icon,
+    IElementRefProps,
     LinkProps,
     Menu,
     MenuProps,
@@ -32,7 +33,8 @@ import {
 import * as Classes from "./classes";
 import { Popover2, Popover2Props } from "./popover2";
 
-export interface MenuItem2Props extends ActionProps, LinkProps {
+// eslint-disable-next-line deprecation/deprecation
+export interface MenuItem2Props extends ActionProps, LinkProps, IElementRefProps<HTMLLIElement> {
     /** Item text, required for usability. */
     text: React.ReactNode;
 
@@ -183,6 +185,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
             className,
             children,
             disabled,
+            elementRef,
             intent,
             labelClassName,
             labelElement,
@@ -264,7 +267,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
 
         const liClasses = classNames({ [CoreClasses.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li className={liClasses} role={liRole} aria-selected={ariaSelected}>
+            <li className={liClasses} ref={elementRef} role={liRole} aria-selected={ariaSelected}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );
