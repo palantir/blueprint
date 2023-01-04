@@ -38,6 +38,8 @@ depending on the `role` attribute of its parent `<ul>` list:
 - `roleStructure="listoption"` is appropriate for a `<ul role="listbox">` parent, such as
     those found in Select2, Suggest2, and MultiSelect2 components. The item will render with
     `<li role="option">` and `<a>` (anchor role undefined).
+- `roleStructure="listitem"` is appropriate for a `<ul>` (no role defined) or a `<ul role="list">` parent. The
+    item will render with `<li>` and `<a>` (roles undefined).
 
 @## Selection state
 
