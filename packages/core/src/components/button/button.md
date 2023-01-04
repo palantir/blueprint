@@ -1,6 +1,6 @@
 @# Button
 
-Buttons trigger actions when clicked.
+Buttons trigger actions when clicked. You may render a button as either a `<button>` or `<a>` HTML element.
 
 @reactExample ButtonsExample
 

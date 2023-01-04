@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
-import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
+import { Alignment, AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
+import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
 import { Size, SizeSelect } from "./common/sizeSelect";
 
-export interface IButtonsExampleState {
+interface ButtonsExampleState {
     active: boolean;
+    alignText: Alignment | undefined;
     disabled: boolean;
+    fill: boolean;
     iconOnly: boolean;
     intent: Intent;
     loading: boolean;
@@ -34,10 +38,12 @@ export interface IButtonsExampleState {
     wiggling: boolean;
 }
 
-export class ButtonsExample extends React.PureComponent<ExampleProps, IButtonsExampleState> {
-    public state: IButtonsExampleState = {
+export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExampleState> {
+    public state: ButtonsExampleState = {
         active: false,
+        alignText: undefined,
         disabled: false,
+        fill: false,
         iconOnly: false,
         intent: Intent.NONE,
         loading: false,
@@ -49,7 +55,11 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, IButtonsEx
 
     private handleActiveChange = handleBooleanChange(active => this.setState({ active }));
 
+    private handleAlignTextChange = (alignText: Alignment) => this.setState({ alignText });
+
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
+    private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
 
     private handleIconOnlyChange = handleBooleanChange(iconOnly => this.setState({ iconOnly }));
 
@@ -80,6 +90,8 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, IButtonsEx
                 <Switch label="Loading" checked={this.state.loading} onChange={this.handleLoadingChange} />
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Outlined" checked={this.state.outlined} onChange={this.handleOutlinedChange} />
+                <Switch label="Fill" checked={this.state.fill} onChange={this.handleFillChange} />
+                <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignTextChange} />
                 <SizeSelect size={this.state.size} onChange={this.handleSizeChange} />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
                 <H5>Example</H5>
@@ -89,7 +101,7 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, IButtonsEx
 
         return (
             <Example options={options} {...this.props}>
-                <div>
+                <div className={classNames({ "docs-flex-column": this.state.fill })}>
                     <p>
                         <Code>Button</Code>
                     </p>
@@ -104,7 +116,7 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, IButtonsEx
                         {!iconOnly && "Click to wiggle"}
                     </Button>
                 </div>
-                <div>
+                <div className={classNames({ "docs-flex-column": this.state.fill })}>
                     <p>
                         <Code>AnchorButton</Code>
                     </p>

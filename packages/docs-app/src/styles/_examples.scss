@@ -15,7 +15,15 @@
   @return '[data-example-id#{$comparator}"#{$ComponentName}Example"]';
 }
 
-// Specific example customizations
+// Common modifiers, incubating usage before they can be incorporated into @blueprintjs/docs-theme
+
+.docs-flex-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+// Example-specific customizations
 
 //
 // CORE
@@ -33,6 +41,19 @@
 }
 
 #{example("Buttons")} {
+  .docs-example {
+    flex-direction: column;
+    gap: $pt-grid-size * 3;
+
+    > * {
+      margin: 0;
+    }
+
+    p {
+      text-align: center;
+    }
+  }
+
   .docs-wiggle {
     animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
   }
