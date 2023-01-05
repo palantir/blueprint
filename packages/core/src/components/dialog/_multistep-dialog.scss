@@ -127,6 +127,10 @@ $step-radius: $pt-border-radius * 2 !default;
   }
 }
 
+.#{$ns}-multistep-dialog-footer {
+  // Deprecating
+}
+
 .#{$ns}-dialog-step-container {
   background-color: $light-gray5;
   border-bottom: 1px solid $pt-divider-black;

@@ -88,7 +88,7 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     /**
      * Dialog footer
      */
-     footer?: React.ReactNode;
+    footer?: React.ReactNode;
 
     /**
      * ID of the element that contains title or label text for this dialog.

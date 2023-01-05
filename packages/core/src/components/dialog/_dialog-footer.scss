@@ -1,0 +1,36 @@
+.#{$ns}-dialog-footer {
+  flex: 0 0 auto;
+  margin: 0 $dialog-padding;
+}
+
+.#{$ns}-dialog-fixed-footer {
+  background-color: $white;
+  border-radius: 0  0 $dialog-border-radius $dialog-border-radius;
+  border-top: 1px solid $pt-divider-black;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+
+  .#{$ns}-dark & {
+    background: $dark-gray4;
+    border-top: 1px solid $pt-dark-divider-white;
+  }
+
+  .#{$ns}-dialog-footer-actions {
+    flex-grow: 1;
+  }
+}
+
+.#{$ns}-dialog-footer-left {
+  flex: 0 0 auto;
+  margin: 0 $dialog-padding;
+}
+
+.#{$ns}-dialog-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  .#{$ns}-button {
+    margin-left: $pt-grid-size;
+  }
+}

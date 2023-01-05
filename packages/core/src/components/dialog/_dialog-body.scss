@@ -1,0 +1,12 @@
+.#{$ns}-dialog-body {
+  // Deprecating
+}
+
+.#{$ns}-dialog-body-padding {
+  padding: $dialog-padding;
+}
+
+.#{$ns}-dialog-body-scroll-container {
+  max-height: 70vh;
+  overflow: auto;
+}
