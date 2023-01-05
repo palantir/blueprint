@@ -196,7 +196,7 @@ jobs:
       - run:
           name: Submit Github comment with links to built artifacts
           command: |
-            artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" -H "Accept: application/json" -u "$CIRCLE_AUTH_TOKEN:")
+            artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" -H "Accept: application/json" -u "$CIRCLE_API_TOKEN:")
             echo $artifacts > ./scripts/artifacts.json
             node ./scripts/preview.js
 

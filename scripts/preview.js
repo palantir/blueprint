@@ -20,15 +20,17 @@ const ARTIFACTS = {
     demo: "packages/demo-app/dist/index.html",
 };
 
-if (!process.env.GH_AUTH_TOKEN) {
+if (!process.env.GITHUB_API_TOKEN) {
     // simply log artifact URLs if auth token is missed (typical on forks)
     Object.keys(ARTIFACTS).forEach(package => console.info(`${ARTIFACTS[package]}: ${getArtifactAnchorLink(package)}`));
     process.exit();
 }
 
+// requires a Github.com personal access token with access to this repository and PR read/write permissions
+// see https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token
 const links = Object.keys(ARTIFACTS).map(getArtifactAnchorLink).join(" | ");
 bot.comment(
-    process.env.GH_AUTH_TOKEN,
+    process.env.GITHUB_API_TOKEN,
     `
 <h3>${bot.commitMessage()}</h3>
 Previews: <strong>${links}</strong>
