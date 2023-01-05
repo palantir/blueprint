@@ -83,14 +83,6 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
     children?: React.ReactNode;
 
     /**
-     * Whether to use a compact appearance, which reduces the visual padding around popover content
-     * (if the "popover content sizing" CSS class is applied) and tooltip content.
-     *
-     * @default false
-     */
-    compact?: boolean;
-
-    /**
      * A boundary element supplied to the "flip" and "preventOverflow" modifiers.
      * This is a shorthand for overriding Popper.js modifier options with the `modifiers` prop.
      *

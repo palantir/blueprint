@@ -48,12 +48,6 @@ $dark-popover2-arrow-box-shadow:
     .#{$ns}-popover2-target + .#{$ns}-overlay & {
       width: $popover2-width;
     }
-
-    &.#{$ns}-compact {
-      .#{$ns}-popover2-content {
-        padding: $pt-grid-size;
-      }
-    }
   }
 
   &.#{$ns}-minimal {

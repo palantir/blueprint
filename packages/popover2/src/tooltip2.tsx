@@ -38,6 +38,14 @@ export interface ITooltip2Props<TProps = DefaultPopover2TargetHTMLProps>
     content: JSX.Element | string;
 
     /**
+     * Whether to use a compact appearance, which reduces the visual padding around
+     * tooltip content.
+     *
+     * @default false
+     */
+    compact?: boolean;
+
+    /**
      * The amount of time in milliseconds the tooltip should remain open after
      * the user hovers off the trigger. The timer is canceled if the user mouses
      * over the target before it expires.
@@ -110,8 +118,10 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
 
     // any descendant ContextMenu2s may update this ctxState
     private renderPopover = (ctxState: Tooltip2ContextState) => {
-        const { children, disabled, intent, popoverClassName, ...restProps } = this.props;
-        const popoverClasses = classNames(Classes.TOOLTIP2, CoreClasses.intentClass(intent), popoverClassName);
+        const { children, compact, disabled, intent, popoverClassName, ...restProps } = this.props;
+        const popoverClasses = classNames(Classes.TOOLTIP2, CoreClasses.intentClass(intent), popoverClassName, {
+            [CoreClasses.COMPACT]: compact,
+        });
 
         return (
             <Popover2

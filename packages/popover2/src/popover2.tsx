@@ -435,7 +435,6 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         const popoverClasses = classNames(
             Classes.POPOVER2,
             {
-                [CoreClasses.COMPACT]: this.props.compact,
                 [CoreClasses.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
                 [CoreClasses.MINIMAL]: this.props.minimal,
                 [Classes.POPOVER2_CAPTURING_DISMISS]: this.props.captureDismiss,
