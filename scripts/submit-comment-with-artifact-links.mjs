@@ -9,20 +9,24 @@
 // Submits a comment to the change PR or commit with links to artifacts that
 // show the results of the code change being applied.
 
+import dedent from "dedent";
 import { execSync } from "node:child_process";
 import { basename } from "node:path";
 import { Octokit } from "octokit";
 
+import { loadJsonFile } from "./utils.mjs";
+
 /**
  * @type {Array<{path: string; url: string;}>}
  */
-const artifacts = require("./artifacts.json").items;
+const artifacts = loadJsonFile("./artifacts.json").items;
 
 if (artifacts === undefined) {
     throw new Error(
         "Unable to read artifacts.json, please make sure the CircleCI API call succeeded with the necessary personal access token.",
     );
 }
+
 const ARTIFACTS = {
     documentation: "packages/docs-app/dist/index.html",
     landing: "packages/landing-app/dist/index.html",
@@ -46,9 +50,10 @@ if (process.env.GITHUB_API_TOKEN) {
         .toString()
         .trim()
         .replace(/\\"/g, '\\\\"');
-    const commentBody = `
-    <h3>${currentGitCommitMessage}</h3>
-    Previews: <strong>${artifactLinks}</strong>
+    const commentBody = dedent`
+        <h3>${currentGitCommitMessage}</h3>
+        Build artifact links for this commit: <strong>${artifactLinks}</strong>
+        <em>This is an automated comment from the deploy-preview CircleCI job.</em>
     `;
 
     const repoParams = {
