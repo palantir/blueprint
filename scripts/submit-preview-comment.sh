@@ -2,6 +2,9 @@
 
 # Submit Github comment with links to built artifacts
 
+set -e
+set -o pipefail
+
 if [ -z "${CIRCLE_BUILD_NUM}" ]; then
     echo "Not on CircleCI, refusing to run script."
     exit 1
@@ -12,6 +15,8 @@ if [ -z "${CIRCLE_API_TOKEN}" ]; then
     exit 1
 fi
 
+SCRIPTS_DIR=$(dirname "$(readlink -f "$0")")
 artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" -H "Accept: application/json" -u "$CIRCLE_API_TOKEN:")
+
 echo $artifacts > ./scripts/artifacts.json
-node ./submit-comment-with-artifact-links.js
+node $SCRIPTS_DIR/submit-comment-with-artifact-links.js
