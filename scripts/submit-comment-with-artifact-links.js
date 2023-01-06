@@ -22,7 +22,10 @@ const ARTIFACTS = {
 
 if (!process.env.GITHUB_API_TOKEN) {
     // simply log artifact URLs if auth token is missed (typical on forks)
-    Object.keys(ARTIFACTS).forEach(package => console.info(`${ARTIFACTS[package]}: ${getArtifactAnchorLink(package)}`));
+    console.warn(
+        "No Github API token available, so we cannot post a preview comment on this build's PR. This is expected on forks which have enabled CircleCI building.",
+    );
+    Object.keys(ARTIFACTS).forEach(pkg => console.info(`${ARTIFACTS[pkg]}: ${getArtifactAnchorLink(pkg)}`));
     process.exit();
 }
 
@@ -37,7 +40,7 @@ Previews: <strong>${links}</strong>
 `,
 );
 
-function getArtifactAnchorLink(package) {
-    const artifactInfo = artifacts.find(a => a.path === ARTIFACTS[package]);
-    return `<a href="${artifactInfo.url}">${package}</a>`;
+function getArtifactAnchorLink(pkg) {
+    const artifactInfo = artifacts.find(a => a.path === ARTIFACTS[pkg]);
+    return `<a href="${artifactInfo.url}">${pkg}</a>`;
 }
