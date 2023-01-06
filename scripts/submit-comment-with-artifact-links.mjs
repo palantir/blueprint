@@ -35,11 +35,6 @@ function getArtifactAnchorLink(pkg) {
     return `<a href="${artifactInfo?.url}">${pkg}</a>`;
 }
 
-// Synchronously execute command and return trimmed stdout as string
-function exec(command, options) {
-    return execSync(command, options).toString().trim();
-}
-
 if (process.env.GITHUB_API_TOKEN) {
     // We can post a comment on the PR if we have the necessary Github.com personal access token with access to this
     // repository and PR read/write permissions.
@@ -47,7 +42,10 @@ if (process.env.GITHUB_API_TOKEN) {
     const octokit = new Octokit({ auth: process.env.GITHUB_API_TOKEN });
 
     const artifactLinks = Object.keys(ARTIFACTS).map(getArtifactAnchorLink).join(" | ");
-    const currentGitCommitMessage = exec('git --no-pager log --pretty=format:"%s" -1').replace(/\\"/g, '\\\\"');
+    const currentGitCommitMessage = execSync('git --no-pager log --pretty=format:"%s" -1')
+        .toString()
+        .trim()
+        .replace(/\\"/g, '\\\\"');
     const commentBody = `
     <h3>${currentGitCommitMessage}</h3>
     Previews: <strong>${artifactLinks}</strong>
@@ -60,14 +58,14 @@ if (process.env.GITHUB_API_TOKEN) {
 
     if (process.env.CIRCLE_PULL_REQUEST) {
         // attempt to comment on the PR as an "issue comment" (not a review comment)
-        octokit.rest.issues.createComment({
+        await octokit.rest.issues.createComment({
             ...repoParams,
             issue_number: parseInt(basename(process.env.CIRCLE_PULL_REQUEST ?? ""), 10),
             body: commentBody,
         });
     } else if (process.env.CIRCLE_SHA1) {
         // attempt to comment on the commit if there is no associated PR (this is most useful on the develop branch)
-        octokit.rest.repos.createCommitComment({
+        await octokit.rest.repos.createCommitComment({
             ...repoParams,
             commit_sha: process.env.CIRCLE_SHA1,
             body: commentBody,
