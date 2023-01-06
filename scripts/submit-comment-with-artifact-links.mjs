@@ -53,6 +53,7 @@ if (process.env.GITHUB_API_TOKEN) {
     const commentBody = dedent`
         <h3>${currentGitCommitMessage}</h3>
         Build artifact links for this commit: <strong>${artifactLinks}</strong>
+
         <em>This is an automated comment from the deploy-preview CircleCI job.</em>
     `;
 
