@@ -27,4 +27,4 @@ SCRIPTS_DIR=$(dirname "$(readlink -f "$0")")
 artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" -H "Accept: application/json" -u "$CIRCLE_API_TOKEN:")
 
 echo $artifacts > ./scripts/artifacts.json
-node $SCRIPTS_DIR/submit-comment-with-artifact-links.js
+node $SCRIPTS_DIR/submit-comment-with-artifact-links.mjs
