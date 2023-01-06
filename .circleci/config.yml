@@ -193,12 +193,7 @@ jobs:
       - store_artifacts: { path: packages/landing-app/dist }
       - store_artifacts: { path: packages/table-dev-app/dist }
       - store_artifacts: { path: packages/demo-app/dist }
-      - run:
-          name: Submit Github comment with links to built artifacts
-          command: |
-            artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" -H "Accept: application/json" -u "$CIRCLE_AUTH_TOKEN:")
-            echo $artifacts > ./scripts/artifacts.json
-            node ./scripts/preview.js
+      - run: ./scripts/submit-preview-comment.sh
 
   deploy-npm:
     docker: *docker-node-image
