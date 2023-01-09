@@ -28,11 +28,11 @@ export interface IDialogBodyProps extends Props {
     children?: React.ReactNode;
 
     /**
-     * Enable scrolling for the container
+     * Removes padding for the container
      *
-     * @default true
+     * @default false
      */
-    enablePadding?: boolean;
+    noPadding?: boolean;
 
     /**
      * Enable scrolling for the container
@@ -45,12 +45,12 @@ export interface IDialogBodyProps extends Props {
 export class DialogBody extends AbstractPureComponent2<DialogBodyProps> {
     public static defaultProps: DialogBodyProps = {
         useOverflowScrollContainer: true,
-        enablePadding: true,
+        noPadding: false,
     };
 
     public render() {
         return (
-            <div role="dialogbody" className={classNames(this.props.className, {[Classes.DIALOG_BODY_SCROLL_CONTAINER]: this.props.useOverflowScrollContainer, [Classes.DIALOG_BODY_PADDING]: this.props.enablePadding})}>
+            <div role="dialogbody" className={classNames(Classes.DIALOG_BODY, this.props.className, {[Classes.DIALOG_BODY_SCROLL_CONTAINER]: this.props.useOverflowScrollContainer, [Classes.DIALOG_BODY_NO_PADDING]: this.props.noPadding})}>
                 {this.props.children}
             </div>
         );

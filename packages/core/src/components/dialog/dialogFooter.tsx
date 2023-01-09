@@ -30,24 +30,28 @@ export interface IDialogFooterProps extends Props {
     /** Buttons displayed on the right hand side of the footer */
     actions?: React.ReactNode;
 
-    /** Buttons displayed on the right hand side of the footer
+    /** Show the footer close from the content.
+     * Do not use with scroll body
+     * Use for small dialogs (confirm)
      *
-     * @default true;
+     * @default false;
      */
-    fixed?: boolean;
+    inline?: boolean;
 }
 
 export class DialogFooter extends AbstractPureComponent2<DialogFooterProps> {
     public static defaultProps: DialogFooterProps = {
-        fixed: true
+        inline: false
     };
 
     public render() {
         return (
-            <div className={classNames(Classes.DIALOG_FOOTER, this.props.className, {[Classes.DIALOG_FIXED_FOOTER]: this.props.fixed})} role="dialogfooter">
-                {this.maybeRenderLeftHandSide()}
+            <div className={classNames(Classes.DIALOG_FOOTER, this.props.className, this.props.inline ? Classes.DIALOG_INLINE_FOOTER : Classes.DIALOG_FIXED_FOOTER)} role="dialogfooter">
+                <div className={Classes.DIALOG_FOOTER_CONTAINER}>
+                    {this.maybeRenderLeftHandSide()}
 
-                {this.maybeRenderActions()}
+                    {this.maybeRenderActions()}
+                </div>
             </div>
         );
     }

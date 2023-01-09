@@ -86,11 +86,6 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     containerRef?: React.Ref<HTMLDivElement>;
 
     /**
-     * Dialog footer
-     */
-    footer?: React.ReactNode;
-
-    /**
      * ID of the element that contains title or label text for this dialog.
      *
      * By default, if the `title` prop is supplied, this component will generate
@@ -134,11 +129,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                     >
                         {this.maybeRenderHeader()}
 
-                        <div className={Classes.DIALOG_BODY_SCROLL_CONTAINER}>
-                            {this.props.children}
-                        </div>
-
-                        {this.maybeRenderFixedFooter()}
+                        {this.props.children}
                     </div>
                 </div>
             </Overlay>
@@ -186,18 +177,5 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                 {this.maybeRenderCloseButton()}
             </div>
         );
-    }
-
-    private maybeRenderFixedFooter() {
-        const { footer } = this.props;
-        if (footer == null) {
-            return undefined;
-        }
-
-        return (
-            <div className={Classes.DIALOG_FIXED_FOOTER}>
-                {this.props.footer}
-            </div>
-        )
     }
 }

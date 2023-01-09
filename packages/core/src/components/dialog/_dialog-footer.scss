@@ -1,29 +1,33 @@
 .#{$ns}-dialog-footer {
   flex: 0 0 auto;
-  margin: 0 $dialog-padding $dialog-padding $dialog-padding;
 }
 
 .#{$ns}-dialog-fixed-footer {
   background-color: $white;
   border-radius: 0  0 $dialog-border-radius $dialog-border-radius;
   border-top: 1px solid $pt-divider-black;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
+  padding: $pt-grid-size;
+  padding-left: $dialog-padding;
 
   .#{$ns}-dark & {
     background: $dark-gray4;
     border-top: 1px solid $pt-dark-divider-white;
   }
+}
 
-  .#{$ns}-dialog-footer-actions {
-    flex-grow: 1;
-  }
+.#{$ns}-dialog-inline-footer {
+  padding: $dialog-padding;
+}
+
+.#{$ns}-dialog-footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $dialog-padding;
 }
 
 .#{$ns}-dialog-footer-left {
-  flex: 0 0 auto;
-  margin: 0 $dialog-padding;
+  flex: 1 0 auto;
 }
 
 .#{$ns}-dialog-footer-actions {

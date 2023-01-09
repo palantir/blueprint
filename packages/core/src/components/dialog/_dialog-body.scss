@@ -1,9 +1,10 @@
 .#{$ns}-dialog-body {
-  // Deprecating
+  flex: 1 1 auto;
+  padding: $dialog-padding;
 }
 
-.#{$ns}-dialog-body-padding {
-  padding: $dialog-padding;
+.#{$ns}-dialog-body-no-padding {
+  padding: 0;
 }
 
 .#{$ns}-dialog-body-scroll-container {
