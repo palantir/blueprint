@@ -17,12 +17,12 @@
         "glob": "^8.0.3",
         "highlights": "^3.1.6",
         "language-less": "github:atom/language-less",
-        "marked": "^4.1.1",
+        "marked": "^4.2.5",
         "semver": "^7.3.8",
         "tree-sitter-typescript": "~0.20.1"
     },
     "devDependencies": {
-        "@types/marked": "^4.0.7"
+        "@types/marked": "^4.0.8"
     },
     "repository": {
         "type": "git",
