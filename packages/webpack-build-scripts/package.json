@@ -28,7 +28,7 @@
         "stream-browserify": "^3.0.0",
         "style-loader": "^3.3.1",
         "ts-loader": "^9.4.2",
-        "webpack": "^5.74.0",
+        "webpack": "^5.75.0",
         "webpack-bundle-analyzer": "^4.7.0",
         "webpack-dev-server": "^4.11.1",
         "webpack-notifier": "^1.15.0"
