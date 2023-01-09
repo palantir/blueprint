@@ -22,7 +22,7 @@
         "process": "^0.11.10",
         "react-refresh": "^0.14.0",
         "react-refresh-typescript": "^2.0.7",
-        "sass": "^1.55.0",
+        "sass": "^1.57.1",
         "sass-loader": "^13.1.0",
         "source-map-loader": "^4.0.1",
         "stream-browserify": "^3.0.0",

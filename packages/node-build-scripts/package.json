@@ -28,7 +28,7 @@
         "postcss-discard-comments": "^5.1.1",
         "postcss-scss": "^4.0.5",
         "prettier": "~2.7.1",
-        "sass": "^1.55.0",
+        "sass": "^1.57.1",
         "source-map": "^0.7.4",
         "strip-css-comments": "^5.0.0",
         "stylelint": "~14.16.0",
