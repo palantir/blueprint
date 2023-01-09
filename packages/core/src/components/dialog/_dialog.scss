@@ -77,10 +77,6 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
     outline: 0;
   }
 
-  &:not(.#{$ns}-dialog-no-padding) {
-    padding-bottom: $pt-grid-size * 2;
-  }
-
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     background: $pt-dark-app-background-color;

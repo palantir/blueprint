@@ -126,7 +126,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
             <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
                 <div className={Classes.DIALOG_CONTAINER} ref={this.props.containerRef}>
                     <div
-                        className={classNames(Classes.DIALOG, this.props.footer != null && Classes.DIALOG_NO_PADDING, this.props.className)}
+                        className={classNames(Classes.DIALOG, this.props.className)}
                         role="dialog"
                         aria-labelledby={this.props["aria-labelledby"] || (this.props.title ? this.titleId : undefined)}
                         aria-describedby={this.props["aria-describedby"]}

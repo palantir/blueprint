@@ -1,6 +1,6 @@
 .#{$ns}-dialog-footer {
   flex: 0 0 auto;
-  margin: 0 $dialog-padding;
+  margin: 0 $dialog-padding $dialog-padding $dialog-padding;
 }
 
 .#{$ns}-dialog-fixed-footer {
