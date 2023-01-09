@@ -58,7 +58,7 @@
         "npm-run-all": "^4.1.5",
         "octokit": "^2.0.10",
         "prettier": "~2.7.1",
-        "sinon": "^14.0.1",
+        "sinon": "^15.0.1",
         "stylelint-config-palantir": "^6.0.1",
         "stylelint-scss": "^4.3.0",
         "typescript": "~4.6.2",
