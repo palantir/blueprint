@@ -16,7 +16,17 @@
 
 import * as React from "react";
 
-import { AnchorButton, Button, Code, Dialog, DialogBody, DialogFooter, DialogProps, H5, Switch } from "@blueprintjs/core";
+import {
+    AnchorButton,
+    Button,
+    Code,
+    Dialog,
+    DialogBody,
+    DialogFooter,
+    DialogProps,
+    H5,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Tooltip2 } from "@blueprintjs/popover2";
 
@@ -84,8 +94,8 @@ export class DialogExample extends React.PureComponent<ExampleProps<IBlueprintEx
                     className={this.props.data.themeName}
                     icon="info-sign"
                     title="Palantir Foundry"
-                    buttonText="Show dialog with title and inline footer"
-                    includeFooter="inline"
+                    buttonText="Show dialog with title and minimal footer"
+                    includeFooter="minimal"
                     {...this.state}
                 />
             </Example>
@@ -129,10 +139,19 @@ function ButtonWithDialog({
     buttonText,
     includeFooter,
     ...props
-}: Omit<DialogProps, "isOpen"> & { buttonText: string; includeFooter: "default" | "inline" | "none"; }) {
+}: Omit<DialogProps, "isOpen"> & { buttonText: string; includeFooter: "default" | "minimal" | "none" }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const handleButtonClick = React.useCallback(() => setIsOpen(!isOpen), []);
     const handleClose = React.useCallback(() => setIsOpen(false), []);
+    const footerActions = (
+        <>
+            <Tooltip2 content="This button is hooked up to close the dialog.">
+                <Button onClick={handleClose}>Close</Button>
+            </Tooltip2>
+            <VisitFoundryWebsiteAnchorButton />
+        </>
+    );
+
     return (
         <>
             <Button onClick={handleButtonClick} text={buttonText} />
@@ -140,50 +159,35 @@ function ButtonWithDialog({
                 <DialogBody>
                     <p>
                         <strong>
-                            Data integration is the seminal problem of the digital age. For over ten years, we’ve helped the
-                            world’s premier organizations rise to the challenge.
+                            Data integration is the seminal problem of the digital age. For over ten years, we’ve helped
+                            the world’s premier organizations rise to the challenge.
                         </strong>
                     </p>
                     <p>
-                        Palantir Foundry radically reimagines the way enterprises interact with data by amplifying and extending
-                        the power of data integration. With Foundry, anyone can source, fuse, and transform data into any shape
-                        they desire. Business analysts become data engineers — and leaders in their organization’s data
-                        revolution.
+                        Palantir Foundry radically reimagines the way enterprises interact with data by amplifying and
+                        extending the power of data integration. With Foundry, anyone can source, fuse, and transform
+                        data into any shape they desire. Business analysts become data engineers — and leaders in their
+                        organization’s data revolution.
                     </p>
                     <p>
-                        Foundry’s back end includes a suite of best-in-class data integration capabilities: data provenance,
-                        git-style versioning semantics, granular access controls, branching, transformation authoring, and more.
-                        But these powers are not limited to the back-end IT shop.
+                        Foundry’s back end includes a suite of best-in-class data integration capabilities: data
+                        provenance, git-style versioning semantics, granular access controls, branching, transformation
+                        authoring, and more. But these powers are not limited to the back-end IT shop.
                     </p>
                     <p>
-                        In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data integrations
-                        in their own right. Access controls, transformation logic, and data quality flow from original data
-                        source to intermediate analysis to presentation in real time. Every end product created in Foundry
-                        becomes a new data source that other users can build upon. And the enterprise data foundation goes where
-                        the business drives it.
+                        In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data
+                        integrations in their own right. Access controls, transformation logic, and data quality flow
+                        from original data source to intermediate analysis to presentation in real time. Every end
+                        product created in Foundry becomes a new data source that other users can build upon. And the
+                        enterprise data foundation goes where the business drives it.
                     </p>
                     <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
                 </DialogBody>
 
-                {includeFooter === "default" &&
-                    <DialogFooter actions={<DialogFooterContent handleClose={handleClose} />}>All checks passed</DialogFooter>
-                }
+                {includeFooter === "default" && <DialogFooter actions={footerActions}>All checks passed</DialogFooter>}
 
-                {includeFooter === "inline" &&
-                    <DialogFooter inline={true} actions={<DialogFooterContent handleClose={handleClose} />} />
-                }
+                {includeFooter === "minimal" && <DialogFooter minimal={true} actions={footerActions} />}
             </Dialog>
-        </>
-    );
-}
-
-function DialogFooterContent(props: { handleClose: (e: React.MouseEvent) => void }) {
-    return (
-        <>
-            <Tooltip2 content="This button is hooked up to close the dialog.">
-                <Button onClick={props.handleClose}>Close</Button>
-            </Tooltip2>
-            <VisitFoundryWebsiteAnchorButton />
         </>
     );
 }

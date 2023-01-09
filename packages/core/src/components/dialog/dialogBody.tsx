@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,9 @@ import * as React from "react";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type DialogBodyProps = IDialogBodyProps;
-/** @deprecated use DialogBodyProps */
-export interface IDialogBodyProps extends Props {
-    /** Dialog contents. */
+export interface DialogBodyProps extends Props {
+    /** Dialog body contents. */
     children?: React.ReactNode;
-
-    /**
-     * Removes padding for the container
-     *
-     * @default false
-     */
-    noPadding?: boolean;
 
     /**
      * Enable scrolling for the container
@@ -45,12 +35,16 @@ export interface IDialogBodyProps extends Props {
 export class DialogBody extends AbstractPureComponent2<DialogBodyProps> {
     public static defaultProps: DialogBodyProps = {
         useOverflowScrollContainer: true,
-        noPadding: false,
     };
 
     public render() {
         return (
-            <div role="dialogbody" className={classNames(Classes.DIALOG_BODY, this.props.className, {[Classes.DIALOG_BODY_SCROLL_CONTAINER]: this.props.useOverflowScrollContainer, [Classes.DIALOG_BODY_NO_PADDING]: this.props.noPadding})}>
+            <div
+                role="dialogbody"
+                className={classNames(Classes.DIALOG_BODY, this.props.className, {
+                    [Classes.DIALOG_BODY_SCROLL_CONTAINER]: this.props.useOverflowScrollContainer,
+                })}
+            >
                 {this.props.children}
             </div>
         );

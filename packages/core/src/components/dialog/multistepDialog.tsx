@@ -217,11 +217,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         const maybeCloseButton = !isFooterCloseButtonVisible ? undefined : (
             <DialogStepButton text="Close" onClick={onClose} {...closeButtonProps} />
         );
-        return (
-            <DialogFooter actions={this.renderButtons()}>
-                {maybeCloseButton}
-            </DialogFooter>
-        );
+        return <DialogFooter actions={this.renderButtons()}>{maybeCloseButton}</DialogFooter>;
     }
 
     private renderButtons() {

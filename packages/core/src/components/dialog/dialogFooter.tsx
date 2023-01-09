@@ -20,63 +20,65 @@ import * as React from "react";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type DialogFooterProps = IDialogFooterProps;
-/** @deprecated use DialogFooterProps */
-export interface IDialogFooterProps extends Props {
+export interface DialogFooterProps extends Props {
     /** Left hand side of the footer */
     children?: React.ReactNode;
 
     /** Buttons displayed on the right hand side of the footer */
     actions?: React.ReactNode;
 
-    /** Show the footer close from the content.
+    /**
+     * Use a "minimal" appearance for the footer, simply applying an HTML role and
+     * some visual padding. This is useful for small dialogs, and should not be used
+     * with `<DialogBody useOverflowScrollContainer>`.
+     *
+     * Note that this is the default behavior when using the CSS API, since that's
+     * how the `-dialog-footer` class was first introduced, so these styles are
+     * applied without a "modifier" class.
+     *
+     * When using the JS component API, `minimal` is false by default.
+     *
+     * Show the footer close from the content.
      * Do not use with scroll body
      * Use for small dialogs (confirm)
      *
      * @default false;
      */
-    inline?: boolean;
+    minimal?: boolean;
 }
 
 export class DialogFooter extends AbstractPureComponent2<DialogFooterProps> {
     public static defaultProps: DialogFooterProps = {
-        inline: false
+        minimal: false,
     };
 
     public render() {
         return (
-            <div className={classNames(Classes.DIALOG_FOOTER, this.props.className, this.props.inline ? Classes.DIALOG_INLINE_FOOTER : Classes.DIALOG_FIXED_FOOTER)} role="dialogfooter">
-                <div className={Classes.DIALOG_FOOTER_CONTAINER}>
-                    {this.maybeRenderLeftHandSide()}
-
-                    {this.maybeRenderActions()}
-                </div>
+            <div
+                className={classNames(Classes.DIALOG_FOOTER, this.props.className, {
+                    [Classes.DIALOG_FOOTER_FIXED]: !this.props.minimal,
+                })}
+                role="dialogfooter"
+            >
+                {this.maybeRenderLeftSection()}
+                {this.maybeRenderActionsSection()}
             </div>
         );
     }
 
-    private maybeRenderLeftHandSide() {
+    private maybeRenderLeftSection() {
         const { children } = this.props;
         if (children == null) {
             return undefined;
         }
-        return (
-            <div className={Classes.DIALOG_FOOTER_LEFT}>
-                {children}
-            </div>
-        );
+        return <div className={Classes.DIALOG_FOOTER_LEFT_SECTION}>{children}</div>;
     }
 
-    private maybeRenderActions() {
+    private maybeRenderActionsSection() {
         const { actions } = this.props;
         if (actions == null) {
             return undefined;
         }
-        return (
-            <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                {actions}
-            </div>
-        );
+        return <div className={Classes.DIALOG_FOOTER_ACTIONS}>{actions}</div>;
     }
 }

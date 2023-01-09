@@ -1,10 +1,9 @@
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
 .#{$ns}-dialog-body {
   flex: 1 1 auto;
   padding: $dialog-padding;
-}
-
-.#{$ns}-dialog-body-no-padding {
-  padding: 0;
 }
 
 .#{$ns}-dialog-body-scroll-container {

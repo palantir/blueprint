@@ -92,8 +92,8 @@ $step-radius: $pt-border-radius * 2 !default;
       }
     }
 
-    .#{$ns}-dialog-fixed-footer {
-      border-radius: 0 0 0 $dialog-border-radius;
+    .#{$ns}-dialog-footer {
+      border-bottom-left-radius: 0;
     }
   }
 }

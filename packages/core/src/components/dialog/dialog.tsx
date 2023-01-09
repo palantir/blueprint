@@ -128,7 +128,6 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                         style={this.props.style}
                     >
                         {this.maybeRenderHeader()}
-
                         {this.props.children}
                     </div>
                 </div>
