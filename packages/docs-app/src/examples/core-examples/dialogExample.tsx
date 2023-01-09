@@ -166,11 +166,11 @@ function ButtonWithDialog({
                 </DialogBody>
 
                 {includeFooter === "default" &&
-                    <DialogFooter actions={<DialogFooterContent handleClose={handleClose} />}>Heello</DialogFooter>
+                    <DialogFooter actions={<DialogFooterContent handleClose={handleClose} />}>All checks passed</DialogFooter>
                 }
 
                 {includeFooter === "inline" &&
-                    <DialogFooter inline={true} actions={<DialogFooterContent handleClose={handleClose} />}>Heello</DialogFooter>
+                    <DialogFooter inline={true} actions={<DialogFooterContent handleClose={handleClose} />} />
                 }
             </Dialog>
         </>
