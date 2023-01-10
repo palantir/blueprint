@@ -70,7 +70,10 @@ jobs:
       - run: yarn compile
       - persist_to_workspace:
           root: "."
-          paths: [packages/*/lib, packages/*/src/generated]
+          paths:
+            - packages/*/lib
+            - packages/*/src/generated
+            - packages/icons/src/generated-icons
 
   format-check:
     docker: *docker-node-image
