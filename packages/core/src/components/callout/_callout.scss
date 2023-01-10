@@ -31,14 +31,14 @@ Styleguide callout
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {
-    padding-left: ($pt-grid-size * 2) + $pt-icon-size-standard;
+    padding-left: ($pt-grid-size * 2.2) + $pt-icon-size-standard;
 
     &::before {
       @include pt-icon($pt-icon-size-standard);
       color: $pt-icon-color;
       left: $pt-grid-size * 1.5;
       position: absolute;
-      top: $pt-grid-size * 1.5;
+      top: $pt-grid-size * 1.7;
     }
   }
 
@@ -48,20 +48,20 @@ Styleguide callout
   }
 
   &.#{$ns}-callout-icon {
-    padding-left: ($pt-grid-size * 2) + $pt-icon-size-standard;
+    padding-left: ($pt-grid-size * 2.2) + $pt-icon-size-standard;
 
     > .#{$ns}-icon:first-child {
       color: $pt-icon-color;
       left: $pt-grid-size * 1.5;
       position: absolute;
-      top: $pt-grid-size * 1.5;
+      top: $pt-grid-size * 1.7;
     }
   }
 
   .#{$ns}-heading {
     line-height: $pt-icon-size-standard;
     margin-bottom: $pt-grid-size * 0.5;
-    margin-top: 0;
+    margin-top: $pt-grid-size * 0.2;
 
     &:last-child {
       margin-bottom: 0;
