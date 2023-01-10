@@ -46,7 +46,7 @@ exec(`git tag --points-at ${commitish}`, (err, stdout) => {
             const packagePath = join("packages", unscopedName);
             return {
                 // This will throw if the package name isn't also the path, which is desirable.
-                packageJson: loadJsonFile(packagePath, "package.json"),
+                packageJson: loadJsonFile("..", packagePath, "package.json"),
                 path: packagePath,
             };
         })

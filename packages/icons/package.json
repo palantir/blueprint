@@ -12,7 +12,7 @@
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/**/* && rm -rf src/generated/*",
+        "clean": "rm -rf dist/* && rm -rf lib/**/* && rm -rf src/generated-icons/*",
         "compile": "npm-run-all -s \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
