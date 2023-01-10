@@ -43,7 +43,7 @@ describe("<MultistepDialog>", () => {
             Classes.DIALOG_STEP_TITLE,
             Classes.DIALOG_FOOTER_ACTIONS,
         ].forEach(className => {
-            assert.lengthOf(dialog.find(`.${className}`), 1, `missing ${className}`);
+            assert.lengthOf(dialog.find(`.${className}`).hostNodes(), 1, `missing ${className}`);
         });
         dialog.unmount();
     });

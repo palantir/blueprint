@@ -217,7 +217,12 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         const maybeCloseButton = !isFooterCloseButtonVisible ? undefined : (
             <DialogStepButton text="Close" onClick={onClose} {...closeButtonProps} />
         );
-        return <DialogFooter actions={this.renderButtons()}>{maybeCloseButton}</DialogFooter>;
+        return (
+            // eslint-disable-next-line deprecation/deprecation -- need to keep adding this class for backcompat, can be removed in next major version
+            <DialogFooter className={Classes.MULTISTEP_DIALOG_FOOTER} actions={this.renderButtons()}>
+                {maybeCloseButton}
+            </DialogFooter>
+        );
     }
 
     private renderButtons() {
