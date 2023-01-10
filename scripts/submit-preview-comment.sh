@@ -19,8 +19,8 @@ if [ -z "${CIRCLE_BUILD_NUM}" ]; then
 fi
 
 if [ -z "${CIRCLE_API_TOKEN}" ]; then
-    echo "No CircleCI API token available to query for artifact asset URLs from thsi build. Check the \$CIRCLE_API_TOKEN environment variable."
-    exit 1
+    echo "No CircleCI API token available to query for artifact asset URLs from this build. Check the \$CIRCLE_API_TOKEN environment variable."
+    exit 0
 fi
 
 SCRIPTS_DIR=$(dirname "$(readlink -f "$0")")

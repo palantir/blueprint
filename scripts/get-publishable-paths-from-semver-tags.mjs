@@ -11,13 +11,11 @@ import { join } from "node:path";
 import { argv } from "node:process";
 import yargs from "yargs";
 
-import { loadJsonFile } from "./utils.mjs";
-
 const cli = yargs(argv.slice(2)).usage("$0 <commitish>").help();
 const args = await cli.argv;
 const commitish = args._[0] || "HEAD";
 
-exec(`git tag --points-at ${commitish}`, (err, stdout) => {
+exec(`git tag --points-at ${commitish}`, async (err, stdout) => {
     if (err) {
         throw err;
     }
@@ -39,17 +37,20 @@ exec(`git tag --points-at ${commitish}`, (err, stdout) => {
         })
         .filter(name => name != null);
 
-    const publishablePackagePaths = taggedPackageNames
-        .map(name => {
+    const taggedPackages = taggedPackageNames
+        .map(async name => {
             const nameParts = name.split("/");
             const unscopedName = nameParts[nameParts.length - 1];
             const packagePath = join("packages", unscopedName);
+            // This will throw if the package name isn't also the path, which is desirable.
+            const { default: packageJson } = await import(join("..", packagePath, "package.json"), { assert: { type: "json " }});
             return {
-                // This will throw if the package name isn't also the path, which is desirable.
-                packageJson: loadJsonFile(packagePath, "package.json"),
+                packageJson,
                 path: packagePath,
             };
-        })
+        });
+
+    const publishablePackagePaths = (await Promise.all(taggedPackages))
         .filter(({ packageJson }) => !packageJson.private)
         .map(pkg => pkg.path);
 

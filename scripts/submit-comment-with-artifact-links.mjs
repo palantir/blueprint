@@ -14,12 +14,10 @@ import { execSync } from "node:child_process";
 import { basename } from "node:path";
 import { Octokit } from "octokit";
 
-import { loadJsonFile } from "./utils.mjs";
-
 /**
  * @type {Array<{path: string; url: string;}>}
  */
-const artifacts = loadJsonFile("./artifacts.json").items;
+const artifacts = (await import("./artifacts.json")).default.items;
 
 if (artifacts === undefined) {
     throw new Error(
