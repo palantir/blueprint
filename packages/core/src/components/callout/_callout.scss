@@ -28,7 +28,7 @@ $callout-header-margin-top: $pt-grid-size * 0.2;
   @include running-typography();
   background-color: rgba($gray3, 0.15);
   border-radius: $pt-border-radius;
-  padding: $pt-grid-size * 1.5;
+  padding: $callout-padding;
   position: relative;
   width: 100%;
 
