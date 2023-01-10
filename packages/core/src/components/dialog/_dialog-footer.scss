@@ -1,0 +1,36 @@
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+.#{$ns}-dialog-footer {
+  flex: 0 0 auto;
+  padding: $dialog-padding;
+}
+
+.#{$ns}-dialog-footer-fixed {
+  align-items: center;
+  background-color: $white;
+  border-radius: 0  0 $dialog-border-radius $dialog-border-radius;
+  border-top: 1px solid $pt-divider-black;
+  display: flex;
+  gap: $dialog-padding;
+  justify-content: space-between;
+  padding: $pt-grid-size $pt-grid-size $pt-grid-size $dialog-padding;
+
+  .#{$ns}-dark & {
+    background: $dark-gray4;
+    border-top: 1px solid $pt-dark-divider-white;
+  }
+}
+
+.#{$ns}-dialog-footer-left-section {
+  flex: 1 0 auto;
+}
+
+.#{$ns}-dialog-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  .#{$ns}-button {
+    margin-left: $pt-grid-size;
+  }
+}
