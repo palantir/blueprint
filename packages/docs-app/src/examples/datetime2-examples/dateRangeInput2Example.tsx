@@ -119,6 +119,7 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
                 <DateRangeInput2
                     {...spreadProps}
                     {...format}
+                    value={range}
                     onChange={this.handleRangeChange}
                     footerElement={showFooterElement ? exampleFooterElement : undefined}
                     timePickerProps={

@@ -34,7 +34,12 @@ export interface IContextMenuTargetComponent extends React.Component {
 
 /* eslint-disable deprecation/deprecation */
 
-/** @deprecated use ContextMenu2 */
+/**
+ * ContextMenuTarget decorator.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/context-menu.decorator-usage
+ * @deprecated use ContextMenu2
+ */
 export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetComponent>>(WrappedComponent: T) {
     if (!isFunction(WrappedComponent.prototype.renderContextMenu)) {
         console.warn(CONTEXTMENU_WARN_DECORATOR_NO_METHOD);

@@ -171,4 +171,4 @@ Below is a little widget to quickly help you try out hotkey combos and see how
 they will look in the dialog. See the key combos section above for more about
 specifying key combo props.
 
-@reactExample HotkeyTester
+@reactExample HotkeyTesterExample

@@ -78,7 +78,12 @@ export interface IPanelStackState {
     stack: IPanel[];
 }
 
-/** @deprecated use `PanelStack2<T>` */
+/**
+ * Panel stack component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/panel-stack
+ * @deprecated use `PanelStack2<T>`
+ */
 
 export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelStackState> {
     public state: IPanelStackState = {

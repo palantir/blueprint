@@ -70,6 +70,11 @@ export interface INonIdealStateProps extends Props {
     title?: React.ReactNode;
 }
 
+/**
+ * Non-ideal state component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/non-ideal-state
+ */
 export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
 

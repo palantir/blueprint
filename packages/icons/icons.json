@@ -3953,5 +3953,12 @@
         "tags": "target, aim, point, crosshair, mark",
         "group": "interface",
         "codepoint": 62261
+    },
+    {
+        "displayName": "Cross circle",
+        "iconName": "cross-circle",
+        "tags": "circle, cross mark, fail, delete, no, close, remove, not, available, unavailable, wrong, incorrect, cancel",
+        "group": "action",
+        "codepoint": 62262
     }
 ]

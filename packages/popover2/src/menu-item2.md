@@ -38,6 +38,22 @@ depending on the `role` attribute of its parent `<ul>` list:
 - `roleStructure="listoption"` is appropriate for a `<ul role="listbox">` parent, such as
     those found in Select2, Suggest2, and MultiSelect2 components. The item will render with
     `<li role="option">` and `<a>` (anchor role undefined).
+- `roleStructure="listitem"` is appropriate for a `<ul>` (no role defined) or a `<ul role="list">` parent. The
+    item will render with `<li>` and `<a>` (roles undefined).
+
+@## Selection state
+
+When `roleStructure="listoption"` is set, MenuItem2 has built-in support for indicating selection state
+using an icon on the left side of the item element. This works for both single- and multi-selection, like the
+kind you would find in Select2, Suggest2, or MultiSelect2 components.
+
+Specify selection state with the `selected?: boolean | undefined` prop. Note that `undefined` is only recommended
+with `roleStructure="menuitem"`, and an explicit boolean value (`true` or `false`) should be set when using
+`roleSTructure="listoption"` &mdash; this ensures consistent padding on the left side of menu items which are
+not currently selected.
+
+Also note that the `icon` prop will take precedence over `selected` if specified, and using them both at the same
+time is not recommended.
 
 @## Submenus
 

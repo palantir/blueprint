@@ -46,6 +46,7 @@ export interface UseHotkeysReturnValue {
 /**
  * React hook to register global and local hotkeys for a component.
  *
+ * @see https://blueprintjs.com/docs/#core/hooks/use-hotkeys
  * @param keys list of hotkeys to configure
  * @param options hook options
  */

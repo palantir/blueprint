@@ -23,6 +23,7 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     Icon,
+    IElementRefProps,
     LinkProps,
     Menu,
     MenuProps,
@@ -32,7 +33,8 @@ import {
 import * as Classes from "./classes";
 import { Popover2, Popover2Props } from "./popover2";
 
-export interface MenuItem2Props extends ActionProps, LinkProps {
+// eslint-disable-next-line deprecation/deprecation
+export interface MenuItem2Props extends ActionProps, LinkProps, IElementRefProps<HTMLLIElement> {
     /** Item text, required for usability. */
     text: React.ReactNode;
 
@@ -93,9 +95,16 @@ export interface MenuItem2Props extends ActionProps, LinkProps {
      *
      *  which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
      *
+     * If `listitem`, role structure becomes:
+     *
+     * `<li role=undefined`
+     *     `<a role=undefined`
+     *
+     *  which can be used if this item is within a basic `<ul/>` (or `role="list"`) parent.
+     *
      * @default "menuitem"
      */
-    roleStructure?: "menuitem" | "listoption";
+    roleStructure?: "menuitem" | "listoption" | "listitem";
 
     /**
      * Whether the text should be allowed to wrap to multiple lines.
@@ -152,6 +161,11 @@ export interface MenuItem2Props extends ActionProps, LinkProps {
     htmlTitle?: string;
 }
 
+/**
+ * Menu item (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#popover2-package/menu-item2
+ */
 export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: MenuItem2Props = {
         active: false,
@@ -171,6 +185,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
             className,
             children,
             disabled,
+            elementRef,
             intent,
             labelClassName,
             labelElement,
@@ -188,18 +203,24 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
         } = this.props;
 
         const [liRole, targetRole, icon, ariaSelected] =
-            roleStructure === "listoption"
-                ? // "listoption": parent has listbox role, or is a <select>
-                  [
+            roleStructure === "listoption" // "listoption": parent has listbox role, or is a <select>
+                ? [
                       "option",
                       undefined, // target should have no role
                       this.props.icon ?? (selected === undefined ? undefined : selected ? "small-tick" : "blank"),
                       Boolean(selected), // aria-selected prop
                   ]
-                : // "menuitem": parent has menu role
-                  [
+                : roleStructure === "menuitem" // "menuitem": parent has menu role
+                ? [
                       "none",
                       "menuitem",
+                      this.props.icon,
+                      undefined, // don't set aria-selected prop
+                  ]
+                : // roleStructure === "listitem"
+                  [
+                      undefined, // needs no role prop, li is listitem by default
+                      undefined,
                       this.props.icon,
                       undefined, // don't set aria-selected prop
                   ];
@@ -246,7 +267,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
 
         const liClasses = classNames({ [CoreClasses.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li className={liClasses} role={liRole} aria-selected={ariaSelected}>
+            <li className={liClasses} ref={elementRef} role={liRole} aria-selected={ariaSelected}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );

@@ -192,6 +192,11 @@ export interface ITagInputState {
 /** special value for absence of active tag */
 const NONE = -1;
 
+/**
+ * Tag input component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tag-input
+ */
 export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 

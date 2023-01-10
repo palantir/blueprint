@@ -127,7 +127,12 @@ export interface ITimezonePickerState {
 // eslint-disable-next-line deprecation/deprecation
 const TypedSelect = Select.ofType<TimezoneItem>();
 
-/** @deprecated use { TimezoneSelect } from "@blueprintjs/datetime2" */
+/**
+ * Timezone picker component.
+ *
+ * @see https://blueprintjs.com/docs/#timezone/timezone-picker
+ * @deprecated use { TimezoneSelect } from "@blueprintjs/datetime2"
+ */
 export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, ITimezonePickerState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 

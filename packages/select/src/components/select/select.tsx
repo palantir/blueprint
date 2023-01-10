@@ -104,7 +104,12 @@ export interface ISelectState {
     isOpen: boolean;
 }
 
-/** @deprecated use { Select2 } from "@blueprintjs/select" */
+/**
+ * Select component.
+ *
+ * @see https://blueprintjs.com/docs/#select/select-component
+ * @deprecated use { Select2 } from "@blueprintjs/select"
+ */
 export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
 

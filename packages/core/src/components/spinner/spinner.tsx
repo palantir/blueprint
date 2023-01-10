@@ -74,6 +74,11 @@ export interface ISpinnerProps extends Props, IntentProps {
     value?: number;
 }
 
+/**
+ * Spinner component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/spinner
+ */
 export class Spinner extends AbstractPureComponent2<SpinnerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
 

@@ -54,7 +54,13 @@ export interface IResizeSensorProps {
     observeParents?: boolean;
 }
 
-/** `ResizeSensor` requires a single DOM element child and will error otherwise. */
+/**
+ * Resize sensor component.
+ *
+ * It requires a single DOM element child and will error otherwise.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/resize-sensor
+ **/
 export class ResizeSensor extends AbstractPureComponent2<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
