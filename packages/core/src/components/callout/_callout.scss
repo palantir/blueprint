@@ -21,6 +21,9 @@ Markup:
 Styleguide callout
 */
 
+$callout-padding:  $pt-grid-size * 1.5;
+$callout-header-margin-top: $pt-grid-size * 0.2;
+
 .#{$ns}-callout {
   @include running-typography();
   background-color: rgba($gray3, 0.15);
@@ -31,14 +34,14 @@ Styleguide callout
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {
-    padding-left: ($pt-grid-size * 2.2) + $pt-icon-size-standard;
+    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-grid-size * 0.7);
 
     &::before {
       @include pt-icon($pt-icon-size-standard);
       color: $pt-icon-color;
-      left: $pt-grid-size * 1.5;
+      left: $callout-padding;
       position: absolute;
-      top: $pt-grid-size * 1.7;
+      top: $callout-padding + $callout-header-margin-top;
     }
   }
 
@@ -48,20 +51,20 @@ Styleguide callout
   }
 
   &.#{$ns}-callout-icon {
-    padding-left: ($pt-grid-size * 2.2) + $pt-icon-size-standard;
+    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-grid-size * 0.7);
 
     > .#{$ns}-icon:first-child {
       color: $pt-icon-color;
-      left: $pt-grid-size * 1.5;
+      left: $callout-padding;
       position: absolute;
-      top: $pt-grid-size * 1.7;
+      top: $callout-padding + $callout-header-margin-top;
     }
   }
 
   .#{$ns}-heading {
     line-height: $pt-icon-size-standard;
     margin-bottom: $pt-grid-size * 0.5;
-    margin-top: $pt-grid-size * 0.2;
+    margin-top: $callout-header-margin-top;
 
     &:last-child {
       margin-bottom: 0;
