@@ -21,10 +21,10 @@ import { AbstractPureComponent2, Classes } from "../../common";
 import { Props } from "../../common/props";
 
 export interface DialogFooterProps extends Props {
-    /** Left hand side of the footer */
+    /** Child contents are rendered on the left side of the footer. */
     children?: React.ReactNode;
 
-    /** Buttons displayed on the right hand side of the footer */
+    /** Dialog actions (typically buttons) are rendered on the right side of the footer. */
     actions?: React.ReactNode;
 
     /**
@@ -47,6 +47,11 @@ export interface DialogFooterProps extends Props {
     minimal?: boolean;
 }
 
+/**
+ * Dialog footer component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/dialog.dialog-footer-props
+ */
 export class DialogFooter extends AbstractPureComponent2<DialogFooterProps> {
     public static defaultProps: DialogFooterProps = {
         minimal: false,

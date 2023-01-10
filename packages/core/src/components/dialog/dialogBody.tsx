@@ -32,6 +32,11 @@ export interface DialogBodyProps extends Props {
     useOverflowScrollContainer?: boolean;
 }
 
+/**
+ * Dialog body component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/dialog.dialog-body-props
+ */
 export class DialogBody extends AbstractPureComponent2<DialogBodyProps> {
     public static defaultProps: DialogBodyProps = {
         useOverflowScrollContainer: true,
