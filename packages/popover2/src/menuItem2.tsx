@@ -27,6 +27,7 @@ import {
     LinkProps,
     Menu,
     MenuProps,
+    removeNonHTMLProps,
     Text,
 } from "@blueprintjs/core";
 
@@ -247,7 +248,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
             {
                 role: targetRole,
                 tabIndex: 0,
-                ...htmlProps,
+                ...removeNonHTMLProps(htmlProps),
                 ...(disabled ? DISABLED_PROPS : {}),
                 className: anchorClasses,
             },
