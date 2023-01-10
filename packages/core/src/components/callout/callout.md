@@ -12,6 +12,6 @@ a title, an icon and content. Each intent has a default icon associated with it.
 @## CSS
 
 Callouts use the same visual intent modifier classes as buttons. If you need a
-heading, use the `<h4>` element with a `.@ns-heading` class.
+heading, use the `<h5>` element with a `.@ns-heading` class.
 
 @css callout
