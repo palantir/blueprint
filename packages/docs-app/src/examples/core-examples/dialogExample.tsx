@@ -72,14 +72,14 @@ export class DialogExample extends React.PureComponent<ExampleProps<IBlueprintEx
                     className={this.props.data.themeName}
                     buttonText="Show dialog"
                     {...this.state}
-                    includeFooter="none"
+                    footerStyle="none"
                 />
                 <ButtonWithDialog
                     className={this.props.data.themeName}
                     icon="info-sign"
                     title="Palantir Foundry"
                     buttonText="Show dialog with title"
-                    includeFooter="none"
+                    footerStyle="none"
                     {...this.state}
                 />
                 <ButtonWithDialog
@@ -87,7 +87,7 @@ export class DialogExample extends React.PureComponent<ExampleProps<IBlueprintEx
                     icon="info-sign"
                     title="Palantir Foundry"
                     buttonText="Show dialog with title and footer"
-                    includeFooter="default"
+                    footerStyle="default"
                     {...this.state}
                 />
                 <ButtonWithDialog
@@ -95,7 +95,7 @@ export class DialogExample extends React.PureComponent<ExampleProps<IBlueprintEx
                     icon="info-sign"
                     title="Palantir Foundry"
                     buttonText="Show dialog with title and minimal footer"
-                    includeFooter="minimal"
+                    footerStyle="minimal"
                     {...this.state}
                 />
             </Example>
@@ -137,9 +137,9 @@ export class DialogExample extends React.PureComponent<ExampleProps<IBlueprintEx
 
 function ButtonWithDialog({
     buttonText,
-    includeFooter,
+    footerStyle,
     ...props
-}: Omit<DialogProps, "isOpen"> & { buttonText: string; includeFooter: "default" | "minimal" | "none" }) {
+}: Omit<DialogProps, "isOpen"> & { buttonText: string; footerStyle: "default" | "minimal" | "none" }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const handleButtonClick = React.useCallback(() => setIsOpen(!isOpen), []);
     const handleClose = React.useCallback(() => setIsOpen(false), []);
@@ -156,7 +156,7 @@ function ButtonWithDialog({
         <>
             <Button onClick={handleButtonClick} text={buttonText} />
             <Dialog {...props} isOpen={isOpen} onClose={handleClose}>
-                <DialogBody>
+                <DialogBody useOverflowScrollContainer={footerStyle === "minimal" ? false : undefined}>
                     <p>
                         <strong>
                             Data integration is the seminal problem of the digital age. For over ten years, we’ve helped
@@ -184,9 +184,9 @@ function ButtonWithDialog({
                     <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
                 </DialogBody>
 
-                {includeFooter === "default" && <DialogFooter actions={footerActions}>All checks passed</DialogFooter>}
+                {footerStyle === "default" && <DialogFooter actions={footerActions}>All checks passed</DialogFooter>}
 
-                {includeFooter === "minimal" && <DialogFooter minimal={true} actions={footerActions} />}
+                {footerStyle === "minimal" && <DialogFooter minimal={true} actions={footerActions} />}
             </Dialog>
         </>
     );
