@@ -286,7 +286,8 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
     /**
      * HTML props for the target element.
      *
-     * This prop is mutually exclusive with the `renderTarget` API.
+     * This prop will be applied with `renderTarget` API, but a warning will be
+     * given, as it is best practice to apply the props directly in the `renderTarget`
      */
     targetProps?: TProps;
 
