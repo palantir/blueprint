@@ -77,9 +77,9 @@ describe("<Popover2>", () => {
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER2_WARN_DOUBLE_TARGET));
         });
 
-        it("warns if given targetWrapperProps and renderTarget", () => {
-            shallow(<Popover2 targetWrapperProps={{ role: "none" }} renderTarget={() => <span>"boom"</span>} />);
-            assert.isTrue(warnSpy.calledWith(Errors.POPOVER2_WARN_TARGET_WRAPPER_PROPS_INEFFECTIVE));
+        it("warns if given targetProps and renderTarget", () => {
+            shallow(<Popover2 targetProps={{ role: "none" }} renderTarget={() => <span>"boom"</span>} />);
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER2_WARN_TARGET_PROPS_INEFFECTIVE));
         });
 
         it("warns if attempting to open a popover with empty content", () => {

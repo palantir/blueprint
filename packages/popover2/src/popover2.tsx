@@ -292,7 +292,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
 
         const childrenCount = React.Children.count(props.children);
         const hasRenderTargetProp = props.renderTarget !== undefined;
-        const hasTargetWrapperPropsProp = props.targetWrapperProps !== undefined;
+        const hasTargetPropsProp = props.targetProps !== undefined;
 
         if (childrenCount === 0 && !hasRenderTargetProp) {
             console.warn(Errors.POPOVER2_REQUIRES_TARGET);
@@ -303,8 +303,8 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         if (childrenCount > 0 && hasRenderTargetProp) {
             console.warn(Errors.POPOVER2_WARN_DOUBLE_TARGET);
         }
-        if (hasRenderTargetProp && hasTargetWrapperPropsProp) {
-            console.warn(Errors.POPOVER2_WARN_TARGET_WRAPPER_PROPS_INEFFECTIVE);
+        if (hasRenderTargetProp && hasTargetPropsProp) {
+            console.warn(Errors.POPOVER2_WARN_TARGET_PROPS_INEFFECTIVE);
         }
     }
 
@@ -319,7 +319,14 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     public reposition = () => this.popperScheduleUpdate?.();
 
     private renderTarget = ({ ref: popperChildRef }: ReferenceChildrenProps) => {
-        const { children, className, fill, openOnTargetFocus, renderTarget, targetWrapperProps } = this.props;
+        const {
+            children,
+            className,
+            fill,
+            openOnTargetFocus,
+            renderTarget,
+            targetProps: targetPropsGiven,
+        } = this.props;
         const { isOpen } = this.state;
         const isControlled = this.isControlled();
         const isHoverInteractionKind = this.isHoverInteractionKind();
@@ -351,6 +358,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
         const targetProps = {
+            ...targetPropsGiven,
             "aria-haspopup":
                 this.props.popupKind ??
                 (this.props.interactionKind === Popover2InteractionKind.HOVER_TARGET_ONLY ? undefined : "true"),
@@ -398,11 +406,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip2) ? true : childTarget.props.disabled,
                 tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
             });
-            const wrappedTarget = React.createElement(
-                targetTagName!,
-                { ...targetWrapperProps, ...targetProps },
-                clonedTarget,
-            );
+            const wrappedTarget = React.createElement(targetTagName!, targetProps, clonedTarget);
             target = wrappedTarget;
         }
 
