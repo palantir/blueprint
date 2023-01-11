@@ -304,7 +304,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             console.warn(Errors.POPOVER2_WARN_DOUBLE_TARGET);
         }
         if (hasRenderTargetProp && hasTargetPropsProp) {
-            console.warn(Errors.POPOVER2_WARN_TARGET_PROPS_INEFFECTIVE);
+            console.warn(Errors.POPOVER2_WARN_TARGET_PROPS_WITH_RENDER_TARGET);
         }
     }
 

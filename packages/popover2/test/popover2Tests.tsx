@@ -79,7 +79,7 @@ describe("<Popover2>", () => {
 
         it("warns if given targetProps and renderTarget", () => {
             shallow(<Popover2 targetProps={{ role: "none" }} renderTarget={() => <span>"boom"</span>} />);
-            assert.isTrue(warnSpy.calledWith(Errors.POPOVER2_WARN_TARGET_PROPS_INEFFECTIVE));
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER2_WARN_TARGET_PROPS_WITH_RENDER_TARGET));
         });
 
         it("warns if attempting to open a popover with empty content", () => {
