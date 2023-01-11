@@ -288,7 +288,7 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
      *
      * This prop is mutually exclusive with the `renderTarget` API.
      */
-    targetWrapperProps?: React.HTMLProps<HTMLSpanElement> | React.HTMLProps<HTMLDivElement>;
+    targetProps?: TProps;
 
     /**
      * Whether the popover should be rendered inside a `Portal` attached to
