@@ -27,11 +27,15 @@ describe("DateUtils", () => {
         const DATE_2 = new Date(2017, Months.JANUARY, 2);
         const DATE_3 = new Date(2017, Months.JANUARY, 3);
         const DATE_4 = new Date(2017, Months.JANUARY, 4);
+        const DATE_5 = new Date(2017, Months.JANUARY, 5);
+        const DATE_5_00 = new Date(2017, Months.JANUARY, 5, 0, 0, 0, 0);
+        const DATE_5_01 = new Date(2017, Months.JANUARY, 5, 1, 1, 1, 1);
 
         describe("returns true for", () => {
             runTest("null and null", null, null, true);
             runTest("[null, null] and [null, null]", [null, null], [null, null], true);
             runTest("[DATE_1, DATE_2] and [DATE_1, DATE_2]", [DATE_1, DATE_2], [DATE_1, DATE_2], true);
+            runTest("[DATE_1, DATE_5] and [DATE_1, DATE_5_00]", [DATE_1, DATE_5], [DATE_1, DATE_5_00], true);
         });
 
         describe("returns false for", () => {
@@ -41,6 +45,7 @@ describe("DateUtils", () => {
             runTest("[DATE_1, DATE_2] and [DATE_1, DATE_4]", [DATE_1, DATE_2], [DATE_1, DATE_4], false);
             runTest("[DATE_1, DATE_4] and [DATE_2, DATE_4]", [DATE_1, DATE_4], [DATE_2, DATE_4], false);
             runTest("[DATE_1, DATE_2] and [DATE_3, DATE_4]", [DATE_1, DATE_2], [DATE_3, DATE_4], false);
+            runTest("[DATE_1, DATE_5] and [DATE_1, DATE_5_01]", [DATE_1, DATE_5], [DATE_1, DATE_5_01], false);
         });
 
         function runTest(description: string, dateRange1: DateRange, dateRange2: DateRange, expectedResult: boolean) {
