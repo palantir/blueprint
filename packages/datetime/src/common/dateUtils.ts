@@ -41,7 +41,7 @@ export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange) {
         const [start2, end2] = dateRange2;
         const areStartsEqual =
             (start1 == null && start2 == null) || (areSameDay(start1, start2) && areSameTime(start1, start2));
-        const areEndsEqual = (end1 == null && end2 == null) || (areSameDay(end1, end2) && areSameTime(start1, start2));
+        const areEndsEqual = (end1 == null && end2 == null) || (areSameDay(end1, end2) && areSameTime(end1, end2));
         return areStartsEqual && areEndsEqual;
     }
 }
