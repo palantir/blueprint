@@ -1207,6 +1207,14 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(wrapper.find(TimePicker).exists());
         });
 
+        it("use defaultTimeValue if set and defaultValue not set", () => {
+            render({ timePickerProps: {}, defaultTimeValue: defaultRange }).left.clickDay(19);
+            const cbHour = onChangeSpy.firstCall.args[0][0].getHours();
+            const cbMinutes = onChangeSpy.firstCall.args[0][0].getMinutes();
+            assert.strictEqual(cbHour, defaultRange[0].getHours());
+            assert.strictEqual(cbMinutes, defaultRange[0].getMinutes());
+        });
+
         it("onChange fired when the time is changed", () => {
             const { wrapper } = render({
                 defaultValue: defaultRange,

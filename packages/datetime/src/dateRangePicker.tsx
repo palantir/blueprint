@@ -70,6 +70,13 @@ export interface IDateRangePickerProps extends DatePickerBaseProps, Props {
     contiguousCalendarMonths?: boolean;
 
     /**
+     * Initial time the `TimePicker` will display.
+     * This should not be set if `defaultValue` or `value` is set.
+     * This overrides `timePickerProps.defaultValue`
+     */
+    defaultTimeValue?: DateRange;
+
+    /**
      * Initial `DateRange` the calendar will display as selected.
      * This should not be set if `value` is set.
      */
@@ -196,7 +203,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
     public constructor(props: DateRangePickerProps, context?: any) {
         super(props, context);
         const value = getInitialValue(props);
-        const time: DateRange = value;
+        const time: DateRange = getInitialTime(props);
         const initialMonth = getInitialMonth(props, value);
 
         // if the initial month is the last month of the picker's
@@ -793,6 +800,19 @@ function getInitialValue(props: DateRangePickerProps): DateRange | null {
     }
     if (props.defaultValue != null) {
         return props.defaultValue;
+    }
+    return [null, null];
+}
+
+function getInitialTime(props: DateRangePickerProps): DateRange | null {
+    if (props.value != null) {
+        return props.value;
+    }
+    if (props.defaultValue != null) {
+        return props.defaultValue;
+    }
+    if (props.defaultTimeValue != null) {
+        return props.defaultTimeValue;
     }
     return [null, null];
 }
