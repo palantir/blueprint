@@ -34,11 +34,13 @@ React application.
 Then, to register hotkeys and generate the relevant event handlers, use the hook like so:
 
 ```tsx
-import { useHotkeys } from "@blueprintjs/core";
-import React, { createRef, useMemo } from "react";
+import { InputGroup, KeyCombo, useHotkeys } from "@blueprintjs/core";
+import React, { createRef, useCallback, useMemo } from "react";
 
 export default function() {
     const inputRef = createRef<HTMLInputElement>();
+    const handleRefresh = useCallback(() => console.info("Refreshing data..."), []);
+    const handleFocus = useCallback(() => inputRef.current?.focus(), [inputRef]);
 
     // important: hotkeys array must be memoized to avoid infinitely re-binding hotkeys
     const hotkeys = useMemo(() => [
@@ -46,20 +48,20 @@ export default function() {
             combo: "R",
             global: true,
             label: "Refresh data",
-            onKeyDown: () => console.info("Refreshing data..."),
+            onKeyDown: handleRefresh,
         },
         {
             combo: "F",
             group: "Input",
             label: "Focus text input",
-            onKeyDown: inputRef.current?.focus(),
+            onKeyDown: handleFocus,
         },
-    ], []);
+    ], [handleRefresh, handleFocus]);
     const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys);
 
     return (
         <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-            Press "R" to refresh data, "F" to focus the input...
+            Press <KeyCombo combo="R" /> to refresh data, <KeyCombo combo="F" /> to focus the input...
             <InputGroup inputRef={inputRef} />
         </div>
     );
