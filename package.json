@@ -37,7 +37,7 @@
         "verify": "npm-run-all -s compile dist:libs dist:apps -p test lint format-check"
     },
     "dependencies": {
-        "@types/chai": "~4.3.3",
+        "@types/chai": "~4.3.4",
         "@types/enzyme": "~3.10.12",
         "@types/enzyme-adapter-react-16": "~1.0.6",
         "@types/mocha": "~10.0.0",
@@ -46,7 +46,7 @@
         "@types/react-transition-group": "~4.4.5",
         "@types/sinon": "~10.0.13",
         "@types/yargs": "~17.0.13",
-        "chai": "^4.3.6",
+        "chai": "^4.3.7",
         "cross-env": "^7.0.3",
         "dedent": "^0.7.0",
         "eslint": "^8.28.0",
