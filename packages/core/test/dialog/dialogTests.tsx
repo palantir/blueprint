@@ -21,13 +21,16 @@ import { spy } from "sinon";
 
 import { Button, Classes, Dialog, DialogBody, DialogFooter, DialogProps } from "../../src";
 
+const COMMON_PROPS: Partial<DialogProps> = {
+    icon: "inbox",
+    isOpen: true,
+    title: "Dialog header",
+    usePortal: false,
+};
+
 describe("<Dialog>", () => {
     it("renders its content correctly", () => {
-        const dialog = mount(
-            <Dialog isOpen={true} usePortal={false}>
-                {renderDialogBodyAndFooter()}
-            </Dialog>,
-        );
+        const dialog = mount(<Dialog {...COMMON_PROPS}>{renderDialogBodyAndFooter()}</Dialog>);
         [
             Classes.DIALOG,
             Classes.DIALOG_BODY,
@@ -43,7 +46,7 @@ describe("<Dialog>", () => {
     it("portalClassName appears on Portal", () => {
         const TEST_CLASS = "test-class";
         const dialog = mount(
-            <Dialog isOpen={true} portalClassName={TEST_CLASS} icon="inbox" title="Dialog header">
+            <Dialog {...COMMON_PROPS} usePortal={true} portalClassName={TEST_CLASS}>
                 {renderDialogBodyAndFooter()}
             </Dialog>,
         );
@@ -55,7 +58,7 @@ describe("<Dialog>", () => {
         const container = document.createElement("div");
         document.body.appendChild(container);
         mount(
-            <Dialog isOpen={true} portalContainer={container} icon="inbox" title="Dialog header">
+            <Dialog {...COMMON_PROPS} usePortal={true} portalContainer={container}>
                 {renderDialogBodyAndFooter()}
             </Dialog>,
         );
@@ -66,7 +69,7 @@ describe("<Dialog>", () => {
     it("attempts to close when overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
-            <Dialog isOpen={true} onClose={onClose} usePortal={false} icon="inbox" title="Dialog header">
+            <Dialog {...COMMON_PROPS} onClose={onClose}>
                 {renderDialogBodyAndFooter()}
             </Dialog>,
         );
@@ -77,14 +80,7 @@ describe("<Dialog>", () => {
     it("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
-            <Dialog
-                canOutsideClickClose={false}
-                isOpen={true}
-                onClose={onClose}
-                usePortal={false}
-                icon="inbox"
-                title="Dialog header"
-            >
+            <Dialog {...COMMON_PROPS} canOutsideClickClose={false} onClose={onClose}>
                 {renderDialogBodyAndFooter()}
             </Dialog>,
         );
@@ -95,14 +91,7 @@ describe("<Dialog>", () => {
     it("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
         const onClose = spy();
         const dialog = mount(
-            <Dialog
-                canEscapeKeyClose={false}
-                isOpen={true}
-                onClose={onClose}
-                usePortal={false}
-                icon="inbox"
-                title="Dialog header"
-            >
+            <Dialog {...COMMON_PROPS} canEscapeKeyClose={false} onClose={onClose}>
                 {renderDialogBodyAndFooter()}
             </Dialog>,
         );
@@ -113,7 +102,7 @@ describe("<Dialog>", () => {
     it("supports overlay lifecycle props", () => {
         const onOpening = spy();
         mount(
-            <Dialog isOpen={true} onOpening={onOpening}>
+            <Dialog {...COMMON_PROPS} onOpening={onOpening}>
                 body
             </Dialog>,
         );
@@ -123,7 +112,7 @@ describe("<Dialog>", () => {
     describe("header", () => {
         it(`renders .${Classes.DIALOG_HEADER} if title prop is given`, () => {
             const dialog = mount(
-                <Dialog isOpen={true} title="Hello!" usePortal={false}>
+                <Dialog {...COMMON_PROPS} title="Hello!">
                     dialog body
                 </Dialog>,
             );
@@ -132,7 +121,7 @@ describe("<Dialog>", () => {
 
         it(`renders close button if isCloseButtonShown={true}`, () => {
             const dialog = mount(
-                <Dialog isCloseButtonShown={true} isOpen={true} title="Hello!" usePortal={false}>
+                <Dialog {...COMMON_PROPS} isCloseButtonShown={true}>
                     dialog body
                 </Dialog>,
             );
@@ -145,7 +134,7 @@ describe("<Dialog>", () => {
         it("clicking close button triggers onClose", () => {
             const onClose = spy();
             const dialog = mount(
-                <Dialog isCloseButtonShown={true} isOpen={true} onClose={onClose} title="Hello!" usePortal={false}>
+                <Dialog {...COMMON_PROPS} isCloseButtonShown={true} onClose={onClose}>
                     dialog body
                 </Dialog>,
             );
@@ -155,14 +144,14 @@ describe("<Dialog>", () => {
     });
 
     it("only adds its className in one location", () => {
-        const dialog = mount(<Dialog className="foo" isOpen={true} title="title" usePortal={false} />);
+        const dialog = mount(<Dialog {...COMMON_PROPS} className="foo" />);
         assert.lengthOf(dialog.find(".foo").hostNodes(), 1);
     });
 
     describe("accessibility features", () => {
         const mountDialog = (props: Partial<DialogProps>) => {
             return mount(
-                <Dialog isOpen={true} usePortal={false} icon="inbox" title="Dialog header" {...props}>
+                <Dialog {...COMMON_PROPS} {...props}>
                     {renderDialogBodyAndFooter()}
                 </Dialog>,
             );
@@ -191,7 +180,7 @@ describe("<Dialog>", () => {
         });
 
         it("does not apply default aria-labelledby if no title", () => {
-            const dialog = mountDialog({ className: "no-default-if-no-title" });
+            const dialog = mountDialog({ className: "no-default-if-no-title", title: null });
             // test existence here because id is generated
             assert.notExists(dialog.find(".no-default-if-no-title").hostNodes().prop("aria-labelledby"));
         });
