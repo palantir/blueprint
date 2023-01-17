@@ -1,11 +1,11 @@
 @# Tooltip
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated: use [Tooltip2](#popover2-package/tooltip2)
 
-</h4>
+</h5>
 
 This component is **deprecated since @blueprintjs/core v3.38.0** in favor of the new
 Tooltip2 component available in the `@blueprintjs/popover2` package. You should migrate
@@ -56,7 +56,7 @@ When creating a tooltip, you must specify both:
 The content will appear in a contrasting popover when the target is hovered.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Button targets</h4>
+    <h5 class="@ns-heading">Button targets</h5>
 
 Buttons make great tooltip targets, but the `disabled` attribute will prevent all
 events so the enclosing `Tooltip` will not know when to respond.

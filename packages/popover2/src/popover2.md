@@ -1,11 +1,11 @@
 @# Popover2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [Popover](#core/components/popover)?
 
-</h4>
+</h5>
 
 Popover2 is a replacement for Popover and will become the standard Popover API in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
@@ -69,7 +69,7 @@ positioned on the page next to the target; the `placement` prop determines its r
 which side of the target).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Button targets</h4>
+    <h5 class="@ns-heading">Button targets</h5>
 
 Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
 events, which interferes with the popover functioning. If you need to disable a button which
@@ -160,7 +160,7 @@ modifier name and its options object, respectively. See the [Popper.js modifiers
 for more info.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Auto placement requires flip modifier</h4>
+    <h5 class="@ns-heading">Auto placement requires flip modifier</h5>
 
 Be careful when disabling the "flip" modifier, since the default "auto" placement relies on it. If you _do_ decide
 to disable this modifier, be sure to also specify a placement which is not "auto".
@@ -186,7 +186,7 @@ in your application logic whether you should care about a particular invocation 
 if the `nextOpenState` is not the same as the `Popover2`'s current state).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Disabling controlled popovers</h4>
+    <h5 class="@ns-heading">Disabling controlled popovers</h5>
 
 If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
 The popover will re-open when `disabled` is set to `false`.
@@ -252,7 +252,7 @@ The following example demonstrates the various interaction kinds (note: these Po
 @reactExample Popover2InteractionKindExample
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Conditionally styling popover targets</h4>
+    <h5 class="@ns-heading">Conditionally styling popover targets</h5>
 
 When a popover is open, `Classes.POPOVER2_OPEN` is applied to the target.
 You can use this to style the target differently when the popover is open.
@@ -332,7 +332,7 @@ a translucent background color, like the backdrop for the [`Dialog`](#core/compo
 The backdrop element has the same opacity-fade transition as the `Dialog` backdrop.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">Dangerous edge case</h4>
+    <h5 class="@ns-heading">Dangerous edge case</h5>
 
 Rendering a `<Popover2 isOpen={true} hasBackdrop={true}>` outside the viewport bounds can easily break
 your application by covering the UI with an invisible non-interactive backdrop. This edge case

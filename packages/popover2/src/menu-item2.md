@@ -5,11 +5,11 @@ tag: new
 @# MenuItem2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [MenuItem](#core/components/menu.menu-item)?
 
-</h4>
+</h5>
 
 MenuItem2 is a replacement for MenuItem. It uses Popover2 instead of Popover for its submenus.
 You are encouraged to migrate to MenuItem2 now in the rare case where you customize submenu layout
