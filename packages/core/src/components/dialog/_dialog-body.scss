@@ -11,8 +11,8 @@
 
 // modifier for -dialog-body class, works similarly to -overlay-scroll-container
 .#{$ns}-dialog-body-scroll-container {
-  max-height: 70vh;
   margin: 0;
+  max-height: 70vh;
   overflow: auto;
   padding: $dialog-padding;
 }
