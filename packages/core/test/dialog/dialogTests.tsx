@@ -19,13 +19,13 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Button, Classes, Dialog, DialogProps, H4, Icon, IconSize } from "../../src";
+import { Button, Classes, Dialog, DialogBody, DialogFooter, DialogProps } from "../../src";
 
 describe("<Dialog>", () => {
     it("renders its content correctly", () => {
         const dialog = mount(
             <Dialog isOpen={true} usePortal={false}>
-                {createDialogContents()}
+                {renderDialogBodyAndFooter()}
             </Dialog>,
         );
         [
@@ -43,8 +43,8 @@ describe("<Dialog>", () => {
     it("portalClassName appears on Portal", () => {
         const TEST_CLASS = "test-class";
         const dialog = mount(
-            <Dialog isOpen={true} portalClassName={TEST_CLASS}>
-                {createDialogContents()}
+            <Dialog isOpen={true} portalClassName={TEST_CLASS} icon="inbox" title="Dialog header">
+                {renderDialogBodyAndFooter()}
             </Dialog>,
         );
         assert.isDefined(document.querySelector(`.${Classes.PORTAL}.${TEST_CLASS}`));
@@ -55,8 +55,8 @@ describe("<Dialog>", () => {
         const container = document.createElement("div");
         document.body.appendChild(container);
         mount(
-            <Dialog isOpen={true} portalContainer={container}>
-                {createDialogContents()}
+            <Dialog isOpen={true} portalContainer={container} icon="inbox" title="Dialog header">
+                {renderDialogBodyAndFooter()}
             </Dialog>,
         );
         assert.lengthOf(container.getElementsByClassName(Classes.DIALOG), 1, `missing ${Classes.DIALOG}`);
@@ -66,8 +66,8 @@ describe("<Dialog>", () => {
     it("attempts to close when overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
-            <Dialog isOpen={true} onClose={onClose} usePortal={false}>
-                {createDialogContents()}
+            <Dialog isOpen={true} onClose={onClose} usePortal={false} icon="inbox" title="Dialog header">
+                {renderDialogBodyAndFooter()}
             </Dialog>,
         );
         dialog.find(`.${Classes.OVERLAY_BACKDROP}`).simulate("mousedown");
@@ -77,8 +77,15 @@ describe("<Dialog>", () => {
     it("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
-            <Dialog canOutsideClickClose={false} isOpen={true} onClose={onClose} usePortal={false}>
-                {createDialogContents()}
+            <Dialog
+                canOutsideClickClose={false}
+                isOpen={true}
+                onClose={onClose}
+                usePortal={false}
+                icon="inbox"
+                title="Dialog header"
+            >
+                {renderDialogBodyAndFooter()}
             </Dialog>,
         );
         dialog.find(`.${Classes.OVERLAY_BACKDROP}`).simulate("mousedown");
@@ -88,8 +95,15 @@ describe("<Dialog>", () => {
     it("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
         const onClose = spy();
         const dialog = mount(
-            <Dialog canEscapeKeyClose={false} isOpen={true} onClose={onClose} usePortal={false}>
-                {createDialogContents()}
+            <Dialog
+                canEscapeKeyClose={false}
+                isOpen={true}
+                onClose={onClose}
+                usePortal={false}
+                icon="inbox"
+                title="Dialog header"
+            >
+                {renderDialogBodyAndFooter()}
             </Dialog>,
         );
         dialog.simulate("keydown", { key: "Escape" });
@@ -148,8 +162,8 @@ describe("<Dialog>", () => {
     describe("accessibility features", () => {
         const mountDialog = (props: Partial<DialogProps>) => {
             return mount(
-                <Dialog isOpen={true} usePortal={false} {...props}>
-                    {createDialogContents()}
+                <Dialog isOpen={true} usePortal={false} icon="inbox" title="Dialog header" {...props}>
+                    {renderDialogBodyAndFooter()}
                 </Dialog>,
             );
         };
@@ -196,25 +210,24 @@ describe("<Dialog>", () => {
 
     // N.B. everything else about Dialog is tested by Overlay
 
-    function createDialogContents(): JSX.Element[] {
+    function renderDialogBodyAndFooter(): JSX.Element[] {
         return [
-            <div className={Classes.DIALOG_HEADER} key={0}>
-                <Icon icon="inbox" size={IconSize.LARGE} />
-                <H4 id="dialog-title">Dialog header</H4>
-            </div>,
-            <div className={Classes.DIALOG_BODY} key={1}>
+            <DialogBody key="body">
                 <p id="dialog-description">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna alqua. Ut enim ad minimum veniam, quis nostrud exercitation ullamco laboris nisi ut
                     aliquip ex ea commodo consequat.
                 </p>
-            </div>,
-            <div className={Classes.DIALOG_FOOTER} key={2}>
-                <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                    <Button text="Secondary" />
-                    <Button className={Classes.INTENT_PRIMARY} type="submit" text="Primary" />
-                </div>
-            </div>,
+            </DialogBody>,
+            <DialogFooter
+                key="footer"
+                actions={
+                    <>
+                        <Button text="Secondary" />
+                        <Button className={Classes.INTENT_PRIMARY} type="submit" text="Primary" />
+                    </>
+                }
+            />,
         ];
     }
 });
