@@ -19,7 +19,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { Classes } from "../../common";
-import { Dialog, DialogProps } from "../../components";
+import { Dialog, DialogBody, DialogProps } from "../../components";
 import { Hotkey, IHotkeyProps } from "./hotkey";
 import { Hotkeys } from "./hotkeys";
 
@@ -119,7 +119,7 @@ class HotkeysDialog {
                 isOpen={this.isDialogShowing}
                 onClose={this.hide}
             >
-                <div className={Classes.DIALOG_BODY}>{this.renderHotkeys()}</div>
+                <DialogBody>{this.renderHotkeys()}</DialogBody>
             </Dialog>
         );
     }
