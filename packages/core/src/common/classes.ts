@@ -122,7 +122,7 @@ export const DIALOG_BODY_SCROLL_CONTAINER = `${DIALOG}-body-scroll-container`;
 export const DIALOG_CLOSE_BUTTON = `${DIALOG}-close-button`;
 export const DIALOG_FOOTER = `${DIALOG}-footer`;
 export const DIALOG_FOOTER_FIXED = `${DIALOG}-footer-fixed`;
-export const DIALOG_FOOTER_LEFT_SECTION = `${DIALOG}-footer-left-section`;
+export const DIALOG_FOOTER_MAIN_SECTION = `${DIALOG}-footer-main-section`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
 
 export const DIALOG_STEP = `${NS}-dialog-step`;

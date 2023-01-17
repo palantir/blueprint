@@ -73,7 +73,7 @@ export class DialogFooter extends AbstractPureComponent2<DialogFooterProps> {
 
     /** Render the main footer section (left aligned). */
     private renderMainSection() {
-        return <div className={Classes.DIALOG_FOOTER_LEFT_SECTION}>{this.props.children}</div>;
+        return <div className={Classes.DIALOG_FOOTER_MAIN_SECTION}>{this.props.children}</div>;
     }
 
     /** Optionally render the footer actions (right aligned). */
