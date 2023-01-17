@@ -5,11 +5,11 @@ tag: new
 @# TimezoneSelect
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [TimezonePicker](#timezone/timezone-picker)?
 
-</h4>
+</h5>
 
 TimezoneSelect is a replacement for [TimezonePicker component](#timezone/timezone-picker) from
 the [__@blueprintjs/timezone__ package](#timezone) and will replace it in Blueprint v5.
@@ -62,7 +62,7 @@ in this case, all button-specific props will be ignored:
 ```
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Local timezone detection</h4>
+    <h5 class="@ns-heading">Local timezone detection</h5>
 
 We detect the local timezone using the
 [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions)

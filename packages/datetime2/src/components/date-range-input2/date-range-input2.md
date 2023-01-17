@@ -5,11 +5,11 @@ tag: new
 @# DateRangeInput2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [DateRangeInput](#datetime/daterangeinput)?
 
-</h4>
+</h5>
 
 DateRangeInput2 is a replacement for the [DateRangeInput component](#datetime/daterangeinput) from
 [__@blueprintjs/datetime__ package](#datetime) and will replace it in Blueprint v5.

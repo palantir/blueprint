@@ -1,11 +1,11 @@
 @# Tooltip2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [Tooltip](#core/components/tooltip)?
 
-</h4>
+</h5>
 
 Tooltip2 is a replacement for Tooltip and will become the standard Popover API in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
@@ -71,7 +71,7 @@ positioned on the page next to the target; the `placement` prop determines its r
 which side of the target).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Button targets</h4>
+    <h5 class="@ns-heading">Button targets</h5>
 
 Buttons make great tooltip targets, but the `disabled` attribute will prevent all
 events so the enclosing `Tooltip2` will not know when to respond.

@@ -5,7 +5,7 @@ reference: datetime2
 @# Datetime2
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Incubating component library</h4>
+    <h5 class="@ns-heading">Incubating component library</h5>
     <p>This package is currently in the v0.x version range, which means its API is unstable.</p>
 </div>
 
@@ -52,7 +52,7 @@ Import the package stylesheet (for example, in Sass):
 ```
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Additional CSS required</h4>
+    <h5 class="@ns-heading">Additional CSS required</h5>
 
 This library relies on some components from other Blueprint packages, so you will need to pull in those
 packages' CSS files as well (if you are not doing this already):

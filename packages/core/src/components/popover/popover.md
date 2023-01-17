@@ -1,11 +1,11 @@
 @# Popover
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated: use [Popover2](#popover2-package/popover2)
 
-</h4>
+</h5>
 
 This component is **deprecated since @blueprintjs/core v3.38.0** in favor of the new
 Popover2 component available in the `@blueprintjs/popover2` package. You should migrate
@@ -89,7 +89,7 @@ wrapped in a single element when rendering
 ```
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Button targets</h4>
+    <h5 class="@ns-heading">Button targets</h5>
 
 Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
 events, which interferes with the popover functioning. If you need to disable a button that
@@ -211,7 +211,7 @@ in your application logic whether you should care about a particular invocation 
 if the `nextOpenState` is not the same as the `Popover`'s current state).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Disabling controlled popovers</h4>
+    <h5 class="@ns-heading">Disabling controlled popovers</h5>
 
 If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
 The popover will re-open when `disabled` is set to `false`.
@@ -278,7 +278,7 @@ The following example demonstrates the various interaction kinds (note: these Po
 @reactExample PopoverInteractionKindExample
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Conditionally styling popover targets</h4>
+    <h5 class="@ns-heading">Conditionally styling popover targets</h5>
 
 When a popover is open, `Classes.POPOVER_OPEN` is applied to the target.
 You can use this to style the target differently when the popover is open.
@@ -358,7 +358,7 @@ a translucent background color, like the backdrop for the [`Dialog`](#core/compo
 The backdrop element has the same opacity-fade transition as the `Dialog` backdrop.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">Dangerous edge case</h4>
+    <h5 class="@ns-heading">Dangerous edge case</h5>
 
 Rendering a `<Popover isOpen={true} hasBackdrop={true}>` outside the viewport bounds can easily break
 your application by covering the UI with an invisible non-interactive backdrop. This edge case

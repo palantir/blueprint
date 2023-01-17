@@ -7,10 +7,10 @@ customizing the appearance of visible items, using the props from the `MenuItem`
 children.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated: use [Overflow list](#core/components/overflow-list)
-</h4>
+</h5>
 
 This component is **deprecated since 3.0.0** with the introduction of
 [`OverflowList`](#core/components/overflow-list) which provides a similar
