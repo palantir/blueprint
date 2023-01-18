@@ -225,7 +225,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
                       this.props.icon,
                       undefined, // don't set aria-selected prop
                   ]
-                : roleStructure === "none" // "none": allows wrapping MenuItem in custom li
+                : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
                 ? [
                       "none",
                       undefined, // target should have no role

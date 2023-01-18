@@ -221,7 +221,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 : roleStructure === "menuitem"
                 ? ["none", "menuitem", undefined] // parent has menu role
                 : roleStructure === "none"
-                ? ["none", undefined, undefined] // if wrapping in a custom `li`
+                ? ["none", undefined, undefined] // if wrapping in a custom <li>
                 : [undefined, undefined, undefined]; // roleStructure === "listitem"-- needs no role prop, li is listitem by default
 
         const target = React.createElement(
