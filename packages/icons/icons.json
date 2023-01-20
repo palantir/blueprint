@@ -3961,12 +3961,11 @@
         "group": "action",
         "codepoint": 62262
     },
-
     {
         "displayName": "Intelligence",
         "iconName": "intelligence",
         "tags": "intelligence, intel, observe, watch, capture, humint",
-        "group": "interface",
+        "group": "miscellaneous",
         "codepoint": 62263
     }
 ]
