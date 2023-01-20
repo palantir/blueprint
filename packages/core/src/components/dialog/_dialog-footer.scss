@@ -3,7 +3,10 @@
 
 .#{$ns}-dialog-footer {
   flex: 0 0 auto;
-  padding: $dialog-padding;
+  // We'd like to use padding instead of margin here to be consistent with the -dialog-footer-fixed class,
+  // but we need to keep this margin style for backwards-compatibility. This may change in a future major version.
+  // TODO(adahiya): migrate from margin to padding style (CSS breaking change)
+  margin: $dialog-padding;
 }
 
 .#{$ns}-dialog-footer-fixed {
@@ -14,6 +17,7 @@
   display: flex;
   gap: $dialog-padding;
   justify-content: space-between;
+  margin: 0;
   padding: $pt-grid-size $pt-grid-size $pt-grid-size $dialog-padding;
 
   .#{$ns}-dark & {
