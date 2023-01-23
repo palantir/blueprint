@@ -5,10 +5,10 @@ orbs:
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:16.14
+    - image: cimg/node:16.19
 
   - &docker-node-browsers-image
-    - image: cimg/node:16.14-browsers
+    - image: cimg/node:16.19-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -70,7 +70,10 @@ jobs:
       - run: yarn compile
       - persist_to_workspace:
           root: "."
-          paths: [packages/*/lib, packages/*/src/generated]
+          paths:
+            - packages/*/lib
+            - packages/*/src/generated
+            - packages/icons/src/generated-icons
 
   format-check:
     docker: *docker-node-image
@@ -193,12 +196,7 @@ jobs:
       - store_artifacts: { path: packages/landing-app/dist }
       - store_artifacts: { path: packages/table-dev-app/dist }
       - store_artifacts: { path: packages/demo-app/dist }
-      - run:
-          name: Submit Github comment with links to built artifacts
-          command: |
-            artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" -H "Accept: application/json" -u "$CIRCLE_AUTH_TOKEN:")
-            echo $artifacts > ./scripts/artifacts.json
-            node ./scripts/preview.js
+      - run: ./scripts/submit-preview-comment.sh
 
   deploy-npm:
     docker: *docker-node-image

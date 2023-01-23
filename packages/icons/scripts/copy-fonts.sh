@@ -4,7 +4,7 @@
 # Usage: copy-fonts
 #   set INPUT / OUTPUT env varibles to change directories
 
-INPUT="${INPUT:-src/generated}"
+INPUT="${INPUT:-src/generated-icons}"
 OUTPUT="${OUTPUT:-lib/css}"
 
 mkdir -p "$OUTPUT"

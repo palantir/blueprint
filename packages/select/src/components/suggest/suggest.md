@@ -1,11 +1,11 @@
 @# Suggest
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated: use [Suggest2](#select/suggest2)
 
-</h4>
+</h5>
 
 This component is **deprecated since @blueprintjs/select v4.3.0** in favor of the new
 Suggest2 component, which uses Popover2 instead of Popover under the hood.

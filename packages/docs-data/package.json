@@ -1,28 +1,28 @@
 {
     "name": "@blueprintjs/docs-data",
-    "version": "4.12.5",
+    "version": "4.14.3",
     "main": "src/index.js",
     "types": "src/index.d.ts",
     "private": true,
     "scripts": {
-        "clean": "rm -rf src/generated/*",
+        "clean": "rm -rf src/generated-icons/*",
         "compile": "node ./compile-docs-data.mjs",
         "test": "exit 0"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.13.0",
-        "@blueprintjs/docs-theme": "^4.4.20",
+        "@blueprintjs/core": "^4.14.3",
+        "@blueprintjs/docs-theme": "^4.4.24",
         "@documentalist/compiler": "^4.0.0",
         "better-handlebars": "github:wmeldon/better-handlebars",
         "glob": "^8.0.3",
         "highlights": "^3.1.6",
         "language-less": "github:atom/language-less",
-        "marked": "^4.1.1",
+        "marked": "^4.2.5",
         "semver": "^7.3.8",
         "tree-sitter-typescript": "~0.20.1"
     },
     "devDependencies": {
-        "@types/marked": "^4.0.7"
+        "@types/marked": "^4.0.8"
     },
     "repository": {
         "type": "git",

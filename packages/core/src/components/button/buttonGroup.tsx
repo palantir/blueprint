@@ -18,12 +18,13 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent2, Alignment, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, IElementRefProps, Props } from "../../common/props";
 
 // eslint-disable-next-line deprecation/deprecation
 export type ButtonGroupProps = IButtonGroupProps;
 /** @deprecated use ButtonGroupProps */
-export interface IButtonGroupProps extends Props, HTMLDivProps {
+// eslint-disable-next-line deprecation/deprecation
+export interface IButtonGroupProps extends Props, HTMLDivProps, IElementRefProps<HTMLDivElement> {
     /**
      * Text alignment within button. By default, icons and text will be centered
      * within the button. Passing `"left"` or `"right"` will align the button
@@ -76,7 +77,7 @@ export class ButtonGroup extends AbstractPureComponent2<ButtonGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;
 
     public render() {
-        const { alignText, className, fill, minimal, large, vertical, ...htmlProps } = this.props;
+        const { alignText, className, elementRef, fill, minimal, large, vertical, ...htmlProps } = this.props;
         const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,
             {
@@ -89,7 +90,7 @@ export class ButtonGroup extends AbstractPureComponent2<ButtonGroupProps> {
             className,
         );
         return (
-            <div {...htmlProps} className={buttonGroupClasses}>
+            <div {...htmlProps} className={buttonGroupClasses} ref={elementRef}>
                 {this.props.children}
             </div>
         );

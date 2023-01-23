@@ -4,10 +4,10 @@
 and a [`TimePicker`](#datetime/timepicker) into one container.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated: use [Date picker](#datetime/datepicker)
-</h4>
+</h5>
 
 This component is **deprecated since @blueprintjs/datetime v3.2.0** with the addition
 of `<DatePicker>` `timePrecision` and `timePickerProps` props to trivially

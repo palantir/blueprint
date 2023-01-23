@@ -162,7 +162,7 @@ and a `<JSONFormat2 detectTruncation={true}>` component to show the timezone inf
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
 
-<h4 class="@ns-heading">Additional CSS required</h4>
+<h5 class="@ns-heading">Additional CSS required</h5>
 
 These cell formatting components depend on @blueprintjs/popover2 styles, so you must remember to import
 that package's stylesheet in your application in addition to `table.css`:

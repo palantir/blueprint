@@ -5,11 +5,11 @@ tag: new
 @# MenuItem2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [MenuItem](#core/components/menu.menu-item)?
 
-</h4>
+</h5>
 
 MenuItem2 is a replacement for MenuItem. It uses Popover2 instead of Popover for its submenus.
 You are encouraged to migrate to MenuItem2 now in the rare case where you customize submenu layout
@@ -38,6 +38,8 @@ depending on the `role` attribute of its parent `<ul>` list:
 - `roleStructure="listoption"` is appropriate for a `<ul role="listbox">` parent, such as
     those found in Select2, Suggest2, and MultiSelect2 components. The item will render with
     `<li role="option">` and `<a>` (anchor role undefined).
+- `roleStructure="listitem"` is appropriate for a `<ul>` (no role defined) or a `<ul role="list">` parent. The
+    item will render with `<li>` and `<a>` (roles undefined).
 
 @## Selection state
 

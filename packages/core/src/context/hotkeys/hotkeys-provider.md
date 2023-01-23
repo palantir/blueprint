@@ -5,11 +5,11 @@ tag: new
 @# HotkeysProvider
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [HotkeysTarget](#core/components/hotkeys)?
 
-</h4>
+</h5>
 
 HotkeysProvider and `useHotkeys`, used together, are a replacement for HotkeysTarget.
 You are encouraged to use this new API, as it will become the standard APIs in a future major version of Blueprint.

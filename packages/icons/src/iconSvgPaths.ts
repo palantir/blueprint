@@ -16,8 +16,8 @@
 
 import { pascalCase } from "change-case";
 
-import * as IconSvgPaths16 from "./generated/16px/paths";
-import * as IconSvgPaths20 from "./generated/20px/paths";
+import * as IconSvgPaths16 from "./generated-icons/16px/paths";
+import * as IconSvgPaths20 from "./generated-icons/20px/paths";
 import type { IconName } from "./iconNames";
 import type { PascalCase } from "./type-utils";
 

@@ -16,7 +16,7 @@
 /**
  * @fileoverview Generates SVG paths used in <Icon> React components
  *
- * Important: we expect ../src/generated/ to contain SVG definitions of all the icons already before this script runs.
+ * Important: we expect ../src/generated-icons/ to contain SVG definitions of all the icons already before this script runs.
  */
 
 // @ts-check

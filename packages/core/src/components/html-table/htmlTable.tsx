@@ -26,16 +26,23 @@ export interface IHTMLTableProps
     extends React.TableHTMLAttributes<HTMLTableElement>,
         // eslint-disable-next-line deprecation/deprecation
         IElementRefProps<HTMLTableElement> {
-    /** Enables borders between rows and cells. */
+    /** Enable borders between rows and cells. */
     bordered?: boolean;
 
-    /** Use small, condensed appearance. */
+    /** Use compact appearance with less padding. */
+    compact?: boolean;
+
+    /**
+     * Use small, condensed appearance.
+     *
+     * @deprecated use `compact` instead
+     */
     condensed?: boolean;
 
-    /** Enables hover styles on row. */
+    /** Enable hover styles on rows. */
     interactive?: boolean;
 
-    /** Use an alternate background color on odd rows. */
+    /** Use an alternate background color on odd-numbered rows. */
     striped?: boolean;
 }
 
@@ -49,11 +56,13 @@ export interface IHTMLTableProps
 export class HTMLTable extends AbstractPureComponent2<HTMLTableProps> {
     public render() {
         // eslint-disable-next-line deprecation/deprecation
-        const { bordered, className, condensed, elementRef, interactive, striped, ...htmlProps } = this.props;
+        const { bordered, className, compact, condensed, elementRef, interactive, striped, ...htmlProps } = this.props;
         const classes = classNames(
             Classes.HTML_TABLE,
             {
+                [Classes.COMPACT]: compact,
                 [Classes.HTML_TABLE_BORDERED]: bordered,
+                // eslint-disable-next-line deprecation/deprecation
                 [Classes.HTML_TABLE_CONDENSED]: condensed,
                 [Classes.HTML_TABLE_STRIPED]: striped,
                 [Classes.INTERACTIVE]: interactive,

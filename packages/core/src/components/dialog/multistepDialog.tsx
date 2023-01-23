@@ -20,6 +20,7 @@ import * as React from "react";
 import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { Dialog, DialogProps } from "./dialog";
+import { DialogFooter } from "./dialogFooter";
 import { DialogStep, DialogStepId, DialogStepProps } from "./dialogStep";
 import { DialogStepButton, DialogStepButtonProps } from "./dialogStepButton";
 
@@ -216,10 +217,10 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
             <DialogStepButton text="Close" onClick={onClose} {...closeButtonProps} />
         );
         return (
-            <div className={Classes.MULTISTEP_DIALOG_FOOTER}>
+            // eslint-disable-next-line deprecation/deprecation -- need to keep adding this class for backcompat, can be removed in next major version
+            <DialogFooter className={Classes.MULTISTEP_DIALOG_FOOTER} actions={this.renderButtons()}>
                 {maybeCloseButton}
-                <div className={Classes.DIALOG_FOOTER_ACTIONS}>{this.renderButtons()}</div>
-            </div>
+            </DialogFooter>
         );
     }
 

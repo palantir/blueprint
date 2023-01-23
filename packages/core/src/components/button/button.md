@@ -1,6 +1,6 @@
 @# Button
 
-Buttons trigger actions when clicked.
+Buttons trigger actions when clicked. You may render a button as either a `<button>` or `<a>` HTML element.
 
 @reactExample ButtonsExample
 
@@ -21,10 +21,10 @@ Buttons trigger actions when clicked.
 ```
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Disabled `Button` prevents all interaction
-</h4>
+</h5>
 
 Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
 
