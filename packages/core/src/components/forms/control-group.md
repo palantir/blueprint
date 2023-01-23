@@ -5,7 +5,7 @@ between elements. It supports any number of buttons, text inputs, input groups, 
 inputs, and HTML selects as direct children.
 
 <div class="@ns-callout @ns-intent-success @ns-icon-comparison">
-    <h4 class="@ns-heading">Control group vs. input group</h4>
+    <h5 class="@ns-heading">Control group vs. input group</h5>
 
 Both components group multiple elements into a single unit, but their usage patterns are
 quite different.

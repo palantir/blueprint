@@ -57,7 +57,7 @@ const ColorSwatch: React.FC<{ colorName: string; hexCode: string }> = ({ colorNa
     };
     return (
         <ClickToCopy className="docs-color-swatch" style={style} value={hexCode}>
-            <div className="docs-color-swatch-trigger docs-clipboard-message" data-message={`@${colorName}`}>
+            <div className="docs-color-swatch-trigger docs-clipboard-message" data-message={`$${colorName}`}>
                 <span>{hexCode}</span>
             </div>
         </ClickToCopy>

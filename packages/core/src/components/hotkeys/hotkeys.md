@@ -1,11 +1,11 @@
 @# Hotkeys
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated: use [useHotkeys](#core/hooks/use-hotkeys)
 
-</h4>
+</h5>
 
 This API is **deprecated since @blueprintjs/core v3.39.0** in favor of the new
 [`useHotkeys` hook](#core/hooks/use-hotkeys) and

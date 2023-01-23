@@ -3,7 +3,7 @@
 Dialogs present content overlaid over other parts of the UI.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Terminology note</h4>
+    <h5 class="@ns-heading">Terminology note</h5>
 
 The term "modal" is sometimes used to mean "dialog," but this is a misnomer.
 _Modal_ is an adjective that describes parts of a UI.
@@ -74,22 +74,19 @@ More examples of dialog content are shown below.
 
 @### Multistep dialog props
 
-`MultistepDialog` is a wrapper around `Dialog` that displays a dialog with multiple steps, each of which maps to a specific panel.
+`MultistepDialog` is a wrapper around `Dialog` that displays a dialog with multiple steps
+Each step has a corresponding panel.
 
-The children you provide to this component are rendered as contents inside the
-`Classes.DIALOG` element. Typically, you will want to render a panel with
-`Classes.DIALOG_BODY` that contains the body content for each step.
-
-Children of the `MultistepDialog` are filtered down to only `DialogStep` components and rendered in order.
-`DialogStep` children are managed by the component; clicking one will change selection.
+This component expects `DialogStep` children: each "step" is rendered in order
+and its panel is shown as the dialog body content when the corresponding step is selected
+in the navigation panel.
 
 @interface IMultistepDialogProps
 
 @### DialogStep
 
 `DialogStep` is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
-parent `MultistepDialog` wrapper. `DialogStep` title text can be set via the `title` prop.
-
-The associated step panel will be visible when the `DialogStep` is selected.
+parent `MultistepDialog` wrapper. Typically, you should render a `<DialogBody>` element as the `panel`
+element. A step's title text can be set via the `title` prop.
 
 @interface IDialogStepProps

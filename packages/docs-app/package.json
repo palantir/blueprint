@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-app",
-    "version": "4.14.1",
+    "version": "4.14.3",
     "description": "Blueprint Documentation Site",
     "private": true,
     "scripts": {
@@ -16,17 +16,17 @@
         "verify": "run-p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.14.1",
-        "@blueprintjs/datetime": "^4.4.10",
-        "@blueprintjs/datetime2": "^0.9.8",
-        "@blueprintjs/docs-data": "^4.14.1",
-        "@blueprintjs/docs-theme": "^4.4.22",
-        "@blueprintjs/icons": "^4.12.1",
-        "@blueprintjs/popover2": "^1.11.1",
-        "@blueprintjs/select": "^4.8.14",
-        "@blueprintjs/table": "^4.7.12",
-        "@blueprintjs/test-commons": "^1.1.5",
-        "@blueprintjs/timezone": "^4.5.14",
+        "@blueprintjs/core": "^4.14.3",
+        "@blueprintjs/datetime": "^4.4.12",
+        "@blueprintjs/datetime2": "^0.9.10",
+        "@blueprintjs/docs-data": "^4.14.3",
+        "@blueprintjs/docs-theme": "^4.4.24",
+        "@blueprintjs/icons": "^4.12.2",
+        "@blueprintjs/popover2": "^1.11.3",
+        "@blueprintjs/select": "^4.8.16",
+        "@blueprintjs/table": "^4.7.14",
+        "@blueprintjs/test-commons": "^1.1.6",
+        "@blueprintjs/timezone": "^4.5.16",
         "@documentalist/client": "^4.0.0",
         "chroma-js": "^2.4.2",
         "classnames": "^2.3.1",
@@ -46,8 +46,8 @@
         "whatwg-fetch": "^3.4.1"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^6.0.3",
-        "@blueprintjs/webpack-build-scripts": "^4.1.0",
+        "@blueprintjs/node-build-scripts": "^6.0.4",
+        "@blueprintjs/webpack-build-scripts": "^4.1.1",
         "@types/chroma-js": "~2.1.4",
         "@types/downloadjs": "~1.4.3",
         "@types/lodash": "~4.14.188",
