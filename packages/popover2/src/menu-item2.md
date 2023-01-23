@@ -40,6 +40,8 @@ depending on the `role` attribute of its parent `<ul>` list:
     `<li role="option">` and `<a>` (anchor role undefined).
 - `roleStructure="listitem"` is appropriate for a `<ul>` (no role defined) or a `<ul role="list">` parent. The
     item will render with `<li>` and `<a>` (roles undefined).
+- `roleStructure="none"` is useful when wrapping in a custom `<li>`. The
+    item will render with `<li role="none">` and `<a>` (roles undefined).
 
 @## Selection state
 
