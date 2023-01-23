@@ -33,6 +33,8 @@ export {
     IPopover2TargetProps,
     Popover2SharedProps,
     Popover2TargetProps,
+    Popover2ClickTargetHandlers,
+    Popover2HoverTargetHandlers,
     PopperBoundary,
     PopperModifierOverrides,
     PopperCustomModifer,

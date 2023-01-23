@@ -73,18 +73,16 @@ export interface IPopover2TargetProps
 /**
  * Event handlers injected by Popover2 for hover interaction popovers.
  */
-export type Popover2HoverTargetHandlers<TProps extends DefaultPopover2TargetHTMLProps> = Pick<
-    TProps,
-    "onBlur" | "onContextMenu" | "onFocus" | "onMouseEnter" | "onMouseLeave"
->;
+export type Popover2HoverTargetHandlers<
+    TProps extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps,
+> = Pick<TProps, "onBlur" | "onContextMenu" | "onFocus" | "onMouseEnter" | "onMouseLeave">;
 
 /**
  * Event handlers injected by Popover2 for click interaction popovers.
  */
-export type Popover2ClickTargetHandlers<TProps extends DefaultPopover2TargetHTMLProps> = Pick<
-    TProps,
-    "onClick" | "onKeyDown"
->;
+export type Popover2ClickTargetHandlers<
+    TProps extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps,
+> = Pick<TProps, "onClick" | "onKeyDown">;
 
 // eslint-disable-next-line deprecation/deprecation
 export type Popover2SharedProps<T extends DefaultPopover2TargetHTMLProps> = IPopover2SharedProps<T>;
