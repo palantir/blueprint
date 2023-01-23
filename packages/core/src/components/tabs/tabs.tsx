@@ -100,6 +100,11 @@ export interface ITabsState {
     selectedTabId?: TabId;
 }
 
+/**
+ * Tabs component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tabs
+ */
 export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;

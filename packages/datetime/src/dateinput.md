@@ -1,11 +1,11 @@
 @# Date input
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated: use [DateInput2](#datetime2/date-input2)
 
-</h4>
+</h5>
 
 This component is **deprecated since @blueprintjs/datetime v4.4.5** in favor of the new
 DateInput2 component available in the `@blueprintjs/datetime2` package, which uses

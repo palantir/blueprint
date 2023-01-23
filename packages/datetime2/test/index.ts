@@ -7,7 +7,9 @@ import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 // tslint:enable no-submodule-imports
+
 import "../lib/css/blueprint-datetime2.css";
+import "./test-debugging-styles.scss";
 
 import "@blueprintjs/test-commons/bootstrap";
 

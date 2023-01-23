@@ -69,7 +69,12 @@ export interface IDateTimePickerState {
     timeValue?: Date;
 }
 
-/** @deprecated since 3.4.0. Prefer `<DatePicker>` with `timePrecision` and `timePickerProps`. */
+/**
+ * Date time picker component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime/datetimepicker
+ * @deprecated since 3.4.0. Prefer `<DatePicker>` with `timePrecision` and `timePickerProps`.
+ */
 export class DateTimePicker extends AbstractPureComponent2<IDateTimePickerProps, IDateTimePickerState> {
     public static defaultProps: IDateTimePickerProps = {
         canClearSelection: true,

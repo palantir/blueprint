@@ -56,6 +56,11 @@ export interface ITextAreaState {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
+/**
+ * Text area component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/text-inputs.text-area
+ */
 export class TextArea extends AbstractPureComponent2<TextAreaProps, ITextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 

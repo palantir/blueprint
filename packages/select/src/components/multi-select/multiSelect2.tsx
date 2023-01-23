@@ -121,6 +121,11 @@ export interface MultiSelect2State {
     isOpen: boolean;
 }
 
+/**
+ * Multi select (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#select/multi-select2
+ */
 export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>, MultiSelect2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect2`;
 

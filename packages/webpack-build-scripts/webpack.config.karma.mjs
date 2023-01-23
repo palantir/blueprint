@@ -58,6 +58,11 @@ export default {
                 },
             },
             {
+                // allow some custom styles to be written for tests (sometimes just for debugging purposes)
+                test: /\.scss$/,
+                use: [require.resolve("style-loader"), require.resolve("css-loader"), require.resolve("sass-loader")],
+            },
+            {
                 test: /\.(eot|ttf|woff|woff2|svg|png)$/,
                 type: "asset/resource",
                 generator: {

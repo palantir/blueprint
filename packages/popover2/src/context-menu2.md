@@ -1,11 +1,11 @@
 @# ContextMenu2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [ContextMenu](#core/components/context-menu)?
 
-</h4>
+</h5>
 
 ContextMenu2 is a replacement for ContextMenu + ContextMenuTarget. It will become the standard
 context menu API in Blueprint core v5. You are encouraged to use this new API now to ease the

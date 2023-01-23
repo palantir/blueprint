@@ -23,6 +23,11 @@ import { KeyCombo } from "./keyCombo";
 
 export type IHotkeyProps = Props & HotkeyConfig;
 
+/**
+ * Hotkey component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/hotkeys
+ */
 export class Hotkey extends AbstractPureComponent2<IHotkeyProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkey`;
 

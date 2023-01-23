@@ -119,6 +119,11 @@ export enum AnimationStates {
     CLOSED,
 }
 
+/**
+ * Collapse component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/collapse
+ */
 export class Collapse extends AbstractPureComponent2<CollapseProps, ICollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 

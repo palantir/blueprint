@@ -194,6 +194,11 @@ const NON_HTML_PROPS: Array<keyof NumericInputProps> = [
 
 type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<Element>, "onKeyDown" | "onMouseDown">>;
 
+/**
+ * Numeric input component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/numeric-input
+ */
 export class NumericInput extends AbstractPureComponent2<HTMLInputProps & NumericInputProps, INumericInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 

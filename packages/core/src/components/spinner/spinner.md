@@ -22,7 +22,7 @@ by including `Classes.SMALL` or `Classes.LARGE` in `className` instead of the
 `size` prop (this prevents an API break when upgrading to 3.x).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">IE11 compatibility note</h4>
+    <h5 class="@ns-heading">IE11 compatibility note</h5>
 
 IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known
 `value` will not smoothly transition as `value` changes. Indeterminate spinners still animate

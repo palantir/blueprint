@@ -129,7 +129,7 @@ export interface IPopover2State {
 }
 
 /**
- * Component to display a floating UI next to and tethered to a target element.
+ * Popover (v2) component, used to display a floating UI next to and tethered to a target element.
  *
  * @template T target element props interface. Note that we cannot assign a default value for this type param because it
  * makes the type of the props supplied to `renderTarget()` cumbersome to work with when that API is used. Consumers

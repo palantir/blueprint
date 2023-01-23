@@ -21,7 +21,7 @@ function handleResize(entries: IResizeEntry[]) {
 @## Props
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Asynchronous behavior</h4>
+    <h5 class="@ns-heading">Asynchronous behavior</h5>
 
 The `onResize` callback is invoked asynchronously after a resize is detected
 and typically happens at the end of a frame (after layout, before paint).

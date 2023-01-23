@@ -180,6 +180,11 @@ const INVALID_DATE = new Date(undefined!);
 const DEFAULT_MAX_DATE = DatePickerUtils.getDefaultMaxDate();
 const DEFAULT_MIN_DATE = DatePickerUtils.getDefaultMinDate();
 
+/**
+ * Date input (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime2/date-input2
+ */
 export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateInput2(props) {
     const {
         defaultTimezone,

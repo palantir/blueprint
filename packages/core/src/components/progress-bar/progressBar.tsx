@@ -47,6 +47,11 @@ export interface IProgressBarProps extends Props, IntentProps {
     value?: number;
 }
 
+/**
+ * Progress bar component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/progress-bar
+ */
 export class ProgressBar extends AbstractPureComponent2<ProgressBarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ProgressBar`;
 

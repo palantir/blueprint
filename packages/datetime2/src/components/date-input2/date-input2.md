@@ -5,11 +5,11 @@ tag: new
 @# DateInput2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [DateInput](#datetime/dateinput)?
 
-</h4>
+</h5>
 
 DateInput2 is a replacement for DateInput and will replace it in Blueprint v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.

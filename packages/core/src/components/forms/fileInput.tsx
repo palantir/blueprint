@@ -84,6 +84,11 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
 
 // this is a simple component, unit tests would be mostly tautological
 /* istanbul ignore next */
+/**
+ * File input component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/file-input
+ */
 export class FileInput extends AbstractPureComponent2<FileInputProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 

@@ -116,18 +116,16 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             checkClickTriggeredOnKeyUp(done, {}, { which: Keys.SPACE });
         });
 
-        if (typeof React.createRef !== "undefined") {
-            it("matches buttonRef with elementRef.current using createRef", done => {
-                const elementRef = React.createRef<HTMLButtonElement>();
-                const wrapper = button({ elementRef }, true);
+        it("matches buttonRef with elementRef.current using createRef", done => {
+            const elementRef = React.createRef<HTMLButtonElement>();
+            const wrapper = button({ elementRef }, true);
 
-                // wait for the whole lifecycle to run
-                setTimeout(() => {
-                    assert.equal(elementRef.current, (wrapper.instance() as any).buttonRef);
-                    done();
-                }, 0);
-            });
-        }
+            // wait for the whole lifecycle to run
+            setTimeout(() => {
+                assert.equal(elementRef.current, (wrapper.instance() as any).buttonRef);
+                done();
+            }, 0);
+        });
 
         it("matches buttonRef with elementRef using callback", done => {
             let elementRef: HTMLElement | null = null;
