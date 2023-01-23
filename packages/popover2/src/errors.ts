@@ -27,5 +27,4 @@ export const POPOVER2_WARN_PLACEMENT_AND_POSITION_MUTEX =
     ns + ` <Popover2> supports either placement or position prop, not both.`;
 export const POPOVER2_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover2> onInteraction is ignored when uncontrolled.`;
 export const POPOVER2_WARN_TARGET_PROPS_WITH_RENDER_TARGET =
-    ns +
-    ` <Popover2> targetProps applied to renderTarget, but best practice to apply props directly in the renderTarget`;
+    ns + ` <Popover2> targetProps value is ignored when renderTarget API is used.`;

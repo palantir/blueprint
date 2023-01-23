@@ -61,7 +61,8 @@ export type Popover2TargetProps = IPopover2TargetProps;
 /**
  * @deprecated use Popover2TargetProps
  */
-export interface IPopover2TargetProps {
+export interface IPopover2TargetProps
+    extends Pick<React.HTMLAttributes<HTMLElement>, "aria-haspopup" | "className" | "tabIndex"> {
     /** Target ref. */
     ref: React.Ref<any>;
 
@@ -69,8 +70,24 @@ export interface IPopover2TargetProps {
     isOpen: boolean;
 }
 
+/**
+ * Event handlers injected by Popover2 for hover interaction popovers.
+ */
+export type Popover2HoverTargetHandlers<TProps extends DefaultPopover2TargetHTMLProps> = Pick<
+    TProps,
+    "onBlur" | "onContextMenu" | "onFocus" | "onMouseEnter" | "onMouseLeave"
+>;
+
+/**
+ * Event handlers injected by Popover2 for click interaction popovers.
+ */
+export type Popover2ClickTargetHandlers<TProps extends DefaultPopover2TargetHTMLProps> = Pick<
+    TProps,
+    "onClick" | "onKeyDown"
+>;
+
 // eslint-disable-next-line deprecation/deprecation
-export type Popover2SharedProps<T> = IPopover2SharedProps<T>;
+export type Popover2SharedProps<T extends DefaultPopover2TargetHTMLProps> = IPopover2SharedProps<T>;
 /**
  * Props shared between `Popover2` and `Tooltip2`.
  *
@@ -78,7 +95,7 @@ export type Popover2SharedProps<T> = IPopover2SharedProps<T>;
  *                  defaults to props for HTMLElement in IPopover2Props and ITooltip2Props
  * @deprecated use Popover2SharedProps
  */
-export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
+export interface IPopover2SharedProps<TProps extends DefaultPopover2TargetHTMLProps> extends OverlayableProps, Props {
     /** Interactive element which will trigger the popover. */
     children?: React.ReactNode;
 
@@ -223,7 +240,9 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
      *
      * Mutually exclusive with `children` and `targetTagName` props.
      */
-    renderTarget?: (props: Popover2TargetProps & TProps) => JSX.Element;
+    renderTarget?: (
+        props: Popover2TargetProps & (Popover2HoverTargetHandlers<TProps> | Popover2ClickTargetHandlers<TProps>),
+    ) => JSX.Element;
 
     /**
      * A root boundary element supplied to the "flip" and "preventOverflow" modifiers.
@@ -284,10 +303,11 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
     targetTagName?: keyof JSX.IntrinsicElements;
 
     /**
-     * HTML props for the target element.
+     * HTML props for the target element. This is useful in some cases where you
+     * need to render some simple attributes on the generated target element.
      *
-     * This prop will be applied with `renderTarget` API, but a warning will be
-     * given, as it is best practice to apply the props directly in the `renderTarget`
+     * For more complex use cases, consider using the `renderTarget` API instead.
+     * This prop will be ignored if `renderTarget` is used.
      */
     targetProps?: TProps;
 
