@@ -192,6 +192,7 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
             className,
             disabled,
             fill,
+            inputClassName,
             inputRef,
             intent,
             large,
@@ -221,7 +222,7 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
         const inputProps = {
             type: "text",
             ...removeNonHTMLProps(this.props),
-            className: Classes.INPUT,
+            className: classNames(Classes.INPUT, inputClassName),
             style,
         };
         const inputElement = asyncControl ? (
