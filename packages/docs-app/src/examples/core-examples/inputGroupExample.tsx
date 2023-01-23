@@ -45,9 +45,9 @@ export interface IInputGroupExampleState {
 export class InputGroupExample extends React.PureComponent<ExampleProps, IInputGroupExampleState> {
     public state: IInputGroupExampleState = {
         disabled: false,
-        readOnly: false,
         filterValue: "",
         large: false,
+        readOnly: false,
         showPassword: false,
         small: false,
         tagValue: "",

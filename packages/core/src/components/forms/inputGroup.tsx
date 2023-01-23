@@ -57,7 +57,8 @@ export interface IInputGroupProps
     asyncControl?: boolean;
 
     /**
-     * Whether the input is disabled
+     * Whether the input is disabled.
+     *
      * Note that `rightElement` must be disabled separately; this prop will not affect it.
      *
      * @default false
@@ -73,8 +74,8 @@ export interface IInputGroupProps
     inputRef?: React.Ref<HTMLInputElement>;
 
     /**
-     * Element to render on the left side of input.  This prop is mutually exclusive
-     * with `leftIcon`.
+     * Element to render on the left side of input.
+     * This prop is mutually exclusive with `leftIcon`.
      */
     leftElement?: JSX.Element;
 
@@ -95,8 +96,10 @@ export interface IInputGroupProps
     placeholder?: string;
 
     /**
-     * Whether the input is read-only
-     * Note that `rightElement` must be disabled separately; this prop will not affect it.
+     * Whether the input is read-only.
+     *
+     * Note that `rightElement` must be disabled or made read-only separately;
+     * this prop will not affect it.
      *
      * @default false
      */
