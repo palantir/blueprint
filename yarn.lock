@@ -5715,10 +5715,10 @@ fork-ts-checker-notifier-webpack-plugin@^6.0.0:
   dependencies:
     node-notifier "^8.0.2"
 
-fork-ts-checker-webpack-plugin@^7.2.13:
-  version "7.2.13"
-  resolved "https://registry.yarnpkg.com/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-7.2.13.tgz#51ffd6a2f96f03ab64b92f8aedf305dbf3dee0f1"
-  integrity sha512-fR3WRkOb4bQdWB/y7ssDUlVdrclvwtyCUIHCfivAoYxq9dF7XfrDKbMdZIfwJ7hxIAqkYSGeU7lLJE6xrxIBdg==
+fork-ts-checker-webpack-plugin@^7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-7.3.0.tgz#a9c984a018493962360d7c7e77a67b44a2d5f3aa"
+  integrity sha512-IN+XTzusCjR5VgntYFgxbxVx3WraPRnKehBFrf00cMSrtUuW9MsG9dhL6MWpY6MkjC3wVwoujfCDgZZCQwbswA==
   dependencies:
     "@babel/code-frame" "^7.16.7"
     chalk "^4.1.2"
