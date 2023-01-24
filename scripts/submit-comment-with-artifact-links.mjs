@@ -6,19 +6,24 @@
 // @ts-check
 /* eslint-disable camelcase */
 
-/**
- * @fileoverview Submits a comment to the change PR or commit with links to CI job artifacts
- * that show the results of the code changes being applied.
- */
+// Submits a comment to the change PR or commit with links to artifacts that
+// show the results of the code change being applied.
 
 import dedent from "dedent";
 import { execSync } from "node:child_process";
 import { basename } from "node:path";
 import { Octokit } from "octokit";
 
-if (process.env.CIRCLE_BUILD_URL === undefined) {
+import { loadJsonFile } from "./utils.mjs";
+
+/**
+ * @type {Array<{path: string; url: string;}>}
+ */
+const artifacts = loadJsonFile("./artifacts.json").items;
+
+if (artifacts === undefined) {
     throw new Error(
-        `This script must be run in a CircleCI job with the the $CIRCLE_BUILD_URL environment variable present.`,
+        "Unable to read artifacts.json, please make sure the CircleCI API call succeeded with the necessary personal access token.",
     );
 }
 
@@ -29,8 +34,9 @@ const ARTIFACTS = {
     demo: "packages/demo-app/dist/index.html",
 };
 
-function getArtifactLink(pkg) {
-    return `${process.env.CIRCLE_BUILD_URL}/artifacts/0/${ARTIFACTS[pkg]}`;
+function getArtifactAnchorLink(pkg) {
+    const artifactInfo = artifacts.find(a => a.path === ARTIFACTS[pkg]);
+    return `<a href="${artifactInfo?.url}">${pkg}</a>`;
 }
 
 if (process.env.GITHUB_API_TOKEN) {
@@ -39,9 +45,7 @@ if (process.env.GITHUB_API_TOKEN) {
     // See https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token
     const octokit = new Octokit({ auth: process.env.GITHUB_API_TOKEN });
 
-    const artifactLinks = Object.keys(ARTIFACTS)
-        .map(pkg => `<a href="${getArtifactLink(pkg)}">${pkg}</a>`)
-        .join(" | ");
+    const artifactLinks = Object.keys(ARTIFACTS).map(getArtifactAnchorLink).join(" | ");
     const currentGitCommitMessage = execSync('git --no-pager log --pretty=format:"%s" -1')
         .toString()
         .trim()
@@ -78,7 +82,5 @@ if (process.env.GITHUB_API_TOKEN) {
     console.warn(
         "No Github API token available, so we cannot post a preview comment on this build's PR. This is expected on forks which have enabled CircleCI building.",
     );
-    Object.keys(ARTIFACTS).forEach(pkg => {
-        console.info(`${ARTIFACTS[pkg]}: ${getArtifactLink(pkg)}`);
-    });
+    Object.keys(ARTIFACTS).forEach(pkg => console.info(`${ARTIFACTS[pkg]}: ${getArtifactAnchorLink(pkg)}`));
 }

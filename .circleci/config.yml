@@ -196,7 +196,7 @@ jobs:
       - store_artifacts: { path: packages/landing-app/dist }
       - store_artifacts: { path: packages/table-dev-app/dist }
       - store_artifacts: { path: packages/demo-app/dist }
-      - run: node ./scripts/submit-preview-comment.mjs
+      - run: ./scripts/submit-preview-comment.sh
 
   deploy-npm:
     docker: *docker-node-image
