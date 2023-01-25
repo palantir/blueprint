@@ -3960,5 +3960,12 @@
         "tags": "circle, cross mark, fail, delete, no, close, remove, not, available, unavailable, wrong, incorrect, cancel",
         "group": "action",
         "codepoint": 62262
+    },
+    {
+        "displayName": "Intelligence",
+        "iconName": "intelligence",
+        "tags": "intelligence, intel, observe, watch, capture, humint",
+        "group": "miscellaneous",
+        "codepoint": 62263
     }
 ]

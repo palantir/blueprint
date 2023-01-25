@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/webpack-build-scripts",
-    "version": "4.1.0",
+    "version": "4.1.2",
     "description": "Webpack build scripts for @blueprintjs packages",
     "type": "module",
     "main": "index.mjs",
@@ -14,7 +14,7 @@
         "css-loader": "^6.7.2",
         "cssnano": "^5.1.14",
         "fork-ts-checker-notifier-webpack-plugin": "^6.0.0",
-        "fork-ts-checker-webpack-plugin": "^7.2.13",
+        "fork-ts-checker-webpack-plugin": "^7.3.0",
         "mini-css-extract-plugin": "^2.6.1",
         "postcss": "^8.4.21",
         "postcss-discard-comments": "^5.1.2",

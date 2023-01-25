@@ -160,6 +160,7 @@ const INVALID_PROPS = [
     "elementRef",
     "fill",
     "icon",
+    "inputClassName",
     "inputRef",
     "intent",
     "inline",

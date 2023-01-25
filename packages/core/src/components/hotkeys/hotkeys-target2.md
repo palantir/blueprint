@@ -5,11 +5,11 @@ tag: new
 @# HotkeysTarget2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [HotkeysTarget](#core/components/hotkeys)?
 
-</h4>
+</h5>
 
 HotkeysTarget2 is a replacement for HotkeysTarget. You are encouraged to use this new API, or
 the `useHotkeys` hook directly in your function components, as they will become the standard

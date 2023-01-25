@@ -5,11 +5,11 @@ tag: new
 @# Select2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [Select](#select/select-component)?
 
-</h4>
+</h5>
 
 Select2 is a replacement for Select and will replace it in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
@@ -171,7 +171,7 @@ in the list, based on the current query string. Use `createNewItemFromQuery` and
     will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
-    <h4 class="@ns-heading">Avoiding type conflicts</h4>
+    <h5 class="@ns-heading">Avoiding type conflicts</h5>
 
 The "Create Item" option is represented by the reserved type `CreateNewItem`
 exported from this package. It is exceedingly unlikely but technically possible

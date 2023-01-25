@@ -57,7 +57,8 @@ export interface IInputGroupProps
     asyncControl?: boolean;
 
     /**
-     * Whether the input is non-interactive.
+     * Whether the input is disabled.
+     *
      * Note that `rightElement` must be disabled separately; this prop will not affect it.
      *
      * @default false
@@ -73,8 +74,8 @@ export interface IInputGroupProps
     inputRef?: React.Ref<HTMLInputElement>;
 
     /**
-     * Element to render on the left side of input.  This prop is mutually exclusive
-     * with `leftIcon`.
+     * Element to render on the left side of input.
+     * This prop is mutually exclusive with `leftIcon`.
      */
     leftElement?: JSX.Element;
 
@@ -93,6 +94,16 @@ export interface IInputGroupProps
 
     /** Placeholder text in the absence of any value. */
     placeholder?: string;
+
+    /**
+     * Whether the input is read-only.
+     *
+     * Note that `rightElement` must be disabled or made read-only separately;
+     * this prop will not affect it.
+     *
+     * @default false
+     */
+    readOnly?: boolean;
 
     /**
      * Element to render on right side of input.
@@ -181,9 +192,11 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
             className,
             disabled,
             fill,
+            inputClassName,
             inputRef,
             intent,
             large,
+            readOnly,
             round,
             small,
             tagName = "div",
@@ -193,6 +206,7 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: disabled,
+                [Classes.READ_ONLY]: readOnly,
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
                 [Classes.SMALL]: small,
@@ -208,7 +222,7 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
         const inputProps = {
             type: "text",
             ...removeNonHTMLProps(this.props),
-            className: Classes.INPUT,
+            className: classNames(Classes.INPUT, inputClassName),
             style,
         };
         const inputElement = asyncControl ? (

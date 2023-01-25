@@ -94,18 +94,25 @@ export interface MenuItem2Props extends ActionProps, LinkProps, IElementRefProps
      * `<li role="option"`
      *     `<a role=undefined`
      *
-     *  which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
+     * which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
      *
      * If `listitem`, role structure becomes:
      *
      * `<li role=undefined`
      *     `<a role=undefined`
      *
-     *  which can be used if this item is within a basic `<ul/>` (or `role="list"`) parent.
+     * which can be used if this item is within a basic `<ul/>` (or `role="list"`) parent.
+     *
+     * If `none`, role structure becomes:
+     *
+     * `<li role="none"`
+     *     `<a role=undefined`
+     *
+     * which can be used if wrapping this item in a custom `<li>` parent.
      *
      * @default "menuitem"
      */
-    roleStructure?: "menuitem" | "listoption" | "listitem";
+    roleStructure?: "menuitem" | "listoption" | "listitem" | "none";
 
     /**
      * Whether the text should be allowed to wrap to multiple lines.
@@ -215,6 +222,13 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
                 ? [
                       "none",
                       "menuitem",
+                      this.props.icon,
+                      undefined, // don't set aria-selected prop
+                  ]
+                : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
+                ? [
+                      "none",
+                      undefined, // target should have no role
                       this.props.icon,
                       undefined, // don't set aria-selected prop
                   ]

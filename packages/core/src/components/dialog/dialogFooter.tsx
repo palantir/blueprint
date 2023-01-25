@@ -65,20 +65,18 @@ export class DialogFooter extends AbstractPureComponent2<DialogFooterProps> {
                 })}
                 role="dialogfooter"
             >
-                {this.maybeRenderLeftSection()}
+                {this.renderMainSection()}
                 {this.maybeRenderActionsSection()}
             </div>
         );
     }
 
-    private maybeRenderLeftSection() {
-        const { children } = this.props;
-        if (children == null) {
-            return undefined;
-        }
-        return <div className={Classes.DIALOG_FOOTER_LEFT_SECTION}>{children}</div>;
+    /** Render the main footer section (left aligned). */
+    private renderMainSection() {
+        return <div className={Classes.DIALOG_FOOTER_MAIN_SECTION}>{this.props.children}</div>;
     }
 
+    /** Optionally render the footer actions (right aligned). */
     private maybeRenderActionsSection() {
         const { actions } = this.props;
         if (actions == null) {

@@ -36,6 +36,7 @@ describe("<MultistepDialog>", () => {
             Classes.MULTISTEP_DIALOG_PANELS,
             Classes.MULTISTEP_DIALOG_LEFT_PANEL,
             Classes.MULTISTEP_DIALOG_RIGHT_PANEL,
+            // eslint-disable-next-line deprecation/deprecation -- need to keep adding this class for backcompat, can be removed in next major version
             Classes.MULTISTEP_DIALOG_FOOTER,
             Classes.DIALOG_STEP,
             Classes.DIALOG_STEP_CONTAINER,

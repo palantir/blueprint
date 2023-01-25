@@ -37,6 +37,11 @@ export interface InputSharedProps extends IntentProps, Props {
     fill?: boolean;
 
     /**
+     * Class name to apply to the `<input>` element (not the InputGroup container).
+     */
+    inputClassName?: string;
+
+    /**
      * Ref attached to the HTML `<input>` element backing this component.
      */
     inputRef?: React.Ref<HTMLInputElement>;

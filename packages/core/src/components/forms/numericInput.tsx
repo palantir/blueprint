@@ -438,6 +438,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                 aria-valuemin={this.props.min}
                 aria-valuenow={valueAsNumber}
                 intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
+                inputClassName={this.props.inputClassName}
                 inputRef={this.inputRef}
                 large={this.props.large}
                 leftElement={this.props.leftElement}

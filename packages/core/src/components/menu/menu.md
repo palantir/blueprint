@@ -91,11 +91,11 @@ there is not enough room to the right.
 ```
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated prop `popoverProps`: use [MenuItem2](#popover2-package/menu-item2)
 
-</h4>
+</h5>
 
 Usage of `<MenuItem popoverProps={...}>` is **deprecated since @blueprintjs/core v4.7.0**
 in favor of the new MenuItem2 component, which uses Popover2 instead of Popover under the hood.
