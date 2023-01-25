@@ -10,7 +10,7 @@ indeterminate states.
 Use the `checked` prop instead of `value` in controlled mode to avoid typings
 issues. Enable the `indeterminate` prop for a third in-between state.
 
-```tsx
+```jsx
 // simple usage for string labels
 <Checkbox checked={this.state.isEnabled} label="Enabled" onChange={this.handleEnabledChange} />
 

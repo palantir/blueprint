@@ -89,7 +89,8 @@ Your application can contain several `Toaster` instances and easily share them a
 The following code samples demonstrate our preferred pattern for intergrating a toaster into a React application:
 
 #### `toaster.ts`
-```tsx
+
+```ts
 import { Position, Toaster } from "@blueprintjs/core";
 
 /** Singleton toaster instance. Create separate instances for different options. */
@@ -99,7 +100,8 @@ export const AppToaster = Toaster.create({
 });
 ```
 
-#### `application.ts`
+#### `application.tsx`
+
 ```tsx
 import { Button } from "@blueprintjs/core";
 import * as React from "react";

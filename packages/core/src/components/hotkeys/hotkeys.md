@@ -79,7 +79,7 @@ make sure to implement the `renderHotkeys` method.
 
 Wrap your `Hotkey`s in the `Hotkeys` element. For example:
 
-```tsx
+```jsx
 <Hotkeys>
     <Hotkey label="Quit" combo="ctrl+q" global onKeyDown={handleQuit} />
     <Hotkey label="Save" combo="ctrl+s" group="File" onKeyDown={handleSave} />

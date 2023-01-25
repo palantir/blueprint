@@ -11,7 +11,7 @@ They also support additional helper text to aid with user navigation.
 This component is a lightweight wrapper around its children with props for the
 label above and helper text below.
 
-```tsx
+```jsx
 <FormGroup
     helperText="Helper text with details..."
     label="Label A"

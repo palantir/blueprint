@@ -16,7 +16,7 @@ The `Classes.ELEVATION_*` constants can be used on any element (not just a
 
 This component is a simple stateless container for its children.
 
-```tsx
+```jsx
 import { Button, Card, Elevation } from "@blueprintjs/core";
 
 <Card interactive={true} elevation={Elevation.TWO}>

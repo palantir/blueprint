@@ -46,7 +46,7 @@ on child buttons (due to the cascading nature of CSS).
 
 The component also supports all HTML `<div>` props.
 
-```tsx
+```jsx
 <ButtonGroup minimal={true} onMouseEnter={...}>
     <Button icon="database">Queries</Button>
     <Button icon="function">Functions</Button>

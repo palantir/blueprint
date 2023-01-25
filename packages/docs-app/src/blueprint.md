@@ -38,7 +38,7 @@ All have peer dependencies on **react** and **react-dom**, so these two packages
 
 Import React components from the appropriate package.
 
-```tsx
+```jsx
 import { Button } from "@blueprintjs/core";
 
 <Button intent="success" text="button content" onClick={incrementCounter} />

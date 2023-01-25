@@ -127,8 +127,11 @@ component with support for mathematical expressions as follows:
 import { NumericInput } from "@blueprintjs/core";
 import * as SomeLibrary from "some-library";
 
-export class NumericInputExample extends React.Component<{}, { value?: number |
-string }> {
+interface NumericInputExampleState = {
+    value?: number | string;
+}
+
+class NumericInputExample extends React.Component<{}, NumericInputExampleState> {
     public state = { value: NumericInput.VALUE_EMPTY };
 
     public render() {

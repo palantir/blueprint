@@ -32,7 +32,7 @@ Also, you must take to either set `<Popover2 shouldReturnFocusOnClose={false}>`
 or `<Tooltip2 openOnTargetFocus={false}>` in this scenario in order to avoid undesirable
 UX where the tooltip could open automatically when a user doesn't want it to.
 
-```tsx
+```jsx
 import { Button, mergeRefs } from "@blueprintjs/core";
 import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 

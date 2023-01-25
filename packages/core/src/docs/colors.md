@@ -53,7 +53,7 @@ Blueprint provides variables for colors in Sass, Less, and JavaScript.
 
 Example in Sass:
 
-```css.scss
+```scss
 @import "~@blueprintjs/core/lib/scss/variables";
 
 .rule {
@@ -64,7 +64,7 @@ Example in Sass:
 
 Example in Less:
 
-```css.less
+```less
 @import "~@blueprintjs/core/lib/less/variables";
 
 .rule {
@@ -76,7 +76,7 @@ Example in Less:
 Hex values for these colors can be accessed in JavaScript through the `Colors` export.
 Note that aliases are not currently available in JavaScript.
 
-```tsx
+```jsx
 import { Colors } from "@blueprintjs/core";
 
 <div style={{ color: Colors.BLUE3, background: Colors.BLACK }} />

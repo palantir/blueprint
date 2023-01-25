@@ -41,7 +41,7 @@ export class BreadcrumbsExample extends React.Component {
             <Breadcrumbs
                 currentBreadcrumbRenderer={this.renderCurrentBreadcrumb}
                 items={BREADCRUMBS}
-             />
+            />
         );
     }
     private renderCurrentBreadcrumb = ({ text, ...restProps }: IBreadcrumbProps) => {

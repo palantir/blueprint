@@ -52,7 +52,7 @@ implementing more advanced use cases than one or two numbers.
 Handles for a `MultiSlider` are configured as `MultiSlider.Handle` children
 elements, each with their own `value` and other properties.
 
-```tsx
+```jsx
 // RangeSlider looks roughly like this:
 <MultiSlider onChange={...}>
     <MultiSlider.Handle

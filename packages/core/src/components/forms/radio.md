@@ -13,7 +13,7 @@ similar to how a `<select>` tag contains several `<option>` tags. As such, you
 can use the `RadioGroup` component with a series of `Radio` children.
 `RadioGroup` is responsible for managing state and interaction.
 
-```tsx
+```jsx
 <RadioGroup
     label="Meal Choice"
     onChange={this.handleMealChange}

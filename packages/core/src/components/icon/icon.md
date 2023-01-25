@@ -34,7 +34,7 @@ grid.
 If `title` is not provided to an Icon, `aria-hidden` will be set to true as
 it will be assumed that the icon is decorative if not labeled.
 
-```tsx
+```jsx
 import { Icon, IconSize } from "@blueprintjs/core";
 
 // icon name string literals are type checked
@@ -50,7 +50,7 @@ import { Icon, IconSize } from "@blueprintjs/core";
 
 Custom sizes are supported. The following React component:
 
-```tsx
+```jsx
 <Icon icon="globe" iconSize={30} />
 ```
 

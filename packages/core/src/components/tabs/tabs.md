@@ -12,7 +12,7 @@ however, require that every `Tab` have a _locally unique `id` value_.
 Arbitrary elements are supported in the tab list, and order is respected. Yes,
 you can even insert things _between_ `Tab`s.
 
-```tsx
+```jsx
 import { Tab, Tabs } from "@blueprintjs/core";
 
 <Tabs id="TabsExample" onChange={this.handleTabChange} selectedTabId="rx">

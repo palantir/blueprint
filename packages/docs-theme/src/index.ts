@@ -21,4 +21,5 @@ export * from "./components/example";
 export * from "./components/navMenuItem";
 export * from "./components/navButton";
 export * from "./common";
+export { MonacoThemeDark, MonacoThemeLight } from "./styles/monacoTheme";
 export * from "./tags";

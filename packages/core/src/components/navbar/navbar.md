@@ -41,7 +41,7 @@ The `Navbar` API includes four stateless React components:
 These components are simple containers for their children. Each of them supports
 the full range of HTML `<div>` props.
 
-```tsx
+```jsx
 <Navbar>
     <Navbar.Group align={Alignment.LEFT}>
         <Navbar.Heading>Blueprint</Navbar.Heading>

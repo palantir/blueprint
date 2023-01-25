@@ -26,7 +26,7 @@ by navigating around and triggering the dialog with the <kbd>?</kbd> key.
 
 @## Usage
 
-```tsx
+```jsx
 import { HotkeysProvider } from "@blueprintjs/core";
 import React from "react";
 import ReactDOM from "react-dom";

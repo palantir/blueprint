@@ -3,9 +3,7 @@
 
 @import "variables";
 
-$syntax-background-color: $white;
-$syntax-text-color: $dark-gray1;
-$syntax-token-colors: (
+$textmate-grammar-token-colors: (
   "brace": $dark-gray3,
   "support": $turquoise3,
   "entity.attribute-name": $orange3,
@@ -26,9 +24,7 @@ $syntax-token-colors: (
   "comment": $gray2,
 );
 
-$dark-syntax-background-color: $dark-gray2;
-$dark-syntax-text-color: $gray5;
-$dark-syntax-token-colors: (
+$dark-textmate-grammar-token-colors: (
   "brace": $light-gray5,
   "support": $turquoise5,
   "entity.attribute-name": $orange4,
@@ -49,8 +45,8 @@ $dark-syntax-token-colors: (
   "comment": $gray2,
 );
 
-// given a map of TextMate tokens to colors
-@mixin syntax($colors) {
+// given a map of TextMate grammar tokens to colors
+@mixin generateTextmateSyntaxTheme($colors) {
   // this one is a very special case and must come before @each for specificity
   .entity.name,
   .entity.inherited-class,
@@ -82,11 +78,12 @@ $dark-syntax-token-colors: (
   }
 }
 
-// actually generate the two themes:
+// TODO(adahiya): remove in Blueprint v5.0
+// DEPRECATED class
 .editor-colors {
-  @include syntax($syntax-token-colors);
-  background: $syntax-background-color;
-  color: $syntax-text-color;
+  @include generateTextmateSyntaxTheme($textmate-grammar-token-colors);
+  background: $code-block-background-color;
+  color: $code-block-text-color;
 
   // italicize all type information
   .meta.type {
@@ -94,9 +91,8 @@ $dark-syntax-token-colors: (
   }
 
   .#{$ns}-dark & {
-    @include syntax($dark-syntax-token-colors);
-    background: $dark-syntax-background-color;
-    color: $dark-syntax-text-color;
+    @include generateTextmateSyntaxTheme($dark-textmate-grammar-token-colors);
+    background: $dark-code-block-background-color;
+    color: $dark-code-block-text-color;
   }
 }
-
