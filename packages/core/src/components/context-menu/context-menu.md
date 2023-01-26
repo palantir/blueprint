@@ -72,7 +72,7 @@ class RightClickMe extends React.Component {
 
 If you're using Blueprint in Javascript, and don't have access to the Babel config (ie: using `create-react-app`), you won't be able to just use the decorator. You can, instead, use it as a [Higher-Order Component][react-hoc], and get to keep all the benefits of `ContextMenuTarget`:
 
-```jsx
+```tsx
 import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
 
 const RightClickMe = ContextMenuTarget(class RightClickMeWithContext extends React.Component {

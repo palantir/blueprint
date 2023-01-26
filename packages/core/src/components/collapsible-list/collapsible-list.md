@@ -36,7 +36,7 @@ items, allowing for _any_ UI, not just a dropdown menu.
 Often a list of items calls for separators between each item.
 Adding separators to a `CollapsibleList` is easily achieved via CSS using `::after` pseudo-elements.
 
-```css.scss
+```scss
 // pass `visibleItemClassName="my-list-item"` to component, then...
 
 .my-list-item::after {

@@ -26,7 +26,7 @@ number of rows (`numRows` prop) as well as a set of `Column` children.
 
 
 
-```tsx
+```ts
 type ICellMapper<T> = (rowIndex: number, columnIndex: number) => T;
 ```
 
@@ -135,7 +135,7 @@ You can construct region objects manually according to this interface, but we
 recommend using our exported __factory methods__ to help you construct the
 appropriate schema for your desired region type:
 
-```tsx
+```ts
 import { Regions } from "@blueprintjs/table";
 
 const singleCellRegion   = Regions.cell(0, 0); // { rows: [0, 0], cols: [0, 0] }

@@ -14,23 +14,23 @@ aliases:
 
   - &restore-node-modules-cache
     name: Restore node_modules cache
-    key: v6-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v7-yarn-deps-{{ checksum "yarn.lock" }}
 
   - &restore-yarn-cache
     name: Restore yarnpkg cache
-    key: v6-yarn-cache
+    key: v7-yarn-cache
 
   - &save-node-modules-cache
     name: Save node_modules cache
     paths:
       - node_modules
-    key: v6-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v7-yarn-deps-{{ checksum "yarn.lock" }}
 
   - &save-yarn-cache
     name: Save yarnpkg cache
     paths:
       - ~/.cache/yarn
-    key: v6-yarn-cache
+    key: v7-yarn-cache
 
 references:
   reports_path: &reports_path

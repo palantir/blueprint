@@ -404,7 +404,7 @@ styles to that class:
 <Popover content={<div class="custom-class">...</div>}>...</Popover>
 ```
 
-```css.scss
+```scss
 .custom-class {
     max-height: $pt-grid-size * 15;
     overflow-y: auto;

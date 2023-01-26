@@ -27,7 +27,7 @@ be hidden. Fortunately, making an overlay scrollable is very easy: simply pass
 care of the rest.
 
 ```tsx
-<Overlay className={Classes.OVERLAY_SCROLL_CONTAINER} ... />
+<Overlay className={Classes.OVERLAY_SCROLL_CONTAINER} />
 ```
 
 The `Dialog` component applies this CSS class automatically.

@@ -33,7 +33,7 @@ The `main` module exports all symbols from all modules so you don't have to impo
 1.  **Don't forget to include the main CSS file from each Blueprint package!** Additionally, the
     `resources/` directory contains supporting media such as fonts and images.
 
-    ```css.scss
+    ```scss
     // using node-style package resolution in a CSS file:
     @import "~normalize.css";
     @import "~@blueprintjs/core/lib/css/blueprint.css";
