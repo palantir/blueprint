@@ -21,14 +21,17 @@ import { cwd } from "node:process";
 
 import { baseConfig } from "@blueprintjs/webpack-build-scripts";
 
-export default Object.assign({}, baseConfig, {
+export default {
+    ...baseConfig,
+
     entry: {
         "blueprint-landing": ["./src/index.tsx", "./src/index.scss"],
     },
 
-    // we override module rules since we don't want the asset modules loader to be triggered for inline SVGs
     module: {
-        rules: baseConfig.module.rules.slice(0, 3).concat([
+        // override the image module rule to avoid the asset modules loader being triggered for inline SVGs
+        rules: [
+            ...baseConfig.module.rules.filter(rule => !rule.test.toString().includes("svg")),
             {
                 test: /^((?!svgs).)*\.(eot|ttf|woff|woff2|svg|png)$/,
                 type: "asset/resource",
@@ -36,7 +39,7 @@ export default Object.assign({}, baseConfig, {
                     filename: "assets/[hash][ext][query]",
                 },
             },
-        ]),
+        ],
     },
 
     output: {
@@ -54,4 +57,4 @@ export default Object.assign({}, baseConfig, {
             ],
         }),
     ]),
-});
+};

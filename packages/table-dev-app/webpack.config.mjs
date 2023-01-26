@@ -21,7 +21,9 @@ import { cwd } from "node:process";
 
 import { baseConfig } from "@blueprintjs/webpack-build-scripts";
 
-export default Object.assign({}, baseConfig, {
+export default {
+    ...baseConfig,
+
     entry: {
         features: ["./src/index.scss", "./src/features.tsx"],
         index: ["./src/index.scss", "./src/index.tsx"],
@@ -42,4 +44,4 @@ export default Object.assign({}, baseConfig, {
             ],
         }),
     ]),
-});
+};
