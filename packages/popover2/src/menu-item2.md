@@ -62,7 +62,7 @@ time is not recommended.
 Menu items may have submenus when nested MenuItem2 `children` are defined. These nested items will
 be displayed inside a popover next to the active menu item on hover. Here's a code example:
 
-```jsx
+```tsx
 import { Menu } from "@blueprintjs/core";
 import { MenuItem2 } from "@blueprintjs/popover2";
 

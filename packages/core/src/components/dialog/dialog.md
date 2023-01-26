@@ -26,7 +26,7 @@ A standard __Dialog__ renders its contents in an [__Overlay__](#core/components/
 `Classes.DIALOG` element. You can use some simple dialog markup sub-components or CSS classes
 to structure its contents:
 
-```jsx
+```tsx
 <Dialog title="Informational dialog" icon="info-sign">
     <DialogBody>
         {/* body contents here */}

@@ -20,7 +20,7 @@ The `main` module exports all symbols from all modules so you don't have to impo
 
 1.  After installation, you'll be able to import the React components in your application:
 
-    ```jsx
+    ```tsx
     import { Button, Spinner } from "@blueprintjs/core";
 
     // using JSX:
@@ -108,7 +108,7 @@ JS components are built using React, but that does not limit their usage to just
 You can render any component in any JavaScript application with `ReactDOM.render`. Think of it like
 using a jQuery plugin.
 
-```jsx
+```tsx
 import { Classes, Spinner } from "@blueprintjs/core";
 
 const myContainerElement = document.getElementById("container");
@@ -128,7 +128,7 @@ ReactDOM.render(
 
 To remove the component from the DOM and clean up, unmount it:
 
-```jsx
+```tsx
 ReactDOM.unmountComponentAtNode(myContainerElement);
 ```
 

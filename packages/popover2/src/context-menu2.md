@@ -24,7 +24,7 @@ interaction handlers.
 
 Create a context menu using the simple function component:
 
-```jsx
+```tsx
 import { Menu, MenuItem } from "@blueprintjs/core";
 import { ContextMenu2 } from "@blueprintjs/popover2";
 

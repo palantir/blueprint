@@ -76,7 +76,7 @@ Example in Less:
 Hex values for these colors can be accessed in JavaScript through the `Colors` export.
 Note that aliases are not currently available in JavaScript.
 
-```jsx
+```tsx
 import { Colors } from "@blueprintjs/core";
 
 <div style={{ color: Colors.BLUE3, background: Colors.BLACK }} />

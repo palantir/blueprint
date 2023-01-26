@@ -17,7 +17,7 @@ you must implement it separately in JS.
 
 </div>
 
-```jsx
+```tsx
 <FileInput disabled={true} text="Choose file..." onInputChange={...} />
 ```
 

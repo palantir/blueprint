@@ -46,13 +46,13 @@ This can be done a few ways:
 1. Provide both the `content` and `target` props, which accept a string or a JSX element.
    Omitting the `target` prop will produce an error.
 
-```jsx
+```tsx
 <Popover content={<Content />} target={<Button text="Open" />} />
 ```
 
 1. Provide one or two `children`. Omitting a `target` element will produce an error.
 
-```jsx
+```tsx
 <Popover>
     <Button text="Open" />
     <Content />
@@ -62,7 +62,7 @@ This can be done a few ways:
 1. It is possible to mix the two: provide the `content` prop and one React child as the target.
    (Using the `target` prop with `children` is not supported and will produce a warning.)
 
-```jsx
+```tsx
 <Popover content={<Content />}>
     <Button text="Open" />
 </Popover>
@@ -79,7 +79,7 @@ in turn is wrapped in a `span.@ns-popover-wrapper`. The extra
 wrapped in a single element when rendering
 [popovers without a portal](#core/components/popover.portal-rendering).
 
-```jsx
+```tsx
 <span class="@ns-popover-wrapper">
     <span class="@ns-popover-target">
         <Button text="My target" />
@@ -310,7 +310,7 @@ containing the dismiss element). `MenuItem` disables this feature such that
 clicking any submenu item will close all submenus, which is desirable behavior
 for a menu tree.
 
-```jsx
+```tsx
 <div className={Classes.POPOVER_DISMISS}>
     <button>Click me to dismiss</button>
     <button disabled={true}>I will not dismiss</button>
@@ -400,7 +400,7 @@ Popovers by default have a `max-width` but no `max-height`. To constrain the hei
 and make its content scrollable, add a custom class to your popover content element and attach
 styles to that class:
 
-```jsx
+```tsx
 <Popover content={<div class="custom-class">...</div>}>...</Popover>
 ```
 
@@ -444,7 +444,7 @@ DOM (outside the usual flow); this can be simplified by setting `usePortal={fals
 Hover interactions can also be tricky due to delays and transitions; this can be resolved by
 zeroing the default hover delays.
 
-```jsx
+```tsx
 <Popover {...yourProps} usePortal={false} hoverCloseDelay={0} hoverOpenDelay={0}>
     {yourTarget}
 </Popover>

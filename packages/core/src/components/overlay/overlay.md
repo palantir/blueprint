@@ -26,7 +26,7 @@ be hidden. Fortunately, making an overlay scrollable is very easy: simply pass
 `Classes.OVERLAY_SCROLL_CONTAINER` as the Overlay `className`, and we'll take
 care of the rest.
 
-```jsx
+```tsx
 <Overlay className={Classes.OVERLAY_SCROLL_CONTAINER} />
 ```
 
@@ -49,7 +49,7 @@ When rendered inline, content will automatically be set to `position: absolute` 
 document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
 </div>
 
-```jsx
+```tsx
 <div>
     <Button text="Show overlay" onClick={this.toggleOverlay} />
     <Overlay isOpen={this.state.isOpen} onClose={this.toggleOverlay}>

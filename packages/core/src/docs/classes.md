@@ -8,7 +8,7 @@ downstream users (although in practice this happens very rarely).
 
 **Avoid referencing hardcoded Blueprint class names in your JS or CSS code.**
 
-```jsx
+```tsx
 // Don't do this! Avoid hardcoding Blueprint class names.
 <button className="@ns-button @ns-large">Don't do this!</button>
 ```
@@ -16,7 +16,7 @@ downstream users (although in practice this happens very rarely).
 The **best practice** is to add your own class to an element and then reference
 that class whenever needed.
 
-```jsx
+```tsx
 <Button className="my-custom-class" text="customized button" />
 ```
 
@@ -30,7 +30,7 @@ In cases where adding and styling a new class is impractical or undesirable, use
 the `Classes` constants or `$ns` Sass/Less variable. The `Classes` constants can
 be particularly useful when writing UI tests.
 
-```jsx
+```tsx
 // use Classes constants for forward-compatible custom elements.
 import { Classes } from "@blueprintjs/core";
 <a className={Classes.MENU_ITEM}>custom menu item</a>;
@@ -51,7 +51,7 @@ appearance. Some commonly used modifiers are `intent`, `large`, and `minimal`.
 While modifiers are typically implemented as simple CSS classes, it is always
 preferrable to use the corresponding prop on a React component.
 
-```jsx
+```tsx
 // Prefer props over modifier classes.
 <Button intent="primary" minimal={true}>Good stuff</Button>
 

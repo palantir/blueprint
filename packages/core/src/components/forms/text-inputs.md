@@ -71,7 +71,7 @@ Apply `Classes.INPUT` on an `input[type="text"]`. You should also specify `dir="
 
 Apply `Classes.INPUT` on a `<textarea>`, or use the `TextArea` React component.
 
-```jsx
+```tsx
 <TextArea
     growVertically={true}
     large={true}

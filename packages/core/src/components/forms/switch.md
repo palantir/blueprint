@@ -7,7 +7,7 @@ simulates on/off instead of checked/unchecked.
 
 @## Props
 
-```jsx
+```tsx
 <Switch checked={this.state.isPublic} label="Public" onChange={this.handlePublicChange} />
 ```
 

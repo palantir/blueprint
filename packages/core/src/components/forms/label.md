@@ -20,7 +20,7 @@ therefore we recommend using it exclusively when constructing forms.
 
 This component supports the full range of HTML props.
 
-```jsx
+```tsx
 <Label>
     Label A
     <input className={Classes.INPUT} placeholder="Placeholder text" />

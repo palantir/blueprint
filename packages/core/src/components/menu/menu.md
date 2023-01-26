@@ -10,7 +10,7 @@ The Menu API includes three React components:
 * [MenuItem](#core/components/menu.menu-item)
 * [MenuDivider](#core/components/menu.menu-divider)
 
-```jsx
+```tsx
 <Menu>
     <MenuItem icon="new-text-box" onClick={handleClick} text="New text box" />
     <MenuItem icon="new-object" onClick={handleClick} text="New object" />
@@ -54,7 +54,7 @@ Use `MenuDivider` to separate menu sections. Optionally, add a title to the divi
 The `Menu` component by itself simply renders a list of items. To make a
 dropdown menu, compose a `Menu` as the `content` property of a `Popover`:
 
-```jsx
+```tsx
 <Popover content={<Menu>...</Menu>} placement="bottom">
     <Button alignText="left" icon="applications" rightIcon="caret-down" text="Open with..." />
 </Popover>
@@ -80,7 +80,7 @@ To add a submenu to a `Menu`, simply nest `MenuItem`s within another `MenuItem`.
 The submenu opens to the right of its parent by default, but will adjust and flip to the left if
 there is not enough room to the right.
 
-```jsx
+```tsx
 <Menu>
     <MenuItem text="Submenu">
         <MenuItem text="Child one" />

@@ -116,7 +116,7 @@ write these functions yourself.
 To use moment.js for localization, make sure to include __moment__ in your dependencies and use
 `MomentLocaleUtils` from `react-day-picker/moment` as follow:
 
-```jsx
+```tsx
 import MomentLocaleUtils from "react-day-picker/moment";
 import "moment/locale/fr";
 

@@ -44,7 +44,7 @@ can be useful when you do want to always show the focus outline, but only for ce
 components, like a tree. This is done by applying `Classes.FOCUS_STYLE_MANAGER_IGNORE`
 to a container element.
 
-```jsx
+```tsx
 import { Classes } from "@blueprintjs/core";
 
 const MyComponent = () => ({

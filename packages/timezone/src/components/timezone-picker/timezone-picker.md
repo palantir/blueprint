@@ -42,7 +42,7 @@ The button can also be managed via `disabled`, `placeholder`, and more generally
 You can show a custom element instead of the default button by passing a single-element child; in this case,
 all button-specific props will be ignored:
 
-```jsx
+```tsx
 <TimezonePicker value={...} onChange={...}>
     <Icon icon="globe" />
 </TimezontPicker>

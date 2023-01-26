@@ -42,7 +42,7 @@ CSS properties.
 This component is a lightweight wrapper around its children. It supports all
 HTML `<div>` props, in addition to those listed below.
 
-```jsx
+```tsx
 <ControlGroup fill={true} vertical={false}>
     <Button icon="filter">Filter</Button>
     <InputGroup placeholder="Find filters..." />

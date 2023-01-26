@@ -32,7 +32,7 @@ This component only supports __controlled__ usage.
 Control the selected timezone with the `value` prop and use the `onChange` prop callback to listen for changes to the
 selected timezone.
 
-```jsx
+```tsx
 import { TimezoneSelect } from "@blueprintjs/datetime2";
 import React, { useState } from "react";
 
@@ -55,7 +55,7 @@ to the `valueDisplayFormat` prop. The button can be customized via `disabled`, `
 You can show a custom element instead of the default button by passing a single-element child to `<TimezoneSelect>`;
 in this case, all button-specific props will be ignored:
 
-```jsx
+```tsx
 <TimezoneSelect value={...} onChange={...}>
     <Icon icon="globe" />
 </TimezonePicker>

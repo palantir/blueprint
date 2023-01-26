@@ -43,7 +43,7 @@ The optional `locale` argument to these functions is the value of the `locale` p
 
 A simple implementation using built-in browser methods could look like this:
 
-```jsx
+```tsx
 <DateInput
     formatDate={date => date.toLocaleString()}
     onChange={this.handleDateChange}

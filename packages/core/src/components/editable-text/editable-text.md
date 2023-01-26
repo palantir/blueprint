@@ -33,7 +33,7 @@ instead of an `<input type="text">`. Multiline mode always appears at 100% width
 and adjusts _vertically_ based on length of text. Use the `minLines` and
 `maxLines` props to constrain the height of the component.
 
-```jsx
+```tsx
 <EditableText multiline={true} minLines={3} maxLines={12} {...props} />
 ```
 

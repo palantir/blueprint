@@ -284,7 +284,7 @@ containing the dismiss element). MenuItem disables this feature such that
 clicking any submenu item will close all submenus, which is desirable behavior
 for a menu tree.
 
-```jsx
+```tsx
 <div className={Classes.POPOVER2_DISMISS}>
     <button>Click me to dismiss</button>
     <button disabled={true}>I will not dismiss</button>
@@ -374,7 +374,7 @@ Popovers by default have a `max-width` but no `max-height`. To constrain the hei
 and make its content scrollable, add a custom class to your popover content element and attach
 styles to that class:
 
-```jsx
+```tsx
 <Popover2 content={<div className="custom-class">...</div>}>...</Popover2>
 ```
 
@@ -418,7 +418,7 @@ DOM (outside the usual flow); this can be simplified by setting `usePortal={fals
 Hover interactions can also be tricky due to delays and transitions; this can be resolved by
 zeroing the default hover delays.
 
-```jsx
+```tsx
 <Popover2 {...yourProps} usePortal={false} hoverCloseDelay={0} hoverOpenDelay={0}>
     {yourTarget}
 </Popover2>
@@ -428,7 +428,7 @@ zeroing the default hover delays.
 
 `Popover2` delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to the target, which may require special handling depending on the current [`interactionKind`](#popover2-package/popover2.interactions). Popper.js also throttles rendering updates to improve performance. If your components are not updating in a synchronous fashion as expected, you may need to introduce a `setTimeout` to wait for asynchronous Popover rendering to catch up:
 
-```jsx
+```tsx
 import { Overlay } from "@blueprintjs/core";
 import { Classes, Popover2 } from "@blueprintjs/popover2";
 import { assert } from "chai";
@@ -462,7 +462,7 @@ If `usePortal={false}` rendering is not an option, `Popover2` instances expose `
 knowing precisely where they are in the DOM. These properties exist primarily to simplify testing;
 do not rely on them for feature work.
 
-```jsx
+```tsx
 // using mount() from enzyme
 const wrapper = mount(<Popover2 content={<div className="test">test</div>} />);
 const { popoverElement } = wrapper.instance();
