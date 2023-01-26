@@ -3,6 +3,9 @@
 
 @import "variables";
 
+// DEPRECATED styles, will be removed in Blueprint v5.0
+// see https://github.com/palantir/blueprint/issues/5895
+
 $textmate-grammar-token-colors: (
   "brace": $dark-gray3,
   "support": $turquoise3,
@@ -46,7 +49,7 @@ $dark-textmate-grammar-token-colors: (
 );
 
 // given a map of TextMate grammar tokens to colors
-@mixin generateTextmateSyntaxTheme($colors) {
+@mixin generate-textmate-grammar-syntax-theme($colors) {
   // this one is a very special case and must come before @each for specificity
   .entity.name,
   .entity.inherited-class,
@@ -81,7 +84,7 @@ $dark-textmate-grammar-token-colors: (
 // TODO(adahiya): remove in Blueprint v5.0
 // DEPRECATED class
 .editor-colors {
-  @include generateTextmateSyntaxTheme($textmate-grammar-token-colors);
+  @include generate-textmate-grammar-syntax-theme($textmate-grammar-token-colors);
   background: $code-block-background-color;
   color: $code-block-text-color;
 
@@ -91,7 +94,7 @@ $dark-textmate-grammar-token-colors: (
   }
 
   .#{$ns}-dark & {
-    @include generateTextmateSyntaxTheme($dark-textmate-grammar-token-colors);
+    @include generate-textmate-grammar-syntax-theme($dark-textmate-grammar-token-colors);
     background: $dark-code-block-background-color;
     color: $dark-code-block-text-color;
   }
