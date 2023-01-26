@@ -17,7 +17,8 @@
 import type { editor } from "monaco-editor";
 
 import { Utils } from "@blueprintjs/core";
-import { Classes as DocsClasses, MonacoThemeDark, MonacoThemeLight } from "@blueprintjs/docs-theme";
+import { Classes as DocsClasses } from "@blueprintjs/docs-theme";
+import { MonacoThemeDark, MonacoThemeLight } from "@blueprintjs/monaco-editor-theme";
 
 let monacoEditor: typeof editor | undefined;
 
