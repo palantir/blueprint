@@ -43,7 +43,7 @@ exec(`git tag --points-at ${commitish}`, async (err, stdout) => {
             const unscopedName = nameParts[nameParts.length - 1];
             const packagePath = join("packages", unscopedName);
             // This will throw if the package name isn't also the path, which is desirable.
-            const { default: packageJson } = await import(join("..", packagePath, "package.json"), { assert: { type: "json " }});
+            const { default: packageJson } = await import(join("..", packagePath, "package.json"), { assert: { type: "json" }});
             return {
                 packageJson,
                 path: packagePath,

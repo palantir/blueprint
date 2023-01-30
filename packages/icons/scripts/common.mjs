@@ -33,7 +33,7 @@ export const NS = "bp4";
  * @property {number} codepoint - icon font codepoint
  */
 
-const iconsMetadataJson = await import("../icons.json", { assert: { type: "json " }});
+const iconsMetadataJson = await import("../icons.json", { assert: { type: "json" }});
 
 /** @type {IconMetadata[]} */
 export const iconsMetadata = iconsMetadataJson.default.sort(
