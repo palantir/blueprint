@@ -49,7 +49,7 @@
         "chai": "^4.3.7",
         "cross-env": "^7.0.3",
         "dedent": "^0.7.0",
-        "eslint": "^8.32.0",
+        "eslint": "^8.33.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
         "gh-pages": "^5.0.0",
