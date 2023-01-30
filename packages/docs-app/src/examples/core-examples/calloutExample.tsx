@@ -23,14 +23,14 @@ import { IconName } from "@blueprintjs/icons";
 import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
 
-export interface ICalloutExampleState {
+interface CalloutExampleState {
     icon?: IconName;
     intent?: Intent;
     showHeader: boolean;
 }
 
-export class CalloutExample extends React.PureComponent<IDocsExampleProps, ICalloutExampleState> {
-    public state: ICalloutExampleState = { showHeader: true };
+export class CalloutExample extends React.PureComponent<IDocsExampleProps, CalloutExampleState> {
+    public state: CalloutExampleState = { showHeader: true };
 
     private handleHeaderChange = handleBooleanChange((showHeader: boolean) => this.setState({ showHeader }));
 
@@ -52,9 +52,9 @@ export class CalloutExample extends React.PureComponent<IDocsExampleProps, ICall
         return (
             <Example options={options} {...this.props}>
                 <Callout {...calloutProps} title={showHeader ? "Visually important content" : undefined}>
-                    The component is a simple wrapper around the CSS API that provides props for modifiers and optional
-                    title element. Any additional HTML props will be spread to the rendered <Code>{"<div>"}</Code>{" "}
-                    element.
+                    Long-form information about the important content. This text is styled as{" "}
+                    <a href="#core/typography.running-text">"Running text"</a>, so it may contain things like headers,
+                    links, lists, <Code>code</Code> etc.
                 </Callout>
             </Example>
         );
