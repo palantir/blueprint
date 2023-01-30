@@ -36,14 +36,6 @@ renderer.code = (textContent, language, isEscaped) => {
             break;
     }
 
-    if (language === "html" && textContent.includes("{{") && textContent.includes("}}")) {
-        // special handling for one kind of handlebars expression we use in CSS APIs
-        textContent = textContent.replace(
-            /{{(\.|:)modifier}}/g,
-            `<span class="${Classes.TAG} ${Classes.MINIMAL} ${Classes.INTENT_PRIMARY}">$1modifier</span>`,
-        );
-    }
-
     const classes = [Classes.CODE_BLOCK, DocsClasses.DOCS_CODE_BLOCK].join(" ");
     return `<pre class="${classes}" data-lang="${language}">${textContent}</pre>`;
 };
