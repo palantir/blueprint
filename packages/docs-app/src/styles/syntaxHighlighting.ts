@@ -16,7 +16,7 @@
 
 import type { editor } from "monaco-editor";
 
-import { Utils } from "@blueprintjs/core";
+import { Classes, Utils } from "@blueprintjs/core";
 import { Classes as DocsClasses } from "@blueprintjs/docs-theme";
 import { MonacoThemeDark, MonacoThemeLight } from "@blueprintjs/monaco-editor-theme";
 
@@ -56,6 +56,19 @@ export async function highlightCodeBlocks() {
         monacoEditor.colorizeElement(block, {
             theme: `blueprint-${targetTheme}`,
         });
+        renderKssModifiersAsTags(block);
         block.setAttribute("data-colorized", targetTheme);
     }
+}
+
+/**
+ * Mutates the codeBlock element.
+ *
+ * @param codeBlock
+ */
+function renderKssModifiersAsTags(codeBlock: HTMLElement) {
+    codeBlock.innerHTML = codeBlock.innerHTML.replace(
+        /{{(\.|:)modifier}}/g,
+        `<span class="${Classes.TAG} ${Classes.MINIMAL} ${Classes.INTENT_PRIMARY}">$1modifier</span>`,
+    );
 }
