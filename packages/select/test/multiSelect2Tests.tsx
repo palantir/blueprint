@@ -97,8 +97,10 @@ describe("<MultiSelect2>", () => {
 
     it("only triggers QueryList key up events when focus is on TagInput's <input>", () => {
         const itemSelectSpy = sinon.spy();
+        const handleRemove = sinon.spy();
         const wrapper = multiselect({
             onItemSelect: itemSelectSpy,
+            onRemove: handleRemove,
             selectedItems: [TOP_100_FILMS[1]],
         });
 
