@@ -289,7 +289,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
             const { targetTagName = "div" } = popoverProps;
 
-            const canRemoveTag = onRemove != null || tagInputProps?.onRemove != null;
+            const canRemoveTag = onRemove != null || tagInputProps?.onRemove != null || tagInputProps?.onChange != null;
 
             return React.createElement(
                 targetTagName,
