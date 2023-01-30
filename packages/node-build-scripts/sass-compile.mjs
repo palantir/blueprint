@@ -2,16 +2,22 @@
  * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  */
 
+// @ts-check
+
 import { watch } from "chokidar";
-import { outputFileSync, readdirSync } from "fs-extra";
+import fsExtra from "fs-extra";
+import nodeSassPackageImporter from "node-sass-package-importer";
 import { basename, dirname, extname, join, parse as parsePath, relative, resolve } from "node:path";
 import { argv } from "node:process";
 import sass from "sass";
-import nodeSassPackageImporter from "node-sass-package-importer";
-import { RawSourceMap } from "source-map";
 import yargs from "yargs";
 
-const args = yargs(argv.slice(2))
+import { svgInliner } from "./svg/svgInliner.mjs";
+
+// slice off two args which are `node` CLI and this script's name
+const truncatedArgv = argv.slice(2);
+
+const args = yargs(truncatedArgv)
     .positional("input", { type: "string", description: "Input folder containing scss to compile" })
     .option("functions", {
         type: "string",
@@ -25,12 +31,35 @@ const args = yargs(argv.slice(2))
     })
     .parseSync();
 
-const functions = args.functions != null ? require(resolve(args.functions)) : undefined;
+/** @type {string} */
+// @ts-ignore
+const inputFolder = args._[0];
+
+const customFunctions = args.functions != null ? require(resolve(args.functions)) : undefined;
+const functions = {
+    /**
+     * Sass function to inline a UI icon svg and change its path color.
+     *
+     * Usage:
+     * svg-icon("16px/icon-name.svg", (path: (fill: $color)) )
+     *
+     * TODO(adahiya): ensure this works when this script is invoked outside of the Blueprint monorepo?
+     */
+    "svg-icon($path, $selectors: null)": svgInliner("../../resources/icons", {
+        // run through SVGO first
+        optimize: true,
+        // minimal "uri" encoding is smaller than base64
+        encodingFormat: "uri",
+    }),
+
+    // custom functions specified as CLI args are allowed to override our default ones
+    ...customFunctions,
+};
 
 if (args.watch) {
     compileAllFiles();
 
-    const folderToWatch = resolve(args._[0] as string);
+    const folderToWatch = resolve(inputFolder);
     console.info(`[sass-compile] Watching ${folderToWatch} for changes...`);
 
     const watcher = watch([`${folderToWatch}/*.scss`, `${folderToWatch}/**/*.scss`], { persistent: true });
@@ -48,10 +77,10 @@ if (args.watch) {
 }
 
 function compileAllFiles() {
-    const files = readdirSync(args._[0] as string);
+    const files = fsExtra.readdirSync(inputFolder);
     const inputFiles = files
         .filter(file => extname(file) === ".scss" && !basename(file).startsWith("_"))
-        .map(fileName => join(args._[0] as string, fileName));
+        .map(fileName => join(inputFolder, fileName));
 
     for (const inputFile of inputFiles) {
         compileFile(inputFile);
@@ -59,7 +88,10 @@ function compileAllFiles() {
     console.info("[sass-compile] Finished compiling all input .scss files.");
 }
 
-function compileFile(inputFile: string) {
+/**
+ * @param {string} inputFile
+ */
+function compileFile(inputFile) {
     if (args.output === undefined) {
         throw new Error(`[sass-compile] Output folder must be specified with --output CLI argument.`);
     }
@@ -76,22 +108,26 @@ function compileFile(inputFile: string) {
         functions,
         charset: true,
     });
-    outputFileSync(outFile, result.css, { flag: "w" });
+    fsExtra.outputFileSync(outFile, result.css, { flag: "w" });
     if (result.map != null) {
-        outputFileSync(outputMapFile, fixSourcePathsInSourceMap({ outputMapFile, sourceMapBuffer: result.map }), {
-            flag: "w",
-        });
+        fsExtra.outputFileSync(
+            outputMapFile,
+            fixSourcePathsInSourceMap({ outputMapFile, sourceMapBuffer: result.map }),
+            {
+                flag: "w",
+            },
+        );
     }
 }
 
-function fixSourcePathsInSourceMap({
-    outputMapFile,
-    sourceMapBuffer,
-}: {
-    outputMapFile: string;
-    sourceMapBuffer: Buffer;
-}): string {
-    const parsedMap = JSON.parse(sourceMapBuffer.toString()) as RawSourceMap;
+/**
+ *
+ * @param {{ outputMapFile: string, sourceMapBuffer: Buffer }} param0
+ * @returns {string}
+ */
+function fixSourcePathsInSourceMap({ outputMapFile, sourceMapBuffer }) {
+    /** @type {import("source-map").RawSourceMap} */
+    const parsedMap = JSON.parse(sourceMapBuffer.toString());
     parsedMap.sources = parsedMap.sources.map(source => {
         const outputDirectory = dirname(outputMapFile);
         const pathToSourceWithoutProtocol = source.replace("file://", "");
