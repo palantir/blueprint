@@ -6,13 +6,14 @@
 
 import { watch } from "chokidar";
 import fsExtra from "fs-extra";
-import nodeSassPackageImporter from "node-sass-package-importer";
 import { basename, dirname, extname, join, parse as parsePath, relative, resolve } from "node:path";
 import { argv } from "node:process";
 import sass from "sass";
+import { SourceMapGenerator } from "source-map-js";
 import yargs from "yargs";
 
-import { svgInliner } from "./svg/svgInliner.mjs";
+import nodeModulesSassImporter from "./sass/nodeModulesSassImporter.mjs";
+import { svgInliner } from "./sass/svgInliner.mjs";
 
 // slice off two args which are `node` CLI and this script's name
 const truncatedArgv = argv.slice(2);
@@ -36,6 +37,7 @@ const args = yargs(truncatedArgv)
 const inputFolder = args._[0];
 
 const customFunctions = args.functions != null ? require(resolve(args.functions)) : undefined;
+/** @type {Record<string, sass.CustomFunction<"async">>} */
 const functions = {
     /**
      * Sass function to inline a UI icon svg and change its path color.
@@ -57,62 +59,57 @@ const functions = {
 };
 
 if (args.watch) {
-    compileAllFiles();
+    await compileAllFiles();
 
     const folderToWatch = resolve(inputFolder);
     console.info(`[sass-compile] Watching ${folderToWatch} for changes...`);
 
     const watcher = watch([`${folderToWatch}/*.scss`, `${folderToWatch}/**/*.scss`], { persistent: true });
-    watcher.on("change", fileName => {
+    watcher.on("change", async fileName => {
         console.info(`[sass-compile] Detected change in ${fileName}, re-compiling.`);
 
         if (basename(fileName).startsWith("_")) {
-            compileAllFiles();
+            await compileAllFiles();
         } else {
-            compileFile(fileName);
+            await compileFile(fileName);
         }
     });
 } else {
-    compileAllFiles();
+    await compileAllFiles();
 }
 
-function compileAllFiles() {
+async function compileAllFiles() {
     const files = fsExtra.readdirSync(inputFolder);
-    const inputFiles = files
+    const inputFilePaths = files
         .filter(file => extname(file) === ".scss" && !basename(file).startsWith("_"))
         .map(fileName => join(inputFolder, fileName));
 
-    for (const inputFile of inputFiles) {
-        compileFile(inputFile);
-    }
+    await Promise.all(inputFilePaths.map(compileFile));
     console.info("[sass-compile] Finished compiling all input .scss files.");
 }
 
 /**
- * @param {string} inputFile
+ * @param {string} inputFilePath
  */
-function compileFile(inputFile) {
+async function compileFile(inputFilePath) {
     if (args.output === undefined) {
         throw new Error(`[sass-compile] Output folder must be specified with --output CLI argument.`);
     }
 
-    const outFile = join(args.output, `${parsePath(inputFile).name}.css`);
+    const outFile = join(args.output, `${parsePath(inputFilePath).name}.css`);
     const outputMapFile = `${outFile}.map`;
     // use deprecated `renderSync` because it supports legacy importers and functions
-    const result = sass.renderSync({
-        file: inputFile,
-        importer: nodeSassPackageImporter(),
+    const result = await sass.compileAsync(inputFilePath, {
+        importers: [nodeModulesSassImporter],
         sourceMap: true,
-        sourceMapContents: true,
-        outFile,
         functions,
         charset: true,
     });
     fsExtra.outputFileSync(outFile, result.css, { flag: "w" });
-    if (result.map != null) {
+    if (result.sourceMap != null) {
         fsExtra.outputFileSync(
             outputMapFile,
-            fixSourcePathsInSourceMap({ outputMapFile, sourceMapBuffer: result.map }),
+            fixSourcePathsInSourceMap({ outputMapFile, rawSourceMap: result.sourceMap }),
             {
                 flag: "w",
             },
@@ -122,16 +119,14 @@ function compileFile(inputFile) {
 
 /**
  *
- * @param {{ outputMapFile: string, sourceMapBuffer: Buffer }} param0
+ * @param {{ outputMapFile: string, rawSourceMap: import("source-map").RawSourceMap }} param0
  * @returns {string}
  */
-function fixSourcePathsInSourceMap({ outputMapFile, sourceMapBuffer }) {
-    /** @type {import("source-map").RawSourceMap} */
-    const parsedMap = JSON.parse(sourceMapBuffer.toString());
-    parsedMap.sources = parsedMap.sources.map(source => {
+function fixSourcePathsInSourceMap({ outputMapFile, rawSourceMap }) {
+    rawSourceMap.sources = rawSourceMap.sources.map(source => {
         const outputDirectory = dirname(outputMapFile);
         const pathToSourceWithoutProtocol = source.replace("file://", "");
         return relative(outputDirectory, pathToSourceWithoutProtocol);
     });
-    return JSON.stringify(parsedMap);
+    return new SourceMapGenerator(rawSourceMap).toString();
 }

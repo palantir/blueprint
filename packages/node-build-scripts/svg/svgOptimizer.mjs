@@ -10,8 +10,6 @@ import SVGO from "svgo";
 
 export const svgOptimizer = new SVGO({ plugins: [{ convertShapeToPath: { convertArcs: true } }] });
 
-export const optimizeSync = deasync(optimizeAsync);
-
 /**
  * @typedef {Object} OptimizedSvg
  * @property {string} data
@@ -21,13 +19,24 @@ export const optimizeSync = deasync(optimizeAsync);
 
 /**
  * @param {string} src
- * @param {(error: any, optimizedSvg: OptimizedSvg) => void} cb
+ * @param {string} path
+ * @returns {OptimizedSvg}
  */
-function optimizeAsync(src, cb) {
+export function optimizeSync(src, path) {
+    let result;
+    let done = false;
+
     svgOptimizer
-        .optimize(src)
-        .then(function (result) {
-            return cb(null, result);
+        .optimize(src, { path })
+        .then(optimizedSvg => {
+            console.log("Got optimized SVG!", optimizedSvg);
+            result = optimizedSvg;
+            done = true;
         })
-        .catch(cb);
+        .catch(err => {
+            throw new Error(err);
+        });
+
+    deasync.loopWhile(() => !done);
+    return result;
 }

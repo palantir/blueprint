@@ -80,6 +80,10 @@ The namespace can be changed _at build time_ to produce a custom Blueprint build
 (though this usage is not recommended and we cannot offer support for it). This
 requires several things:
 
+```js
+// TODO(@adidahiya): this section is outdated, needs to be updated for the modern dart-sass import APIs
+```
+
 1. You must use Sass and import Blueprint Sass source into your app, rather than using the CSS file distributed in the NPM package.
     - Compiling Blueprint Sass source requires two additional tools:
       [node-sass-package-importer](https://www.npmjs.com/package/node-sass-package-importer)
