@@ -421,6 +421,13 @@ describe("<TagInput>", () => {
         });
     });
 
+    it("when both onRemove or onChange are not supplied", () => {
+        const wrapper = mount(<TagInput values={VALUES} />);
+        wrapper.find(Tag).forEach(tag => {
+            assert.lengthOf(tag.find("." + Classes.TAG_REMOVE), 0, "tag should not have tag-remove button");
+        });
+    });
+
     describe("onKeyDown", () => {
         it("emits the active tag index on key down", () => {
             runKeyPressTest("onKeyDown", 1, 1);

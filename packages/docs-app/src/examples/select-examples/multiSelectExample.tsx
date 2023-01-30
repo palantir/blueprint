@@ -39,6 +39,7 @@ const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Int
 
 export interface IMultiSelectExampleState {
     allowCreate: boolean;
+    allowRemove: boolean;
     createdItems: Film[];
     disabled: boolean;
     fill: boolean;
@@ -57,6 +58,7 @@ export interface IMultiSelectExampleState {
 export class MultiSelectExample extends React.PureComponent<ExampleProps, IMultiSelectExampleState> {
     public state: IMultiSelectExampleState = {
         allowCreate: false,
+        allowRemove: true,
         createdItems: [],
         disabled: false,
         fill: false,
@@ -75,6 +77,8 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
     private popoverRef: React.RefObject<Popover2<DefaultPopover2TargetHTMLProps>> = React.createRef();
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
+
+    private handleAllowRemoveChange = this.handleSwitchChange("allowRemove");
 
     private handleDisabledChange = this.handleSwitchChange("disabled");
 
@@ -129,7 +133,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
                     popoverRef={this.popoverRef}
                     tagRenderer={this.renderTag}
                     tagInputProps={{
-                        onRemove: this.handleTagRemove,
+                        onRemove: this.state.allowRemove ? this.handleTagRemove : undefined,
                         tagProps: getTagProps,
                     }}
                     selectedItems={this.state.films}
@@ -169,6 +173,20 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
                         label="Allow creating new films"
                         checked={this.state.allowCreate}
                         onChange={this.handleAllowCreateChange}
+                    />
+                </PropCodeTooltip>
+                <PropCodeTooltip
+                    content={
+                        <>
+                            <Code>onRemove</Code> or <Code>tagProps.onRemove</Code> is{" "}
+                            {this.state.allowRemove ? "defined" : "undefined"}
+                        </>
+                    }
+                >
+                    <Switch
+                        label="Allow deselecting films from tags"
+                        checked={this.state.allowRemove}
+                        onChange={this.handleAllowRemoveChange}
                     />
                 </PropCodeTooltip>
                 <PropCodeTooltip

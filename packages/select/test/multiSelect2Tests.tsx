@@ -111,14 +111,26 @@ describe("<MultiSelect2>", () => {
         assert.isFalse(itemSelectSpy.calledWith(TOP_100_FILMS[0]));
     });
 
-    it("triggers onRemove", () => {
+    it("triggers onRemove if provided", () => {
         const handleRemove = sinon.spy();
         const wrapper = multiselect({
             onRemove: handleRemove,
             selectedItems: [TOP_100_FILMS[2], TOP_100_FILMS[3], TOP_100_FILMS[4]],
         });
+        wrapper.find(Tag).forEach(tag => {
+            assert.lengthOf(tag.find(`.${CoreClasses.TAG_REMOVE}`), 1, "tag should have tag-remove button");
+        });
         wrapper.find(`.${CoreClasses.TAG_REMOVE}`).at(1).simulate("click");
         assert.isTrue(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1));
+    });
+
+    it("does not render tag-remove button if both onRemove and tagInputProps.onRemove are not provided", () => {
+        const wrapper = multiselect({
+            selectedItems: [TOP_100_FILMS[2], TOP_100_FILMS[3], TOP_100_FILMS[4]],
+        });
+        wrapper.find(Tag).forEach(tag => {
+            assert.lengthOf(tag.find(`.${CoreClasses.TAG_REMOVE}`), 0, "tag should not have tag-remove button");
+        });
     });
 
     function multiselect(props: Partial<MultiSelect2Props<Film>> = {}, query?: string) {

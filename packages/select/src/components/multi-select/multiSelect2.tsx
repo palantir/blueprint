@@ -67,6 +67,9 @@ export interface MultiSelect2Props<T> extends ListItemsProps<T>, SelectPopoverPr
      * the value's rendered `ReactNode` tag.
      *
      * It is not recommended to supply _both_ this prop and `tagInputProps.onRemove`.
+     *
+     * If none of `tagInputProps.onRemove` and `tagInputProps.onChange`, and `onRemove` are provided,
+     * rendered tag items will not have remove icons.
      */
     onRemove?: (value: T, index: number) => void;
 
@@ -110,6 +113,10 @@ export interface MultiSelect2Props<T> extends ListItemsProps<T>, SelectPopoverPr
      * - you are responsible for disabling any elements you may render here when the overall `MultiSelect2` is disabled
      * - if the `onClear` prop is defined, this element will override/replace the default rightElement,
      *   which is a "clear" button that removes all items from the current selection.
+     *
+     * Notes for `tagInputProps.onRemove` and `tagInputProps.onChange`:
+     * - if none of `tagInputProps.onRemove` and `tagInputProps.onChange`, and `onRemove` are provided,
+     *   rendered tag items will not have remove icons.
      */
     tagInputProps?: Partial<Omit<TagInputProps, "inputValue" | "onInputChange">>;
 
@@ -244,6 +251,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 disabled,
                 fill,
                 onClear,
+                onRemove,
                 placeholder,
                 popoverProps = {},
                 popoverTargetProps = {},
@@ -281,6 +289,8 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
             const { targetTagName = "div" } = popoverProps;
 
+            const canRemoveTag = onRemove != null || tagInputProps?.onRemove != null;
+
             return React.createElement(
                 targetTagName,
                 {
@@ -311,7 +321,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                     inputValue={listProps.query}
                     onAdd={this.getTagInputAddHandler(listProps)}
                     onInputChange={listProps.handleQueryChange}
-                    onRemove={this.handleTagRemove}
+                    onRemove={canRemoveTag ? this.handleTagRemove : undefined}
                     values={selectedItems.map(this.props.tagRenderer)}
                 />,
             );

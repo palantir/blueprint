@@ -110,7 +110,8 @@ export interface ITagInputProps extends IntentProps, Props {
      *
      * This callback essentially implements basic `onAdd` and `onRemove` functionality and merges
      * the two handlers into one to simplify controlled usage.
-     * ```
+     *
+     * If both `onRemove` and `onChange` are not provided, rendered tag items will not have remove icons.
      */
     onChange?: (values: React.ReactNode[]) => boolean | void;
 
@@ -137,6 +138,8 @@ export interface ITagInputProps extends IntentProps, Props {
     /**
      * Callback invoked when the user clicks the X button on a tag.
      * Receives value and index of removed tag.
+     *
+     * If both `onRemove` and `onChange` are not provided, rendered tag items will not have remove icons.
      */
     onRemove?: (value: React.ReactNode, index: number) => void;
 
@@ -307,15 +310,16 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
         if (!tag) {
             return null;
         }
-        const { large, tagProps } = this.props;
+        const { large, tagProps, onRemove, onChange } = this.props;
         const props = Utils.isFunction(tagProps) ? tagProps(tag, index) : tagProps;
+        const canRemoveTag = onRemove != null || onChange != null;
         return (
             <Tag
                 active={index === this.state.activeIndex}
                 data-tag-index={index}
                 key={tag + "__" + index}
                 large={large}
-                onRemove={this.props.disabled ? undefined : this.handleRemoveTag}
+                onRemove={this.props.disabled || !canRemoveTag ? undefined : this.handleRemoveTag}
                 {...props}
             >
                 {tag}
