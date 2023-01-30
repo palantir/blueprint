@@ -9,7 +9,7 @@ Callout
 Markup:
 <div class="#{$ns}-callout {{.modifier}}">
   <h5 class="#{$ns}-heading">Callout Heading</h5>
-  It's dangerous to go alone! Take this.
+  It's dangerous to go alone! Take <a href="#">this</a>.
 </div>
 
 .#{$ns}-intent-primary - Primary intent
@@ -21,7 +21,7 @@ Markup:
 Styleguide callout
 */
 
-$callout-padding:  $pt-grid-size * 1.5;
+$callout-padding: $pt-grid-size * 1.5;
 $callout-header-margin-top: $pt-grid-size * 0.2;
 
 .#{$ns}-callout {
@@ -104,6 +104,24 @@ $callout-header-margin-top: $pt-grid-size * 0.2;
         .#{$ns}-heading {
           color: map-get($pt-dark-intent-text-colors, $intent);
         }
+      }
+    }
+  }
+
+  &.#{$ns}-intent-primary {
+    // special case for links inside primary intent callouts, which would otherwise not have any indication
+    // that they are clickable links; see https://github.com/palantir/blueprint/issues/5853
+    a {
+      text-decoration: underline;
+
+      &:hover {
+        color: $blue1;
+      }
+    }
+
+    .#{$ns}-dark & {
+      a:hover {
+        color: $blue6;
       }
     }
   }
