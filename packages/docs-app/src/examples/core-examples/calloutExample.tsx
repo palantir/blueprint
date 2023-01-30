@@ -52,9 +52,9 @@ export class CalloutExample extends React.PureComponent<IDocsExampleProps, Callo
         return (
             <Example options={options} {...this.props}>
                 <Callout {...calloutProps} title={showHeader ? "Visually important content" : undefined}>
-                    Long-form information about the the important content. This text is styled as{" "}
-                    <a href="#core/typography.running-text">"Running text" typography</a>, so it may contain things like
-                    headers, links, lists, <Code>code</Code> etc.
+                    Long-form information about the important content. This text is styled as{" "}
+                    <a href="#core/typography.running-text">"Running text"</a>, so it may contain things like headers,
+                    links, lists, <Code>code</Code> etc.
                 </Callout>
             </Example>
         );
