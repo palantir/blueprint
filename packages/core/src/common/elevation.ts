@@ -23,4 +23,4 @@ export const Elevation = {
     FOUR: 4 as 4,
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type Elevation = typeof Elevation[keyof typeof Elevation];
+export type Elevation = (typeof Elevation)[keyof typeof Elevation];

@@ -32,7 +32,7 @@ export const PopoverPosition = {
     AUTO_START: "auto-start" as "auto-start",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type PopoverPosition = typeof PopoverPosition[keyof typeof PopoverPosition];
+export type PopoverPosition = (typeof PopoverPosition)[keyof typeof PopoverPosition];
 
 /** Props shared between `Popover` and `Tooltip`. */
 export interface IPopoverSharedProps extends OverlayableProps, Props {
