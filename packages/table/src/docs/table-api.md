@@ -26,7 +26,7 @@ number of rows (`numRows` prop) as well as a set of `Column` children.
 
 
 
-```tsx
+```ts
 type ICellMapper<T> = (rowIndex: number, columnIndex: number) => T;
 ```
 
@@ -64,7 +64,7 @@ name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell2`.
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
 
-<h4 class="@ns-heading">Additional CSS required</h4>
+<h5 class="@ns-heading">Additional CSS required</h5>
 
 __ColumnHeaderCell2__ depends on @blueprintjs/popover2 styles, so you must remember to import
 that package's stylesheet in your application in addition to `table.css`:
@@ -100,7 +100,7 @@ In order to use this API, supply a custom renderer function which returns a `Row
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
 
-<h4 class="@ns-heading">Additional CSS required</h4>
+<h5 class="@ns-heading">Additional CSS required</h5>
 
 __RowHeaderCell2__ depends on @blueprintjs/popover2 styles, so you must remember to import
 that package's stylesheet in your application in addition to `table.css`:
@@ -135,7 +135,7 @@ You can construct region objects manually according to this interface, but we
 recommend using our exported __factory methods__ to help you construct the
 appropriate schema for your desired region type:
 
-```tsx
+```ts
 import { Regions } from "@blueprintjs/table";
 
 const singleCellRegion   = Regions.cell(0, 0); // { rows: [0, 0], cols: [0, 0] }

@@ -19,7 +19,9 @@ if [ -z "${CIRCLE_BUILD_NUM}" ]; then
 fi
 
 if [ -z "${CIRCLE_API_TOKEN}" ]; then
-    echo "No CircleCI API token available to query for artifact asset URLs from this build. Check the \$CIRCLE_API_TOKEN environment variable."
+    echo "No CircleCI API token available to query for artifact asset URLs from this build."
+    echo " --> If this is a build on a fork of the main repo, this is expected behavior. You can view artifact URLs through the CircleCI job web UI."
+    echo " --> If this is a build on the main repo, something is wrong: check the \$CIRCLE_API_TOKEN environment variable."
     exit 0
 fi
 

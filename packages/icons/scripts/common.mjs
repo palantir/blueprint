@@ -21,7 +21,7 @@ import { fileURLToPath } from "node:url";
 
 export const scriptsDir = fileURLToPath(new URL(".", import.meta.url));
 export const iconResourcesDir = resolve(scriptsDir, "../../../resources/icons");
-export const generatedSrcDir = resolve(scriptsDir, "../src/generated");
+export const generatedSrcDir = resolve(scriptsDir, "../src/generated-icons");
 export const NS = "bp4";
 
 /**

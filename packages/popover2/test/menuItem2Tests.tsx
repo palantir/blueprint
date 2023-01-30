@@ -68,6 +68,12 @@ describe("MenuItem2", () => {
         assert.equal(wrapper.find("a").prop("role"), undefined);
     });
 
+    it('can set roleStructure to change role prop structure to void li role (set role="none")', () => {
+        const wrapper = mount(<MenuItem2 text="Roles" roleStructure="none" />);
+        assert.equal(wrapper.find("li").prop("role"), "none");
+        assert.equal(wrapper.find("a").prop("role"), undefined);
+    });
+
     it("disabled MenuItem2 will not show its submenu", () => {
         const wrapper = shallow(
             <MenuItem2 disabled={true} icon="style" text="Style">

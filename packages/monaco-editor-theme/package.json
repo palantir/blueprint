@@ -1,0 +1,48 @@
+{
+    "name": "@blueprintjs/monaco-editor-theme",
+    "version": "0.0.0",
+    "description": "Blueprint theme for monaco-editor",
+    "main": "lib/cjs/index.js",
+    "module": "lib/esm/index.js",
+    "esnext": "lib/esnext/index.js",
+    "typings": "lib/esm/index.d.ts",
+    "sideEffects": [],
+    "scripts": {
+        "clean": "rm -rf dist/* && rm -rf lib/*",
+        "compile": "run-p \"compile:*\"",
+        "compile:esm": "tsc -p ./src",
+        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
+        "dev": "run-p \"compile:esm -- --watch\"",
+        "dist": "run-s \"dist:*\"",
+        "dist:verify": "assert-package-layout",
+        "lint": "run-p lint:es",
+        "lint:es": "es-lint",
+        "lint-fix": "es-lint --fix && sass-lint --fix",
+        "verify": "npm-run-all compile -p dist lint"
+    },
+    "dependencies": {
+        "@blueprintjs/colors": "^4.1.13",
+        "monaco-editor": "^0.34.1"
+    },
+    "devDependencies": {
+        "@blueprintjs/node-build-scripts": "^6.0.5",
+        "npm-run-all": "^4.1.5",
+        "typescript": "~4.6.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/monaco-editor-theme"
+    },
+    "keywords": [
+        "palantir",
+        "blueprint",
+        "theme",
+        "monaco",
+        "editor",
+        "vscode"
+    ],
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0"
+}

@@ -33,7 +33,7 @@ The `main` module exports all symbols from all modules so you don't have to impo
 1.  **Don't forget to include the main CSS file from each Blueprint package!** Additionally, the
     `resources/` directory contains supporting media such as fonts and images.
 
-    ```css.scss
+    ```scss
     // using node-style package resolution in a CSS file:
     @import "~normalize.css";
     @import "~@blueprintjs/core/lib/css/blueprint.css";
@@ -52,7 +52,7 @@ The `main` module exports all symbols from all modules so you don't have to impo
     ```
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">CDN-only usage</h4>
+    <h5 class="@ns-heading">CDN-only usage</h5>
 
 Blueprint can instead be quickly added to a page using the Unpkg CDN.
 [See below for instructions](#blueprint/getting-started.cdn-consumption).

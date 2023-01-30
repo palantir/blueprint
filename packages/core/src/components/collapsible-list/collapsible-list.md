@@ -7,10 +7,10 @@ customizing the appearance of visible items, using the props from the `MenuItem`
 children.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated: use [Overflow list](#core/components/overflow-list)
-</h4>
+</h5>
 
 This component is **deprecated since 3.0.0** with the introduction of
 [`OverflowList`](#core/components/overflow-list) which provides a similar
@@ -36,7 +36,7 @@ items, allowing for _any_ UI, not just a dropdown menu.
 Often a list of items calls for separators between each item.
 Adding separators to a `CollapsibleList` is easily achieved via CSS using `::after` pseudo-elements.
 
-```css.scss
+```scss
 // pass `visibleItemClassName="my-list-item"` to component, then...
 
 .my-list-item::after {

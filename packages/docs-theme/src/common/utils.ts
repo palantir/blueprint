@@ -20,6 +20,10 @@ import * as React from "react";
 /**
  * Removes leading indents from a template string without removing all leading whitespace.
  * Trims resulting string to remove blank first/last lines caused by ` location.
+ *
+ * TODO(adahiya): remove in Blueprint v5.0
+ *
+ * @deprecated use "dedent" package from NPM
  */
 export function dedent(strings: TemplateStringsArray, ...values: Array<{ toString(): string }>) {
     let fullString = strings.reduce((accumulator, str, i) => {

@@ -20,7 +20,7 @@ that class whenever needed.
 <Button className="my-custom-class" text="customized button" />
 ```
 
-```css.scss
+```scss
 .my-custom-class {
     width: 4000px;
 }
@@ -36,7 +36,7 @@ import { Classes } from "@blueprintjs/core";
 <a className={Classes.MENU_ITEM}>custom menu item</a>;
 ```
 
-```css.scss
+```scss
 // interpolate the $ns variable to generate forward-compatible class names.
 // this approach is *not encouraged* as it increases maintenance cost.
 @import "~@blueprintjs/core/lib/scss/variables";
