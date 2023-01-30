@@ -22,7 +22,7 @@ import * as sinon from "sinon";
 import { Classes as CoreClasses, Menu, MenuItem, Overlay, Portal } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes, Errors } from "../src";
+import { Classes, Errors, Popover2TargetProps } from "../src";
 import { IPopover2Props, IPopover2State, Popover2, Popover2InteractionKind } from "../src/popover2";
 import { Popover2Arrow } from "../src/popover2Arrow";
 import { PopupKind } from "../src/popupKind";
@@ -780,8 +780,8 @@ describe("<Popover2>", () => {
         });
     });
 
-    // these tests can be removed once Popover2 is merged into core in v5.0
     describe("compatibility", () => {
+        // this test can be removed once Popover2 is merged into core in v5.0
         it("MenuItem from core package is able to dismiss open Popover2", () => {
             wrapper = renderPopover(
                 { defaultIsOpen: true, usePortal: false },
@@ -792,6 +792,23 @@ describe("<Popover2>", () => {
             );
             wrapper.find(`.${CoreClasses.MENU_ITEM}`).simulate("click");
             wrapper.assertIsOpen(false);
+        });
+
+        it("renderTarget type definition allows sending props to child components", () => {
+            mount(
+                <Popover2
+                    usePortal={false}
+                    hoverCloseDelay={0}
+                    hoverOpenDelay={0}
+                    content="content"
+                    renderTarget={({ isOpen, ref, ...props }) => (
+                        <button data-testid="target-button" ref={ref} onClick={props.onClick} {...props}>
+                            Target
+                        </button>
+                    )}
+                />,
+                { attachTo: testsContainerElement },
+            );
         });
     });
 

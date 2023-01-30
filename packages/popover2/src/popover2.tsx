@@ -57,10 +57,12 @@ export const Popover2InteractionKind = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Popover2InteractionKind = (typeof Popover2InteractionKind)[keyof typeof Popover2InteractionKind];
 
-// eslint-disable-next-line deprecation/deprecation
-export type Popover2Props<TProps = DefaultPopover2TargetHTMLProps> = IPopover2Props<TProps>;
+export type Popover2Props<TProps extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps> =
+    // eslint-disable-next-line deprecation/deprecation
+    IPopover2Props<TProps>;
 /** @deprecated use Popover2Props */
-export interface IPopover2Props<TProps = DefaultPopover2TargetHTMLProps> extends Popover2SharedProps<TProps> {
+export interface IPopover2Props<TProps extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps>
+    extends Popover2SharedProps<TProps> {
     /**
      * Whether the popover/tooltip should acquire application focus when it first opens.
      *
