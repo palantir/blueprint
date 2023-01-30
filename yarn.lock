@@ -2771,14 +2771,14 @@ async@1.x:
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
   integrity sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=
 
-async@^2.6.1, async@^2.6.2:
+async@^2.6.2:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.3.tgz#d72625e2344a3656e3a3ad4fa749fa83299d82ff"
   integrity sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg==
   dependencies:
     lodash "^4.17.14"
 
-async@^3.2.3:
+async@^3.2.3, async@^3.2.4:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/async/-/async-3.2.4.tgz#2d22e00f8cddeb5fde5dd33522b56d1cf569a81c"
   integrity sha512-iAB+JbDEGXhyIUavoDl9WP/Jj106Kz9DEn1DPgYw5ruDn0e3Wgi3sKFm55sASdGBNOQB8F59d9qQ7deqrHA8wQ==
@@ -4655,10 +4655,10 @@ electron-to-chromium@^1.4.251:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.271.tgz#2d9f04f6a53c70e1bb1acfaae9c39f07ca40d290"
   integrity sha512-BCPBtK07xR1/uY2HFDtl3wK2De66AW4MSiPlLrnPNxKC/Qhccxd59W73654S3y6Rb/k3hmuGJOBnhjfoutetXA==
 
-email-addresses@^3.0.1:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/email-addresses/-/email-addresses-3.1.0.tgz#cabf7e085cbdb63008a70319a74e6136188812fb"
-  integrity sha512-k0/r7GrWVL32kZlGwfPNgB2Y/mMXVTq/decgLczm/j34whdaspNrZO8CnXPf1laaHxI6ptUlsnAxN+UAPw+fzg==
+email-addresses@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/email-addresses/-/email-addresses-5.0.0.tgz#7ae9e7f58eef7d5e3e2c2c2d3ea49b78dc854fa6"
+  integrity sha512-4OIPYlA6JXqtVn8zpHpGiI7vE6EQOAg16aGnDMIAlZVinnoZ8208tW1hAbjWydgN/4PLTT9q+O1K6AH/vALJGw==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -5843,14 +5843,14 @@ get-value@^2.0.3, get-value@^2.0.6:
   resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
   integrity sha1-3BXKHGcjh8p2vTesCjlbogQqLCg=
 
-gh-pages@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/gh-pages/-/gh-pages-4.0.0.tgz#bd7447bab7eef008f677ac8cc4f6049ab978f4a6"
-  integrity sha512-p8S0T3aGJc68MtwOcZusul5qPSNZCalap3NWbhRUZYu1YOdp+EjZ+4kPmRM8h3NNRdqw00yuevRjlkuSzCn7iQ==
+gh-pages@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/gh-pages/-/gh-pages-5.0.0.tgz#e0893272a0e33f0453e53a3c017c33b91ddd6394"
+  integrity sha512-Nqp1SjkPIB94Xw/3yYNTUL+G2dxlhjvv1zeN/4kMC1jfViTEqhtVz/Ba1zSXHuvXCN9ADNS1dN4r5/J/nZWEQQ==
   dependencies:
-    async "^2.6.1"
+    async "^3.2.4"
     commander "^2.18.0"
-    email-addresses "^3.0.1"
+    email-addresses "^5.0.0"
     filenamify "^4.3.0"
     find-cache-dir "^3.3.1"
     fs-extra "^8.1.0"
