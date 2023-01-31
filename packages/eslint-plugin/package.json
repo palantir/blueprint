@@ -12,8 +12,8 @@
         "test": "mocha"
     },
     "dependencies": {
-        "@typescript-eslint/utils": "^5.38.1",
-        "eslint": "^8.32.0"
+        "@typescript-eslint/utils": "^5.50.0",
+        "eslint": "^8.33.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^6.0.5",

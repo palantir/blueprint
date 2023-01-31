@@ -17,7 +17,7 @@
         "autoprefixer": "^10.4.12",
         "chokidar": "^3.5.3",
         "cross-spawn": "^7.0.3",
-        "eslint": "^8.32.0",
+        "eslint": "^8.33.0",
         "eslint-formatter-codeframe": "^7.32.1",
         "fs-extra": "^11.1.0",
         "get-sass-vars": "^3.4.0",
