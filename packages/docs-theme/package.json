@@ -36,7 +36,6 @@
         "@documentalist/client": "^4.0.0",
         "classnames": "^2.3.1",
         "fuzzaldrin-plus": "^0.6.0",
-        "monaco-editor": "^0.34.1",
         "tslib": "~2.3.1"
     },
     "peerDependencies": {
