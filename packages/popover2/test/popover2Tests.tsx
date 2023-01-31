@@ -22,7 +22,7 @@ import * as sinon from "sinon";
 import { Classes as CoreClasses, Menu, MenuItem, Overlay, Portal } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes, Errors, Popover2TargetProps } from "../src";
+import { Classes, Errors } from "../src";
 import { IPopover2Props, IPopover2State, Popover2, Popover2InteractionKind } from "../src/popover2";
 import { Popover2Arrow } from "../src/popover2Arrow";
 import { PopupKind } from "../src/popupKind";
