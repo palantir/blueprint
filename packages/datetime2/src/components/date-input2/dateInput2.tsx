@@ -35,7 +35,7 @@ import {
     DatePickerShortcut,
     DatePickerUtils,
 } from "@blueprintjs/datetime";
-import { Popover2, Popover2TargetProps } from "@blueprintjs/popover2";
+import { Popover2, Popover2ClickTargetHandlers, Popover2TargetProps } from "@blueprintjs/popover2";
 
 import * as Classes from "../../common/classes";
 import { DatetimePopoverProps } from "../../common/datetimePopoverProps";
@@ -568,13 +568,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
 
     // We use the renderTarget API to flatten the rendered DOM and make it easier to implement features like the "fill" prop.
     const renderTarget = React.useCallback(
-        // N.B. pull out `defaultValue` so that it's not forwarded to the DOM.
-        ({
-            defaultValue: _defaultValue,
-            isOpen: targetIsOpen,
-            ref,
-            ...targetProps
-        }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
+        ({ isOpen: targetIsOpen, ref, ...targetProps }: Popover2TargetProps & Popover2ClickTargetHandlers) => {
             return (
                 <InputGroup
                     autoComplete="off"
