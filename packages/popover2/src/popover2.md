@@ -122,8 +122,8 @@ each consist of two attributes:
 
 These two attributes can be expressed with a single value having the following structure:
 
-<pre class="docs-popover-placement-value-code-block">
-    <span class="docs-popover-placement-label-side">[SIDE]</span>-<span class="docs-popover-placement-label-alignment">[ALIGNMENT]</span>
+<pre class="docs-popover2-placement-value-code-block">
+<span class="docs-popover2-placement-label-side">[SIDE]</span>-<span class="docs-popover2-placement-label-alignment">[ALIGNMENT]</span>
 </pre>
 
 @reactExample Popover2PlacementExample
