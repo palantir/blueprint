@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/datetime2",
-    "version": "0.9.11",
+    "version": "0.9.12",
     "description": "Components for interacting with dates and times with timezones",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -35,10 +35,10 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.15.0",
-        "@blueprintjs/datetime": "^4.4.13",
-        "@blueprintjs/popover2": "^1.12.0",
-        "@blueprintjs/select": "^4.8.17",
+        "@blueprintjs/core": "^4.15.1",
+        "@blueprintjs/datetime": "^4.4.14",
+        "@blueprintjs/popover2": "^1.12.1",
+        "@blueprintjs/select": "^4.8.18",
         "classnames": "^2.3.1",
         "date-fns": "^2.28.0",
         "date-fns-tz": "^1.3.7",
@@ -56,10 +56,10 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/colors": "^4.1.13",
-        "@blueprintjs/karma-build-scripts": "^4.0.9",
-        "@blueprintjs/node-build-scripts": "^6.0.5",
-        "@blueprintjs/test-commons": "^1.1.7",
+        "@blueprintjs/colors": "^4.1.14",
+        "@blueprintjs/karma-build-scripts": "^4.0.10",
+        "@blueprintjs/node-build-scripts": "^6.0.6",
+        "@blueprintjs/test-commons": "^1.1.8",
         "@types/lodash": "~4.14.188",
         "enzyme": "^3.11.0",
         "karma": "^6.4.1",
