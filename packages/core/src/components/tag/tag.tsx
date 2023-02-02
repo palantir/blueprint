@@ -165,13 +165,7 @@ export class Tag extends AbstractPureComponent2<TagProps> {
         );
         const isLarge = large || tagClasses.indexOf(Classes.LARGE) >= 0;
         const removeButton = isRemovable ? (
-            <button
-                aria-label="Remove Tag"
-                type="button"
-                className={Classes.TAG_REMOVE}
-                onClick={this.onRemoveClick}
-                tabIndex={interactive ? tabIndex : undefined}
-            >
+            <button aria-label="Remove Tag" type="button" className={Classes.TAG_REMOVE} onClick={this.onRemoveClick}>
                 <Icon icon="small-cross" size={isLarge ? IconSize.LARGE : IconSize.STANDARD} />
             </button>
         ) : null;
