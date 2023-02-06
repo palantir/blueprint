@@ -48,7 +48,9 @@ export class MultiSelectEditableOnClickExample extends React.PureComponent<Examp
                     onItemSelect={this.handleFilmSelect}
                     onItemsPaste={this.handleFilmsPaste}
                     popoverProps={{
+                        minimal: true,
                         onClosed: this.handlePopoverClosed,
+                        placement: "bottom",
                     }}
                     readOnly={!this.state.hasFocus}
                     tagRenderer={this.renderTag}
