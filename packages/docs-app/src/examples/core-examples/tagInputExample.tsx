@@ -44,6 +44,7 @@ export interface ITagInputExampleState {
     leftIcon: boolean;
     tagIntents: boolean;
     tagMinimal: boolean;
+    readOnly: boolean;
     values: React.ReactNode[];
 }
 
@@ -56,6 +57,7 @@ export class TagInputExample extends React.PureComponent<ExampleProps, ITagInput
         intent: "none",
         large: false,
         leftIcon: true,
+        readOnly: false,
         tagIntents: false,
         tagMinimal: false,
         values: VALUES,
@@ -75,6 +77,8 @@ export class TagInputExample extends React.PureComponent<ExampleProps, ITagInput
 
     private handleLeftIconChange = handleBooleanChange(leftIcon => this.setState({ leftIcon }));
 
+    private handleReadOnlyChange = handleBooleanChange(readOnly => this.setState({ readOnly }));
+
     private handleTagIntentsChange = handleBooleanChange(tagIntents => this.setState({ tagIntents }));
 
     private handleTagMinimalChange = handleBooleanChange(tagMinimal => this.setState({ tagMinimal }));
@@ -82,7 +86,7 @@ export class TagInputExample extends React.PureComponent<ExampleProps, ITagInput
     public render() {
         const { tagIntents, tagMinimal, values, ...props } = this.state;
 
-        const clearButton = (
+        const maybeClearButton = props.readOnly ? undefined : (
             <Button
                 disabled={props.disabled}
                 icon={values.length > 1 ? "cross" : "refresh"}
@@ -107,7 +111,7 @@ export class TagInputExample extends React.PureComponent<ExampleProps, ITagInput
                     leftIcon={this.state.leftIcon ? "user" : undefined}
                     onChange={this.handleChange}
                     placeholder="Separate values with commas..."
-                    rightElement={clearButton}
+                    rightElement={maybeClearButton}
                     tagProps={getTagProps}
                     values={values}
                 />
@@ -121,6 +125,7 @@ export class TagInputExample extends React.PureComponent<ExampleProps, ITagInput
                 <H5>Props</H5>
                 <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
+                <Switch label="Read-only" checked={this.state.readOnly} onChange={this.handleReadOnlyChange} />
                 <Switch label="Left icon" checked={this.state.leftIcon} onChange={this.handleLeftIconChange} />
                 <Switch label="Add on blur" checked={this.state.addOnBlur} onChange={this.handleAddOnBlurChange} />
                 <Switch label="Add on paste" checked={this.state.addOnPaste} onChange={this.handleAddOnPasteChange} />

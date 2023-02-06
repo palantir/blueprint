@@ -94,15 +94,23 @@ export interface MultiSelect2Props<T> extends ListItemsProps<T>, SelectPopoverPr
      */
     placeholder?: string;
 
+    /**
+     * Whether the component is read-only.
+     *
+     * @default false
+     */
+    readOnly?: boolean;
+
     /** Controlled selected values. */
     selectedItems: T[];
 
     /**
-     * Props to pass to the [TagInput component](##core/components/tag-input).
+     * Props to pass to the [TagInput component](#core/components/tag-input).
      *
      * Some properties are unavailable:
      * - `tagInputProps.inputValue`: use `query` instead
      * - `tagInputProps.onInputChange`: use `onQueryChange` instead
+     * - `tagInputProps.readOnly`: use `readOnly` instead
      *
      * Some properties are available, but discouraged. If you find yourself using these due to a bug in MultiSelect2
      * or some edge case which is not handled by `onItemSelect`, `onItemsPaste`, `onRemove`, and `onClear`, please
@@ -118,7 +126,7 @@ export interface MultiSelect2Props<T> extends ListItemsProps<T>, SelectPopoverPr
      * - if none of `tagInputProps.onRemove` and `tagInputProps.onChange`, and `onRemove` are provided,
      *   rendered tag items will not have remove icons.
      */
-    tagInputProps?: Partial<Omit<TagInputProps, "inputValue" | "onInputChange">>;
+    tagInputProps?: Partial<Omit<TagInputProps, "inputValue" | "onInputChange" | "readOnly">>;
 
     /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;
@@ -142,6 +150,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         disabled: false,
         fill: false,
         placeholder: "Search...",
+        readonly: false,
     };
 
     /** @deprecated no longer necessary now that the TypeScript parser supports type arguments on JSX element tags */
@@ -203,7 +212,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
     }
 
     private renderQueryList = (listProps: QueryListRendererProps<T>) => {
-        const { disabled, popoverContentProps = {}, popoverProps = {} } = this.props;
+        const { disabled, popoverContentProps = {}, popoverProps = {}, readOnly } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
 
         const popoverRef =
@@ -216,7 +225,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
             <Popover2
                 autoFocus={false}
                 canEscapeKeyClose={true}
-                disabled={disabled}
+                disabled={disabled || readOnly}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
@@ -255,6 +264,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 placeholder,
                 popoverProps = {},
                 popoverTargetProps = {},
+                readOnly,
                 selectedItems,
                 tagInputProps = {},
             } = this.props;
@@ -273,23 +283,26 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                 className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT),
             };
 
-            const maybeClearButton =
-                onClear !== undefined && selectedItems.length > 0 ? (
-                    // use both aria-label and title a11y attributes here, for screen readers
-                    // and mouseover interactions respectively
-                    <Button
-                        aria-label="Clear selected items"
-                        disabled={disabled}
-                        icon="cross"
-                        minimal={true}
-                        onClick={this.handleClearButtonClick}
-                        title="Clear selected items"
-                    />
-                ) : undefined;
+            const canClearAllTags = !readOnly && onClear !== undefined && selectedItems.length > 0;
+            const canRemoveAnyTag =
+                !disabled &&
+                !readOnly &&
+                (onRemove != null || tagInputProps?.onRemove != null || tagInputProps?.onChange != null);
+
+            const maybeClearButton = canClearAllTags ? (
+                // use both aria-label and title a11y attributes here, for screen readers
+                // and mouseover interactions respectively
+                <Button
+                    aria-label="Clear selected items"
+                    disabled={disabled}
+                    icon="cross"
+                    minimal={true}
+                    onClick={this.handleClearButtonClick}
+                    title="Clear selected items"
+                />
+            ) : undefined;
 
             const { targetTagName = "div" } = popoverProps;
-
-            const canRemoveTag = onRemove != null || tagInputProps?.onRemove != null || tagInputProps?.onChange != null;
 
             return React.createElement(
                 targetTagName,
@@ -321,7 +334,8 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                     inputValue={listProps.query}
                     onAdd={this.getTagInputAddHandler(listProps)}
                     onInputChange={listProps.handleQueryChange}
-                    onRemove={canRemoveTag ? this.handleTagRemove : undefined}
+                    onRemove={canRemoveAnyTag ? this.handleTagRemove : undefined}
+                    readOnly={readOnly}
                     values={selectedItems.map(this.props.tagRenderer)}
                 />,
             );

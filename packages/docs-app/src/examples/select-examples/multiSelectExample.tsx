@@ -50,6 +50,7 @@ export interface IMultiSelectExampleState {
     matchTargetWidth: boolean;
     openOnKeyDown: boolean;
     popoverMinimal: boolean;
+    readOnly: boolean;
     resetOnSelect: boolean;
     showClearButton: boolean;
     tagMinimal: boolean;
@@ -69,6 +70,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
         matchTargetWidth: false,
         openOnKeyDown: false,
         popoverMinimal: true,
+        readOnly: false,
         resetOnSelect: true,
         showClearButton: true,
         tagMinimal: false,
@@ -93,6 +95,8 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
     private handleMatchTargetWidthChange = this.handleSwitchChange("matchTargetWidth");
 
     private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
+
+    private handleReadOnlyChange = this.handleSwitchChange("readOnly");
 
     private handleResetChange = this.handleSwitchChange("resetOnSelect");
 
@@ -208,6 +212,9 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
                 </PropCodeTooltip>
                 <PropCodeTooltip snippet={`fill={${this.state.fill.toString()}}`}>
                     <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`readOnly={${this.state.readOnly.toString()}}`}>
+                    <Switch label="Read-only" checked={this.state.readOnly} onChange={this.handleReadOnlyChange} />
                 </PropCodeTooltip>
                 <H5>Tag props</H5>
                 <Switch

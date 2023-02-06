@@ -74,7 +74,13 @@ export interface ITagInputProps extends IntentProps, Props {
 
     /**
      * React props to pass to the `<input>` element.
-     * Note that `ref` and `key` are not supported here; use `inputRef` below.
+     *
+     * Some properties are unavailable:
+     * - `inputProps.ref`: use `inputRef` instead
+     * - `inputProps.key`: use `key` instead
+     *
+     * Some properties are discouraged and their values will be overriden by alternative props:
+     * - `inputProps.readOnly`: use `readOnly` instead
      */
     inputProps?: HTMLInputProps;
 
@@ -154,6 +160,16 @@ export interface ITagInputProps extends IntentProps, Props {
     placeholder?: string;
 
     /**
+     * Whether the tag input is read-only.
+     *
+     * Note that `rightElement` must be disabled or made read-only separately;
+     * this prop will not affect it.
+     *
+     * @default false
+     */
+    readOnly?: boolean;
+
+    /**
      * Element to render on right side of input.
      * For best results, use a small spinner or minimal button (button height will adjust if `TagInput` uses large styles).
      * Other elements will likely require custom styles for correct positioning.
@@ -207,6 +223,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
         addOnBlur: false,
         addOnPaste: true,
         inputProps: {},
+        readOnly: false,
         separator: /[,\n\r]/,
         tagProps: {},
     };
@@ -235,7 +252,8 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
     private handleRef: React.Ref<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
     public render() {
-        const { className, disabled, fill, inputProps, intent, large, leftIcon, placeholder, values } = this.props;
+        const { className, disabled, fill, inputProps, intent, large, leftIcon, placeholder, readOnly, values } =
+            this.props;
 
         const classes = classNames(
             Classes.INPUT,
@@ -245,6 +263,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
                 [Classes.DISABLED]: disabled,
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
+                [Classes.READ_ONLY]: readOnly,
             },
             Classes.intentClass(intent),
             className,
@@ -268,15 +287,16 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
                     <input
                         value={this.state.inputValue}
                         {...inputProps}
-                        onFocus={this.handleInputFocus}
-                        onChange={this.handleInputChange}
-                        onKeyDown={this.handleInputKeyDown}
-                        onKeyUp={this.handleInputKeyUp}
-                        onPaste={this.handleInputPaste}
-                        placeholder={resolvedPlaceholder}
-                        ref={this.handleRef}
                         className={classNames(Classes.INPUT_GHOST, inputProps?.className)}
                         disabled={disabled}
+                        onChange={readOnly ? undefined : this.handleInputChange}
+                        onFocus={readOnly ? undefined : this.handleInputFocus}
+                        onKeyDown={readOnly ? undefined : this.handleInputKeyDown}
+                        onKeyUp={readOnly ? undefined : this.handleInputKeyUp}
+                        onPaste={readOnly ? undefined : this.handleInputPaste}
+                        placeholder={resolvedPlaceholder}
+                        readOnly={readOnly}
+                        ref={this.handleRef}
                     />
                 </div>
                 {this.props.rightElement}
@@ -310,16 +330,16 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
         if (!tag) {
             return null;
         }
-        const { large, tagProps, onRemove, onChange } = this.props;
+        const { disabled, large, readOnly, tagProps, onRemove, onChange } = this.props;
+        const canRemoveTag = !disabled && !readOnly && (onRemove !== undefined || onChange !== undefined);
         const props = Utils.isFunction(tagProps) ? tagProps(tag, index) : tagProps;
-        const canRemoveTag = onRemove != null || onChange != null;
         return (
             <Tag
                 active={index === this.state.activeIndex}
                 data-tag-index={index}
                 key={tag + "__" + index}
                 large={large}
-                onRemove={this.props.disabled || !canRemoveTag ? undefined : this.handleRemoveTag}
+                onRemove={canRemoveTag ? this.handleRemoveTag : undefined}
                 {...props}
             >
                 {tag}
@@ -364,10 +384,16 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
     }
 
     private handleContainerClick = () => {
+        if (this.props.readOnly) {
+            return;
+        }
         this.inputElement?.focus();
     };
 
     private handleContainerBlur = ({ currentTarget }: React.FocusEvent<HTMLDivElement>) => {
+        if (this.props.readOnly) {
+            return;
+        }
         this.requestAnimationFrame(() => {
             // we only care if the blur event is leaving the container.
             // defer this check using rAF so activeElement will have updated.
