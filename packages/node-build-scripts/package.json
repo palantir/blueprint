@@ -26,7 +26,7 @@
         "postcss": "^8.4.21",
         "postcss-cli": "^10.1.0",
         "postcss-discard-comments": "^5.1.1",
-        "postcss-scss": "^4.0.5",
+        "postcss-scss": "^4.0.6",
         "prettier": "~2.8.3",
         "sass": "^1.57.1",
         "source-map": "^0.7.4",
