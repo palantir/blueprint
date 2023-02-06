@@ -208,7 +208,7 @@ export class Collapse extends AbstractPureComponent2<CollapseProps, ICollapseSta
                 className={Classes.COLLAPSE_BODY}
                 ref={this.contentsRefHandler}
                 style={contentsStyle}
-                aria-hidden={!isContentVisible && this.props.keepChildrenMounted}
+                aria-hidden={!shouldRenderChildren}
             >
                 {shouldRenderChildren ? this.props.children : null}
             </div>,
