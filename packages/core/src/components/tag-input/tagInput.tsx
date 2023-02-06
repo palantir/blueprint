@@ -122,6 +122,11 @@ export interface ITagInputProps extends IntentProps, Props {
     onChange?: (values: React.ReactNode[]) => boolean | void;
 
     /**
+     * Callback invoked when the user clicks on the tag input.
+     */
+    onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+
+    /**
      * Callback invoked when the value of `<input>` element is changed.
      * This is shorthand for `inputProps={{ onChange }}`.
      */
@@ -383,11 +388,12 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
             .filter(val => val.length > 0);
     }
 
-    private handleContainerClick = () => {
-        if (this.props.readOnly) {
-            return;
+    private handleContainerClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        this.props.onClick?.(event);
+
+        if (!this.props.readOnly) {
+            this.inputElement?.focus();
         }
-        this.inputElement?.focus();
     };
 
     private handleContainerBlur = ({ currentTarget }: React.FocusEvent<HTMLDivElement>) => {
