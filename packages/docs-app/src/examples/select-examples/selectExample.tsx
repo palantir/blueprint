@@ -16,9 +16,10 @@
 
 import * as React from "react";
 
-import { H5, MenuItem, Switch } from "@blueprintjs/core";
+import { H5, Menu, MenuDivider, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { Film, FilmSelect, TOP_100_FILMS } from "@blueprintjs/select/examples";
+import { isCreateNewItem, ItemListRendererProps, ListItemsProps } from "@blueprintjs/select";
+import { Film, FilmSelect, filterFilm, TOP_100_FILMS } from "@blueprintjs/select/examples";
 
 export interface ISelectExampleState {
     allowCreate: boolean;
@@ -28,6 +29,7 @@ export interface ISelectExampleState {
     disabled: boolean;
     fill: boolean;
     filterable: boolean;
+    grouped: boolean;
     hasInitialContent: boolean;
     matchTargetWidth: boolean;
     minimal: boolean;
@@ -46,6 +48,7 @@ export class SelectExample extends React.PureComponent<ExampleProps, ISelectExam
         disabled: false,
         fill: false,
         filterable: true,
+        grouped: false,
         hasInitialContent: false,
         matchTargetWidth: false,
         minimal: false,
@@ -64,6 +67,8 @@ export class SelectExample extends React.PureComponent<ExampleProps, ISelectExam
 
     private handleFilterableChange = this.handleSwitchChange("filterable");
 
+    private handleGroupedChange = this.handleSwitchChange("grouped");
+
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
 
     private handleItemDisabledChange = this.handleSwitchChange("disableItems");
@@ -79,11 +84,9 @@ export class SelectExample extends React.PureComponent<ExampleProps, ISelectExam
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
     public render() {
-        const { allowCreate, disabled, disableItems, matchTargetWidth, minimal, ...flags } = this.state;
+        const { allowCreate, disabled, disableItems, grouped, matchTargetWidth, minimal, ...flags } = this.state;
 
-        const initialContent = this.state.hasInitialContent ? (
-            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
-        ) : undefined;
+        const initialContent = this.getInitialContent();
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
@@ -92,7 +95,10 @@ export class SelectExample extends React.PureComponent<ExampleProps, ISelectExam
                     allowCreate={allowCreate}
                     createNewItemPosition={this.state.createFirst ? "first" : "last"}
                     disabled={disabled}
+                    getActiveElement={grouped ? this.getGroupedActiveElement : undefined}
                     itemDisabled={this.isItemDisabled}
+                    itemListRenderer={grouped ? this.renderGroupedItemList : undefined}
+                    itemListPredicate={grouped ? this.groupedItemListPredicate : undefined}
                     initialContent={initialContent}
                     popoverProps={{ matchTargetWidth, minimal }}
                 />
@@ -105,6 +111,7 @@ export class SelectExample extends React.PureComponent<ExampleProps, ISelectExam
             <>
                 <H5>Props</H5>
                 <Switch label="Filterable" checked={this.state.filterable} onChange={this.handleFilterableChange} />
+                <Switch label="Grouped" checked={this.state.grouped} onChange={this.handleGroupedChange} />
                 <Switch
                     label="Reset on close"
                     checked={this.state.resetOnClose}
@@ -159,6 +166,60 @@ export class SelectExample extends React.PureComponent<ExampleProps, ISelectExam
         );
     }
 
+    private getGroup(item: Film) {
+        const firstLetter = item.title[0].toUpperCase();
+        return /[0-9]/.test(firstLetter) ? "0-9" : firstLetter;
+    }
+
+    private getGroupedActiveElement: ListItemsProps<Film>["getActiveElement"] = ({
+        activeItem,
+        filteredItems,
+        index,
+        itemsParent,
+    }) => {
+        if (itemsParent != null) {
+            if (isCreateNewItem(activeItem)) {
+                return itemsParent.children.item(index) as HTMLElement;
+            }
+
+            const group = this.getGroup(activeItem);
+            const groupedItems = this.getGroupedItems(filteredItems);
+            const groupIndex = groupedItems.findIndex(item => item.group === group);
+            return itemsParent.children.item(index + groupIndex + 1) as HTMLElement;
+        }
+        return undefined;
+    };
+
+    private getGroupedItems = (filteredItems: Film[]) => {
+        return filteredItems.reduce<Array<{ group: string; index: number; items: Film[]; key: number }>>(
+            (acc, item, index) => {
+                const group = this.getGroup(item);
+
+                const lastGroup = acc.at(-1);
+                if (lastGroup && lastGroup.group === group) {
+                    lastGroup.items.push(item);
+                } else {
+                    acc.push({ group, index, items: [item], key: index });
+                }
+
+                return acc;
+            },
+            [],
+        );
+    };
+
+    private getInitialContent = () => {
+        return this.state.hasInitialContent ? (
+            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
+        ) : undefined;
+    };
+
+    private groupedItemListPredicate = (query: string, items: Film[]) => {
+        return items
+            .filter((item, index) => filterFilm(query, item, index))
+            .sort((a, b) => this.getGroup(a).localeCompare(this.getGroup(b)));
+    };
+
     private handleSwitchChange(prop: keyof ISelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {
             const checked = event.currentTarget.checked;
@@ -167,4 +228,47 @@ export class SelectExample extends React.PureComponent<ExampleProps, ISelectExam
     }
 
     private isItemDisabled = (film: Film) => this.state.disableItems && film.year < 2000;
+
+    private renderGroupedItemList = (listProps: ItemListRendererProps<Film>) => {
+        const initialContent = this.getInitialContent();
+        const noResults = <MenuItem disabled={true} text="No results." roleStructure="listoption" />;
+
+        // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
+        const createItemView = listProps.renderCreateItem();
+        const maybeNoResults = createItemView != null ? null : noResults;
+
+        const menuContent = this.renderGroupedMenuContent(listProps, maybeNoResults, initialContent);
+        if (menuContent == null && createItemView == null) {
+            return null;
+        }
+        const { createFirst } = this.state;
+        return (
+            <Menu role="listbox" {...listProps.menuProps} ulRef={listProps.itemsParentRef}>
+                {createFirst && createItemView}
+                {menuContent}
+                {!createFirst && createItemView}
+            </Menu>
+        );
+    };
+
+    private renderGroupedMenuContent = (
+        listProps: ItemListRendererProps<Film>,
+        noResults?: React.ReactNode,
+        initialContent?: React.ReactNode | null,
+    ) => {
+        if (listProps.query.length === 0 && initialContent !== undefined) {
+            return initialContent;
+        }
+
+        const groupedItems = this.getGroupedItems(listProps.filteredItems);
+
+        const menuContent = groupedItems.map(groupedItem => (
+            <React.Fragment key={groupedItem.key}>
+                <MenuDivider title={groupedItem.group} />
+                {groupedItem.items.map((item, index) => listProps.renderItem(item, groupedItem.index + index))}
+            </React.Fragment>
+        ));
+
+        return groupedItems.length > 0 ? menuContent : noResults;
+    };
 }
