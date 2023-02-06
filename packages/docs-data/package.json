@@ -27,7 +27,7 @@
         "directory": "packages/docs-data"
     },
     "engines": {
-        "node": ">=16"
+        "node": ">=18"
     },
     "author": "Palantir Technologies",
     "license": "Apache-2.0"

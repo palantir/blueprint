@@ -69,7 +69,7 @@
         "@types/react": "16.14.32"
     },
     "engines": {
-        "node": ">=19.3"
+        "node": ">=18"
     },
     "repository": {
         "type": "git",
