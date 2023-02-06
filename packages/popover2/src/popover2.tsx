@@ -57,10 +57,12 @@ export const Popover2InteractionKind = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Popover2InteractionKind = (typeof Popover2InteractionKind)[keyof typeof Popover2InteractionKind];
 
-// eslint-disable-next-line deprecation/deprecation
-export type Popover2Props<TProps = DefaultPopover2TargetHTMLProps> = IPopover2Props<TProps>;
+export type Popover2Props<TProps extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps> =
+    // eslint-disable-next-line deprecation/deprecation
+    IPopover2Props<TProps>;
 /** @deprecated use Popover2Props */
-export interface IPopover2Props<TProps = DefaultPopover2TargetHTMLProps> extends Popover2SharedProps<TProps> {
+export interface IPopover2Props<TProps extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps>
+    extends Popover2SharedProps<TProps> {
     /**
      * Whether the popover/tooltip should acquire application focus when it first opens.
      *
@@ -136,16 +138,14 @@ export interface IPopover2State {
 /**
  * Popover (v2) component, used to display a floating UI next to and tethered to a target element.
  *
- * @template T target element props interface. Note that we cannot assign a default value for this type param because it
- * makes the type of the props supplied to `renderTarget()` cumbersome to work with when that API is used. Consumers
- * wishing to stay in sync with Blueprint's default target HTML props interface should use the
- * `DefaultPopover2TargetHTMLProps` type exported from @blueprintjs/popover2.
+ * @template T target element props interface. Consumers wishing to stay in sync with Blueprint's default target HTML
+ * props interface should use the `DefaultPopover2TargetHTMLProps` type (although this is already the default type for
+ * this type param).
  * @see https://blueprintjs.com/docs/#popover2-package/popover2
  */
-export class Popover2<T extends DefaultPopover2TargetHTMLProps> extends AbstractPureComponent2<
-    Popover2Props<T>,
-    IPopover2State
-> {
+export class Popover2<
+    T extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps,
+> extends AbstractPureComponent2<Popover2Props<T>, IPopover2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
 
     public static defaultProps: Popover2Props = {
@@ -685,7 +685,8 @@ export class Popover2<T extends DefaultPopover2TargetHTMLProps> extends Abstract
             return;
         }
 
-        const eventTarget = e.target as HTMLElement;
+        const event = (e.nativeEvent ?? e) as Event;
+        const eventTarget = (event.composed ? event.composedPath()[0] : event.target) as HTMLElement;
         // if click was in target, target event listener will handle things, so don't close
         if (!Utils.elementIsOrContains(this.targetElement, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
             this.setOpenState(false, e);

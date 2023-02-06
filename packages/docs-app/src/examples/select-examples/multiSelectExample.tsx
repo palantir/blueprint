@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Code, H5, Intent, MenuItem, Switch, TagProps } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { DefaultPopover2TargetHTMLProps, Popover2 } from "@blueprintjs/popover2";
+import { Popover2 } from "@blueprintjs/popover2";
 import { ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
 import {
     areFilmsEqual,
@@ -72,7 +72,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
         tagMinimal: false,
     };
 
-    private popoverRef: React.RefObject<Popover2<DefaultPopover2TargetHTMLProps>> = React.createRef();
+    private popoverRef: React.RefObject<Popover2> = React.createRef();
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
 
