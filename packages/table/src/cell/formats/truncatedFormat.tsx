@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to TruncatedFormat2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -76,6 +83,7 @@ export interface ITrucatedFormateMeasureByApproximateOptions {
 }
 
 export type TruncatedFormatProps = ITruncatedFormatProps;
+/** @deprecated use TruncatedFormatProps */
 export interface ITruncatedFormatProps extends Props {
     children?: string;
 
@@ -150,10 +158,11 @@ export interface ITruncatedFormatState {
     isPopoverOpen?: boolean;
 }
 
-export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, ITruncatedFormatState> {
+/** @deprecated use TruncatedFormat2 */
+export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, ITruncatedFormatState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TruncatedFormat`;
 
-    public static defaultProps: ITruncatedFormatProps = {
+    public static defaultProps: TruncatedFormatProps = {
         detectTruncation: false,
         measureByApproxOptions: {
             approximateCharWidth: 8,
@@ -227,7 +236,6 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             return (
-                /* eslint-disable-next-line deprecation/deprecation */
                 <Popover
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                     modifiers={{ preventOverflow: { boundariesElement: "window" } }}
@@ -237,12 +245,10 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
                     onClose={this.handlePopoverClose}
                 >
                     <Icon icon="more" />
-                    {/* eslint-disable-next-line deprecation/deprecation */}
                 </Popover>
             );
         } else {
-            // NOTE: This structure matches what `<Popover>` does internally. If
-            // `<Popover>` changes, this must be updated.
+            // NOTE: This structure matches what `<Popover>` does internally. If `<Popover>` changes, this must be updated.
             return (
                 <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
                     <Icon icon="more" />

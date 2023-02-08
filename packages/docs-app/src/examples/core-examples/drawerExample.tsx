@@ -26,17 +26,20 @@ import {
     H5,
     HTMLSelect,
     Label,
+    Menu,
+    MenuItem,
     OptionProps,
     Position,
     Switch,
 } from "@blueprintjs/core";
 import {
     Example,
+    ExampleProps,
     handleBooleanChange,
     handleStringChange,
     handleValueChange,
-    IExampleProps,
 } from "@blueprintjs/docs-theme";
+import { ContextMenu2 } from "@blueprintjs/popover2";
 
 import { IBlueprintExampleData } from "../../tags/types";
 
@@ -51,7 +54,7 @@ export interface IDrawerExampleState {
     size: string;
     usePortal: boolean;
 }
-export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IDrawerExampleState> {
+export class DrawerExample extends React.PureComponent<ExampleProps<IBlueprintExampleData>, IDrawerExampleState> {
     public state: IDrawerExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,
@@ -92,6 +95,7 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
                     {...this.state}
                 >
                     <div className={Classes.DRAWER_BODY}>
+                        {/* HACKHACK: strange use of unrelated dialog class, should be refactored */}
                         <div className={Classes.DIALOG_BODY}>
                             <p>
                                 <strong>
@@ -119,6 +123,17 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
                                 can build upon. And the enterprise data foundation goes where the business drives it.
                             </p>
                             <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
+                            <ContextMenu2
+                                content={
+                                    <Menu>
+                                        <MenuItem text="Menu Item 1" />
+                                    </Menu>
+                                }
+                            >
+                                <Button onClick={this.handleClose}>
+                                    Right Click for a <Code>&lt;ContextMenu2 /&gt;</Code>
+                                </Button>
+                            </ContextMenu2>
                         </div>
                     </div>
                     <div className={Classes.DRAWER_FOOTER}>Footer</div>

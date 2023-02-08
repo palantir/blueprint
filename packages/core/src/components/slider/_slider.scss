@@ -72,6 +72,10 @@ $track-height: $track-size !default;
       background-color: $color;
     }
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    background: ButtonText;
+  }
 }
 
 .#{$ns}-slider-handle {

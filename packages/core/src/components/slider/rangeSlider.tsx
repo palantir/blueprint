@@ -19,6 +19,7 @@ import * as React from "react";
 import { AbstractPureComponent2, Intent } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { HandleHtmlProps } from "./handleProps";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
 export type NumberRange = [number, number];
@@ -44,8 +45,16 @@ export interface IRangeSliderProps extends ISliderBaseProps {
 
     /** Callback invoked when a handle is released. */
     onRelease?(value: NumberRange): void;
+
+    /** HTML props to apply to the slider Handles */
+    handleHtmlProps?: { start?: HandleHtmlProps; end?: HandleHtmlProps };
 }
 
+/**
+ * Range slider component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/sliders.range-slider
+ */
 export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
     public static defaultProps: RangeSliderProps = {
         ...MultiSlider.defaultSliderProps,
@@ -56,11 +65,16 @@ export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.RangeSlider`;
 
     public render() {
-        const { value, ...props } = this.props;
+        const { value, handleHtmlProps, ...props } = this.props;
         return (
             <MultiSlider {...props}>
-                <MultiSlider.Handle value={value![RangeIndex.START]} type="start" intentAfter={props.intent} />
-                <MultiSlider.Handle value={value![RangeIndex.END]} type="end" />
+                <MultiSlider.Handle
+                    value={value![RangeIndex.START]}
+                    type="start"
+                    intentAfter={props.intent}
+                    htmlProps={handleHtmlProps?.start}
+                />
+                <MultiSlider.Handle value={value![RangeIndex.END]} type="end" htmlProps={handleHtmlProps?.end} />
             </MultiSlider>
         );
     }

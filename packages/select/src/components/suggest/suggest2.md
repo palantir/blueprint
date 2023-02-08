@@ -5,11 +5,11 @@ tag: new
 @# Suggest2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [Suggest](#select/suggest)?
 
-</h4>
+</h5>
 
 Suggest2 is a replacement for Suggest and will replace it in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.

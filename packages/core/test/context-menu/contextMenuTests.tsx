@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-/* eslint-disable max-classes-per-file */
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to ContextMenu2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, max-classes-per-file */
 
 import { assert } from "chai";
 import { mount } from "enzyme";

@@ -1,5 +1,16 @@
 @# Date range input
 
+<div class="@ns-callout @ns-intent-success @ns-icon-star">
+    <h5 class="@ns-heading">Newer API available</h5>
+
+There is an updated version of this component available in the new
+[__@blueprintjs/datetime2__ package](#datetime2) called
+[DateRangeInput2](#datetime2/date-range-input2). Its API is currently in development,
+but you are encouraged to try it out and provide feedback for the next
+version of the Blueprint date input.
+
+</div>
+
 The DateRangeInput component is a [ControlGroup](#core/components/control-group) composed
 of two [InputGroups](#core/components/text-inputs.input-group). It shows a
 [DateRangePicker](#datetime/daterangepicker) in a [Popover](#core/components/popover) on focus.
@@ -28,4 +39,4 @@ information on these props.
 
 @## Localization
 
-See the [Date picker localization docs](#datetime/datepicker.localization).
+See the [DatePicker localization docs](#datetime/datepicker.localization).

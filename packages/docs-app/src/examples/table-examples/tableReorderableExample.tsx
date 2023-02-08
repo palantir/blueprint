@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IBaseExampleProps, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, IBaseExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table2, Utils } from "@blueprintjs/table";
 
 export interface ITableReorderableExampleState {
@@ -34,7 +34,7 @@ const REORDERABLE_TABLE_DATA = [
     ["E", "Eggplant", "Elk", "Eritrea", "El Paso"],
 ].map(([letter, fruit, animal, country, city]) => ({ letter, fruit, animal, country, city }));
 
-export class TableReorderableExample extends React.PureComponent<IExampleProps, ITableReorderableExampleState> {
+export class TableReorderableExample extends React.PureComponent<ExampleProps, ITableReorderableExampleState> {
     public state: ITableReorderableExampleState = {
         columns: [
             // these cellRenderers are only created once and then cloned on updates

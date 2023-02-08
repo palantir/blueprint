@@ -24,7 +24,7 @@ import { Icon, IconProps } from "../icon/icon";
 
 // eslint-disable-next-line deprecation/deprecation
 export type HTMLSelectProps = IHTMLSelectProps;
-/** @deprecated use HTMLSelectPRops */
+/** @deprecated use HTMLSelectProps */
 export interface IHTMLSelectProps
     // eslint-disable-next-line deprecation/deprecation
     extends IElementRefProps<HTMLSelectElement>,
@@ -65,6 +65,11 @@ export interface IHTMLSelectProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
+/**
+ * HTML select component
+ *
+ * @see https://blueprintjs.com/docs/#core/components/html-select
+ */
 export class HTMLSelect extends AbstractPureComponent2<HTMLSelectProps> {
     public render() {
         const {

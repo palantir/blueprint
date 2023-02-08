@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Callout, Classes, H5, Switch } from "@blueprintjs/core";
 import { DatePicker, TimePrecision } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { MomentDate } from "./common/momentDate";
 import { PrecisionSelect } from "./common/precisionSelect";
@@ -37,7 +37,7 @@ export interface IDatePickerExampleState {
     showFooterElement: boolean;
 }
 
-export class DatePickerExample extends React.PureComponent<IExampleProps, IDatePickerExampleState> {
+export class DatePickerExample extends React.PureComponent<ExampleProps, IDatePickerExampleState> {
     public state: IDatePickerExampleState = {
         date: null,
         highlightCurrentDay: false,
@@ -54,12 +54,7 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
 
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
 
-    private toggleShowFooterElement = () => {
-        this.setState(prevState => {
-            const showFooterElement = !prevState.showFooterElement;
-            return { showFooterElement };
-        });
-    };
+    private toggleShowFooterElement = handleBooleanChange(showFooterElement => this.setState({ showFooterElement }));
 
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
 

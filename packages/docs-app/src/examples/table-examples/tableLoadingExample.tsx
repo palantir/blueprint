@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table2, TableLoadingOption } from "@blueprintjs/table";
 
 interface IBigSpaceRock {
@@ -33,7 +33,7 @@ export interface ITableLoadingExampleState {
     rowHeadersLoading?: boolean;
 }
 
-export class TableLoadingExample extends React.PureComponent<IExampleProps, ITableLoadingExampleState> {
+export class TableLoadingExample extends React.PureComponent<ExampleProps, ITableLoadingExampleState> {
     public state: ITableLoadingExampleState = {
         cellsLoading: true,
         columnHeadersLoading: true,

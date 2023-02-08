@@ -2,14 +2,17 @@
  * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  */
 
-const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
-
-module.exports = function (config) {
-    const baseConfig = createKarmaConfig({
-        dirname: __dirname,
-    });
-    config.set(baseConfig);
-    config.set({
-        // overrides here
-    });
+module.exports = async function (config) {
+    const { createKarmaConfig } = await import("@blueprintjs/karma-build-scripts");
+    config.set(
+        createKarmaConfig({
+            dirname: __dirname,
+            coverageExcludes: [
+                // HACKHACK: needs coverage
+                "src/components/date-range-input2/*",
+                // not worth coverage, fairly simple implementation
+                "src/common/timezoneDisplayFormat.ts",
+            ],
+        }),
+    );
 };

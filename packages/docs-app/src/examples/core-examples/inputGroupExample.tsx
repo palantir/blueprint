@@ -29,11 +29,12 @@ import {
     Switch,
     Tag,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
 export interface IInputGroupExampleState {
     disabled: boolean;
+    readOnly: boolean;
     filterValue: string;
     large: boolean;
     small: boolean;
@@ -41,17 +42,20 @@ export interface IInputGroupExampleState {
     tagValue: string;
 }
 
-export class InputGroupExample extends React.PureComponent<IExampleProps, IInputGroupExampleState> {
+export class InputGroupExample extends React.PureComponent<ExampleProps, IInputGroupExampleState> {
     public state: IInputGroupExampleState = {
         disabled: false,
         filterValue: "",
         large: false,
+        readOnly: false,
         showPassword: false,
         small: false,
         tagValue: "",
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
+    private handleReadOnlyChange = handleBooleanChange(readOnly => this.setState({ readOnly }));
 
     private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
 
@@ -64,7 +68,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
     public render() {
-        const { disabled, filterValue, large, small, showPassword, tagValue } = this.state;
+        const { disabled, filterValue, large, readOnly, small, showPassword, tagValue } = this.state;
 
         const maybeSpinner = filterValue ? <Spinner size={IconSize.STANDARD} /> : undefined;
 
@@ -109,6 +113,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                         leftIcon="filter"
                         onChange={this.handleFilterChange}
                         placeholder="Filter histogram..."
+                        readOnly={readOnly}
                         rightElement={maybeSpinner}
                         small={small}
                         value={filterValue}
@@ -118,6 +123,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                     disabled={disabled}
                     large={large}
                     placeholder="Enter your password..."
+                    readOnly={readOnly}
                     rightElement={lockButton}
                     small={small}
                     type={showPassword ? "text" : "password"}
@@ -128,6 +134,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                     leftElement={<Icon icon="tag" />}
                     onChange={this.handleTagChange}
                     placeholder="Find tags"
+                    readOnly={readOnly}
                     rightElement={resultsTag}
                     small={small}
                     value={tagValue}
@@ -136,6 +143,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                     disabled={disabled}
                     large={large}
                     placeholder="Add people or groups..."
+                    readOnly={readOnly}
                     rightElement={permissionsMenu}
                     small={small}
                 />
@@ -144,11 +152,12 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
     }
 
     private renderOptions() {
-        const { disabled, large, small } = this.state;
+        const { disabled, readOnly, large, small } = this.state;
         return (
             <>
                 <H5>Props</H5>
                 <Switch label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />
+                <Switch label="Read-only" onChange={this.handleReadOnlyChange} checked={readOnly} />
                 <Switch label="Large" onChange={this.handleLargeChange} checked={large} />
                 <Switch label="Small" onChange={this.handleSmallChange} checked={small} />
             </>

@@ -16,15 +16,15 @@
 
 import * as React from "react";
 
-import { Button, ButtonGroup, H1, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Button, ButtonGroup, Code, H1, Switch } from "@blueprintjs/core";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Classes, Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
 export interface ITooltip2ExampleState {
     isOpen: boolean;
 }
 
-export class Tooltip2Example extends React.PureComponent<IExampleProps, ITooltip2ExampleState> {
+export class Tooltip2Example extends React.PureComponent<ExampleProps, ITooltip2ExampleState> {
     public static displayName = "Tooltip2Example";
 
     public state: ITooltip2ExampleState = {
@@ -76,7 +76,12 @@ export class Tooltip2Example extends React.PureComponent<IExampleProps, ITooltip
                     This line's tooltip{" "}
                     <Tooltip2
                         className={Classes.TOOLTIP2_INDICATOR}
-                        content={<span>BRRAAAIINS</span>}
+                        content={
+                            <span>
+                                Use <Code>{`compact={true}`}</Code> in data-dense UIs
+                            </span>
+                        }
+                        compact={true}
                         isOpen={this.state.isOpen}
                     >
                         is controlled by external state.

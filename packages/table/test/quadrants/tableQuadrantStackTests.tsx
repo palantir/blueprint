@@ -21,8 +21,6 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
-import { IRef } from "@blueprintjs/core";
-
 import * as Classes from "../../src/common/classes";
 import { Grid } from "../../src/common/grid";
 import * as ScrollUtils from "../../src/common/internal/scrollUtils";
@@ -65,10 +63,10 @@ describe("TableQuadrantStack", () => {
         const columnHeaderRef = sinon.spy();
         const scrollContainerRef = sinon.spy();
 
-        const columnHeaderRenderer = (refHandler: IRef<HTMLDivElement>) => {
+        const columnHeaderRenderer = (refHandler: React.Ref<HTMLDivElement>) => {
             return <div ref={refHandler} />;
         };
-        const rendeRowHeader = (refHandler: IRef<HTMLDivElement>) => {
+        const rendeRowHeader = (refHandler: React.Ref<HTMLDivElement>) => {
             return <div ref={refHandler} />;
         };
 
@@ -418,7 +416,7 @@ describe("TableQuadrantStack", () => {
         });
 
         function assertDefaultQuadrantSizesCorrect(numFrozenRows: number, numFrozenColumns: number) {
-            const rowHeaderRenderer = (refHandler: IRef<HTMLDivElement>) => {
+            const rowHeaderRenderer = (refHandler: React.Ref<HTMLDivElement>) => {
                 // need to set the width on a child so the header maintains its size
                 // when the component measures the "desired" row-header width (by
                 // setting width:auto on the parent here).
@@ -428,7 +426,7 @@ describe("TableQuadrantStack", () => {
                     </div>
                 );
             };
-            const columnHeaderRenderer = (refHandler: IRef<HTMLDivElement>) => {
+            const columnHeaderRenderer = (refHandler: React.Ref<HTMLDivElement>) => {
                 return <div ref={refHandler} style={{ height: COLUMN_HEADER_HEIGHT, width: "100%" }} />;
             };
 
@@ -455,7 +453,7 @@ describe("TableQuadrantStack", () => {
         }
 
         function assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows: number, numFrozenColumns: number) {
-            const columnHeaderRenderer = (refHandler: IRef<HTMLDivElement>) => {
+            const columnHeaderRenderer = (refHandler: React.Ref<HTMLDivElement>) => {
                 return <div ref={refHandler} style={{ height: COLUMN_HEADER_HEIGHT, width: "100%" }} />;
             };
 

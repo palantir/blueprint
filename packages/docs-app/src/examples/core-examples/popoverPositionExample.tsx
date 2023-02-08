@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Popover2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { Button, Classes, Code, Popover, Position } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 const EXAMPLE_CLASS = "docs-popover-position-example";
-
 const SIDE_LABEL_CLASS = "docs-popover-position-label-side";
 const ALIGNMENT_LABEL_CLASS = "docs-popover-position-label-alignment";
+const CONTENT_CLASS = `${EXAMPLE_CLASS}-content`;
 
-export class PopoverPositionExample extends React.PureComponent<IExampleProps> {
+export class PopoverPositionExample extends React.PureComponent<ExampleProps> {
     public render() {
         return (
             <Example className={EXAMPLE_CLASS} options={false} {...this.props}>
@@ -103,12 +110,10 @@ export class PopoverPositionExample extends React.PureComponent<IExampleProps> {
             </div>
         );
 
-        /* eslint-disable deprecation/deprecation */
         return (
-            <Popover content={content} position={position} usePortal={false}>
+            <Popover content={content} popoverClassName={CONTENT_CLASS} position={position}>
                 <Button className={Classes.MONOSPACE_TEXT}>{buttonLabel}</Button>
             </Popover>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 }

@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangeInput2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { H5, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateRange, DateRangeInput, TimePrecision } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { MomentDateRange } from "./common/momentDate";
 import { MOMENT_FORMATS, MomentFormatSelector } from "./common/momentFormats";
@@ -38,7 +45,7 @@ export interface IDateRangeInputExampleState {
     showTimeArrowButtons: boolean;
 }
 
-export class DateRangeInputExample extends React.PureComponent<IExampleProps, IDateRangeInputExampleState> {
+export class DateRangeInputExample extends React.PureComponent<ExampleProps, IDateRangeInputExampleState> {
     public state: IDateRangeInputExampleState = {
         allowSingleDayRange: false,
         closeOnSelection: false,

@@ -17,35 +17,35 @@
 import * as React from "react";
 
 import { Code, H5, Intent, MenuItem, Switch, TagProps } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Popover2 } from "@blueprintjs/popover2";
 import { ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
-
 import {
     areFilmsEqual,
     arrayContainsFilm,
-    createFilm,
-    filmSelectProps,
-    IFilm,
+    createFilms,
+    Film,
+    filterFilm,
+    getFilmItemProps,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
-    renderCreateFilmOption,
+    renderCreateFilmsMenuItem,
     TOP_100_FILMS,
-} from "../../common/films";
+} from "@blueprintjs/select/examples";
 
-const FilmMultiSelect = MultiSelect2.ofType<IFilm>();
+import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
 export interface IMultiSelectExampleState {
     allowCreate: boolean;
-    createdItems: IFilm[];
+    createdItems: Film[];
     disabled: boolean;
     fill: boolean;
-    films: IFilm[];
+    films: Film[];
     hasInitialContent: boolean;
     intent: boolean;
-    items: IFilm[];
+    items: Film[];
     matchTargetWidth: boolean;
     openOnKeyDown: boolean;
     popoverMinimal: boolean;
@@ -54,7 +54,7 @@ export interface IMultiSelectExampleState {
     tagMinimal: boolean;
 }
 
-export class MultiSelectExample extends React.PureComponent<IExampleProps, IMultiSelectExampleState> {
+export class MultiSelectExample extends React.PureComponent<ExampleProps, IMultiSelectExampleState> {
     public state: IMultiSelectExampleState = {
         allowCreate: false,
         createdItems: [],
@@ -63,7 +63,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         films: [],
         hasInitialContent: false,
         intent: false,
-        items: filmSelectProps.items,
+        items: TOP_100_FILMS,
         matchTargetWidth: false,
         openOnKeyDown: false,
         popoverMinimal: true,
@@ -72,7 +72,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         tagMinimal: false,
     };
 
-    private popoverRef: React.RefObject<Popover2<any>> = React.createRef();
+    private popoverRef: React.RefObject<Popover2> = React.createRef();
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
 
@@ -108,22 +108,19 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
         ) : // explicit undefined (not null) for default behavior (show full list)
         undefined;
-        const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
-        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <FilmMultiSelect
-                    {...filmSelectProps}
+                <MultiSelect2<Film>
                     {...flags}
-                    createNewItemFromQuery={maybeCreateNewItemFromQuery}
-                    createNewItemRenderer={maybeCreateNewItemRenderer}
+                    createNewItemFromQuery={allowCreate ? createFilms : undefined}
+                    createNewItemRenderer={allowCreate ? renderCreateFilmsMenuItem : null}
                     initialContent={initialContent}
+                    itemPredicate={filterFilm}
                     itemRenderer={this.renderFilm}
-                    itemsEqual={areFilmsEqual}
-                    // we may customize the default filmSelectProps.items by
-                    // adding newly created items to the list, so pass our own
                     items={this.state.items}
+                    itemsEqual={areFilmsEqual}
+                    menuProps={{ "aria-label": "films" }}
                     noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
                     onClear={this.state.showClearButton ? this.handleClear : undefined}
                     onItemSelect={this.handleFilmSelect}
@@ -160,42 +157,40 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     checked={this.state.hasInitialContent}
                     onChange={this.handleInitialContentChange}
                 />
-                <Tooltip2
+                <PropCodeTooltip
                     content={
                         <>
                             <Code>createNewItemFromQuery</Code> and <Code>createNewItemRenderer</Code> are{" "}
                             {this.state.allowCreate ? "defined" : "undefined"}
                         </>
                     }
-                    placement="left"
                 >
                     <Switch
                         label="Allow creating new films"
                         checked={this.state.allowCreate}
                         onChange={this.handleAllowCreateChange}
                     />
-                </Tooltip2>
-                <Tooltip2
+                </PropCodeTooltip>
+                <PropCodeTooltip
                     content={
                         <>
                             <Code>onClear</Code> is {this.state.showClearButton ? "defined" : "undefined"}
                         </>
                     }
-                    placement="left"
                 >
                     <Switch
                         label="Show clear button"
                         checked={this.state.showClearButton}
                         onChange={this.handleShowClearButtonChange}
                     />
-                </Tooltip2>
+                </PropCodeTooltip>
                 <H5>Appearance props</H5>
-                <Tooltip2 content={<Code>disabled=&#123;{this.state.disabled.toString()}&#125;</Code>} placement="left">
+                <PropCodeTooltip snippet={`disabled={${this.state.disabled.toString()}}`}>
                     <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
-                </Tooltip2>
-                <Tooltip2 content={<Code>fill=&#123;{this.state.fill.toString()}&#125;</Code>} placement="left">
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`fill={${this.state.fill.toString()}}`}>
                     <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
-                </Tooltip2>
+                </PropCodeTooltip>
                 <H5>Tag props</H5>
                 <Switch
                     label="Minimal tag style"
@@ -208,56 +203,39 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     onChange={this.handleIntentChange}
                 />
                 <H5>Popover props</H5>
-                <Tooltip2
-                    content={
-                        <Code>
-                            popoverProps=&#123;&#123; matchTargetWidth: {this.state.matchTargetWidth.toString()}{" "}
-                            &#125;&#125;
-                        </Code>
-                    }
-                    placement="left"
+                <PropCodeTooltip
+                    snippet={`popoverProps={{ matchTargetWidth: ${this.state.matchTargetWidth.toString()} }}`}
                 >
                     <Switch
                         label="Match target width"
                         checked={this.state.matchTargetWidth}
                         onChange={this.handleMatchTargetWidthChange}
                     />
-                </Tooltip2>
-                <Tooltip2
-                    content={
-                        <Code>
-                            popoverProps=&#123;&#123; minimal: {this.state.popoverMinimal.toString()} &#125;&#125;
-                        </Code>
-                    }
-                    placement="left"
-                >
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`popoverProps={{ minimal: ${this.state.popoverMinimal.toString()} }}`}>
                     <Switch
                         label="Minimal popover style"
                         checked={this.state.popoverMinimal}
                         onChange={this.handlePopoverMinimalChange}
                     />
-                </Tooltip2>
+                </PropCodeTooltip>
             </>
         );
     }
 
-    private renderTag = (film: IFilm) => film.title;
+    private renderTag = (film: Film) => film.title;
 
-    // NOTE: not using Films.itemRenderer here so we can set icons.
-    private renderFilm: ItemRenderer<IFilm> = (film, { modifiers, handleClick }) => {
-        if (!modifiers.matchesPredicate) {
+    private renderFilm: ItemRenderer<Film> = (film, props) => {
+        if (!props.modifiers.matchesPredicate) {
             return null;
         }
+
         return (
             <MenuItem
-                selected={modifiers.active}
-                icon={this.isFilmSelected(film) ? "tick" : "blank"}
-                roleStructure="listoption"
-                key={film.rank}
-                label={film.year.toString()}
-                onClick={handleClick}
-                text={`${film.rank}. ${film.title}`}
+                {...getFilmItemProps(film, props)}
+                selected={this.isFilmSelected(film)}
                 shouldDismissPopover={false}
+                text={`${film.rank}. ${film.title}`}
             />
         );
     };
@@ -266,39 +244,38 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         this.deselectFilm(index);
     };
 
-    private getSelectedFilmIndex(film: IFilm) {
+    private getSelectedFilmIndex(film: Film) {
         return this.state.films.indexOf(film);
     }
 
-    private isFilmSelected(film: IFilm) {
+    private isFilmSelected(film: Film) {
         return this.getSelectedFilmIndex(film) !== -1;
     }
 
-    private selectFilm(film: IFilm) {
+    private selectFilm(film: Film) {
         this.selectFilms([film]);
     }
 
-    private selectFilms(filmsToSelect: IFilm[]) {
-        const { createdItems, films, items } = this.state;
+    private selectFilms(filmsToSelect: Film[]) {
+        this.setState(({ createdItems, films, items }) => {
+            let nextCreatedItems = createdItems.slice();
+            let nextFilms = films.slice();
+            let nextItems = items.slice();
 
-        let nextCreatedItems = createdItems.slice();
-        let nextFilms = films.slice();
-        let nextItems = items.slice();
-
-        filmsToSelect.forEach(film => {
-            const results = maybeAddCreatedFilmToArrays(nextItems, nextCreatedItems, film);
-            nextItems = results.items;
-            nextCreatedItems = results.createdItems;
-            // Avoid re-creating an item that is already selected (the "Create
-            // Item" option will be shown even if it matches an already selected
-            // item).
-            nextFilms = !arrayContainsFilm(nextFilms, film) ? [...nextFilms, film] : nextFilms;
-        });
-
-        this.setState({
-            createdItems: nextCreatedItems,
-            films: nextFilms,
-            items: nextItems,
+            filmsToSelect.forEach(film => {
+                const results = maybeAddCreatedFilmToArrays(nextItems, nextCreatedItems, film);
+                nextItems = results.items;
+                nextCreatedItems = results.createdItems;
+                // Avoid re-creating an item that is already selected (the "Create
+                // Item" option will be shown even if it matches an already selected
+                // item).
+                nextFilms = !arrayContainsFilm(nextFilms, film) ? [...nextFilms, film] : nextFilms;
+            });
+            return {
+                createdItems: nextCreatedItems,
+                films: nextFilms,
+                items: nextItems,
+            };
         });
     }
 
@@ -320,7 +297,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         });
     }
 
-    private handleFilmSelect = (film: IFilm) => {
+    private handleFilmSelect = (film: Film) => {
         if (!this.isFilmSelected(film)) {
             this.selectFilm(film);
         } else {
@@ -328,7 +305,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         }
     };
 
-    private handleFilmsPaste = (films: IFilm[]) => {
+    private handleFilmsPaste = (films: Film[]) => {
         // On paste, don't bother with deselecting already selected values, just
         // add the new ones.
         this.selectFilms(films);

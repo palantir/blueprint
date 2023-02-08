@@ -64,3 +64,11 @@
   right: 0;
   top: 0;
 }
+
+.#{$ns}-table-cell-text-placeholder {
+  color: $pt-text-color-muted;
+
+  .#{$ns}-dark & {
+    color: $pt-dark-text-color-muted;
+  }
+}

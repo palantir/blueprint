@@ -44,8 +44,17 @@ export class SliderExample extends React.PureComponent<Record<string, unknown>, 
                         labelStepSize={10}
                         onChange={this.getChangeHandler("value")}
                         value={this.state.value}
+                        handleHtmlProps={{ "aria-label": "example 1" }}
                     />
-                    <Slider disabled={true} min={0} max={10} stepSize={0.1} labelStepSize={10} value={5} />
+                    <Slider
+                        disabled={true}
+                        min={0}
+                        max={10}
+                        stepSize={0.1}
+                        labelStepSize={10}
+                        value={5}
+                        handleHtmlProps={{ "aria-label": "example 2" }}
+                    />
                 </ExampleCard>
             </div>
         );

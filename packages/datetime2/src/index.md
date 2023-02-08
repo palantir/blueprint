@@ -5,15 +5,16 @@ reference: datetime2
 @# Datetime2
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Experimental Library</h4>
+    <h5 class="@ns-heading">Incubating component library</h5>
     <p>This package is currently in the v0.x version range, which means its API is unstable.</p>
 </div>
 
 The [__@blueprintjs/datetime2__ package](https://www.npmjs.com/package/@blueprintjs/datetime2)
 provides components for interacting with dates, times, and timezones:
 
-- [DateInput2](#datetime2/date-input2) renders a [DateInput](#datetime/dateinput)
-  with an optional embedded [TimezoneSelect](#datetime2/timezone-select).
+- [DateInput2](#datetime2/date-input2) renders a date input with
+    an optional embedded [TimezoneSelect](#datetime2/timezone-select).
+- [DateRangeInput2](#datetime2/date-range-input2) renders a date range input.
 - [TimezoneSelect](#datetime2/timezone-select) renders a [Select2](#select/select2)
   with a list of timezones for the user to choose from.
 
@@ -44,17 +45,25 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 npm install --save @blueprintjs/datetime2
 ```
 
-Import CSS with a JS bundler like webpack:
+Import the package stylesheet (for example, in Sass):
 
-```js
+```scss
 @import "~@blueprintjs/datetime2/lib/css/blueprint-datetime2.css";
 ```
 
-...or in plain HTML:
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h5 class="@ns-heading">Additional CSS required</h5>
 
-```html
-<link href="path/to/node_modules/@blueprintjs/datetime2/lib/css/blueprint-datetime2.css" rel="stylesheet" />
+This library relies on some components from other Blueprint packages, so you will need to pull in those
+packages' CSS files as well (if you are not doing this already):
+
+```scss
+@import "~@blueprintjs/datetime/lib/css/blueprint-datetime.css";
+@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+@import "~@blueprintjs/select/lib/css/blueprint-select.css";
 ```
+</div>
 
 @page date-input2
+@page date-range-input2
 @page timezone-select

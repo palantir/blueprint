@@ -19,9 +19,10 @@ import * as React from "react";
 
 import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { Button, ButtonProps } from "../button/buttons";
 import { Dialog, DialogProps } from "./dialog";
-import { DialogStep, DialogStepButtonProps, DialogStepId, DialogStepProps } from "./dialogStep";
+import { DialogFooter } from "./dialogFooter";
+import { DialogStep, DialogStepId, DialogStepProps } from "./dialogStep";
+import { DialogStepButton, DialogStepButtonProps } from "./dialogStepButton";
 
 type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.ReactNode }>;
 
@@ -37,18 +38,17 @@ export interface IMultistepDialogProps extends DialogProps {
     backButtonProps?: DialogStepButtonProps;
 
     /** Dialog steps. */
-    children: React.ReactNode;
+    children?: React.ReactNode;
 
     /**
-     * Props for the close button that appears in the footer when there is no
-     * title.
+     * Props for the close button that appears in the footer.
      */
-    closeButtonProps?: Partial<ButtonProps>;
+    closeButtonProps?: DialogStepButtonProps;
 
     /**
      * Props for the button to display on the final step.
      */
-    finalButtonProps?: Partial<ButtonProps>;
+    finalButtonProps?: DialogStepButtonProps;
 
     /**
      * Position of the step navigation within the dialog.
@@ -80,9 +80,8 @@ export interface IMultistepDialogProps extends DialogProps {
     resetOnClose?: boolean;
 
     /**
-     * Whether the footer close button is shown. The button will only appear if
-     * `isCloseButtonShown` is `true`. The close button in the dialog title will
-     * not be shown when this is `true`.
+     * Whether the footer close button is shown. When this value is true, the button will appear
+     * regardless of the value of `isCloseButtonShown`.
      *
      * @default false
      */
@@ -105,6 +104,11 @@ const PADDING_BOTTOM = 0;
 
 const MIN_WIDTH = 800;
 
+/**
+ * Multi-step dialog component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/dialog.multistep-dialog
+ */
 export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps, IMultistepDialogState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultistepDialog`;
 
@@ -122,13 +126,9 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         const { className, navigationPosition, showCloseButtonInFooter, isCloseButtonShown, ...otherProps } =
             this.props;
 
-        // Only one close button should be displayed. If the footer close button
-        // is shown, we need to ensure the dialog close button is not displayed.
-        const isCloseButtonVisible = !showCloseButtonInFooter && isCloseButtonShown;
-
         return (
             <Dialog
-                isCloseButtonShown={isCloseButtonVisible}
+                isCloseButtonShown={isCloseButtonShown}
                 {...otherProps}
                 className={classNames(
                     {
@@ -212,16 +212,15 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
     }
 
     private renderFooter() {
-        const { closeButtonProps, isCloseButtonShown, showCloseButtonInFooter, onClose } = this.props;
-        const isFooterCloseButtonVisible = showCloseButtonInFooter && isCloseButtonShown;
-        const maybeCloseButton = !isFooterCloseButtonVisible ? undefined : (
-            <Button text="Close" onClick={onClose} {...closeButtonProps} />
+        const { closeButtonProps, showCloseButtonInFooter, onClose } = this.props;
+        const maybeCloseButton = !showCloseButtonInFooter ? undefined : (
+            <DialogStepButton text="Close" onClick={onClose} {...closeButtonProps} />
         );
         return (
-            <div className={Classes.MULTISTEP_DIALOG_FOOTER}>
+            // eslint-disable-next-line deprecation/deprecation -- need to keep adding this class for backcompat, can be removed in next major version
+            <DialogFooter className={Classes.MULTISTEP_DIALOG_FOOTER} actions={this.renderButtons()}>
                 {maybeCloseButton}
-                <div className={Classes.DIALOG_FOOTER_ACTIONS}>{this.renderButtons()}</div>
-            </div>
+            </DialogFooter>
         );
     }
 
@@ -232,9 +231,8 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
         if (this.state.selectedIndex > 0) {
             const backButtonProps = steps[selectedIndex].props.backButtonProps ?? this.props.backButtonProps;
-
             buttons.push(
-                <Button
+                <DialogStepButton
                     key="back"
                     onClick={this.getDialogStepChangeHandler(selectedIndex - 1)}
                     text="Back"
@@ -244,12 +242,13 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         }
 
         if (selectedIndex === this.getDialogStepChildren().length - 1) {
-            buttons.push(<Button intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />);
+            buttons.push(
+                <DialogStepButton intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />,
+            );
         } else {
             const nextButtonProps = steps[selectedIndex].props.nextButtonProps ?? this.props.nextButtonProps;
-
             buttons.push(
-                <Button
+                <DialogStepButton
                     intent="primary"
                     key="next"
                     onClick={this.getDialogStepChangeHandler(selectedIndex + 1)}

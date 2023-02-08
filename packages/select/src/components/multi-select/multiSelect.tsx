@@ -13,6 +13,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to MultiSelect2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -32,15 +39,14 @@ import {
     TagInputProps,
 } from "@blueprintjs/core";
 
-import { Classes, IListItemsProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { Classes, ListItemsProps } from "../../common";
+import { QueryList, QueryListRendererProps } from "../query-list/queryList";
 
 // N.B. selectedItems should really be a required prop, but is left optional for backwards compatibility
 
-// eslint-disable-next-line deprecation/deprecation
 export type MultiSelectProps<T> = IMultiSelectProps<T>;
 /** @deprecated use MultiSelectProps */
-export interface IMultiSelectProps<T> extends IListItemsProps<T> {
+export interface IMultiSelectProps<T> extends ListItemsProps<T> {
     /**
      * Whether the component should take up the full width of its container.
      * This overrides `popoverProps.fill` and `tagInputProps.fill`.
@@ -97,7 +103,12 @@ export interface IMultiSelectState {
     isOpen: boolean;
 }
 
-/** @deprecated use { MultiSelect2 } from "@blueprintjs/select" */
+/**
+ * Multi select component.
+ *
+ * @see https://blueprintjs.com/docs/#select/multi-select
+ * @deprecated use { MultiSelect2 } from "@blueprintjs/select"
+ */
 export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, IMultiSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
 
@@ -107,15 +118,12 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
     };
 
     public static ofType<U>() {
-        // eslint-disable-next-line deprecation/deprecation
         return MultiSelect as new (props: MultiSelectProps<U>) => MultiSelect<U>;
     }
 
     public state: IMultiSelectState = {
         isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
     };
-
-    private TypedQueryList = QueryList.ofType<T>();
 
     public input: HTMLInputElement | null = null;
 
@@ -142,8 +150,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
         const { openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
 
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
-            <this.TypedQueryList
+            <QueryList<T>
                 {...restProps}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
@@ -153,7 +160,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
         );
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         const { fill, tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
         const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
 
@@ -175,7 +182,6 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
         };
 
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 canEscapeKeyClose={true}
@@ -210,7 +216,6 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {listProps.itemList}
                 </div>
-                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     };
@@ -261,7 +266,6 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
     private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
             // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-            // eslint-disable-next-line deprecation/deprecation
             const { which } = e;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {

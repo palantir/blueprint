@@ -1,12 +1,17 @@
+/**
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ */
+
 import { watch } from "chokidar";
-import fs from "fs-extra";
-import path from "path";
-import * as sass from "sass";
+import { outputFileSync, readdirSync } from "fs-extra";
+import { basename, dirname, extname, join, parse as parsePath, relative, resolve } from "node:path";
+import { argv } from "node:process";
+import sass from "sass";
 import nodeSassPackageImporter from "node-sass-package-importer";
 import { RawSourceMap } from "source-map";
 import yargs from "yargs";
 
-const args = yargs(process.argv.slice(2))
+const args = yargs(argv.slice(2))
     .positional("input", { type: "string", description: "Input folder containing scss to compile" })
     .option("functions", {
         type: "string",
@@ -20,19 +25,19 @@ const args = yargs(process.argv.slice(2))
     })
     .parseSync();
 
-const functions = args.functions != null ? require(path.resolve(args.functions)) : undefined;
+const functions = args.functions != null ? require(resolve(args.functions)) : undefined;
 
 if (args.watch) {
     compileAllFiles();
 
-    const folderToWatch = path.resolve(args._[0] as string);
+    const folderToWatch = resolve(args._[0] as string);
     console.info(`[sass-compile] Watching ${folderToWatch} for changes...`);
 
     const watcher = watch([`${folderToWatch}/*.scss`, `${folderToWatch}/**/*.scss`], { persistent: true });
     watcher.on("change", fileName => {
         console.info(`[sass-compile] Detected change in ${fileName}, re-compiling.`);
 
-        if (path.basename(fileName).startsWith("_")) {
+        if (basename(fileName).startsWith("_")) {
             compileAllFiles();
         } else {
             compileFile(fileName);
@@ -43,10 +48,10 @@ if (args.watch) {
 }
 
 function compileAllFiles() {
-    const files = fs.readdirSync(args._[0] as string);
+    const files = readdirSync(args._[0] as string);
     const inputFiles = files
-        .filter(file => path.extname(file) === ".scss" && !path.basename(file).startsWith("_"))
-        .map(fileName => path.join(args._[0] as string, fileName));
+        .filter(file => extname(file) === ".scss" && !basename(file).startsWith("_"))
+        .map(fileName => join(args._[0] as string, fileName));
 
     for (const inputFile of inputFiles) {
         compileFile(inputFile);
@@ -55,7 +60,11 @@ function compileAllFiles() {
 }
 
 function compileFile(inputFile: string) {
-    const outFile = path.join(args.output, `${path.parse(inputFile).name}.css`);
+    if (args.output === undefined) {
+        throw new Error(`[sass-compile] Output folder must be specified with --output CLI argument.`);
+    }
+
+    const outFile = join(args.output, `${parsePath(inputFile).name}.css`);
     const outputMapFile = `${outFile}.map`;
     // use deprecated `renderSync` because it supports legacy importers and functions
     const result = sass.renderSync({
@@ -67,9 +76,9 @@ function compileFile(inputFile: string) {
         functions,
         charset: true,
     });
-    fs.outputFileSync(outFile, result.css, { flag: "w" });
+    outputFileSync(outFile, result.css, { flag: "w" });
     if (result.map != null) {
-        fs.outputFileSync(outputMapFile, fixSourcePathsInSourceMap({ outputMapFile, sourceMapBuffer: result.map }), {
+        outputFileSync(outputMapFile, fixSourcePathsInSourceMap({ outputMapFile, sourceMapBuffer: result.map }), {
             flag: "w",
         });
     }
@@ -84,9 +93,9 @@ function fixSourcePathsInSourceMap({
 }): string {
     const parsedMap = JSON.parse(sourceMapBuffer.toString()) as RawSourceMap;
     parsedMap.sources = parsedMap.sources.map(source => {
-        const outputDirectory = path.dirname(outputMapFile);
+        const outputDirectory = dirname(outputMapFile);
         const pathToSourceWithoutProtocol = source.replace("file://", "");
-        return path.relative(outputDirectory, pathToSourceWithoutProtocol);
+        return relative(outputDirectory, pathToSourceWithoutProtocol);
     });
     return JSON.stringify(parsedMap);
 }

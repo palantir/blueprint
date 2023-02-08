@@ -62,6 +62,10 @@ $dark-navbar-background-color: $dark-gray4 !default;
     right: 0;
     top: 0;
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
 }
 
 .#{$ns}-navbar-heading {

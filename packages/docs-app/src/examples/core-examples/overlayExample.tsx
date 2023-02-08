@@ -17,7 +17,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Button, Classes, Code, H3, H5, Intent, Overlay, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IBlueprintExampleData } from "../../tags/types";
 
@@ -35,7 +35,7 @@ export interface IOverlayExampleState {
     useTallContent: boolean;
 }
 
-export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IOverlayExampleState> {
+export class OverlayExample extends React.PureComponent<ExampleProps<IBlueprintExampleData>, IOverlayExampleState> {
     public state: IOverlayExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,

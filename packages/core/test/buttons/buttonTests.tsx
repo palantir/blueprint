@@ -79,6 +79,14 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.isTrue(wrapper.hasClass(Classes.DISABLED));
         });
 
+        // This tests some subtle (potentialy unexpected) behavior, but it was an API decision we
+        // made a long time ago which we rely on and should not break.
+        // See https://github.com/palantir/blueprint/issues/3819#issuecomment-1189478596
+        it("button is disabled when the loading prop is true, even if disabled={false}", () => {
+            const wrapper = button({ disabled: false, loading: true });
+            assert.isTrue(wrapper.hasClass(Classes.DISABLED));
+        });
+
         it("clicking button triggers onClick prop", () => {
             const onClick = spy();
             button({ onClick }).simulate("click");
@@ -108,18 +116,16 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             checkClickTriggeredOnKeyUp(done, {}, { which: Keys.SPACE });
         });
 
-        if (typeof React.createRef !== "undefined") {
-            it("matches buttonRef with elementRef.current using createRef", done => {
-                const elementRef = React.createRef<HTMLButtonElement>();
-                const wrapper = button({ elementRef }, true);
+        it("matches buttonRef with elementRef.current using createRef", done => {
+            const elementRef = React.createRef<HTMLButtonElement>();
+            const wrapper = button({ elementRef }, true);
 
-                // wait for the whole lifecycle to run
-                setTimeout(() => {
-                    assert.equal(elementRef.current, (wrapper.instance() as any).buttonRef);
-                    done();
-                }, 0);
-            });
-        }
+            // wait for the whole lifecycle to run
+            setTimeout(() => {
+                assert.equal(elementRef.current, (wrapper.instance() as any).buttonRef);
+                done();
+            }, 0);
+        });
 
         it("matches buttonRef with elementRef using callback", done => {
             let elementRef: HTMLElement | null = null;

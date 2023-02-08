@@ -17,14 +17,14 @@
 import * as React from "react";
 
 import { H5, NumberRange, RangeSlider, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface IRangeSliderExampleState {
     range: NumberRange;
     vertical: boolean;
 }
 
-export class RangeSliderExample extends React.PureComponent<IExampleProps, IRangeSliderExampleState> {
+export class RangeSliderExample extends React.PureComponent<ExampleProps, IRangeSliderExampleState> {
     public state: IRangeSliderExampleState = {
         range: [36, 72],
         vertical: false,
@@ -51,6 +51,7 @@ export class RangeSliderExample extends React.PureComponent<IExampleProps, IRang
                     onChange={this.handleValueChange}
                     value={range}
                     vertical={vertical}
+                    handleHtmlProps={{ start: { "aria-label": "example start" }, end: { "aria-label": "example end" } }}
                 />
             </Example>
         );

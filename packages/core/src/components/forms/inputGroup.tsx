@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, IRef } from "../../common";
+import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import {
     ControlledProps2,
@@ -57,7 +57,8 @@ export interface IInputGroupProps
     asyncControl?: boolean;
 
     /**
-     * Whether the input is non-interactive.
+     * Whether the input is disabled.
+     *
      * Note that `rightElement` must be disabled separately; this prop will not affect it.
      *
      * @default false
@@ -70,11 +71,11 @@ export interface IInputGroupProps
     fill?: boolean;
 
     /** Ref handler or a ref object that receives HTML `<input>` element backing this component. */
-    inputRef?: IRef<HTMLInputElement>;
+    inputRef?: React.Ref<HTMLInputElement>;
 
     /**
-     * Element to render on the left side of input.  This prop is mutually exclusive
-     * with `leftIcon`.
+     * Element to render on the left side of input.
+     * This prop is mutually exclusive with `leftIcon`.
      */
     leftElement?: JSX.Element;
 
@@ -93,6 +94,16 @@ export interface IInputGroupProps
 
     /** Placeholder text in the absence of any value. */
     placeholder?: string;
+
+    /**
+     * Whether the input is read-only.
+     *
+     * Note that `rightElement` must be disabled or made read-only separately;
+     * this prop will not affect it.
+     *
+     * @default false
+     */
+    readOnly?: boolean;
 
     /**
      * Element to render on right side of input.
@@ -137,6 +148,13 @@ export interface IInputGroupProps2
     round?: boolean;
 
     /**
+     * Name of the HTML tag that contains the input group.
+     *
+     * @default "div"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
+
+    /**
      * HTML `input` type attribute.
      *
      * @default "text"
@@ -149,6 +167,11 @@ export interface IInputGroupState {
     rightElementWidth?: number;
 }
 
+/**
+ * Input group component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/text-inputs.input-group
+ */
 export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
@@ -164,12 +187,26 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
     };
 
     public render() {
-        const { asyncControl = false, className, disabled, fill, inputRef, intent, large, small, round } = this.props;
+        const {
+            asyncControl = false,
+            className,
+            disabled,
+            fill,
+            inputClassName,
+            inputRef,
+            intent,
+            large,
+            readOnly,
+            round,
+            small,
+            tagName = "div",
+        } = this.props;
         const inputGroupClasses = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: disabled,
+                [Classes.READ_ONLY]: readOnly,
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
                 [Classes.SMALL]: small,
@@ -185,20 +222,21 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
         const inputProps = {
             type: "text",
             ...removeNonHTMLProps(this.props),
-            className: Classes.INPUT,
+            className: classNames(Classes.INPUT, inputClassName),
             style,
         };
+        const inputElement = asyncControl ? (
+            <AsyncControllableInput {...inputProps} inputRef={inputRef} />
+        ) : (
+            <input {...inputProps} ref={inputRef} />
+        );
 
-        return (
-            <div className={inputGroupClasses}>
-                {this.maybeRenderLeftElement()}
-                {asyncControl ? (
-                    <AsyncControllableInput {...inputProps} inputRef={inputRef} />
-                ) : (
-                    <input {...inputProps} ref={inputRef} />
-                )}
-                {this.maybeRenderRightElement()}
-            </div>
+        return React.createElement(
+            tagName,
+            { className: inputGroupClasses },
+            this.maybeRenderLeftElement(),
+            inputElement,
+            this.maybeRenderRightElement(),
         );
     }
 

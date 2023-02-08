@@ -5,7 +5,9 @@
             "options": [
                 "core-js",
                 "date-fns",
+                "lodash",
                 "react-dom",
+                "@blueprintjs/select/examples",
                 "@blueprintjs/table/src",
                 "@blueprintjs/test-commons/bootstrap",
                 "tsutils"

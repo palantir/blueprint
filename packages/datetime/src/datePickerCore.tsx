@@ -34,7 +34,7 @@ export interface IDatePickerModifiers {
 // eslint-disable-next-line deprecation/deprecation
 export type DatePickerModifiers = IDatePickerModifiers;
 
-export interface IDatePickerBaseProps {
+export interface DatePickerBaseProps {
     /**
      * Props to pass to ReactDayPicker. See API documentation
      * [here](https://react-day-picker-v7.netlify.app/api/DayPicker).
@@ -52,7 +52,7 @@ export interface IDatePickerBaseProps {
     dayPickerProps?: DayPickerProps;
 
     /**
-     * An additional element to show below the date picker
+     * An additional element to show below the date picker.
      */
     footerElement?: JSX.Element;
 

@@ -19,7 +19,7 @@ You can add one additional action button to a toast. You might use this to provi
 
 You can also apply the same visual intent styles to `Toast`s that you can to [`Button`s](#core/components/button.css).
 
-@interface IToastProps
+@interface ToastProps
 
 @### Toaster
 
@@ -30,12 +30,12 @@ horizontally aligned along the left edge, center, or right edge of its container
 
 There are three ways to use the `Toaster` component:
 
-1. `Toaster.create(props)` static method returns a new `IToaster` instance. Use the instance method `toaster.show()` to manipulate this instance. __(recommended)__
+1. `Toaster.create(props)` static method returns a new `ToasterInstance` instance. Use the instance method `toaster.show()` to manipulate this instance. __(recommended)__
 1. `<Toaster><Toast />...</Toaster>`: Render a `<Toaster>` element with React `children`.
 1. `<Toaster ref={ref => ref.show({ ...toast })} />`: Render a `<Toaster>` element and use the `ref` prop to access its instance methods.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Working with multiple toasters</h4>
+    <h5 class="@ns-heading">Working with multiple toasters</h5>
 
 You can have multiple toasters in a single application, but you must ensure that each has a unique
 `position` to prevent overlap.
@@ -43,7 +43,7 @@ You can have multiple toasters in a single application, but you must ensure that
 </div>
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Toaster focus</h4>
+    <h5 class="@ns-heading">Toaster focus</h5>
 
 `Toaster` always disables `Overlay`'s `enforceFocus` behavior (meaning that you're not blocked
 from accessing other parts of the application while a toast is active), and by default also
@@ -62,25 +62,25 @@ element attached to `<body>`. A `Toaster` instance
 has a collection of methods to show and hide toasts in its given container.
 
 ```ts
-Toaster.create(props?: IToasterProps, container = document.body): IToaster
+Toaster.create(props?: IToasterProps, container = document.body): ToasterInstance
 ```
 
 The `Toaster` will be rendered into a new element appended to the given `container`.
 The `container` determines which element toasts are positioned relative to; the default value of `<body>` allows them to use the entire viewport.
 
-Note that the return type is `IToaster`, which is a minimal interface that exposes only the instance
+Note that the return type is `ToasterInstance`, which is a minimal interface that exposes only the instance
 methods detailed below. It can be thought of as `Toaster` minus the `React.Component` methods,
 because the `Toaster` should not be treated as a normal React component.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">React 16 usage</h4>
+    <h5 class="@ns-heading">React 16 usage</h5>
 
 `Toaster.create()` will throw an error if invoked inside a component lifecycle method in React 16, as `ReactDOM.render()` will return
 `null` resulting in an inaccessible toaster instance. See the second bullet point on the [React 16 release notes](https://reactjs.org/blog/2017/09/26/react-v16.0.html#breaking-changes) for more information.
 
 </div>
 
-@interface IToaster
+@interface ToasterInstance
 
 @### Example
 
@@ -89,7 +89,8 @@ Your application can contain several `Toaster` instances and easily share them a
 The following code samples demonstrate our preferred pattern for intergrating a toaster into a React application:
 
 #### `toaster.ts`
-```tsx
+
+```ts
 import { Position, Toaster } from "@blueprintjs/core";
 
 /** Singleton toaster instance. Create separate instances for different options. */
@@ -99,7 +100,8 @@ export const AppToaster = Toaster.create({
 });
 ```
 
-#### `application.ts`
+#### `application.tsx`
+
 ```tsx
 import { Button } from "@blueprintjs/core";
 import * as React from "react";
@@ -131,7 +133,7 @@ import { Button, Position, Toast, Toaster } from "@blueprintjs/core";
 import * as React from "react";
 
 class MyComponent extends React.PureComponent {
-    public state = { toasts: [ /* IToastProps[] */ ] }
+    public state = { toasts: [ /* ToastProps[] */ ] }
 
     private toaster: Toaster;
     private refHandlers = {

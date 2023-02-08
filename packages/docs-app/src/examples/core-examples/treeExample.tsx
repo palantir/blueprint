@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { cloneDeep } from "lodash-es";
+import cloneDeep from "lodash/cloneDeep";
 import * as React from "react";
 
 import { Classes, Icon, Intent, Tree, TreeNodeInfo } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { ContextMenu2, Classes as Popover2Classes, Tooltip2 } from "@blueprintjs/popover2";
 
 type NodePath = number[];
@@ -62,7 +62,7 @@ function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
     }
 }
 
-export const TreeExample: React.FC<IExampleProps> = props => {
+export const TreeExample: React.FC<ExampleProps> = props => {
     const [nodes, dispatch] = React.useReducer(treeExampleReducer, INITIAL_STATE);
 
     const handleNodeClick = React.useCallback(

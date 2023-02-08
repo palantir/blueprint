@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Alignment, Button, ButtonGroup, H5, IconName, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Popover2 } from "@blueprintjs/popover2";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
@@ -31,7 +31,7 @@ export interface IButtonGroupPopoverExampleState {
     vertical: boolean;
 }
 
-export class ButtonGroupPopoverExample extends React.PureComponent<IExampleProps, IButtonGroupPopoverExampleState> {
+export class ButtonGroupPopoverExample extends React.PureComponent<ExampleProps, IButtonGroupPopoverExampleState> {
     public state: IButtonGroupPopoverExampleState = {
         alignText: Alignment.CENTER,
         fill: false,

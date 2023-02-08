@@ -15,6 +15,8 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { expect } = require("chai");
+const fs = require("fs");
+const path = require("path");
 const stylelint = require("stylelint");
 
 const config = {
@@ -165,5 +167,39 @@ describe("no-prefix-literal", () => {
         expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
         expect(warnings).lengthOf(2);
+    });
+
+    describe("auto-fixer", () => {
+        const tmpDir = path.join(__dirname, "tmp");
+
+        before(() => {
+            fs.mkdirSync(tmpDir);
+        });
+        after(() => {
+            fs.rmSync(tmpDir, { recursive: true, force: true });
+        });
+
+        it("Replaces selector text properly", async () => {
+            const fixtureFilename = "contains-bp3.scss";
+            // path to the fixture we want to test
+            const fixturePath = path.join(__dirname, "fixtures/no-prefix-literal", fixtureFilename);
+            // path to a copy of the fixture which we can allow stylelint to mutate
+            const mutableFixturePath = path.join(tmpDir, fixtureFilename);
+            fs.copyFileSync(fixturePath, mutableFixturePath);
+
+            const result = await stylelint.lint({
+                files: mutableFixturePath,
+                config,
+                fix: true,
+            });
+            // there should be no warnings/errors since the fixer should succeed
+            expect(result.errored).to.be.false;
+            const warnings = result.results[0].warnings;
+            expect(warnings).lengthOf(0);
+
+            const fixedSourceContents = fs.readFileSync(mutableFixturePath, { encoding: "utf-8" });
+            expect(fixedSourceContents).to.contain(`@use "@blueprintjs/core/lib/scss/variables.scss" as bp;`);
+            expect(fixedSourceContents).to.contain(".#{bp.$ns}-tag {");
+        });
     });
 });

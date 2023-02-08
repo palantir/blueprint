@@ -31,6 +31,12 @@
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
   }
 
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    &:not(.#{$ns}-disabled)::before {
+      border: 1px solid $pt-high-contrast-mode-border-color;
+    }
+  }
+
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
       .#{$ns}-editable-text-content,

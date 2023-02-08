@@ -38,6 +38,7 @@ export const TABLE_CONTAINER = `${NS}-table-container`;
 export const TABLE_DRAGGING = `${NS}-table-dragging`;
 export const TABLE_EDITABLE_NAME = `${NS}-table-editable-name`;
 export const TABLE_EDITABLE_TEXT = `${NS}-table-editable-text`;
+export const TABLE_CELL_TEXT_PLACEHOLDER = `${NS}-table-cell-text-placeholder`;
 export const TABLE_FOCUS_REGION = `${NS}-table-focus-region`;
 export const TABLE_HAS_INTERACTION_BAR = `${NS}-table-has-interaction-bar`;
 export const TABLE_HAS_REORDER_HANDLE = `${NS}-table-has-reorder-handle`;

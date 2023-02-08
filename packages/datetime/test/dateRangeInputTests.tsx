@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangeInput2 in the datetime2
+ * package instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -155,7 +163,6 @@ describe("<DateRangeInput>", () => {
             );
 
             root.setState({ isOpen: true });
-            /* eslint-disable-next-line deprecation/deprecation */
             expect(root.find(Popover).prop("isOpen")).to.be.true;
 
             keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
@@ -180,7 +187,6 @@ describe("<DateRangeInput>", () => {
 
             keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
             root.update();
-            /* eslint-disable-next-line deprecation/deprecation */
             expect(root.find(Popover).prop("isOpen")).to.be.true;
         });
 
@@ -195,7 +201,6 @@ describe("<DateRangeInput>", () => {
             root.update();
             keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP, 1);
             root.update();
-            /* eslint-disable-next-line deprecation/deprecation */
             expect(root.find(Popover).prop("isOpen")).to.be.true;
         });
 
@@ -222,7 +227,6 @@ describe("<DateRangeInput>", () => {
             const startInput = getStartInput(root);
 
             startInput.simulate("click");
-            /* eslint-disable-next-line deprecation/deprecation */
             expect(root.find(Popover).prop("isOpen")).to.be.false;
             expect(startInput.prop("disabled")).to.be.true;
         });
@@ -238,7 +242,6 @@ describe("<DateRangeInput>", () => {
             const endInput = getEndInput(root);
 
             endInput.simulate("click");
-            /* eslint-disable-next-line deprecation/deprecation */
             expect(root.find(Popover).prop("isOpen")).to.be.false;
             expect(endInput.prop("disabled")).to.be.true;
         });
@@ -364,7 +367,6 @@ describe("<DateRangeInput>", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} disabled={true} />);
         const startInput = getStartInput(root);
         startInput.simulate("click");
-        /* eslint-disable-next-line deprecation/deprecation */
         expect(root.find(Popover).prop("isOpen")).to.be.false;
         expect(startInput.prop("disabled")).to.be.true;
         expect(getEndInput(root).prop("disabled")).to.be.true;
@@ -528,10 +530,8 @@ describe("<DateRangeInput>", () => {
                 position: Position.TOP_LEFT,
                 usePortal: false,
             };
-            /* eslint-disable-next-line deprecation/deprecation */
             const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
             expect(popover.prop("backdropProps")).to.equal(popoverProps.backdropProps);
-            /* eslint-disable-next-line deprecation/deprecation */
             expect(popover.prop("position")).to.equal(popoverProps.position);
         });
 
@@ -543,7 +543,6 @@ describe("<DateRangeInput>", () => {
                 enforceFocus: true,
                 usePortal: false,
             };
-            /* eslint-disable-next-line deprecation/deprecation */
             const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
             // this test assumes the following values will be the defaults internally
             expect(popover.prop("autoFocus")).to.be.false;

@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Alignment, AnchorButton, Button, ButtonGroup, Classes, H5, Icon, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Tooltip2 } from "@blueprintjs/popover2";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
@@ -33,7 +33,7 @@ export interface IButtonGroupExampleState {
     vertical: boolean;
 }
 
-export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButtonGroupExampleState> {
+export class ButtonGroupExample extends React.PureComponent<ExampleProps, IButtonGroupExampleState> {
     public state: IButtonGroupExampleState = {
         alignText: Alignment.CENTER,
         fill: false,
@@ -48,7 +48,7 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
 
     private handleIconOnlyChange = handleBooleanChange(iconOnly => this.setState({ iconOnly }));
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
 

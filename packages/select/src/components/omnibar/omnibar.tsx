@@ -19,13 +19,13 @@ import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, InputGroup, InputGroupProps2, Overlay, OverlayProps } from "@blueprintjs/core";
 
-import { Classes, IListItemsProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { Classes, ListItemsProps } from "../../common";
+import { QueryList, QueryListRendererProps } from "../query-list/queryList";
 
 // eslint-disable-next-line deprecation/deprecation
 export type OmnibarProps<T> = IOmnibarProps<T>;
 /** @deprecated use OmnibarProps */
-export interface IOmnibarProps<T> extends IListItemsProps<T> {
+export interface IOmnibarProps<T> extends ListItemsProps<T> {
     /**
      * Props to spread to the query `InputGroup`. Use `query` and
      * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
@@ -55,6 +55,11 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
     overlayProps?: Partial<OverlayProps>;
 }
 
+/**
+ * Omnibar component.
+ *
+ * @see https://blueprintjs.com/docs/#select/omnibar
+ */
 export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Omnibar`;
 
@@ -62,17 +67,15 @@ export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
         return Omnibar as new (props: OmnibarProps<U>) => Omnibar<U>;
     }
 
-    private TypedQueryList = QueryList.ofType<T>();
-
     public render() {
         // omit props specific to this component, spread the rest.
         const { isOpen, inputProps, overlayProps, ...restProps } = this.props;
         const initialContent = "initialContent" in this.props ? this.props.initialContent : null;
 
-        return <this.TypedQueryList {...restProps} initialContent={initialContent} renderer={this.renderQueryList} />;
+        return <QueryList<T> {...restProps} initialContent={initialContent} renderer={this.renderQueryList} />;
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
         const handlers = isOpen ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};

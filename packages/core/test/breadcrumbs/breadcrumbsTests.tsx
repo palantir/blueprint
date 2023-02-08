@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";

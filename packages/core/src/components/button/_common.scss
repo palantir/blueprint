@@ -129,6 +129,11 @@ $button-intents: (
       background: $button-background-color-active-disabled;
     }
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
 }
 
 @mixin pt-button-default-colors() {
@@ -146,6 +151,11 @@ $button-intents: (
 @mixin pt-button-active() {
   background-color: $button-background-color-active;
   box-shadow: $button-box-shadow-active;
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    background: $pt-high-contrast-mode-active-background-color;
+  }
 }
 
 @mixin pt-button-disabled() {
@@ -182,6 +192,12 @@ $button-intents: (
   &.#{$ns}-disabled {
     @include pt-button-intent-disabled($default-color);
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid $pt-high-contrast-mode-border-color;
+    box-shadow: none;
+  }
 }
 
 @mixin pt-button-intent-disabled($default-color) {
@@ -189,6 +205,12 @@ $button-intents: (
   border-color: transparent;
   box-shadow: none;
   color: $button-intent-color-disabled;
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border-color: $pt-high-contrast-mode-disabled-border-color;
+    color: $pt-high-contrast-mode-disabled-border-color;
+  }
 }
 
 // N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS

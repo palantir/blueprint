@@ -17,30 +17,28 @@
 import * as React from "react";
 
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Suggest2 } from "@blueprintjs/select";
-
 import {
     areFilmsEqual,
     createFilm,
-    filmSelectProps,
-    IFilm,
+    Film,
+    filterFilm,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
-    renderCreateFilmOption,
+    renderCreateFilmMenuItem,
+    renderFilm,
     TOP_100_FILMS,
-} from "./../../common/films";
+} from "@blueprintjs/select/examples";
 
-const FilmSuggest = Suggest2.ofType<IFilm>();
-
-export interface ISuggestExampleState {
+export interface SuggestExampleState {
     allowCreate: boolean;
     closeOnSelect: boolean;
-    createdItems: IFilm[];
+    createdItems: Film[];
     disabled: boolean;
     fill: boolean;
-    film: IFilm;
-    items: IFilm[];
+    film: Film;
+    items: Film[];
     matchTargetWidth: boolean;
     minimal: boolean;
     openOnKeyDown: boolean;
@@ -49,15 +47,15 @@ export interface ISuggestExampleState {
     resetOnSelect: boolean;
 }
 
-export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestExampleState> {
-    public state: ISuggestExampleState = {
+export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExampleState> {
+    public state: SuggestExampleState = {
         allowCreate: false,
         closeOnSelect: true,
         createdItems: [],
         disabled: false,
         fill: false,
         film: TOP_100_FILMS[0],
-        items: filmSelectProps.items,
+        items: [...TOP_100_FILMS],
         matchTargetWidth: false,
         minimal: true,
         openOnKeyDown: false,
@@ -90,20 +88,19 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
         const { allowCreate, film, matchTargetWidth, minimal, ...flags } = this.state;
 
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
-        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
+        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmMenuItem : null;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <FilmSuggest
-                    {...filmSelectProps}
+                <Suggest2<Film>
                     {...flags}
                     createNewItemFromQuery={maybeCreateNewItemFromQuery}
                     createNewItemRenderer={maybeCreateNewItemRenderer}
                     inputValueRenderer={this.renderInputValue}
-                    itemsEqual={areFilmsEqual}
-                    // we may customize the default filmSelectProps.items by
-                    // adding newly created items to the list, so pass our own.
                     items={this.state.items}
+                    itemsEqual={areFilmsEqual}
+                    itemPredicate={filterFilm}
+                    itemRenderer={renderFilm}
                     noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
                     onItemSelect={this.handleValueChange}
                     popoverProps={{ matchTargetWidth, minimal }}
@@ -164,9 +161,9 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
         );
     }
 
-    private renderInputValue = (film: IFilm) => film.title;
+    private renderInputValue = (film: Film) => film.title;
 
-    private handleValueChange = (film: IFilm) => {
+    private handleValueChange = (film: Film) => {
         // delete the old film from the list if it was newly created
         const { createdItems, items } = maybeDeleteCreatedFilmFromArrays(
             this.state.items,
@@ -182,7 +179,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
         this.setState({ createdItems: nextCreatedItems, film, items: nextItems });
     };
 
-    private handleSwitchChange(prop: keyof ISuggestExampleState) {
+    private handleSwitchChange(prop: keyof SuggestExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {
             const checked = event.currentTarget.checked;
             this.setState(state => ({ ...state, [prop]: checked }));

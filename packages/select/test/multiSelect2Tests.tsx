@@ -22,24 +22,22 @@ import * as sinon from "sinon";
 import { Classes as CoreClasses, Keys, Tag } from "@blueprintjs/core";
 import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
 
-// this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
-import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
-import { IItemRendererProps, MultiSelect2, MultiSelect2Props, MultiSelect2State } from "../src";
+import { ItemRendererProps, MultiSelect2, MultiSelect2Props, MultiSelect2State } from "../src";
+import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("<MultiSelect2>", () => {
-    const FilmMultiSelect = MultiSelect2.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
         query: "",
-        selectedItems: [] as IFilm[],
+        selectedItems: [] as Film[],
         tagRenderer: renderTag,
     };
     let handlers: {
-        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
+        itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
     let testsContainerElement: HTMLElement | undefined;
@@ -58,7 +56,7 @@ describe("<MultiSelect2>", () => {
         testsContainerElement?.remove();
     });
 
-    selectComponentSuite<MultiSelect2Props<IFilm>, MultiSelect2State>(props =>
+    selectComponentSuite<MultiSelect2Props<Film>, MultiSelect2State>(props =>
         mount(
             <MultiSelect2
                 selectedItems={[]}
@@ -69,7 +67,7 @@ describe("<MultiSelect2>", () => {
         ),
     );
 
-    selectPopoverTestSuite<MultiSelect2Props<IFilm>, MultiSelect2State>(props =>
+    selectPopoverTestSuite<MultiSelect2Props<Film>, MultiSelect2State>(props =>
         mount(<MultiSelect2 {...props} selectedItems={[]} tagRenderer={renderTag} />, {
             attachTo: testsContainerElement,
         }),
@@ -123,11 +121,11 @@ describe("<MultiSelect2>", () => {
         assert.isTrue(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1));
     });
 
-    function multiselect(props: Partial<MultiSelect2Props<IFilm>> = {}, query?: string) {
+    function multiselect(props: Partial<MultiSelect2Props<Film>> = {}, query?: string) {
         const wrapper = mount(
-            <FilmMultiSelect {...defaultProps} {...handlers} {...props}>
+            <MultiSelect2<Film> {...defaultProps} {...handlers} {...props}>
                 <article />
-            </FilmMultiSelect>,
+            </MultiSelect2>,
         );
         if (query !== undefined) {
             wrapper.setState({ query });
@@ -136,10 +134,10 @@ describe("<MultiSelect2>", () => {
     }
 });
 
-function renderTag(film: IFilm) {
+function renderTag(film: Film) {
     return film.title;
 }
 
-function filterByYear(query: string, film: IFilm) {
+function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;
 }

@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Popover2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { Button, Code, H5, IPopoverProps, Popover, Position, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IPopoverPortalExampleState {
     isOpen: boolean;
 }
 
-export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPopoverPortalExampleState> {
+export class PopoverPortalExample extends React.PureComponent<ExampleProps, IPopoverPortalExampleState> {
     public state: IPopoverPortalExampleState = {
         isOpen: true,
     };
@@ -53,7 +60,6 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
             </>
         );
 
-        /* eslint-disable deprecation/deprecation */
         return (
             <Example className="docs-popover-portal-example" options={options} {...this.props}>
                 <div
@@ -88,7 +94,6 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
                 </em>
             </Example>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 
     private handleOpen = () => this.setState({ isOpen: !this.state.isOpen });

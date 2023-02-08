@@ -29,9 +29,9 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 npm install --save @blueprintjs/select
 ```
 
-Import CSS with a JS bundler like webpack:
+Import the package stylesheet in Sass:
 
-```js
+```scss
 @import "~@blueprintjs/select/lib/css/blueprint-select.css";
 ```
 

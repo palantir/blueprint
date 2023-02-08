@@ -19,7 +19,6 @@ import * as React from "react";
 import type { IconName } from "@blueprintjs/icons";
 
 import { Intent } from "./intent";
-import { IRef } from "./refs";
 
 export const DISPLAYNAME_PREFIX = "Blueprint4";
 
@@ -102,7 +101,7 @@ export type LinkProps = ILinkProps;
 /**
  * Interface for a controlled input.
  *
- * @deprecated use IControlledProps2.
+ * @deprecated use ControlledProps2.
  */
 export interface IControlledProps {
     /** Initial value of the input, for uncontrolled usage. */
@@ -129,7 +128,7 @@ export type ControlledProps2 = IControlledProps2;
  */
 export interface IElementRefProps<E extends HTMLElement> {
     /** A ref handler or a ref object that receives the native HTML element rendered by this component. */
-    elementRef?: IRef<E>;
+    elementRef?: React.Ref<E>;
 }
 
 /**
@@ -161,6 +160,7 @@ const INVALID_PROPS = [
     "elementRef",
     "fill",
     "icon",
+    "inputClassName",
     "inputRef",
     "intent",
     "inline",
@@ -178,6 +178,7 @@ const INVALID_PROPS = [
     "rightIcon",
     "round",
     "small",
+    "tagName",
     "text",
 ];
 

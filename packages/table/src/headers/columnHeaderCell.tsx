@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to ColumnHeaderCell2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
 import {
     AbstractPureComponent2,
     Utils as CoreUtils,
+    DISPLAYNAME_PREFIX,
     Icon,
     IconName,
     Popover,
@@ -28,7 +36,7 @@ import {
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "../common/context";
+import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "../common/context";
 import { LoadableContent } from "../common/loadableContent";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
@@ -41,7 +49,7 @@ export interface IColumnNameProps {
 
     /**
      * A callback to override the default name rendering behavior. The default
-     * behavior is to simply use the `ColumnHeaderCell`s name prop.
+     * behavior is to simply use the `ColumnHeaderCell2`s name prop.
      *
      * This render callback can be used, for example, to provide a
      * `EditableName` component for editing column names.
@@ -55,6 +63,7 @@ export interface IColumnNameProps {
     nameRenderer?: (name: string, index?: number) => React.ReactElement<Props>;
 }
 
+/** @deprecated use ColumnHeaderCellProps */
 export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNameProps {
     /**
      * Specifies if the column is reorderable.
@@ -73,6 +82,8 @@ export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNamePro
      */
     menuIcon?: IconName | JSX.Element;
 }
+// eslint-disable-next-line deprecation/deprecation
+export type ColumnHeaderCellProps = IColumnHeaderCellProps;
 
 export interface IColumnHeaderCellState {
     isActive?: boolean;
@@ -82,13 +93,16 @@ export function HorizontalCellDivider(): JSX.Element {
     return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER} />;
 }
 
+/** @deprecated use ColumnHeaderCell2 instead */
 export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellProps, IColumnHeaderCellState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.ColumnHeaderCell`;
+
     public static defaultProps: IColumnHeaderCellProps = {
         isActive: false,
         menuIcon: "chevron-down",
     };
 
-    public static contextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> =
+    public static contextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> =
         columnInteractionBarContextTypes;
 
     /**
@@ -107,7 +121,7 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         );
     }
 
-    public context: IColumnInteractionBarContextTypes = {
+    public context: ColumnInteractionBarContextTypes = {
         enableColumnInteractionBar: false,
     };
 
@@ -205,7 +219,6 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         return (
             <div className={classes}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
-                {/* eslint-disable-next-line deprecation/deprecation */}
                 <Popover
                     content={menuRenderer(index)}
                     position={Position.BOTTOM}
@@ -215,7 +228,6 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
                     onClosing={this.handlePopoverClosing}
                 >
                     <Icon icon={menuIcon} />
-                    {/* eslint-disable-next-line deprecation/deprecation */}
                 </Popover>
             </div>
         );

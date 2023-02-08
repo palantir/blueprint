@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
 import {
     Button,
     ButtonProps,
-    Classes,
     Code,
+    DialogBody,
     DialogStep,
     H5,
     HTMLSelect,
@@ -35,10 +34,10 @@ import {
 } from "@blueprintjs/core";
 import {
     Example,
+    ExampleProps,
     handleBooleanChange,
     handleStringChange,
     handleValueChange,
-    IExampleProps,
 } from "@blueprintjs/docs-theme";
 
 import { IBlueprintExampleData } from "../../tags/types";
@@ -61,7 +60,7 @@ export interface IMultistepDialogExampleState {
 const NAV_POSITIONS = ["left", "top", "right"];
 
 export class MultistepDialogExample extends React.PureComponent<
-    IExampleProps<IBlueprintExampleData>,
+    ExampleProps<IBlueprintExampleData>,
     IMultistepDialogExampleState
 > {
     public state: IMultistepDialogExampleState = {
@@ -115,7 +114,10 @@ export class MultistepDialogExample extends React.PureComponent<
                     icon="info-sign"
                     navigationPosition={position}
                     onClose={this.handleClose}
-                    nextButtonProps={{ disabled: this.state.value === undefined }}
+                    nextButtonProps={{
+                        disabled: this.state.value === undefined,
+                        tooltipContent: this.state.value === undefined ? "Select an option to continue" : undefined,
+                    }}
                     finalButtonProps={finalButtonProps}
                     title={hasTitle ? "Multistep dialog" : undefined}
                     {...state}
@@ -203,7 +205,7 @@ export interface ISelectPanelProps {
 }
 
 const SelectPanel: React.FC<ISelectPanelProps> = props => (
-    <div className={classNames(Classes.DIALOG_BODY, "docs-multistep-dialog-example-step")}>
+    <DialogBody className="docs-multistep-dialog-example-step">
         <p>Use this dialog to divide content into multiple sequential steps.</p>
         <p>Select one of the options below in order to proceed to the next step:</p>
         <RadioGroup onChange={props.onChange} selectedValue={props.selectedValue}>
@@ -211,23 +213,21 @@ const SelectPanel: React.FC<ISelectPanelProps> = props => (
             <Radio label="Option B" value="B" />
             <Radio label="Option C" value="C" />
         </RadioGroup>
-    </div>
+    </DialogBody>
 );
 
 export interface IConfirmPanelProps {
     selectedValue: string;
 }
 
-const ConfirmPanel: React.FC<IConfirmPanelProps> = props => {
-    return (
-        <div className={classNames(Classes.DIALOG_BODY, "docs-multistep-dialog-example-step")}>
-            <p>
-                You selected <strong>Option {props.selectedValue}</strong>.
-            </p>
-            <p>
-                To make changes, click the "Back" button or click on the "Select" step. Otherwise, click "Close" to
-                complete your selection.
-            </p>
-        </div>
-    );
-};
+const ConfirmPanel: React.FC<IConfirmPanelProps> = props => (
+    <DialogBody className="docs-multistep-dialog-example-step">
+        <p>
+            You selected <strong>Option {props.selectedValue}</strong>.
+        </p>
+        <p>
+            To make changes, click the "Back" button or click on the "Select" step. Otherwise, click "Close" to complete
+            your selection.
+        </p>
+    </DialogBody>
+);

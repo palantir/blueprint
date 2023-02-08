@@ -16,13 +16,13 @@
 import type { Root } from "postcss";
 import selectorParser from "postcss-selector-parser";
 import stylelint from "stylelint";
-import type { PluginContext, PostcssResult } from "stylelint";
+import type { PostcssResult, RuleContext } from "stylelint";
 
 import { checkImportExists } from "../utils/checkImportExists";
 import {
     BpPrefixVariableMap,
+    BpSassNamespace,
     BpVariableImportMap,
-    CssExtensionMap,
     CssSyntax,
     getCssSyntax,
     isCssSyntaxToStringMap,
@@ -42,9 +42,8 @@ interface Options {
     variablesImportPath?: Partial<Record<Exclude<CssSyntax, CssSyntax.OTHER>, string>>;
 }
 
-export default stylelint.createPlugin(
-    ruleName,
-    (enabled: boolean, options: Options | undefined, context: PluginContext) => (root: Root, result: PostcssResult) => {
+const ruleImpl =
+    (enabled: boolean, options: Options | undefined, context: RuleContext) => (root: Root, result: PostcssResult) => {
         if (!enabled) {
             return;
         }
@@ -81,12 +80,11 @@ export default stylelint.createPlugin(
         let hasBpVariablesImport: boolean | undefined; // undefined means not checked yet
         function assertBpVariablesImportExists(cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS) {
             const importPath = options?.variablesImportPath?.[cssSyntaxType] ?? BpVariableImportMap[cssSyntaxType];
-            const extension = CssExtensionMap[cssSyntaxType];
             if (hasBpVariablesImport == null) {
-                hasBpVariablesImport = checkImportExists(root, [importPath, `${importPath}.${extension}`]);
+                hasBpVariablesImport = checkImportExists(cssSyntaxType, root, importPath, BpSassNamespace);
             }
             if (!hasBpVariablesImport) {
-                insertImport(root, context, importPath);
+                insertImport(cssSyntaxType, root, context, importPath, BpSassNamespace);
                 hasBpVariablesImport = true;
             }
         }
@@ -101,8 +99,7 @@ export default stylelint.createPlugin(
                         if ((context as any).fix && !disableFix) {
                             assertBpVariablesImportExists(cssSyntax);
                             const fixed =
-                                BpPrefixVariableMap[cssSyntax] +
-                                selector.value.substring(bannedPrefix.length, selector.value.length - 1);
+                                BpPrefixVariableMap[cssSyntax] + selector.value.substring(bannedPrefix.length);
                             // Note - selector.value = "#{$var}" escapes special characters and produces "\#\{\$var\}",
                             // and to work around that we use selector.toString instead.
                             selector.toString = () => `.${fixed}`;
@@ -120,5 +117,9 @@ export default stylelint.createPlugin(
                 });
             }).processSync(rule.selector);
         });
-    },
-);
+    };
+
+ruleImpl.ruleName = ruleName;
+ruleImpl.messages = messages;
+
+export default stylelint.createPlugin(ruleName, ruleImpl);

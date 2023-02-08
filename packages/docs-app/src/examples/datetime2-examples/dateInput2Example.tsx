@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
-import { H5, Position, Switch } from "@blueprintjs/core";
+import { Classes, Code, H5, Icon, Switch, Tag } from "@blueprintjs/core";
 import { DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
 import { DateInput2 } from "@blueprintjs/datetime2";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
+import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "./dateFnsFormatSelector";
 
@@ -33,11 +35,15 @@ export interface DateInput2ExampleState {
     format: DateFormatProps;
     reverseMonthAndYearMenus: boolean;
     shortcuts: boolean;
+    showActionsBar: boolean;
+    showRightElement: boolean;
+    showTimePickerArrows: boolean;
     showTimezoneSelect: boolean;
     timePrecision: TimePrecision | undefined;
+    useAmPm: boolean;
 }
 
-export class DateInput2Example extends React.PureComponent<IExampleProps, DateInput2ExampleState> {
+export class DateInput2Example extends React.PureComponent<ExampleProps, DateInput2ExampleState> {
     public state: DateInput2ExampleState = {
         closeOnSelection: true,
         date: null,
@@ -47,9 +53,15 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
         format: DATE_FNS_FORMATS[0],
         reverseMonthAndYearMenus: false,
         shortcuts: false,
+        showActionsBar: false,
+        showRightElement: false,
+        showTimePickerArrows: false,
         showTimezoneSelect: true,
         timePrecision: TimePrecision.MINUTE,
+        useAmPm: false,
     };
+
+    private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
 
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
 
@@ -67,23 +79,41 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
 
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
 
+    private toggleRightElement = handleBooleanChange(showRightElement => this.setState({ showRightElement }));
+
+    private toggleTimePickerArrows = handleBooleanChange(showTimePickerArrows =>
+        this.setState({ showTimePickerArrows }),
+    );
+
+    private toggleUseAmPm = handleBooleanChange(useAmPm => this.setState({ useAmPm }));
+
     private handleTimePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
 
     public render() {
-        const { date, format, timePrecision, ...spreadProps } = this.state;
+        const { date, format, showRightElement, showTimePickerArrows, useAmPm, ...spreadProps } = this.state;
+
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <DateInput2
                     {...spreadProps}
                     {...format}
                     onChange={this.handleDateChange}
-                    popoverProps={{ position: Position.BOTTOM }}
-                    timePrecision={timePrecision}
+                    popoverProps={{ placement: "bottom" }}
+                    rightElement={
+                        showRightElement && (
+                            <Icon icon="globe" intent="primary" style={{ padding: 7, marginLeft: -5 }} />
+                        )
+                    }
+                    timePickerProps={
+                        this.state.timePrecision === undefined
+                            ? undefined
+                            : { showArrowButtons: showTimePickerArrows, useAmPm }
+                    }
                     value={date}
                 />
-                {date}
+                {date == null ? <Tag minimal={true}>no date</Tag> : <Tag intent="primary">{date}</Tag>}
             </Example>
         );
     }
@@ -92,48 +122,131 @@ export class DateInput2Example extends React.PureComponent<IExampleProps, DateIn
         const {
             closeOnSelection,
             disabled,
-            fill,
-            reverseMonthAndYearMenus: reverse,
-            format,
-            timePrecision,
-            shortcuts,
             disableTimezoneSelect,
+            fill,
+            format,
+            reverseMonthAndYearMenus: reverse,
+            shortcuts,
+            showActionsBar,
+            showRightElement,
+            showTimePickerArrows,
             showTimezoneSelect,
+            timePrecision,
+            useAmPm,
         } = this.state;
+
+        const isTimePickerShown = timePrecision !== undefined;
+
         return (
             <>
-                <H5>Props</H5>
-                <Switch label="Close on selection" checked={closeOnSelection} onChange={this.toggleSelection} />
-                <Switch checked={shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
+                <H5>Behavior props</H5>
+                <PropCodeTooltip snippet={`closeOnSelection={${closeOnSelection.toString()}}`}>
+                    <Switch label="Close on selection" checked={closeOnSelection} onChange={this.toggleSelection} />
+                </PropCodeTooltip>
+
+                <H5>Date picker props</H5>
+                <PropCodeTooltip snippet={`shortcuts={${shortcuts.toString()}}`}>
+                    <Switch
+                        checked={shortcuts}
+                        disabled={showActionsBar}
+                        label="Show shortcuts"
+                        onChange={this.toggleShortcuts}
+                    />
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`showActionsBar={${showActionsBar.toString()}}`}>
+                    <Switch
+                        checked={showActionsBar}
+                        disabled={shortcuts}
+                        label="Show actions bar"
+                        onChange={this.toggleActionsBar}
+                    />
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`reverseMonthAndYearMenus={${reverse.toString()}}`}>
+                    <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
+                </PropCodeTooltip>
+
+                <H5>Input appearance props</H5>
+                <PropCodeTooltip snippet={`disabled={${disabled.toString()}}`}>
+                    <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`fill={${fill.toString()}}`}>
+                    <Switch label="Fill container width" checked={fill} onChange={this.toggleFill} />
+                </PropCodeTooltip>
+                <PropCodeTooltip
+                    content={
+                        <>
+                            <Code>rightElement</Code> is {showRightElement ? "defined" : "undefined"}
+                        </>
+                    }
+                >
+                    <Switch label="Show right element" checked={showRightElement} onChange={this.toggleRightElement} />
+                </PropCodeTooltip>
+                <DateFnsFormatSelector format={format} onChange={this.handleFormatChange} />
+
+                <H5>Time picker props</H5>
                 <PrecisionSelect
                     allowNone={true}
                     label="Time precision"
                     onChange={this.handleTimePrecisionChange}
                     value={timePrecision}
                 />
+                <PropCodeTooltip
+                    snippet={`timePickerProps={{ showArrowButtons: ${showTimePickerArrows.toString()} }}`}
+                    disabled={!isTimePickerShown}
+                >
+                    <Switch
+                        label="Show time picker arrows"
+                        checked={showTimePickerArrows}
+                        disabled={!isTimePickerShown}
+                        onChange={this.toggleTimePickerArrows}
+                    />
+                </PropCodeTooltip>
+                <PropCodeTooltip
+                    snippet={`timePickerProps={{ useAmPm: ${useAmPm.toString()} }}`}
+                    disabled={!isTimePickerShown}
+                >
+                    <Switch
+                        label="Use AM/PM time"
+                        checked={useAmPm}
+                        disabled={!isTimePickerShown}
+                        onChange={this.toggleUseAmPm}
+                    />
+                </PropCodeTooltip>
 
-                <H5>Appearance props</H5>
-                <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
-                <Switch label="Fill" checked={fill} onChange={this.toggleFill} />
-                <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
-                <DateFnsFormatSelector format={format} onChange={this.handleFormatChange} />
-
-                <H5>Timezone props</H5>
-                <Switch
-                    label="Disable timezone select"
-                    checked={disableTimezoneSelect}
-                    onChange={this.toggleDisableTimezoneSelect}
-                />
-                <Switch
-                    label="Show timezone select"
-                    checked={showTimezoneSelect}
-                    onChange={this.toggleShowTimezoneSelect}
-                />
+                <H5 className={classNames({ [Classes.TEXT_DISABLED]: timePrecision === undefined })}>
+                    Timezone select props
+                </H5>
+                <PropCodeTooltip
+                    snippet={`showTimezoneSelect={${showTimezoneSelect.toString()}}`}
+                    disabled={!isTimePickerShown}
+                >
+                    <Switch
+                        label={`Show timezone${disableTimezoneSelect ? "" : " select"}`}
+                        checked={showTimezoneSelect}
+                        disabled={!isTimePickerShown}
+                        onChange={this.toggleShowTimezoneSelect}
+                    />
+                </PropCodeTooltip>
+                <PropCodeTooltip
+                    snippet={`disableTimezoneSelect={${disableTimezoneSelect.toString()}}`}
+                    disabled={!isTimePickerShown || !showTimezoneSelect}
+                >
+                    <Switch
+                        label="Disable timezone select"
+                        checked={disableTimezoneSelect}
+                        disabled={!isTimePickerShown || !showTimezoneSelect}
+                        onChange={this.toggleDisableTimezoneSelect}
+                    />
+                </PropCodeTooltip>
             </>
         );
     }
 
-    private handleDateChange = (date: string | null) => this.setState({ date });
+    private handleDateChange = (date: string | null) => {
+        this.setState({ date });
+    };
 
-    private handleFormatChange = (format: DateFormatProps) => this.setState({ format });
+    private handleFormatChange = (format: DateFormatProps) => {
+        this.setState({ format });
+    };
 }

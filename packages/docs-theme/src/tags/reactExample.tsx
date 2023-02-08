@@ -19,11 +19,11 @@ import * as React from "react";
 
 import { AnchorButton, Intent } from "@blueprintjs/core";
 
-import { IExampleProps } from "../components/example";
+import { ExampleProps } from "../components/example";
 
 export interface IExample {
     sourceUrl: string;
-    render: (props: IExampleProps) => JSX.Element | undefined;
+    render: (props: ExampleProps) => JSX.Element | undefined;
 }
 
 // construct a map of package name to all examples defined in that package.

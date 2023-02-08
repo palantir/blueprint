@@ -19,7 +19,7 @@ import { ModifierFn } from "popper.js";
 import * as React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent2, Classes, IRef, refHandler, setRef } from "../../common";
+import { AbstractPureComponent2, Classes, refHandler, setRef } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -39,8 +39,9 @@ export const PopoverInteractionKind = {
     HOVER_TARGET_ONLY: "hover-target" as "hover-target",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type PopoverInteractionKind = typeof PopoverInteractionKind[keyof typeof PopoverInteractionKind];
+export type PopoverInteractionKind = (typeof PopoverInteractionKind)[keyof typeof PopoverInteractionKind];
 
+/** @deprecated migrate to Popover2, use Popover2Props */
 export interface IPopoverProps extends IPopoverSharedProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
@@ -93,7 +94,7 @@ export interface IPopoverProps extends IPopoverSharedProps {
     /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
-    popoverRef?: IRef<HTMLElement>;
+    popoverRef?: React.Ref<HTMLElement>;
 
     /**
      * The target to which the popover content is attached. This can instead be
@@ -108,13 +109,19 @@ export interface IPopoverState {
     hasDarkParent: boolean;
 }
 
-/** @deprecated use { Popover2 } from "@blueprintjs/popover2" */
+/**
+ * Popover component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/popover
+ * @deprecated use { Popover2 } from "@blueprintjs/popover2"
+ */
+// eslint-disable-next-line deprecation/deprecation
 export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
-    // eslint-disable-next-line deprecation/deprecation
     private popoverRef = React.createRef<HTMLDivElement>();
 
+    // eslint-disable-next-line deprecation/deprecation
     public static defaultProps: IPopoverProps = {
         boundary: "scrollParent",
         captureDismiss: false,
@@ -167,7 +174,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate?: () => void;
 
-    private handlePopoverRef: IRef<HTMLElement> = refHandler(this, "popoverElement", this.props.popoverRef);
+    private handlePopoverRef: React.Ref<HTMLElement> = refHandler(this, "popoverElement", this.props.popoverRef);
 
     private handleTargetRef = (ref: HTMLElement | null) => (this.targetElement = ref);
 
@@ -239,6 +246,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         this.updateDarkParent();
     }
 
+    // eslint-disable-next-line deprecation/deprecation
     public componentDidUpdate(prevProps: IPopoverProps, prevState: IPopoverState) {
         super.componentDidUpdate(prevProps, prevState);
 
@@ -273,6 +281,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
      */
     public reposition = () => this.popperScheduleUpdate?.();
 
+    // eslint-disable-next-line deprecation/deprecation
     protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
         if (props.isOpen == null && props.onInteraction != null) {
             console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
@@ -438,6 +447,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
 
     private isControlled = () => this.props.isOpen !== undefined;
 
+    // eslint-disable-next-line deprecation/deprecation
     private getIsOpen(props: IPopoverProps) {
         // disabled popovers should never be allowed to open.
         if (props.disabled) {

@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview These APIs are DEPRECATED and the code is frozen.
+ * All changes & bugfixes should be made to @blueprintjs/datetime2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation */
+
 import * as moment from "moment-timezone";
 
 import { getTimezoneMetadata } from "./timezoneMetadata";
 
+/** @deprecated use @blueprintjs/datetime2 */
 export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name" | "composite";
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TimezoneDisplayFormat = {
@@ -31,6 +39,7 @@ export const TimezoneDisplayFormat = {
     OFFSET: "offset" as "offset",
 };
 
+/** @deprecated use @blueprintjs/datetime2 */
 export function formatTimezone(timezone: string, date: Date, displayFormat: TimezoneDisplayFormat): string | undefined {
     if (!timezone || !moment.tz.zone(timezone)) {
         return undefined;

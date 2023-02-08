@@ -17,8 +17,6 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IRef } from "@blueprintjs/core";
-
 import * as Classes from "../common/classes";
 import { ColumnIndices } from "../common/grid";
 import { Utils } from "../common/index";
@@ -26,11 +24,11 @@ import { IClientCoordinates } from "../interactions/dragTypes";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
-import { ColumnHeaderCell, IColumnHeaderCellProps } from "./columnHeaderCell";
+import { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./columnHeaderCell2";
 import { Header, IHeaderProps } from "./header";
 
 /** @deprecated use ColumnHeaderRenderer */
-export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps> | null;
+export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<ColumnHeaderCell2Props> | null;
 // eslint-disable-next-line deprecation/deprecation
 export type ColumnHeaderRenderer = IColumnHeaderRenderer;
 
@@ -44,8 +42,8 @@ export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, ColumnI
     /**
      * A ColumnHeaderRenderer that, for each `<Column>`, will delegate to:
      * 1. The `columnHeaderCellRenderer` method from the `<Column>`
-     * 2. A `<ColumnHeaderCell>` using the `name` prop from the `<Column>`
-     * 3. A `<ColumnHeaderCell>` with a `name` generated from `Utils.toBase26Alpha`
+     * 2. A `<ColumnHeaderCell2>` using the `name` prop from the `<Column>`
+     * 3. A `<ColumnHeaderCell2>` with a `name` generated from `Utils.toBase26Alpha`
      */
     cellRenderer: ColumnHeaderRenderer;
 
@@ -53,7 +51,7 @@ export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, ColumnI
      * Ref handler that receives the HTML element that should be measured to
      * indicate the fluid height of the column header.
      */
-    measurableElementRef?: IRef<HTMLDivElement>;
+    measurableElementRef?: React.Ref<HTMLDivElement>;
 
     /**
      * A callback invoked when user is done resizing the column
@@ -211,7 +209,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
             width: `${rect.width}px`,
         };
         return (
-            <ColumnHeaderCell
+            <ColumnHeaderCell2
                 className={classNames(extremaClasses)}
                 index={index}
                 key={Classes.columnIndexClass(index)}

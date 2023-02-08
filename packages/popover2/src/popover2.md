@@ -1,11 +1,11 @@
 @# Popover2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [Popover](#core/components/popover)?
 
-</h4>
+</h5>
 
 Popover2 is a replacement for Popover and will become the standard Popover API in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
@@ -65,11 +65,11 @@ in different DOM layout depending on your application's needs:
         your popover target.
 
 The **content** will be shown inside the popover itself. When opened, the popover will always be
-positioned on the page next to the target; the `position` prop determines its relative position (on
+positioned on the page next to the target; the `placement` prop determines its relative placement (on
 which side of the target).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Button targets</h4>
+    <h5 class="@ns-heading">Button targets</h5>
 
 Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
 events, which interferes with the popover functioning. If you need to disable a button which
@@ -122,8 +122,8 @@ each consist of two attributes:
 
 These two attributes can be expressed with a single value having the following structure:
 
-<pre class="docs-popover-placement-value-code-block">
-    <span class="docs-popover-placement-label-side">[SIDE]</span>-<span class="docs-popover-placement-label-alignment">[ALIGNMENT]</span>
+<pre class="docs-popover2-placement-value-code-block">
+<span class="docs-popover2-placement-label-side">[SIDE]</span>-<span class="docs-popover2-placement-label-alignment">[ALIGNMENT]</span>
 </pre>
 
 @reactExample Popover2PlacementExample
@@ -159,6 +159,14 @@ You may override the default modifiers with the `modifiers` prop, which is an ob
 modifier name and its options object, respectively. See the [Popper.js modifiers docs page](https://popper.js.org/docs/v2/modifiers/)
 for more info.
 
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h5 class="@ns-heading">Auto placement requires flip modifier</h5>
+
+Be careful when disabling the "flip" modifier, since the default "auto" placement relies on it. If you _do_ decide
+to disable this modifier, be sure to also specify a placement which is not "auto".
+
+</div>
+
 You may also add custom modifiers using the `modifiersCustom` prop. See the
 [Popper.js custom modifiers documentation](https://popper.js.org/docs/v2/modifiers/#custom-modifiers) for more info.
 
@@ -178,7 +186,7 @@ in your application logic whether you should care about a particular invocation 
 if the `nextOpenState` is not the same as the `Popover2`'s current state).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Disabling controlled popovers</h4>
+    <h5 class="@ns-heading">Disabling controlled popovers</h5>
 
 If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
 The popover will re-open when `disabled` is set to `false`.
@@ -238,12 +246,13 @@ The supported values are:
     -   **Opens when:** the target is clicked, or when Enter key is pressed while target is focused
     -   **Closes when:** the target is clicked
 
-The following example demonstrates the various interaction kinds (note: these Popovers contain [`MenuItem`](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
+The following example demonstrates the various interaction kinds (note: these Popovers contain
+[MenuItem](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
 
 @reactExample Popover2InteractionKindExample
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Conditionally styling popover targets</h4>
+    <h5 class="@ns-heading">Conditionally styling popover targets</h5>
 
 When a popover is open, `Classes.POPOVER2_OPEN` is applied to the target.
 You can use this to style the target differently when the popover is open.
@@ -252,15 +261,15 @@ You can use this to style the target differently when the popover is open.
 
 @### Closing on click
 
-Sometimes it is desirable for an element inside a `Popover2`'s content to close the popover
-on click. `Popover2` supports a pair of CSS classes, `Classes.POPOVER2_DISMISS`
+Sometimes it is desirable for an element inside a Popover2's content to close the popover
+on click. Popover2 supports a pair of CSS classes, `Classes.POPOVER2_DISMISS`
 and `Classes.POPOVER2_DISMISS_OVERRIDE`, which can be added to elements to
 describe whether click events should dismiss the enclosing popover.
 
 To mark an element (and its children) as "dismiss elements", simply add the
 class `Classes.POPOVER2_DISMISS`. For example, the **Cancel** and **Delete** buttons in the
 top-level [Popover2 example](#popover2-package/popover2) have this class, and all
-`MenuItem`s receive this class by default (see `shouldDismissPopover` prop). To
+MenuItems receive this class by default (see `shouldDismissPopover` prop). To
 enable this behavior on the entire popover body, pass
 `popoverClassName={Classes.POPOVER2_DISMISS}`.
 
@@ -270,8 +279,8 @@ originating inside disabled elements (either via the `disabled` attribute or
 `Classes.DISABLED`) will never dismiss a popover.
 
 Additionally, the prop `captureDismiss` (disabled by default) will prevent click
-events from dismissing _grandparent_ popovers (not the `Popover2` immediately
-containing the dismiss element). `MenuItem` disables this feature such that
+events from dismissing _grandparent_ popovers (not the Popover2 immediately
+containing the dismiss element). MenuItem disables this feature such that
 clicking any submenu item will close all submenus, which is desirable behavior
 for a menu tree.
 
@@ -323,7 +332,7 @@ a translucent background color, like the backdrop for the [`Dialog`](#core/compo
 The backdrop element has the same opacity-fade transition as the `Dialog` backdrop.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">Dangerous edge case</h4>
+    <h5 class="@ns-heading">Dangerous edge case</h5>
 
 Rendering a `<Popover2 isOpen={true} hasBackdrop={true}>` outside the viewport bounds can easily break
 your application by covering the UI with an invisible non-interactive backdrop. This edge case
@@ -369,7 +378,7 @@ styles to that class:
 <Popover2 content={<div className="custom-class">...</div>}>...</Popover2>
 ```
 
-```css.scss
+```scss
 .custom-class {
     max-height: $pt-grid-size * 15;
     overflow-y: auto;

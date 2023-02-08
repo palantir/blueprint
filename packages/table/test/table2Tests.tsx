@@ -249,13 +249,22 @@ describe("<Table2>", function (this) {
         runTestToEnsureScrollingIsEnabled(false);
 
         it("does not render ghost rows when there is vertical overflow", () => {
+            // we need _some_ amount of vertical overflow to avoid the code path which disables vertical scroll
+            // in the table altogether. 200px leaves just enough space for the rows, but there is 30px taken up by
+            // the column header, which will overflow.
+            runTestToEnsureGhostCellsAreNotVisible(200);
+        });
+
+        it("does not render ghost rows when there is vertical exact fit", () => {
+            // 200px for row heights, 30px for row header
+            runTestToEnsureGhostCellsAreNotVisible(230);
+        });
+
+        function runTestToEnsureGhostCellsAreNotVisible(height: number) {
             const { containerElement } = mountTable(
                 { defaultRowHeight: 20, enableGhostCells: true },
                 {
-                    // we need _some_ amount of vertical overflow to avoid the code path which disables vertical scroll
-                    // in the table altogether. 200px leaves just enough space for the rows, but there is 30px taken up by
-                    // the column header, which will overflow.
-                    height: 200,
+                    height,
                     width: 300,
                 },
             );
@@ -266,7 +275,7 @@ describe("<Table2>", function (this) {
 
             // cleanup
             document.body.removeChild(containerElement);
-        });
+        }
 
         function runTestToEnsureScrollingIsEnabled(enableGhostCells: boolean) {
             it(`isn't disabled when there is half a row left to scroll to and enableGhostCells is set to ${enableGhostCells}`, () => {

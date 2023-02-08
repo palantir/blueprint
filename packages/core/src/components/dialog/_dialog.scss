@@ -63,13 +63,12 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
 }
 
 .#{$ns}-dialog {
-  background: $light-gray4;
+  background: $light-gray5;
   border-radius: $dialog-border-radius;
   box-shadow: $pt-dialog-box-shadow;
   display: flex;
   flex-direction: column;
   margin: $dialog-margin;
-  padding-bottom: $pt-grid-size * 2;
   pointer-events: all;
   user-select: text;
   width: $pt-grid-size * 50;
@@ -84,7 +83,13 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
     box-shadow: $pt-dark-dialog-box-shadow;
     color: $pt-dark-text-color;
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
 }
+
+$dialog-header-padding: math.div($pt-grid-size, 2);
 
 .#{$ns}-dialog-header {
   align-items: center;
@@ -93,9 +98,9 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
   box-shadow: 0 1px 0 $pt-divider-black;
   display: flex;
   flex: 0 0 auto;
-  min-height: $pt-icon-size-large + $dialog-padding;
+  min-height: $pt-button-height + $dialog-header-padding * 2;
+  padding: $dialog-header-padding;
   padding-left: $dialog-padding;
-  padding-right: math.div($pt-grid-size, 2);
   z-index: 0;
 
   .#{$ns}-icon-large,
@@ -110,7 +115,7 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
     @include overflow-ellipsis();
     flex: 1 1 auto;
     line-height: inherit;
-    margin: $pt-grid-size 0;
+    margin: 0;
 
     &:last-child {
       margin-right: $dialog-padding;
@@ -126,24 +131,8 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
       color: $pt-dark-icon-color;
     }
   }
-}
 
-.#{$ns}-dialog-body {
-  flex: 1 1 auto;
-  line-height: $pt-grid-size * 1.8;
-  margin: $dialog-padding;
-}
-
-.#{$ns}-dialog-footer {
-  flex: 0 0 auto;
-  margin: 0 $dialog-padding;
-}
-
-.#{$ns}-dialog-footer-actions {
-  display: flex;
-  justify-content: flex-end;
-
-  .#{$ns}-button {
-    margin-left: $pt-grid-size;
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border-bottom: 1px solid $pt-high-contrast-mode-border-color;
   }
 }

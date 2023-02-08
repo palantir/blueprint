@@ -23,7 +23,6 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     Intent,
-    IRef,
     Keys,
     Position,
     refHandler,
@@ -195,6 +194,11 @@ const NON_HTML_PROPS: Array<keyof NumericInputProps> = [
 
 type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<Element>, "onKeyDown" | "onMouseDown">>;
 
+/**
+ * Numeric input component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/numeric-input
+ */
 export class NumericInput extends AbstractPureComponent2<HTMLInputProps & NumericInputProps, INumericInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 
@@ -290,7 +294,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
 
     public inputElement: HTMLInputElement | null = null;
 
-    private inputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
+    private inputRef: React.Ref<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
     private intervalId?: number;
 
@@ -422,19 +426,19 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
     private renderInput() {
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, NON_HTML_PROPS, true);
         const valueAsNumber = this.getCurrentValueAsNumber();
-        const hasSpinButtons = this.props.buttonPosition !== undefined && this.props.buttonPosition !== "none";
 
         return (
             <InputGroup
                 asyncControl={this.props.asyncControl}
                 autoComplete="off"
                 id={this.numericInputId}
-                role={hasSpinButtons ? "spinbutton" : "textbox"}
+                role={this.props.allowNumericCharactersOnly ? "spinbutton" : undefined}
                 {...inputGroupHtmlProps}
                 aria-valuemax={this.props.max}
                 aria-valuemin={this.props.min}
                 aria-valuenow={valueAsNumber}
                 intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
+                inputClassName={this.props.inputClassName}
                 inputRef={this.inputRef}
                 large={this.props.large}
                 leftElement={this.props.leftElement}
@@ -595,6 +599,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
             e.preventDefault();
         }
 
+        // eslint-disable-next-line deprecation/deprecation
         this.props.onKeyPress?.(e);
     };
 

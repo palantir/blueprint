@@ -1,30 +1,37 @@
 @# Button
 
-Buttons trigger actions when clicked.
+Buttons trigger actions when clicked. You may render a button as either a `<button>` or `<a>` HTML element.
 
 @reactExample ButtonsExample
 
-### `AnchorButton`
+### AnchorButton vs. Button
+
+The two button components generate different HTML tags. They each look the same, but they have different semantic
+behaviors according to the HTML spec.
 
 ```tsx
 <AnchorButton text="Click" />
-// renders:
-<a class="@ns-button" role="button" tabIndex={0}>Click</a>
 ```
 
-### `Button`
+```html
+<a class="@ns-button" role="button" tabindex={0}>Click</a>
+```
+
+---
 
 ```tsx
 <Button icon="refresh" />
-// renders:
+```
+
+```html
 <button class="@ns-button" type="button"><svg class="@ns-icon">...</svg></button>
 ```
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Disabled `Button` prevents all interaction
-</h4>
+</h5>
 
 Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
 

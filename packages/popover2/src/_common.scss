@@ -81,6 +81,16 @@ $pt-dark-tooltip2-box-shadow: $pt-dark-tooltip-box-shadow !default;
 
   .#{$ns}-popover2-arrow-fill {
     fill: $background-color;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      fill: $pt-high-contrast-mode-border-color;
+    }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid $pt-high-contrast-mode-border-color;
   }
 }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { memoize } from "lodash-es";
+import memoize from "lodash/memoize";
 
 /**
  * Gets the users current time zone, for example "Europe/Oslo".

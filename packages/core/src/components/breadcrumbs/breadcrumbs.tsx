@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -24,7 +26,6 @@ import { OverflowList, OverflowListProps } from "../overflow-list/overflowList";
 import { IPopoverProps, Popover } from "../popover/popover";
 import { Breadcrumb, BreadcrumbProps } from "./breadcrumb";
 
-// eslint-disable-next-line deprecation/deprecation
 export type BreadcrumbsProps = IBreadcrumbsProps;
 /** @deprecated use BreadcrumbsProps */
 export interface IBreadcrumbsProps extends Props {
@@ -79,6 +80,12 @@ export interface IBreadcrumbsProps extends Props {
     popoverProps?: IPopoverProps;
 }
 
+/**
+ * Breadcrumbs component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/breadcrumbs
+ * @deprecated use { Breadcrumbs2 } from "@blueprintjs/popover2"
+ */
 export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
     public static defaultProps: Partial<BreadcrumbsProps> = {
         collapseFrom: Boundary.START,
@@ -112,7 +119,6 @@ export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
             orderedItems = items.slice().reverse();
         }
 
-        /* eslint-disable deprecation/deprecation */
         return (
             <li>
                 <Popover
@@ -125,7 +131,6 @@ export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
                 </Popover>
             </li>
         );
-        /* eslint-enable deprecation/deprecation */
     };
 
     private renderOverflowBreadcrumb = (props: BreadcrumbProps, index: number) => {

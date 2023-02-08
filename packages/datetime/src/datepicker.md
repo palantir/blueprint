@@ -54,7 +54,7 @@ Modifiers are a react-day-picker concept and are documented in full in the
 The example below renders a DatePicker that prevents the user from selecting any Sundays,
 by using the component in controlled mode and with the `modifiers` prop:
 
-```css.scss
+```scss
 // in CSS
 .#{$ns}-datepicker .DayPicker-Day--isSunday {
     // CSS rules to make the day appear disabled
@@ -97,7 +97,7 @@ function isSunday(date: Date) {
 `DatePicker`, `DateRangePicker`, `DateInput`, and `DateRangeInput` all support calendar localization
 using an interface defined by __react-day-picker__:
 
-```tsx
+```js
 import { LocaleUtils } from "react-day-picker";
 ```
 

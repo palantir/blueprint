@@ -23,9 +23,9 @@ import { DISPLAYNAME_PREFIX, IntentProps } from "../../common/props";
 import { Popover, PopoverInteractionKind } from "../popover/popover";
 import { IPopoverSharedProps } from "../popover/popoverSharedProps";
 
-// eslint-disable-next-line deprecation/deprecation
-export type TooltipProps = ITooltipProps;
-/** @deprecated use TooltipProps */
+/** @deprecated migrate to Tooltip2, use Tooltip2Props */
+export type TooltipProps = ITooltipProps; // eslint-disable-line deprecation/deprecation
+/** @deprecated migrate to Tooltip2, use Tooltip2Props */
 export interface ITooltipProps extends IPopoverSharedProps, IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
@@ -70,10 +70,17 @@ export interface ITooltipProps extends IPopoverSharedProps, IntentProps {
     transitionDuration?: number;
 }
 
-/** @deprecated use { Tooltip2 } from "@blueprintjs/popover2" */
+/**
+ * Tooltip component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tooltip
+ * @deprecated use { Tooltip2 } from "@blueprintjs/popover2"
+ */
+// eslint-disable-next-line deprecation/deprecation
 export class Tooltip extends AbstractPureComponent2<TooltipProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
+    // eslint-disable-next-line deprecation/deprecation
     public static defaultProps: Partial<TooltipProps> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,

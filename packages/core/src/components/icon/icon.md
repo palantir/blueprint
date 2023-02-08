@@ -88,7 +88,7 @@ Icon classes also support the four `.@ns-intent-*` modifiers to color the image.
 ```
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Non-standard sizes</h4>
+    <h5 class="@ns-heading">Non-standard sizes</h5>
 
 Generally, font icons should only be used at either 16px or 20px. However, if a non-standard size is
 necessary, set a `font-size` that is whole multiple of 16 or 20 with the relevant size class.

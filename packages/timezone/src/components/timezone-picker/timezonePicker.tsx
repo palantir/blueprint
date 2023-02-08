@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to TimezoneSelect instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -109,6 +116,7 @@ export interface ITimezonePickerProps extends Props {
     inputProps?: InputGroupProps2;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    // eslint-disable-next-line deprecation/deprecation
     popoverProps?: Partial<IPopoverProps>;
 }
 
@@ -119,7 +127,12 @@ export interface ITimezonePickerState {
 // eslint-disable-next-line deprecation/deprecation
 const TypedSelect = Select.ofType<TimezoneItem>();
 
-/** @deprecated use { TimezoneSelect } from "@blueprintjs/datetime2" */
+/**
+ * Timezone picker component.
+ *
+ * @see https://blueprintjs.com/docs/#timezone/timezone-picker
+ * @deprecated use { TimezoneSelect } from "@blueprintjs/datetime2"
+ */
 export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, ITimezonePickerState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 
@@ -155,6 +168,7 @@ export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, 
             placeholder: "Search for timezones...",
             ...inputProps,
         };
+        // eslint-disable-next-line deprecation/deprecation
         const finalPopoverProps: Partial<IPopoverProps> = {
             ...popoverProps,
             popoverClassName: classNames(Classes.TIMEZONE_PICKER_POPOVER, popoverProps.popoverClassName),
@@ -192,7 +206,7 @@ export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, 
         }
     }
 
-    protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
+    protected validateProps(props: TimezonePickerProps & { children?: React.ReactNode }) {
         const childrenCount = React.Children.count(props.children);
         if (childrenCount > 1) {
             console.warn(Errors.TIMEZONE_PICKER_WARN_TOO_MANY_CHILDREN);

@@ -29,7 +29,6 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-console.info("Testing icon-components rule...");
 ruleTester.run("icon-components", iconComponentsRule, {
     invalid: [
         {

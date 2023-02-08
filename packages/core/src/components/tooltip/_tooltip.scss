@@ -58,6 +58,11 @@ $dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-op
 
       .#{$ns}-popover-arrow-fill {
         fill: $color;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // In Windows high contrast mode, just force the color to be the same as the border.
+          fill: $pt-high-contrast-mode-border-color;
+        }
       }
     }
   }

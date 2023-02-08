@@ -31,7 +31,6 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-console.info("Testing html-components rule...");
 ruleTester.run("html-components", htmlComponentsRule, {
     invalid: [
         {

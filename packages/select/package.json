@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/select",
-    "version": "4.4.2",
+    "version": "4.8.18",
     "description": "Components related to selecting items from a list",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -35,27 +35,33 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.6.0",
-        "@blueprintjs/popover2": "^1.4.2",
-        "classnames": "^2.2",
+        "@blueprintjs/core": "^4.15.1",
+        "@blueprintjs/popover2": "^1.12.1",
+        "classnames": "^2.3.1",
         "tslib": "~2.3.1"
     },
     "peerDependencies": {
+        "@types/react": "^16.14.32 || 17 || 18",
         "react": "^16.8 || 17 || 18",
         "react-dom": "^16.8 || 17 || 18"
     },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
+    },
     "devDependencies": {
-        "@blueprintjs/karma-build-scripts": "^3.1.1",
-        "@blueprintjs/node-build-scripts": "^5.0.2",
+        "@blueprintjs/karma-build-scripts": "^4.0.10",
+        "@blueprintjs/node-build-scripts": "^6.0.6",
         "enzyme": "^3.11.0",
-        "karma": "^6.3.17",
-        "mocha": "^9.2.2",
+        "karma": "^6.4.1",
+        "mocha": "^10.1.0",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
         "typescript": "~4.6.2",
-        "webpack-cli": "^3.3.12"
+        "webpack-cli": "^5.0.1"
     },
     "repository": {
         "type": "git",

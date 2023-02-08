@@ -17,14 +17,14 @@
 import * as React from "react";
 
 import { Button, Card, Classes, Elevation, H5, Label, Slider, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ICardExampleState {
     elevation: Elevation;
     interactive: boolean;
 }
 
-export class CardExample extends React.PureComponent<IExampleProps, ICardExampleState> {
+export class CardExample extends React.PureComponent<ExampleProps, ICardExampleState> {
     public state: ICardExampleState = {
         elevation: 0,
         interactive: false,
@@ -42,6 +42,7 @@ export class CardExample extends React.PureComponent<IExampleProps, ICardExample
                         showTrackFill={false}
                         value={this.state.elevation}
                         onChange={this.handleElevationChange}
+                        handleHtmlProps={{ "aria-label": "card elevation" }}
                     />
                 </Label>
             </>

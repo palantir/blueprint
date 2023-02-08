@@ -28,13 +28,19 @@ import {
 
 import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
-import { Cell, ICellProps } from "./cell";
+import { Cell, CellProps } from "./cell";
 
-export interface EditableCell2Props extends Omit<ICellProps, "onKeyDown" | "onKeyUp"> {
+export interface EditableCell2Props extends Omit<CellProps, "onKeyDown" | "onKeyUp"> {
     /**
      * Whether the given cell is the current active/focused cell.
      */
     isFocused?: boolean;
+
+    /**
+     * Optional placeholder value for when the cell is empty (overrides the
+     * placeholder in {@link EditableTextProps})
+     */
+    placeholder?: string;
 
     /**
      * The value displayed in the text box. Be sure to update this value when
@@ -79,6 +85,11 @@ export interface EditableCell2State {
     dirtyValue?: string;
 }
 
+/**
+ * Editable cell (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.editablecell2
+ */
 export class EditableCell2 extends React.Component<EditableCell2Props, EditableCell2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell2`;
 
@@ -143,6 +154,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
 
         const { isEditing, dirtyValue, savedValue } = this.state;
         const interactive = spreadableProps.interactive || isEditing;
+        const hasValue = this.props.value != null && this.props.value !== "";
 
         let cellContents: JSX.Element | undefined;
         if (isEditing) {
@@ -158,7 +170,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
                     onChange={this.handleChange}
                     onConfirm={this.handleConfirm}
                     onEdit={this.handleEdit}
-                    placeholder=""
+                    placeholder={this.props.placeholder}
                     selectAllOnFocus={false}
                     value={dirtyValue}
                 />
@@ -167,9 +179,10 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
             const textClasses = classNames(Classes.TABLE_EDITABLE_TEXT, {
                 [Classes.TABLE_TRUNCATED_TEXT]: truncated,
                 [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
+                [Classes.TABLE_CELL_TEXT_PLACEHOLDER]: !hasValue,
             });
 
-            cellContents = <div className={textClasses}>{savedValue}</div>;
+            cellContents = <div className={textClasses}>{hasValue ? savedValue : this.props.placeholder}</div>;
         }
 
         return (

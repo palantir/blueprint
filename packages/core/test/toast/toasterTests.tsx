@@ -22,12 +22,12 @@ import { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, IToaster, Toaster } from "../../src";
+import { Classes, Toaster, ToasterInstance } from "../../src";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
 
 describe("Toaster", () => {
     let testsContainerElement: HTMLElement;
-    let toaster: IToaster;
+    let toaster: ToasterInstance;
 
     before(() => {
         testsContainerElement = document.createElement("div");

@@ -231,6 +231,11 @@ $dark-menu-item-intent-colors: (
       }
     }
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    background-color: $pt-high-contrast-mode-active-background-color;
+  }
 }
 
 @mixin menu-item-intent($intent, $is-dark, $bg-color, $fg-color, $fg-color-active) {

@@ -119,6 +119,11 @@ export interface IOverflowListState<T> {
     lastChopSize: number | null;
 }
 
+/**
+ * Overflow list component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/overflow-list
+ */
 export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOverflowListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.OverflowList`;
 
@@ -147,13 +152,14 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, IOver
         this.repartition();
     }
 
-    public shouldComponentUpdate(_nextProps: OverflowListProps<T>, nextState: IOverflowListState<T>) {
+    public shouldComponentUpdate(nextProps: OverflowListProps<T>, nextState: IOverflowListState<T>) {
         // We want this component to always re-render, even when props haven't changed, so that
         // changes in the renderers' behavior can be reflected.
         // The following statement prevents re-rendering only in the case where the state changes
         // identity (i.e. setState was called), but the state is still the same when
-        // shallow-compared to the previous state.
-        return !(this.state !== nextState && shallowCompareKeys(this.state, nextState));
+        // shallow-compared to the previous state. Original context: https://github.com/palantir/blueprint/pull/3278.
+        // We also ensure that we re-render if the props DO change (which isn't necessarily accounted for by other logic).
+        return this.props !== nextProps || !(this.state !== nextState && shallowCompareKeys(this.state, nextState));
     }
 
     public componentDidUpdate(prevProps: OverflowListProps<T>, prevState: IOverflowListState<T>) {

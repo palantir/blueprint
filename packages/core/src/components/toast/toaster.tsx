@@ -24,9 +24,9 @@ import { ESCAPE } from "../../common/keys";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
-import { IToastProps, Toast } from "./toast";
+import { Toast, ToastProps } from "./toast";
 
-export type IToastOptions = IToastProps & { key: string };
+export type IToastOptions = ToastProps & { key: string };
 export type ToasterPosition =
     | typeof Position.TOP
     | typeof Position.TOP_LEFT
@@ -35,14 +35,17 @@ export type ToasterPosition =
     | typeof Position.BOTTOM_LEFT
     | typeof Position.BOTTOM_RIGHT;
 
-/** Instance methods available on a `<Toaster>` component instance. */
-export interface IToaster {
+/** @deprecated use ToasterInstance */
+export type IToaster = ToasterInstance;
+
+/** Public API methods available on a `<Toaster>` component instance. */
+export interface ToasterInstance {
     /**
      * Shows a new toast to the user, or updates an existing toast corresponding to the provided key (optional).
      *
      * Returns the unique key of the toast.
      */
-    show(props: IToastProps, key?: string): string;
+    show(props: ToastProps, key?: string): string;
 
     /** Dismiss the given toast instantly. */
     dismiss(key: string): void;
@@ -110,7 +113,12 @@ export interface IToasterState {
     toasts: IToastOptions[];
 }
 
-export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState> implements IToaster {
+/**
+ * Toaster component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/toast.toaster
+ */
+export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState> implements ToasterInstance {
     public static displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
 
     public static defaultProps: IToasterProps = {
@@ -124,7 +132,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
      * Create a new `Toaster` instance that can be shared around your application.
      * The `Toaster` will be rendered into a new element appended to the given container.
      */
-    public static create(props?: IToasterProps, container = document.body): IToaster {
+    public static create(props?: IToasterProps, container = document.body): ToasterInstance {
         if (props != null && props.usePortal != null && !isNodeEnv("production")) {
             console.warn(TOASTER_WARN_INLINE);
         }
@@ -147,7 +155,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     // auto-incrementing identifier for un-keyed toasts
     private toastId = 0;
 
-    public show(props: IToastProps, key?: string) {
+    public show(props: ToastProps, key?: string) {
         if (this.props.maxToasts) {
             // check if active number of toasts are at the maxToasts limit
             this.dismissIfAtLimit();
@@ -232,7 +240,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
         return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
     };
 
-    private createToastOptions(props: IToastProps, key = `toast-${this.toastId++}`) {
+    private createToastOptions(props: ToastProps, key = `toast-${this.toastId++}`) {
         // clone the object before adding the key prop to avoid leaking the mutation
         return { ...props, key };
     }

@@ -90,7 +90,7 @@ export interface ISelectableProps {
 
 export interface IDragSelectableProps extends ISelectableProps {
     /** Element to make interactive. */
-    children: React.ReactNode;
+    children?: React.ReactNode;
 
     /**
      * A list of CSS selectors that should _not_ trigger selection when a `mousedown` occurs inside of them.

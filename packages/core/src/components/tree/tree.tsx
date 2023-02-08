@@ -77,6 +77,11 @@ export interface ITreeProps<T = {}> extends Props {
     onNodeMouseLeave?: TreeEventHandler<T>;
 }
 
+/**
+ * Tree component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tree
+ */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export class Tree<T = {}> extends React.Component<TreeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tree`;
@@ -126,9 +131,8 @@ export class Tree<T = {}> extends React.Component<TreeProps<T>> {
 
         const nodeItems = treeNodes.map((node, i) => {
             const elementPath = currentPath!.concat(i);
-            const TypedTreeNode = TreeNode.ofType<T>();
             return (
-                <TypedTreeNode
+                <TreeNode<T>
                     {...node}
                     key={node.id}
                     contentRef={this.handleContentRef}
@@ -143,7 +147,7 @@ export class Tree<T = {}> extends React.Component<TreeProps<T>> {
                     path={elementPath}
                 >
                     {this.renderNodes(node.childNodes, elementPath)}
-                </TypedTreeNode>
+                </TreeNode>
             );
         });
 

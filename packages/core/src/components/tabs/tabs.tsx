@@ -100,6 +100,11 @@ export interface ITabsState {
     selectedTabId?: TabId;
 }
 
+/**
+ * Tabs component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tabs
+ */
 export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;
@@ -234,7 +239,7 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const focusedElement = document.activeElement?.closest(TAB_SELECTOR);
+        const focusedElement = Utils.getActiveElement(this.tablistElement)?.closest(TAB_SELECTOR);
         // rest of this is potentially expensive and futile, so bail if no tab is focused
         if (focusedElement == null) {
             return;

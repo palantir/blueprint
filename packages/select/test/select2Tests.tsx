@@ -22,21 +22,20 @@ import * as sinon from "sinon";
 import { InputGroup, Keys, MenuItem } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
 
-import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
-import { IItemRendererProps, Select2, Select2Props, Select2State } from "../src";
+import { ItemRendererProps, Select2, Select2Props, Select2State } from "../src";
+import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("<Select2>", () => {
-    const FilmSelect = Select2.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
         query: "",
     };
     let handlers: {
-        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
+        itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
     let testsContainerElement: HTMLElement | undefined;
@@ -58,11 +57,11 @@ describe("<Select2>", () => {
         testsContainerElement?.remove();
     });
 
-    selectComponentSuite<Select2Props<IFilm>, Select2State>(props =>
+    selectComponentSuite<Select2Props<Film>, Select2State>(props =>
         mount(<Select2 {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
     );
 
-    selectPopoverTestSuite<Select2Props<IFilm>, Select2State>(props =>
+    selectPopoverTestSuite<Select2Props<Film>, Select2State>(props =>
         mount(<Select2 {...props} />, { attachTo: testsContainerElement }),
     );
 
@@ -95,6 +94,7 @@ describe("<Select2>", () => {
 
     it("inputProps value and onChange are ignored", () => {
         const inputProps = { value: "nailed it", onChange: sinon.spy() };
+        // @ts-expect-error - value and onChange are now omitted from the props type
         const input = select({ inputProps }).find("input");
         assert.notEqual(input.prop("onChange"), inputProps.onChange);
         assert.notEqual(input.prop("value"), inputProps.value);
@@ -128,11 +128,11 @@ describe("<Select2>", () => {
         assert.isTrue(handlers.onItemSelect.calledOnce);
     });
 
-    function select(props: Partial<Select2Props<IFilm>> = {}, query?: string) {
+    function select(props: Partial<Select2Props<Film>> = {}, query?: string) {
         const wrapper = mount(
-            <FilmSelect {...defaultProps} {...handlers} {...props}>
+            <Select2<Film> {...defaultProps} {...handlers} {...props}>
                 <button data-testid="target-button">Target</button>
-            </FilmSelect>,
+            </Select2>,
         );
         if (query !== undefined) {
             wrapper.setState({ query });
@@ -141,6 +141,6 @@ describe("<Select2>", () => {
     }
 });
 
-function filterByYear(query: string, film: IFilm) {
+function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;
 }

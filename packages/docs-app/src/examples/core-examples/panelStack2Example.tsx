@@ -24,7 +24,7 @@
 import * as React from "react";
 
 import { Button, H5, Intent, NumericInput, Panel, PanelProps, PanelStack2, Switch, UL } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Panel1Info {
@@ -112,7 +112,7 @@ const initialPanel: Panel<Panel1Info> = {
     title: "Panel 1",
 };
 
-export const PanelStack2Example: React.FC<IExampleProps> = props => {
+export const PanelStack2Example: React.FC<ExampleProps> = props => {
     const [activePanelOnly, setActivePanelOnly] = React.useState(false);
     const [showHeader, setShowHeader] = React.useState(true);
     const [currentPanelStack, setCurrentPanelStack] = React.useState<

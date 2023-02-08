@@ -24,7 +24,7 @@ import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { DatePickerCaption } from "./datePickerCaption";
-import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
+import { DatePickerBaseProps, getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
 import { DatePickerNavbar } from "./datePickerNavbar";
 import { DatePickerShortcut, DateRangeShortcut, Shortcuts } from "./shortcuts";
 import { TimePicker } from "./timePicker";
@@ -32,7 +32,7 @@ import { TimePicker } from "./timePicker";
 // eslint-disable-next-line deprecation/deprecation
 export type DatePickerProps = IDatePickerProps;
 /** @deprecated use DatePickerProps */
-export interface IDatePickerProps extends IDatePickerBaseProps, Props {
+export interface IDatePickerProps extends DatePickerBaseProps, Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * If disabled, the "Clear" Button in the Actions Bar will also be disabled.
@@ -110,6 +110,11 @@ export interface IDatePickerState {
     selectedShortcutIndex?: number;
 }
 
+/**
+ * Date picker component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime/datepicker
+ */
 export class DatePicker extends AbstractPureComponent2<DatePickerProps, IDatePickerState> {
     public static defaultProps: DatePickerProps = {
         canClearSelection: true,

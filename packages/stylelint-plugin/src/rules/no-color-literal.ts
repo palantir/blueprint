@@ -15,15 +15,15 @@
 
 import type { Declaration, Root } from "postcss";
 import valueParser from "postcss-value-parser";
-import stylelint, { PluginContext, PostcssResult } from "stylelint";
+import stylelint, { PostcssResult, RuleContext } from "stylelint";
 
 import { Colors } from "@blueprintjs/colors";
 
 import { checkImportExists } from "../utils/checkImportExists";
 import {
+    BpSassNamespace,
     BpVariableImportMap,
     BpVariablePrefixMap,
-    CssExtensionMap,
     CssSyntax,
     getCssSyntax,
     isCssSyntaxToStringMap,
@@ -42,9 +42,8 @@ interface Options {
     variablesImportPath?: Partial<Record<Exclude<CssSyntax, CssSyntax.OTHER>, string>>;
 }
 
-export default stylelint.createPlugin(
-    ruleName,
-    (enabled: boolean, options: Options | undefined, context: PluginContext) => (root: Root, result: PostcssResult) => {
+const ruleImpl =
+    (enabled: boolean, options: Options | undefined, context: RuleContext) => (root: Root, result: PostcssResult) => {
         if (!enabled) {
             return;
         }
@@ -81,12 +80,11 @@ export default stylelint.createPlugin(
         let hasBpVariablesImport: boolean | undefined; // undefined means not checked yet
         function assertBpVariablesImportExists(cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS) {
             const importPath = options?.variablesImportPath?.[cssSyntaxType] ?? BpVariableImportMap[cssSyntaxType];
-            const extension = CssExtensionMap[cssSyntaxType];
             if (hasBpVariablesImport == null) {
-                hasBpVariablesImport = checkImportExists(root, [importPath, `${importPath}.${extension}`]);
+                hasBpVariablesImport = checkImportExists(cssSyntaxType, root, importPath, BpSassNamespace);
             }
             if (!hasBpVariablesImport) {
-                insertImport(root, context, importPath);
+                insertImport(cssSyntaxType, root, context, importPath, BpSassNamespace);
                 hasBpVariablesImport = true;
             }
         }
@@ -106,7 +104,7 @@ export default stylelint.createPlugin(
                 }
                 if (context.fix && !disableFix) {
                     assertBpVariablesImportExists(cssSyntax);
-                    node.value = cssVar;
+                    node.value = `${BpSassNamespace}.${cssVar}`;
                     needsFix = true;
                 } else {
                     const message =
@@ -124,24 +122,17 @@ export default stylelint.createPlugin(
                 decl.value = parsedValue.toString();
             }
         });
-    },
-);
+    };
+
+ruleImpl.ruleName = ruleName;
+ruleImpl.messages = messages;
+
+export default stylelint.createPlugin(ruleName, ruleImpl);
 
 function declarationValueIndex(decl: Declaration) {
     const beforeColon = decl.toString().indexOf(":");
     const afterColon = decl.raw("between").length - decl.raw("between").indexOf(":");
     return beforeColon + afterColon;
-}
-
-/**
- * Returns a CSS color variable for a given hex color, or undefined if one doesn't exist.
- */
-function getCssColorVariable(hexColor: string, cssSyntax: CssSyntax.SASS | CssSyntax.LESS): string | undefined {
-    const normalizedHex = normalizeHexColor(hexColor);
-    if (hexToColorName[normalizedHex] == null) {
-        return undefined;
-    }
-    return BpVariablePrefixMap[cssSyntax] + hexToColorName[normalizedHex].toLocaleLowerCase().split("_").join("-");
 }
 
 function getHexToColorName(): { [upperHex: string]: string } {
@@ -153,3 +144,14 @@ function getHexToColorName(): { [upperHex: string]: string } {
 }
 
 const hexToColorName = getHexToColorName();
+
+/**
+ * Returns a CSS color variable for a given hex color, or undefined if one doesn't exist.
+ */
+function getCssColorVariable(hexColor: string, cssSyntax: CssSyntax.SASS | CssSyntax.LESS): string | undefined {
+    const normalizedHex = normalizeHexColor(hexColor);
+    if (hexToColorName[normalizedHex] == null) {
+        return undefined;
+    }
+    return BpVariablePrefixMap[cssSyntax] + hexToColorName[normalizedHex].toLocaleLowerCase().split("_").join("-");
+}

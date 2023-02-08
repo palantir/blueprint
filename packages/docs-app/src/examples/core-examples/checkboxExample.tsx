@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Alignment, Checkbox, H5, Label, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 
@@ -29,7 +29,7 @@ export interface ICheckboxExampleState {
     value?: string;
 }
 
-export class CheckboxExample extends React.PureComponent<IExampleProps, ICheckboxExampleState> {
+export class CheckboxExample extends React.PureComponent<ExampleProps, ICheckboxExampleState> {
     public state: ICheckboxExampleState = {
         alignIndicator: Alignment.LEFT,
         disabled: false,

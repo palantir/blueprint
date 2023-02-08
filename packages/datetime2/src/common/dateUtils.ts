@@ -14,60 +14,42 @@
  * limitations under the License.
  */
 
-import { formatInTimeZone } from "date-fns-tz";
-import { isEmpty } from "lodash-es";
+import { isSameDay, isWithinInterval } from "date-fns";
 
-import { TimePrecision } from "@blueprintjs/datetime";
+import { DateRange, isNonNullRange } from "./dateRange";
 
-import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "./timezoneUtils";
-
-const NO_TIME_PRECISION = "date";
-const UTC_IANA_LABEL = "Etc/UTC";
-
-const TIME_FORMAT_TO_ISO_FORMAT: Record<TimePrecision | "date", string> = {
-    [TimePrecision.MILLISECOND]: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
-    [TimePrecision.SECOND]: "yyyy-MM-dd'T'HH:mm:ssxxx",
-    [TimePrecision.MINUTE]: "yyyy-MM-dd'T'HH:mmxxx",
-    [NO_TIME_PRECISION]: "yyyy-MM-dd",
-};
-
-/**
- * @see https://github.com/marnusw/date-fns-tz#formatintimezone
- * @returns a string of tokens which tell date-fns-tz's formatInTimeZone how to render a datetime
- */
-function getFormatStr(timePrecision: TimePrecision | undefined): string {
-    return TIME_FORMAT_TO_ISO_FORMAT[timePrecision ?? NO_TIME_PRECISION];
+export function clone(d: Date) {
+    return new Date(d.getTime());
 }
 
-export function getIsoEquivalentWithUpdatedTimezone(
-    date: Date,
-    timezone: string,
-    timePrecision: TimePrecision | undefined,
-): string {
-    const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(date, timezone);
-    return formatInTimeZone(convertedDate, timezone, getFormatStr(timePrecision));
+export function isDateValid(date: Date | false | null): date is Date {
+    return date instanceof Date && !isNaN(date.valueOf());
 }
 
-/**
- * HACKHACK: this method relies on parsing strings with the `Date()` constructor, which is discouraged
- * by the MDN documentation and the Moment.js status page. If we continue to use this approach, we need
- * to validate that input strings conform to the ISO 8601 format.
- *
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date#parameters
- * @see https://momentjs.com/docs/#/-project-status/
- *
- * @param value ISO string representation of a date
- * @param timezone target timezone IANA code
- */
-export function getDateObjectFromIsoString(value: string | null | undefined, timezone: string): Date | null {
-    if (value == null || isEmpty(value)) {
-        return null;
+export function isSameTime(d1: Date | null, d2: Date | null) {
+    // N.B. do not use date-fns helper fns here, since we don't want to return false when the month/day/year is different
+    return (
+        d1 != null &&
+        d2 != null &&
+        d1.getHours() === d2.getHours() &&
+        d1.getMinutes() === d2.getMinutes() &&
+        d1.getSeconds() === d2.getSeconds() &&
+        d1.getMilliseconds() === d2.getMilliseconds()
+    );
+}
+
+export function isDayInRange(date: Date | null, dateRange: DateRange, exclusive = false) {
+    if (date == null || !isNonNullRange(dateRange)) {
+        return false;
     }
-    const date = new Date(value);
-    // If the value is just a date format then we convert it to midnight in local time to avoid weird things happening
-    if (value.length === 10) {
-        // If it's just a date, we know it's interpreted as midnight UTC so we convert it to local time of that UTC time
-        return convertLocalDateToTimezoneTime(date, UTC_IANA_LABEL);
-    }
-    return convertLocalDateToTimezoneTime(date, timezone);
+
+    const day = clone(date);
+    const start = clone(dateRange[0]);
+    const end = clone(dateRange[1]);
+
+    day.setHours(0, 0, 0, 0);
+    start.setHours(0, 0, 0, 0);
+    end.setHours(0, 0, 0, 0);
+
+    return isWithinInterval(date, { start, end }) && (!exclusive || (!isSameDay(start, day) && !isSameDay(day, end)));
 }

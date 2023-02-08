@@ -1,0 +1,43 @@
+# See the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "adidahiya"
+    versioning-strategy: increase
+    ignore:
+      # don't try to update internal packages
+      - dependency-name: "@blueprintjs/*"
+      # @typescript-eslint/* deps should all be upgraded together
+      - dependency-name: "@typescript-eslint/*"
+      # typescript and typedoc are usually upgraded together, and are often require code changes
+      - dependency-name: "typescript"
+      - dependency-name: "typedoc"
+      # deprecated dependencies
+      - dependency-name: "moment"
+      - dependency-name: "moment-*"
+      # we are stuck on svgo v1 for now
+      # see https://github.com/palantir/blueprint/blob/727b91ffe76f49cded1acb8240c44502f34fce48/packages/icons/scripts/generate-icon-paths.mjs#L27-L30
+      - dependency-name: "svgo"
+      - dependency-name: "@types/svgo"
+      # some deps should use a "widen" versioning strategy, since overly strict constraints can lead to duplicates and large bundle sizes
+      - dependency-name: "date-fns"
+      - dependency-name: "moment"
+      - dependency-name: "lodash"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "adidahiya"
+    versioning-strategy: widen
+    allow:
+      - dependency-name: "date-fns"
+      - dependency-name: "moment"
+      - dependency-name: "lodash"

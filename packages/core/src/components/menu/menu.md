@@ -6,9 +6,9 @@ Menus display lists of interactive items.
 
 The Menu API includes three React components:
 
-* [`Menu`](#core/components/menu.menu)
-* [`MenuItem`](#core/components/menu.menu-item)
-* [`MenuDivider`](#core/components/menu.menu-divider)
+* [Menu](#core/components/menu.menu)
+* [MenuItem](#core/components/menu.menu-item)
+* [MenuDivider](#core/components/menu.menu-divider)
 
 ```tsx
 <Menu>
@@ -55,18 +55,22 @@ The `Menu` component by itself simply renders a list of items. To make a
 dropdown menu, compose a `Menu` as the `content` property of a `Popover`:
 
 ```tsx
-<Popover content={<Menu>...</Menu>} position={Position.RIGHT_TOP}>
-    <Button icon="share" text="Open in..." />
+<Popover content={<Menu>...</Menu>} placement="bottom">
+    <Button alignText="left" icon="applications" rightIcon="caret-down" text="Open with..." />
 </Popover>
 ```
 
-By default, the popover is automatically dismissed when the user clicks a menu
-item ([Popover docs](#core/components/popover.closing-on-click) have more
-details). If you want to opt out of this behavior, set
-`shouldDismissPopover={false}` on a `MenuItem`.
+Some tips for designing dropdown menus:
 
-In the example below, clicking the menu item labeled "Table" will not dismiss
-the `Popover`.
+* __Appearance__: it's often useful to style the target Button with `fill={true}`,
+  `alignText="left"`, and `rightIcon="caret-down"`. This makes it appear more like an
+  [HTML `<select>`](#core/components/html-select) dropdown.
+
+* __Interactions__: by default, the popover is automatically dismissed when the user clicks a menu
+  item ([Popover docs](#core/components/popover.closing-on-click) have more
+  details). If you want to opt out of this behavior, set
+  `shouldDismissPopover={false}` on a `MenuItem`. For example, clicking the "Table"
+  item in this dropdown menu will not dismiss the `Popover`:
 
 @reactExample DropdownMenuExample
 
@@ -86,11 +90,17 @@ there is not enough room to the right.
 </Menu>
 ```
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">JavaScript only</h4>
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h5 class="@ns-heading">
 
-Submenus are only supported in the React components. They cannot be created with CSS alone because
-they rely on the [`Popover`](#core/components/popover) component for positioning and transitions.
+Deprecated prop `popoverProps`: use [MenuItem2](#popover2-package/menu-item2)
+
+</h5>
+
+Usage of `<MenuItem popoverProps={...}>` is **deprecated since @blueprintjs/core v4.7.0**
+in favor of the new MenuItem2 component, which uses Popover2 instead of Popover under the hood.
+If you use customize the layout of submenus using this prop, you should migrate to the new API
+which will become the standard in Blueprint v5.
 
 </div>
 

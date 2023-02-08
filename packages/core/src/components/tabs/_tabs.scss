@@ -47,6 +47,11 @@ $tab-indicator-width: 3px !default;
       &[aria-selected="true"] {
         background-color: rgba($pt-intent-primary, 0.2);
         box-shadow: none;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-color: $pt-high-contrast-mode-active-background-color;
+          color: $black;
+        }
       }
     }
 
@@ -117,6 +122,11 @@ $tab-indicator-width: 3px !default;
   &[aria-disabled="true"] {
     color: $pt-text-color-disabled;
     cursor: not-allowed;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      color: $pt-high-contrast-mode-disabled-text-color;
+    }
   }
 
   &[aria-selected="true"] {
@@ -127,6 +137,11 @@ $tab-indicator-width: 3px !default;
   &[aria-selected="true"],
   &:not([aria-disabled="true"]):hover {
     color: $tab-color-selected;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      color: $pt-high-contrast-mode-active-text-color;
+    }
   }
 
   &:focus {
@@ -164,6 +179,11 @@ $tab-indicator-width: 3px !default;
     left: 0;
     position: absolute;
     right: 0;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      background-color: $pt-high-contrast-mode-active-background-color;
+    }
   }
 
   &.#{$ns}-no-animation {
@@ -177,6 +197,11 @@ $tab-indicator-width: 3px !default;
 
     &[aria-disabled="true"] {
       color: $pt-dark-text-color-disabled;
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        color: $pt-high-contrast-mode-disabled-text-color;
+      }
     }
 
     &[aria-selected="true"] {
@@ -186,11 +211,21 @@ $tab-indicator-width: 3px !default;
     &[aria-selected="true"],
     &:not([aria-disabled="true"]):hover {
       color: $dark-tab-color-selected;
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        color: $pt-high-contrast-mode-active-text-color;
+      }
     }
   }
 
   .#{$ns}-tab-indicator {
     background-color: $dark-tab-color-selected;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      background-color: $pt-high-contrast-mode-active-background-color;
+    }
   }
 }
 

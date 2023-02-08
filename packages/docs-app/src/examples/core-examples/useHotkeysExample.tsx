@@ -17,11 +17,11 @@
 import * as React from "react";
 
 import { useHotkeys } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { PianoKey } from "./audio";
 
-export const UseHotkeysExample: React.FC<IExampleProps> = props => {
+export const UseHotkeysExample: React.FC<ExampleProps> = props => {
     const [audioContext, setAudioContext] = React.useState<AudioContext>();
 
     const pianoRef = React.useRef<HTMLDivElement>();

@@ -29,7 +29,7 @@ export const HandleType = {
     END: "end" as "end",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type HandleType = typeof HandleType[keyof typeof HandleType];
+export type HandleType = (typeof HandleType)[keyof typeof HandleType];
 
 export const HandleInteractionKind = {
     /** Locked handles prevent other handles from being dragged past then. */
@@ -45,7 +45,9 @@ export const HandleInteractionKind = {
     NONE: "none" as "none",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type HandleInteractionKind = typeof HandleInteractionKind[keyof typeof HandleInteractionKind];
+export type HandleInteractionKind = (typeof HandleInteractionKind)[keyof typeof HandleInteractionKind];
+
+export type HandleHtmlProps = Pick<React.HTMLProps<HTMLSpanElement>, "aria-label" | "aria-labelledby">;
 
 // eslint-disable-next-line deprecation/deprecation
 export type HandleProps = IHandleProps;
@@ -89,4 +91,9 @@ export interface IHandleProps extends Props {
      * @default "full"
      */
     type?: HandleType;
+
+    /**
+     * A limited subset of HTML props to apply to the rendered `<span>` element.
+     */
+    htmlProps?: HandleHtmlProps;
 }

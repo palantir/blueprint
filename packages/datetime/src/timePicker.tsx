@@ -50,7 +50,7 @@ export const TimePrecision = {
     SECOND: "second" as "second",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type TimePrecision = typeof TimePrecision[keyof typeof TimePrecision];
+export type TimePrecision = (typeof TimePrecision)[keyof typeof TimePrecision];
 
 // eslint-disable-next-line deprecation/deprecation
 export type TimePickerProps = ITimePickerProps;
@@ -163,6 +163,11 @@ export interface ITimePickerState {
     isPm?: boolean;
 }
 
+/**
+ * Time picker component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime/timepicker
+ */
 export class TimePicker extends React.Component<TimePickerProps, ITimePickerState> {
     public static defaultProps: TimePickerProps = {
         autoFocus: false,
@@ -287,7 +292,8 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
 
         return (
             <input
-                // we use a type="text" input here, so we must set some a11y attributes
+                aria-label={getTimeUnitPrintStr(unit)}
+                // we use a type="text" input here, so we must set these a11y attributes
                 // which we would otherwise get for free with a type="number" input
                 aria-valuemin={0}
                 aria-valuenow={valueNumber}

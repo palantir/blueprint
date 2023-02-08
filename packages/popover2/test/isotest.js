@@ -24,8 +24,11 @@ const Popover2Package = require("../lib/cjs");
 
 const requiredChild = React.createElement("button");
 
-describe("Core isomorphic rendering", () => {
+describe("Popover2 isomorphic rendering", () => {
     generateIsomorphicTests(Popover2Package, {
+        Breadcrumbs2: {
+            props: { items: [] },
+        },
         Popover2: {
             children: requiredChild,
         },

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/table",
-    "version": "4.3.2",
+    "version": "4.7.16",
     "description": "Scalable interactive table component",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -35,29 +35,37 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.6.0",
-        "classnames": "^2.2",
+        "@blueprintjs/core": "^4.15.1",
+        "@blueprintjs/popover2": "^1.12.1",
+        "classnames": "^2.3.1",
         "prop-types": "^15.7.2",
         "react-innertext": "^1.1.5",
         "tslib": "~2.3.1"
     },
     "peerDependencies": {
+        "@types/react": "^16.14.32 || 17 || 18",
         "react": "^16.8 || 17 || 18",
         "react-dom": "^16.8 || 17 || 18"
     },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
+    },
     "devDependencies": {
-        "@blueprintjs/colors": "^4.1.4",
-        "@blueprintjs/node-build-scripts": "^5.0.2",
-        "@blueprintjs/test-commons": "^1.0.9",
+        "@blueprintjs/colors": "^4.1.14",
+        "@blueprintjs/node-build-scripts": "^6.0.6",
+        "@blueprintjs/test-commons": "^1.1.8",
+        "@types/prop-types": "~15.7.5",
         "enzyme": "^3.11.0",
-        "karma": "^6.3.17",
-        "mocha": "^9.2.2",
+        "karma": "^6.4.1",
+        "mocha": "^10.1.0",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
         "typescript": "~4.6.2",
-        "webpack": "^5.71.0"
+        "webpack": "^5.75.0"
     },
     "repository": {
         "type": "git",

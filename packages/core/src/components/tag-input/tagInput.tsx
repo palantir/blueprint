@@ -17,8 +17,9 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, IRef, Keys, refHandler, setRef, Utils } from "../../common";
+import { AbstractPureComponent2, Classes, Keys, refHandler, setRef, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, MaybeElement, Props } from "../../common/props";
+import { getActiveElement } from "../../common/utils";
 import { Icon, IconName, IconSize } from "../icon/icon";
 import { Tag, TagProps } from "../tag/tag";
 
@@ -78,7 +79,7 @@ export interface ITagInputProps extends IntentProps, Props {
     inputProps?: HTMLInputProps;
 
     /** Ref handler for the `<input>` element. */
-    inputRef?: IRef<HTMLInputElement>;
+    inputRef?: React.Ref<HTMLInputElement>;
 
     /** Controlled value of the `<input>` element. This is shorthand for `inputProps={{ value }}`. */
     inputValue?: string;
@@ -191,6 +192,11 @@ export interface ITagInputState {
 /** special value for absence of active tag */
 const NONE = -1;
 
+/**
+ * Tag input component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tag-input
+ */
 export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
@@ -223,7 +229,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
 
     public inputElement: HTMLInputElement | null = null;
 
-    private handleRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
+    private handleRef: React.Ref<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
     public render() {
         const { className, disabled, fill, inputProps, intent, large, leftIcon, placeholder, values } = this.props;
@@ -361,7 +367,8 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
         this.requestAnimationFrame(() => {
             // we only care if the blur event is leaving the container.
             // defer this check using rAF so activeElement will have updated.
-            if (!currentTarget.contains(document.activeElement)) {
+            const isFocusInsideContainer = currentTarget.contains(getActiveElement(this.inputElement));
+            if (!isFocusInsideContainer) {
                 if (this.props.addOnBlur && this.state.inputValue !== undefined && this.state.inputValue.length > 0) {
                     this.addTags(this.state.inputValue, "blur");
                 }

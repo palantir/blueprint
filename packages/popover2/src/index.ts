@@ -18,6 +18,7 @@
 
 export * as Classes from "./classes";
 export * as Errors from "./errors";
+export { Breadcrumbs2, Breadcrumbs2Props, BreadcrumbProps } from "./breadcrumbs2";
 export {
     ContextMenu2,
     ContextMenu2Props,
@@ -25,12 +26,18 @@ export {
     ContextMenu2ContentProps,
     ContextMenu2RenderProps,
 } from "./contextMenu2";
+export { MenuItem2, MenuItem2Props } from "./menuItem2";
 export {
+    DefaultPopover2TargetHTMLProps,
     IPopover2SharedProps,
     IPopover2TargetProps,
     Popover2SharedProps,
     Popover2TargetProps,
+    Popover2ClickTargetHandlers,
+    Popover2HoverTargetHandlers,
     PopperBoundary,
+    PopperModifierOverrides,
+    PopperCustomModifer,
     Placement,
     PlacementOptions,
     StrictModifierNames,

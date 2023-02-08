@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Suggest2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -21,22 +28,21 @@ import * as sinon from "sinon";
 
 import { InputGroup, IPopoverProps, Keys, MenuItem, Popover } from "@blueprintjs/core";
 
-import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
-import { IItemRendererProps, QueryList } from "../src";
+import { ItemRendererProps, QueryList } from "../src";
+import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import { ISuggestProps, ISuggestState, Suggest } from "../src/components/suggest/suggest";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("Suggest", () => {
-    const FilmSuggest = Suggest.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
         query: "",
     };
     let handlers: {
-        inputValueRenderer: sinon.SinonSpy<[IFilm], string>;
-        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
+        inputValueRenderer: sinon.SinonSpy<[Film], string>;
+        itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
 
@@ -49,7 +55,7 @@ describe("Suggest", () => {
         };
     });
 
-    selectComponentSuite<ISuggestProps<IFilm>, ISuggestState<IFilm>>(props =>
+    selectComponentSuite<ISuggestProps<Film>, ISuggestState<Film>>(props =>
         mount(
             <Suggest
                 {...props}
@@ -62,7 +68,6 @@ describe("Suggest", () => {
     describe("Basic behavior", () => {
         it("renders an input that triggers a popover containing items", () => {
             const wrapper = suggest();
-            /* eslint-disable-next-line deprecation/deprecation */
             const popover = wrapper.find(Popover);
             assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
             assert.lengthOf(popover, 1, "should render Popover");
@@ -93,7 +98,7 @@ describe("Suggest", () => {
 
         it("scrolls active item into view when popover opens", () => {
             const wrapper = suggest();
-            const queryList = (wrapper.instance() as Suggest<IFilm> as any).queryList; // private ref
+            const queryList = (wrapper.instance() as Suggest<Film> as any).queryList; // private ref
             const scrollActiveItemIntoViewSpy = sinon.spy(queryList, "scrollActiveItemIntoView");
             wrapper.setState({ isOpen: false });
             assert.isFalse(scrollActiveItemIntoViewSpy.called);
@@ -107,7 +112,7 @@ describe("Suggest", () => {
                 popoverProps: { transitionDuration: 5 },
                 selectedItem: TOP_100_FILMS[10],
             });
-            const queryList = (wrapper.instance() as Suggest<IFilm> as any).queryList as QueryList<IFilm>; // private ref
+            const queryList = (wrapper.instance() as Suggest<Film> as any).queryList as QueryList<Film>; // private ref
 
             assert.deepEqual(
                 queryList.state.activeItem,
@@ -241,7 +246,6 @@ describe("Suggest", () => {
             const modifiers = {}; // our own instance
             const wrapper = suggest({ popoverProps: getPopoverProps(false, modifiers) });
             wrapper.setProps({ popoverProps: getPopoverProps(true, modifiers) }).update();
-            /* eslint-disable-next-line deprecation/deprecation */
             assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
             assert.isTrue(onOpening.calledOnce);
         });
@@ -326,16 +330,13 @@ describe("Suggest", () => {
         });
     });
 
-    function suggest(props: Partial<ISuggestProps<IFilm>> = {}, query?: string) {
-        const wrapper = mount<typeof FilmSuggest>(<FilmSuggest {...defaultProps} {...handlers} {...props} />);
-        if (query !== undefined) {
-            wrapper.setState({ query });
-        }
+    function suggest(props: Partial<ISuggestProps<Film>> = {}) {
+        const wrapper = mount<Suggest<Film>>(<Suggest<Film> {...defaultProps} {...handlers} {...props} />);
         return wrapper;
     }
 });
 
-function filterByYear(query: string, film: IFilm) {
+function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;
 }
 
@@ -343,7 +344,7 @@ function selectItem(wrapper: ReactWrapper<any, any>, index: number) {
     wrapper.find("a").at(index).simulate("click");
 }
 
-function inputValueRenderer(item: IFilm) {
+function inputValueRenderer(item: Film) {
     return item.title;
 }
 

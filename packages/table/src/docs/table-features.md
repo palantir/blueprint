@@ -41,13 +41,22 @@ render at each row index, so by including it as a dependency in `cellRendererDep
 guarantee that cell renderers will be re-triggered after a sorting operation, and those renderers
 will reference the up-to-date `sortedIndexMap` value.
 
+@## Focused cell
+
+You may allow users to focus on a single cell and navigate around the table with arrow keys
+by setting `enableFocusedCell={true}`. Try out this interaction in the table above &mdash; the table
+container will also scroll around if you move focus outside the current viewport. You can expand
+and shrink the selected cell range using <kbd>Shift</kbd> + arrow keys. For a full reference of
+enabled keyboard hotkeys, press <kbd>?</kbd> to bring up the hotkeys dialog after you have clicked
+into the table once.
+
 @## Editing
 
-To make your table editable, use the `EditableCell` and
+To make your table editable, use the [`EditableCell2`](#table/table2.editablecell2) and
 `EditableName` components to create editable table cells and column names.
 
 To further extend the interactivity of the column headers, you can
-add children components to each `ColumnHeaderCell` defined in the
+add children components to each `ColumnHeaderCell2` defined in the
 `columnHeaderCellRenderer` prop of `Column`.
 
 The following example renders a table with editable column names (single
@@ -135,7 +144,7 @@ individual column's header and body cells. Try selecting a different column in t
 
 @### Cells
 
-`Cell`, `EditableCell`, `ColumnHeaderCell`, and `RowHeaderCell` expose a `loading` prop for granular
+`Cell`, `EditableCell2`, `ColumnHeaderCell2`, and `RowHeaderCell2` expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading
 configuration.
 
@@ -144,12 +153,24 @@ configuration.
 @## Formatting
 
 To display long strings or native JavaScript objects, we provide
-`<TruncatedFormat>` and `<JSONFormat>` components, which are designed to be used
-within a `<Cell>`.
+`<TruncatedFormat2>` and `<JSONFormat2>` components. These are designed to be used within a `<Cell>`,
+where they will render a popover to show the full cell contents on click.
 
 Below is a table of timezones including the local time when this page was
-rendered. It uses a `<TruncatedFormat>` component to show the long date string
-and a `<JSONFormat>` component to show the timezone info object.
+rendered. It uses a `<TruncatedFormat2 detectTruncation={true}>` component to show the long date string
+and a `<JSONFormat2 detectTruncation={true}>` component to show the timezone info object.
+
+<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
+
+<h5 class="@ns-heading">Additional CSS required</h5>
+
+These cell formatting components depend on @blueprintjs/popover2 styles, so you must remember to import
+that package's stylesheet in your application in addition to `table.css`:
+
+```scss
+@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+```
+</div>
 
 @reactExample TableFormatsExample
 

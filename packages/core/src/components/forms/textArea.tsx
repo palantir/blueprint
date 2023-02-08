@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, IRef, IRefCallback, refHandler, setRef } from "../../common";
+import { AbstractPureComponent2, Classes, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -47,7 +47,7 @@ export interface ITextAreaProps extends IntentProps, Props, React.TextareaHTMLAt
     /**
      * Ref handler that receives HTML `<textarea>` element backing this component.
      */
-    inputRef?: IRef<HTMLTextAreaElement>;
+    inputRef?: React.Ref<HTMLTextAreaElement>;
 }
 
 export interface ITextAreaState {
@@ -56,6 +56,11 @@ export interface ITextAreaState {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
+/**
+ * Text area component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/text-inputs.text-area
+ */
 export class TextArea extends AbstractPureComponent2<TextAreaProps, ITextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
@@ -64,7 +69,11 @@ export class TextArea extends AbstractPureComponent2<TextAreaProps, ITextAreaSta
     // used to measure and set the height of the component on first mount
     public textareaElement: HTMLTextAreaElement | null = null;
 
-    private handleRef: IRefCallback<HTMLTextAreaElement> = refHandler(this, "textareaElement", this.props.inputRef);
+    private handleRef: React.RefCallback<HTMLTextAreaElement> = refHandler(
+        this,
+        "textareaElement",
+        this.props.inputRef,
+    );
 
     public componentDidMount() {
         if (this.props.growVertically && this.textareaElement !== null) {

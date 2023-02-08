@@ -18,6 +18,7 @@ import * as React from "react";
 
 import { AbstractPureComponent2, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { HandleHtmlProps } from "./handleProps";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -44,8 +45,16 @@ export interface ISliderProps extends ISliderBaseProps {
 
     /** Callback invoked when the handle is released. */
     onRelease?(value: number): void;
+
+    /** A limited subset of HTML props to apply to the slider Handle */
+    handleHtmlProps?: HandleHtmlProps;
 }
 
+/**
+ * Slider component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/sliders.slider
+ */
 export class Slider extends AbstractPureComponent2<SliderProps> {
     public static defaultProps: SliderProps = {
         ...MultiSlider.defaultSliderProps,
@@ -57,7 +66,7 @@ export class Slider extends AbstractPureComponent2<SliderProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Slider`;
 
     public render() {
-        const { initialValue, intent, value, onChange, onRelease, ...props } = this.props;
+        const { initialValue, intent, value, onChange, onRelease, handleHtmlProps, ...props } = this.props;
         return (
             <MultiSlider {...props}>
                 <MultiSlider.Handle
@@ -66,6 +75,7 @@ export class Slider extends AbstractPureComponent2<SliderProps> {
                     intentBefore={value! >= initialValue! ? intent : undefined}
                     onChange={onChange}
                     onRelease={onRelease}
+                    htmlProps={handleHtmlProps}
                 />
                 <MultiSlider.Handle value={initialValue!} interactionKind="none" />
             </MultiSlider>

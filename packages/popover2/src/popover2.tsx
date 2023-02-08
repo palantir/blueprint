@@ -36,7 +36,12 @@ import { matchReferenceWidthModifier } from "./customModifiers";
 import * as Errors from "./errors";
 import { Popover2Arrow, POPOVER_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { positionToPlacement } from "./popover2PlacementUtils";
-import { Popover2SharedProps } from "./popover2SharedProps";
+import {
+    DefaultPopover2TargetHTMLProps,
+    Popover2ClickTargetHandlers,
+    Popover2HoverTargetHandlers,
+    Popover2SharedProps,
+} from "./popover2SharedProps";
 import { PopupKind } from "./popupKind";
 import { ResizeSensor2 } from "./resizeSensor2";
 // eslint-disable-next-line import/no-cycle
@@ -50,12 +55,14 @@ export const Popover2InteractionKind = {
     HOVER_TARGET_ONLY: "hover-target" as "hover-target",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type Popover2InteractionKind = typeof Popover2InteractionKind[keyof typeof Popover2InteractionKind];
+export type Popover2InteractionKind = (typeof Popover2InteractionKind)[keyof typeof Popover2InteractionKind];
 
-// eslint-disable-next-line deprecation/deprecation
-export type Popover2Props<TProps = React.HTMLProps<HTMLElement>> = IPopover2Props<TProps>;
+export type Popover2Props<TProps extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps> =
+    // eslint-disable-next-line deprecation/deprecation
+    IPopover2Props<TProps>;
 /** @deprecated use Popover2Props */
-export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends Popover2SharedProps<TProps> {
+export interface IPopover2Props<TProps extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps>
+    extends Popover2SharedProps<TProps> {
     /**
      * Whether the popover/tooltip should acquire application focus when it first opens.
      *
@@ -129,9 +136,16 @@ export interface IPopover2State {
 }
 
 /**
- * @template T target component props interface
+ * Popover (v2) component, used to display a floating UI next to and tethered to a target element.
+ *
+ * @template T target element props interface. Consumers wishing to stay in sync with Blueprint's default target HTML
+ * props interface should use the `DefaultPopover2TargetHTMLProps` type (although this is already the default type for
+ * this type param).
+ * @see https://blueprintjs.com/docs/#popover2-package/popover2
  */
-export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopover2State> {
+export class Popover2<
+    T extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps,
+> extends AbstractPureComponent2<Popover2Props<T>, IPopover2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
 
     public static defaultProps: Popover2Props = {
@@ -151,7 +165,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         // N.B. we don't set a default for `placement` or `position` here because that would trigger
         // a warning in validateProps if the other prop is specified by a user of this component
         positioningStrategy: "absolute",
-        renderTarget: undefined as any,
+        renderTarget: undefined,
         shouldReturnFocusOnClose: false,
         targetTagName: "span",
         transitionDuration: 300,
@@ -270,7 +284,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         }
     }
 
-    protected validateProps(props: Popover2Props & { children?: React.ReactNode }) {
+    protected validateProps(props: Popover2Props<T> & { children?: React.ReactNode }) {
         if (props.isOpen == null && props.onInteraction != null) {
             console.warn(Errors.POPOVER2_WARN_UNCONTROLLED_ONINTERACTION);
         }
@@ -286,6 +300,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
 
         const childrenCount = React.Children.count(props.children);
         const hasRenderTargetProp = props.renderTarget !== undefined;
+        const hasTargetPropsProp = props.targetProps !== undefined;
 
         if (childrenCount === 0 && !hasRenderTargetProp) {
             console.warn(Errors.POPOVER2_REQUIRES_TARGET);
@@ -295,6 +310,9 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         }
         if (childrenCount > 0 && hasRenderTargetProp) {
             console.warn(Errors.POPOVER2_WARN_DOUBLE_TARGET);
+        }
+        if (hasRenderTargetProp && hasTargetPropsProp) {
+            console.warn(Errors.POPOVER2_WARN_TARGET_PROPS_WITH_RENDER_TARGET);
         }
     }
 
@@ -321,46 +339,58 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
 
         const ref = mergeRefs(popperChildRef, this.targetRef);
 
-        const targetEventHandlers = isHoverInteractionKind
-            ? {
-                  // HOVER handlers
-                  onBlur: this.handleTargetBlur,
-                  onContextMenu: this.handleTargetContextMenu,
-                  onFocus: this.handleTargetFocus,
-                  onMouseEnter: this.handleMouseEnter,
-                  onMouseLeave: this.handleMouseLeave,
-              }
-            : {
-                  // CLICK needs only one handler
-                  onClick: this.handleTargetClick,
-                  // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
-                  onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>
-                      // eslint-disable-next-line deprecation/deprecation
-                      Keys.isKeyboardClick(event.keyCode) && this.handleTargetClick(event),
-              };
+        const targetEventHandlers: Popover2HoverTargetHandlers<T> | Popover2ClickTargetHandlers<T> =
+            isHoverInteractionKind
+                ? {
+                      // HOVER handlers
+                      onBlur: this.handleTargetBlur,
+                      onContextMenu: this.handleTargetContextMenu,
+                      onFocus: this.handleTargetFocus,
+                      onMouseEnter: this.handleMouseEnter,
+                      onMouseLeave: this.handleMouseLeave,
+                  }
+                : {
+                      // CLICK needs only one handler
+                      onClick: this.handleTargetClick,
+                      // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
+                      onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>
+                          // eslint-disable-next-line deprecation/deprecation
+                          Keys.isKeyboardClick(event.keyCode) && this.handleTargetClick(event),
+                  };
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
-        const targetProps = {
+        const ownTargetProps = {
             "aria-haspopup":
                 this.props.popupKind ??
-                (this.props.interactionKind === Popover2InteractionKind.HOVER_TARGET_ONLY ? undefined : "true"),
+                (this.props.interactionKind === Popover2InteractionKind.HOVER_TARGET_ONLY
+                    ? undefined
+                    : ("true" as "true")),
             // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
             // If, instead, renderTarget is undefined and the target is provided as a child, this.props.className is
             // applied to the generated target wrapper element.
             className: classNames(className, Classes.POPOVER2_TARGET, {
                 [Classes.POPOVER2_OPEN]: isOpen,
                 // this class is mainly useful for button targets
-                [CoreClasses.ACTIVE]: !isControlled && isOpen && !isHoverInteractionKind,
+                [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
             }),
             ref,
-            ...(targetEventHandlers as unknown as T),
+            ...targetEventHandlers,
+        };
+
+        const targetModifierClasses = {
+            // this class is mainly useful for Blueprint <Button> targets; we should only apply it for
+            // uncontrolled popovers when they are opened by a user interaction
+            [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
+            // similarly, this class is mainly useful for targets like <Button>, <InputGroup>, etc.
+            [CoreClasses.FILL]: fill,
         };
 
         let target: JSX.Element | undefined;
 
         if (renderTarget !== undefined) {
             target = renderTarget({
-                ...targetProps,
+                ...ownTargetProps,
+                className: classNames(ownTargetProps.className, targetModifierClasses),
                 // if the consumer renders a tooltip target, it's their responsibility to disable that tooltip
                 // when *this* popover is open
                 isOpen,
@@ -373,20 +403,20 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 return null;
             }
 
-            const targetModifierClasses = {
-                // this class is mainly useful for Blueprint <Button> targets; we should only apply it for
-                // uncontrolled popovers when they are opened by a user interaction
-                [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
-                // similarly, this class is mainly useful for targets like <Button>, <InputGroup>, etc.
-                [CoreClasses.FILL]: fill,
-            };
             const clonedTarget: JSX.Element = React.cloneElement(childTarget, {
                 className: classNames(childTarget.props.className, targetModifierClasses),
                 // force disable single Tooltip2 child when popover is open
                 disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip2) ? true : childTarget.props.disabled,
                 tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
             });
-            const wrappedTarget = React.createElement(targetTagName!, targetProps, clonedTarget);
+            const wrappedTarget = React.createElement(
+                targetTagName!,
+                {
+                    ...ownTargetProps,
+                    ...this.props.targetProps,
+                },
+                clonedTarget,
+            );
             target = wrappedTarget;
         }
 
@@ -655,7 +685,8 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             return;
         }
 
-        const eventTarget = e.target as HTMLElement;
+        const event = (e.nativeEvent ?? e) as Event;
+        const eventTarget = (event.composed ? event.composedPath()[0] : event.target) as HTMLElement;
         // if click was in target, target event listener will handle things, so don't close
         if (!Utils.elementIsOrContains(this.targetElement, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
             this.setOpenState(false, e);

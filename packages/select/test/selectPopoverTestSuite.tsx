@@ -15,25 +15,25 @@
  */
 
 import { assert } from "chai";
-import { ReactWrapper } from "enzyme";
+import type { ReactWrapper } from "enzyme";
 import * as sinon from "sinon";
 
 import { Classes as Popover2Classes } from "@blueprintjs/popover2";
 
-import { areFilmsEqual, filterFilm, IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
-import { IListItemsProps, SelectPopoverProps } from "../src";
+import { ListItemsProps, SelectPopoverProps } from "../src";
+import { areFilmsEqual, Film, filterFilm, renderFilm, TOP_100_FILMS } from "../src/__examples__";
+
+type EnzymeLocator<P, S> = (wrapper: ReactWrapper<P, S>) => ReactWrapper;
 
 /**
- * Common tests for popover functionality in select components which use Popover2.
+ * Common tests for popover functionality in `@blueprintjs/select` components which use Popover2.
  *
- * render() should ensure the component is attached to a DOM node so that we can get accurate DOM measurements.
+ * @param render should ensure the component is attached to a DOM node so that we can get accurate DOM measurements.
  */
-export function selectPopoverTestSuite<P extends IListItemsProps<IFilm>, S>(
-    render: (props: IListItemsProps<IFilm> & SelectPopoverProps) => ReactWrapper<P, S>,
-    findPopover: (wrapper: ReactWrapper<P, S>) => ReactWrapper = wrapper =>
-        wrapper.find(`.${Popover2Classes.POPOVER2}`),
-    findTarget: (wrapper: ReactWrapper<P, S>) => ReactWrapper = wrapper =>
-        wrapper.find(`.${Popover2Classes.POPOVER2_TARGET}`),
+export function selectPopoverTestSuite<P extends ListItemsProps<Film>, S>(
+    render: (props: ListItemsProps<Film> & SelectPopoverProps) => ReactWrapper<P, S>,
+    findPopover: EnzymeLocator<P, S> = wrapper => wrapper.find(`.${Popover2Classes.POPOVER2}`),
+    findTarget: EnzymeLocator<P, S> = wrapper => wrapper.find(`.${Popover2Classes.POPOVER2_TARGET}`),
 ) {
     const defaultProps = {
         itemPredicate: filterFilm,
@@ -50,7 +50,7 @@ export function selectPopoverTestSuite<P extends IListItemsProps<IFilm>, S>(
         usePortal: false,
     };
 
-    describe("popover", () => {
+    describe("popoverProps functionality", () => {
         it("matchTargetWidth: true makes popover same width as target", () => {
             const wrapper = render({
                 ...defaultProps,
@@ -61,6 +61,20 @@ export function selectPopoverTestSuite<P extends IListItemsProps<IFilm>, S>(
             assert.notEqual(popoverWidth, 0, "popover width should be > 0");
             assert.notEqual(targetWidth, 0, "target width should be > 0");
             assert.closeTo(targetWidth, popoverWidth, 1, "popover width should be close to target width");
+            wrapper.detach();
+        });
+
+        it("targetTagName allows customizing the target element", () => {
+            const targetTagName = "a";
+            const wrapper = render({
+                ...defaultProps,
+                popoverProps: { ...defaultPopoverProps, targetTagName },
+            });
+            const anchorElement = wrapper.find(`${targetTagName}.${Popover2Classes.POPOVER2_TARGET}`);
+            assert.isTrue(
+                anchorElement.exists(),
+                `Expected to find popover target element with tag name '${targetTagName}'`,
+            );
             wrapper.detach();
         });
     });

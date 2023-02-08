@@ -25,7 +25,7 @@ export type CollapseProps = ICollapseProps;
 /** @deprecated use CollapseProps */
 export interface ICollapseProps extends Props {
     /** Contents to collapse. */
-    children: React.ReactNode;
+    children?: React.ReactNode;
 
     /**
      * Component to render as the root element.
@@ -119,6 +119,11 @@ export enum AnimationStates {
     CLOSED,
 }
 
+/**
+ * Collapse component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/collapse
+ */
 export class Collapse extends AbstractPureComponent2<CollapseProps, ICollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
@@ -203,7 +208,7 @@ export class Collapse extends AbstractPureComponent2<CollapseProps, ICollapseSta
                 className={Classes.COLLAPSE_BODY}
                 ref={this.contentsRefHandler}
                 style={contentsStyle}
-                aria-hidden={!isContentVisible && this.props.keepChildrenMounted}
+                aria-hidden={!shouldRenderChildren}
             >
                 {shouldRenderChildren ? this.props.children : null}
             </div>,

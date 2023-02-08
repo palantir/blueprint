@@ -21,7 +21,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
-import { isFunction } from "../../common/utils";
+import { getActiveElement, isFunction } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -199,6 +199,11 @@ export interface IOverlayState {
     hasEverOpened?: boolean;
 }
 
+/**
+ * Overlay component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/overlay
+ */
 export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 
@@ -349,11 +354,13 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         return this.requestAnimationFrame(() => {
             // container ref may be undefined between component mounting and Portal rendering
             // activeElement may be undefined in some rare cases in IE
-            if (this.containerElement == null || document.activeElement == null || !this.props.isOpen) {
+            const activeElement = getActiveElement(this.containerElement);
+
+            if (this.containerElement == null || activeElement == null || !this.props.isOpen) {
                 return;
             }
 
-            const isFocusOutsideModal = !this.containerElement.contains(document.activeElement);
+            const isFocusOutsideModal = !this.containerElement.contains(activeElement);
             if (isFocusOutsideModal) {
                 this.startFocusTrapElement?.focus({ preventScroll: true });
                 this.isAutoFocusing = false;
@@ -594,7 +601,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             document.body.classList.add(Classes.OVERLAY_OPEN);
         }
 
-        this.lastActiveElementBeforeOpened = document.activeElement;
+        this.lastActiveElementBeforeOpened = getActiveElement(this.containerElement);
     }
 
     private handleTransitionExited = (node: HTMLElement) => {

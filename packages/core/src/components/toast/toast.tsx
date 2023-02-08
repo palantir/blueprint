@@ -23,8 +23,10 @@ import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
 import { Icon, IconName } from "../icon/icon";
 
-export type ToastProps = IToastProps;
-export interface IToastProps extends Props, IntentProps {
+/** @deprecated use ToastProps */
+export type IToastProps = ToastProps;
+
+export interface ToastProps extends Props, IntentProps {
     /**
      * Action rendered as a minimal `AnchorButton`. The toast is dismissed automatically when the
      * user clicks the action button. Note that the `intent` prop is ignored (the action button
@@ -35,6 +37,13 @@ export interface IToastProps extends Props, IntentProps {
 
     /** Name of a Blueprint UI icon (or an icon element) to render before the message. */
     icon?: IconName | MaybeElement;
+
+    /**
+     * Whether to show the close button in the toast.
+     *
+     * @default true
+     */
+    isCloseButtonShown?: boolean;
 
     /** Message to display in the body of the toast. */
     message: React.ReactNode;
@@ -54,9 +63,15 @@ export interface IToastProps extends Props, IntentProps {
     timeout?: number;
 }
 
-export class Toast extends AbstractPureComponent2<IToastProps> {
-    public static defaultProps: IToastProps = {
+/**
+ * Toast component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/toast
+ */
+export class Toast extends AbstractPureComponent2<ToastProps> {
+    public static defaultProps: ToastProps = {
         className: "",
+        isCloseButtonShown: true,
         message: "",
         timeout: 5000,
     };
@@ -64,7 +79,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Toast`;
 
     public render(): JSX.Element {
-        const { className, icon, intent, message } = this.props;
+        const { className, icon, intent, message, isCloseButtonShown } = this.props;
         return (
             <div
                 className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
@@ -80,7 +95,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
                 </span>
                 <ButtonGroup minimal={true}>
                     {this.maybeRenderActionButton()}
-                    <Button aria-label="Close" icon="cross" onClick={this.handleCloseClick} />
+                    {isCloseButtonShown && <Button aria-label="Close" icon="cross" onClick={this.handleCloseClick} />}
                 </ButtonGroup>
             </div>
         );
@@ -90,7 +105,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
         this.startTimeout();
     }
 
-    public componentDidUpdate(prevProps: IToastProps) {
+    public componentDidUpdate(prevProps: ToastProps) {
         if (prevProps.timeout !== this.props.timeout) {
             if (this.props.timeout! > 0) {
                 this.startTimeout();

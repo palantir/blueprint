@@ -15,4 +15,5 @@
  */
 
 export { DateInput2Example } from "./dateInput2Example";
+export { DateRangeInput2Example } from "./dateRangeInput2Example";
 export { TimezoneSelectExample } from "./timezoneSelectExample";

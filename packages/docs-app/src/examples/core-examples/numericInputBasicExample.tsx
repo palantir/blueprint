@@ -31,11 +31,11 @@ import {
 } from "@blueprintjs/core";
 import {
     Example,
+    ExampleProps,
     handleBooleanChange,
     handleNumberChange,
     handleStringChange,
     handleValueChange,
-    IExampleProps,
 } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 import { Popover2 } from "@blueprintjs/popover2";
@@ -63,7 +63,7 @@ const BUTTON_POSITIONS = [
     { label: "Right", value: Position.RIGHT },
 ];
 
-export class NumericInputBasicExample extends React.PureComponent<IExampleProps, NumericInputProps> {
+export class NumericInputBasicExample extends React.PureComponent<ExampleProps, NumericInputProps> {
     public state: NumericInputProps = {
         allowNumericCharactersOnly: true,
         buttonPosition: "right",
@@ -85,7 +85,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
 
     private handleMinChange = handleNumberChange(min => this.setState({ min }));
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private handleButtonPositionChange = handleValueChange((buttonPosition: NumericInputProps["buttonPosition"]) =>
         this.setState({ buttonPosition }),

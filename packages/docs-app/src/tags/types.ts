@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/** Interface for `IExampleProps` `data` in this here Blueprint docs-app. */
+/** Interface for `ExampleProps` `data` in this here Blueprint docs-app. */
 export interface IBlueprintExampleData {
     /** CSS class of theme, typically `""` or `Classes.DARK`. */
     themeName: string;

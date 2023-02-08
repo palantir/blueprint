@@ -16,7 +16,7 @@
 import * as React from "react";
 
 import { Keys, NumericInput } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface INumericInputExtendedExampleState {
     value?: string;
@@ -31,7 +31,7 @@ const NumberAbbreviation = {
 const NUMBER_ABBREVIATION_REGEX = /((\.\d+)|(\d+(\.\d+)?))(k|m|b)\b/gi;
 const SCIENTIFIC_NOTATION_REGEX = /((\.\d+)|(\d+(\.\d+)?))(e\d+)\b/gi;
 
-export class NumericInputExtendedExample extends React.PureComponent<IExampleProps, INumericInputExtendedExampleState> {
+export class NumericInputExtendedExample extends React.PureComponent<ExampleProps, INumericInputExtendedExampleState> {
     public state: INumericInputExtendedExampleState = {
         value: "",
     };

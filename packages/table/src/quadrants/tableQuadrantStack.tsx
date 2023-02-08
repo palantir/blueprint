@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { AbstractComponent2, Utils as CoreUtils, IRef, Props, setRef } from "@blueprintjs/core";
+import { AbstractComponent2, Utils as CoreUtils, Props, setRef } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";
@@ -34,7 +34,7 @@ interface QuadrantRefMap<T> {
     scrollContainer?: T;
 }
 
-type QuadrantRefHandler = IRef<HTMLDivElement>;
+type QuadrantRefHandler = React.Ref<HTMLDivElement>;
 type QuadrantRefs = QuadrantRefMap<HTMLDivElement | null>;
 type QuadrantRefHandlers = QuadrantRefMap<QuadrantRefHandler>;
 
@@ -42,12 +42,12 @@ export interface ITableQuadrantStackProps extends Props {
     /**
      * A callback that receives a `ref` to the main quadrant's table-body element.
      */
-    bodyRef?: IRef<HTMLDivElement>;
+    bodyRef?: React.Ref<HTMLDivElement>;
 
     /**
      * A callback that receives a `ref` to the main quadrant's column-header container.
      */
-    columnHeaderRef?: IRef<HTMLDivElement>;
+    columnHeaderRef?: React.Ref<HTMLDivElement>;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -151,7 +151,7 @@ export interface ITableQuadrantStackProps extends Props {
     /**
      * A callback that receives a `ref` to the main-quadrant element.
      */
-    quadrantRef?: IRef<HTMLDivElement>;
+    quadrantRef?: React.Ref<HTMLDivElement>;
 
     /**
      * A callback that renders either all of or just frozen sections of the table body.
@@ -168,7 +168,7 @@ export interface ITableQuadrantStackProps extends Props {
      * May return undefined if the table is not attached to the DOM yet.
      */
     columnHeaderRenderer?: (
-        refHandler: IRef<HTMLDivElement>,
+        refHandler: React.Ref<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenColumnsOnly?: boolean,
@@ -177,14 +177,14 @@ export interface ITableQuadrantStackProps extends Props {
     /**
      * A callback that renders the table menu (the rectangle in the top-left corner).
      */
-    menuRenderer?: (refHandler: IRef<HTMLDivElement> | undefined) => JSX.Element;
+    menuRenderer?: (refHandler: React.Ref<HTMLDivElement> | undefined) => JSX.Element;
 
     /**
      * A callback that renders either all of or just the frozen section of the row header.
      * May return undefined if the table is not attached to the DOM yet.
      */
     rowHeaderRenderer?: (
-        refHandler: IRef<HTMLDivElement>,
+        refHandler: React.Ref<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenRowsOnly?: boolean,
@@ -193,12 +193,12 @@ export interface ITableQuadrantStackProps extends Props {
     /**
      * A callback that receives a `ref` to the main quadrant's row-header container.
      */
-    rowHeaderRef?: IRef<HTMLDivElement>;
+    rowHeaderRef?: React.Ref<HTMLDivElement>;
 
     /**
      * A callback that receives a `ref` to the main quadrant's scroll-container element.
      */
-    scrollContainerRef?: IRef<HTMLDivElement>;
+    scrollContainerRef?: React.Ref<HTMLDivElement>;
 
     /**
      * Whether "scroll" and "wheel" events should be throttled using
@@ -227,7 +227,7 @@ export interface ITableQuadrantStackProps extends Props {
      *
      * This value defaults to `undefined` so that, by default, it won't override
      * the `enableColumnInteractionBar` values that you might have provided directly to
-     * each `<ColumnHeaderCell>`.
+     * each `<ColumnHeaderCell2>`.
      *
      * REQUIRES QUADRANT RESYNC
      *

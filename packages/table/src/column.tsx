@@ -52,11 +52,16 @@ export interface IColumnProps extends IColumnNameProps, Props {
 
     /**
      * An instance of `ColumnHeaderRenderer`, a function that takes a column
-     * index and returns a `ColumnHeaderCell` React element.
+     * index and returns a `ColumnHeaderCell2` React element.
      */
     columnHeaderCellRenderer?: ColumnHeaderRenderer;
 }
 
+/**
+ * Column component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.column
+ */
 export class Column extends React.PureComponent<IColumnProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Column`;
 

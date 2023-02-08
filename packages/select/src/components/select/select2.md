@@ -5,11 +5,11 @@ tag: new
 @# Select2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [Select](#select/select-component)?
 
-</h4>
+</h5>
 
 Select2 is a replacement for Select and will replace it in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
@@ -28,29 +28,70 @@ You may provide a predicate to customize the filtering algorithm. The value of a
 
 ```tsx
 import { Button, MenuItem } from "@blueprintjs/core";
-import { Select2 } from "@blueprintjs/select";
-import * as Films from "./films";
+import { ItemPredicate, ItemRenderer, Select2 } from "@blueprintjs/select";
+import React from "react";
+import ReactDOM from "react-dom";
 
-// Select2<T> is a generic component to work with your data types.
-// In TypeScript, you must first obtain a non-generic reference:
-const FilmSelect = Select2.ofType<Films.Film>();
+export interface Film {
+    title: string;
+    year: number;
+    rank: number;
+}
 
-ReactDOM.render(
-    <FilmSelect
-        items={Films.items}
-        itemPredicate={Films.itemPredicate}
-        itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
-        onItemSelect={...}
-    >
-        {/* children become the popover target; render value here */}
-        <Button text={Films.items[0].title} rightIcon="double-caret-vertical" />
-    </FilmSelect>,
-    document.querySelector("#root")
-);
+const TOP_100_FILMS: Film[] = [
+    { title: "The Shawshank Redemption", year: 1994 },
+    { title: "The Godfather", year: 1972 },
+    // ...
+].map((f, index) => ({ ...f, rank: index + 1 }));
+
+const filterFilm: ItemPredicate<Film> = (query, film, _index, exactMatch) => {
+    const normalizedTitle = film.title.toLowerCase();
+    const normalizedQuery = query.toLowerCase();
+
+    if (exactMatch) {
+        return normalizedTitle === normalizedQuery;
+    } else {
+        return `${film.rank}. ${normalizedTitle} ${film.year}`.indexOf(normalizedQuery) >= 0;
+    }
+};
+
+const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifiers, query }) => {
+    if (!modifiers.matchesPredicate) {
+        return null;
+    }
+    return (
+        <MenuItem
+            active={modifiers.active}
+            disabled={modifiers.disabled}
+            key={film.rank}
+            label={film.year.toString()}
+            onClick={handleClick}
+            onFocus={handleFocus}
+            roleStructure="listoption"
+            text={`${film.rank}. ${film.title}`}
+        />
+    );
+};
+
+const FilmSelect: React.FC = () => {
+    const [selectedFilm, setSelectedFilm] = React.useState<Film | undefined>();
+    return (
+        <Select2<Film>
+            items={TOP_100_FILMS}
+            itemPredicate={filterFilm}
+            itemRenderer={renderFilm}
+            noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
+            onItemSelect={setSelectedFilm}
+        >
+            <Button text={selectedFilm?.title} rightIcon="double-caret-vertical" placeholder="Select a film" />
+        </Select2>
+    );
+};
+
+ReactDOM.render(<FilmSelect /> document.querySelector("#root"));
 ```
 
-In TypeScript, `Select2<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type (speak your language) so you can easily define handlers without transformation steps, but most props are required as a result. The static `Select2.ofType<T>()` method is available to streamline this process. (Note that this has no effect on JavaScript usage: the `Select2` export is a perfectly valid React component class.)
+In TypeScript, `Select2<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type so you can easily define handlers without transformation steps, but most props are required as a result.
 
 @## Querying
 
@@ -71,13 +112,11 @@ Since Select2 accepts arbitrary children, disabling a Select2 componet requires 
 _and also_ disabling its children. For example:
 
 ```tsx
-const FilmSelect = Select2.ofType<Films.Film>();
-
-// many props omitted here for brevity
-return (
-    <FilmSelect disabled={true}>
+const FilmSelect: React.FC = () => (
+    // many props omitted here for brevity
+    <Select2<Film> disabled={true}>
         <Button disabled={true}>
-    </FilmSelect>
+    </Select2>
 );
 ```
 
@@ -96,17 +135,19 @@ The input value can be controlled with the `query` and `onQueryChange` props. _D
 The focused item (for keyboard interactions) can be controlled with the `activeItem` and `onActiveItemChange` props.
 
 ```tsx
-<FilmSelect
-    items={myFilter(ALL_ITEMS, this.state.myQuery)}
-    itemRenderer={...}
-    onItemSelect={...}
-    // controlled active item
-    activeItem={this.state.myActiveItem}
-    onActiveItemChange={this.handleActiveItemChange}
-    // controlled query
-    query={this.state.myQuery}
-    onQueryChange={this.handleQueryChange}
-/>
+const FilmSelect: React.FC = () => (
+    <Select2<Film>
+        items={myFilter(ALL_ITEMS, this.state.myQuery)}
+        itemRenderer={...}
+        onItemSelect={...}
+        // controlled active item
+        activeItem={this.state.myActiveItem}
+        onActiveItemChange={this.handleActiveItemChange}
+        // controlled query
+        query={this.state.myQuery}
+        onQueryChange={this.handleQueryChange}
+    />
+);
 ```
 
 This controlled usage allows you to implement all sorts of advanced behavior on
@@ -130,9 +171,9 @@ in the list, based on the current query string. Use `createNewItemFromQuery` and
     will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
-    <h4 class="@ns-heading">Avoiding type conflicts</h4>
+    <h5 class="@ns-heading">Avoiding type conflicts</h5>
 
-The "Create Item" option is represented by the reserved type `ICreateNewItem`
+The "Create Item" option is represented by the reserved type `CreateNewItem`
 exported from this package. It is exceedingly unlikely but technically possible
 for your custom type `<T>` to conflict with this type. If your type conflicts,
 you may see unexpected behavior; to resolve, consider changing the schema for
@@ -141,7 +182,7 @@ your items.
 </div>
 
 ```tsx
-function createFilm(title: string): IFilm {
+function createFilm(title: string): Film {
     return {
         rank: /* ... */,
         title,
@@ -159,15 +200,15 @@ function renderCreateFilmOption(
             icon="add"
             text={`Create "${query}"`}
             roleStructure="listoption"
-            selected={active}
+            active={active}
             onClick={handleClick}
             shouldDismissPopover={false}
         />
     )
 }
 
-ReactDOM.render(
-    <FilmSelect
+const FilmSelect: React.FC = () => (
+    <Select2<Film>
         createNewItemFromQuery={createFilm}
         createNewItemRenderer={renderCreateFilmOption}
         items={Films.items}
@@ -175,8 +216,7 @@ ReactDOM.render(
         itemRenderer={Films.itemRenderer}
         noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
         onItemSelect={...}
-    />,
-    document.querySelector("#root")
+    />
 );
 ```
 
@@ -205,11 +245,11 @@ activeItem={isCreateNewItemActive ? getCreateNewItem() : activeItem}
 Altogether, the code might look something like this:
 
 ```tsx
-const currentActiveItem: Film | ICreateNewItem | null;
-const isCreateNewItemActive: Film | ICreateNewItem | null;
+const currentActiveItem: Film | CreateNewItem | null;
+const isCreateNewItemActive: Film | CreateNewItem | null;
 
 function handleActiveItemChange(
-    activeItem: Film | ICreateNewItem | null,
+    activeItem: Film | CreateNewItem | null,
     isCreateNewItem: boolean,
 ) {
     currentActiveItem = activeItem;
@@ -220,15 +260,14 @@ function getActiveItem() {
     return isCreateNewItemActive ? getCreateNewItem() : currentActiveItem;
 }
 
-ReactDOM.render(
-    <FilmSelect
+const FilmSelect: React.FC = () => (
+    <Select2<Film>
         {...} // Other required props (see previous examples).
         activeItem={getActiveItem()}
         createNewItemFromQuery={...}
         createNewItemRenderer={...}
         onActiveItemChange={handleActiveItemChange}
-    />,
-    document.querySelector("#root")
+    />
 );
 ```
 
@@ -243,12 +282,11 @@ to rendering this item in this frame. The renderer is called for all items, so d
 `modifiers.matchesPredicate` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item, or face React's console wrath!
 
 ```tsx
-import { Classes, MenuItem } from "@blueprintjs/core";
+import { Classes } from "@blueprintjs/core";
+import { MenuItem } from "@blueprintjs/popover2";
 import { ItemRenderer, ItemPredicate, Select2 } from "@blueprintjs/select";
 
-const FilmSelect = Select2.ofType<Film>();
-
-const filterFilm: ItemPredicate<IFilm> = (query, film) => {
+const filterFilm: ItemPredicate<Film> = (query, film) => {
     return film.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
 };
 
@@ -261,7 +299,7 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
             text={film.title}
             label={film.year}
             roleStructure="listoption"
-            selected={modifiers.active}
+            active={modifiers.active}
             key={film.title}
             onClick={handleClick}
             onFocus={handleFocus}
@@ -269,10 +307,17 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifi
     );
 };
 
-<FilmSelect itemPredicate={filterFilm} itemRenderer={renderFilm} items={...} onItemSelect={...} />
+const FilmSelect: React.FC = () => (
+    <Select2<Film>
+        itemPredicate={filterFilm}
+        itemRenderer={renderFilm}
+        items={...}
+        onItemSelect={...}
+    />
+);
 ```
 
-@interface IItemRendererProps
+@interface ItemRendererProps
 
 @### Item list renderer
 
@@ -295,13 +340,15 @@ const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, rend
     );
 };
 
-<FilmSelect
-    itemListRenderer={renderMenu}
-    itemPredicate={filterFilm}
-    itemRenderer={renderFilm}
-    items={...}
-    onItemSelect={...}
-/>
+const FilmSelect: React.FC = () => (
+    <Select2<Film>
+        itemListRenderer={renderMenu}
+        itemPredicate={filterFilm}
+        itemRenderer={renderFilm}
+        items={...}
+        onItemSelect={...}
+    />
+);
 ```
 
-@interface IItemListRendererProps
+@interface ItemListRendererProps

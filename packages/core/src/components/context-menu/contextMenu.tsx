@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to ContextMenu2 instead.
+ */
+
 import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -44,8 +49,12 @@ const TRANSITION_DURATION = 100;
 type IContextMenuProps = IOverlayLifecycleProps;
 
 /* istanbul ignore next */
-/** @deprecated use ContextMenu2 */
-
+/**
+ * ContextMenu component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/context-menu
+ * @deprecated use ContextMenu2
+ */
 class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenuState> {
     public state: IContextMenuState = {
         isDarkTheme: false,

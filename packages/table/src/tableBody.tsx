@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to TableBody2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -30,6 +37,8 @@ import { ILocator } from "./locator";
 import { Region, Regions } from "./regions";
 import { cellClassNames, ITableBodyCellsProps, TableBodyCells } from "./tableBodyCells";
 
+export type TableBodyProps = ITableBodyProps;
+/** @deprecated use TableBodyProps */
 export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps {
     /**
      * An optional callback for displaying a context menu when right-clicking
@@ -54,9 +63,10 @@ export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps 
     numFrozenRows?: number;
 }
 
-const DEEP_COMPARE_KEYS: Array<keyof ITableBodyProps> = ["selectedRegions"];
+const DEEP_COMPARE_KEYS: Array<keyof TableBodyProps> = ["selectedRegions"];
 
-export class TableBody extends AbstractComponent2<ITableBodyProps> {
+/** @deprecated use TableBody2 instead */
+export class TableBody extends AbstractComponent2<TableBodyProps> {
     public static defaultProps = {
         loading: false,
         renderMode: RenderMode.BATCH,

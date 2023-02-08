@@ -21,10 +21,10 @@ import { Classes, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
 import { DateRange, DateRangePicker, TimePrecision } from "@blueprintjs/datetime";
 import {
     Example,
+    ExampleProps,
     handleBooleanChange,
     handleNumberChange,
     handleValueChange,
-    IExampleProps,
 } from "@blueprintjs/docs-theme";
 
 import { MomentDateRange } from "./common/momentDate";
@@ -71,7 +71,7 @@ const MAX_DATE_OPTIONS: IDateOption[] = [
     },
 ];
 
-export class DateRangePickerExample extends React.PureComponent<IExampleProps, IDateRangePickerExampleState> {
+export class DateRangePickerExample extends React.PureComponent<ExampleProps, IDateRangePickerExampleState> {
     public state: IDateRangePickerExampleState = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,

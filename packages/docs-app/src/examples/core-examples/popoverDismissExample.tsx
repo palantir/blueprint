@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Popover2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { Button, Callout, Classes, Popover, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export class PopoverDismissExample extends React.PureComponent<
-    IExampleProps,
+    ExampleProps,
     { captureDismiss: boolean; isOpen: boolean }
 > {
     public state = { captureDismiss: true, isOpen: true };
@@ -32,7 +39,6 @@ export class PopoverDismissExample extends React.PureComponent<
     }
 
     public render() {
-        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={false} {...this.props}>
                 <Popover
@@ -70,7 +76,6 @@ export class PopoverDismissExample extends React.PureComponent<
                 </p>
             </Example>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 
     private handleInteraction = (isOpen: boolean) => this.setState({ isOpen });

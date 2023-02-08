@@ -21,7 +21,7 @@ import * as React from "react";
 /**
  * An object describing a panel in a `PanelStack`.
  *
- * @deprecated use `Panel<T>`
+ * @deprecated use `Panel<T>` with PanelStack2
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export interface IPanel<P = {}> {
@@ -59,7 +59,7 @@ export interface IPanel<P = {}> {
  * export class SettingsPanel extends React.Component<IPanelProps & ISettingsPanelProps> {...}
  * ```
  *
- * @deprecated use `PanelActions<T>`
+ * @deprecated use `PanelActions<T>` with PanelStack2
  */
 export interface IPanelProps {
     /**

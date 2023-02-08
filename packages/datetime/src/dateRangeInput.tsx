@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangeInput2 in the datetime2
+ * package instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker from "react-day-picker";
@@ -39,7 +47,7 @@ import { DateRange } from "./common/dateRange";
 import { areSameTime, isDateValid, isDayInRange } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { DateFormatProps, getFormattedDateString } from "./dateFormat";
-import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
+import { DatePickerBaseProps, getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
 import { DateRangePicker } from "./dateRangePicker";
 import { DateRangeShortcut } from "./shortcuts";
 
@@ -50,10 +58,9 @@ type InputEvent =
     | React.FocusEvent<HTMLInputElement>
     | React.ChangeEvent<HTMLInputElement>;
 
-// eslint-disable-next-line deprecation/deprecation
 export type DateRangeInputProps = IDateRangeInputProps;
 /** @deprecated use DateRangeInputProps */
-export interface IDateRangeInputProps extends IDatePickerBaseProps, DateFormatProps, Props {
+export interface IDateRangeInputProps extends DatePickerBaseProps, DateFormatProps, Props {
     /**
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
@@ -213,6 +220,12 @@ interface IStateKeysAndValuesObject {
     };
 }
 
+/**
+ * Date range input component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime/daterangeinput
+ * @deprecated use { DateRangeInput2 } from "@blueprintjs/datetime2"
+ */
 export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: Partial<DateRangeInputProps> = {
         allowSingleDayRange: false,
@@ -251,8 +264,8 @@ export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, 
         this.props.endInputProps?.inputRef,
     );
 
-    public constructor(props: DateRangeInputProps, context?: any) {
-        super(props, context);
+    public constructor(props: DateRangeInputProps) {
+        super(props);
         this.reset(props);
     }
 
@@ -342,7 +355,6 @@ export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, 
         // allow custom props for the popover and each input group, but pass them in an order that
         // guarantees only some props are overridable.
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
@@ -357,7 +369,6 @@ export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, 
                     {this.renderInputGroup(Boundary.START)}
                     {this.renderInputGroup(Boundary.END)}
                 </div>
-                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     }
@@ -589,7 +600,6 @@ export class DateRangeInput extends AbstractPureComponent2<DateRangeInputProps, 
     // - if focused in end field, Shift+Tab moves focus to start field
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable deprecation/deprecation */
         const isTabPressed = e.which === Keys.TAB;
         const isEnterPressed = e.which === Keys.ENTER;
         const isShiftPressed = e.shiftKey;

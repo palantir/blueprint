@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/icons",
-    "version": "4.3.1",
+    "version": "4.13.1",
     "description": "Components, fonts, icons, and css files for creating and displaying icons.",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -12,7 +12,7 @@
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/**/* && rm -rf src/generated/*",
+        "clean": "rm -rf dist/* && rm -rf lib/**/* && rm -rf src/generated-icons/*",
         "compile": "npm-run-all -s \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
@@ -25,7 +25,7 @@
         "dist:bundle": "cross-env NODE_ENV=production webpack",
         "dist:css": "css-dist lib/css/*.css",
         "dist:verify": "assert-package-layout",
-        "generate-icon-src": "node scripts/generate-icon-fonts.js && node scripts/generate-icon-paths.js",
+        "generate-icon-src": "node scripts/generate-icon-fonts.mjs && node scripts/generate-icon-paths.mjs",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
@@ -37,22 +37,23 @@
     },
     "dependencies": {
         "change-case": "^4.1.2",
-        "classnames": "^2.2",
+        "classnames": "^2.3.1",
         "tslib": "~2.3.1"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^5.0.2",
-        "@blueprintjs/test-commons": "^1.0.9",
+        "@blueprintjs/node-build-scripts": "^6.0.6",
+        "@blueprintjs/test-commons": "^1.1.8",
+        "@types/svgo": "~1.3.6",
         "enzyme": "^3.11.0",
-        "fantasticon": "^1.2.3",
-        "mocha": "^9.2.2",
+        "fantasticon": "^2.0.0",
+        "mocha": "^10.1.0",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
         "svgo": "^1.3.2",
         "typescript": "~4.6.2",
-        "webpack-cli": "^3.3.12"
+        "webpack-cli": "^5.0.1"
     },
     "repository": {
         "type": "git",

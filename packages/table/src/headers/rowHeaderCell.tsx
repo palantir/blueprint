@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to RowHeaderCell2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { AbstractPureComponent2, Props } from "@blueprintjs/core";
@@ -47,6 +54,7 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, Props {
     nameRenderer?: (name: string, index?: number) => React.ReactElement<Props>;
 }
 
+/** @deprecated use RowHeaderCell2 */
 export class RowHeaderCell extends AbstractPureComponent2<IRowHeaderCellProps> {
     public render() {
         const {

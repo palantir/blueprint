@@ -14,34 +14,27 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 import classNames from "classnames";
 import { Modifiers } from "popper.js";
 import * as React from "react";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
-import { ActionProps, DISPLAYNAME_PREFIX, LinkProps } from "../../common/props";
+import { ActionProps, DISPLAYNAME_PREFIX, IElementRefProps, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
 import { Menu, MenuProps } from "./menu";
 
-// eslint-disable-next-line deprecation/deprecation
 export type MenuItemProps = IMenuItemProps;
 /** @deprecated use MenuItemProps */
-export interface IMenuItemProps extends ActionProps, LinkProps {
+export interface IMenuItemProps extends ActionProps, LinkProps, IElementRefProps<HTMLLIElement> {
     /** Item text, required for usability. */
     text: React.ReactNode;
 
     /**
-     * Whether this item should render with an active appearance.
-     * This is the same styling as the `:active` CSS element state.
-     *
-     * Note: in Blueprint 3.x, this prop was conflated with a "selected" appearance
-     * when `intent` was undefined. For legacy purposes, we emulate this behavior in
-     * Blueprint 4.x, so setting `active={true} intent={undefined}` is the same as
-     * `selected={true}`. This prop will be removed in a future major version.
-     *
-     * @deprecated use `selected` prop
+     * Whether this item should render with an active appearance. Used to indicate keyboard focus.
      */
     active?: boolean;
 
@@ -93,11 +86,25 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      * `<li role="option"`
      *     `<a role=undefined`
      *
-     *  which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
+     * which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
+     *
+     * If `listitem`, role structure becomes:
+     *
+     * `<li role=undefined`
+     *     `<a role=undefined`
+     *
+     * which can be used if this item is within a basic `<ul/>` (or `role="list"`) parent.
+     *
+     * If `none`, role structure becomes:
+     *
+     * `<li role="none"`
+     *     `<a role=undefined`
+     *
+     * which can be used if wrapping this item in a custom `<li>` parent.
      *
      * @default "menuitem"
      */
-    roleStructure?: "menuitem" | "listoption";
+    roleStructure?: "menuitem" | "listoption" | "listitem" | "none";
 
     /**
      * Whether the text should be allowed to wrap to multiple lines.
@@ -115,7 +122,7 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     popoverProps?: Partial<IPopoverProps>;
 
     /**
-     * Whether this item should appear selected.
+     * Whether this item is selected. This will set the `aria-selected` attribute.
      */
     selected?: boolean;
 
@@ -149,6 +156,11 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     htmlTitle?: string;
 }
 
+/**
+ * Menu item component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/menu.menu-item
+ */
 export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: MenuItemProps = {
         active: false,
@@ -164,11 +176,11 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
     public render() {
         const {
-            // eslint-disable-next-line deprecation/deprecation
             active,
             className,
             children,
             disabled,
+            elementRef,
             icon,
             intent,
             labelClassName,
@@ -206,7 +218,11 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const [liRole, targetRole, ariaSelected] =
             roleStructure === "listoption"
                 ? ["option", undefined, active || selected] // parent has listbox role, or is a <select>
-                : ["none", "menuitem", undefined]; // parent has menu role
+                : roleStructure === "menuitem"
+                ? ["none", "menuitem", undefined] // parent has menu role
+                : roleStructure === "none"
+                ? ["none", undefined, undefined] // if wrapping in a custom <li>
+                : [undefined, undefined, undefined]; // roleStructure === "listitem"-- needs no role prop, li is listitem by default
 
         const target = React.createElement(
             tagName,
@@ -233,7 +249,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li className={liClasses} role={liRole} aria-selected={ariaSelected}>
+            <li className={liClasses} ref={elementRef} role={liRole} aria-selected={ariaSelected}>
                 {this.maybeRenderPopover(target, children)}
             </li>
         );
@@ -258,7 +274,6 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         }
         const { disabled, popoverProps, submenuProps } = this.props;
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 captureDismiss={false}

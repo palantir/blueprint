@@ -20,6 +20,7 @@ import * as React from "react";
 import { Classes } from "../../common";
 import { HotkeyConfig } from "../../hooks";
 import { Dialog, DialogProps } from "../dialog/dialog";
+import { DialogBody } from "../dialog/dialogBody";
 import { Hotkey } from "./hotkey";
 import { Hotkeys } from "./hotkeys";
 
@@ -36,7 +37,7 @@ export interface HotkeysDialog2Props extends DialogProps {
 export const HotkeysDialog2: React.FC<HotkeysDialog2Props> = ({ globalGroupName = "Global", hotkeys, ...props }) => {
     return (
         <Dialog {...props} className={classNames(Classes.HOTKEY_DIALOG, props.className)}>
-            <div className={Classes.DIALOG_BODY}>
+            <DialogBody>
                 <Hotkeys>
                     {hotkeys.map((hotkey, index) => (
                         <Hotkey
@@ -46,7 +47,7 @@ export const HotkeysDialog2: React.FC<HotkeysDialog2Props> = ({ globalGroupName 
                         />
                     ))}
                 </Hotkeys>
-            </div>
+            </DialogBody>
         </Dialog>
     );
 };

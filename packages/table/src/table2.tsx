@@ -23,7 +23,6 @@ import {
     DISPLAYNAME_PREFIX,
     HotkeyConfig,
     HotkeysTarget2,
-    IRef,
     UseHotkeysReturnValue,
 } from "@blueprintjs/core";
 
@@ -31,7 +30,6 @@ import { CellRenderer } from "./cell/cell";
 import { Column, ColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
-import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "./common/context";
 import * as Errors from "./common/errors";
 import { Grid, ICellMapper } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
@@ -40,7 +38,7 @@ import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
 import { ColumnHeader } from "./headers/columnHeader";
-import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
+import { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./headers/columnHeaderCell2";
 import { renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { GuideLayer } from "./layers/guides";
@@ -55,7 +53,7 @@ import {
     resizeRowsByTallestCell,
 } from "./resizeRows";
 import { compareChildren, getHotkeysFromProps, isSelectionModeEnabled } from "./table2Utils";
-import { TableBody } from "./tableBody";
+import { TableBody2 } from "./tableBody2";
 import { TableHotkeys } from "./tableHotkeys";
 import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./tableProps";
 import type { TableSnapshot, TableState } from "./tableState";
@@ -70,6 +68,11 @@ export interface Table2Props extends TableProps {
     cellRendererDependencies?: React.DependencyList;
 }
 
+/**
+ * Table (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#table/table2
+ */
 export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table2`;
 
@@ -97,9 +100,6 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         rowHeaderCellRenderer: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
-
-    public static childContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> =
-        columnInteractionBarContextTypes;
 
     public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState) {
         const {
@@ -433,12 +433,6 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     // React lifecycle
     // ===============
 
-    public getChildContext(): IColumnInteractionBarContextTypes {
-        return {
-            enableColumnInteractionBar: this.props.enableColumnInteractionBar!,
-        };
-    }
-
     public shouldComponentUpdate(nextProps: Table2Props, nextState: TableState) {
         const propKeysDenylist = { exclude: Table2.SHALLOW_COMPARE_PROP_KEYS_DENYLIST };
         const stateKeysDenylist = { exclude: Table2.SHALLOW_COMPARE_STATE_KEYS_DENYLIST };
@@ -710,7 +704,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         return areGhostColumnsVisible && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
     }
 
-    private renderMenu = (refHandler: IRef<HTMLDivElement> | undefined) => {
+    private renderMenu = (refHandler: React.Ref<HTMLDivElement> | undefined) => {
         const classes = classNames(Classes.TABLE_MENU, {
             [Classes.TABLE_SELECTION_ENABLED]: isSelectionModeEnabled(
                 this.props as TablePropsWithDefaults,
@@ -763,26 +757,28 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
             if (columnHeaderCell != null) {
                 return React.cloneElement(columnHeaderCell, {
+                    enableColumnInteractionBar: this.props.enableColumnInteractionBar,
                     loading: columnHeaderCell.props.loading ?? columnLoading,
                 });
             }
         }
 
-        const baseProps: IColumnHeaderCellProps = {
+        const baseProps: ColumnHeaderCell2Props = {
+            enableColumnInteractionBar: this.props.enableColumnInteractionBar,
             index: columnIndex,
             loading: columnLoading,
             ...spreadableProps,
         };
 
         if (columnProps.name != null) {
-            return <ColumnHeaderCell {...baseProps} />;
+            return <ColumnHeaderCell2 {...baseProps} />;
         } else {
-            return <ColumnHeaderCell {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
+            return <ColumnHeaderCell2 {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
         }
     };
 
     private renderColumnHeader = (
-        refHandler: IRef<HTMLDivElement>,
+        refHandler: React.Ref<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenColumnsOnly: boolean = false,
@@ -814,15 +810,15 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             return <div className={classes} ref={refHandler} />;
         }
 
-        // if we have horizontal overflow, no need to render ghost columns
+        // if we have horizontal overflow or exact fit, no need to render ghost columns
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
-        const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(
+        const hasHorizontalOverflowOrExactFit = this.locator.hasHorizontalOverflowOrExactFit(
             enableRowHeader ? this.rowHeaderWidth : 0,
             viewportRect,
         );
         const columnIndices = this.grid.getColumnIndicesInRect(
             viewportRect,
-            hasHorizontalOverflow ? false : enableGhostCells,
+            hasHorizontalOverflowOrExactFit ? false : enableGhostCells,
         );
 
         const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
@@ -864,7 +860,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     };
 
     private renderRowHeader = (
-        refHandler: IRef<HTMLDivElement>,
+        refHandler: React.Ref<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenRowsOnly: boolean = false,
@@ -897,14 +893,14 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             return <div className={classes} ref={refHandler} />;
         }
 
-        // if we have vertical overflow, no need to render ghost rows
+        // if we have vertical overflow or exact fit, no need to render ghost rows
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
-        const hasVerticalOverflow = this.locator.hasVerticalOverflow(
+        const hasVerticalOverflowOrExactFit = this.locator.hasVerticalOverflowOrExactFit(
             enableColumnHeader ? this.columnHeaderHeight : 0,
             viewportRect,
         );
         const rowIndices = this.grid.getRowIndicesInRect({
-            includeGhostCells: hasVerticalOverflow ? false : enableGhostCells,
+            includeGhostCells: hasVerticalOverflowOrExactFit ? false : enableGhostCells,
             rect: viewportRect,
         });
 
@@ -994,23 +990,23 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             return undefined;
         }
 
-        // if we have vertical/horizontal overflow, no need to render ghost rows/columns (respectively)
+        // if we have vertical/horizontal overflow or exact fit, no need to render ghost rows/columns (respectively)
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
-        const hasVerticalOverflow = this.locator.hasVerticalOverflow(
+        const hasVerticalOverflowOrExactFit = this.locator.hasVerticalOverflowOrExactFit(
             enableColumnHeader ? this.columnHeaderHeight : 0,
             viewportRect,
         );
-        const hasHorizontalOverflow = this.locator.hasHorizontalOverflow(
+        const hasHorizontalOverflowOrExactFit = this.locator.hasHorizontalOverflowOrExactFit(
             enableRowHeader ? this.rowHeaderWidth : 0,
             viewportRect,
         );
         const rowIndices = this.grid.getRowIndicesInRect({
-            includeGhostCells: hasVerticalOverflow ? false : enableGhostCells,
+            includeGhostCells: hasVerticalOverflowOrExactFit ? false : enableGhostCells,
             rect: viewportRect,
         });
         const columnIndices = this.grid.getColumnIndicesInRect(
             viewportRect,
-            hasHorizontalOverflow ? false : enableGhostCells,
+            hasHorizontalOverflowOrExactFit ? false : enableGhostCells,
         );
 
         // start beyond the frozen area if rendering unrelated quadrants, so we
@@ -1029,7 +1025,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
 
         return (
             <div>
-                <TableBody
+                <TableBody2
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
                     focusedCell={focusedCell}

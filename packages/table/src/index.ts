@@ -24,12 +24,16 @@ export { EditableCell2, EditableCell2Props } from "./cell/editableCell2";
 
 export { JSONFormat, IJSONFormatProps, JSONFormatProps } from "./cell/formats/jsonFormat";
 
+export { JSONFormat2 } from "./cell/formats/jsonFormat2";
+
 export {
     TruncatedPopoverMode,
     TruncatedFormat,
     TruncatedFormatProps,
     ITruncatedFormatProps,
 } from "./cell/formats/truncatedFormat";
+
+export { TruncatedFormat2 } from "./cell/formats/truncatedFormat2";
 
 export { Column, ColumnProps, IColumnProps } from "./column";
 
@@ -65,9 +69,18 @@ export { ColumnHeaderRenderer, IColumnHeaderRenderer } from "./headers/columnHea
 
 export { RowHeaderRenderer } from "./headers/rowHeader";
 
-export { ColumnHeaderCell, IColumnHeaderCellProps, HorizontalCellDivider } from "./headers/columnHeaderCell";
+export {
+    ColumnHeaderCell,
+    ColumnHeaderCellProps,
+    IColumnHeaderCellProps,
+    HorizontalCellDivider,
+} from "./headers/columnHeaderCell";
 
-export { IRowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
+export { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./headers/columnHeaderCell2";
+
+export { IRowHeaderCellProps, RowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
+
+export { RowHeaderCell2 } from "./headers/rowHeaderCell2";
 
 export { IEditableNameProps, EditableNameProps, EditableName } from "./headers/editableName";
 

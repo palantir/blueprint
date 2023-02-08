@@ -65,8 +65,9 @@ export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = 
     large?: boolean;
 
     /**
-     * If set to `true`, the button will display a centered loading spinner instead of its contents, and the button will be disabled.
-     * The width of the button is not affected by the value of this prop.
+     * If set to `true`, the button will display a centered loading spinner instead of its contents
+     * and the button will be disabled (_even if_ `disabled={false}`). The width of the button is
+     * not affected by the value of this prop.
      *
      * @default false
      */
@@ -120,8 +121,18 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
     public abstract render(): JSX.Element;
 
     protected getCommonButtonProps() {
-        const { active, alignText, fill, large, loading = false, outlined, minimal, small, tabIndex } = this.props;
-        const disabled = this.props.disabled ?? loading;
+        const {
+            active = false,
+            alignText,
+            fill,
+            large,
+            loading = false,
+            outlined,
+            minimal,
+            small,
+            tabIndex,
+        } = this.props;
+        const disabled = this.props.disabled || loading;
 
         const className = classNames(
             Classes.BUTTON,

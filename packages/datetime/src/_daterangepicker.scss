@@ -4,19 +4,13 @@
 @import "./common";
 
 // react-day-picker does not conform to our naming scheme
-
 /* stylelint-disable selector-class-pattern */
+
 .#{$ns}-daterangepicker {
   display: flex;
-  white-space: nowrap;
 
   .DayPicker-NavButton--interactionDisabled {
     display: none;
-  }
-
-  .#{$ns}-daterangepicker-timepickers {
-    display: flex;
-    justify-content: space-around;
   }
 
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
@@ -105,6 +99,25 @@
         }
       }
     }
+  }
+}
+
+.#{$ns}-daterangepicker-calendars {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.#{$ns}-daterangepicker-timepickers {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+
+  .#{$ns}-timepicker-arrow-row:empty + .#{$ns}-timepicker-input-row {
+    // when timepicker arrows are not displayed in the daterangepicker, we need a bit of extra margin
+    margin: $datepicker-padding 0;
   }
 }
 

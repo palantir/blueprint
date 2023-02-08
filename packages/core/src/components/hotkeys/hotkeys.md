@@ -1,16 +1,16 @@
 @# Hotkeys
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated: use [useHotkeys](#core/hooks/use-hotkeys)
 
-</h4>
+</h5>
 
 This API is **deprecated since @blueprintjs/core v3.39.0** in favor of the new
 [`useHotkeys` hook](#core/hooks/use-hotkeys) and
-[HotkeysTarget2 component](#core/components/hotkeys-target2) available to React 16.8+ users.
-You should migrate to one of these new APIs, as they will become the standard in Blueprint v5.
+[HotkeysTarget2 component](#core/components/hotkeys-target2). You should migrate to one of
+these new APIs, as they will become the standard in future major version of Blueprint.
 
 </div>
 
@@ -171,4 +171,4 @@ Below is a little widget to quickly help you try out hotkey combos and see how
 they will look in the dialog. See the key combos section above for more about
 specifying key combo props.
 
-@reactExample HotkeyTester
+@reactExample HotkeyTesterExample
