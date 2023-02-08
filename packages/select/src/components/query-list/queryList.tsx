@@ -169,6 +169,8 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
 
     private itemsParentRef?: HTMLElement | null;
 
+    private itemRefs = new Map<number, HTMLElement>();
+
     private refHandlers = {
         itemsParent: (ref: HTMLElement | null) => (this.itemsParentRef = ref),
     };
@@ -394,6 +396,13 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
                 index,
                 modifiers,
                 query,
+                ref: node => {
+                    if (node) {
+                        this.itemRefs.set(index, node);
+                    } else {
+                        this.itemRefs.delete(index);
+                    }
+                },
             });
         }
 
@@ -415,21 +424,16 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     };
 
     private getActiveElement() {
-        const { activeItem, filteredItems } = this.state;
+        const { activeItem } = this.state;
         if (this.itemsParentRef != null) {
-            const { getActiveElement } = this.props;
             if (isCreateNewItem(activeItem)) {
-                const index = this.isCreateItemFirst() ? 0 : filteredItems.length;
-                if (typeof getActiveElement === "function") {
-                    return getActiveElement({ activeItem, filteredItems, index, itemsParent: this.itemsParentRef });
-                }
+                const index = this.isCreateItemFirst() ? 0 : this.state.filteredItems.length;
                 return this.itemsParentRef.children.item(index) as HTMLElement;
             } else {
-                const index = this.getActiveIndex();
-                if (typeof getActiveElement === "function") {
-                    return getActiveElement({ activeItem, filteredItems, index, itemsParent: this.itemsParentRef });
-                }
-                return this.itemsParentRef.children.item(index) as HTMLElement;
+                const activeIndex = this.getActiveIndex();
+                return (
+                    this.itemRefs.get(activeIndex) ?? (this.itemsParentRef.children.item(activeIndex) as HTMLElement)
+                );
             }
         }
         return undefined;

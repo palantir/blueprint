@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, Ref } from "react";
 
 /** @deprecated use ItemModifiers */
 export type IItemModifiers = ItemModifiers;
@@ -38,6 +38,9 @@ export type IItemRendererProps = ItemRendererProps;
  * An `itemRenderer` receives the item as its first argument, and this object as its second argument.
  */
 export interface ItemRendererProps {
+    /** A ref that receives the native HTML element rendered by this item. */
+    ref: Ref<any>;
+
     /** Click event handler to select this item. */
     handleClick: MouseEventHandler<HTMLElement>;
 

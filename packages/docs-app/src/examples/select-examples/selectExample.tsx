@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { H5, Menu, MenuDivider, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { isCreateNewItem, ItemListRendererProps, ListItemsProps } from "@blueprintjs/select";
+import { ItemListRendererProps } from "@blueprintjs/select";
 import { Film, FilmSelect, filterFilm, TOP_100_FILMS } from "@blueprintjs/select/examples";
 
 export interface ISelectExampleState {
@@ -95,7 +95,6 @@ export class SelectExample extends React.PureComponent<ExampleProps, ISelectExam
                     allowCreate={allowCreate}
                     createNewItemPosition={this.state.createFirst ? "first" : "last"}
                     disabled={disabled}
-                    getActiveElement={grouped ? this.getGroupedActiveElement : undefined}
                     itemDisabled={this.isItemDisabled}
                     itemListRenderer={grouped ? this.renderGroupedItemList : undefined}
                     itemListPredicate={grouped ? this.groupedItemListPredicate : undefined}
@@ -170,25 +169,6 @@ export class SelectExample extends React.PureComponent<ExampleProps, ISelectExam
         const firstLetter = item.title[0].toUpperCase();
         return /[0-9]/.test(firstLetter) ? "0-9" : firstLetter;
     }
-
-    private getGroupedActiveElement: ListItemsProps<Film>["getActiveElement"] = ({
-        activeItem,
-        filteredItems,
-        index,
-        itemsParent,
-    }) => {
-        if (itemsParent != null) {
-            if (isCreateNewItem(activeItem)) {
-                return itemsParent.children.item(index) as HTMLElement;
-            }
-
-            const group = this.getGroup(activeItem);
-            const groupedItems = this.getGroupedItems(filteredItems);
-            const groupIndex = groupedItems.findIndex(item => item.group === group);
-            return itemsParent.children.item(index + groupIndex + 1) as HTMLElement;
-        }
-        return undefined;
-    };
 
     private getGroupedItems = (filteredItems: Film[]) => {
         return filteredItems.reduce<Array<{ group: string; index: number; items: Film[]; key: number }>>(
