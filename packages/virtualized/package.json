@@ -13,6 +13,29 @@
         "components",
         "virtualized"
     ],
+    "scripts": {
+        "clean": "rm -rf dist/* && rm -rf lib/*",
+        "compile": "run-p \"compile:*\"",
+        "compile:esm": "tsc -p ./src",
+        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
+        "compile:css": "sass-compile ./src",
+        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+        "dist": "run-s \"dist:*\"",
+        "dist:bundle": "cross-env NODE_ENV=production webpack",
+        "dist:css": "css-dist lib/css/*.css",
+        "dist:verify": "assert-package-layout",
+        "lint": "run-p lint:scss lint:es",
+        "lint:scss": "sass-lint",
+        "lint:es": "es-lint",
+        "lint-fix": "es-lint --fix && sass-lint --fix",
+        "test": "run-s test:typeCheck test:iso test:karma",
+        "test:typeCheck": "tsc -p ./test",
+        "test:iso": "mocha test/isotest.js",
+        "test:karma": "karma start",
+        "test:karma:debug": "karma start --single-run=false --reporters=helpful --debug",
+        "verify": "npm-run-all compile -p dist test lint"
+    },
     "dependencies": {
         "@blueprintjs/core": "^4.5.0",
         "tslib": "~2.3.1"

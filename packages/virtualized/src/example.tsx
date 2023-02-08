@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+
 // Class name management
 import classNames from "classnames";
 import * as Classes from "./common/classes";
@@ -51,9 +52,9 @@ export class VirtualizedTable extends React.Component<IVirtualizedTableProps, IV
     };
 
     // Constructor of the component
-    public constructor(props?: VirtualizedTableProps, context?: any) {
+    public constructor(props: VirtualizedTableProps) {
         // Call the parent constructor
-        super(props, context);
+        super(props);
 
         // Set the state's values (potentially from the properties values)
         // if (props.children !== undefined) {
@@ -94,7 +95,9 @@ export class VirtualizedTable extends React.Component<IVirtualizedTableProps, IV
 
     public componentDidUpdate(prevProps: VirtualizedTableProps, prevState: IVirtualizedTableState) {
         // call the parent's method
-        super.componentDidUpdate(prevProps, prevState);
+        if(super.componentDidUpdate){
+            super.componentDidUpdate(prevProps, prevState);
+        }
         // add on top the behavior specific to this child component
 
         // Load the new properties and state into memory

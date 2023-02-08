@@ -20,7 +20,7 @@ import * as React from "react";
 import { IExampleProps } from "@blueprintjs/docs-theme";
 // import { someWidget } from "@blueprintjs/virtualized";
 
-export class Virtualized extends React.PureComponent<IExampleProps> {}
+export class Virtualized extends React.PureComponent<IExampleProps> { }
 
 export class VirtualizedTableExample extends React.PureComponent<IExampleProps> {
     public render() {
