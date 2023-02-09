@@ -46,8 +46,8 @@ export function showContextMenu(props: Omit<ContextMenu2PopoverProps, "isOpen">)
         contextMenuElement = document.createElement("div");
         contextMenuElement.classList.add(Classes.CONTEXT_MENU2);
         document.body.appendChild(contextMenuElement);
-        ReactDOM.render(<UncontrolledContextMenu2Popover {...props} />, contextMenuElement);
     }
+    ReactDOM.render(<UncontrolledContextMenu2Popover {...props} />, contextMenuElement);
 }
 
 /**
