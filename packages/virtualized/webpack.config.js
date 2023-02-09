@@ -1,5 +1,6 @@
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +23,7 @@ import { baseConfig, COMMON_EXTERNALS } from "@blueprintjs/webpack-build-scripts
 
 export default Object.assign({}, baseConfig, {
     entry: {
-        table: ["./src/index.ts"],
+        "virtualized": "./src/index.ts",
     },
 
     externals: COMMON_EXTERNALS,

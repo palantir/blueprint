@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/virtualized",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "Virtualized Components",
     "style": "lib/css/blueprint-virtualized.css",
     "unpkg": "dist/virtualized.bundle.js",
