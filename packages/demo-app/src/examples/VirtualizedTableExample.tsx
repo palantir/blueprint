@@ -23,7 +23,7 @@ import * as React from "react";
 // const WIDTH = 600;
 export const VirtualizedTableExample = React.memo(() => {
     return (<div>Example Virtualized Table ! </div>
-        /*<ExampleCard width={WIDTH} horizontal={true} label="Table">
+        /* <ExampleCard width={WIDTH} horizontal={true} label="Table">
             <VirtualizedTable title={"test title"}>
             </VirtualizedTable>
         </ExampleCard>*/

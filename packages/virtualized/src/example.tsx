@@ -67,6 +67,9 @@ export class VirtualizedTable extends React.Component<IVirtualizedTableProps, IV
     }
 
     public render() {
+        // Validate the props passed
+        this.validateProps(this.props)
+
         // Load the properties and state into memory
         const { title } = this.props;
         const { childrenArray } = this.state;

@@ -14,42 +14,39 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
+import { mount } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 
-import { Classes, VirtualizedTable, VirtualizedTableProps } from "../src";
+import { VirtualizedTable } from "../src";
 
 describe("<VirtualizedTable>", () => {
-    let testsContainerElement: Element;
-    let virtualizedTable: VirtualizedTable;
+    let testsContainerElement: HTMLElement | undefined;
 
-    before(() => {
-        // this is essentially what TestUtils.renderIntoDocument does
+    beforeEach(() => {
         testsContainerElement = document.createElement("div");
-        document.documentElement.appendChild(testsContainerElement);
+        document.body.appendChild(testsContainerElement);
     });
-
-    /*
-    beforeEach(() => { });
-    */
 
     afterEach(() => {
-        ReactDOM.unmountComponentAtNode(testsContainerElement);
+        testsContainerElement?.remove();
     });
-
-    function renderVirtualizedTable(props?: Partial<VirtualizedTableProps>) {
-        virtualizedTable = ReactDOM.render<VirtualizedTableProps>(
-            <VirtualizedTable {...props} />, // onChange={onVirtualizedTableChange}
-            testsContainerElement,
-        ) as VirtualizedTable;
-        return virtualizedTable
-    }
 
     it("renders its contents", () => {
-        assert.lengthOf(document.getElementsByClassName(Classes.VIRTUALIZED_TABLE), 0);
-
-        renderVirtualizedTable();
-        assert.lengthOf(document.getElementsByClassName(Classes.VIRTUALIZED_TABLE), 1);
+        mount(
+            <div style={{ width: 70 }}>
+                <VirtualizedTable
+                />
+            </div>,
+            { attachTo: testsContainerElement },
+        );
     });
 });
+
+
+
+
+
+
+
+
+

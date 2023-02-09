@@ -3,6 +3,8 @@
  */
 
 import "@blueprintjs/test-commons/bootstrap";
+import "./exampleTests";
+import "./exampleTestsOld";
 
 /*
 Example :
