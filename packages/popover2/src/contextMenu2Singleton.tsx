@@ -38,6 +38,8 @@ let contextMenuElement: HTMLElement | undefined;
  * Alternative APIs to consider which do not have the limitations of global state:
  *  - `<ContextMenu2>`
  *  - `<ContextMenu2Popover>`
+ *
+ * @see https://blueprintjs.com/docs/#popover2-package/context-menu2-popover.imperative-api
  */
 export function showContextMenu(props: Omit<ContextMenu2PopoverProps, "isOpen">) {
     if (contextMenuElement === undefined) {
@@ -52,6 +54,8 @@ export function showContextMenu(props: Omit<ContextMenu2PopoverProps, "isOpen">)
  * Hide a context menu that was created using `showContextMenu()`.
  *
  * Note that this API relies on global state in the @blueprintjs/popover2 package, and should be used with caution.
+ *
+ * @see https://blueprintjs.com/docs/#popover2-package/context-menu2-popover.imperative-api
  */
 export function hideContextMenu() {
     if (contextMenuElement !== undefined) {

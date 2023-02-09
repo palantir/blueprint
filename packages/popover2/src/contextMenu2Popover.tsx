@@ -38,7 +38,7 @@ export interface ContextMenu2PopoverProps extends ContextMenu2PopoverOptions {
  * Popover2 and Tooltip2, which wrap their children with interaction handlers -- if you're looking for the whole
  * interaction package, use ContextMenu2 instead.
  *
- * @see https://blueprintjs.com/docs/#popover2-package/context-menu2
+ * @see https://blueprintjs.com/docs/#popover2-package/context-menu2-popover
  */
 export function ContextMenu2Popover(props: ContextMenu2PopoverProps) {
     const cancelContextMenu = React.useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
