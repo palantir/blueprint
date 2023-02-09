@@ -22,7 +22,7 @@
         "dev:popover2": "lerna run dev --scope \"@blueprintjs/{popover2,docs-app}\"",
         "dev:select": "lerna run dev --scope \"@blueprintjs/{select,docs-app}\"",
         "dev:table": "lerna run dev --scope \"@blueprintjs/{table,table-dev-app}\"",
-        "dev:virtualized": "lerna run dev --parallel --scope \"@blueprintjs/{core,virtualized}\"",
+        "dev:virtualized": "lerna run dev --parallel --scope \"@blueprintjs/{core,virtualized,docs-app}\"",
         "dist": "run-s dist:libs dist:apps",
         "dist:libs": "lerna run dist --scope \"@blueprintjs/{colors,core,datetime,datetime2, docs-theme,icons,popover2,select,table,timezone,virtualized}\"",
         "dist:apps": "lerna run dist --scope \"@blueprintjs/{docs-app,landing-app,table-dev-app,demo-app}\"",
