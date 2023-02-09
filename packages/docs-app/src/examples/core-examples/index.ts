@@ -26,7 +26,6 @@ export * from "./collapseExample";
 export * from "./cardExample";
 export * from "./collapsibleListExample";
 export * from "./contextMenuExample";
-export * from "./contextMenu2Example";
 export * from "./controlGroupExample";
 export * from "./dialogExample";
 export * from "./multistepDialogExample";
