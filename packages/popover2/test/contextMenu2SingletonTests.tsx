@@ -19,10 +19,11 @@ import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 
-import { Classes, hideContextMenu, showContextMenu } from "../src";
+import { hideContextMenu, showContextMenu } from "../src";
 
+const TEST_MENU_CLASS_NAME = "test-menu";
 const MENU = (
-    <Menu>
+    <Menu className={TEST_MENU_CLASS_NAME}>
         <MenuItem icon="align-left" text="Align Left" />,
         <MenuItem icon="align-center" text="Align Center" />,
         <MenuItem icon="align-right" text="Align Right" />,
@@ -38,7 +39,7 @@ describe("showContextMenu() + hideContextMenu()", () => {
         showContextMenu({
             content: MENU,
             onOpened: () => {
-                const ctxMenuElement = document.querySelectorAll(`.${Classes.CONTEXT_MENU2_POPOVER2}`);
+                const ctxMenuElement = document.querySelectorAll(`.${TEST_MENU_CLASS_NAME}`);
                 assert.isTrue(ctxMenuElement.length === 1);
                 done();
             },
@@ -55,7 +56,7 @@ describe("showContextMenu() + hideContextMenu()", () => {
             onOpened: () => {
                 hideContextMenu();
                 setTimeout(() => {
-                    const ctxMenuElement = document.querySelectorAll(`.${Classes.CONTEXT_MENU2_POPOVER2}`);
+                    const ctxMenuElement = document.querySelectorAll(`.${TEST_MENU_CLASS_NAME}`);
                     assert.isTrue(ctxMenuElement.length === 0);
                     done();
                 });
