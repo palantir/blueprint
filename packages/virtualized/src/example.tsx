@@ -16,13 +16,13 @@
 
 // Class name management
 import classNames from "classnames";
-import * as Classes from "./common/classes";
-import * as Errors from "./common/errors";
-
 import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, Props } from "@blueprintjs/core";
+
 import type { ColumnProps } from "./../../table/src/column"; // TODO : to change
+import * as Classes from "./common/classes";
+import * as Errors from "./common/errors";
 
 // Properties of the component
 export interface IVirtualizedTableProps extends Props {
@@ -116,7 +116,7 @@ export class VirtualizedTable extends React.Component<IVirtualizedTableProps, IV
         const { title } = props;
 
         // do cheap error-checking first.
-        if (props == undefined) {
+        if (props === undefined) {
             throw new Error(Errors.PROPS_UNDEFINED);
         }
 

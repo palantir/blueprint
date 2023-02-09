@@ -15,13 +15,9 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-dom/test-utils";
-import * as sinon from "sinon";
 
-import { Classes as CoreClasses, Intent, Keys } from "@blueprintjs/core";
 import { Classes, VirtualizedTable, VirtualizedTableProps } from "../src";
 
 describe("<VirtualizedTable>", () => {
@@ -34,7 +30,9 @@ describe("<VirtualizedTable>", () => {
         document.documentElement.appendChild(testsContainerElement);
     });
 
-    beforeEach(() => {});
+    /*
+    beforeEach(() => { });
+    */
 
     afterEach(() => {
         ReactDOM.unmountComponentAtNode(testsContainerElement);
@@ -45,6 +43,7 @@ describe("<VirtualizedTable>", () => {
             <VirtualizedTable {...props} />, // onChange={onVirtualizedTableChange}
             testsContainerElement,
         ) as VirtualizedTable;
+        return virtualizedTable
     }
 
     it("renders its contents", () => {

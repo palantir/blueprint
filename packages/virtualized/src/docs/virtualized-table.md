@@ -1,5 +1,5 @@
 ---
-reference: features
+reference: virtualized-table
 ---
 
 @# Virtualized Table features

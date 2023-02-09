@@ -23,7 +23,7 @@ import { baseConfig, COMMON_EXTERNALS } from "@blueprintjs/webpack-build-scripts
 
 export default Object.assign({}, baseConfig, {
     entry: {
-        "virtualized": "./src/index.ts",
+        virtualized: "./src/index.ts",
     },
 
     externals: COMMON_EXTERNALS,

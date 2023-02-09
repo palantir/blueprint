@@ -5,7 +5,7 @@
 import "@blueprintjs/test-commons/bootstrap";
 
 /*
-Example : 
+Example :
 import "./common/dateUtilsTests";
 import "./dateInputTests";
 */
