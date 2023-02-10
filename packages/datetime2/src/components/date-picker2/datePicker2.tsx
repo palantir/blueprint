@@ -123,6 +123,7 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
                         locale={locale}
                         localeUtils={localeUtils}
                         // TODO(@adidahiya)
+                        // @ts-ignore -- HACKHACK: ??
                         modifiers={this.getDatePickerModifiers()}
                         {...dayPickerProps}
                         canChangeMonth={true}
@@ -238,7 +239,7 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
     };
 
     // TODO(@adidahiya)
-    private renderCaption = (props: CaptionElementProps) => (
+    private renderCaption = (props: any /* CaptionElementProps */) => (
         <DatePickerCaption
             {...props}
             maxDate={this.props.maxDate}
@@ -249,7 +250,7 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
     );
 
     // TODO(@adidahiya)
-    private renderNavbar = (props: NavbarElementProps) => (
+    private renderNavbar = (props: any /* NavbarElementProps */) => (
         <DatePickerNavbar {...props} maxDate={this.props.maxDate} minDate={this.props.minDate} />
     );
 
@@ -331,6 +332,7 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
     }
 
     private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent) => {
+        // @ts-ignore -- HACKHACK(@adidahiya): multiple versions of rdp types in this monorepo create a type conflict here
         this.props.dayPickerProps?.onDayClick?.(day, modifiers, e);
         if (modifiers.disabled) {
             return;
