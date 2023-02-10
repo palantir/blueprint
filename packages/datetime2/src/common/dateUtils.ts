@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview Some of these functions are similar to the implementations found in DateUtils from
+ * "@blueprintjs/datetime", but these have some improvements to use the "date-fns" library and compile with
+ * TypeScript strict null checks.
+ */
+
 import { isSameDay, isWithinInterval } from "date-fns";
 
 import { DateRange, isNonNullRange } from "./dateRange";
@@ -24,6 +30,19 @@ export function clone(d: Date) {
 
 export function isDateValid(date: Date | false | null): date is Date {
     return date instanceof Date && !isNaN(date.valueOf());
+}
+
+export function areSameMonth(date1: Date | null, date2: Date | null) {
+    return (
+        date1 != null &&
+        date2 != null &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getFullYear() === date2.getFullYear()
+    );
+}
+
+export function areSameDay(date1: Date | null, date2: Date | null) {
+    return areSameMonth(date1, date2) && date1?.getDate() === date2?.getDate();
 }
 
 export function isSameTime(d1: Date | null, d2: Date | null) {
