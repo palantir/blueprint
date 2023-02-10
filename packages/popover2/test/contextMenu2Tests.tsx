@@ -33,12 +33,13 @@ import {
     Tooltip2Props,
 } from "../src";
 
-const MENU_ITEMS = [
-    <MenuItem key="left" icon="align-left" text="Align Left" />,
-    <MenuItem key="center" icon="align-center" text="Align Center" />,
-    <MenuItem key="right" icon="align-right" text="Align Right" />,
-];
-const MENU = <Menu>{MENU_ITEMS}</Menu>;
+const MENU = (
+    <Menu>
+        <MenuItem icon="align-left" text="Align Left" />,
+        <MenuItem icon="align-center" text="Align Center" />,
+        <MenuItem icon="align-right" text="Align Right" />,
+    </Menu>
+);
 const TARGET_CLASSNAME = "test-target";
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP2}`;
 const COMMON_TOOLTIP_PROPS: Partial<Tooltip2Props> = {

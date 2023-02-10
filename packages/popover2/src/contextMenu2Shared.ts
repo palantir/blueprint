@@ -1,5 +1,6 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,13 +14,17 @@
  * limitations under the License.
  */
 
-import "@blueprintjs/test-commons/bootstrap";
+import { OverlayLifecycleProps } from "@blueprintjs/core";
 
-import "./breadcrumbs2Tests";
-import "./contextMenu2Tests";
-import "./contextMenu2SingletonTests";
-import "./menuItem2Tests";
-import "./popover2Tests";
-import "./resizeSensor2Tests";
-import "./tooltip2Tests";
-import "./utilsTests";
+import { Popover2Props } from "./popover2";
+
+export type Offset = {
+    left: number;
+    top: number;
+};
+
+/**
+ * A limited subset of props to forward along to the context menu popover overlay.
+ */
+export type ContextMenu2PopoverOptions = OverlayLifecycleProps &
+    Pick<Popover2Props, "popoverClassName" | "transitionDuration" | "popoverRef" | "rootBoundary">;
