@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, Portal } from "@blueprintjs/core";
+import { Classes as CoreClasses, DISPLAYNAME_PREFIX, Portal } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
 import { ContextMenu2PopoverOptions, Offset } from "./contextMenu2Shared";
@@ -40,55 +40,62 @@ export interface ContextMenu2PopoverProps extends ContextMenu2PopoverOptions {
  *
  * @see https://blueprintjs.com/docs/#popover2-package/context-menu2-popover
  */
-export function ContextMenu2Popover(props: ContextMenu2PopoverProps) {
+export const ContextMenu2Popover = React.memo(function _ContextMenu2Popover(props: ContextMenu2PopoverProps) {
+    const {
+        content,
+        popoverClassName,
+        onClose,
+        isDarkTheme = false,
+        rootBoundary = "viewport",
+        targetOffset,
+        transitionDuration = 100,
+        ...popoverProps
+    } = props;
     const cancelContextMenu = React.useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
 
     // Popover2 should attach its ref to the virtual target we render inside a Portal, not the "inline" child target
     const renderTarget = React.useCallback(
         ({ ref }: Popover2TargetProps) => (
             <Portal>
-                <div className={Classes.CONTEXT_MENU2_VIRTUAL_TARGET} style={props.targetOffset} ref={ref} />
+                <div className={Classes.CONTEXT_MENU2_VIRTUAL_TARGET} style={targetOffset} ref={ref} />
             </Portal>
         ),
-        [props.targetOffset],
+        [targetOffset],
     );
 
     const handleInteraction = React.useCallback((nextOpenState: boolean) => {
         if (!nextOpenState) {
-            props.onClose?.();
+            onClose?.();
         }
     }, []);
 
     return (
         <Popover2
-            {...props}
+            {...popoverProps}
             content={
                 // this prevents right-clicking inside our context menu
-                <div onContextMenu={cancelContextMenu}>{props.content}</div>
+                <div onContextMenu={cancelContextMenu}>{content}</div>
             }
             enforceFocus={false}
             // Generate key based on offset so that a new Popover instance is created
             // when offset changes, to force recomputing position.
-            key={getPopoverKey(props.targetOffset)}
+            key={getPopoverKey(targetOffset)}
             hasBackdrop={true}
             backdropProps={{ className: Classes.CONTEXT_MENU2_BACKDROP }}
             minimal={true}
             onInteraction={handleInteraction}
-            popoverClassName={classNames(Classes.CONTEXT_MENU2_POPOVER2, props.popoverClassName, {
-                [CoreClasses.DARK]: props.isDarkTheme,
+            popoverClassName={classNames(Classes.CONTEXT_MENU2_POPOVER2, popoverClassName, {
+                [CoreClasses.DARK]: isDarkTheme,
             })}
             placement="right-start"
             positioningStrategy="fixed"
-            rootBoundary={props?.rootBoundary ?? "viewport"}
+            rootBoundary={rootBoundary}
             renderTarget={renderTarget}
-            transitionDuration={props.transitionDuration}
+            transitionDuration={transitionDuration}
         />
     );
-}
-ContextMenu2Popover.defaultProps = {
-    isDarkTheme: false,
-    transitionDuration: 100,
-};
+});
+ContextMenu2Popover.displayName = `${DISPLAYNAME_PREFIX}.ContextMenu2Popover`;
 
 function getPopoverKey(targetOffset: Offset | undefined) {
     return targetOffset === undefined ? "default" : `${targetOffset.left}x${targetOffset.top}`;
