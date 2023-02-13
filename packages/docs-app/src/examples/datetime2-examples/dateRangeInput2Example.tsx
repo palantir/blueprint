@@ -16,10 +16,11 @@
 
 import * as React from "react";
 
-import { Callout, Code, H5, Switch } from "@blueprintjs/core";
+import { Button, Callout, Code, ControlGroup, H5, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateRange, TimePrecision } from "@blueprintjs/datetime";
 import { DateRangeInput2 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Tooltip2 } from "@blueprintjs/popover2";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
@@ -49,6 +50,7 @@ export interface DateRangeInput2ExampleState {
     showTimeArrowButtons: boolean;
     singleMonthOnly: boolean;
     timePrecision: TimePrecision | undefined;
+    useCurrentTimeAsDefault: boolean;
 }
 
 export class DateRangeInput2Example extends React.PureComponent<ExampleProps, DateRangeInput2ExampleState> {
@@ -68,6 +70,7 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
         showTimeArrowButtons: false,
         singleMonthOnly: false,
         timePrecision: TimePrecision.MINUTE,
+        useCurrentTimeAsDefault: false,
     };
 
     private toggleContiguous = handleBooleanChange(contiguous => {
@@ -104,6 +107,10 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
 
+    private toggleUseCurrentTimeAsDefault = handleBooleanChange(useCurrentTimeAsDefault =>
+        this.setState({ useCurrentTimeAsDefault }),
+    );
+
     public render() {
         const {
             enableTimePicker,
@@ -112,22 +119,30 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
             showFooterElement,
             showTimeArrowButtons,
             timePrecision,
+            useCurrentTimeAsDefault,
             ...spreadProps
         } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <DateRangeInput2
-                    {...spreadProps}
-                    {...format}
-                    value={range}
-                    onChange={this.handleRangeChange}
-                    footerElement={showFooterElement ? exampleFooterElement : undefined}
-                    timePickerProps={
-                        enableTimePicker
-                            ? { precision: timePrecision, showArrowButtons: showTimeArrowButtons }
-                            : undefined
-                    }
-                />
+                <ControlGroup>
+                    <DateRangeInput2
+                        {...spreadProps}
+                        {...format}
+                        value={range}
+                        onChange={this.handleRangeChange}
+                        footerElement={showFooterElement ? exampleFooterElement : undefined}
+                        timePickerProps={
+                            enableTimePicker
+                                ? {
+                                      defaultValue: useCurrentTimeAsDefault ? new Date() : undefined,
+                                      precision: timePrecision,
+                                      showArrowButtons: showTimeArrowButtons,
+                                  }
+                                : undefined
+                        }
+                    />
+                    {this.maybeRenderClearButton()}
+                </ControlGroup>
                 <DateFnsDateRange range={range} />
             </Example>
         );
@@ -148,6 +163,7 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
             showTimeArrowButtons,
             singleMonthOnly,
             timePrecision,
+            useCurrentTimeAsDefault,
         } = this.state;
         return (
             <>
@@ -224,9 +240,37 @@ export class DateRangeInput2Example extends React.PureComponent<ExampleProps, Da
                         onChange={this.toggleTimepickerArrowButtons}
                     />
                 </PropCodeTooltip>
+                <PropCodeTooltip
+                    snippet={`timePickerProps={{ defaultValue: ${
+                        useCurrentTimeAsDefault ? "new Date()" : "undefined"
+                    } }}`}
+                    disabled={!enableTimePicker}
+                >
+                    <Switch
+                        disabled={!enableTimePicker}
+                        checked={useCurrentTimeAsDefault}
+                        label="Use current time as default"
+                        onChange={this.toggleUseCurrentTimeAsDefault}
+                    />
+                </PropCodeTooltip>
             </>
         );
     }
+
+    private maybeRenderClearButton() {
+        const { range } = this.state;
+        if (range[0] == null && range[1] == null) {
+            return undefined;
+        }
+
+        return (
+            <Tooltip2 content="Clear selection" placement="top-end">
+                <Button aria-label="Clear selection" minimal={true} icon="cross" onClick={this.clearSelection} />
+            </Tooltip2>
+        );
+    }
+
+    private clearSelection = () => this.setState({ range: [null, null] });
 
     private handleFormatChange = (format: DateFormatProps) => this.setState({ format });
 
