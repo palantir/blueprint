@@ -28,6 +28,18 @@ const CURRENT_DATE = Date.now();
 const LONG_NAME_FORMAT_STR = "zzzz";
 const SHORT_NAME_FORMAT_STR = "zzz";
 
+export function isValidTimezone(timeZone: string | undefined): boolean {
+    if (timeZone === undefined) {
+        return false;
+    }
+    try {
+        Intl.DateTimeFormat(undefined, { timeZone });
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
 export function getTimezoneShortName(tzIanaCode: string, date: Date | undefined) {
     return formatInTimeZone(date ?? CURRENT_DATE, tzIanaCode, SHORT_NAME_FORMAT_STR);
 }
