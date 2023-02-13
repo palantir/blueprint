@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "4.15.1",
+    "version": "4.16.0",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -46,8 +46,8 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/colors": "^4.1.14",
-        "@blueprintjs/icons": "^4.13.1",
+        "@blueprintjs/colors": "^4.1.15",
+        "@blueprintjs/icons": "^4.13.2",
         "@juggle/resize-observer": "^3.4.0",
         "@types/dom4": "^2.0.2",
         "classnames": "^2.3.1",
@@ -69,9 +69,9 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/karma-build-scripts": "^4.0.10",
-        "@blueprintjs/node-build-scripts": "^6.0.6",
-        "@blueprintjs/test-commons": "^1.1.8",
+        "@blueprintjs/karma-build-scripts": "^4.0.11",
+        "@blueprintjs/node-build-scripts": "^6.0.7",
+        "@blueprintjs/test-commons": "^1.1.9",
         "@testing-library/react": "^12.1.5",
         "@vgrid/sass-inline-svg": "^1.0.1",
         "enzyme": "^3.11.0",
