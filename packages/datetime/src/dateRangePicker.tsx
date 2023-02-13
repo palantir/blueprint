@@ -127,6 +127,7 @@ export interface IDateRangePickerProps extends DatePickerBaseProps, Props {
 
 // leftView and rightView controls the DayPicker displayed month
 export interface IDateRangePickerState {
+    hasModifiedTimePickers?: [boolean, boolean];
     hoverValue?: DateRange;
     leftView?: MonthAndYear;
     rightView?: MonthAndYear;
@@ -219,6 +220,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
                 ? MonthAndYear.fromDate(rightDate)
                 : leftView.getNextMonth();
         this.state = {
+            hasModifiedTimePickers: [false, false],
             hoverValue: [null, null],
             leftView,
             rightView,
@@ -258,12 +260,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
             !DateUtils.areRangesEqual(prevProps.value, this.props.value) ||
             prevProps.contiguousCalendarMonths !== this.props.contiguousCalendarMonths
         ) {
-            const nextState = getStateChange(
-                prevProps.value,
-                this.props.value,
-                this.state,
-                prevProps.contiguousCalendarMonths,
-            );
+            const nextState = getStateChange(prevProps.value, this.props.value, this.state, this.props);
             this.setState(nextState);
         }
 
@@ -391,17 +388,24 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
     private handleTimeChange = (newTime: Date, dateIndex: number) => {
         this.props.timePickerProps?.onChange?.(newTime);
 
-        const { value, time } = this.state;
-        const newValue = DateUtils.getDateTime(
-            value[dateIndex] != null ? DateUtils.clone(value[dateIndex]) : new Date(),
-            newTime,
-        );
-        const newDateRange: DateRange = [value[0], value[1]];
-        newDateRange[dateIndex] = newValue;
-        const newTimeRange: DateRange = [time[0], time[1]];
-        newTimeRange[dateIndex] = newTime;
-        this.props.onChange?.(newDateRange);
-        this.setState({ value: newDateRange, time: newTimeRange });
+        this.setState(({ hasModifiedTimePickers, value, time }) => {
+            const newValue = DateUtils.getDateTime(
+                value[dateIndex] != null ? DateUtils.clone(value[dateIndex]) : new Date(),
+                newTime,
+            );
+            const newDateRange: DateRange = [value[0], value[1]];
+            newDateRange[dateIndex] = newValue;
+            const newTimeRange: DateRange = [time[0], time[1]];
+            newTimeRange[dateIndex] = newTime;
+            this.props.onChange?.(newDateRange);
+            hasModifiedTimePickers[dateIndex] = true;
+
+            return {
+                hasModifiedTimePickers,
+                time: newTimeRange,
+                value: newDateRange,
+            };
+        });
     };
 
     private handleTimeChangeLeftCalendar = (time: Date) => {
@@ -539,8 +543,8 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
         const { dateRange, boundary } = DateRangeSelectionStrategy.getNextState(
             this.state.value,
             day,
-            this.props.allowSingleDayRange,
-            this.props.boundaryToModify,
+            this.props,
+            this.state.hasModifiedTimePickers,
         );
         this.setState({ hoverValue: dateRange });
         this.props.onHoverChange?.(dateRange, day, boundary);
@@ -567,8 +571,8 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
         const nextValue = DateRangeSelectionStrategy.getNextState(
             this.state.value,
             day,
-            this.props.allowSingleDayRange,
-            this.props.boundaryToModify,
+            this.props,
+            this.state.hasModifiedTimePickers,
         ).dateRange;
 
         // update the hovered date range after click to show the newly selected
@@ -579,12 +583,12 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
     };
 
     private handleShortcutClick = (shortcut: DateRangeShortcut, selectedShortcutIndex: number) => {
-        const { onChange, contiguousCalendarMonths, onShortcutChange } = this.props;
+        const { onChange, onShortcutChange } = this.props;
         const { dateRange, includeTime } = shortcut;
         if (includeTime) {
             const newDateRange: DateRange = [dateRange[0], dateRange[1]];
             const newTimeRange: DateRange = [dateRange[0], dateRange[1]];
-            const nextState = getStateChange(this.state.value, dateRange, this.state, contiguousCalendarMonths);
+            const nextState = getStateChange(this.state.value, dateRange, this.state, this.props);
             this.setState({ ...nextState, time: newTimeRange });
             onChange?.(newDateRange);
         } else {
@@ -603,7 +607,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
         nextValue[0] = DateUtils.getDateTime(nextValue[0], this.state.time[0]);
         nextValue[1] = DateUtils.getDateTime(nextValue[1], this.state.time[1]);
 
-        const nextState = getStateChange(value, nextValue, this.state, this.props.contiguousCalendarMonths);
+        const nextState = getStateChange(value, nextValue, this.state, this.props);
 
         if (this.props.value == null) {
             this.setState(nextState);
@@ -713,7 +717,7 @@ function getStateChange(
     value: DateRange,
     nextValue: DateRange,
     state: IDateRangePickerState,
-    contiguousCalendarMonths: boolean,
+    { contiguousCalendarMonths, timePickerProps }: DateRangePickerProps,
 ): IDateRangePickerState {
     if (value != null && nextValue == null) {
         return { value: [null, null] };
@@ -724,11 +728,11 @@ function getStateChange(
         const nextValueStartView = MonthAndYear.fromDate(nextValue[0]);
         const nextValueEndView = MonthAndYear.fromDate(nextValue[1]);
 
-        // Only end date selected.
-        // If the newly selected end date isn't in either of the displayed months, then
-        //   - set the right DayPicker to the month of the selected end date
-        //   - ensure the left DayPicker is before the right, changing if needed
         if (nextValueStartView == null && nextValueEndView != null) {
+            // Only end date selected.
+            // If the newly selected end date isn't in either of the displayed months, then
+            //   - set the right DayPicker to the month of the selected end date
+            //   - ensure the left DayPicker is before the right, changing if needed
             if (!nextValueEndView.isSame(leftView) && !nextValueEndView.isSame(rightView)) {
                 rightView = nextValueEndView;
                 if (!leftView.isBefore(rightView)) {
@@ -767,6 +771,17 @@ function getStateChange(
                 if (contiguousCalendarMonths === false && !rightView.isSame(nextValueEndView)) {
                     rightView = nextValueEndView;
                 }
+            }
+        }
+
+        // Update time values if timePickerProps.defaultValue is set
+        if (timePickerProps.defaultValue != null) {
+            const [hasModifiedStartTime, hasModifiedEndTime] = state.hasModifiedTimePickers;
+            if (nextValue[0] != null && !hasModifiedStartTime) {
+                DateUtils.setTime(nextValue[0], timePickerProps.defaultValue);
+            }
+            if (nextValue[1] != null && !hasModifiedEndTime) {
+                DateUtils.setTime(nextValue[1], timePickerProps.defaultValue);
             }
         }
 

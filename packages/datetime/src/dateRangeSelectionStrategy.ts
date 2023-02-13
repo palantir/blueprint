@@ -17,7 +17,8 @@
 import { Boundary } from "@blueprintjs/core";
 
 import { DateRange } from "./common/dateRange";
-import { areSameDay } from "./common/dateUtils";
+import { areSameDay, setTime } from "./common/dateUtils";
+import { DateRangePickerProps } from "./dateRangePicker";
 
 export interface IDateRangeSelectionState {
     /**
@@ -42,21 +43,31 @@ export class DateRangeSelectionStrategy {
     public static getNextState(
         currentRange: DateRange,
         day: Date,
-        allowSingleDayRange: boolean,
-        boundary?: Boundary,
+        props: DateRangePickerProps,
+        [hasModifiedStartTimePicker, hasModifiedEndTimePicker]: [boolean, boolean],
     ): IDateRangeSelectionState {
-        if (boundary != null) {
-            return this.getNextStateForBoundary(currentRange, day, allowSingleDayRange, boundary);
+        const hasModifiedTimePicker =
+            props.boundaryToModify === Boundary.END ? hasModifiedEndTimePicker : hasModifiedStartTimePicker;
+
+        if (!hasModifiedTimePicker && props.timePickerProps?.defaultValue !== undefined) {
+            setTime(day, props.timePickerProps.defaultValue);
+        }
+
+        if (props.boundaryToModify != null) {
+            return this.getNextStateForBoundary(currentRange, day, props);
         } else {
-            return this.getDefaultNextState(currentRange, day, allowSingleDayRange);
+            return this.getDefaultNextState(currentRange, day, props);
         }
     }
 
+    /**
+     * @param currentRange the currently selected date range
+     * @param day the date in the calendar which the user clicked
+     */
     private static getNextStateForBoundary(
         currentRange: DateRange,
         day: Date,
-        allowSingleDayRange: boolean,
-        boundary: Boundary,
+        { allowSingleDayRange, boundaryToModify: boundary }: DateRangePickerProps,
     ): IDateRangeSelectionState {
         const boundaryDate = this.getBoundaryDate(boundary, currentRange);
         const otherBoundary = this.getOtherBoundary(boundary);
@@ -116,10 +127,14 @@ export class DateRangeSelectionStrategy {
         return { dateRange: nextDateRange, boundary: nextBoundary };
     }
 
+    /**
+     * @param selectedRange the currently selected date range
+     * @param day the date in the calendar which the user clicked
+     */
     private static getDefaultNextState(
         selectedRange: DateRange,
         day: Date,
-        allowSingleDayRange: boolean,
+        { allowSingleDayRange }: DateRangePickerProps,
     ): IDateRangeSelectionState {
         const [start, end] = selectedRange;
 

@@ -40,8 +40,19 @@ import { IDateRangeShortcut, Shortcuts } from "../src/shortcuts";
 import { assertDayDisabled } from "./common/dateTestUtils";
 
 describe("<DateRangePicker>", () => {
-    let onChangeSpy: sinon.SinonSpy;
-    let onHoverChangeSpy: sinon.SinonSpy;
+    const onChangeSpy = sinon.spy();
+    const onHoverChangeSpy = sinon.spy();
+    let containerElement: HTMLElement | undefined;
+
+    beforeEach(() => {
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+    });
+    afterEach(() => {
+        containerElement?.remove();
+        onChangeSpy.resetHistory();
+        onHoverChangeSpy.resetHistory();
+    });
 
     it("renders its template", () => {
         const { wrapper } = render();
@@ -1207,6 +1218,28 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(wrapper.find(TimePicker).exists());
         });
 
+        it("uses timePickerProps.defaultValue to set the time in selected ranges", () => {
+            const defaultTimeValue = new Date(2023, 2, 13, 7, 30);
+            const { left, right, getTimeInput } = render({
+                onChange: onChangeSpy,
+                timePickerProps: { defaultValue: defaultTimeValue },
+                timePrecision: "minute",
+            });
+
+            assert.strictEqual(parseInt(getTimeInput("hour", "left"), 10), defaultTimeValue.getHours());
+            assert.strictEqual(parseInt(getTimeInput("minute", "left"), 10), defaultTimeValue.getMinutes());
+
+            left.clickDay(1);
+            right.clickDay(1);
+
+            assert.strictEqual(onChangeSpy.callCount, 2);
+            const [selectedStart, selectedEnd] = onChangeSpy.args[1][0] as DateRange;
+            assert.strictEqual(selectedStart.getHours(), defaultTimeValue.getHours());
+            assert.strictEqual(selectedStart.getMinutes(), defaultTimeValue.getMinutes());
+            assert.strictEqual(selectedEnd.getHours(), defaultTimeValue.getHours());
+            assert.strictEqual(selectedEnd.getMinutes(), defaultTimeValue.getMinutes());
+        });
+
         it("onChange fired when the time is changed", () => {
             const { wrapper } = render({
                 defaultValue: defaultRange,
@@ -1288,14 +1321,11 @@ describe("<DateRangePicker>", () => {
     }
 
     function render(props?: IDateRangePickerProps) {
-        onChangeSpy = sinon.spy();
-        onHoverChangeSpy = sinon.spy();
-        const wrapper = wrap(<DateRangePicker onChange={onChangeSpy} onHoverChange={onHoverChangeSpy} {...props} />);
-        return wrapper;
+        return wrap(<DateRangePicker onChange={onChangeSpy} onHoverChange={onHoverChangeSpy} {...props} />);
     }
 
     function wrap(datepicker: JSX.Element) {
-        const wrapper = mount<IDateRangePickerProps, IDateRangePickerState>(datepicker);
+        const wrapper = mount<IDateRangePickerProps, IDateRangePickerState>(datepicker, { attachTo: containerElement });
 
         const findTimeInput = (precision: TimePrecision | "hour", which: "left" | "right") =>
             wrapper.find(`.${DateClasses.TIMEPICKER}-${precision}`).at(which === "left" ? 0 : 1);

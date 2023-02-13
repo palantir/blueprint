@@ -238,3 +238,13 @@ export function get24HourFrom12Hour(hour: number, isPm: boolean): number {
 export function isToday(date: Date): boolean {
     return areSameDay(date, new Date());
 }
+
+/**
+ * Set the time properties on `date` from the `time` parameter.
+ */
+export function setTime(date: Date, time: Date) {
+    date.setHours(time.getHours());
+    date.setMinutes(time.getMinutes());
+    date.setSeconds(time.getSeconds());
+    date.setMilliseconds(time.getMilliseconds());
+}
