@@ -14,7 +14,7 @@
         "sass-lint": "./sass-lint.mjs"
     },
     "dependencies": {
-        "autoprefixer": "^10.4.12",
+        "autoprefixer": "^10.4.13",
         "chokidar": "^3.5.3",
         "cross-spawn": "^7.0.3",
         "eslint": "^8.33.0",
