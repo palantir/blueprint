@@ -521,7 +521,7 @@ describe("<DateRangeInput2>", () => {
         it("accepts custom popoverProps", () => {
             const popoverProps: Partial<Popover2Props> = {
                 backdropProps: {},
-                position: Position.TOP_LEFT,
+                placement: "top-start",
                 usePortal: false,
             };
             const popover = wrap(<DateRangeInput2 {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover2);
