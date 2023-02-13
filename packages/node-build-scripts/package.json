@@ -39,7 +39,7 @@
     },
     "devDependencies": {
         "@types/fs-extra": "~11.0.1",
-        "@types/yargs": "~17.0.13"
+        "@types/yargs": "~17.0.22"
     },
     "engines": {
         "node": ">=16"
