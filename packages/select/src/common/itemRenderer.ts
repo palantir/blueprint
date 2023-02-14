@@ -40,10 +40,9 @@ export type IItemRendererProps = ItemRendererProps;
  * Make sure to forward the provided `ref` to the rendered element (usually via the `elementRef` prop on `MenuItem`/`MenuItem2`)
  * to ensure that scrolling to active items works correctly.
  *
- * @template T type of the DOM element to attach a ref to, usually the component's root container (defaults to MenuItem's HTMLLIElement)
- * @template U type of the DOM element to attach a click handler to, usually the component's root container (defaults to MenuItem's HTMLAnchorElement)
+ * @template T type of the DOM element rendered for this item to which we can attach a ref (defaults to MenuItem's HTMLLIElement)
  */
-export interface ItemRendererProps<T extends HTMLElement = HTMLLIElement, U extends HTMLElement = HTMLAnchorElement> {
+export interface ItemRendererProps<T extends HTMLElement = HTMLLIElement> {
     /**
      * A ref attached the native HTML element rendered by this item.
      *
@@ -52,7 +51,7 @@ export interface ItemRendererProps<T extends HTMLElement = HTMLLIElement, U exte
     ref?: React.Ref<T>;
 
     /** Click event handler to select this item. */
-    handleClick: React.MouseEventHandler<U>;
+    handleClick: React.MouseEventHandler<HTMLElement>;
 
     /**
      * Focus event handler to set this as the "active" item.
