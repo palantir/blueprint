@@ -16,11 +16,11 @@
 
 import * as React from "react";
 
-import { AnchorButton, ButtonProps } from "../button/buttons";
+import { AnchorButton, AnchorButtonProps } from "../button/buttons";
 import { Tooltip, TooltipProps } from "../tooltip/tooltip";
 
 // omit "elementRef", which is the only property with a different type in ButtonProps vs. AnchorButtonProps
-export type DialogStepButtonProps = Partial<Omit<ButtonProps, "elementRef">> & {
+export type DialogStepButtonProps = Partial<Omit<AnchorButtonProps, "elementRef">> & {
     /** If defined, the button will be wrapped with a tooltip with the specified content. */
     // eslint-disable-next-line deprecation/deprecation
     tooltipContent?: TooltipProps["content"];
