@@ -30,11 +30,21 @@ import {
 import { Icon, IconName, IconSize } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
 
-// eslint-disable-next-line deprecation/deprecation
-export type ButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement> = IButtonProps<E>;
 /** @deprecated use ButtonProps */
-export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement>
-    extends ActionProps<E>,
+export type IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement> = ButtonProps<E>;
+
+/**
+ * Props interface for both the Button and AnchorButton components.
+ *
+ * Note that it is useful for the props for the two components to be assignable to each other, which we can allow
+ * by omitting the `elementRef` prop as `DialogStepButton` does. This is mostly for backwards compatibility, but it is
+ * a feature we like to preserve because the components are so similar and distinguishing between them in their event
+ * handlers is usually unnecessary. For this reason, we extend `ActionProps<HTMLElement>` rather than `ActionProps<E>`.
+ *
+ * @see {@link ActionProps}
+ */
+export interface ButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement>
+    extends ActionProps<HTMLElement>,
         // eslint-disable-next-line deprecation/deprecation
         IElementRefProps<E> {
     /**
