@@ -278,8 +278,15 @@ const FilmSelect: React.FC = () => (
 @### Item renderer
 
 `Select2`'s `itemRenderer` will be called for each item and receives the item and a props object containing data specific
-to rendering this item in this frame. The renderer is called for all items, so don't forget to respect
-`modifiers.matchesPredicate` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item, or face React's console wrath!
+to rendering this item in this frame.
+
+A few things to keep in mind:
+
+-   The renderer is called for all items, so don't forget to respect `modifiers.matchesPredicate` to hide items which
+    do not match the predicate.
+-   Make sure to forward the provided `ref` to the rendered element (usually via the `elementRef` prop on
+    `MenuItem` or `MenuItem2`) to ensure that scrolling to active items works correctly.
+-   Also, don't forget to define a `key` for each item, or face React's console wrath!
 
 ```tsx
 import { Classes } from "@blueprintjs/core";
