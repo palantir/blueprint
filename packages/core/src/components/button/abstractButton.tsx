@@ -34,7 +34,7 @@ import { Spinner } from "../spinner/spinner";
 export type ButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement> = IButtonProps<E>;
 /** @deprecated use ButtonProps */
 export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement>
-    extends ActionProps,
+    extends ActionProps<E>,
         // eslint-disable-next-line deprecation/deprecation
         IElementRefProps<E> {
     /**
@@ -156,6 +156,7 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
             disabled,
             onBlur: this.handleBlur,
             onClick: disabled ? undefined : this.props.onClick,
+            onFocus: disabled ? undefined : this.props.onFocus,
             onKeyDown: this.handleKeyDown,
             onKeyUp: this.handleKeyUp,
             tabIndex: disabled ? -1 : tabIndex,
