@@ -35,7 +35,7 @@ import * as Classes from "./classes";
 import { Popover2, Popover2Props } from "./popover2";
 
 // eslint-disable-next-line deprecation/deprecation
-export interface MenuItem2Props extends ActionProps<HTMLAnchorElement>, LinkProps, IElementRefProps<HTMLLIElement> {
+export interface MenuItem2Props extends ActionProps, LinkProps, IElementRefProps<HTMLLIElement> {
     /** Item text, required for usability. */
     text: React.ReactNode;
 
