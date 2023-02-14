@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { MenuItem, MenuItemProps } from "@blueprintjs/core";
+import { MenuItem2, MenuItem2Props } from "@blueprintjs/popover2";
 
 import type { ItemPredicate, ItemRenderer, ItemRendererProps } from "../common";
 
@@ -141,7 +141,7 @@ export const TOP_100_FILMS: Film[] = [
 export function getFilmItemProps(
     film: Film,
     { handleClick, handleFocus, modifiers, ref, query }: ItemRendererProps,
-): MenuItemProps & React.Attributes & React.HTMLAttributes<HTMLAnchorElement> {
+): MenuItem2Props & React.Attributes {
     return {
         active: modifiers.active,
         disabled: modifiers.disabled,
@@ -162,7 +162,7 @@ export const renderFilm: ItemRenderer<Film> = (film, props) => {
     if (!props.modifiers.matchesPredicate) {
         return null;
     }
-    return <MenuItem {...getFilmItemProps(film, props)} />;
+    return <MenuItem2 {...getFilmItemProps(film, props)} />;
 };
 
 /**
@@ -173,7 +173,7 @@ export const renderCreateFilmMenuItem = (
     active: boolean,
     handleClick: React.MouseEventHandler<HTMLElement>,
 ) => (
-    <MenuItem
+    <MenuItem2
         icon="add"
         text={`Create "${query}"`}
         roleStructure="listoption"
@@ -191,7 +191,7 @@ export const renderCreateFilmsMenuItem = (
     active: boolean,
     handleClick: React.MouseEventHandler<HTMLElement>,
 ) => (
-    <MenuItem
+    <MenuItem2
         icon="add"
         text={`Create ${printReadableList(query)}`}
         roleStructure="listoption"

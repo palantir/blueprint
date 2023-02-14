@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { MouseEventHandler, Ref } from "react";
+import * as React from "react";
 
 /** @deprecated use ItemModifiers */
 export type IItemModifiers = ItemModifiers;
@@ -36,18 +36,28 @@ export type IItemRendererProps = ItemRendererProps;
 /**
  * An object describing how to render a particular item.
  * An `itemRenderer` receives the item as its first argument, and this object as its second argument.
+ *
+ * Make sure to forward the provided `ref` to the rendered element (usually via the `elementRef` prop on `MenuItem`/`MenuItem2`)
+ * to ensure that scrolling to active items works correctly.
+ *
+ * @template T type of the DOM element to attach a ref to, usually the component's root container (defaults to MenuItem's HTMLLIElement)
+ * @template U type of the DOM element to attach a click handler to, usually the component's root container (defaults to MenuItem's HTMLAnchorElement)
  */
-export interface ItemRendererProps {
-    /** A ref that receives the native HTML element rendered by this item. */
-    ref: Ref<any>;
+export interface ItemRendererProps<T extends HTMLElement = HTMLLIElement, U extends HTMLElement = HTMLAnchorElement> {
+    /**
+     * A ref attached the native HTML element rendered by this item.
+     *
+     * N.B. this is optional to preserve backwards-compatibilty with @blueprintjs/select version < 4.9.0
+     */
+    ref?: React.Ref<T>;
 
     /** Click event handler to select this item. */
-    handleClick: MouseEventHandler<HTMLElement>;
+    handleClick: React.MouseEventHandler<U>;
 
     /**
      * Focus event handler to set this as the "active" item.
      *
-     * N.B. this is optional to preserve back-compat; it will become required in the next major version.
+     * N.B. this is optional to preserve backwards-compatibility with @blueprintjs/select version < 4.2.0
      */
     handleFocus?: () => void;
 
@@ -60,5 +70,9 @@ export interface ItemRendererProps {
     query: string;
 }
 
-/** Type alias for a function that receives an item and props and renders a JSX element (or `null`). */
+/**
+ * Type alias for a function that receives an item and props and renders a JSX element (or `null`).
+ *
+ * @template T list item data type
+ */
 export type ItemRenderer<T> = (item: T, itemProps: ItemRendererProps) => JSX.Element | null;

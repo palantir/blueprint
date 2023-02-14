@@ -29,7 +29,7 @@ import { Menu, MenuProps } from "./menu";
 
 export type MenuItemProps = IMenuItemProps;
 /** @deprecated use MenuItemProps */
-export interface IMenuItemProps extends ActionProps, LinkProps, IElementRefProps<HTMLLIElement> {
+export interface IMenuItemProps extends ActionProps<HTMLAnchorElement>, LinkProps, IElementRefProps<HTMLLIElement> {
     /** Item text, required for usability. */
     text: React.ReactNode;
 
