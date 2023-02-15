@@ -8,6 +8,8 @@
 
 // the icon class which will contain an SVG icon
 .#{$ns}-icon {
+  @include pt-icon-colors();
+
   // ensure icons sit inline with text & isolate svg from surrounding elements
   // (vertical alignment in flow is usually off due to svg - not an issue with flex.)
   display: inline-block;
