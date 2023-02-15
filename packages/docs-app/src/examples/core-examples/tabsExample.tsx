@@ -18,12 +18,15 @@ import * as React from "react";
 
 import { Alignment, Classes, H3, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 
 export interface ITabsExampleState {
     activePanelOnly: boolean;
     animate: boolean;
     navbarTabId: TabId;
     vertical: boolean;
+    icon: boolean;
+    tag: boolean;
 }
 
 export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleState> {
@@ -32,6 +35,8 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
         animate: true,
         navbarTabId: "Home",
         vertical: false,
+        icon: false,
+        tag: false,
     };
 
     private toggleActiveOnly = handleBooleanChange(activePanelOnly => this.setState({ activePanelOnly }));
@@ -39,6 +44,10 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
     private toggleAnimate = handleBooleanChange(animate => this.setState({ animate }));
 
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
+
+    private toggleIcon = handleBooleanChange(icon => this.setState({ icon }));
+
+    private toggleTag = handleBooleanChange(tag => this.setState({ tag }));
 
     public render() {
         const options = (
@@ -51,6 +60,8 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
                     label="Render active tab panel only"
                     onChange={this.toggleActiveOnly}
                 />
+                <Switch checked={this.state.icon} label="Icon" onChange={this.toggleIcon} />
+                <Switch checked={this.state.tag} label="Tag" onChange={this.toggleTag} />
             </>
         );
 
@@ -71,9 +82,9 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
                             onChange={this.handleNavbarTabChange}
                             selectedTabId={this.state.navbarTabId}
                         >
-                            <Tab id="Home" title="Home" />
-                            <Tab id="Files" title="Files" />
-                            <Tab id="Builds" title="Builds" />
+                            <Tab id="Home" title="Home" icon={this.state.icon ? IconNames.HOME : undefined} />
+                            <Tab id="Files" title="Files" icon={this.state.icon ? IconNames.FOLDER_OPEN : undefined} tagProps={this.state.tag ? { children: "10" } : undefined} />
+                            <Tab id="Builds" title="Builds" icon={this.state.icon ? IconNames.BUILD : undefined} tagProps={this.state.tag ? { children: "34" } : undefined} />
                         </Tabs>
                     </Navbar.Group>
                 </Navbar>

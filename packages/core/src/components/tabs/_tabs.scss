@@ -162,6 +162,14 @@ $tab-indicator-width: 3px !default;
   }
 }
 
+.#{$ns}-tab-icon {
+  margin-right: 7px;
+}
+
+.#{$ns}-tab-tag {
+  margin-left: 7px;
+}
+
 .#{$ns}-tab-indicator-wrapper {
   left: 0;
   pointer-events: none;
