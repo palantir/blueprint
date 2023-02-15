@@ -260,8 +260,9 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
         const target = React.createElement(
             tagName,
             {
-                role: targetRole,
-                tabIndex: 0,
+                // if hasSubmenu, must apply correct role and tabIndex to the outer Popover2 target <span> instead of this target element
+                role: hasSubmenu ? "none" : targetRole,
+                tabIndex: hasSubmenu ? -1 : 0,
                 ...removeNonHTMLProps(htmlProps),
                 ...(disabled ? DISABLED_PROPS : {}),
                 className: anchorClasses,
@@ -283,7 +284,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
         const liClasses = classNames({ [CoreClasses.MENU_SUBMENU]: hasSubmenu });
         return (
             <li className={liClasses} ref={elementRef} role={liRole} aria-selected={ariaSelected}>
-                {this.maybeRenderPopover(target, children)}
+                {this.maybeRenderPopover(target, { role: targetRole, tabIndex: 0 }, children)}
             </li>
         );
     }
@@ -301,7 +302,11 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
         );
     }
 
-    private maybeRenderPopover(target: JSX.Element, children?: React.ReactNode) {
+    private maybeRenderPopover(
+        target: JSX.Element,
+        popoverTargetProps: Popover2Props["targetProps"],
+        children?: React.ReactNode,
+    ) {
         if (children == null) {
             return target;
         }
@@ -315,6 +320,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
                 hoverCloseDelay={0}
                 interactionKind="hover"
                 modifiers={SUBMENU_POPOVER_MODIFIERS}
+                targetProps={popoverTargetProps}
                 placement="right-start"
                 usePortal={false}
                 {...popoverProps}

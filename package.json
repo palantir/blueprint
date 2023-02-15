@@ -45,7 +45,7 @@
         "@types/react-dom": "~16.9.10",
         "@types/react-transition-group": "~4.4.5",
         "@types/sinon": "~10.0.13",
-        "@types/yargs": "~17.0.13",
+        "@types/yargs": "~17.0.22",
         "chai": "^4.3.7",
         "cross-env": "^7.0.3",
         "dedent": "^0.7.0",

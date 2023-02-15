@@ -41,7 +41,7 @@ required `text` prop for `MenuItem` content.
 
 @reactExample MenuItemExample
 
-@interface IMenuItemProps
+@interface MenuItemProps
 
 @## Menu divider
 

@@ -22,7 +22,12 @@ import memoize from "lodash/memoize";
  */
 export const getCurrentTimezone: () => string = memoize(guessTimezone);
 
+/**
+ * Unsupported in IE, which newer Blueprint components do not support.
+ * In the unlikely case that the browser API returns undefined, we default to UTC.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/resolvedOptions
+ */
 function guessTimezone(): string {
-    // N.B. getting time zone from the Intl api is not supported in IE (it returns undefined)
-    return Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
+    return Intl.DateTimeFormat().resolvedOptions().timeZone ?? "Etc/UTC";
 }

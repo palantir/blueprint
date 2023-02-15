@@ -40,8 +40,9 @@ import { Popover2, Popover2ClickTargetHandlers, Popover2TargetProps } from "@blu
 import * as Classes from "../../common/classes";
 import { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import { isDateValid, isDayInRange } from "../../common/dateUtils";
+import * as Errors from "../../common/errors";
 import { getCurrentTimezone } from "../../common/getTimezone";
-import { getTimezoneShortName } from "../../common/timezoneNameUtils";
+import { getTimezoneShortName, isValidTimezone } from "../../common/timezoneNameUtils";
 import {
     convertLocalDateToTimezoneTime,
     getDateObjectFromIsoString,
@@ -214,7 +215,7 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
     // ------------------------------------------------------------------------
 
     const [isOpen, setIsOpen] = React.useState(false);
-    const [timezoneValue, setTimezoneValue] = React.useState(defaultTimezone ?? getCurrentTimezone());
+    const [timezoneValue, setTimezoneValue] = React.useState(getInitialTimezoneValue(props));
     const valueFromProps = React.useMemo(
         () => getDateObjectFromIsoString(value, timezoneValue),
         [timezoneValue, value],
@@ -640,6 +641,19 @@ DateInput2.defaultProps = {
     outOfRangeMessage: "Out of range",
     reverseMonthAndYearMenus: false,
 };
+
+function getInitialTimezoneValue({ defaultTimezone }: DateInput2Props) {
+    if (defaultTimezone === undefined) {
+        return getCurrentTimezone();
+    } else {
+        if (isValidTimezone(defaultTimezone)) {
+            return defaultTimezone;
+        } else {
+            console.error(Errors.DATEINPUT_INVALID_DEFAULT_TIMEZONE);
+            return "Etc/UTC";
+        }
+    }
+}
 
 function getRelatedTargetWithFallback(e: React.FocusEvent<HTMLElement>) {
     return (e.relatedTarget ?? Utils.getActiveElement(e.currentTarget)) as HTMLElement;
