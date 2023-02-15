@@ -51,6 +51,7 @@ Styleguide select
   .#{$ns}-icon {
     @extend %pt-select-arrow;
     @include pt-icon-colors();
+    @include pt-icon-colors-hover();
   }
 
   &.#{$ns}-minimal select {
