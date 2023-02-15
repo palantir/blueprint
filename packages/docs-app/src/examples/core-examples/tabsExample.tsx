@@ -70,7 +70,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
                 <Navbar>
                     <Navbar.Group>
                         <Navbar.Heading>
-                            Current page: <strong>{this.state.navbarTabId}</strong>
+                            Page: <strong>{this.state.navbarTabId}</strong>
                         </Navbar.Heading>
                     </Navbar.Group>
                     <Navbar.Group align={Alignment.RIGHT}>
@@ -83,7 +83,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
                             selectedTabId={this.state.navbarTabId}
                         >
                             <Tab id="Home" title="Home" icon={this.state.icon ? IconNames.HOME : undefined} />
-                            <Tab id="Files" title="Files" icon={this.state.icon ? IconNames.FOLDER_OPEN : undefined} tagProps={this.state.tag ? { children: "10" } : undefined} />
+                            <Tab id="Files" title="Files" icon={this.state.icon ? IconNames.FOLDER_OPEN : undefined} />
                             <Tab id="Builds" title="Builds" icon={this.state.icon ? IconNames.BUILD : undefined} tagProps={this.state.tag ? { children: "34" } : undefined} />
                         </Tabs>
                     </Navbar.Group>
@@ -97,7 +97,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
                     vertical={this.state.vertical}
                 >
                     <Tab id="rx" title="React" panel={<ReactPanel />} />
-                    <Tab id="ng" title="Angular" panel={<AngularPanel />} />
+                    <Tab id="ng" title="Angular" panel={<AngularPanel />} tagProps={this.state.tag ? { children: "10" } : undefined} />
                     <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
                     <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
                     <Tabs.Expander />

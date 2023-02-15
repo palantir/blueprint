@@ -45,6 +45,8 @@ export class TabTitle extends AbstractPureComponent2<TabTitleProps> {
 
     public render() {
         const { className, children, disabled, id, parentId, selected, title, icon, tagProps, ...htmlProps } = this.props;
+        const intent = selected ? Intent.PRIMARY : Intent.NONE;
+
         return (
             <div
                 {...removeNonHTMLProps(htmlProps)}
@@ -59,10 +61,10 @@ export class TabTitle extends AbstractPureComponent2<TabTitleProps> {
                 role="tab"
                 tabIndex={disabled ? undefined : selected ? 0 : -1}
             >
-                {icon != null && <Icon icon={icon} intent={selected ? Intent.PRIMARY : Intent.NONE} className={Classes.TAB_ICON} />}
+                {icon != null && <Icon icon={icon} intent={intent} className={Classes.TAB_ICON} />}
                 {title}
                 {children}
-                {tagProps != null && <Tag minimal={true} intent={tagProps.intent != undefined ? tagProps.intent : selected ? Intent.PRIMARY : Intent.NONE} className={classNames(Classes.TAB_TAG, tagProps.className)} {...tagProps} />}
+                {tagProps != null && <Tag minimal={true} intent={tagProps.intent != undefined ? tagProps.intent : intent} className={Classes.TAB_TAG} {...tagProps} />}
             </div>
         );
     }
