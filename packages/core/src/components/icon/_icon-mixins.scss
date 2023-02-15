@@ -23,13 +23,17 @@
 @mixin pt-icon-colors() {
   color: $pt-icon-color;
 
+  .#{$ns}-dark & {
+    color: $pt-dark-icon-color;
+  }
+}
+
+@mixin pt-icon-colors-hover() {
   &:hover {
     color: $pt-icon-color-hover;
   }
 
   .#{$ns}-dark & {
-    color: $pt-dark-icon-color;
-
     &:hover {
       color: $pt-dark-icon-color-hover;
     }
