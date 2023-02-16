@@ -42,4 +42,9 @@ export function hideContextMenu(): void;
 ```
 
 These are useful in some cases when working with imperative code that does not follow typical React paradigms.
-Note that these functions _rely on global state stored in Blueprint library code_, so they should be used with caution.
+Note that these functions come with come caveats, and thus they should be used with caution:
+
+-   they rely on global state stored in Blueprint library code.
+-   they create a new React DOM tree via `ReactDOM.render()`, which means they do not preserve any existing React
+    context from the calling code.
+-   they do _not_ automatically detect dark theme, so you must manualy set the `{ isDarkTheme: true }` property

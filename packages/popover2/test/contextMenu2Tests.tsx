@@ -18,6 +18,7 @@ import { assert } from "chai";
 import classNames from "classnames";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
 
 import { Classes as CoreClasses, Drawer, Menu, MenuItem } from "@blueprintjs/core";
@@ -35,9 +36,9 @@ import {
 
 const MENU = (
     <Menu>
-        <MenuItem icon="align-left" text="Align Left" />,
-        <MenuItem icon="align-center" text="Align Center" />,
-        <MenuItem icon="align-right" text="Align Right" />,
+        <MenuItem icon="align-left" text="Align Left" />
+        <MenuItem icon="align-center" text="Align Center" />
+        <MenuItem icon="align-right" text="Align Right" />
     </Menu>
 );
 const TARGET_CLASSNAME = "test-target";
@@ -56,7 +57,8 @@ describe("ContextMenu2", () => {
         document.body.appendChild(containerElement);
     });
     afterEach(() => {
-        containerElement?.remove();
+        ReactDOM.unmountComponentAtNode(containerElement!);
+        containerElement!.remove();
     });
 
     describe("basic usage", () => {
@@ -191,6 +193,7 @@ describe("ContextMenu2", () => {
                 ctxMenuPopover.hasClass(CoreClasses.DARK),
                 "ContextMenu2 popover should be open WITH dark theme applied",
             );
+            closeCtxMenu(wrapper);
         });
 
         it("detects theme change (dark -> light)", () => {
@@ -209,6 +212,7 @@ describe("ContextMenu2", () => {
                 ctxMenuPopover.hasClass(CoreClasses.DARK),
                 "ContextMenu2 popover should be open WITHOUT dark theme applied",
             );
+            closeCtxMenu(wrapper);
         });
     });
 
@@ -488,14 +492,6 @@ describe("ContextMenu2", () => {
             }
             target.hostNodes().closest(`.${Classes.POPOVER2_TARGET}`).simulate("mouseenter");
         }
-
-        function closeCtxMenu(wrapper: ReactWrapper) {
-            const backdrop = wrapper.find(`.${Classes.CONTEXT_MENU2_BACKDROP}`);
-            if (backdrop.exists()) {
-                backdrop.simulate("click");
-                wrapper.update();
-            }
-        }
     });
 
     function openCtxMenu(ctxMenu: ReactWrapper, targetClassName = TARGET_CLASSNAME) {
@@ -508,6 +504,14 @@ describe("ContextMenu2", () => {
             .hostNodes()
             .simulate("contextmenu", { defaultPrevented: false, clientX: clientLeft + 10, clientY: clientTop + 10 })
             .update();
+    }
+
+    function closeCtxMenu(wrapper: ReactWrapper) {
+        const backdrop = wrapper.find(`.${Classes.CONTEXT_MENU2_BACKDROP}`);
+        if (backdrop.exists()) {
+            backdrop.simulate("mousedown");
+            wrapper.update();
+        }
     }
 
     function renderClickedInfo(targetOffset: ContextMenu2ContentProps["targetOffset"]) {
