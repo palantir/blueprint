@@ -168,7 +168,7 @@ export class Tag extends AbstractPureComponent2<TagProps> {
             <button
                 aria-label="Remove Tag"
                 type="button"
-                className={Classes.TAG_REMOVE}
+                className={classNames(Classes.TAG_REMOVE, Classes.INTERACTIVE)}
                 onClick={this.onRemoveClick}
                 tabIndex={tabIndex}
             >
