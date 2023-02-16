@@ -15,11 +15,11 @@
 
 import "@blueprintjs/test-commons/bootstrap";
 
-// import "./breadcrumbs2Tests";
+import "./breadcrumbs2Tests";
 import "./contextMenu2Tests";
 import "./contextMenu2SingletonTests";
-// import "./menuItem2Tests";
-// import "./popover2Tests";
-// import "./resizeSensor2Tests";
-// import "./tooltip2Tests";
-// import "./utilsTests";
+import "./menuItem2Tests";
+import "./popover2Tests";
+import "./resizeSensor2Tests";
+import "./tooltip2Tests";
+import "./utilsTests";
