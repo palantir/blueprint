@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/table-dev-app",
-    "version": "4.7.19",
+    "version": "4.7.20",
     "description": "Dev application for @blueprintjs/table",
     "private": true,
     "scripts": {
@@ -16,9 +16,9 @@
         "verify": "npm-run-all -p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.16.2",
-        "@blueprintjs/popover2": "^1.13.2",
-        "@blueprintjs/table": "^4.7.19",
+        "@blueprintjs/core": "^4.16.3",
+        "@blueprintjs/popover2": "^1.13.3",
+        "@blueprintjs/table": "^4.7.20",
         "classnames": "^2.3.1",
         "dom4": "^2.1.5",
         "lodash": "^4.17.21",
