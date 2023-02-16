@@ -30,6 +30,10 @@ const MENU = (
         <MenuItem icon="align-right" text="Align Right" />
     </Menu>
 );
+const MENU_TARGET_OFFSET = {
+    left: 10,
+    top: 10,
+};
 
 function assertMenuState(isOpen = true) {
     const ctxMenuElement = document.querySelectorAll<HTMLElement>(`.${TEST_MENU_CLASS_NAME}`);
@@ -51,31 +55,38 @@ function dismissContextMenu() {
 }
 
 describe("showContextMenu() + hideContextMenu()", () => {
-    let dismissTarget: HTMLDivElement | undefined;
+    let containerElement: HTMLElement | undefined;
 
     before(() => {
-        dismissTarget = document.createElement("div");
-        dismissTarget.setAttribute("style", "width: 10px; height: 10px;");
-        document.body.appendChild(dismissTarget);
+        // create an element on the page with non-zero dimensions so that we can trigger a context menu above it
+        containerElement = document.createElement("div");
+        containerElement.setAttribute("style", "width: 100px; height: 100px;");
+        document.body.appendChild(containerElement);
     });
 
     beforeEach(() => {
         assertMenuState(false);
     });
 
+    after(() => {
+        containerElement?.remove();
+    });
+
     it("shows a menu with the imperative API", done => {
         showContextMenu({
             content: MENU,
             onOpened: () => {
-                assertMenuState(true);
-                // important: close menu for the next test
-                dismissContextMenu();
-                setTimeout(done);
+                // defer assertions until the next animation frame; otherwise, this might throw an error
+                // inside the <TransitionGroup>, which may throw off test debugging
+                requestAnimationFrame(() => {
+                    assertMenuState(true);
+                    // important: close menu for the next test
+                    dismissContextMenu();
+                    done();
+                });
             },
-            targetOffset: {
-                left: 10,
-                top: 10,
-            },
+            targetOffset: MENU_TARGET_OFFSET,
+            transitionDuration: 0,
         });
     });
 
@@ -83,16 +94,15 @@ describe("showContextMenu() + hideContextMenu()", () => {
         showContextMenu({
             content: MENU,
             onOpened: () => {
-                hideContextMenu();
-                setTimeout(() => {
+                // defer assertions until the next animation frame
+                requestAnimationFrame(() => {
+                    hideContextMenu();
                     assertMenuState(false);
                     done();
                 });
             },
-            targetOffset: {
-                left: 10,
-                top: 10,
-            },
+            targetOffset: MENU_TARGET_OFFSET,
+            transitionDuration: 0,
         });
     });
 });

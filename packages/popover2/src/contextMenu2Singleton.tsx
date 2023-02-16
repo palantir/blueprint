@@ -47,8 +47,9 @@ export function showContextMenu(props: Omit<ContextMenu2PopoverProps, "isOpen">)
         contextMenuElement.classList.add(Classes.CONTEXT_MENU2);
         document.body.appendChild(contextMenuElement);
     } else {
-        // it's important to unmount previous components rendered by this function, otherwise React will detect no
-        // change in the props and therefore do nothing after the first call to this function renders a menu
+        // N.B. It's important to unmount previous instances of the ContextMenu2Popover rendered by this function.
+        // Otherwise, React will detect no change in props sent to the already-mounted component, and therefore
+        // do nothing after the first call to this function, leading to bugs like https://github.com/palantir/blueprint/issues/5949
         ReactDOM.unmountComponentAtNode(contextMenuElement);
     }
 
