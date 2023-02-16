@@ -84,7 +84,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
                         >
                             <Tab id="Home" title="Home" icon={this.state.icon ? IconNames.HOME : undefined} />
                             <Tab id="Files" title="Files" icon={this.state.icon ? IconNames.FOLDER_OPEN : undefined} />
-                            <Tab id="Builds" title="Builds" icon={this.state.icon ? IconNames.BUILD : undefined} tagProps={this.state.tag ? { children: "34" } : undefined} />
+                            <Tab id="Builds" title="Builds" icon={this.state.icon ? IconNames.BUILD : undefined} tagProps={this.state.tag ? { children: "4" } : undefined} />
                         </Tabs>
                     </Navbar.Group>
                 </Navbar>
