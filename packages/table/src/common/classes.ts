@@ -95,6 +95,7 @@ export const TABLE_TH_MENU = `${NS}-table-th-menu`;
 export const TABLE_TH_MENU_CONTAINER = `${NS}-table-th-menu-container`;
 export const TABLE_TH_MENU_CONTAINER_BACKGROUND = `${NS}-table-th-menu-container-background`;
 export const TABLE_TH_MENU_OPEN = `${NS}-table-th-menu-open`;
+export const TABLE_TH_MENU_SELECT_CELLS = `${NS}-table-th-menu-select-cells`;
 export const TABLE_THEAD = `${NS}-table-thead`;
 export const TABLE_TOP_CONTAINER = `${NS}-table-top-container`;
 export const TABLE_TRUNCATED_CELL = `${NS}-table-truncated-cell`;
