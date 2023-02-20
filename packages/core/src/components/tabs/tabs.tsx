@@ -93,6 +93,10 @@ export interface ITabsProps extends Props {
      * A callback function that is invoked when a tab in the tab list is clicked.
      */
     onChange?(newTabId: TabId, prevTabId: TabId | undefined, event: React.MouseEvent<HTMLElement>): void;
+
+    height?: number;
+
+    fill?: boolean;
 }
 
 export interface ITabsState {
@@ -150,7 +154,7 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
             </div>
         ) : null;
 
-        const classes = classNames(Classes.TABS, { [Classes.VERTICAL]: this.props.vertical }, this.props.className);
+        const classes = classNames(Classes.TABS, { [Classes.VERTICAL]: this.props.vertical, [Classes.FILL]: this.props.fill }, this.props.className);
         const tabListClasses = classNames(Classes.TAB_LIST, {
             [Classes.LARGE]: this.props.large,
         });
@@ -285,9 +289,8 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
 
         let indicatorWrapperStyle: React.CSSProperties = { display: "none" };
         if (selectedTabElement != null) {
-            const { clientHeight, clientWidth, offsetLeft, offsetTop } = selectedTabElement;
+            const { clientWidth, offsetLeft, offsetTop } = selectedTabElement;
             indicatorWrapperStyle = {
-                height: clientHeight,
                 transform: `translateX(${Math.floor(offsetLeft)}px) translateY(${Math.floor(offsetTop)}px)`,
                 width: clientWidth,
             };
@@ -327,6 +330,7 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
                     parentId={this.props.id}
                     onClick={this.handleTabClick}
                     selected={id === this.state.selectedTabId}
+                    height={this.props.height}
                 />
             );
         }

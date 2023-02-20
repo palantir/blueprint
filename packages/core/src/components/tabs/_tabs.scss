@@ -29,6 +29,14 @@ $dark-tab-color-selected: $pt-dark-link-color !default;
 
 $tab-indicator-width: 3px !default;
 
+.#{$ns}-tabs.#{$ns}-fill {
+  height: 100%;
+
+  .#{$ns}-tab-list {
+    height: 100%;
+  }
+}
+
 .#{$ns}-tabs.#{$ns}-vertical {
   display: flex;
 
@@ -103,6 +111,10 @@ $tab-indicator-width: 3px !default;
   position: relative;
   vertical-align: top;
 
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+
   // support for links in tab titles #363
   a {
     color: inherit;
@@ -167,6 +179,7 @@ $tab-indicator-width: 3px !default;
   pointer-events: none;
   position: absolute;
   top: 0;
+  height: 100%;
   transform: translateX(0), translateY(0);
   transition: height, transform, width;
   transition-duration: $pt-transition-duration * 2;
