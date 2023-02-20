@@ -102,18 +102,17 @@ $tab-indicator-width: 3px !default;
 
 .#{$ns}-tab {
   @include overflow-ellipsis();
+  align-items: center;
+  align-self: stretch;
   color: $pt-text-color;
   cursor: pointer;
+  display: flex;
   flex: 0 0 auto;
   font-size: $pt-font-size;
   line-height: $pt-button-height;
   max-width: 100%;
   position: relative;
   vertical-align: top;
-
-  display: flex;
-  align-items: center;
-  align-self: stretch;
 
   // support for links in tab titles #363
   a {
@@ -175,11 +174,11 @@ $tab-indicator-width: 3px !default;
 }
 
 .#{$ns}-tab-indicator-wrapper {
+  height: 100%;
   left: 0;
   pointer-events: none;
   position: absolute;
   top: 0;
-  height: 100%;
   transform: translateX(0), translateY(0);
   transition: height, transform, width;
   transition-duration: $pt-transition-duration * 2;
