@@ -3967,5 +3967,12 @@
         "tags": "intelligence, intel, observe, watch, capture, humint",
         "group": "miscellaneous",
         "codepoint": 62263
+    },
+    {
+    "displayName": "Axle",
+    "iconName": "axle",
+    "tags": "axle, shaft, rail, train, wheels",
+    "group": "interface",
+    "codepoint": 62264
     }
 ]
