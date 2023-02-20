@@ -60,7 +60,7 @@
         "@blueprintjs/karma-build-scripts": "^4.0.11",
         "@blueprintjs/node-build-scripts": "^6.0.7",
         "@blueprintjs/test-commons": "^1.1.9",
-        "@types/lodash": "~4.14.188",
+        "@types/lodash": "~4.14.191",
         "enzyme": "^3.11.0",
         "karma": "^6.4.1",
         "mocha": "^10.1.0",
