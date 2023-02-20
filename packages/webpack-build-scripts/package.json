@@ -15,7 +15,7 @@
         "cssnano": "^5.1.14",
         "fork-ts-checker-notifier-webpack-plugin": "^6.0.0",
         "fork-ts-checker-webpack-plugin": "^7.3.0",
-        "mini-css-extract-plugin": "^2.6.1",
+        "mini-css-extract-plugin": "^2.7.2",
         "postcss": "^8.4.21",
         "postcss-discard-comments": "^5.1.2",
         "postcss-loader": "^7.0.2",
