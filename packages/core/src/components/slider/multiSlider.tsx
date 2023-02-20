@@ -65,14 +65,14 @@ export interface ISliderBaseProps extends Props, IntentProps {
     labelPrecision?: number;
 
     /**
-     * Maximum value of the slider.
+     * Maximum value of the slider. Value must be a finite number.
      *
      * @default 10
      */
     max?: number;
 
     /**
-     * Minimum value of the slider.
+     * Minimum value of the slider. Value must be a finite number.
      *
      * @default 0
      */
