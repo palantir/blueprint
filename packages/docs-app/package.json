@@ -50,7 +50,7 @@
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^6.0.7",
         "@blueprintjs/webpack-build-scripts": "^4.2.1",
-        "@types/chroma-js": "~2.1.4",
+        "@types/chroma-js": "~2.4.0",
         "@types/downloadjs": "~1.4.3",
         "@types/lodash": "~4.14.191",
         "copy-webpack-plugin": "^11.0.0",
