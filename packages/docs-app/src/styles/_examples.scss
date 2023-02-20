@@ -482,10 +482,6 @@
   margin-top: $pt-grid-size * 0.5;
 }
 
-.docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
-  line-height: $pt-navbar-height;
-}
-
 #{example("Tooltip2")},
 #{example("Tooltip")} {
   .docs-example {

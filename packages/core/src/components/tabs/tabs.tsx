@@ -90,13 +90,16 @@ export interface ITabsProps extends Props {
     vertical?: boolean;
 
     /**
+     * Fill the height of its parent. Does not apply to vertical tabs.
+     *
+     * @default false
+     */
+    fill?: boolean;
+
+    /**
      * A callback function that is invoked when a tab in the tab list is clicked.
      */
     onChange?(newTabId: TabId, prevTabId: TabId | undefined, event: React.MouseEvent<HTMLElement>): void;
-
-    height?: number;
-
-    fill?: boolean;
 }
 
 export interface ITabsState {
@@ -115,6 +118,7 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
         large: false,
         renderActiveTabPanelOnly: false,
         vertical: false,
+        fill: false,
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Tabs`;
@@ -330,7 +334,6 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
                     parentId={this.props.id}
                     onClick={this.handleTabClick}
                     selected={id === this.state.selectedTabId}
-                    height={this.props.height}
                 />
             );
         }

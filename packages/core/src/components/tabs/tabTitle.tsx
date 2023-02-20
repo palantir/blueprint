@@ -36,10 +36,6 @@ export interface ITabTitleProps extends TabProps {
 
     /** Whether the tab is currently selected. */
     selected: boolean;
-
-    height?: number;
-
-    fill?: boolean;
 }
 
 export class TabTitle extends AbstractPureComponent2<TabTitleProps> {

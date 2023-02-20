@@ -16,16 +16,14 @@
 
 import * as React from "react";
 
-import { Alignment, Classes, FormGroup, H3, H5, InputGroup, Navbar, NumericInput, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
+import { Alignment, Classes, H3, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
-import { parseInt } from "lodash";
 
 export interface ITabsExampleState {
     activePanelOnly: boolean;
     animate: boolean;
     navbarTabId: TabId;
     vertical: boolean;
-    tabsHeight: number;
     fill: boolean;
 }
 
@@ -35,8 +33,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
         animate: true,
         navbarTabId: "Home",
         vertical: false,
-        tabsHeight: 30,
-        fill: false,
+        fill: true,
     };
 
     private toggleActiveOnly = handleBooleanChange(activePanelOnly => this.setState({ activePanelOnly }));
@@ -58,17 +55,12 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
                     label="Render active tab panel only"
                     onChange={this.toggleActiveOnly}
                 />
-
-                <Switch checked={this.state.fill} label="Fill height" onChange={this.toggleFill} />
-
-                <FormGroup label="Height">
-                    <NumericInput disabled={this.state.fill} min={30} max={60} defaultValue={this.state.tabsHeight.toString()} onChange={this.handleTabsHeightChange} />
-                </FormGroup>
+                <Switch checked={this.state.fill} label="Fill" onChange={this.toggleFill} />
             </>
         );
 
         return (
-            <Example className="docs-tabs-example" options={options} {...this.props}>
+            <Example options={options} {...this.props}>
                 <Navbar>
                     <Navbar.Group>
                         <Navbar.Heading>
@@ -83,7 +75,6 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
                             large={true}
                             onChange={this.handleNavbarTabChange}
                             selectedTabId={this.state.navbarTabId}
-                            height={this.state.tabsHeight}
                             fill={this.state.fill}
                         >
                             <Tab id="Home" title="Home" />
@@ -99,8 +90,6 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
                     key={this.state.vertical ? "vertical" : "horizontal"}
                     renderActiveTabPanelOnly={this.state.activePanelOnly}
                     vertical={this.state.vertical}
-                    height={100}
-                    fill={this.state.fill}
                 >
                     <Tab id="rx" title="React" panel={<ReactPanel />} />
                     <Tab id="ng" title="Angular" panel={<AngularPanel />} />
@@ -112,15 +101,6 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
             </Example>
         );
     }
-
-
-    private handleTabsHeightChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-        const valueString = (event.target as HTMLInputElement).value;
-        const value = parseInt(valueString);
-        console.log(value)
-
-        this.setState({ tabsHeight: value }
-    )};
 
     private handleNavbarTabChange = (navbarTabId: TabId) => this.setState({ navbarTabId });
 }
