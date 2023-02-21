@@ -31,9 +31,9 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
     public state: ITabsExampleState = {
         activePanelOnly: false,
         animate: true,
+        fill: true,
         navbarTabId: "Home",
         vertical: false,
-        fill: true,
     };
 
     private toggleActiveOnly = handleBooleanChange(activePanelOnly => this.setState({ activePanelOnly }));
