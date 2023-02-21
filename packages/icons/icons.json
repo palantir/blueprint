@@ -3972,7 +3972,7 @@
     "displayName": "Axle",
     "iconName": "axle",
     "tags": "axle, shaft, rail, train, wheels",
-    "group": "interface",
+    "group": "miscellaneous",
     "codepoint": 62264
     }
 ]
