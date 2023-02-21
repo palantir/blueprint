@@ -65,14 +65,14 @@ export interface ISliderBaseProps extends Props, IntentProps {
     labelPrecision?: number;
 
     /**
-     * Maximum value of the slider.
+     * Maximum value of the slider. Value must be a finite number.
      *
      * @default 10
      */
     max?: number;
 
     /**
-     * Minimum value of the slider.
+     * Minimum value of the slider. Value must be a finite number.
      *
      * @default 0
      */
@@ -227,6 +227,12 @@ export class MultiSlider extends AbstractPureComponent2<MultiSliderProps, ISlide
         }
         if (props.labelStepSize !== undefined && props.labelStepSize! <= 0) {
             throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
+        }
+        if (props.min !== undefined && !isFinite(props.min)) {
+            throw new Error(Errors.SLIDER_MIN);
+        }
+        if (props.max !== undefined && !isFinite(props.max)) {
+            throw new Error(Errors.SLIDER_MAX);
         }
 
         let anyInvalidChildren = false;
