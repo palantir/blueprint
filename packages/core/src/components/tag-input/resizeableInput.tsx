@@ -37,6 +37,7 @@ export const ResizeableInput = forwardRef<Ref, ResizeableInputProps>(function Re
                     maxWidth: "100%",
                     minWidth: "80px",
                     position: "absolute",
+                    whiteSpace: "nowrap",
                     zIndex: -100,
                 }}
             >
