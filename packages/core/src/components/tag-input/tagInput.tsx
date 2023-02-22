@@ -22,7 +22,7 @@ import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, MaybeElement, Props } 
 import { getActiveElement } from "../../common/utils";
 import { Icon, IconName, IconSize } from "../icon/icon";
 import { Tag, TagProps } from "../tag/tag";
-import { ResizeableInput } from "./resizeableInput";
+import { ResizableInput } from "./resizableInput";
 
 /**
  * The method in which a `TagInput` value was added.
@@ -263,7 +263,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
                 <div className={Classes.TAG_INPUT_VALUES}>
                     {values.map(this.maybeRenderTag)}
                     {this.props.children}
-                    <ResizeableInput
+                    <ResizableInput
                         value={this.state.inputValue}
                         {...inputProps}
                         onFocus={this.handleInputFocus}

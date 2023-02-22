@@ -6,10 +6,10 @@ import React, { forwardRef, useEffect, useRef, useState } from "react";
 
 import { HTMLInputProps } from "../../common";
 
-type ResizeableInputProps = HTMLInputProps;
+type ResizableInputProps = HTMLInputProps;
 export type Ref = HTMLInputElement;
 
-export const ResizeableInput = forwardRef<Ref, ResizeableInputProps>(function ResizeableInput(props, ref) {
+export const ResizableInput = forwardRef<Ref, ResizableInputProps>(function ResizableInput(props, ref) {
     const [content, setContent] = useState("");
     const [width, setWidth] = useState(0);
     const span = useRef<HTMLSpanElement>(null);
