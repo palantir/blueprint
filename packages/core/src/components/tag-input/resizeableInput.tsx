@@ -41,7 +41,8 @@ export const ResizeableInput = forwardRef<Ref, ResizeableInputProps>(function Re
                     zIndex: -100,
                 }}
             >
-                {content}
+                {/* Need to replace spaces with the html character for them to be preserved */}
+                {content.replace(/ /g, "\u00a0")}
             </span>
             <input type="text" style={{ width }} autoFocus={true} onChange={changeHandler} ref={ref} {...otherProps} />
         </span>
