@@ -15,7 +15,7 @@ export const ResizableInput = forwardRef<Ref, ResizableInputProps>(function Resi
     const span = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
-        if (span.current) {
+        if (span.current != null) {
             setWidth(span.current.offsetWidth);
         }
     }, [content]);
