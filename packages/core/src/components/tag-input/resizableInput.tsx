@@ -22,7 +22,7 @@ export const ResizableInput = forwardRef<Ref, ResizableInputProps>(function Resi
 
     const { onChange, ...otherProps } = props;
 
-    const changeHandler: React.ChangeEventHandler<HTMLInputElement> = evt => {
+    const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = evt => {
         onChange?.(evt);
         setContent(evt?.target?.value ?? "");
     };
@@ -33,7 +33,7 @@ export const ResizableInput = forwardRef<Ref, ResizableInputProps>(function Resi
                 {/* Need to replace spaces with the html character for them to be preserved */}
                 {content.replace(/ /g, "\u00a0")}
             </span>
-            <input {...otherProps} type="text" style={{ width }} onChange={changeHandler} ref={ref} />
+            <input {...otherProps} type="text" style={{ width }} onChange={handleInputChange} ref={ref} />
         </span>
     );
 });
