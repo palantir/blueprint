@@ -430,6 +430,40 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
     }
 
+    /**
+         * Scrolls the table to the target region in a fashion appropriate to the target region's
+         * cardinality:
+         *
+         * - CELLS: Scroll the top-left cell in the target region to the top-left corner of the viewport.
+         * - FULL_ROWS: Scroll the top-most row in the target region to the top of the viewport.
+         * - FULL_COLUMNS: Scroll the left-most column in the target region to the left side of the viewport.
+         * - FULL_TABLE: Scroll the top-left cell in the table to the top-left corner of the viewport.
+         *
+         * If there are active frozen rows and/or columns, the target region will be positioned in the
+         * top-left corner of the non-frozen area (unless the target region itself is in the frozen
+         * area).
+         *
+         * If the target region is close to the bottom-right corner of the table, this function will
+         * simply scroll the target region as close to the top-left as possible until the bottom-right
+         * corner is reached.
+         */
+    public scroll(xOffset: number, yOffset: number) {
+        const {viewportRect} = this.state;
+
+        if (viewportRect === undefined || this.grid === null || this.quadrantStackInstance === undefined) {
+            return;
+        }
+
+        const { left: currScrollLeft, top: currScrollTop } = viewportRect;
+
+        const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : currScrollLeft + xOffset;
+        const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : currScrollTop + yOffset;
+
+        // defer to the quadrant stack to keep all quadrant positions in sync
+        this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
+    }
+
+
     // React lifecycle
     // ===============
 
