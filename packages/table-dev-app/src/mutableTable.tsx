@@ -1,3 +1,7 @@
+/* !
+ * (c) Copyright 2022 Palantir Technologies Inc. All rights reserved.
+ */
+
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
@@ -18,6 +22,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { useRef } from "react";
 
 import {
     Button,
@@ -315,6 +320,90 @@ const DEFAULT_STATE: IMutableTableState = {
     showZebraStriping: false,
 };
 
+export const TableExample: React.FC = () => {
+    const renderCell = React.useCallback((_row: number, _col: number) => {
+        return <DroppableCell />;
+    }, []);
+
+    const refr = useRef(null);
+    const refr2 = useRef(null);
+    if (refr.current) {
+        refr.current.scrollToRegion();
+    }
+    const scrollDirection = React.useRef(undefined);
+    const requestRef = React.useRef(undefined);
+    const previousTimeRef = React.useRef(undefined);
+
+    const checkScrolling = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const top = refr2.current.getBoundingClientRect().top;
+        const bottom = refr2.current.getBoundingClientRect().bottom;
+        const scrollAbove = top + 0.3 * (bottom - top);
+        const scrollBelow = bottom - 0.3 * (bottom - top);
+        const pos = event.clientY;
+
+        if (pos < scrollAbove && pos > top) {
+            // console.log("up");
+            scrollDirection.current = "UP";
+            requestAnimationFrame(animate);
+        } else if (pos > scrollBelow && pos < bottom) {
+            // console.log("down");
+
+            scrollDirection.current = "Down";
+            requestAnimationFrame(animate);
+        } else {
+            cancelAnimationFrame(requestRef.current);
+        }
+    };
+
+    const animate = (time: number) => {
+        if (previousTimeRef.current !== undefined && refr.current) {
+            // console.log("time: " + time + " previous: " + previousTimeRef.current);
+            const deltaTime = time - previousTimeRef.current;
+            if (deltaTime > 100) {
+                if (scrollDirection.current === "UP") {
+                    refr.current.scroll(0, -10);
+                } else {
+                    refr.current.scroll(0, 10);
+                }
+                previousTimeRef.current += 100;
+            }
+            // Pass on a function to the setter of the state
+            // to make sure we always have the latest state
+            // setCount(prevCount => (prevCount + deltaTime * 0.01) % 100);
+        } else {
+            previousTimeRef.current = time;
+        }
+        requestRef.current = requestAnimationFrame(animate);
+    };
+
+    return (
+        <div
+            ref={refr2}
+            style={{
+                backgroundColor: "red",
+                display: "flex",
+                flexDirection: "row",
+                gap: 20,
+                height: 300,
+                width: "100%",
+            }}
+            onMouseOver={event => checkScrolling(event)}
+            onMouseLeave={() => cancelAnimationFrame(requestRef.current)}
+        >
+            <Table2 ref={refr} numRows={20}>
+                <Column cellRenderer={renderCell} />
+            </Table2>
+        </div>
+    );
+};
+
+function DroppableCell() {
+    return (
+        <Cell>
+            <span>{"Waiting for drag"}</span>
+        </Cell>
+    );
+}
 // eslint-disable-next-line @typescript-eslint/ban-types
 export class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new DenseGridMutableStore<any>();
@@ -334,6 +423,9 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.state = this.stateStore.getWithDefaults(DEFAULT_STATE);
     }
 
+    // Copied sandbox code
+    // ==================
+
     // React Lifecycle
     // ===============
 
@@ -349,7 +441,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                         branchClassName="layout-passthrough-fill"
                     >
                         <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
-                            <button onClick={() => this.tableInstance.scroll(0, 10)}>clickMe</button>
+                            <TableExample />
                             {this.renderTable()}
                         </div>
                     </SlowLayoutStack>
