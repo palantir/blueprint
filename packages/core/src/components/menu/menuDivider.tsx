@@ -32,7 +32,7 @@ export interface IMenuDividerProps extends Props {
     title?: React.ReactNode;
 
     /** Optional `id` prop for the header title. */
-    id?: string;
+    titleId?: string;
 }
 
 /**
@@ -44,7 +44,7 @@ export class MenuDivider extends React.Component<MenuDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MenuDivider`;
 
     public render() {
-        const { className, title, id } = this.props;
+        const { className, title, titleId } = this.props;
         if (title == null) {
             // simple divider
             return <li className={classNames(Classes.MENU_DIVIDER, className)} role="separator" />;
@@ -52,7 +52,7 @@ export class MenuDivider extends React.Component<MenuDividerProps> {
             // section header with title
             return (
                 <li className={classNames(Classes.MENU_HEADER, className)} role="separator">
-                    <H6 id={id}>{title}</H6>
+                    <H6 id={titleId}>{title}</H6>
                 </li>
             );
         }
