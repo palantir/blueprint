@@ -349,7 +349,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                         branchClassName="layout-passthrough-fill"
                     >
                         <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
-                            <button onClick={() => this.tableInstance.scroll(0,10)}>clickMe</button>
+                            <button onClick={() => this.tableInstance.scroll(0, 10)}>clickMe</button>
                             {this.renderTable()}
                         </div>
                     </SlowLayoutStack>

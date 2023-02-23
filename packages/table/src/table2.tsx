@@ -438,7 +438,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
      *
      */
     public scroll(xOffset: number, yOffset: number) {
-        const {viewportRect} = this.state;
+        const { viewportRect } = this.state;
 
         if (viewportRect === undefined || this.grid === null || this.quadrantStackInstance === undefined) {
             return;
@@ -452,7 +452,6 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         // defer to the quadrant stack to keep all quadrant positions in sync
         this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
     }
-
 
     // React lifecycle
     // ===============
