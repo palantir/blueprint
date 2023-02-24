@@ -31,7 +31,7 @@ npm install --save @blueprintjs/datetime
 Import the package stylesheet in Sass:
 
 ```scss
-@import "~@blueprintjs/datetime/lib/css/blueprint-datetime.css";
+@import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 ```
 
 ...or in plain HTML:

@@ -65,9 +65,9 @@ export type IntentProps = IIntentProps;
  * Interface for a clickable action, such as a button or menu item.
  * These props can be spready directly to a `<Button>` or `<MenuItem>` element.
  *
- * @deprecated use ActionProps
+ * @template T type of the DOM element rendered by this component
  */
-export interface IActionProps extends IntentProps, Props {
+export interface ActionProps<T extends HTMLElement = HTMLElement> extends IntentProps, Props {
     /** Whether this action is non-interactive. */
     disabled?: boolean;
 
@@ -75,13 +75,18 @@ export interface IActionProps extends IntentProps, Props {
     icon?: IconName | MaybeElement;
 
     /** Click event handler. */
-    onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+    onClick?: (event: React.MouseEvent<T>) => void;
+
+    /** Focus event handler. */
+    onFocus?: (event: React.FocusEvent<T>) => void;
 
     /** Action text. Can be any single React renderable. */
     text?: React.ReactNode;
 }
-// eslint-disable-next-line deprecation/deprecation
-export type ActionProps = IActionProps;
+/**
+ * @deprecated use ActionProps
+ */
+export type IActionProps = ActionProps;
 
 /**
  * Interface for a link, with support for customizing target window.

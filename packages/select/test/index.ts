@@ -11,6 +11,7 @@ import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 // tslint:enable no-submodule-imports
 import "../lib/css/blueprint-select.css";
 
+import "./itemRendererTests";
 import "./listItemsPropsTests";
 import "./multiSelectTests";
 import "./multiSelect2Tests";

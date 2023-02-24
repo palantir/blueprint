@@ -239,7 +239,13 @@ export interface IPopover2SharedProps<TProps extends DefaultPopover2TargetHTMLPr
      * Mutually exclusive with `children` and `targetTagName` props.
      */
     renderTarget?: (
-        props: Popover2TargetProps & (Popover2HoverTargetHandlers<TProps> | Popover2ClickTargetHandlers<TProps>),
+        // N.B. we would like to discriminate between "hover" and "click" popovers here, so that we can be clear
+        // about exactly which event handlers are passed here to be rendered on the target element, but unfortunately
+        // we can't do that without breaking backwards-compatibility in the renderTarget API. Besides, that kind of
+        // improvement would be better implemented if we added another type param to Popover2, something like
+        // Popover2<TProps, "click" | "hover">. Instead of discriminating, we union the different possible event handlers
+        // that may be passed (they are all optional properties anyway).
+        props: Popover2TargetProps & Popover2HoverTargetHandlers<TProps> & Popover2ClickTargetHandlers<TProps>,
     ) => JSX.Element;
 
     /**

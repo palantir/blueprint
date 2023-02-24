@@ -26,10 +26,12 @@ import { TOOLTIP_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { DefaultPopover2TargetHTMLProps, Popover2SharedProps } from "./popover2SharedProps";
 import { Tooltip2Context, Tooltip2ContextState, Tooltip2Provider } from "./tooltip2Context";
 
-// eslint-disable-next-line deprecation/deprecation
-export type Tooltip2Props<TProps = DefaultPopover2TargetHTMLProps> = ITooltip2Props<TProps>;
+export type Tooltip2Props<TProps extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps> =
+    // eslint-disable-next-line deprecation/deprecation
+    ITooltip2Props<TProps>;
+
 /** @deprecated use Tooltip2Props */
-export interface ITooltip2Props<TProps = DefaultPopover2TargetHTMLProps>
+export interface ITooltip2Props<TProps extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps>
     extends Omit<Popover2SharedProps<TProps>, "shouldReturnFocusOnClose">,
         IntentProps {
     /**
@@ -88,7 +90,9 @@ export interface ITooltip2Props<TProps = DefaultPopover2TargetHTMLProps>
  *
  * @see https://blueprintjs.com/docs/#popover2-package/tooltip2
  */
-export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
+export class Tooltip2<
+    T extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps,
+> extends React.PureComponent<Tooltip2Props<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip2`;
 
     public static defaultProps: Partial<Tooltip2Props> = {

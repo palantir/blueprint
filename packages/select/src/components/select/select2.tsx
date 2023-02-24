@@ -31,7 +31,7 @@ import {
     setRef,
     Utils,
 } from "@blueprintjs/core";
-import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
+import { Popover2, Popover2ClickTargetHandlers, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { QueryList, QueryListRendererProps } from "../query-list/queryList";
@@ -213,7 +213,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         // N.B. pull out `isOpen` so that it's not forwarded to the DOM, but remember not to use it directly
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
-        ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
+        ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & Popover2ClickTargetHandlers) => {
             const { popoverProps = {}, popoverTargetProps } = this.props;
             const { handleKeyDown, handleKeyUp } = listProps;
             const { targetTagName = "div" } = popoverProps;

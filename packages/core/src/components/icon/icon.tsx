@@ -96,7 +96,8 @@ export interface IIconProps extends IntentProps, Props {
      * aural feedback.
      *
      * If this value is nullish, `false`, or an empty string, the component will assume
-     * that the icon is decorative and `aria-hidden="true"` will be applied.
+     * that the icon is decorative and `aria-hidden="true"` will be applied (can be overridden
+     * by manually passing `aria-hidden` prop).
      *
      * @see https://www.w3.org/WAI/tutorials/images/decorative/
      */
@@ -145,8 +146,8 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
         return React.createElement(
             tagName,
             {
-                ...htmlprops,
                 "aria-hidden": title ? undefined : true,
+                ...htmlprops,
                 className: classes,
                 title: htmlTitle,
             },

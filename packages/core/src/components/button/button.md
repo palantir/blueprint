@@ -56,7 +56,7 @@ The two button components each support arbitrary HTML props for their underlying
 DOM element (`<button>` and `<a>` respectively). Specifying an HTML prop will
 override the component's default for it, such as `role` on `<AnchorButton>`.
 
-@interface IButtonProps
+@interface ButtonProps
 
 @## CSS
 

@@ -24,7 +24,7 @@ import { Icon } from "../icon/icon";
 // eslint-disable-next-line deprecation/deprecation
 export type BreadcrumbProps = IBreadcrumbProps;
 /** @deprecated use BreadcrumbProps */
-export interface IBreadcrumbProps extends ActionProps, LinkProps {
+export interface IBreadcrumbProps extends ActionProps<HTMLAnchorElement>, LinkProps {
     children?: React.ReactNode;
 
     /** Whether this breadcrumb is the current breadcrumb. */
@@ -68,6 +68,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = props => {
             className={classes}
             href={props.href}
             onClick={props.disabled ? undefined : props.onClick}
+            onFocus={props.disabled ? undefined : props.onFocus}
             tabIndex={props.disabled ? undefined : 0}
             target={props.target}
         >
