@@ -66,11 +66,11 @@ export function svgInlinerFactory(base, opts) {
  */
 function encode(content, opts) {
     if (opts.encodingFormat === "uri") {
-        return new sass.SassString(`url("${svgToDataUri(content.toString("UTF-8"))}")`);
+        return new sass.SassString(`url("${svgToDataUri(content.toString("UTF-8"))}")`, { quotes: false });
     }
 
     if (opts.encodingFormat === "base64") {
-        return new sass.SassString(`url("data:image/svg+xml;base64,${content.toString("base64")})`);
+        return new sass.SassString(`url("data:image/svg+xml;base64,${content.toString("base64")})`, { quotes: false });
     }
 
     throw new Error(`[node-build-scripts] encodingFormat ${opts.encodingFormat} is not supported`);
