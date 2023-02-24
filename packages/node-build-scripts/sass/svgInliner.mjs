@@ -20,13 +20,13 @@ import sass from "sass";
 import { optimizeSync, svgOptimizer } from "../svg/svgOptimizer.mjs";
 
 /**
- * The SVG inliner function
- * This is a factory that expects a base path abd returns the actual function
+ * The SVG inliner function.
+ * This is a factory that expects a base path and returns the actual function.
  *
  * @param {string} base
  * @param {{optimize: boolean, encodingFormat: string}} opts
  */
-export async function svgInliner(base, opts) {
+export function svgInlinerFactory(base, opts) {
     const { optimize = false, encodingFormat = "base64" } = opts;
 
     /**
@@ -59,7 +59,7 @@ export async function svgInliner(base, opts) {
 }
 
 /**
- * encode the string
+ * Encode a JS string as a Sass string.
  *
  * @param {any} content
  * @param {any} opts
@@ -78,7 +78,7 @@ function encode(content, opts) {
 }
 
 /**
- * Change the style of an SVG
+ * Change the style attributes of an SVG string.
  *
  * @param {string} source
  * @param {sass.types.Map} selectorsMap
@@ -111,7 +111,7 @@ function changeStyle(source, selectorsMap) {
 }
 
 /**
- * Transform a Sass map into a JS object
+ * Transform a Sass map into a JS object.
  *
  * @param {sass.types.Map} map
  * @returns {Record<any, any>}

@@ -13,7 +13,7 @@ import { SourceMapGenerator } from "source-map-js";
 import yargs from "yargs";
 
 import nodeModulesSassImporter from "./sass/nodeModulesSassImporter.mjs";
-import { svgInliner } from "./sass/svgInliner.mjs";
+import defaultCustomFunctions from "./sass/sassCustomFunctions.mjs";
 
 // slice off two args which are `node` CLI and this script's name
 const truncatedArgv = argv.slice(2);
@@ -36,27 +36,8 @@ const args = yargs(truncatedArgv)
 // @ts-ignore
 const inputFolder = args._[0];
 
-const customFunctions = args.functions != null ? require(resolve(args.functions)) : undefined;
 /** @type {Record<string, sass.CustomFunction<"async">>} */
-const functions = {
-    /**
-     * Sass function to inline a UI icon svg and change its path color.
-     *
-     * Usage:
-     * svg-icon("16px/icon-name.svg", (path: (fill: $color)) )
-     *
-     * TODO(adahiya): ensure this works when this script is invoked outside of the Blueprint monorepo?
-     */
-    "svg-icon($path, $selectors: null)": svgInliner("../../resources/icons", {
-        // run through SVGO first
-        optimize: true,
-        // minimal "uri" encoding is smaller than base64
-        encodingFormat: "uri",
-    }),
-
-    // custom functions specified as CLI args are allowed to override our default ones
-    ...customFunctions,
-};
+const cliCustomFunctions = args.functions != null ? require(resolve(args.functions)) : undefined;
 
 if (args.watch) {
     await compileAllFiles();
@@ -98,11 +79,14 @@ async function compileFile(inputFilePath) {
 
     const outFile = join(args.output, `${parsePath(inputFilePath).name}.css`);
     const outputMapFile = `${outFile}.map`;
-    // use deprecated `renderSync` because it supports legacy importers and functions
     const result = await sass.compileAsync(inputFilePath, {
         importers: [nodeModulesSassImporter],
         sourceMap: true,
-        functions,
+        functions: {
+            ...defaultCustomFunctions,
+            // custom functions specified as CLI args are allowed to override our default ones
+            ...cliCustomFunctions,
+        },
         charset: true,
     });
     fsExtra.outputFileSync(outFile, result.css, { flag: "w" });

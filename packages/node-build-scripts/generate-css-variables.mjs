@@ -5,7 +5,6 @@
 
 // @ts-check
 
-import getSassVars from "get-sass-vars";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { argv, cwd } from "node:process";
@@ -13,6 +12,7 @@ import prettier from "prettier";
 import yargs from "yargs/yargs";
 
 import { COPYRIGHT_HEADER, USE_MATH_RULE } from "./constants.mjs";
+import sassVariableParser from "./sass/sassVariableParser.mjs";
 
 const SRC_DIR = resolve(cwd(), "./src");
 const DEST_DIR = resolve(cwd(), "./lib");
@@ -40,11 +40,10 @@ async function main() {
 }
 
 /**
- * Pulls together variables from the specified Sass source files, sanitizes them for consumption,
- * and gets compiled output from `get-sass-vars`.
+ * Pulls together variables from the specified Sass source files and sanitizes them for consumption.
  *
  * @param {string[]} inputSources
- * @returns {Promise<{parsedVars: object, varsInBlocks: Set<string | undefined>[], varsWithDefaultFlag: Set<string | undefined>}>} output compiled variable values and grouped variable blocks
+ * @returns {Promise<{parsedVars: object, varsInBlocks: Set<string | undefined>[]}>} output compiled variable values and grouped variable blocks
  */
 async function getParsedVars(inputSources) {
     const stripCssComments = (await import("strip-css-comments")).default;
@@ -61,11 +60,7 @@ async function getParsedVars(inputSources) {
         .replace(/\n{3,}/g, "\n\n");
     cleanedInput = [USE_MATH_RULE, cleanedInput].join("\n");
 
-    const functions = (await import("./node-sass-json-functions.mjs")).default;
-    const parsedVars = await getSassVars(cleanedInput, {
-        // @ts-ignore - `get-sass-vars` types do not capture the type constraints possible with the library
-        sassOptions: { functions },
-    });
+    const parsedVars = await sassVariableParser(cleanedInput);
 
     // get variable blocks for separating variables in output
     const varsInBlocks = cleanedInput
@@ -75,16 +70,7 @@ async function getParsedVars(inputSources) {
                 new Set([...block.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)/g)].map(match => match.groups?.varName)),
         );
 
-    // `getSassVarsSync` strips `!default` flags from the output, so we need to determine which
-    // variables had those flags set here and pass it on
-    const varsWithDefaultFlag = new Set(
-        [...cleanedInput.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)(?<varValue>[\s\S]+?);/gm)]
-            .map(match => [match.groups?.varName, match.groups?.varValue.trim()])
-            .filter(([, varValue]) => varValue?.endsWith("!default"))
-            .map(([varName]) => varName),
-    );
-
-    return { parsedVars, varsInBlocks, varsWithDefaultFlag };
+    return { parsedVars, varsInBlocks };
 }
 
 function isPrimitive(value) {
@@ -92,7 +78,7 @@ function isPrimitive(value) {
 }
 
 /**
- * Converts values from parsed output of `get-sass-vars` to valid scss or less
+ * Converts values from parsed output of `sassVariableParser` to valid scss or less
  *
  * @param {unknown} value
  * @param {"less" | "scss"} outputType
@@ -130,21 +116,28 @@ function convertParsedValueToOutput(value, outputType) {
  * Pulls together variables from the specified Sass source files, sanitizes them for consumption,
  * and writes to an output file.
  *
- * @param {{parsedVars: object, varsInBlocks: Set<string | undefined>[], varsWithDefaultFlag: Set<string | undefined>}} parsedInput
+ * @param {{parsedVars: Record<string, string>, varsInBlocks: Set<string | undefined>[]}} parsedInput
  * @param {string} outputFilename
  * @param {boolean} retainDefault whether to retain `!default` flags on variables
  * @returns {string} output Sass contents
  */
 function generateScssVariables(parsedInput, outputFilename, retainDefault) {
-    const { parsedVars, varsInBlocks, varsWithDefaultFlag } = parsedInput;
+    const { parsedVars, varsInBlocks } = parsedInput;
 
     let variablesScss = COPYRIGHT_HEADER + "\n";
     for (const varsInBlock of varsInBlocks) {
         const variablesArray = Object.entries(parsedVars)
-            .filter(([varName, _value]) => varsInBlock.has(varName))
+            .filter(([varName, _value]) => varsInBlock.has(`$${varName}`))
             .map(([varName, value]) => {
-                const defaultFlag = retainDefault && varsWithDefaultFlag.has(varName) ? "!default" : "";
-                return `${varName}: ${convertParsedValueToOutput(value, "scss")} ${defaultFlag};`;
+                let defaultFlag = "";
+                // strip the default flag if it exists, and keep track of it if we need to retain it in the output
+                if (value.includes("!default")) {
+                    value = value.replace("!default", "");
+                    if (retainDefault) {
+                        defaultFlag = "!default";
+                    }
+                }
+                return `$${varName}: ${convertParsedValueToOutput(value, "scss")} ${defaultFlag};`;
             });
 
         variablesScss = `${variablesScss}${variablesArray.join("\n")}\n\n`;
@@ -162,7 +155,7 @@ function generateScssVariables(parsedInput, outputFilename, retainDefault) {
 /**
  * Takes in variable values from compiled sass vars, converts them to Less and writes to an output file.
  *
- * @param {{parsedVars: object, varsInBlocks: Set<string | undefined>[]}} parsedInput
+ * @param {{parsedVars: Record<string, string>, varsInBlocks: Set<string | undefined>[]}} parsedInput
  * @param {string} outputFilename
  * @returns {void}
  */
