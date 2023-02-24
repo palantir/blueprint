@@ -27,7 +27,7 @@ import { svgOptimizer } from "../svg/svgOptimizer.mjs";
  * @param {{optimize: boolean, encodingFormat: string}} opts
  * @returns {sass.CustomFunction<"async">}
  */
-export function svgInlinerFactory(base, opts) {
+export function sassSvgInlinerFactory(base, opts) {
     const { optimize = false, encodingFormat = "base64" } = opts;
 
     /**

@@ -7,8 +7,7 @@
 import { watch } from "chokidar";
 import fsExtra from "fs-extra";
 import { basename, dirname, extname, join, parse as parsePath, relative, resolve } from "node:path";
-import { argv, cwd } from "node:process";
-import { pkgUpSync } from "pkg-up";
+import { argv } from "node:process";
 import sass from "sass";
 import { SourceMapGenerator } from "source-map-js";
 import yargs from "yargs";

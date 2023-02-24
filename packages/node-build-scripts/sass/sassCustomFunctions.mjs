@@ -6,10 +6,10 @@
 
 import sass from "sass";
 
-import { svgInlinerFactory } from "./svgInliner.mjs";
+import { sassSvgInlinerFactory } from "./sassSvgInliner.mjs";
 
 /** @type {sass.CustomFunction<"async">} */
-const svgIconInliner = svgInlinerFactory("../../resources/icons", {
+const svgIconInliner = sassSvgInlinerFactory("../../resources/icons", {
     // run through SVGO first
     optimize: true,
     // minimal "uri" encoding is smaller than base64
