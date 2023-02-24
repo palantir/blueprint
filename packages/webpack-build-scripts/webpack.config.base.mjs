@@ -28,7 +28,8 @@ import ReactRefreshTypeScript from "react-refresh-typescript";
 import webpack from "webpack";
 import WebpackNotifierPlugin from "webpack-notifier";
 
-import { loadPaths } from "./sassNodeModulesLoadPaths.mjs";
+import { sassNodeModulesLoadPaths } from "@blueprintjs/node-build-scripts";
+
 import { getPackageName } from "./utils.mjs";
 
 // globals
@@ -114,7 +115,7 @@ const scssLoaders = [
         loader: require.resolve("sass-loader"),
         options: {
             sassOptions: {
-                includePaths: loadPaths,
+                includePaths: sassNodeModulesLoadPaths,
             },
         },
     },

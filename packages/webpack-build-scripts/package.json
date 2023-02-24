@@ -8,6 +8,7 @@
         "test": "exit 0"
     },
     "dependencies": {
+        "@blueprintjs/node-build-scripts": "^6.0.7",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "assert": "^2.0.0",
         "autoprefixer": "^10.4.13",

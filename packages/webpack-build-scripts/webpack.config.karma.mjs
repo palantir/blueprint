@@ -9,7 +9,7 @@ import { createRequire } from "node:module";
 import { cwd } from "node:process";
 import webpack from "webpack";
 
-import { loadPaths } from "./sassNodeModulesLoadPaths.mjs";
+import { sassNodeModulesLoadPaths } from "@blueprintjs/node-build-scripts";
 
 // import.meta.resolve is still experimental under a CLI flag, so we create a require fn instead
 // see https://nodejs.org/docs/latest-v16.x/api/esm.html#importmetaresolvespecifier-parent
@@ -69,7 +69,7 @@ export default {
                         loader: require.resolve("sass-loader"),
                         options: {
                             sassOptions: {
-                                includePaths: loadPaths,
+                                includePaths: sassNodeModulesLoadPaths,
                             },
                         },
                     },
