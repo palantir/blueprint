@@ -322,7 +322,7 @@ const DEFAULT_STATE: IMutableTableState = {
 
 export const TableExample: React.FC = () => {
     const renderCell = React.useCallback((_row: number, _col: number) => {
-        return <DroppableCell />;
+        return <MyCell num={_col} />;
     }, []);
 
     const refr = useRef(null);
@@ -380,7 +380,7 @@ export const TableExample: React.FC = () => {
         <div
             ref={refr2}
             style={{
-                backgroundColor: "red",
+                // backgroundColor: "red",
                 display: "flex",
                 flexDirection: "row",
                 gap: 20,
@@ -392,15 +392,17 @@ export const TableExample: React.FC = () => {
         >
             <Table2 ref={refr} numRows={20}>
                 <Column cellRenderer={renderCell} />
+                <Column cellRenderer={renderCell} />
+                <Column cellRenderer={renderCell} />
             </Table2>
         </div>
     );
 };
 
-function DroppableCell() {
+function MyCell(props: { num: number }) {
     return (
         <Cell>
-            <span>{"Waiting for drag"}</span>
+            <span>{"some random text" + props.num}</span>
         </Cell>
     );
 }
@@ -442,7 +444,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     >
                         <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
                             <TableExample />
-                            {this.renderTable()}
+                            {Date.now() === 2 ? this.renderTable() : "hi"}
                         </div>
                     </SlowLayoutStack>
                     {this.renderSidebar()}
