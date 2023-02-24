@@ -5,6 +5,15 @@
 @import "color-aliases";
 @import "mixins";
 
+// ----------------------------------------------------------------------------
+// This file contains most of the public Sass API of @blueprintjs/core.
+// As such, it comes with important considerations:
+//
+// -  Changes to these variable names and values are generally considered breaking changes.
+// -  A limited subset of Sass syntax is supported. All syntax inluded here must be able to get parsed by the
+//    `generate-css-variables` script in @blueprintjs/node-build-scripts.
+// ----------------------------------------------------------------------------
+
 // Namespace appended to the beginning of each CSS class: `.#{$ns}-button`.
 // N.B. No quotes around this string value, for Less syntax compatibility. Also, this cannot be overriden
 // (the JS components have this class prefix hard-coded), so it does not have the `!default` modifier.
@@ -46,10 +55,12 @@ $pt-font-size-large: $pt-grid-size * 1.6 !default;
 $pt-font-size-small: $pt-grid-size * 1.2 !default;
 
 // a little bit extra to ensure the height comes out to just over 18px (and browser rounds to 18px)
+// equivalent to: 1.28581
 $pt-line-height: math.div($pt-grid-size * 1.8, $pt-font-size) + 0.0001 !default;
 
 // Grids & dimensions
 
+// equivalent to: 2px
 $pt-border-radius: floor(math.div($pt-grid-size, 5)) !default;
 
 // Buttons

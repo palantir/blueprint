@@ -35,9 +35,9 @@ The `main` module exports all symbols from all modules so you don't have to impo
 
     ```scss
     // using node-style package resolution in a CSS file:
-    @import "~normalize.css";
-    @import "~@blueprintjs/core/lib/css/blueprint.css";
-    @import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+    @import "normalize.css";
+    @import "@blueprintjs/core/lib/css/blueprint.css";
+    @import "@blueprintjs/icons/lib/css/blueprint-icons.css";
     ```
 
     ```html

@@ -4,9 +4,9 @@
 // HACKHACK(https://github.com/palantir/blueprint/issues/5331): weird imports here because
 // core/lib/scss/variables is not available until after the 'dist' task, but at this point
 // we are only guaranteed 'compile'
-@import "~@blueprintjs/colors/lib/scss/colors";
-@import "~@blueprintjs/core/src/common/variables";
-@import "~@blueprintjs/core/src/common/react-transition";
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "@blueprintjs/core/src/common/variables";
+@import "@blueprintjs/core/src/common/react-transition";
 
 $omnibar-height: 60vh !default;
 $omnibar-width: $pt-grid-size * 50 !default;
