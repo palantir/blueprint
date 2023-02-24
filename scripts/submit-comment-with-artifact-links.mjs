@@ -17,9 +17,9 @@ import { Octokit } from "octokit";
 /**
  * @type {Array<{path: string; url: string;}>}
  */
-const artifacts = (await import("./artifacts.json")).default.items;
+const { default: artifacts } = await import("./artifacts.json", { assert: { type: "json" }});
 
-if (artifacts === undefined) {
+if (artifacts.items === undefined) {
     throw new Error(
         "Unable to read artifacts.json, please make sure the CircleCI API call succeeded with the necessary personal access token.",
     );
@@ -33,7 +33,7 @@ const ARTIFACTS = {
 };
 
 function getArtifactAnchorLink(pkg) {
-    const artifactInfo = artifacts.find(a => a.path === ARTIFACTS[pkg]);
+    const artifactInfo = artifacts.items.find(a => a.path === ARTIFACTS[pkg]);
     return `<a href="${artifactInfo?.url}">${pkg}</a>`;
 }
 

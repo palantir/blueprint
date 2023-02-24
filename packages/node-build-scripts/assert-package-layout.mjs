@@ -13,7 +13,7 @@ import { cwd, exit } from "node:process";
 // asserts that all main fields in package.json reference existing files
 const PACKAGE_MAIN_FIELDS = ["main", "module", "style", "types", "typings", "unpkg"];
 
-const manifest = await import(join(cwd(), "package.json"), { assert: { type: "json" }});
+const { default: manifest } = await import(join(cwd(), "package.json"), { assert: { type: "json" }};
 
 for (const field of PACKAGE_MAIN_FIELDS.filter(f => manifest[f] !== undefined)) {
     if (!existsSync(resolve(cwd(), manifest[field]))) {
