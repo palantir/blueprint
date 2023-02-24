@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-const ns = "[Blueprint]";
+import { OverlayLifecycleProps } from "@blueprintjs/core";
 
-export const DATERANGEINPUT_NULL_VALUE =
-    `${ns} <DateRangeInput2> value cannot be null. Pass undefined to clear the value and operate in` +
-    " uncontrolled mode, or pass [null, null] to clear the value and continue operating in controlled mode.";
+import { Popover2Props } from "./popover2";
 
-export const DATEINPUT_INVALID_DEFAULT_TIMEZONE = `${ns} <DateInput2> was provided an invalid defaultTimezone, defaulting to Etc/UTC instead`;
+export type Offset = {
+    left: number;
+    top: number;
+};
+
+/**
+ * A limited subset of props to forward along to the context menu popover overlay.
+ */
+export type ContextMenu2PopoverOptions = OverlayLifecycleProps &
+    Pick<Popover2Props, "popoverClassName" | "transitionDuration" | "popoverRef" | "rootBoundary">;

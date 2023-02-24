@@ -15,6 +15,8 @@
  */
 
 export { Breadcrumbs2Example } from "./breadcrumbs2Example";
+export { ContextMenu2Example } from "./contextMenu2Example";
+export { ContextMenu2PopoverExample } from "./contextMenu2PopoverExample";
 export { MenuItem2Example } from "./menuItem2Example";
 export * from "./popover2DismissExample";
 export * from "./popover2Example";

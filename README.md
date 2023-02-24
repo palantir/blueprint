@@ -74,9 +74,12 @@ Builds are orchestrated via `lerna run` and NPM scripts.
 
 ### One-time setup
 
+First, ensure you have `nvm` ([Node Version Manager](https://github.com/nvm-sh/nvm)) installed.
+
 After cloning this repo, run:
 
-1. `yarn` to install all dependencies.
+1. `nvm use` to use the supported Node version for Blueprint development.
+1. `yarn` to install all dependencies for the monorepo.
 1. If running on Windows:
     1. `npm install -g windows-build-tools` to install build tools globally
     1. Ensure `bash` is your configured script-shell by running:<br />

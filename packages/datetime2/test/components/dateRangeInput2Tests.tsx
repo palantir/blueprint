@@ -21,15 +21,7 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
-import {
-    Boundary,
-    HTMLDivProps,
-    HTMLInputProps,
-    InputGroup,
-    InputGroupProps2,
-    Keys,
-    Position,
-} from "@blueprintjs/core";
+import { Boundary, HTMLDivProps, HTMLInputProps, InputGroup, InputGroupProps2, Keys } from "@blueprintjs/core";
 import { DateRangePicker, Classes as DatetimeClasses, Months, TimePrecision } from "@blueprintjs/datetime";
 import { Popover2, Classes as Popover2Classes, Popover2Props } from "@blueprintjs/popover2";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
@@ -521,7 +513,7 @@ describe("<DateRangeInput2>", () => {
         it("accepts custom popoverProps", () => {
             const popoverProps: Partial<Popover2Props> = {
                 backdropProps: {},
-                position: Position.TOP_LEFT,
+                placement: "top-start",
                 usePortal: false,
             };
             const popover = wrap(<DateRangeInput2 {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover2);

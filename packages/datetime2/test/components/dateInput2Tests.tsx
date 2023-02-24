@@ -170,6 +170,10 @@ describe("<DateInput2>", () => {
             assert.strictEqual(popover.prop("usePortal"), false);
             assert.isTrue(onOpening.calledOnce);
         });
+
+        it("gracefully handles invalid defaultTimezone prop value", () => {
+            mount(<DateInput2 {...DEFAULT_PROPS} defaultTimezone="Foo/Bar" />);
+        });
     });
 
     describe("popover interaction", () => {
@@ -217,7 +221,6 @@ describe("<DateInput2>", () => {
             const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
             clickTimezoneItem(wrapper, "New York");
             assert.isTrue(onChange.calledOnce);
-            console.info(onChange.firstCall.args);
             // New York is UTC-5
             assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00-05:00");
         });
