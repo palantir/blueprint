@@ -63,11 +63,12 @@ async function getParsedVars(inputSources) {
     cleanedInput = cleanedInput
         // variables files should be free of relative imports
         .replace(/(@import|\/\/).*\n+/g, "")
-        // get-sass-vars interprets and evaluates math for us, so we don't need the "sass:math" dependency
+        // we only want one "sass:math" reference, we'll add it in manually
         .replace(new RegExp(USE_MATH_RULE, "g"), "")
         // special case for one common mixin used in variables
         .replace(/border-shadow\((.+)\)/g, "0 0 0 1px rgba($black, $1)")
         .replace(/\n{3,}/g, "\n\n");
+    cleanedInput = [USE_MATH_RULE, cleanedInput].join("\n");
 
     const parsedVars = await getSassVars(cleanedInput);
 
