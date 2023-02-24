@@ -2,7 +2,10 @@
     "name": "@blueprintjs/node-build-scripts",
     "version": "6.0.7",
     "description": "Node.js build scripts for @blueprintjs packages",
-    "module": "index.mjs",
+    "module": "./index.mjs",
+    "exports": {
+        "import": "./index.mjs"
+    },
     "scripts": {
         "test": "exit 0"
     },
@@ -19,7 +22,6 @@
         "chokidar": "^3.5.3",
         "cross-spawn": "^7.0.3",
         "css-select": "^5.1.0",
-        "deasync": "^0.1.28",
         "dom-serializer": "^2.0.0",
         "eslint": "^8.33.0",
         "eslint-formatter-codeframe": "^7.32.1",
@@ -35,7 +37,6 @@
         "pkg-up": "^4.0.0",
         "prettier": "~2.8.3",
         "sass": "^1.58.3",
-        "sass-alias": "^2.0.1",
         "sass-extended-importer": "^0.4.2",
         "source-map-js": "^1.0.2",
         "strip-css-comments": "^5.0.0",
@@ -47,7 +48,6 @@
         "yargs": "^17.6.0"
     },
     "devDependencies": {
-        "@types/deasync": "^0.1.2",
         "@types/fs-extra": "~11.0.1",
         "@types/pkg-up": "^3.1.0",
         "@types/svgo": "~1.3.6",

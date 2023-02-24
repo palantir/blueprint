@@ -48,7 +48,7 @@ npm install --save @blueprintjs/datetime2
 Import the package stylesheet (for example, in Sass):
 
 ```scss
-@import "~@blueprintjs/datetime2/lib/css/blueprint-datetime2.css";
+@import "@blueprintjs/datetime2/lib/css/blueprint-datetime2.css";
 ```
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
@@ -58,9 +58,9 @@ This library relies on some components from other Blueprint packages, so you wil
 packages' CSS files as well (if you are not doing this already):
 
 ```scss
-@import "~@blueprintjs/datetime/lib/css/blueprint-datetime.css";
-@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
-@import "~@blueprintjs/select/lib/css/blueprint-select.css";
+@import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
+@import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+@import "@blueprintjs/select/lib/css/blueprint-select.css";
 ```
 </div>
 

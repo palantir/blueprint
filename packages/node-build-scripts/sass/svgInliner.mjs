@@ -17,7 +17,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import sass from "sass";
 
-import { optimizeSync, svgOptimizer } from "../svg/svgOptimizer.mjs";
+import { svgOptimizer } from "../svg/svgOptimizer.mjs";
 
 /**
  * The SVG inliner function.
@@ -25,35 +25,34 @@ import { optimizeSync, svgOptimizer } from "../svg/svgOptimizer.mjs";
  *
  * @param {string} base
  * @param {{optimize: boolean, encodingFormat: string}} opts
+ * @returns {sass.CustomFunction<"async">}
  */
 export function svgInlinerFactory(base, opts) {
     const { optimize = false, encodingFormat = "base64" } = opts;
 
     /**
-     * @param {sass.types.String} path
-     * @param {sass.types.Map | undefined} selectors
-     * @returns {Promise<sass.types.String | undefined>}
+     * @param {sass.Value[]} args
+     * @returns {Promise<sass.SassString>}
      */
-    return async function (path, selectors) {
-        const resolvedPath = resolve(base, path.getValue());
+    return async function (args) {
+        const path = /** @type {sass.SassString} */ (args[0]);
+        const selectors = /** @type {sass.SassMap | undefined} */ (args[1]);
+        const resolvedPath = resolve(base, path.text);
         try {
             let svgContents = readFileSync(resolvedPath, { encoding: "utf8" });
 
-            if (selectors && selectors.getLength && selectors.getLength()) {
+            if (selectors !== undefined && selectors.asList.size > 0) {
                 svgContents = changeStyle(svgContents, selectors);
             }
 
             if (optimize) {
-                // const optimizedSvg = optimizeSync(svgContents);
-                // svgContents = Buffer.from(optimizedSvg.data, "utf8");
                 svgContents = (await svgOptimizer.optimize(svgContents, { path: resolvedPath })).data;
-                // svgContents = optimizeSync(svgContents, resolvedPath).data;
-                console.info(`with optimization:`, svgContents);
             }
 
             return encode(svgContents, { encodingFormat });
         } catch (err) {
             console.error("[node-build-scripts]", err);
+            return new sass.SassString("");
         }
     };
 }
@@ -63,15 +62,15 @@ export function svgInlinerFactory(base, opts) {
  *
  * @param {any} content
  * @param {any} opts
- * @returns {sass.types.String}
+ * @returns {sass.SassString}
  */
 function encode(content, opts) {
     if (opts.encodingFormat === "uri") {
-        return new sass.types.String(`url("${svgToDataUri(content.toString("UTF-8"))}")`);
+        return new sass.SassString(`url("${svgToDataUri(content.toString("UTF-8"))}")`);
     }
 
     if (opts.encodingFormat === "base64") {
-        return new sass.types.String(`url("data:image/svg+xml;base64,${content.toString("base64")})`);
+        return new sass.SassString(`url("data:image/svg+xml;base64,${content.toString("base64")})`);
     }
 
     throw new Error(`[node-build-scripts] encodingFormat ${opts.encodingFormat} is not supported`);
@@ -81,7 +80,7 @@ function encode(content, opts) {
  * Change the style attributes of an SVG string.
  *
  * @param {string} source
- * @param {sass.types.Map} selectorsMap
+ * @param {sass.SassMap} selectorsMap
  * @returns {*}
  */
 function changeStyle(source, selectorsMap) {
@@ -101,47 +100,26 @@ function changeStyle(source, selectorsMap) {
         const newAttributes = selectors[selector];
 
         elements.forEach(function (element) {
-            // @ts-ignore
+            // @ts-ignore -- attribs property does exist
             Object.assign(element.attribs, newAttributes);
         });
     });
 
-    // return Buffer.from(serialize(document), "utf8");
     return serialize(document);
 }
 
 /**
- * Transform a Sass map into a JS object.
+ * Recursively transforms a Sass map into a JS object.
  *
- * @param {sass.types.Map} map
+ * @param {sass.SassMap} sassMap
  * @returns {Record<any, any>}
  */
-function mapToObj(map) {
+function mapToObj(sassMap) {
     const obj = Object.create(null);
+    const map = sassMap.contents.toJS();
 
-    for (let i = 0, len = map.getLength(); i < len; i++) {
-        // @ts-ignore
-        const key = map.getKey(i).getValue();
-        let value = map.getValue(i);
-
-        switch (value.constructor.name) {
-            case sass.types.Map.name:
-                value = mapToObj(/** @type {sass.types.Map} */ (value));
-                break;
-            case sass.types.Color.name:
-                const color = /** @type {sass.types.Color} */ (value);
-                if (color.getA() === 1) {
-                    value = `rgb(${color.getR()},${color.getG()},${color.getB()})`;
-                } else {
-                    value = `rgba(${color.getR()},${color.getG()},${color.getB()},${color.getA()})`;
-                }
-                break;
-            default:
-                // @ts-ignore
-                value = value.getValue();
-        }
-
-        obj[key] = value;
+    for (const [key, value] of /** @type {[string, sass.Value][]} */ (Object.entries(map))) {
+        obj[key] = value instanceof sass.SassMap ? mapToObj(value) : value.toString();
     }
 
     return obj;

@@ -28,6 +28,7 @@ import ReactRefreshTypeScript from "react-refresh-typescript";
 import webpack from "webpack";
 import WebpackNotifierPlugin from "webpack-notifier";
 
+import { loadPaths } from "./sassNodeModulesLoadPaths.mjs";
 import { getPackageName } from "./utils.mjs";
 
 // globals
@@ -107,7 +108,17 @@ const cssLoaders = [
 ];
 
 // Module loaders for Sass/SCSS files, used in reverse order: compile Sass, then apply CSS loaders
-const scssLoaders = [...cssLoaders, require.resolve("sass-loader")];
+const scssLoaders = [
+    ...cssLoaders,
+    {
+        loader: require.resolve("sass-loader"),
+        options: {
+            sassOptions: {
+                includePaths: loadPaths,
+            },
+        },
+    },
+];
 
 export default {
     // to automatically find tsconfig.json

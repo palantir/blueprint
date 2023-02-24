@@ -7,13 +7,14 @@
 import { watch } from "chokidar";
 import fsExtra from "fs-extra";
 import { basename, dirname, extname, join, parse as parsePath, relative, resolve } from "node:path";
-import { argv } from "node:process";
+import { argv, cwd } from "node:process";
+import { pkgUpSync } from "pkg-up";
 import sass from "sass";
 import { SourceMapGenerator } from "source-map-js";
 import yargs from "yargs";
 
-import nodeModulesSassImporter from "./sass/nodeModulesSassImporter.mjs";
 import defaultCustomFunctions from "./sass/sassCustomFunctions.mjs";
+import { loadPaths } from "./sass/sassNodeModulesLoadPaths.mjs";
 
 // slice off two args which are `node` CLI and this script's name
 const truncatedArgv = argv.slice(2);
@@ -80,7 +81,7 @@ async function compileFile(inputFilePath) {
     const outFile = join(args.output, `${parsePath(inputFilePath).name}.css`);
     const outputMapFile = `${outFile}.map`;
     const result = await sass.compileAsync(inputFilePath, {
-        importers: [nodeModulesSassImporter],
+        loadPaths,
         sourceMap: true,
         functions: {
             ...defaultCustomFunctions,

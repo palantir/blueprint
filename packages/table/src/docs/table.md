@@ -18,7 +18,7 @@ npm install --save @blueprintjs/table
 Do not forget to include `table.css` on your page:
 
 ```scss
-@import "~@blueprintjs/table/lib/css/table.css";
+@import "@blueprintjs/table/lib/css/table.css";
 ```
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
@@ -30,7 +30,7 @@ depend on @blueprintjs/popover2 styles, so you must also import this CSS file fo
 to display properly:
 
 ```scss
-@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+@import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 ```
 </div>
 

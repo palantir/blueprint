@@ -168,7 +168,7 @@ These cell formatting components depend on @blueprintjs/popover2 styles, so you 
 that package's stylesheet in your application in addition to `table.css`:
 
 ```scss
-@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+@import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 ```
 </div>
 
