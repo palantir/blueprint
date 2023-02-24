@@ -54,7 +54,7 @@
         "@types/yargs": "~17.0.22"
     },
     "engines": {
-        "node": ">=16"
+        "node": ">=19.3"
     },
     "repository": {
         "type": "git",

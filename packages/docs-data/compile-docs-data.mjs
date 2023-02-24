@@ -7,8 +7,7 @@
 // @ts-check
 
 import { Documentalist, KssPlugin, MarkdownPlugin, NpmPlugin, TypescriptPlugin } from "@documentalist/compiler";
-import { existsSync } from "node:fs";
-import { mkdir, writeFile } from "node:fs/promises";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { cwd } from "node:process";
 import semver from "semver";
@@ -24,7 +23,7 @@ const docsDataFilePath = join(generatedSrcDir, "docs.json");
 
 try {
     if (!existsSync(generatedSrcDir)) {
-        await mkdir(generatedSrcDir);
+        mkdirSync(generatedSrcDir);
     }
     await generateDocumentalistData();
 } catch (err) {
@@ -66,7 +65,7 @@ async function generateDocumentalistData() {
     );
 
     const content = JSON.stringify(docs, transformDocumentalistData, 2);
-    return writeFile(docsDataFilePath, content);
+    return writeFileSync(docsDataFilePath, content);
 }
 
 /**
