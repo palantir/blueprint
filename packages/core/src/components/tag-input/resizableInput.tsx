@@ -6,10 +6,9 @@ import React, { forwardRef, useEffect, useRef, useState } from "react";
 
 import { Classes, HTMLInputProps } from "../../common";
 
-type ResizableInputProps = HTMLInputProps;
 export type Ref = HTMLInputElement;
 
-export const ResizableInput = forwardRef<Ref, ResizableInputProps>(function ResizableInput(props, ref) {
+export const ResizableInput = forwardRef<Ref, HTMLInputProps>(function ResizableInput(props, ref) {
     const [content, setContent] = useState("");
     const [width, setWidth] = useState(0);
     const span = useRef<HTMLSpanElement>(null);
@@ -29,7 +28,7 @@ export const ResizableInput = forwardRef<Ref, ResizableInputProps>(function Resi
 
     return (
         <span>
-            <span id="hide" ref={span} className={Classes.INPUT_RESIZABLE_INPUT_SPAN}>
+            <span id="hide" ref={span} className={Classes.RESIZABLE_INPUT_SPAN}>
                 {/* Need to replace spaces with the html character for them to be preserved */}
                 {content.replace(/ /g, "\u00a0")}
             </span>

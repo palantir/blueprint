@@ -163,7 +163,7 @@ export const INPUT_GROUP = `${INPUT}-group`;
 export const INPUT_LEFT_CONTAINER = `${INPUT}-left-container`;
 export const INPUT_ACTION = `${INPUT}-action`;
 
-export const INPUT_RESIZABLE_INPUT_SPAN = `${NS}-resizable-input-span`;
+export const RESIZABLE_INPUT_SPAN = `${NS}-resizable-input-span`;
 
 export const CONTROL = `${NS}-control`;
 export const CONTROL_INDICATOR = `${CONTROL}-indicator`;
