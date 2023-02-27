@@ -90,7 +90,12 @@ export interface ITabsProps extends Props {
     vertical?: boolean;
 
     /**
-     * Fill the height of its parent. Does not apply to vertical tabs.
+     * Whether to make the tabs list fill the height of its parent.
+     *
+     * This has no effect when `vertical={true}`.
+     * This is not recommended when tab panels are defined within this component subtree, as the height computation will
+     * include the panel height, which is usually not intended. Instead, it works well if the panels are rendered
+     * elsewhere in the React tree.
      *
      * @default false
      */
