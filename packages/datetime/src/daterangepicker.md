@@ -49,7 +49,7 @@ The **preset shortcuts** can be seen in the example above. They are as follows:
 
 @## Props interface
 
-@interface IDateRangePickerProps
+@interface DateRangePickerProps
 
 @## Localization
 

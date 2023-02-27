@@ -18,17 +18,16 @@ import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
 
-import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, Props } from "@blueprintjs/core";
+import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 
 import * as DateClasses from "./common/classes";
-import { DateRange } from "./common/dateRange";
+import type { DateRange } from "./common/dateRange";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
 import { DatePickerCaption } from "./datePickerCaption";
 import {
     combineModifiers,
-    DatePickerBaseProps,
     DatePickerModifiers,
     getDefaultMaxDate,
     getDefaultMinDate,
@@ -36,112 +35,19 @@ import {
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
 import { DatePickerNavbar } from "./datePickerNavbar";
+import type { DateRangePickerProps } from "./dateRangePickerProps";
+import type { DateRangePickerState } from "./dateRangePickerState";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
 import { DateRangeShortcut, Shortcuts } from "./shortcuts";
 import { TimePicker } from "./timePicker";
 
-// eslint-disable-next-line deprecation/deprecation
-export type DateRangePickerProps = IDateRangePickerProps;
-/** @deprecated use DateRangePickerProps */
-export interface IDateRangePickerProps extends DatePickerBaseProps, Props {
-    /**
-     * Whether the start and end dates of the range can be the same day.
-     * If `true`, clicking a selected date will create a one-day range.
-     * If `false`, clicking a selected date will clear the selection.
-     *
-     * @default false
-     */
-    allowSingleDayRange?: boolean;
-
-    /**
-     * The date-range boundary that the next click should modify.
-     * This will be honored unless the next click would overlap the other boundary date.
-     * In that case, the two boundary dates will be auto-swapped to keep them in chronological order.
-     * If `undefined`, the picker will revert to its default selection behavior.
-     */
-    boundaryToModify?: Boundary;
-
-    /**
-     * Whether displayed months in the calendar are contiguous.
-     * If false, each side of the calendar can move independently to non-contiguous months.
-     *
-     * @default true
-     */
-    contiguousCalendarMonths?: boolean;
-
-    /**
-     * Initial `DateRange` the calendar will display as selected.
-     * This should not be set if `value` is set.
-     */
-    defaultValue?: DateRange;
-
-    /**
-     * Called when the user selects a day.
-     * If no days are selected, it will pass `[null, null]`.
-     * If a start date is selected but not an end date, it will pass `[selectedDate, null]`.
-     * If both a start and end date are selected, it will pass `[startDate, endDate]`.
-     */
-    onChange?: (selectedDates: DateRange) => void;
-
-    /**
-     * Called when the user changes the hovered date range, either from mouseenter or mouseleave.
-     * When triggered from mouseenter, it will pass the date range that would result from next click.
-     * When triggered from mouseleave, it will pass `undefined`.
-     */
-    onHoverChange?: (hoveredDates: DateRange, hoveredDay: Date, hoveredBoundary: Boundary) => void;
-
-    /**
-     * Called when the `shortcuts` props is enabled and the user changes the shortcut.
-     */
-    onShortcutChange?: (shortcut: DateRangeShortcut, index: number) => void;
-
-    /**
-     * Whether shortcuts to quickly select a range of dates are displayed or not.
-     * If `true`, preset shortcuts will be displayed.
-     * If `false`, no shortcuts will be displayed.
-     * If an array is provided, the custom shortcuts will be displayed.
-     *
-     * @default true
-     */
-    shortcuts?: boolean | DateRangeShortcut[];
-
-    /**
-     * The currently selected shortcut.
-     * If this prop is provided, the component acts in a controlled manner.
-     */
-    selectedShortcutIndex?: number;
-
-    /**
-     * Whether to show only a single month calendar.
-     *
-     * @default false
-     */
-    singleMonthOnly?: boolean;
-
-    /**
-     * The currently selected `DateRange`.
-     * If this prop is provided, the component acts in a controlled manner.
-     */
-    value?: DateRange;
-}
-
 // leftView and rightView controls the DayPicker displayed month
-export interface IDateRangePickerState {
-    hasModifiedTimePickers?: [boolean, boolean];
-    hoverValue?: DateRange;
-    leftView?: MonthAndYear;
-    rightView?: MonthAndYear;
-    value?: DateRange;
-    time?: DateRange;
-    selectedShortcutIndex?: number;
-}
-
 /**
  * Date range picker component.
  *
  * @see https://blueprintjs.com/docs/#datetime/daterangepicker
  */
-export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps, IDateRangePickerState> {
+export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps, DateRangePickerState> {
     public static defaultProps: DateRangePickerProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
@@ -220,7 +126,6 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
                 ? MonthAndYear.fromDate(rightDate)
                 : leftView.getNextMonth();
         this.state = {
-            hasModifiedTimePickers: [false, false],
             hoverValue: [null, null],
             leftView,
             rightView,
@@ -253,7 +158,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
         );
     }
 
-    public componentDidUpdate(prevProps: DateRangePickerProps, prevState: IDateRangePickerState) {
+    public componentDidUpdate(prevProps: DateRangePickerProps, prevState: DateRangePickerState) {
         super.componentDidUpdate(prevProps, prevState);
 
         if (
@@ -388,7 +293,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
     private handleTimeChange = (newTime: Date, dateIndex: number) => {
         this.props.timePickerProps?.onChange?.(newTime);
 
-        this.setState(({ hasModifiedTimePickers, value, time }) => {
+        this.setState(({ value, time }) => {
             const newValue = DateUtils.getDateTime(
                 value[dateIndex] != null ? DateUtils.clone(value[dateIndex]) : new Date(),
                 newTime,
@@ -398,10 +303,8 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
             const newTimeRange: DateRange = [time[0], time[1]];
             newTimeRange[dateIndex] = newTime;
             this.props.onChange?.(newDateRange);
-            hasModifiedTimePickers[dateIndex] = true;
 
             return {
-                hasModifiedTimePickers,
                 time: newTimeRange,
                 value: newDateRange,
             };
@@ -540,12 +443,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
         if (modifiers.disabled) {
             return;
         }
-        const { dateRange, boundary } = DateRangeSelectionStrategy.getNextState(
-            this.state.value,
-            day,
-            this.props,
-            this.state.hasModifiedTimePickers,
-        );
+        const { dateRange, boundary } = DateRangeSelectionStrategy.getNextState(this.props, this.state, day);
         this.setState({ hoverValue: dateRange });
         this.props.onHoverChange?.(dateRange, day, boundary);
     };
@@ -568,12 +466,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
             return;
         }
 
-        const nextValue = DateRangeSelectionStrategy.getNextState(
-            this.state.value,
-            day,
-            this.props,
-            this.state.hasModifiedTimePickers,
-        ).dateRange;
+        const nextValue = DateRangeSelectionStrategy.getNextState(this.props, this.state, day).dateRange;
 
         // update the hovered date range after click to show the newly selected
         // state, at leasts until the mouse moves again
@@ -716,9 +609,9 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
 function getStateChange(
     value: DateRange,
     nextValue: DateRange,
-    state: IDateRangePickerState,
+    state: DateRangePickerState,
     { contiguousCalendarMonths, timePickerProps }: DateRangePickerProps,
-): IDateRangePickerState {
+): DateRangePickerState {
     if (value != null && nextValue == null) {
         return { value: [null, null] };
     } else if (nextValue != null) {
@@ -774,14 +667,17 @@ function getStateChange(
             }
         }
 
-        // Update time values if timePickerProps.defaultValue is set
-        if (timePickerProps.defaultValue != null) {
-            const [hasModifiedStartTime, hasModifiedEndTime] = state.hasModifiedTimePickers;
-            if (nextValue[0] != null && !hasModifiedStartTime) {
-                DateUtils.setTime(nextValue[0], timePickerProps.defaultValue);
+        if (nextValue[0] != null) {
+            const startTime = state.time[0] ?? timePickerProps.defaultValue;
+            if (startTime != null) {
+                DateUtils.setTime(nextValue[0], startTime);
             }
-            if (nextValue[1] != null && !hasModifiedEndTime) {
-                DateUtils.setTime(nextValue[1], timePickerProps.defaultValue);
+        }
+
+        if (nextValue[1] != null) {
+            const endTime = state.time[1] ?? timePickerProps.defaultValue;
+            if (endTime != null) {
+                DateUtils.setTime(nextValue[0], endTime);
             }
         }
 

@@ -42,6 +42,7 @@ export { DatePickerUtils } from "./datePickerUtils";
 export { DatePickerBaseProps, DatePickerModifiers, IDatePickerModifiers } from "./datePickerCore";
 export { DateTimePicker, IDateTimePickerProps } from "./dateTimePicker";
 export { DateRangeInput, DateRangeInputProps, IDateRangeInputProps } from "./dateRangeInput";
-export { DateRangePicker, DateRangePickerProps, IDateRangePickerProps } from "./dateRangePicker";
+export { DateRangePicker } from "./dateRangePicker";
+export { DateRangePickerProps, IDateRangePickerProps } from "./dateRangePickerProps";
 export { ITimePickerProps, TimePicker, TimePickerProps, TimePrecision } from "./timePicker";
 export { DatePickerShortcut, DateRangeShortcut, IDatePickerShortcut, IDateRangeShortcut } from "./shortcuts";
