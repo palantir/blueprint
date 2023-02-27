@@ -29,7 +29,7 @@ $dark-tab-color-selected: $pt-dark-link-color !default;
 
 $tab-indicator-width: 3px !default;
 
-.#{$ns}-tabs.#{$ns}-fill {
+.#{$ns}-tabs:not(.#{$ns}-vertical).#{$ns}-fill {
   height: 100%;
 
   .#{$ns}-tab-list {

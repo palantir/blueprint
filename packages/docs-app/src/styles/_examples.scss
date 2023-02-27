@@ -572,6 +572,12 @@
   }
 }
 
+#{example("Tabs")} {
+  .docs-example .#{$ns}-heading {
+    margin-bottom: 0;
+  }
+}
+
 //
 // DATETIME
 //
