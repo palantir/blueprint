@@ -68,7 +68,10 @@ export interface ITabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "o
     /** Name of a Blueprint UI icon (or an icon element) to render before the children. */
     icon?: IconName | MaybeElement;
 
-    /** Content to render inside a `<Tag>` after the children. */
+    /**
+     * Content to render inside a `<Tag>` after the children.
+     * The tag is `minimal` by default; it can be further modified by using `tagProps`.
+     */
     tagContent?: TagProps["children"];
 
     /**

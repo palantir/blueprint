@@ -77,7 +77,12 @@ export class TabTitle extends AbstractPureComponent2<TabTitleProps> {
                 {title}
                 {children}
                 {tagContent != null && (
-                    <Tag minimal={true} intent={tagProps?.intent ?? intent} className={Classes.TAB_TAG} {...tagProps}>
+                    <Tag
+                        minimal={true}
+                        intent={intent}
+                        {...tagProps}
+                        className={classNames(Classes.TAB_TAG, tagProps?.className)}
+                    >
                         {tagContent}
                     </Tag>
                 )}
