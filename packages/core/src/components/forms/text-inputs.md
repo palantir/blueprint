@@ -69,17 +69,11 @@ Apply `Classes.INPUT` on an `input[type="text"]`. You should also specify `dir="
 
 @## Text area
 
-Apply `Classes.INPUT` on a `<textarea>`, or use the `TextArea` React component.
+Use the `<TextArea>` React component, which can be controlled similar to an `<InputGroup>` or `<input>` element.
 
-```tsx
-<TextArea
-    growVertically={true}
-    large={true}
-    intent={Intent.PRIMARY}
-    onChange={this.handleChange}
-    value={this.state.value}
-/>
-```
+@reactExample TextAreaExample
+
+Alternatively, you may apply `Classes.INPUT` to a `<textarea>` element.
 
 @css textarea
 
