@@ -90,6 +90,18 @@ export interface ITabsProps extends Props {
     vertical?: boolean;
 
     /**
+     * Whether to make the tabs list fill the height of its parent.
+     *
+     * This has no effect when `vertical={true}`.
+     * This is not recommended when tab panels are defined within this component subtree, as the height computation will
+     * include the panel height, which is usually not intended. Instead, it works well if the panels are rendered
+     * elsewhere in the React tree.
+     *
+     * @default false
+     */
+    fill?: boolean;
+
+    /**
      * A callback function that is invoked when a tab in the tab list is clicked.
      */
     onChange?(newTabId: TabId, prevTabId: TabId | undefined, event: React.MouseEvent<HTMLElement>): void;
@@ -113,6 +125,7 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
 
     public static defaultProps: Partial<TabsProps> = {
         animate: true,
+        fill: false,
         large: false,
         renderActiveTabPanelOnly: false,
         vertical: false,
@@ -155,7 +168,10 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
             </div>
         ) : null;
 
-        const classes = classNames(Classes.TABS, { [Classes.VERTICAL]: this.props.vertical }, this.props.className);
+        const classes = classNames(Classes.TABS, this.props.className, {
+            [Classes.VERTICAL]: this.props.vertical,
+            [Classes.FILL]: this.props.fill,
+        });
         const tabListClasses = classNames(Classes.TAB_LIST, {
             [Classes.LARGE]: this.props.large,
         });

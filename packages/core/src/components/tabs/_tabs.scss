@@ -29,6 +29,14 @@ $dark-tab-color-selected: $pt-dark-link-color !default;
 
 $tab-indicator-width: 3px !default;
 
+.#{$ns}-tabs:not(.#{$ns}-vertical).#{$ns}-fill {
+  height: 100%;
+
+  .#{$ns}-tab-list {
+    height: 100%;
+  }
+}
+
 .#{$ns}-tabs.#{$ns}-vertical {
   display: flex;
 
@@ -96,8 +104,11 @@ $tab-indicator-width: 3px !default;
 
 .#{$ns}-tab {
   @include overflow-ellipsis();
+  align-items: center;
+  align-self: stretch;
   color: $pt-text-color;
   cursor: pointer;
+  display: flex;
   flex: 0 0 auto;
   font-size: $pt-font-size;
   line-height: $pt-button-height;
@@ -198,6 +209,10 @@ $tab-indicator-width: 3px !default;
 
   &.#{$ns}-no-animation {
     transition: none;
+  }
+
+  .#{$ns}-tabs:not(.#{$ns}-vertical) & {
+    height: 100%;
   }
 }
 

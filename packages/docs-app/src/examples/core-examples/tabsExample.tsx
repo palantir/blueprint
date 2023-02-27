@@ -24,6 +24,8 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 export interface TabsExampleState {
     activePanelOnly: boolean;
     animate: boolean;
+    fill: boolean;
+    large: boolean;
     navbarTabId: TabId;
     showIcon: boolean;
     showTags: boolean;
@@ -35,6 +37,8 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
     public state: TabsExampleState = {
         activePanelOnly: false,
         animate: true,
+        fill: true,
+        large: false,
         navbarTabId: "Home",
         showIcon: false,
         showTags: false,
@@ -46,20 +50,24 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
 
     private toggleAnimate = handleBooleanChange(animate => this.setState({ animate }));
 
-    private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
+    private toggleLarge = handleBooleanChange(large => this.setState({ large }));
+
+    private toggleFill = handleBooleanChange(fill => this.setState({ fill }));
 
     private toggleIcon = handleBooleanChange(icon => this.setState({ showIcon: icon }));
 
+    private toggleRoundTags = handleBooleanChange(useRoundTags => this.setState({ useRoundTags }));
+
     private toggleTag = handleBooleanChange(tag => this.setState({ showTags: tag }));
 
-    private toggleRoundTags = handleBooleanChange(useRoundTags => this.setState({ useRoundTags }));
+    private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
 
     public render() {
         const options = (
             <>
                 <H5>Appearance props</H5>
-                <Switch checked={this.state.animate} label="Animate indicator" onChange={this.toggleAnimate} />
-                <Switch checked={this.state.vertical} label="Use vertical tabs" onChange={this.toggleVertical} />
+                <Switch checked={this.state.large} label="Large size" onChange={this.toggleLarge} />
+                <Switch checked={this.state.animate} label="Animate tab indicator" onChange={this.toggleAnimate} />
                 <H5>Behavior props</H5>
                 <Switch
                     checked={this.state.activePanelOnly}
@@ -86,7 +94,8 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
 
         return (
             <Example className="docs-tabs-example" options={options} {...this.props}>
-                <H4>Large tabs without panels, controlled mode:</H4>
+                <H4>Tabs without panels, controlled mode</H4>
+                <Switch checked={this.state.fill} label="Fill height" onChange={this.toggleFill} />
                 <Navbar>
                     <Navbar.Group>
                         <Navbar.Heading>
@@ -94,11 +103,11 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
                         </Navbar.Heading>
                     </Navbar.Group>
                     <Navbar.Group align={Alignment.RIGHT}>
-                        {/* controlled mode & no panels (see h1 below): */}
                         <Tabs
                             animate={this.state.animate}
+                            fill={this.state.fill}
                             id="navbar"
-                            large={true}
+                            large={this.state.large}
                             onChange={this.handleNavbarTabChange}
                             selectedTabId={this.state.navbarTabId}
                         >
@@ -115,11 +124,13 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
                     </Navbar.Group>
                 </Navbar>
                 <Divider style={{ margin: "20px 0", width: "100%" }} />
-                <H4>Regular tabs with panels, uncontrolled mode:</H4>
+                <H4>Tabs with panels, uncontrolled mode</H4>
+                <Switch checked={this.state.vertical} label="Use vertical tabs" onChange={this.toggleVertical} />
                 <Tabs
                     animate={this.state.animate}
                     id="TabsExample"
                     key={this.state.vertical ? "vertical" : "horizontal"}
+                    large={this.state.large}
                     renderActiveTabPanelOnly={this.state.activePanelOnly}
                     vertical={this.state.vertical}
                 >
