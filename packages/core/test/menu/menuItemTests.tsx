@@ -39,11 +39,14 @@ describe("MenuItem", () => {
     });
 
     it("supports HTML props", () => {
-        const func = () => false;
-        const item = shallow(<MenuItem text="text" onClick={func} onKeyDown={func} onMouseMove={func} />).find("a");
-        assert.strictEqual(item.prop("onClick"), func);
-        assert.strictEqual(item.prop("onKeyDown"), func);
-        assert.strictEqual(item.prop("onMouseMove"), func);
+        const mouseHandler = (_event: React.MouseEvent<HTMLElement>) => false;
+        const keyHandler = (_event: React.KeyboardEvent<HTMLElement>) => false;
+        const item = shallow(
+            <MenuItem text="text" onClick={mouseHandler} onKeyDown={keyHandler} onMouseMove={mouseHandler} />,
+        ).find("a");
+        assert.strictEqual(item.prop("onClick"), mouseHandler);
+        assert.strictEqual(item.prop("onKeyDown"), keyHandler);
+        assert.strictEqual(item.prop("onMouseMove"), mouseHandler);
     });
 
     it("children appear in submenu", () => {

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "4.15.1",
+    "version": "4.16.3",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -27,7 +27,7 @@
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
-        "compile:css": "sass-compile --functions ./scripts/sass-custom-functions.js ./src",
+        "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
         "dist": "run-s \"dist:*\"",
         "dist:bundle": "cross-env NODE_ENV=production webpack",
@@ -46,8 +46,8 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/colors": "^4.1.14",
-        "@blueprintjs/icons": "^4.13.1",
+        "@blueprintjs/colors": "^4.1.15",
+        "@blueprintjs/icons": "^4.13.2",
         "@juggle/resize-observer": "^3.4.0",
         "@types/dom4": "^2.0.2",
         "classnames": "^2.3.1",
@@ -69,14 +69,13 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/karma-build-scripts": "^4.0.10",
-        "@blueprintjs/node-build-scripts": "^6.0.6",
-        "@blueprintjs/test-commons": "^1.1.8",
+        "@blueprintjs/karma-build-scripts": "^4.0.11",
+        "@blueprintjs/node-build-scripts": "^6.0.7",
+        "@blueprintjs/test-commons": "^1.1.9",
         "@testing-library/react": "^12.1.5",
-        "@vgrid/sass-inline-svg": "^1.0.1",
         "enzyme": "^3.11.0",
         "karma": "^6.4.1",
-        "mocha": "^10.1.0",
+        "mocha": "^10.2.0",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",

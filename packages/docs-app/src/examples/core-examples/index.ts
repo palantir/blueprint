@@ -64,6 +64,7 @@ export * from "./radioExample";
 export * from "./sliderExample";
 export * from "./switchExample";
 export * from "./tagInputExample";
+export * from "./textAreaExample";
 export * from "./textExample";
 export * from "./spinnerExample";
 export * from "./tabsExample";

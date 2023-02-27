@@ -17,36 +17,76 @@
 import { assert } from "chai";
 import * as React from "react";
 
-import { Menu, MenuItem } from "@blueprintjs/core";
+import { Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { hideContextMenu, showContextMenu } from "../src";
+import { Classes, hideContextMenu, showContextMenu } from "../src";
 
 const TEST_MENU_CLASS_NAME = "test-menu";
 const MENU = (
     <Menu className={TEST_MENU_CLASS_NAME}>
-        <MenuItem icon="align-left" text="Align Left" />,
-        <MenuItem icon="align-center" text="Align Center" />,
-        <MenuItem icon="align-right" text="Align Right" />,
+        <MenuItem icon="align-left" text="Align Left" />
+        <MenuItem icon="align-center" text="Align Center" />
+        <MenuItem icon="align-right" text="Align Right" />
     </Menu>
 );
+const MENU_TARGET_OFFSET = {
+    left: 10,
+    top: 10,
+};
+
+function assertMenuState(isOpen = true) {
+    const ctxMenuElement = document.querySelectorAll<HTMLElement>(`.${TEST_MENU_CLASS_NAME}`);
+    if (isOpen) {
+        assert.isTrue(ctxMenuElement.length === 1, "Expected menu to be rendered on the page");
+        assert.isNotNull(ctxMenuElement[0].closest(`.${CoreClasses.OVERLAY_OPEN}`), "Expected overlay to be open");
+    } else {
+        if (ctxMenuElement.length > 0) {
+            assert.isNull(ctxMenuElement[0].closest(`.${CoreClasses.OVERLAY_OPEN}`), "Expected overlay to be closed");
+        }
+    }
+}
+
+function dismissContextMenu() {
+    const backdrop = document.querySelector<HTMLElement>(`.${Classes.CONTEXT_MENU2_BACKDROP}`);
+    if (backdrop != null) {
+        dispatchMouseEvent(backdrop, "mousedown");
+    }
+}
 
 describe("showContextMenu() + hideContextMenu()", () => {
-    afterEach(() => {
-        hideContextMenu();
+    let containerElement: HTMLElement | undefined;
+
+    before(() => {
+        // create an element on the page with non-zero dimensions so that we can trigger a context menu above it
+        containerElement = document.createElement("div");
+        containerElement.setAttribute("style", "width: 100px; height: 100px;");
+        document.body.appendChild(containerElement);
+    });
+
+    beforeEach(() => {
+        assertMenuState(false);
+    });
+
+    after(() => {
+        containerElement?.remove();
     });
 
     it("shows a menu with the imperative API", done => {
         showContextMenu({
             content: MENU,
             onOpened: () => {
-                const ctxMenuElement = document.querySelectorAll(`.${TEST_MENU_CLASS_NAME}`);
-                assert.isTrue(ctxMenuElement.length === 1);
-                done();
+                // defer assertions until the next animation frame; otherwise, this might throw an error
+                // inside the <TransitionGroup>, which may throw off test debugging
+                requestAnimationFrame(() => {
+                    assertMenuState(true);
+                    // important: close menu for the next test
+                    dismissContextMenu();
+                    done();
+                });
             },
-            targetOffset: {
-                left: 10,
-                top: 10,
-            },
+            targetOffset: MENU_TARGET_OFFSET,
+            transitionDuration: 0,
         });
     });
 
@@ -54,17 +94,15 @@ describe("showContextMenu() + hideContextMenu()", () => {
         showContextMenu({
             content: MENU,
             onOpened: () => {
-                hideContextMenu();
-                setTimeout(() => {
-                    const ctxMenuElement = document.querySelectorAll(`.${TEST_MENU_CLASS_NAME}`);
-                    assert.isTrue(ctxMenuElement.length === 0);
+                // defer assertions until the next animation frame
+                requestAnimationFrame(() => {
+                    hideContextMenu();
+                    assertMenuState(false);
                     done();
                 });
             },
-            targetOffset: {
-                left: 10,
-                top: 10,
-            },
+            targetOffset: MENU_TARGET_OFFSET,
+            transitionDuration: 0,
         });
     });
 });

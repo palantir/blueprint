@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/table",
-    "version": "4.7.16",
+    "version": "4.7.20",
     "description": "Scalable interactive table component",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -35,8 +35,8 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.15.1",
-        "@blueprintjs/popover2": "^1.12.1",
+        "@blueprintjs/core": "^4.16.3",
+        "@blueprintjs/popover2": "^1.13.3",
         "classnames": "^2.3.1",
         "prop-types": "^15.7.2",
         "react-innertext": "^1.1.5",
@@ -53,13 +53,13 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/colors": "^4.1.14",
-        "@blueprintjs/node-build-scripts": "^6.0.6",
-        "@blueprintjs/test-commons": "^1.1.8",
+        "@blueprintjs/colors": "^4.1.15",
+        "@blueprintjs/node-build-scripts": "^6.0.7",
+        "@blueprintjs/test-commons": "^1.1.9",
         "@types/prop-types": "~15.7.5",
         "enzyme": "^3.11.0",
         "karma": "^6.4.1",
-        "mocha": "^10.1.0",
+        "mocha": "^10.2.0",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
