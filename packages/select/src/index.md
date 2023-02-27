@@ -32,7 +32,7 @@ npm install --save @blueprintjs/select
 Import the package stylesheet in Sass:
 
 ```scss
-@import "~@blueprintjs/select/lib/css/blueprint-select.css";
+@import "@blueprintjs/select/lib/css/blueprint-select.css";
 ```
 
 ...or in plain HTML:

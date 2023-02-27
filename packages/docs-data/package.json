@@ -26,9 +26,6 @@
         "url": "git@github.com:palantir/blueprint.git",
         "directory": "packages/docs-data"
     },
-    "engines": {
-        "node": ">=16"
-    },
     "author": "Palantir Technologies",
     "license": "Apache-2.0"
 }

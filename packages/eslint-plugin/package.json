@@ -19,7 +19,7 @@
         "@blueprintjs/node-build-scripts": "^6.0.7",
         "@types/dedent": "~0.7.0",
         "dedent": "^0.7.0",
-        "mocha": "^10.1.0",
+        "mocha": "^10.2.0",
         "ts-node": "^10.9.1",
         "typescript": "^4.6.2"
     },

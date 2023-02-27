@@ -23,7 +23,7 @@ npm install --save @blueprintjs/popover2
 Import the package stylesheet in Sass:
 
 ```scss
-@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
+@import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 ```
 
 ...or in plain HTML:
