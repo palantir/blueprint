@@ -40,7 +40,7 @@
         "@types/chai": "~4.3.4",
         "@types/enzyme": "~3.10.12",
         "@types/enzyme-adapter-react-16": "~1.0.6",
-        "@types/mocha": "~10.0.0",
+        "@types/mocha": "~10.0.1",
         "@types/react": "~16.14.32",
         "@types/react-dom": "~16.9.10",
         "@types/react-transition-group": "~4.4.5",
