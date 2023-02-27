@@ -12,7 +12,7 @@
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "assert": "^2.0.0",
         "autoprefixer": "^10.4.13",
-        "css-loader": "^6.7.2",
+        "css-loader": "^6.7.3",
         "cssnano": "^5.1.14",
         "fork-ts-checker-notifier-webpack-plugin": "^6.0.0",
         "fork-ts-checker-webpack-plugin": "^7.3.0",
