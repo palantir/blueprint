@@ -38,31 +38,32 @@ $tab-indicator-width: 3px !default;
   > .#{$ns}-tab-list {
     align-items: flex-start;
     flex-direction: column;
+    gap: 3px;
 
     .#{$ns}-tab {
       border-radius: $pt-border-radius;
       padding: 0 $pt-grid-size;
       width: 100%;
+      min-height: $pt-grid-size * 3.5;
 
       &[aria-selected="true"] {
-        background-color: rgba($pt-intent-primary, 0.2);
-        box-shadow: none;
+        background-color: rgba($pt-intent-primary, 0.05);
+        box-shadow: 0 0 0 1px $blue4;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           background-color: $pt-high-contrast-mode-active-background-color;
           color: $black;
         }
       }
+
+      &:not([aria-disabled="true"]):not([aria-selected="true"]):hover {
+        color: inherit;
+        background-color: $light-gray4;
+      }
     }
 
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
-      background-color: rgba($pt-intent-primary, 0.2);
-      border-radius: $pt-border-radius;
-      bottom: 0;
-      height: auto;
-      left: 0;
-      right: 0;
-      top: 0;
+      display: none;
     }
   }
 
@@ -98,6 +99,8 @@ $tab-indicator-width: 3px !default;
   cursor: pointer;
   flex: 0 0 auto;
   font-size: $pt-font-size;
+  display: flex;
+  align-items: center;
   line-height: $pt-button-height;
   max-width: 100%;
   position: relative;
@@ -108,15 +111,6 @@ $tab-indicator-width: 3px !default;
     color: inherit;
     display: block;
     text-decoration: none;
-  }
-
-  .#{$ns}-tab-indicator-wrapper ~ & {
-    // these properties are only for static markup, therefore
-    // we never want them if there's a tab indicator
-    /* stylelint-disable declaration-no-important */
-    background-color: transparent !important;
-    box-shadow: none !important;
-    /* stylelint-enable declaration-no-important */
   }
 
   &[aria-disabled="true"] {
@@ -134,8 +128,7 @@ $tab-indicator-width: 3px !default;
     box-shadow: inset 0 (-$tab-indicator-width) 0 $tab-color-selected;
   }
 
-  &[aria-selected="true"],
-  &:not([aria-disabled="true"]):hover {
+  &[aria-selected="true"] {
     color: $tab-color-selected;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -159,6 +152,28 @@ $tab-indicator-width: 3px !default;
 
   &[aria-hidden="true"] {
     display: none;
+  }
+}
+
+.#{$ns}-tabs:not(.#{$ns}-vertical) {
+  .#{$ns}-tab {
+    &:not([aria-disabled="true"]):hover {
+      color: $tab-color-selected;
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        color: $pt-high-contrast-mode-active-text-color;
+      }
+    }
+  }
+
+  .#{$ns}-tab-indicator-wrapper ~ & {
+    // these properties are only for static markup, therefore
+    // we never want them if there's a tab indicator
+    /* stylelint-disable declaration-no-important */
+    background-color: transparent !important;
+    box-shadow: none !important;
+    /* stylelint-enable declaration-no-important */
   }
 }
 
@@ -192,6 +207,26 @@ $tab-indicator-width: 3px !default;
 }
 
 .#{$ns}-dark {
+  .#{$ns}-tabs.#{$ns}-vertical {
+    > .#{$ns}-tab-list {
+      .#{$ns}-tab {
+        &[aria-selected="true"] {
+          background-color: rgba($blue5, 0.1);
+          box-shadow: 0 0 0 1px $blue5;
+
+          @media (forced-colors: active) and (prefers-color-scheme: dark) {
+            color: $pt-high-contrast-mode-active-text-color;
+          }
+        }
+
+        &:not([aria-disabled="true"]):not([aria-selected="true"]):hover {
+          color: inherit;
+          background-color: $dark-gray1;
+        }
+      }
+    }
+  }
+
   .#{$ns}-tab {
     color: $pt-dark-text-color;
 
