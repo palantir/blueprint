@@ -40,9 +40,9 @@ $tab-indicator-width: 3px !default;
     flex-direction: column;
 
     .#{$ns}-tab {
-      display: flex;
       align-items: center;
       border-radius: $pt-border-radius;
+      display: flex;
       padding: 0 $pt-grid-size;
       width: 100%;
 
