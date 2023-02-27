@@ -23,7 +23,6 @@ import { TextArea } from "../../src";
 
 describe("<TextArea>", () => {
     let containerElement: HTMLElement | undefined;
-    const mountOptions = { attachTo: containerElement };
 
     beforeEach(() => {
         containerElement = document.createElement("div");
@@ -38,7 +37,7 @@ describe("<TextArea>", () => {
 
     // HACKHACK: skipped test, see https://github.com/palantir/blueprint/issues/5976
     it.skip("can resize automatically", () => {
-        const wrapper = mount(<TextArea growVertically={true} />, mountOptions);
+        const wrapper = mount(<TextArea growVertically={true} />, { attachTo: containerElement });
         const textarea = wrapper.find("textarea");
 
         textarea.simulate("change", { target: { scrollHeight: 500 } });
@@ -47,7 +46,7 @@ describe("<TextArea>", () => {
     });
 
     it("doesn't resize by default", () => {
-        const wrapper = mount(<TextArea />, mountOptions);
+        const wrapper = mount(<TextArea />, { attachTo: containerElement });
         const textarea = wrapper.find("textarea");
 
         textarea.simulate("change", {
@@ -80,10 +79,9 @@ describe("<TextArea>", () => {
         Sed eros sapien, semper sed imperdiet sed,
         dictum eget purus. Donec porta accumsan pretium.
         Fusce at felis mattis, tincidunt erat non, varius erat.`;
-        const wrapper = mount(
-            <TextArea growVertically={true} value={initialValue} style={{ marginTop: 10 }} />,
-            mountOptions,
-        );
+        const wrapper = mount(<TextArea growVertically={true} value={initialValue} style={{ marginTop: 10 }} />, {
+            attachTo: containerElement,
+        });
         const textarea = wrapper.find("textarea");
         const scrollHeightInPixels = `${textarea.getDOMNode<HTMLElement>().scrollHeight}px`;
         assert.equal(textarea.getDOMNode<HTMLElement>().style.height, scrollHeightInPixels);
@@ -103,7 +101,7 @@ describe("<TextArea>", () => {
             textAreaNew = ref;
         };
 
-        const textAreawrapper = mount(<TextArea inputRef={textAreaRefCallback} />, mountOptions);
+        const textAreawrapper = mount(<TextArea inputRef={textAreaRefCallback} />, { attachTo: containerElement });
         assert.instanceOf(textArea, HTMLTextAreaElement);
         assert.strictEqual(callCount, 1);
 
@@ -119,7 +117,7 @@ describe("<TextArea>", () => {
         const textAreaRef = React.createRef<HTMLTextAreaElement>();
         const textAreaNewRef = React.createRef<HTMLTextAreaElement>();
 
-        const textAreawrapper = mount(<TextArea inputRef={textAreaRef} />, mountOptions);
+        const textAreawrapper = mount(<TextArea inputRef={textAreaRef} />, { attachTo: containerElement });
         assert.instanceOf(textAreaRef.current, HTMLTextAreaElement);
 
         textAreawrapper.setProps({ inputRef: textAreaNewRef });
@@ -131,7 +129,7 @@ describe("<TextArea>", () => {
     it.skip("resizes when props change if growVertically is true", () => {
         const initialText = "A";
         const longText = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-        const wrapper = mount(<TextArea growVertically={true} value={initialText} />, mountOptions);
+        const wrapper = mount(<TextArea growVertically={true} value={initialText} />, { attachTo: containerElement });
         const initialHeight = wrapper.find("textarea").getDOMNode<HTMLElement>().style.height;
         wrapper.setProps({ value: longText }).update();
         const newHeight = wrapper.find("textarea").getDOMNode<HTMLElement>().style.height;

@@ -54,10 +54,6 @@ export interface TextAreaState {
     height?: number;
 }
 
-export interface TextAreaSnapshot {
-    scrollHeight: number;
-}
-
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 /**
@@ -65,7 +61,7 @@ export interface TextAreaSnapshot {
  *
  * @see https://blueprintjs.com/docs/#core/components/text-inputs.text-area
  */
-export class TextArea extends AbstractPureComponent2<TextAreaProps, TextAreaState, TextAreaSnapshot> {
+export class TextArea extends AbstractPureComponent2<TextAreaProps, TextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
     public state: TextAreaState = {};
@@ -92,7 +88,7 @@ export class TextArea extends AbstractPureComponent2<TextAreaProps, TextAreaStat
         this.maybeSyncHeightToScrollHeight();
     }
 
-    public componentDidUpdate(prevProps: TextAreaProps, _prevState: TextAreaState) {
+    public componentDidUpdate(prevProps: TextAreaProps) {
         if (prevProps.inputRef !== this.props.inputRef) {
             setRef(prevProps.inputRef, null);
             this.handleRef = refHandler(this, "textareaElement", this.props.inputRef);
