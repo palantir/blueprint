@@ -16,27 +16,30 @@
 
 import * as React from "react";
 
-import { Alignment, Classes, H3, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
+import { Alignment, Classes, Divider, H4, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
-import { IconNames } from "@blueprintjs/icons";
 
-export interface ITabsExampleState {
+import { PropCodeTooltip } from "../../common/propCodeTooltip";
+
+export interface TabsExampleState {
     activePanelOnly: boolean;
     animate: boolean;
     navbarTabId: TabId;
+    showIcon: boolean;
+    showTags: boolean;
+    useRoundTags: boolean;
     vertical: boolean;
-    icon: boolean;
-    tag: boolean;
 }
 
-export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleState> {
-    public state: ITabsExampleState = {
+export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleState> {
+    public state: TabsExampleState = {
         activePanelOnly: false,
         animate: true,
         navbarTabId: "Home",
+        showIcon: false,
+        showTags: false,
+        useRoundTags: false,
         vertical: false,
-        icon: false,
-        tag: false,
     };
 
     private toggleActiveOnly = handleBooleanChange(activePanelOnly => this.setState({ activePanelOnly }));
@@ -45,28 +48,45 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
 
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
 
-    private toggleIcon = handleBooleanChange(icon => this.setState({ icon }));
+    private toggleIcon = handleBooleanChange(icon => this.setState({ showIcon: icon }));
 
-    private toggleTag = handleBooleanChange(tag => this.setState({ tag }));
+    private toggleTag = handleBooleanChange(tag => this.setState({ showTags: tag }));
+
+    private toggleRoundTags = handleBooleanChange(useRoundTags => this.setState({ useRoundTags }));
 
     public render() {
         const options = (
             <>
-                <H5>Props</H5>
+                <H5>Appearance props</H5>
                 <Switch checked={this.state.animate} label="Animate indicator" onChange={this.toggleAnimate} />
                 <Switch checked={this.state.vertical} label="Use vertical tabs" onChange={this.toggleVertical} />
+                <H5>Behavior props</H5>
                 <Switch
                     checked={this.state.activePanelOnly}
                     label="Render active tab panel only"
                     onChange={this.toggleActiveOnly}
                 />
-                <Switch checked={this.state.icon} label="Icon" onChange={this.toggleIcon} />
-                <Switch checked={this.state.tag} label="Tag" onChange={this.toggleTag} />
+                <H5>Tab content props</H5>
+                <PropCodeTooltip snippet="icon">
+                    <Switch checked={this.state.showIcon} label="Show icon" onChange={this.toggleIcon} />
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet="tagContent">
+                    <Switch checked={this.state.showTags} label="Show tag" onChange={this.toggleTag} />
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`tagProps={{ round: ${this.state.useRoundTags.toString()} }}`}>
+                    <Switch
+                        disabled={!this.state.showTags}
+                        checked={this.state.useRoundTags}
+                        label="Use round tags"
+                        onChange={this.toggleRoundTags}
+                    />
+                </PropCodeTooltip>
             </>
         );
 
         return (
             <Example className="docs-tabs-example" options={options} {...this.props}>
+                <H4>Large tabs without panels, controlled mode:</H4>
                 <Navbar>
                     <Navbar.Group>
                         <Navbar.Heading>
@@ -82,13 +102,20 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
                             onChange={this.handleNavbarTabChange}
                             selectedTabId={this.state.navbarTabId}
                         >
-                            <Tab id="Home" title="Home" icon={this.state.icon ? IconNames.HOME : undefined} />
-                            <Tab id="Files" title="Files" icon={this.state.icon ? IconNames.FOLDER_OPEN : undefined} />
-                            <Tab id="Builds" title="Builds" icon={this.state.icon ? IconNames.BUILD : undefined} tagProps={this.state.tag ? { children: "4" } : undefined} />
+                            <Tab id="Home" title="Home" icon={this.state.showIcon ? "home" : undefined} />
+                            <Tab id="Files" title="Files" icon={this.state.showIcon ? "folder-open" : undefined} />
+                            <Tab
+                                id="Builds"
+                                title="Builds"
+                                icon={this.state.showIcon ? "build" : undefined}
+                                tagContent={this.state.showTags ? 4 : undefined}
+                                tagProps={{ round: this.state.useRoundTags }}
+                            />
                         </Tabs>
                     </Navbar.Group>
                 </Navbar>
-                {/* uncontrolled mode & each Tab has a panel: */}
+                <Divider style={{ margin: "20px 0", width: "100%" }} />
+                <H4>Regular tabs with panels, uncontrolled mode:</H4>
                 <Tabs
                     animate={this.state.animate}
                     id="TabsExample"
@@ -97,7 +124,13 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
                     vertical={this.state.vertical}
                 >
                     <Tab id="rx" title="React" panel={<ReactPanel />} />
-                    <Tab id="ng" title="Angular" panel={<AngularPanel />} tagProps={this.state.tag ? { children: "10" } : undefined} />
+                    <Tab
+                        id="ng"
+                        title="Angular"
+                        panel={<AngularPanel />}
+                        tagContent={this.state.showTags ? 10 : undefined}
+                        tagProps={{ round: this.state.useRoundTags }}
+                    />
                     <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
                     <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
                     <Tabs.Expander />
@@ -112,7 +145,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, ITabsExampleS
 
 const ReactPanel: React.FC = () => (
     <div>
-        <H3>Example panel: React</H3>
+        <H4>Example panel: React</H4>
         <p className={Classes.RUNNING_TEXT}>
             Lots of people use React as the V in MVC. Since React makes no assumptions about the rest of your technology
             stack, it's easy to try it out on a small feature in an existing project.
@@ -122,7 +155,7 @@ const ReactPanel: React.FC = () => (
 
 const AngularPanel: React.FC = () => (
     <div>
-        <H3>Example panel: Angular</H3>
+        <H4>Example panel: Angular</H4>
         <p className={Classes.RUNNING_TEXT}>
             HTML is great for declaring static documents, but it falters when we try to use it for declaring dynamic
             views in web-applications. AngularJS lets you extend HTML vocabulary for your application. The resulting
@@ -133,7 +166,7 @@ const AngularPanel: React.FC = () => (
 
 const EmberPanel: React.FC = () => (
     <div>
-        <H3>Example panel: Ember</H3>
+        <H4>Example panel: Ember</H4>
         <p className={Classes.RUNNING_TEXT}>
             Ember.js is an open-source JavaScript application framework, based on the model-view-controller (MVC)
             pattern. It allows developers to create scalable single-page web applications by incorporating common idioms
@@ -145,6 +178,6 @@ const EmberPanel: React.FC = () => (
 
 const BackbonePanel: React.FC = () => (
     <div>
-        <H3>Backbone</H3>
+        <H4>Backbone</H4>
     </div>
 );

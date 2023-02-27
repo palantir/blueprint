@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { IconName } from "@blueprintjs/icons";
 import classNames from "classnames";
 import * as React from "react";
+
+import { IconName } from "@blueprintjs/icons";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, MaybeElement, Props } from "../../common/props";
@@ -67,8 +68,14 @@ export interface ITabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "o
     /** Name of a Blueprint UI icon (or an icon element) to render before the children. */
     icon?: IconName | MaybeElement;
 
-    /** Props for rendering a tag after the children. */
-    tagProps?: TagProps;
+    /** Content to render inside a `<Tag>` after the children. */
+    tagContent?: TagProps["children"];
+
+    /**
+     * Props to customize the `<Tag>` rendered after the children.
+     * This has no effect if `tagContent` is `undefined`.
+     */
+    tagProps?: Omit<TagProps, "children">;
 }
 
 /**

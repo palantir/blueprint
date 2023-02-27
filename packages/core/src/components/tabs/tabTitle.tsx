@@ -44,7 +44,19 @@ export class TabTitle extends AbstractPureComponent2<TabTitleProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TabTitle`;
 
     public render() {
-        const { className, children, disabled, id, parentId, selected, title, icon, tagProps, ...htmlProps } = this.props;
+        const {
+            className,
+            children,
+            disabled,
+            id,
+            parentId,
+            selected,
+            title,
+            icon,
+            tagContent,
+            tagProps,
+            ...htmlProps
+        } = this.props;
         const intent = selected ? Intent.PRIMARY : Intent.NONE;
 
         return (
@@ -64,7 +76,11 @@ export class TabTitle extends AbstractPureComponent2<TabTitleProps> {
                 {icon != null && <Icon icon={icon} intent={intent} className={Classes.TAB_ICON} />}
                 {title}
                 {children}
-                {tagProps != null && <Tag minimal={true} intent={tagProps.intent != undefined ? tagProps.intent : intent} className={Classes.TAB_TAG} {...tagProps} />}
+                {tagContent != null && (
+                    <Tag minimal={true} intent={tagProps?.intent ?? intent} className={Classes.TAB_TAG} {...tagProps}>
+                        {tagContent}
+                    </Tag>
+                )}
             </div>
         );
     }
