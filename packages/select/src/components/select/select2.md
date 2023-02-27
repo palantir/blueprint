@@ -88,7 +88,7 @@ const FilmSelect: React.FC = () => {
     );
 };
 
-ReactDOM.render(<FilmSelect /> document.querySelector("#root"));
+ReactDOM.render(<FilmSelect />, document.querySelector("#root"));
 ```
 
 In TypeScript, `Select2<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type so you can easily define handlers without transformation steps, but most props are required as a result.
