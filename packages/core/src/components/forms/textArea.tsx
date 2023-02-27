@@ -90,6 +90,12 @@ export class TextArea extends AbstractPureComponent2<TextAreaProps, ITextAreaSta
             setRef(prevProps.inputRef, null);
             this.handleRef = refHandler(this, "textareaElement", this.props.inputRef);
             setRef(this.props.inputRef, this.textareaElement);
+            return;
+        }
+        if (this.props.growVertically && this.textareaElement !== null && prevProps.value !== this.props.value) {
+            this.setState({
+                height: this.textareaElement?.scrollHeight,
+            });
         }
     }
 
