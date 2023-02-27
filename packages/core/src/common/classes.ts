@@ -283,6 +283,8 @@ export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
 
 export const TAB = `${NS}-tab`;
+export const TAB_ICON = `${TAB}-icon`;
+export const TAB_TAG = `${TAB}-tag`;
 export const TAB_INDICATOR = `${TAB}-indicator`;
 export const TAB_INDICATOR_WRAPPER = `${TAB_INDICATOR}-wrapper`;
 export const TAB_LIST = `${TAB}-list`;

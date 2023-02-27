@@ -40,7 +40,9 @@ $tab-indicator-width: 3px !default;
     flex-direction: column;
 
     .#{$ns}-tab {
+      align-items: center;
       border-radius: $pt-border-radius;
+      display: flex;
       padding: 0 $pt-grid-size;
       width: 100%;
 
@@ -160,6 +162,14 @@ $tab-indicator-width: 3px !default;
   &[aria-hidden="true"] {
     display: none;
   }
+}
+
+.#{$ns}-tab-icon {
+  margin-right: 7px;
+}
+
+.#{$ns}-tab-tag {
+  margin-left: 7px;
 }
 
 .#{$ns}-tab-indicator-wrapper {
