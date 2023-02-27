@@ -28,6 +28,8 @@ import ReactRefreshTypeScript from "react-refresh-typescript";
 import webpack from "webpack";
 import WebpackNotifierPlugin from "webpack-notifier";
 
+import { sassNodeModulesLoadPaths } from "@blueprintjs/node-build-scripts";
+
 import { getPackageName } from "./utils.mjs";
 
 // globals
@@ -81,9 +83,8 @@ if (!IS_PRODUCTION) {
 // see https://nodejs.org/docs/latest-v16.x/api/esm.html#importmetaresolvespecifier-parent
 const require = createRequire(import.meta.url);
 
-// Module loaders for .scss files, used in reverse order:
-// compile Sass, apply PostCSS, interpret CSS as modules.
-const scssLoaders = [
+// Module loaders for CSS files, used in reverse order: apply PostCSS, then interpret CSS as ES modules
+const cssLoaders = [
     // Only extract CSS to separate file in production mode.
     IS_PRODUCTION
         ? {
@@ -105,7 +106,19 @@ const scssLoaders = [
             },
         },
     },
-    require.resolve("sass-loader"),
+];
+
+// Module loaders for Sass/SCSS files, used in reverse order: compile Sass, then apply CSS loaders
+const scssLoaders = [
+    ...cssLoaders,
+    {
+        loader: require.resolve("sass-loader"),
+        options: {
+            sassOptions: {
+                includePaths: sassNodeModulesLoadPaths,
+            },
+        },
+    },
 ];
 
 export default {
@@ -156,6 +169,10 @@ export default {
                     }),
                     transpileOnly: !IS_PRODUCTION,
                 },
+            },
+            {
+                test: /\.css$/,
+                use: cssLoaders,
             },
             {
                 test: /\.scss$/,

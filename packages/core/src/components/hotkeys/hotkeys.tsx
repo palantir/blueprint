@@ -24,6 +24,11 @@ import { H4 } from "../html/html";
 import { Hotkey, IHotkeyProps } from "./hotkey";
 import { IHotkeysProps } from "./hotkeysTypes";
 
+/**
+ * Hotkeys component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/hotkeys
+ */
 export class Hotkeys extends AbstractPureComponent2<IHotkeysProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkeys`;
 

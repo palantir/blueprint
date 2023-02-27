@@ -66,6 +66,8 @@ const REACT_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
 };
 
 /**
+ * Portal (v2) component.
+ *
  * This component detaches its contents and re-attaches them to document.body.
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
  * Any class names passed to this element will be propagated to the new container element on document.body.

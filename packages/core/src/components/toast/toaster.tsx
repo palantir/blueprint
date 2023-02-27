@@ -113,6 +113,11 @@ export interface IToasterState {
     toasts: IToastOptions[];
 }
 
+/**
+ * Toaster component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/toast.toaster
+ */
 export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState> implements ToasterInstance {
     public static displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
 

@@ -39,11 +39,14 @@ describe("MenuItem", () => {
     });
 
     it("supports HTML props", () => {
-        const func = () => false;
-        const item = shallow(<MenuItem text="text" onClick={func} onKeyDown={func} onMouseMove={func} />).find("a");
-        assert.strictEqual(item.prop("onClick"), func);
-        assert.strictEqual(item.prop("onKeyDown"), func);
-        assert.strictEqual(item.prop("onMouseMove"), func);
+        const mouseHandler = (_event: React.MouseEvent<HTMLElement>) => false;
+        const keyHandler = (_event: React.KeyboardEvent<HTMLElement>) => false;
+        const item = shallow(
+            <MenuItem text="text" onClick={mouseHandler} onKeyDown={keyHandler} onMouseMove={mouseHandler} />,
+        ).find("a");
+        assert.strictEqual(item.prop("onClick"), mouseHandler);
+        assert.strictEqual(item.prop("onKeyDown"), keyHandler);
+        assert.strictEqual(item.prop("onMouseMove"), mouseHandler);
     });
 
     it("children appear in submenu", () => {
@@ -68,6 +71,18 @@ describe("MenuItem", () => {
         const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" selected={true} />);
         assert.equal(wrapper.find("li").prop("role"), "option");
         assert.equal(wrapper.find("li").prop("aria-selected"), true);
+        assert.equal(wrapper.find("a").prop("role"), undefined);
+    });
+
+    it("can set roleStructure to change role prop structure to that of a list item", () => {
+        const wrapper = mount(<MenuItem text="Roles" roleStructure="listitem" />);
+        assert.equal(wrapper.find("li").prop("role"), undefined);
+        assert.equal(wrapper.find("a").prop("role"), undefined);
+    });
+
+    it('can set roleStructure to change role prop structure to void li role (set role="none")', () => {
+        const wrapper = mount(<MenuItem text="Roles" roleStructure="none" />);
+        assert.equal(wrapper.find("li").prop("role"), "none");
         assert.equal(wrapper.find("a").prop("role"), undefined);
     });
 

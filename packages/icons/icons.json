@@ -3953,5 +3953,26 @@
         "tags": "target, aim, point, crosshair, mark",
         "group": "interface",
         "codepoint": 62261
+    },
+    {
+        "displayName": "Cross circle",
+        "iconName": "cross-circle",
+        "tags": "circle, cross mark, fail, delete, no, close, remove, not, available, unavailable, wrong, incorrect, cancel",
+        "group": "action",
+        "codepoint": 62262
+    },
+    {
+        "displayName": "Intelligence",
+        "iconName": "intelligence",
+        "tags": "intelligence, intel, observe, watch, capture, humint",
+        "group": "miscellaneous",
+        "codepoint": 62263
+    },
+    {
+        "displayName": "Axle",
+        "iconName": "axle",
+        "tags": "axle, shaft, rail, train, wheels",
+        "group": "miscellaneous",
+        "codepoint": 62264
     }
 ]

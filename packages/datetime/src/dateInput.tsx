@@ -167,7 +167,12 @@ export interface IDateInputState {
     selectedShortcutIndex?: number;
 }
 
-/** @deprecated use { DateInput2 } from "@blueprintjs/datetime2" */
+/**
+ * Date input component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime/dateinput
+ * @deprecated use { DateInput2 } from "@blueprintjs/datetime2"
+ */
 export class DateInput extends AbstractPureComponent2<DateInputProps, IDateInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
 

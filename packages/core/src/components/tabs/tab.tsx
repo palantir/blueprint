@@ -71,6 +71,11 @@ export interface ITabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "o
     tagProps?: TagProps;
 }
 
+/**
+ * Tab component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tabs.tab
+ */
 export class Tab extends AbstractPureComponent2<TabProps> {
     public static defaultProps: Partial<TabProps> = {
         disabled: false,

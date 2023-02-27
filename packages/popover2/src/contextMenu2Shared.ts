@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-const inliner = require("@vgrid/sass-inline-svg");
+import { OverlayLifecycleProps } from "@blueprintjs/core";
 
-module.exports = {
-    /**
-     * Sass function to inline a UI icon svg and change its path color.
-     *
-     * Usage:
-     * svg-icon("16px/icon-name.svg", (path: (fill: $color)) )
-     */
-    "svg-icon($path, $selectors: null)": inliner("../../resources/icons", {
-        // run through SVGO first
-        optimize: true,
-        // minimal "uri" encoding is smaller than base64
-        encodingFormat: "uri",
-    }),
+import { Popover2Props } from "./popover2";
+
+export type Offset = {
+    left: number;
+    top: number;
 };
+
+/**
+ * A limited subset of props to forward along to the context menu popover overlay.
+ */
+export type ContextMenu2PopoverOptions = OverlayLifecycleProps &
+    Pick<Popover2Props, "popoverClassName" | "transitionDuration" | "popoverRef" | "rootBoundary">;

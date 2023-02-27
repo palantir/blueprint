@@ -23,6 +23,11 @@ import { LoadableContent } from "../common/loadableContent";
 import { HeaderCell2 } from "./headerCell2";
 import type { RowHeaderCellProps } from "./rowHeaderCell";
 
+/**
+ * Row header cell (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.rowheadercell2
+ */
 export class RowHeaderCell2 extends AbstractPureComponent2<RowHeaderCellProps> {
     public render() {
         const {

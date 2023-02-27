@@ -1,11 +1,11 @@
 @# TimezonePicker
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated: use [TimezoneSelect](#datetime2/timezone-select)
 
-</h4>
+</h5>
 
 This component is **deprecated since @blueprintjs/timezone v4.3.0** in favor of the new
 TimezoneSelect component, which uses Popover2 instead of Popover under the hood, and
@@ -49,7 +49,7 @@ all button-specific props will be ignored:
 ```
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Local timezone detection</h4>
+    <h5 class="@ns-heading">Local timezone detection</h5>
 
 We detect the local timezone when the `showLocalTimezone` prop is enabled and cannot guarantee correctness in all browsers.
 In supported browsers, the [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions) is used.

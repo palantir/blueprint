@@ -39,7 +39,7 @@ import {
     DateRangePicker,
     DateRangeShortcut,
 } from "@blueprintjs/datetime";
-import { Popover2, Popover2TargetProps } from "@blueprintjs/popover2";
+import { Popover2, Popover2ClickTargetHandlers, Popover2TargetProps } from "@blueprintjs/popover2";
 
 import { Classes, DateRange, NonNullDateRange } from "../../common";
 import { DatetimePopoverProps } from "../../common/datetimePopoverProps";
@@ -213,6 +213,11 @@ interface StateKeysAndValuesObject {
     };
 }
 
+/**
+ * Date range input (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime2/date-range-input2
+ */
 export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props, DateRangeInput2State> {
     public static defaultProps: Partial<DateRangeInput2Props> = {
         allowSingleDayRange: false,
@@ -373,7 +378,7 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
     // We use the renderTarget API to flatten the rendered DOM.
     private renderTarget =
         // N.B. pull out `isOpen` so that it's not forwarded to the DOM.
-        ({ isOpen, ...targetProps }: Popover2TargetProps & React.HTMLProps<unknown>) => {
+        ({ isOpen, ...targetProps }: Popover2TargetProps & Popover2ClickTargetHandlers) => {
             const { fill, popoverProps = {} } = this.props;
             const { targetTagName = "div" } = popoverProps;
             return React.createElement(
@@ -682,7 +687,15 @@ export class DateRangeInput2 extends AbstractPureComponent2<DateRangeInput2Props
 
     private handleInputFocus = (_e: React.FormEvent<HTMLInputElement>, boundary: Boundary) => {
         const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
-        const inputString = DatePickerUtils.getFormattedDateString(values.selectedValue, this.props, true);
+        const isValueControlled = this.isControlled();
+        // We may be reacting to a programmatic focus triggered by componentDidUpdate() at a point when
+        // values.selectedValue may not have been updated yet in controlled mode, so we must use values.controlledValue
+        // in that case.
+        const inputString = DatePickerUtils.getFormattedDateString(
+            isValueControlled ? values.controlledValue : values.selectedValue,
+            this.props,
+            true,
+        );
 
         // change the boundary only if the user explicitly focused in the field.
         // focus changes from hovering don't count; they're just temporary.

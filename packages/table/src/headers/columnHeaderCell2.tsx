@@ -35,8 +35,21 @@ export interface ColumnHeaderCell2Props extends IColumnHeaderCellProps {
      * @default false
      */
     enableColumnInteractionBar?: boolean;
+
+    /**
+     * If `true`, clicks on the header menu target element will cause the column's
+     * cells to be selected.
+     *
+     * @default true
+     */
+    selectCellsOnMenuClick?: boolean;
 }
 
+/**
+ * Column header cell (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.columnheadercell2
+ */
 export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCell2Props, IColumnHeaderCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ColumnHeaderCell2`;
 
@@ -44,6 +57,7 @@ export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCell2P
         enableColumnInteractionBar: false,
         isActive: false,
         menuIcon: "chevron-down",
+        selectCellsOnMenuClick: true,
     };
 
     /**
@@ -139,7 +153,7 @@ export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCell2P
     }
 
     private maybeRenderDropdownMenu() {
-        const { index, menuIcon, menuRenderer } = this.props;
+        const { index, menuIcon, menuRenderer, selectCellsOnMenuClick } = this.props;
 
         if (!CoreUtils.isFunction(menuRenderer)) {
             return undefined;
@@ -147,6 +161,7 @@ export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCell2P
 
         const classes = classNames(Classes.TABLE_TH_MENU_CONTAINER, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT, {
             [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
+            [Classes.TABLE_TH_MENU_SELECT_CELLS]: selectCellsOnMenuClick,
         });
 
         return (

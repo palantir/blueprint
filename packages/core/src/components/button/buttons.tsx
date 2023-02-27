@@ -26,6 +26,11 @@ import { AbstractButton, AnchorButtonProps, ButtonProps, IAnchorButtonProps, IBu
 // eslint-disable-next-line deprecation/deprecation
 export { IAnchorButtonProps, IButtonProps, ButtonProps, AnchorButtonProps };
 
+/**
+ * Button component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/button
+ */
 export class Button extends AbstractButton<HTMLButtonElement> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Button`;
 
@@ -56,6 +61,11 @@ export class Button extends AbstractButton<HTMLButtonElement> {
     }
 }
 
+/**
+ * AnchorButton component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/button
+ */
 export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
     public static displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
 

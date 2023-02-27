@@ -1,7 +1,7 @@
 // Copyright 2020 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/lib/scss/variables";
+@import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/mixins";
 @import "../../common/react-transition";
 @import "../../common/variables";
@@ -92,8 +92,8 @@ $step-radius: $pt-border-radius * 2 !default;
       }
     }
 
-    .#{$ns}-multistep-dialog-footer {
-      border-radius: 0 0 0 $dialog-border-radius;
+    .#{$ns}-dialog-footer {
+      border-bottom-left-radius: 0;
     }
   }
 }
@@ -128,21 +128,7 @@ $step-radius: $pt-border-radius * 2 !default;
 }
 
 .#{$ns}-multistep-dialog-footer {
-  background-color: $white;
-  border-radius: 0  0 $dialog-border-radius 0;
-  border-top: 1px solid $pt-divider-black;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-
-  .#{$ns}-dark & {
-    background: $dark-gray4;
-    border-top: 1px solid $pt-dark-divider-white;
-  }
-
-  .#{$ns}-dialog-footer-actions {
-    flex-grow: 1;
-  }
+  // Deprecating
 }
 
 .#{$ns}-dialog-step-container {
@@ -164,7 +150,6 @@ $step-radius: $pt-border-radius * 2 !default;
 
 .#{$ns}-dialog-step {
   align-items: center;
-  background-color: $light-gray5;
   border-radius: $step-radius;
   cursor: not-allowed;
   display: flex;

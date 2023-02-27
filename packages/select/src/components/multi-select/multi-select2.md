@@ -5,11 +5,11 @@ tag: new
 @# MultiSelect2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [MultiSelect](#select/multi-select)?
 
-</h4>
+</h5>
 
 MultiSelect2 is a replacement for MultiSelect and will replace it in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
@@ -28,7 +28,7 @@ You may react to user interactions with the `onItemSelect` and `onRemove` callba
 @reactExample MultiSelectExample
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Generic components and custom filtering</h4>
+    <h5 class="@ns-heading">Generic components and custom filtering</h5>
 
 For more information on controlled usage, generic components, creating new items, and custom filtering,
 please visit the documentation for [Select2](#select/select2).

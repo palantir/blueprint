@@ -23,16 +23,19 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     Icon,
+    IElementRefProps,
     LinkProps,
     Menu,
     MenuProps,
+    removeNonHTMLProps,
     Text,
 } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
 import { Popover2, Popover2Props } from "./popover2";
 
-export interface MenuItem2Props extends ActionProps, LinkProps {
+// eslint-disable-next-line deprecation/deprecation
+export interface MenuItem2Props extends ActionProps, LinkProps, IElementRefProps<HTMLLIElement> {
     /** Item text, required for usability. */
     text: React.ReactNode;
 
@@ -91,11 +94,25 @@ export interface MenuItem2Props extends ActionProps, LinkProps {
      * `<li role="option"`
      *     `<a role=undefined`
      *
-     *  which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
+     * which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
+     *
+     * If `listitem`, role structure becomes:
+     *
+     * `<li role=undefined`
+     *     `<a role=undefined`
+     *
+     * which can be used if this item is within a basic `<ul/>` (or `role="list"`) parent.
+     *
+     * If `none`, role structure becomes:
+     *
+     * `<li role="none"`
+     *     `<a role=undefined`
+     *
+     * which can be used if wrapping this item in a custom `<li>` parent.
      *
      * @default "menuitem"
      */
-    roleStructure?: "menuitem" | "listoption";
+    roleStructure?: "menuitem" | "listoption" | "listitem" | "none";
 
     /**
      * Whether the text should be allowed to wrap to multiple lines.
@@ -152,6 +169,11 @@ export interface MenuItem2Props extends ActionProps, LinkProps {
     htmlTitle?: string;
 }
 
+/**
+ * Menu item (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#popover2-package/menu-item2
+ */
 export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: MenuItem2Props = {
         active: false,
@@ -171,6 +193,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
             className,
             children,
             disabled,
+            elementRef,
             intent,
             labelClassName,
             labelElement,
@@ -188,18 +211,31 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
         } = this.props;
 
         const [liRole, targetRole, icon, ariaSelected] =
-            roleStructure === "listoption"
-                ? // "listoption": parent has listbox role, or is a <select>
-                  [
+            roleStructure === "listoption" // "listoption": parent has listbox role, or is a <select>
+                ? [
                       "option",
                       undefined, // target should have no role
                       this.props.icon ?? (selected === undefined ? undefined : selected ? "small-tick" : "blank"),
                       Boolean(selected), // aria-selected prop
                   ]
-                : // "menuitem": parent has menu role
-                  [
+                : roleStructure === "menuitem" // "menuitem": parent has menu role
+                ? [
                       "none",
                       "menuitem",
+                      this.props.icon,
+                      undefined, // don't set aria-selected prop
+                  ]
+                : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
+                ? [
+                      "none",
+                      undefined, // target should have no role
+                      this.props.icon,
+                      undefined, // don't set aria-selected prop
+                  ]
+                : // roleStructure === "listitem"
+                  [
+                      undefined, // needs no role prop, li is listitem by default
+                      undefined,
                       this.props.icon,
                       undefined, // don't set aria-selected prop
                   ];
@@ -224,9 +260,10 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
         const target = React.createElement(
             tagName,
             {
-                role: targetRole,
-                tabIndex: 0,
-                ...htmlProps,
+                // if hasSubmenu, must apply correct role and tabIndex to the outer Popover2 target <span> instead of this target element
+                role: hasSubmenu ? "none" : targetRole,
+                tabIndex: hasSubmenu ? -1 : 0,
+                ...removeNonHTMLProps(htmlProps),
                 ...(disabled ? DISABLED_PROPS : {}),
                 className: anchorClasses,
             },
@@ -246,8 +283,8 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
 
         const liClasses = classNames({ [CoreClasses.MENU_SUBMENU]: hasSubmenu });
         return (
-            <li className={liClasses} role={liRole} aria-selected={ariaSelected}>
-                {this.maybeRenderPopover(target, children)}
+            <li className={liClasses} ref={elementRef} role={liRole} aria-selected={ariaSelected}>
+                {this.maybeRenderPopover(target, { role: targetRole, tabIndex: 0 }, children)}
             </li>
         );
     }
@@ -265,7 +302,11 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
         );
     }
 
-    private maybeRenderPopover(target: JSX.Element, children?: React.ReactNode) {
+    private maybeRenderPopover(
+        target: JSX.Element,
+        popoverTargetProps: Popover2Props["targetProps"],
+        children?: React.ReactNode,
+    ) {
         if (children == null) {
             return target;
         }
@@ -279,6 +320,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
                 hoverCloseDelay={0}
                 interactionKind="hover"
                 modifiers={SUBMENU_POPOVER_MODIFIERS}
+                targetProps={popoverTargetProps}
                 placement="right-start"
                 usePortal={false}
                 {...popoverProps}

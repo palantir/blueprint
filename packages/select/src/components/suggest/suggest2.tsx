@@ -30,7 +30,7 @@ import {
     setRef,
     Utils,
 } from "@blueprintjs/core";
-import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
+import { Popover2, Popover2ClickTargetHandlers, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { QueryList, QueryListRendererProps } from "../query-list/queryList";
@@ -112,6 +112,11 @@ export interface Suggest2State<T> {
     selectedItem: T | null;
 }
 
+/**
+ * Suggest (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#select/suggest2
+ */
 export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Suggest2State<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest2`;
 
@@ -227,11 +232,9 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
         ({
             // pull out `isOpen` so that it's not forwarded to the DOM
             isOpen: _isOpen,
-            // pull out `defaultValue` due to type incompatibility with InputGroup
-            defaultValue,
             ref,
             ...targetProps
-        }: Popover2TargetProps & React.HTMLProps<HTMLInputElement>) => {
+        }: Popover2TargetProps & Popover2ClickTargetHandlers) => {
             const { disabled, fill, inputProps = {}, inputValueRenderer, popoverProps = {}, resetOnClose } = this.props;
             const { selectedItem } = this.state;
             const { handleKeyDown, handleKeyUp } = listProps;
@@ -242,7 +245,13 @@ export class Suggest2<T> extends AbstractPureComponent2<Suggest2Props<T>, Sugges
             const inputPlaceholder = isOpen && selectedItemText ? selectedItemText : placeholder;
             // value shows query when open, and query remains when closed if nothing is selected.
             // if resetOnClose is enabled, then hide query when not open. (see handlePopoverOpening)
-            const inputValue = isOpen ? listProps.query : selectedItemText ?? (resetOnClose ? "" : listProps.query);
+            const inputValue = isOpen
+                ? listProps.query
+                : selectedItemText === ""
+                ? resetOnClose
+                    ? ""
+                    : listProps.query
+                : selectedItemText;
 
             return (
                 <InputGroup

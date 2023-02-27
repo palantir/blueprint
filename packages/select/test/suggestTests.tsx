@@ -26,7 +26,8 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, IPopoverProps, Keys, MenuItem, Popover } from "@blueprintjs/core";
+import { InputGroup, IPopoverProps, Keys, Popover } from "@blueprintjs/core";
+import { MenuItem2 } from "@blueprintjs/popover2";
 
 import { ItemRendererProps, QueryList } from "../src";
 import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
@@ -71,7 +72,7 @@ describe("Suggest", () => {
             const popover = wrapper.find(Popover);
             assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
             assert.lengthOf(popover, 1, "should render Popover");
-            assert.lengthOf(popover.find(MenuItem), 100, "should render 100 items in popover");
+            assert.lengthOf(popover.find(MenuItem2), 100, "should render 100 items in popover");
         });
 
         describe("when ESCAPE key pressed", () => {

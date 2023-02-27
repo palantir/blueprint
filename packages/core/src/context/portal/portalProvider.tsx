@@ -27,6 +27,11 @@ export interface PortalContextOptions {
  */
 export const PortalContext = React.createContext<PortalContextOptions>({});
 
+/**
+ * Portal context provider.
+ *
+ * @see https://blueprintjs.com/docs/#core/context/portal-provider
+ */
 export const PortalProvider = ({ children, ...options }: React.PropsWithChildren<PortalContextOptions>) => {
     return <PortalContext.Provider value={options}>{children}</PortalContext.Provider>;
 };
