@@ -15,7 +15,14 @@
  */
 
 export * from "./compareUtils";
-export * from "./domUtils";
+export {
+    elementIsOrContains,
+    elementIsTextInput,
+    getActiveElement,
+    throttle,
+    throttleEvent,
+    throttleReactEventCallback,
+} from "./domUtils";
 export * from "./functionUtils";
 export * from "./jsUtils";
 export * from "./reactUtils";

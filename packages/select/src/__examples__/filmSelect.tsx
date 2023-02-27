@@ -16,7 +16,8 @@
 
 import * as React from "react";
 
-import { Button, MenuItem } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core";
+import { MenuItem2 } from "@blueprintjs/popover2";
 
 import type { ItemRenderer } from "../common";
 import { Select2, Select2Props } from "../components/select/select2";
@@ -65,7 +66,7 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
             if (!props.modifiers.matchesPredicate) {
                 return null;
             }
-            return <MenuItem {...getFilmItemProps(film, props)} selected={film === selectedFilm} />;
+            return <MenuItem2 {...getFilmItemProps(film, props)} selected={film === selectedFilm} />;
         },
         [selectedFilm],
     );
@@ -80,7 +81,7 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
             items={items}
             itemsEqual={areFilmsEqual}
             menuProps={{ "aria-label": "films" }}
-            noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
+            noResults={<MenuItem2 disabled={true} text="No results." roleStructure="listoption" />}
             onItemSelect={handleItemSelect}
             {...restProps}
         >

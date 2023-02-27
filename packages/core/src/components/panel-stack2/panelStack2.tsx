@@ -80,6 +80,9 @@ interface PanelStack2Component {
 }
 
 /**
+ * Panel stack (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/panel-stack2
  * @template T type union of all possible panels in this stack
  */
 // eslint-disable-next-line @typescript-eslint/ban-types

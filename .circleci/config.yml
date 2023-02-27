@@ -1,36 +1,36 @@
 version: 2.1
 
 orbs:
-  browser-tools: circleci/browser-tools@1.3.0
+  browser-tools: circleci/browser-tools@1.4.1
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:16.14
+    - image: cimg/node:19.7
 
   - &docker-node-browsers-image
-    - image: cimg/node:16.14-browsers
+    - image: cimg/node:19.7-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
   - &restore-node-modules-cache
     name: Restore node_modules cache
-    key: v6-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v7-yarn-deps-{{ checksum "yarn.lock" }}
 
   - &restore-yarn-cache
     name: Restore yarnpkg cache
-    key: v6-yarn-cache
+    key: v7-yarn-cache
 
   - &save-node-modules-cache
     name: Save node_modules cache
     paths:
       - node_modules
-    key: v6-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v7-yarn-deps-{{ checksum "yarn.lock" }}
 
   - &save-yarn-cache
     name: Save yarnpkg cache
     paths:
       - ~/.cache/yarn
-    key: v6-yarn-cache
+    key: v7-yarn-cache
 
 references:
   reports_path: &reports_path
@@ -70,7 +70,10 @@ jobs:
       - run: yarn compile
       - persist_to_workspace:
           root: "."
-          paths: [packages/*/lib, packages/*/src/generated]
+          paths:
+            - packages/*/lib
+            - packages/*/src/generated
+            - packages/icons/src/generated-icons
 
   format-check:
     docker: *docker-node-image
@@ -157,7 +160,7 @@ jobs:
           # see https://github.com/palantir/blueprint/issues/3616
           command: |
             case $CIRCLE_NODE_INDEX in \
-            0) yarn lerna run --parallel test:typeCheck ;; \
+            0) yarn lerna run test:typeCheck ;; \
             1) yarn lerna run --scope "@blueprintjs/core" test:karma ;; \
             2) yarn lerna run --scope "@blueprintjs/datetime" test:karma ;; \
             3) yarn lerna run --scope "@blueprintjs/datetime2" test:karma ;; \
@@ -179,7 +182,7 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: mkdir ./reports
-      - run: yarn lerna run --parallel test:iso
+      - run: yarn lerna run test:iso
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
@@ -193,12 +196,7 @@ jobs:
       - store_artifacts: { path: packages/landing-app/dist }
       - store_artifacts: { path: packages/table-dev-app/dist }
       - store_artifacts: { path: packages/demo-app/dist }
-      - run:
-          name: Submit Github comment with links to built artifacts
-          command: |
-            artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" -H "Accept: application/json" -u "$CIRCLE_AUTH_TOKEN:")
-            echo $artifacts > ./scripts/artifacts.json
-            node ./scripts/preview.js
+      - run: ./scripts/submit-preview-comment.sh
 
   deploy-npm:
     docker: *docker-node-image

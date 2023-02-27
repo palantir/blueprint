@@ -125,6 +125,11 @@ export interface TimezoneSelectState {
     query: string;
 }
 
+/**
+ * Timezone select component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime2/timezone-select
+ */
 export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, TimezoneSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezoneSelect`;
 

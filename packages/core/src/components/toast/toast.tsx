@@ -63,6 +63,11 @@ export interface ToastProps extends Props, IntentProps {
     timeout?: number;
 }
 
+/**
+ * Toast component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/toast
+ */
 export class Toast extends AbstractPureComponent2<ToastProps> {
     public static defaultProps: ToastProps = {
         className: "",

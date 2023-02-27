@@ -77,6 +77,11 @@ describe("<Popover2>", () => {
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER2_WARN_DOUBLE_TARGET));
         });
 
+        it("warns if given targetProps and renderTarget", () => {
+            shallow(<Popover2 targetProps={{ role: "none" }} renderTarget={() => <span>"boom"</span>} />);
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER2_WARN_TARGET_PROPS_WITH_RENDER_TARGET));
+        });
+
         it("warns if attempting to open a popover with empty content", () => {
             shallow(
                 <Popover2 content={undefined} isOpen={true}>
@@ -775,8 +780,8 @@ describe("<Popover2>", () => {
         });
     });
 
-    // these tests can be removed once Popover2 is merged into core in v5.0
     describe("compatibility", () => {
+        // this test can be removed once Popover2 is merged into core in v5.0
         it("MenuItem from core package is able to dismiss open Popover2", () => {
             wrapper = renderPopover(
                 { defaultIsOpen: true, usePortal: false },
@@ -787,6 +792,23 @@ describe("<Popover2>", () => {
             );
             wrapper.find(`.${CoreClasses.MENU_ITEM}`).simulate("click");
             wrapper.assertIsOpen(false);
+        });
+
+        it("renderTarget type definition allows sending props to child components", () => {
+            mount(
+                <Popover2
+                    usePortal={false}
+                    hoverCloseDelay={0}
+                    hoverOpenDelay={0}
+                    content="content"
+                    renderTarget={({ isOpen, ref, ...props }) => (
+                        <button data-testid="target-button" ref={ref} onClick={props.onClick} {...props}>
+                            Target
+                        </button>
+                    )}
+                />,
+                { attachTo: testsContainerElement },
+            );
         });
     });
 

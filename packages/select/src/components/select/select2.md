@@ -5,11 +5,11 @@ tag: new
 @# Select2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [Select](#select/select-component)?
 
-</h4>
+</h5>
 
 Select2 is a replacement for Select and will replace it in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
@@ -171,7 +171,7 @@ in the list, based on the current query string. Use `createNewItemFromQuery` and
     will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
-    <h4 class="@ns-heading">Avoiding type conflicts</h4>
+    <h5 class="@ns-heading">Avoiding type conflicts</h5>
 
 The "Create Item" option is represented by the reserved type `CreateNewItem`
 exported from this package. It is exceedingly unlikely but technically possible
@@ -278,8 +278,15 @@ const FilmSelect: React.FC = () => (
 @### Item renderer
 
 `Select2`'s `itemRenderer` will be called for each item and receives the item and a props object containing data specific
-to rendering this item in this frame. The renderer is called for all items, so don't forget to respect
-`modifiers.matchesPredicate` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item, or face React's console wrath!
+to rendering this item in this frame.
+
+A few things to keep in mind:
+
+-   The renderer is called for all items, so don't forget to respect `modifiers.matchesPredicate` to hide items which
+    do not match the predicate.
+-   Make sure to forward the provided `ref` to the rendered element (usually via the `elementRef` prop on
+    `MenuItem` or `MenuItem2`) to ensure that scrolling to active items works correctly.
+-   Also, don't forget to define a `key` for each item, or face React's console wrath!
 
 ```tsx
 import { Classes } from "@blueprintjs/core";

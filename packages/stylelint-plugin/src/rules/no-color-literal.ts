@@ -15,7 +15,7 @@
 
 import type { Declaration, Root } from "postcss";
 import valueParser from "postcss-value-parser";
-import stylelint, { PluginContext, PostcssResult } from "stylelint";
+import stylelint, { PostcssResult, RuleContext } from "stylelint";
 
 import { Colors } from "@blueprintjs/colors";
 
@@ -43,7 +43,7 @@ interface Options {
 }
 
 const ruleImpl =
-    (enabled: boolean, options: Options | undefined, context: PluginContext) => (root: Root, result: PostcssResult) => {
+    (enabled: boolean, options: Options | undefined, context: RuleContext) => (root: Root, result: PostcssResult) => {
         if (!enabled) {
             return;
         }

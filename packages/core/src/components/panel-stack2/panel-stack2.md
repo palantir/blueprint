@@ -5,11 +5,11 @@ tag: new
 @# Panel stack (v2)
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [PanelStack](#core/components/panel-stack)?
 
-</h4>
+</h5>
 
 PanelStack2 is a replacement for PanelStack. It will become the standard
 API in a future major version of Blueprint. You are encouraged to use this

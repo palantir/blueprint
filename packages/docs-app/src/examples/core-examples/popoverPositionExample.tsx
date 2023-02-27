@@ -27,9 +27,9 @@ import { Button, Classes, Code, Popover, Position } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 const EXAMPLE_CLASS = "docs-popover-position-example";
-
 const SIDE_LABEL_CLASS = "docs-popover-position-label-side";
 const ALIGNMENT_LABEL_CLASS = "docs-popover-position-label-alignment";
+const CONTENT_CLASS = `${EXAMPLE_CLASS}-content`;
 
 export class PopoverPositionExample extends React.PureComponent<ExampleProps> {
     public render() {
@@ -111,7 +111,7 @@ export class PopoverPositionExample extends React.PureComponent<ExampleProps> {
         );
 
         return (
-            <Popover content={content} position={position} usePortal={false}>
+            <Popover content={content} popoverClassName={CONTENT_CLASS} position={position}>
                 <Button className={Classes.MONOSPACE_TEXT}>{buttonLabel}</Button>
             </Popover>
         );

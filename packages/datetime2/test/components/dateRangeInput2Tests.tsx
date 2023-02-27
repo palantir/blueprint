@@ -21,15 +21,7 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
-import {
-    Boundary,
-    HTMLDivProps,
-    HTMLInputProps,
-    InputGroup,
-    InputGroupProps2,
-    Keys,
-    Position,
-} from "@blueprintjs/core";
+import { Boundary, HTMLDivProps, HTMLInputProps, InputGroup, InputGroupProps2, Keys } from "@blueprintjs/core";
 import { DateRangePicker, Classes as DatetimeClasses, Months, TimePrecision } from "@blueprintjs/datetime";
 import { Popover2, Classes as Popover2Classes, Popover2Props } from "@blueprintjs/popover2";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
@@ -60,6 +52,19 @@ type InvalidDateTestFunction = (
 DateRangeInput2.defaultProps.popoverProps = { usePortal: false };
 
 describe("<DateRangeInput2>", () => {
+    let containerElement: HTMLElement | undefined;
+
+    beforeEach(() => {
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+    });
+    afterEach(() => {
+        if (containerElement !== undefined) {
+            ReactDOM.unmountComponentAtNode(containerElement);
+            containerElement.remove();
+        }
+    });
+
     const START_DAY = 22;
     const START_DATE = new Date(2022, Months.JANUARY, START_DAY);
     const START_STR = DATE_FORMAT.formatDate(START_DATE);
@@ -145,14 +150,8 @@ describe("<DateRangeInput2>", () => {
     });
 
     describe("timePrecision prop", () => {
-        const testsContainerElement = document.createElement("div");
-        document.documentElement.appendChild(testsContainerElement);
-
         it("<TimePicker /> should not lose focus on increment/decrement with up/down arrows", () => {
-            const { root } = wrap(
-                <DateRangeInput2 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
-                testsContainerElement,
-            );
+            const { root } = wrap(<DateRangeInput2 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
 
             root.setState({ isOpen: true });
             expect(root.find(Popover2).prop("isOpen")).to.be.true;
@@ -165,7 +164,7 @@ describe("<DateRangeInput2>", () => {
         it("when timePrecision != null && closeOnSelection=true && <TimePicker /> values is changed popover should not close", () => {
             const { root, getDayElement } = wrap(
                 <DateRangeInput2 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
-                testsContainerElement,
+                true,
             );
 
             root.setState({ isOpen: true });
@@ -183,10 +182,7 @@ describe("<DateRangeInput2>", () => {
         });
 
         it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
-            const { root } = wrap(
-                <DateRangeInput2 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
-                testsContainerElement,
-            );
+            const { root } = wrap(<DateRangeInput2 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
 
             root.setState({ isOpen: true });
             keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
@@ -194,10 +190,6 @@ describe("<DateRangeInput2>", () => {
             keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, Keys.ARROW_UP, 1);
             root.update();
             expect(root.find(Popover2).prop("isOpen")).to.be.true;
-        });
-
-        afterEach(() => {
-            ReactDOM.unmountComponentAtNode(testsContainerElement);
         });
 
         function keyDownOnInput(className: string, key: number, inputElementIndex: number = 0) {
@@ -365,19 +357,8 @@ describe("<DateRangeInput2>", () => {
     });
 
     describe("closeOnSelection", () => {
-        let containerElement: HTMLElement | undefined;
-
-        beforeEach(() => {
-            containerElement = document.createElement("div");
-            document.body.appendChild(containerElement);
-        });
-        afterEach(() => containerElement?.remove());
-
         it("if closeOnSelection=false, popover stays open when full date range is selected", () => {
-            const { root, getDayElement } = wrap(
-                <DateRangeInput2 {...DATE_FORMAT} closeOnSelection={false} />,
-                containerElement,
-            );
+            const { root, getDayElement } = wrap(<DateRangeInput2 {...DATE_FORMAT} closeOnSelection={false} />, true);
             root.setState({ isOpen: true });
             root.update();
             getDayElement(1).simulate("click");
@@ -387,7 +368,7 @@ describe("<DateRangeInput2>", () => {
         });
 
         it("if closeOnSelection=true, popover closes when full date range is selected", () => {
-            const { root, getDayElement } = wrap(<DateRangeInput2 {...DATE_FORMAT} />, containerElement);
+            const { root, getDayElement } = wrap(<DateRangeInput2 {...DATE_FORMAT} />, true);
             root.setState({ isOpen: true });
             root.update();
             getDayElement(1).simulate("click");
@@ -399,7 +380,7 @@ describe("<DateRangeInput2>", () => {
         it("if closeOnSelection=true && timePrecision != null, popover closes when full date range is selected", () => {
             const { root, getDayElement } = wrap(
                 <DateRangeInput2 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
-                containerElement,
+                true,
             );
             root.setState({ isOpen: true });
             root.update();
@@ -467,19 +448,8 @@ describe("<DateRangeInput2>", () => {
     });
 
     describe("selectAllOnFocus", () => {
-        let containerElement: HTMLElement | undefined;
-
-        beforeEach(() => {
-            containerElement = document.createElement("div");
-            document.body.appendChild(containerElement);
-        });
-        afterEach(() => containerElement?.remove());
-
         it("if false (the default), does not select any text on focus", () => {
-            const { root } = wrap(
-                <DateRangeInput2 {...DATE_FORMAT} defaultValue={[START_DATE, null]} />,
-                containerElement,
-            );
+            const { root } = wrap(<DateRangeInput2 {...DATE_FORMAT} defaultValue={[START_DATE, null]} />, true);
 
             const startInput = getStartInput(root);
             startInput.simulate("focus");
@@ -491,7 +461,7 @@ describe("<DateRangeInput2>", () => {
         it("if true, selects all text on focus", () => {
             const { root } = wrap(
                 <DateRangeInput2 {...DATE_FORMAT} defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,
-                containerElement,
+                true,
             );
 
             const startInput = getStartInput(root);
@@ -505,7 +475,7 @@ describe("<DateRangeInput2>", () => {
         it.skip("if true, selects all text on day mouseenter in calendar", () => {
             const { root, getDayElement } = wrap(
                 <DateRangeInput2 {...DATE_FORMAT} defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,
-                containerElement,
+                true,
             );
 
             root.setState({ isOpen: true });
@@ -543,7 +513,7 @@ describe("<DateRangeInput2>", () => {
         it("accepts custom popoverProps", () => {
             const popoverProps: Partial<Popover2Props> = {
                 backdropProps: {},
-                position: Position.TOP_LEFT,
+                placement: "top-start",
                 usePortal: false,
             };
             const popover = wrap(<DateRangeInput2 {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover2);
@@ -2649,6 +2619,60 @@ describe("<DateRangeInput2>", () => {
             assertInputValuesEqual(root, START_STR, "");
         });
 
+        // Regression test for https://github.com/palantir/blueprint/issues/5791
+        it("Hovering and clicking on end date shows the new date in input, not a previously selected date", () => {
+            const DEC_1_DATE = new Date(2022, 11, 1);
+            const DEC_1_STR = DATE_FORMAT.formatDate(DEC_1_DATE);
+            const DEC_2_DATE = new Date(2022, 11, 2);
+            const DEC_2_STR = DATE_FORMAT.formatDate(DEC_2_DATE);
+            const DEC_6_DATE = new Date(2022, 11, 6);
+            const DEC_6_STR = DATE_FORMAT.formatDate(DEC_6_DATE);
+            const DEC_8_DATE = new Date(2022, 11, 8);
+            const DEC_8_STR = DATE_FORMAT.formatDate(DEC_8_DATE);
+
+            // eslint-disable-next-line prefer-const
+            let controlledRoot: WrappedComponentRoot;
+
+            const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });
+            const { root, getDayElement } = wrap(
+                <DateRangeInput2
+                    {...DATE_FORMAT}
+                    closeOnSelection={false}
+                    popoverProps={{ isOpen: true }}
+                    onChange={onChange}
+                    value={[DEC_6_DATE, DEC_8_DATE]}
+                />,
+                true,
+            );
+            controlledRoot = root;
+
+            // initial state
+            getStartInput(root).simulate("focus");
+            assertInputValuesEqual(root, DEC_6_STR, DEC_8_STR);
+
+            // hover over Dec 1
+            getDayElement(1).simulate("mouseenter");
+            assertInputValuesEqual(root, DEC_1_STR, DEC_8_STR);
+
+            // click to select Dec 1
+            getDayElement(1).simulate("click");
+            getDayElement(1).simulate("mouseleave");
+            assertInputValuesEqual(root, DEC_1_STR, DEC_8_STR);
+
+            // re-focus on start input to ensure the component doesn't think we're changing the end boundary
+            // (this mimics real UX, where the component-refocuses the start input after selecting a start date)
+            getStartInput(root).simulate("focus");
+
+            // hover over Dec 2
+            getDayElement(2).simulate("mouseenter");
+            assertInputValuesEqual(root, DEC_2_STR, DEC_8_STR);
+
+            // click to select Dec 2
+            getDayElement(2).simulate("click");
+            getDayElement(2).simulate("mouseleave");
+            assertInputValuesEqual(root, DEC_2_STR, DEC_8_STR);
+        });
+
         it.skip("Formats locale-specific format strings properly", () => {
             const { root } = wrap(<DateRangeInput2 {...DATE_FORMAT} locale="de" value={DATE_RANGE_2} />);
             assertInputValuesEqual(root, START_DE_STR_2, END_DE_STR_2);
@@ -2725,8 +2749,9 @@ describe("<DateRangeInput2>", () => {
         expect(actualEnd).to.equal(expectedEnd);
     }
 
-    function wrap(dateRangeInput: JSX.Element, attachTo?: HTMLElement) {
-        const wrapper = mount(dateRangeInput, { attachTo });
+    function wrap(dateRangeInput: JSX.Element, attachToDOM = false) {
+        const mountOptions = attachToDOM ? { attachTo: containerElement } : undefined;
+        const wrapper = mount(dateRangeInput, mountOptions);
         return {
             getDayElement: (dayNumber = 1, fromLeftMonth = true) => {
                 const monthElement = wrapper.find(".DayPicker-Month").at(fromLeftMonth ? 0 : 1);

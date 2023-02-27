@@ -18,14 +18,14 @@ import * as React from "react";
 
 import { Alignment, Button, ButtonGroup } from "@blueprintjs/core";
 
-export interface IAlignSelectProps {
+interface AlignmentSelectProps {
     align: Alignment | undefined;
     allowCenter?: boolean;
     label?: string;
     onChange: (align: Alignment) => void;
 }
 
-export class AlignmentSelect extends React.PureComponent<IAlignSelectProps> {
+export class AlignmentSelect extends React.PureComponent<AlignmentSelectProps> {
     public render() {
         const { align, allowCenter = true, label = "Align text" } = this.props;
         return (

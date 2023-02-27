@@ -68,6 +68,11 @@ export interface Table2Props extends TableProps {
     cellRendererDependencies?: React.DependencyList;
 }
 
+/**
+ * Table (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#table/table2
+ */
 export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table2`;
 

@@ -1,7 +1,7 @@
 // Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/core/src/common/typography-colors";
+@import "@blueprintjs/core/src/common/typography-colors";
 @import "./common";
 
 $tooltip2-background-color: $dark-gray5 !default;
@@ -12,6 +12,9 @@ $dark-tooltip2-text-color: $dark-gray5 !default;
 
 $tooltip2-padding-vertical: $pt-grid-size !default;
 $tooltip2-padding-horizontal: 1.2 * $pt-grid-size !default;
+
+$tooltip2-padding-compact-vertical: 0.5 * $pt-grid-size !default;
+$tooltip2-padding-compact-horizontal: 0.7 * $pt-grid-size !default;
 
 $tooltip2-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
 $dark-tooltip2-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
@@ -43,7 +46,22 @@ $dark-tooltip2-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-o
     padding: $tooltip2-padding-vertical $tooltip2-padding-horizontal;
   }
 
-  // // need to adjust arrow placement a little bit for tooltips
+  &.#{$ns}-compact {
+    .#{$ns}-popover2-content {
+      line-height: 1rem; // ensure a consistent line height
+      padding: $tooltip2-padding-compact-vertical $tooltip2-padding-compact-horizontal;
+    }
+
+    // Compact tooltip content is usually just a single line with default line-height, where the slight vertical
+    // misalignment of <Code> spans inside text stands out more than it does elsewhere in the design system. We apply
+    // a small typographic adjustment here to counteract this problem.
+    // TODO(adahiya): consider applying this more broadly to fix the root problem...
+    .#{$ns}-code {
+      vertical-align: text-bottom;
+    }
+  }
+
+  // need to adjust arrow placement a little bit for tooltips
   &.#{$ns}-popover2-placement-top .#{$ns}-popover2-arrow { transform: translateY(-3px); }
   &.#{$ns}-popover2-placement-left .#{$ns}-popover2-arrow { transform: translateX(-3px); }
   &.#{$ns}-popover2-placement-bottom .#{$ns}-popover2-arrow { transform: translateY(3px); }

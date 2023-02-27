@@ -22,6 +22,7 @@ import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, MaybeElement, Props } 
 import { getActiveElement } from "../../common/utils";
 import { Icon, IconName, IconSize } from "../icon/icon";
 import { Tag, TagProps } from "../tag/tag";
+import { ResizableInput } from "./resizableInput";
 
 /**
  * The method in which a `TagInput` value was added.
@@ -192,6 +193,11 @@ export interface ITagInputState {
 /** special value for absence of active tag */
 const NONE = -1;
 
+/**
+ * Tag input component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tag-input
+ */
 export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
@@ -257,7 +263,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
                 <div className={Classes.TAG_INPUT_VALUES}>
                     {values.map(this.maybeRenderTag)}
                     {this.props.children}
-                    <input
+                    <ResizableInput
                         value={this.state.inputValue}
                         {...inputProps}
                         onFocus={this.handleInputFocus}

@@ -107,6 +107,11 @@ export interface ITabsState {
     selectedTabId?: TabId;
 }
 
+/**
+ * Tabs component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tabs
+ */
 export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;
@@ -158,7 +163,10 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
             </div>
         ) : null;
 
-        const classes = classNames(Classes.TABS, { [Classes.VERTICAL]: this.props.vertical, [Classes.FILL]: this.props.fill }, this.props.className);
+        const classes = classNames(Classes.TABS, this.props.className, {
+            [Classes.VERTICAL]: this.props.vertical,
+            [Classes.FILL]: this.props.fill,
+        });
         const tabListClasses = classNames(Classes.TAB_LIST, {
             [Classes.LARGE]: this.props.large,
         });
@@ -293,8 +301,9 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
 
         let indicatorWrapperStyle: React.CSSProperties = { display: "none" };
         if (selectedTabElement != null) {
-            const { clientWidth, offsetLeft, offsetTop } = selectedTabElement;
+            const { clientHeight, clientWidth, offsetLeft, offsetTop } = selectedTabElement;
             indicatorWrapperStyle = {
+                height: clientHeight,
                 transform: `translateX(${Math.floor(offsetLeft)}px) translateY(${Math.floor(offsetTop)}px)`,
                 width: clientWidth,
             };

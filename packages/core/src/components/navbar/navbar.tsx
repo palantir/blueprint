@@ -40,6 +40,11 @@ export interface INavbarProps extends Props, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
+/**
+ * Navbar component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/navbar
+ */
 export class Navbar extends AbstractPureComponent2<NavbarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Navbar`;
 

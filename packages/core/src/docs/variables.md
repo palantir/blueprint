@@ -2,12 +2,12 @@
 
 Available for use with Sass and Less.
 
-```css.scss
+```scss
 // Sass
 @import "path/to/@blueprintjs/core/lib/scss/variables";
 ```
 
-```css.less
+```less
 // Less
 @import "path/to/@blueprintjs/core/lib/less/variables";
 ```
@@ -41,8 +41,8 @@ In rare cases, you may need direct access to the code points the icon font. Blue
 variables in Sass as a map and in TypeScript as an object (see the [Icons section](#icons) for the
 full list of identifiers):
 
-```css.scss
-@import "~@blueprintjs/icons/lib/scss/variables";
+```scss
+@import "@blueprintjs/icons/lib/scss/variables";
 
 .my-custom-icon {
     content: map-get($blueprint-icon-codepoints, "tick");

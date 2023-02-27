@@ -1,15 +1,15 @@
 @# Context menu
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated: use [ContextMenu2](#popover2-package/context-menu2)
 
-</h4>
+</h5>
 
 This API is **deprecated since @blueprintjs/core v3.39.0** in favor of the new
 ContextMenu2 component available in the `@blueprintjs/popover2` package. You should migrate
-to the new API which will become the standard in Blueprint v5.
+to the new API which will become the standard in Blueprint v6.
 
 </div>
 
@@ -72,7 +72,7 @@ class RightClickMe extends React.Component {
 
 If you're using Blueprint in Javascript, and don't have access to the Babel config (ie: using `create-react-app`), you won't be able to just use the decorator. You can, instead, use it as a [Higher-Order Component][react-hoc], and get to keep all the benefits of `ContextMenuTarget`:
 
-```jsx
+```tsx
 import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
 
 const RightClickMe = ContextMenuTarget(class RightClickMeWithContext extends React.Component {
