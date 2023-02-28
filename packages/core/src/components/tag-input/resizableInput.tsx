@@ -28,7 +28,7 @@ export const ResizableInput = forwardRef<Ref, HTMLInputProps>(function Resizable
 
     return (
         <span>
-            <span id="hide" ref={span} className={Classes.RESIZABLE_INPUT_SPAN}>
+            <span ref={span} className={Classes.RESIZABLE_INPUT_SPAN}>
                 {/* Need to replace spaces with the html character for them to be preserved */}
                 {content.replace(/ /g, "\u00a0")}
             </span>
