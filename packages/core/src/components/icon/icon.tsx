@@ -84,7 +84,7 @@ export interface IIconProps extends IntentProps, Props {
     style?: React.CSSProperties;
 
     /** Props to apply to the `SVG` element */
-    svgProps?: React.HTMLAttributes<SVGElement>
+    svgProps?: React.HTMLAttributes<SVGElement>;
 
     /**
      * HTML tag to use for the rendered element.
