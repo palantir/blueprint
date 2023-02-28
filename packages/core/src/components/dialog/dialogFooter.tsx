@@ -63,7 +63,6 @@ export class DialogFooter extends AbstractPureComponent2<DialogFooterProps> {
                 className={classNames(Classes.DIALOG_FOOTER, this.props.className, {
                     [Classes.DIALOG_FOOTER_FIXED]: !this.props.minimal,
                 })}
-                role="dialogfooter"
             >
                 {this.renderMainSection()}
                 {this.maybeRenderActionsSection()}
