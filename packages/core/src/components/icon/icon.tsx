@@ -83,6 +83,8 @@ export interface IIconProps extends IntentProps, Props {
     /** CSS style properties. */
     style?: React.CSSProperties;
 
+    svgProps?: React.HTMLAttributes<SVGElement>
+
     /**
      * HTML tag to use for the rendered element.
      *
@@ -128,6 +130,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
             iconSize,
             intent,
             size = iconSize ?? IconSize.STANDARD,
+            svgProps,
             title,
             tagName = "span",
             ...htmlprops
@@ -159,6 +162,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
                 viewBox={viewBox}
                 aria-labelledby={title ? titleId : undefined}
                 role="img"
+                {...svgProps}
             >
                 {title && <title id={titleId}>{title}</title>}
                 {paths}
