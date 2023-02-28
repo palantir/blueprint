@@ -213,7 +213,7 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
         const maybeHasText = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
         return [
             loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={IconSize.LARGE} />,
-            <Icon key="leftIcon" icon={icon}/>,
+            <Icon key="leftIcon" icon={icon} />,
             maybeHasText && (
                 <span key="text" className={Classes.BUTTON_TEXT}>
                     {text}
