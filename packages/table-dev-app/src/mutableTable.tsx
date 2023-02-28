@@ -326,9 +326,9 @@ export const TableExample: React.FC = () => {
     if (refr.current) {
         refr.current.scrollToRegion();
     }
-    const scrollDirection = React.useRef(undefined);
-    const requestRef = React.useRef(undefined);
-    const previousTimeRef = React.useRef(undefined);
+    const scrollDirection = React.useRef<"UP" | "DOWN" | undefined>(undefined);
+    const requestRef = React.useRef<number>(undefined);
+    const previousTimeRef = React.useRef<number>(undefined);
 
     const checkScrolling = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         const top = refr2.current.getBoundingClientRect().top;
@@ -338,22 +338,23 @@ export const TableExample: React.FC = () => {
         const pos = event.clientY;
 
         if (pos < scrollAbove && pos > top) {
-            // console.log("up");
             scrollDirection.current = "UP";
-            requestAnimationFrame(animate);
+            if (requestRef.current === undefined) {
+                requestAnimationFrame(animate);
+            }
         } else if (pos > scrollBelow && pos < bottom) {
-            // console.log("down");
-
-            scrollDirection.current = "Down";
-            requestAnimationFrame(animate);
+            scrollDirection.current = "DOWN";
+            if (requestRef.current === undefined) {
+                requestAnimationFrame(animate);
+            }
         } else {
-            cancelAnimationFrame(requestRef.current);
+            cancelAnimation();
         }
     };
 
     const animate = (time: number) => {
-        if (previousTimeRef.current !== undefined && refr.current) {
-            // console.log("time: " + time + " previous: " + previousTimeRef.current);
+        previousTimeRef.current = previousTimeRef.current ?? time;
+        if (refr.current) {
             const deltaTime = time - previousTimeRef.current;
             if (deltaTime > 100) {
                 if (scrollDirection.current === "UP") {
@@ -363,13 +364,14 @@ export const TableExample: React.FC = () => {
                 }
                 previousTimeRef.current += 100;
             }
-            // Pass on a function to the setter of the state
-            // to make sure we always have the latest state
-            // setCount(prevCount => (prevCount + deltaTime * 0.01) % 100);
-        } else {
-            previousTimeRef.current = time;
         }
         requestRef.current = requestAnimationFrame(animate);
+    };
+
+    const cancelAnimation = () => {
+        cancelAnimationFrame(requestRef.current);
+        requestRef.current = undefined;
+        previousTimeRef.current = undefined;
     };
 
     return (
@@ -384,7 +386,7 @@ export const TableExample: React.FC = () => {
                 width: "100%",
             }}
             onMouseOver={event => checkScrolling(event)}
-            onMouseLeave={() => cancelAnimationFrame(requestRef.current)}
+            onMouseLeave={cancelAnimation}
         >
             <Table2 ref={refr} numRows={20}>
                 <Column cellRenderer={renderCell} />
