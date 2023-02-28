@@ -437,7 +437,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
      * - yOffset: The vertical scroll modification
      *
      */
-    public scroll(xOffset: number, yOffset: number) {
+    public scroll(relativeOffset: { left: number; top: number }) {
         const { viewportRect } = this.state;
 
         if (viewportRect === undefined || this.grid === null || this.quadrantStackInstance === undefined) {
