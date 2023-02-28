@@ -214,7 +214,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
         ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & Popover2ClickTargetHandlers) => {
-            const { popoverProps = {}, popoverTargetProps } = this.props;
+            const { disabled, popoverProps = {}, popoverTargetProps } = this.props;
             const { handleKeyDown, handleKeyUp } = listProps;
             const { targetTagName = "div" } = popoverProps;
             return React.createElement(
@@ -228,6 +228,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                     className: classNames(targetProps.className, popoverTargetProps?.className, {
                         [CoreClasses.FILL]: this.props.fill,
                     }),
+                    disabled,
                     // Normally, Popover2 would also need to attach its own `onKeyDown` handler via `targetProps`,
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
