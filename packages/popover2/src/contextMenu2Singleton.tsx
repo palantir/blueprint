@@ -79,7 +79,7 @@ function UncontrolledContextMenu2Popover(props: Omit<ContextMenu2PopoverProps, "
     const handleClose = React.useCallback(() => {
         setIsOpen(false);
         props.onClose?.();
-    }, []);
+    }, [props.onClose]);
 
-    return <ContextMenu2Popover isOpen={isOpen} onClose={handleClose} {...props} />;
+    return <ContextMenu2Popover isOpen={isOpen} {...props} onClose={handleClose} />;
 }
