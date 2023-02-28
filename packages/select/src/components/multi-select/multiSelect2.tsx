@@ -288,6 +288,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                     "aria-controls": this.listboxId,
                     ...popoverTargetProps,
                     ...targetProps,
+                    "aria-disabled": disabled,
                     "aria-expanded": isOpen,
                     // Note that we must set FILL here in addition to TagInput to get the wrapper element to full width
                     className: classNames(targetProps.className, popoverTargetProps.className, {

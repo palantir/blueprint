@@ -214,7 +214,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
         ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & Popover2ClickTargetHandlers) => {
-            const { popoverProps = {}, popoverTargetProps } = this.props;
+            const { disabled, popoverProps = {}, popoverTargetProps } = this.props;
             const { handleKeyDown, handleKeyUp } = listProps;
             const { targetTagName = "div" } = popoverProps;
             return React.createElement(
@@ -223,6 +223,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                     "aria-controls": this.listboxId,
                     ...popoverTargetProps,
                     ...targetProps,
+                    "aria-disabled": disabled,
                     "aria-expanded": isOpen,
                     // Note that we must set FILL here in addition to children to get the wrapper element to full width
                     className: classNames(targetProps.className, popoverTargetProps?.className, {
