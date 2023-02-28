@@ -4,7 +4,7 @@
 
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 
-import { Classes, HTMLInputProps } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, HTMLInputProps } from "../../common";
 
 export type Ref = HTMLInputElement;
 
@@ -27,12 +27,13 @@ export const ResizableInput = forwardRef<Ref, HTMLInputProps>(function Resizable
     };
 
     return (
-        <span>
+        <>
             <span ref={span} className={Classes.RESIZABLE_INPUT_SPAN}>
                 {/* Need to replace spaces with the html character for them to be preserved */}
                 {content.replace(/ /g, "\u00a0")}
             </span>
             <input {...otherProps} type="text" style={{ width }} onChange={handleInputChange} ref={ref} />
-        </span>
+        </>
     );
 });
+ResizableInput.displayName = `${DISPLAYNAME_PREFIX}.ResizableInput`;
