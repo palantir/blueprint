@@ -289,11 +289,11 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                     ...popoverTargetProps,
                     ...targetProps,
                     "aria-expanded": isOpen,
+                    "aria-disabled": disabled,
                     // Note that we must set FILL here in addition to TagInput to get the wrapper element to full width
                     className: classNames(targetProps.className, popoverTargetProps.className, {
                         [CoreClasses.FILL]: fill,
                     }),
-                    disabled,
                     // Normally, Popover2 would also need to attach its own `onKeyDown` handler via `targetProps`,
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.

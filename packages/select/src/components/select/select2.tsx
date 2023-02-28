@@ -223,12 +223,12 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                     "aria-controls": this.listboxId,
                     ...popoverTargetProps,
                     ...targetProps,
+                    "aria-disabled": disabled,
                     "aria-expanded": isOpen,
                     // Note that we must set FILL here in addition to children to get the wrapper element to full width
                     className: classNames(targetProps.className, popoverTargetProps?.className, {
                         [CoreClasses.FILL]: this.props.fill,
                     }),
-                    disabled,
                     // Normally, Popover2 would also need to attach its own `onKeyDown` handler via `targetProps`,
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
