@@ -30,9 +30,13 @@ const MENU = (
         <MenuItem icon="align-right" text="Align Right" />
     </Menu>
 );
-const MENU_TARGET_OFFSET = {
-    left: 10,
-    top: 10,
+const DEFAULT_CONTEXT_MENU2_POPOVER_PROPS = {
+    content: MENU,
+    targetOffset: {
+        left: 10,
+        top: 10,
+    },
+    transitionDuration: 0,
 };
 
 function assertMenuState(isOpen = true) {
@@ -74,8 +78,8 @@ describe("showContextMenu() + hideContextMenu()", () => {
 
     it("shows a menu with the imperative API", done => {
         showContextMenu({
-            content: MENU,
-            onOpened: () => {
+            ...DEFAULT_CONTEXT_MENU2_POPOVER_PROPS,
+            onOpened: () =>
                 // defer assertions until the next animation frame; otherwise, this might throw an error
                 // inside the <TransitionGroup>, which may throw off test debugging
                 requestAnimationFrame(() => {
@@ -83,26 +87,39 @@ describe("showContextMenu() + hideContextMenu()", () => {
                     // important: close menu for the next test
                     dismissContextMenu();
                     done();
-                });
-            },
-            targetOffset: MENU_TARGET_OFFSET,
-            transitionDuration: 0,
+                }),
         });
     });
 
-    it("hides a menu with the imperative API", done => {
-        showContextMenu({
-            content: MENU,
-            onOpened: () => {
-                // defer assertions until the next animation frame
+    describe("hides a menu", () => {
+        it("by clicking on the backdrop (when onClose prop is defined)", done => {
+            const handleClose = () =>
                 requestAnimationFrame(() => {
-                    hideContextMenu();
                     assertMenuState(false);
                     done();
                 });
-            },
-            targetOffset: MENU_TARGET_OFFSET,
-            transitionDuration: 0,
+
+            showContextMenu({
+                ...DEFAULT_CONTEXT_MENU2_POPOVER_PROPS,
+                onClose: handleClose,
+                onOpened: () =>
+                    requestAnimationFrame(() => {
+                        dismissContextMenu();
+                    }),
+            });
+        });
+
+        it("via hideContextMenu()", done => {
+            showContextMenu({
+                ...DEFAULT_CONTEXT_MENU2_POPOVER_PROPS,
+                onOpened: () =>
+                    // defer assertions until the next animation frame
+                    requestAnimationFrame(() => {
+                        hideContextMenu();
+                        assertMenuState(false);
+                        done();
+                    }),
+            });
         });
     });
 });
