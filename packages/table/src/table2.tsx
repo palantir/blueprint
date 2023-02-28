@@ -446,8 +446,8 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
 
         const { left: currScrollLeft, top: currScrollTop } = viewportRect;
 
-        const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : currScrollLeft + xOffset;
-        const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : currScrollTop + yOffset;
+        const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : currScrollLeft + relativeOffset.left;
+        const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : currScrollTop + relativeOffset.top;
 
         // defer to the quadrant stack to keep all quadrant positions in sync
         this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);

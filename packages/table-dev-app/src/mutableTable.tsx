@@ -358,9 +358,9 @@ export const TableExample: React.FC = () => {
             const deltaTime = time - previousTimeRef.current;
             if (deltaTime > 100) {
                 if (scrollDirection.current === "UP") {
-                    refr.current.scroll(0, -10);
+                    refr.current.scroll({ left: 0, top: -10 });
                 } else {
-                    refr.current.scroll(0, 10);
+                    refr.current.scroll({ left: 0, top: -10 });
                 }
                 previousTimeRef.current += 100;
             }
