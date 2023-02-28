@@ -360,7 +360,7 @@ export const TableExample: React.FC = () => {
                 if (scrollDirection.current === "UP") {
                     refr.current.scroll({ left: 0, top: -10 });
                 } else {
-                    refr.current.scroll({ left: 0, top: -10 });
+                    refr.current.scroll({ left: 0, top: +10 });
                 }
                 previousTimeRef.current += 100;
             }
