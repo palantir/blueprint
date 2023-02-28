@@ -150,7 +150,6 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
         return React.createElement(
             tagName,
             {
-                "aria-hidden": title ? undefined : true,
                 ...htmlprops,
                 className: classes,
                 title: htmlTitle,
@@ -163,6 +162,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
                 viewBox={viewBox}
                 aria-labelledby={title ? titleId : undefined}
                 role="img"
+                aria-hidden={title ? undefined : true}
                 {...svgProps}
             >
                 {title && <title id={titleId}>{title}</title>}
