@@ -318,7 +318,7 @@ const DEFAULT_STATE: IMutableTableState = {
 
 export const TableExample: React.FC = () => {
     const tableRef = useRef<Table2>(null);
-    const refr2 = useRef(null);
+    const tableWrapperRef = useRef<HTMLDivElement>(null);
     const [value, setString] = useState<string>(undefined);
 
     const scrollDirection = React.useRef<"UP" | "DOWN" | undefined>(undefined);
@@ -326,8 +326,8 @@ export const TableExample: React.FC = () => {
     const previousTimeRef = React.useRef<number>(undefined);
 
     const checkScrolling = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        const top = refr2.current.getBoundingClientRect().top;
-        const bottom = refr2.current.getBoundingClientRect().bottom;
+        const top = tableWrapperRef.current.getBoundingClientRect().top;
+        const bottom = tableWrapperRef.current.getBoundingClientRect().bottom;
         const scrollAbove = top + 0.3 * (bottom - top);
         const scrollBelow = bottom - 0.3 * (bottom - top);
         const pos = event.clientY;
@@ -389,7 +389,7 @@ export const TableExample: React.FC = () => {
     };
     return (
         <div
-            ref={refr2}
+            ref={tableWrapperRef}
             style={{
                 display: "flex",
                 flexDirection: "row",
@@ -428,9 +428,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.state = this.stateStore.getWithDefaults(DEFAULT_STATE);
     }
 
-    // Copied sandbox code
-    // ==================
-
     // React Lifecycle
     // ===============
 
@@ -447,7 +444,8 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     >
                         <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
                             <TableExample />
-                            {Date.now() === 2 ? this.renderTable() : "hi"}
+                            {Date.now() === 2 ? this.renderTable() : ""}
+                            {/* empty string above to get mutable table to render a smaller demo table */}
                         </div>
                     </SlowLayoutStack>
                     {this.renderSidebar()}

@@ -181,11 +181,6 @@ export interface ITableQuadrantStackProps extends Props {
     menuRenderer?: (refHandler: React.Ref<HTMLDivElement> | undefined) => JSX.Element;
 
     /**
-     * A callback that renders an overlay div meant to indicate automatic scrolling behavior
-     */
-    scrollOverlayRenderer?: () => JSX.Element | undefined;
-
-    /**
      * A callback that renders either all of or just the frozen section of the row header.
      * May return undefined if the table is not attached to the DOM yet.
      */
@@ -839,6 +834,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     private syncQuadrantViews = () => {
         const mainRefs = this.quadrantRefs[QuadrantType.MAIN];
         const mainScrollContainer = mainRefs.scrollContainer;
+
         //
         // Reads (batched to avoid DOM thrashing)
         //
