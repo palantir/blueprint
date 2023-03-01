@@ -37,7 +37,7 @@ $table-quadrant-scroll-container-overflow: 20px;
   right: 0;
   top: 0;
   user-select: none;
-  will-change: transform; // forces hardware acceleration for smoother animations
+  // will-change: transform; // forces hardware acceleration for smoother animations
 
   // We disable x or y scrolling when we are displaying "ghost" cells that
   // overflow the body.
@@ -49,12 +49,50 @@ $table-quadrant-scroll-container-overflow: 20px;
   .#{$ns}-table-no-horizontal-scroll & {
     overflow-x: hidden;
   }
+
+}
+
+
+.#{$ns}-table-body-is-scrolling {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  background: transparent;
+  pointer-events: none;
+}
+
+.#{$ns}-table-body-is-scrolling-top {
+  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 20%);
+}
+
+.#{$ns}-table-body-is-scrolling-right {
+  background: linear-gradient(90deg, rgba(0,0,0,0.4) 0%, transparent 20%);
+}
+
+.#{$ns}-table-body-is-scrolling-bottom {
+  background: linear-gradient(0deg, rgba(0,0,0,0.4) 0%, transparent 20%);
+}
+
+.#{$ns}-table-body-is-scrolling-left {
+  background: linear-gradient(270deg, rgba(0,0,0,0.4) 0%, transparent 20%);
 }
 
 .#{$ns}-table-quadrant-body-container {
   position: relative;
 }
+.#{$ns}-table-quadrant-scroll-container::after {
+  content: '';
 
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.0) 85%, rgba(0, 0, 0, 0.4) 100%);
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+}
 .#{$ns}-table-quadrant-main {
   height: 100%;
   left: auto;

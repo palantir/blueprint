@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractComponent2, Utils as CoreUtils, Props, setRef } from "@blueprintjs/core";
@@ -180,6 +181,11 @@ export interface ITableQuadrantStackProps extends Props {
     menuRenderer?: (refHandler: React.Ref<HTMLDivElement> | undefined) => JSX.Element;
 
     /**
+     * A callback that renders an overlay div meant to indicate automatic scrolling behavior
+     */
+    scrollOverlayRenderer?: () => JSX.Element | undefined;
+
+    /**
      * A callback that renders either all of or just the frozen section of the row header.
      * May return undefined if the table is not attached to the DOM yet.
      */
@@ -200,6 +206,7 @@ export interface ITableQuadrantStackProps extends Props {
      */
     scrollContainerRef?: React.Ref<HTMLDivElement>;
 
+    scrollIndicatorRef?: React.Ref<HTMLDivElement>;
     /**
      * Whether "scroll" and "wheel" events should be throttled using
      * requestAnimationFrame. Disabling this can be useful for unit testing,
@@ -433,8 +440,22 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             />
         ) : undefined;
 
+        const maybeTableOverlay = () => {
+            const columnHeaderHeight = this.cache.getColumnHeaderHeight();
+            const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
+            const scrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer!, "vertical");
+            const classes = classNames(Classes.TABLE_BODY_IS_SCROLLING);
+            return (
+                <div
+                    className={classes}
+                    ref={this.props.scrollIndicatorRef}
+                    style={{ marginRight: scrollBarWidth, marginTop: columnHeaderHeight }}
+                />
+            );
+        };
         return (
             <div className={Classes.TABLE_QUADRANT_STACK}>
+                {maybeTableOverlay()}
                 <TableQuadrant
                     {...baseProps}
                     bodyRef={this.props.bodyRef}
@@ -818,7 +839,6 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     private syncQuadrantViews = () => {
         const mainRefs = this.quadrantRefs[QuadrantType.MAIN];
         const mainScrollContainer = mainRefs.scrollContainer;
-
         //
         // Reads (batched to avoid DOM thrashing)
         //

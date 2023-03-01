@@ -317,7 +317,7 @@ const DEFAULT_STATE: IMutableTableState = {
 };
 
 export const TableExample: React.FC = () => {
-    const refr = useRef(null);
+    const tableRef = useRef<Table2>(null);
     const refr2 = useRef(null);
     const [value, setString] = useState<string>(undefined);
 
@@ -335,12 +335,14 @@ export const TableExample: React.FC = () => {
         if (pos < scrollAbove && pos > top) {
             scrollDirection.current = "UP";
             setString("n-resize");
+            tableRef.current.setScrollIndicator({ top: true });
             if (requestRef.current === undefined) {
                 requestAnimationFrame(animate);
             }
         } else if (pos > scrollBelow && pos < bottom) {
             scrollDirection.current = "DOWN";
             setString("s-resize");
+            tableRef.current.setScrollIndicator({ bottom: true });
             if (requestRef.current === undefined) {
                 requestAnimationFrame(animate);
             }
@@ -351,13 +353,13 @@ export const TableExample: React.FC = () => {
 
     const animate = (time: number) => {
         previousTimeRef.current = previousTimeRef.current ?? time;
-        if (refr.current) {
+        if (tableRef.current) {
             const deltaTime = time - previousTimeRef.current;
             if (deltaTime > 100) {
                 if (scrollDirection.current === "UP") {
-                    refr.current.scroll({ left: 0, top: -10 });
+                    tableRef.current.scroll({ left: 0, top: -10 });
                 } else {
-                    refr.current.scroll({ left: 0, top: +10 });
+                    tableRef.current.scroll({ left: 0, top: +10 });
                 }
                 previousTimeRef.current += 100;
             }
@@ -370,6 +372,7 @@ export const TableExample: React.FC = () => {
         requestRef.current = undefined;
         previousTimeRef.current = undefined;
         setString(undefined);
+        tableRef.current.setScrollIndicator({});
     };
     const renderCell = React.useCallback(
         (_row: number, _col: number) => {
@@ -392,17 +395,16 @@ export const TableExample: React.FC = () => {
                 flexDirection: "row",
                 gap: 20,
                 height: 300,
-                width: "100%",
+                position: "relative",
             }}
             onMouseOver={event => checkScrolling(event)}
             onMouseLeave={cancelAnimation}
         >
-            <Table2 ref={refr} numRows={20} cellRendererDependencies={[value]}>
+            <Table2 ref={tableRef} numRows={20} cellRendererDependencies={[value]}>
                 <Column cellRenderer={renderCell} />
                 <Column cellRenderer={renderCell} />
                 <Column cellRenderer={renderCell} />
             </Table2>
-            {value}
         </div>
     );
 };

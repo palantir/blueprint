@@ -237,6 +237,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             }
         },
         scrollContainer: (ref: HTMLElement | null) => (this.scrollContainerElement = ref),
+        scrollIndicator: (ref: HTMLElement | null) => (this.scrollIndicatorOverlay = ref),
     };
 
     private cellContainerElement?: HTMLElement | null;
@@ -254,6 +255,8 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     private rowHeaderWidth = Grid.MIN_ROW_HEADER_WIDTH;
 
     private scrollContainerElement?: HTMLElement | null;
+
+    private scrollIndicatorOverlay?: HTMLElement | null;
 
     private didColumnHeaderMount = false;
 
@@ -445,7 +448,6 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         }
 
         const { left: currScrollLeft, top: currScrollTop } = viewportRect;
-
         const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : currScrollLeft + relativeOffset.left;
         const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : currScrollTop + relativeOffset.top;
 
@@ -453,6 +455,22 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
     }
 
+    public setScrollIndicator(displayScrollIndicator: {
+        left?: boolean;
+        right?: boolean;
+        top?: boolean;
+        bottom?: boolean;
+    }) {
+        if (this.scrollIndicatorOverlay) {
+            const classes = classNames(Classes.TABLE_BODY_IS_SCROLLING, {
+                [Classes.TABLE_BODY_IS_SCROLLING_BOTTOM]: displayScrollIndicator?.bottom || false,
+                [Classes.TABLE_BODY_IS_SCROLLING_TOP]: displayScrollIndicator?.top || false,
+                [Classes.TABLE_BODY_IS_SCROLLING_LEFT]: displayScrollIndicator?.left || false,
+                [Classes.TABLE_BODY_IS_SCROLLING_RIGHT]: displayScrollIndicator?.right || false,
+            });
+            this.scrollIndicatorOverlay.className = classes;
+        }
+    }
     // React lifecycle
     // ===============
 
@@ -541,6 +559,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
                     enableColumnHeader={enableColumnHeader}
+                    scrollIndicatorRef={this.refHandlers.scrollIndicator}
                 />
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, Classes.TABLE_OVERLAY_REORDERING_CURSOR)} />
                 <GuideLayer
