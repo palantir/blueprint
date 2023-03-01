@@ -4,6 +4,6 @@
 
 // @ts-check
 
-export { svgOptimizer } from "./svg/svgOptimizer.mjs";
-export { loadPaths as sassNodeModulesLoadPaths } from "./sass/sassNodeModulesLoadPaths.mjs";
-export { sassSvgInlinerFactory } from "./sass/sassSvgInliner.mjs";
+export { svgOptimizer } from "./src/svg/svgOptimizer.mjs";
+export { loadPaths as sassNodeModulesLoadPaths } from "./src/sass/sassNodeModulesLoadPaths.mjs";
+export { sassSvgInlinerFactory } from "./src/sass/sassSvgInliner.mjs";
