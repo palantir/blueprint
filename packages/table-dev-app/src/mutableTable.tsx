@@ -18,7 +18,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import {
     Button,
@@ -317,15 +317,10 @@ const DEFAULT_STATE: IMutableTableState = {
 };
 
 export const TableExample: React.FC = () => {
-    const renderCell = React.useCallback((_row: number, _col: number) => {
-        return <MyCell num={_col} />;
-    }, []);
-
     const refr = useRef(null);
     const refr2 = useRef(null);
-    if (refr.current) {
-        refr.current.scrollToRegion();
-    }
+    const [value, setString] = useState<string>(undefined);
+
     const scrollDirection = React.useRef<"UP" | "DOWN" | undefined>(undefined);
     const requestRef = React.useRef<number>(undefined);
     const previousTimeRef = React.useRef<number>(undefined);
@@ -339,11 +334,13 @@ export const TableExample: React.FC = () => {
 
         if (pos < scrollAbove && pos > top) {
             scrollDirection.current = "UP";
+            setString("n-resize");
             if (requestRef.current === undefined) {
                 requestAnimationFrame(animate);
             }
         } else if (pos > scrollBelow && pos < bottom) {
             scrollDirection.current = "DOWN";
+            setString("s-resize");
             if (requestRef.current === undefined) {
                 requestAnimationFrame(animate);
             }
@@ -372,13 +369,25 @@ export const TableExample: React.FC = () => {
         cancelAnimationFrame(requestRef.current);
         requestRef.current = undefined;
         previousTimeRef.current = undefined;
+        setString(undefined);
     };
-
+    const renderCell = React.useCallback(
+        (_row: number, _col: number) => {
+            return MyCell({ style: value, num: _row.toLocaleString() });
+        },
+        [value],
+    );
+    const MyCell = ({ num, style }: { style: string; num: string }) => {
+        return (
+            <Cell style={{ cursor: style }}>
+                <span>{"some random text" + num}</span>
+            </Cell>
+        );
+    };
     return (
         <div
             ref={refr2}
             style={{
-                // backgroundColor: "red",
                 display: "flex",
                 flexDirection: "row",
                 gap: 20,
@@ -388,22 +397,16 @@ export const TableExample: React.FC = () => {
             onMouseOver={event => checkScrolling(event)}
             onMouseLeave={cancelAnimation}
         >
-            <Table2 ref={refr} numRows={20}>
+            <Table2 ref={refr} numRows={20} cellRendererDependencies={[value]}>
                 <Column cellRenderer={renderCell} />
                 <Column cellRenderer={renderCell} />
                 <Column cellRenderer={renderCell} />
             </Table2>
+            {value}
         </div>
     );
 };
 
-function MyCell(props: { num: number }) {
-    return (
-        <Cell>
-            <span>{"some random text" + props.num}</span>
-        </Cell>
-    );
-}
 // eslint-disable-next-line @typescript-eslint/ban-types
 export class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new DenseGridMutableStore<any>();
