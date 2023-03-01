@@ -52,8 +52,7 @@ $table-quadrant-scroll-container-overflow: 20px;
 
 }
 
-
-.#{$ns}-table-body-is-scrolling-overlay {
+.#{$ns}-table-body-scrolling-indicator-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -69,7 +68,7 @@ $table-quadrant-scroll-container-overflow: 20px;
 }
 
 .#{$ns}-table-body-is-scrolling-right {
-  background: linear-gradient(90deg, rgba(0,0,0,0.4) 0%, transparent 20%);
+  background: linear-gradient(270deg, rgba(0,0,0,0.4) 0%, transparent 20%);
 }
 
 .#{$ns}-table-body-is-scrolling-bottom {
@@ -77,7 +76,7 @@ $table-quadrant-scroll-container-overflow: 20px;
 }
 
 .#{$ns}-table-body-is-scrolling-left {
-  background: linear-gradient(270deg, rgba(0,0,0,0.4) 0%, transparent 20%);
+  background: linear-gradient(90deg, rgba(0,0,0,0.4) 0%, transparent 20%);
 }
 
 .#{$ns}-table-quadrant-body-container {

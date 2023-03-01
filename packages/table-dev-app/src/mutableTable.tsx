@@ -316,6 +316,9 @@ const DEFAULT_STATE: IMutableTableState = {
     showZebraStriping: false,
 };
 
+/**
+ * An example table to demo/proove out the new scroll functionality. Assuming that this should be deleted before merging.
+ */
 export const TableExample: React.FC = () => {
     const tableRef = useRef<Table2>(null);
     const tableWrapperRef = useRef<HTMLDivElement>(null);
@@ -335,14 +338,14 @@ export const TableExample: React.FC = () => {
         if (pos < scrollAbove && pos > top) {
             scrollDirection.current = "UP";
             setString("n-resize");
-            tableRef.current.setScrollIndicator({ top: true });
+            tableRef.current.setScrollOverlayBackground("linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 20%)");
             if (requestRef.current === undefined) {
                 requestAnimationFrame(animate);
             }
         } else if (pos > scrollBelow && pos < bottom) {
             scrollDirection.current = "DOWN";
             setString("s-resize");
-            tableRef.current.setScrollIndicator({ bottom: true });
+            tableRef.current.setScrollOverlayBackground("linear-gradient(0deg, rgba(0,0,0,0.4) 0%, transparent 20%)");
             if (requestRef.current === undefined) {
                 requestAnimationFrame(animate);
             }
@@ -372,7 +375,7 @@ export const TableExample: React.FC = () => {
         requestRef.current = undefined;
         previousTimeRef.current = undefined;
         setString(undefined);
-        tableRef.current.setScrollIndicator({});
+        tableRef.current.setScrollOverlayBackground("transparent");
     };
     const renderCell = React.useCallback(
         (_row: number, _col: number) => {

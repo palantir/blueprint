@@ -201,6 +201,10 @@ export interface ITableQuadrantStackProps extends Props {
      */
     scrollContainerRef?: React.Ref<HTMLDivElement>;
 
+    /**
+     * A callback that receives a `ref` an overlay div over the main quadrant's scrollable body less headers.
+     */
+
     scrollIndicatorRef?: React.Ref<HTMLDivElement>;
     /**
      * Whether "scroll" and "wheel" events should be throttled using
@@ -435,11 +439,11 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             />
         ) : undefined;
 
-        const maybeTableOverlay = () => {
+        const tableOverlay = () => {
             const columnHeaderHeight = this.cache.getColumnHeaderHeight();
             const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
             const scrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer!, "vertical");
-            const classes = classNames(Classes.TABLE_BODY_IS_SCROLLING_OVERLAY);
+            const classes = classNames(Classes.TABLE_BODY_SCROLLING_INDICATOR_OVERLAY);
             return (
                 <div
                     className={classes}
@@ -448,9 +452,10 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
                 />
             );
         };
+
         return (
             <div className={Classes.TABLE_QUADRANT_STACK}>
-                {maybeTableOverlay()}
+                {tableOverlay()}
                 <TableQuadrant
                     {...baseProps}
                     bodyRef={this.props.bodyRef}

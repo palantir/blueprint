@@ -455,20 +455,16 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
     }
 
-    public setScrollIndicator(displayScrollIndicator: {
-        left?: boolean;
-        right?: boolean;
-        top?: boolean;
-        bottom?: boolean;
-    }) {
+    /**
+     * Passes in a background style string which is applied as a foreground overlay over the main
+     * scrolling table (excludes scroll bar and headers). Useful for applying visual affects.
+     * ex: on-scroll set background to a linear gradient.
+     *
+     * - background the "background" style string to pass to the transparent overlay.
+     */
+    public setScrollOverlayBackground(background: string) {
         if (this.scrollIndicatorOverlay) {
-            const classes = classNames(Classes.TABLE_BODY_IS_SCROLLING_OVERLAY, {
-                [Classes.TABLE_BODY_IS_SCROLLING_BOTTOM]: displayScrollIndicator?.bottom || false,
-                [Classes.TABLE_BODY_IS_SCROLLING_TOP]: displayScrollIndicator?.top || false,
-                [Classes.TABLE_BODY_IS_SCROLLING_LEFT]: displayScrollIndicator?.left || false,
-                [Classes.TABLE_BODY_IS_SCROLLING_RIGHT]: displayScrollIndicator?.right || false,
-            });
-            this.scrollIndicatorOverlay.className = classes;
+            this.scrollIndicatorOverlay.style.background = background;
         }
     }
     // React lifecycle

@@ -20,7 +20,7 @@ const NS = Classes.getClassNamespace();
 
 export const TABLE_BODY = `${NS}-table-body`;
 export const TABLE_BODY_CELLS = `${NS}-table-body-cells`;
-export const TABLE_BODY_IS_SCROLLING_OVERLAY = `${NS}-table-body-is-scrolling-overlay`;
+export const TABLE_BODY_SCROLLING_INDICATOR_OVERLAY = `${NS}-table-body-scrolling-indicator-overlay`;
 export const TABLE_BODY_IS_SCROLLING_TOP = `${NS}-table-body-is-scrolling-top`;
 export const TABLE_BODY_IS_SCROLLING_BOTTOM = `${NS}-table-body-is-scrolling-bottom`;
 export const TABLE_BODY_IS_SCROLLING_RIGHT = `${NS}-table-body-is-scrolling-right`;
