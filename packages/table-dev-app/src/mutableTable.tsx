@@ -338,14 +338,14 @@ export const TableExample: React.FC = () => {
         if (pos < scrollAbove && pos > top) {
             scrollDirection.current = "UP";
             setString("n-resize");
-            tableRef.current.setScrollOverlayBackground("linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 20%)");
+            tableRef.current.setScrollOverlayIndicator("TOP");
             if (requestRef.current === undefined) {
                 requestAnimationFrame(animate);
             }
         } else if (pos > scrollBelow && pos < bottom) {
             scrollDirection.current = "DOWN";
             setString("s-resize");
-            tableRef.current.setScrollOverlayBackground("linear-gradient(0deg, rgba(0,0,0,0.4) 0%, transparent 20%)");
+            tableRef.current.setScrollOverlayIndicator("BOTTOM");
             if (requestRef.current === undefined) {
                 requestAnimationFrame(animate);
             }
@@ -375,7 +375,7 @@ export const TableExample: React.FC = () => {
         requestRef.current = undefined;
         previousTimeRef.current = undefined;
         setString(undefined);
-        tableRef.current.setScrollOverlayBackground("transparent");
+        tableRef.current.setScrollOverlayIndicator("NONE");
     };
     const renderCell = React.useCallback(
         (_row: number, _col: number) => {

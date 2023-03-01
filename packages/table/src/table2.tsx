@@ -451,8 +451,25 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : currScrollLeft + relativeOffset.left;
         const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : currScrollTop + relativeOffset.top;
 
+        this.checkCorrectedScrollValues(correctedScrollLeft, correctedScrollTop);
+
         // defer to the quadrant stack to keep all quadrant positions in sync
         this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
+    }
+
+    private checkCorrectedScrollValues(correctedScrollLeft: number, correctedScrollTop: number) {
+        if (this.scrollIndicatorOverlay && this.scrollContainerElement) {
+            const scrollWrapper = this.scrollContainerElement;
+            const classes = classNames({
+                [Classes.TABLE_BODY_IS_SCROLLING_BOTTOM]:
+                    scrollWrapper.scrollHeight - scrollWrapper.offsetHeight === correctedScrollTop,
+                [Classes.TABLE_BODY_IS_SCROLLING_TOP]: correctedScrollTop <= 0,
+                [Classes.TABLE_BODY_IS_SCROLLING_LEFT]: correctedScrollLeft <= 0,
+                [Classes.TABLE_BODY_IS_SCROLLING_RIGHT]:
+                    scrollWrapper.scrollWidth - scrollWrapper.offsetWidth === correctedScrollLeft,
+            });
+            classes.split(" ").forEach(name => this.scrollIndicatorOverlay?.classList.remove(name));
+        }
     }
 
     /**
@@ -462,9 +479,20 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
      *
      * - background the "background" style string to pass to the transparent overlay.
      */
-    public setScrollOverlayBackground(background: string) {
-        if (this.scrollIndicatorOverlay) {
-            this.scrollIndicatorOverlay.style.background = background;
+    public setScrollOverlayIndicator(scrollDirection: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE") {
+        if (this.scrollIndicatorOverlay && this.scrollContainerElement?.scrollTop) {
+            const scrollWrapper = this.scrollContainerElement;
+            const classes = classNames(Classes.TABLE_BODY_SCROLLING_INDICATOR_OVERLAY, {
+                [Classes.TABLE_BODY_IS_SCROLLING_BOTTOM]:
+                    scrollDirection === "BOTTOM" &&
+                    scrollWrapper.scrollHeight - scrollWrapper.offsetHeight !== scrollWrapper.scrollTop,
+                [Classes.TABLE_BODY_IS_SCROLLING_TOP]: scrollDirection === "TOP" && scrollWrapper.scrollTop !== 0,
+                [Classes.TABLE_BODY_IS_SCROLLING_LEFT]: scrollDirection === "LEFT" && scrollWrapper.scrollLeft !== 0,
+                [Classes.TABLE_BODY_IS_SCROLLING_RIGHT]:
+                    scrollDirection === "RIGHT" &&
+                    scrollWrapper.scrollWidth - scrollWrapper.offsetWidth === scrollWrapper.scrollLeft,
+            });
+            this.scrollIndicatorOverlay.className = classes;
         }
     }
     // React lifecycle
