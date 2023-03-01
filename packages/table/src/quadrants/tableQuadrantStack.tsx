@@ -444,7 +444,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             const columnHeaderHeight = this.cache.getColumnHeaderHeight();
             const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
             const scrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer!, "vertical");
-            const classes = classNames(Classes.TABLE_BODY_IS_SCROLLING);
+            const classes = classNames(Classes.TABLE_BODY_IS_SCROLLING_OVERLAY);
             return (
                 <div
                     className={classes}

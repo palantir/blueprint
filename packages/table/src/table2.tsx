@@ -462,7 +462,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         bottom?: boolean;
     }) {
         if (this.scrollIndicatorOverlay) {
-            const classes = classNames(Classes.TABLE_BODY_IS_SCROLLING, {
+            const classes = classNames(Classes.TABLE_BODY_IS_SCROLLING_OVERLAY, {
                 [Classes.TABLE_BODY_IS_SCROLLING_BOTTOM]: displayScrollIndicator?.bottom || false,
                 [Classes.TABLE_BODY_IS_SCROLLING_TOP]: displayScrollIndicator?.top || false,
                 [Classes.TABLE_BODY_IS_SCROLLING_LEFT]: displayScrollIndicator?.left || false,
