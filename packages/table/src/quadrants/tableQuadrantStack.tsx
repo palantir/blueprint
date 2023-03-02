@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractComponent2, Utils as CoreUtils, Props, setRef } from "@blueprintjs/core";
@@ -191,6 +190,8 @@ export interface ITableQuadrantStackProps extends Props {
         showFrozenRowsOnly?: boolean,
     ) => JSX.Element | undefined;
 
+    renderScrollIndicatorOverlay?: (scrollBarWidth: number, columnHeaderHeight: number) => JSX.Element | undefined;
+
     /**
      * A callback that receives a `ref` to the main quadrant's row-header container.
      */
@@ -201,11 +202,6 @@ export interface ITableQuadrantStackProps extends Props {
      */
     scrollContainerRef?: React.Ref<HTMLDivElement>;
 
-    /**
-     * A callback that receives a `ref` an overlay div over the main quadrant's scrollable body less headers.
-     */
-
-    scrollIndicatorRef?: React.Ref<HTMLDivElement>;
     /**
      * Whether "scroll" and "wheel" events should be throttled using
      * requestAnimationFrame. Disabling this can be useful for unit testing,
@@ -443,14 +439,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             const columnHeaderHeight = this.cache.getColumnHeaderHeight();
             const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
             const scrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer!, "vertical");
-            const classes = classNames(Classes.TABLE_BODY_SCROLLING_INDICATOR_OVERLAY);
-            return (
-                <div
-                    className={classes}
-                    ref={this.props.scrollIndicatorRef}
-                    style={{ marginRight: scrollBarWidth, marginTop: columnHeaderHeight }}
-                />
-            );
+            return this.props.renderScrollIndicatorOverlay?.(scrollBarWidth, columnHeaderHeight);
         };
 
         return (

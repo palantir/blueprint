@@ -94,6 +94,8 @@ export interface TableState {
     columnIdToIndex: { [key: string]: number };
 
     childrenArray: Array<React.ReactElement<ColumnProps>>;
+
+    scrollDirection?: "TOP" | "BOTTOM" | "LEFT" | "RIGHT" | "NONE";
 }
 
 export interface TableSnapshot {

@@ -237,7 +237,6 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             }
         },
         scrollContainer: (ref: HTMLElement | null) => (this.scrollContainerElement = ref),
-        scrollIndicator: (ref: HTMLElement | null) => (this.scrollIndicatorOverlay = ref),
     };
 
     private cellContainerElement?: HTMLElement | null;
@@ -255,8 +254,6 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     private rowHeaderWidth = Grid.MIN_ROW_HEADER_WIDTH;
 
     private scrollContainerElement?: HTMLElement | null;
-
-    private scrollIndicatorOverlay?: HTMLElement | null;
 
     private didColumnHeaderMount = false;
 
@@ -304,7 +301,6 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             undefined,
             selectedRegions,
         );
-
         this.state = {
             childrenArray,
             columnIdToIndex,
@@ -317,6 +313,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
             rowHeights: newRowHeights,
+            scrollDirection: undefined,
             selectedRegions,
             verticalGuides: [],
         };
@@ -451,25 +448,8 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : currScrollLeft + relativeOffset.left;
         const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : currScrollTop + relativeOffset.top;
 
-        this.checkCorrectedScrollValues(correctedScrollLeft, correctedScrollTop);
-
         // defer to the quadrant stack to keep all quadrant positions in sync
         this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
-    }
-
-    private checkCorrectedScrollValues(correctedScrollLeft: number, correctedScrollTop: number) {
-        if (this.scrollIndicatorOverlay && this.scrollContainerElement) {
-            const scrollWrapper = this.scrollContainerElement;
-            const classes = classNames({
-                [Classes.TABLE_BODY_IS_SCROLLING_BOTTOM]:
-                    scrollWrapper.scrollHeight - scrollWrapper.offsetHeight === correctedScrollTop,
-                [Classes.TABLE_BODY_IS_SCROLLING_TOP]: correctedScrollTop <= 0,
-                [Classes.TABLE_BODY_IS_SCROLLING_LEFT]: correctedScrollLeft <= 0,
-                [Classes.TABLE_BODY_IS_SCROLLING_RIGHT]:
-                    scrollWrapper.scrollWidth - scrollWrapper.offsetWidth === correctedScrollLeft,
-            });
-            classes.split(" ").forEach(name => this.scrollIndicatorOverlay?.classList.remove(name));
-        }
     }
 
     /**
@@ -480,21 +460,41 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
      * - background the "background" style string to pass to the transparent overlay.
      */
     public setScrollOverlayIndicator(scrollDirection: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE") {
-        if (this.scrollIndicatorOverlay && this.scrollContainerElement?.scrollTop) {
-            const scrollWrapper = this.scrollContainerElement;
-            const classes = classNames(Classes.TABLE_BODY_SCROLLING_INDICATOR_OVERLAY, {
-                [Classes.TABLE_BODY_IS_SCROLLING_BOTTOM]:
-                    scrollDirection === "BOTTOM" &&
-                    scrollWrapper.scrollHeight - scrollWrapper.offsetHeight !== scrollWrapper.scrollTop,
-                [Classes.TABLE_BODY_IS_SCROLLING_TOP]: scrollDirection === "TOP" && scrollWrapper.scrollTop !== 0,
-                [Classes.TABLE_BODY_IS_SCROLLING_LEFT]: scrollDirection === "LEFT" && scrollWrapper.scrollLeft !== 0,
-                [Classes.TABLE_BODY_IS_SCROLLING_RIGHT]:
-                    scrollDirection === "RIGHT" &&
-                    scrollWrapper.scrollWidth - scrollWrapper.offsetWidth === scrollWrapper.scrollLeft,
-            });
-            this.scrollIndicatorOverlay.className = classes;
-        }
+        this.setState({ scrollDirection });
     }
+
+    private renderScrollIndicatorOverlay = (scrollBarWidth: number, columnHeaderHeight: number) => {
+        const { scrollDirection } = this.state;
+        const handleStyle = (direction: string | undefined, compare: string) => {
+            return {
+                marginRight: scrollBarWidth,
+                marginTop: columnHeaderHeight,
+                opacity: direction === compare ? 1 : 0,
+            };
+        };
+        const baseClass = Classes.TABLE_BODY_SCROLLING_INDICATOR_OVERLAY;
+        return (
+            <>
+                <div
+                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_TOP)}
+                    style={handleStyle(scrollDirection, "TOP")}
+                />
+                <div
+                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_BOTTOM)}
+                    style={handleStyle(scrollDirection, "BOTTOM")}
+                />
+                <div
+                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_RIGHT)}
+                    style={handleStyle(scrollDirection, "RIGHT")}
+                />
+                <div
+                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_LEFT)}
+                    style={handleStyle(scrollDirection, "LEFT")}
+                />
+            </>
+        );
+    };
+
     // React lifecycle
     // ===============
 
@@ -583,7 +583,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
                     enableColumnHeader={enableColumnHeader}
-                    scrollIndicatorRef={this.refHandlers.scrollIndicator}
+                    renderScrollIndicatorOverlay={this.renderScrollIndicatorOverlay}
                 />
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, Classes.TABLE_OVERLAY_REORDERING_CURSOR)} />
                 <GuideLayer
