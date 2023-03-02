@@ -5,6 +5,8 @@
 
 // @ts-check
 
+import { ensureDirSync } from "fs-extra";
+import { writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { argv, cwd } from "node:process";
 import yargs from "yargs/yargs";
@@ -32,6 +34,14 @@ async function main() {
 
     const outputFilename = args["outputFileName"];
     const parsedInput = await getParsedVars(SRC_DIR, args["_"]);
-    generateScssVariables(parsedInput, join(LIB_DIR, "scss"), outputFilename, args["retainDefault"]);
-    generateLessVariables(parsedInput, join(LIB_DIR, "less"), outputFilename);
+
+    const scssVariables = generateScssVariables(parsedInput, args["retainDefault"]);
+    const outputScssDir = join(LIB_DIR, "scss");
+    ensureDirSync(outputScssDir);
+    writeFileSync(`${outputScssDir}/${outputFilename}.scss`, scssVariables);
+
+    const lessVariables = generateLessVariables(parsedInput);
+    const outputLessDir = join(LIB_DIR, "less");
+    ensureDirSync(outputLessDir);
+    writeFileSync(`${outputLessDir}/${outputFilename}.less`, lessVariables);
 }

@@ -1,21 +1,23 @@
-#!/usr/bin/env node
 /**
  * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
 // @ts-check
 
-import getSassVars from "get-sass-vars";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { snakeCase } from "change-case";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import prettier from "prettier";
 
-import { COPYRIGHT_HEADER, DEFAULT_FLAG, USE_MATH_RULE } from "./constants.mjs";
+import { Colors } from "@blueprintjs/colors";
+
+import { COPYRIGHT_HEADER, USE_MATH_RULE } from "./constants.mjs";
+import sassVariableParser from "./sass/sassVariableParser.mjs";
 
 /**
  * @typedef {Object} ParsedVarsResult
- * @property {Record<string, unknown>} parsedVars keyed by variable name, including the leading "$"
+ * @property {Record<string, string>} parsedVars keyed by variable name, including the leading "$"
  * @property {Set<string | undefined>[]} varsInBlocks
- * @property {Set<string | undefined>} varsWithDefaultFlag
  */
 
 /**
@@ -29,31 +31,26 @@ export async function getParsedVars(inputDir, inputSources) {
     const stripCssComments = (await import("strip-css-comments")).default;
     // concatenate sources
     let cleanedInput = inputSources.reduce((str, currentFilename) => {
-        return str + readFileSync(`${inputDir}/${currentFilename}`).toString();
+        return str + readFileSync(join(inputDir, currentFilename), { encoding: "utf8" });
     }, "");
     // strip comments, clean up for consumption
     cleanedInput = stripCssComments(cleanedInput);
     cleanedInput = cleanedInput
         // variables files should be free of relative imports
         .replace(/(@import|\/\/).*\n+/g, "")
-        // we only want one "sass:math" reference, we'll add it in manually
+        // we don't want "sass:math" references
         .replace(new RegExp(USE_MATH_RULE, "g"), "")
         // special case for one common mixin used in variables
         .replace(/border-shadow\((.+)\)/g, "0 0 0 1px rgba($black, $1)")
+        // special case for rgba(#hexColor) math, which is supported in Sass but not Less,
+        // so we manually look up the hex value of the color in JS and convert it to RGB
+        .replace(
+            /rgba\(\$(.+)\, (.+)\)/g,
+            (_substr, colorName, opacity) => `rgba(${blueprintColorAsRgbTuple(colorName)}, ${opacity})`,
+        )
         .replace(/\n{3,}/g, "\n\n");
-    cleanedInput = [USE_MATH_RULE, cleanedInput].join("\n");
 
-    const parsedVars = await getSassVars(cleanedInput);
-
-    // `getSassVarsSync` strips `!default` flags from the output, so we need to determine which
-    // variables had those flags set here and pass it on. This is a bit of a hack since it relies on regex;
-    // an alternative approach would involve postcss parsing via a plugin like postcss-simple-vars.
-    const varsWithDefaultFlag = new Set(
-        [...cleanedInput.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)(?<varValue>[\s\S]+?);/gm)]
-            .map(match => [match.groups?.varName, match.groups?.varValue.trim()])
-            .filter(([, varValue]) => varValue?.endsWith(DEFAULT_FLAG))
-            .map(([varName]) => varName),
-    );
+    const parsedVars = await sassVariableParser(cleanedInput);
 
     // get variable blocks for separating variables in output
     const varsInBlocks = cleanedInput
@@ -63,7 +60,7 @@ export async function getParsedVars(inputDir, inputSources) {
                 new Set([...block.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)/g)].map(match => match.groups?.varName)),
         );
 
-    return { parsedVars, varsInBlocks, varsWithDefaultFlag };
+    return { parsedVars, varsInBlocks };
 }
 
 function isPrimitive(value) {
@@ -71,7 +68,7 @@ function isPrimitive(value) {
 }
 
 /**
- * Converts values from parsed output of `get-sass-vars` to valid scss or less
+ * Converts parsed postcss "simple variables" to valid scss or less
  *
  * @param {unknown} value
  * @param {"less" | "scss"} outputType
@@ -110,44 +107,42 @@ function convertParsedValueToOutput(value, outputType) {
  * and writes to an output file.
  *
  * @param {ParsedVarsResult} parsedInput
- * @param {string} outputDir
- * @param {string} outputFilename
  * @param {boolean} retainDefault whether to retain `!default` flags on variables
  * @returns {string} output Sass contents
  */
-export function generateScssVariables(parsedInput, outputDir, outputFilename, retainDefault) {
-    const { parsedVars, varsInBlocks, varsWithDefaultFlag } = parsedInput;
+export function generateScssVariables(parsedInput, retainDefault) {
+    const { parsedVars, varsInBlocks } = parsedInput;
 
     let variablesScss = COPYRIGHT_HEADER + "\n";
     for (const varsInBlock of varsInBlocks) {
         const variablesArray = Object.entries(parsedVars)
-            .filter(([varName, _value]) => varsInBlock.has(varName))
+            // N.B. the leading "$" is intentional here, as postcss-simple-vars preserves those in variable names
+            .filter(([varName, _value]) => varsInBlock.has(`$${varName}`))
             .map(([varName, value]) => {
-                const initializerSuffix = retainDefault && varsWithDefaultFlag.has(varName) ? DEFAULT_FLAG : "";
-                return `${varName}: ${convertParsedValueToOutput(value, "scss")} ${initializerSuffix};`;
+                let defaultFlag = "";
+                // strip the default flag if it exists, and keep track of it if we need to retain it in the output
+                if (value.includes("!default")) {
+                    value = value.replace("!default", "");
+                    if (retainDefault) {
+                        defaultFlag = "!default";
+                    }
+                }
+                return `$${varName}: ${convertParsedValueToOutput(value, "scss")} ${defaultFlag};`;
             });
 
         variablesScss = `${variablesScss}${variablesArray.join("\n")}\n\n`;
     }
 
-    const formattedVariablesScss = prettier.format(variablesScss, { parser: "less" });
-
-    if (!existsSync(outputDir)) {
-        mkdirSync(outputDir, { recursive: true });
-    }
-    writeFileSync(`${outputDir}/${outputFilename}.scss`, formattedVariablesScss);
-    return formattedVariablesScss;
+    return prettier.format(variablesScss, { parser: "scss" });
 }
 
 /**
  * Takes in variable values from compiled sass vars, converts them to Less and writes to an output file.
  *
  * @param {ParsedVarsResult} parsedInput
- * @param {string} outputDir
- * @param {string} outputFilename
- * @returns {void}
+ * @returns {string} output Less contents
  */
-export function generateLessVariables(parsedInput, outputDir, outputFilename) {
+export function generateLessVariables(parsedInput) {
     const { parsedVars, varsInBlocks } = parsedInput;
 
     const convertField = ([varName, value]) => {
@@ -177,10 +172,27 @@ export function generateLessVariables(parsedInput, outputDir, outputFilename) {
         variablesLess = `${variablesLess}${lessBlock}\n\n`;
     }
 
-    const formattedVariablesLess = prettier.format(variablesLess, { parser: "less" });
+    return prettier.format(variablesLess, { parser: "less" });
+}
 
-    if (!existsSync(outputDir)) {
-        mkdirSync(outputDir, { recursive: true });
+/**
+ * @param {string} colorName
+ * @returns {string}
+ */
+function blueprintColorAsRgbTuple(colorName) {
+    if (colorName.startsWith("$")) {
+        colorName = colorName.substring(1);
     }
-    writeFileSync(`${outputDir}/${outputFilename}.less`, formattedVariablesLess);
+    colorName = snakeCase(colorName).toUpperCase();
+
+    let colorHex = Colors[colorName];
+    if (colorHex === undefined) {
+        throw new Error(`[node-build-scripts] Could not find Blueprint color name '${colorName}'`);
+    } else if (colorHex.startsWith("#")) {
+        colorHex = colorHex.substring(1);
+    }
+
+    const aRgbHex = colorHex.match(/.{1,2}/g);
+    const [r, g, b] = [parseInt(aRgbHex[0], 16), parseInt(aRgbHex[1], 16), parseInt(aRgbHex[2], 16)];
+    return `${r}, ${g}, ${b}`;
 }

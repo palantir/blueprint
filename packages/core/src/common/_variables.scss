@@ -1,17 +1,16 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:math";
 @import "color-aliases";
 @import "mixins";
 
 // ----------------------------------------------------------------------------
-// This file contains most of the public Sass API of @blueprintjs/core.
+// This file is part of the public Sass API of @blueprintjs/core.
 // As such, it comes with important considerations:
 //
 // -  Changes to these variable names and values are generally considered breaking changes.
 // -  A limited subset of Sass syntax is supported. All syntax inluded here must be able to get parsed by the
-//    `generate-css-variables` script in @blueprintjs/node-build-scripts.
+//    `generate-css-variables` script in @blueprintjs/node-build-scripts. For example, "sass:math" is unsupported.
 // ----------------------------------------------------------------------------
 
 // Namespace appended to the beginning of each CSS class: `.#{$ns}-button`.
@@ -55,13 +54,13 @@ $pt-font-size-large: $pt-grid-size * 1.6 !default;
 $pt-font-size-small: $pt-grid-size * 1.2 !default;
 
 // a little bit extra to ensure the height comes out to just over 18px (and browser rounds to 18px)
-// equivalent to: 1.28581
-$pt-line-height: math.div($pt-grid-size * 1.8, $pt-font-size) + 0.0001 !default;
+// equivalent to: math.div($pt-grid-size * 1.8, $pt-font-size) + 0.0001
+$pt-line-height: 1.28581 !default;
 
 // Grids & dimensions
 
-// equivalent to: 2px
-$pt-border-radius: floor(math.div($pt-grid-size, 5)) !default;
+// equivalent to: floor(math.div($pt-grid-size, 5))
+$pt-border-radius: 2px !default;
 
 // Buttons
 $pt-button-height: $pt-grid-size * 3 !default;
