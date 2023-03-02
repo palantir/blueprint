@@ -338,14 +338,14 @@ export const TableExample: React.FC = () => {
         if (pos < scrollAbove && pos > top) {
             scrollDirection.current = "UP";
             setString("n-resize");
-            tableRef.current.setScrollOverlayIndicator("TOP");
+            // tableRef.current.setScrollOverlayIndicator("TOP");
             if (requestRef.current === undefined) {
                 requestAnimationFrame(animate);
             }
         } else if (pos > scrollBelow && pos < bottom) {
             scrollDirection.current = "DOWN";
             setString("s-resize");
-            tableRef.current.setScrollOverlayIndicator("BOTTOM");
+            // tableRef.current.setScrollOverlayIndicator("BOTTOM");
             if (requestRef.current === undefined) {
                 requestAnimationFrame(animate);
             }
@@ -360,9 +360,9 @@ export const TableExample: React.FC = () => {
             const deltaTime = time - previousTimeRef.current;
             if (deltaTime > 100) {
                 if (scrollDirection.current === "UP") {
-                    tableRef.current.scroll({ left: 0, top: -10 });
+                    tableRef.current.setScrolling({ left: 0, top: -10 }, "TOP");
                 } else {
-                    tableRef.current.scroll({ left: 0, top: +10 });
+                    tableRef.current.setScrolling({ left: 0, top: +10 }, "BOTTOM");
                 }
                 previousTimeRef.current += 100;
             }
@@ -375,7 +375,7 @@ export const TableExample: React.FC = () => {
         requestRef.current = undefined;
         previousTimeRef.current = undefined;
         setString(undefined);
-        tableRef.current.setScrollOverlayIndicator("NONE");
+        tableRef.current.setScrolling(undefined, "NONE");
     };
     const renderCell = React.useCallback(
         (_row: number, _col: number) => {

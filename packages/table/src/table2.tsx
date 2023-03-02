@@ -431,43 +431,38 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     }
 
     /**
-     * Scrolls the table by the provided x and y offset.
+     * Can adjust the scroll offset the table by the provided x and y values. Can also set a
+     * linear gradient overlay effect to the table to indicate scrolling with the scrolling
+     * direction provided.
      *
-     * - xOffset: The horizontal scroll modification
-     * - yOffset: The vertical scroll modification
-     *
+     * - relativeOffset: The horizontal and vertical scroll modification to be applied.
+     * - scrollDirection the scrolling direction for which we should generate the scroll indicator
+     *   gradient.
      */
-    public scroll(relativeOffset: { left: number; top: number }) {
+    public setScrolling(
+        relativeOffset?: { left: number; top: number },
+        scrollDirection?: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE",
+    ) {
+        if (this.shouldRenderScrollDirection(scrollDirection)) {
+            this.setState({ scrollDirection });
+        }
         const { viewportRect } = this.state;
 
         if (viewportRect === undefined || this.grid === null || this.quadrantStackInstance === undefined) {
             return;
         }
 
-        const { left: currScrollLeft, top: currScrollTop } = viewportRect;
-        const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : currScrollLeft + relativeOffset.left;
-        const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : currScrollTop + relativeOffset.top;
+        if (relativeOffset !== undefined) {
+            const { left: currScrollLeft, top: currScrollTop } = viewportRect;
+            const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : currScrollLeft + relativeOffset.left;
+            const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : currScrollTop + relativeOffset.top;
 
-        if (!this.shouldRenderScrollDirection(this.state.scrollDirection)) {
-            this.setState({ scrollDirection: "NONE" });
-        }
-        // defer to the quadrant stack to keep all quadrant positions in sync
-        this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
-    }
+            if (!this.shouldRenderScrollDirection(this.state.scrollDirection)) {
+                this.setState({ scrollDirection: "NONE" });
+            }
 
-    /**
-     * Passes in a background style string which is applied as a foreground overlay over the main
-     * scrolling table (excludes scroll bar and headers). Useful for applying visual affects.
-     * ex: on-scroll set background to a linear gradient.
-     *
-     * - scrollDirection the scrolling direction for which we should generate the scroll indicator
-     *   gradient.
-     */
-    public setScrollOverlayIndicator(scrollDirection: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE") {
-        if (this.shouldRenderScrollDirection(scrollDirection)) {
-            this.setState({ scrollDirection });
-        } else {
-            this.setState({ scrollDirection: "NONE" });
+            // defer to the quadrant stack to keep all quadrant positions in sync
+            this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
         }
     }
 
