@@ -18,9 +18,7 @@
         "sass-lint": "./sass-lint.mjs"
     },
     "dependencies": {
-        "@blueprintjs/colors": "^4.1.16",
         "autoprefixer": "^10.4.13",
-        "change-case": "^4.1.2",
         "chokidar": "^3.5.3",
         "cross-spawn": "^7.0.3",
         "css-select": "^5.1.0",

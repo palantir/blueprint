@@ -4,14 +4,11 @@
 
 // @ts-check
 
-import { snakeCase } from "change-case";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import prettier from "prettier";
 
-import { Colors } from "@blueprintjs/colors";
-
-import { COPYRIGHT_HEADER, USE_MATH_RULE } from "./constants.mjs";
+import { COPYRIGHT_HEADER, DEFAULT_FLAG, USE_MATH_RULE } from "./constants.mjs";
 import sassVariableParser from "./sass/sassVariableParser.mjs";
 
 /**
@@ -42,12 +39,6 @@ export async function getParsedVars(inputDir, inputSources) {
         .replace(new RegExp(USE_MATH_RULE, "g"), "")
         // special case for one common mixin used in variables
         .replace(/border-shadow\((.+)\)/g, "0 0 0 1px rgba($black, $1)")
-        // special case for rgba(#hexColor) math, which is supported in Sass but not Less,
-        // so we manually look up the hex value of the color in JS and convert it to RGB
-        .replace(
-            /rgba\(\$(.+)\, (.+)\)/g,
-            (_substr, colorName, opacity) => `rgba(${blueprintColorAsRgbTuple(colorName)}, ${opacity})`,
-        )
         .replace(/\n{3,}/g, "\n\n");
 
     const parsedVars = await sassVariableParser(cleanedInput);
@@ -70,14 +61,15 @@ function isPrimitive(value) {
 /**
  * Converts parsed postcss "simple variables" to valid scss or less
  *
- * @param {unknown} value
+ * @param {Array | object | string} value
+ * @param {Record<string, string>} allVariables
  * @param {"less" | "scss"} outputType
- * @returns {unknown} output
+ * @returns {string} output
  */
-function convertParsedValueToOutput(value, outputType) {
+function printVariable(value, allVariables, outputType) {
     // array values should be separated with commas
     if (Array.isArray(value)) {
-        return `${value.map(elt => convertParsedValueToOutput(elt, outputType)).join(",\n")}`;
+        return `${value.map(elt => printVariable(elt, allVariables, outputType)).join(",\n")}`;
     }
 
     // Objects are map variables, formatted like:
@@ -86,16 +78,19 @@ function convertParsedValueToOutput(value, outputType) {
     if (value !== null && typeof value === "object") {
         return outputType === "scss"
             ? `(${Object.entries(value).reduce(
-                  (str, [key, val]) => `${str}\n"${key}": ${convertParsedValueToOutput(val, outputType)},`,
+                  (str, [key, val]) => `${str}\n"${key}": ${printVariable(val, allVariables, outputType)},`,
                   "",
               )}\n)`
             : `{${Object.entries(value).reduce(
-                  (str, [key, val]) => `${str}\n${key}: ${convertParsedValueToOutput(val, outputType)};`,
+                  (str, [key, val]) => `${str}\n${key}: ${printVariable(val, allVariables, outputType)};`,
                   "",
               )}\n}`;
     }
 
     if (isPrimitive(value)) {
+        // special case for rgba(#hexColor) math, which is supported in Sass but not Less,
+        // so we manually look up the hex value of the color and convert it to RGB
+        value = evaluateRgbaInitializerColor(value, allVariables);
         return value;
     }
 
@@ -127,7 +122,7 @@ export function generateScssVariables(parsedInput, retainDefault) {
                         defaultFlag = "!default";
                     }
                 }
-                return `$${varName}: ${convertParsedValueToOutput(value, "scss")} ${defaultFlag};`;
+                return `$${varName}: ${printVariable(value, parsedVars, "scss")} ${defaultFlag};`;
             });
 
         variablesScss = `${variablesScss}${variablesArray.join("\n")}\n\n`;
@@ -147,9 +142,9 @@ export function generateLessVariables(parsedInput) {
 
     const convertField = ([varName, value]) => {
         if (typeof value === "object" && !Array.isArray(value)) {
-            return `${varName}: ${convertParsedValueToOutput(value, "less")}`;
+            return `${varName}: ${printVariable(value, parsedVars, "less")}`;
         }
-        return `${varName}: ${convertParsedValueToOutput(value, "less")};`;
+        return `${varName}: ${printVariable(value, parsedVars, "less")};`;
     };
 
     let variablesLess = COPYRIGHT_HEADER + "\n";
@@ -176,23 +171,32 @@ export function generateLessVariables(parsedInput) {
 }
 
 /**
- * @param {string} colorName
+ * To ensure compatibility with Less, we must converat all instances of `rgba(color, opacity)` which use a hex color
+ * as the first argument (e.g. `rgba($black, 0.1)`) to use the more widely-compatible `rgba(r, g, b, a)` syntax.
+ *
+ * @param {string} variableInitializer
+ * @param {Record<string, string>} allVariables
  * @returns {string}
  */
-function blueprintColorAsRgbTuple(colorName) {
-    if (colorName.startsWith("$")) {
-        colorName = colorName.substring(1);
-    }
-    colorName = snakeCase(colorName).toUpperCase();
+function evaluateRgbaInitializerColor(variableInitializer, allVariables) {
+    return variableInitializer.replace(
+        /rgba\((.+)\, (.+)\)/g,
+        (_, colorHexCode, opacity) => `rgba(${colorHexToRgb(colorHexCode)}, ${opacity})`,
+    );
+}
 
-    let colorHex = Colors[colorName];
-    if (colorHex === undefined) {
-        throw new Error(`[node-build-scripts] Could not find Blueprint color name '${colorName}'`);
-    } else if (colorHex.startsWith("#")) {
+/**
+ * @param {string} colorHex
+ * @returns {string} tuple of r, g, b values of input color
+ */
+function colorHexToRgb(colorHex) {
+    if (colorHex.startsWith("#")) {
         colorHex = colorHex.substring(1);
     }
-
     const aRgbHex = colorHex.match(/.{1,2}/g);
+    if (aRgbHex == null) {
+        throw new Error(`[node-build-scripts] Could not convert hex color to RGB '${colorHex}'`);
+    }
     const [r, g, b] = [parseInt(aRgbHex[0], 16), parseInt(aRgbHex[1], 16), parseInt(aRgbHex[2], 16)];
     return `${r}, ${g}, ${b}`;
 }
