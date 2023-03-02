@@ -1,6 +1,15 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+// ----------------------------------------------------------------------------
+// This file is part of the public Sass API of @blueprintjs/core.
+// As such, it comes with important considerations:
+//
+// -  Changes to these variable names and values are generally considered breaking changes.
+// -  A limited subset of Sass syntax is supported. All syntax inluded here must be able to get parsed by the
+//    `generate-css-variables` script in @blueprintjs/node-build-scripts. For example, "sass:math" is unsupported.
+// ----------------------------------------------------------------------------
+
 $pt-intent-primary: $blue3 !default;
 $pt-intent-success: $green3 !default;
 $pt-intent-warning: $orange3 !default;
@@ -13,12 +22,12 @@ $pt-outline-color: rgba($blue3, 0.6) !default;
 
 $pt-text-color: $dark-gray1 !default;
 $pt-text-color-muted: $gray1 !default;
-$pt-text-color-disabled: rgba($pt-text-color-muted, 0.6) !default;
+$pt-text-color-disabled: rgba($gray1, 0.6) !default;
 $pt-heading-color: $pt-text-color !default;
 $pt-link-color: $blue2 !default;
 $pt-dark-text-color: $light-gray5 !default;
 $pt-dark-text-color-muted: $gray4 !default;
-$pt-dark-text-color-disabled: rgba($pt-dark-text-color-muted, 0.6) !default;
+$pt-dark-text-color-disabled: rgba($gray4, 0.6) !default;
 $pt-dark-heading-color: $pt-dark-text-color !default;
 $pt-dark-link-color: $blue5 !default;
 // Default text selection color using #7dbcff

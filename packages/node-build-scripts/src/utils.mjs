@@ -19,6 +19,7 @@
 import { basename, dirname, join, resolve } from "node:path";
 import { cwd, env } from "node:process";
 import { fileURLToPath } from "node:url";
+import { pkgUpSync } from "pkg-up";
 
 /**
  * @param {string} dirName name of directory containing XML file.
@@ -42,5 +43,7 @@ export function junitReportPath(dirName, fileName = basename(cwd())) {
  * @returns the root directory of this Blueprint monorepo
  */
 export function getRootDir() {
-    return resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
+    const thisDirName = dirname(fileURLToPath(import.meta.url));
+    const nodeModuleScriptsDir = dirname(pkgUpSync({ cwd: thisDirName }));
+    return resolve(nodeModuleScriptsDir, "..", "..");
 }

@@ -6,14 +6,12 @@
 
 import { watch } from "chokidar";
 import fsExtra from "fs-extra";
-import { basename, dirname, extname, join, parse as parsePath, relative, resolve } from "node:path";
+import { basename, extname, join, resolve } from "node:path";
 import { argv } from "node:process";
 import sass from "sass";
-import { SourceMapGenerator } from "source-map-js";
 import yargs from "yargs";
 
-import defaultCustomFunctions from "./sass/sassCustomFunctions.mjs";
-import { loadPaths } from "./sass/sassNodeModulesLoadPaths.mjs";
+import { sassCompileFile } from "./src/sass/sassCompileFile.mjs";
 
 // slice off two args which are `node` CLI and this script's name
 const truncatedArgv = argv.slice(2);
@@ -77,40 +75,5 @@ async function compileFile(inputFilePath) {
         throw new Error(`[sass-compile] Output folder must be specified with --output CLI argument.`);
     }
 
-    const outFile = join(args.output, `${parsePath(inputFilePath).name}.css`);
-    const outputMapFile = `${outFile}.map`;
-    const result = await sass.compileAsync(inputFilePath, {
-        loadPaths,
-        sourceMap: true,
-        functions: {
-            ...defaultCustomFunctions,
-            // custom functions specified as CLI args are allowed to override our default ones
-            ...cliCustomFunctions,
-        },
-        charset: true,
-    });
-    fsExtra.outputFileSync(outFile, result.css, { flag: "w" });
-    if (result.sourceMap != null) {
-        fsExtra.outputFileSync(
-            outputMapFile,
-            fixSourcePathsInSourceMap({ outputMapFile, rawSourceMap: result.sourceMap }),
-            {
-                flag: "w",
-            },
-        );
-    }
-}
-
-/**
- *
- * @param {{ outputMapFile: string, rawSourceMap: import("source-map").RawSourceMap }} param0
- * @returns {string}
- */
-function fixSourcePathsInSourceMap({ outputMapFile, rawSourceMap }) {
-    rawSourceMap.sources = rawSourceMap.sources.map(source => {
-        const outputDirectory = dirname(outputMapFile);
-        const pathToSourceWithoutProtocol = source.replace("file://", "");
-        return relative(outputDirectory, pathToSourceWithoutProtocol);
-    });
-    return new SourceMapGenerator(rawSourceMap).toString();
+    return sassCompileFile(inputFilePath, args.output, cliCustomFunctions);
 }
