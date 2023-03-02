@@ -1167,7 +1167,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
      */
     private renderScrollIndicatorOverlay = (scrollBarWidth: number, columnHeaderHeight: number) => {
         const { scrollDirection } = this.state;
-        const handleStyle = (direction: string | undefined, compare: string) => {
+        const getStyle = (direction: string | undefined, compare: string) => {
             return {
                 marginRight: scrollBarWidth,
                 marginTop: columnHeaderHeight,
