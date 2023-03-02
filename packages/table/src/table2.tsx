@@ -431,9 +431,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     }
 
     /**
-     * Can adjust the scroll offset the table by the provided x and y values. Can also set a
-     * linear gradient overlay effect to the table to indicate scrolling with the scrolling
-     * direction provided.
+     * Scrolls the table by a specified number of offset pixels in either the horizontal or vertical dimension.
      *
      * - relativeOffset: The horizontal and vertical scroll modification to be applied.
      * - scrollDirection the scrolling direction for which we should generate the scroll indicator
