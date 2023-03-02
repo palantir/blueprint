@@ -18,7 +18,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { useRef, useState } from "react";
 
 import {
     Button,
@@ -244,6 +243,7 @@ export interface IMutableTableState {
     enableRowResizing?: boolean;
     enableRowSelection?: boolean;
     enableSlowLayout?: boolean;
+    enableScrollingApi?: boolean;
     numCols?: number;
     numFrozenCols?: number;
     numFrozenRows?: number;
@@ -266,6 +266,9 @@ export interface IMutableTableState {
     showRowHeadersLoading?: boolean;
     showTableInteractionBar?: boolean;
     showZebraStriping?: boolean;
+    scrollDirection?: "UP" | "DOWN";
+    animationRequestId?: number;
+    previousTime?: number;
 }
 
 const DEFAULT_STATE: IMutableTableState = {
@@ -291,6 +294,7 @@ const DEFAULT_STATE: IMutableTableState = {
     enableRowReordering: false,
     enableRowResizing: false,
     enableRowSelection: true,
+    enableScrollingApi: false,
     enableSlowLayout: false,
     numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
     numFrozenCols: FROZEN_COLUMN_COUNTS[FROZEN_COLUMN_COUNT_DEFAULT_INDEX],
@@ -316,110 +320,19 @@ const DEFAULT_STATE: IMutableTableState = {
     showZebraStriping: false,
 };
 
-/**
- * An example table to demo/proove out the new scroll functionality. Assuming that this should be deleted before merging.
- */
-export const TableExample: React.FC = () => {
-    const tableRef = useRef<Table2>(null);
-    const tableWrapperRef = useRef<HTMLDivElement>(null);
-    const [value, setString] = useState<string>(undefined);
-
-    const scrollDirection = React.useRef<"UP" | "DOWN" | undefined>(undefined);
-    const requestRef = React.useRef<number>(undefined);
-    const previousTimeRef = React.useRef<number>(undefined);
-
-    const checkScrolling = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        const top = tableWrapperRef.current.getBoundingClientRect().top;
-        const bottom = tableWrapperRef.current.getBoundingClientRect().bottom;
-        const scrollAbove = top + 0.3 * (bottom - top);
-        const scrollBelow = bottom - 0.3 * (bottom - top);
-        const pos = event.clientY;
-
-        if (pos < scrollAbove && pos > top) {
-            scrollDirection.current = "UP";
-            setString("n-resize");
-            if (requestRef.current === undefined) {
-                requestAnimationFrame(animate);
-            }
-        } else if (pos > scrollBelow && pos < bottom) {
-            scrollDirection.current = "DOWN";
-            setString("s-resize");
-            if (requestRef.current === undefined) {
-                requestAnimationFrame(animate);
-            }
-        } else {
-            cancelAnimation();
-        }
-    };
-
-    const animate = (time: number) => {
-        previousTimeRef.current = previousTimeRef.current ?? time;
-        if (tableRef.current) {
-            const deltaTime = time - previousTimeRef.current;
-            if (deltaTime > 100) {
-                if (scrollDirection.current === "UP") {
-                    tableRef.current.scrollByOffset({ left: 0, top: -10 });
-                } else {
-                    tableRef.current.scrollByOffset({ left: 0, top: +10 });
-                }
-                previousTimeRef.current += 100;
-            }
-        }
-        requestRef.current = requestAnimationFrame(animate);
-    };
-
-    const cancelAnimation = () => {
-        cancelAnimationFrame(requestRef.current);
-        requestRef.current = undefined;
-        previousTimeRef.current = undefined;
-        setString(undefined);
-        tableRef.current.scrollByOffset(null);
-    };
-    const renderCell = React.useCallback(
-        (_row: number, _col: number) => {
-            return MyCell({ style: value, num: _row.toLocaleString() });
-        },
-        [value],
-    );
-    const MyCell = ({ num, style }: { style: string; num: string }) => {
-        return (
-            <Cell style={{ cursor: style }}>
-                <span>{"some random text" + num}</span>
-            </Cell>
-        );
-    };
-    return (
-        <div
-            ref={tableWrapperRef}
-            style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 20,
-                height: 300,
-                position: "relative",
-            }}
-            onMouseOver={event => checkScrolling(event)}
-            onMouseLeave={cancelAnimation}
-        >
-            <Table2 ref={tableRef} numRows={20} cellRendererDependencies={[value]}>
-                <Column cellRenderer={renderCell} />
-                <Column cellRenderer={renderCell} />
-                <Column cellRenderer={renderCell} />
-            </Table2>
-        </div>
-    );
-};
-
 // eslint-disable-next-line @typescript-eslint/ban-types
 export class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new DenseGridMutableStore<any>();
 
     private tableInstance: Table2;
 
+    private tableWrapperRef: HTMLDivElement;
+
     private stateStore: LocalStore<IMutableTableState>;
 
     private refHandlers = {
         table: (ref: Table2) => (this.tableInstance = ref),
+        tableWrapperRef: (ref: HTMLDivElement) => (this.tableWrapperRef = ref),
     };
 
     // eslint-disable-next-line @typescript-eslint/ban-types
@@ -444,8 +357,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                         branchClassName="layout-passthrough-fill"
                     >
                         <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
-                            <TableExample />
-                            {Date.now() === 2 ? this.renderTable() : ""}
+                            {this.renderTable()};
                             {/* empty string above to get mutable table to render a smaller demo table */}
                         </div>
                     </SlowLayoutStack>
@@ -487,48 +399,109 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         return Math.random().toString(36).substring(7);
     };
 
+    private animate = (time: number) => {
+        this.setState({ previousTime: this.state.previousTime ?? time });
+        if (this.tableInstance) {
+            const deltaTime = time - this.state.previousTime;
+            if (deltaTime > 100) {
+                if (this.state.scrollDirection === "UP") {
+                    this.tableInstance.scrollByOffset({ left: 0, top: -10 });
+                } else {
+                    this.tableInstance.scrollByOffset({ left: 0, top: +10 });
+                }
+                this.setState({ previousTime: (this.state.previousTime ?? 0) + 100 });
+            }
+        }
+        this.setState({ animationRequestId: requestAnimationFrame(this.animate) });
+    };
+
+    private cancelAnimation = () => {
+        cancelAnimationFrame(this.state.animationRequestId);
+        this.setState({ animationRequestId: undefined });
+        this.setState({ previousTime: undefined });
+        this.tableInstance.scrollByOffset(null);
+    };
+
+    private checkScrolling = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (!this.state.enableScrollingApi) {
+            return;
+        }
+        const top = this.tableWrapperRef.getBoundingClientRect().top;
+        const bottom = this.tableWrapperRef.getBoundingClientRect().bottom;
+        const scrollAbove = top + 0.3 * (bottom - top);
+        const scrollBelow = bottom - 0.3 * (bottom - top);
+        const pos = event.clientY;
+
+        if (pos < scrollAbove && pos > top) {
+            this.setState({ scrollDirection: "UP" });
+            if (this.state.animationRequestId === undefined) {
+                requestAnimationFrame(this.animate);
+            }
+        } else if (pos > scrollBelow && pos < bottom) {
+            this.setState({ scrollDirection: "DOWN" });
+            if (this.state.animationRequestId === undefined) {
+                requestAnimationFrame(this.animate);
+            }
+        } else {
+            this.cancelAnimation();
+        }
+    };
+
     // Renderers
     // =========
 
     private renderTable() {
         return (
-            <Table2
-                bodyContextMenuRenderer={this.renderBodyContextMenu}
-                enableColumnHeader={this.state.enableColumnHeader}
-                enableColumnInteractionBar={this.state.showTableInteractionBar}
-                enableColumnReordering={this.state.enableColumnReordering}
-                enableColumnResizing={this.state.enableColumnResizing}
-                enableFocusedCell={this.state.showFocusCell}
-                enableGhostCells={this.state.showGhostCells}
-                enableMultipleSelection={this.state.enableMultiSelection}
-                enableRowHeader={this.state.enableRowHeader}
-                enableRowReordering={this.state.enableRowReordering}
-                enableRowResizing={this.state.enableRowResizing}
-                getCellClipboardData={this.getCellValue}
-                loadingOptions={this.getEnabledLoadingOptions()}
-                numFrozenColumns={this.state.numFrozenCols}
-                numFrozenRows={this.state.numFrozenRows}
-                numRows={this.state.numRows}
-                onColumnsReordered={this.onColumnsReordered}
-                onColumnWidthChanged={this.onColumnWidthChanged}
-                onCompleteRender={this.onCompleteRender}
-                onCopy={this.onCopy}
-                onFocusedCell={this.onFocus}
-                onRowHeightChanged={this.onRowHeightChanged}
-                onRowsReordered={this.onRowsReordered}
-                onSelection={this.onSelection}
-                onVisibleCellsChange={this.onVisibleCellsChange}
-                ref={this.refHandlers.table}
-                renderMode={this.state.renderMode}
-                rowHeaderCellRenderer={this.renderRowHeader}
-                selectedRegionTransform={this.getSelectedRegionTransform()}
-                selectionModes={this.getEnabledSelectionModes()}
-                selectedRegions={this.state.selectedRegions}
-                styledRegionGroups={this.getStyledRegionGroups()}
-                cellRendererDependencies={[this.state.cellContent]}
+            <div
+                ref={this.refHandlers.tableWrapperRef}
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 20,
+                    height: 300,
+                    position: "relative",
+                }}
+                onMouseOver={event => this.checkScrolling(event)}
+                onMouseLeave={this.cancelAnimation}
             >
-                {this.renderColumns()}
-            </Table2>
+                <Table2
+                    bodyContextMenuRenderer={this.renderBodyContextMenu}
+                    enableColumnHeader={this.state.enableColumnHeader}
+                    enableColumnInteractionBar={this.state.showTableInteractionBar}
+                    enableColumnReordering={this.state.enableColumnReordering}
+                    enableColumnResizing={this.state.enableColumnResizing}
+                    enableFocusedCell={this.state.showFocusCell}
+                    enableGhostCells={this.state.showGhostCells}
+                    enableMultipleSelection={this.state.enableMultiSelection}
+                    enableRowHeader={this.state.enableRowHeader}
+                    enableRowReordering={this.state.enableRowReordering}
+                    enableRowResizing={this.state.enableRowResizing}
+                    getCellClipboardData={this.getCellValue}
+                    loadingOptions={this.getEnabledLoadingOptions()}
+                    numFrozenColumns={this.state.numFrozenCols}
+                    numFrozenRows={this.state.numFrozenRows}
+                    numRows={this.state.numRows}
+                    onColumnsReordered={this.onColumnsReordered}
+                    onColumnWidthChanged={this.onColumnWidthChanged}
+                    onCompleteRender={this.onCompleteRender}
+                    onCopy={this.onCopy}
+                    onFocusedCell={this.onFocus}
+                    onRowHeightChanged={this.onRowHeightChanged}
+                    onRowsReordered={this.onRowsReordered}
+                    onSelection={this.onSelection}
+                    onVisibleCellsChange={this.onVisibleCellsChange}
+                    ref={this.refHandlers.table}
+                    renderMode={this.state.renderMode}
+                    rowHeaderCellRenderer={this.renderRowHeader}
+                    selectedRegionTransform={this.getSelectedRegionTransform()}
+                    selectionModes={this.getEnabledSelectionModes()}
+                    selectedRegions={this.state.selectedRegions}
+                    styledRegionGroups={this.getStyledRegionGroups()}
+                    cellRendererDependencies={[this.state.cellContent]}
+                >
+                    {this.renderColumns()}
+                </Table2>
+            </div>
         );
     }
 
@@ -780,6 +753,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Callback logs", "showCallbackLogs")}
                 {this.renderSwitch("Full-table selection", "enableFullTableSelection")}
                 {this.renderSwitch("Multi-selection", "enableMultiSelection")}
+                {this.renderSwitch("Demo programmatic scrolling API", "enableScrollingApi")}
                 {selectedRegionTransformPresetMenu}
                 <H6>Scroll to</H6>
                 {this.renderScrollToSection()}
