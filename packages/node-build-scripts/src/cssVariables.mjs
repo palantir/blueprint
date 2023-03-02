@@ -44,57 +44,56 @@ export async function getParsedVars(inputDir, inputSources) {
     const parsedVars = await sassVariableParser(cleanedInput);
 
     // get variable blocks for separating variables in output
-    const varsInBlocks = cleanedInput
-        .split("\n\n")
-        .map(
-            block =>
-                new Set([...block.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)/g)].map(match => match.groups?.varName)),
-        );
+    const varsInBlocks = cleanedInput.split("\n\n").map(
+        block =>
+            new Set(
+                [...block.matchAll(/(?<varName>\$[-_a-zA-z0-9]+)(?::)/g)].map(match =>
+                    // trip the leading "$"
+                    match.groups?.varName.substring(1),
+                ),
+            ),
+    );
 
     return { parsedVars, varsInBlocks };
-}
-
-function isPrimitive(value) {
-    return value !== Object(value);
 }
 
 /**
  * Converts parsed postcss "simple variables" to valid scss or less
  *
- * @param {Array | object | string} value
+ * @param {string} value
  * @param {Record<string, string>} allVariables
  * @param {"less" | "scss"} outputType
  * @returns {string} output
  */
 function printVariable(value, allVariables, outputType) {
-    // array values should be separated with commas
-    if (Array.isArray(value)) {
-        return `${value.map(elt => printVariable(elt, allVariables, outputType)).join(",\n")}`;
+    value = value.trim();
+
+    // special case for rgba(#hexColor) math, which is supported in Sass but not Less,
+    // so we manually look up the hex value of the color and convert it to RGB
+    value = evaluateRgbaInitializerColor(value, allVariables);
+
+    if (outputType === "less") {
+        // special case for maps in Less, which need to be printed with a different syntax
+        // https://lesscss.org/features/#maps-feature
+        // https://sass-lang.com/documentation/values/maps
+        if (value.startsWith("(") && value.endsWith(")")) {
+            // looks like a Sass map (we do not support lists of this syntax)
+            value = value
+                .split("\n")
+                .map(line => {
+                    if (line === "(") {
+                        return "{";
+                    } else if (line === ")") {
+                        return "}";
+                    } else {
+                        return line.replace(/"(\S+)": (.+),/, (_substr, key, value) => `${key}: ${value.trim()};`);
+                    }
+                })
+                .join("\n");
+        }
     }
 
-    // Objects are map variables, formatted like:
-    // https://lesscss.org/features/#maps-feature
-    // https://sass-lang.com/documentation/values/maps
-    if (value !== null && typeof value === "object") {
-        return outputType === "scss"
-            ? `(${Object.entries(value).reduce(
-                  (str, [key, val]) => `${str}\n"${key}": ${printVariable(val, allVariables, outputType)},`,
-                  "",
-              )}\n)`
-            : `{${Object.entries(value).reduce(
-                  (str, [key, val]) => `${str}\n${key}: ${printVariable(val, allVariables, outputType)};`,
-                  "",
-              )}\n}`;
-    }
-
-    if (isPrimitive(value)) {
-        // special case for rgba(#hexColor) math, which is supported in Sass but not Less,
-        // so we manually look up the hex value of the color and convert it to RGB
-        value = evaluateRgbaInitializerColor(value, allVariables);
-        return value;
-    }
-
-    throw new Error(`Encountered sass variable value that cannot be converted to scss/less value: ${value}`);
+    return value;
 }
 
 /**
@@ -111,8 +110,7 @@ export function generateScssVariables(parsedInput, retainDefault) {
     let variablesScss = COPYRIGHT_HEADER + "\n";
     for (const varsInBlock of varsInBlocks) {
         const variablesArray = Object.entries(parsedVars)
-            // N.B. the leading "$" is intentional here, as postcss-simple-vars preserves those in variable names
-            .filter(([varName, _value]) => varsInBlock.has(`$${varName}`))
+            .filter(([varName, _value]) => varsInBlock.has(varName))
             .map(([varName, value]) => {
                 let defaultFlag = "";
                 // strip the default flag if it exists, and keep track of it if we need to retain it in the output
@@ -140,24 +138,19 @@ export function generateScssVariables(parsedInput, retainDefault) {
 export function generateLessVariables(parsedInput) {
     const { parsedVars, varsInBlocks } = parsedInput;
 
-    const convertField = ([varName, value]) => {
-        if (typeof value === "object" && !Array.isArray(value)) {
-            return `${varName}: ${printVariable(value, parsedVars, "less")}`;
-        }
-        return `${varName}: ${printVariable(value, parsedVars, "less")};`;
-    };
-
     let variablesLess = COPYRIGHT_HEADER + "\n";
     for (const varsInBlock of varsInBlocks) {
         const lessVariablesArray = Object.entries(parsedVars)
             .filter(([varName, _value]) => varsInBlock.has(varName))
-            .map(convertField);
+            // !default syntax is not valid in less, so remove it regardless of `retainDefault` flag
+            .map(([varName, value]) => [varName, value.replace(" !default", "")])
+            .map(([varName, value]) => `@${varName}: ${printVariable(value, parsedVars, "less")};`);
 
         const lessBlock = lessVariablesArray
             .join("\n")
-            // !default syntax is not valid in less, so remove it regardless of `retainDefault` flag
-            .replace(/\ \!default/g, "")
             .replace(/rgba\((\$[\w-]+), ([\d\.]+)\)/g, (_match, color, opacity) => `fade(${color}, ${+opacity * 100}%)`)
+            // special case for hsl(), which supports a value like '270deg' in its first argument in Sass, but in Less we must omit the 'deg'
+            .replace(/hsl\(([0-9]+)deg, (.+)\)/g, (_match, degrees, rest) => `hsl(${degrees}, ${rest})`)
             .replace(
                 /rgba\((\$[\w-]+), (\$[\w-]+)\)/g,
                 (_match, color, variable) => `fade(${color}, ${variable} * 100%)`,
