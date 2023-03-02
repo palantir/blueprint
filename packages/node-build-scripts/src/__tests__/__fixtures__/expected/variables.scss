@@ -19,3 +19,8 @@ $pt-elevation-shadow-1: 0 0 0 1px rgba(17, 20, 24, 0.1),
   0 1px 1px rgba(17, 20, 24, 0.2) !default;
 $pt-text-color-disabled: rgba(95, 107, 124, 0.6) !default;
 $pt-dark-divider-white: rgba(255, 255, 255, 0.2) !default;
+$pt-dark-popover-border-color: hsl(215deg, 3%, 38%) !default;
+$test-map: (
+  "first": #111418,
+  "second": #ffffff,
+) !default;
