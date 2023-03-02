@@ -36,6 +36,7 @@ import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
+import { ScrollDirection } from "./common/scrollDirection";
 import { Utils } from "./common/utils";
 import { ColumnHeader } from "./headers/columnHeader";
 import { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./headers/columnHeaderCell2";
@@ -437,11 +438,24 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
      * - scrollDirection the scrolling direction for which we should generate the scroll indicator
      *   gradient.
      */
-    public setScrolling(
-        relativeOffset?: { left: number; top: number },
-        scrollDirection?: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE",
-    ) {
-        if (this.shouldRenderScrollDirection(scrollDirection)) {
+    public scrollByOffset(relativeOffset: { left: number; top: number } | null) {
+        let scrollDirection: ScrollDirection | undefined;
+        if (relativeOffset) {
+            if (Math.abs(relativeOffset.left) > Math.abs(relativeOffset.top)) {
+                if (relativeOffset.left < 0) {
+                    scrollDirection = ScrollDirection.LEFT;
+                } else {
+                    scrollDirection = ScrollDirection.RIGHT;
+                }
+            } else {
+                if (relativeOffset.top < 0) {
+                    scrollDirection = ScrollDirection.TOP;
+                } else {
+                    scrollDirection = ScrollDirection.BOTTOM;
+                }
+            }
+        }
+        if (this.shouldRenderScrollDirection(scrollDirection) || scrollDirection == null) {
             this.setState({ scrollDirection });
         }
         const { viewportRect } = this.state;
@@ -450,13 +464,13 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             return;
         }
 
-        if (relativeOffset !== undefined) {
+        if (relativeOffset !== null) {
             const { left: currScrollLeft, top: currScrollTop } = viewportRect;
             const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : currScrollLeft + relativeOffset.left;
             const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : currScrollTop + relativeOffset.top;
 
             if (!this.shouldRenderScrollDirection(this.state.scrollDirection)) {
-                this.setState({ scrollDirection: "NONE" });
+                this.setState({ scrollDirection: null });
             }
 
             // defer to the quadrant stack to keep all quadrant positions in sync
@@ -739,7 +753,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         return areGhostColumnsVisible && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
     }
 
-    private shouldRenderScrollDirection(scrollDirection: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE" | undefined) {
+    private shouldRenderScrollDirection(scrollDirection?: ScrollDirection | null) {
         if (!this.scrollContainerElement || !this.state.viewportRect) {
             return false;
         }
@@ -747,13 +761,13 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
 
         switch (scrollDirection) {
-            case "LEFT":
+            case "left":
                 return currScrollLeft > 0;
-            case "RIGHT":
+            case "right":
                 return scrollWrapper.scrollWidth - scrollWrapper.offsetWidth !== currScrollLeft;
-            case "TOP":
+            case "top":
                 return currScrollTop > 0;
-            case "BOTTOM":
+            case "bottom":
                 return scrollWrapper.scrollHeight - scrollWrapper.offsetHeight !== currScrollTop;
             default:
                 return false;
@@ -1167,7 +1181,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
      */
     private renderScrollIndicatorOverlay = (scrollBarWidth: number, columnHeaderHeight: number) => {
         const { scrollDirection } = this.state;
-        const getStyle = (direction: string | undefined, compare: string) => {
+        const getStyle = (direction: ScrollDirection | null | undefined, compare: string) => {
             return {
                 marginRight: scrollBarWidth,
                 marginTop: columnHeaderHeight,
@@ -1179,19 +1193,19 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             <>
                 <div
                     className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_TOP)}
-                    style={handleStyle(scrollDirection, "TOP")}
+                    style={getStyle(scrollDirection, ScrollDirection.TOP)}
                 />
                 <div
                     className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_BOTTOM)}
-                    style={handleStyle(scrollDirection, "BOTTOM")}
+                    style={getStyle(scrollDirection, ScrollDirection.BOTTOM)}
                 />
                 <div
                     className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_RIGHT)}
-                    style={handleStyle(scrollDirection, "RIGHT")}
+                    style={getStyle(scrollDirection, ScrollDirection.RIGHT)}
                 />
                 <div
                     className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_LEFT)}
-                    style={handleStyle(scrollDirection, "LEFT")}
+                    style={getStyle(scrollDirection, ScrollDirection.LEFT)}
                 />
             </>
         );

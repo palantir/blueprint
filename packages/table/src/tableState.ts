@@ -16,6 +16,7 @@
 import type { ColumnProps } from "./column";
 import type { Rect } from "./common";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
+import { ScrollDirection } from "./common/scrollDirection";
 import type { Region } from "./regions";
 
 export interface TableState {
@@ -95,7 +96,7 @@ export interface TableState {
 
     childrenArray: Array<React.ReactElement<ColumnProps>>;
 
-    scrollDirection?: "TOP" | "BOTTOM" | "LEFT" | "RIGHT" | "NONE";
+    scrollDirection?: ScrollDirection | null;
 }
 
 export interface TableSnapshot {

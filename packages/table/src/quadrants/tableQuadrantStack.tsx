@@ -435,16 +435,9 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             />
         ) : undefined;
 
-        const tableOverlay = () => {
-            const columnHeaderHeight = this.cache.getColumnHeaderHeight();
-            const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
-            const scrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer!, "vertical");
-            return this.props.renderScrollIndicatorOverlay?.(scrollBarWidth, columnHeaderHeight);
-        };
-
         return (
             <div className={Classes.TABLE_QUADRANT_STACK}>
-                {tableOverlay()}
+                {this.renderTableOverlay()}
                 <TableQuadrant
                     {...baseProps}
                     bodyRef={this.props.bodyRef}
@@ -488,6 +481,16 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         ];
         return refHandlers.reduce(reducer, {});
     }
+
+    // Scrolling overlay renderer
+    // ===========================
+
+    private renderTableOverlay = () => {
+        const columnHeaderHeight = this.cache.getColumnHeaderHeight();
+        const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
+        const scrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer!, "vertical");
+        return this.props.renderScrollIndicatorOverlay?.(scrollBarWidth, columnHeaderHeight);
+    };
 
     // Quadrant-specific renderers
     // ===========================
