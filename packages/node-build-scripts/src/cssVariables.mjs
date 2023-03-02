@@ -86,7 +86,7 @@ function printVariable(value, allVariables, outputType) {
                     } else if (line === ")") {
                         return "}";
                     } else {
-                        return line.replace(/"(\S+)": (.+),/, (_substr, key, value) => `${key}: ${value.trim()};`);
+                        return line.replace(/"(\S+)"\s*: (.+),/, (_substr, key, value) => `${key}: ${value.trim()};`);
                     }
                 })
                 .join("\n");
@@ -149,12 +149,12 @@ export function generateLessVariables(parsedInput) {
         const lessBlock = lessVariablesArray
             .join("\n")
             .replace(/rgba\((\$[\w-]+), ([\d\.]+)\)/g, (_match, color, opacity) => `fade(${color}, ${+opacity * 100}%)`)
-            // special case for hsl(), which supports a value like '270deg' in its first argument in Sass, but in Less we must omit the 'deg'
-            .replace(/hsl\(([0-9]+)deg, (.+)\)/g, (_match, degrees, rest) => `hsl(${degrees}, ${rest})`)
             .replace(
                 /rgba\((\$[\w-]+), (\$[\w-]+)\)/g,
                 (_match, color, variable) => `fade(${color}, ${variable} * 100%)`,
             )
+            // special case for hsl(), which supports a value like '270deg' in its first argument in Sass, but in Less we must omit the 'deg'
+            .replace(/hsl\(([0-9]+)deg, (.+)\)/g, (_match, degrees, rest) => `hsl(${degrees}, ${rest})`)
             .replace(/\$/g, "@");
 
         variablesLess = `${variablesLess}${lessBlock}\n\n`;

@@ -27,6 +27,7 @@ $pt-text-color-disabled: rgba($gray1, 0.6) !default;
 $pt-dark-divider-white: rgba($white, 0.2) !default;
 $pt-dark-popover-border-color: hsl(215deg, 3%, 38%) !default;
 $test-map: (
-  "first": $black,
+  "first" : $black,
   "second": $white,
+  "third" : $gray1,
 ) !default;
