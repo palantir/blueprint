@@ -433,7 +433,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     /**
      * Scrolls the table by a specified number of offset pixels in either the horizontal or vertical dimension.
      *
-     * - relativeOffset: The horizontal and vertical scroll modification to be applied.
+     * @param relativeOffset - how much to scroll the table body in pixels relative to the current scroll offset
      * - scrollDirection the scrolling direction for which we should generate the scroll indicator
      *   gradient.
      */
