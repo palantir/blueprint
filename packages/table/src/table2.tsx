@@ -301,6 +301,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             undefined,
             selectedRegions,
         );
+
         this.state = {
             childrenArray,
             columnIdToIndex,
@@ -313,7 +314,6 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
             rowHeights: newRowHeights,
-            scrollDirection: undefined,
             selectedRegions,
             verticalGuides: [],
         };
@@ -448,40 +448,11 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : currScrollLeft + relativeOffset.left;
         const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : currScrollTop + relativeOffset.top;
 
-        if (!this.checkScrolling(this.state.scrollDirection)) {
+        if (!this.shouldRenderScrollDirection(this.state.scrollDirection)) {
             this.setState({ scrollDirection: "NONE" });
         }
         // defer to the quadrant stack to keep all quadrant positions in sync
         this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
-    }
-
-    public setScrollOverlayIndicator(scrollDirection: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE") {
-        if (this.checkScrolling(scrollDirection)) {
-            this.setState({ scrollDirection });
-        } else {
-            this.setState({ scrollDirection: "NONE" });
-        }
-    }
-
-    private checkScrolling(scrollDirection: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE" | undefined) {
-        if (!this.scrollContainerElement || !this.state.viewportRect) {
-            return false;
-        }
-        const scrollWrapper = this.scrollContainerElement;
-        const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
-
-        switch (scrollDirection) {
-            case "LEFT":
-                return currScrollLeft > 0;
-            case "RIGHT":
-                return scrollWrapper.scrollWidth - scrollWrapper.offsetWidth !== currScrollLeft;
-            case "TOP":
-                return currScrollTop > 0;
-            case "BOTTOM":
-                return scrollWrapper.scrollHeight - scrollWrapper.offsetHeight !== currScrollTop;
-            default:
-                return false;
-        }
     }
 
     /**
@@ -489,40 +460,16 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
      * scrolling table (excludes scroll bar and headers). Useful for applying visual affects.
      * ex: on-scroll set background to a linear gradient.
      *
-     * - background the "background" style string to pass to the transparent overlay.
+     * - scrollDirection the scrolling direction for which we should generate the scroll indicator
+     *   gradient.
      */
-
-    private renderScrollIndicatorOverlay = (scrollBarWidth: number, columnHeaderHeight: number) => {
-        const { scrollDirection } = this.state;
-        const handleStyle = (direction: string | undefined, compare: string) => {
-            return {
-                marginRight: scrollBarWidth,
-                marginTop: columnHeaderHeight,
-                opacity: direction === compare ? 1 : 0,
-            };
-        };
-        const baseClass = Classes.TABLE_BODY_SCROLLING_INDICATOR_OVERLAY;
-        return (
-            <>
-                <div
-                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_TOP)}
-                    style={handleStyle(scrollDirection, "TOP")}
-                />
-                <div
-                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_BOTTOM)}
-                    style={handleStyle(scrollDirection, "BOTTOM")}
-                />
-                <div
-                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_RIGHT)}
-                    style={handleStyle(scrollDirection, "RIGHT")}
-                />
-                <div
-                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_LEFT)}
-                    style={handleStyle(scrollDirection, "LEFT")}
-                />
-            </>
-        );
-    };
+    public setScrollOverlayIndicator(scrollDirection: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE") {
+        if (this.shouldRenderScrollDirection(scrollDirection)) {
+            this.setState({ scrollDirection });
+        } else {
+            this.setState({ scrollDirection: "NONE" });
+        }
+    }
 
     // React lifecycle
     // ===============
@@ -797,6 +744,27 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         const areGhostColumnsVisible = enableGhostCells! && this.grid.isGhostColumn(columnIndices.columnIndexEnd);
 
         return areGhostColumnsVisible && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
+    }
+
+    private shouldRenderScrollDirection(scrollDirection: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE" | undefined) {
+        if (!this.scrollContainerElement || !this.state.viewportRect) {
+            return false;
+        }
+        const scrollWrapper = this.scrollContainerElement;
+        const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
+
+        switch (scrollDirection) {
+            case "LEFT":
+                return currScrollLeft > 0;
+            case "RIGHT":
+                return scrollWrapper.scrollWidth - scrollWrapper.offsetWidth !== currScrollLeft;
+            case "TOP":
+                return currScrollTop > 0;
+            case "BOTTOM":
+                return scrollWrapper.scrollHeight - scrollWrapper.offsetHeight !== currScrollTop;
+            default:
+                return false;
+        }
     }
 
     private renderMenu = (refHandler: React.Ref<HTMLDivElement> | undefined) => {
@@ -1192,6 +1160,49 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         }
         return this.grid;
     }
+
+    /**
+     * Renders a scroll indicator overlay on top of the table body inside the quadrant stack.
+     * This component is offset by the headers and scrollbar, and it provides the overlay which
+     * we use to render automatic scrolling indicator linear gradients.
+     *
+     * @param scrollBarWidth the calculated scroll bar width to be passed in by the quadrant stack
+     * @param columnHeaderHeight the calculated column header height to be passed in by the quadrant stack
+     * @returns A jsx element which will render a linear gradient with smooth transitions based on
+     *          state of the scroll (will not render if we are already at the top/left/right/bottom)
+     *           and the state of "scroll direction"
+     */
+    private renderScrollIndicatorOverlay = (scrollBarWidth: number, columnHeaderHeight: number) => {
+        const { scrollDirection } = this.state;
+        const handleStyle = (direction: string | undefined, compare: string) => {
+            return {
+                marginRight: scrollBarWidth,
+                marginTop: columnHeaderHeight,
+                opacity: direction === compare ? 1 : 0,
+            };
+        };
+        const baseClass = Classes.TABLE_BODY_SCROLLING_INDICATOR_OVERLAY;
+        return (
+            <>
+                <div
+                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_TOP)}
+                    style={handleStyle(scrollDirection, "TOP")}
+                />
+                <div
+                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_BOTTOM)}
+                    style={handleStyle(scrollDirection, "BOTTOM")}
+                />
+                <div
+                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_RIGHT)}
+                    style={handleStyle(scrollDirection, "RIGHT")}
+                />
+                <div
+                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_LEFT)}
+                    style={handleStyle(scrollDirection, "LEFT")}
+                />
+            </>
+        );
+    };
 
     /**
      * Renders a `RegionLayer`, applying styles to the regions using the
