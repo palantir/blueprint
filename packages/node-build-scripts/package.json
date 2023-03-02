@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/node-build-scripts",
-    "version": "7.0.0",
+    "version": "7.0.1",
     "description": "Node.js build scripts for @blueprintjs packages",
     "module": "./index.mjs",
     "exports": {
@@ -33,8 +33,8 @@
         "postcss": "^8.4.21",
         "postcss-cli": "^10.1.0",
         "postcss-discard-comments": "^5.1.1",
-        "postcss-simple-vars": "^7.0.1",
         "postcss-scss": "^4.0.6",
+        "postcss-simple-vars": "^7.0.1",
         "prettier": "~2.8.3",
         "sass": "^1.58.3",
         "sass-extended-importer": "^0.4.2",
