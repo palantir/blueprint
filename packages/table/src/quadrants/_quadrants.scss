@@ -62,52 +62,29 @@ $table-quadrant-scroll-container-overflow: 20px;
   pointer-events: none;
 }
 
-.#{$ns}-table-body-is-scrolling-top {
+.table-is-scrolling {
   opacity: 1;
   transition: opacity 0.2s linear;
-  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, transparent 20%);
 }
 
-.#{$ns}-table-body-is-not-scrolling-top {
-  opacity: 0;
-  transition: opacity 0.2s linear;
-  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, transparent 20%);
+.#{$ns}-table-body-is-scrolling-top {
+  @extend .table-is-scrolling;
+  background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, transparent 10%);
 }
 
 .#{$ns}-table-body-is-scrolling-right {
-  opacity: 1;
-  transition: opacity 0.2s linear;
-  background: linear-gradient(270deg, rgba(0,0,0,0.2) 0%, transparent 20%);
-}
-
-.#{$ns}-table-body-is-not-scrolling-right {
-  opacity: 0;
-  transition: opacity 0.2s linear;
-  background: linear-gradient(270deg, rgba(0,0,0,0.2) 0%, transparent 20%);
+  @extend .table-is-scrolling;
+  background: linear-gradient(270deg, rgba(0,0,0,0.15) 0%, transparent 10%);
 }
 
 .#{$ns}-table-body-is-scrolling-bottom {
-  opacity: 1;
-  transition: opacity 0.2s linear;
-  background: linear-gradient(0deg, rgba(0,0,0,0.2) 0%, transparent 20%);
-}
-
-.#{$ns}-table-body-is-not-scrolling-bottom {
-  opacity: 0;
-  transition: opacity 0.2s linear;
-  background: linear-gradient(0deg, rgba(0,0,0,0.2) 0%, transparent 20%);
+  @extend .table-is-scrolling;
+  background: linear-gradient(0deg, rgba(0,0,0,0.15) 0%, transparent 10%);
 }
 
 .#{$ns}-table-body-is-scrolling-left {
-  opacity: 1;
-  transition: opacity 0.2s linear;
-  background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, transparent 20%);
-}
-
-.#{$ns}-table-body-is-not-scrolling-left {
-  opacity: 0;
-  transition: opacity 0.2s linear;
-  background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, transparent 20%);
+  @extend .table-is-scrolling;
+  background: linear-gradient(90deg, rgba(0,0,0,0.15) 0%, transparent 10%);
 }
 
 .#{$ns}-table-quadrant-body-container {

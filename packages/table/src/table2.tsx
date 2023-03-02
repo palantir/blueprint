@@ -448,8 +448,40 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : currScrollLeft + relativeOffset.left;
         const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : currScrollTop + relativeOffset.top;
 
+        if (!this.checkScrolling(this.state.scrollDirection)) {
+            this.setState({ scrollDirection: "NONE" });
+        }
         // defer to the quadrant stack to keep all quadrant positions in sync
         this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
+    }
+
+    public setScrollOverlayIndicator(scrollDirection: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE") {
+        if (this.checkScrolling(scrollDirection)) {
+            this.setState({ scrollDirection });
+        } else {
+            this.setState({ scrollDirection: "NONE" });
+        }
+    }
+
+    private checkScrolling(scrollDirection: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE" | undefined) {
+        if (!this.scrollContainerElement || !this.state.viewportRect) {
+            return false;
+        }
+        const scrollWrapper = this.scrollContainerElement;
+        const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
+
+        switch (scrollDirection) {
+            case "LEFT":
+                return currScrollLeft > 0;
+            case "RIGHT":
+                return scrollWrapper.scrollWidth - scrollWrapper.offsetWidth !== currScrollLeft;
+            case "TOP":
+                return currScrollTop > 0;
+            case "BOTTOM":
+                return scrollWrapper.scrollHeight - scrollWrapper.offsetHeight !== currScrollTop;
+            default:
+                return false;
+        }
     }
 
     /**
@@ -459,9 +491,6 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
      *
      * - background the "background" style string to pass to the transparent overlay.
      */
-    public setScrollOverlayIndicator(scrollDirection: "LEFT" | "RIGHT" | "TOP" | "BOTTOM" | "NONE") {
-        this.setState({ scrollDirection });
-    }
 
     private renderScrollIndicatorOverlay = (scrollBarWidth: number, columnHeaderHeight: number) => {
         const { scrollDirection } = this.state;
