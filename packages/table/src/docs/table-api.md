@@ -33,6 +33,8 @@ type ICellMapper<T> = (rowIndex: number, columnIndex: number) => T;
 
 @method Table.scrollToRegion
 
+@method Table.scrollByOffset
+
 @## Column
 
 `Column` contains props for defining how the header and cells of that column

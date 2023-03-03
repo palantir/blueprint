@@ -435,9 +435,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
      * Scrolls the table by a specified number of offset pixels in either the horizontal or vertical dimension.
      * Will set a scroll indicator gradient which can be cleared by calling scrollByOffset(null);
      *
-     * @param relativeOffset - how much to scroll the table body in pixels relative to the current scroll offset
-     * - scrollDirection the scrolling direction for which we should generate the scroll indicator
-     *   gradient.
+     * @param relativeOffset - How much to scroll the table body in pixels relative to the current scroll offset
      */
     public scrollByOffset(relativeOffset: { left: number; top: number } | null) {
         let scrollDirection: ScrollDirection | undefined;
