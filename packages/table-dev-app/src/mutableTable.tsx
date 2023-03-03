@@ -356,7 +356,13 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                         rootClassName={classNames("table", { "is-inline": this.state.showInline })}
                         branchClassName="layout-passthrough-fill"
                     >
-                        <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
+                        <div
+                            className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}
+                            ref={this.refHandlers.tableWrapperRef}
+                            // className={this.state.enableScrollingApi ? "tbl-scrolling-wrapper" : ""}
+                            onMouseOver={event => this.checkScrolling(event)}
+                            onMouseLeave={this.cancelAnimation}
+                        >
                             {this.renderTable()};
                         </div>
                     </SlowLayoutStack>
@@ -451,50 +457,43 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderTable() {
         return (
-            <div
-                ref={this.refHandlers.tableWrapperRef}
-                className={this.state.enableScrollingApi ? "tbl-scrolling-wrapper" : ""}
-                onMouseOver={event => this.checkScrolling(event)}
-                onMouseLeave={this.cancelAnimation}
+            <Table2
+                bodyContextMenuRenderer={this.renderBodyContextMenu}
+                enableColumnHeader={this.state.enableColumnHeader}
+                enableColumnInteractionBar={this.state.showTableInteractionBar}
+                enableColumnReordering={this.state.enableColumnReordering}
+                enableColumnResizing={this.state.enableColumnResizing}
+                enableFocusedCell={this.state.showFocusCell}
+                enableGhostCells={this.state.showGhostCells}
+                enableMultipleSelection={this.state.enableMultiSelection}
+                enableRowHeader={this.state.enableRowHeader}
+                enableRowReordering={this.state.enableRowReordering}
+                enableRowResizing={this.state.enableRowResizing}
+                getCellClipboardData={this.getCellValue}
+                loadingOptions={this.getEnabledLoadingOptions()}
+                numFrozenColumns={this.state.numFrozenCols}
+                numFrozenRows={this.state.numFrozenRows}
+                numRows={this.state.numRows}
+                onColumnsReordered={this.onColumnsReordered}
+                onColumnWidthChanged={this.onColumnWidthChanged}
+                onCompleteRender={this.onCompleteRender}
+                onCopy={this.onCopy}
+                onFocusedCell={this.onFocus}
+                onRowHeightChanged={this.onRowHeightChanged}
+                onRowsReordered={this.onRowsReordered}
+                onSelection={this.onSelection}
+                onVisibleCellsChange={this.onVisibleCellsChange}
+                ref={this.refHandlers.table}
+                renderMode={this.state.renderMode}
+                rowHeaderCellRenderer={this.renderRowHeader}
+                selectedRegionTransform={this.getSelectedRegionTransform()}
+                selectionModes={this.getEnabledSelectionModes()}
+                selectedRegions={this.state.selectedRegions}
+                styledRegionGroups={this.getStyledRegionGroups()}
+                cellRendererDependencies={[this.state.cellContent]}
             >
-                <Table2
-                    bodyContextMenuRenderer={this.renderBodyContextMenu}
-                    enableColumnHeader={this.state.enableColumnHeader}
-                    enableColumnInteractionBar={this.state.showTableInteractionBar}
-                    enableColumnReordering={this.state.enableColumnReordering}
-                    enableColumnResizing={this.state.enableColumnResizing}
-                    enableFocusedCell={this.state.showFocusCell}
-                    enableGhostCells={this.state.showGhostCells}
-                    enableMultipleSelection={this.state.enableMultiSelection}
-                    enableRowHeader={this.state.enableRowHeader}
-                    enableRowReordering={this.state.enableRowReordering}
-                    enableRowResizing={this.state.enableRowResizing}
-                    getCellClipboardData={this.getCellValue}
-                    loadingOptions={this.getEnabledLoadingOptions()}
-                    numFrozenColumns={this.state.numFrozenCols}
-                    numFrozenRows={this.state.numFrozenRows}
-                    numRows={this.state.numRows}
-                    onColumnsReordered={this.onColumnsReordered}
-                    onColumnWidthChanged={this.onColumnWidthChanged}
-                    onCompleteRender={this.onCompleteRender}
-                    onCopy={this.onCopy}
-                    onFocusedCell={this.onFocus}
-                    onRowHeightChanged={this.onRowHeightChanged}
-                    onRowsReordered={this.onRowsReordered}
-                    onSelection={this.onSelection}
-                    onVisibleCellsChange={this.onVisibleCellsChange}
-                    ref={this.refHandlers.table}
-                    renderMode={this.state.renderMode}
-                    rowHeaderCellRenderer={this.renderRowHeader}
-                    selectedRegionTransform={this.getSelectedRegionTransform()}
-                    selectionModes={this.getEnabledSelectionModes()}
-                    selectedRegions={this.state.selectedRegions}
-                    styledRegionGroups={this.getStyledRegionGroups()}
-                    cellRendererDependencies={[this.state.cellContent]}
-                >
-                    {this.renderColumns()}
-                </Table2>
-            </div>
+                {this.renderColumns()}
+            </Table2>
         );
     }
 
