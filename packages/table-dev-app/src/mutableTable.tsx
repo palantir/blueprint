@@ -358,7 +358,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     >
                         <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
                             {this.renderTable()};
-                            {/* empty string above to get mutable table to render a smaller demo table */}
                         </div>
                     </SlowLayoutStack>
                     {this.renderSidebar()}
