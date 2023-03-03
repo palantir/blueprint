@@ -453,7 +453,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         return (
             <div
                 ref={this.refHandlers.tableWrapperRef}
-                className={"tbl-scrolling-wrapper"}
+                className={this.state.enableScrollingApi ? "tbl-scrolling-wrapper" : ""}
                 onMouseOver={event => this.checkScrolling(event)}
                 onMouseLeave={this.cancelAnimation}
             >
