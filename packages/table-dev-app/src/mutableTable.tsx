@@ -266,9 +266,6 @@ export interface IMutableTableState {
     showRowHeadersLoading?: boolean;
     showTableInteractionBar?: boolean;
     showZebraStriping?: boolean;
-    scrollDirection?: "UP" | "DOWN";
-    animationRequestId?: number;
-    previousTime?: number;
 }
 
 const DEFAULT_STATE: IMutableTableState = {
@@ -329,6 +326,12 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private tableWrapperRef: HTMLDivElement;
 
     private stateStore: LocalStore<IMutableTableState>;
+
+    private scrollDirection: "UP" | "DOWN";
+
+    private animationRequestId: number;
+
+    private previousTime: number;
 
     private refHandlers = {
         table: (ref: Table2) => (this.tableInstance = ref),
@@ -404,25 +407,25 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     };
 
     private animate = (time: number) => {
-        this.setState({ previousTime: this.state.previousTime ?? time });
+        this.previousTime = this.previousTime ?? time;
         if (this.tableInstance) {
-            const deltaTime = time - this.state.previousTime;
+            const deltaTime = time - this.previousTime;
             if (deltaTime > 100) {
-                if (this.state.scrollDirection === "UP") {
+                if (this.scrollDirection === "UP") {
                     this.tableInstance.scrollByOffset({ left: 0, top: -10 });
                 } else {
                     this.tableInstance.scrollByOffset({ left: 0, top: +10 });
                 }
-                this.setState({ previousTime: (this.state.previousTime ?? 0) + 100 });
+                this.previousTime = (this.previousTime ?? 0) + 100;
             }
         }
-        this.setState({ animationRequestId: requestAnimationFrame(this.animate) });
+        this.animationRequestId = requestAnimationFrame(this.animate);
     };
 
     private cancelAnimation = () => {
-        cancelAnimationFrame(this.state.animationRequestId);
-        this.setState({ animationRequestId: undefined });
-        this.setState({ previousTime: undefined });
+        cancelAnimationFrame(this.animationRequestId);
+        this.animationRequestId = undefined;
+        this.previousTime = undefined;
         this.tableInstance.scrollByOffset(null);
     };
 
@@ -437,13 +440,13 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         const pos = event.clientY;
 
         if (pos < scrollAbove && pos > top) {
-            this.setState({ scrollDirection: "UP" });
-            if (this.state.animationRequestId === undefined) {
+            this.scrollDirection = "UP";
+            if (this.animationRequestId === undefined) {
                 requestAnimationFrame(this.animate);
             }
         } else if (pos > scrollBelow && pos < bottom) {
-            this.setState({ scrollDirection: "DOWN" });
-            if (this.state.animationRequestId === undefined) {
+            this.scrollDirection = "DOWN";
+            if (this.animationRequestId === undefined) {
                 requestAnimationFrame(this.animate);
             }
         } else {
