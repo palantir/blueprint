@@ -34,9 +34,9 @@ import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
 export interface IInputGroupExampleState {
     disabled: boolean;
-    readOnly: boolean;
     filterValue: string;
     large: boolean;
+    readOnly: boolean;
     small: boolean;
     showPassword: boolean;
     tagValue: string;
@@ -55,8 +55,6 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, IInputG
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
 
-    private handleReadOnlyChange = handleBooleanChange(readOnly => this.setState({ readOnly }));
-
     private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
 
     private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
@@ -64,6 +62,8 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, IInputG
     private handleFilterChange = handleStringChange(filterValue =>
         window.setTimeout(() => this.setState({ filterValue }), 10),
     );
+
+    private handleReadOnlyChange = handleBooleanChange(readOnly => this.setState({ readOnly }));
 
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 

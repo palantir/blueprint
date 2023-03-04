@@ -37,3 +37,15 @@ please visit the documentation for [Select2](#select/select2).
 @## Props interface
 
 @interface MultiSelect2Props
+
+@## Editable on click
+
+It's possible to make a MultiSelect2 behave like [EditableText](#core/components/editable-text) where its contents
+are read-only until a user clicks on the component.
+
+To do this, set the `readOnly` prop:
+
+- `true` after handling `tagInputProps.onClick`
+- `false` after handling `popoverProps.onClosed`
+
+@reactExample MultiSelectEditableOnClickExample

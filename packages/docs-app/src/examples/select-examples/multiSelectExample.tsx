@@ -39,6 +39,7 @@ const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Int
 
 export interface IMultiSelectExampleState {
     allowCreate: boolean;
+    allowRemove: boolean;
     createdItems: Film[];
     disabled: boolean;
     fill: boolean;
@@ -49,6 +50,7 @@ export interface IMultiSelectExampleState {
     matchTargetWidth: boolean;
     openOnKeyDown: boolean;
     popoverMinimal: boolean;
+    readOnly: boolean;
     resetOnSelect: boolean;
     showClearButton: boolean;
     tagMinimal: boolean;
@@ -57,6 +59,7 @@ export interface IMultiSelectExampleState {
 export class MultiSelectExample extends React.PureComponent<ExampleProps, IMultiSelectExampleState> {
     public state: IMultiSelectExampleState = {
         allowCreate: false,
+        allowRemove: true,
         createdItems: [],
         disabled: false,
         fill: false,
@@ -67,6 +70,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
         matchTargetWidth: false,
         openOnKeyDown: false,
         popoverMinimal: true,
+        readOnly: false,
         resetOnSelect: true,
         showClearButton: true,
         tagMinimal: false,
@@ -75,6 +79,8 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
     private popoverRef: React.RefObject<Popover2> = React.createRef();
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
+
+    private handleAllowRemoveChange = this.handleSwitchChange("allowRemove");
 
     private handleDisabledChange = this.handleSwitchChange("disabled");
 
@@ -89,6 +95,8 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
     private handleMatchTargetWidthChange = this.handleSwitchChange("matchTargetWidth");
 
     private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
+
+    private handleReadOnlyChange = this.handleSwitchChange("readOnly");
 
     private handleResetChange = this.handleSwitchChange("resetOnSelect");
 
@@ -129,7 +137,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
                     popoverRef={this.popoverRef}
                     tagRenderer={this.renderTag}
                     tagInputProps={{
-                        onRemove: this.handleTagRemove,
+                        onRemove: this.state.allowRemove ? this.handleTagRemove : undefined,
                         tagProps: getTagProps,
                     }}
                     selectedItems={this.state.films}
@@ -174,6 +182,20 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
                 <PropCodeTooltip
                     content={
                         <>
+                            <Code>onRemove</Code> or <Code>tagProps.onRemove</Code> is{" "}
+                            {this.state.allowRemove ? "defined" : "undefined"}
+                        </>
+                    }
+                >
+                    <Switch
+                        label="Allow deselecting films from tags"
+                        checked={this.state.allowRemove}
+                        onChange={this.handleAllowRemoveChange}
+                    />
+                </PropCodeTooltip>
+                <PropCodeTooltip
+                    content={
+                        <>
                             <Code>onClear</Code> is {this.state.showClearButton ? "defined" : "undefined"}
                         </>
                     }
@@ -190,6 +212,9 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
                 </PropCodeTooltip>
                 <PropCodeTooltip snippet={`fill={${this.state.fill.toString()}}`}>
                     <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`readOnly={${this.state.readOnly.toString()}}`}>
+                    <Switch label="Read-only" checked={this.state.readOnly} onChange={this.handleReadOnlyChange} />
                 </PropCodeTooltip>
                 <H5>Tag props</H5>
                 <Switch

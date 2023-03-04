@@ -15,6 +15,7 @@
  */
 
 export * from "./multiSelectExample";
+export * from "./multiSelectEditableOnClickExample";
 export * from "./omnibarExample";
 export * from "./selectExample";
 export * from "./suggestExample";

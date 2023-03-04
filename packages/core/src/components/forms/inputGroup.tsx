@@ -206,6 +206,7 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: disabled,
+                // N.B. this 'read-only' class does not apply any styles, but may be useful as a CSS selector
                 [Classes.READ_ONLY]: readOnly,
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
