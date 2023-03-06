@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-theme",
-    "version": "4.5.10",
+    "version": "4.5.11",
     "description": "Blueprint theme for documentalist",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -31,8 +31,8 @@
     },
     "dependencies": {
         "@blueprintjs/colors": "^4.1.19",
-        "@blueprintjs/core": "^4.17.4",
-        "@blueprintjs/select": "^4.9.8",
+        "@blueprintjs/core": "^4.17.5",
+        "@blueprintjs/select": "^4.9.9",
         "@documentalist/client": "^4.0.0",
         "classnames": "^2.3.1",
         "fuzzaldrin-plus": "^0.6.0",

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "4.17.4",
+    "version": "4.17.5",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -69,7 +69,7 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/karma-build-scripts": "^4.0.15",
+        "@blueprintjs/karma-build-scripts": "^4.0.16",
         "@blueprintjs/node-build-scripts": "^7.0.3",
         "@blueprintjs/test-commons": "^1.1.13",
         "@testing-library/react": "^12.1.5",
