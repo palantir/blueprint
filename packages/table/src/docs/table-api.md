@@ -33,7 +33,7 @@ type ICellMapper<T> = (rowIndex: number, columnIndex: number) => T;
 
 @method Table.scrollToRegion
 
-@method Table.scrollByOffset
+@method Table2.scrollByOffset
 
 @## Column
 
