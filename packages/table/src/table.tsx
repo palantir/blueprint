@@ -45,7 +45,6 @@ import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
-import { ScrollDirection } from "./common/scrollDirection";
 import { Utils } from "./common/utils";
 import { ColumnHeader } from "./headers/columnHeader";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
@@ -403,52 +402,6 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
     }
 
-    /**
-     * Scrolls the table by a specified number of offset pixels in either the horizontal or vertical dimension.
-     * Will set a scroll indicator gradient which can be cleared by calling scrollByOffset(null);
-     *
-     * @param relativeOffset - How much to scroll the table body in pixels relative to the current scroll offset
-     */
-    public scrollByOffset(relativeOffset: { left: number; top: number } | null) {
-        let scrollDirection: ScrollDirection | undefined;
-        if (relativeOffset) {
-            if (Math.abs(relativeOffset.left) > Math.abs(relativeOffset.top)) {
-                if (relativeOffset.left < 0) {
-                    scrollDirection = ScrollDirection.LEFT;
-                } else {
-                    scrollDirection = ScrollDirection.RIGHT;
-                }
-            } else {
-                if (relativeOffset.top < 0) {
-                    scrollDirection = ScrollDirection.TOP;
-                } else {
-                    scrollDirection = ScrollDirection.BOTTOM;
-                }
-            }
-        }
-        if (this.shouldRenderScrollDirection(scrollDirection) || scrollDirection == null) {
-            this.setState({ scrollDirection });
-        }
-        const { viewportRect } = this.state;
-
-        if (viewportRect === undefined || this.grid === null || this.quadrantStackInstance === undefined) {
-            return;
-        }
-
-        if (relativeOffset !== null) {
-            const { left: currScrollLeft, top: currScrollTop } = viewportRect;
-            const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : currScrollLeft + relativeOffset.left;
-            const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : currScrollTop + relativeOffset.top;
-
-            if (!this.shouldRenderScrollDirection(this.state.scrollDirection)) {
-                this.setState({ scrollDirection: null });
-            }
-
-            // defer to the quadrant stack to keep all quadrant positions in sync
-            this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
-        }
-    }
-
     // React lifecycle
     // ===============
 
@@ -531,7 +484,6 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
                     enableColumnHeader={enableColumnHeader}
-                    renderScrollIndicatorOverlay={this.renderScrollIndicatorOverlay}
                 />
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, Classes.TABLE_OVERLAY_REORDERING_CURSOR)} />
                 <GuideLayer
@@ -879,27 +831,6 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         return areGhostColumnsVisible && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
     }
 
-    private shouldRenderScrollDirection(scrollDirection?: ScrollDirection | null) {
-        if (!this.scrollContainerElement || !this.state.viewportRect) {
-            return false;
-        }
-        const scrollWrapper = this.scrollContainerElement;
-        const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
-
-        switch (scrollDirection) {
-            case "left":
-                return currScrollLeft > 0;
-            case "right":
-                return scrollWrapper.scrollWidth - scrollWrapper.offsetWidth !== currScrollLeft;
-            case "top":
-                return currScrollTop > 0;
-            case "bottom":
-                return scrollWrapper.scrollHeight - scrollWrapper.offsetHeight !== currScrollTop;
-            default:
-                return false;
-        }
-    }
-
     private renderMenu = (refHandler: React.Ref<HTMLDivElement> | undefined) => {
         const classes = classNames(Classes.TABLE_MENU, {
             [Classes.TABLE_SELECTION_ENABLED]: Table.isSelectionModeEnabled(
@@ -911,49 +842,6 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             <div className={classes} ref={refHandler} onMouseDown={this.handleMenuMouseDown}>
                 {this.maybeRenderRegions(this.styleMenuRegion)}
             </div>
-        );
-    };
-
-    /**
-     * Renders a scroll indicator overlay on top of the table body inside the quadrant stack.
-     * This component is offset by the headers and scrollbar, and it provides the overlay which
-     * we use to render automatic scrolling indicator linear gradients.
-     *
-     * @param scrollBarWidth the calculated scroll bar width to be passed in by the quadrant stack
-     * @param columnHeaderHeight the calculated column header height to be passed in by the quadrant stack
-     * @returns A jsx element which will render a linear gradient with smooth transitions based on
-     *          state of the scroll (will not render if we are already at the top/left/right/bottom)
-     *           and the state of "scroll direction"
-     */
-    private renderScrollIndicatorOverlay = (scrollBarWidth: number, columnHeaderHeight: number) => {
-        const { scrollDirection } = this.state;
-        const getStyle = (direction: ScrollDirection | null | undefined, compare: string) => {
-            return {
-                marginRight: scrollBarWidth,
-                marginTop: columnHeaderHeight,
-                opacity: direction === compare ? 1 : 0,
-            };
-        };
-        const baseClass = Classes.TABLE_BODY_SCROLLING_INDICATOR_OVERLAY;
-        return (
-            <>
-                <div
-                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_TOP)}
-                    style={getStyle(scrollDirection, ScrollDirection.TOP)}
-                />
-                <div
-                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_BOTTOM)}
-                    style={getStyle(scrollDirection, ScrollDirection.BOTTOM)}
-                />
-                <div
-                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_RIGHT)}
-                    style={getStyle(scrollDirection, ScrollDirection.RIGHT)}
-                />
-                <div
-                    className={classNames(baseClass, Classes.TABLE_BODY_IS_SCROLLING_LEFT)}
-                    style={getStyle(scrollDirection, ScrollDirection.LEFT)}
-                />
-            </>
         );
     };
 
