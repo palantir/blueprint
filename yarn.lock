@@ -10700,10 +10700,10 @@ sass-inline-svg@^1.2.3:
     object-assign "^4.0.1"
     svgo "^1.3.0"
 
-sass-loader@^13.1.0:
-  version "13.1.0"
-  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-13.1.0.tgz#e5b9acf14199a9bc6eaed7a0b8b23951c2cebf6f"
-  integrity sha512-tZS1RJQ2n2+QNyf3CCAo1H562WjL/5AM6Gi8YcPVVoNxQX8d19mx8E+8fRrMWsyc93ZL6Q8vZDSM0FHVTJaVnQ==
+sass-loader@^13.2.0:
+  version "13.2.0"
+  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-13.2.0.tgz#80195050f58c9aac63b792fa52acb6f5e0f6bdc3"
+  integrity sha512-JWEp48djQA4nbZxmgC02/Wh0eroSUutulROUusYJO9P9zltRbNN80JCBHqRGzjd4cmZCa/r88xgfkjGD0TXsHg==
   dependencies:
     klona "^2.0.4"
     neo-async "^2.6.2"
