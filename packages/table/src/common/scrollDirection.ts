@@ -1,6 +1,5 @@
-/*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- *
+/* !
+ * (c) Copyright 2022 Palantir Technologies Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,13 +13,10 @@
  * limitations under the License.
  */
 
-export type { CellCoordinates, FocusedCellCoordinates } from "./cellTypes";
-export { Clipboard } from "./clipboard";
-export { Grid } from "./grid";
-export { Rect, type AnyRect } from "./rect";
-export { RenderMode } from "./renderMode";
-export { Utils } from "./utils";
-
-// NOTE: The following are not exported in the public API:
-// - Errors
-// - internal/
+export enum ScrollDirection {
+    TOP = "top",
+    BOTTOM = "bottom",
+    RIGHT = "right",
+    LEFT = "left",
+    NONE = "none",
+}
