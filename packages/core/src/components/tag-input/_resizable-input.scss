@@ -5,9 +5,9 @@
   max-height: 0;
   max-width: 100%;
   min-width: $pt-grid-size * 8;
+  opacity: 0;
+  overflow: hidden;
   position: absolute;
   white-space: nowrap;
   z-index: -1;
-  opacity: 0;
-  overflow: hidden;
 }
