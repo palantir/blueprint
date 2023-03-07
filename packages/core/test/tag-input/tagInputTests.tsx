@@ -565,6 +565,25 @@ describe("<TagInput>", () => {
         });
     });
 
+    describe("when autoResize={true}", () => {
+        it("passes inputProps to input element", () => {
+            const onBlur = sinon.spy();
+            const input = mount(
+                <TagInput autoResize={true} values={VALUES} inputProps={{ autoFocus: true, onBlur }} />,
+            ).find("input");
+            assert.isTrue(input.prop("autoFocus"));
+            // check that event handler is proxied
+            const fakeEvent = { flag: "yes" };
+            input.prop("onBlur")?.(fakeEvent as any);
+            assert.strictEqual(onBlur.args[0][0], fakeEvent);
+        });
+
+        it("renders a Tag for each value", () => {
+            const wrapper = mount(<TagInput autoResize={true} values={VALUES} />);
+            assert.lengthOf(wrapper.find(Tag), VALUES.length);
+        });
+    });
+
     function pressEnterInInput(wrapper: ReactWrapper<any, any>, value: string) {
         wrapper.find("input").prop("onKeyDown")?.(createInputKeydownEventMetadata(value, Keys.ENTER) as any);
     }
