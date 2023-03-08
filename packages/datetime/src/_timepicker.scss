@@ -93,18 +93,22 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
 
   &.#{$ns}-disabled {
     .#{$ns}-timepicker-input-row {
-      @include pt-input-disabled();
+      @include pt-input-disabled() ;
     }
 
     .#{$ns}-timepicker-input,
     .#{$ns}-timepicker-divider-text {
-      color: $input-color-disabled;
+      // disabled state always overrides over styles
+      /* stylelint-disable-next-line declaration-no-important */
+      color: $input-color-disabled  !important;
       cursor: not-allowed;
     }
 
     .#{$ns}-timepicker-arrow-button,
     .#{$ns}-timepicker-arrow-button:hover {
-      color: $input-color-disabled;
+      // disabled state always overrides over styles
+      /* stylelint-disable-next-line declaration-no-important */
+      color: $input-color-disabled  !important;
       cursor: not-allowed;
     }
   }
