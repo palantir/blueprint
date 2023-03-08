@@ -93,7 +93,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
 
   &.#{$ns}-disabled {
     .#{$ns}-timepicker-input-row {
-      @include pt-input-disabled() ;
+      @include pt-input-disabled();
     }
 
     .#{$ns}-timepicker-input,
