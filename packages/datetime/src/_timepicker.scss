@@ -100,7 +100,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     .#{$ns}-timepicker-divider-text {
       // disabled state always overrides over styles
       /* stylelint-disable-next-line declaration-no-important */
-      color: $input-color-disableed  !important;
+      color: $input-color-disabled  !important;
       cursor: not-allowed;
     }
 
