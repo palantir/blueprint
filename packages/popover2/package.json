@@ -41,7 +41,7 @@
         "classnames": "^2.3.1",
         "dom4": "^2.1.5",
         "react-popper": "^2.3.0",
-        "tslib": "~2.3.1"
+        "tslib": "~2.5.0"
     },
     "peerDependencies": {
         "@types/react": "^16.14.32 || 17 || 18",

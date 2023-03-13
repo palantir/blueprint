@@ -40,7 +40,7 @@
         "classnames": "^2.3.1",
         "prop-types": "^15.7.2",
         "react-innertext": "^1.1.5",
-        "tslib": "~2.3.1"
+        "tslib": "~2.5.0"
     },
     "peerDependencies": {
         "@types/react": "^16.14.32 || 17 || 18",
