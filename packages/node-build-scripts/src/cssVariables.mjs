@@ -172,6 +172,11 @@ export function generateLessVariables(parsedInput) {
  * @returns {string}
  */
 function evaluateRgbaInitializerColor(variableInitializer, allVariables) {
+    if (variableInitializer.match(/rgba\(([0-9]+), ([0-9]+), ([0-9]+), (.+)\)/)) {
+        // do nothing if the color is specified in full rgba(r, g, b, a) syntax, since this _is_ supported in Less
+        return variableInitializer;
+    }
+
     return variableInitializer.replace(
         /rgba\((.+)\, (.+)\)/g,
         (_, colorHexCode, opacity) => `rgba(${colorHexToRgb(colorHexCode)}, ${opacity})`,
