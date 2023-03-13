@@ -210,7 +210,8 @@ $tag-round-adjustment: 2px !default;
       color: $hover-active-text-color;
     }
 
-    &:active {
+    &:active,
+    &.#{$ns}-active {
       background-color: rgba($background-color, 0.3);
       color: $hover-active-text-color;
     }
@@ -240,7 +241,8 @@ $tag-round-adjustment: 2px !default;
       color: $hover-active-text-color;
     }
 
-    &:active {
+    &:active,
+    &.#{$ns}-active {
       background-color: rgba($background-color, 0.35);
       color: $hover-active-text-color;
     }
