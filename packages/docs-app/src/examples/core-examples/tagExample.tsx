@@ -22,6 +22,7 @@ import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-th
 import { IntentSelect } from "./common/intentSelect";
 
 export interface ITagExampleState {
+    active: boolean;
     fill: boolean;
     icon: boolean;
     intent: Intent;
@@ -36,6 +37,7 @@ export interface ITagExampleState {
 
 export class TagExample extends React.PureComponent<ExampleProps, ITagExampleState> {
     public state: ITagExampleState = {
+        active: false,
         fill: false,
         icon: false,
         intent: Intent.NONE,
@@ -47,6 +49,8 @@ export class TagExample extends React.PureComponent<ExampleProps, ITagExampleSta
         round: false,
         tags: INITIAL_TAGS,
     };
+
+    private handleActiveChange = handleBooleanChange(active => this.setState({ active }));
 
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
 
@@ -90,10 +94,11 @@ export class TagExample extends React.PureComponent<ExampleProps, ITagExampleSta
     }
 
     private renderOptions() {
-        const { fill, icon, intent, interactive, large, minimal, removable, rightIcon, round } = this.state;
+        const { active, fill, icon, intent, interactive, large, minimal, removable, rightIcon, round } = this.state;
         return (
             <>
                 <H5>Props</H5>
+                <Switch label="Active" checked={active} onChange={this.handleActiveChange} />
                 <Switch label="Fill" checked={fill} onChange={this.handleFillChange} />
                 <Switch label="Large" checked={large} onChange={this.handleLargeChange} />
                 <Switch label="Minimal" checked={minimal} onChange={this.handleMinimalChange} />

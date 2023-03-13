@@ -121,7 +121,8 @@ $tag-round-adjustment: 2px !default;
       background-color: $hover-color;
     }
 
-    &:active {
+    &:active,
+    &.#{$ns}-active {
       background-color: $active-color;
     }
   }
