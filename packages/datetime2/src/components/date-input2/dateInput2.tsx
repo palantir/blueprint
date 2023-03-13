@@ -393,8 +393,8 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
 
     const handleTimezoneChange = React.useCallback(
         (newTimezone: string) => {
-            if (valueAsDate !== null) {
-                setTimezoneValue(newTimezone);
+            setTimezoneValue(newTimezone);
+            if (valueAsDate != null) {
                 const newDateString = getIsoEquivalentWithUpdatedTimezone(valueAsDate, newTimezone, timePrecision);
                 props.onChange?.(newDateString, true);
             }

@@ -53,6 +53,7 @@ const DEFAULT_PROPS = {
     popoverProps: {
         usePortal: false,
     },
+    showTimezoneSelect: true,
     timePrecision: TimePrecision.SECOND,
 };
 
@@ -468,6 +469,23 @@ describe("<DateInput2>", () => {
             assert.isTrue(onChange.calledOnce);
             assert.isTrue(isEqual(parseISO(onChange.firstCall.args[0]), DATE));
         });
+
+        describe("allows changing timezone", () => {
+            it("before selecting a date", () => {
+                const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />, { attachTo: containerElement });
+                focusInput(wrapper);
+                clickTimezoneItem(wrapper, "Paris");
+                assertTimezoneIsSelected(wrapper, "GMT+1");
+            });
+
+            it("after selecting a date", () => {
+                const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />, { attachTo: containerElement });
+                focusInput(wrapper);
+                clickCalendarDay(wrapper, 1);
+                clickTimezoneItem(wrapper, "Paris");
+                assertTimezoneIsSelected(wrapper, "GMT+1");
+            });
+        });
     });
 
     describe("controlled usage", () => {
@@ -480,32 +498,6 @@ describe("<DateInput2>", () => {
 
         it("handles null inputs without crashing", () => {
             assert.doesNotThrow(() => mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} value={null} />));
-        });
-
-        describe("when changing timezone", () => {
-            it("calls onChange with the updated ISO string", () => {
-                const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
-                clickTimezoneItem(wrapper, "Paris");
-                assert.isTrue(onChange.calledOnce);
-                assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00+01:00");
-            });
-
-            it("formats the returned ISO string according to timePrecision", () => {
-                const wrapper = mount(
-                    <DateInput2 {...DEFAULT_PROPS_CONTROLLED} timePrecision={TimePrecision.MINUTE} />,
-                );
-                clickTimezoneItem(wrapper, "Paris");
-                assert.isTrue(onChange.calledOnce);
-                assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30+01:00");
-            });
-
-            it("updates the displayed timezone", () => {
-                const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />);
-                clickTimezoneItem(wrapper, "New York");
-                const tzTag = wrapper.find(Tag);
-                // date-fns does not know about Daylight Saving Time in Node.js
-                assert.strictEqual(tzTag.text(), "EST");
-            });
         });
 
         it("changing the time calls onChange with the updated ISO string", () => {
@@ -673,6 +665,37 @@ describe("<DateInput2>", () => {
             const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} locale="de" value={DATE2_VALUE} />);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_UI_STR_DE);
         });
+
+        describe("when changing timezone", () => {
+            it("calls onChange with the updated ISO string", () => {
+                const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
+                clickTimezoneItem(wrapper, "Paris");
+                assert.isTrue(onChange.calledOnce);
+                assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00+01:00");
+            });
+
+            it("formats the returned ISO string according to timePrecision", () => {
+                const wrapper = mount(
+                    <DateInput2 {...DEFAULT_PROPS_CONTROLLED} timePrecision={TimePrecision.MINUTE} />,
+                    { attachTo: containerElement },
+                );
+                clickTimezoneItem(wrapper, "Paris");
+                assert.isTrue(onChange.calledOnce);
+                assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30+01:00");
+            });
+
+            it("updates the displayed timezone", () => {
+                const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
+                clickTimezoneItem(wrapper, "Paris");
+                assertTimezoneIsSelected(wrapper, "GMT+1");
+            });
+
+            it("before selecting a date (initial value={null})", () => {
+                const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} value={null} />, { attachTo: containerElement });
+                clickTimezoneItem(wrapper, "Paris");
+                assertTimezoneIsSelected(wrapper, "GMT+1");
+            });
+        });
     });
 
     describe("date formatting", () => {
@@ -801,6 +824,11 @@ describe("<DateInput2>", () => {
                 `Expected .${Popover2Classes.POPOVER2_OPEN} NOT to exist, indicating the popover is closed`,
             );
         }
+    }
+
+    function assertTimezoneIsSelected(wrapper: ReactWrapper<DateInput2Props>, tzCode: string) {
+        const tzTag = wrapper.find(Tag);
+        assert.strictEqual(tzTag.text(), tzCode);
     }
 });
 
