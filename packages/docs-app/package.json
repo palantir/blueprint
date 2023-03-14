@@ -37,14 +37,14 @@
         "downloadjs": "^1.4.7",
         "lodash": "^4.17.21",
         "moment": "^2.29.1",
-        "monaco-editor": "^0.35.0",
+        "monaco-editor": "^0.36.1",
         "normalize.css": "^8.0.1",
         "popper.js": "^1.16.1",
         "promise": "^8.3.0",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "~2.3.1",
+        "tslib": "~2.5.0",
         "whatwg-fetch": "^3.4.1"
     },
     "devDependencies": {

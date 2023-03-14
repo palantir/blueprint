@@ -40,7 +40,7 @@
         "classnames": "^2.3.1",
         "moment": "^2.29.0",
         "moment-timezone": "^0.5.31",
-        "tslib": "~2.3.1"
+        "tslib": "~2.5.0"
     },
     "peerDependencies": {
         "@types/react": "^16.14.32 || 17 || 18",

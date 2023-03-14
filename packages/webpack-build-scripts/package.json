@@ -13,7 +13,7 @@
         "assert": "^2.0.0",
         "autoprefixer": "^10.4.13",
         "css-loader": "^6.7.3",
-        "cssnano": "^5.1.14",
+        "cssnano": "^5.1.15",
         "fork-ts-checker-notifier-webpack-plugin": "^6.0.0",
         "fork-ts-checker-webpack-plugin": "^7.3.0",
         "mini-css-extract-plugin": "^2.7.2",
