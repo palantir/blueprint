@@ -1660,15 +1660,10 @@
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-10.0.1.tgz#2f4f65bb08bc368ac39c96da7b2f09140b26851b"
   integrity sha512-/fvYntiO1GeICvqbQ3doGDIP97vWmvFt83GKguJ6prmQM2iXZfFcq6YE8KteFyRtX2/h5Hf91BYvPodJKFYv5Q==
 
-"@types/node@*", "@types/node@16.10.4", "@types/node@>=10.0.0":
+"@types/node@*", "@types/node@>=10.0.0":
   version "16.10.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.10.4.tgz#592f12b0b5f357533ddc3310b0176d42ea3e45d1"
   integrity sha512-EITwVTX5B4nDjXjGeQAfXOrm+Jn+qNjDmyDRtWoD+wZsl/RDPRTFRKivs4Mt74iOFlLOrE5+Kf+p5yjyhm3+cA==
-
-"@types/node@^15.9.0":
-  version "15.14.9"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.14.9.tgz#bc43c990c3c9be7281868bbc7b8fdd6e2b57adfa"
-  integrity sha512-qjd88DrCxupx/kJD5yQgZdcYKZKSIGBVDIBE1/LTGcNm3d2Np/jxojkdePDdfnBHJc5W7vSMpbJ1aB7p/Py69A==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -1734,11 +1729,6 @@
     "@types/prop-types" "*"
     "@types/scheduler" "*"
     csstype "^3.0.2"
-
-"@types/resolve@1.20.1":
-  version "1.20.1"
-  resolved "https://registry.yarnpkg.com/@types/resolve/-/resolve-1.20.1.tgz#3727e48042fda81e374f5d5cf2fa92288bf698f8"
-  integrity sha512-Ku5+GPFa12S3W26Uwtw+xyrtIpaZsGYHH6zxNbZlstmlvMYSZRzOwzwsXbxlVUbHyUucctSyuFtu6bNxwYomIw==
 
 "@types/retry@0.12.0":
   version "0.12.0"
@@ -3713,13 +3703,6 @@ cross-spawn@^7.0.1, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
-
-crosspath@0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/crosspath/-/crosspath-0.0.9.tgz#2ac42b39b3b83eeb25851a4058ccd0722baea520"
-  integrity sha512-lhDiWhqHk1IQ0BiGN9/Ji7qEr9LwCG8taDCTgihII/6b91my+GvTNXDB7eKh/FySz488tkt2IboqBJTSZtc4Fw==
-  dependencies:
-    "@types/node" "^15.9.0"
 
 css-declaration-sorter@^6.3.1:
   version "6.3.1"
@@ -7936,13 +7919,6 @@ minimalistic-assert@^1.0.0:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimatch@3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
-  integrity sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA==
-  dependencies:
-    brace-expansion "^1.1.7"
-
 minimatch@5.0.1, minimatch@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.0.1.tgz#fb9022f7528125187c92bd9e9b6366be1cf3415b"
@@ -10135,17 +10111,6 @@ safe-regex-test@^1.0.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-sass-extended-importer@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/sass-extended-importer/-/sass-extended-importer-0.4.2.tgz#58f86b8118d0739ba6e60797fa4f2744b6e0b3ee"
-  integrity sha512-3e9+iVB1vvoGS6ohq7OG2MiYvcwESkZqwV8g0uCDGvHeTt4kEt0E/T8eav18J03fvNFK1/mV47592E1tx1izgQ==
-  dependencies:
-    "@types/node" "16.10.4"
-    "@types/resolve" "1.20.1"
-    crosspath "0.0.9"
-    minimatch "3.0.4"
-    resolve "^1.20.0"
-
 sass-inline-svg@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/sass-inline-svg/-/sass-inline-svg-1.2.3.tgz#3dedfff55c13f1a96aac07740413be61f871c4bc"
@@ -11502,10 +11467,15 @@ typedoc@~0.19.2:
     shelljs "^0.8.4"
     typedoc-default-themes "^0.11.4"
 
-"typescript@^3 || ^4", typescript@^4.6.2, typescript@~4.6.2:
+"typescript@^3 || ^4", typescript@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.2.tgz#fe12d2727b708f4eef40f51598b3398baa9611d4"
   integrity sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==
+
+typescript@~4.8.4:
+  version "4.8.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.4.tgz#c464abca159669597be5f96b8943500b238e60e6"
+  integrity sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==
 
 ua-parser-js@^0.7.30:
   version "0.7.33"
