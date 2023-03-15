@@ -152,10 +152,10 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
 .#{$ns}-datepicker-navbar {
   align-items: center;
   display: flex;
-  position: relative;
   height: $pt-button-height;
   justify-content: center;
   margin-bottom: 5px;
+  position: relative;
 
   > .DayPicker-NavButton--prev {
     margin-right: auto;
