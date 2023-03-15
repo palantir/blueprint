@@ -48,6 +48,8 @@ async function generateDocumentalistData() {
     })
         .use(".md", {
             compile: files =>
+                // HACKHACK: special case for Windows environment
+                // see https://github.com/palantir/documentalist/issues/98
                 process.platform === "win32" ? files.map(file => file.read().replace(/\r\n/g, "\n")) : files,
         })
         .use(".md", new MarkdownPlugin({ navPage: "_nav" }))
