@@ -1359,10 +1359,7 @@ describe("<DateRangePicker>", () => {
         const harness = {
             get wrapper() {
                 // use accessor to ensure it's always the latest reference
-                return parent
-                    .find(ReactDayPicker)
-                    .find("Month")
-                    .at(which === "left" ? 0 : 1);
+                return parent.find(ReactDayPicker).at(which === "left" ? 0 : 1);
             },
             get monthSelect() {
                 return harness.wrapper.find({ className: DateClasses.DATEPICKER_MONTH_SELECT }).find("select");
