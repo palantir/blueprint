@@ -449,7 +449,7 @@ describe("<DatePicker>", () => {
             assert.isFalse(onChange.secondCall.args[1], "expected isUserChange to be false again");
         });
 
-        it("can change displayed date with the dropdowns in the caption", () => {
+        it("can change displayed date with the dropdowns in the navbar", () => {
             const { months, root, years } = wrap(
                 <DatePicker initialMonth={new Date(2015, Months.MARCH, 2)} value={null} />,
             );
@@ -593,7 +593,7 @@ describe("<DatePicker>", () => {
             assertSelectedDays(maxDate.getDate());
         });
 
-        it("can change displayed date with the dropdowns in the caption", () => {
+        it("can change displayed date with the dropdowns in the navbar", () => {
             const { months, root, years } = wrap(<DatePicker initialMonth={new Date(2015, Months.MARCH, 2)} />);
             assert.equal(root.state("displayMonth"), Months.MARCH);
             assert.equal(root.state("displayYear"), 2015);

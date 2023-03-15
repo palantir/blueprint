@@ -682,7 +682,7 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(onChangeSpy.notCalled);
         });
 
-        it("caption options are only displayed for possible months and years", () => {
+        it("navbar options are only displayed for possible months and years", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const maxDate = new Date(2015, Months.JANUARY, 7);
             const { left } = render({ minDate, maxDate });
@@ -879,7 +879,7 @@ describe("<DateRangePicker>", () => {
             assertSelectedDays();
         });
 
-        it("can change displayed date with the dropdowns in the caption", () => {
+        it("can change displayed date with the dropdowns in the navbar", () => {
             const { left } = render({
                 initialMonth: new Date(2015, Months.MARCH, 2),
                 value: [null, null],
@@ -1156,7 +1156,7 @@ describe("<DateRangePicker>", () => {
                 .assertSelectedDays(1, 5);
         });
 
-        it("can change displayed date with the dropdowns in the caption", () => {
+        it("can change displayed date with the dropdowns in the navbar", () => {
             const { left } = render({ initialMonth: new Date(2015, Months.MARCH, 2) });
             left.assertMonthYear(Months.MARCH, 2015);
             left.monthSelect.simulate("change", { target: { value: Months.JANUARY } });
