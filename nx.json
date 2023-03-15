@@ -1,0 +1,132 @@
+{
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": [
+          "bundle",
+          "compile:cjs",
+          "compile:css-colors",
+          "compile:css",
+          "compile:esm",
+          "compile:esnext",
+          "compile",
+          "copy:fonts",
+          "copy:scss",
+          "dist:bundle",
+          "dist:css",
+          "dist:variables",
+          "generate-icon-src",
+          "lint:es",
+          "lint:scss",
+          "lint",
+          "test:karma",
+          "test:typeCheck"
+        ]
+      }
+    }
+  },
+  "targetDefaults": {
+    "compile": {
+      "dependsOn": [
+        "^compile"
+      ],
+      "outputs": [
+        "{projectRoot}/lib"
+      ]
+    },
+    "compile:esm": {
+      "dependsOn": [
+        "^compile:esm"
+      ],
+      "outputs": [
+        "{projectRoot}/lib/esm"
+      ]
+    },
+    "compile:css": {
+      "dependsOn": [
+        "^compile:css"
+      ],
+      "outputs": [
+        "{projectRoot}/lib/css"
+      ]
+    },
+    "dev": {
+      "dependsOn": [
+        "^dev"
+      ]
+    },
+    "compile:cjs": {
+      "dependsOn": [
+        "^compile:cjs"
+      ],
+      "outputs": [
+        "{projectRoot}/lib/cjs"
+      ]
+    },
+    "compile:esnext": {
+      "dependsOn": [
+        "^compile:esnext"
+      ],
+      "outputs": [
+        "{projectRoot}/lib/esnext"
+      ]
+    },
+    "dist:bundle": {
+      "dependsOn": [
+        "^dist:bundle"
+      ],
+      "outputs": [
+        "{projectRoot}/dist"
+      ]
+    },
+    "test:karma": {
+      "dependsOn": [
+        "^test:karma"
+      ]
+    },
+    "test:karma:debug": {
+      "dependsOn": [
+        "^test:karma:debug"
+      ]
+    },
+    "bundle": {
+      "dependsOn": [
+        "^bundle"
+      ],
+      "outputs": [
+        "{projectRoot}/dist"
+      ]
+    },
+    "compile:css-colors": {
+      "outputs": [
+        "{projectRoot}/lib"
+      ]
+    },
+    "dist:css": {
+      "outputs": [
+        "{projectRoot}/lib/css"
+      ]
+    },
+    "dist:variables": {
+      "outputs": [
+        "{projectRoot}/lib"
+      ]
+    },
+    "copy:scss": {
+      "outputs": [
+        "{projectRoot}/lib/scss"
+      ]
+    },
+    "copy:fonts": {
+      "outputs": [
+        "{projectRoot}/lib/css"
+      ]
+    },
+    "generate-icon-src": {
+      "outputs": [
+        "{projectRoot}/src/generated-icons"
+      ]
+    }
+  }
+}
