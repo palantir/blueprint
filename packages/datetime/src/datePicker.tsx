@@ -23,8 +23,8 @@ import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, Props } fr
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
-import { DatePickerCaption } from "./datePickerCaption";
 import { DatePickerBaseProps, getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
+import { DatePickerMonthYearSelect } from "./datePickerMonthYearSelect";
 import { DatePickerNavbar } from "./datePickerNavbar";
 import { DatePickerShortcut, DateRangeShortcut, Shortcuts } from "./shortcuts";
 import { TimePicker } from "./timePicker";
@@ -255,18 +255,22 @@ export class DatePicker extends AbstractPureComponent2<DatePickerProps, IDatePic
         return Array.isArray(disabledDays) ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
     };
 
-    private renderCaption = (props: CaptionElementProps) => (
-        <DatePickerCaption
-            {...props}
-            maxDate={this.props.maxDate}
-            minDate={this.props.minDate}
-            onDateChange={this.handleMonthChange}
-            reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
-        />
+    private renderCaption = (captionProps: CaptionElementProps) => (
+        <div className={captionProps.classNames.caption}>
+            <Divider />
+        </div>
     );
 
-    private renderNavbar = (props: NavbarElementProps) => (
-        <DatePickerNavbar {...props} maxDate={this.props.maxDate} minDate={this.props.minDate} />
+    private renderNavbar = (navbarProps: NavbarElementProps) => (
+        <DatePickerNavbar {...navbarProps} maxDate={this.props.maxDate} minDate={this.props.minDate}>
+            <DatePickerMonthYearSelect
+                {...navbarProps}
+                onDateChange={this.handleMonthChange}
+                reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
+                maxDate={this.props.maxDate}
+                minDate={this.props.minDate}
+            />
+        </DatePickerNavbar>
     );
 
     private renderOptionsBar() {

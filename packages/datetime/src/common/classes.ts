@@ -22,10 +22,6 @@ export const DATEINPUT = `${NS}-dateinput`;
 export const DATEINPUT_POPOVER = `${DATEINPUT}-popover`;
 
 export const DATEPICKER = `${NS}-datepicker`;
-export const DATEPICKER_CAPTION = `${DATEPICKER}-caption`;
-export const DATEPICKER_CAPTION_CARET = `${DATEPICKER_CAPTION}-caret`;
-export const DATEPICKER_CAPTION_MEASURE = `${DATEPICKER_CAPTION}-measure`;
-export const DATEPICKER_CAPTION_SELECT = `${DATEPICKER_CAPTION}-select`;
 export const DATEPICKER_CONTENT = `${DATEPICKER}-content`;
 export const DATEPICKER_DAY = "DayPicker-Day";
 export const DATEPICKER_DAY_DISABLED = `${DATEPICKER_DAY}--disabled`;
@@ -37,6 +33,8 @@ export const DATEPICKER_FOOTER = `${DATEPICKER}-footer`;
 export const DATEPICKER_MONTH_SELECT = `${DATEPICKER}-month-select`;
 export const DATEPICKER_YEAR_SELECT = `${DATEPICKER}-year-select`;
 export const DATEPICKER_NAVBAR = `${DATEPICKER}-navbar`;
+export const DATEPICKER_NAVBAR_CENTER = `${DATEPICKER_NAVBAR}-center`;
+export const DATEPICKER_NAVBAR_CENTER_MEASURE = `${DATEPICKER_NAVBAR_CENTER}-measure`;
 export const DATEPICKER_NAVBUTTON = `DayPicker-NavButton`;
 export const DATEPICKER_TIMEPICKER_WRAPPER = `${DATEPICKER}-timepicker-wrapper`;
 

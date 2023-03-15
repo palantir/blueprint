@@ -29,6 +29,9 @@ export interface IDatePickerNavbarProps extends NavbarElementProps {
 
     hideLeftNavButton?: boolean;
     hideRightNavButton?: boolean;
+
+    /** Placed at center */
+    children?: React.ReactNode;
 }
 
 export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps> {
@@ -47,6 +50,7 @@ export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps
                         onClick={this.handlePreviousClick}
                     />
                 )}
+                {this.props.children && <div className={Classes.DATEPICKER_NAVBAR_CENTER}>{this.props.children}</div>}
                 {this.props.hideRightNavButton || (
                     <Button
                         aria-label="Go to next month"

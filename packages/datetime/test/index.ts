@@ -6,7 +6,7 @@ import "@blueprintjs/test-commons/bootstrap";
 
 import "./common/dateUtilsTests";
 import "./dateInputTests";
-import "./datePickerCaptionTests";
+import "./datePickerMonthYearSelectTests";
 import "./datePickerTests";
 import "./dateRangeInputTests";
 import "./dateRangePickerTests";

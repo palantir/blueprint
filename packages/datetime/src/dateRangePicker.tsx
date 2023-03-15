@@ -25,7 +25,6 @@ import { DateRange } from "./common/dateRange";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
-import { DatePickerCaption } from "./datePickerCaption";
 import {
     combineModifiers,
     DatePickerBaseProps,
@@ -35,6 +34,7 @@ import {
     HOVERED_RANGE_MODIFIER,
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
+import { DatePickerMonthYearSelect } from "./datePickerMonthYearSelect";
 import { DatePickerNavbar } from "./datePickerNavbar";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
 import { DateRangeShortcut, Shortcuts } from "./shortcuts";
@@ -431,7 +431,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
             return (
                 <DayPicker
                     {...dayPickerBaseProps}
-                    captionElement={this.renderSingleCaption}
+                    captionElement={this.renderCaption}
                     navbarElement={this.renderSingleNavbar}
                     fromMonth={minDate}
                     month={this.state.leftView.getFullDate()}
@@ -448,7 +448,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
                         key="left"
                         {...dayPickerBaseProps}
                         canChangeMonth={true}
-                        captionElement={this.renderLeftCaption}
+                        captionElement={this.renderCaption}
                         navbarElement={this.renderLeftNavbar}
                         fromMonth={minDate}
                         month={this.state.leftView.getFullDate()}
@@ -461,7 +461,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
                         key="right"
                         {...dayPickerBaseProps}
                         canChangeMonth={true}
-                        captionElement={this.renderRightCaption}
+                        captionElement={this.renderCaption}
                         navbarElement={this.renderRightNavbar}
                         fromMonth={DateUtils.getDateNextMonth(minDate)}
                         month={this.state.rightView.getFullDate()}
@@ -475,8 +475,23 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
         }
     }
 
+    private renderCaption = (captionProps: CaptionElementProps) => (
+        <div className={captionProps.classNames.caption}>
+            <Divider />
+        </div>
+    );
+
     private renderSingleNavbar = (navbarProps: NavbarElementProps) => (
-        <DatePickerNavbar {...navbarProps} maxDate={this.props.maxDate} minDate={this.props.minDate} />
+        <DatePickerNavbar {...navbarProps} maxDate={this.props.maxDate} minDate={this.props.minDate}>
+            <DatePickerMonthYearSelect
+                {...navbarProps}
+                maxDate={this.props.maxDate}
+                minDate={this.props.minDate}
+                onMonthChange={this.handleLeftMonthSelectChange}
+                onYearChange={this.handleLeftYearSelectChange}
+                reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
+            />
+        </DatePickerNavbar>
     );
 
     private renderLeftNavbar = (navbarProps: NavbarElementProps) => (
@@ -485,7 +500,16 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
             hideRightNavButton={this.props.contiguousCalendarMonths}
             maxDate={this.props.maxDate}
             minDate={this.props.minDate}
-        />
+        >
+            <DatePickerMonthYearSelect
+                {...navbarProps}
+                maxDate={DateUtils.getDatePreviousMonth(this.props.maxDate)}
+                minDate={this.props.minDate}
+                onMonthChange={this.handleLeftMonthSelectChange}
+                onYearChange={this.handleLeftYearSelectChange}
+                reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
+            />
+        </DatePickerNavbar>
     );
 
     private renderRightNavbar = (navbarProps: NavbarElementProps) => (
@@ -494,40 +518,16 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
             hideLeftNavButton={this.props.contiguousCalendarMonths}
             maxDate={this.props.maxDate}
             minDate={this.props.minDate}
-        />
-    );
-
-    private renderSingleCaption = (captionProps: CaptionElementProps) => (
-        <DatePickerCaption
-            {...captionProps}
-            maxDate={this.props.maxDate}
-            minDate={this.props.minDate}
-            onMonthChange={this.handleLeftMonthSelectChange}
-            onYearChange={this.handleLeftYearSelectChange}
-            reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
-        />
-    );
-
-    private renderLeftCaption = (captionProps: CaptionElementProps) => (
-        <DatePickerCaption
-            {...captionProps}
-            maxDate={DateUtils.getDatePreviousMonth(this.props.maxDate)}
-            minDate={this.props.minDate}
-            onMonthChange={this.handleLeftMonthSelectChange}
-            onYearChange={this.handleLeftYearSelectChange}
-            reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
-        />
-    );
-
-    private renderRightCaption = (captionProps: CaptionElementProps) => (
-        <DatePickerCaption
-            {...captionProps}
-            maxDate={this.props.maxDate}
-            minDate={DateUtils.getDateNextMonth(this.props.minDate)}
-            onMonthChange={this.handleRightMonthSelectChange}
-            onYearChange={this.handleRightYearSelectChange}
-            reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
-        />
+        >
+            <DatePickerMonthYearSelect
+                {...navbarProps}
+                maxDate={this.props.maxDate}
+                minDate={DateUtils.getDateNextMonth(this.props.minDate)}
+                onMonthChange={this.handleRightMonthSelectChange}
+                onYearChange={this.handleRightYearSelectChange}
+                reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
+            />
+        </DatePickerNavbar>
     );
 
     private handleDayMouseEnter = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {

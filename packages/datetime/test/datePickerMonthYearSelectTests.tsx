@@ -22,9 +22,9 @@ import * as sinon from "sinon";
 import { HTMLSelect } from "@blueprintjs/core";
 
 import { Classes, IDatePickerLocaleUtils } from "../src";
-import { DatePickerCaption, IDatePickerCaptionProps } from "../src/datePickerCaption";
+import { DatePickerMonthYearSelect, IDatePickerMonthYearSelectProps } from "../src/datePickerMonthYearSelect";
 
-describe("<DatePickerCaption>", () => {
+describe("<DatePickerMonthYearSelect>", () => {
     const LOCALE_UTILS: IDatePickerLocaleUtils = {
         getMonths: () => [
             "January",
@@ -43,7 +43,7 @@ describe("<DatePickerCaption>", () => {
     } as any;
 
     it("renders month and year choosers", () => {
-        const { month, year } = renderDatePickerCaption();
+        const { month, year } = renderDatePickerMonthYearSelect();
         assert.lengthOf(month, 1);
         assert.lengthOf(year, 1);
     });
@@ -51,7 +51,7 @@ describe("<DatePickerCaption>", () => {
     it("fires on*Change events as expected", () => {
         const onMonthChange = sinon.spy();
         const onYearChange = sinon.spy();
-        const { month, year } = renderDatePickerCaption({ onMonthChange, onYearChange });
+        const { month, year } = renderDatePickerMonthYearSelect({ onMonthChange, onYearChange });
 
         assert.isTrue(onMonthChange.notCalled, "onMonthChange before");
         month.simulate("change", { target: { value: 11 } });
@@ -64,10 +64,10 @@ describe("<DatePickerCaption>", () => {
         assert.strictEqual(onYearChange.args[0][0], 2014);
     });
 
-    it("caption options are only displayed for possible months and years", () => {
+    it("select options are only displayed for possible months and years", () => {
         const minDate = new Date(2014, 11, 20);
         const maxDate = new Date(2015, 0, 12);
-        const { month, year } = renderDatePickerCaption({ maxDate, minDate });
+        const { month, year } = renderDatePickerMonthYearSelect({ maxDate, minDate });
         assert.deepEqual(
             month.find("option").map(mo => mo.text()),
             ["January"],
@@ -93,7 +93,7 @@ describe("<DatePickerCaption>", () => {
             "Novembre",
             "Décembre",
         ] as any;
-        const { month } = renderDatePickerCaption({ months });
+        const { month } = renderDatePickerMonthYearSelect({ months });
         const options = month.find("option");
         assert.deepEqual(
             options.map(mo => mo.text()),
@@ -105,7 +105,7 @@ describe("<DatePickerCaption>", () => {
         const date = new Date(2017, 0, 6);
         const minDate = new Date(2015, 0, 1);
         const maxDate = new Date(2016, 11, 31);
-        const { year } = renderDatePickerCaption({ date, maxDate, minDate });
+        const { year } = renderDatePickerMonthYearSelect({ month: date, maxDate, minDate });
         const options = year.find("option");
         assert.deepEqual(
             options.map(yr => yr.text()),
@@ -114,11 +114,10 @@ describe("<DatePickerCaption>", () => {
         assert.isTrue(options.last().prop("disabled"), "2017 is not disabled");
     });
 
-    function renderDatePickerCaption(props?: Partial<IDatePickerCaptionProps>) {
+    function renderDatePickerMonthYearSelect(props?: Partial<IDatePickerMonthYearSelectProps>) {
         const wrapper = mount(
-            <DatePickerCaption
-                classNames={{} as any}
-                date={new Date(2015, 0)}
+            <DatePickerMonthYearSelect
+                month={new Date(2015, 0)}
                 locale="en"
                 localeUtils={LOCALE_UTILS}
                 maxDate={new Date(2030, 0)}

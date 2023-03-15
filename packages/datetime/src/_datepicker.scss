@@ -61,6 +61,10 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
 
   .DayPicker-Caption {
     display: table-caption;
+
+    .#{$ns}-divider {
+      margin: 0;
+    }
   }
 
   .DayPicker-Weekdays {
@@ -148,11 +152,10 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
 .#{$ns}-datepicker-navbar {
   align-items: center;
   display: flex;
+  position: relative;
   height: $pt-button-height;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
+  justify-content: center;
+  margin-bottom: 5px;
 
   > .DayPicker-NavButton--prev {
     margin-right: auto;
@@ -161,12 +164,6 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   > .DayPicker-NavButton--next {
     margin-left: auto;
   }
-}
-
-.#{$ns}-datepicker-caption {
-  @include pt-flex-container(row, $fill: ":first-child");
-  justify-content: space-between;
-  margin: 0 ($pt-button-height - $datepicker-padding) $datepicker-padding;
 
   // HTMLSelect overrides for a narrower appearance
   select {
@@ -178,10 +175,16 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
       right: 2px;
     }
   }
+}
 
-  + .#{$ns}-divider {
-    margin: 0;
-  }
+.#{$ns}-datepicker-navbar-center {
+  // centers item regardless of DayPicker-NavButton present
+  position: absolute;
+}
+
+.#{$ns}-datepicker-navbar-center-measure {
+  font-weight: 600;
+  padding-left: $datepicker-padding;
 }
 
 .#{$ns}-datepicker-month-select {
@@ -191,11 +194,6 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
 .#{$ns}-datepicker-year-select {
   flex-shrink: 1;
   min-width: 60px;
-}
-
-.#{$ns}-datepicker-caption-measure {
-  font-weight: 600;
-  padding-left: $datepicker-padding;
 }
 
 .#{$ns}-datepicker-content {

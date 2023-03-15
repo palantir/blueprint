@@ -15,17 +15,18 @@
  */
 
 import * as React from "react";
-import { CaptionElementProps } from "react-day-picker";
+import { NavbarElementProps } from "react-day-picker";
 
-import { AbstractPureComponent2, Divider, HTMLSelect, IconSize, OptionProps } from "@blueprintjs/core";
+import { AbstractPureComponent2, HTMLSelect, IconSize, OptionProps } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import { clone } from "./common/dateUtils";
 import { measureTextWidth } from "./common/utils";
 
-export interface IDatePickerCaptionProps extends CaptionElementProps {
+export interface IDatePickerMonthYearSelectProps extends Pick<NavbarElementProps, "month" | "locale" | "localeUtils"> {
     maxDate: Date;
     minDate: Date;
+    months?: string[];
     onMonthChange?: (month: number) => void;
     onYearChange?: (year: number) => void;
     /** Callback invoked when the month or year `<select>` is changed. */
@@ -33,12 +34,15 @@ export interface IDatePickerCaptionProps extends CaptionElementProps {
     reverseMonthAndYearMenus?: boolean;
 }
 
-export interface IDatePickerCaptionState {
+export interface IDatePickerMonthYearSelectState {
     monthRightOffset: number;
 }
 
-export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaptionProps, IDatePickerCaptionState> {
-    public state: IDatePickerCaptionState = { monthRightOffset: 0 };
+export class DatePickerMonthYearSelect extends AbstractPureComponent2<
+    IDatePickerMonthYearSelectProps,
+    IDatePickerMonthYearSelectState
+> {
+    public state: IDatePickerMonthYearSelectState = { monthRightOffset: 0 };
 
     private containerElement: HTMLElement;
 
@@ -49,7 +53,14 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
     private handleYearSelectChange = this.dateChangeHandler((d, year) => d.setFullYear(year), this.props.onYearChange);
 
     public render() {
-        const { date, locale, localeUtils, minDate, maxDate, months = localeUtils.getMonths(locale) } = this.props;
+        const {
+            month: date,
+            locale,
+            localeUtils,
+            minDate,
+            maxDate,
+            months = localeUtils.getMonths(locale),
+        } = this.props;
         const minYear = minDate.getFullYear();
         const maxYear = maxDate.getFullYear();
         const displayMonth = date.getMonth();
@@ -101,14 +112,7 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
             ? [yearSelect, monthSelect]
             : [monthSelect, yearSelect];
 
-        return (
-            <div className={this.props.classNames.caption}>
-                <div className={Classes.DATEPICKER_CAPTION} ref={ref => (this.containerElement = ref)}>
-                    {orderedSelects}
-                </div>
-                <Divider />
-            </div>
-        );
+        return <div ref={ref => (this.containerElement = ref)}>{orderedSelects}</div>;
     }
 
     public componentDidMount() {
@@ -123,12 +127,12 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
         // measure width of text as rendered inside our container element.
         const monthTextWidth = measureTextWidth(
             this.displayedMonthText,
-            Classes.DATEPICKER_CAPTION_MEASURE,
+            Classes.DATEPICKER_NAVBAR_CENTER_MEASURE,
             this.containerElement,
         );
         const monthSelectWidth =
             this.containerElement == null ? 0 : this.containerElement.firstElementChild.clientWidth;
-        const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - IconSize.STANDARD - 2);
+        const rightOffset = Math.max(0, monthSelectWidth - monthTextWidth - IconSize.STANDARD - 2);
         this.setState({ monthRightOffset: rightOffset });
     }
 
@@ -139,7 +143,7 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
             if (isNaN(value)) {
                 return;
             }
-            const newDate = clone(this.props.date);
+            const newDate = clone(this.props.month);
             updater(newDate, value);
             this.props.onDateChange?.(newDate);
             handler?.(value);
