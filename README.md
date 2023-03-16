@@ -4,7 +4,7 @@
 
 Blueprint is a React-based UI toolkit for the web.
 
-It is optimized for building complex, data-dense web interfaces for _desktop applications_ which run in modern browsers and IE11. This is not a mobile-first UI toolkit.
+It is optimized for building complex, data-dense web interfaces for _desktop applications_ which run in modern browsers. This is not a mobile-first UI toolkit.
 
 [**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
 
@@ -43,6 +43,7 @@ These are hosted on GitHub Pages as static web applications:
 
 These are used as development playground environments:
 
+-   `demo-app` &ndash; demo page that shows many components all on the same page in light and dark themes
 -   `table-dev-app` &ndash; demo page that supports manual testing of all table features
 
 ### Build tooling
@@ -70,7 +71,7 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 [Lerna](https://lerna.js.org/) manages inter-package dependencies in this monorepo.
 Builds are orchestrated via `lerna run` and NPM scripts.
 
-**Prerequisites**: Node.js v19.x (see version specified in `.nvmrc`), Yarn v1.22+
+**Prerequisites**: Node.js v19.x (see version specified in `.nvmrc`), Yarn v1.22
 
 ### One-time setup
 
@@ -104,6 +105,7 @@ There are a few ways to run development scripts, here they are listed from simpl
     -   `yarn dev:core`
     -   `yarn dev:docs`
     -   `yarn dev:datetime`
+    -   `yarn dev:datetime2`
     -   `yarn dev:popover2`
     -   `yarn dev:select`
     -   `yarn dev:table`
