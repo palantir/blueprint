@@ -200,6 +200,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
                 <Draggable
                     onActivate={this.handleCellActivate}
                     onDoubleClick={this.handleCellDoubleClick}
+                    onSingleClick={this.handleCellSingleClick}
                     preventDefault={false}
                     stopPropagation={interactive}
                 >
@@ -258,6 +259,10 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
     };
 
     private handleCellDoubleClick = (_event: MouseEvent) => {
+        this.handleEdit();
+    };
+    
+     private handleCellSingleClick = (_event: MouseEvent) => {
         this.handleEdit();
     };
 
