@@ -29,6 +29,8 @@ updates:
       - dependency-name: "date-fns"
       - dependency-name: "moment"
       - dependency-name: "lodash"
+      # see https://github.com/tancredi/fantasticon/issues/470
+      - dependency-name: "fantasticon"
 
   - package-ecosystem: "npm"
     directory: "/"

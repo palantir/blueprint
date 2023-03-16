@@ -46,6 +46,12 @@ async function generateDocumentalistData() {
         // must mark our @Decorator APIs as reserved so we can use them in code samples
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget", "param", "returns"],
     })
+        .use(".md", {
+            compile: files =>
+                // HACKHACK: special case for Windows environment
+                // see https://github.com/palantir/documentalist/issues/98
+                process.platform === "win32" ? files.map(file => file.read().replace(/\r\n/g, "\n")) : files,
+        })
         .use(".md", new MarkdownPlugin({ navPage: "_nav" }))
         .use(
             /\.tsx?$/,
