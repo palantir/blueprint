@@ -23,6 +23,7 @@ import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, Props } fr
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
+import { DatePickerCaption } from "./datePickerCaption";
 import { DatePickerBaseProps, getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
 import { DatePickerMonthYearSelect } from "./datePickerMonthYearSelect";
 import { DatePickerNavbar } from "./datePickerNavbar";
@@ -255,11 +256,7 @@ export class DatePicker extends AbstractPureComponent2<DatePickerProps, IDatePic
         return Array.isArray(disabledDays) ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
     };
 
-    private renderCaption = (captionProps: CaptionElementProps) => (
-        <div className={captionProps.classNames.caption}>
-            <Divider />
-        </div>
-    );
+    private renderCaption = (captionProps: CaptionElementProps) => <DatePickerCaption {...captionProps} />;
 
     private renderNavbar = (navbarProps: NavbarElementProps) => (
         <DatePickerNavbar {...navbarProps} maxDate={this.props.maxDate} minDate={this.props.minDate}>

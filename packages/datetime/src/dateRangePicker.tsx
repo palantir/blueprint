@@ -25,6 +25,7 @@ import { DateRange } from "./common/dateRange";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
+import { DatePickerCaption } from "./datePickerCaption";
 import {
     combineModifiers,
     DatePickerBaseProps,
@@ -475,11 +476,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
         }
     }
 
-    private renderCaption = (captionProps: CaptionElementProps) => (
-        <div className={captionProps.classNames.caption}>
-            <Divider />
-        </div>
-    );
+    private renderCaption = (captionProps: CaptionElementProps) => <DatePickerCaption {...captionProps} />;
 
     private renderSingleNavbar = (navbarProps: NavbarElementProps) => (
         <DatePickerNavbar {...navbarProps} maxDate={this.props.maxDate} minDate={this.props.minDate}>
