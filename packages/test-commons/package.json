@@ -17,7 +17,7 @@
         "chai": "^4.3.7",
         "core-js": "^3.29.1",
         "enzyme": "^3.11.0",
-        "enzyme-adapter-react-16": "^1.15.5"
+        "enzyme-adapter-react-16": "^1.15.7"
     },
     "peerDependencies": {
         "react": ">=16.8"
