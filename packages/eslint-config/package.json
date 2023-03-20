@@ -1,18 +1,18 @@
 {
     "name": "@blueprintjs/eslint-config",
-    "version": "2.9.0",
+    "version": "2.9.1",
     "description": "ESLint configuration for @blueprintjs packages",
     "dependencies": {
-        "@blueprintjs/eslint-plugin": "^2.7.5",
-        "@blueprintjs/tslint-config": "^3.3.1",
-        "@typescript-eslint/eslint-plugin": "^5.50.0",
-        "@typescript-eslint/eslint-plugin-tslint": "^5.50.0",
-        "@typescript-eslint/parser": "^5.50.0",
-        "eslint": "^8.33.0",
+        "@blueprintjs/eslint-plugin": "^2.7.6",
+        "@blueprintjs/tslint-config": "^3.3.2",
+        "@typescript-eslint/eslint-plugin": "^5.55.0",
+        "@typescript-eslint/eslint-plugin-tslint": "^5.55.0",
+        "@typescript-eslint/parser": "^5.55.0",
+        "eslint": "^8.36.0",
         "eslint-plugin-deprecation": "^1.3.3",
         "eslint-plugin-header": "^3.1.1",
         "eslint-plugin-import": "~2.26.0",
-        "eslint-plugin-jsdoc": "^40.0.1",
+        "eslint-plugin-jsdoc": "^40.0.3",
         "eslint-plugin-react": "^7.32.2"
     },
     "repository": {

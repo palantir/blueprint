@@ -123,4 +123,13 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
   .#{$ns}-timepicker-input {
     color: $pt-dark-text-color;
   }
+
+  &.#{$ns}-disabled {
+    .#{$ns}-timepicker-input,
+    .#{$ns}-timepicker-divider-text,
+    .#{$ns}-timepicker-arrow-button,
+    .#{$ns}-timepicker-arrow-button:hover {
+      color: $dark-input-color-disabled;
+    }
+  }
 }
