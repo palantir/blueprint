@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "@blueprintjs/colors/lib/scss/colors";
+@import "@blueprintjs/core/src/common/variables";
+@import "@blueprintjs/core/src/common/mixins";
 @import "@blueprintjs/core/src/components/popover/common";
 @import "./common";
 
@@ -196,6 +198,11 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   min-width: 60px;
 }
 
+.#{$ns}-datepicker-caption-text {
+  // create hidden MMMMM YYYY caption to label date grid for screenreaders
+  @include screenreader-only;
+}
+
 .#{$ns}-datepicker-content {
   align-items: center;
   display: flex;
@@ -276,15 +283,3 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   }
 }
 
-// reference: https://tailwindcss.com/docs/screen-readers
-.screenreader-only {
-  border-width: 0;
-  clip: rect(0, 0, 0, 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-}

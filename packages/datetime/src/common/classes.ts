@@ -22,6 +22,8 @@ export const DATEINPUT = `${NS}-dateinput`;
 export const DATEINPUT_POPOVER = `${DATEINPUT}-popover`;
 
 export const DATEPICKER = `${NS}-datepicker`;
+export const DATEPICKER_CAPTION = `${DATEPICKER}-caption`;
+export const DATEPICKER_CAPTION_TEXT = `${DATEPICKER_CAPTION}-text`;
 export const DATEPICKER_CONTENT = `${DATEPICKER}-content`;
 export const DATEPICKER_DAY = "DayPicker-Day";
 export const DATEPICKER_DAY_DISABLED = `${DATEPICKER_DAY}--disabled`;

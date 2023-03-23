@@ -19,6 +19,8 @@ import { CaptionElementProps } from "react-day-picker";
 
 import { AbstractPureComponent2, Divider } from "@blueprintjs/core";
 
+import * as Classes from "./common/classes";
+
 export class DatePickerCaption extends AbstractPureComponent2<CaptionElementProps> {
     public render() {
         const formattedDateTime = this.props.date.toLocaleString("en-US", {
@@ -28,8 +30,7 @@ export class DatePickerCaption extends AbstractPureComponent2<CaptionElementProp
 
         return (
             <div className={this.props.classNames.caption}>
-                {/** create hidden caption to label date grid for screenreaders */}
-                <span className="screenreader-only">{formattedDateTime}</span>
+                <span className={Classes.DATEPICKER_CAPTION_TEXT}>{formattedDateTime}</span>
                 <Divider />
             </div>
         );

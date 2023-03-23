@@ -85,6 +85,19 @@ $pt-dark-intent-text-colors: (
   -moz-outline-radius: 6px;
 }
 
+@mixin screenreader-only() {
+  // reference: https://tailwindcss.com/docs/screen-readers
+  border-width: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
 @function border-shadow($alpha, $color: $black, $size: 1px) {
   @return 0 0 0 $size rgba($color, $alpha);
 }
