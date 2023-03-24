@@ -33,10 +33,10 @@ export const DATEPICKER_DAY_IS_TODAY = `${DATEPICKER_DAY}--isToday`;
 export const DATEPICKER_DAY_WRAPPER = `${DATEPICKER}-day-wrapper`;
 export const DATEPICKER_FOOTER = `${DATEPICKER}-footer`;
 export const DATEPICKER_MONTH_SELECT = `${DATEPICKER}-month-select`;
+export const DATEPICKER_MONTH_SELECT_MEASURE = `${DATEPICKER_MONTH_SELECT}-measure`;
 export const DATEPICKER_YEAR_SELECT = `${DATEPICKER}-year-select`;
 export const DATEPICKER_NAVBAR = `${DATEPICKER}-navbar`;
 export const DATEPICKER_NAVBAR_CENTER = `${DATEPICKER_NAVBAR}-center`;
-export const DATEPICKER_NAVBAR_CENTER_MEASURE = `${DATEPICKER_NAVBAR_CENTER}-measure`;
 export const DATEPICKER_NAVBUTTON = `DayPicker-NavButton`;
 export const DATEPICKER_TIMEPICKER_WRAPPER = `${DATEPICKER}-timepicker-wrapper`;
 

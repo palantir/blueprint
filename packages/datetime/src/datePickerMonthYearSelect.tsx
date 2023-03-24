@@ -127,7 +127,7 @@ export class DatePickerMonthYearSelect extends AbstractPureComponent2<
         // measure width of text as rendered inside our container element.
         const monthTextWidth = measureTextWidth(
             this.displayedMonthText,
-            Classes.DATEPICKER_NAVBAR_CENTER_MEASURE,
+            Classes.DATEPICKER_MONTH_SELECT_MEASURE,
             this.containerElement,
         );
         const monthSelectWidth =

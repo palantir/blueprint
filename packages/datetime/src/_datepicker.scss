@@ -184,11 +184,6 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   position: absolute;
 }
 
-.#{$ns}-datepicker-navbar-center-measure {
-  font-weight: 600;
-  padding-left: $datepicker-padding;
-}
-
 .#{$ns}-datepicker-month-select {
   flex-shrink: 1;
 }
@@ -196,6 +191,11 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
 .#{$ns}-datepicker-year-select {
   flex-shrink: 1;
   min-width: 60px;
+}
+
+.#{$ns}-datepicker-month-select-measure {
+  font-weight: 600;
+  padding-left: $datepicker-padding;
 }
 
 .#{$ns}-datepicker-caption-text {
