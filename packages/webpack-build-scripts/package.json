@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/webpack-build-scripts",
-    "version": "4.3.5",
+    "version": "4.3.6",
     "description": "Webpack build scripts for @blueprintjs packages",
     "type": "module",
     "main": "index.mjs",
@@ -8,7 +8,7 @@
         "test": "exit 0"
     },
     "dependencies": {
-        "@blueprintjs/node-build-scripts": "^7.0.4",
+        "@blueprintjs/node-build-scripts": "^7.1.0",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "assert": "^2.0.0",
         "autoprefixer": "^10.4.14",

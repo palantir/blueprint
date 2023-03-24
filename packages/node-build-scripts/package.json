@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/node-build-scripts",
-    "version": "7.0.4",
+    "version": "7.1.0",
     "description": "Node.js build scripts for @blueprintjs packages",
     "module": "./index.mjs",
     "exports": {
@@ -56,7 +56,7 @@
         "ts-jest": "^29.0.5"
     },
     "engines": {
-        "node": ">=19.3"
+        "node": ">=18.13"
     },
     "repository": {
         "type": "git",
