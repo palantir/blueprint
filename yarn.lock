@@ -9738,12 +9738,10 @@ raw-loader@^4.0.2:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-react-day-picker@7.4.9:
-  version "7.4.9"
-  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-7.4.9.tgz#ab556df9e838caa5bc988e55d1cb15318564149e"
-  integrity sha512-CcXf0p7p6gTYnG0+n/4wNGljZuQDXl4HhgcxsXB0nX+8D4LnRho9EclPA/aLz4WlvvVpfY+AEgj2ylgPj4nm/g==
-  dependencies:
-    prop-types "^15.6.2"
+react-day-picker@8.6.0:
+  version "8.6.0"
+  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-8.6.0.tgz#20e88f3aa2d568be29d5cf9a6684dd2162cbf6ef"
+  integrity sha512-n9/6abBZu+koSUBtsXqBfiOW44ROTjl7ebIqyaTQSO8i79bsCCgKCAyQP/1a79ySFkK4puGV1e7p7hK1ymdb/w==
 
 react-dom@^16.14.0:
   version "16.14.0"
