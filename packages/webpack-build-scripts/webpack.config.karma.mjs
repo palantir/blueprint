@@ -88,7 +88,7 @@ export default {
     plugins: [
         // HACKHACK: we should use an alternative to `process` in frontend code
         new webpack.ProvidePlugin({
-            process: "process/browser",
+            process: "process/browser.js",
         }),
 
         new ForkTsCheckerWebpackPlugin({
