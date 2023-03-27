@@ -54,7 +54,7 @@
         "dom4": "^2.1.5",
         "normalize.css": "^8.0.1",
         "popper.js": "^1.16.1",
-        "react-popper": "^1.3.11",
+        "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
         "tslib": "~2.5.0"
     },
