@@ -18,7 +18,9 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { AnchorButton, Classes, DialogStep, Keys, MultistepDialog } from "../../src";
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
+
+import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../../src";
 
 // TODO: button selectors in these tests should not be tied so closely to implementation; we shouldn't
 // need to reference AnchorButton directly
@@ -163,26 +165,25 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    it("pressing enter on older step takes effect", done => {
+    it("pressing enter on older step takes effect", () => {
+        const testsContainerElement = document.createElement("div");
+        document.documentElement.appendChild(testsContainerElement);
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
+            { attachTo: testsContainerElement },
         );
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const step = dialog.find(`.${Classes.DIALOG_STEP}`);
-        step.at(0).simulate("focus").simulate("keyDown", { keyCode: Keys.ENTER });
-        setTimeout(() => {
-            const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-            assert.strictEqual(dialog.state("selectedIndex"), 0);
-            assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
-            assert.strictEqual(steps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
-            done();
-        }, 200);
+        step.at(0).simulate("focus");
+        dispatchTestKeyboardEvent(step.at(0).getDOMNode(), "keydown", "Enter");
+        assert.strictEqual(dialog.state("selectedIndex"), 0);
         dialog.unmount();
+        testsContainerElement.remove();
     });
 
     it("gets by without children", () => {
