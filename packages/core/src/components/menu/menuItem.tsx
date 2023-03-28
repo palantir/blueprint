@@ -22,6 +22,7 @@ import * as React from "react";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { ActionProps, DISPLAYNAME_PREFIX, IElementRefProps, LinkProps } from "../../common/props";
+import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
@@ -228,9 +229,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             tagName,
             {
                 // for menuitems, onClick when enter key pressed doesn't take effect like it does for a button-- fix this
-                onKeyDown: (e: React.KeyboardEvent) =>
-                    (e.key === "Enter" || e.key === " ") &&
-                    e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined })),
+                onKeyDown: clickElementOnKeyPress(["Enter", " "]),
                 role: targetRole,
                 tabIndex: 0,
                 ...htmlProps,
