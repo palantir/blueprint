@@ -174,7 +174,7 @@ describe("<MultistepDialog>", () => {
         findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const step = dialog.find(`.${Classes.DIALOG_STEP}`);
-        step.at(0).simulate("keyDown", Keys.ENTER);
+        step.at(0).simulate("focus").simulate("keyDown", { keyCode: Keys.ENTER });
         const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
