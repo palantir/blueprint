@@ -19,6 +19,7 @@ import * as React from "react";
 
 import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { clickElementOnKeyPress } from "../../common/utils";
 import { Dialog, DialogProps } from "./dialog";
 import { DialogFooter } from "./dialogFooter";
 import { DialogStep, DialogStepId, DialogStepProps } from "./dialogStep";
@@ -190,10 +191,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
                     onClick={handleClickDialogStep}
                     tabIndex={handleClickDialogStep ? 0 : -1}
                     // enable enter key to take effect on the div as if it were a button
-                    onKeyDown={e =>
-                        (e.key === "Enter" || e.key === " ") &&
-                        e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }))
-                    }
+                    onKeyDown={clickElementOnKeyPress(["Enter", " "])}
                 >
                     <div className={Classes.DIALOG_STEP_ICON}>{stepNumber}</div>
                     <div className={Classes.DIALOG_STEP_TITLE}>{step.props.title}</div>
