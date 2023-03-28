@@ -163,7 +163,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
     private renderLeftPanel() {
         return (
-            <div className={Classes.MULTISTEP_DIALOG_LEFT_PANEL}>
+            <div className={Classes.MULTISTEP_DIALOG_LEFT_PANEL} role="tablist" aria-label="steps">
                 {this.getDialogStepChildren().filter(isDialogStepElement).map(this.renderDialogStep)}
             </div>
         );
@@ -173,6 +173,8 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         const stepNumber = index + 1;
         const hasBeenViewed = this.state.lastViewedIndex >= index;
         const currentlySelected = this.state.selectedIndex === index;
+        const handleClickDialogStep =
+            index > this.state.lastViewedIndex ? undefined : this.getDialogStepChangeHandler(index);
         return (
             <div
                 className={classNames(Classes.DIALOG_STEP_CONTAINER, {
@@ -180,11 +182,13 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
                     [Classes.DIALOG_STEP_VIEWED]: hasBeenViewed,
                 })}
                 key={index}
+                aria-selected={currentlySelected}
+                role="tab"
             >
                 <div
                     className={Classes.DIALOG_STEP}
-                    onClick={this.handleClickDialogStep(index)}
-                    tabIndex={this.handleClickDialogStep(index) ? 0 : -1}
+                    onClick={handleClickDialogStep}
+                    tabIndex={handleClickDialogStep ? 0 : -1}
                     onKeyDown={e =>
                         e.key === "Enter" && e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }))
                     }
@@ -194,13 +198,6 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
                 </div>
             </div>
         );
-    };
-
-    private handleClickDialogStep = (index: number) => {
-        if (index > this.state.lastViewedIndex) {
-            return;
-        }
-        return this.getDialogStepChangeHandler(index);
     };
 
     private maybeRenderRightPanel() {
