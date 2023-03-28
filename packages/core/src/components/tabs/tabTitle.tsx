@@ -71,7 +71,7 @@ export class TabTitle extends AbstractPureComponent2<TabTitleProps> {
                 id={generateTabTitleId(parentId, id)}
                 onClick={disabled ? undefined : this.handleClick}
                 role="tab"
-                tabIndex={disabled ? undefined : selected ? 0 : -1}
+                tabIndex={disabled ? undefined : selected ? -1 : 0}
             >
                 {icon != null && <Icon icon={icon} intent={intent} className={Classes.TAB_ICON} />}
                 {title}

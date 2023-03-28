@@ -115,6 +115,11 @@ export interface MenuItemProps extends ActionProps, LinkProps, IElementRefProps<
     multiline?: boolean;
 
     /**
+     * Called on click, and on enter keydown (unless `onKeyDown` manually overriden)
+     */
+    onClick?: (e: React.MouseEvent | React.KeyboardEvent) => void;
+
+    /**
      * Props to spread to `Popover`. Note that `content` and `minimal` cannot be
      * changed and `usePortal` defaults to `false` so all submenus will live in
      * the same container.
@@ -186,6 +191,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             labelClassName,
             labelElement,
             multiline,
+            onClick,
             popoverProps,
             roleStructure = "menuitem",
             selected,
@@ -227,6 +233,8 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const target = React.createElement(
             tagName,
             {
+                onClick,
+                onKeyDown: e => (e.key === "Enter" && onClick ? onClick(e) : undefined),
                 role: targetRole,
                 tabIndex: 0,
                 ...htmlProps,
