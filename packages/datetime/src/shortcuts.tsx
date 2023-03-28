@@ -100,7 +100,6 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
                 disabled={!this.isShortcutInRange(shortcut.dateRange)}
                 key={index}
                 onClick={this.getShorcutClickHandler(shortcut, index)}
-                onKeyDown={this.getShorcutKeyDownHandler(shortcut, index)}
                 shouldDismissPopover={false}
                 text={shortcut.label}
             />
@@ -113,11 +112,11 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
         );
     }
 
-    private getShorcutClickHandler = (shortcut: DateRangeShortcut, index: number) => () =>
-        this.props.onShortcutClick(shortcut, index);
+    private getShorcutClickHandler = (shortcut: DateRangeShortcut, index: number) => () => {
+        const { onShortcutClick } = this.props;
 
-    private getShorcutKeyDownHandler = (shortcut: DateRangeShortcut, index: number) => (e: React.KeyboardEvent) =>
-        e.key === "Enter" && this.props.onShortcutClick(shortcut, index);
+        onShortcutClick(shortcut, index);
+    };
 
     private isShortcutInRange = (shortcutDateRange: DateRange) => {
         const { minDate, maxDate } = this.props;

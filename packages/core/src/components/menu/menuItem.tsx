@@ -102,9 +102,6 @@ export interface MenuItemProps extends ActionProps, LinkProps, IElementRefProps<
      *
      * which can be used if wrapping this item in a custom `<li>` parent.
      *
-     * NOTE: if not `listoption`, need to specify `onKeyDown` or similar for enter key press
-     * to take effect.
-     *
      * @default "menuitem"
      */
     roleStructure?: "menuitem" | "listoption" | "listitem" | "none";
@@ -230,6 +227,9 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const target = React.createElement(
             tagName,
             {
+                // for menuitems, onClick when enter key pressed doesn't take effect like it does for a button-- fix this
+                onKeyDown: (e: React.KeyboardEvent) =>
+                    e.key === "Enter" && e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined })),
                 role: targetRole,
                 tabIndex: 0,
                 ...htmlProps,
