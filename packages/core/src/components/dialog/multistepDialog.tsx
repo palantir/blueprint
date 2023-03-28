@@ -68,7 +68,7 @@ export interface IMultistepDialogProps extends DialogProps {
     onChange?(
         newDialogStepId: DialogStepId,
         prevDialogStepId: DialogStepId | undefined,
-        event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
+        event: React.MouseEvent<HTMLElement>,
     ): void;
 
     /**
@@ -173,8 +173,6 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         const stepNumber = index + 1;
         const hasBeenViewed = this.state.lastViewedIndex >= index;
         const currentlySelected = this.state.selectedIndex === index;
-        const handleClickDialogStep =
-            index > this.state.lastViewedIndex ? undefined : this.getDialogStepChangeHandler(index);
         return (
             <div
                 className={classNames(Classes.DIALOG_STEP_CONTAINER, {
@@ -185,15 +183,24 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
             >
                 <div
                     className={Classes.DIALOG_STEP}
-                    onClick={handleClickDialogStep}
-                    tabIndex={handleClickDialogStep ? 0 : -1}
-                    onKeyDown={e => e.key === "Enter" && handleClickDialogStep && handleClickDialogStep(e)}
+                    onClick={this.handleClickDialogStep(index)}
+                    tabIndex={this.handleClickDialogStep(index) ? 0 : -1}
+                    onKeyDown={e =>
+                        e.key === "Enter" && e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }))
+                    }
                 >
                     <div className={Classes.DIALOG_STEP_ICON}>{stepNumber}</div>
                     <div className={Classes.DIALOG_STEP_TITLE}>{step.props.title}</div>
                 </div>
             </div>
         );
+    };
+
+    private handleClickDialogStep = (index: number) => {
+        if (index > this.state.lastViewedIndex) {
+            return;
+        }
+        return this.getDialogStepChangeHandler(index);
     };
 
     private maybeRenderRightPanel() {
@@ -262,7 +269,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
     }
 
     private getDialogStepChangeHandler(index: number) {
-        return (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        return (event: React.MouseEvent<HTMLElement>) => {
             if (this.props.onChange !== undefined) {
                 const steps = this.getDialogStepChildren();
                 const prevStepId = steps[this.state.selectedIndex].props.id;
