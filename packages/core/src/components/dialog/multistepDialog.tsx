@@ -189,6 +189,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
                     className={Classes.DIALOG_STEP}
                     onClick={handleClickDialogStep}
                     tabIndex={handleClickDialogStep ? 0 : -1}
+                    // enable enter key to take effect on the div as if it were a button
                     onKeyDown={e =>
                         e.key === "Enter" && e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }))
                     }
