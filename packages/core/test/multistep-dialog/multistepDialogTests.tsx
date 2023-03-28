@@ -163,7 +163,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    it("pressing enter on older step takes effect", () => {
+    it("pressing enter on older step takes effect", done => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -175,10 +175,13 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const step = dialog.find(`.${Classes.DIALOG_STEP}`);
         step.at(0).simulate("focus").simulate("keyDown", { keyCode: Keys.ENTER });
-        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
-        assert.strictEqual(steps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
+        setTimeout(() => {
+            const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
+            assert.strictEqual(dialog.state("selectedIndex"), 0);
+            assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
+            assert.strictEqual(steps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
+            done();
+        }, 200);
         dialog.unmount();
     });
 
