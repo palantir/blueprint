@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../../src";
+import { AnchorButton, Classes, DialogStep, Keys, MultistepDialog } from "../../src";
 
 // TODO: button selectors in these tests should not be tied so closely to implementation; we shouldn't
 // need to reference AnchorButton directly
@@ -156,6 +156,25 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const step = dialog.find(`.${Classes.DIALOG_STEP}`);
         step.at(0).simulate("click");
+        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
+        assert.strictEqual(dialog.state("selectedIndex"), 0);
+        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
+        assert.strictEqual(steps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
+        dialog.unmount();
+    });
+
+    it("pressing enter on older step takes effect", () => {
+        const dialog = mount(
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} />
+            </MultistepDialog>,
+        );
+        assert.strictEqual(dialog.state("selectedIndex"), 0);
+        findButtonWithText(dialog, "Next").simulate("click");
+        assert.strictEqual(dialog.state("selectedIndex"), 1);
+        const step = dialog.find(`.${Classes.DIALOG_STEP}`);
+        step.at(0).simulate("keyDown", Keys.ENTER);
         const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
