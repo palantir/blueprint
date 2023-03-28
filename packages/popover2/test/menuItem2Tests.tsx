@@ -19,7 +19,7 @@ import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Button, Classes, Icon, Keys, MenuProps, Text } from "@blueprintjs/core";
+import { Button, Classes, Icon, MenuProps, Text } from "@blueprintjs/core";
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
 import { MenuItem2, MenuItem2Props, Popover2, Popover2InteractionKind } from "../src";
