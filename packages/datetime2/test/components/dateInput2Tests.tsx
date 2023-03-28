@@ -27,6 +27,7 @@ import { Popover2, Classes as Popover2Classes } from "@blueprintjs/popover2";
 
 import { Classes, DateInput2, DateInput2Props, TimezoneSelect } from "../../src";
 import { getCurrentTimezone } from "../../src/common/getTimezone";
+import { getTimezoneShortName } from "../../src/common/timezoneNameUtils";
 
 const VALUE = "2021-11-29T10:30:00z";
 
@@ -475,15 +476,17 @@ describe("<DateInput2>", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />, { attachTo: containerElement });
                 focusInput(wrapper);
                 clickTimezoneItem(wrapper, "Paris");
-                assertTimezoneIsSelected(wrapper, "GMT+1");
+                assertTimezoneIsSelected(wrapper, getTimezoneShortName("Europe/Paris", new Date()));
             });
 
             it("after selecting a date", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />, { attachTo: containerElement });
                 focusInput(wrapper);
                 clickCalendarDay(wrapper, 1);
+                const clickedDate = new Date();
+                clickedDate.setDate(0);
                 clickTimezoneItem(wrapper, "Paris");
-                assertTimezoneIsSelected(wrapper, "GMT+1");
+                assertTimezoneIsSelected(wrapper, getTimezoneShortName("Europe/Paris", clickedDate));
             });
         });
     });
@@ -687,13 +690,13 @@ describe("<DateInput2>", () => {
             it("updates the displayed timezone", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
                 clickTimezoneItem(wrapper, "Paris");
-                assertTimezoneIsSelected(wrapper, "GMT+1");
+                assertTimezoneIsSelected(wrapper, getTimezoneShortName("Europe/Paris", new Date()));
             });
 
             it("before selecting a date (initial value={null})", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} value={null} />, { attachTo: containerElement });
                 clickTimezoneItem(wrapper, "Paris");
-                assertTimezoneIsSelected(wrapper, "GMT+1");
+                assertTimezoneIsSelected(wrapper, getTimezoneShortName("Europe/Paris", new Date()));
             });
         });
     });
