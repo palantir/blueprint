@@ -102,13 +102,16 @@ describe("MenuItem2", () => {
         assert.isTrue(onClick.calledOnce);
     });
 
-    it("pressing enter on MenuItem2 triggers onClick prop", () => {
+    it("pressing enter on MenuItem2 triggers onClick prop", done => {
         const onClick = spy();
         shallow(<MenuItem2 text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("focus")
             .simulate("keydown", { keyCode: Keys.ENTER });
-        assert.isTrue(onClick.calledOnce);
+        setTimeout(() => {
+            assert.isTrue(onClick.calledOnce);
+            done();
+        }, 200);
     });
 
     it("clicking disabled MenuItem2 does not trigger onClick prop", () => {
