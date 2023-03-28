@@ -20,6 +20,7 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { Button, Classes, Icon, Keys, MenuProps, Text } from "@blueprintjs/core";
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
 import { MenuItem2, MenuItem2Props, Popover2, Popover2InteractionKind } from "../src";
 
@@ -102,16 +103,13 @@ describe("MenuItem2", () => {
         assert.isTrue(onClick.calledOnce);
     });
 
-    it("pressing enter on MenuItem2 triggers onClick prop", done => {
+    it("pressing enter on MenuItem2 triggers onClick prop", () => {
+        const testsContainerElement = document.createElement("div");
+        document.documentElement.appendChild(testsContainerElement);
         const onClick = spy();
-        shallow(<MenuItem2 text="Graph" onClick={onClick} />)
-            .find("a")
-            .simulate("focus")
-            .simulate("keydown", { keyCode: Keys.ENTER });
-        setTimeout(() => {
-            assert.isTrue(onClick.calledOnce);
-            done();
-        }, 200);
+        const wrapper = mount(<MenuItem2 text="Graph" onClick={onClick} />, { attachTo: testsContainerElement });
+        dispatchTestKeyboardEvent(wrapper.find("a").getDOMNode(), "keydown", "Enter");
+        assert.isTrue(onClick.calledOnce);
     });
 
     it("clicking disabled MenuItem2 does not trigger onClick prop", () => {
