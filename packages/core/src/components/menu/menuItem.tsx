@@ -102,7 +102,7 @@ export interface MenuItemProps extends ActionProps, LinkProps, IElementRefProps<
      *
      * which can be used if wrapping this item in a custom `<li>` parent.
      *
-     * NOTE: if `listoption` or `none`, need to specift `onKeyDown` for enter key press to take effect.
+     * NOTE: if `listoption` or `none`, need to specify `onKeyDown` for enter key press to take effect.
      *
      * @default "menuitem"
      */
