@@ -106,7 +106,7 @@ describe("MenuItem2", () => {
         const onClick = spy();
         shallow(<MenuItem2 text="Graph" onClick={onClick} />)
             .find("a")
-            .simulate("keydown", Keys.ENTER);
+            .simulate("keydown", { which: Keys.ENTER });
         assert.isTrue(onClick.calledOnce);
     });
 
