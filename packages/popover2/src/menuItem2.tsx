@@ -110,6 +110,8 @@ export interface MenuItem2Props extends ActionProps, LinkProps, IElementRefProps
      *
      * which can be used if wrapping this item in a custom `<li>` parent.
      *
+     * NOTE: if `listoption` or `none`, need to specift `onKeyDown` for enter key press to take effect.
+     *
      * @default "menuitem"
      */
     roleStructure?: "menuitem" | "listoption" | "listitem" | "none";
@@ -121,11 +123,6 @@ export interface MenuItem2Props extends ActionProps, LinkProps, IElementRefProps
      * @default false
      */
     multiline?: boolean;
-
-    /**
-     * Called on click, and on enter keydown (unless `onKeyDown` manually overriden)
-     */
-    onClick?: (e: React.MouseEvent | React.KeyboardEvent) => void;
 
     /**
      * Props to spread to the submenu popover. Note that `content` and `minimal` cannot be
@@ -203,7 +200,6 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
             labelClassName,
             labelElement,
             multiline,
-            onClick,
             popoverProps,
             roleStructure = "menuitem",
             selected,
@@ -266,8 +262,6 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
         const target = React.createElement(
             tagName,
             {
-                onClick,
-                onKeyDown: e => (e.key === "Enter" && onClick ? onClick(e) : undefined),
                 // if hasSubmenu, must apply correct role and tabIndex to the outer Popover2 target <span> instead of this target element
                 role: hasSubmenu ? "none" : targetRole,
                 tabIndex: hasSubmenu ? -1 : 0,
