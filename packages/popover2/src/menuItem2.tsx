@@ -262,7 +262,8 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
             {
                 // for menuitems, onClick when enter key pressed doesn't take effect like it does for a button-- fix this
                 onKeyDown: (e: React.KeyboardEvent) =>
-                    e.key === "Enter" && e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined })),
+                    (e.key === "Enter" || e.key === " ") &&
+                    e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined })),
                 // if hasSubmenu, must apply correct role and tabIndex to the outer Popover2 target <span> instead of this target element
                 role: hasSubmenu ? "none" : targetRole,
                 tabIndex: hasSubmenu ? -1 : 0,

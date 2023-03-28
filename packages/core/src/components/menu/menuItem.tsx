@@ -229,7 +229,8 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             {
                 // for menuitems, onClick when enter key pressed doesn't take effect like it does for a button-- fix this
                 onKeyDown: (e: React.KeyboardEvent) =>
-                    e.key === "Enter" && e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined })),
+                    (e.key === "Enter" || e.key === " ") &&
+                    e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined })),
                 role: targetRole,
                 tabIndex: 0,
                 ...htmlProps,
