@@ -25,6 +25,7 @@ import {
     Icon,
     IMenuItemProps,
     IMenuProps,
+    Keys,
     MenuItem,
     Popover,
     PopoverInteractionKind,
@@ -112,6 +113,14 @@ describe("MenuItem", () => {
         shallow(<MenuItem text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("click");
+        assert.isTrue(onClick.calledOnce);
+    });
+
+    it("pressing enter on MenuItem triggers onClick prop", () => {
+        const onClick = spy();
+        shallow(<MenuItem text="Graph" onClick={onClick} />)
+            .find("a")
+            .simulate("keydown", Keys.ENTER);
         assert.isTrue(onClick.calledOnce);
     });
 

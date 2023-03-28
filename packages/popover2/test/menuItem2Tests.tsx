@@ -19,7 +19,7 @@ import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Button, Classes, Icon, MenuProps, Text } from "@blueprintjs/core";
+import { Button, Classes, Icon, Keys, MenuProps, Text } from "@blueprintjs/core";
 
 import { MenuItem2, MenuItem2Props, Popover2, Popover2InteractionKind } from "../src";
 
@@ -99,6 +99,14 @@ describe("MenuItem2", () => {
         shallow(<MenuItem2 text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("click");
+        assert.isTrue(onClick.calledOnce);
+    });
+
+    it("pressing enter on MenuItem2 triggers onClick prop", () => {
+        const onClick = spy();
+        shallow(<MenuItem2 text="Graph" onClick={onClick} />)
+            .find("a")
+            .simulate("keydown", Keys.ENTER);
         assert.isTrue(onClick.calledOnce);
     });
 
