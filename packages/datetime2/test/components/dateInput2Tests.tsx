@@ -474,16 +474,18 @@ describe("<DateInput2>", () => {
             it("before selecting a date", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />, { attachTo: containerElement });
                 focusInput(wrapper);
-                clickTimezoneItem(wrapper, "Paris");
-                assertTimezoneIsSelected(wrapper, "GMT+1");
+                // Japan is one of the few countries that does not have any kind of daylight savings, so this unit test
+                // keeps working all year round
+                clickTimezoneItem(wrapper, "Tokyo");
+                assertTimezoneIsSelected(wrapper, "GMT+9");
             });
 
             it("after selecting a date", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />, { attachTo: containerElement });
                 focusInput(wrapper);
                 clickCalendarDay(wrapper, 1);
-                clickTimezoneItem(wrapper, "Paris");
-                assertTimezoneIsSelected(wrapper, "GMT+1");
+                clickTimezoneItem(wrapper, "Tokyo");
+                assertTimezoneIsSelected(wrapper, "GMT+9");
             });
         });
     });
@@ -686,14 +688,14 @@ describe("<DateInput2>", () => {
 
             it("updates the displayed timezone", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
-                clickTimezoneItem(wrapper, "Paris");
-                assertTimezoneIsSelected(wrapper, "GMT+1");
+                clickTimezoneItem(wrapper, "Tokyo");
+                assertTimezoneIsSelected(wrapper, "GMT+9");
             });
 
             it("before selecting a date (initial value={null})", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} value={null} />, { attachTo: containerElement });
-                clickTimezoneItem(wrapper, "Paris");
-                assertTimezoneIsSelected(wrapper, "GMT+1");
+                clickTimezoneItem(wrapper, "Tokyo");
+                assertTimezoneIsSelected(wrapper, "GMT+9");
             });
         });
     });
