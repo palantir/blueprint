@@ -3974,5 +3974,19 @@
         "tags": "axle, shaft, rail, train, wheels",
         "group": "miscellaneous",
         "codepoint": 62264
+    },
+    {
+        "displayName": "Subscript",
+        "iconName": "subscript",
+        "tags": "typography, text, font style",
+        "group": "editor",
+        "codepoint": 62265
+    },
+    {
+        "displayName": "Superscript",
+        "iconName": "superscript",
+        "tags": "typography, text, font style",
+        "group": "editor",
+        "codepoint": 62266
     }
 ]
