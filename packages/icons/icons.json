@@ -3974,5 +3974,19 @@
         "tags": "axle, shaft, rail, train, wheels",
         "group": "miscellaneous",
         "codepoint": 62264
+    },
+    {
+        "displayName": "Locomotive",
+        "iconName": "locomotive",
+        "tags": "locomotive, loco, rail, train, engine, freight",
+        "group": "miscellaneous",
+        "codepoint": 62265
+    },
+    {
+        "displayName": "Sensor",
+        "iconName": "sensor",
+        "tags": "sensor, detector, iot, wayside, alarm, device",
+        "group": "miscellaneous",
+        "codepoint": 62266
     }
 ]
