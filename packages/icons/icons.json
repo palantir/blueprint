@@ -3974,5 +3974,12 @@
         "tags": "axle, shaft, rail, train, wheels",
         "group": "miscellaneous",
         "codepoint": 62264
-    }
+    },
+    {
+        "displayName": "Model",
+        "iconName": "model",
+        "tags": "model, ml",
+        "group": "action",
+        "codepoint": 62265
+      }
 ]
