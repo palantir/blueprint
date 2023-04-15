@@ -300,8 +300,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         // event.target.closest(Classes.MENU_ITEM)?.matches(Classes.POPOVER_DISMISS)
         const target = event?.target as HTMLElement;
         const shouldDismiss =
-            target?.closest(`.${CoreClasses.MENU_ITEM}`)?.classList?.contains(Popover2Classes.POPOVER2_DISMISS) ??
-            false;
+            target?.closest(`.${CoreClasses.MENU_ITEM}`)?.classList?.contains(Popover2Classes.POPOVER2_DISMISS) ?? true;
 
         this.setState({ isOpen: !shouldDismiss });
         this.props.onItemSelect?.(item, event);
