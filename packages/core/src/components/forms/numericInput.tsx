@@ -316,7 +316,11 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
 
     public render() {
         const { buttonPosition, className, fill, large, small } = this.props;
-        const containerClasses = classNames(Classes.NUMERIC_INPUT, { [Classes.LARGE]: large, [Classes.SMALL]: small }, className);
+        const containerClasses = classNames(
+            Classes.NUMERIC_INPUT,
+            { [Classes.LARGE]: large, [Classes.SMALL]: small },
+            className,
+        );
         const buttons = this.renderButtons();
         return (
             <ControlGroup className={containerClasses} fill={fill}>
