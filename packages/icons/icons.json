@@ -3988,5 +3988,19 @@
         "tags": "typography, text, font style",
         "group": "editor",
         "codepoint": 62266
+    },
+    {
+        "displayName": "Locomotive",
+        "iconName": "locomotive",
+        "tags": "locomotive, loco, rail, train, engine, freight",
+        "group": "miscellaneous",
+        "codepoint": 62267
+    },
+    {
+        "displayName": "Sensor",
+        "iconName": "sensor",
+        "tags": "sensor, detector, iot, wayside, alarm, device",
+        "group": "miscellaneous",
+        "codepoint": 62268
     }
 ]
