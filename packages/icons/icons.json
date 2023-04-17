@@ -3976,10 +3976,38 @@
         "codepoint": 62264
     },
     {
+        "displayName": "Subscript",
+        "iconName": "subscript",
+        "tags": "typography, text, font style",
+        "group": "editor",
+        "codepoint": 62265
+    },
+    {
+        "displayName": "Superscript",
+        "iconName": "superscript",
+        "tags": "typography, text, font style",
+        "group": "editor",
+        "codepoint": 62266
+    },
+    {
+        "displayName": "Locomotive",
+        "iconName": "locomotive",
+        "tags": "locomotive, loco, rail, train, engine, freight",
+        "group": "miscellaneous",
+        "codepoint": 62267
+    },
+    {
+        "displayName": "Sensor",
+        "iconName": "sensor",
+        "tags": "sensor, detector, iot, wayside, alarm, device",
+        "group": "miscellaneous",
+        "codepoint": 62268
+    },
+    {
         "displayName": "Model",
         "iconName": "model",
         "tags": "model, ml",
         "group": "action",
-        "codepoint": 62265
+        "codepoint": 62269
     }
 ]
