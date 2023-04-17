@@ -31,7 +31,13 @@ import {
     setRef,
     Utils,
 } from "@blueprintjs/core";
-import { Popover2, Popover2ClickTargetHandlers, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
+import {
+    Popover2,
+    Classes as Popover2Classes,
+    Popover2ClickTargetHandlers,
+    Popover2TargetProps,
+    PopupKind,
+} from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { QueryList, QueryListRendererProps } from "../query-list/queryList";
@@ -291,7 +297,11 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
-        this.setState({ isOpen: false });
+        const target = event?.target as HTMLElement;
+        const shouldDismiss =
+            target?.closest(`.${CoreClasses.MENU_ITEM}`)?.classList?.contains(Popover2Classes.POPOVER2_DISMISS) ?? true;
+
+        this.setState({ isOpen: !shouldDismiss });
         this.props.onItemSelect?.(item, event);
     };
 
