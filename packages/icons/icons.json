@@ -4002,5 +4002,12 @@
         "tags": "sensor, detector, iot, wayside, alarm, device",
         "group": "miscellaneous",
         "codepoint": 62268
+    },
+    {
+        "displayName": "Model",
+        "iconName": "model",
+        "tags": "model, ml",
+        "group": "action",
+        "codepoint": 62269
     }
 ]
