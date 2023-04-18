@@ -141,7 +141,7 @@ export class FileInput extends AbstractPureComponent2<FileInputProps> {
 
         return (
             <label {...htmlProps} className={rootClasses}>
-                <input {...inputProps} onChange={this.handleInputChange} type="file" disabled={disabled}/>
+                <input {...inputProps} onChange={this.handleInputChange} type="file" disabled={disabled} />
                 <span {...uploadProps}>{text}</span>
             </label>
         );
