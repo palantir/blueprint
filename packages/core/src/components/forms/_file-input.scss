@@ -29,7 +29,7 @@ $file-input-button-padding: ($pt-input-height - $pt-button-height-small) * 0.5 !
 $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) * 0.5 !default;
 $file-input-button-width-small: $pt-grid-size * 5.5 !default;
 
-$pt-input-height-small-difference: $pt-input-height-small - $pt-input-height-smaller;
+$pt-input-height-small-difference: $pt-input-height-small - $pt-button-height-smaller;
 $file-input-button-padding-small: $pt-input-height-small-difference * 0.5 !default;
 
 .#{$ns}-file-input {
