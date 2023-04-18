@@ -51,7 +51,7 @@ export class MenuDivider extends React.Component<MenuDividerProps> {
         } else {
             // section header with title
             return (
-                <li className={classNames(Classes.MENU_HEADER, className)} role="separator" tabIndex={0}>
+                <li className={classNames(Classes.MENU_HEADER, className)} role="separator" tabIndex={-1}>
                     <H6 id={titleId}>{title}</H6>
                 </li>
             );
