@@ -40,9 +40,16 @@ export function dispatchTestKeyboardEventWithCode(
     keyCode: number,
     shift = false,
 ) {
-    const event = document.createEvent("KeyboardEvent");
-    (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, false, false, shift);
-
+    const event = new KeyboardEvent(eventType, {
+        altKey: false,
+        bubbles: true,
+        cancelable: true,
+        ctrlKey: false,
+        key,
+        location: 0,
+        shiftKey: shift,
+        view: window,
+    });
     // Hack around these readonly properties in WebKit and Chrome
     if (detectBrowser() === Browser.WEBKIT) {
         (event as any).key = key;

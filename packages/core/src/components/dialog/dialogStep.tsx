@@ -71,8 +71,8 @@ export class DialogStep extends AbstractPureComponent2<DialogStepProps> {
     public render() {
         const { className } = this.props;
         return (
-            <div className={Classes.DIALOG_STEP_CONTAINER}>
-                <div className={classNames(Classes.DIALOG_STEP, className)} role="dialogsteplist" />
+            <div className={Classes.DIALOG_STEP_CONTAINER} role="tab">
+                <div className={classNames(Classes.DIALOG_STEP, className)} />
             </div>
         );
     }
