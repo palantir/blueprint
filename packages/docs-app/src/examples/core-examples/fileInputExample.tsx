@@ -36,7 +36,7 @@ export class FileInputExample extends React.PureComponent<ExampleProps, IFileInp
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <FileInput text={text} buttonText={buttonText} small={small} large={large}/>
+                <FileInput text={text} buttonText={buttonText} small={small} large={large} />
             </Example>
         );
     }

@@ -99,7 +99,7 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
     private toggleLeftIcon = handleBooleanChange(leftIcon =>
         this.setState({ leftIcon: leftIcon ? "dollar" : undefined }),
     );
-    
+
     private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
 
     private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
@@ -158,7 +158,7 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
             leftIcon,
             leftElement,
             locale,
-            small
+            small,
         } = this.state;
 
         return (
