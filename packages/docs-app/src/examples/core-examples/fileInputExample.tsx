@@ -15,29 +15,34 @@
 
 import * as React from "react";
 
-import { FileInput, FormGroup, H5, InputGroup } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { FileInput, FormGroup, H5, Switch, InputGroup } from "@blueprintjs/core";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 interface IFileInputExampleState {
     buttonText?: string;
     text?: string;
+    large?: boolean;
+    small?: boolean;
 }
 
 export class FileInputExample extends React.PureComponent<ExampleProps, IFileInputExampleState> {
-    public state: IFileInputExampleState = {};
+    public state: IFileInputExampleState = {
+        small: false,
+        large: false,
+    };
 
     public render() {
-        const { text, buttonText } = this.state;
+        const { text, buttonText, small, large } = this.state;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <FileInput text={text} buttonText={buttonText} />
+                <FileInput text={text} buttonText={buttonText} small={small} large={large}/>
             </Example>
         );
     }
 
     private renderOptions = () => {
-        const { text, buttonText } = this.state;
+        const { text, buttonText, small, large } = this.state;
 
         return (
             <>
@@ -48,6 +53,8 @@ export class FileInputExample extends React.PureComponent<ExampleProps, IFileInp
                 <FormGroup label="Button text">
                     <InputGroup placeholder="Browse" onChange={this.handleButtonTextChange} value={buttonText} />
                 </FormGroup>
+                <Switch label="Large" onChange={this.handleLargeChange} checked={large}></Switch>
+                <Switch label="Small" onChange={this.handleSmallChange} checked={small}></Switch>
             </>
         );
     };
@@ -59,4 +66,8 @@ export class FileInputExample extends React.PureComponent<ExampleProps, IFileInp
     private handleButtonTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ buttonText: e.target.value });
     };
+
+    private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
+
+    private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
 }

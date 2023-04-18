@@ -71,6 +71,7 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
         fill: false,
         intent: Intent.NONE,
         large: false,
+        small: false,
         majorStepSize: 10,
         max: 100,
         min: 0,
@@ -98,6 +99,10 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
     private toggleLeftIcon = handleBooleanChange(leftIcon =>
         this.setState({ leftIcon: leftIcon ? "dollar" : undefined }),
     );
+    
+    private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
+
+    private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
 
     private toggleLeftElement = handleBooleanChange(leftElement =>
         this.setState({
@@ -119,8 +124,6 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
     );
 
     private toggleFullWidth = handleBooleanChange(fill => this.setState({ fill }));
-
-    private toggleLargeSize = handleBooleanChange(large => this.setState({ large }));
 
     private toggleNumericCharsOnly = handleBooleanChange(allowNumericCharactersOnly =>
         this.setState({ allowNumericCharactersOnly }),
@@ -155,6 +158,7 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
             leftIcon,
             leftElement,
             locale,
+            small
         } = this.state;
 
         return (
@@ -162,7 +166,8 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
                 <H5>Props</H5>
                 {this.renderSwitch("Disabled", disabled, this.toggleDisabled)}
                 {this.renderSwitch("Fill", fill, this.toggleFullWidth)}
-                {this.renderSwitch("Large", large, this.toggleLargeSize)}
+                {this.renderSwitch("Large", large, this.handleLargeChange)}
+                {this.renderSwitch("Small", small, this.handleSmallChange)}
                 {this.renderSwitch("Left icon", leftIcon != null, this.toggleLeftIcon)}
                 {this.renderSwitch("Left element", leftElement != null, this.toggleLeftElement)}
                 {this.renderSwitch("Numeric characters only", allowNumericCharactersOnly, this.toggleNumericCharsOnly)}
