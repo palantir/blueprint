@@ -16,6 +16,7 @@
 
 export * from "./compareUtils";
 export {
+    clickElementOnKeyPress,
     elementIsOrContains,
     elementIsTextInput,
     getActiveElement,
