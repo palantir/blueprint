@@ -19,6 +19,8 @@ import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
+
 import {
     Button,
     Classes,
@@ -112,6 +114,15 @@ describe("MenuItem", () => {
         shallow(<MenuItem text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("click");
+        assert.isTrue(onClick.calledOnce);
+    });
+
+    it("pressing enter on MenuItem triggers onClick prop", () => {
+        const testsContainerElement = document.createElement("div");
+        document.documentElement.appendChild(testsContainerElement);
+        const onClick = spy();
+        const wrapper = mount(<MenuItem text="Graph" onClick={onClick} />, { attachTo: testsContainerElement });
+        dispatchTestKeyboardEvent(wrapper.find("a").getDOMNode(), "keydown", "Enter");
         assert.isTrue(onClick.calledOnce);
     });
 
