@@ -142,3 +142,8 @@ function throttleImpl<T extends Function>(
     };
     return func as any as T;
 }
+
+export function clickElementOnKeyPress(keys: string[]) {
+    return (e: React.KeyboardEvent) =>
+        keys.some(key => e.key === key) && e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }));
+}

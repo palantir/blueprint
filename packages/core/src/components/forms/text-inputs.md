@@ -36,7 +36,7 @@ but there is basic support for it using the `asyncControl` prop. Note that the i
 to the end of the input if the speed of text entry (time between change events) is faster than the
 speed of the async update.
 
-@interface IInputGroupProps
+@interface InputGroupProps2
 
 @### CSS
 
