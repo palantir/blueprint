@@ -171,7 +171,7 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   select {
     font-weight: 600;
     padding-left: $datepicker-padding;
-    padding-right: $pt-icon-size-standard;
+    padding-right: $pt-icon-size-standard + 2;
 
     + .#{$ns}-icon {
       right: 2px;
@@ -185,8 +185,6 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
     width: calc(100% - #{$datepicker-padding * 2});
   }
 }
-
-
 
 .#{$ns}-datepicker-month-select {
   flex-shrink: 1;

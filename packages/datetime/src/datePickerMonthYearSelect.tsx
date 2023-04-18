@@ -132,7 +132,7 @@ export class DatePickerMonthYearSelect extends AbstractPureComponent2<
         );
         const monthSelectWidth =
             this.containerElement == null ? 0 : this.containerElement.firstElementChild.clientWidth;
-        const rightOffset = Math.max(0, monthSelectWidth - monthTextWidth - IconSize.STANDARD - 2);
+        const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - IconSize.STANDARD - 2);
         this.setState({ monthRightOffset: rightOffset });
     }
 
