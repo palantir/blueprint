@@ -16,14 +16,13 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import DayPicker, { CaptionElementProps, DayModifiers, NavbarElementProps } from "react-day-picker";
+import DayPicker, { DayModifiers, NavbarElementProps } from "react-day-picker";
 
 import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, Props } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
-import { DatePickerCaption } from "./datePickerCaption";
 import { DatePickerBaseProps, getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
 import { DatePickerMonthYearSelect } from "./datePickerMonthYearSelect";
 import { DatePickerNavbar } from "./datePickerNavbar";
@@ -164,7 +163,7 @@ export class DatePicker extends AbstractPureComponent2<DatePickerProps, IDatePic
                         modifiers={this.getDatePickerModifiers()}
                         {...dayPickerProps}
                         canChangeMonth={true}
-                        captionElement={this.renderCaption}
+                        captionElement={<></>}
                         navbarElement={this.renderNavbar}
                         disabledDays={this.getDisabledDaysModifier()}
                         fromMonth={minDate}
@@ -255,8 +254,6 @@ export class DatePicker extends AbstractPureComponent2<DatePickerProps, IDatePic
 
         return Array.isArray(disabledDays) ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
     };
-
-    private renderCaption = (captionProps: CaptionElementProps) => <DatePickerCaption {...captionProps} />;
 
     private renderNavbar = (navbarProps: NavbarElementProps) => (
         <DatePickerNavbar {...navbarProps} maxDate={this.props.maxDate} minDate={this.props.minDate}>

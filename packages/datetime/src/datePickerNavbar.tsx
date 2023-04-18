@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { NavbarElementProps } from "react-day-picker";
 
-import { Button } from "@blueprintjs/core";
+import { Button, Divider } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import { areSameMonth } from "./common/dateUtils";
@@ -61,6 +61,7 @@ export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps
                         onClick={this.handleNextClick}
                     />
                 )}
+                <Divider />
             </div>
         );
     }

@@ -63,10 +63,7 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
 
   .DayPicker-Caption {
     display: table-caption;
-
-    .#{$ns}-divider {
-      margin: 0;
-    }
+    visibility: hidden;
   }
 
   .DayPicker-Weekdays {
@@ -177,6 +174,13 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
       right: 2px;
     }
   }
+
+  // bottom border divider of navbar
+  .#{$ns}-divider {
+    position: absolute;
+    bottom: calc(0 - #{$datepicker-padding * 2});
+    width: calc(100% - #{$datepicker-padding * 2});
+  }
 }
 
 .#{$ns}-datepicker-navbar-center {
@@ -198,10 +202,7 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   padding-left: $datepicker-padding;
 }
 
-.#{$ns}-datepicker-caption-text {
-  // create hidden MMMMM YYYY caption to label date grid for screenreaders
-  @include screenreader-only;
-}
+
 
 .#{$ns}-datepicker-content {
   align-items: center;

@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
+import DayPicker, { DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
 
 import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, Props } from "@blueprintjs/core";
 
@@ -25,7 +25,6 @@ import { DateRange } from "./common/dateRange";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
-import { DatePickerCaption } from "./datePickerCaption";
 import {
     combineModifiers,
     DatePickerBaseProps,
@@ -432,7 +431,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
             return (
                 <DayPicker
                     {...dayPickerBaseProps}
-                    captionElement={this.renderCaption}
+                    captionElement={<></>}
                     navbarElement={this.renderSingleNavbar}
                     fromMonth={minDate}
                     month={this.state.leftView.getFullDate()}
@@ -449,7 +448,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
                         key="left"
                         {...dayPickerBaseProps}
                         canChangeMonth={true}
-                        captionElement={this.renderCaption}
+                        captionElement={<></>}
                         navbarElement={this.renderLeftNavbar}
                         fromMonth={minDate}
                         month={this.state.leftView.getFullDate()}
@@ -462,7 +461,7 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
                         key="right"
                         {...dayPickerBaseProps}
                         canChangeMonth={true}
-                        captionElement={this.renderCaption}
+                        captionElement={<></>}
                         navbarElement={this.renderRightNavbar}
                         fromMonth={DateUtils.getDateNextMonth(minDate)}
                         month={this.state.rightView.getFullDate()}
@@ -475,8 +474,6 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
             );
         }
     }
-
-    private renderCaption = (captionProps: CaptionElementProps) => <DatePickerCaption {...captionProps} />;
 
     private renderSingleNavbar = (navbarProps: NavbarElementProps) => (
         <DatePickerNavbar {...navbarProps} maxDate={this.props.maxDate} minDate={this.props.minDate}>
