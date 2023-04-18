@@ -37,7 +37,7 @@
         "downloadjs": "^1.4.7",
         "lodash": "^4.17.21",
         "moment": "^2.29.1",
-        "monaco-editor": "^0.36.1",
+        "monaco-editor": "^0.37.1",
         "normalize.css": "^8.0.1",
         "popper.js": "^1.16.1",
         "promise": "^8.3.0",
