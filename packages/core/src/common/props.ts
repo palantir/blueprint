@@ -159,7 +159,7 @@ export type OptionProps = IOptionProps;
 const INVALID_PROPS = [
     "active",
     "alignText",
-    "asyncControl", // IInputGroupProps2
+    "asyncControl", // InputGroupProps2
     "containerRef",
     "current",
     "elementRef",
