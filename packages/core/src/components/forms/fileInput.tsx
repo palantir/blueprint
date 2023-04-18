@@ -68,6 +68,11 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
     onInputChange?: React.FormEventHandler<HTMLInputElement>;
 
     /**
+     * Whether the file input should appear with small styling.
+     */
+    small?: boolean;
+
+    /**
      * The text to display.
      *
      * @default "Choose file..."
@@ -108,6 +113,7 @@ export class FileInput extends AbstractPureComponent2<FileInputProps> {
             inputProps,
             large,
             onInputChange,
+            small,
             text,
             ...htmlProps
         } = this.props;
@@ -119,6 +125,7 @@ export class FileInput extends AbstractPureComponent2<FileInputProps> {
                 [Classes.DISABLED]: disabled,
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
+                [Classes.SMALL]: small,
             },
             className,
         );

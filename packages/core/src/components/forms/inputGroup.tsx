@@ -33,11 +33,12 @@ import { Icon, IconName } from "../icon/icon";
 import { AsyncControllableInput } from "./asyncControllableInput";
 import type { InputSharedProps } from "./inputSharedProps";
 
+/** @deprecated use InputGroupProps2 */
 // eslint-disable-next-line deprecation/deprecation
 export type InputGroupProps = IInputGroupProps;
 
 /**
- * @deprecated use IInputGroupProps2.
+ * @deprecated use InputGroupProps2.
  *
  * NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
  * Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
@@ -122,10 +123,10 @@ export interface IInputGroupProps
     type?: string;
 }
 
-// eslint-disable-next-line deprecation/deprecation
-export type InputGroupProps2 = IInputGroupProps2;
 /** @deprecated use InputGroupProps2 */
-export interface IInputGroupProps2
+export type IInputGroupProps2 = InputGroupProps2;
+
+export interface InputGroupProps2
     extends Omit<HTMLInputProps, keyof ControlledProps2>,
         ControlledProps2,
         InputSharedProps {
