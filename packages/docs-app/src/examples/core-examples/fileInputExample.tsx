@@ -15,7 +15,7 @@
 
 import * as React from "react";
 
-import { FileInput, FormGroup, H5, Switch, InputGroup } from "@blueprintjs/core";
+import { FileInput, FormGroup, H5, InputGroup, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 interface IFileInputExampleState {
@@ -27,8 +27,8 @@ interface IFileInputExampleState {
 
 export class FileInputExample extends React.PureComponent<ExampleProps, IFileInputExampleState> {
     public state: IFileInputExampleState = {
-        small: false,
         large: false,
+        small: false,
     };
 
     public render() {
@@ -53,8 +53,8 @@ export class FileInputExample extends React.PureComponent<ExampleProps, IFileInp
                 <FormGroup label="Button text">
                     <InputGroup placeholder="Browse" onChange={this.handleButtonTextChange} value={buttonText} />
                 </FormGroup>
-                <Switch label="Large" onChange={this.handleLargeChange} checked={large}></Switch>
-                <Switch label="Small" onChange={this.handleSmallChange} checked={small}></Switch>
+                <Switch label="Large" onChange={this.handleLargeChange} checked={large} />
+                <Switch label="Small" onChange={this.handleSmallChange} checked={small} />
             </>
         );
     };
