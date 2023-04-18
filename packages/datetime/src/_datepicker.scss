@@ -162,6 +162,11 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
     margin-left: auto;
   }
 
+  .#{$ns}-datepicker-navbar-center {
+    // centers item regardless of DayPicker-NavButton present
+    position: absolute;
+  }
+
   // HTMLSelect overrides for a narrower appearance
   select {
     font-weight: 600;
@@ -181,10 +186,7 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   }
 }
 
-.#{$ns}-datepicker-navbar-center {
-  // centers item regardless of DayPicker-NavButton present
-  position: absolute;
-}
+
 
 .#{$ns}-datepicker-month-select {
   flex-shrink: 1;
@@ -199,8 +201,6 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   font-weight: 600;
   padding-left: $datepicker-padding;
 }
-
-
 
 .#{$ns}-datepicker-content {
   align-items: center;
