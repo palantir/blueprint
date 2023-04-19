@@ -71,6 +71,9 @@ export const ContextMenu2Popover = React.memo(function _ContextMenu2Popover(prop
 
     return (
         <Popover2
+            placement="right-start"
+            rootBoundary={rootBoundary}
+            transitionDuration={transitionDuration}
             {...popoverProps}
             content={
                 // this prevents right-clicking inside our context menu
@@ -87,11 +90,8 @@ export const ContextMenu2Popover = React.memo(function _ContextMenu2Popover(prop
             popoverClassName={classNames(Classes.CONTEXT_MENU2_POPOVER2, popoverClassName, {
                 [CoreClasses.DARK]: isDarkTheme,
             })}
-            placement="right-start"
             positioningStrategy="fixed"
-            rootBoundary={rootBoundary}
             renderTarget={renderTarget}
-            transitionDuration={transitionDuration}
         />
     );
 });

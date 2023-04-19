@@ -116,6 +116,20 @@ describe("ContextMenu2", () => {
             assert.isFalse(wrapperClickSpy.called, "ctx menu wrapper click handler should not be called");
         });
 
+        it("allows overrding some Popover2 props", () => {
+            const placement = "top";
+            const popoverClassName = "test-popover-class";
+            const ctxMenu = mountTestMenu({ popoverProps: { placement, popoverClassName } });
+            openCtxMenu(ctxMenu);
+            const popoverWithTopPlacement = document.querySelector(
+                `.${popoverClassName}.${Classes.POPOVER2_CONTENT_PLACEMENT}-${placement}`,
+            );
+            assert.exists(
+                popoverWithTopPlacement,
+                `popover element with custom class '${popoverClassName}' and '${placement}' placement should exist`,
+            );
+        });
+
         function mountTestMenu(props: Partial<ContextMenu2Props> = {}) {
             return mount(
                 <ContextMenu2 content={MENU} popoverProps={{ transitionDuration: 0 }} {...props}>
