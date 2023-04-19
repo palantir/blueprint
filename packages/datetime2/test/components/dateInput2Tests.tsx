@@ -27,11 +27,17 @@ import { Popover2, Classes as Popover2Classes } from "@blueprintjs/popover2";
 
 import { Classes, DateInput2, DateInput2Props, TimezoneSelect } from "../../src";
 import { getCurrentTimezone } from "../../src/common/getTimezone";
+import { TIMEZONE_ITEMS, UTC_TIME } from "../../src/common/timezoneItems";
+import { getTimezoneShortName } from "../../src/common/timezoneNameUtils";
+
+const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
+const PARIS_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Paris")!;
+const TOKYO_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Tokyo")!;
 
 const VALUE = "2021-11-29T10:30:00z";
 
 const DEFAULT_PROPS = {
-    defaultTimezone: "Etc/UTC",
+    defaultTimezone: UTC_TIME.ianaCode,
     formatDate: (date: Date | null | undefined, locale?: string) => {
         if (date == null) {
             return "";
@@ -220,7 +226,7 @@ describe("<DateInput2>", () => {
 
         it("calls onChange on timezone changes", () => {
             const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
-            clickTimezoneItem(wrapper, "New York");
+            clickTimezoneItem(wrapper, NEW_YORK_TIMEZONE.label);
             assert.isTrue(onChange.calledOnce);
             // New York is UTC-5
             assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00-05:00");
@@ -476,7 +482,7 @@ describe("<DateInput2>", () => {
                 focusInput(wrapper);
                 // Japan is one of the few countries that does not have any kind of daylight savings, so this unit test
                 // keeps working all year round
-                clickTimezoneItem(wrapper, "Tokyo");
+                clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
                 assertTimezoneIsSelected(wrapper, "GMT+9");
             });
 
@@ -484,16 +490,25 @@ describe("<DateInput2>", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} />, { attachTo: containerElement });
                 focusInput(wrapper);
                 clickCalendarDay(wrapper, 1);
-                clickTimezoneItem(wrapper, "Tokyo");
+                clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
                 assertTimezoneIsSelected(wrapper, "GMT+9");
             });
+        });
+
+        describe("allows changing defaultTimezone", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            assert.strictEqual(wrapper.find(TimezoneSelect).text(), getTimezoneShortName(UTC_TIME.ianaCode, undefined));
+            wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode });
+            assert.strictEqual(
+                wrapper.find(TimezoneSelect).text(),
+                getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
+            );
         });
     });
 
     describe("controlled usage", () => {
         const DEFAULT_PROPS_CONTROLLED = {
             ...DEFAULT_PROPS,
-            defaultTimezone: "Etc/UTC",
             onChange,
             value: VALUE,
         };
@@ -545,7 +560,7 @@ describe("<DateInput2>", () => {
             assert.isTrue(onChange.calledTwice, "onChange called twice");
             assert.strictEqual(
                 onChange.args[1][0],
-                formatInTimeZone(parseISO(DATE2_VALUE), "Etc/UTC", "yyyy-MM-dd'T'HH:mm:ssxxx"),
+                formatInTimeZone(parseISO(DATE2_VALUE), UTC_TIME.ianaCode, "yyyy-MM-dd'T'HH:mm:ssxxx"),
             );
             assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
             assert.strictEqual(
@@ -671,7 +686,7 @@ describe("<DateInput2>", () => {
         describe("when changing timezone", () => {
             it("calls onChange with the updated ISO string", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
-                clickTimezoneItem(wrapper, "Paris");
+                clickTimezoneItem(wrapper, PARIS_TIMEZONE.label);
                 assert.isTrue(onChange.calledOnce);
                 assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00+01:00");
             });
@@ -681,22 +696,32 @@ describe("<DateInput2>", () => {
                     <DateInput2 {...DEFAULT_PROPS_CONTROLLED} timePrecision={TimePrecision.MINUTE} />,
                     { attachTo: containerElement },
                 );
-                clickTimezoneItem(wrapper, "Paris");
+                clickTimezoneItem(wrapper, PARIS_TIMEZONE.label);
                 assert.isTrue(onChange.calledOnce);
                 assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30+01:00");
             });
 
             it("updates the displayed timezone", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
-                clickTimezoneItem(wrapper, "Tokyo");
+                clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
                 assertTimezoneIsSelected(wrapper, "GMT+9");
             });
 
             it("before selecting a date (initial value={null})", () => {
                 const wrapper = mount(<DateInput2 {...DEFAULT_PROPS} value={null} />, { attachTo: containerElement });
-                clickTimezoneItem(wrapper, "Tokyo");
+                clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
                 assertTimezoneIsSelected(wrapper, "GMT+9");
             });
+        });
+
+        describe("allows changing defaultTimezone", () => {
+            const wrapper = mount(<DateInput2 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
+            assert.strictEqual(wrapper.find(TimezoneSelect).text(), getTimezoneShortName(UTC_TIME.ianaCode, undefined));
+            wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode });
+            assert.strictEqual(
+                wrapper.find(TimezoneSelect).text(),
+                getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
+            );
         });
     });
 

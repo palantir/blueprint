@@ -16,13 +16,13 @@
 
 import { expect } from "chai";
 
+import { UTC_TIME } from "../../src/common/timezoneItems";
 import {
     convertDateToLocalEquivalentOfTimezoneTime,
     convertLocalDateToTimezoneTime,
 } from "../../src/common/timezoneUtils";
 
 const OSLO_TIME = "Europe/Oslo";
-const UTC_TIME = "Etc/UTC";
 const LONDON_TIME = "Europe/London";
 const NEW_YORK = "America/New_York";
 
@@ -31,7 +31,7 @@ const MOCK_WINTER_DATE = new Date(2022, 0, 1, 12);
 
 describe("convertLocalDateToTimezoneTime", () => {
     it("Returns the same date when current time is the same as passed", () => {
-        const convertedDate = convertLocalDateToTimezoneTime(MOCK_SUMMER_DATE, UTC_TIME);
+        const convertedDate = convertLocalDateToTimezoneTime(MOCK_SUMMER_DATE, UTC_TIME.ianaCode);
         expect(checkIfDatesAreEqual(MOCK_SUMMER_DATE, convertedDate)).to.equal(true);
     });
 
@@ -78,7 +78,7 @@ describe("convertLocalDateToTimezoneTime", () => {
 
 describe("convertDateToLocalEquivalentOfTimezoneTime", () => {
     it("Returns the same date when current time is the same as passed", () => {
-        const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(MOCK_SUMMER_DATE, UTC_TIME);
+        const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(MOCK_SUMMER_DATE, UTC_TIME.ianaCode);
         expect(checkIfDatesAreEqual(MOCK_SUMMER_DATE, convertedDate)).to.equal(true);
     });
 

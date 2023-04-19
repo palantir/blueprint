@@ -20,9 +20,9 @@ import isEmpty from "lodash/isEmpty";
 import { TimePrecision } from "@blueprintjs/datetime";
 
 import { getCurrentTimezone } from "./getTimezone";
+import { UTC_TIME } from "./timezoneItems";
 
 const NO_TIME_PRECISION = "date";
-const UTC_IANA_LABEL = "Etc/UTC";
 
 const TIME_FORMAT_TO_ISO_FORMAT: Record<TimePrecision | "date", string> = {
     [TimePrecision.MILLISECOND]: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
@@ -75,7 +75,7 @@ export function getDateObjectFromIsoString(
     // If the value is just a date format then we convert it to midnight in local time to avoid weird things happening
     if (value.length === 10) {
         // If it's just a date, we know it's interpreted as midnight UTC so we convert it to local time of that UTC time
-        return convertLocalDateToTimezoneTime(date, UTC_IANA_LABEL);
+        return convertLocalDateToTimezoneTime(date, UTC_TIME.ianaCode);
     }
     return convertLocalDateToTimezoneTime(date, timezone);
 }
