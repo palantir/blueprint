@@ -237,7 +237,6 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
                 text={`${item.label}, ${item.longName}`}
                 onClick={handleClick}
                 label={item.shortName}
-                shouldDismissPopover={false}
             />
         );
     };
