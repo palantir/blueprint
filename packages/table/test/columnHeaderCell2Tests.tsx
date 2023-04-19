@@ -61,6 +61,12 @@ describe("<ColumnHeaderCell2>", () => {
     });
 
     describe("Custom renderer", () => {
+        const menuClickSpy = sinon.spy();
+
+        beforeEach(() => {
+            menuClickSpy.resetHistory();
+        });
+
         it("renders custom name", () => {
             const columnHeaderCellRenderer = (columnIndex: number) => {
                 return <ColumnHeaderCell2 name={`COLUMN-${columnIndex}`} />;
@@ -83,28 +89,37 @@ describe("<ColumnHeaderCell2>", () => {
             expect(text).to.equal("Header of 2");
         });
 
-        it("renders custom menu items", () => {
-            const menuClickSpy = sinon.spy();
-            const menu = getMenuComponent(menuClickSpy);
-            const renderMenuFn = () => menu;
-
-            const columnHeaderCellRenderer = (columnIndex: number) => {
-                return <ColumnHeaderCell2 name={`COL-${columnIndex}`} menuRenderer={renderMenuFn} />;
-            };
-            const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            expectMenuToOpen(table, menuClickSpy);
-        });
-
         it("renders custom menu items with a menuRenderer callback", () => {
-            const menuClickSpy = sinon.spy();
-            const menu = getMenuComponent(menuClickSpy);
-            const menuRenderer = sinon.stub().returns(menu);
-
             const columnHeaderCellRenderer = (columnIndex: number) => (
-                <ColumnHeaderCell2 name={`COL-${columnIndex}`} menuRenderer={menuRenderer} />
+                <ColumnHeaderCell2 name={`COL-${columnIndex}`} menuRenderer={renderMenu} />
             );
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            expectMenuToOpen(table, menuClickSpy);
+            expectMenuToOpen(table);
+
+            // attempt to click one of the menu items
+            ElementHarness.document().find('[data-icon="export"]')!.mouse("click");
+            expect(menuClickSpy.called).to.be.true;
+        });
+
+        it("custom menu supports popover props", () => {
+            const expectedMenuPopoverProps = {
+                placement: "top" as const,
+                popoverClassName: "test-popover-class",
+            };
+            const columnHeaderCellRenderer = (columnIndex: number) => (
+                <ColumnHeaderCell2
+                    name={`COL-${columnIndex}`}
+                    menuRenderer={renderMenu}
+                    menuPopoverProps={expectedMenuPopoverProps}
+                />
+            );
+            const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
+            expectMenuToOpen(table);
+            const popover = ElementHarness.document().find(`.${Popover2Classes.POPOVER2}`);
+            expect(popover.hasClass(expectedMenuPopoverProps.popoverClassName)).to.be.true;
+            expect(
+                popover.hasClass(`${Popover2Classes.POPOVER2_CONTENT_PLACEMENT}-${expectedMenuPopoverProps.placement}`),
+            ).to.be.true;
         });
 
         it("renders loading state properly", () => {
@@ -118,7 +133,7 @@ describe("<ColumnHeaderCell2>", () => {
             );
         });
 
-        function getMenuComponent(menuClickSpy: sinon.SinonSpy) {
+        function renderMenu() {
             return (
                 <Menu>
                     <MenuItem icon="export" onClick={menuClickSpy} text="Teleport" />
@@ -128,11 +143,11 @@ describe("<ColumnHeaderCell2>", () => {
             );
         }
 
-        function expectMenuToOpen(table: ElementHarness, menuClickSpy: sinon.SinonSpy) {
+        function expectMenuToOpen(table: ElementHarness) {
             table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!.mouse("mousemove");
-            table.find(`.${Classes.TABLE_TH_MENU}.${Popover2Classes.POPOVER2_TARGET}`)!.mouse("click");
-            ElementHarness.document().find('[data-icon="export"]')!.mouse("click");
-            expect(menuClickSpy.called).to.be.true;
+            const target = table.find(`.${Classes.TABLE_TH_MENU}.${Popover2Classes.POPOVER2_TARGET}`)!;
+            target.mouse("click");
+            expect(target.hasClass(Popover2Classes.POPOVER2_OPEN)).to.be.true;
         }
     });
 
