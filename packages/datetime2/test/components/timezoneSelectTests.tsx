@@ -24,7 +24,7 @@ import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 import { QueryList, Select2 } from "@blueprintjs/select";
 
 import { TimezoneSelect, TimezoneSelectProps } from "../../src";
-import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
+import { TIMEZONE_ITEMS, UTC_TIME } from "../../src/common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames, TimezoneWithNames } from "../../src/common/timezoneNameUtils";
 
 const VALUE = "America/Los_Angeles";
@@ -84,7 +84,7 @@ describe("<TimezoneSelect>", () => {
         const items = findSelect(timezoneSelect).prop("items");
         assert.isTrue(items.length > 0);
         const firstItem = items[0];
-        assert.strictEqual(firstItem.ianaCode, "Etc/UTC");
+        assert.strictEqual(firstItem.ianaCode, UTC_TIME.ianaCode);
     });
 
     it("if showLocalTimezone=false, the local timezone is not rendered at the top of the item list", () => {

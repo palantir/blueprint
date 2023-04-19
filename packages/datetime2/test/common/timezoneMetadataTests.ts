@@ -16,15 +16,15 @@
 
 import { expect } from "chai";
 
+import { UTC_TIME } from "../../src/common/timezoneItems";
 import { getTimezoneMetadata } from "../../src/common/timezoneMetadata";
 
-const UTC_TIME = "Etc/UTC";
 const LONDON_TIME = "Europe/London";
 const NEW_YORK = "America/New_York";
 
 describe("getTimezoneMetadata", () => {
     it("Returns valid metadata for common timezones", () => {
-        for (const tzCode of [UTC_TIME, LONDON_TIME, NEW_YORK]) {
+        for (const tzCode of [UTC_TIME.ianaCode, LONDON_TIME, NEW_YORK]) {
             const metadata = getTimezoneMetadata(tzCode);
             expect(metadata).not.to.be.undefined;
             expect(metadata?.label).to.exist;

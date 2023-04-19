@@ -42,6 +42,7 @@ import { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import { isDateValid, isDayInRange } from "../../common/dateUtils";
 import * as Errors from "../../common/errors";
 import { getCurrentTimezone } from "../../common/getTimezone";
+import { UTC_TIME } from "../../common/timezoneItems";
 import { getTimezoneShortName, isValidTimezone } from "../../common/timezoneNameUtils";
 import {
     convertLocalDateToTimezoneTime,
@@ -257,6 +258,12 @@ export const DateInput2: React.FC<DateInput2Props> = React.memo(function _DateIn
             setValue(valueFromProps);
         }
     }, [valueFromProps]);
+
+    React.useEffect(() => {
+        if (defaultTimezone !== undefined && isValidTimezone(defaultTimezone)) {
+            setTimezoneValue(defaultTimezone);
+        }
+    }, [defaultTimezone]);
 
     React.useEffect(() => {
         if (isControlled && !isInputFocused) {
@@ -650,7 +657,7 @@ function getInitialTimezoneValue({ defaultTimezone }: DateInput2Props) {
             return defaultTimezone;
         } else {
             console.error(Errors.DATEINPUT_INVALID_DEFAULT_TIMEZONE);
-            return "Etc/UTC";
+            return UTC_TIME.ianaCode;
         }
     }
 }
