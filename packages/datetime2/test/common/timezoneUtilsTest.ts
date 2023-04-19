@@ -78,7 +78,7 @@ describe("convertLocalDateToTimezoneTime", () => {
 
 describe("convertDateToLocalEquivalentOfTimezoneTime", () => {
     it("Returns the same date when current time is the same as passed", () => {
-        const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(MOCK_SUMMER_DATE, UTC_TIME);
+        const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(MOCK_SUMMER_DATE, UTC_TIME.ianaCode);
         expect(checkIfDatesAreEqual(MOCK_SUMMER_DATE, convertedDate)).to.equal(true);
     });
 
