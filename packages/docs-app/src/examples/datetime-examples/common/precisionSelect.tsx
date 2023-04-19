@@ -56,6 +56,7 @@ export const PrecisionSelect: React.FC<PrecisionSelectProps> = props => (
         {props.label}
         <HTMLSelect value={props.value} onChange={props.onChange} disabled={props.disabled}>
             {props.allowNone && <option value="none">None</option>}
+            <option value={TimePrecision.QUARTER_HOUR}>Quarter Hour</option>
             <option value={TimePrecision.MINUTE}>Minute</option>
             <option value={TimePrecision.SECOND}>Second</option>
             <option value={TimePrecision.MILLISECOND}>Millisecond</option>

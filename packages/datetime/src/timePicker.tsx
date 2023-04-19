@@ -47,6 +47,7 @@ import * as Utils from "./common/utils";
 export const TimePrecision = {
     MILLISECOND: "millisecond" as "millisecond",
     MINUTE: "minute" as "minute",
+    QUARTER_HOUR: "quarter_hour" as "quarter_hour",
     SECOND: "second" as "second",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -208,7 +209,7 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
             <div className={classes}>
                 <div className={Classes.TIMEPICKER_ARROW_ROW}>
                     {this.maybeRenderArrowButton(true, hourUnit)}
-                    {this.maybeRenderArrowButton(true, TimeUnit.MINUTE)}
+                    {this.maybeRenderArrowButton(true, TimeUnit.MINUTE, this.props.precision)}
                     {shouldRenderSeconds && this.maybeRenderArrowButton(true, TimeUnit.SECOND)}
                     {shouldRenderMilliseconds && this.maybeRenderArrowButton(true, TimeUnit.MS)}
                 </div>
@@ -226,7 +227,7 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
                 {this.maybeRenderAmPm()}
                 <div className={Classes.TIMEPICKER_ARROW_ROW}>
                     {this.maybeRenderArrowButton(false, hourUnit)}
-                    {this.maybeRenderArrowButton(false, TimeUnit.MINUTE)}
+                    {this.maybeRenderArrowButton(false, TimeUnit.MINUTE, this.props.precision)}
                     {shouldRenderSeconds && this.maybeRenderArrowButton(false, TimeUnit.SECOND)}
                     {shouldRenderMilliseconds && this.maybeRenderArrowButton(false, TimeUnit.MS)}
                 </div>
@@ -259,13 +260,21 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
 
     // begin method definitions: rendering
 
-    private maybeRenderArrowButton(isDirectionUp: boolean, timeUnit: TimeUnit) {
+    private maybeRenderArrowButton(isDirectionUp: boolean, timeUnit: TimeUnit, precision?: TimePrecision) {
         if (!this.props.showArrowButtons) {
             return null;
         }
         const classes = classNames(Classes.TIMEPICKER_ARROW_BUTTON, getTimeUnitClassName(timeUnit));
-        const onClick = () => (isDirectionUp ? this.incrementTime : this.decrementTime)(timeUnit);
         const label = `${isDirectionUp ? "Increase" : "Decrease"} ${getTimeUnitPrintStr(timeUnit)}`;
+
+        const onClick = () =>
+            (precision && timeUnit === TimeUnit.MINUTE && precision === TimePrecision.QUARTER_HOUR
+                ? isDirectionUp
+                    ? this.shiftTime.bind(this, 15)
+                    : this.shiftTime.bind(this, -15)
+                : isDirectionUp
+                ? this.incrementTime
+                : this.decrementTime)(timeUnit);
 
         // set tabIndex=-1 to ensure a valid FocusEvent relatedTarget when focused
         return (
@@ -411,11 +420,11 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
         /* tslint:enable:object-literal-sort-keys */
     }
 
-    private incrementTime = (unit: TimeUnit) => this.shiftTime(unit, 1);
+    private incrementTime = (unit: TimeUnit) => this.shiftTime(1, unit);
 
-    private decrementTime = (unit: TimeUnit) => this.shiftTime(unit, -1);
+    private decrementTime = (unit: TimeUnit) => this.shiftTime(-1, unit);
 
-    private shiftTime(unit: TimeUnit, amount: number) {
+    private shiftTime(amount: number, unit: TimeUnit) {
         if (this.props.disabled) {
             return;
         }
