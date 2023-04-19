@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/datetime",
-    "version": "4.4.27",
+    "version": "4.4.28",
     "description": "Components for interacting with dates and times",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -35,7 +35,7 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.17.8",
+        "@blueprintjs/core": "^4.18.0",
         "classnames": "^2.3.1",
         "react-day-picker": "7.4.9",
         "tslib": "~2.5.0"
@@ -51,10 +51,10 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/colors": "^4.1.21",
-        "@blueprintjs/karma-build-scripts": "^4.0.18",
-        "@blueprintjs/node-build-scripts": "^7.1.0",
-        "@blueprintjs/test-commons": "^1.1.15",
+        "@blueprintjs/colors": "^4.1.22",
+        "@blueprintjs/karma-build-scripts": "^4.0.19",
+        "@blueprintjs/node-build-scripts": "^7.1.1",
+        "@blueprintjs/test-commons": "^1.1.16",
         "enzyme": "^3.11.0",
         "karma": "^6.4.1",
         "mocha": "^10.2.0",
