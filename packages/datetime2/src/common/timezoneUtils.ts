@@ -28,6 +28,7 @@ const TIME_FORMAT_TO_ISO_FORMAT: Record<TimePrecision | "date", string> = {
     [TimePrecision.MILLISECOND]: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
     [TimePrecision.SECOND]: "yyyy-MM-dd'T'HH:mm:ssxxx",
     [TimePrecision.MINUTE]: "yyyy-MM-dd'T'HH:mmxxx",
+    [TimePrecision.QUARTER_HOUR]: "yyyy-MM-dd'T'HH:mmxxx",
     [NO_TIME_PRECISION]: "yyyy-MM-dd",
 };
 
