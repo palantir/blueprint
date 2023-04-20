@@ -29,7 +29,12 @@ import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../src/common/timezoneNameUtils";
 import { TimezoneWithNames } from "../../src/common/timezoneTypes";
 
-const LOS_ANGELES_IANA_CODE = "America/Los_Angeles";
+const LOS_ANGELES_TZ = "America/Los_Angeles";
+let CURRENT_TZ = getCurrentTimezone();
+// HACKHACK: tests in CI seem to return 'UTC' instead of 'Etc/UTC';
+if (CURRENT_TZ === "UTC") {
+    CURRENT_TZ = "Etc/UTC";
+}
 
 describe("<TimezoneSelect>", () => {
     const onChange = sinon.spy();
@@ -39,7 +44,7 @@ describe("<TimezoneSelect>", () => {
             isOpen: true,
             usePortal: false,
         },
-        value: LOS_ANGELES_IANA_CODE,
+        value: LOS_ANGELES_TZ,
     };
 
     afterEach(() => onChange.resetHistory());

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { lookupTimezoneOffset } from "./timezoneMetadata";
+import { lookupTimezoneOffset } from "./timezoneOffsetUtils";
 import { Timezone, TimezoneWithoutOffset } from "./timezoneTypes";
 
 const utcWithoutOffset: TimezoneWithoutOffset = { label: "UTC", ianaCode: "Etc/UTC" };
