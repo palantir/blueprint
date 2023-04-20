@@ -91,7 +91,7 @@ describe("<TimezoneSelect>", () => {
         const items = findSelect(timezoneSelect).prop("items");
         assert.isTrue(items.length > 0);
         const firstItem = items[0];
-        assert.strictEqual(firstItem.ianaCode, getCurrentTimezone());
+        assert.strictEqual(firstItem.ianaCode, CURRENT_TZ);
     });
 
     it("if showLocalTimezone=false, the local timezone is not rendered at the top of the item list", () => {
