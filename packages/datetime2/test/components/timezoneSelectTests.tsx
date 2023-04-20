@@ -24,10 +24,17 @@ import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 import { QueryList, Select2 } from "@blueprintjs/select";
 
 import { TimezoneSelect, TimezoneSelectProps } from "../../src";
-import { TIMEZONE_ITEMS, UTC_TIME } from "../../src/common/timezoneItems";
-import { getInitialTimezoneItems, mapTimezonesWithNames, TimezoneWithNames } from "../../src/common/timezoneNameUtils";
+import { getCurrentTimezone } from "../../src/common/getTimezone";
+import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
+import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../src/common/timezoneNameUtils";
+import { TimezoneWithNames } from "../../src/common/timezoneTypes";
 
-const VALUE = "America/Los_Angeles";
+const LOS_ANGELES_TZ = "America/Los_Angeles";
+let CURRENT_TZ = getCurrentTimezone();
+// HACKHACK: tests in CI seem to return 'UTC' instead of 'Etc/UTC';
+if (CURRENT_TZ === "UTC") {
+    CURRENT_TZ = "Etc/UTC";
+}
 
 describe("<TimezoneSelect>", () => {
     const onChange = sinon.spy();
@@ -37,7 +44,7 @@ describe("<TimezoneSelect>", () => {
             isOpen: true,
             usePortal: false,
         },
-        value: VALUE,
+        value: LOS_ANGELES_TZ,
     };
 
     afterEach(() => onChange.resetHistory());
@@ -59,7 +66,7 @@ describe("<TimezoneSelect>", () => {
     it("if query is empty, shows initial items", () => {
         const timezoneSelect = mountTS();
         const items = findSelect(timezoneSelect).prop("items");
-        assert.deepEqual(items, getInitialTimezoneItems(new Date(), true));
+        assert.deepEqual(items, getInitialTimezoneItems(new Date(), false));
     });
 
     it("if query is not empty, shows all items", () => {
@@ -84,7 +91,7 @@ describe("<TimezoneSelect>", () => {
         const items = findSelect(timezoneSelect).prop("items");
         assert.isTrue(items.length > 0);
         const firstItem = items[0];
-        assert.strictEqual(firstItem.ianaCode, UTC_TIME.ianaCode);
+        assert.strictEqual(firstItem.ianaCode, CURRENT_TZ);
     });
 
     it("if showLocalTimezone=false, the local timezone is not rendered at the top of the item list", () => {

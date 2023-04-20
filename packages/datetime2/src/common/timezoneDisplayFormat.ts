@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { TimezoneWithNames } from "./timezoneNameUtils";
+import type { TimezoneWithNames } from "./timezoneTypes";
 
 export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name" | "composite" | "code" | "long-name";
 // eslint-disable-next-line @typescript-eslint/no-redeclare

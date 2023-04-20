@@ -15,16 +15,15 @@
  */
 
 import { TIMEZONE_ITEMS } from "./timezoneItems";
-import { getTimezoneNames, TimezoneWithNames } from "./timezoneNameUtils";
-
-export type TimezoneMetadata = TimezoneWithNames;
+import { getTimezoneNames } from "./timezoneNameUtils";
+import { Timezone, TimezoneWithNames } from "./timezoneTypes";
 
 /**
  * Given a timezone IANA code and an optional date object, retrieve additional metadata like its common name, offset,
  * and abbreviation.
  */
-export function getTimezoneMetadata(timezoneIanaCode: string, date?: Date): TimezoneMetadata | undefined {
-    const timezone = TIMEZONE_ITEMS.find(tz => tz.ianaCode === timezoneIanaCode);
+export function getTimezoneMetadata(timezoneIanaCode: string, date?: Date): TimezoneWithNames | undefined {
+    const timezone = TIMEZONE_ITEMS.find((tz: Timezone) => tz.ianaCode === timezoneIanaCode);
     if (timezone === undefined) {
         return undefined;
     }
