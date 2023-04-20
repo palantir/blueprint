@@ -16,8 +16,14 @@
 
 import * as Classes from "./classes";
 import * as DateUtils from "./dateUtils";
+import { TimezoneWithNames } from "./timezoneTypes";
 
-export { Classes, DateUtils };
+/** @deprecated use `TimezoneWithNames` */
+type TimezoneMetadata = TimezoneWithNames;
+
+// eslint-disable-next-line deprecation/deprecation
+export { Classes, DateUtils, TimezoneWithNames, TimezoneMetadata };
+
 export { DateRange, NonNullDateRange } from "./dateRange";
 export { TimezoneDisplayFormat } from "./timezoneDisplayFormat";
-export { TimezoneMetadata, getTimezoneMetadata } from "./timezoneMetadata";
+export { getTimezoneMetadata } from "./timezoneMetadata";

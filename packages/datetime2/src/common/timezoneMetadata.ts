@@ -14,19 +14,44 @@
  * limitations under the License.
  */
 
-import { TIMEZONE_ITEMS } from "./timezoneItems";
-import { getTimezoneNames, TimezoneWithNames } from "./timezoneNameUtils";
+import { getTimezoneOffset } from "date-fns-tz";
 
-export type TimezoneMetadata = TimezoneWithNames;
+import { TIMEZONE_ITEMS } from "./timezoneItems";
+import { getTimezoneNames } from "./timezoneNameUtils";
+import { Timezone, TimezoneWithNames, TimezoneWithoutOffset } from "./timezoneTypes";
 
 /**
  * Given a timezone IANA code and an optional date object, retrieve additional metadata like its common name, offset,
  * and abbreviation.
  */
-export function getTimezoneMetadata(timezoneIanaCode: string, date?: Date): TimezoneMetadata | undefined {
-    const timezone = TIMEZONE_ITEMS.find(tz => tz.ianaCode === timezoneIanaCode);
+export function getTimezoneMetadata(timezoneIanaCode: string, date?: Date): TimezoneWithNames | undefined {
+    const timezone = TIMEZONE_ITEMS.find((tz: Timezone) => tz.ianaCode === timezoneIanaCode);
     if (timezone === undefined) {
         return undefined;
     }
     return getTimezoneNames(timezone, date);
+}
+
+/**
+ * Augment hard-coded timezone information stored in this package with its current offset relative to UTC,
+ * adjusted for daylight saving using the current date.
+ *
+ * @see https://github.com/marnusw/date-fns-tz#gettimezoneoffset
+ */
+export function lookupTimezoneOffset(tz: TimezoneWithoutOffset, date?: Date): Timezone {
+    const offsetInMs = getTimezoneOffset(tz.ianaCode, date);
+    if (isNaN(offsetInMs)) {
+        throw new Error(`Unable to lookup offset for invalid timezone '${tz.ianaCode}'`);
+    }
+
+    const isPositiveOffset = offsetInMs >= 0;
+    const offsetInMinutes = Math.abs(offsetInMs) / 1000 / 60;
+    const offsetHours = Math.trunc(offsetInMinutes / 60)
+        .toString()
+        .padStart(2, "0");
+    const offsetMinutes = (offsetInMinutes % 60).toString().padEnd(2, "0");
+    return {
+        ...tz,
+        offset: `${isPositiveOffset ? "+" : "-"}${offsetHours}:${offsetMinutes}`,
+    };
 }

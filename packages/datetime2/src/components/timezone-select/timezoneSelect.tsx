@@ -32,7 +32,8 @@ import { ItemListPredicate, ItemRenderer, Select2, SelectPopoverProps } from "@b
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "../../common/timezoneDisplayFormat";
 import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
-import { getInitialTimezoneItems, mapTimezonesWithNames, TimezoneWithNames } from "../../common/timezoneNameUtils";
+import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../common/timezoneNameUtils";
+import { TimezoneWithNames } from "../../common/timezoneTypes";
 
 export interface TimezoneSelectProps extends Props {
     /**
