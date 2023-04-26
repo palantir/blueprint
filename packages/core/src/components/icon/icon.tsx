@@ -99,6 +99,7 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
                 ...htmlProps,
                 "aria-hidden": title ? undefined : true,
                 className: classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className),
+                "data-icon": icon,
                 ref,
                 title: htmlTitle,
             });

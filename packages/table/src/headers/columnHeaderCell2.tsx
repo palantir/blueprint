@@ -25,7 +25,6 @@ import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { ColumnHeaderCellProps, ColumnHeaderCellState, HorizontalCellDivider } from "./columnHeaderCell";
 import { HeaderCell2 } from "./headerCell2";
 
-// eslint-disable-next-line deprecation/deprecation
 export interface ColumnHeaderCell2Props extends ColumnHeaderCellProps {
     /**
      * If `true`, adds an interaction bar on top of all column header cells, and
