@@ -20,7 +20,7 @@ import React from "react";
 import { Cross } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, ActionProps, IntentProps, LinkProps, Props, MaybeElement } from "../../common/props";
+import { ActionProps, DISPLAYNAME_PREFIX, IntentProps, LinkProps, MaybeElement, Props } from "../../common/props";
 import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
 import { Icon, IconName } from "../icon/icon";
@@ -36,6 +36,13 @@ export interface ToastProps extends Props, IntentProps {
 
     /** Name of a Blueprint UI icon (or an icon element) to render before the message. */
     icon?: IconName | MaybeElement;
+
+    /**
+     * Whether to show the close button in the toast.
+     *
+     * @default true
+     */
+    isCloseButtonShown?: boolean;
 
     /** Message to display in the body of the toast. */
     message: React.ReactNode;
@@ -58,6 +65,7 @@ export interface ToastProps extends Props, IntentProps {
 export class Toast extends AbstractPureComponent<ToastProps> {
     public static defaultProps: ToastProps = {
         className: "",
+        isCloseButtonShown: true,
         message: "",
         timeout: 5000,
     };
@@ -65,7 +73,7 @@ export class Toast extends AbstractPureComponent<ToastProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Toast`;
 
     public render(): JSX.Element {
-        const { className, icon, intent, message } = this.props;
+        const { className, icon, intent, message, isCloseButtonShown } = this.props;
         return (
             <div
                 className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
@@ -76,10 +84,14 @@ export class Toast extends AbstractPureComponent<ToastProps> {
                 tabIndex={0}
             >
                 <Icon icon={icon} />
-                <span className={Classes.TOAST_MESSAGE}>{message}</span>
+                <span className={Classes.TOAST_MESSAGE} role="alert">
+                    {message}
+                </span>
                 <ButtonGroup minimal={true}>
                     {this.maybeRenderActionButton()}
-                    <Button aria-label="Close" icon={<Cross />} onClick={this.handleCloseClick} />
+                    {isCloseButtonShown && (
+                        <Button aria-label="Close" icon={<Cross />} onClick={this.handleCloseClick} />
+                    )}
                 </ButtonGroup>
             </div>
         );

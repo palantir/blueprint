@@ -14,48 +14,45 @@
  * limitations under the License.
  */
 
-import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
-import { ReportFixFunction } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
+import { AST_NODE_TYPES, TSESLint, TSESTree } from "@typescript-eslint/utils";
 
 /**
  * Return a function which when provided with a fixer will produce a RuleFix to add the
  * specified imports from the specified packageName at the top of the file (in alphabetical order)
  */
-export const addImportToFile = (
-    program: TSESTree.Program,
-    imports: string[],
-    packageName: string,
-): ReportFixFunction => fixer => {
-    const fileImports = program.body.filter(
-        node => node.type === AST_NODE_TYPES.ImportDeclaration,
-    ) as TSESTree.ImportDeclaration[];
-    const nodeToModify = fileImports.find(node => node.source.value === packageName);
+export const addImportToFile =
+    (program: TSESTree.Program, imports: string[], packageName: string): TSESLint.ReportFixFunction =>
+    fixer => {
+        const fileImports = program.body.filter(
+            node => node.type === AST_NODE_TYPES.ImportDeclaration,
+        ) as TSESTree.ImportDeclaration[];
+        const nodeToModify = fileImports.find(node => node.source.value === packageName);
 
-    if (
-        nodeToModify !== undefined &&
-        nodeToModify.specifiers.every(node => node.type === AST_NODE_TYPES.ImportSpecifier)
-    ) {
-        // Module imports
-        const existingImports = nodeToModify.specifiers.map(node => node.local.name);
-        const newImports = Array.from(new Set(existingImports.concat(imports))).sort();
-        const importString = `import { ${newImports.join(", ")} } from "${nodeToModify.source.value}";`;
-        return fixer.replaceText(nodeToModify, importString);
-    } else {
-        // Default imports
+        if (
+            nodeToModify !== undefined &&
+            nodeToModify.specifiers.every(node => node.type === AST_NODE_TYPES.ImportSpecifier)
+        ) {
+            // Module imports
+            const existingImports = nodeToModify.specifiers.map(node => node.local.name);
+            const newImports = Array.from(new Set(existingImports.concat(imports))).sort();
+            const importString = `import { ${newImports.join(", ")} } from "${nodeToModify.source.value}";`;
+            return fixer.replaceText(nodeToModify, importString);
+        } else {
+            // Default imports
 
-        // Find the node thats alphabetically after the new one, so we can insert before it
-        const followingImportNode = fileImports.find(imp => {
-            return imp.source.value != null && compare(imp.source.value.toString(), packageName) === 1;
-        });
+            // Find the node thats alphabetically after the new one, so we can insert before it
+            const followingImportNode = fileImports.find(imp => {
+                return imp.source.value != null && compare(imp.source.value.toString(), packageName) === 1;
+            });
 
-        const onlyImport = fileImports.length === 0;
-        return fixer.insertTextBefore(
-            followingImportNode !== undefined ? followingImportNode : program.body[0],
-            // If we are adding the first import, add a 2nd new line afterwards
-            `import { ${imports.sort().join(", ")} } from "${packageName}";\n${onlyImport ? "\n" : ""}`,
-        );
-    }
-};
+            const onlyImport = fileImports.length === 0;
+            return fixer.insertTextBefore(
+                followingImportNode !== undefined ? followingImportNode : program.body[0],
+                // If we are adding the first import, add a 2nd new line afterwards
+                `import { ${imports.sort().join(", ")} } from "${packageName}";\n${onlyImport ? "\n" : ""}`,
+            );
+        }
+    };
 
 function isLow(value: string) {
     return value[0] === "." || value[0] === "/";

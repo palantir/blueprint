@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ESLintUtils } from "@typescript-eslint/experimental-utils";
+import { ESLintUtils } from "@typescript-eslint/utils";
 
 /** Create a rule and automatically fill its url based on the rule name. */
 export const createRule = ESLintUtils.RuleCreator(

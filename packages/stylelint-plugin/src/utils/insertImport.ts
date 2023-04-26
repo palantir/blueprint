@@ -13,20 +13,38 @@
  * limitations under the License.
  */
 
-import postcss, { Root } from "postcss";
-import type { RuleTesterContext } from "stylelint";
+import postcss, { AtRule, Comment, Root } from "postcss";
+import type { PluginContext } from "stylelint";
+
+import { CssSyntax } from "./cssSyntax";
 
 /**
  * Adds an import statement to the file. The import is inserted below the existing imports, and if there are
  * no imports present then it's inserted at the top of the file (but below any copyright headers).
  */
-export function insertImport(root: Root, context: RuleTesterContext, importPath: string): void {
+export function insertImport(
+    cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS,
+    root: Root,
+    context: PluginContext,
+    importPath: string,
+    namespace?: string,
+): void {
     const newline: string = (context as any).newline || "\n";
-    const ruleOrComment = getLastImport(root) || getCopyrightHeader(root);
+    const ruleOrComment = getLastImport(cssSyntaxType, root) || getCopyrightHeader(root);
+
+    let importOrUse = "import";
+    let params = `"${importPath}"`;
+    if (cssSyntaxType === CssSyntax.SASS) {
+        importOrUse = "use";
+        if (namespace !== undefined) {
+            params += ` as ${namespace}`;
+        }
+    }
+
     if (ruleOrComment != null) {
         const importNode = postcss.atRule({
-            name: "import",
-            params: `"${importPath}"`,
+            name: importOrUse,
+            params,
             raws: {
                 afterName: " ",
                 before: ruleOrComment.type === "comment" ? `${newline}${newline}` : newline,
@@ -36,8 +54,8 @@ export function insertImport(root: Root, context: RuleTesterContext, importPath:
         root.insertAfter(ruleOrComment, importNode);
     } else {
         const importNode = postcss.atRule({
-            name: "import",
-            params: `"${importPath}"`,
+            name: importOrUse,
+            params,
             raws: {
                 afterName: " ",
                 before: "",
@@ -59,25 +77,44 @@ export function insertImport(root: Root, context: RuleTesterContext, importPath:
 /**
  * Returns the last import node in the file, or undefined if one does not exist
  */
-function getLastImport(root: Root): postcss.AtRule | undefined {
-    let lastImport: postcss.AtRule | undefined;
-    root.walkAtRules(/^import$/i, atRule => {
+function getLastImport(cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS, root: Root): AtRule | undefined {
+    let lastImport: AtRule | undefined;
+    const walkRegex = cssSyntaxType === CssSyntax.LESS ? /^import$/i : /^use$/i;
+    root.walkAtRules(walkRegex, atRule => {
         lastImport = atRule;
     });
     return lastImport;
 }
 
 /**
- * Returns the first copyright header in the file, or undefined if one does not exist
+ * Returns the first copyright header in the file, or undefined if one does not exist.
+ * If the first copyright header spans multiple lines, the last line is returned.
  */
-function getCopyrightHeader(root: Root): postcss.Comment | undefined {
-    let copyrightComment: postcss.Comment | undefined;
+function getCopyrightHeader(root: Root): Comment | undefined {
+    let lastCopyrightComment: Comment | undefined;
     root.walkComments(comment => {
-        if (comment.text.toLowerCase().includes("copyright")) {
-            copyrightComment = comment;
-            return false; // Stop the iteration
+        if (lastCopyrightComment) {
+            if (comment.source?.start === undefined || lastCopyrightComment.source?.end === undefined) {
+                return false;
+            }
+            if (comment.source.start.line === lastCopyrightComment.source.end.line + 1) {
+                // Copyright continues in next comment via //
+                lastCopyrightComment = comment;
+            } else {
+                // The next comment is not directly under the prior comment
+                return false;
+            }
+        } else if (comment.text.toLowerCase().includes("copyright")) {
+            lastCopyrightComment = comment;
+            if (comment.source?.start === undefined || comment.source?.end === undefined) {
+                return false;
+            }
+            if (comment.source.start.line !== comment.source.end.line) {
+                // A multi-line copyright comment such as /* */
+                return false; // Stop the iteration
+            }
         }
-        return true;
+        return;
     });
-    return copyrightComment;
+    return lastCopyrightComment;
 }

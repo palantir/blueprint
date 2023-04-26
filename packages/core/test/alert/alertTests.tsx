@@ -21,7 +21,7 @@ import { SinonStub, spy, stub } from "sinon";
 
 import { WarningSign } from "@blueprintjs/icons";
 
-import { Alert, Button, Classes, AlertProps, ButtonProps, Icon, Intent, Keys } from "../../src";
+import { Alert, AlertProps, Button, ButtonProps, Classes, Icon, Intent } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { findInPortal } from "../utils";
 
@@ -177,11 +177,11 @@ describe("<Alert>", () => {
             );
             const overlay = findInPortal(alert, "." + Classes.OVERLAY).first();
 
-            overlay.simulate("keydown", { which: Keys.ESCAPE });
+            overlay.simulate("keydown", { key: "Escape" });
             assert.isTrue(onCancel.notCalled);
 
             alert.setProps({ canEscapeKeyCancel: true });
-            overlay.simulate("keydown", { which: Keys.ESCAPE });
+            overlay.simulate("keydown", { key: "Escape" });
             assert.isTrue(onCancel.calledOnce);
 
             alert.unmount();

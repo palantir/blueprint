@@ -24,16 +24,19 @@ import {
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
-    IntentProps,
     Intent,
-    Props,
+    IntentProps,
     MaybeElement,
+    Props,
 } from "../../common";
 import { H4 } from "../html/html";
 import { Icon } from "../icon/icon";
 
 /** This component also supports the full range of HTML `<div>` props. */
 export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
+    /** Callout contents. */
+    children?: React.ReactNode;
+
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side.
      *

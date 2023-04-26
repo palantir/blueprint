@@ -153,34 +153,21 @@ export class ElementHarness {
         if (bounds !== undefined) {
             const x = bounds.left + bounds.width / 2 + offsetX;
             const y = bounds.top + bounds.height / 2 + offsetY;
-            const event = document.createEvent("MouseEvent");
 
-            // The crazy long list of arguments below are defined in this ancient web API:
-            // event.initMouseEvent(
-            //     type, canBubble, cancelable, view,
-            //     detail, screenX, screenY, clientX, clientY,
-            //     ctrlKey, altKey, shiftKey, metaKey,
-            //     button, relatedTarget
-            // );
-            // HACKHACK: see https://github.com/palantir/blueprint/issues/5173
-            // eslint-disable-next-line deprecation/deprecation
-            event.initMouseEvent(
-                eventType,
-                true,
-                true,
-                window,
-                0,
-                0,
-                0,
-                x,
-                y,
-                isCtrlKeyDown,
-                isAltKeyDown,
-                isShiftKeyDown,
-                isMetaKeyDown,
+            const event = new MouseEvent(eventType, {
+                altKey: isAltKeyDown,
+                bubbles: true,
                 button,
-                null,
-            );
+                cancelable: true,
+                clientX: x,
+                clientY: y,
+                ctrlKey: isCtrlKeyDown,
+                detail: 0,
+                metaKey: isMetaKeyDown,
+                shiftKey: isShiftKeyDown,
+                view: window,
+            });
+
             this.element!.dispatchEvent(event);
         }
         return this;

@@ -16,26 +16,24 @@
 
 import { assert, expect } from "chai";
 import {
-    mount as untypedMount,
     MountRendererProps,
-    shallow as untypedShallow,
     ShallowRendererProps,
     ShallowWrapper,
+    mount as untypedMount,
+    shallow as untypedShallow,
 } from "enzyme";
 import React from "react";
 import sinon from "sinon";
 
-import { Button, Classes, Intent, TagInputProps, Keys, Tag, TagInput } from "../../src";
+import { Button, Classes, Intent, Keys, Tag, TagInput, TagInputProps } from "../../src";
 
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
-// tslint:disable no-unnecessary-callback-wrapper
 const mount = (el: React.ReactElement<TagInputProps>, options?: MountRendererProps) =>
     untypedMount<TagInput>(el, options);
 const shallow = (el: React.ReactElement<TagInputProps>, options?: ShallowRendererProps) =>
     untypedShallow<TagInput>(el, options);
-// tslint:enable no-unnecessary-callback-wrapper
 
 const VALUES = ["one", "two", "three"];
 

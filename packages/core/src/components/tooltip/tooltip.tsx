@@ -74,6 +74,7 @@ export interface TooltipProps<TProps = React.HTMLProps<HTMLElement>>
 export class Tooltip<T> extends React.PureComponent<TooltipProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
+    // eslint-disable-next-line deprecation/deprecation
     public static defaultProps: Partial<TooltipProps> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,

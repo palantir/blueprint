@@ -17,7 +17,7 @@
 import React from "react";
 
 import { AnchorButton, Button, Classes, Code, Dialog, DialogProps, H5, Switch, Tooltip } from "@blueprintjs/core";
-import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { BlueprintExampleData } from "../../tags/types";
 

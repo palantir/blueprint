@@ -22,17 +22,19 @@ import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Handle } from "./handle";
-import { HandleInteractionKind, HandleType, HandleProps } from "./handleProps";
+import { HandleInteractionKind, HandleProps, HandleType } from "./handleProps";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";
 
 /**
  * SFC used to pass slider handle props to a `MultiSlider`.
  * This element is not rendered directly.
  */
-const MultiSliderHandle: React.FunctionComponent<HandleProps> = () => null;
+const MultiSliderHandle: React.FC<HandleProps> = () => null;
 MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 
 export interface SliderBaseProps extends Props, IntentProps {
+    children?: React.ReactNode;
+
     /**
      * Whether the slider is non-interactive.
      *
@@ -305,8 +307,9 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
             return null;
         }
 
-        return handleProps.map(({ value, type, className }, index) => (
+        return handleProps.map(({ value, type, className, htmlProps }, index) => (
             <Handle
+                htmlProps={htmlProps}
                 className={classNames(
                     {
                         [Classes.START]: type === HandleType.START,
@@ -484,10 +487,7 @@ function getSortedInteractiveHandleProps(props: React.PropsWithChildren<MultiSli
     return getSortedHandleProps(props, childProps => childProps.interactionKind !== HandleInteractionKind.NONE);
 }
 
-function getSortedHandleProps(
-    { children }: React.PropsWithChildren<MultiSliderProps>,
-    predicate: (props: HandleProps) => boolean = () => true,
-) {
+function getSortedHandleProps({ children }: MultiSliderProps, predicate: (props: HandleProps) => boolean = () => true) {
     const maybeHandles = React.Children.map(children, child =>
         Utils.isElementOfType(child, MultiSlider.Handle) && predicate(child.props) ? child.props : null,
     );

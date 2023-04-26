@@ -19,9 +19,12 @@ import React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
-import { TabProps, TabId } from "./tab";
+import { TabId, TabProps } from "./tab";
 
 export interface TabTitleProps extends TabProps {
+    /** Optional contents. */
+    children?: React.ReactNode;
+
     /** Handler invoked when this tab is clicked. */
     onClick: (id: TabId, event: React.MouseEvent<HTMLElement>) => void;
 

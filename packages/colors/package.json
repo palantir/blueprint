@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/colors",
-    "version": "4.0.0",
+    "version": "4.1.8",
     "description": "Blueprint color definitions",
     "main": "lib/index.js",
     "scripts": {
@@ -8,7 +8,7 @@
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p src/",
         "compile:css": "sass-compile ./src",
-        "compile:css-colors": "generate-css-variables --outputFileName colors _colors.scss",
+        "compile:css-colors": "generate-css-variables --retainDefault true --outputFileName colors _colors.scss",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
         "lint": "npm-run-all -p lint:scss lint:es",
         "lint:scss": "sass-lint",
@@ -17,8 +17,8 @@
         "verify": "npm-run-all compile -p dist lint"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^2.0.0",
-        "mocha": "^9.2.2",
+        "@blueprintjs/node-build-scripts": "^6.0.0",
+        "mocha": "^10.1.0",
         "typescript": "~4.6.2"
     },
     "repository": {

@@ -47,6 +47,10 @@ $dark-drawer-background-color: $dark-gray4 !default;
     right: 0;
 
     top: 0;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border-bottom: 1px solid $pt-high-contrast-mode-border-color;
+    }
   }
 
   &.#{$ns}-position-bottom {
@@ -70,6 +74,10 @@ $dark-drawer-background-color: $dark-gray4 !default;
     left: 0;
 
     right: 0;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border-top: 1px solid $pt-high-contrast-mode-border-color;
+    }
   }
 
   &.#{$ns}-position-left {
@@ -93,6 +101,10 @@ $dark-drawer-background-color: $dark-gray4 !default;
 
     top: 0;
     width: $drawer-default-size;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border-right: 1px solid $pt-high-contrast-mode-border-color;
+    }
   }
 
   &.#{$ns}-position-right {
@@ -116,6 +128,10 @@ $dark-drawer-background-color: $dark-gray4 !default;
 
     top: 0;
     width: $drawer-default-size;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border-left: 1px solid $pt-high-contrast-mode-border-color;
+    }
   }
 
   &.#{$ns}-dark,
@@ -133,15 +149,19 @@ $dark-drawer-background-color: $dark-gray4 !default;
   display: flex;
   flex: 0 0 auto;
   min-height: $pt-icon-size-large + $drawer-padding;
-  padding: $drawer-padding / 4;
+  padding: $drawer-padding * 0.25;
   padding-left: $drawer-padding;
   position: relative;
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border-bottom: 1px solid $pt-high-contrast-mode-border-color;
+  }
 
   .#{$ns}-icon-large,
   .#{$ns}-icon {
     color: $pt-icon-color;
     flex: 0 0 auto;
-    margin-right: $drawer-padding / 2;
+    margin-right: $drawer-padding * 0.5;
   }
 
   .#{$ns}-heading {
@@ -174,7 +194,7 @@ $dark-drawer-background-color: $dark-gray4 !default;
 .#{$ns}-drawer-footer {
   box-shadow: inset 0 1px 0 $pt-divider-black;
   flex: 0 0 auto;
-  padding: $drawer-padding/2 $drawer-padding;
+  padding: $drawer-padding*0.5 $drawer-padding;
   position: relative;
 
   .#{$ns}-dark & {

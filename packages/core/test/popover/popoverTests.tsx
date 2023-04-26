@@ -21,11 +21,12 @@ import sinon from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes, Keys } from "../../src/common";
+import { Classes } from "../../src/common";
 import * as Errors from "../../src/common/errors";
 import { Menu, MenuItem, Overlay, Portal } from "../../src/components";
-import { PopoverProps, PopoverState, Popover, PopoverInteractionKind } from "../../src/components/popover/popover";
+import { Popover, PopoverInteractionKind, PopoverProps, PopoverState } from "../../src/components/popover/popover";
 import { PopoverArrow } from "../../src/components/popover/popoverArrow";
+import { PopupKind } from "../../src/components/popover/popupKind";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 
 describe("<Popover>", () => {
@@ -191,6 +192,16 @@ describe("<Popover>", () => {
         it("renders with aria-haspopup attr", () => {
             wrapper = renderPopover({ isOpen: true });
             assert.isTrue(wrapper.find("[aria-haspopup='true']").exists());
+        });
+
+        it("sets aria-haspopup attr base on popupKind", () => {
+            wrapper = renderPopover({ isOpen: true, popupKind: PopupKind.DIALOG });
+            assert.isTrue(wrapper.find("[aria-haspopup='dialog']").exists());
+        });
+
+        it("renders without aria-haspopup attr for hover interaction", () => {
+            wrapper = renderPopover({ isOpen: true, interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY });
+            assert.isFalse(wrapper.find("[aria-haspopup]").exists());
         });
     });
 
@@ -642,6 +653,18 @@ describe("<Popover>", () => {
             wrapper = renderPopover({ minimal: true, isOpen: true });
             assert.lengthOf(wrapper.find(PopoverArrow), 0);
         });
+
+        it("matches target width via custom modifier", () => {
+            wrapper = renderPopover({ matchTargetWidth: true, isOpen: true, placement: "bottom" });
+            const targetElement = wrapper.find("[data-testid='target-button']").getDOMNode();
+            const popoverElement = wrapper.find(`.${Classes.POPOVER}`).getDOMNode();
+            assert.closeTo(
+                popoverElement.clientWidth,
+                targetElement.clientWidth,
+                5,
+                "content width should equal target width +/- 5px",
+            );
+        });
     });
 
     describe("closing on click", () => {
@@ -820,8 +843,8 @@ describe("<Popover>", () => {
         };
         wrapper.sendEscapeKey = () => {
             wrapper!.findClass(Classes.OVERLAY_OPEN).simulate("keydown", {
+                key: "Escape",
                 nativeEvent: new KeyboardEvent("keydown"),
-                which: Keys.ESCAPE,
             });
             return wrapper!;
         };

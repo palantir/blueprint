@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import React from "react";
 
 import { Classes, HTMLSelect } from "@blueprintjs/core";
 import { TimePrecision } from "@blueprintjs/datetime";
 
 export interface PrecisionSelectProps {
+    /**
+     * Whether the select is disabled.
+     *
+     * @default false
+     */
+    disabled?: boolean;
+
     /**
      * The precision-string option to display as selected.
      */
@@ -43,10 +51,10 @@ export interface PrecisionSelectProps {
     label?: string;
 }
 
-export const PrecisionSelect: React.FunctionComponent<PrecisionSelectProps> = props => (
-    <label className={Classes.LABEL}>
-        {props.label || "Precision"}
-        <HTMLSelect value={props.value} onChange={props.onChange}>
+export const PrecisionSelect: React.FC<PrecisionSelectProps> = props => (
+    <label className={classNames(Classes.LABEL, { [Classes.DISABLED]: props.disabled })}>
+        {props.label}
+        <HTMLSelect value={props.value} onChange={props.onChange} disabled={props.disabled}>
             {props.allowNone && <option value="none">None</option>}
             <option value={TimePrecision.MINUTE}>Minute</option>
             <option value={TimePrecision.SECOND}>Second</option>
@@ -54,3 +62,7 @@ export const PrecisionSelect: React.FunctionComponent<PrecisionSelectProps> = pr
         </HTMLSelect>
     </label>
 );
+PrecisionSelect.defaultProps = {
+    disabled: false,
+    label: "Precision",
+};

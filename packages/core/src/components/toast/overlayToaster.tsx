@@ -24,8 +24,8 @@ import { ESCAPE } from "../../common/keys";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
-import { ToastProps, Toast } from "./toast";
-import { Toaster, ToastOptions, ToasterPosition } from "./toaster";
+import { Toast, ToastProps } from "./toast";
+import { Toaster, ToasterPosition, ToastOptions } from "./toaster";
 
 /**
  * Props supported by the `<Toaster>` component.

@@ -23,11 +23,11 @@ import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import {
     Cell,
     Column,
-    ColumnHeaderCell,
+    ColumnHeaderCell2,
     CopyCellsMenuItem,
     MenuContext,
     SelectionModes,
-    Table,
+    Table2,
     Utils,
 } from "@blueprintjs/table";
 
@@ -49,7 +49,7 @@ abstract class AbstractSortableColumn implements SortableColumn {
             <Cell>{getCellData(rowIndex, columnIndex)}</Cell>
         );
         const menuRenderer = this.renderMenu.bind(this, sortColumn);
-        const columnHeaderCellRenderer = () => <ColumnHeaderCell name={this.name} menuRenderer={menuRenderer} />;
+        const columnHeaderCellRenderer = () => <ColumnHeaderCell2 name={this.name} menuRenderer={menuRenderer} />;
         return (
             <Column
                 cellRenderer={cellRenderer}
@@ -121,7 +121,6 @@ class RecordSortableColumn extends AbstractSortableColumn {
     private static WIN_LOSS_PATTERN = /^([0-9]+)(-([0-9]+))?(-([0-9]+)) ?.*/;
 
     protected renderMenu(sortColumn: SortCallback) {
-        // tslint:disable:jsx-no-lambda
         return (
             <Menu>
                 <MenuItem
@@ -209,14 +208,16 @@ export class TableSortableExample extends React.PureComponent<ExampleProps> {
         const columns = this.state.columns.map(col => col.getColumn(this.getCellData, this.sortColumn));
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table
+                <Table2
                     bodyContextMenuRenderer={this.renderBodyContextMenu}
                     numRows={numRows}
                     selectionModes={SelectionModes.COLUMNS_AND_CELLS}
                     getCellClipboardData={this.getCellData}
+                    cellRendererDependencies={[this.state.sortedIndexMap]}
+                    enableFocusedCell={true}
                 >
                     {columns}
-                </Table>
+                </Table2>
             </Example>
         );
     }

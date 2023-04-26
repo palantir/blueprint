@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import { Clipboard } from "./common/clipboard";
@@ -24,7 +24,7 @@ import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
 import { NonNullRegion, Region, RegionCardinality, Regions } from "./regions";
 import type { TableProps } from "./tableProps";
-import type { TableState, TableSnapshot } from "./tableState";
+import type { TableSnapshot, TableState } from "./tableState";
 
 export interface TableHandlers {
     handleSelection: (selectedRegions: Region[]) => void;
@@ -416,7 +416,11 @@ export class TableHotkeys {
         e.stopPropagation();
 
         const cells = Regions.enumerateUniqueCells(selectedRegions, this.grid.numRows, this.grid.numCols);
-        const sparse = Regions.sparseMapCells(cells, getCellClipboardData);
+        // non-null assertion because Column.defaultProps.cellRenderer is defined
+        const sparse = Regions.sparseMapCells(cells, (row, col) =>
+            getCellClipboardData(row, col, this.state.childrenArray[col].props.cellRenderer!),
+        );
+
         if (sparse != null) {
             Clipboard.copyCells(sparse)
                 .then(() => onCopy?.(true))

@@ -17,7 +17,7 @@
 import React from "react";
 
 import { Alignment, Classes, H3, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
-import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface TabsExampleState {
     activePanelOnly: boolean;
@@ -99,7 +99,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
     private handleNavbarTabChange = (navbarTabId: TabId) => this.setState({ navbarTabId });
 }
 
-const ReactPanel: React.FunctionComponent = () => (
+const ReactPanel: React.FC = () => (
     <div>
         <H3>Example panel: React</H3>
         <p className={Classes.RUNNING_TEXT}>
@@ -109,7 +109,7 @@ const ReactPanel: React.FunctionComponent = () => (
     </div>
 );
 
-const AngularPanel: React.FunctionComponent = () => (
+const AngularPanel: React.FC = () => (
     <div>
         <H3>Example panel: Angular</H3>
         <p className={Classes.RUNNING_TEXT}>
@@ -120,7 +120,7 @@ const AngularPanel: React.FunctionComponent = () => (
     </div>
 );
 
-const EmberPanel: React.FunctionComponent = () => (
+const EmberPanel: React.FC = () => (
     <div>
         <H3>Example panel: Ember</H3>
         <p className={Classes.RUNNING_TEXT}>
@@ -132,7 +132,7 @@ const EmberPanel: React.FunctionComponent = () => (
     </div>
 );
 
-const BackbonePanel: React.FunctionComponent = () => (
+const BackbonePanel: React.FC = () => (
     <div>
         <H3>Backbone</H3>
     </div>

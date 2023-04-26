@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Boundary, Classes, Props, Position, removeNonHTMLProps } from "../../common";
+import { AbstractPureComponent, Boundary, Classes, Props, removeNonHTMLProps } from "../../common";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
-import { OverflowListProps, OverflowList } from "../overflow-list/overflowList";
-import { PopoverProps, Popover } from "../popover/popover";
+import { OverflowList, OverflowListProps } from "../overflow-list/overflowList";
+import { Popover, PopoverProps } from "../popover/popover";
 import { Breadcrumb, BreadcrumbProps } from "./breadcrumb";
 
 export interface BreadcrumbsProps extends Props {
@@ -68,12 +68,16 @@ export interface BreadcrumbsProps extends Props {
      * Props to spread to `OverflowList`. Note that `items`,
      * `overflowRenderer`, and `visibleItemRenderer` cannot be changed.
      */
-    overflowListProps?: Partial<OverflowListProps<BreadcrumbProps>>;
+    overflowListProps?: Partial<
+        Omit<OverflowListProps<BreadcrumbProps>, "items" | "overflowRenderer" | "visibleItemRenderer">
+    >;
 
     /**
-     * Props to spread to the `Popover` showing the overflow menu.
+     * Props to spread to the popover showing the overflow menu.
      */
-    popoverProps?: PopoverProps;
+    popoverProps?: Partial<
+        Omit<PopoverProps, "content" | "defaultIsOpen" | "disabled" | "fill" | "renderTarget" | "targetTagName">
+    >;
 }
 
 export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
@@ -98,8 +102,8 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
     }
 
     private renderOverflow = (items: readonly BreadcrumbProps[]) => {
-        const { collapseFrom } = this.props;
-        const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
+        const { collapseFrom, popoverProps } = this.props;
+
         let orderedItems = items;
         if (collapseFrom === Boundary.START) {
             // If we're collapsing from the start, the menu should be read from the bottom to the
@@ -112,9 +116,10 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
         return (
             <li>
                 <Popover
+                    placement={collapseFrom === Boundary.END ? "bottom-end" : "bottom-start"}
+                    disabled={orderedItems.length === 0}
                     content={<Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>}
-                    position={position}
-                    {...this.props.popoverProps}
+                    {...popoverProps}
                 >
                     <span className={Classes.BREADCRUMBS_COLLAPSED} />
                 </Popover>

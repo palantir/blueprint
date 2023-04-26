@@ -24,8 +24,8 @@ import type { PascalCase } from "./type-utils";
 export { IconSvgPaths16, IconSvgPaths20 };
 
 /**
- * Type safe string literal conversion of snake-case icon names to PascalCase icon names,
- * useful for indexing into the SVG paths record to extract a single icon's SVG path definition.
+ * Type safe string literal conversion of snake-case icon names to PascalCase icon names.
+ * This is useful for indexing into the SVG paths record to extract a single icon's SVG path definition.
  */
 export function iconNameToPathsRecordKey(name: IconName): PascalCase<IconName> {
     return pascalCase(name) as PascalCase<IconName>;

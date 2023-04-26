@@ -142,12 +142,15 @@ automatically by enabling the modifiers `flip` and `preventOverflow`.
 
 @### Modifiers
 
-Modifiers allow you customize Popper.js's positioning behavior. `Popover` configures several of Popper.js's built-in modifiers
+Modifiers allow us to customize Popper.js's positioning behavior. `Popover` configures several of Popper.js's built-in modifiers
 to handle things such as flipping, preventing overflow from a boundary element, and positioning the arrow.
 
-You may override these default modifiers with the `modifiers` prop, which is an object with key-value pairs representing the
+You may override the default modifiers with the `modifiers` prop, which is an object with key-value pairs representing the
 modifier name and its options object, respectively. See the [Popper.js modifiers docs page](https://popper.js.org/docs/v2/modifiers/)
-for more info. It is not currently possible to add your own custom modifiers through `Popover`.
+for more info.
+
+You may also add custom modifiers using the `modifiersCustom` prop. See the
+[Popper.js custom modifiers documentation](https://popper.js.org/docs/v2/modifiers/#custom-modifiers) for more info.
 
 @### Controlled mode
 
@@ -224,7 +227,8 @@ The supported values are:
     -   **Opens when:** the target is clicked, or when Enter or Shift key are pressed while target is focused
     -   **Closes when:** the target is clicked
 
-The following example demonstrates the various interaction kinds (note: these Popovers contain [`MenuItem`](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
+The following example demonstrates the various interaction kinds (note: these Popovers contain
+[MenuItem](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
 
 @reactExample PopoverInteractionKindExample
 
@@ -238,15 +242,15 @@ You can use this to style the target differently when the popover is open.
 
 @### Closing on click
 
-Sometimes it is desirable for an element inside a `Popover`'s content to close the popover
-on click. `Popover` supports a pair of CSS classes, `Classes.POPOVER_DISMISS`
-and `Classes.POPOVER_DISMISS_OVERRIDE`, which can be added to elements to
+Sometimes it is desirable for an element inside a Popover's content to close the popover
+on click. Popover supports a pair of CSS classes, `Classes.POPOVER2_DISMISS`
+and `Classes.POPOVER2_DISMISS_OVERRIDE`, which can be added to elements to
 describe whether click events should dismiss the enclosing popover.
 
 To mark an element (and its children) as "dismiss elements", simply add the
 class `Classes.POPOVER_DISMISS`. For example, the **Cancel** and **Delete** buttons in the
 top-level [Popover example](#core/components/popover) have this class, and all
-`MenuItem`s receive this class by default (see `shouldDismissPopover` prop). To
+MenuItems receive this class by default (see `shouldDismissPopover` prop). To
 enable this behavior on the entire popover body, pass
 `popoverClassName={Classes.POPOVER_DISMISS}`.
 
@@ -256,8 +260,8 @@ originating inside disabled elements (either via the `disabled` attribute or
 `Classes.DISABLED`) will never dismiss a popover.
 
 Additionally, the prop `captureDismiss` (disabled by default) will prevent click
-events from dismissing _grandparent_ popovers (not the `Popover` immediately
-containing the dismiss element). `MenuItem` disables this feature such that
+events from dismissing _grandparent_ popovers (not the Popover immediately
+containing the dismiss element). MenuItem disables this feature such that
 clicking any submenu item will close all submenus, which is desirable behavior
 for a menu tree.
 

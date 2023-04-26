@@ -40,9 +40,9 @@ of this wrapper element.
 
 ### Advanced usage
 
-By default, `<ContextMenu2>` will render a wrapper element around its children to attach an event handler
+By default, `<ContextMenu>` will render a wrapper element around its children to attach an event handler
 and get a DOM ref for theme detection. If this wrapper element breaks your HTML and/or CSS layout in
-some way and you wish to omit it, you may do so by utilizing ContextMenu2's advanced rendering API
+some way and you wish to omit it, you may do so by utilizing ContextMenu's advanced rendering API
 which uses a `children` render function. If you use this approach, you must take care to properly use
 all the render props supplied to the `children()` function:
 

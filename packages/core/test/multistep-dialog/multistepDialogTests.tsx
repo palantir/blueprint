@@ -15,14 +15,14 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 
-import { Classes, MultistepDialog, DialogStep } from "../../src";
+import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../../src";
 
-const NEXT_BUTTON = "[text='Next']";
-const BACK_BUTTON = "[text='Back']";
-const SUBMIT_BUTTON = "[text='Submit']";
+// TODO: button selectors in these tests should not be tied so closely to implementation; we shouldn't
+// need to reference AnchorButton directly
+const findButtonWithText = (wrapper: ReactWrapper, text: string) => wrapper.find(AnchorButton).find(`[text='${text}']`);
 
 describe("<MultistepDialog>", () => {
     it("renders its content correctly", () => {
@@ -62,14 +62,14 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    it("clicking next should select the next element", () => {
+    it("clicking next should move to the next step", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        dialog.find(NEXT_BUTTON).simulate("click");
+        findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
         assert.strictEqual(steps.at(0).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
@@ -77,7 +77,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    it("clicking back should select the prev element", () => {
+    it("clicking back should move to the prev step", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -85,13 +85,13 @@ describe("<MultistepDialog>", () => {
             </MultistepDialog>,
         );
 
-        dialog.find(NEXT_BUTTON).simulate("click");
+        findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
         assert.strictEqual(steps.at(0).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
         assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 1);
 
-        dialog.find(BACK_BUTTON).simulate("click");
+        findButtonWithText(dialog, "Back").simulate("click");
         const newSteps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         assert.strictEqual(newSteps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
@@ -106,11 +106,11 @@ describe("<MultistepDialog>", () => {
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        dialog.find(NEXT_BUTTON).simulate("click");
+        findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
-        assert.strictEqual(dialog.find(BACK_BUTTON).length, 1);
-        assert.strictEqual(dialog.find(NEXT_BUTTON).length, 0);
-        assert.strictEqual(dialog.find(SUBMIT_BUTTON).length, 1);
+        assert.strictEqual(findButtonWithText(dialog, "Back").length, 1);
+        assert.strictEqual(findButtonWithText(dialog, "Next").length, 0);
+        assert.strictEqual(findButtonWithText(dialog, "Submit").length, 1);
         dialog.unmount();
     });
 
@@ -123,9 +123,9 @@ describe("<MultistepDialog>", () => {
         );
 
         assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.strictEqual(dialog.find(BACK_BUTTON).length, 0);
-        assert.strictEqual(dialog.find(NEXT_BUTTON).length, 1);
-        assert.strictEqual(dialog.find(SUBMIT_BUTTON).length, 0);
+        assert.strictEqual(findButtonWithText(dialog, "Back").length, 0);
+        assert.strictEqual(findButtonWithText(dialog, "Next").length, 1);
+        assert.strictEqual(findButtonWithText(dialog, "Submit").length, 0);
         dialog.unmount();
     });
 
@@ -137,9 +137,9 @@ describe("<MultistepDialog>", () => {
         );
 
         assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.strictEqual(dialog.find(BACK_BUTTON).length, 0);
-        assert.strictEqual(dialog.find(NEXT_BUTTON).length, 0);
-        assert.strictEqual(dialog.find(SUBMIT_BUTTON).length, 1);
+        assert.strictEqual(findButtonWithText(dialog, "Back").length, 0);
+        assert.strictEqual(findButtonWithText(dialog, "Next").length, 0);
+        assert.strictEqual(findButtonWithText(dialog, "Submit").length, 1);
         dialog.unmount();
     });
 
@@ -151,7 +151,7 @@ describe("<MultistepDialog>", () => {
             </MultistepDialog>,
         );
         assert.strictEqual(dialog.state("selectedIndex"), 0);
-        dialog.find(NEXT_BUTTON).simulate("click");
+        findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const step = dialog.find(`.${Classes.DIALOG_STEP}`);
         step.at(0).simulate("click");
@@ -190,7 +190,7 @@ describe("<MultistepDialog>", () => {
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.strictEqual(dialog.find(NEXT_BUTTON).prop("disabled"), undefined);
+        assert.strictEqual(findButtonWithText(dialog, "Next").prop("disabled"), undefined);
         dialog.unmount();
     });
 
@@ -201,7 +201,7 @@ describe("<MultistepDialog>", () => {
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.strictEqual(dialog.find(NEXT_BUTTON).prop("disabled"), true);
+        assert.strictEqual(findButtonWithText(dialog, "Next").prop("disabled"), true);
         dialog.unmount();
     });
 
@@ -215,11 +215,11 @@ describe("<MultistepDialog>", () => {
         );
 
         assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.strictEqual(dialog.find(NEXT_BUTTON).prop("disabled"), undefined);
-        dialog.find(NEXT_BUTTON).simulate("click");
+        assert.strictEqual(findButtonWithText(dialog, "Next").prop("disabled"), undefined);
+        findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
-        assert.strictEqual(dialog.find(NEXT_BUTTON).prop("disabled"), true);
-        dialog.find(NEXT_BUTTON).simulate("click");
+        assert.strictEqual(findButtonWithText(dialog, "Next").prop("disabled"), true);
+        findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         dialog.unmount();
     });
@@ -234,13 +234,13 @@ describe("<MultistepDialog>", () => {
         );
 
         assert.strictEqual(dialog.state("selectedIndex"), 0);
-        dialog.find(NEXT_BUTTON).simulate("click");
+        findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
-        assert.strictEqual(dialog.find(BACK_BUTTON).prop("disabled"), true);
-        dialog.find(BACK_BUTTON).simulate("click");
+        assert.strictEqual(findButtonWithText(dialog, "Back").prop("disabled"), true);
+        findButtonWithText(dialog, "Back").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         dialog.unmount();
     });
 });
 
-const Panel: React.FunctionComponent = () => <strong> panel</strong>;
+const Panel: React.FC = () => <strong> panel</strong>;

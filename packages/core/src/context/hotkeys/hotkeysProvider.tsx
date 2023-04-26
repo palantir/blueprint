@@ -21,6 +21,13 @@ import { HotkeysDialog, HotkeysDialogProps } from "../../components/hotkeys/hotk
 import { HotkeyConfig } from "../../hooks";
 
 interface HotkeysContextState {
+    /**
+     * Whether the context instance is being used within a tree which has a <HotkeysProvider>.
+     * It's technically ok if this is false, but not recommended, since that means any hotkeys
+     * bound with that context instance will not show up in the hotkeys help dialog.
+     */
+    hasProvider: boolean;
+
     /** List of hotkeys accessible in the current scope, registered by currently mounted components, can be global or local. */
     hotkeys: HotkeyConfig[];
 
@@ -34,7 +41,7 @@ type HotkeysAction =
 
 export type HotkeysContextInstance = [HotkeysContextState, React.Dispatch<HotkeysAction>];
 
-const initialHotkeysState: HotkeysContextState = { hotkeys: [], isDialogOpen: false };
+const initialHotkeysState: HotkeysContextState = { hasProvider: false, hotkeys: [], isDialogOpen: false };
 const noOpDispatch: React.Dispatch<HotkeysAction> = () => null;
 
 /**
@@ -43,7 +50,7 @@ const noOpDispatch: React.Dispatch<HotkeysAction> = () => null;
  * if using global hotkeys.
  *
  * You will likely not be using this HotkeysContext directly, except in cases where you need to get a direct handle on an
- * exisitng context instance for advanced use cases involving nested HotkeysProviders.
+ * existing context instance for advanced use cases involving nested HotkeysProviders.
  *
  * For more information, see the [HotkeysProvider documentation](https://blueprintjs.com/docs/#core/context/hotkeys-provider).
  */
@@ -100,7 +107,7 @@ export interface HotkeysProviderProps {
  */
 export const HotkeysProvider = ({ children, dialogProps, renderDialog, value }: HotkeysProviderProps) => {
     const hasExistingContext = value != null;
-    const [state, dispatch] = value ?? React.useReducer(hotkeysReducer, initialHotkeysState);
+    const [state, dispatch] = value ?? React.useReducer(hotkeysReducer, { ...initialHotkeysState, hasProvider: true });
     const handleDialogClose = React.useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), []);
 
     const dialog = renderDialog?.(state, { handleDialogClose }) ?? (

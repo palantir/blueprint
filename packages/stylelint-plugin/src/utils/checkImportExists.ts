@@ -15,20 +15,38 @@
 
 import type { Root } from "postcss";
 
+import { CssExtensionMap, CssSyntax } from "./cssSyntax";
+
 /**
  * Returns true if the given import exists in the file, otherwise returns false.
  * If `importPath` is an array, any of the strings has to match in order fortrue to be returned.
  */
-export function checkImportExists(root: Root, importPath: string | string[]): boolean {
+export function checkImportExists(
+    cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS,
+    root: Root,
+    importPath: string,
+    namespace?: string,
+): boolean {
     let hasBpVarsImport = false;
-    root.walkAtRules(/^import$/i, atRule => {
-        for (const path of typeof importPath === "string" ? [importPath] : importPath) {
+    const walkRegex = cssSyntaxType === CssSyntax.LESS ? /^import$/i : /^use$/i;
+    root.walkAtRules(walkRegex, atRule => {
+        for (const path of [importPath, `${importPath}.${CssExtensionMap[cssSyntaxType]}`]) {
             if (stripQuotes(stripLessReference(atRule.params)) === path) {
                 hasBpVarsImport = true;
                 return false; // Stop the iteration
             }
+            if (namespace !== undefined) {
+                const asText = ` as ${namespace}`;
+                if (
+                    atRule.params.endsWith(asText) &&
+                    stripQuotes(atRule.params.substring(0, atRule.params.lastIndexOf(asText))) === path
+                ) {
+                    hasBpVarsImport = true;
+                    return false; // Stop the iteration
+                }
+            }
         }
-        return true;
+        return;
     });
     return hasBpVarsImport;
 }
@@ -36,7 +54,7 @@ export function checkImportExists(root: Root, importPath: string | string[]): bo
 function stripLessReference(str: string): string {
     const LESS_REFERENCE = "(reference)";
     if (str.startsWith(`${LESS_REFERENCE} `)) {
-        return str.substring(LESS_REFERENCE.length + 1, str.length);
+        return str.substring(LESS_REFERENCE.length + 1);
     }
     return str;
 }
@@ -46,6 +64,7 @@ function stripQuotes(str: string): string {
         (str.charAt(0) === '"' && str.charAt(str.length - 1) === '"') ||
         (str.charAt(0) === "'" && str.charAt(str.length - 1) === "'")
     ) {
+        // omit first and last character
         return str.substring(1, str.length - 1);
     }
     return str;

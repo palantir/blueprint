@@ -18,6 +18,8 @@ export { Cell, CellProps, CellRenderer } from "./cell/cell";
 
 export { EditableCell, EditableCellProps } from "./cell/editableCell";
 
+export { EditableCell2, EditableCell2Props } from "./cell/editableCell2";
+
 export { JSONFormat, JSONFormatProps } from "./cell/formats/jsonFormat";
 
 export { TruncatedPopoverMode, TruncatedFormat, TruncatedFormatProps } from "./cell/formats/truncatedFormat";
@@ -49,9 +51,14 @@ export { ColumnHeaderRenderer } from "./headers/columnHeader";
 
 export { RowHeaderRenderer } from "./headers/rowHeader";
 
+// eslint-disable-next-line deprecation/deprecation
 export { ColumnHeaderCell, ColumnHeaderCellProps, HorizontalCellDivider } from "./headers/columnHeaderCell";
 
+export { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./headers/columnHeaderCell2";
+
 export { RowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
+
+export { RowHeaderCell2 } from "./headers/rowHeaderCell2";
 
 export { EditableNameProps, EditableName } from "./headers/editableName";
 
@@ -68,5 +75,9 @@ export {
     TableLoadingOption,
 } from "./regions";
 
-// TODO(adahiya): rename Table2 to Table
-export { Table2 as Table, Table2Props as TableProps } from "./table";
+// eslint-disable-next-line deprecation/deprecation
+export { Table } from "./table";
+
+export { TableProps } from "./tableProps";
+
+export { Table2, Table2Props } from "./table2";

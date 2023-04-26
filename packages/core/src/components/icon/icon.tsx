@@ -19,7 +19,7 @@ import React, { forwardRef, useEffect, useState } from "react";
 
 import { IconComponent, IconName, Icons, IconSize, SVGIconProps } from "@blueprintjs/icons";
 
-import { Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props } from "../../common";
 
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
 export { IconName, IconSize };

@@ -60,7 +60,7 @@ export interface DateFormatProps {
 }
 
 export function getFormattedDateString(
-    date: Date | false | null,
+    date: Date | false | null | undefined,
     props: DateFormatProps & DatePickerBaseProps,
     ignoreRange = false,
 ) {

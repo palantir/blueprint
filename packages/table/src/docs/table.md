@@ -1,11 +1,12 @@
 @# Table
 
-A highly interactive table component.
+The [__@blueprintjs/table__ package](https://www.npmjs.com/package/@blueprintjs/select) provides components
+to build a highly interactive table or spreadsheet UI.
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
 
-If you are looking instead for the Blueprint-styled HTML `<table>`, see
-[`HTMLTable` in **@blueprintjs/core**](#core/components/html-table).
+If you are looking for the simpler Blueprint-styled HTML `<table>` instead, see
+[the `HTMLTable` component in **@blueprintjs/core**](#core/components/html-table).
 </div>
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
@@ -32,30 +33,25 @@ Do not forget to include `table.css` on your page:
 
 @## Basic usage
 
+<div class="@ns-callout @ns-large @ns-intent-success @ns-icon-star">
+
+There is an updated version of the table component with some new features and compatibility with the
+[new hotkeys API](#core/components/hotkeys-target2): see [Table2](#table/table2).
+</div>
+
 To create a table, you must define the rows and columns. Add children to the `Table` to create columns,
 and change the `numRows` prop on the `Table` to set the number of rows.
 
-`Table` uses `HotkeysTarget` from `@blueprintjs/core` to bind some built-in hotkeys. For this feature
-to work, must configure a [HotkeysProvider](#core/context/hotkeys-provider) in your application.
-
-This code creates an empty table with three columns and five rows:
+For example, this code creates an empty table with three columns and five rows:
 
 ```tsx
-import { HotkeysProvider } from "@blueprintjs/core";
 import { Column, Table } from "@blueprintjs/table";
-import React from "react";
-import ReactDOM from "react-dom";
 
-ReactDOM.render(
-    <HotkeysProvider>
-        <Table numRows={5}>
-            <Column />
-            <Column />
-            <Column />
-        </Table>
-    </HotkeysProvider>,
-    document.querySelector("#app"),
-);
+<Table numRows={5}>
+    <Column />
+    <Column />
+    <Column />
+</Table>
 ```
 
 The table is **data-agnostic**. It doesn't store any data internally, so it is up to you to bind the table to your data.
@@ -83,5 +79,6 @@ const euroCellRenderer = (rowIndex: number) => (
 
 @reactExample TableDollarExample
 
+@page table2
 @page features
 @page api

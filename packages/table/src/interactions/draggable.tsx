@@ -17,12 +17,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { Props, Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils, Props } from "@blueprintjs/core";
 
 import { DragEvents } from "./dragEvents";
 import { DragHandler } from "./dragTypes";
 
-export interface DraggableProps extends Props, DragHandler {}
+export interface DraggableProps extends Props, DragHandler {
+    children?: React.ReactNode;
+}
 
 const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof DraggableProps>;
 

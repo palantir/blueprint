@@ -19,7 +19,7 @@ import sinon from "sinon";
 
 import { executeItemsEqual } from "../src/common/listItemsProps";
 
-describe("IListItemsProps Utils", () => {
+describe("ListItemsProps Utils", () => {
     describe("executeItemsEqual", () => {
         // interface for a non-primitive item value
         interface ItemObject {

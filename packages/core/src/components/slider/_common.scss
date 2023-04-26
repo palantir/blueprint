@@ -23,7 +23,7 @@
 }
 
 @mixin slider-track-orientation($handle-size, $track-size, $vertical: false) {
-  $slider-track-offset: ($handle-size - $track-size) / 2;
+  $slider-track-offset: ($handle-size - $track-size) * 0.5;
 
   @if $vertical == false {
     height: $track-size;

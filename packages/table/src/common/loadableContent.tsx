@@ -19,6 +19,8 @@ import React from "react";
 import { Classes } from "@blueprintjs/core";
 
 export interface LoadableContentProps {
+    children?: React.ReactNode;
+
     /**
      * If true, render a skeleton. Otherwise render the single, non-string child passed to this
      * component.

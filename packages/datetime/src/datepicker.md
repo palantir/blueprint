@@ -1,30 +1,36 @@
 @# Date picker
 
-A `DatePicker` shows a monthly calendar and allows the user to choose a single date.
-
-`DatePicker` is built on top of the [**react-day-picker**](https://github.com/gpbl/react-day-picker) library.
+DatePicker renders a UI to choose a single date and (optionally) a time of day.
+It is built on top of the [__react-day-picker__ library](https://github.com/gpbl/react-day-picker).
+If a `timePrecision` is defined, it will show a [TimePicker](#datetime/timepicker) underneath the
+calendar.
 
 @reactExample DatePickerExample
 
-@## Props
+@## Usage
 
-`DatePicker` supports both controlled and uncontrolled usage. You can control
+DatePicker supports both controlled and uncontrolled usage. You can control
 the selected day by setting the `value` prop, or use the component in
 uncontrolled mode and specify an initial day by setting `defaultValue`. Use the
 `onChange` prop to listen for changes to the selected day.
 
+@## Props interface
+
 Some props are managed by the `DatePicker` component, while others are passed
-to the **react-day-picker** library. These passed props are documented in full
-in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker/index.html).
+to the __react-day-picker__ library. These passed-through props are documented in full
+in the [__react-day-picker__ documentation](https://react-day-picker-v7.netlify.app/).
 
 @interface DatePickerProps
 
 @## Shortcuts
 
-The menu on the left of the calendars provides "shortcuts" that allow users to
+The menu on the left of the calendars provides "shortcuts" which allow users to
 quickly select common dates. The items in this menu are controlled through
-the `shortcuts` prop: `true` to show presets, `false` to hide (default), or an
-array of `DatePickerShortcut` objects to define custom shortcuts.
+the `shortcuts` prop:
+
+- `false` (default) will hide the shortcuts menu,
+- `true` will show the built-in shortcuts, and
+- custom shortcuts can be shown by defining an array of `DatePickerShortcut` objects.
 
 The **preset shortcuts** can be seen in the example above. They are as follows:
 
@@ -43,9 +49,9 @@ The **preset shortcuts** can be seen in the example above. They are as follows:
 
 You can use the `modifiers` prop to conditionally apply styles to days.
 Modifiers are a react-day-picker concept and are documented in full in the
-[**react-day-picker** documentation](http://react-day-picker.js.org/docs/matching-days).
+[__react-day-picker__ documentation](https://react-day-picker-v7.netlify.app/docs/matching-days).
 
-The example below creates a `DatePicker` that prevents the user from selecting any Sundays,
+The example below renders a DatePicker that prevents the user from selecting any Sundays,
 by using the component in controlled mode and with the `modifiers` prop:
 
 ```css.scss
@@ -57,6 +63,8 @@ by using the component in controlled mode and with the `modifiers` prop:
 
 ```tsx
 // in TypeScript
+import { DatePicker } from "@blueprintjs/datetime";
+
 export class DatePickerExample extends React.Component<{}, { selectedDate: Date }> {
     public state = { selectedDate: new Date() };
 
@@ -86,23 +94,27 @@ function isSunday(date: Date) {
 
 @## Localization
 
-`DatePicker`, `DateRangePicker`, `DateInput`, and `DateRangeInput` all support localization using an interface defined in the
-`react-day-picker` module:
+`DatePicker`, `DateRangePicker`, `DateInput`, and `DateRangeInput` all support calendar localization
+using an interface defined by __react-day-picker__:
 
 ```tsx
 import { LocaleUtils } from "react-day-picker";
 ```
 
-By supplying a `locale: string` and `localeUtils: LocaleUtils` prop to these Blueprint components, you can
-customize how dates are rendered, which day of the week is the first column, etc.
-You will need to overwrite the functions of `LocaleUtil` by your own.
-[See the interface definition for more details](https://github.com/gpbl/react-day-picker/blob/v7.3.0/types/utils.d.ts#L5).
+By supplying a `locale: string` and `localeUtils: LocaleUtils` prop to these Blueprint components,
+you can customize how dates are rendered, which day of the week is the first column, etc.
 
-Although `@blueprintjs/datetime` and `react-day-picker` do not explicitly require `moment.js` as a dependency,
-you may wish to use Moment's implementation of localization so that you do not have to write these functions yourself.
+You will need to define the functions of `LocaleUtil` on your own.
+[See the interface definition](https://github.com/gpbl/react-day-picker/blob/v7.3.0/types/utils.d.ts#L5)
+for more details.
 
-To use moment for your localization, make sure to include `moment` in your dependencies and use `MomentLocaleUtils`
-from `react-day-picker/moment` as follow:
+Although `@blueprintjs/datetime` and `react-day-picker` do not explicitly require
+[__moment.js__](https://momentjs.com/) or [__date-fns__](https://date-fns.org/) as dependencies,
+you may wish to use those third-party implementations of localization so that you do not have to
+write these functions yourself.
+
+To use moment.js for localization, make sure to include __moment__ in your dependencies and use
+`MomentLocaleUtils` from `react-day-picker/moment` as follow:
 
 ```tsx
 import MomentLocaleUtils from "react-day-picker/moment";
@@ -111,4 +123,5 @@ import "moment/locale/fr";
 <DatePicker locale="fr" localeUtils={MomentLocaleUtils} />;
 ```
 
-More detailed examples can be found in the [**react-day-picker** documentation](https://react-day-picker.js.org/docs/localization/).
+More detailed examples can be found in the
+[__react-day-picker__ documentation](https://react-day-picker-v7.netlify.app/docs/localization).

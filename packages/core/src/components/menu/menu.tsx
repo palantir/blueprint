@@ -17,15 +17,18 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, Ref } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
 export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
+    /** Menu items. */
+    children?: React.ReactNode;
+
     /** Whether the menu items in this menu should use a large appearance. */
     large?: boolean;
 
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
-    ulRef?: Ref<HTMLUListElement>;
+    ulRef?: React.Ref<HTMLUListElement>;
 }
 
 export class Menu extends AbstractPureComponent<MenuProps> {
@@ -35,7 +38,7 @@ export class Menu extends AbstractPureComponent<MenuProps> {
         const { className, children, large, ulRef, ...htmlProps } = this.props;
         const classes = classNames(Classes.MENU, { [Classes.LARGE]: large }, className);
         return (
-            <ul {...htmlProps} className={classes} ref={ulRef}>
+            <ul role="menu" {...htmlProps} className={classes} ref={ulRef}>
                 {children}
             </ul>
         );

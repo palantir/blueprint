@@ -19,10 +19,11 @@ import React from "react";
 
 import { IconName, IconSize } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes, Ref, Keys, refHandler, setRef, Utils } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, Props, MaybeElement } from "../../common/props";
+import { AbstractPureComponent, Classes, Keys, refHandler, setRef, Utils } from "../../common";
+import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, MaybeElement, Props } from "../../common/props";
+import { getActiveElement } from "../../common/utils";
 import { Icon } from "../icon/icon";
-import { TagProps, Tag } from "../tag/tag";
+import { Tag, TagProps } from "../tag/tag";
 
 /**
  * The method in which a `TagInput` value was added.
@@ -56,6 +57,8 @@ export interface TagInputProps extends IntentProps, Props {
      */
     addOnPaste?: boolean;
 
+    children?: React.ReactNode;
+
     /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's `rightElement`,
@@ -75,7 +78,7 @@ export interface TagInputProps extends IntentProps, Props {
     inputProps?: HTMLInputProps;
 
     /** Ref handler for the `<input>` element. */
-    inputRef?: Ref<HTMLInputElement>;
+    inputRef?: React.Ref<HTMLInputElement>;
 
     /** Controlled value of the `<input>` element. This is shorthand for `inputProps={{ value }}`. */
     inputValue?: string;
@@ -174,10 +177,6 @@ export interface TagInputProps extends IntentProps, Props {
      * Controlled tag values. Each value will be rendered inside a `Tag`, which can be customized
      * using `tagProps`. Therefore, any valid React node can be used as a `TagInput` value; falsy
      * values will not be rendered.
-     *
-     * __Note about typed usage:__ If you know your `values` will always be of a certain `ReactNode`
-     * subtype, such as `string` or `ReactChild`, you can use that type on all your handlers
-     * to simplify type logic.
      */
     values: readonly React.ReactNode[];
 }
@@ -224,7 +223,7 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
 
     public inputElement: HTMLInputElement | null = null;
 
-    private handleRef: Ref<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
+    private handleRef: React.Ref<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
     public render() {
         const { className, disabled, fill, inputProps, intent, large, leftIcon, placeholder, values } = this.props;
@@ -362,7 +361,8 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
         this.requestAnimationFrame(() => {
             // we only care if the blur event is leaving the container.
             // defer this check using rAF so activeElement will have updated.
-            if (!currentTarget.contains(document.activeElement)) {
+            const isFocusInsideContainer = currentTarget.contains(getActiveElement(this.inputElement));
+            if (!isFocusInsideContainer) {
                 if (this.props.addOnBlur && this.state.inputValue !== undefined && this.state.inputValue.length > 0) {
                     this.addTags(this.state.inputValue, "blur");
                 }

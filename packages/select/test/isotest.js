@@ -15,8 +15,9 @@
 
 // @ts-check
 require("@blueprintjs/test-commons/bootstrap");
+
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
-const React = require("react");
+
 const Select = require("../lib/cjs");
 
 describe("Select isomorphic rendering", () => {
@@ -37,9 +38,6 @@ describe("Select isomorphic rendering", () => {
         },
         Omnibar: {
             props: { items: [], isOpen: true, overlayProps: { usePortal: false } },
-        },
-        QueryList: {
-            skip: true,
         },
     });
 });

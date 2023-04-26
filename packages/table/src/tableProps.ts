@@ -16,6 +16,7 @@
 
 import type { Props } from "@blueprintjs/core";
 
+import type { CellRenderer } from "./cell/cell";
 import type { ColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import type { ColumnIndices, RowIndices } from "./common/grid";
@@ -25,7 +26,7 @@ import type { RowHeaderRenderer, RowHeights } from "./headers/rowHeader";
 import type { ContextMenuRenderer } from "./interactions/menus";
 import type { IndexedResizeCallback } from "./interactions/resizable";
 import type { SelectedRegionTransform } from "./interactions/selectable";
-import type { Region, StyledRegionGroup, RegionCardinality, TableLoadingOption } from "./regions";
+import type { Region, RegionCardinality, StyledRegionGroup, TableLoadingOption } from "./regions";
 
 export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWidths> {
     /**
@@ -147,9 +148,14 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
      * attempts to copy a selection via `mod+c`. The returned data will be copied
      * to the clipboard and need not match the display value of the `<Cell>`.
      * The data will be invisibly added as `textContent` into the DOM before
-     * copying. If not defined, keyboard copying via `mod+c` will be disabled.
+     * copying. If not defined, a default implementation will be used that
+     * turns the rendered cell elements into strings using 'react-innertext'.
+     *
+     * @param row the row index coordinate of the cell to get data for
+     * @param col the col index coordinate of the cell to get data for
+     * @param cellRenderer the cell renderer for this row, col coordinate in the table
      */
-    getCellClipboardData?: (row: number, col: number) => any;
+    getCellClipboardData?: (row: number, col: number, celRenderer: CellRenderer) => any;
 
     /**
      * A list of `TableLoadingOption`. Set this prop to specify whether to
@@ -310,6 +316,13 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
      * marked with their own `className` for custom styling.
      */
     styledRegionGroups?: StyledRegionGroup[];
+
+    /**
+     * If `false`, hides the column headers.
+     *
+     * @default true
+     */
+    enableColumnHeader?: boolean;
 }
 
 export type TablePropsDefaults = Required<
@@ -323,6 +336,7 @@ export type TablePropsDefaults = Required<
         | "enableMultipleSelection"
         | "enableRowHeader"
         | "forceRerenderOnSelectionChange"
+        | "getCellClipboardData"
         | "loadingOptions"
         | "maxColumnWidth"
         | "maxRowHeight"
@@ -334,6 +348,7 @@ export type TablePropsDefaults = Required<
         | "renderMode"
         | "rowHeaderCellRenderer"
         | "selectionModes"
+        | "enableColumnHeader"
     >
 >;
 export type TablePropsWithDefaults = Omit<TableProps, keyof TablePropsDefaults> & TablePropsDefaults;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,16 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import React from "react";
-import sinon from "sinon";
+import * as sinon from "sinon";
 
-import { InputGroup, Popover } from "@blueprintjs/core";
+import { InputGroup, Keys, MenuItem, Popover } from "@blueprintjs/core";
 
-import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
-import { ItemRendererProps, SelectProps, SelectState, Select } from "../src";
+import { ItemRendererProps, Select, SelectProps, SelectState } from "../src";
+import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import { selectComponentSuite } from "./selectComponentSuite";
+import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("<Select>", () => {
-    const FilmSelect = Select.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
@@ -37,6 +37,7 @@ describe("<Select>", () => {
         itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
+    let testsContainerElement: HTMLElement | undefined;
 
     beforeEach(() => {
         handlers = {
@@ -44,10 +45,23 @@ describe("<Select>", () => {
             itemRenderer: sinon.spy(renderFilm),
             onItemSelect: sinon.spy(),
         };
+        testsContainerElement = document.createElement("div");
+        document.body.appendChild(testsContainerElement);
+    });
+
+    afterEach(() => {
+        for (const spy of Object.values(handlers)) {
+            spy.resetHistory();
+        }
+        testsContainerElement?.remove();
     });
 
     selectComponentSuite<SelectProps<Film>, SelectState>(props =>
         mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
+    );
+
+    selectPopoverTestSuite<SelectProps<Film>, SelectState>(props =>
+        mount(<Select {...props} />, { attachTo: testsContainerElement }),
     );
 
     it("renders a Popover around children that contains InputGroup and items", () => {
@@ -84,23 +98,39 @@ describe("<Select>", () => {
         assert.notEqual(input.prop("value"), inputProps.value);
     });
 
-    it("popover can be controlled with popoverProps", () => {
+    it("Popover can be controlled with popoverProps", () => {
         // Select defines its own onOpening so this ensures that the passthrough happens
         const onOpening = sinon.spy();
         const modifiers = {}; // our own instance
         const wrapper = select({ popoverProps: { onOpening, modifiers } });
-        wrapper.find("article").simulate("click");
+        wrapper.find("[data-testid='target-button']").simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
         assert.isTrue(onOpening.calledOnce);
     });
 
-    it.skip("returns focus to focusable target after popover closed");
+    // TODO(adahiya): move into selectComponentSuite, generalize for Suggest & MultiSelect
+    it("opens Popover when arrow key pressed on target while closed", () => {
+        // override isOpen in defaultProps
+        const wrapper = select({ popoverProps: { usePortal: false } });
+        // should be closed to start
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        wrapper.find("[data-testid='target-button']").simulate("keydown", { which: Keys.ARROW_DOWN });
+        // ...then open after key down
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+    });
+
+    // HACKHACK: see https://github.com/palantir/blueprint/issues/5364
+    it.skip("invokes onItemSelect when clicking first MenuItem", () => {
+        const wrapper = select();
+        wrapper.find(Popover).find(MenuItem).first().simulate("click");
+        assert.isTrue(handlers.onItemSelect.calledOnce);
+    });
 
     function select(props: Partial<SelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
-            <FilmSelect {...defaultProps} {...handlers} {...props}>
-                <article />
-            </FilmSelect>,
+            <Select<Film> {...defaultProps} {...handlers} {...props}>
+                <button data-testid="target-button">Target</button>
+            </Select>,
         );
         if (query !== undefined) {
             wrapper.setState({ query });

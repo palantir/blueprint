@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangeInput2 in the datetime2
+ * package instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import React from "react";
 import DayPicker from "react-day-picker";
@@ -23,13 +31,13 @@ import {
     Boundary,
     Classes,
     DISPLAYNAME_PREFIX,
-    InputGroupProps,
     InputGroup,
+    InputGroupProps,
     Intent,
-    PopoverProps,
-    Props,
     Keys,
     Popover,
+    PopoverProps,
+    Props,
     refHandler,
     setRef,
 } from "@blueprintjs/core";
@@ -37,8 +45,8 @@ import {
 import { DateRange } from "./common/dateRange";
 import { areSameTime, isDateValid, isDayInRange } from "./common/dateUtils";
 import * as Errors from "./common/errors";
-import { getFormattedDateString, DateFormatProps } from "./dateFormat";
-import { getDefaultMaxDate, getDefaultMinDate, DatePickerBaseProps } from "./datePickerCore";
+import { DateFormatProps, getFormattedDateString } from "./dateFormat";
+import { DatePickerBaseProps, getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
 import { DateRangePicker } from "./dateRangePicker";
 import { DateRangeShortcut } from "./shortcuts";
 
@@ -583,7 +591,6 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
     // - if focused in end field, Shift+Tab moves focus to start field
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable deprecation/deprecation */
         const isTabPressed = e.which === Keys.TAB;
         const isEnterPressed = e.which === Keys.ENTER;
         const isShiftPressed = e.shiftKey;

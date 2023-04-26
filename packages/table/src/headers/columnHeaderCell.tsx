@@ -14,10 +14,25 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to ColumnHeaderCell2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Icon, IconName, Props, Popover, Utils as CoreUtils } from "@blueprintjs/core";
+import {
+    AbstractPureComponent,
+    Utils as CoreUtils,
+    DISPLAYNAME_PREFIX,
+    Icon,
+    IconName,
+    Popover,
+    Props,
+} from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "../common/context";
@@ -33,7 +48,7 @@ export interface ColumnNameProps {
 
     /**
      * A callback to override the default name rendering behavior. The default
-     * behavior is to simply use the `ColumnHeaderCell`s name prop.
+     * behavior is to simply use the `ColumnHeaderCell2`s name prop.
      *
      * This render callback can be used, for example, to provide a
      * `EditableName` component for editing column names.
@@ -74,13 +89,17 @@ export function HorizontalCellDivider(): JSX.Element {
     return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER} />;
 }
 
+/** @deprecated use ColumnHeaderCell2 instead */
 export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProps, ColumnHeaderCellState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.ColumnHeaderCell`;
+
     public static defaultProps: ColumnHeaderCellProps = {
         isActive: false,
         menuIcon: "chevron-down",
     };
 
-    public static contextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
+    public static contextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> =
+        columnInteractionBarContextTypes;
 
     /**
      * This method determines if a `MouseEvent` was triggered on a target that

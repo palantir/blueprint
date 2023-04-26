@@ -21,10 +21,10 @@ import { Classes, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
 import { DateRange, DateRangePicker, TimePrecision } from "@blueprintjs/datetime";
 import {
     Example,
+    ExampleProps,
     handleBooleanChange,
     handleNumberChange,
     handleValueChange,
-    ExampleProps,
 } from "@blueprintjs/docs-theme";
 
 import { MomentDateRange } from "./common/momentDate";

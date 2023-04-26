@@ -23,6 +23,8 @@ import { Classes } from "@blueprintjs/core";
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 
 export interface NavMenuItemProps {
+    children?: React.ReactNode;
+
     /** CSS classes to apply to the root element, for proper appearance in the tree. */
     className: string;
 

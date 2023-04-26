@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangeInput2 in the datetime2
+ * package instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import React from "react";
@@ -26,8 +34,8 @@ import {
     Classes,
     HTMLDivProps,
     HTMLInputProps,
-    InputGroupProps,
     InputGroup,
+    InputGroupProps,
     Keys,
     Popover,
     PopoverProps,
@@ -36,7 +44,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src";
 import { Months } from "../src/common/months";
-import { DATETIME_FORMAT, DATE_FORMAT } from "./common/dateFormat";
+import { DATE_FORMAT, DATETIME_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
 type WrappedComponentRoot = ReactWrapper<any>;

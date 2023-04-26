@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, Ref, RefCallback, refHandler, setRef } from "../../common";
+import { AbstractPureComponent, Classes, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 
 export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -44,7 +44,7 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
     /**
      * Ref handler that receives HTML `<textarea>` element backing this component.
      */
-    inputRef?: Ref<HTMLTextAreaElement>;
+    inputRef?: React.Ref<HTMLTextAreaElement>;
 }
 
 export interface TextAreaState {
@@ -61,7 +61,11 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
     // used to measure and set the height of the component on first mount
     public textareaElement: HTMLTextAreaElement | null = null;
 
-    private handleRef: RefCallback<HTMLTextAreaElement> = refHandler(this, "textareaElement", this.props.inputRef);
+    private handleRef: React.RefCallback<HTMLTextAreaElement> = refHandler(
+        this,
+        "textareaElement",
+        this.props.inputRef,
+    );
 
     public componentDidMount() {
         if (this.props.growVertically && this.textareaElement !== null) {

@@ -85,6 +85,14 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
             assert.isTrue(wrapper.find(tagName).hasClass(Classes.DISABLED));
         });
 
+        // This tests some subtle (potentialy unexpected) behavior, but it was an API decision we
+        // made a long time ago which we rely on and should not break.
+        // See https://github.com/palantir/blueprint/issues/3819#issuecomment-1189478596
+        it("button is disabled when the loading prop is true, even if disabled={false}", () => {
+            const wrapper = button({ disabled: false, loading: true });
+            assert.isTrue(wrapper.hasClass(Classes.DISABLED));
+        });
+
         it("clicking button triggers onClick prop", () => {
             const onClick = spy();
             button({ onClick }).simulate("click");

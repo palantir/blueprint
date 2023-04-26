@@ -115,6 +115,7 @@ describe("Utils", () => {
     });
 
     describe("arrayOfLength", () => {
+        /* eslint-disable deprecation/deprecation */
         it("truncates if too long", () => {
             const original = Utils.times(5, () => "A");
             const result = Utils.arrayOfLength(original, 2, "B");
@@ -139,6 +140,7 @@ describe("Utils", () => {
             expect(result).to.have.lengthOf(5);
             expect(result).to.deep.equal(["A", "A", "A", "A", "A"]);
         });
+        /* eslint-enable deprecation/deprecation */
     });
 
     describe("assignSparseValues", () => {
@@ -245,11 +247,11 @@ describe("Utils", () => {
         const RIGHT_BUTTON_CODE = 1;
 
         it("returns true for left click", () => {
-            expect(Utils.isLeftClick(({ button: LEFT_BUTTON_CODE } as any) as MouseEvent)).to.be.true;
+            expect(Utils.isLeftClick({ button: LEFT_BUTTON_CODE } as any as MouseEvent)).to.be.true;
         });
 
         it("returns false for right click", () => {
-            expect(Utils.isLeftClick(({ button: RIGHT_BUTTON_CODE } as any) as MouseEvent)).to.be.false;
+            expect(Utils.isLeftClick({ button: RIGHT_BUTTON_CODE } as any as MouseEvent)).to.be.false;
         });
     });
 

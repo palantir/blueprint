@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to TimezoneSelect instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import React from "react";
 
 import {
     AbstractPureComponent,
     Button,
+    ButtonProps,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
-    ButtonProps,
     InputGroupProps,
+    MenuItem,
     PopoverProps,
     Props,
-    MenuItem,
 } from "@blueprintjs/core";
 import { CaretDown } from "@blueprintjs/icons";
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
@@ -39,9 +46,12 @@ import { getInitialTimezoneItems, getTimezoneItems, TimezoneItem } from "./timez
 export { TimezoneDisplayFormat };
 
 export interface TimezonePickerProps extends Props {
+    children?: React.ReactNode;
+
     /**
      * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
-     * See https://www.iana.org/time-zones for more information.
+     *
+     * @see https://www.iana.org/time-zones
      */
     value: string | undefined;
 
@@ -111,8 +121,7 @@ export interface TimezonePickerState {
     query: string;
 }
 
-const TypedSelect = Select.ofType<TimezoneItem>();
-
+/** @deprecated use { TimezoneSelect } from "@blueprintjs/datetime2" */
 export class TimezonePicker extends AbstractPureComponent<TimezonePickerProps, TimezonePickerState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 
@@ -154,7 +163,7 @@ export class TimezonePicker extends AbstractPureComponent<TimezonePickerProps, T
         };
 
         return (
-            <TypedSelect
+            <Select<TimezoneItem>
                 className={classNames(Classes.TIMEZONE_PICKER, className)}
                 items={query ? this.timezoneItems : this.initialTimezoneItems}
                 itemListPredicate={this.filterItems}
@@ -169,7 +178,7 @@ export class TimezonePicker extends AbstractPureComponent<TimezonePickerProps, T
                 onQueryChange={this.handleQueryChange}
             >
                 {children ?? this.renderButton()}
-            </TypedSelect>
+            </Select>
         );
     }
 
@@ -185,7 +194,7 @@ export class TimezonePicker extends AbstractPureComponent<TimezonePickerProps, T
         }
     }
 
-    protected validateProps(props: TimezonePickerProps & { children?: React.ReactNode }) {
+    protected validateProps(props: TimezonePickerProps) {
         const childrenCount = React.Children.count(props.children);
         if (childrenCount > 1) {
             console.warn(Errors.TIMEZONE_PICKER_WARN_TOO_MANY_CHILDREN);
@@ -209,7 +218,7 @@ export class TimezonePicker extends AbstractPureComponent<TimezonePickerProps, T
         return items.filter(item => expr.test(item.text + item.label));
     };
 
-    private renderItem: ItemRenderer<TimezoneItem> = (item, { handleClick, modifiers }) => {
+    private renderItem: ItemRenderer<TimezoneItem> = (item, { handleClick, handleFocus, modifiers }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
@@ -221,6 +230,7 @@ export class TimezonePicker extends AbstractPureComponent<TimezonePickerProps, T
                 text={item.text}
                 label={item.label}
                 onClick={handleClick}
+                onFocus={handleFocus}
                 shouldDismissPopover={false}
             />
         );

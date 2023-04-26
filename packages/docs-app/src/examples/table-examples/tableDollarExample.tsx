@@ -31,7 +31,7 @@ export class TableDollarExample extends React.PureComponent<ExampleProps> {
         );
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table numRows={20} enableGhostCells={true}>
+                <Table numRows={20} enableGhostCells={true} enableFocusedCell={true}>
                     <Column cellRenderer={dollarCellRenderer} columnHeaderCellRenderer={renderColumnHeader} />
                     <Column cellRenderer={euroCellRenderer} columnHeaderCellRenderer={renderColumnHeader} />
                 </Table>

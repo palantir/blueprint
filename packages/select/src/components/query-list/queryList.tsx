@@ -16,17 +16,17 @@
 
 import React from "react";
 
-import { AbstractComponent, DISPLAYNAME_PREFIX, Props, Keys, Menu, Utils } from "@blueprintjs/core";
+import { AbstractComponent, DISPLAYNAME_PREFIX, Keys, Menu, Props, Utils } from "@blueprintjs/core";
 
 import {
+    CreateNewItem,
     executeItemsEqual,
     getActiveItem,
     getCreateNewItem,
-    CreateNewItem,
+    isCreateNewItem,
     ItemListRendererProps,
     ItemModifiers,
     ListItemsProps,
-    isCreateNewItem,
     renderFilteredItems,
 } from "../../common";
 
@@ -36,6 +36,11 @@ export interface QueryListProps<T> extends ListItemsProps<T> {
      * not activeItem.
      */
     initialActiveItem?: T;
+
+    /**
+     * Additional props to apply to the `Menu` that is created within the `QueryList`
+     */
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
     /**
      * Callback invoked when user presses a key, after processing `QueryList`'s own key events
@@ -128,7 +133,7 @@ export interface QueryListState<T> {
      * this element will be used to hide the "Create Item" option if its value
      * matches the current `query`.
      */
-    createNewItem: T | undefined;
+    createNewItem: T | T[] | undefined;
 
     /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
     filteredItems: T[];
@@ -145,6 +150,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         resetOnQuery: true,
     };
 
+    /** @deprecated no longer necessary now that the TypeScript parser supports type arguments on JSX element tags */
     public static ofType<U>() {
         return QueryList as new (props: QueryListProps<U>) => QueryList<U>;
     }
@@ -203,7 +209,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     }
 
     public render() {
-        const { className, items, renderer, itemListRenderer = this.renderItemList } = this.props;
+        const { className, items, renderer, itemListRenderer = this.renderItemList, menuProps } = this.props;
         const { createNewItem, ...spreadableState } = this.state;
         return renderer({
             ...spreadableState,
@@ -217,6 +223,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                 ...spreadableState,
                 items,
                 itemsParentRef: this.refHandlers.itemsParent,
+                menuProps,
                 renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,
             }),
@@ -351,7 +358,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         }
         const createFirst = this.isCreateItemFirst();
         return (
-            <Menu ulRef={listProps.itemsParentRef}>
+            <Menu role="listbox" {...listProps.menuProps} ulRef={listProps.itemsParentRef}>
                 {createFirst && createItemView}
                 {menuContent}
                 {!createFirst && createItemView}
@@ -362,15 +369,16 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     /** wrapper around `itemRenderer` to inject props */
     private renderItem = (item: T, index: number) => {
         if (this.props.disabled !== true) {
-            const { activeItem, query } = this.state;
-            const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
+            const { activeItem, query, filteredItems } = this.state;
+
             const modifiers: ItemModifiers = {
                 active: executeItemsEqual(this.props.itemsEqual, getActiveItem(activeItem), item),
                 disabled: isItemDisabled(item, index, this.props.itemDisabled),
-                matchesPredicate,
+                matchesPredicate: filteredItems.indexOf(item) >= 0,
             };
             return this.props.itemRenderer(item, {
                 handleClick: e => this.handleItemSelect(item, e),
+                handleFocus: () => this.setActiveItem(item),
                 index,
                 modifiers,
                 query,
@@ -434,9 +442,13 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     private handleItemCreate = (query: string, evt?: React.SyntheticEvent<HTMLElement>) => {
         // we keep a cached createNewItem in state, but might as well recompute
         // the result just to be sure it's perfectly in sync with the query.
-        const item = this.props.createNewItemFromQuery?.(query);
-        if (item != null) {
-            this.props.onItemSelect?.(item, evt);
+        const value = this.props.createNewItemFromQuery?.(query);
+
+        if (value != null) {
+            const newItems = Array.isArray(value) ? value : [value];
+            for (const item of newItems) {
+                this.props.onItemSelect?.(item, evt);
+            }
             this.maybeResetQuery();
         }
     };
@@ -465,9 +477,10 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                 nextActiveItem = equalItem;
                 pastedItemsToEmit.push(equalItem);
             } else if (this.canCreateItems()) {
-                const newItem = createNewItemFromQuery?.(query);
-                if (newItem !== undefined) {
-                    pastedItemsToEmit.push(newItem);
+                const value = createNewItemFromQuery?.(query);
+                if (value !== undefined) {
+                    const newItems = Array.isArray(value) ? value : [value];
+                    pastedItemsToEmit.push(...newItems);
                 }
             } else {
                 nextQueries.push(query);
@@ -573,9 +586,12 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     private wouldCreatedItemMatchSomeExistingItem() {
         // search only the filtered items, not the full items list, because we
         // only need to check items that match the current query.
-        return this.state.filteredItems.some(item =>
-            executeItemsEqual(this.props.itemsEqual, item, this.state.createNewItem),
-        );
+        return this.state.filteredItems.some(item => {
+            const newItems = Array.isArray(this.state.createNewItem)
+                ? this.state.createNewItem
+                : [this.state.createNewItem];
+            return newItems.some(newItem => executeItemsEqual(this.props.itemsEqual, item, newItem));
+        });
     }
 
     private maybeResetQuery() {

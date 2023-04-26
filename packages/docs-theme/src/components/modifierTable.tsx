@@ -20,6 +20,9 @@ import React from "react";
 import { Classes, HTMLTable } from "@blueprintjs/core";
 
 export interface ModifierTableProps {
+    /** Table body contents. */
+    children?: React.ReactNode;
+
     /** Message to display when children is empty. */
     emptyMessage?: string;
 

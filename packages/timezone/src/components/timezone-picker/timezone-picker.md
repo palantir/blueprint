@@ -1,6 +1,18 @@
 @# TimezonePicker
 
-`TimezonePicker` allows the user to select from a list of timezones.
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h4 class="@ns-heading">
+
+Deprecated: use [TimezoneSelect](#datetime2/timezone-select)
+
+</h4>
+
+This component is **deprecated since @blueprintjs/timezone v4.3.0** in favor of the new
+TimezoneSelect component, which uses Popover2 instead of Popover under the hood, and
+does not have a dependency on moment-timezone. You should migrate to the new API which
+will become the standard in Blueprint v5.
+
+</div>
 
 [Moment Timezone](http://momentjs.com/timezone/) is used internally for the list of available timezones and
 timezone metadata.

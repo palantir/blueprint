@@ -17,10 +17,26 @@
 import { classesConstantsRule } from "./classes-constants";
 import { htmlComponentsRule } from "./html-components";
 import { iconComponentsRule } from "./icon-components";
+import {
+    noDeprecatedComponentsRule,
+    noDeprecatedCoreComponentsRule,
+    noDeprecatedDatetimeComponentsRule,
+    noDeprecatedSelectComponentsRule,
+    noDeprecatedTableComponentsRule,
+    noDeprecatedTimezoneComponentsRule,
+} from "./no-deprecated-components";
+import { noDeprecatedTypeReferencesRule } from "./no-deprecated-type-references";
 
 // eslint-disable-next-line import/no-default-export
 export default {
     "classes-constants": classesConstantsRule,
     "html-components": htmlComponentsRule,
     "icon-components": iconComponentsRule,
+    "no-deprecated-components": noDeprecatedComponentsRule,
+    "no-deprecated-core-components": noDeprecatedCoreComponentsRule,
+    "no-deprecated-datetime-components": noDeprecatedDatetimeComponentsRule,
+    "no-deprecated-select-components": noDeprecatedSelectComponentsRule,
+    "no-deprecated-table-components": noDeprecatedTableComponentsRule,
+    "no-deprecated-timezone-components": noDeprecatedTimezoneComponentsRule,
+    "no-deprecated-type-references": noDeprecatedTypeReferencesRule,
 };

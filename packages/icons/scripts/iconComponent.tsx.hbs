@@ -17,6 +17,7 @@ import React, { forwardRef } from "react";
 import type { SVGIconProps } from "../../svgIconProps";
 import { IconSize } from "../../iconSize";
 import * as Classes from "../../classes";
+import { uniqueId } from "../../jsUtils";
 
 export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, SVGIconProps>(({
     className,
@@ -30,6 +31,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, S
     const isLarge = size >= IconSize.LARGE;
     const pixelGridSize =  isLarge ? IconSize.LARGE : IconSize.STANDARD;
     const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
+    const titleId = uniqueId("iconTitle");
     const path = (
         <path
             d={
@@ -43,8 +45,18 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, S
 
     if (tagName === null) {
         return (
-            <svg fill={color} data-icon="{{iconName}}" width={size} height={size} viewBox={viewBox} ref={ref} {...htmlProps}>
-                {title && <desc>{title}</desc>}
+            <svg
+                aria-labelledby={title ? titleId : undefined}
+                data-icon="{{iconName}}"
+                fill={color}
+                height={size}
+                ref={ref}
+                role="img"
+                viewBox={viewBox}
+                width={size}
+                {...htmlProps}
+            >
+                {title && <title id={titleId}>{title}</title>}
                 {path}
             </svg>
         );
@@ -59,7 +71,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, S
                 title: htmlTitle,
             },
             <svg fill={color} data-icon="{{iconName}}" width={size} height={size} viewBox={viewBox}>
-                {title && <desc>{title}</desc>}
+                {title && <title>{title}</title>}
                 {path}
             </svg>
         );

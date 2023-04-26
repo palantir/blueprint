@@ -15,14 +15,14 @@
 
 import { assert, expect } from "chai";
 import {
-    mount as untypedMount,
     MountRendererProps,
     ReactWrapper,
-    shallow as untypedShallow,
     ShallowRendererProps,
+    mount as untypedMount,
+    shallow as untypedShallow,
 } from "enzyme";
 import React from "react";
-import { spy, stub, SinonStub } from "sinon";
+import { SinonStub, spy, stub } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
@@ -33,9 +33,9 @@ import {
     HTMLInputProps,
     Icon,
     InputGroup,
-    NumericInputProps,
     Keys,
     NumericInput,
+    NumericInputProps,
     Position,
 } from "../../src";
 import * as Errors from "../../src/common/errors";
@@ -43,12 +43,10 @@ import * as Errors from "../../src/common/errors";
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
-// tslint:disable no-unnecessary-callback-wrapper
 const mount = (el: React.ReactElement<NumericInputProps>, options?: MountRendererProps) =>
     untypedMount<NumericInput>(el, options);
 const shallow = (el: React.ReactElement<NumericInputProps>, options?: ShallowRendererProps) =>
     untypedShallow<NumericInput>(el, options);
-// tslint:enable no-unnecessary-callback-wrapper
 
 describe("<NumericInput>", () => {
     describe("Defaults", () => {
@@ -1039,6 +1037,24 @@ describe("<NumericInput>", () => {
             const component = mount(<NumericInput leftIcon="variable" />);
             const icon = component.find(InputGroup).find(Icon);
             expect(icon.prop("icon")).to.equal("variable");
+        });
+
+        it("shows a left element if provided", () => {
+            const component = mount(<NumericInput leftElement={<Button minimal={true} icon="variable" />} />);
+            const button = component.find(InputGroup).find(Button);
+            expect(button.prop("icon")).to.equal("variable");
+            expect(button.prop("minimal")).to.equal(true);
+        });
+
+        it("shows only a left element if both a left element and a left icon are provided", () => {
+            const component = mount(
+                <NumericInput leftIcon="variable" leftElement={<Button minimal={true} icon="variable" />} />,
+            );
+            const button = component.find(InputGroup).find(Button);
+            expect(button.prop("icon")).to.equal("variable");
+            expect(button.prop("minimal")).to.equal(true);
+            const icon = component.find(InputGroup).find(Icon);
+            expect(icon).to.be.empty;
         });
 
         it("shows placeholder text if provided", () => {

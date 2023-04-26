@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import React from "react";
 import Sinon, { stub } from "sinon";
 
-import { Graph, Add, Calendar, Airplane, Icons, IconName, IconSize } from "@blueprintjs/icons";
+import { Add, Airplane, Calendar, Graph, IconName, Icons, IconSize } from "@blueprintjs/icons";
 
 import { Classes, Icon, IconProps, Intent } from "../../src";
 
@@ -98,11 +98,11 @@ describe("<Icon>", () => {
         assert.isTrue(wrapper.isEmptyRender());
     });
 
-    it("title sets content of <desc> element", async () => {
+    it("title sets content of <title> element", async () => {
         const wrapper = mount(<Icon icon="airplane" title="bird" />);
         await waitUntilSpyCalledOnce(iconLoader);
         wrapper.update();
-        assert.equal(wrapper.find("desc").text(), "bird");
+        assert.equal(wrapper.find("title").text(), "bird");
     });
 
     it("does not add desc if title is not provided", () => {

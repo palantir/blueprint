@@ -1,9 +1,10 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/mixins";
 @import "~@blueprintjs/icons/lib/scss/variables";
+@import "../../common/variables";
+@import "../../common/variables-extended";
+@import "../../common/mixins";
 
 /*
 Trees
@@ -42,7 +43,13 @@ Styleguide tree
 */
 
 $tree-row-height: $pt-grid-size * 3 !default;
-$tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
+$tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
+$tree-intent-icon-colors: (
+  "primary": $blue5,
+  "success": $green5,
+  "warning": $orange5,
+  "danger" : $red5,
+) !default;
 
 .#{$ns}-tree {
   #{$icon-classes} {
@@ -78,13 +85,18 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
 .#{$ns}-tree-node-content {
   align-items: center;
+  background: none;
   display: flex;
   height: $tree-row-height;
-  padding-right: $pt-grid-size / 2;
+  padding-right: $pt-grid-size * 0.5;
   width: 100%;
 
   &:hover {
-    background-color: rgba($gray5, 0.4);
+    background-color: rgba($gray3, 0.15);
+  }
+
+  &:active {
+    background-color: rgba($gray3, 0.3);
   }
 }
 
@@ -128,7 +140,7 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 }
 
 .#{$ns}-tree-node-secondary-label {
-  padding: 0 ($pt-grid-size / 2);
+  padding: 0 ($pt-grid-size * 0.5);
   user-select: none;
 
   .#{$ns}-popover-wrapper,
@@ -172,17 +184,19 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 }
 
 .#{$ns}-dark {
-  .#{$ns}-tree-node-content:hover {
-    background-color: rgba($gray1, 0.3);
+  .#{$ns}-tree-node-content {
+    &:hover {
+      background-color: rgba($gray1, 0.3);
+    }
   }
 
   .#{$ns}-tree {
     #{$icon-classes} {
       color: $pt-dark-icon-color;
 
-      @each $intent, $colors in $pt-intent-colors {
+      @each $intent, $color in $tree-intent-icon-colors {
         &.#{$ns}-intent-#{$intent} {
-          @include intent-color($intent);
+          color: $color;
         }
       }
     }
@@ -190,5 +204,9 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
   .#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
     background-color: $pt-intent-primary;
+
+    #{$icon-classes} {
+      color: $white;
+    }
   }
 }

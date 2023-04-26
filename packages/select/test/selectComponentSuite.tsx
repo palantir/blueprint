@@ -19,17 +19,18 @@ import { ReactWrapper } from "enzyme";
 import React from "react";
 import sinon from "sinon";
 
-import { HTMLInputProps, Keys, MenuItem } from "@blueprintjs/core";
+import { Classes, HTMLInputProps, Keys } from "@blueprintjs/core";
 
+import { ListItemsProps } from "../src";
 import {
     areFilmsEqual,
     createFilm,
-    filterFilm,
+    createFilms,
     Film,
+    filterFilm,
     renderFilm,
     TOP_100_FILMS,
-} from "../../docs-app/src/common/films";
-import { ListItemsProps } from "../src";
+} from "../src/__examples__";
 
 export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
     render: (props: ListItemsProps<Film>) => ReactWrapper<P, S>,
@@ -59,10 +60,10 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
         it("itemRenderer is called for each child", () => {
             const wrapper = render(testProps);
             // each item is rendered once
-            assert.equal(wrapper.find(MenuItem).length, 15, "re-render");
+            assert.equal(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes().length, 15, "re-render");
             wrapper.setProps({ query: "1999" });
             wrapper.update();
-            assert.equal(wrapper.find(MenuItem).length, 2, "re-render");
+            assert.equal(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes().length, 2, "re-render");
         });
 
         it("renders noResults when given empty list", () => {
@@ -214,6 +215,28 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
             assert.equal(testCreateProps.createNewItemFromQuery.args[0][0], "non-existent film name");
         });
 
+        it("when createNewItemFromQuery returns an array, it should invoke onItemSelect once per each item in the array", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                createNewItemFromQuery: createFilms,
+                query: "non-existent film name, second film name",
+            });
+            assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ENTER });
+            findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
+            assert.equal(testCreateProps.onItemSelect.calledTwice, true, "should invoke onItemSelect twice");
+            assert.equal(
+                (testCreateProps.onItemSelect.args[0][0] as Film).title,
+                "non-existent film name",
+                "should create and select first item",
+            );
+            assert.equal(
+                (testCreateProps.onItemSelect.args[1][0] as Film).title,
+                "second film name",
+                "should create and select second item",
+            );
+        });
+
         it("when create item is rendered, arrow down invokes onActiveItemChange with activeItem=null and isCreateNewItem=true", () => {
             const wrapper = render({
                 ...testCreateProps,
@@ -227,7 +250,7 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
             assert.equal(testProps.onActiveItemChange.lastCall.args[1], false);
         });
 
-        it("when create item is rendered, arrow up invokes onActiveItemChange with an `ICreateNewItem`", () => {
+        it("when create item is rendered, arrow up invokes onActiveItemChange with an `CreateNewItem`", () => {
             const wrapper = render({
                 ...testCreateProps,
                 query: TOP_100_FILMS[0].title,

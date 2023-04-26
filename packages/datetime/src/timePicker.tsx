@@ -17,7 +17,16 @@
 import classNames from "classnames";
 import React from "react";
 
-import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, Props, Keys } from "@blueprintjs/core";
+import {
+    Classes as CoreClasses,
+    Utils as CoreUtils,
+    DISPLAYNAME_PREFIX,
+    HTMLSelect,
+    Icon,
+    Intent,
+    Keys,
+    Props,
+} from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -26,6 +35,8 @@ import {
     getDefaultMinTime,
     getTimeUnit,
     getTimeUnitClassName,
+    getTimeUnitMax,
+    getTimeUnitPrintStr,
     isTimeUnitValid,
     setTimeUnit,
     TimeUnit,
@@ -169,6 +180,14 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         this.state = this.getFullStateFromValue(this.getInitialValue(), props.useAmPm);
     }
 
+    private timeInputIds: { [key in TimeUnit]: string } = {
+        [TimeUnit.HOUR_24]: CoreUtils.uniqueId(TimeUnit.HOUR_24 + "-input"),
+        [TimeUnit.HOUR_12]: CoreUtils.uniqueId(TimeUnit.HOUR_12 + "-input"),
+        [TimeUnit.MINUTE]: CoreUtils.uniqueId(TimeUnit.MINUTE + "-input"),
+        [TimeUnit.SECOND]: CoreUtils.uniqueId(TimeUnit.SECOND + "-input"),
+        [TimeUnit.MS]: CoreUtils.uniqueId(TimeUnit.MS + "-input"),
+    };
+
     public render() {
         const shouldRenderMilliseconds = this.props.precision === TimePrecision.MILLISECOND;
         const shouldRenderSeconds = shouldRenderMilliseconds || this.props.precision === TimePrecision.SECOND;
@@ -238,13 +257,18 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         }
         const classes = classNames(Classes.TIMEPICKER_ARROW_BUTTON, getTimeUnitClassName(timeUnit));
         const onClick = () => (isDirectionUp ? this.incrementTime : this.decrementTime)(timeUnit);
+        const label = `${isDirectionUp ? "Increase" : "Decrease"} ${getTimeUnitPrintStr(timeUnit)}`;
+
         // set tabIndex=-1 to ensure a valid FocusEvent relatedTarget when focused
         return (
-            <span tabIndex={-1} className={classes} onClick={onClick}>
-                <Icon
-                    icon={isDirectionUp ? "chevron-up" : "chevron-down"}
-                    title={isDirectionUp ? "Increase" : "Decrease"}
-                />
+            <span
+                aria-controls={this.timeInputIds[timeUnit]}
+                aria-label={label}
+                tabIndex={-1}
+                className={classes}
+                onClick={onClick}
+            >
+                <Icon icon={isDirectionUp ? "chevron-up" : "chevron-down"} title={label} />
             </span>
         );
     }
@@ -254,21 +278,30 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
     }
 
     private renderInput(className: string, unit: TimeUnit, value: string) {
-        const isValid = isTimeUnitValid(unit, parseInt(value, 10));
+        const valueNumber = parseInt(value, 10);
+        const isValid = isTimeUnitValid(unit, valueNumber);
         const isHour = unit === TimeUnit.HOUR_12 || unit === TimeUnit.HOUR_24;
 
         return (
             <input
+                aria-label={getTimeUnitPrintStr(unit)}
+                // we use a type="text" input here, so we must set these a11y attributes
+                // which we would otherwise get for free with a type="number" input
+                aria-valuemin={0}
+                aria-valuenow={valueNumber}
+                aria-valuemax={getTimeUnitMax(unit)}
                 className={classNames(
                     Classes.TIMEPICKER_INPUT,
                     { [CoreClasses.intentClass(Intent.DANGER)]: !isValid },
                     className,
                 )}
+                id={this.timeInputIds[unit]}
                 onBlur={this.getInputBlurHandler(unit)}
                 onChange={this.getInputChangeHandler(unit)}
                 onFocus={this.getInputFocusHandler(unit)}
                 onKeyDown={this.getInputKeyDownHandler(unit)}
                 onKeyUp={this.getInputKeyUpHandler(unit)}
+                role={this.props.showArrowButtons ? "spinbutton" : undefined}
                 value={value}
                 disabled={this.props.disabled}
                 autoFocus={isHour && this.props.autoFocus}

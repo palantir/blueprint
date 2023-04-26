@@ -17,20 +17,22 @@
 import { State as PopperState, PositioningStrategy } from "@popperjs/core";
 import classNames from "classnames";
 import React from "react";
-import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, Modifier } from "react-popper";
+import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, HTMLDivProps, mergeRefs, Utils } from "../../common";
 import * as Errors from "../../common/errors";
 import { isKeyboardClick } from "../../common/keys";
-import { Ref, refHandler, setRef } from "../../common/refs";
+import { refHandler, setRef } from "../../common/refs";
 import { Overlay } from "../overlay/overlay";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
-// eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
+import { matchReferenceWidthModifier } from "./customModifiers";
+// eslint-disable-next-line import/no-cycle
 import { POPOVER_ARROW_SVG_SIZE, PopoverArrow } from "./popoverArrow";
 import { positionToPlacement } from "./popoverPlacementUtils";
 import { PopoverSharedProps } from "./popoverSharedProps";
 import { getBasePlacement, getTransformOrigin } from "./popperUtils";
+import { PopupKind } from "./popupKind";
 
 export const PopoverInteractionKind = {
     CLICK: "click" as "click",
@@ -45,7 +47,7 @@ export interface PopoverProps<TProps = React.HTMLProps<HTMLElement>> extends Pop
     /**
      * Whether the popover/tooltip should acquire application focus when it first opens.
      *
-     * @default true for click interations, false for hover interactions
+     * @default true for click interactions, false for hover interactions
      */
     autoFocus?: boolean;
 
@@ -63,6 +65,17 @@ export interface PopoverProps<TProps = React.HTMLProps<HTMLElement>> extends Pop
      * @default "click"
      */
     interactionKind?: PopoverInteractionKind;
+
+    /**
+     * The kind of popup displayed by the popover. This property is ignored if
+     * `interactionKind` is {@link PopoverInteractionKind.HOVER_TARGET_ONLY}.
+     * This controls the `aria-haspopup` attribute of the target element. The
+     * default is "menu" (technically, `aria-haspopup` will be set to "true",
+     * which is the same as "menu", for backwards compatibility).
+     *
+     * @default "menu" or undefined
+     */
+    popupKind?: PopupKind;
 
     /**
      * Enables an invisible overlay beneath the popover that captures clicks and
@@ -90,11 +103,6 @@ export interface PopoverProps<TProps = React.HTMLProps<HTMLElement>> extends Pop
     shouldReturnFocusOnClose?: boolean;
 
     /**
-     * Ref attached to the `Classes.POPOVER` element.
-     */
-    popoverRef?: Ref<HTMLElement>;
-
-    /**
      * Popper.js positioning strategy.
      *
      * @see https://popper.js.org/docs/v2/constructors/#strategy
@@ -109,7 +117,7 @@ export interface PopoverState {
 }
 
 /**
- * @template T target component props inteface
+ * @template T target component props interface
  */
 export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
@@ -125,6 +133,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         hoverOpenDelay: 150,
         inheritDarkTheme: true,
         interactionKind: PopoverInteractionKind.CLICK,
+        matchTargetWidth: false,
         minimal: false,
         openOnTargetFocus: true,
         // N.B. we don't set a default for `placement` or `position` here because that would trigger
@@ -153,10 +162,10 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
     public targetElement: HTMLElement | null = null;
 
     /** Popover ref handler */
-    private popoverRef: Ref<HTMLDivElement> = refHandler(this, "popoverElement", this.props.popoverRef);
+    private popoverRef: React.Ref<HTMLDivElement> = refHandler(this, "popoverElement", this.props.popoverRef);
 
     /** Target ref handler */
-    private targetRef: Ref<HTMLElement> = el => (this.targetElement = el);
+    private targetRef: React.RefCallback<HTMLElement> = el => (this.targetElement = el);
 
     private cancelOpenTimeout?: () => void;
 
@@ -270,15 +279,15 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         }
 
         const childrenCount = React.Children.count(props.children);
-        const hasRenderTargetPropp = props.renderTarget !== undefined;
+        const hasRenderTargetProp = props.renderTarget !== undefined;
 
-        if (childrenCount === 0 && !hasRenderTargetPropp) {
+        if (childrenCount === 0 && !hasRenderTargetProp) {
             console.warn(Errors.POPOVER_REQUIRES_TARGET);
         }
         if (childrenCount > 1) {
             console.warn(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);
         }
-        if (childrenCount > 0 && hasRenderTargetPropp) {
+        if (childrenCount > 0 && hasRenderTargetProp) {
             console.warn(Errors.POPOVER_WARN_DOUBLE_TARGET);
         }
     }
@@ -325,7 +334,9 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
         const targetProps = {
-            "aria-haspopup": "true",
+            "aria-haspopup":
+                this.props.popupKind ??
+                (this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY ? undefined : "true"),
             // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
             // If, instead, renderTarget is undefined and the target is provided as a child, this.props.className is
             // applied to the generated target wrapper element.
@@ -335,7 +346,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                 [Classes.ACTIVE]: !isControlled && isOpen && !isHoverInteractionKind,
             }),
             ref,
-            ...((targetEventHandlers as unknown) as T),
+            ...(targetEventHandlers as unknown as T),
         };
 
         let target: JSX.Element | undefined;
@@ -414,6 +425,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                 [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
                 [Classes.MINIMAL]: this.props.minimal,
                 [Classes.POPOVER_CAPTURING_DISMISS]: this.props.captureDismiss,
+                [Classes.POPOVER_MATCH_TARGET_WIDTH]: this.props.matchTargetWidth,
                 [Classes.POPOVER_REFERENCE_HIDDEN]: popperProps.isReferenceHidden === true,
                 [Classes.POPOVER_POPPER_ESCAPED]: popperProps.hasPopperEscaped === true,
             },
@@ -465,9 +477,9 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         );
     };
 
-    private getPopperModifiers(): Array<Modifier<string>> {
-        const { customModifiers = [], modifiers } = this.props;
-        return [
+    private getPopperModifiers(): ReadonlyArray<Modifier<any>> {
+        const { matchTargetWidth, modifiers, modifiersCustom } = this.props;
+        const popperModifiers: Array<Modifier<any>> = [
             {
                 enabled: this.isArrowEnabled(),
                 name: "arrow",
@@ -514,8 +526,17 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                     ...modifiers?.preventOverflow?.options,
                 },
             },
-            ...customModifiers,
         ];
+
+        if (matchTargetWidth) {
+            popperModifiers.push(matchReferenceWidthModifier);
+        }
+
+        if (modifiersCustom !== undefined) {
+            popperModifiers.push(...modifiersCustom);
+        }
+
+        return popperModifiers;
     }
 
     private handleTargetFocus = (e: React.FocusEvent<HTMLElement>) => {
@@ -525,7 +546,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                 // lost focus (e.g. due to switching tabs).
                 return;
             }
-            this.handleMouseEnter((e as unknown) as React.MouseEvent<HTMLElement>);
+            this.handleMouseEnter(e as unknown as React.MouseEvent<HTMLElement>);
         }
     };
 
@@ -542,10 +563,10 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                     e.relatedTarget !== this.popoverElement &&
                     !this.isElementInPopover(e.relatedTarget as HTMLElement)
                 ) {
-                    this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+                    this.handleMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
                 }
             } else {
-                this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+                this.handleMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;

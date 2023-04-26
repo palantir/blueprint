@@ -19,7 +19,7 @@ import React from "react";
 import { Button, Popover } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-import { FileMenu } from "../core-examples/common/fileMenu";
+import { FileMenu } from "./common/fileMenu";
 
 export class PopoverSizingExample extends React.PureComponent<ExampleProps> {
     public static displayName = "PopoverSizingExample";

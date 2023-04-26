@@ -24,8 +24,8 @@ Styleguide file-input
 
 $file-input-button-width: $pt-grid-size * 7 !default;
 $file-input-button-width-large: $pt-grid-size * 8.5 !default;
-$file-input-button-padding: ($pt-input-height - $pt-button-height-small) / 2 !default;
-$file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) / 2 !default;
+$file-input-button-padding: ($pt-input-height - $pt-button-height-small) * 0.5 !default;
+$file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) * 0.5 !default;
 
 .#{$ns}-file-input {
   cursor: pointer;
@@ -97,7 +97,7 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
   user-select: none;
 
   &::after {
-    @include pt-button();
+    @include pt-button-default-colors();
     @include pt-button-height($pt-button-height-small);
     @include overflow-ellipsis();
     border-radius: $pt-border-radius;
@@ -119,6 +119,8 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
     @include pt-button-active();
   }
 
+  // N.B. disabled state is handled above, inside .#{$ns}-file-input block
+
   .#{$ns}-large & {
     @include pt-input-large();
     padding-right: $file-input-button-width-large + $input-padding-horizontal;
@@ -136,7 +138,7 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
     color: $pt-dark-text-color-disabled;
 
     &::after {
-      @include pt-dark-button();
+      @include pt-dark-button-default-colors();
     }
 
     &:hover::after {

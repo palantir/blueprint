@@ -20,7 +20,11 @@ import React, { useContext } from "react";
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContext } from "../../common/context";
 
-export const ApiHeader: React.FC<ITsDocBase> = props => {
+interface ApiHeaderProps extends ITsDocBase {
+    children?: React.ReactNode;
+}
+
+export const ApiHeader: React.FC<ApiHeaderProps> = props => {
     const { renderType, renderViewSourceLinkText } = useContext(DocumentationContext);
     let inheritance: React.ReactNode = "";
 

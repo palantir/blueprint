@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,17 @@
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import React from "react";
-import sinon from "sinon";
+import * as sinon from "sinon";
 
 import { InputGroup, Keys, MenuItem, Popover, PopoverProps } from "@blueprintjs/core";
 
-import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { ItemRendererProps, QueryList } from "../src";
-import { SuggestProps, SuggestState, Suggest } from "../src/components/select/suggest";
+import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
+import { Suggest, SuggestProps, SuggestState } from "../src/components/suggest/suggest";
 import { selectComponentSuite } from "./selectComponentSuite";
+import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("Suggest", () => {
-    const FilmSuggest = Suggest.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
@@ -39,6 +39,7 @@ describe("Suggest", () => {
         itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
+    let testsContainerElement: HTMLElement | undefined;
 
     beforeEach(() => {
         handlers = {
@@ -47,6 +48,12 @@ describe("Suggest", () => {
             itemRenderer: sinon.spy(renderFilm),
             onItemSelect: sinon.spy(),
         };
+        testsContainerElement = document.createElement("div");
+        document.body.appendChild(testsContainerElement);
+    });
+
+    afterEach(() => {
+        testsContainerElement?.remove();
     });
 
     selectComponentSuite<SuggestProps<Film>, SuggestState<Film>>(props =>
@@ -59,9 +66,14 @@ describe("Suggest", () => {
         ),
     );
 
+    selectPopoverTestSuite<SuggestProps<Film>, SuggestState<Film>>(props =>
+        mount(<Suggest {...props} inputValueRenderer={inputValueRenderer} />, { attachTo: testsContainerElement }),
+    );
+
     describe("Basic behavior", () => {
         it("renders an input that triggers a popover containing items", () => {
             const wrapper = suggest();
+            /* eslint-disable-next-line deprecation/deprecation */
             const popover = wrapper.find(Popover);
             assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
             assert.lengthOf(popover, 1, "should render Popover");
@@ -92,7 +104,7 @@ describe("Suggest", () => {
 
         it("scrolls active item into view when popover opens", () => {
             const wrapper = suggest();
-            const queryList = ((wrapper.instance() as Suggest<Film>) as any).queryList; // private ref
+            const queryList = (wrapper.instance() as Suggest<Film> as any).queryList; // private ref
             const scrollActiveItemIntoViewSpy = sinon.spy(queryList, "scrollActiveItemIntoView");
             wrapper.setState({ isOpen: false });
             assert.isFalse(scrollActiveItemIntoViewSpy.called);
@@ -106,7 +118,7 @@ describe("Suggest", () => {
                 popoverProps: { transitionDuration: 5 },
                 selectedItem: TOP_100_FILMS[10],
             });
-            const queryList = ((wrapper.instance() as Suggest<Film>) as any).queryList as QueryList<Film>; // private ref
+            const queryList = (wrapper.instance() as Suggest<Film> as any).queryList as QueryList<Film>; // private ref
 
             assert.deepEqual(
                 queryList.state.activeItem,
@@ -200,12 +212,12 @@ describe("Suggest", () => {
             const ITEM_INDEX = 4;
             const wrapper = suggest();
 
-            assert.isFalse(handlers.inputValueRenderer.called, "should not call inputValueRenderer before selection");
+            assert.isFalse(handlers.inputValueRenderer.called, "should not call inputValueRenderer before selection");
             selectItem(wrapper, ITEM_INDEX);
             const selectedItem = TOP_100_FILMS[ITEM_INDEX];
             const expectedValue = inputValueRenderer(selectedItem);
 
-            assert.isTrue(handlers.inputValueRenderer.called, "should call inputValueRenderer after selection");
+            assert.isTrue(handlers.inputValueRenderer.called, "should call inputValueRenderer after selection");
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), expectedValue);
         });
     });
@@ -240,6 +252,7 @@ describe("Suggest", () => {
             const modifiers = {}; // our own instance
             const wrapper = suggest({ popoverProps: getPopoverProps(false, modifiers) });
             wrapper.setProps({ popoverProps: getPopoverProps(true, modifiers) }).update();
+            /* eslint-disable-next-line deprecation/deprecation */
             assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
             assert.isTrue(onOpening.calledOnce);
         });
@@ -324,12 +337,8 @@ describe("Suggest", () => {
         });
     });
 
-    function suggest(props: Partial<SuggestProps<Film>> = {}, query?: string) {
-        const wrapper = mount<typeof FilmSuggest>(<FilmSuggest {...defaultProps} {...handlers} {...props} />);
-        if (query !== undefined) {
-            wrapper.setState({ query });
-        }
-        return wrapper;
+    function suggest(props: Partial<SuggestProps<Film>> = {}) {
+        return mount<Suggest<Film>>(<Suggest<Film> {...defaultProps} {...handlers} {...props} />);
     }
 });
 

@@ -88,6 +88,9 @@ export interface SelectableProps {
 }
 
 export interface DragSelectableProps extends SelectableProps {
+    /** Element to make interactive. */
+    children?: React.ReactNode;
+
     /**
      * A list of CSS selectors that should _not_ trigger selection when a `mousedown` occurs inside of them.
      */

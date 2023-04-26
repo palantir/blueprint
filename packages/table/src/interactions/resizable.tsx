@@ -24,6 +24,9 @@ import { LockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
 export type IndexedResizeCallback = (index: number, size: number) => void;
 
 export interface ResizableProps extends Props, LockableLayout {
+    /** Element to resize. */
+    children: React.ReactNode;
+
     /**
      * Enables/disables the resize interaction for the column.
      *

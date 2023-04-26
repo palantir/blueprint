@@ -29,6 +29,9 @@ export interface ButtonGroupProps extends Props, HTMLDivProps {
      */
     alignText?: Alignment;
 
+    /** Buttons in this group. */
+    children: React.ReactNode;
+
     /**
      * Whether the button group should take up the full width of its container.
      *

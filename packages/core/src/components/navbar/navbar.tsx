@@ -25,8 +25,9 @@ import { NavbarHeading } from "./navbarHeading";
 
 export { NavbarDividerProps } from "./navbarDivider";
 
-// allow the empty interface so we can label it clearly in the docs
 export interface NavbarProps extends Props, HTMLDivProps {
+    children?: React.ReactNode;
+
     /**
      * Whether this navbar should be fixed to the top of the viewport (using CSS `position: fixed`).
      */

@@ -26,6 +26,7 @@ export const DATEPICKER_CAPTION = `${DATEPICKER}-caption`;
 export const DATEPICKER_CAPTION_CARET = `${DATEPICKER_CAPTION}-caret`;
 export const DATEPICKER_CAPTION_MEASURE = `${DATEPICKER_CAPTION}-measure`;
 export const DATEPICKER_CAPTION_SELECT = `${DATEPICKER_CAPTION}-select`;
+export const DATEPICKER_CONTENT = `${DATEPICKER}-content`;
 export const DATEPICKER_DAY = "DayPicker-Day";
 export const DATEPICKER_DAY_DISABLED = `${DATEPICKER_DAY}--disabled`;
 export const DATEPICKER_DAY_OUTSIDE = `${DATEPICKER_DAY}--outside`;
@@ -40,6 +41,7 @@ export const DATEPICKER_NAVBUTTON = `DayPicker-NavButton`;
 export const DATEPICKER_TIMEPICKER_WRAPPER = `${DATEPICKER}-timepicker-wrapper`;
 
 export const DATERANGEPICKER = `${NS}-daterangepicker`;
+export const DATERANGEPICKER_CALENDARS = `${DATERANGEPICKER}-calendars`;
 export const DATERANGEPICKER_CONTIGUOUS = `${DATERANGEPICKER}-contiguous`;
 export const DATERANGEPICKER_SINGLE_MONTH = `${DATERANGEPICKER}-single-month`;
 export const DATERANGEPICKER_DAY_SELECTED_RANGE = `${DATEPICKER_DAY}--selected-range`;

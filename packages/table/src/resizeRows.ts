@@ -15,11 +15,11 @@
  */
 
 import type { Rect } from "./common";
-import type { Grid, CellMapper } from "./common/grid";
+import type { CellMapper, Grid } from "./common/grid";
 import { Utils } from "./common/utils";
 import { Locator, LocatorImpl } from "./locator";
 
-export interface IResizeRowsByApproximateHeightOptions {
+export interface ResizeRowsByApproximateHeightOptions {
     /**
      * Approximate width (in pixels) of an average character of text.
      */
@@ -51,7 +51,7 @@ export interface IResizeRowsByApproximateHeightResolvedOptions {
 
 // these default values for `resizeRowsByApproximateHeight` have been
 // fine-tuned to work well with default Table font styles.
-const resizeRowsByApproximateHeightDefaults: Record<keyof IResizeRowsByApproximateHeightOptions, number> = {
+const resizeRowsByApproximateHeightDefaults: Record<keyof ResizeRowsByApproximateHeightOptions, number> = {
     getApproximateCharWidth: 8,
     getApproximateLineHeight: 18,
     getCellHorizontalPadding: 2 * LocatorImpl.CELL_HORIZONTAL_PADDING,
@@ -63,16 +63,16 @@ const resizeRowsByApproximateHeightDefaults: Record<keyof IResizeRowsByApproxima
  * (falling back to default values as necessary).
  */
 function resolveResizeRowsByApproximateHeightOptions(
-    options: IResizeRowsByApproximateHeightOptions | null | undefined,
+    options: ResizeRowsByApproximateHeightOptions | null | undefined,
     rowIndex: number,
     columnIndex: number,
 ) {
     const optionKeys = Object.keys(resizeRowsByApproximateHeightDefaults) as Array<
-        keyof IResizeRowsByApproximateHeightOptions
+        keyof ResizeRowsByApproximateHeightOptions
     >;
     const optionReducer = (
         agg: Partial<IResizeRowsByApproximateHeightResolvedOptions>,
-        key: keyof IResizeRowsByApproximateHeightOptions,
+        key: keyof ResizeRowsByApproximateHeightOptions,
     ) => {
         const valueOrMapper = options?.[key];
         if (typeof valueOrMapper === "function") {
@@ -99,7 +99,7 @@ export function resizeRowsByApproximateHeight(
     numRows: number,
     columnWidths: number[],
     getCellText: CellMapper<string>,
-    options?: IResizeRowsByApproximateHeightOptions,
+    options?: ResizeRowsByApproximateHeightOptions,
 ) {
     const numColumns = columnWidths.length;
 

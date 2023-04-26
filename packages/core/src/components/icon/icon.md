@@ -9,8 +9,11 @@ See the [**Icons package**](#icons) for a searchable list of all available UI ic
 Blueprint provides icons in two formats (SVG and fonts). It's easy to change their color
 or apply effects like text shadows via standard SVG or CSS properties.
 
-This section describes two ways of using the UI icon font: via React `Icon`
-component to render SVG images or via CSS classes to use the icon font.
+Blueprint provides icons in two formats (SVG and fonts). It's easy to change their color
+or apply effects like text shadows via standard SVG or CSS properties.
+
+This section describes two ways of using Blueprint's UI icons:
+via the `Icon` component to render SVG images or via CSS classes to use the icon font.
 
 Many Blueprint components provide an `icon` prop which accepts an icon name
 (such as `"history"`) or a JSX element to use as the icon. When you specify
@@ -71,6 +74,9 @@ Custom sizes are supported. The following React component:
 @## CSS
 
 The CSS-only icons API uses the __icon fonts__ from the __@blueprintjs/icons__ package.
+Note that _none of Blueprint's React components use the icon font_; it is only provided
+for convenience to Blueprint consumers for rare situations where an icon font may be
+preferred over icon SVGs.
 
 To use Blueprint UI icons via CSS, you must apply two classes to a `<span>` element:
 - a __sizing class__, either `@ns-icon-standard` (16px) or `@ns-icon-large` (20px)

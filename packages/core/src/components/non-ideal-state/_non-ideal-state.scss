@@ -9,11 +9,13 @@ Non-ideal state
 
 Markup:
 <div class="#{$ns}-non-ideal-state">
-  <div class="#{$ns}-non-ideal-state-visual">
+  <div class="#{$ns}-non-ideal-state-visual" style="font-size: 48px; line-height: 48px;">
     <span class="#{$ns}-icon #{$ns}-icon-folder-open"></span>
   </div>
-  <h4 class="#{$ns}-heading">This folder is empty</h4>
-  <div>Create a new file to populate the folder.</div>
+  <div class="#{$ns}-non-ideal-state-text">
+    <h4 class="#{$ns}-heading">This folder is empty</h4>
+    <div>Create a new file to populate the folder.</div>
+  </div>
   <button class="#{$ns}-button #{$ns}-intent-primary">Create</button>
 </div>
 
@@ -23,6 +25,7 @@ Styleguide non-ideal-state
 .#{$ns}-non-ideal-state {
   @include pt-flex-container(column, $pt-grid-size * 2);
   align-items: center;
+  color: $pt-text-color-muted;
   height: 100%;
   justify-content: center;
   text-align: center;
@@ -31,13 +34,56 @@ Styleguide non-ideal-state
   > * {
     max-width: $pt-grid-size * 40;
   }
+
+  .#{$ns}-heading {
+    color: $pt-text-color-muted;
+    line-height: $pt-grid-size * 2;
+    margin-bottom: $pt-grid-size;
+
+    &:only-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.#{$ns}-non-ideal-state-horizontal {
+    @include pt-flex-container(row, $pt-grid-size * 2);
+    text-align: left;
+
+    // We need to override the pt-flex-container() styles on the default vertical layout of this
+    // component with this universal selector. A better approach would be to only apply pt-flex-container(column, ...)
+    // on the .#{$ns}-non-ideal-state-vertical class, but we cannot do that without a CSS breaking change.
+    > * {
+      margin-bottom: 0;
+    }
+  }
+
+  .#{$ns}-dark & {
+    color: $pt-dark-text-color-muted;
+
+    .#{$ns}-heading {
+      color: $pt-dark-text-color-muted;
+    }
+  }
 }
 
 .#{$ns}-non-ideal-state-visual {
-  color: $pt-icon-color-disabled;
-  font-size: $pt-icon-size-large * 3;
+  color: $gray3;
+
+  .#{$ns}-icon svg {
+    fill-opacity: 15%;
+    // need to show overflow for some strokes on paths that reach the edge of the icon bounding box
+    overflow: visible;
+
+    path {
+      stroke: $gray3;
+      stroke-opacity: 50%;
+      stroke-width: 0.5px;
+    }
+  }
 
   .#{$ns}-dark & {
-    color: $pt-dark-icon-color-disabled;
+    .#{$ns}-icon svg {
+      fill-opacity: 20%;
+    }
   }
 }

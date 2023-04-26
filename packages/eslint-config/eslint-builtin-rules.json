@@ -112,7 +112,7 @@
     "one-var-declaration-per-line": "off",
     "operator-linebreak": "off",
     "padded-blocks": "off",
-    "prefer-arrow-callback": "error",
+    "prefer-arrow-callback": ["error", { "allowNamedFunctions": true }],
     "prefer-const": "error",
     "prefer-object-spread": "error",
     "quote-props": "off",
@@ -122,6 +122,16 @@
     "semi": "off",
     "semi-spacing": "off",
     "semi-style": "off",
+    "sort-imports": [
+        "error",
+        {
+            "ignoreCase": true,
+            "ignoreDeclarationSort": true,
+            "ignoreMemberSort": false,
+            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+            "allowSeparatedGroups": false
+        }
+    ],
     "space-after-function-name": "off",
     "space-after-keywords": "off",
     "space-before-blocks": "off",

@@ -65,6 +65,9 @@ export interface ReorderableProps {
 }
 
 export interface DragReorderable extends ReorderableProps {
+    /** Element to drag & reorder. */
+    children?: React.ReactNode;
+
     /**
      * Whether the reordering behavior is disabled.
      *

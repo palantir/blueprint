@@ -20,22 +20,25 @@ import {
     Button,
     Classes,
     Code,
+    ContextMenu,
     Divider,
     Drawer,
     DrawerSize,
     H5,
     HTMLSelect,
-    OptionProps,
     Label,
+    Menu,
+    MenuItem,
+    OptionProps,
     Position,
     Switch,
 } from "@blueprintjs/core";
 import {
     Example,
+    ExampleProps,
     handleBooleanChange,
     handleStringChange,
     handleValueChange,
-    ExampleProps,
 } from "@blueprintjs/docs-theme";
 
 import { BlueprintExampleData } from "../../tags/types";
@@ -119,6 +122,17 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
                                 can build upon. And the enterprise data foundation goes where the business drives it.
                             </p>
                             <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
+                            <ContextMenu
+                                content={
+                                    <Menu>
+                                        <MenuItem text="Menu Item 1" />
+                                    </Menu>
+                                }
+                            >
+                                <Button onClick={this.handleClose}>
+                                    Right Click for a <Code>&lt;ContextMenu /&gt;</Code>
+                                </Button>
+                            </ContextMenu>
                         </div>
                     </div>
                     <div className={Classes.DRAWER_FOOTER}>Footer</div>

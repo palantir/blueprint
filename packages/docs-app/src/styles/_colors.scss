@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:math";
 @import "~@blueprintjs/icons/lib/scss/variables";
 
 $palette-spacing: $pt-grid-size * 2;
@@ -13,7 +14,7 @@ $swatch-hover-message: "Click to copy hex code";
 $swatch-copied-message: "#{map-get($blueprint-icon-codepoints, "tick")} Copied to clipboard";
 
 @function palette-width($columns) {
-  @return (102% - 2% * $columns) / $columns;
+  @return math.div(102% - 2% * $columns, $columns);
 }
 
 .docs-clipboard {
@@ -41,7 +42,7 @@ $swatch-copied-message: "#{map-get($blueprint-icon-codepoints, "tick")} Copied t
   /* stylelint-disable declaration-no-important */
   &.docs-clipboard-copied .docs-clipboard-message::after {
     content: $swatch-copied-message !important;
-    font-family: $pt-font-family-monospace, "Icons16", sans-serif;
+    font-family: $blueprint-icons-16-font, $pt-font-family-monospace, sans-serif;
   }
 
   &.docs-clipboard-copied .docs-clipboard-message[data-copied-message]::after {
@@ -120,7 +121,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
   }
 
   &::before {
-    @include position-all(absolute, -$palette-border-radius / 2);
+    @include position-all(absolute, -$palette-border-radius * 0.5);
     border-radius: $palette-border-radius;
     box-shadow: border-shadow(0, $pt-intent-primary, 0);
     content: "";
@@ -138,7 +139,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
 }
 
 .docs-color-swatch {
-  border: 1px solid rgba($black, $pt-border-shadow-opacity * 2);
+  border: 1px solid rgba($black, $pt-border-shadow-opacity * 200%);
   border-bottom-width: 0;
   border-top-width: 0;
   display: block;
@@ -163,13 +164,13 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
     @include position-all(absolute, $swatch-hover-offset);
     border-radius: $pt-border-radius;
     box-shadow: inset border-shadow($pt-border-shadow-opacity * 2),
-                      0 2px 4px rgba($black, $pt-drop-shadow-opacity / 2),
+                      0 2px 4px rgba($black, $pt-drop-shadow-opacity * 50%),
                       0 8px 24px rgba($black, $pt-drop-shadow-opacity);
     z-index: $pt-z-index-base + 1;
   }
 
   &:active .docs-color-swatch-trigger {
-    @include position-all(absolute, $swatch-hover-offset / 2);
+    @include position-all(absolute, $swatch-hover-offset * 0.5);
     box-shadow: inset border-shadow($pt-border-shadow-opacity * 2),
                 0 1px 1px rgba($black, $pt-drop-shadow-opacity);
   }
@@ -179,7 +180,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
 
     &:hover .docs-color-swatch-trigger {
       box-shadow: inset border-shadow($pt-dark-border-shadow-opacity, $color: $white),
-                  0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity / 2),
+                  0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity * 50%),
                   0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity);
     }
 

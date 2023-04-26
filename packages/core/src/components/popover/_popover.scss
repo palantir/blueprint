@@ -1,6 +1,7 @@
 // Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:color";
 @import "./common";
 @import "./popover-in-button-group";
 @import "./popover-in-control-group";
@@ -9,6 +10,13 @@
 @import "./popover-in-tree";
 
 $popover-width: $pt-grid-size * 35 !default;
+$popover-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
+// Extra border shadow added here to match the one in $pt-dark-popover-box-shadow.
+// We can't use a transparent color here because it is outset and will overlay other lines/borders underneath.
+// Also, it needs to have slightly increased lightness because its apparent width makes it look darker otherwise.
+$dark-popover-arrow-box-shadow:
+  0 0 0 1px color.adjust($pt-dark-popover-border-color, $lightness: 10%),
+  1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
 .#{$ns}-popover {
   @include popover-sizing(
@@ -20,7 +28,7 @@ $popover-width: $pt-grid-size * 35 !default;
     $pt-popover-background-color,
     inherit,
     $pt-popover-box-shadow,
-    $pt-drop-shadow-opacity,
+    $popover-arrow-box-shadow,
     $pt-border-shadow-opacity
   );
   @include scale-transition();
@@ -48,8 +56,8 @@ $popover-width: $pt-grid-size * 35 !default;
   }
 
   &.#{$ns}-minimal {
-    // popovers with no obvious trigger will never have margin because the arrow
-    // is hidden so it is safe to remove in all cases always
+    // Popover with no obvious trigger will never have margin because the arrow is hidden,
+    // so it is safe to remove.
     margin: 0 !important; /* stylelint-disable-line declaration-no-important */
 
     .#{$ns}-popover-arrow {
@@ -66,15 +74,27 @@ $popover-width: $pt-grid-size * 35 !default;
     }
   }
 
+  &.#{$ns}-popover-match-target-width {
+    // parent element will have width styles set by our custom popper.js modifier,
+    // so we should fill that container's width
+    width: 100%;
+  }
+
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     @include popover-appearance(
       $pt-dark-popover-background-color,
       inherit,
       $pt-dark-popover-box-shadow,
-      $pt-dark-drop-shadow-opacity,
+      $dark-popover-arrow-box-shadow,
       $pt-dark-border-shadow-opacity
     );
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+    // Windows High Contrast dark theme
+    box-shadow: none;
   }
 }
 
@@ -120,4 +140,10 @@ span.#{$ns}-popover-target {
 
   // this is important for span tag as default inline display height only includes text.
   // div tag can be used for display: block, which works fine.
+}
+
+.#{$ns}-popover-target {
+  &.#{$ns}-fill {
+    width: 100%;
+  }
 }

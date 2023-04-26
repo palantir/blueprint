@@ -99,9 +99,9 @@
       @include pt-icon($icon-size, 16);
       color: $white;
       content: map-get($blueprint-icon-codepoints, "envelope");
-      left: ($node-size - $icon-size) / 2 - $node-border-width;
+      left: ($node-size - $icon-size) * 0.5 - $node-border-width;
       position: relative;
-      top: ($node-size - $icon-size) / 2 - $node-border-width;
+      top: ($node-size - $icon-size) * 0.5 - $node-border-width;
     }
 
     &.docs-context-menu-open {
@@ -139,7 +139,7 @@
       border-bottom-right-radius: 5px;
       color: $black;
       height: $pt-grid-size * 24;
-      margin-right: $pt-grid-size/2;
+      margin-right: $pt-grid-size*0.5;
       width: $pt-grid-size * 8;
     }
   }
@@ -250,7 +250,7 @@
     $pt-transition-duration * 5,
     $before: "&"
   );
-  left: calc(50vw - #{$overlay-example-width / 2});
+  left: calc(50vw - #{$overlay-example-width * 0.5});
   margin: 10vh 0;
 
   top: 0;
@@ -359,7 +359,7 @@
 
   .#{$ns}-popover-wrapper {
     // Add a bit of space between borders of consecutive buttons.
-    margin: $pt-grid-size / 2;
+    margin: $pt-grid-size * 0.5;
   }
 
   .#{$ns}-popover-content {
@@ -460,7 +460,7 @@
 
 .#{$ns}-progress-bar.docs-toast-progress {
   margin-bottom: 0;
-  margin-top: $pt-grid-size / 2;
+  margin-top: $pt-grid-size * 0.5;
 }
 
 .docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
@@ -472,7 +472,7 @@
     flex-direction: column;
 
     > * {
-      margin: $pt-grid-size / 2;
+      margin: $pt-grid-size * 0.5;
     }
   }
 }
@@ -506,18 +506,36 @@
 #{page("datetime", "^=")} {
   .docs-example {
     flex-direction: column;
+    gap: $pt-grid-size;
     justify-content: center;
+  }
+
+  #{example("TimezoneSelectExample")} .docs-example {
+    flex-direction: row;
   }
 }
 
 .docs-date-range {
-  @include pt-flex-container(row, $pt-grid-size / 2);
+  @include pt-flex-container(row, $pt-grid-size * 0.5);
   align-items: center;
 }
 
 #{example("DateInputExample")} {
   .docs-example > * {
-    margin: 0 0 20px 0;
+    margin: 0 0 20px;
+  }
+}
+
+//
+// DATETIME2
+//
+
+#{example("DateInput2Example")} {
+  .#{$ns}-date-input {
+    // should not grow in vertical direction when fill={true}
+    flex-grow: 0;
+    margin: 0;
+    min-width: 300px;
   }
 }
 

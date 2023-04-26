@@ -17,10 +17,12 @@
 import classNames from "classnames";
 import React, { forwardRef, useCallback, useRef, useState } from "react";
 
-import { HTMLDivProps, Props, Keys, removeNonHTMLProps } from "@blueprintjs/core";
+import { HTMLDivProps, Keys, Props, removeNonHTMLProps } from "@blueprintjs/core";
 import { createKeyEventHandler } from "@blueprintjs/docs-theme";
 
 export interface ClickToCopyProps extends Props, React.RefAttributes<any>, HTMLDivProps {
+    children?: React.ReactNode;
+
     /**
      * Additional class names to apply after value has been copied
      *

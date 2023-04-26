@@ -1,44 +1,79 @@
 @# Select
 
-Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover`](#core/components/popover) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
-
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Disabling a Select</h4>
-
-Disabling the component requires setting the `disabled` prop to `true`
-and separately disabling the component's children as appropriate (because `Select` accepts arbitrary children).
-
-For example, `<Select ... disabled={true}><Button ... disabled={true} /></Select>`
-
-</div>
+The Select component renders a UI to choose one item from a list. Its children are wrapped in a
+[Popover](#core/components/popover) that contains the list and an optional
+[InputGroup](#core/components/text-inputs.input-group) to filter it.
+You may provide a predicate to customize the filtering algorithm. The value of a Select
+(the currently chosen item) is uncontrolled: listen to changes with the `onItemSelect` callback prop.
 
 @reactExample SelectExample
 
 ```tsx
 import { Button, MenuItem } from "@blueprintjs/core";
-import { Select } from "@blueprintjs/select";
-import * as Films from "./films";
+import { ItemPredicate, ItemRenderer, Select } from "@blueprintjs/select";
+import React from "react";
+import ReactDOM from "react-dom";
 
-// Select<T> is a generic component to work with your data types.
-// In TypeScript, you must first obtain a non-generic reference:
-const FilmSelect = Select.ofType<Films.Film>();
+export interface Film {
+    title: string;
+    year: number;
+    rank: number;
+}
 
-ReactDOM.render(
-    <FilmSelect
-        items={Films.items}
-        itemPredicate={Films.itemPredicate}
-        itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true} text="No results." />}
-        onItemSelect={...}
-    >
-        {/* children become the popover target; render value here */}
-        <Button text={Films.items[0].title} rightIcon="double-caret-vertical" />
-    </FilmSelect>,
-    document.querySelector("#root")
-);
+const TOP_100_FILMS: Film[] = [
+    { title: "The Shawshank Redemption", year: 1994 },
+    { title: "The Godfather", year: 1972 },
+    // ...
+].map((f, index) => ({ ...f, rank: index + 1 }));
+
+const filterFilm: ItemPredicate<Film> = (query, film, _index, exactMatch) => {
+    const normalizedTitle = film.title.toLowerCase();
+    const normalizedQuery = query.toLowerCase();
+
+    if (exactMatch) {
+        return normalizedTitle === normalizedQuery;
+    } else {
+        return `${film.rank}. ${normalizedTitle} ${film.year}`.indexOf(normalizedQuery) >= 0;
+    }
+};
+
+const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifiers, query }) => {
+    if (!modifiers.matchesPredicate) {
+        return null;
+    }
+    return (
+        <MenuItem
+            active={modifiers.active}
+            disabled={modifiers.disabled}
+            key={film.rank}
+            label={film.year.toString()}
+            onClick={handleClick}
+            onFocus={handleFocus}
+            roleStructure="listoption"
+            text={`${film.rank}. ${film.title}`}
+        />
+    );
+};
+
+const FilmSelect: React.FC = () => {
+    const [selectedFilm, setSelectedFilm] = React.useState<Film | undefined>();
+    return (
+        <Select<Film>
+            items={TOP_100_FILMS}
+            itemPredicate={filterFilm}
+            itemRenderer={renderFilm}
+            noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
+            onItemSelect={setSelectedFilm}
+        >
+            <Button text={selectedFilm?.title} rightIcon="double-caret-vertical" placeholder="Select a film" />
+        </Select>
+    );
+};
+
+ReactDOM.render(<FilmSelect /> document.querySelector("#root"));
 ```
 
-In TypeScript, `Select<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type (speak your language) so you can easily define handlers without transformation steps, but most props are required as a result. The static `Select.ofType<T>()` method is available to streamline this process. (Note that this has no effect on JavaScript usage: the `Select` export is a perfectly valid React component class.)
+In TypeScript, `Select<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type so you can easily define handlers without transformation steps, but most props are required as a result.
 
 @## Querying
 
@@ -47,11 +82,25 @@ Supply a predicate to automatically query items based on the `InputGroup` value.
 Omitting both `itemPredicate` and `itemListPredicate` props will cause the component to always render all `items`. It will not hide the `InputGroup`; use the `filterable` prop for that. In this case, you can implement your own filtering and simply change the `items` prop.
 
 The **@blueprintjs/select** package exports `ItemPredicate<T>` and `ItemListPredicate<T>` type aliases to simplify the process of implementing these functions.
-See the code sample in [Item Renderer API](#select/select-component.item-renderer) below for usage.
+See the code sample in [Item Renderer API](#select/Select.item-renderer) below for usage.
 
 @### Non-ideal states
 
 If the query returns no results or `items` is empty, then `noResults` will be rendered in place of the usual list. You also have the option to provide `initialContent`, which will render in place of the item list if the query is empty.
+
+@## Disabling
+
+Since Select accepts arbitrary children, disabling a Select componet requires setting `disabled={true}`
+_and also_ disabling its children. For example:
+
+```tsx
+const FilmSelect: React.FC = () => (
+    // many props omitted here for brevity
+    <Select<Film> disabled={true}>
+        <Button disabled={true}>
+    </Select>
+);
+```
 
 @## Custom menu
 
@@ -59,7 +108,7 @@ By default, `Select` renders the displayed items in a [`Menu`](#core/components/
 
 Note that the non-ideal states of `noResults` and `initialContent` are specific to the default renderer. If you provide the `itemListRenderer` prop, these props will be ignored.
 
-See the code sample in [Item List Renderer API](#select/select-component.item-list-renderer) below for usage.
+See the code sample in [Item List Renderer API](#select/Select.item-list-renderer) below for usage.
 
 @## Controlled usage
 
@@ -68,17 +117,19 @@ The input value can be controlled with the `query` and `onQueryChange` props. _D
 The focused item (for keyboard interactions) can be controlled with the `activeItem` and `onActiveItemChange` props.
 
 ```tsx
-<FilmSelect
-    items={myFilter(ALL_ITEMS, this.state.myQuery)}
-    itemRenderer={...}
-    onItemSelect={...}
-    // controlled active item
-    activeItem={this.state.myActiveItem}
-    onActiveItemChange={this.handleActiveItemChange}
-    // controlled query
-    query={this.state.myQuery}
-    onQueryChange={this.handleQueryChange}
-/>
+const FilmSelect: React.FC = () => (
+    <Select<Film>
+        items={myFilter(ALL_ITEMS, this.state.myQuery)}
+        itemRenderer={...}
+        onItemSelect={...}
+        // controlled active item
+        activeItem={this.state.myActiveItem}
+        onActiveItemChange={this.handleActiveItemChange}
+        // controlled query
+        query={this.state.myQuery}
+        onQueryChange={this.handleQueryChange}
+    />
+);
 ```
 
 This controlled usage allows you to implement all sorts of advanced behavior on
@@ -87,7 +138,7 @@ data sets.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
-To control the active item when a "Create Item" option is present, See [Controlling the active item](#select/select-component.controlling-the-active-item) in the "Creating new items" section below.
+To control the active item when a "Create Item" option is present, See [Controlling the active item](#select/Select.controlling-the-active-item) in the "Creating new items" section below.
 </div>
 
 @## Creating new items
@@ -96,10 +147,10 @@ If you wish, you can allow users to select a brand new item that doesn't appear
 in the list, based on the current query string. Use `createNewItemFromQuery` and
 `createNewItemRenderer` to enable this:
 - `createNewItemFromQuery`: Specifies how to convert a user-entered query string
-into an item of type `<T>` that `Select` understands.
+    into an item of type `<T>` that `Select` understands.
 - `createNewItemRenderer`: Renders a custom "Create Item" element that will be
-shown at the bottom of the list. When selected via click or `Enter`, this element
-will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
+    shown at the bottom of the list. When selected via click or `Enter`, this element
+    will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
     <h4 class="@ns-heading">Avoiding type conflicts</h4>
@@ -130,24 +181,24 @@ function renderCreateFilmOption(
         <MenuItem
             icon="add"
             text={`Create "${query}"`}
-            selected={active}
+            roleStructure="listoption"
+            active={active}
             onClick={handleClick}
             shouldDismissPopover={false}
         />
     )
 }
 
-ReactDOM.render(
-    <FilmSelect
+const FilmSelect: React.FC = () => (
+    <Select<Film>
         createNewItemFromQuery={createFilm}
         createNewItemRenderer={renderCreateFilmOption}
         items={Films.items}
         itemPredicate={Films.itemPredicate}
         itemRenderer={Films.itemRenderer}
-        noResults={<MenuItem disabled={true} text="No results." />}
+        noResults={<MenuItem disabled={true} text="No results."  roleStructure="listoption" />}
         onItemSelect={...}
-    />,
-    document.querySelector("#root")
+    />
 );
 ```
 
@@ -191,19 +242,18 @@ function getActiveItem() {
     return isCreateNewItemActive ? getCreateNewItem() : currentActiveItem;
 }
 
-ReactDOM.render(
-    <FilmSelect
+const FilmSelect: React.FC = () => (
+    <Select<Film>
         {...} // Other required props (see previous examples).
         activeItem={getActiveItem()}
         createNewItemFromQuery={...}
         createNewItemRenderer={...}
         onActiveItemChange={handleActiveItemChange}
-    />,
-    document.querySelector("#root")
+    />
 );
 ```
 
-@## JavaScript API
+@## Props interface
 
 @interface SelectProps
 
@@ -217,28 +267,35 @@ to rendering this item in this frame. The renderer is called for all items, so d
 import { Classes, MenuItem } from "@blueprintjs/core";
 import { ItemRenderer, ItemPredicate, Select } from "@blueprintjs/select";
 
-const FilmSelect = Select.ofType<Film>();
-
 const filterFilm: ItemPredicate<Film> = (query, film) => {
     return film.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
 };
 
-const renderFilm: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
+const renderFilm: ItemRenderer<Film> = (film, { handleClick, handleFocus, modifiers }) => {
     if (!modifiers.matchesPredicate) {
         return null;
     }
     return (
         <MenuItem
-            selected={modifiers.active}
-            key={film.title}
-            label={film.year}
-            onClick={handleClick}
             text={film.title}
+            label={film.year}
+            roleStructure="listoption"
+            active={modifiers.active}
+            key={film.title}
+            onClick={handleClick}
+            onFocus={handleFocus}
         />
     );
 };
 
-<FilmSelect itemPredicate={filterFilm} itemRenderer={renderFilm} items={...} onItemSelect={...} />
+const FilmSelect: React.FC = () => (
+    <Select<Film>
+        itemPredicate={filterFilm}
+        itemRenderer={renderFilm}
+        items={...}
+        onItemSelect={...}
+    />
+);
 ```
 
 @interface ItemRendererProps
@@ -250,26 +307,29 @@ If provided, the `itemListRenderer` prop will be called to render the contents o
 ```tsx
 import { ItemListRenderer } from "@blueprintjs/select";
 
-const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, renderItem }) => {
+const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, renderItem, menuProps }) => {
     const renderedItems = items.map(renderItem).filter(item => item != null);
     return (
-        <Menu ulRef={itemsParentRef}>
+        <Menu role="listbox" ulRef={itemsParentRef} {...menuProps}>
             <MenuItem
                 disabled={true}
                 text={`Found ${renderedItems.length} items matching "${query}"`}
+                roleStructure="listoption"
             />
             {renderedItems}
         </Menu>
     );
 };
 
-<FilmSelect
-    itemListRenderer={renderMenu}
-    itemPredicate={filterFilm}
-    itemRenderer={renderFilm}
-    items={...}
-    onItemSelect={...}
-/>
+const FilmSelect: React.FC = () => (
+    <Select<Film>
+        itemListRenderer={renderMenu}
+        itemPredicate={filterFilm}
+        itemRenderer={renderFilm}
+        items={...}
+        onItemSelect={...}
+    />
+);
 ```
 
 @interface ItemListRendererProps

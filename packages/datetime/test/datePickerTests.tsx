@@ -314,6 +314,43 @@ describe("<DatePicker>", () => {
             });
         });
 
+        describe("today button validation", () => {
+            const today = new Date();
+            const MIN_DATE_BEFORE_TODAY = MIN_DATE;
+            const MAX_DATE_BEFORE_TODAY = MAX_DATE;
+
+            const MIN_DATE_AFTER_TODAY = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
+            const MAX_DATE_AFTER_TODAY = new Date(today.getFullYear() + 2, today.getMonth(), today.getDate());
+
+            it("min/max before today has disabled button", () => {
+                const { getTodayButton } = wrap(
+                    <DatePicker
+                        minDate={MIN_DATE_BEFORE_TODAY}
+                        maxDate={MAX_DATE_BEFORE_TODAY}
+                        showActionsBar={true}
+                    />,
+                );
+
+                assert.isTrue(getTodayButton().props().disabled);
+            });
+
+            it("min/max after today has disabled button", () => {
+                const { getTodayButton } = wrap(
+                    <DatePicker minDate={MIN_DATE_AFTER_TODAY} maxDate={MAX_DATE_AFTER_TODAY} showActionsBar={true} />,
+                );
+
+                assert.isTrue(getTodayButton().props().disabled);
+            });
+
+            it("valid min/max today has enabled button", () => {
+                const { getTodayButton } = wrap(
+                    <DatePicker minDate={MIN_DATE_BEFORE_TODAY} maxDate={MAX_DATE_AFTER_TODAY} showActionsBar={true} />,
+                );
+
+                assert.isFalse(getTodayButton().props().disabled);
+            });
+        });
+
         it("only days outside bounds have disabled class", () => {
             const minDate = new Date(2000, Months.JANUARY, 10);
             const { getDay } = wrap(<DatePicker initialMonth={minDate} minDate={minDate} />);
@@ -688,6 +725,16 @@ describe("<DatePicker>", () => {
         assert.isNull(onChange.secondCall.args[0]);
     });
 
+    it("Clear button disabled when canClearSelection is false", () => {
+        const { getClearButton } = wrap(<DatePicker canClearSelection={false} showActionsBar={true} />);
+        assert.isTrue(getClearButton().props().disabled);
+    });
+
+    it("Clear button enabled when canClearSelection is true", () => {
+        const { getClearButton } = wrap(<DatePicker canClearSelection={true} showActionsBar={true} />);
+        assert.isFalse(getClearButton().props().disabled);
+    });
+
     it("selects the current day when Today is clicked", () => {
         const { root } = wrap(<DatePicker showActionsBar={true} />);
         root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).first().simulate("click");
@@ -720,10 +767,12 @@ describe("<DatePicker>", () => {
             clickShortcut: (index = 0) => {
                 wrapper.find(`.${Classes.DATERANGEPICKER_SHORTCUTS}`).hostNodes().find("a").at(index).simulate("click");
             },
+            getClearButton: () => wrapper.find(`.${Classes.DATEPICKER_FOOTER}`).find(Button).last(),
             getDay: (dayNumber = 1) =>
                 wrapper
                     .find(`.${Classes.DATEPICKER_DAY}`)
                     .filterWhere(day => day.text() === "" + dayNumber && !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE)),
+            getTodayButton: () => wrapper.find(`.${Classes.DATEPICKER_FOOTER}`).find(Button).first(),
             months: wrapper.find(HTMLSelect).filter({ className: Classes.DATEPICKER_MONTH_SELECT }).find("select"),
             root: wrapper,
             setTimeInput: (precision: TimePrecision | "hour", value: number) =>

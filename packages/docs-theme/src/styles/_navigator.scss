@@ -4,16 +4,12 @@
 $navigator-width: $pt-grid-size * 40;
 
 .docs-navigator-menu {
-  left: calc(50% - #{$navigator-width / 2});
+  left: calc(50% - #{$navigator-width * 0.5});
   width: $navigator-width;
 
   .#{$ns}-menu-item small {
     align-items: center;
     // center-align text and SVG icons
     display: flex;
-  }
-
-  .#{$ns}-menu-item.#{$ns}-active small {
-    color: rgba($white, 0.7);
   }
 }

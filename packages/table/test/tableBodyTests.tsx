@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to TableBody2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import React from "react";
@@ -27,7 +34,7 @@ import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { MenuContext } from "../src/interactions/menus/menuContext";
 import { Region, Regions } from "../src/regions";
-import { TableBodyProps, TableBody } from "../src/tableBody";
+import { TableBody, TableBodyProps } from "../src/tableBody";
 import { cellClassNames } from "../src/tableBodyCells";
 
 describe("TableBody", () => {

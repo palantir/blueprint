@@ -36,11 +36,11 @@ export class MenuDivider extends React.Component<MenuDividerProps> {
         const { className, title } = this.props;
         if (title == null) {
             // simple divider
-            return <li className={classNames(Classes.MENU_DIVIDER, className)} />;
+            return <li className={classNames(Classes.MENU_DIVIDER, className)} role="none" />;
         } else {
             // section header with title
             return (
-                <li className={classNames(Classes.MENU_HEADER, className)}>
+                <li className={classNames(Classes.MENU_HEADER, className)} role="none">
                     <H6>{title}</H6>
                 </li>
             );

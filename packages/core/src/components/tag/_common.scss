@@ -1,44 +1,58 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@import "../../common/variables";
+@import "../../common/variables-extended";
+
 $tag-default-color: $gray1 !default;
 $dark-tag-default-color: $gray5 !default;
 
 $tag-height: $pt-grid-size * 2 !default;
 $tag-line-height: $pt-icon-size-standard !default;
-$tag-padding-top: ($tag-height - $tag-line-height) / 2 !default;
+$tag-padding-top: ($tag-height - $tag-line-height) * 0.5 !default;
 $tag-padding: $tag-padding-top * 3 !default;
-$tag-margin: ($pt-input-height - $tag-height) / 2 !default;
+$tag-margin: ($pt-input-height - $tag-height) * 0.5 !default;
 
 $tag-height-large: $pt-grid-size * 3 !default;
 $tag-line-height-large: $pt-icon-size-large !default;
 $tag-padding-large: ($tag-height-large - $tag-line-height-large) !default;
 
-$tag-icon-spacing: ($tag-height - 12px) / 2 !default;
-$tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !default;
+$tag-icon-spacing: ($tag-height - 12px) * 0.5 !default;
+$tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) * 0.5 !default;
 
 $tag-round-adjustment: 2px !default;
 
 @mixin pt-tag() {
-  @include pt-tag-interactive($tag-default-color, 1);
   @include pt-flex-container(row, $tag-icon-spacing, inline);
   align-items: center;
   background-color: $tag-default-color;
   border: none;
   border-radius: $pt-border-radius;
   box-shadow: none;
-  color: $pt-dark-text-color;
+  color: $white;
   font-size: $pt-font-size-small;
   line-height: $tag-line-height;
   max-width: 100%;
   min-height: $tag-height;
   min-width: $tag-height;
   padding: $tag-padding-top $tag-padding;
-
   position: relative;
 
   &:focus {
     @include focus-outline(0);
+  }
+
+  &.#{$ns}-interactive {
+    cursor: pointer;
+
+    &:hover {
+      background: $dark-gray5;
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      background: $dark-gray4;
+    }
   }
 
   &.#{$ns}-round {
@@ -49,18 +63,32 @@ $tag-round-adjustment: 2px !default;
   }
 
   .#{$ns}-dark & {
-    @include pt-tag-interactive($dark-tag-default-color, 1);
-
     background-color: $dark-tag-default-color;
     color: $pt-text-color;
 
     > #{$icon-classes} {
-      fill: currentColor;
+      fill: currentcolor;
+    }
+
+    &.#{$ns}-interactive {
+      &:hover {
+        background: $gray4;
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        background: $gray3;
+      }
     }
   }
 
   > #{$icon-classes} {
     fill: $white;
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid $pt-high-contrast-mode-border-color;
   }
 }
 
@@ -70,7 +98,7 @@ $tag-round-adjustment: 2px !default;
   line-height: $tag-line-height-large;
   min-height: $tag-height-large;
   min-width: $tag-height-large;
-  padding: ($tag-padding-large / 2) $tag-padding-large;
+  padding: ($tag-padding-large * 0.5) $tag-padding-large;
 
   &.#{$ns}-round {
     padding-left: $tag-padding-large + $tag-round-adjustment;
@@ -79,11 +107,33 @@ $tag-round-adjustment: 2px !default;
   }
 }
 
-@mixin pt-tag-intent($background-color, $text-color: $white) {
-  @include pt-tag-interactive($background-color, 1);
-
+@mixin pt-tag-intent(
+  $background-color,
+  $hover-color,
+  $active-color,
+  $text-color
+) {
   background: $background-color;
   color: $text-color;
+
+  &.#{$ns}-interactive {
+    &:hover {
+      background-color: $hover-color;
+    }
+
+    &:active {
+      background-color: $active-color;
+    }
+  }
+
+  .#{$ns}-tag-remove {
+    color: rgba($text-color, 0.7);
+
+    &:hover,
+    &:active {
+      color: $text-color;
+    }
+  }
 }
 
 @mixin pt-tag-minimal() {
@@ -92,67 +142,115 @@ $tag-round-adjustment: 2px !default;
   }
 
   &:not([class*="#{$ns}-intent-"]) {
-    @include pt-tag-minimal-interactive($tag-default-color, 0.2);
+    @include pt-tag-minimal-interactive($gray3, $black);
 
-    background-color: rgba($gray3, 0.2);
+    background-color: rgba($gray3, 0.15);
     color: $pt-text-color;
 
-    .#{$ns}-dark & {
-      @include pt-tag-minimal-interactive($dark-tag-default-color, 0.2);
+    .#{$ns}-tag-remove {
+      color: $gray1;
 
+      &:hover,
+      &:active {
+        color: $dark-gray5;
+      }
+    }
+
+    .#{$ns}-dark & {
+      @include pt-tag-minimal-interactive($gray3, $white);
+
+      background-color: rgba($gray3, 0.15);
       color: $pt-dark-text-color;
 
-      > #{$icon-classes} {
-        fill: $pt-dark-icon-color;
+      .#{$ns}-tag-remove {
+        color: $pt-dark-icon-color;
+
+        &:hover,
+        &:active {
+          color: $light-gray1;
+        }
       }
     }
   }
 }
 
-@mixin pt-tag-minimal-intent($background-color, $text-color, $dark-text-color) {
-  @include pt-tag-minimal-interactive($background-color, 0.15);
+@mixin pt-tag-minimal-interactive($background-color, $text-color) {
+  &.#{$ns}-interactive {
+    cursor: pointer;
 
-  background-color: rgba($background-color, 0.15);
+    &:hover {
+      background-color: rgba($background-color, 0.3);
+      color: $text-color;
+    }
+
+    &.#{$ns}-active,
+    &:active {
+      background-color: rgba($background-color, 0.35);
+      color: $text-color;
+    }
+  }
+}
+
+@mixin pt-tag-minimal-intent(
+  $background-color,
+  $text-color,
+  $hover-active-text-color
+) {
+  background-color: rgba($background-color, 0.1);
   color: $text-color;
 
   > #{$icon-classes} {
-    fill: $background-color;
+    fill: $text-color;
   }
 
-  .#{$ns}-dark & {
-    @include pt-tag-minimal-interactive($background-color, 0.25);
+  &.#{$ns}-interactive {
+    &:hover {
+      background-color: rgba($background-color, 0.2);
+      color: $hover-active-text-color;
+    }
 
-    background-color: rgba($background-color, 0.25);
-    color: $dark-text-color;
+    &:active {
+      background-color: rgba($background-color, 0.3);
+      color: $hover-active-text-color;
+    }
+  }
+
+  .#{$ns}-tag-remove {
+    color: $text-color;
+
+    &:hover,
+    &:active {
+      color: $hover-active-text-color;
+    }
   }
 }
 
-@mixin pt-tag-interactive($background-color, $opacity) {
-  &.#{$ns}-interactive {
-    cursor: pointer;
+@mixin pt-tag-minimal-dark-intent (
+  $background-color,
+  $text-color,
+  $hover-active-text-color
+) {
+  background-color: rgba($background-color, 0.2);
+  color: $text-color;
 
+  &.#{$ns}-interactive {
     &:hover {
-      background-color: rgba($background-color, $opacity - 0.15);
+      background-color: rgba($background-color, 0.3);
+      color: $hover-active-text-color;
     }
 
-    &.#{$ns}-active,
     &:active {
-      background-color: rgba($background-color, $opacity - 0.3);
+      background-color: rgba($background-color, 0.35);
+      color: $hover-active-text-color;
     }
   }
-}
 
-@mixin pt-tag-minimal-interactive($background-color, $opacity) {
-  &.#{$ns}-interactive {
-    cursor: pointer;
+  .#{$ns}-tag-remove {
+    color: $text-color;
 
-    &:hover {
-      background-color: rgba($background-color, $opacity + 0.1);
-    }
-
-    &.#{$ns}-active,
+    &:hover,
     &:active {
-      background-color: rgba($background-color, $opacity + 0.2);
+      color: $hover-active-text-color;
     }
   }
 }
@@ -160,7 +258,7 @@ $tag-round-adjustment: 2px !default;
 @mixin pt-tag-remove() {
   background: none;
   border: none;
-  color: inherit;
+  color: rgba($white, 0.7);
   cursor: pointer;
   display: flex;
   margin-bottom: -$tag-padding-top;
@@ -169,18 +267,22 @@ $tag-round-adjustment: 2px !default;
   // top/bottom to allow for padding to enlarge click area,
   // right to tuck remove button into padding space.
   margin-top: -$tag-padding-top;
-  opacity: 0.5;
   padding: $tag-padding-top;
   padding-left: 0;
 
   &:hover {
     background: none;
-    opacity: 0.8;
+    color: inherit;
     text-decoration: none;
   }
 
+  .#{$ns}-icon:first-child {
+    color: inherit;
+  }
+
+  &:hover,
   &:active {
-    opacity: 1;
+    color: $white;
   }
 
   // CSS API support
@@ -192,10 +294,19 @@ $tag-round-adjustment: 2px !default;
   .#{$ns}-large & {
     /* stylelint-disable-next-line declaration-no-important */
     margin-right: -$tag-padding-large !important;
-    padding: 0 ($tag-padding-large / 2) 0 0;
+    padding: 0 ($tag-padding-large * 0.5) 0 0;
 
     &:empty::before {
       @include pt-icon-sized($pt-icon-size-large);
+    }
+  }
+
+  .#{$ns}-dark & {
+    color: rgba($dark-gray1, 0.7);
+
+    &:hover,
+    &:active {
+      color: $dark-gray1;
     }
   }
 }

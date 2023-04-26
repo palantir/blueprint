@@ -14,30 +14,36 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Button, ButtonGroup, Label } from "@blueprintjs/core";
 
 export type Size = "small" | "regular" | "large";
 
 export interface SizeSelectProps {
+    label?: string;
     size: Size;
+    optionLabels?: [string, string, string];
     onChange: (size: Size) => void;
 }
 
-export const SizeSelect: React.FC<SizeSelectProps> = ({ size, onChange }) => {
+export const SizeSelect: React.FC<SizeSelectProps> = ({ label, size, optionLabels, onChange }) => {
     const handleSmall = React.useCallback(() => onChange("small"), []);
     const handleRegular = React.useCallback(() => onChange("regular"), []);
     const handleLarge = React.useCallback(() => onChange("large"), []);
 
     return (
         <Label>
-            Size
+            {label}
             <ButtonGroup fill={true} style={{ marginTop: 5 }}>
-                <Button active={size === "small"} text="Small" onClick={handleSmall} />
-                <Button active={size === "regular"} text="Regular" onClick={handleRegular} />
-                <Button active={size === "large"} text="Large" onClick={handleLarge} />
+                <Button active={size === "small"} text={optionLabels[0]} onClick={handleSmall} />
+                <Button active={size === "regular"} text={optionLabels[1]} onClick={handleRegular} />
+                <Button active={size === "large"} text={optionLabels[2]} onClick={handleLarge} />
             </ButtonGroup>
         </Label>
     );
+};
+SizeSelect.defaultProps = {
+    label: "Size",
+    optionLabels: ["Small", "Regular", "Large"],
 };

@@ -4,12 +4,15 @@ reference: timezone
 
 @# Timezone
 
-The **@blueprintjs/timezone** NPM package provides React components related to handling and selecting Timezones.
+The [__@blueprintjs/timezone__ package](https://www.npmjs.com/package/@blueprintjs/timezone)
+provides React components related to handling and selecting timezones:
 
-- [`TimezonePicker`](#timezone/timezone-picker), which allows the user to select from a list of timezones.
+- [TimezonePicker](#timezone/timezone-picker) allows the user to select from a list of
+    timezones (DEPRECATED).
 
-Be aware that this package depends on [moment](https://momentjs.com/) and [moment-timezone](https://momentjs.com/timezone/) which may
-be a significant factor in a consumer's bundle size.
+Be aware that this package depends on [__moment__](https://momentjs.com/) and
+[__moment-timezone__](https://momentjs.com/timezone/) which may be a significant factor
+in a consumer's bundle size.
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 

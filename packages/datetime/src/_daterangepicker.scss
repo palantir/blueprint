@@ -4,19 +4,13 @@
 @import "./common";
 
 // react-day-picker does not conform to our naming scheme
-
 /* stylelint-disable selector-class-pattern */
+
 .#{$ns}-daterangepicker {
   display: flex;
-  white-space: nowrap;
 
   .DayPicker-NavButton--interactionDisabled {
     display: none;
-  }
-
-  .#{$ns}-daterangepicker-timepickers {
-    display: flex;
-    justify-content: space-around;
   }
 
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
@@ -37,6 +31,7 @@
 
     &--hovered-range {
       border-radius: 0;
+      color: $blue2;
 
       // need to disable hover styles for all variants of selected dates
 
@@ -50,9 +45,11 @@
     &--selected-range {
       background-color: $daterangepicker-range-background-color-selected;
       border-radius: 0;
+      color: $blue2;
 
       &:hover {
         background-color: $daterangepicker-range-background-color-selected-hover;
+        color: $blue2;
       }
     }
 
@@ -84,7 +81,7 @@
   .#{$ns}-dark & {
     .DayPicker-Day {
       &--hovered-range {
-        // same for dark theme
+        color: $light-gray5;
 
         /* stylelint-disable max-line-length */
         &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
@@ -95,12 +92,32 @@
 
       &--selected-range {
         background-color: $dark-daterangepicker-range-background-color-selected;
+        color: $light-gray5;
 
         &:hover {
           background-color: $dark-daterangepicker-range-background-color-selected-hover;
         }
       }
     }
+  }
+}
+
+.#{$ns}-daterangepicker-calendars {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.#{$ns}-daterangepicker-timepickers {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+
+  .#{$ns}-timepicker-arrow-row:empty + .#{$ns}-timepicker-input-row {
+    // when timepicker arrows are not displayed in the daterangepicker, we need a bit of extra margin
+    margin: $datepicker-padding 0;
   }
 }
 

@@ -24,7 +24,7 @@ Styleguide card
 $card-padding: $pt-grid-size * 2 !default;
 
 $card-background-color: $white !default;
-$dark-card-background-color: $dark-gray4 !default;
+$dark-card-background-color: $dark-gray3 !default;
 
 $elevation-shadows: (
   $pt-elevation-shadow-0
@@ -54,6 +54,12 @@ $dark-elevation-shadows: (
     background-color: $dark-card-background-color;
     box-shadow: $pt-dark-elevation-shadow-0;
   }
+
+  // High contrast mode hides box-shadows, so we need to use a border instead
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+    box-shadow: none;
+  }
 }
 
 @for $index from 1 through length($elevation-shadows) {
@@ -63,6 +69,10 @@ $dark-elevation-shadows: (
     &.#{$ns}-dark,
     .#{$ns}-dark & {
       box-shadow: nth($dark-elevation-shadows, $index);
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border: 1px solid $pt-high-contrast-mode-border-color;
     }
   }
 }

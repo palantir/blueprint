@@ -20,9 +20,8 @@ import React from "react";
 import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-// allow the empty interface so we can label it clearly in the docs
 export interface NavbarHeadingProps extends Props, HTMLDivProps {
-    // Empty
+    children?: React.ReactNode;
 }
 
 // this component is simple enough that tests would be purely tautological.

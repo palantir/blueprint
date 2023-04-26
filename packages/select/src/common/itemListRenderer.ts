@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import { Ref } from "@blueprintjs/core";
-
-import { CreateNewItem } from "./listItemsUtils";
+import type { CreateNewItem } from "./listItemsUtils";
 
 /**
  * An object describing how to render the list of items.
@@ -54,7 +52,12 @@ export interface ItemListRendererProps<T> {
      * A ref handler that should be attached to the parent HTML element of the menu items.
      * This is required for the active item to scroll into view automatically.
      */
-    itemsParentRef: Ref<HTMLUListElement>;
+    itemsParentRef: React.Ref<HTMLUListElement>;
+
+    /**
+     * Props to apply to the `Menu` created within the `itemListRenderer`
+     */
+    menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
     /**
      * Call this function to render an item.

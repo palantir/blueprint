@@ -23,7 +23,6 @@ import * as CoreExamples from "../examples/core-examples";
 import * as DateExamples from "../examples/datetime-examples";
 import * as SelectExamples from "../examples/select-examples";
 import * as TableExamples from "../examples/table-examples";
-import * as TimezoneExamples from "../examples/timezone-examples";
 import { BlueprintExampleData } from "./types";
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
@@ -50,6 +49,5 @@ export const reactExamples: ExampleMap = (() => {
         ...getPackageExamples("datetime", DateExamples as any),
         ...getPackageExamples("select", SelectExamples as any),
         ...getPackageExamples("table", TableExamples as any),
-        ...getPackageExamples("timezone", TimezoneExamples as any),
     };
 })();

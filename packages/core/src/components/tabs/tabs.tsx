@@ -20,10 +20,10 @@ import React from "react";
 import { AbstractPureComponent, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import * as Utils from "../../common/utils";
-import { TabProps, Tab, TabId } from "./tab";
+import { Tab, TabId, TabProps } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
-export const Expander: React.FunctionComponent = () => <div className={Classes.FLEX_EXPANDER} />;
+export const Expander: React.FC = () => <div className={Classes.FLEX_EXPANDER} />;
 
 type TabElement = React.ReactElement<TabProps & { children: React.ReactNode }>;
 
@@ -36,6 +36,9 @@ export interface TabsProps extends Props {
      * @default true
      */
     animate?: boolean;
+
+    /** Tab elements. */
+    children?: React.ReactNode;
 
     /**
      * Initial selected tab `id`, for uncontrolled usage.
@@ -228,7 +231,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const focusedElement = document.activeElement?.closest(TAB_SELECTOR);
+        const focusedElement = Utils.getActiveElement(this.tablistElement)?.closest(TAB_SELECTOR);
         // rest of this is potentially expensive and futile, so bail if no tab is focused
         if (focusedElement == null) {
             return;

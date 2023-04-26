@@ -20,6 +20,8 @@ import React from "react";
 import { Classes, Intent, Props } from "@blueprintjs/core";
 
 export interface BannerProps extends Props {
+    children?: React.ReactNode;
+
     /** Link URL. */
     href: string;
 

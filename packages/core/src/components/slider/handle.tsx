@@ -66,11 +66,14 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
     }
 
     public render() {
-        const { className, disabled, label } = this.props;
+        const { className, disabled, label, min, max, value, vertical, htmlProps } = this.props;
         const { isMoving } = this.state;
 
         return (
             <span
+                role="slider"
+                tabIndex={0}
+                {...htmlProps}
                 className={classNames(Classes.SLIDER_HANDLE, { [Classes.ACTIVE]: isMoving }, className)}
                 onKeyDown={disabled ? undefined : this.handleKeyDown}
                 onKeyUp={disabled ? undefined : this.handleKeyUp}
@@ -78,7 +81,10 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
                 onTouchStart={disabled ? undefined : this.beginHandleTouchMovement}
                 ref={this.refHandlers.handle}
                 style={this.getStyleProperties()}
-                tabIndex={0}
+                aria-valuemin={min}
+                aria-valuemax={max}
+                aria-valuenow={value}
+                aria-orientation={vertical ? "vertical" : "horizontal"}
             >
                 {label == null ? null : <span className={Classes.SLIDER_LABEL}>{label}</span>}
             </span>

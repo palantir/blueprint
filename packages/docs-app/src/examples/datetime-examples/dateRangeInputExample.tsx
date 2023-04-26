@@ -17,11 +17,11 @@
 import React from "react";
 
 import { H5, Switch } from "@blueprintjs/core";
-import { DateRange, DateRangeInput, DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { DateFormatProps, DateRange, DateRangeInput, TimePrecision } from "@blueprintjs/datetime";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-import { FORMATS, FormatSelect } from "./common/formatSelect";
 import { MomentDateRange } from "./common/momentDate";
+import { MOMENT_FORMATS, MomentFormatSelector } from "./common/momentFormats";
 
 export interface DateRangeInputExampleState {
     allowSingleDayRange: boolean;
@@ -45,7 +45,7 @@ export class DateRangeInputExample extends React.PureComponent<ExampleProps, Dat
         contiguousCalendarMonths: true,
         disabled: false,
         enableTimePicker: false,
-        format: FORMATS[0],
+        format: MOMENT_FORMATS[0],
         range: [null, null],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
@@ -146,7 +146,7 @@ export class DateRangeInputExample extends React.PureComponent<ExampleProps, Dat
                     label="Show timepicker arrow buttons"
                     onChange={this.toggleTimepickerArrowButtons}
                 />
-                <FormatSelect key="Format" format={this.state.format} onChange={this.handleFormatChange} />
+                <MomentFormatSelector key="Format" format={this.state.format} onChange={this.handleFormatChange} />
             </>
         );
     }

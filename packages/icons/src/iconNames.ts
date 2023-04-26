@@ -16,18 +16,23 @@
 
 /* eslint-disable camelcase */
 
-import { pascalCase } from "change-case";
+import { pascalCase, snakeCase } from "change-case";
 
-// icon sets are identical aside from SVG paths, so we just import the info for the 16px set
+// The two icon sets are identical aside from SVG paths, so we only need to import info for the 16px set
 import { BlueprintIcons_16, BlueprintIcons_16Id as IconName } from "./generated/16px/blueprint-icons-16";
-import type { PascalCase } from "./type-utils";
+import type { PascalCase, ScreamingSnakeCase } from "./type-utils";
 
 export type { IconName };
 
-const IconNames = {} as Record<PascalCase<IconName>, IconName>;
+const IconNamesNew = {} as Record<PascalCase<IconName>, IconName>;
+const IconNamesLegacy = {} as Record<ScreamingSnakeCase<IconName>, IconName>;
 
 for (const name of Object.values(BlueprintIcons_16) as IconName[]) {
-    IconNames[pascalCase(name) as PascalCase<IconName>] = name;
+    IconNamesNew[pascalCase(name) as PascalCase<IconName>] = name;
+    IconNamesLegacy[snakeCase(name).toUpperCase() as ScreamingSnakeCase<IconName>] = name;
 }
 
-export { IconNames };
+export const IconNames = {
+    ...IconNamesNew,
+    ...IconNamesLegacy,
+};

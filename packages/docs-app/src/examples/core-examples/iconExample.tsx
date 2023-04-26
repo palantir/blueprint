@@ -17,7 +17,7 @@
 import React from "react";
 
 import { H5, Icon, Intent, Label, Slider } from "@blueprintjs/core";
-import { Example, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleValueChange } from "@blueprintjs/docs-theme";
 import { IconName, IconSize } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
@@ -42,6 +42,8 @@ export class IconExample extends React.PureComponent<ExampleProps, IconExampleSt
 
     private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 
+    private iconSizeLabelId = "icon-size-label";
+
     public render() {
         const { icon, iconSize, intent } = this.state;
 
@@ -50,7 +52,7 @@ export class IconExample extends React.PureComponent<ExampleProps, IconExampleSt
                 <H5>Props</H5>
                 <IconSelect iconName={icon} onChange={this.handleIconNameChange} />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
-                <Label>Icon size</Label>
+                <Label id={this.iconSizeLabelId}>Icon size</Label>
                 <Slider
                     labelStepSize={MAX_ICON_SIZE / 5}
                     min={0}
@@ -58,6 +60,7 @@ export class IconExample extends React.PureComponent<ExampleProps, IconExampleSt
                     showTrackFill={false}
                     value={iconSize}
                     onChange={this.handleIconSizeChange}
+                    handleHtmlProps={{ "aria-labelledby": this.iconSizeLabelId }}
                 />
             </>
         );

@@ -19,7 +19,8 @@ import React from "react";
 import { AbstractPureComponent, Intent } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { SliderBaseProps, MultiSlider } from "./multiSlider";
+import { HandleHtmlProps } from "./handleProps";
+import { MultiSlider, SliderBaseProps } from "./multiSlider";
 
 export type NumberRange = [number, number];
 
@@ -41,6 +42,9 @@ export interface RangeSliderProps extends SliderBaseProps {
 
     /** Callback invoked when a handle is released. */
     onRelease?(value: NumberRange): void;
+
+    /** HTML props to apply to the slider Handles */
+    handleHtmlProps?: { start?: HandleHtmlProps; end?: HandleHtmlProps };
 }
 
 export class RangeSlider extends AbstractPureComponent<RangeSliderProps> {
@@ -53,11 +57,16 @@ export class RangeSlider extends AbstractPureComponent<RangeSliderProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.RangeSlider`;
 
     public render() {
-        const { value, ...props } = this.props;
+        const { value, handleHtmlProps, ...props } = this.props;
         return (
             <MultiSlider {...props}>
-                <MultiSlider.Handle value={value![RangeIndex.START]} type="start" intentAfter={props.intent} />
-                <MultiSlider.Handle value={value![RangeIndex.END]} type="end" />
+                <MultiSlider.Handle
+                    value={value![RangeIndex.START]}
+                    type="start"
+                    intentAfter={props.intent}
+                    htmlProps={handleHtmlProps?.start}
+                />
+                <MultiSlider.Handle value={value![RangeIndex.END]} type="end" htmlProps={handleHtmlProps?.end} />
             </MultiSlider>
         );
     }

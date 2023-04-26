@@ -409,4 +409,4 @@ describe("<Tabs>", () => {
     }
 });
 
-const Panel: React.FunctionComponent<{ title: string }> = ({ title }) => <strong>{title} panel</strong>;
+const Panel: React.FC<{ title: string }> = ({ title }) => <strong>{title} panel</strong>;

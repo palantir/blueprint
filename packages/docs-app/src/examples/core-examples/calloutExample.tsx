@@ -34,6 +34,8 @@ export class CalloutExample extends React.PureComponent<DocsExampleProps, Callou
 
     private handleHeaderChange = handleBooleanChange((showHeader: boolean) => this.setState({ showHeader }));
 
+    private handleIconNameChange = (icon: IconName) => this.setState({ icon });
+
     private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
 
     public render() {
@@ -57,6 +59,4 @@ export class CalloutExample extends React.PureComponent<DocsExampleProps, Callou
             </Example>
         );
     }
-
-    private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 }

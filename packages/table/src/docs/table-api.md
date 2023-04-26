@@ -4,15 +4,15 @@ reference: api
 
 @# JavaScript API
 
-The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell`
+The `Table`, `Column`, `Cell`, `ColumnHeaderCell2`, `EditableName`, and `EditableCell2`
 components are available in the __@blueprintjs/table__ package.
 
 @## Table
 
-The top-level component of the table is `Table`. You must at least define the
+The top-level component of the table is `Table2`. You must at least define the
 number of rows (`numRows` prop) as well as a set of `Column` children.
 
-@interface TableProps
+@interface Table2Props
 
 @### Instance methods
 
@@ -53,31 +53,40 @@ returned from the `cellRenderer` method of each `Column`.
 
 @interface CellProps
 
-@## ColumnHeaderCell
+@## ColumnHeaderCell2
 
-Customize how each column header is displayed.
+Optionally customize how each column header is displayed.
 
 The `columnHeaderCellRenderer` method on each `Column` should return a
-`ColumnHeaderCell`. Children of a `ColumnHeaderCell` are rendered below
+`ColumnHeaderCell2`. Children of a `ColumnHeaderCell2` are rendered below
 the name of the column. If you want to override the render behavior of the
-name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell`.
+name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell2`.
 
 @interface ColumnHeaderCellProps
 
 @## EditableName
 
 Return a `EditableName` component from the `nameRenderer` prop on a
-`ColumnHeaderCell` to enable click-to-edit functionality in the column
+`ColumnHeaderCell2` to enable click-to-edit functionality in the column
 header.
 
 @interface EditableNameProps
 
-@## EditableCell
+@## EditableCell2
 
-Return a `EditableCell` component from the `cellRenderer` prop on a
+Return an `EditableCell2` component from the `cellRenderer` prop on a
 `Column` to enable double-click-to-edit functionality in the table body.
 
-@interface EditableCellProps
+@interface EditableCell2Props
+
+@## RowHeaderCell2
+
+Optionally customize how each row header is displayed.
+
+In order to use this API, supply a custom renderer function which returns a `RowHeaderCell2` to the
+`rowHeaderCellRenderer` prop on the overall `Table2`.
+
+@interface RowHeaderCellProps
 
 @## Region
 

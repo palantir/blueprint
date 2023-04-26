@@ -1,33 +1,36 @@
-version: 2
+version: 2.1
+
+orbs:
+  browser-tools: circleci/browser-tools@1.3.0
 
 aliases:
-  - &docker-node-lts
-    - image: circleci/node:12
+  - &docker-node-image
+    - image: cimg/node:16.14
 
-  - &docker-node-browsers
-    - image: circleci/node:12-browsers
+  - &docker-node-browsers-image
+    - image: cimg/node:16.14-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
   - &restore-node-modules-cache
     name: Restore node_modules cache
-    key: v4-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v6-yarn-deps-{{ checksum "yarn.lock" }}
 
   - &restore-yarn-cache
     name: Restore yarnpkg cache
-    key: v4-yarn-cache
+    key: v6-yarn-cache
 
   - &save-node-modules-cache
     name: Save node_modules cache
     paths:
       - node_modules
-    key: v4-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v6-yarn-deps-{{ checksum "yarn.lock" }}
 
   - &save-yarn-cache
     name: Save yarnpkg cache
     paths:
       - ~/.cache/yarn
-    key: v4-yarn-cache
+    key: v6-yarn-cache
 
 references:
   reports_path: &reports_path
@@ -35,7 +38,7 @@ references:
 
 jobs:
   checkout-code:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     steps:
       - checkout
       - restore_cache: *restore-yarn-cache
@@ -51,14 +54,14 @@ jobs:
           paths: [packages/*/node_modules]
 
   clean-lockfile:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - run: ./scripts/verifyCleanLockfile.sh
 
   compile:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     resource_class: large
     steps:
       - checkout
@@ -70,7 +73,7 @@ jobs:
           paths: [packages/*/lib, packages/*/src/generated]
 
   format-check:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     environment:
       JUNIT_REPORT_PATH: reports
       NODE_ENV: test
@@ -81,7 +84,7 @@ jobs:
       - run: yarn format-check
 
   lint:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     resource_class: large
     environment:
       JUNIT_REPORT_PATH: reports
@@ -97,8 +100,10 @@ jobs:
       - store_artifacts: { path: ./reports }
 
   dist:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     resource_class: large
+    environment:
+      NODE_ENV: test
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
@@ -109,7 +114,7 @@ jobs:
           paths: [packages/*/lib, packages/*/dist]
 
   test-node-libs:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     environment:
       JUNIT_REPORT_PATH: reports
     parallelism: 2
@@ -129,7 +134,7 @@ jobs:
       - store_artifacts: { path: ./reports }
 
   test-react-16: &test-react
-    docker: *docker-node-browsers
+    docker: *docker-node-browsers-image
     environment:
       JUNIT_REPORT_PATH: reports
     parallelism: 6
@@ -137,6 +142,13 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - run:
+          name: Verify Chrome browser installed
+          command: |
+            google-chrome --version
+            chromedriver --version
       - run: mkdir -p ./reports
       - run:
           # split karma tests into containers because they can take up a lot of memory
@@ -156,7 +168,7 @@ jobs:
       - store_artifacts: { path: ./reports }
 
   test-iso-react-16: &test-iso
-    docker: *docker-node-lts
+    docker: *docker-node-image
     environment:
       JUNIT_REPORT_PATH: reports
     steps:
@@ -169,7 +181,7 @@ jobs:
       - store_artifacts: { path: ./reports }
 
   deploy-preview:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
@@ -180,10 +192,13 @@ jobs:
       - store_artifacts: { path: packages/demo-app/dist }
       - run:
           name: Submit Github comment with links to built artifacts
-          command: node ./scripts/preview.js
+          command: |
+            artifacts=$(curl -X GET "https://circleci.com/api/v2/project/github/palantir/blueprint/$CIRCLE_BUILD_NUM/artifacts" -H "Accept: application/json" -u "$CIRCLE_AUTH_TOKEN:")
+            echo $artifacts > ./scripts/artifacts.json
+            node ./scripts/preview.js
 
   deploy-npm:
-    docker: *docker-node-lts
+    docker: *docker-node-image
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
