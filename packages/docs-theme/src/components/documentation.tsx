@@ -21,7 +21,7 @@ import React from "react";
 import { Classes, Drawer, FocusStyleManager, HotkeysTarget, Props } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
-import { hasTypescriptData, DocsData, DocumentationContext, DocumentationContextApi } from "../common/context";
+import { DocsData, DocumentationContext, DocumentationContextApi, hasTypescriptData } from "../common/context";
 import { eachLayoutNode } from "../common/documentalistUtils";
 import { TagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";

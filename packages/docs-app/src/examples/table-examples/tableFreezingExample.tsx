@@ -17,7 +17,7 @@
 import React from "react";
 
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { Cell, Column, Table, Utils } from "@blueprintjs/table";
+import { Cell, Column, Table2, Utils } from "@blueprintjs/table";
 
 export interface TableFreezingExampleState {
     numFrozenColumns?: number;
@@ -33,9 +33,9 @@ export class TableFreezingExample extends React.PureComponent<ExampleProps, Tabl
     public render() {
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table numRows={NUM_ROWS} numFrozenRows={NUM_FROZEN_ROWS} numFrozenColumns={NUM_FROZEN_COLUMNS}>
+                <Table2 numRows={NUM_ROWS} numFrozenRows={NUM_FROZEN_ROWS} numFrozenColumns={NUM_FROZEN_COLUMNS}>
                     {this.renderColumns()}
-                </Table>
+                </Table2>
             </Example>
         );
     }

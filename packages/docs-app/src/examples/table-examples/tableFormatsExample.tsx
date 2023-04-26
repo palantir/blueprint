@@ -17,7 +17,7 @@
 import React from "react";
 
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { Cell, Column, JSONFormat, Table, TruncatedFormat } from "@blueprintjs/table";
+import { Cell, Column, JSONFormat, Table2, TruncatedFormat } from "@blueprintjs/table";
 
 interface Timezone {
     name: string;
@@ -86,12 +86,12 @@ export class TableFormatsExample extends React.PureComponent<ExampleProps> {
     public render() {
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table enableRowResizing={true} numRows={this.data.length}>
+                <Table2 enableRowResizing={true} numRows={this.data.length}>
                     <Column name="Timezone" cellRenderer={this.renderTimezone} />
                     <Column name="UTC Offset" cellRenderer={this.renderOffset} />
                     <Column name="Local Time" cellRenderer={this.renderLocalTime} />
                     <Column name="Timezone JSON" cellRenderer={this.renderJSON} />
-                </Table>
+                </Table2>
             </Example>
         );
     }

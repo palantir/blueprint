@@ -1481,7 +1481,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
     /**
      * Normalizes RenderMode.BATCH_ON_UPDATE into RenderMode.{BATCH,NONE}. We do
      * this because there are actually multiple updates required before the
-     * <Table> is considered fully "mounted," and adding that knowledge to child
+     * <Table2> is considered fully "mounted," and adding that knowledge to child
      * components would lead to tight coupling. Thus, keep it simple for them.
      */
     private getNormalizedRenderMode(): RenderMode.BATCH | RenderMode.NONE {

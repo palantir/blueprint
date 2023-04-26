@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { Cell, Column, ColumnHeaderCell, Table } from "@blueprintjs/table";
+import { Cell, Column, ColumnHeaderCell2, Table2 } from "@blueprintjs/table";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -27,12 +27,12 @@ export const TableExample = React.memo(() => {
         [],
     );
     const columnHeaderCellRenderer = React.useCallback(
-        (index: number) => <ColumnHeaderCell name={`Column ${index}`} />,
+        (index: number) => <ColumnHeaderCell2 name={`Column ${index}`} />,
         [],
     );
     return (
         <ExampleCard width={WIDTH} horizontal={true} label="Table">
-            <Table numRows={4}>
+            <Table2 numRows={4}>
                 <Column
                     cellRenderer={cellRenderer}
                     columnHeaderCellRenderer={columnHeaderCellRenderer}
@@ -48,7 +48,7 @@ export const TableExample = React.memo(() => {
                     columnHeaderCellRenderer={columnHeaderCellRenderer}
                     key="column-2"
                 />
-            </Table>
+            </Table2>
         </ExampleCard>
     );
 });

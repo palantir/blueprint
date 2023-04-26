@@ -24,9 +24,9 @@ import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
 
 import {
     Classes as DateClasses,
+    DatePickerModifiers,
     DateRange,
     DateRangePicker,
-    DatePickerModifiers,
     DateRangePickerProps,
     TimePicker,
     TimePrecision,

@@ -29,7 +29,7 @@ import sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover } from "@blueprintjs/core";
 
-import { Classes, DateInput, DatePicker, DateInputProps, TimePicker, TimePrecision } from "../src";
+import { Classes, DateInput, DateInputProps, DatePicker, TimePicker, TimePrecision } from "../src";
 import { Months } from "../src/common/months";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";

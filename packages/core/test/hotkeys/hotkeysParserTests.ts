@@ -20,8 +20,8 @@ import {
     comboMatches,
     getKeyCombo,
     getKeyComboString,
-    normalizeKeyCombo,
     KeyCombo,
+    normalizeKeyCombo,
     parseKeyCombo,
 } from "../../src/components/hotkeys/hotkeyParser";
 

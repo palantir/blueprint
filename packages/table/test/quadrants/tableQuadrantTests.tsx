@@ -22,7 +22,7 @@ import sinon from "sinon";
 import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import { Grid } from "../../src/common/grid";
-import { TableQuadrantProps, QuadrantType, TableQuadrant } from "../../src/quadrants/tableQuadrant";
+import { QuadrantType, TableQuadrant, TableQuadrantProps } from "../../src/quadrants/tableQuadrant";
 
 /**
  * <TableQuadrant> is responsible for showing a single table "instance" of both

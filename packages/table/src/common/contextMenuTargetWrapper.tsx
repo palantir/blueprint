@@ -36,8 +36,6 @@ export interface ContextMenuTargetWrapperProps extends Props {
  * `element.addEventListener`, the prop can be lost. This wrapper helps us
  * maintain context menu fuctionality when doing fancy React.cloneElement
  * chains.
- *
- * @deprecated use ContextMenu instead
  */
 @ContextMenuTargetLegacy
 export class ContextMenuTargetWrapper extends React.PureComponent<ContextMenuTargetWrapperProps> {

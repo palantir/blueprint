@@ -25,9 +25,9 @@ import { isKeyboardClick } from "../../common/keys";
 import { refHandler, setRef } from "../../common/refs";
 import { Overlay } from "../overlay/overlay";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
+// eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
 import { matchReferenceWidthModifier } from "./customModifiers";
-// eslint-disable-next-line import/no-cycle
 import { POPOVER_ARROW_SVG_SIZE, PopoverArrow } from "./popoverArrow";
 import { positionToPlacement } from "./popoverPlacementUtils";
 import { PopoverSharedProps } from "./popoverSharedProps";

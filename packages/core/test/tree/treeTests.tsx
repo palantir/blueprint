@@ -20,7 +20,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { spy } from "sinon";
 
-import { Classes, TreeNodeInfo, TreeProps, Tree } from "../../src";
+import { Classes, Tree, TreeNodeInfo, TreeProps } from "../../src";
 
 describe("<Tree>", () => {
     let testsContainerElement: Element;

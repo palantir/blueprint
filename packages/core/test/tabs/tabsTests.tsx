@@ -21,7 +21,7 @@ import { spy } from "sinon";
 import * as Classes from "../../src/common/classes";
 import * as Keys from "../../src/common/keys";
 import { Tab } from "../../src/components/tabs/tab";
-import { TabsProps, TabsState, Tabs } from "../../src/components/tabs/tabs";
+import { Tabs, TabsProps, TabsState } from "../../src/components/tabs/tabs";
 
 describe("<Tabs>", () => {
     const ID = "tabsTests";

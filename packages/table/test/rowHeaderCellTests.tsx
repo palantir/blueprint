@@ -28,7 +28,7 @@ import sinon from "sinon";
 
 import { H4 } from "@blueprintjs/core";
 
-import { RowHeaderCellProps, RowHeaderCell } from "../src";
+import { RowHeaderCell, RowHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";
 import { ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";

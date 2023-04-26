@@ -390,6 +390,7 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
         this.safeInvokeInputProp("onBlur", e);
     };
 
+    /* eslint-disable deprecation/deprecation */
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
         if (e.which === Keys.ENTER) {
@@ -408,6 +409,7 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
         }
         this.safeInvokeInputProp("onKeyDown", e);
     };
+    /* eslint-enable deprecation/deprecation */
 
     private getKeyboardFocusableElements = (): HTMLElement[] => {
         const elements: HTMLElement[] = Array.from(
