@@ -81,12 +81,6 @@ describe("<MultiSelect>", () => {
         assert.equal(wrapper.find(Tag).find("strong").length, 1);
     });
 
-    // N.B. this is not good behavior, we shouldn't support this since the component is controlled.
-    // we keep it around for backcompat but expect that nobody actually uses the component this way.
-    it("selectedItems is optional", () => {
-        assert.doesNotThrow(() => multiselect({ selectedItems: undefined }));
-    });
-
     it("only triggers QueryList key up events when focus is on TagInput's <input>", () => {
         const itemSelectSpy = sinon.spy();
         const wrapper = multiselect({

@@ -155,7 +155,7 @@ function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(p
         <>
             {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={IconSize.LARGE} />}
             {/* The icon is purely decorative if text is provided */}
-            <Icon key="leftIcon" icon={icon} aria-hidden={hasTextContent} tabIndex={hasTextContent ? -1 : undefined} />,
+            <Icon key="leftIcon" icon={icon} aria-hidden={hasTextContent} tabIndex={hasTextContent ? -1 : undefined} />
             {hasTextContent && (
                 <span key="text" className={Classes.BUTTON_TEXT}>
                     {text}

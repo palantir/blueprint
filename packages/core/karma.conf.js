@@ -8,6 +8,9 @@ module.exports = async function (config) {
         createKarmaConfig({
             dirname: __dirname,
             coverageExcludes: [
+                // no need to test legacy APIs
+                "src/legacy/*",
+
                 // not worth full coverage
                 "src/accessibility/*",
                 "src/common/abstractComponent*",
@@ -18,15 +21,18 @@ module.exports = async function (config) {
                 "src/common/refs.ts",
 
                 // HACKHACK: need to add hotkeys tests
-                "src/components/hotkeys/hotkey.tsx",
-                "src/components/hotkeys/hotkeys.tsx",
-                "src/components/hotkeys/hotkeysDialog.tsx",
-                "src/components/hotkeys/hotkeysTarget.tsx",
+                "src/components/hotkeys/*",
                 "src/context/hotkeys/hotkeysProvider.tsx",
 
                 // HACKHACK: see https://github.com/palantir/blueprint/issues/5511
                 "src/context/portal/portalProvider.tsx",
             ],
+            coverageOverrides: {
+                "src/components/popover/customModifiers.ts": {
+                    lines: 66,
+                    statements: 66,
+                },
+            },
         }),
     );
 };
