@@ -7,7 +7,6 @@ import { coreComponentsMigrationMapping } from "./no-deprecated-core-components"
 import { datetimeComponentsMigrationMapping } from "./no-deprecated-datetime-components";
 import { selectComponentsMigrationMapping } from "./no-deprecated-select-components";
 import { tableComponentsMigrationMapping } from "./no-deprecated-table-components";
-import { timezoneComponentsMigrationMapping } from "./no-deprecated-timezone-components";
 
 /**
  * This rule checks a hardcoded list of components that Blueprint is actively migrating to a newer version (e.g. v1 -> v2)
@@ -17,18 +16,11 @@ import { timezoneComponentsMigrationMapping } from "./no-deprecated-timezone-com
  */
 export const noDeprecatedComponentsRule = createNoDeprecatedComponentsRule(
     "no-deprecated-components",
-    [
-        "@blueprintjs/core",
-        "@blueprintjs/datetime",
-        "@blueprintjs/select",
-        "@blueprintjs/table",
-        "@blueprintjs/timezone",
-    ],
+    ["@blueprintjs/core", "@blueprintjs/datetime", "@blueprintjs/select", "@blueprintjs/table"],
     {
         ...coreComponentsMigrationMapping,
         ...datetimeComponentsMigrationMapping,
         ...selectComponentsMigrationMapping,
         ...tableComponentsMigrationMapping,
-        ...timezoneComponentsMigrationMapping,
     },
 );

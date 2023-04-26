@@ -24,7 +24,7 @@ Install it with your package manager ([Yarn](https://yarnpkg.com/) is used in th
 yarn add @blueprintjs/core react react-dom
 ```
 
-Additional components live in the **@blueprintjs/icons**, **@blueprintjs/datetime**, **@blueprintjs/select**, **@blueprintjs/table**, and **@blueprintjs/timezone** packages,
+Additional components live in the **@blueprintjs/icons**, **@blueprintjs/datetime**, **@blueprintjs/select**, and **@blueprintjs/table** packages,
 separated by use case and significant dependencies. All have peer dependencies on **react** and **react-dom**, so these two packages must be installed alongside Blueprint.
 
 ### Import

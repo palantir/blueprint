@@ -94,12 +94,5 @@ ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
                 class MyClass2 extends BP.AbstractComponent {}
             `,
         },
-        {
-            code: dedent`
-                import { TimezonePicker } from "@blueprintjs/timezone";
-
-                return <TimezonePicker />;
-            `,
-        },
     ],
 });

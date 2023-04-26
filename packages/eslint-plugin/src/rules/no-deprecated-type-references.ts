@@ -142,8 +142,6 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "IRowHeaderRenderer",
         "IRowHeaderCellProps",
     ],
-
-    "@blueprintjs/timezone": ["ITimezoneItem", "ITimezonePickerProps"],
 };
 
 /**
