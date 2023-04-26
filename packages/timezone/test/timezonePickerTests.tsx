@@ -49,8 +49,6 @@ const shallow = (
     options?: ShallowRendererProps,
 ): TimezonePickerShallowWrapper => untypedShallow<TimezonePicker>(el, options);
 
-/* eslint-disable deprecation/deprecation */
-
 describe("<TimezonePicker>", () => {
     const onChange = sinon.spy();
     const DEFAULT_PROPS: TimezonePickerProps = {

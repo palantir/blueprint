@@ -5,7 +5,7 @@
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
 export const timezoneComponentsMigrationMapping = {
-    TimezonePicker: "TimezoneSelect",
+    // nothing yet
 };
 
 /**

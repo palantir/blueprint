@@ -33,80 +33,7 @@ const ruleTester = new TSESLint.RuleTester({
 });
 
 ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
-    invalid: [
-        {
-            code: dedent`
-                import { CollapsibleList } from "@blueprintjs/core";
-
-                return <CollapsibleList />
-            `,
-            errors: [
-                {
-                    messageId: "migration",
-                    data: { deprecatedComponentName: "CollapsibleList", newComponentName: "OverflowList" },
-                },
-            ],
-        },
-        {
-            code: dedent`
-                import * as BP from "@blueprintjs/core";
-
-                return <BP.CollapsibleList />
-            `,
-            errors: [
-                {
-                    messageId: "migration",
-                    data: { deprecatedComponentName: "CollapsibleList", newComponentName: "OverflowList" },
-                },
-            ],
-        },
-        {
-            code: dedent`
-                import { AbstractComponent } from "@blueprintjs/core";
-
-                export class MyClass extends AbstractComponent {
-                }
-            `,
-            errors: [
-                {
-                    messageId: "migration",
-                    data: { deprecatedComponentName: "AbstractComponent", newComponentName: "AbstractComponent2" },
-                },
-            ],
-        },
-        {
-            code: dedent`
-                import * as BP from "@blueprintjs/core";
-
-                export class MyClass extends BP.AbstractComponent {
-                }
-                class MyClass2 extends BP.AbstractComponent {}
-            `,
-            errors: [
-                {
-                    messageId: "migration",
-                    data: { deprecatedComponentName: "AbstractComponent", newComponentName: "AbstractComponent2" },
-                },
-                {
-                    messageId: "migration",
-                    data: { deprecatedComponentName: "AbstractComponent", newComponentName: "AbstractComponent2" },
-                },
-            ],
-        },
-        {
-            code: dedent`
-                import { TimezonePicker } from "@blueprintjs/timezone";
-
-                return <TimezonePicker />;
-            `,
-            errors: [
-                {
-                    messageId: "migration",
-                    data: { deprecatedComponentName: "TimezonePicker", newComponentName: "TimezoneSelect" },
-                },
-            ],
-        },
-    ],
+    invalid: [],
     valid: [
         {
             code: dedent`
@@ -134,6 +61,44 @@ ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
                 import * as BP from "@blueprintjs/core";
 
                 return <BP.Button />
+            `,
+        },
+        {
+            code: dedent`
+                import { CollapsibleList } from "@blueprintjs/core";
+
+                return <CollapsibleList />
+            `,
+        },
+        {
+            code: dedent`
+                import * as BP from "@blueprintjs/core";
+
+                return <BP.CollapsibleList />
+            `,
+        },
+        {
+            code: dedent`
+                import { AbstractComponent } from "@blueprintjs/core";
+
+                export class MyClass extends AbstractComponent {
+                }
+            `,
+        },
+        {
+            code: dedent`
+                import * as BP from "@blueprintjs/core";
+
+                export class MyClass extends BP.AbstractComponent {
+                }
+                class MyClass2 extends BP.AbstractComponent {}
+            `,
+        },
+        {
+            code: dedent`
+                import { TimezonePicker } from "@blueprintjs/timezone";
+
+                return <TimezonePicker />;
             `,
         },
     ],

@@ -5,8 +5,6 @@
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
 export const datetimeComponentsMigrationMapping = {
-    DateInput: "DateInput2",
-    DateRangeInput: "DateRangeInput2",
     // TODO(@adidahiya): Blueprint v6
     // DateTimePicker: "DatePicker",
 };

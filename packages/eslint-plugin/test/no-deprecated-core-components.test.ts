@@ -35,42 +35,7 @@ const ruleTester = new TSESLint.RuleTester({
 ruleTester.run("no-deprecated-core-components", noDeprecatedCoreComponentsRule, {
     // N.B. most other deprecated components are tested by no-deprecated-components.test.ts, this suite just tests
     // for more specific violations which involve certain deprecated props
-    invalid: [
-        {
-            code: dedent`
-                import { MenuItem } from "@blueprintjs/core";
-
-                return <MenuItem popoverProps={{ boundary: "window" }} />
-            `,
-            errors: [
-                {
-                    messageId: "migrationWithPropUsage",
-                    data: {
-                        deprecatedComponentName: "MenuItem",
-                        deprecatedPropName: "popoverProps",
-                        newComponentName: "MenuItem2",
-                    },
-                },
-            ],
-        },
-        {
-            code: dedent`
-                import * as Blueprint from "@blueprintjs/core";
-
-                return <Blueprint.MenuItem popoverProps={{ boundary: "window" }} />
-            `,
-            errors: [
-                {
-                    messageId: "migrationWithPropUsage",
-                    data: {
-                        deprecatedComponentName: "MenuItem",
-                        deprecatedPropName: "popoverProps",
-                        newComponentName: "MenuItem2",
-                    },
-                },
-            ],
-        },
-    ],
+    invalid: [],
     valid: [
         {
             code: dedent`
@@ -84,6 +49,20 @@ ruleTester.run("no-deprecated-core-components", noDeprecatedCoreComponentsRule, 
                 import * as Blueprint from "@blueprintjs/core";
 
                 return <Blueprint.MenuItem text="Open in new tab" icon="share" />
+            `,
+        },
+        {
+            code: dedent`
+                import { MenuItem } from "@blueprintjs/core";
+
+                return <MenuItem popoverProps={{ boundary: "window" }} />
+            `,
+        },
+        {
+            code: dedent`
+                import * as Blueprint from "@blueprintjs/core";
+
+                return <Blueprint.MenuItem popoverProps={{ boundary: "window" }} />
             `,
         },
     ],
