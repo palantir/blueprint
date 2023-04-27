@@ -106,7 +106,7 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
         } else {
             return (
                 <Component
-                    className={classNames(Classes.intentClass(intent), className)}
+                    className={classNames(Classes.iconClass(icon), Classes.intentClass(intent), className)}
                     color={color}
                     size={size}
                     tagName={tagName}

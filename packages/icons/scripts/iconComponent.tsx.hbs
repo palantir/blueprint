@@ -40,6 +40,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, S
                     : "{{icon16pxPath}}"
             }
             fillRule="evenodd"
+            transform="scale({{pathScaleFactor}} {{pathScaleFactor}})"
         />
     );
 
@@ -70,7 +71,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, S
                 ref,
                 title: htmlTitle,
             },
-            <svg fill={color} data-icon="{{iconName}}" width={size} height={size} viewBox={viewBox}>
+            <svg fill={color} data-icon="{{iconName}}" width={size} height={size} role="img" viewBox={viewBox}>
                 {title && <title>{title}</title>}
                 {path}
             </svg>

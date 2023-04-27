@@ -24,7 +24,14 @@ import { getLogger } from "fantasticon/lib/cli/logger.js";
 import { mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 
-import { generatedSrcDir, iconResourcesDir, iconsMetadata, NS, scriptsDir } from "./common.mjs";
+import {
+    generatedSrcDir,
+    ICON_RASTER_SCALING_FACTOR,
+    iconResourcesDir,
+    iconsMetadata,
+    NS,
+    scriptsDir,
+} from "./common.mjs";
 
 const logger = getLogger();
 
@@ -58,10 +65,7 @@ async function generateFonts(size, prefix) {
         outputDir: join(generatedSrcDir, `${size}px`),
         normalize: true,
         descent: 0,
-        // N.B. Important: we need to scale up the font height so that the icons do not get visually degraded
-        // or compressed through rounding errors (svgicons2svgfont rasterizes the icons in order to convert them)
-        // See https://github.com/palantir/blueprint/issues/5002
-        fontHeight: size * 20,
+        fontHeight: size * ICON_RASTER_SCALING_FACTOR,
         fontTypes: [FontAssetType.TTF, FontAssetType.EOT, FontAssetType.WOFF2, FontAssetType.WOFF, FontAssetType.SVG],
         // CSS contains @font-face, SCSS contains codepoints, TS contains enums & codepoints
         assetTypes: [OtherAssetType.CSS, OtherAssetType.SCSS, OtherAssetType.TS],
@@ -83,6 +87,11 @@ async function generateFonts(size, prefix) {
  * @param {Promise<import("fantasticon/lib/core/runner").RunnerResults>} runner
  * @returns {Promise<void>}
  */
-function connectToLogger(runner) {
-    return runner.then(results => logger.results(results)).catch(error => logger.error(error));
+async function connectToLogger(runner) {
+    try {
+        const results = await runner;
+        logger.results(results);
+    } catch (error) {
+        logger.error(error);
+    }
 }

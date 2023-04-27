@@ -27,6 +27,17 @@ export const NS = "bp5";
 export const ICON_SIZES = [16, 20];
 
 /**
+ * We need to scale up the icon paths during conversion so that the icons do not get visually degraded
+ * or compressed through rounding errors (svgicons2svgfont rasterizes the icons in order to convert them).
+ *
+ * After generating the icon font files, we also need to take care to scale the paths _back down_ by this
+ * factor in the icon component SVG paths, since we read the upscaled paths from SVG font at that point.
+ *
+ * @see https://github.com/palantir/blueprint/issues/5002
+ */
+export const ICON_RASTER_SCALING_FACTOR = 20;
+
+/**
  * @typedef {Object} IconMetadata
  * @property {string} displayName - "Icon name" for display
  * @property {string} iconName - `icon-name` for IconName and CSS class

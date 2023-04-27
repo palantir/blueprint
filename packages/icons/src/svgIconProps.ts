@@ -49,7 +49,7 @@ export interface SVGIconProps extends React.RefAttributes<any> {
 
     /**
      * HTML tag to use for the rendered element. Commonly "span" or "div".
-     * If `null`, no wrapper will be rendered, just the <svg>.
+     * If `null`, no wrapper will be rendered, just the `<svg>` element.
      *
      * @default "span"
      */

@@ -9,9 +9,6 @@ See the [**Icons package**](#icons) for a searchable list of all available UI ic
 Blueprint provides icons in two formats (SVG and fonts). It's easy to change their color
 or apply effects like text shadows via standard SVG or CSS properties.
 
-Blueprint provides icons in two formats (SVG and fonts). It's easy to change their color
-or apply effects like text shadows via standard SVG or CSS properties.
-
 This section describes two ways of using Blueprint's UI icons:
 via the `Icon` component to render SVG images or via CSS classes to use the icon font.
 

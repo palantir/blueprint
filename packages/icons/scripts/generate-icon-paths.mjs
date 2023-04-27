@@ -29,14 +29,10 @@ import { join } from "node:path";
 // resulting in invalid d="..." attributes rendered by the <Icon> component.
 import SVGO from "svgo";
 
-import { iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
+import { ICON_SIZES, iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
 
 const svgo = new SVGO({ plugins: [{ convertShapeToPath: { convertArcs: true } }] });
-
 const ICON_NAMES = iconsMetadata.map(icon => icon.iconName);
-
-/** @type {[16, 20]} */
-const ICON_SIZES = [16, 20];
 
 for (const iconSize of ICON_SIZES) {
     const iconPaths = await getIconPaths(iconSize);

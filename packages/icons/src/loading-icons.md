@@ -60,35 +60,36 @@ The following strategies assume you are bundling with Webpack; if you are using 
 to its available APIs.
 </div>
 
-1. Load all icons statically, similar to Blueprint v3.x behavior. This results in the largest bundle size for your main chunk.
+1. Load all icons statically, similar to Blueprint v4.x behavior. This results in the largest bundle size for your main chunk.
 
-  In the entry point for your bundle, specify an annotated icon loader function to ensure that webpack will bundle all the
-  icon modules in your main chunk ([relevant Webpack docs here](https://webpack.js.org/api/module-methods/#magic-comments)):
+    In the entry point for your bundle, use `Icons.loadAll()` with its default annotated icon loader function _or_ specify
+    a custom one. This will to ensure that webpack will bundle all the icon modules in your main chunk
+    (see [relevant Webpack docs here](https://webpack.js.org/api/module-methods/#magic-comments)):
 
-  ```ts
-  Icons.loadAll({
-      // specify a custom loader function optimized for loading all icons statically
-      loader: async name => {
-          return (
-              await import(
-                  /* webpackInclude: /\.js$/ */
-                  /* webpackMode: "eager" */
-                  `@blueprintjs/icons/lib/esm/generated/components/${name}`
-              )
-          ).default;
-      },
-  });
-  ```
+    ```ts
+    Icons.loadAll({
+        // (OPTIONAL) specify a custom loader function optimized for loading all icons statically
+        loader: async name => {
+            return (
+                await import(
+                    /* webpackInclude: /\.js$/ */
+                    /* webpackMode: "eager" */
+                    `@blueprintjs/icons/lib/esm/generated/components/${name}`
+                )
+            ).default;
+        },
+    });
+    ```
 
 2. Load some icons up front (but still dynamically) with network requests, and the rest lazily/on-demand.
 
-  In the entry point for your bundle:
+    In the entry point for your bundle:
 
-  ```ts
-  Icons.load(["download", "caret-down", "endorsed", "help", "lock"]);
-  ```
+    ```ts
+    Icons.load(["download", "caret-down", "endorsed", "help", "lock"]);
+    ```
 
 3. Load all icons lazily.
 
-  This is the default behavior, where any usage of `<Icon icon="..." />` will trigger a network request to
-  fetch the icon contents chunk.
+    This is the default behavior, where any usage of `<Icon icon="..." />` will trigger a network request to
+    fetch the icon contents chunk.

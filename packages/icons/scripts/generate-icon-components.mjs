@@ -24,13 +24,10 @@
 import { pascalCase } from "change-case";
 import Handlebars from "handlebars";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join, resolve } from "node:path";
 import { parse } from "svg-parser";
 
-import { generatedSrcDir, ICON_SIZES } from "./common.mjs";
-
-const scriptsDir = dirname(fileURLToPath(import.meta.url));
+import { generatedSrcDir, ICON_RASTER_SCALING_FACTOR, ICON_SIZES, scriptsDir } from "./common.mjs";
 
 Handlebars.registerHelper("pascalCase", iconName => pascalCase(iconName));
 const iconComponentTemplate = Handlebars.compile(readFileSync(resolve(scriptsDir, "iconComponent.tsx.hbs"), "utf8"));
@@ -73,6 +70,7 @@ for (const [iconName, icon16pxPath] of Object.entries(iconPaths[16])) {
             iconName,
             icon16pxPath,
             icon20pxPath,
+            pathScaleFactor: 1 / ICON_RASTER_SCALING_FACTOR,
         }),
     );
 }
