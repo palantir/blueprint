@@ -57,12 +57,12 @@ Alternatively, you may enable specific rules provided the plugin:
 
 ### `@blueprintjs/classes-constants`
 
-Enforce usage of class names exported as public API via the `Classes` object instead of string literals like `"bp4-dark"`.
+Enforce usage of class names exported as public API via the `Classes` object instead of string literals like `"bp5-dark"`.
 
 Each `@blueprintjs` package exports a `Classes` object which contains constants for every CSS class defined by the package.
 
 __Rationale__: This is useful to avoid typos in styling or creating Blueprint components, and also helps future-proof your code for major
-version bumps of Blueprint where the class namespace (e.g. `bp4-`) changes.
+version bumps of Blueprint where the class namespace (e.g. `bp5-`) changes.
 
 ```json
 {
