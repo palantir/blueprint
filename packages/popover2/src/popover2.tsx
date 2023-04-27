@@ -695,6 +695,7 @@ export class Popover2<
     };
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+        // eslint-disable-next-line deprecation/deprecation
         const isKeyboardClick = Keys.isKeyboardClick(e.keyCode);
 
         // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
@@ -704,7 +705,6 @@ export class Popover2<
 
         // Target element(s) may fire simulated click event upon pressing ENTER/SPACE, which we should ignore later
         // see: https://github.com/palantir/blueprint/issues/5775
-        // eslint-disable-next-line deprecation/deprecation
         this.lastKeyWasKeyboardClick = isKeyboardClick;
     };
 
