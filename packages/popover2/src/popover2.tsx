@@ -203,6 +203,9 @@ export class Popover2<
     // element on the same page.
     private lostFocusOnSamePage = true;
 
+    // Tracks when previous onKeyUp was a keyboard click
+    private lastKeyWasKeyboardClick = false;
+
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate?: () => Promise<Partial<PopperState> | null>;
 
@@ -353,9 +356,7 @@ export class Popover2<
                       // CLICK needs only one handler
                       onClick: this.handleTargetClick,
                       // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
-                      onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>
-                          // eslint-disable-next-line deprecation/deprecation
-                          Keys.isKeyboardClick(event.keyCode) && this.handleTargetClick(event),
+                      onKeyDown: this.handleKeyDown,
                   };
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
@@ -693,15 +694,31 @@ export class Popover2<
         }
     };
 
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+        // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
+        this.handleTargetClick(e);
+
+        // Target element(s) may fire simulated click event upon pressing ENTER/SPACE, which we should ignore later
+        // see: https://github.com/palantir/blueprint/issues/5775
+        // eslint-disable-next-line deprecation/deprecation
+        this.lastKeyWasKeyboardClick = Keys.isKeyboardClick(e.keyCode);
+    };
+
     private handleTargetClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-        // ensure click did not originate from within inline popover before closing
-        if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
-            if (this.props.isOpen == null) {
-                this.setState(prevState => ({ isOpen: !prevState.isOpen }));
-            } else {
-                this.setOpenState(!this.props.isOpen, e);
+        // Target element(s) may fire simulated click event upon pressing ENTER/SPACE, which we should ignore
+        // see: https://github.com/palantir/blueprint/issues/5775
+        if (e.isTrusted || !this.lastKeyWasKeyboardClick) {
+            // ensure click did not originate from within inline popover before closing
+            if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
+                if (this.props.isOpen == null) {
+                    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+                } else {
+                    this.setOpenState(!this.props.isOpen, e);
+                }
             }
         }
+
+        this.lastKeyWasKeyboardClick = false;
     };
 
     // a wrapper around setState({ isOpen }) that will call props.onInteraction instead when in controlled mode.
