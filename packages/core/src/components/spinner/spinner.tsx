@@ -41,7 +41,7 @@ const MIN_SIZE = 10;
 const STROKE_WIDTH = 4;
 const MIN_STROKE_WIDTH = 16;
 
-export interface SpinnerProps extends Props, IntentProps {
+export interface SpinnerProps<T extends HTMLElement = HTMLElement> extends Props, IntentProps, React.HTMLAttributes<T> {
     /**
      * Width and height of the spinner in pixels. The size cannot be less than
      * 10px.
@@ -82,7 +82,7 @@ export class Spinner extends AbstractPureComponent<SpinnerProps> {
     }
 
     public render() {
-        const { className, intent, value, tagName = "div" } = this.props;
+        const { className, intent, value, tagName = "div", ...htmlProps } = this.props;
         const size = this.getSize();
 
         const classes = classNames(
@@ -102,8 +102,12 @@ export class Spinner extends AbstractPureComponent<SpinnerProps> {
         return React.createElement(
             tagName,
             {
+                "aria-valuemax": 100,
+                "aria-valuemin": 0,
+                "aria-valuenow": value === undefined ? undefined : value * 100,
                 className: classes,
                 role: "progressbar",
+                ...htmlProps,
             },
             React.createElement(
                 tagName,

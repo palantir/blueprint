@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to TableBody2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import React from "react";
@@ -27,7 +34,7 @@ import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { MenuContext } from "../src/interactions/menus/menuContext";
 import { Region, Regions } from "../src/regions";
-import { TableBodyProps, TableBody } from "../src/tableBody";
+import { TableBody, TableBodyProps } from "../src/tableBody";
 import { cellClassNames } from "../src/tableBodyCells";
 
 describe("TableBody", () => {
@@ -110,8 +117,8 @@ describe("TableBody", () => {
 
     describe("bodyContextMenuRenderer", () => {
         // 0-indexed coordinates
-        const TARGET_ROW = 0;
-        const TARGET_COLUMN = 0;
+        const TARGET_ROW = 1;
+        const TARGET_COLUMN = 1;
         const TARGET_CELL_COORDS = { row: TARGET_ROW, col: TARGET_COLUMN };
         const TARGET_REGION = Regions.cell(TARGET_ROW, TARGET_COLUMN);
 
@@ -127,7 +134,7 @@ describe("TableBody", () => {
 
         describe("on right-click", () => {
             const simulateAction = (tableBody: ReactWrapper<any, any>) => {
-                tableBody.simulate("contextmenu", { clientX: COLUMN_WIDTH / 2, clientY: ROW_HEIGHT / 2 });
+                tableBody.simulate("contextmenu");
             };
             runTestSuite(simulateAction);
         });
@@ -145,8 +152,7 @@ describe("TableBody", () => {
             it("selects a right-clicked cell if there is no active selection", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
-                expect(onSelection.calledOnce).to.be.true;
-                expect(onSelection.firstCall.args[0]).to.deep.equal([TARGET_REGION]);
+                checkOnSelectionCallback([TARGET_REGION]);
             });
 
             it("doesn't change the selected regions if the right-clicked cell is contained in one", () => {
@@ -166,15 +172,12 @@ describe("TableBody", () => {
                 ];
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, selectedRegions);
                 simulateAction(tableBody);
-                expect(onSelection.calledOnce).to.be.true;
-                expect(onSelection.firstCall.args[0]).to.deep.equal([TARGET_REGION]);
+                checkOnSelectionCallback([TARGET_REGION]);
             });
 
-            // HACKHACK: skipped test, see https://github.com/palantir/blueprint/issues/4754
-            it.skip("renders context menu using new selection if selection changed on right-click", () => {
+            it("renders context menu using new selection if selection changed on right-click", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
-                expect(bodyContextMenuRenderer.calledOnce).to.be.true;
                 const menuContext = bodyContextMenuRenderer.firstCall.args[0] as MenuContext;
                 expect(menuContext.getSelectedRegions()).to.deep.equal([TARGET_REGION]);
             });
@@ -196,7 +199,6 @@ describe("TableBody", () => {
         ) {
             return mountTableBody({
                 bodyContextMenuRenderer,
-                enableBodyContextMenu: true,
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,
@@ -204,6 +206,11 @@ describe("TableBody", () => {
                 onSelection,
                 selectedRegions,
             });
+        }
+
+        function checkOnSelectionCallback(expectedSelectedRegions: Region[]) {
+            expect(onSelection.calledOnce).to.be.true;
+            expect(onSelection.firstCall.args[0]).to.deep.equal(expectedSelectedRegions);
         }
     });
 

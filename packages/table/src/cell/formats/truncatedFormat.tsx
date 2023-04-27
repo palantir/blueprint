@@ -230,16 +230,16 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
                 <Popover
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                     content={popoverContent}
-                    placement="bottom"
                     isOpen={true}
                     onClose={this.handlePopoverClose}
+                    placement="bottom"
+                    rootBoundary="document"
                 >
                     <More />
                 </Popover>
             );
         } else {
-            // NOTE: This structure matches what `<Popover>` does internally. If
-            // `<Popover>` changes, this must be updated.
+            // NOTE: This structure matches what `<Popover>` does internally. If `<Popover>` changes, this must be updated.
             return (
                 <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
                     <More />
@@ -276,12 +276,8 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
                     return false;
                 }
 
-                const {
-                    approximateCharWidth,
-                    approximateLineHeight,
-                    cellHorizontalPadding,
-                    numBufferLines,
-                } = measureByApproxOptions!;
+                const { approximateCharWidth, approximateLineHeight, cellHorizontalPadding, numBufferLines } =
+                    measureByApproxOptions!;
 
                 const cellWidth = this.props.parentCellWidth;
                 const approxCellHeight = Utils.getApproxCellHeight(

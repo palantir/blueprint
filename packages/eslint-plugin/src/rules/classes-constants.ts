@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable object-literal-sort-keys
-import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
-import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
+import { AST_NODE_TYPES, TSESLint, TSESTree } from "@typescript-eslint/utils";
 
 import { addImportToFile } from "./utils/addImportToFile";
 import { createRule } from "./utils/createRule";
@@ -24,17 +22,17 @@ import { FixList } from "./utils/fixList";
 import { getProgram } from "./utils/getProgram";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
-// currently support "pt-", "bp3-", "bp4-" prefixes.
-const BLUEPRINT_CLASSNAME_PATTERN = /(?<![\w])((?:pt|bp3|bp4)-(?!icon)[\w-]+)/g;
+// currently supports "pt-", "bp3-", "bp4-", "bp5-" prefixes.
+const BLUEPRINT_CLASSNAME_PATTERN = /(?<![\w])((?:pt|bp3|bp4|bp5)-(?!icon)[\w-]+)/g;
 
 type MessageIds = "useBlueprintClasses";
 
+// tslint:disable object-literal-sort-keys
 export const classesConstantsRule = createRule<[], MessageIds>({
     name: "classes-constants",
     meta: {
         docs: {
             description: "Enforce usage of Classes constants over namespaced string literals.",
-            category: "Stylistic Issues",
             recommended: "error",
             requiresTypeChecking: false,
         },
@@ -51,7 +49,10 @@ export const classesConstantsRule = createRule<[], MessageIds>({
     }),
 });
 
-function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | TSESTree.TemplateElement): void {
+function create(
+    context: TSESLint.RuleContext<MessageIds, []>,
+    node: TSESTree.Literal | TSESTree.TemplateElement,
+): void {
     // We shouldn't lint on strings from imports/exports
     if (
         node.parent?.type === AST_NODE_TYPES.ImportDeclaration ||
@@ -90,7 +91,7 @@ function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | T
 
 function getAllMatches(className: string) {
     const ptMatches = [];
-    let currentMatch: RegExpMatchArray | null;
+    let currentMatch: RegExpExecArray | null;
     // eslint-disable-line no-cond-assign
     while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(className)) != null) {
         ptMatches.push({ match: currentMatch[1], index: currentMatch.index || 0 });
@@ -162,7 +163,7 @@ function wrapForParent(statement: string, node: TSESTree.Node) {
 /** Converts a `pt-class-name` literal to `Classes.CLASS_NAME` constant. */
 function convertPtClassName(text: string) {
     const className = text
-        .replace(/(pt|bp3|bp4)-/, "")
+        .replace(/(pt|bp3|bp4|bp5)-/, "")
         .replace(/-/g, "_")
         .toUpperCase();
     return `Classes.${className}`;

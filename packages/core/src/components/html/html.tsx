@@ -25,12 +25,16 @@ function htmlElement<E extends HTMLElement>(
 ): React.FC<React.HTMLAttributes<E> & React.RefAttributes<E>> {
     /* eslint-disable-next-line react/display-name */
     return forwardRef<E, React.HTMLAttributes<E>>((props, ref) => {
-        const { className, ...htmlProps } = props;
-        return React.createElement(tagName, {
-            ...htmlProps,
-            className: classNames(tagClassName, className),
-            ref,
-        });
+        const { className, children, ...htmlProps } = props;
+        return React.createElement(
+            tagName,
+            {
+                ...htmlProps,
+                className: classNames(tagClassName, className),
+                ref,
+            },
+            children,
+        );
     });
 }
 

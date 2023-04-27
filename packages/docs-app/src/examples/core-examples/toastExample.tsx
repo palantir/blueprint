@@ -23,18 +23,18 @@ import {
     H5,
     HTMLSelect,
     Intent,
-    OverlayToasterProps,
-    ToastProps,
     Label,
     NumericInput,
     OverlayToaster,
+    OverlayToasterProps,
     Position,
     ProgressBar,
     Switch,
     Toaster,
     ToasterPosition,
+    ToastProps,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { BlueprintExampleData } from "../../tags/types";
 
@@ -108,6 +108,22 @@ export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExam
             icon: "hand",
             intent: Intent.WARNING,
             message: "Goodbye, old friend.",
+        },
+        {
+            action: {
+                onClick: () =>
+                    this.addToast({
+                        icon: "ban-circle",
+                        intent: Intent.DANGER,
+                        message: "You can't cancel what's been done!",
+                    }),
+                text: "Cancel",
+            },
+            button: "Start loading",
+            icon: "hand",
+            intent: Intent.PRIMARY,
+            isCloseButtonShown: false,
+            message: "Loading...",
         },
     ];
 

@@ -21,8 +21,6 @@ import ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
-import { Ref } from "@blueprintjs/core";
-
 import * as Classes from "../../src/common/classes";
 import { Grid } from "../../src/common/grid";
 import * as ScrollUtils from "../../src/common/internal/scrollUtils";
@@ -65,10 +63,10 @@ describe("TableQuadrantStack", () => {
         const columnHeaderRef = sinon.spy();
         const scrollContainerRef = sinon.spy();
 
-        const columnHeaderRenderer = (refHandler: Ref<HTMLDivElement>) => {
+        const columnHeaderRenderer = (refHandler: React.Ref<HTMLDivElement>) => {
             return <div ref={refHandler} />;
         };
-        const rendeRowHeader = (refHandler: Ref<HTMLDivElement>) => {
+        const rendeRowHeader = (refHandler: React.Ref<HTMLDivElement>) => {
             return <div ref={refHandler} />;
         };
 
@@ -214,6 +212,20 @@ describe("TableQuadrantStack", () => {
                 />,
             );
             expect(columnHeaderRenderer.callCount).to.equal(4);
+        });
+
+        it("does not invoke columnHeaderRenderer on mount if enableColumnHeader={false}", () => {
+            const bodyRenderer = sinon.spy();
+            const columnHeaderRenderer = sinon.spy();
+            mount(
+                <TableQuadrantStack
+                    grid={grid}
+                    bodyRenderer={bodyRenderer}
+                    enableColumnHeader={false}
+                    columnHeaderRenderer={columnHeaderRenderer}
+                />,
+            );
+            expect(columnHeaderRenderer.callCount).to.equal(0);
         });
 
         it("invokes rowHeaderRenderer once for each quadrant on mount", () => {
@@ -364,8 +376,7 @@ describe("TableQuadrantStack", () => {
 
     describe("Size syncing", () => {
         describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/1794
-            it.skip("syncs initial quadrant sizes properly", () => {
+            it("syncs initial quadrant sizes properly", () => {
                 assertDefaultQuadrantSizesCorrect(0, 0);
             });
 
@@ -375,8 +386,7 @@ describe("TableQuadrantStack", () => {
         });
 
         describe("if numFrozenRows > 0 && numFrozenColumns == 0", () => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/1794
-            it.skip("syncs initial quadrant sizes properly", () => {
+            it("syncs initial quadrant sizes properly", () => {
                 assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, 0);
             });
 
@@ -386,8 +396,7 @@ describe("TableQuadrantStack", () => {
         });
 
         describe("if numFrozenRows == 0 && numFrozenColumns > 0", () => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/1794
-            it.skip("syncs initial quadrant sizes properly", () => {
+            it("syncs initial quadrant sizes properly", () => {
                 assertDefaultQuadrantSizesCorrect(0, NUM_FROZEN_COLUMNS);
             });
 
@@ -397,8 +406,7 @@ describe("TableQuadrantStack", () => {
         });
 
         describe("if numFrozenRows > 0 && numFrozenColumns > 0", () => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/1794
-            it.skip("syncs initial quadrant sizes properly", () => {
+            it("syncs initial quadrant sizes properly", () => {
                 assertDefaultQuadrantSizesCorrect(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
             });
 
@@ -408,7 +416,7 @@ describe("TableQuadrantStack", () => {
         });
 
         function assertDefaultQuadrantSizesCorrect(numFrozenRows: number, numFrozenColumns: number) {
-            const rowHeaderRenderer = (refHandler: Ref<HTMLDivElement>) => {
+            const rowHeaderRenderer = (refHandler: React.Ref<HTMLDivElement>) => {
                 // need to set the width on a child so the header maintains its size
                 // when the component measures the "desired" row-header width (by
                 // setting width:auto on the parent here).
@@ -418,7 +426,7 @@ describe("TableQuadrantStack", () => {
                     </div>
                 );
             };
-            const columnHeaderRenderer = (refHandler: Ref<HTMLDivElement>) => {
+            const columnHeaderRenderer = (refHandler: React.Ref<HTMLDivElement>) => {
                 return <div ref={refHandler} style={{ height: COLUMN_HEADER_HEIGHT, width: "100%" }} />;
             };
 
@@ -445,7 +453,7 @@ describe("TableQuadrantStack", () => {
         }
 
         function assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows: number, numFrozenColumns: number) {
-            const columnHeaderRenderer = (refHandler: Ref<HTMLDivElement>) => {
+            const columnHeaderRenderer = (refHandler: React.Ref<HTMLDivElement>) => {
                 return <div ref={refHandler} style={{ height: COLUMN_HEADER_HEIGHT, width: "100%" }} />;
             };
 

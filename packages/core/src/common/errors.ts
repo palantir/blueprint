@@ -24,12 +24,11 @@ export const ALERT_WARN_CANCEL_ESCAPE_KEY =
 export const ALERT_WARN_CANCEL_OUTSIDE_CLICK =
     ns + ` <Alert> canOutsideClickCancel enabled without onCancel or onClose handler.`;
 
-export const CONTEXTMENU_WARN_DECORATOR_NO_METHOD =
-    ns + ` @ContextMenuTarget-decorated class should implement renderContextMenu.`;
-export const CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT =
-    ns + ` "@ContextMenuTarget-decorated components must return a single JSX.Element or an empty render.`;
-
 export const HOTKEYS_HOTKEY_CHILDREN = ns + ` <Hotkeys> only accepts <Hotkey> children.`;
+
+export const HOTKEYS_PROVIDER_NOT_FOUND =
+    ns +
+    ` useHotkeys() was used outside of a <HotkeysProvider> context. These hotkeys will not be shown in the hotkeys help dialog.`;
 export const HOTKEYS_TARGET_CHILDREN_LOCAL_HOTKEYS =
     ns +
     ` <HotkeysTarget> was configured with local hotkeys, but you did not use the generated event handlers to bind their event handlers. Try using a render function as the child of this component.`;
@@ -68,6 +67,10 @@ export const POPOVER_WARN_HAS_BACKDROP_INLINE = ns + ` <Popover usePortal={false
 export const POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX =
     ns + ` <Popover> supports either placement or position prop, not both.`;
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onInteraction is ignored when uncontrolled.`;
+
+export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
+export const PORTAL_LEGACY_CONTEXT_API =
+    ns + ` setting blueprintPortalClassName via legacy React context API is deprecated, use <PortalProvider> instead.`;
 
 export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
     ns + ` <RadioGroup> children and options prop are mutually exclusive, with options taking priority.`;

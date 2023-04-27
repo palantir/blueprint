@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { AnchorButton, Button, Classes, ButtonProps, Icon, Spinner } from "../../src";
+import { AnchorButton, Button, ButtonProps, Classes, Icon, Spinner } from "../../src";
 import * as Keys from "../../src/common/keys";
 
 describe("Buttons:", () => {
@@ -82,6 +82,14 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
 
         it("button is disabled when the loading prop is true", () => {
             const wrapper = button({ loading: true });
+            assert.isTrue(wrapper.find(tagName).hasClass(Classes.DISABLED));
+        });
+
+        // This tests some subtle (potentialy unexpected) behavior, but it was an API decision we
+        // made a long time ago which we rely on and should not break.
+        // See https://github.com/palantir/blueprint/issues/3819#issuecomment-1189478596
+        it("button is disabled when the loading prop is true, even if disabled={false}", () => {
+            const wrapper = button({ disabled: false, loading: true });
             assert.isTrue(wrapper.find(tagName).hasClass(Classes.DISABLED));
         });
 

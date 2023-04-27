@@ -1,0 +1,23 @@
+# See the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "adidahiya"
+    versioning-strategy: increase
+    ignore:
+      # don't try to update internal packages
+      - dependency-name: "@blueprintjs/*"
+      # @typescript-eslint/* deps should all be upgraded together
+      - dependency-name: "@typescript-eslint/*"
+      # typescript and typedoc are usually upgraded together, and are often require code changes
+      - dependency-name: "typescript"
+      - dependency-name: "typedoc"
+      # deprecated dependencies
+      - dependency-name: "moment"
+      - dependency-name: "moment-*"

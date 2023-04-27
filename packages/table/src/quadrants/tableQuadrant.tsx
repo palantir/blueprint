@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractComponent, Props, Ref } from "@blueprintjs/core";
+import { AbstractComponent, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -51,7 +51,7 @@ export interface TableQuadrantProps extends Props {
      * A callback that receives a `ref` to the quadrant's body-wrapping element. Will need to be
      * provided only for the MAIN quadrant, because that quadrant contains the main table body.
      */
-    bodyRef?: Ref<HTMLDivElement>;
+    bodyRef?: React.Ref<HTMLDivElement>;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -83,7 +83,7 @@ export interface TableQuadrantProps extends Props {
     /**
      * A callback that receives a `ref` to the quadrant's outermost element.
      */
-    quadrantRef?: Ref<HTMLDivElement>;
+    quadrantRef?: React.Ref<HTMLDivElement>;
 
     /**
      * The quadrant type. Informs the values of the parameters that will be passed to the
@@ -118,23 +118,31 @@ export interface TableQuadrantProps extends Props {
     /**
      * A callback that receives a `ref` to the quadrant's scroll-container element.
      */
-    scrollContainerRef?: Ref<HTMLDivElement>;
+    scrollContainerRef?: React.Ref<HTMLDivElement>;
 
     /**
      * CSS styles to apply to the quadrant's outermost element.
      */
     style?: React.CSSProperties;
+
+    /**
+     * If `false`, hides the column headers.
+     *
+     * @default true
+     */
+    enableColumnHeader?: boolean;
 }
 
 export class TableQuadrant extends AbstractComponent<TableQuadrantProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
     public static defaultProps: Partial<TableQuadrantProps> = {
+        enableColumnHeader: true,
         enableRowHeader: true,
     };
 
     public render() {
-        const { grid, enableRowHeader, quadrantType, bodyRenderer } = this.props;
+        const { grid, enableRowHeader, quadrantType, bodyRenderer, enableColumnHeader } = this.props;
 
         const showFrozenRowsOnly = quadrantType === QuadrantType.TOP || quadrantType === QuadrantType.TOP_LEFT;
         const showFrozenColumnsOnly = quadrantType === QuadrantType.LEFT || quadrantType === QuadrantType.TOP_LEFT;
@@ -143,7 +151,7 @@ export class TableQuadrant extends AbstractComponent<TableQuadrantProps> {
 
         const maybeMenu = enableRowHeader && this.props.menuRenderer?.();
         const maybeRowHeader = enableRowHeader && this.props.rowHeaderCellRenderer?.(showFrozenRowsOnly);
-        const maybeColumnHeader = this.props.columnHeaderCellRenderer?.(showFrozenColumnsOnly);
+        const maybeColumnHeader = enableColumnHeader && this.props.columnHeaderCellRenderer?.(showFrozenColumnsOnly);
         const body = bodyRenderer(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly);
 
         // need to set bottom container size to prevent overlay clipping on scroll

@@ -16,9 +16,9 @@
 
 // icon sets should be identical aside from SVG paths, so we just import the info for the 16px set
 import {
-    BlueprintIcons_16 as IconNames,
-    BlueprintIcons_16Id as IconName,
     BLUEPRINT_ICONS_16_CODEPOINTS as IconCodepoints,
+    BlueprintIcons_16Id as IconName,
+    BlueprintIcons_16 as IconNames,
 } from "./generated/16px/blueprint-icons-16";
 
 export { IconCodepoints, IconName, IconNames };

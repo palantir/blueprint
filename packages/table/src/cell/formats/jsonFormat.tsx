@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import React from "react";
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
 import * as Classes from "../../common/classes";
-import { TruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
+import { TruncatedFormat, TruncatedFormatProps, TruncatedPopoverMode } from "./truncatedFormat";
 
 export interface JSONFormatProps extends TruncatedFormatProps {
     children?: any;

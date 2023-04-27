@@ -25,7 +25,7 @@ import {
     ContextMenu,
     ContextMenuContentProps,
     ContextMenuProps,
-    Keys,
+    Drawer,
     Menu,
     MenuItem,
     Popover,
@@ -49,6 +49,16 @@ const COMMON_TOOLTIP_PROPS: Partial<TooltipProps> = {
 };
 
 describe("ContextMenu", () => {
+    let containerElement: HTMLElement | undefined;
+
+    beforeEach(() => {
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+    });
+    afterEach(() => {
+        containerElement?.remove();
+    });
+
     describe("basic usage", () => {
         it("renders children and Popover", () => {
             const ctxMenu = mountTestMenu();
@@ -81,8 +91,8 @@ describe("ContextMenu", () => {
                 .find(`.${Classes.OVERLAY_OPEN}`)
                 .hostNodes()
                 .simulate("keydown", {
+                    key: "Escape",
                     nativeEvent: new KeyboardEvent("keydown"),
-                    which: Keys.ESCAPE,
                 });
             assert.isFalse(ctxMenu.find(Popover).prop("isOpen"));
         });
@@ -109,6 +119,7 @@ describe("ContextMenu", () => {
                 <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }} {...props}>
                     <div className={TARGET_CLASSNAME} />
                 </ContextMenu>,
+                { attachTo: containerElement },
             );
         }
     });
@@ -159,6 +170,7 @@ describe("ContextMenu", () => {
                         </div>
                     )}
                 </ContextMenu>,
+                { attachTo: containerElement },
             );
         }
     });
@@ -428,6 +440,44 @@ describe("ContextMenu", () => {
                         </Tooltip>,
                     );
                 }
+            });
+        });
+
+        describe("with Drawer as parent content", () => {
+            it("positions correctly", () => {
+                const POPOVER_CLASSNAME = "test-positions-popover";
+                const wrapper = mount(
+                    <Drawer isOpen={true} position="right" transitionDuration={0}>
+                        <ContextMenu
+                            content={MENU}
+                            className="test-ctx-menu"
+                            popoverProps={{ transitionDuration: 0, popoverClassName: POPOVER_CLASSNAME }}
+                            style={{ padding: 20, background: "red" }}
+                        >
+                            <div className={TARGET_CLASSNAME} style={{ width: 20, height: 20, background: "blue" }} />
+                        </ContextMenu>
+                    </Drawer>,
+                    { attachTo: containerElement },
+                );
+                const target = wrapper.find(`.${TARGET_CLASSNAME}`).hostNodes();
+                assert.isTrue(target.exists(), "target should exist");
+                const nonExistentPopover = wrapper.find(`.${POPOVER_CLASSNAME}`).hostNodes();
+                assert.isFalse(
+                    nonExistentPopover.exists(),
+                    "ContextMenu2 popover should not be open before triggering contextmenu event",
+                );
+
+                const targetRect = target.getDOMNode().getBoundingClientRect();
+                // right click on the target
+                const simulateArgs = {
+                    clientX: targetRect.left + targetRect.width / 2,
+                    clientY: targetRect.top + targetRect.height / 2,
+                    x: targetRect.left + targetRect.width / 2,
+                    y: targetRect.top + targetRect.height / 2,
+                };
+                target.simulate("contextmenu", simulateArgs);
+                const popover = wrapper.find(`.${POPOVER_CLASSNAME}`).hostNodes();
+                assert.isTrue(popover.exists(), "ContextMenu2 popover should be open");
             });
         });
 

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { Classes, KeyComboTag, Icon } from "@blueprintjs/core";
+import { Classes, Icon, KeyComboTag } from "@blueprintjs/core";
 import { IconName } from "@blueprintjs/icons";
 
 export interface NavButtonProps {

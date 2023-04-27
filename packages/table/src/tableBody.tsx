@@ -17,29 +17,23 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractComponent, ContextMenu, ContextMenuContentProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent, Utils as CoreUtils } from "@blueprintjs/core";
 
 import type { CellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
+import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { RenderMode } from "./common/renderMode";
 import { CoordinateData } from "./interactions/dragTypes";
 import { ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
 import { DragSelectable, SelectableProps } from "./interactions/selectable";
 import { Locator } from "./locator";
 import { Region, Regions } from "./regions";
-import { cellClassNames, TableBodyCellsProps, TableBodyCells } from "./tableBodyCells";
+import { TableBodyCells, TableBodyCellsProps } from "./tableBodyCells";
 
 export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
     /**
-     * Whether the body context menu is enabled.
-     *
-     * @default false
-     */
-    enableBodyContextMenu?: boolean;
-
-    /**
      * An optional callback for displaying a context menu when right-clicking
-     * on the table body. The callback is supplied with an `IMenuContext`
+     * on the table body. The callback is supplied with a `MenuContext`
      * containing the `Region`s of interest.
      */
     bodyContextMenuRenderer?: ContextMenuRenderer;
@@ -64,17 +58,9 @@ const DEEP_COMPARE_KEYS: Array<keyof TableBodyProps> = ["selectedRegions"];
 
 export class TableBody extends AbstractComponent<TableBodyProps> {
     public static defaultProps = {
-        enableBodyContextMenu: false,
         loading: false,
         renderMode: RenderMode.BATCH,
     };
-
-    /**
-     * @deprecated, will be removed from public API in the next major version
-     */
-    public static cellClassNames(rowIndex: number, columnIndex: number) {
-        return cellClassNames(rowIndex, columnIndex);
-    }
 
     private activationCell: CellCoordinates | null = null;
 
@@ -86,7 +72,7 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
     }
 
     public render() {
-        const { enableBodyContextMenu, grid, numFrozenColumns, numFrozenRows } = this.props;
+        const { grid, numFrozenColumns, numFrozenRows } = this.props;
 
         const defaultStyle = grid.getRect().sizeStyle();
         const style = {
@@ -106,76 +92,64 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
                 selectedRegions={this.props.selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
             >
-                <ContextMenu
-                    disabled={!enableBodyContextMenu}
-                    content={this.renderContextMenu}
-                    onContextMenu={this.handleContextMenu}
+                <ContextMenuTargetWrapper
+                    className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
+                    renderContextMenu={this.renderContextMenu}
+                    style={style}
                 >
-                    <div
-                        className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
-                        style={style}
-                    >
-                        <TableBodyCells
-                            cellRenderer={this.props.cellRenderer}
-                            focusedCell={this.props.focusedCell}
-                            grid={grid}
-                            loading={this.props.loading}
-                            onCompleteRender={this.props.onCompleteRender}
-                            renderMode={this.props.renderMode}
-                            columnIndexStart={this.props.columnIndexStart}
-                            columnIndexEnd={this.props.columnIndexEnd}
-                            rowIndexStart={this.props.rowIndexStart}
-                            rowIndexEnd={this.props.rowIndexEnd}
-                            viewportRect={this.props.viewportRect}
-                        />
-                    </div>
-                </ContextMenu>
+                    <TableBodyCells
+                        cellRenderer={this.props.cellRenderer}
+                        focusedCell={this.props.focusedCell}
+                        grid={grid}
+                        loading={this.props.loading}
+                        onCompleteRender={this.props.onCompleteRender}
+                        renderMode={this.props.renderMode}
+                        columnIndexStart={this.props.columnIndexStart}
+                        columnIndexEnd={this.props.columnIndexEnd}
+                        rowIndexStart={this.props.rowIndexStart}
+                        rowIndexEnd={this.props.rowIndexEnd}
+                        viewportRect={this.props.viewportRect}
+                    />
+                </ContextMenuTargetWrapper>
             </DragSelectable>
         );
     }
 
-    private renderContextMenu = ({ mouseEvent }: ContextMenuContentProps) => {
-        const { grid, bodyContextMenuRenderer, selectedRegions } = this.props;
+    public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
+        const { grid, onFocusedCell, onSelection, bodyContextMenuRenderer, selectedRegions = [] } = this.props;
         const { numRows, numCols } = grid;
 
-        if (bodyContextMenuRenderer == null || mouseEvent == null) {
-            // either context menu is disabled, or it was just closed by the ContextMenu component
+        if (bodyContextMenuRenderer == null) {
             return undefined;
         }
 
-        const targetRegion = this.locateClick(mouseEvent.nativeEvent as MouseEvent);
-        let nextSelectedRegions: Region[] = selectedRegions ?? [];
-
-        // if the event did not happen within a selected region, update selection info for menu renderer
-        const foundIndex = Regions.findContainingRegion(selectedRegions, targetRegion);
-        if (foundIndex < 0) {
-            nextSelectedRegions = [targetRegion];
-        }
-
-        const menuContext = new MenuContextImpl(targetRegion, nextSelectedRegions, numRows, numCols);
-        return bodyContextMenuRenderer(menuContext);
-    };
-
-    // Callbacks
-    // =========
-
-    private handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-        const { onFocusedCell, onSelection, selectedRegions } = this.props;
         const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
+
+        let nextSelectedRegions: Region[] = selectedRegions;
 
         // if the event did not happen within a selected region, clear all
         // selections and select the right-clicked cell.
         const foundIndex = Regions.findContainingRegion(selectedRegions, targetRegion);
         if (foundIndex < 0) {
+            nextSelectedRegions = [targetRegion];
+            onSelection(nextSelectedRegions);
+
             // move the focused cell to the new region.
             const nextFocusedCell = {
                 ...Regions.getFocusCellCoordinatesFromRegion(targetRegion),
                 focusSelectionIndex: 0,
             };
-            onSelection([targetRegion]);
             onFocusedCell(nextFocusedCell);
         }
+
+        const menuContext = new MenuContextImpl(targetRegion, nextSelectedRegions, numRows, numCols);
+        const contextMenu = bodyContextMenuRenderer(menuContext);
+
+        return contextMenu == null ? undefined : contextMenu;
     };
+
+    // Callbacks
+    // =========
 
     private handleSelectionEnd = () => {
         this.activationCell = null; // not strictly required, but good practice
@@ -183,7 +157,7 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
 
     private locateClick = (event: MouseEvent) => {
         this.activationCell = this.props.locator.convertPointToCell(event.clientX, event.clientY);
-        return Regions.cell(this.activationCell!.row, this.activationCell!.col);
+        return Regions.cell(this.activationCell.row, this.activationCell.col);
     };
 
     private locateDrag = (_event: MouseEvent, coords: CoordinateData, returnEndOnly = false) => {

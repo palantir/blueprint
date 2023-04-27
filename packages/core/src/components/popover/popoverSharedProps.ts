@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { Boundary, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
-import { Modifier, StrictModifier } from "react-popper";
+import { Boundary, Modifier, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
+import React from "react";
+import { StrictModifier } from "react-popper";
 
-import { Props, Position } from "../../common";
+import { Position, Props } from "../../common";
 import { OverlayableProps } from "../overlay/overlay";
 
 export const PopoverPosition = {
@@ -34,9 +35,16 @@ export { Boundary as PopperBoundary, Placement, placements as PopperPlacements }
 export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
 
 /**
- * E: target element interface, defaults to HTMLElement in Popover component props interface.
+ * Configuration object for customizing popper.js v2 modifiers in Popover and Tooltip.
+ *
+ * @see https://popper.js.org/docs/v2/modifiers/
  */
+export type PopperModifierOverrides = Partial<{
+    [M in StrictModifierNames]: Partial<Omit<StrictModifier<M>, "name">>;
+}>;
+
 export interface PopoverTargetProps {
+    /** Target ref. */
     ref: React.Ref<any>;
 
     /** Whether the popover or tooltip is currently open. */
@@ -50,6 +58,9 @@ export interface PopoverTargetProps {
  *                  defaults to props for HTMLElement in PopoverProps and TooltipProps
  */
 export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
+    /** Interactive element which will trigger the popover. */
+    children?: React.ReactNode;
+
     /**
      * A boundary element supplied to the "flip" and "preventOverflow" modifiers.
      * This is a shorthand for overriding Popper.js modifier options with the `modifiers` prop.
@@ -125,6 +136,15 @@ export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
     isOpen?: boolean;
 
     /**
+     * Whether the popover content should be sized to match the width of the target.
+     * This is sometimes useful for dropdown menus. This prop is implemented using
+     * a Popper.js custom modifier.
+     *
+     * @default false
+     */
+    matchTargetWidth?: boolean;
+
+    /**
      * Whether to apply minimal styling to this popover or tooltip. Minimal popovers
      * do not have an arrow pointing to their target and use a subtler animation.
      *
@@ -138,20 +158,20 @@ export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
      *
      * For example, the arrow modifier can be disabled by providing `{ arrow: { enabled: false } }`.
      *
-     * Some of Popover2's default modifiers may get disabled under certain circumstances, but you may
+     * Some of Popover's default modifiers may get disabled under certain circumstances, but you may
      * choose to re-enable and customize them. For example, "offset" is disabled when `minimal={true}`,
      * but you can re-enable it with `{ offset: { enabled: true } }`.
      *
      * @see https://popper.js.org/docs/v2/modifiers/
      */
-    modifiers?: Partial<
-        {
-            [M in StrictModifierNames]: StrictModifier<M>;
-        }
-    >;
+    modifiers?: PopperModifierOverrides;
 
-    // eslint-disable-next-line @typescript-eslint/array-type
-    customModifiers?: Array<Modifier<string>>;
+    /**
+     * Custom modifiers to add to the popper instance.
+     *
+     * @see https://popper.js.org/docs/v2/modifiers/#custom-modifiers
+     */
+    modifiersCustom?: ReadonlyArray<Partial<Modifier<any, object>>>;
 
     /**
      * Callback invoked in controlled mode when the popover open state *would*
@@ -172,10 +192,15 @@ export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
     openOnTargetFocus?: boolean;
 
     /**
+     * Ref supplied to the `Classes.POPOVER` element.
+     */
+    popoverRef?: React.Ref<HTMLElement>;
+
+    /**
      * Target renderer which receives props injected by Popover which should be spread onto
      * the rendered element. This function should return a single React node.
      *
-     * Mutually exclusive with children, targetClassName, and targetTagName.
+     * Mutually exclusive with `children` and `targetTagName` props.
      */
     renderTarget?: (props: PopoverTargetProps & TProps) => JSX.Element;
 

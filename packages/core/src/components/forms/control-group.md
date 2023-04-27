@@ -1,8 +1,8 @@
 @# Control group
 
-A control group renders several distinct form controls as one unit, squaring the
-borders between them. It supports any number of buttons, text inputs, input
-groups, and HTML selects as direct children.
+A control group renders multiple distinct form controls as one unit, with a small margin
+between elements. It supports any number of buttons, text inputs, input groups, numeric
+inputs, and HTML selects as direct children.
 
 <div class="@ns-callout @ns-intent-success @ns-icon-comparison">
     <h4 class="@ns-heading">Control group vs. input group</h4>
@@ -52,10 +52,6 @@ HTML `<div>` props, in addition to those listed below.
 @interface ControlGroupProps
 
 @## CSS
-
-A `.@ns-control-group` renders several distinct controls as one unit, squaring the borders between
-them. It supports any number of `.@ns-button`, `.@ns-input`, `.@ns-input-group`, and `.@ns-select`
-elements as direct children.
 
 Note that `.@ns-control-group` does not cascade any modifiers to its children. For example, each
 child must be marked individually as `.@ns-large` for uniform large appearance.

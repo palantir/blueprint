@@ -19,7 +19,7 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { Classes, NumericInput, Panel, PanelProps, PanelStackProps, PanelStack } from "../../src";
+import { Classes, NumericInput, Panel, PanelProps, PanelStack, PanelStackProps } from "../../src";
 
 const TestPanel: React.FC<PanelProps> = props => {
     const [counter, setCounter] = React.useState(0);

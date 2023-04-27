@@ -19,6 +19,10 @@ import React from "react";
 
 import { Props } from "@blueprintjs/core";
 
+/** @deprecated use ExampleProps */
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type IExampleProps<T = {}> = ExampleProps<T>;
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 export interface ExampleProps<T = {}> extends Props {
     /**
@@ -46,6 +50,8 @@ export interface ExampleProps<T = {}> extends Props {
  * Additional props will be spread to the root `<div>` element.
  */
 export interface DocsExampleProps extends ExampleProps {
+    children?: React.ReactNode;
+
     /**
      * Options for the example, which will typically appear in a narrow column
      * to the right of the example.

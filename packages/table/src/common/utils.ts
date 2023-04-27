@@ -140,7 +140,10 @@ export const Utils = {
      * @param array - the `Array` to copy and adjust
      * @param length - the target length of the array
      * @param fillValue - the value to add to the array if it is too short
+     *
+     * @deprecated this function is no longer used in the table component, so it will be removed in a future major version
      */
+    // eslint-disable-next-line deprecation/deprecation
     arrayOfLength<T>(array: T[], length: number, fillValue: T): T[] {
         if (array.length > length) {
             return array.slice(0, length);

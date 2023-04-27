@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import type { ResizeObserverEntry } from "@juggle/resize-observer";
 import classNames from "classnames";
 import React from "react";
 
@@ -113,16 +112,15 @@ export interface OverflowListProps<T> extends Props {
 }
 
 export interface OverflowListState<T> {
-    /**
-     * Direction of current overflow operation. An overflow can take several frames to settle.
-     *
-     * @internal don't expose the type
-     */
-    direction: OverflowDirection;
+    /** Whether repartitioning is still active. An overflow can take several frames to settle. */
+    repartitioning: boolean;
     /** Length of last overflow to dedupe `onOverflow` calls during smooth resizing. */
     lastOverflowCount: number;
     overflow: readonly T[];
     visible: readonly T[];
+    /** Pointer for the binary search algorithm used to find the finished non-overflowing state */
+    chopSize: number;
+    lastChopSize: number | null;
 }
 
 export class OverflowList<T> extends React.Component<OverflowListProps<T>, OverflowListState<T>> {
@@ -139,28 +137,28 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, Overf
     }
 
     public state: OverflowListState<T> = {
-        direction: OverflowDirection.NONE,
+        chopSize: this.defaultChopSize(),
+        lastChopSize: null,
         lastOverflowCount: 0,
         overflow: [],
+        repartitioning: false,
         visible: this.props.items,
     };
-
-    /** A cache containing the widths of all elements being observed to detect growing/shrinking */
-    private previousWidths = new Map<Element, number>();
 
     private spacer: HTMLElement | null = null;
 
     public componentDidMount() {
-        this.repartition(false);
+        this.repartition();
     }
 
-    public shouldComponentUpdate(_nextProps: OverflowListProps<T>, nextState: OverflowListState<T>) {
+    public shouldComponentUpdate(nextProps: OverflowListProps<T>, nextState: OverflowListState<T>) {
         // We want this component to always re-render, even when props haven't changed, so that
         // changes in the renderers' behavior can be reflected.
         // The following statement prevents re-rendering only in the case where the state changes
         // identity (i.e. setState was called), but the state is still the same when
-        // shallow-compared to the previous state.
-        return !(this.state !== nextState && shallowCompareKeys(this.state, nextState));
+        // shallow-compared to the previous state. Original context: https://github.com/palantir/blueprint/pull/3278.
+        // We also ensure that we re-render if the props DO change (which isn't necessarily accounted for by other logic).
+        return this.props !== nextProps || !(this.state !== nextState && shallowCompareKeys(this.state, nextState));
     }
 
     public componentDidUpdate(prevProps: OverflowListProps<T>, prevState: OverflowListState<T>) {
@@ -178,24 +176,28 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, Overf
         ) {
             // reset visible state if the above props change.
             this.setState({
-                direction: OverflowDirection.GROW,
+                chopSize: this.defaultChopSize(),
+                lastChopSize: null,
                 lastOverflowCount: 0,
                 overflow: [],
+                repartitioning: true,
                 visible: this.props.items,
             });
         }
 
-        if (!shallowCompareKeys(prevState, this.state)) {
-            this.repartition(false);
-        }
-        const { direction, overflow, lastOverflowCount } = this.state;
+        const { repartitioning, overflow, lastOverflowCount } = this.state;
+
         if (
-            // if a resize operation has just completed (transition to NONE)
-            direction === OverflowDirection.NONE &&
-            direction !== prevState.direction &&
-            overflow.length !== lastOverflowCount
+            // if a resize operation has just completed
+            repartitioning === false &&
+            prevState.repartitioning === true
         ) {
-            this.props.onOverflow?.(overflow.slice());
+            // only invoke the callback if the UI has actually changed
+            if (overflow.length !== lastOverflowCount) {
+                this.props.onOverflow?.(overflow.slice());
+            }
+        } else if (!shallowCompareKeys(prevState, this.state)) {
+            this.repartition();
         }
     }
 
@@ -229,54 +231,97 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, Overf
         return this.props.overflowRenderer(overflow.slice());
     }
 
-    private resize = (entries: readonly ResizeObserverEntry[]) => {
-        // if any parent is growing, assume we have more room than before
-        const growing = entries.some(entry => {
-            const previousWidth = this.previousWidths.get(entry.target) || 0;
-            return entry.contentRect.width > previousWidth;
-        });
-        this.repartition(growing);
-        entries.forEach(entry => this.previousWidths.set(entry.target, entry.contentRect.width));
+    private resize = () => {
+        this.repartition();
     };
 
-    private repartition(growing: boolean) {
+    private repartition() {
         if (this.spacer == null) {
             return;
         }
-        if (growing) {
-            this.setState(state => ({
-                direction: OverflowDirection.GROW,
-                // store last overflow if this is the beginning of a resize (for check in componentDidUpdate).
-                lastOverflowCount:
-                    state.direction === OverflowDirection.NONE ? state.overflow.length : state.lastOverflowCount,
-                overflow: [],
-                visible: this.props.items,
-            }));
-        } else if (this.spacer.offsetWidth < 0.9) {
-            // spacer has flex-shrink and width 1px so if it's much smaller then we know to shrink
+
+        // if lastChopSize was 1, then our binary search has exhausted.
+        const partitionExhausted = this.state.lastChopSize === 1;
+        const minVisible = this.props.minVisibleItems ?? 0;
+
+        // spacer has flex-shrink and width 1px so if it's much smaller then we know to shrink
+        const shouldShrink = this.spacer.offsetWidth < 0.9 && this.state.visible.length > minVisible;
+
+        // we only check partitionExhausted for shouldGrow to ensure shrinking is the final operation.
+        const shouldGrow =
+            (this.spacer.offsetWidth >= 1 || this.state.visible.length < minVisible) &&
+            this.state.overflow.length > 0 &&
+            !partitionExhausted;
+
+        if (shouldShrink || shouldGrow) {
             this.setState(state => {
-                if (state.visible.length <= this.props.minVisibleItems!) {
-                    return null;
+                let visible;
+                let overflow;
+                if (this.props.collapseFrom === Boundary.END) {
+                    const result = shiftElements(
+                        state.visible,
+                        state.overflow,
+                        this.state.chopSize * (shouldShrink ? 1 : -1),
+                    );
+                    visible = result[0];
+                    overflow = result[1];
+                } else {
+                    const result = shiftElements(
+                        state.overflow,
+                        state.visible,
+                        this.state.chopSize * (shouldShrink ? -1 : 1),
+                    );
+                    overflow = result[0];
+                    visible = result[1];
                 }
-                const collapseFromStart = this.props.collapseFrom === Boundary.START;
-                const visible = state.visible.slice();
-                const next = collapseFromStart ? visible.shift() : visible.pop();
-                if (next === undefined) {
-                    return null;
-                }
-                const overflow = collapseFromStart ? [...state.overflow, next] : [next, ...state.overflow];
+
                 return {
-                    // set SHRINK mode unless a GROW is already in progress.
-                    // GROW shows all items then shrinks until it settles, so we
-                    // preserve the fact that the original trigger was a GROW.
-                    direction: state.direction === OverflowDirection.NONE ? OverflowDirection.SHRINK : state.direction,
+                    chopSize: halve(state.chopSize),
+                    lastChopSize: state.chopSize,
+                    // if we're starting a new partition cycle, record the last overflow count so we can track whether the UI changes after the new overflow is calculated
+                    lastOverflowCount: this.isFirstPartitionCycle(state.chopSize)
+                        ? state.overflow.length
+                        : state.lastOverflowCount,
                     overflow,
+                    repartitioning: true,
                     visible,
                 };
             });
         } else {
             // repartition complete!
-            this.setState({ direction: OverflowDirection.NONE });
+            this.setState({
+                chopSize: this.defaultChopSize(),
+                lastChopSize: null,
+                repartitioning: false,
+            });
         }
     }
+
+    private defaultChopSize(): number {
+        return halve(this.props.items.length);
+    }
+
+    private isFirstPartitionCycle(currentChopSize: number): boolean {
+        return currentChopSize === this.defaultChopSize();
+    }
+}
+
+function halve(num: number): number {
+    return Math.ceil(num / 2);
+}
+
+function shiftElements<T>(leftArray: readonly T[], rightArray: readonly T[], num: number): [newFrom: T[], newTo: T[]] {
+    // if num is positive then elements are shifted from left-to-right, if negative then right-to-left
+    const allElements = leftArray.concat(rightArray);
+    const newLeftLength = leftArray.length - num;
+
+    if (newLeftLength <= 0) {
+        return [[], allElements];
+    } else if (newLeftLength >= allElements.length) {
+        return [allElements, []];
+    }
+
+    const sliceIndex = allElements.length - newLeftLength;
+
+    return [allElements.slice(0, -sliceIndex), allElements.slice(-sliceIndex)];
 }

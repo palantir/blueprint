@@ -22,6 +22,8 @@ import { ActionProps, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 
 export interface BreadcrumbProps extends ActionProps, LinkProps {
+    children?: React.ReactNode;
+
     /** Whether this breadcrumb is the current breadcrumb. */
     current?: boolean;
 
@@ -32,41 +34,38 @@ export interface BreadcrumbProps extends ActionProps, LinkProps {
     iconTitle?: string;
 }
 
-export const Breadcrumb: React.FunctionComponent<BreadcrumbProps> = breadcrumbProps => {
+export const Breadcrumb: React.FC<BreadcrumbProps> = props => {
     const classes = classNames(
         Classes.BREADCRUMB,
         {
-            [Classes.BREADCRUMB_CURRENT]: breadcrumbProps.current,
-            [Classes.DISABLED]: breadcrumbProps.disabled,
+            [Classes.BREADCRUMB_CURRENT]: props.current,
+            [Classes.DISABLED]: props.disabled,
         },
-        breadcrumbProps.className,
+        props.className,
     );
 
-    const icon =
-        breadcrumbProps.icon != null ? (
-            <Icon title={breadcrumbProps.iconTitle} icon={breadcrumbProps.icon} />
-        ) : undefined;
+    const icon = props.icon != null ? <Icon title={props.iconTitle} icon={props.icon} /> : undefined;
 
-    if (breadcrumbProps.href == null && breadcrumbProps.onClick == null) {
+    if (props.href == null && props.onClick == null) {
         return (
             <span className={classes}>
                 {icon}
-                {breadcrumbProps.text}
-                {breadcrumbProps.children}
+                {props.text}
+                {props.children}
             </span>
         );
     }
     return (
         <a
             className={classes}
-            href={breadcrumbProps.href}
-            onClick={breadcrumbProps.disabled ? undefined : breadcrumbProps.onClick}
-            tabIndex={breadcrumbProps.disabled ? undefined : 0}
-            target={breadcrumbProps.target}
+            href={props.href}
+            onClick={props.disabled ? undefined : props.onClick}
+            tabIndex={props.disabled ? undefined : 0}
+            target={props.target}
         >
             {icon}
-            {breadcrumbProps.text}
-            {breadcrumbProps.children}
+            {props.text}
+            {props.children}
         </a>
     );
 };

@@ -65,7 +65,7 @@ Styleguide select
     &::after, // CSS support
     .#{$ns}-icon {
       right: $pt-grid-size * 1.2;
-      top: ($pt-button-height-large - $pt-icon-size-standard) / 2;
+      top: ($pt-button-height-large - $pt-icon-size-standard) * 0.5;
     }
   }
 

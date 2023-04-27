@@ -18,7 +18,7 @@ import { IHeadingNode, IPageNode } from "@documentalist/client";
 import { filter } from "fuzzaldrin-plus";
 import React from "react";
 
-import { Classes, InputGroupProps, MenuItem } from "@blueprintjs/core";
+import { Classes, MenuItem } from "@blueprintjs/core";
 import { CaretRight } from "@blueprintjs/icons";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
@@ -47,9 +47,6 @@ export interface NavigationSection {
     title: string;
 }
 
-const NavOmnibar = Omnibar.ofType<NavigationSection>();
-const INPUT_PROPS: InputGroupProps = { placeholder: "Fuzzy search headings..." };
-
 export class Navigator extends React.PureComponent<NavigatorProps> {
     private sections: NavigationSection[];
 
@@ -71,9 +68,9 @@ export class Navigator extends React.PureComponent<NavigatorProps> {
             return null;
         }
         return (
-            <NavOmnibar
+            <Omnibar<NavigationSection>
                 className="docs-navigator-menu"
-                inputProps={INPUT_PROPS}
+                inputProps={{ placeholder: "Search documentation pages and sections..." }}
                 itemListPredicate={this.filterMatches}
                 isOpen={this.props.isOpen}
                 items={this.sections}
@@ -114,11 +111,13 @@ export class Navigator extends React.PureComponent<NavigatorProps> {
         );
         return (
             <MenuItem
-                selected={props.modifiers.active}
-                href={"#" + section.route}
+                active={props.modifiers.active}
+                href={`#${section.route}`}
                 key={section.route}
                 multiline={true}
                 onClick={props.handleClick}
+                onFocus={props.handleFocus}
+                roleStructure="listoption"
                 text={text}
             />
         );

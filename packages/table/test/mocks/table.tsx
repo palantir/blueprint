@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { Cell, Column, ColumnProps, TableProps, RenderMode, Table, Utils } from "../../src";
+import { Cell, Column, ColumnProps, RenderMode, Table, TableProps, Utils } from "../../src";
 
 export function createStringOfLength(length: number) {
     return new Array(length).fill("a").join("");

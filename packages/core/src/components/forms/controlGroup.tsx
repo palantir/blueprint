@@ -21,6 +21,9 @@ import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
 export interface ControlGroupProps extends Props, HTMLDivProps {
+    /** Group contents. */
+    children?: React.ReactNode;
+
     /**
      * Whether the control group should take up the full width of its container.
      *

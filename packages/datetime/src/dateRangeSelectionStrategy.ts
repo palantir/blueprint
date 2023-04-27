@@ -31,6 +31,7 @@ export interface DateRangeSelectionState {
     dateRange: DateRange;
 }
 
+/* eslint-disable-next-line @typescript-eslint/no-extraneous-class */
 export class DateRangeSelectionStrategy {
     /**
      * Returns the new date-range and the boundary that would be affected if `day` were clicked. The

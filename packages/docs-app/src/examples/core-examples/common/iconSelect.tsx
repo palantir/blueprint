@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import React from "react";
 
 import { Alignment, Button, Classes, MenuItem } from "@blueprintjs/core";
@@ -25,19 +26,19 @@ import { getIconNames, IconNameOrNone, NONE } from "./iconNames";
 const ICON_NAMES = getIconNames();
 
 export interface IconSelectProps {
+    disabled?: boolean;
     iconName?: IconName;
     onChange: (iconName?: IconName) => void;
 }
 
-const TypedSelect = Select.ofType<IconNameOrNone>();
-
 export class IconSelect extends React.PureComponent<IconSelectProps> {
     public render() {
-        const { iconName } = this.props;
+        const { disabled, iconName } = this.props;
         return (
-            <label className={Classes.LABEL}>
+            <label className={classNames(Classes.LABEL, { [Classes.DISABLED]: disabled })}>
                 Icon
-                <TypedSelect
+                <Select<IconNameOrNone>
+                    disabled={disabled}
                     items={ICON_NAMES}
                     itemPredicate={this.filterIconName}
                     itemRenderer={this.renderIconItem}
@@ -48,17 +49,18 @@ export class IconSelect extends React.PureComponent<IconSelectProps> {
                     <Button
                         alignText={Alignment.LEFT}
                         className={Classes.TEXT_OVERFLOW_ELLIPSIS}
+                        disabled={disabled}
                         fill={true}
                         icon={iconName}
                         text={iconName || NONE}
                         rightIcon="caret-down"
                     />
-                </TypedSelect>
+                </Select>
             </label>
         );
     }
 
-    private renderIconItem: ItemRenderer<IconName | typeof NONE> = (icon, { handleClick, modifiers }) => {
+    private renderIconItem: ItemRenderer<IconName | typeof NONE> = (icon, { handleClick, handleFocus, modifiers }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
@@ -68,6 +70,7 @@ export class IconSelect extends React.PureComponent<IconSelectProps> {
                 icon={icon === NONE ? undefined : icon}
                 key={icon}
                 onClick={handleClick}
+                onFocus={handleFocus}
                 text={icon}
             />
         );

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
+import { HOTKEYS_PROVIDER_NOT_FOUND } from "../../common/errors";
 import { comboMatches, getKeyCombo, KeyCombo, parseKeyCombo } from "../../components/hotkeys/hotkeyParser";
 import { HotkeysContext } from "../../context";
 import { HotkeyConfig } from "./hotkeyConfig";
@@ -72,7 +73,13 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
     );
 
     // register keys with global context
-    const [, dispatch] = React.useContext(HotkeysContext);
+    const [state, dispatch] = React.useContext(HotkeysContext);
+
+    if (!state.hasProvider) {
+        React.useEffect(() => console.warn(HOTKEYS_PROVIDER_NOT_FOUND), []);
+    }
+
+    // we can still bind the hotkeys if there is no HotkeysProvider, they just won't show up in the dialog
     React.useEffect(() => {
         const payload = [...globalKeys.map(k => k.config), ...localKeys.map(k => k.config)];
         dispatch({ type: "ADD_HOTKEYS", payload });

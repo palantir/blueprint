@@ -17,7 +17,7 @@
 import { expect } from "chai";
 import React from "react";
 
-import { Cell, Column, ColumnLoadingOption, Table } from "../src";
+import { Cell, Column, ColumnLoadingOption, Table2 } from "../src";
 import * as Classes from "../src/common/classes";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
@@ -35,11 +35,11 @@ describe("Column", () => {
 
     it("displays a table with columns", () => {
         const table = harness.mount(
-            <Table numRows={5}>
+            <Table2 numRows={5}>
                 <Column />
                 <Column />
                 <Column />
-            </Table>,
+            </Table2>,
         );
         const selector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
         expect(table.find(selector, 0)?.element).to.exist;
@@ -50,11 +50,11 @@ describe("Column", () => {
 
     it("passes column name to renderer or defaults if none specified", () => {
         const table = harness.mount(
-            <Table numRows={5}>
+            <Table2 numRows={5}>
                 <Column name="Zero" />
                 <Column name="One" />
                 <Column />
-            </Table>,
+            </Table2>,
         );
 
         const selector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
@@ -69,7 +69,7 @@ describe("Column", () => {
         const cellValue = "my cell value";
         const cellRenderer = () => <Cell>{cellValue}</Cell>;
         const table = harness.mount(
-            <Table numRows={NUM_ROWS}>
+            <Table2 numRows={NUM_ROWS}>
                 <Column name="Zero" loadingOptions={[ColumnLoadingOption.CELLS]} cellRenderer={cellRenderer} />
                 <Column
                     name="One"
@@ -77,7 +77,7 @@ describe("Column", () => {
                     cellRenderer={cellRenderer}
                 />
                 <Column name="Two" cellRenderer={cellRenderer} />
-            </Table>,
+            </Table2>,
         );
 
         const columnHeaders = table.element!.querySelectorAll(
@@ -96,9 +96,9 @@ describe("Column", () => {
     it("passes custom class name to renderer", () => {
         const CLASS_NAME = "my-custom-class-name";
         const table = harness.mount(
-            <Table numRows={5}>
+            <Table2 numRows={5}>
                 <Column className={CLASS_NAME} />
-            </Table>,
+            </Table2>,
         );
         const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0)?.hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;

@@ -19,8 +19,7 @@ import { mount } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { Button, Classes, Dialog, H4, Icon, IconSize } from "../../src";
-import * as Keys from "../../src/common/keys";
+import { Button, Classes, Dialog, DialogProps, H4, Icon, IconSize } from "../../src";
 
 describe("<Dialog>", () => {
     it("renders its content correctly", () => {
@@ -93,7 +92,7 @@ describe("<Dialog>", () => {
                 {createDialogContents()}
             </Dialog>,
         );
-        dialog.simulate("keydown", { which: Keys.ESCAPE });
+        dialog.simulate("keydown", { key: "Escape" });
         assert.isTrue(onClose.notCalled);
     });
 
@@ -147,54 +146,55 @@ describe("<Dialog>", () => {
     });
 
     describe("accessibility features", () => {
-        const mountDialog = (className: string) => {
+        const mountDialog = (props: Partial<DialogProps>) => {
             return mount(
-                <Dialog
-                    className={className}
-                    isOpen={true}
-                    usePortal={false}
-                    aria-labelledby="dialog-title"
-                    aria-describedby="dialog-description"
-                >
+                <Dialog isOpen={true} usePortal={false} {...props}>
                     {createDialogContents()}
                 </Dialog>,
             );
         };
 
         it("renders with role={dialog}", () => {
-            const dialog = mountDialog("check-role");
+            const dialog = mountDialog({ className: "check-role" });
             assert.equal(dialog.find(`.check-role`).hostNodes().prop("role"), "dialog", "missing dialog role!!");
         });
 
         it("renders with provided aria-labelledby and aria-described by from props", () => {
-            const dialog = mountDialog("renders-with-props");
+            const dialog = mountDialog({
+                "aria-describedby": "dialog-description",
+                "aria-labelledby": "dialog-title",
+                className: "renders-with-props",
+            });
             const dialogElement = dialog.find(`.renders-with-props`).hostNodes();
             assert.equal(dialogElement.prop("aria-labelledby"), "dialog-title");
             assert.equal(dialogElement.prop("aria-describedby"), "dialog-description");
         });
 
         it("uses title as default aria-labelledby", () => {
-            const dialog = mount(
-                <Dialog className="default-title" isOpen={true} usePortal={false} title="Title by props">
-                    {createDialogContents()}
-                </Dialog>,
-            );
+            const dialog = mountDialog({ className: "default-title", title: "Title by props" });
             // test existence here because id is generated
             assert.exists(dialog.find(".default-title").hostNodes().prop("aria-labelledby"));
         });
 
         it("does not apply default aria-labelledby if no title", () => {
-            const dialog = mount(
-                <Dialog className={"no-default-if-no-title"} isOpen={true} usePortal={false}>
-                    {createDialogContents()}
-                </Dialog>,
-            );
+            const dialog = mountDialog({ className: "no-default-if-no-title" });
             // test existence here because id is generated
             assert.notExists(dialog.find(".no-default-if-no-title").hostNodes().prop("aria-labelledby"));
         });
+
+        it("supports ref objects attached to container", done => {
+            const containerRef = React.createRef<HTMLDivElement>();
+            mountDialog({ containerRef });
+
+            // wait for the whole lifecycle to run
+            setTimeout(() => {
+                assert.isTrue(containerRef.current?.classList.contains(Classes.DIALOG_CONTAINER));
+                done();
+            }, 0);
+        });
     });
 
-    // everything else about Dialog is tested by Overlay
+    // N.B. everything else about Dialog is tested by Overlay
 
     function createDialogContents(): JSX.Element[] {
         return [

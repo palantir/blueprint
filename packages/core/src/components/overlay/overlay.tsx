@@ -20,7 +20,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { AbstractPureComponent, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
-import { isFunction } from "../../common/utils";
+import { getActiveElement, isFunction } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
 export interface OverlayableProps extends OverlayLifecycleProps {
@@ -168,6 +168,9 @@ export interface BackdropProps {
 }
 
 export interface OverlayProps extends OverlayableProps, BackdropProps, Props {
+    /** Element to overlay. */
+    children?: React.ReactNode;
+
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
@@ -329,12 +332,14 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         return this.requestAnimationFrame(() => {
             // container element may be undefined between component mounting and Portal rendering
             // activeElement may be undefined in some rare cases in IE
-            if (this.containerElement.current == null || document.activeElement == null || !this.props.isOpen) {
+            const activeElement = getActiveElement(this.containerElement.current);
+
+            if (this.containerElement.current == null || activeElement == null || !this.props.isOpen) {
                 return;
             }
 
             const container = this.containerElement.current;
-            const isFocusOutsideModal = !container.contains(document.activeElement);
+            const isFocusOutsideModal = !container.contains(activeElement);
             if (isFocusOutsideModal) {
                 this.startFocusTrapElement.current?.focus({ preventScroll: true });
                 this.isAutoFocusing = false;
@@ -383,14 +388,8 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     };
 
     private maybeRenderBackdrop() {
-        const {
-            backdropClassName,
-            backdropProps,
-            hasBackdrop,
-            isOpen,
-            transitionDuration,
-            transitionName,
-        } = this.props;
+        const { backdropClassName, backdropProps, hasBackdrop, isOpen, transitionDuration, transitionName } =
+            this.props;
 
         if (hasBackdrop && isOpen) {
             return (
@@ -585,7 +584,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
             document.body.classList.add(Classes.OVERLAY_OPEN);
         }
 
-        this.lastActiveElementBeforeOpened = document.activeElement;
+        this.lastActiveElementBeforeOpened = getActiveElement(this.containerElement.current);
     }
 
     private handleTransitionExited = (node: HTMLElement) => {
@@ -650,10 +649,10 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         const { canEscapeKeyClose, onClose } = this.props;
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable-next-line deprecation/deprecation */
-        if (e.which === Keys.ESCAPE && canEscapeKeyClose) {
+        if (e.key === "Escape" && canEscapeKeyClose) {
             onClose?.(e);
+            // prevent other overlays from closing
+            e.stopPropagation();
             // prevent browser-specific escape key behavior (Safari exits fullscreen)
             e.preventDefault();
         }

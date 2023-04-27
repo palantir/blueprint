@@ -68,6 +68,7 @@ export const INTENT_WARNING = intentClass(Intent.WARNING)!;
 export const INTENT_DANGER = intentClass(Intent.DANGER)!;
 
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
+export const FOCUS_STYLE_MANAGER_IGNORE = `${NS}-focus-style-manager-ignore`;
 
 // text utilities
 export const UI_TEXT = `${NS}-ui-text`;
@@ -202,6 +203,8 @@ export const MULTISTEP_DIALOG_PANELS = `${MULTISTEP_DIALOG}-panels`;
 export const MULTISTEP_DIALOG_LEFT_PANEL = `${MULTISTEP_DIALOG}-left-panel`;
 export const MULTISTEP_DIALOG_RIGHT_PANEL = `${MULTISTEP_DIALOG}-right-panel`;
 export const MULTISTEP_DIALOG_FOOTER = `${MULTISTEP_DIALOG}-footer`;
+export const MULTISTEP_DIALOG_NAV_TOP = `${MULTISTEP_DIALOG}-nav-top`;
+export const MULTISTEP_DIALOG_NAV_RIGHT = `${MULTISTEP_DIALOG}-nav-right`;
 
 export const NAVBAR = `${NS}-navbar`;
 export const NAVBAR_GROUP = `${NAVBAR}-group`;
@@ -210,6 +213,7 @@ export const NAVBAR_DIVIDER = `${NAVBAR}-divider`;
 
 export const NON_IDEAL_STATE = `${NS}-non-ideal-state`;
 export const NON_IDEAL_STATE_VISUAL = `${NON_IDEAL_STATE}-visual`;
+export const NON_IDEAL_STATE_TEXT = `${NON_IDEAL_STATE}-text`;
 
 export const NUMERIC_INPUT = `${NS}-numeric-input`;
 
@@ -240,6 +244,7 @@ export const POPOVER_CONTENT_PLACEMENT = `${POPOVER}-placement`;
 export const POPOVER_CONTENT_SIZING = `${POPOVER_CONTENT}-sizing`;
 export const POPOVER_DISMISS = `${POPOVER}-dismiss`;
 export const POPOVER_DISMISS_OVERRIDE = `${POPOVER_DISMISS}-override`;
+export const POPOVER_MATCH_TARGET_WIDTH = `${POPOVER}-match-target-width`;
 export const POPOVER_OPEN = `${POPOVER}-open`;
 export const POPOVER_POPPER_ESCAPED = `${POPOVER}-popper-escaped`;
 export const POPOVER_REFERENCE_HIDDEN = `${POPOVER}-reference-hidden`;

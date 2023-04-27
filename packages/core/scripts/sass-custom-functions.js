@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const inliner = require("sass-inline-svg");
+const inliner = require("@vgrid/sass-inline-svg");
 
 module.exports = {
     /**
@@ -23,10 +23,10 @@ module.exports = {
      * Usage:
      * svg-icon("16px/icon-name.svg", (path: (fill: $color)) )
      */
-    "svg-icon": inliner("../../resources/icons", {
+    "svg-icon($path, $selectors: null)": inliner("../../resources/icons", {
         // run through SVGO first
         optimize: true,
         // minimal "uri" encoding is smaller than base64
-        encodingFormat: "uri"
+        encodingFormat: "uri",
     }),
 };

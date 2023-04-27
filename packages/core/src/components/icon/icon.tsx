@@ -19,7 +19,7 @@ import React, { forwardRef, useEffect, useState } from "react";
 
 import { IconComponent, IconName, Icons, IconSize, SVGIconProps } from "@blueprintjs/icons";
 
-import { Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props } from "../../common";
 
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
 export { IconName, IconSize };
@@ -99,13 +99,14 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
                 ...htmlProps,
                 "aria-hidden": title ? undefined : true,
                 className: classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className),
+                "data-icon": icon,
                 ref,
                 title: htmlTitle,
             });
         } else {
             return (
                 <Component
-                    className={classNames(Classes.intentClass(intent), className)}
+                    className={classNames(Classes.iconClass(icon), Classes.intentClass(intent), className)}
                     color={color}
                     size={size}
                     tagName={tagName}

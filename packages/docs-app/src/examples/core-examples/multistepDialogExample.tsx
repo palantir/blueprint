@@ -19,19 +19,27 @@ import React from "react";
 
 import {
     Button,
-    Code,
-    H5,
-    MultistepDialog,
-    DialogStep,
-    Switch,
-    Classes,
     ButtonProps,
-    RadioGroup,
-    Radio,
-    NumericInput,
+    Classes,
+    Code,
+    DialogStep,
+    H5,
+    HTMLSelect,
     Label,
+    MultistepDialog,
+    MultistepDialogNavPosition,
+    NumericInput,
+    Radio,
+    RadioGroup,
+    Switch,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    ExampleProps,
+    handleBooleanChange,
+    handleStringChange,
+    handleValueChange,
+} from "@blueprintjs/docs-theme";
 
 import { BlueprintExampleData } from "../../tags/types";
 
@@ -44,10 +52,13 @@ export interface MultistepDialogExampleState {
     isCloseButtonShown: boolean;
     showCloseButtonInFooter: boolean;
     isOpen: boolean;
+    navPosition: MultistepDialogNavPosition;
     usePortal: boolean;
     value?: string;
     initialStepIndex: number;
 }
+
+const NAV_POSITIONS = ["left", "top", "right"];
 
 export class MultistepDialogExample extends React.PureComponent<
     ExampleProps<BlueprintExampleData>,
@@ -62,6 +73,7 @@ export class MultistepDialogExample extends React.PureComponent<
         initialStepIndex: 0,
         isCloseButtonShown: true,
         isOpen: false,
+        navPosition: "left",
         showCloseButtonInFooter: true,
         usePortal: true,
     };
@@ -84,21 +96,29 @@ export class MultistepDialogExample extends React.PureComponent<
 
     private handleHasTitleChange = handleBooleanChange(hasTitle => this.setState({ hasTitle }));
 
+    private handleNavPositionChange = handleValueChange((navPosition: MultistepDialogNavPosition) =>
+        this.setState({ navPosition }),
+    );
+
     public render() {
         const finalButtonProps: Partial<ButtonProps> = {
             intent: "primary",
             onClick: this.handleClose,
             text: "Close",
         };
-        const { hasTitle, ...state } = this.state;
+        const { hasTitle, navPosition: position, ...state } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <Button onClick={this.handleOpen}>Show dialog</Button>
                 <MultistepDialog
                     className={this.props.data.themeName}
                     icon="info-sign"
+                    navigationPosition={position}
                     onClose={this.handleClose}
-                    nextButtonProps={{ disabled: this.state.value === undefined }}
+                    nextButtonProps={{
+                        disabled: this.state.value === undefined,
+                        tooltipContent: this.state.value === undefined ? "Select an option to continue" : undefined,
+                    }}
                     finalButtonProps={finalButtonProps}
                     title={hasTitle ? "Multistep dialog" : undefined}
                     {...state}
@@ -128,6 +148,7 @@ export class MultistepDialogExample extends React.PureComponent<
             hasTitle,
             initialStepIndex,
             isCloseButtonShown,
+            navPosition: position,
             showCloseButtonInFooter,
         } = this.state;
         return (
@@ -155,6 +176,10 @@ export class MultistepDialogExample extends React.PureComponent<
                     onChange={this.handleFooterCloseButtonChange}
                 />
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
+                <Label>
+                    Navigation Position
+                    <HTMLSelect value={position} onChange={this.handleNavPositionChange} options={NAV_POSITIONS} />
+                </Label>
                 <Label>Initial step index (0-indexed)</Label>
                 <NumericInput
                     value={initialStepIndex}
@@ -180,7 +205,7 @@ export interface SelectPanelProps {
     onChange: (event: React.FormEvent<HTMLInputElement>) => void;
 }
 
-const SelectPanel: React.FunctionComponent<SelectPanelProps> = props => (
+const SelectPanel: React.FC<SelectPanelProps> = props => (
     <div className={classNames(Classes.DIALOG_BODY, "docs-multistep-dialog-example-step")}>
         <p>Use this dialog to divide content into multiple sequential steps.</p>
         <p>Select one of the options below in order to proceed to the next step:</p>
@@ -196,7 +221,7 @@ export interface ConfirmPanelProps {
     selectedValue: string;
 }
 
-const ConfirmPanel: React.FunctionComponent<ConfirmPanelProps> = props => {
+const ConfirmPanel: React.FC<ConfirmPanelProps> = props => {
     return (
         <div className={classNames(Classes.DIALOG_BODY, "docs-multistep-dialog-example-step")}>
             <p>

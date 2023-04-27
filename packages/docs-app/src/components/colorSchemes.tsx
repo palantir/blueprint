@@ -205,9 +205,9 @@ export class ColorScheme extends React.PureComponent<ColorSchemeProps, ColorSche
     }
 }
 
-export const QualitativeSchemePalette: React.FunctionComponent = () => <ColorBar colors={QUALITATIVE} />;
+export const QualitativeSchemePalette: React.FC = () => <ColorBar colors={QUALITATIVE} />;
 
-export const SequentialSchemePalette: React.FunctionComponent = () => {
+export const SequentialSchemePalette: React.FC = () => {
     const schemes = [
         { label: "Single hue", palettes: SINGLE_HUE },
         { label: "Multi-hue", palettes: SEQUENTIAL },
@@ -215,7 +215,7 @@ export const SequentialSchemePalette: React.FunctionComponent = () => {
     return <ColorScheme schemes={schemes} />;
 };
 
-export const DivergingSchemePalette: React.FunctionComponent = () => {
+export const DivergingSchemePalette: React.FC = () => {
     const schemes = [{ diverging: true, label: "Diverging", palettes: DIVERGING }];
     return <ColorScheme schemes={schemes} />;
 };

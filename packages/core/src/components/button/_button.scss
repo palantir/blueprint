@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
+@import "../../common/variables-extended";
 @import "./common";
 
 /*
@@ -27,7 +28,7 @@ Markup:
 Styleguide button
 */
 .#{$ns}-button {
-  @include pt-button-base();
+  @include pt-button-layout();
   @include pt-button-height($pt-button-height);
 
   &:empty {
@@ -123,7 +124,7 @@ Styleguide button
   // if loading, then it contains exactly [spinner, icon]
   .#{$ns}-spinner + .#{$ns}-icon:last-child {
     // center icon horizontally. this works for large buttons too.
-    margin: 0 (-($pt-button-height - $pt-icon-size-standard) / 2);
+    margin: 0 (-($pt-button-height - $pt-icon-size-standard) * 0.5);
   }
 
   // dark theme
@@ -171,6 +172,55 @@ Styleguide button
   &.#{$ns}-outlined {
     @include pt-button-minimal();
     @include pt-button-outlined();
+  }
+
+  // special case override: use dark text for warning intent
+  &.#{$ns}-intent-warning {
+    background: $orange5;
+    color: $pt-text-color;
+
+    &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+      fill: rgba($dark-gray1, 0.7);
+    }
+
+    &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
+      &:hover {
+        background: $orange4;
+        color: $pt-text-color;
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        background: $orange3;
+        color: $pt-text-color;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // Windows High Contrast dark theme
+          background: $pt-high-contrast-mode-active-background-color;
+        }
+      }
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      background: rgba($orange3, 0.5);
+      color: rgba($dark-gray1, 0.35);
+
+      .#{$ns}-dark & {
+        color: rgba($dark-gray1, 0.6);
+      }
+    }
+
+    &.#{$ns}-minimal,
+    &.#{$ns}-outlined {
+      background: none;
+
+      .#{$ns}-dark & {
+        &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+          fill: $orange5;
+        }
+      }
+    }
   }
 }
 

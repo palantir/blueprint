@@ -16,6 +16,9 @@
 
 /* eslint-disable no-underscore-dangle */
 
+/** @deprecated use CreateNewItem */
+export type ICreateNewItem = CreateNewItem;
+
 /**
  * The reserved type of the "Create Item" option in item lists. This is intended
  * not to conflict with any custom item type `T` that might be used in  item
@@ -39,7 +42,7 @@ export function isCreateNewItem<T>(item: T | CreateNewItem | null | undefined): 
         return false;
     }
 
-    // see if the provided item exactly matches the `ICreateNewItem` object,
+    // see if the provided item exactly matches the `CreateNewItem` object,
     // with no superfluous keys.
     const keys = Object.keys(item);
     if (keys.length !== 1 || keys[0] !== "__blueprintCreateNewItemBrand") {

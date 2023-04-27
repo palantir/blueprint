@@ -23,8 +23,8 @@
 
 import React, { useCallback, useState } from "react";
 
-import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack, Switch, UL } from "@blueprintjs/core";
-import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Button, H5, Intent, NumericInput, Panel, PanelProps, PanelStack, Switch, UL } from "@blueprintjs/core";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 const Panel1: React.FC<PanelProps> = props => {
     const [counter, setCounter] = useState(0);

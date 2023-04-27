@@ -38,7 +38,7 @@ describe("<NonIdealState>", () => {
 
     it("ensures description is wrapped in an element", () => {
         const wrapper = shallow(<NonIdealState action={<strong />} description="foo" />);
-        const div = wrapper.children().find("div");
+        const div = wrapper.find(`.${Classes.NON_IDEAL_STATE_TEXT}`).children().find("div");
         assert.lengthOf(div, 1);
         assert.strictEqual(div.text(), "foo");
     });

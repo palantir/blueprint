@@ -21,23 +21,22 @@ import type { DayPickerProps } from "react-day-picker";
 import {
     AbstractPureComponent,
     DISPLAYNAME_PREFIX,
-    InputGroupProps,
     InputGroup,
+    InputGroupProps,
     Intent,
-    PopoverProps,
-    Props,
-    Ref,
     Keys,
     Popover,
+    PopoverProps,
+    Props,
     refHandler,
     setRef,
 } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import { isDateValid, isDayInRange } from "./common/dateUtils";
-import { getFormattedDateString, DateFormatProps } from "./dateFormat";
+import { DateFormatProps, getFormattedDateString } from "./dateFormat";
 import { DatePicker } from "./datePicker";
-import { getDefaultMaxDate, getDefaultMinDate, DatePickerBaseProps } from "./datePickerCore";
+import { DatePickerBaseProps, getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
 import { DatePickerShortcut } from "./shortcuts";
 
 export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Props {
@@ -89,12 +88,14 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Pr
     inputProps?: InputGroupProps;
 
     /**
-     * Called when the user selects a new valid date through the `DatePicker` or by typing
-     * in the input. The second argument is true if the user clicked on a date in the
-     * calendar, changed the input value, or cleared the selection; it will be false if the date
-     * was changed by choosing a new month or year.
+     * Called when the user selects a new valid date through the DatePicker or by typing
+     * in the input.
+     *
+     * @param selectedDate Date or `null` (if the date is invalid or text input has been cleared)
+     * @param isUserChange `true` if the user clicked on a date in the calendar, changed the input value,
+     *     or cleared the selection; `false` if the date was changed by changing the month or year.
      */
-    onChange?: (selectedDate: Date, isUserChange: boolean) => void;
+    onChange?: (selectedDate: Date | null, isUserChange: boolean) => void;
 
     /**
      * Called when the user finishes typing in a new date and the date causes an error state.
@@ -187,7 +188,7 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
         this.props.inputProps?.inputRef,
     );
 
-    private handlePopoverContentRef: Ref<HTMLDivElement> = refHandler(this, "popoverContentElement");
+    private handlePopoverContentRef: React.Ref<HTMLDivElement> = refHandler(this, "popoverContentElement");
 
     public render() {
         const { value, valueString } = this.state;
@@ -360,7 +361,7 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         const { valueString } = this.state;
-        const date = this.parseDate(valueString);
+        const date: Date = this.parseDate(valueString);
         if (
             valueString.length > 0 &&
             valueString !== getFormattedDateString(this.state.value, this.props) &&
@@ -389,9 +390,9 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
         this.safeInvokeInputProp("onBlur", e);
     };
 
+    /* eslint-disable deprecation/deprecation */
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable deprecation/deprecation */
         if (e.which === Keys.ENTER) {
             const nextDate = this.parseDate(this.state.valueString);
             this.handleDateChange(nextDate, true, true);
@@ -408,6 +409,7 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
         }
         this.safeInvokeInputProp("onKeyDown", e);
     };
+    /* eslint-enable deprecation/deprecation */
 
     private getKeyboardFocusableElements = (): HTMLElement[] => {
         const elements: HTMLElement[] = Array.from(

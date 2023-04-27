@@ -21,6 +21,9 @@ import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
 export interface CollapseProps extends Props {
+    /** Contents to collapse. */
+    children?: React.ReactNode;
+
     /**
      * Component to render as the root element.
      * Useful when rendering a `Collapse` inside a `<table>`, for instance.
@@ -116,7 +119,7 @@ export enum AnimationStates {
 export class Collapse extends AbstractPureComponent<CollapseProps, CollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
-    public static defaultProps: CollapseProps = {
+    public static defaultProps: Partial<CollapseProps> = {
         component: "div",
         isOpen: false,
         keepChildrenMounted: false,

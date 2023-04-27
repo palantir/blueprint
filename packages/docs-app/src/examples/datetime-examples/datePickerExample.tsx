@@ -16,12 +16,14 @@
 
 import React from "react";
 
-import { Classes, H5, Switch } from "@blueprintjs/core";
+import { Callout, Classes, H5, Switch } from "@blueprintjs/core";
 import { DatePicker, TimePrecision } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { MomentDate } from "./common/momentDate";
 import { PrecisionSelect } from "./common/precisionSelect";
+
+const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
 
 export interface DatePickerExampleState {
     date: Date | null;
@@ -32,6 +34,7 @@ export interface DatePickerExampleState {
     timePrecision: TimePrecision | undefined;
     showTimeArrowButtons: boolean;
     useAmPm?: boolean;
+    showFooterElement: boolean;
 }
 
 export class DatePickerExample extends React.PureComponent<ExampleProps, DatePickerExampleState> {
@@ -41,6 +44,7 @@ export class DatePickerExample extends React.PureComponent<ExampleProps, DatePic
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: false,
+        showFooterElement: false,
         showTimeArrowButtons: false,
         timePrecision: undefined,
         useAmPm: false,
@@ -49,6 +53,8 @@ export class DatePickerExample extends React.PureComponent<ExampleProps, DatePic
     private toggleHighlight = handleBooleanChange(highlightCurrentDay => this.setState({ highlightCurrentDay }));
 
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
+
+    private toggleShowFooterElement = handleBooleanChange(showFooterElement => this.setState({ showFooterElement }));
 
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
 
@@ -82,6 +88,11 @@ export class DatePickerExample extends React.PureComponent<ExampleProps, DatePic
                     checked={props.reverseMonthAndYearMenus}
                     label="Reverse month and year menus"
                     onChange={this.toggleReverseMenus}
+                />
+                <Switch
+                    checked={this.state.showFooterElement}
+                    label="Show custom footer element"
+                    onChange={this.toggleShowFooterElement}
                 />
                 <PrecisionSelect
                     allowNone={true}
@@ -117,6 +128,7 @@ export class DatePickerExample extends React.PureComponent<ExampleProps, DatePic
                     className={Classes.ELEVATION_1}
                     onChange={this.handleDateChange}
                     timePickerProps={timePickerProps}
+                    footerElement={this.state.showFooterElement ? exampleFooterElement : undefined}
                     {...props}
                 />
                 <MomentDate date={date} withTime={props.timePrecision !== undefined} />

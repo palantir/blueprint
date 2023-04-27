@@ -25,6 +25,8 @@ import { DISPLAYNAME_PREFIX, OptionProps } from "../../common/props";
 export interface HTMLSelectProps
     extends React.RefAttributes<HTMLSelectElement>,
         React.SelectHTMLAttributes<HTMLSelectElement> {
+    children?: React.ReactNode;
+
     /** Whether this element is non-interactive. */
     disabled?: boolean;
 
@@ -60,7 +62,7 @@ export interface HTMLSelectProps
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => {
-    const { className, children, disabled, fill, iconProps, large, minimal, options = [], ...htmlProps } = props;
+    const { className, children, disabled, fill, iconProps, large, minimal, options = [], value, ...htmlProps } = props;
     const classes = classNames(
         HTML_SELECT,
         {
@@ -79,7 +81,7 @@ export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => 
 
     return (
         <div className={classes}>
-            <select disabled={disabled} ref={ref} {...htmlProps} multiple={false}>
+            <select disabled={disabled} ref={ref} value={value} {...htmlProps} multiple={false}>
                 {optionChildren}
                 {children}
             </select>

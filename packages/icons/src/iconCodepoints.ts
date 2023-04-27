@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+// The two icon sets are identical aside from SVG paths, so we only need to import info for the 16px set
 import { BLUEPRINT_ICONS_16_CODEPOINTS } from "./generated/16px/blueprint-icons-16";
 import type { IconName } from "./iconNames";
-// icon sets are identical aside from SVG paths, so we just import the info for the 16px set
 
 /**
  * Icon codepoints as base 10 number strings. If you need to render these strings

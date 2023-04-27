@@ -20,7 +20,7 @@ import React from "react";
 import sinon from "sinon";
 
 import * as Classes from "../src/common/classes";
-import { ResizableProps, ResizeableState, Resizable } from "../src/interactions/resizable";
+import { Resizable, ResizableProps, ResizeableState } from "../src/interactions/resizable";
 import { Orientation, ResizeHandle } from "../src/interactions/resizeHandle";
 import { ReactHarness } from "./harness";
 

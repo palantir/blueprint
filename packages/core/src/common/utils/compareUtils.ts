@@ -114,8 +114,8 @@ export function deepCompareKeys(objA: any, objB: any, keys?: Array<string | numb
  * between two provided objects. Useful for debugging shouldComponentUpdate.
  */
 export function getDeepUnequalKeyValues<T extends {}>(
-    objA: T = ({} as any) as T,
-    objB: T = ({} as any) as T,
+    objA: T = {} as any as T,
+    objB: T = {} as any as T,
     keys?: Array<keyof T>,
 ) {
     const filteredKeys = keys == null ? unionKeys(objA, objB) : keys;

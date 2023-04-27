@@ -1,13 +1,20 @@
 @# Date range picker
 
-A `DateRangePicker` shows two sequential month calendars and lets the user select a single range of
-days.
+A DateRangePicker shows two sequential month calendars and allows the user to select
+a _range_ of days.
 
 @reactExample DateRangePickerExample
 
+@## Usage
+
+DateRangePicker supports both controlled and uncontrolled usage. You can control
+the selected date range by setting the `value` prop, or use the component in
+uncontrolled mode and specify an initial date range by setting `defaultValue`. Use the
+`onChange` prop to listen for changes to the selected range.
+
 @## Date ranges
 
-`DateRangePicker` uses the `DateRange` type across its API. This is an alias for
+DateRangePicker uses the `DateRange` type across its API. This is an alias for
 the tuple type `[Date, Date]`.
 
 Semantically:
@@ -17,10 +24,13 @@ Semantically:
 
 @## Shortcuts
 
-The menu on the left of the calendars provides "shortcuts" that allow users to
+The menu on the left of the calendars provides "shortcuts" which allow users to
 quickly select common date ranges. The items in this menu are controlled through
-the `shortcuts` prop: `true` to show presets (default), `false` to hide, or an
-array of `DateRangeShortcut` objects to define custom shortcuts.
+the `shortcuts` prop:
+
+- `true` (default) will show the built-in shortcuts,
+- `false` will hide the shortcuts menu, and
+- custom shortcuts can be shown by defining an array of `DateRangeShortcut` objects.
 
 The **preset shortcuts** can be seen in the example above. They are as follows:
 
@@ -37,21 +47,7 @@ The **preset shortcuts** can be seen in the example above. They are as follows:
 
 @interface DateRangeShortcut
 
-@## Props
-
-Use the `onChange` prop to listen for changes to the set date range. You can
-control the selected date range by setting the `value` prop, or use the
-component in uncontrolled mode and specify an initial date range by setting
-`defaultValue`.
-
-```tsx
-import { DateRangePicker } from "@blueprintjs/datetime";
-
-<DateRangePicker
-    value={[this.state.startDate, this.state.endDate]}
-    onChange={this.handleDateChange}
-/>
-```
+@## Props interface
 
 @interface DateRangePickerProps
 

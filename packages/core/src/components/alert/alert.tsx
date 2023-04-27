@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, Props, MaybeElement } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, MaybeElement, Props } from "../../common";
 import {
     ALERT_WARN_CANCEL_ESCAPE_KEY,
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
@@ -50,6 +50,9 @@ export interface AlertProps extends OverlayLifecycleProps, Props {
      * If this prop is defined, then either `onCancel` or `onClose` must also be defined.
      */
     cancelButtonText?: string;
+
+    /** Dialog contents. */
+    children?: React.ReactNode;
 
     /**
      * The text for the confirm (right-most) button.

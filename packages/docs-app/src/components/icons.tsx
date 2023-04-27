@@ -78,7 +78,7 @@ export class Icons extends React.PureComponent<IconsProps, IconsState> {
 
         let padIndex = iconElements.length;
         while (iconElements.length % ICONS_PER_ROW > 0) {
-            iconElements.push(<div className="docs-placeholder" key={`pad-${padIndex++}`} />);
+            iconElements.push(<div className="docs-icon-spacer" key={`pad-${padIndex++}`} />);
         }
         return (
             <div className="docs-icon-group" key={index}>

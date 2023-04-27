@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { TSESLint } from "@typescript-eslint/experimental-utils";
+import { TSESLint } from "@typescript-eslint/utils";
 import dedent from "dedent";
 
 import { htmlComponentsRule } from "../src/rules/html-components";
@@ -31,7 +31,6 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-console.info("Testing html-components rule...");
 ruleTester.run("html-components", htmlComponentsRule, {
     invalid: [
         {

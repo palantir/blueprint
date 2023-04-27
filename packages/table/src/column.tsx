@@ -18,7 +18,7 @@ import React from "react";
 
 import { DISPLAYNAME_PREFIX, Props } from "@blueprintjs/core";
 
-import { emptyCellRenderer, CellRenderer } from "./cell/cell";
+import { CellRenderer, emptyCellRenderer } from "./cell/cell";
 import { ColumnHeaderRenderer } from "./headers/columnHeader";
 import { ColumnNameProps } from "./headers/columnHeaderCell";
 import { ColumnLoadingOption } from "./regions";
@@ -51,7 +51,7 @@ export interface ColumnProps extends ColumnNameProps, Props {
 
     /**
      * An instance of `ColumnHeaderRenderer`, a function that takes a column
-     * index and returns a `ColumnHeaderCell` React element.
+     * index and returns a `ColumnHeaderCell2` React element.
      */
     columnHeaderCellRenderer?: ColumnHeaderRenderer;
 }

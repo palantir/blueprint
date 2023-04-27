@@ -17,7 +17,7 @@
 import React from "react";
 
 import { Classes, EditableText, FormGroup, H1, H5, Intent, NumericInput, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -35,7 +35,7 @@ export interface EditableTextExampleState {
 
 export class EditableTextExample extends React.PureComponent<ExampleProps, EditableTextExampleState> {
     public state: EditableTextExampleState = {
-        alwaysRenderInput: true,
+        alwaysRenderInput: false,
         confirmOnEnterKey: false,
         disabled: false,
         report: "",

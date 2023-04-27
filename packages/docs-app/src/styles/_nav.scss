@@ -7,10 +7,11 @@ $package-colors: (
   "blueprint": ($gray1, $black),
   "core": ($blue3, $blue2),
   "datetime": ($red3, $red2),
+  "datetime2": ($rose3, $rose2),
   "icons": ($gold4, $gold3),
   "select": ($cerulean3, $cerulean2),
+  "popover2-package": ($turquoise3, $turquoise2),
   "table": ($forest3, $forest2),
-  "timezone": ($vermilion4, $vermilion3),
   "resources": ($orange3, $orange2),
 );
 
@@ -18,10 +19,11 @@ $dark-package-colors: (
   "blueprint": ($gray3, $white),
   "core": ($blue4, $blue5),
   "datetime": ($red4, $red5),
+  "datetime2": ($rose4, $rose5),
   "icons": ($gold4, $gold5),
   "select": ($cerulean4, $cerulean5),
+  "popover2-package": ($turquoise4, $turquoise5),
   "table": ($forest4, $forest5),
-  "timezone": ($vermilion5, $vermilion5),
   "resources": ($orange5, $orange5),
 );
 
@@ -54,7 +56,7 @@ $dark-package-colors: (
   margin-right: $pt-grid-size;
 
   .#{$ns}-tag {
-    margin-left: $pt-grid-size / 2;
+    margin-left: $pt-grid-size * 0.5;
     padding-left: $pt-grid-size;
     vertical-align: middle;
   }
@@ -138,7 +140,7 @@ $dark-package-colors: (
   }
 
   + .docs-nav-menu {
-    margin-bottom: $pt-grid-size / 2;
+    margin-bottom: $pt-grid-size * 0.5;
     margin-left: $pkg-icon-width + $pt-grid-size;
 
     &:empty {
@@ -166,7 +168,7 @@ $dark-package-colors: (
 
   svg {
     height: 1.2em;
-    padding: 0 ($pt-grid-size / 2);
+    padding: 0 ($pt-grid-size * 0.5);
   }
 
   a:not(:hover) {

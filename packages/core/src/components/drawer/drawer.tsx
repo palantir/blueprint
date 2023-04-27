@@ -17,16 +17,16 @@
 import classNames from "classnames";
 import React from "react";
 
-import { SmallCross, IconName, IconSize } from "@blueprintjs/icons";
+import { IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
-import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon } from "../icon/icon";
-import { BackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
+import { BackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
 
 export enum DrawerSize {
     SMALL = "360px",
@@ -35,6 +35,9 @@ export enum DrawerSize {
 }
 
 export interface DrawerProps extends OverlayableProps, BackdropProps, Props {
+    /** Drawer contents. */
+    children?: React.ReactNode;
+
     /**
      * Name of a Blueprint UI icon (or an icon element) to render in the
      * drawer's header. Note that the header will only be rendered if `title` is

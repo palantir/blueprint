@@ -19,6 +19,18 @@ export function elementIsOrContains(element: HTMLElement, testElement: HTMLEleme
 }
 
 /**
+ * Gets the active element in the document or shadow root (if an element is provided, and it's in the shadow DOM).
+ */
+export function getActiveElement(element?: HTMLElement | null, options?: GetRootNodeOptions) {
+    if (element == null) {
+        return document.activeElement;
+    }
+
+    const rootNode = (element.getRootNode(options) ?? document) as DocumentOrShadowRoot & Node;
+    return rootNode.activeElement;
+}
+
+/**
  * Throttle an event on an EventTarget by wrapping it in a
  * `requestAnimationFrame` call. Returns the event handler that was bound to
  * given eventName so you can clean up after yourself.
@@ -92,5 +104,5 @@ function throttleImpl<T extends Function>(
             isRunning = false;
         });
     };
-    return (func as any) as T;
+    return func as any as T;
 }

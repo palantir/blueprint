@@ -17,7 +17,7 @@
 import React from "react";
 
 import { H5, Intent, Label, Slider, Spinner, SpinnerSize, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -43,10 +43,17 @@ export class SpinnerExample extends React.PureComponent<ExampleProps, SpinnerExa
         const { size, hasValue, intent, value } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <Spinner intent={intent} size={size} value={hasValue ? value : null} />
+                <Spinner
+                    aria-label={hasValue ? `Loading ${value * 100}% complete` : "Loading..."}
+                    intent={intent}
+                    size={size}
+                    value={hasValue ? value : null}
+                />
             </Example>
         );
     }
+
+    private spinnerSizeLabelId = "spinner-size-label";
 
     private renderOptions() {
         const { size, hasValue, intent, value } = this.state;
@@ -54,7 +61,7 @@ export class SpinnerExample extends React.PureComponent<ExampleProps, SpinnerExa
             <>
                 <H5>Props</H5>
                 <IntentSelect intent={intent} onChange={this.handleModifierChange} />
-                <Label>Size</Label>
+                <Label id={this.spinnerSizeLabelId}>Size</Label>
                 <Slider
                     labelStepSize={50}
                     min={0}
@@ -63,6 +70,7 @@ export class SpinnerExample extends React.PureComponent<ExampleProps, SpinnerExa
                     stepSize={5}
                     value={size}
                     onChange={this.handleSizeChange}
+                    handleHtmlProps={{ "aria-labelledby": this.spinnerSizeLabelId }}
                 />
                 <Switch checked={hasValue} label="Known value" onChange={this.handleIndeterminateChange} />
                 <Slider
@@ -75,6 +83,7 @@ export class SpinnerExample extends React.PureComponent<ExampleProps, SpinnerExa
                     stepSize={0.1}
                     showTrackFill={false}
                     value={value}
+                    handleHtmlProps={{ "aria-label": "spinner value" }}
                 />
             </>
         );

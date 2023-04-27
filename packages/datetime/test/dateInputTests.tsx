@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateInput2 in the datetime2
+ * package instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import { assert } from "chai";
 import { mount } from "enzyme";
 import React from "react";
@@ -21,7 +29,7 @@ import sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover } from "@blueprintjs/core";
 
-import { Classes, DateInput, DatePicker, DateInputProps, TimePicker, TimePrecision } from "../src";
+import { Classes, DateInput, DateInputProps, DatePicker, TimePicker, TimePrecision } from "../src";
 import { Months } from "../src/common/months";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";

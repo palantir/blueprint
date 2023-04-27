@@ -68,7 +68,7 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     props: ButtonProps<E>,
     ref: React.Ref<E>,
 ) {
-    const { active, alignText, fill, large, loading, outlined, minimal, small, tabIndex } = props;
+    const { active = false, alignText, fill, large, loading = false, outlined, minimal, small, tabIndex } = props;
     const disabled = props.disabled || loading;
 
     // the current key being pressed
@@ -155,7 +155,7 @@ function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(p
         <>
             {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={IconSize.LARGE} />}
             {/* The icon is purely decorative if text is provided */}
-            <Icon key="leftIcon" icon={icon} aria-hidden={hasTextContent} tabIndex={hasTextContent ? -1 : 0} />,
+            <Icon key="leftIcon" icon={icon} aria-hidden={hasTextContent} tabIndex={hasTextContent ? -1 : undefined} />
             {hasTextContent && (
                 <span key="text" className={Classes.BUTTON_TEXT}>
                     {text}

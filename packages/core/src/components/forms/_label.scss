@@ -49,12 +49,12 @@ label.#{$ns}-label {
   .#{$ns}-slider,
   .#{$ns}-popover-wrapper {
     display: block;
-    margin-top: $pt-grid-size / 2;
+    margin-top: $pt-grid-size * 0.5;
     text-transform: none;
   }
 
   .#{$ns}-button-group {
-    margin-top: $pt-grid-size / 2;
+    margin-top: $pt-grid-size * 0.5;
   }
 
   .#{$ns}-select select,
@@ -80,12 +80,12 @@ label.#{$ns}-label {
     .#{$ns}-select,
     .#{$ns}-popover-wrapper {
       display: inline-block;
-      margin: 0 0 0 ($pt-grid-size / 2);
+      margin: 0 0 0 ($pt-grid-size * 0.5);
       vertical-align: top;
     }
 
     .#{$ns}-button-group {
-      margin: 0 0 0 ($pt-grid-size / 2);
+      margin: 0 0 0 ($pt-grid-size * 0.5);
     }
 
     .#{$ns}-input-group .#{$ns}-input {

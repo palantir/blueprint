@@ -17,7 +17,7 @@
 import React from "react";
 
 import { H5, HandleInteractionKind, Intent, MultiSlider, Radio, RadioGroup, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 interface SliderValues {
     dangerStart: number;
@@ -87,6 +87,7 @@ export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiS
                             value={values.dangerStart}
                             intentBefore="danger"
                             interactionKind={interactionKind}
+                            htmlProps={{ "aria-label": "danger start" }}
                         />
                     )}
                     {showWarning && (
@@ -95,6 +96,7 @@ export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiS
                             value={values.warningStart}
                             intentBefore="warning"
                             interactionKind={interactionKind}
+                            htmlProps={{ "aria-label": "warning start" }}
                         />
                     )}
                     {showWarning && (
@@ -103,6 +105,7 @@ export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiS
                             value={values.warningEnd}
                             intentAfter="warning"
                             interactionKind={interactionKind}
+                            htmlProps={{ "aria-label": "warning end" }}
                         />
                     )}
                     {showDanger && (
@@ -111,6 +114,7 @@ export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiS
                             value={values.dangerEnd}
                             intentAfter="danger"
                             interactionKind={interactionKind}
+                            htmlProps={{ "aria-label": "danger end" }}
                         />
                     )}
                 </MultiSlider>

@@ -20,7 +20,6 @@ import React from "react";
 import { spy } from "sinon";
 
 import { Button, Classes, Drawer, DrawerProps, Position } from "../../src";
-import * as Keys from "../../src/common/keys";
 
 describe("<Drawer>", () => {
     let drawer: ReactWrapper<DrawerProps, any>;
@@ -197,7 +196,7 @@ describe("<Drawer>", () => {
                 {createDrawerContents()}
             </Drawer>,
         );
-        drawer.simulate("keydown", { which: Keys.ESCAPE });
+        drawer.simulate("keydown", { key: "Escape" });
         assert.isTrue(onClose.notCalled);
     });
 

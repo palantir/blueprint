@@ -28,11 +28,11 @@ import { MonthAndYear } from "./common/monthAndYear";
 import { DatePickerCaption } from "./datePickerCaption";
 import {
     combineModifiers,
+    DatePickerBaseProps,
+    DatePickerModifiers,
     getDefaultMaxDate,
     getDefaultMinDate,
     HOVERED_RANGE_MODIFIER,
-    DatePickerBaseProps,
-    DatePickerModifiers,
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
 import { DatePickerNavbar } from "./datePickerNavbar";
@@ -222,7 +222,7 @@ export class DateRangePicker extends AbstractPureComponent<DateRangePickerProps,
     }
 
     public render() {
-        const { className, contiguousCalendarMonths, singleMonthOnly } = this.props;
+        const { className, contiguousCalendarMonths, singleMonthOnly, footerElement } = this.props;
         const isShowingOneMonth = singleMonthOnly || DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
 
         const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
@@ -234,9 +234,10 @@ export class DateRangePicker extends AbstractPureComponent<DateRangePickerProps,
         return (
             <div className={classes}>
                 {this.maybeRenderShortcuts()}
-                <div>
+                <div className={DateClasses.DATEPICKER_CONTENT}>
                     {this.renderCalendars(isShowingOneMonth)}
-                    {this.maybeRenderTimePickers()}
+                    {this.maybeRenderTimePickers(isShowingOneMonth)}
+                    {footerElement}
                 </div>
             </div>
         );
@@ -344,27 +345,39 @@ export class DateRangePicker extends AbstractPureComponent<DateRangePickerProps,
         ];
     }
 
-    private maybeRenderTimePickers() {
+    private maybeRenderTimePickers(isShowingOneMonth: boolean) {
         const { timePrecision, timePickerProps } = this.props;
         if (timePrecision == null && timePickerProps === DateRangePicker.defaultProps.timePickerProps) {
             return null;
         }
-        return (
-            <div className={DateClasses.DATERANGEPICKER_TIMEPICKERS}>
+
+        if (isShowingOneMonth) {
+            return (
                 <TimePicker
                     precision={timePrecision}
                     {...timePickerProps}
                     onChange={this.handleTimeChangeLeftCalendar}
                     value={this.state.time[0]}
                 />
-                <TimePicker
-                    precision={timePrecision}
-                    {...timePickerProps}
-                    onChange={this.handleTimeChangeRightCalendar}
-                    value={this.state.time[1]}
-                />
-            </div>
-        );
+            );
+        } else {
+            return (
+                <div className={DateClasses.DATERANGEPICKER_TIMEPICKERS}>
+                    <TimePicker
+                        precision={timePrecision}
+                        {...timePickerProps}
+                        onChange={this.handleTimeChangeLeftCalendar}
+                        value={this.state.time[0]}
+                    />
+                    <TimePicker
+                        precision={timePrecision}
+                        {...timePickerProps}
+                        onChange={this.handleTimeChangeRightCalendar}
+                        value={this.state.time[1]}
+                    />
+                </div>
+            );
+        }
     }
 
     private handleTimeChange = (newTime: Date, dateIndex: number) => {
@@ -421,34 +434,36 @@ export class DateRangePicker extends AbstractPureComponent<DateRangePickerProps,
                 />
             );
         } else {
-            return [
-                <DayPicker
-                    key="left"
-                    {...dayPickerBaseProps}
-                    canChangeMonth={true}
-                    captionElement={this.renderLeftCaption}
-                    navbarElement={this.renderLeftNavbar}
-                    fromMonth={minDate}
-                    month={this.state.leftView.getFullDate()}
-                    numberOfMonths={1}
-                    onMonthChange={this.handleLeftMonthChange}
-                    toMonth={DateUtils.getDatePreviousMonth(maxDate)}
-                    renderDay={dayPickerProps?.renderDay ?? this.renderDay}
-                />,
-                <DayPicker
-                    key="right"
-                    {...dayPickerBaseProps}
-                    canChangeMonth={true}
-                    captionElement={this.renderRightCaption}
-                    navbarElement={this.renderRightNavbar}
-                    fromMonth={DateUtils.getDateNextMonth(minDate)}
-                    month={this.state.rightView.getFullDate()}
-                    numberOfMonths={1}
-                    onMonthChange={this.handleRightMonthChange}
-                    toMonth={maxDate}
-                    renderDay={dayPickerProps?.renderDay ?? this.renderDay}
-                />,
-            ];
+            return (
+                <div className={DateClasses.DATERANGEPICKER_CALENDARS}>
+                    <DayPicker
+                        key="left"
+                        {...dayPickerBaseProps}
+                        canChangeMonth={true}
+                        captionElement={this.renderLeftCaption}
+                        navbarElement={this.renderLeftNavbar}
+                        fromMonth={minDate}
+                        month={this.state.leftView.getFullDate()}
+                        numberOfMonths={1}
+                        onMonthChange={this.handleLeftMonthChange}
+                        toMonth={DateUtils.getDatePreviousMonth(maxDate)}
+                        renderDay={dayPickerProps?.renderDay ?? this.renderDay}
+                    />
+                    <DayPicker
+                        key="right"
+                        {...dayPickerBaseProps}
+                        canChangeMonth={true}
+                        captionElement={this.renderRightCaption}
+                        navbarElement={this.renderRightNavbar}
+                        fromMonth={DateUtils.getDateNextMonth(minDate)}
+                        month={this.state.rightView.getFullDate()}
+                        numberOfMonths={1}
+                        onMonthChange={this.handleRightMonthChange}
+                        toMonth={maxDate}
+                        renderDay={dayPickerProps?.renderDay ?? this.renderDay}
+                    />
+                </div>
+            );
         }
     }
 

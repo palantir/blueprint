@@ -22,8 +22,7 @@ import React from "react";
 import { HotkeysTarget, InputGroup } from "@blueprintjs/core";
 
 export default class extends React.PureComponent {
-    private inputEl: HTMLInputElement | null = null;
-    private handleInputRef = (el: HTMLInputElement) => (this.inputEl = el);
+    private inputRef = React.createRef<HTMLInputElement>();
 
     private hotkeys = [
         {
@@ -36,7 +35,7 @@ export default class extends React.PureComponent {
             combo: "F",
             group: "Input",
             label: "Focus text input",
-            onKeyDown: this.inputEl?.focus(),
+            onKeyDown: this.inputRef.current?.focus(),
         },
     ];
 
@@ -46,7 +45,7 @@ export default class extends React.PureComponent {
                 {({ handleKeyDown, handleKeyUp }) => (
                     <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         Press "R" to refresh data, "F" to focus the input...
-                        <InputGroup ref={this.handleInputRef} />
+                        <InputGroup ref={this.inputRef} />
                     </div>
                 )}
             </HotkeysTarget>
@@ -61,7 +60,7 @@ event handlers with the `handleKeyDown` and `handleKeyUp` functions in the child
 you will likely have to set a non-negative `tabIndex` on the DOM node to which these local event handlers are
 bound for them to work correctly.
 
-`<HotkeysTarget2>` takes an optional `options: UseHotkeysOptions` prop which can customize some of the hook's
+`<HotkeysTarget>` takes an optional `options: UseHotkeysOptions` prop which can customize some of the hook's
 default behavior.
 
 @## Props

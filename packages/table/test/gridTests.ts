@@ -48,7 +48,7 @@ describe("Grid", () => {
         expect(columnIndexStart).to.equal(2);
         expect(columnIndexEnd).to.equal(5);
 
-        const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect(rect, true);
+        const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect({ rect, includeGhostCells: true });
         expect(rowIndexStart).to.equal(1);
         expect(rowIndexEnd).to.equal(5);
     });
@@ -73,7 +73,7 @@ describe("Grid", () => {
     it("locates row indices of overlapping rect", () => {
         const grid = new Grid(test7s, test13s, 0);
         const rect = new Rect(0, 15, 0, 15);
-        const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect(rect);
+        const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect({ rect });
         expect(rowIndexStart).to.equal(2);
         expect(rowIndexEnd).to.equal(4);
 
@@ -116,7 +116,7 @@ describe("Grid", () => {
         it("row before border", () => {
             const grid = new Grid(test7s, test13s, 0);
             const rect = new Rect(0, 13, 0, 1);
-            const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect(rect);
+            const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect({ rect });
             expect(rowIndexStart).to.equal(1);
             expect(rowIndexEnd).to.equal(1);
         });
@@ -124,7 +124,7 @@ describe("Grid", () => {
         it("row overlapping border", () => {
             const grid = new Grid(test7s, test13s, 0);
             const rect = new Rect(0, 13, 0, 2);
-            const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect(rect);
+            const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect({ rect });
             expect(rowIndexStart).to.equal(1);
             expect(rowIndexEnd).to.equal(2);
         });
@@ -132,7 +132,7 @@ describe("Grid", () => {
         it("row after border", () => {
             const grid = new Grid(test7s, test13s, 0);
             const rect = new Rect(0, 14, 0, 7);
-            const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect(rect);
+            const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect({ rect });
             expect(rowIndexStart).to.equal(2);
             expect(rowIndexEnd).to.equal(2);
         });
@@ -193,13 +193,17 @@ describe("Grid", () => {
         const rect = new Rect(0, 0, 50000, 50000);
 
         it("limits rows", () => {
-            const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect(rect);
+            const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect({ rect });
             expect(rowIndexStart).to.equal(0);
             expect(rowIndexEnd).to.equal(Grid.DEFAULT_MAX_ROWS);
         });
 
         it("unlimited rows", () => {
-            const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect(rect, false, 0);
+            const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect({
+                includeGhostCells: false,
+                limit: 0,
+                rect,
+            });
             expect(rowIndexStart).to.equal(0);
             expect(rowIndexEnd).to.equal(5000 - 1);
         });

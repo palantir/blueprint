@@ -20,10 +20,10 @@ import { ExampleMap, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { getTheme } from "../components/blueprintDocs";
 import * as CoreExamples from "../examples/core-examples";
-import * as DateExamples from "../examples/datetime-examples";
+import * as DatetimeExamples from "../examples/datetime-examples";
+import * as Datetime2Examples from "../examples/datetime2-examples";
 import * as SelectExamples from "../examples/select-examples";
 import * as TableExamples from "../examples/table-examples";
-import * as TimezoneExamples from "../examples/timezone-examples";
 import { BlueprintExampleData } from "./types";
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
@@ -47,9 +47,9 @@ function getPackageExamples(
 export const reactExamples: ExampleMap = (() => {
     return {
         ...getPackageExamples("core", CoreExamples as any),
-        ...getPackageExamples("datetime", DateExamples as any),
+        ...getPackageExamples("datetime", DatetimeExamples as any),
+        ...getPackageExamples("datetime2", Datetime2Examples as any),
         ...getPackageExamples("select", SelectExamples as any),
         ...getPackageExamples("table", TableExamples as any),
-        ...getPackageExamples("timezone", TimezoneExamples as any),
     };
 })();

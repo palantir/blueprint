@@ -27,14 +27,17 @@ const INTENTS = [
 ];
 
 export interface IntentSelectProps {
-    inline?: boolean;
     intent: Intent;
+    label?: React.ReactNode;
     onChange: React.FormEventHandler<HTMLSelectElement>;
 }
 
-export const IntentSelect: React.FunctionComponent<IntentSelectProps> = props => (
+export const IntentSelect: React.FC<IntentSelectProps> = props => (
     <Label>
-        Intent
+        {props.label}
         <HTMLSelect value={props.intent} onChange={props.onChange} options={INTENTS} />
     </Label>
 );
+IntentSelect.defaultProps = {
+    label: "Intent",
+};

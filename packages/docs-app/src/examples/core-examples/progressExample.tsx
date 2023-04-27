@@ -17,7 +17,7 @@
 import React from "react";
 
 import { H5, Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -55,6 +55,7 @@ export class ProgressExample extends React.PureComponent<ExampleProps, ProgressE
                     stepSize={0.1}
                     showTrackFill={false}
                     value={value}
+                    handleHtmlProps={{ "aria-label": "progressbar value" }}
                 />
             </>
         );

@@ -33,6 +33,9 @@ export type ItemsEqualComparator<T> = (itemA: T, itemB: T) => boolean;
  */
 export type ItemsEqualProp<T> = ItemsEqualComparator<T> | keyof T;
 
+/** @deprecated use ListItemsProps */
+export type IListItemsProps<T> = ListItemsProps<T>;
+
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface ListItemsProps<T> extends Props {
     /**
@@ -126,6 +129,8 @@ export interface ListItemsProps<T> extends Props {
      * If omitted, nothing will be rendered in this case.
      *
      * This prop is ignored if a custom `itemListRenderer` is supplied.
+     *
+     * NOTE: if passing a `MenuItem`, ensure it has `roleStructure="listoption"` prop.
      */
     noResults?: React.ReactNode;
 
@@ -137,11 +142,11 @@ export interface ListItemsProps<T> extends Props {
      *
      * If the "Create Item" option is displayed and currently active, then
      * `isCreateNewItem` will be `true` and `activeItem` will be `null`. In this
-     * case, you should provide a valid `ICreateNewItem` object to the
+     * case, you should provide a valid `CreateNewItem` object to the
      * `activeItem` _prop_ in order for the "Create Item" option to appear as
      * active.
      *
-     * __Note:__ You can instantiate a `ICreateNewItem` object using the
+     * __Note:__ You can instantiate a `CreateNewItem` object using the
      * `getCreateNewItem()` utility exported from this package.
      */
     onActiveItemChange?: (activeItem: T | null, isCreateNewItem: boolean) => void;
@@ -164,11 +169,11 @@ export interface ListItemsProps<T> extends Props {
 
     /**
      * If provided, allows new items to be created using the current query
-     * string. This is invoked when user interaction causes a new item to be
+     * string. This is invoked when user interaction causes one or many items to be
      * created, either by pressing the `Enter` key or by clicking on the "Create
-     * Item" option. It transforms a query string into an item type.
+     * Item" option. It transforms a query string into one or many items type.
      */
-    createNewItemFromQuery?: (query: string) => T;
+    createNewItemFromQuery?: (query: string) => T | T[];
 
     /**
      * Custom renderer to transform the current query string into a selectable

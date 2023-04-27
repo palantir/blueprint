@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 
-import { Alignment, Classes, mergeRefs, Ref } from "../../common";
+import { Alignment, Classes, mergeRefs } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, Props } from "../../common/props";
 
 export interface ControlProps extends Props, HTMLInputProps, React.RefAttributes<any> {
@@ -43,7 +43,7 @@ export interface ControlProps extends Props, HTMLInputProps, React.RefAttributes
     disabled?: boolean;
 
     /** Ref handler that receives HTML `<input>` element backing this component. */
-    inputRef?: Ref<HTMLInputElement>;
+    inputRef?: React.Ref<HTMLInputElement>;
 
     /** Whether the control should appear as an inline element. */
     inline?: boolean;

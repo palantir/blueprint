@@ -7,7 +7,7 @@
 
 $cell-size: $pt-grid-size * 3 !default;
 $header-height: $pt-grid-size * 4 !default;
-$header-margin: ($header-height - $pt-input-height) / 2 !default;
+$header-margin: ($header-height - $pt-input-height) * 0.5 !default;
 
 @mixin calendar-day() {
   display: table-cell;
@@ -50,7 +50,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     border-collapse: collapse;
     border-spacing: 0;
     display: inline-table;
-    margin: 0 $datepicker-padding $datepicker-padding;
+    margin: 0 $datepicker-padding;
     user-select: none;
 
     // create space between months (selector matches all but first month)
@@ -130,6 +130,10 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       &:hover {
         background-color: $blue2;
       }
+
+      &:active {
+        background-color: $blue1;
+      }
     }
 
     // putting it last so it overrides equally specific selectors above.
@@ -194,9 +198,22 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   padding-left: $datepicker-padding;
 }
 
+.#{$ns}-datepicker-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  > .#{$ns}-divider {
+    margin: 0; // margin is already applied via flex gap
+    width: calc(100% - #{$datepicker-padding * 2});
+  }
+}
+
 .#{$ns}-datepicker-footer {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 .#{$ns}-dark .#{$ns}-datepicker {
@@ -231,7 +248,11 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       background-color: $blue3;
 
       &:hover {
-        background-color: $blue4;
+        background-color: $blue2;
+      }
+
+      &:active {
+        background-color: $blue1;
       }
     }
 
@@ -250,4 +271,9 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   align-items: center;
   display: flex;
   flex-direction: column;
+
+  .#{$ns}-timepicker-arrow-row:empty + .#{$ns}-timepicker-input-row {
+    // when timepicker arrows are not displayed in the datepicker, we need a bit of extra margin
+    margin: $datepicker-padding 0;
+  }
 }

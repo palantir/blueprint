@@ -1,4 +1,3 @@
-
 @import "../../common/variables";
 @import "./common";
 
@@ -6,7 +5,7 @@
   // we need a very-specific selector here to override specificicty of selectors defined elsewhere.
   .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
     // let the buttons shrink to equal heights
-    flex: 1 1 ($pt-button-height / 2 - 1);
+    flex: 1 1 ($pt-button-height * 0.5 - 1);
     min-height: 0;
     padding: 0;
     width: $pt-button-height;

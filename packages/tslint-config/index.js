@@ -51,12 +51,12 @@ module.exports = {
         "no-submodule-imports": {
             options: [
                 "core-js",
+                "date-fns",
                 "lodash",
                 "react-dom",
                 "@blueprintjs/table/src",
                 "@blueprintjs/test-commons/bootstrap",
                 "tsutils",
-                "@typescript-eslint/experimental-utils",
             ],
         },
         "no-unnecessary-callback-wrapper": true,

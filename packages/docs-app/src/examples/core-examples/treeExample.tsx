@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { cloneDeep } from "lodash-es";
+import cloneDeep from "lodash/cloneDeep";
 import React, { useCallback, useReducer } from "react";
 
-import { Classes, ContextMenu, Icon, Intent, Tooltip, TreeNodeInfo, Tree } from "@blueprintjs/core";
+import { Classes, ContextMenu, Icon, Intent, Tooltip, Tree, TreeNodeInfo } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 type NodePath = number[];

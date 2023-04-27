@@ -18,7 +18,8 @@ import React from "react";
 
 import { AbstractPureComponent, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { SliderBaseProps, MultiSlider } from "./multiSlider";
+import { HandleHtmlProps } from "./handleProps";
+import { MultiSlider, SliderBaseProps } from "./multiSlider";
 
 export interface SliderProps extends SliderBaseProps {
     /**
@@ -41,6 +42,9 @@ export interface SliderProps extends SliderBaseProps {
 
     /** Callback invoked when the handle is released. */
     onRelease?(value: number): void;
+
+    /** A limited subset of HTML props to apply to the slider Handle */
+    handleHtmlProps?: HandleHtmlProps;
 }
 
 export class Slider extends AbstractPureComponent<SliderProps> {
@@ -54,7 +58,7 @@ export class Slider extends AbstractPureComponent<SliderProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Slider`;
 
     public render() {
-        const { initialValue, intent, value, onChange, onRelease, ...props } = this.props;
+        const { initialValue, intent, value, onChange, onRelease, handleHtmlProps, ...props } = this.props;
         return (
             <MultiSlider {...props}>
                 <MultiSlider.Handle
@@ -63,6 +67,7 @@ export class Slider extends AbstractPureComponent<SliderProps> {
                     intentBefore={value! >= initialValue! ? intent : undefined}
                     onChange={onChange}
                     onRelease={onRelease}
+                    htmlProps={handleHtmlProps}
                 />
                 <MultiSlider.Handle value={initialValue!} interactionKind="none" />
             </MultiSlider>

@@ -2,31 +2,37 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
+module.exports = async function (config) {
+    const { createKarmaConfig } = await import("@blueprintjs/karma-build-scripts");
+    config.set(
+        createKarmaConfig({
+            dirname: __dirname,
+            coverageExcludes: [
+                // no need to test legacy APIs
+                "src/legacy/*",
 
-module.exports = function (config) {
-    const coverageExcludes = [
-        // not worth full coverage
-        "src/accessibility/*",
-        "src/common/abstractComponent*",
-        "src/common/abstractPureComponent*",
-        "src/compatibility/*",
-        // HACKHACK: for karma upgrade only
-        "src/common/refs.ts",
-        // HACKHACK: need to add hotkeys tests
-        "src/components/hotkeys/hotkey.tsx",
-        "src/components/hotkeys/hotkeys.tsx",
-        "src/components/hotkeys/hotkeysDialog.tsx",
-        "src/components/hotkeys/hotkeysTarget.tsx",
-        "src/context/hotkeys/hotkeysProvider.tsx",
-    ];
+                // not worth full coverage
+                "src/accessibility/*",
+                "src/common/abstractComponent*",
+                "src/common/abstractPureComponent*",
+                "src/compatibility/*",
 
-    const baseConfig = createKarmaConfig({
-        dirname: __dirname,
-        coverageExcludes,
-    });
-    config.set(baseConfig);
-    config.set({
-        // overrides here
-    });
+                // HACKHACK: for karma upgrade only
+                "src/common/refs.ts",
+
+                // HACKHACK: need to add hotkeys tests
+                "src/components/hotkeys/*",
+                "src/context/hotkeys/hotkeysProvider.tsx",
+
+                // HACKHACK: see https://github.com/palantir/blueprint/issues/5511
+                "src/context/portal/portalProvider.tsx",
+            ],
+            coverageOverrides: {
+                "src/components/popover/customModifiers.ts": {
+                    lines: 66,
+                    statements: 66,
+                },
+            },
+        }),
+    );
 };

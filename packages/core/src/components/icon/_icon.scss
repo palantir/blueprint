@@ -2,13 +2,9 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "~@blueprintjs/icons/lib/scss/variables";
+@import "../../common/variables";
+@import "../../common/variables-extended";
 @import "icon-mixins";
-
-$icon-classes: (
-  ".#{$ns}-icon",
-  ".#{$ns}-icon-standard",
-  ".#{$ns}-icon-large"
-) !default;
 
 // the icon class which will contain an SVG icon
 .#{$ns}-icon {
@@ -37,23 +33,12 @@ $icon-classes: (
 
     // inherit text color unless explicit fill is set
     &:not([fill]) {
-      fill: currentColor;
+      fill: currentcolor;
     }
   }
 }
 
-// intent support for both SVG and font icons
-#{$icon-classes} {
-  @each $intent, $color in $pt-intent-text-colors {
-    &.#{$ns}-intent-#{$intent} {
-      color: $color;
-
-      .#{$ns}-dark & {
-        color: map-get($pt-dark-intent-text-colors, $intent);
-      }
-    }
-  }
-}
+// intent colors for both SVG and font icons are set in _typography-colors.scss
 
 //
 // Icon font styles

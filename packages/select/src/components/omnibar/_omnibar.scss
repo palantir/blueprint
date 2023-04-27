@@ -1,18 +1,21 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+// HACKHACK(https://github.com/palantir/blueprint/issues/5331): weird imports here because
+// core/lib/scss/variables is not available until after the 'dist' task, but at this point
+// we are only guaranteed 'compile'
 @import "~@blueprintjs/colors/lib/scss/colors";
 @import "~@blueprintjs/core/src/common/variables";
 @import "~@blueprintjs/core/src/common/react-transition";
 
 $omnibar-height: 60vh !default;
 $omnibar-width: $pt-grid-size * 50 !default;
-$omnibar-input-height: $pt-grid-size * 4;
+$omnibar-input-height: $pt-grid-size * 4 !default;
 
 .#{$ns}-omnibar {
   $omnibar-transition-props: (
     filter: (blur($pt-grid-size * 2), blur(0)),
-    opacity: (0.2, 1),
+    opacity: (0, 1),
   );
 
   @include react-transition(
@@ -25,8 +28,8 @@ $omnibar-input-height: $pt-grid-size * 4;
   background-color: $white;
   border-radius: $pt-border-radius;
   box-shadow: $pt-elevation-shadow-4;
-  left: calc(50% - #{$omnibar-width / 2});
-  top: (100 - $omnibar-height) / 2;
+  left: calc(50% - #{$omnibar-width * 0.5});
+  top: (100 - $omnibar-height) * 0.5;
   width: $omnibar-width;
   z-index: $pt-z-index-overlay + 1;
 

@@ -20,9 +20,14 @@ import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, OptionProps, Props } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
-import { RadioProps, Radio } from "./controls";
+import { Radio, RadioProps } from "./controls";
 
 export interface RadioGroupProps extends Props {
+    /**
+     * Radio elements. This prop is mutually exclusive with `options`.
+     */
+    children?: React.ReactNode;
+
     /**
      * Whether the group and _all_ its radios are disabled.
      * Individual radios can be disabled using their `disabled` prop.

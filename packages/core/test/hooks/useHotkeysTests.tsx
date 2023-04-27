@@ -17,13 +17,14 @@
 import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
 import React, { useMemo } from "react";
-import { spy } from "sinon";
+import { SinonStub, spy, stub } from "sinon";
 
 // N.B. { fireEvent } from "@testing-library/react" does not generate "real" enough events which
 // work with our hotkey parser implementation (worth investigating...)
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
 import { InputGroup } from "../../src/components/forms/inputGroup";
+import { HotkeysProvider } from "../../src/context";
 import { useHotkeys } from "../../src/hooks";
 
 interface TestComponentProps extends TestComponentContainerProps {
@@ -80,11 +81,6 @@ const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputRea
 };
 
 describe("useHotkeys", () => {
-    if (React.version.startsWith("15")) {
-        it("skipped tests for backwards-incompatible component", () => expect(true).to.be.true);
-        return;
-    }
-
     const onKeyASpy = spy();
     const onKeyBSpy = spy();
 
@@ -160,5 +156,27 @@ describe("useHotkeys", () => {
         const target = screen.getByTestId("input-target");
         dispatchTestKeyboardEvent(target, "keydown", "A");
         expect(onKeyASpy.calledOnce).to.be.true;
+    });
+
+    describe("working with HotkeysProvider", () => {
+        let warnSpy: SinonStub | undefined;
+
+        before(() => (warnSpy = stub(console, "warn")));
+        afterEach(() => warnSpy?.resetHistory());
+        after(() => warnSpy?.restore());
+
+        it("logs a warning when used outside of HotkeysProvider context", () => {
+            render(<TestComponentContainer />);
+            expect(warnSpy?.calledOnce).to.be.true;
+        });
+
+        it("does NOT log a warning when used inside a HotkeysProvider context", () => {
+            render(
+                <HotkeysProvider>
+                    <TestComponentContainer />
+                </HotkeysProvider>,
+            );
+            expect(warnSpy?.notCalled).to.be.true;
+        });
     });
 });

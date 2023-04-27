@@ -27,6 +27,18 @@ export enum TimeUnit {
     MS = "ms",
 }
 
+/** Gets a descriptive label representing the plural of the given time unit. */
+export function getTimeUnitPrintStr(unit: TimeUnit) {
+    const timeUnitToPrintstr: { [k in TimeUnit]: string } = {
+        [TimeUnit.HOUR_24]: "hours (24hr clock)",
+        [TimeUnit.HOUR_12]: "hours (12hr clock)",
+        [TimeUnit.MINUTE]: "minutes",
+        [TimeUnit.SECOND]: "seconds",
+        [TimeUnit.MS]: "milliseconds",
+    };
+    return timeUnitToPrintstr[unit];
+}
+
 /** Returns the given time unit component of the date. */
 export function getTimeUnit(unit: TimeUnit, date: Date) {
     switch (unit) {

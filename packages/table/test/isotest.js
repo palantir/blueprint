@@ -15,8 +15,9 @@
 
 // @ts-check
 require("@blueprintjs/test-commons/bootstrap");
+
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
-const React = require("react");
+
 const Table = require("../lib/cjs");
 
 describe("Table isomorphic rendering", () => {

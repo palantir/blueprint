@@ -22,7 +22,7 @@ import sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, MultiSliderProps, MultiSlider } from "../../src";
+import { Classes, MultiSlider, MultiSliderProps } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 

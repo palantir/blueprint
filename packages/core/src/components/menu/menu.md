@@ -6,9 +6,9 @@ Menus display lists of interactive items.
 
 The Menu API includes three React components:
 
-* [`Menu`](#core/components/menu.menu)
-* [`MenuItem`](#core/components/menu.menu-item)
-* [`MenuDivider`](#core/components/menu.menu-divider)
+* [Menu](#core/components/menu.menu)
+* [MenuItem](#core/components/menu.menu-item)
+* [MenuDivider](#core/components/menu.menu-divider)
 
 ```tsx
 <Menu>
@@ -41,7 +41,7 @@ required `text` prop for `MenuItem` content.
 
 @reactExample MenuItemExample
 
-@interface IMenuItemProps
+@interface MenuItemProps
 
 @## Menu divider
 
@@ -85,14 +85,6 @@ there is not enough room to the right.
     </MenuItem>
 </Menu>
 ```
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">JavaScript only</h4>
-
-Submenus are only supported in the React components. They cannot be created with CSS alone because
-they rely on the [`Popover`](#core/components/popover) component for positioning and transitions.
-
-</div>
 
 @## CSS
 

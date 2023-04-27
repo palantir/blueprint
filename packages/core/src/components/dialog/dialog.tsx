@@ -17,18 +17,21 @@
 import classNames from "classnames";
 import React from "react";
 
-import { SmallCross, IconName, IconSize } from "@blueprintjs/icons";
+import { IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
-import { H4 } from "../html/html";
+import { H5 } from "../html/html";
 import { Icon } from "../icon/icon";
-import { BackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
+import { BackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
 
 export interface DialogProps extends OverlayableProps, BackdropProps, Props {
+    /** Dialog contents. */
+    children?: React.ReactNode;
+
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
@@ -77,10 +80,15 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     transitionName?: string;
 
     /**
+     * Ref supplied to the `Classes.DIALOG_CONTAINER` element.
+     */
+    containerRef?: React.Ref<HTMLDivElement>;
+
+    /**
      * ID of the element that contains title or label text for this dialog.
      *
      * By default, if the `title` prop is supplied, this component will generate
-     * a unique ID for the `<H4>` title element and use that ID here.
+     * a unique ID for the `<H5>` title element and use that ID here.
      */
     "aria-labelledby"?: string;
 
@@ -110,7 +118,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
     public render() {
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
-                <div className={Classes.DIALOG_CONTAINER}>
+                <div className={Classes.DIALOG_CONTAINER} ref={this.props.containerRef}>
                     <div
                         className={classNames(Classes.DIALOG, this.props.className)}
                         role="dialog"
@@ -145,7 +153,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<SmallCross size={IconSize.LARGE} />}
+                    icon={<SmallCross size={IconSize.STANDARD} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -162,8 +170,8 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
-                <Icon icon={icon} size={IconSize.LARGE} aria-hidden={true} tabIndex={-1} />
-                <H4 id={this.titleId}>{title}</H4>
+                <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
+                <H5 id={this.titleId}>{title}</H5>
                 {this.maybeRenderCloseButton()}
             </div>
         );

@@ -23,7 +23,7 @@ import sinon from "sinon";
 
 import { Classes as CoreClasses, Intent, Keys } from "@blueprintjs/core";
 
-import { Classes, TimePickerProps, TimePicker, TimePrecision } from "../src";
+import { Classes, TimePicker, TimePickerProps, TimePrecision } from "../src";
 import { assertTimeIs, createTimeObject } from "./common/dateTestUtils";
 
 describe("<TimePicker>", () => {

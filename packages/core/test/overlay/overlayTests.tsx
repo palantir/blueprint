@@ -21,8 +21,7 @@ import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes, OverlayProps, Overlay, Portal, Utils } from "../../src";
-import * as Keys from "../../src/common/keys";
+import { Classes, Overlay, OverlayProps, Portal, Utils } from "../../src";
 import { findInPortal } from "../utils";
 
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
@@ -224,7 +223,7 @@ describe("<Overlay>", () => {
                     {createOverlayContents()}
                 </Overlay>,
             );
-            wrapper.simulate("keydown", { which: Keys.ESCAPE });
+            wrapper.simulate("keydown", { key: "Escape" });
             assert.isTrue(onClose.calledOnce);
         });
 
@@ -235,7 +234,7 @@ describe("<Overlay>", () => {
                     {createOverlayContents()}
                 </Overlay>,
             );
-            overlay.simulate("keydown", { which: Keys.ESCAPE });
+            overlay.simulate("keydown", { key: "Escape" });
             assert.isTrue(onClose.notCalled);
             overlay.unmount();
         });

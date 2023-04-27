@@ -19,7 +19,7 @@ import React, { forwardRef } from "react";
 
 import { IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
-import { Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement, Utils } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props, Utils } from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
 import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
@@ -35,6 +35,8 @@ export interface TagProps
      * @default false
      */
     active?: boolean;
+
+    children?: React.ReactNode;
 
     /**
      * Whether the tag should take up the full width of its container.
@@ -147,7 +149,7 @@ export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
     };
     const removeButton = isRemovable ? (
         <button
-            aria-label="Remove"
+            aria-label="Remove tag"
             type="button"
             className={Classes.TAG_REMOVE}
             onClick={handleRemoveClick}

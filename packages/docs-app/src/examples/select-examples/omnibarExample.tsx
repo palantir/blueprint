@@ -1,7 +1,5 @@
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -27,12 +25,17 @@ import {
     Switch,
     Toaster,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
-
-import { areFilmsEqual, createFilm, filmSelectProps, Film, renderCreateFilmOption } from "./../../common/films";
-
-const FilmOmnibar = Omnibar.ofType<Film>();
+import {
+    areFilmsEqual,
+    createFilm,
+    Film,
+    filterFilm,
+    renderCreateFilmMenuItem,
+    renderFilm,
+    TOP_100_FILMS,
+} from "@blueprintjs/select/examples";
 
 export interface OmnibarExampleState {
     allowCreate: boolean;
@@ -61,7 +64,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExa
         const { allowCreate } = this.state;
 
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
-        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
+        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmMenuItem : null;
 
         return (
             <HotkeysTarget
@@ -83,15 +86,17 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExa
                         <KeyComboTag combo="shift + o" />
                     </span>
 
-                    <FilmOmnibar
-                        {...filmSelectProps}
+                    <Omnibar<Film>
                         {...this.state}
                         createNewItemFromQuery={maybeCreateNewItemFromQuery}
                         createNewItemRenderer={maybeCreateNewItemRenderer}
+                        itemPredicate={filterFilm}
+                        itemRenderer={renderFilm}
+                        items={TOP_100_FILMS}
                         itemsEqual={areFilmsEqual}
                         noResults={<MenuItem disabled={true} text="No results." />}
-                        onItemSelect={this.handleItemSelect}
                         onClose={this.handleClose}
+                        onItemSelect={this.handleItemSelect}
                     />
                     <OverlayToaster position={Position.TOP} ref={this.refHandlers.toaster} />
                 </Example>

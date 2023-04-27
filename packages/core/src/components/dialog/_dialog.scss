@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:math";
 @import "~@blueprintjs/icons/lib/scss/variables";
 @import "../../common/mixins";
 @import "../../common/react-transition";
@@ -15,7 +16,7 @@ Markup:
   <div class="#{$ns}-dialog">
     <div class="#{$ns}-dialog-header">
       <span class="#{$ns}-icon-large #{$ns}-icon-inbox"></span>
-      <h4 class="#{$ns}-heading">Dialog header</h4>
+      <h5 class="#{$ns}-heading">Dialog header</h5>
       <button aria-label="Close" class="#{$ns}-dialog-close-button #{$ns}-button #{$ns}-minimal #{$ns}-icon-cross"></button>
     </div>
     <div class="#{$ns}-dialog-body">
@@ -36,7 +37,7 @@ Styleguide dialog
 
 $dialog-border-radius: $pt-border-radius * 2 !default;
 $dialog-margin: ($pt-grid-size * 3) 0 !default;
-$dialog-padding: $pt-grid-size * 2 !default;
+$dialog-padding: $pt-grid-size * 1.5 !default;
 
 .#{$ns}-dialog-container {
   $dialog-transition-props: (
@@ -83,6 +84,10 @@ $dialog-padding: $pt-grid-size * 2 !default;
     box-shadow: $pt-dark-dialog-box-shadow;
     color: $pt-dark-text-color;
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
 }
 
 .#{$ns}-dialog-header {
@@ -94,21 +99,22 @@ $dialog-padding: $pt-grid-size * 2 !default;
   flex: 0 0 auto;
   min-height: $pt-icon-size-large + $dialog-padding;
   padding-left: $dialog-padding;
-  padding-right: $dialog-padding / 4;
+  padding-right: math.div($pt-grid-size, 2);
   z-index: 0;
 
   .#{$ns}-icon-large,
   .#{$ns}-icon {
     color: $pt-icon-color;
     flex: 0 0 auto;
-    margin-right: $dialog-padding / 2;
+    margin-left: -3px;
+    margin-right: $dialog-padding * 0.5;
   }
 
   .#{$ns}-heading {
     @include overflow-ellipsis();
     flex: 1 1 auto;
     line-height: inherit;
-    margin: 0;
+    margin: $pt-grid-size 0;
 
     &:last-child {
       margin-right: $dialog-padding;
@@ -116,13 +122,17 @@ $dialog-padding: $pt-grid-size * 2 !default;
   }
 
   .#{$ns}-dark & {
-    background: $dark-gray4;
-    box-shadow: 0 1px 0 $pt-dark-divider-black;
+    background: $dark-gray3;
+    box-shadow: inset 0 0 0 1px $pt-dark-divider-white;
 
     .#{$ns}-icon-large,
     .#{$ns}-icon {
       color: $pt-dark-icon-color;
     }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border-bottom: 1px solid $pt-high-contrast-mode-border-color;
   }
 }
 

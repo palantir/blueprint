@@ -1,8 +1,13 @@
 // Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@import "../../common/variables";
+@import "../../common/typography-colors";
 @import "../popover/common";
 @import "./common";
+
+$tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
+$dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
 .#{$ns}-tooltip {
   @include popover-sizing(
@@ -14,7 +19,7 @@
     $tooltip-background-color,
     $tooltip-text-color,
     $pt-tooltip-box-shadow,
-    $pt-drop-shadow-opacity,
+    $tooltip-arrow-box-shadow,
     $pt-border-shadow-opacity
   );
   // lightweight scale for tooltips
@@ -24,6 +29,8 @@
     $duration: $pt-transition-duration,
     $after: "> &"
   );
+  // override typography & icon colors because we use a dark background
+  @include pt-dark-typography-colors();
 
   .#{$ns}-popover-content {
     padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
@@ -41,9 +48,11 @@
       $dark-tooltip-background-color,
       $dark-tooltip-text-color,
       $pt-dark-tooltip-box-shadow,
-      $pt-dark-drop-shadow-opacity,
+      $dark-tooltip-arrow-box-shadow,
       $pt-dark-border-shadow-opacity
     );
+    // override typography because we use a light background
+    @include pt-typography-colors();
   }
 
   @each $intent, $color in $pt-intent-colors {
@@ -55,6 +64,11 @@
 
       .#{$ns}-popover-arrow-fill {
         fill: $color;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // In Windows high contrast mode, just force the color to be the same as the border.
+          fill: $pt-high-contrast-mode-border-color;
+        }
       }
     }
   }

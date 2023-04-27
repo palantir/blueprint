@@ -23,16 +23,16 @@ import {
     Button,
     Classes,
     Icon,
+    MenuItem,
     MenuItemProps,
     MenuProps,
-    MenuItem,
     Popover,
     PopoverInteractionKind,
     Text,
 } from "../../src";
 
 describe("MenuItem", () => {
-    it("React renders MenuItem", () => {
+    it("basic rendering", () => {
         const wrapper = shallow(<MenuItem icon="graph" text="Graph" />);
         assert.isTrue(wrapper.find(Icon).exists());
         assert.strictEqual(findText(wrapper).text(), "Graph");
@@ -58,6 +58,18 @@ describe("MenuItem", () => {
         assert.lengthOf(submenu.props.children, 3);
     });
 
+    it("default role prop structure is correct for a menuitem that is a an item of a ul with role=menu", () => {
+        const wrapper = mount(<MenuItem text="Roles" />);
+        assert.equal(wrapper.find("li").prop("role"), "none");
+        assert.equal(wrapper.find("a").prop("role"), "menuitem");
+    });
+
+    it("can set roleStructure to change role prop structure to that of a listbox or select item", () => {
+        const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" />);
+        assert.equal(wrapper.find("li").prop("role"), "option");
+        assert.equal(wrapper.find("a").prop("role"), undefined);
+    });
+
     it("disabled MenuItem will not show its submenu", () => {
         const wrapper = shallow(
             <MenuItem disabled={true} icon="style" text="Style">
@@ -66,7 +78,6 @@ describe("MenuItem", () => {
                 <MenuItem icon="underline" text="Underline" />
             </MenuItem>,
         );
-        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(wrapper.find(Popover).prop("disabled"));
     });
 
@@ -79,7 +90,7 @@ describe("MenuItem", () => {
         assert.strictEqual(mouseSpy.callCount, 0);
     });
 
-    it("Clicking MenuItem triggers onClick prop", () => {
+    it("clicking MenuItem triggers onClick prop", () => {
         const onClick = spy();
         shallow(<MenuItem text="Graph" onClick={onClick} />)
             .find("a")
@@ -87,7 +98,7 @@ describe("MenuItem", () => {
         assert.isTrue(onClick.calledOnce);
     });
 
-    it("Clicking disabled MenuItem does not trigger onClick prop", () => {
+    it("clicking disabled MenuItem does not trigger onClick prop", () => {
         const onClick = spy();
         shallow(<MenuItem disabled={true} text="Graph" onClick={onClick} />)
             .find("a")
@@ -98,15 +109,25 @@ describe("MenuItem", () => {
     it("shouldDismissPopover=false prevents a clicked MenuItem from closing the Popover automatically", () => {
         const handleClose = spy();
         const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
-        /* eslint-disable deprecation/deprecation */
         const wrapper = mount(
             <Popover content={menu} isOpen={true} onInteraction={handleClose} usePortal={false}>
                 <Button />
             </Popover>,
         );
-        /* eslint-enable deprecation/deprecation */
         wrapper.find(MenuItem).find("a").simulate("click");
         assert.isTrue(handleClose.notCalled);
+    });
+
+    it("submenuProps are forwarded to the Menu", () => {
+        const submenuProps = { "aria-label": "test-menu" };
+        const wrapper = shallow(
+            <MenuItem icon="style" text="Style" submenuProps={submenuProps}>
+                <MenuItem text="one" />
+                <MenuItem text="two" />
+            </MenuItem>,
+        );
+        const submenu = findSubmenu(wrapper);
+        assert.strictEqual(submenu.props["aria-label"], submenuProps["aria-label"]);
     });
 
     it("popoverProps (except content) are forwarded to Popover", () => {
@@ -122,14 +143,12 @@ describe("MenuItem", () => {
                 <MenuItem text="two" />
             </MenuItem>,
         );
-        /* eslint-disable deprecation/deprecation */
         assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
         assert.notStrictEqual(
             wrapper.find(Popover).prop("popoverClassName")!.indexOf(popoverProps.popoverClassName),
             0,
         );
         assert.notStrictEqual(wrapper.find(Popover).prop("content"), popoverProps.content);
-        /* eslint-enable deprecation/deprecation */
     });
 
     it("multiline prop determines if long content is ellipsized", () => {
@@ -156,7 +175,6 @@ describe("MenuItem", () => {
 });
 
 function findSubmenu(wrapper: ShallowWrapper<any, any>) {
-    /* eslint-disable-next-line deprecation/deprecation */
     return wrapper.find(Popover).prop("content") as React.ReactElement<
         MenuProps & { children: Array<React.ReactElement<MenuItemProps>> }
     >;

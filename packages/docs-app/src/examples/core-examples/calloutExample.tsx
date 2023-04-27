@@ -17,7 +17,7 @@
 import React from "react";
 
 import { Callout, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, DocsExampleProps } from "@blueprintjs/docs-theme";
+import { DocsExampleProps, Example, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 import { IconName } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
@@ -33,6 +33,8 @@ export class CalloutExample extends React.PureComponent<DocsExampleProps, Callou
     public state: CalloutExampleState = { showHeader: true };
 
     private handleHeaderChange = handleBooleanChange((showHeader: boolean) => this.setState({ showHeader }));
+
+    private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 
     private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
 
@@ -57,6 +59,4 @@ export class CalloutExample extends React.PureComponent<DocsExampleProps, Callou
             </Example>
         );
     }
-
-    private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 }

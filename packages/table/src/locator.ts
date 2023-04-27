@@ -71,12 +71,12 @@ export interface Locator {
     /**
      * @returns whether the rendered rows overflow the visible viewport vertically, helpful for scrolling calculations
      */
-    hasVerticalOverflow(columnHeaderHeight: number, viewportRect: Rect): boolean;
+    hasVerticalOverflowOrExactFit(columnHeaderHeight: number, viewportRect: Rect): boolean;
 
     /**
      * @returns whether the rendered columns overflow the visible viewport horizontally, helpful for scrolling calculations
      */
-    hasHorizontalOverflow(rowHeaderWidth: number, viewportRect: Rect): boolean;
+    hasHorizontalOverflowOrExactFit(rowHeaderWidth: number, viewportRect: Rect): boolean;
 }
 
 export class LocatorImpl implements Locator {
@@ -185,28 +185,31 @@ export class LocatorImpl implements Locator {
     /**
      * Pass in an already-computed viewport rect here, if available, to reduce DOM reads.
      *
-     * @returns whether the rendered rows overflow the visible viewport vertically, helpful for scrolling calculations
+     * @returns whether the rendered rows overflow or exactly fit the visible viewport vertically, helpful for scrolling calculations
      */
-    public hasVerticalOverflow(
+    public hasVerticalOverflowOrExactFit(
         columnHeaderHeight = Grid.MIN_COLUMN_HEADER_HEIGHT,
         viewportRect = this.getViewportRect(),
     ) {
         if (this.grid === undefined) {
             return false;
         }
-        return this.grid.getHeight() > viewportRect.height - columnHeaderHeight;
+        return this.grid.getHeight() >= viewportRect.height - columnHeaderHeight;
     }
 
     /**
      * Pass in an already-computed viewport rect here, if available, to reduce DOM reads.
      *
-     * @returns whether the rendered columns overflow the visible viewport horizontally, helpful for scrolling calculations
+     * @returns whether the rendered columns overflow or exactly fit the visible viewport horizontally, helpful for scrolling calculations
      */
-    public hasHorizontalOverflow(rowHeaderWidth = Grid.MIN_ROW_HEADER_WIDTH, viewportRect = this.getViewportRect()) {
+    public hasHorizontalOverflowOrExactFit(
+        rowHeaderWidth = Grid.MIN_ROW_HEADER_WIDTH,
+        viewportRect = this.getViewportRect(),
+    ) {
         if (this.grid === undefined) {
             return false;
         }
-        return this.grid.getWidth() > viewportRect.width - rowHeaderWidth;
+        return this.grid.getWidth() >= viewportRect.width - rowHeaderWidth;
     }
 
     // Converters

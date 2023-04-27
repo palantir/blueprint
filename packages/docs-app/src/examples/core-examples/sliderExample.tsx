@@ -17,7 +17,7 @@
 import React from "react";
 
 import { H5, Slider, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface SliderExampleState {
     value1?: number;
@@ -55,6 +55,7 @@ export class SliderExample extends React.PureComponent<ExampleProps, SliderExamp
                     onChange={this.getChangeHandler("value2")}
                     value={this.state.value2}
                     vertical={vertical}
+                    handleHtmlProps={{ "aria-label": "example 1" }}
                 />
                 <Slider
                     min={0}
@@ -65,6 +66,7 @@ export class SliderExample extends React.PureComponent<ExampleProps, SliderExamp
                     labelRenderer={this.renderLabel2}
                     value={this.state.value1}
                     vertical={vertical}
+                    handleHtmlProps={{ "aria-label": "example 2" }}
                 />
                 <Slider
                     min={-12}
@@ -76,6 +78,7 @@ export class SliderExample extends React.PureComponent<ExampleProps, SliderExamp
                     showTrackFill={false}
                     value={this.state.value3}
                     vertical={vertical}
+                    handleHtmlProps={{ "aria-label": "example 3" }}
                 />
             </Example>
         );

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { Alignment, ActionProps, MaybeElement } from "../../common";
+import type { ActionProps, Alignment, MaybeElement } from "../../common";
 import type { IconName } from "../icon/icon";
 
 export type ButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement> = ActionProps &
@@ -40,6 +40,9 @@ export type ButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLBu
          */
         alignText?: Alignment;
 
+        /** Button contents. */
+        children?: React.ReactNode;
+
         /** Whether this button should expand to fill its container. */
         fill?: boolean;
 
@@ -47,8 +50,9 @@ export type ButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLBu
         large?: boolean;
 
         /**
-         * If set to `true`, the button will display a centered loading spinner instead of its contents, and the button will be disabled.
-         * The width of the button is not affected by the value of this prop.
+         * If set to `true`, the button will display a centered loading spinner instead of its contents
+         * and the button will be disabled (_even if_ `disabled={false}`). The width of the button is
+         * not affected by the value of this prop.
          *
          * @default false
          */

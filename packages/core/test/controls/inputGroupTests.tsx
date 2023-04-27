@@ -63,7 +63,6 @@ describe("<InputGroup>", () => {
 
     it("supports inputRef", () => {
         let input: HTMLInputElement | null = null;
-        // tslint:disable-next-line:jsx-no-lambda
         mount(<InputGroup inputRef={ref => (input = ref)} />);
         assert.instanceOf(input, HTMLInputElement);
     });
@@ -89,11 +88,7 @@ describe("<InputGroup>", () => {
         }
 
         const wrapper = mount(
-            <TestComponent
-                initialValue="abc"
-                // tslint:disable-next-line:jsx-no-lambda
-                transformInput={(value: string) => value.substring(0, 3)}
-            />,
+            <TestComponent initialValue="abc" transformInput={(value: string) => value.substring(0, 3)} />,
         );
 
         let input = wrapper.find("input");

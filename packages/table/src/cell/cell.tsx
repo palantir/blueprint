@@ -16,14 +16,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import {
-    Classes as CoreClasses,
-    DISPLAYNAME_PREFIX,
-    IntentProps,
-    Props,
-    Ref,
-    Utils as CoreUtils,
-} from "@blueprintjs/core";
+import { Classes as CoreClasses, Utils as CoreUtils, DISPLAYNAME_PREFIX, IntentProps, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
@@ -32,6 +25,8 @@ import { TruncatedFormat } from "./formats/truncatedFormat";
 
 export interface CellProps extends IntentProps, Props {
     key?: string;
+
+    children?: React.ReactNode;
 
     style?: React.CSSProperties;
 
@@ -107,7 +102,7 @@ export interface CellProps extends IntentProps, Props {
     /**
      * A ref handle to capture the outer div of this cell. Used internally.
      */
-    cellRef?: Ref<HTMLDivElement>;
+    cellRef?: React.Ref<HTMLDivElement>;
 }
 
 export type CellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<CellProps> | undefined;

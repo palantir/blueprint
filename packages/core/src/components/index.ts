@@ -17,8 +17,8 @@
 import "../common/configureDom4";
 
 export * from "./alert/alert";
-export * from "./breadcrumbs/breadcrumb";
-export * from "./breadcrumbs/breadcrumbs";
+export { Breadcrumb, BreadcrumbProps } from "./breadcrumbs/breadcrumb";
+export { Breadcrumbs, BreadcrumbsProps } from "./breadcrumbs/breadcrumbs";
 export * from "./button/buttons";
 export * from "./button/buttonGroup";
 export * from "./callout/callout";
@@ -31,8 +31,9 @@ export {
     ContextMenuContentProps,
 } from "./context-menu/contextMenu";
 export * from "./dialog/dialog";
-export * from "./dialog/multistepDialog";
+export type { DialogStepButtonProps } from "./dialog/dialogStepButton";
 export * from "./dialog/dialogStep";
+export * from "./dialog/multistepDialog";
 export * from "./divider/divider";
 export * from "./drawer/drawer";
 export * from "./editable-text/editableText";
@@ -51,7 +52,7 @@ export * from "./hotkeys";
 export * from "./icon/icon";
 export * from "./menu/menu";
 export * from "./menu/menuDivider";
-export * from "./menu/menuItem";
+export { MenuItem, MenuItemProps } from "./menu/menuItem";
 export * from "./navbar/navbar";
 export * from "./navbar/navbarDivider";
 export * from "./navbar/navbarGroup";
@@ -67,10 +68,12 @@ export {
     PopoverSharedProps,
     PopoverTargetProps,
     PopperBoundary,
+    PopperModifierOverrides,
     Placement,
     PopperPlacements,
     StrictModifierNames,
 } from "./popover/popoverSharedProps";
+export { PopupKind } from "./popover/popupKind";
 export { Portal, PortalProps } from "./portal/portal";
 export * from "./progress-bar/progressBar";
 export * from "./resize-sensor/resizeSensor";

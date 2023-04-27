@@ -339,12 +339,12 @@ describe("scrollUtils", () => {
 
         function mountElementsWithContentSize(contentWidth: number, contentHeight: number) {
             // HACKHACK: `as unknown as HTMLElement` cast is sketchy
-            return (ReactDOM.render<React.HTMLProps<HTMLDivElement>>(
+            return ReactDOM.render<React.HTMLProps<HTMLDivElement>>(
                 <div style={parentStyle}>
                     <div style={{ ...baseStyles, width: contentWidth, height: contentHeight }} />
                 </div>,
                 containerElement!,
-            ) as unknown) as HTMLElement;
+            ) as unknown as HTMLElement;
         }
     });
 });

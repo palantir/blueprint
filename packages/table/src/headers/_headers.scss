@@ -164,7 +164,7 @@ $dark-selectable-header-menu-selected-hover-background:
     width: $interaction-bar-height;
 
     .#{$ns}-icon {
-      $icon-margin: ($interaction-bar-height - $pt-icon-size-standard) / 2;
+      $icon-margin: ($interaction-bar-height - $pt-icon-size-standard) * 0.5;
 
       margin: $icon-margin;
       margin-left: $icon-margin + $cell-border-width;
@@ -173,7 +173,7 @@ $dark-selectable-header-menu-selected-hover-background:
   }
 
   .#{$ns}-icon {
-    $icon-offset: ($column-header-min-height - $pt-icon-size-standard) / 2;
+    $icon-offset: ($column-header-min-height - $pt-icon-size-standard) * 0.5;
     background-color: $header-background-color;
     border-radius: $pt-border-radius;
     box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity);
@@ -212,11 +212,11 @@ $dark-selectable-header-menu-selected-hover-background:
   }
 
   &:hover .#{$ns}-icon {
-    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity * 2);
+    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity * 200%);
     color: $pt-icon-color-hover;
 
     .#{$ns}-dark & {
-      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity * 2);
+      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity * 200%);
       color: $pt-dark-icon-color-hover;
     }
   }
@@ -347,7 +347,7 @@ $dark-selectable-header-menu-selected-hover-background:
 .#{$ns}-table-row-name {
   display: block;
   font-size: $pt-font-size-small;
-  padding: 0 $pt-grid-size / 2;
+  padding: 0 $pt-grid-size * 0.5;
   text-align: right;
 }
 

@@ -20,24 +20,21 @@ import React from "react";
 import sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
-import { QueryListProps } from "@blueprintjs/select";
 
-import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import {
-    QueryListRendererProps,
-    QueryListState,
     ItemListPredicate,
     ItemListRenderer,
     ItemPredicate,
     QueryList,
+    QueryListProps,
+    QueryListRendererProps,
+    QueryListState,
 } from "../src";
-
-// this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
+import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 
 type FilmQueryListWrapper = ReactWrapper<QueryListProps<Film>, QueryListState<Film>>;
 
 describe("<QueryList>", () => {
-    const FilmQueryList = QueryList.ofType<Film>();
     const testProps = {
         itemRenderer: sinon.spy(renderFilm),
         items: TOP_100_FILMS.slice(0, 20),
@@ -55,7 +52,7 @@ describe("<QueryList>", () => {
 
     describe("items", () => {
         it("handles controlled changes to the whole items list", () => {
-            const wrapper = shallow(<FilmQueryList {...testProps} />);
+            const wrapper = shallow(<QueryList<Film> {...testProps} />);
             const newItems = TOP_100_FILMS.slice(0, 1);
             wrapper.setProps({ items: newItems });
             assert.deepEqual(wrapper.state("filteredItems"), newItems);
@@ -68,7 +65,7 @@ describe("<QueryList>", () => {
         );
 
         it("renderItem calls itemRenderer", () => {
-            const wrapper = shallow(<FilmQueryList {...testProps} itemListRenderer={itemListRenderer} />);
+            const wrapper = shallow(<QueryList<Film> {...testProps} itemListRenderer={itemListRenderer} />);
             assert.lengthOf(wrapper.find("ul.foo"), 1, "should find element");
             assert.equal(testProps.itemRenderer.callCount, 20);
         });
@@ -77,7 +74,7 @@ describe("<QueryList>", () => {
     describe("filtering", () => {
         it("itemPredicate filters each item by query", () => {
             const predicate = sinon.spy((query: string, film: Film) => film.year === +query);
-            shallow(<FilmQueryList {...testProps} itemPredicate={predicate} query="1994" />);
+            shallow(<QueryList<Film> {...testProps} itemPredicate={predicate} query="1994" />);
 
             assert.equal(predicate.callCount, testProps.items.length, "called once per item");
             const { filteredItems } = testProps.renderer.args[0][0] as QueryListRendererProps<Film>;
@@ -86,7 +83,7 @@ describe("<QueryList>", () => {
 
         it("itemListPredicate filters entire list by query", () => {
             const predicate = sinon.spy((query: string, films: Film[]) => films.filter(f => f.year === +query));
-            shallow(<FilmQueryList {...testProps} itemListPredicate={predicate} query="1994" />);
+            shallow(<QueryList<Film> {...testProps} itemListPredicate={predicate} query="1994" />);
 
             assert.equal(predicate.callCount, 1, "called once for entire list");
             const { filteredItems } = testProps.renderer.args[0][0] as QueryListRendererProps<Film>;
@@ -98,7 +95,7 @@ describe("<QueryList>", () => {
             const listPredicate: ItemListPredicate<any> = (_q, items) => items;
             const listPredicateSpy = sinon.spy(listPredicate);
             shallow(
-                <FilmQueryList
+                <QueryList<Film>
                     {...testProps}
                     itemPredicate={predicate}
                     itemListPredicate={listPredicateSpy}
@@ -110,14 +107,16 @@ describe("<QueryList>", () => {
         });
 
         it("omitting both predicate props is supported", () => {
-            shallow(<FilmQueryList {...testProps} query="1980" />);
+            shallow(<QueryList<Film> {...testProps} query="1980" />);
             const { filteredItems } = testProps.renderer.args[0][0] as QueryListRendererProps<Film>;
             assert.lengthOf(filteredItems, testProps.items.length, "returns all films");
         });
 
         it("ensure onActiveItemChange is not called with undefined and empty list", () => {
             const myItem = { title: "Toy Story 3", year: 2010, rank: 1 };
-            const filmQueryList = mount(<FilmQueryList {...testProps} items={[myItem]} activeItem={myItem} query="" />);
+            const filmQueryList = mount(
+                <QueryList<Film> {...testProps} items={[myItem]} activeItem={myItem} query="" />,
+            );
             filmQueryList.setState({ query: "query" });
             filmQueryList.setState({ activeItem: undefined });
             assert.equal(testProps.onActiveItemChange.callCount, 0);
@@ -131,7 +130,7 @@ describe("<QueryList>", () => {
                 items: [myItem],
                 query: "",
             };
-            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
             filmQueryList.setProps(props);
             assert.equal(testProps.onActiveItemChange.callCount, 0);
         });
@@ -142,7 +141,7 @@ describe("<QueryList>", () => {
                 items: [TOP_100_FILMS[0]],
                 query: "abc",
             };
-            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
             assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[0]);
             filmQueryList.setProps({
                 items: [TOP_100_FILMS[1]],
@@ -157,7 +156,7 @@ describe("<QueryList>", () => {
                 items: [TOP_100_FILMS[0]],
                 query: "abc",
             };
-            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
             assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[0]);
             filmQueryList.setProps({
                 items: [TOP_100_FILMS[1]],
@@ -175,7 +174,7 @@ describe("<QueryList>", () => {
                 itemPredicate: (_query, item) => item === TOP_100_FILMS[11],
                 query: "123",
             };
-            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
             assert(filmQueryList.state().activeItem === TOP_100_FILMS[11]);
         });
 
@@ -185,7 +184,7 @@ describe("<QueryList>", () => {
                 // List is not filtered, and item at index 11 is explicitly chosen as activeItem
                 activeItem: TOP_100_FILMS[11],
             };
-            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
             assert(filmQueryList.state().activeItem === TOP_100_FILMS[11]);
         });
 
@@ -194,7 +193,7 @@ describe("<QueryList>", () => {
                 ...testProps,
                 activeItem: null,
             };
-            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
             assert(filmQueryList.state().activeItem === null);
         });
 
@@ -206,7 +205,7 @@ describe("<QueryList>", () => {
                 items: TOP_100_FILMS.slice(0, 4),
                 query: "the",
             };
-            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
             assert(filmQueryList.find(Menu).children().children().last().is("article"));
             filmQueryList.setProps({ createNewItemPosition: "first" });
             assert(filmQueryList.find(Menu).children().children().first().is("article"));
@@ -239,7 +238,7 @@ describe("<QueryList>", () => {
                 ...overrideProps,
             };
 
-            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
             // `handlePaste` will have been set by now, because `props.renderer`
             // will have been called.
             return { filmQueryList, handlePaste: handlePaste! };
@@ -349,7 +348,7 @@ describe("<QueryList>", () => {
                 return <div>{props.itemList}</div>;
             });
             shallow(
-                <FilmQueryList
+                <QueryList<Film>
                     {...testProps}
                     renderer={renderer}
                     createNewItemFromQuery={createNewItemFromQuerySpy}
@@ -387,10 +386,9 @@ describe("<QueryList>", () => {
                 },
             );
             const queryList = shallow(
-                <FilmQueryList
+                <QueryList<Film>
                     {...testProps}
                     // Must return something in order for item creation to work.
-                    // tslint:disable-next-line jsx-no-lambda
                     createNewItemFromQuery={() => ({ title: "irrelevant", rank: 0, year: 0 })}
                     createNewItemRenderer={createNewItemRenderer}
                     onQueryChange={onQueryChangeSpy}

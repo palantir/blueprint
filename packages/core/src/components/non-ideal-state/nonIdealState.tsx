@@ -21,10 +21,16 @@ import { IconName, IconSize } from "@blueprintjs/icons";
 
 import { AbstractPureComponent } from "../../common";
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
 import { Icon } from "../icon/icon";
+
+export enum NonIdealStateIconSize {
+    STANDARD = IconSize.STANDARD * 3,
+    SMALL = IconSize.STANDARD * 2,
+    EXTRA_SMALL = IconSize.LARGE,
+}
 
 export interface NonIdealStateProps extends Props {
     /** An action to resolve the non-ideal state which appears after `description`. */
@@ -45,6 +51,20 @@ export interface NonIdealStateProps extends Props {
     /** The name of a Blueprint icon or a JSX Element (such as `<Spinner/>`) to render above the title. */
     icon?: IconName | MaybeElement;
 
+    /**
+     * How large the icon visual should be.
+     *
+     * @default NonIdealStateIconSize.STANDARD
+     */
+    iconSize?: NonIdealStateIconSize;
+
+    /**
+     * Component layout, either vertical or horizontal.
+     *
+     * @default "vertical"
+     */
+    layout?: "vertical" | "horizontal";
+
     /** The title of the non-ideal state. */
     title?: React.ReactNode;
 }
@@ -52,13 +72,18 @@ export interface NonIdealStateProps extends Props {
 export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
 
+    public static defaultProps: Partial<NonIdealStateProps> = {
+        iconSize: NonIdealStateIconSize.STANDARD,
+        layout: "vertical",
+    };
+
     public render() {
-        const { action, children, className, description, title } = this.props;
+        const { action, children, className, layout } = this.props;
+
         return (
-            <div className={classNames(Classes.NON_IDEAL_STATE, className)}>
+            <div className={classNames(Classes.NON_IDEAL_STATE, `${Classes.NON_IDEAL_STATE}-${layout}`, className)}>
                 {this.maybeRenderVisual()}
-                {title && <H4>{title}</H4>}
-                {description && ensureElement(description, "div")}
+                {this.maybeRenderText()}
                 {action}
                 {children}
             </div>
@@ -66,13 +91,30 @@ export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
     }
 
     private maybeRenderVisual() {
-        const { icon } = this.props;
+        const { icon, iconSize } = this.props;
         if (icon == null) {
-            return null;
+            return undefined;
         } else {
             return (
-                <div className={Classes.NON_IDEAL_STATE_VISUAL}>
-                    <Icon icon={icon} size={IconSize.LARGE * 3} aria-hidden={true} tabIndex={-1} />
+                <div
+                    className={Classes.NON_IDEAL_STATE_VISUAL}
+                    style={{ fontSize: `${iconSize}px`, lineHeight: `${iconSize}px` }}
+                >
+                    <Icon icon={icon} size={iconSize} aria-hidden={true} tabIndex={-1} />
+                </div>
+            );
+        }
+    }
+
+    private maybeRenderText() {
+        const { description, title } = this.props;
+        if (title == null && description == null) {
+            return undefined;
+        } else {
+            return (
+                <div className={Classes.NON_IDEAL_STATE_TEXT}>
+                    {title && <H4>{title}</H4>}
+                    {description && ensureElement(description, "div")}
                 </div>
             );
         }
