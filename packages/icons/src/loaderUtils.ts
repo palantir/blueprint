@@ -17,11 +17,16 @@
 // injected by webpack.DefinePlugin
 declare let NODE_ENV: string;
 
+/** Returns whether bundler-injected variable `NODE_ENV` equals `env`. */
+function isNodeEnv(env: string) {
+    return typeof NODE_ENV !== "undefined" && NODE_ENV === env;
+}
+
 /**
  * Wraps an async task with a performance timer. Only logs to console in development.
  */
 export async function wrapWithTimer(taskDescription: string, task: () => Promise<void>) {
-    const shouldMeasure = NODE_ENV === "development" && typeof performance !== "undefined";
+    const shouldMeasure = isNodeEnv("development") && typeof performance !== "undefined";
     let start: number;
 
     /* eslint-disable no-console */

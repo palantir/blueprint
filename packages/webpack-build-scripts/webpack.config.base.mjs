@@ -61,7 +61,7 @@ const plugins = [
     // CSS extraction is only enabled in production (see scssLoaders below).
     new MiniCssExtractPlugin({ filename: "[name].css" }),
 
-    // pipe env variables to FE build, setting defaults where appropriate (null means optional)
+    // pipe env variables to FE build, with these default values (null means optional)
     new webpack.EnvironmentPlugin({
         NODE_ENV: "development",
         BLUEPRINT_NAMESPACE: null,
