@@ -28,7 +28,7 @@ export const PopoverPosition = {
     AUTO_START: "auto-start" as "auto-start",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type PopoverPosition = typeof PopoverPosition[keyof typeof PopoverPosition];
+export type PopoverPosition = (typeof PopoverPosition)[keyof typeof PopoverPosition];
 
 export { Boundary as PopperBoundary, Placement, placements as PopperPlacements };
 // copied from @popperjs/core, where it is not exported as public

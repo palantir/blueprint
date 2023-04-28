@@ -8,7 +8,11 @@
     "typings": "lib/esm/generated/index.d.ts",
     "style": "lib/css/blueprint-icons.css",
     "unpkg": "dist/icons.bundle.js",
-    "files": ["dist", "lib", "src"],
+    "files": [
+        "dist",
+        "lib",
+        "src"
+    ],
     "sideEffects": [
         "**/*.css"
     ],

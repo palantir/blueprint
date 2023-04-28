@@ -50,7 +50,7 @@ export const TimePrecision = {
     SECOND: "second" as "second",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type TimePrecision = typeof TimePrecision[keyof typeof TimePrecision];
+export type TimePrecision = (typeof TimePrecision)[keyof typeof TimePrecision];
 
 export interface TimePickerProps extends Props {
     /**
