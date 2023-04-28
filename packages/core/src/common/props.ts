@@ -57,8 +57,10 @@ export interface IntentProps {
 /**
  * Interface for a clickable action, such as a button or menu item.
  * These props can be spready directly to a `<Button>` or `<MenuItem>` element.
+ *
+ * @template T type of the DOM element rendered by this component
  */
-export interface ActionProps extends IntentProps, Props {
+export interface ActionProps<T extends HTMLElement = HTMLElement> extends IntentProps, Props {
     /** Whether this action is non-interactive. */
     disabled?: boolean;
 
@@ -66,7 +68,10 @@ export interface ActionProps extends IntentProps, Props {
     icon?: IconName | MaybeElement;
 
     /** Click event handler. */
-    onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+    onClick?: (event: React.MouseEvent<T>) => void;
+
+    /** Focus event handler. */
+    onFocus?: (event: React.FocusEvent<T>) => void;
 
     /** Action text. Can be any single React renderable. */
     text?: React.ReactNode;
@@ -112,6 +117,7 @@ const INVALID_PROPS = [
     "current",
     "fill",
     "icon",
+    "inputClassName",
     "inputRef",
     "intent",
     "inline",
@@ -129,6 +135,7 @@ const INVALID_PROPS = [
     "rightIcon",
     "round",
     "small",
+    "tagName",
     "text",
 ];
 

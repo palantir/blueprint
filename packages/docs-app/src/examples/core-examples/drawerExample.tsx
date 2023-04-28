@@ -95,6 +95,7 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
                     {...this.state}
                 >
                     <div className={Classes.DRAWER_BODY}>
+                        {/* HACKHACK: strange use of unrelated dialog class, should be refactored */}
                         <div className={Classes.DIALOG_BODY}>
                             <p>
                                 <strong>

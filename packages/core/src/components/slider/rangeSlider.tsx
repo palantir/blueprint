@@ -47,6 +47,11 @@ export interface RangeSliderProps extends SliderBaseProps {
     handleHtmlProps?: { start?: HandleHtmlProps; end?: HandleHtmlProps };
 }
 
+/**
+ * Range slider component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/sliders.range-slider
+ */
 export class RangeSlider extends AbstractPureComponent<RangeSliderProps> {
     public static defaultProps: RangeSliderProps = {
         ...MultiSlider.defaultSliderProps,

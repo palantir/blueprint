@@ -2,8 +2,6 @@
 
 A tooltip is a lightweight popover for showing additional information during hover interactions.
 
-`Tooltip`
-
 @reactExample TooltipExample
 
 @## Combining with popover
@@ -49,17 +47,21 @@ import { Button, mergeRefs, Popover, Tooltip } from "@blueprintjs/core";
 some exceptions. Notably, it only supports hover interactions.
 
 When creating a tooltip, you must specify both its **content** (via the `content` prop) and
-its **target** (via the `renderTarget` prop).
-
-The **target** is rendered at the location of the Tooltip component in the React component tree. It acts
-as the trigger for the tooltip; hover interaction will show the tooltip based on the `interactionKind` prop.
-In Popper.js terms, this is the popper "reference". In order to add its interaction logic to the target,
-Tooltip supplies an object of props to the `renderTarget` function. These props should be
-[spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_object_literals)
-out to the `JSX.Element` returned from `renderTarget`.
+its **target** (either as children, or via the `renderTarget` prop). See the
+[Popover "Structure" docs](#core/components/popover.structure) for more info on rendering a tooltip target.
 
 The **content** will be shown inside the tooltip itself. When opened, the tooltip will always be
-positioned on the page next to the target; the `position` prop determines its relative position (on
+positioned on the page next to the target; the `placement` prop determines its relative placement (on
 which side of the target).
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h5 class="@ns-heading">Button targets</h5>
+
+Buttons make great tooltip targets, but the `disabled` attribute will prevent all
+events so the enclosing `Tooltip` will not know when to respond.
+Use [`AnchorButton`](#core/components/button.anchor-button) instead;
+see the [callout here](#core/components/button.props) for more details.
+
+</div>
 
 @interface TooltipProps

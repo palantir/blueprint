@@ -100,6 +100,11 @@ export interface DrawerProps extends OverlayableProps, BackdropProps, Props {
     transitionName?: string;
 }
 
+/**
+ * Drawer component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/drawer
+ */
 export class Drawer extends AbstractPureComponent<DrawerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
 

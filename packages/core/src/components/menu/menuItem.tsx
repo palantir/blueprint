@@ -20,12 +20,15 @@ import React from "react";
 import { CaretRight } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { ActionProps, DISPLAYNAME_PREFIX, LinkProps } from "../../common/props";
+import { ActionProps, DISPLAYNAME_PREFIX, LinkProps, removeNonHTMLProps } from "../../common/props";
+import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
 import { Popover, PopoverProps } from "../popover/popover";
 import { Text } from "../text/text";
 import { Menu, MenuProps } from "./menu";
 
+// TODO(adahiya): MUST FIX FOR BLUEPRINT v5.0, add back `ref` prop support by migrating to function component, using React.RefAttributes<HTMLLIElement>
+// see https://github.com/palantir/blueprint/issues/6094
 export interface MenuItemProps extends ActionProps, LinkProps {
     /** Item text, required for usability. */
     text: React.ReactNode;
@@ -85,11 +88,25 @@ export interface MenuItemProps extends ActionProps, LinkProps {
      * `<li role="option"`
      *     `<a role=undefined`
      *
-     *  which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
+     * which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
+     *
+     * If `listitem`, role structure becomes:
+     *
+     * `<li role=undefined`
+     *     `<a role=undefined`
+     *
+     * which can be used if this item is within a basic `<ul/>` (or `role="list"`) parent.
+     *
+     * If `none`, role structure becomes:
+     *
+     * `<li role="none"`
+     *     `<a role=undefined`
+     *
+     * which can be used if wrapping this item in a custom `<li>` parent.
      *
      * @default "menuitem"
      */
-    roleStructure?: "menuitem" | "listoption";
+    roleStructure?: "menuitem" | "listoption" | "listitem" | "none";
 
     /**
      * Whether the text should be allowed to wrap to multiple lines.
@@ -146,6 +163,11 @@ export interface MenuItemProps extends ActionProps, LinkProps {
     htmlTitle?: string;
 }
 
+/**
+ * Menu item component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/menu.menu-item
+ */
 export class MenuItem extends AbstractPureComponent<MenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: MenuItemProps = {
         active: false,
@@ -182,18 +204,31 @@ export class MenuItem extends AbstractPureComponent<MenuItemProps & React.Anchor
         } = this.props;
 
         const [liRole, targetRole, icon, ariaSelected] =
-            roleStructure === "listoption"
-                ? // "listoption": parent has listbox role, or is a <select>
-                  [
+            roleStructure === "listoption" // "listoption": parent has listbox role, or is a <select>
+                ? [
                       "option",
                       undefined, // target should have no role
                       this.props.icon ?? (selected === undefined ? undefined : selected ? "small-tick" : "blank"),
                       Boolean(selected), // aria-selected prop
                   ]
-                : // "menuitem": parent has menu role
-                  [
+                : roleStructure === "menuitem" // "menuitem": parent has menu role
+                ? [
                       "none",
                       "menuitem",
+                      this.props.icon,
+                      undefined, // don't set aria-selected prop
+                  ]
+                : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
+                ? [
+                      "none",
+                      undefined, // target should have no role
+                      this.props.icon,
+                      undefined, // don't set aria-selected prop
+                  ]
+                : // roleStructure === "listitem"
+                  [
+                      undefined, // needs no role prop, li is listitem by default
+                      undefined,
                       this.props.icon,
                       undefined, // don't set aria-selected prop
                   ];
@@ -218,9 +253,12 @@ export class MenuItem extends AbstractPureComponent<MenuItemProps & React.Anchor
         const target = React.createElement(
             tagName,
             {
-                role: targetRole,
-                tabIndex: 0,
-                ...htmlProps,
+                // for menuitems, onClick when enter key pressed doesn't take effect like it does for a button-- fix this
+                onKeyDown: clickElementOnKeyPress(["Enter", " "]),
+                // if hasSubmenu, must apply correct role and tabIndex to the outer Popover2 target <span> instead of this target element
+                role: hasSubmenu ? "none" : targetRole,
+                tabIndex: hasSubmenu ? -1 : 0,
+                ...removeNonHTMLProps(htmlProps),
                 ...(disabled ? DISABLED_PROPS : {}),
                 className: anchorClasses,
             },
@@ -241,7 +279,7 @@ export class MenuItem extends AbstractPureComponent<MenuItemProps & React.Anchor
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         return (
             <li className={liClasses} role={liRole} aria-selected={ariaSelected}>
-                {this.maybeRenderPopover(target, children)}
+                {this.maybeRenderPopover(target, { role: targetRole, tabIndex: 0 }, children)}
             </li>
         );
     }
@@ -259,7 +297,11 @@ export class MenuItem extends AbstractPureComponent<MenuItemProps & React.Anchor
         );
     }
 
-    private maybeRenderPopover(target: JSX.Element, children?: React.ReactNode) {
+    private maybeRenderPopover(
+        target: JSX.Element,
+        popoverTargetProps: PopoverProps["targetProps"],
+        children?: React.ReactNode,
+    ) {
         if (children == null) {
             return target;
         }
@@ -273,6 +315,7 @@ export class MenuItem extends AbstractPureComponent<MenuItemProps & React.Anchor
                 hoverCloseDelay={0}
                 interactionKind="hover"
                 modifiers={SUBMENU_POPOVER_MODIFIERS}
+                targetProps={popoverTargetProps}
                 placement="right-start"
                 usePortal={false}
                 {...popoverProps}

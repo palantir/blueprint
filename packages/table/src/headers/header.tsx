@@ -277,6 +277,12 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
     };
 
     private locateClick = (event: MouseEvent): Region => {
+        const menuContainer = (event.target as HTMLElement).closest(`.${Classes.TABLE_TH_MENU_CONTAINER}`);
+
+        if (menuContainer && !menuContainer.classList.contains(Classes.TABLE_TH_MENU_SELECT_CELLS)) {
+            return this.props.toRegion(-1);
+        }
+
         this.activationIndex = this.convertEventToIndex(event);
         return this.props.toRegion(this.activationIndex);
     };

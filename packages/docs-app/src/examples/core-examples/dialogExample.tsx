@@ -16,7 +16,18 @@
 
 import React from "react";
 
-import { AnchorButton, Button, Classes, Code, Dialog, DialogProps, H5, Switch, Tooltip } from "@blueprintjs/core";
+import {
+    AnchorButton,
+    Button,
+    Code,
+    Dialog,
+    DialogBody,
+    DialogFooter,
+    DialogProps,
+    H5,
+    Switch,
+    Tooltip,
+} from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { BlueprintExampleData } from "../../tags/types";
@@ -60,14 +71,14 @@ export class DialogExample extends React.PureComponent<ExampleProps<BlueprintExa
                     className={this.props.data.themeName}
                     buttonText="Show dialog"
                     {...this.state}
-                    includeFooter={false}
+                    footerStyle="none"
                 />
                 <ButtonWithDialog
                     className={this.props.data.themeName}
                     icon="info-sign"
                     title="Palantir Foundry"
                     buttonText="Show dialog with title"
-                    includeFooter={false}
+                    footerStyle="none"
                     {...this.state}
                 />
                 <ButtonWithDialog
@@ -75,7 +86,15 @@ export class DialogExample extends React.PureComponent<ExampleProps<BlueprintExa
                     icon="info-sign"
                     title="Palantir Foundry"
                     buttonText="Show dialog with title and footer"
-                    includeFooter={true}
+                    footerStyle="default"
+                    {...this.state}
+                />
+                <ButtonWithDialog
+                    className={this.props.data.themeName}
+                    icon="info-sign"
+                    title="Palantir Foundry"
+                    buttonText="Show dialog with title and minimal footer"
+                    footerStyle="minimal"
                     {...this.state}
                 />
             </Example>
@@ -117,71 +136,58 @@ export class DialogExample extends React.PureComponent<ExampleProps<BlueprintExa
 
 function ButtonWithDialog({
     buttonText,
-    includeFooter,
+    footerStyle,
     ...props
-}: Omit<DialogProps, "isOpen"> & { buttonText: string; includeFooter: boolean }) {
+}: Omit<DialogProps, "isOpen"> & { buttonText: string; footerStyle: "default" | "minimal" | "none" }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const handleButtonClick = React.useCallback(() => setIsOpen(!isOpen), []);
     const handleClose = React.useCallback(() => setIsOpen(false), []);
+    const footerActions = (
+        <>
+            <Tooltip content="This button is hooked up to close the dialog.">
+                <Button onClick={handleClose}>Close</Button>
+            </Tooltip>
+            <VisitFoundryWebsiteAnchorButton />
+        </>
+    );
+
     return (
         <>
             <Button onClick={handleButtonClick} text={buttonText} />
             <Dialog {...props} isOpen={isOpen} onClose={handleClose}>
-                <DialogBody />
-                {includeFooter ? (
-                    <DialogFooter handleClose={handleClose} />
-                ) : (
-                    <div style={{ margin: "0 20px" }}>
-                        <VisitFoundryWebsiteAnchorButton fill={true} />
-                    </div>
-                )}
+                <DialogBody useOverflowScrollContainer={footerStyle === "minimal" ? false : undefined}>
+                    <p>
+                        <strong>
+                            Data integration is the seminal problem of the digital age. For over ten years, we’ve helped
+                            the world’s premier organizations rise to the challenge.
+                        </strong>
+                    </p>
+                    <p>
+                        Palantir Foundry radically reimagines the way enterprises interact with data by amplifying and
+                        extending the power of data integration. With Foundry, anyone can source, fuse, and transform
+                        data into any shape they desire. Business analysts become data engineers — and leaders in their
+                        organization’s data revolution.
+                    </p>
+                    <p>
+                        Foundry’s back end includes a suite of best-in-class data integration capabilities: data
+                        provenance, git-style versioning semantics, granular access controls, branching, transformation
+                        authoring, and more. But these powers are not limited to the back-end IT shop.
+                    </p>
+                    <p>
+                        In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data
+                        integrations in their own right. Access controls, transformation logic, and data quality flow
+                        from original data source to intermediate analysis to presentation in real time. Every end
+                        product created in Foundry becomes a new data source that other users can build upon. And the
+                        enterprise data foundation goes where the business drives it.
+                    </p>
+                    <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
+                </DialogBody>
+
+                {footerStyle === "default" && <DialogFooter actions={footerActions}>All checks passed</DialogFooter>}
+
+                {footerStyle === "minimal" && <DialogFooter minimal={true} actions={footerActions} />}
             </Dialog>
         </>
-    );
-}
-
-function DialogBody() {
-    return (
-        <div className={Classes.DIALOG_BODY}>
-            <p>
-                <strong>
-                    Data integration is the seminal problem of the digital age. For over ten years, we’ve helped the
-                    world’s premier organizations rise to the challenge.
-                </strong>
-            </p>
-            <p>
-                Palantir Foundry radically reimagines the way enterprises interact with data by amplifying and extending
-                the power of data integration. With Foundry, anyone can source, fuse, and transform data into any shape
-                they desire. Business analysts become data engineers — and leaders in their organization’s data
-                revolution.
-            </p>
-            <p>
-                Foundry’s back end includes a suite of best-in-class data integration capabilities: data provenance,
-                git-style versioning semantics, granular access controls, branching, transformation authoring, and more.
-                But these powers are not limited to the back-end IT shop.
-            </p>
-            <p>
-                In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data integrations
-                in their own right. Access controls, transformation logic, and data quality flow from original data
-                source to intermediate analysis to presentation in real time. Every end product created in Foundry
-                becomes a new data source that other users can build upon. And the enterprise data foundation goes where
-                the business drives it.
-            </p>
-            <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
-        </div>
-    );
-}
-
-function DialogFooter(props: { handleClose: (e: React.MouseEvent) => void }) {
-    return (
-        <div className={Classes.DIALOG_FOOTER}>
-            <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                <Tooltip content="This button is hooked up to close the dialog.">
-                    <Button onClick={props.handleClose}>Close</Button>
-                </Tooltip>
-                <VisitFoundryWebsiteAnchorButton />
-            </div>
-        </div>
     );
 }
 

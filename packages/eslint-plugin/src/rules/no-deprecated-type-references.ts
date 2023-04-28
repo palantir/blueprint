@@ -8,6 +8,7 @@ import { TSESTree } from "@typescript-eslint/utils";
 
 import { createRule } from "./utils/createRule";
 import { FixList } from "./utils/fixList";
+import { getAllIdentifiersInFile } from "./utils/getAllIdentifiersInFile";
 import { getProgram } from "./utils/getProgram";
 import { replaceImportInFile } from "./utils/replaceImportInFile";
 
@@ -27,7 +28,8 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "IIntentProps",
         "IActionProps",
         "ILinkProps",
-        "IControlledProps",
+        ["IControlledProps", "ControlledProps2"],
+        "IControlledProps2",
         "IOptionProps",
         "IKeyAllowlist",
         "IKeyDenylist",
@@ -52,7 +54,8 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "ICheckboxProps",
         "IFileInputProps",
         "IFormGroupProps",
-        "IInputGroupProps",
+        ["IInputGroupProps", "InputGroupProps2"],
+        "IInputGroupProps2",
         "INumericInputProps",
         "IRadioGroupProps",
         "ITextAreaProps",
@@ -199,6 +202,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
         > = [];
         // keep a list of already fixed imports in the file so that we do not report overlapping fixes
         const fixedImportNames: string[] = [];
+        const identifiersInFile = getAllIdentifiersInFile(context.getSourceCode());
 
         function isDeprecatedTypeReference(name: string) {
             return (
@@ -252,22 +256,24 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                         if (isDeprecatedTypeReference(node.typeName.name)) {
                             const deprecatedTypeName = node.typeName.name;
                             const newTypeName = deprecatedToNewType[deprecatedTypeName];
+                            const doesNewTypeRequireAlias = identifiersInFile.includes(newTypeName);
+                            const newTypeAlias = doesNewTypeRequireAlias ? `Blueprint${newTypeName}` : undefined;
                             context.report({
                                 data: { deprecatedTypeName, newTypeName },
                                 messageId: "migration",
                                 node,
                                 fix: fixer => {
                                     const fixes = new FixList();
-                                    fixes.addFixes(fixer.replaceText(node.typeName, newTypeName));
+                                    fixes.addFixes(fixer.replaceText(node.typeName, newTypeAlias ?? newTypeName));
                                     const program = getProgram(node);
                                     if (program !== undefined && !fixedImportNames.includes(deprecatedTypeName)) {
                                         fixes.addFixes(
-                                            replaceImportInFile(
-                                                program,
-                                                deprecatedTypeName,
-                                                newTypeName,
-                                                newTypeToPackageName[newTypeName],
-                                            )(fixer),
+                                            replaceImportInFile(program, {
+                                                fromName: deprecatedTypeName,
+                                                toName: newTypeName,
+                                                alias: newTypeAlias,
+                                                moduleSpecifier: newTypeToPackageName[newTypeName],
+                                            })(fixer),
                                         );
                                         fixedImportNames.push(deprecatedTypeName);
                                     }
@@ -302,22 +308,24 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                     if (isDeprecatedTypeReference(node.expression.name)) {
                         const deprecatedTypeName = node.expression.name;
                         const newTypeName = deprecatedToNewType[deprecatedTypeName];
+                        const doesNewTypeRequireAlias = identifiersInFile.includes(newTypeName);
+                        const newTypeAlias = doesNewTypeRequireAlias ? `Blueprint${newTypeName}` : undefined;
                         context.report({
                             data: { deprecatedTypeName, newTypeName },
                             messageId: "migration",
                             node,
                             fix: fixer => {
                                 const fixes = new FixList();
-                                fixes.addFixes(fixer.replaceText(node.expression, newTypeName));
+                                fixes.addFixes(fixer.replaceText(node.expression, newTypeAlias ?? newTypeName));
                                 const program = getProgram(node);
                                 if (program !== undefined && !fixedImportNames.includes(deprecatedTypeName)) {
                                     fixes.addFixes(
-                                        replaceImportInFile(
-                                            program,
-                                            deprecatedTypeName,
-                                            newTypeName,
-                                            newTypeToPackageName[newTypeName],
-                                        )(fixer),
+                                        replaceImportInFile(program, {
+                                            fromName: deprecatedTypeName,
+                                            toName: newTypeName,
+                                            alias: newTypeAlias,
+                                            moduleSpecifier: newTypeToPackageName[newTypeName],
+                                        })(fixer),
                                     );
                                     fixedImportNames.push(deprecatedTypeName);
                                 }

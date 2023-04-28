@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { Button, ButtonGroup, Classes, H1, Popover, Switch, Tooltip } from "@blueprintjs/core";
+import { Button, ButtonGroup, Classes, Code, H1, Popover, Switch, Tooltip } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface TooltipExampleState {
@@ -74,8 +74,12 @@ export class TooltipExample extends React.PureComponent<ExampleProps, TooltipExa
                 <div>
                     This line's tooltip{" "}
                     <Tooltip
-                        className={Classes.TOOLTIP_INDICATOR}
-                        content={<span>BRRAAAIINS</span>}
+                        content={
+                            <span>
+                                Use <Code>{`compact={true}`}</Code> in data-dense UIs
+                            </span>
+                        }
+                        compact={true}
                         isOpen={this.state.isOpen}
                     >
                         is controlled by external state.

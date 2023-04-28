@@ -30,7 +30,11 @@ export {
     ContextMenuChildrenProps,
     ContextMenuContentProps,
 } from "./context-menu/contextMenu";
+export { ContextMenuPopover, ContextMenuPopoverProps } from "./context-menu/contextMenuPopover";
+export { showContextMenu, hideContextMenu } from "./context-menu/contextMenuSingleton";
 export * from "./dialog/dialog";
+export * from "./dialog/dialogBody";
+export * from "./dialog/dialogFooter";
 export type { DialogStepButtonProps } from "./dialog/dialogStepButton";
 export * from "./dialog/dialogStep";
 export * from "./dialog/multistepDialog";
@@ -65,8 +69,11 @@ export { PanelStack, PanelStackProps } from "./panel-stack/panelStack";
 export { Panel, PanelProps } from "./panel-stack/panelTypes";
 export { PopoverProps, Popover, PopoverInteractionKind } from "./popover/popover";
 export {
+    DefaultPopoverTargetHTMLProps,
     PopoverSharedProps,
     PopoverTargetProps,
+    PopoverClickTargetHandlers,
+    PopoverHoverTargetHandlers,
     PopperBoundary,
     PopperModifierOverrides,
     Placement,
@@ -76,7 +83,7 @@ export {
 export { PopupKind } from "./popover/popupKind";
 export { Portal, PortalProps } from "./portal/portal";
 export * from "./progress-bar/progressBar";
-export * from "./resize-sensor/resizeSensor";
+export { ResizeSensor, ResizeSensorProps } from "./resize-sensor/resizeSensor";
 export * from "./slider/handleProps";
 export * from "./slider/multiSlider";
 export * from "./slider/rangeSlider";

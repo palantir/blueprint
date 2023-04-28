@@ -71,6 +71,11 @@ function nextName() {
     return `${RadioGroup.displayName}-${counter++}`;
 }
 
+/**
+ * Radio group component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/radio.radiogroup
+ */
 export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.RadioGroup`;
 

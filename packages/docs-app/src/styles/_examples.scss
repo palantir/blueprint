@@ -1,21 +1,30 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/lib/scss/variables";
-@import "~@blueprintjs/core/src/common/react-transition";
-@import "~@blueprintjs/core/src/components/icon/icon-mixins";
+@import "@blueprintjs/core/src/common/react-transition";
+@import "@blueprintjs/core/src/common/variables-extended";
+@import "@blueprintjs/core/src/components/icon/icon-mixins";
+@import "@blueprintjs/icons/lib/scss/variables";
 
 // Generate a selector for a page ID by reference
 @function page($ref, $comparator: "$=") {
   @return '[data-page-id#{$comparator}"#{$ref}"]';
 }
 
-// Generate a selector for a React example by name
-@function example($NameExample, $comparator: "=") {
-  @return '[data-example-id#{$comparator}"#{$NameExample}"]';
+// Generate a selector for a React component example by name
+@function example($ComponentName, $comparator: "=") {
+  @return '[data-example-id#{$comparator}"#{$ComponentName}Example"]';
 }
 
-// Specific example customizations
+// Common modifiers, incubating usage before they can be incorporated into @blueprintjs/docs-theme
+
+.docs-flex-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+// Example-specific customizations
 
 //
 // CORE
@@ -32,13 +41,26 @@
   width: $pt-grid-size * 35;
 }
 
-#{example("ButtonsExample")} {
+#{example("Buttons")} {
+  .docs-example {
+    flex-direction: column;
+    gap: $pt-grid-size * 3;
+
+    > * {
+      margin: 0;
+    }
+
+    p {
+      text-align: center;
+    }
+  }
+
   .docs-wiggle {
     animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
   }
 }
 
-#{example("EditableTextExample")} {
+#{example("EditableText")} {
   .docs-example {
     display: block;
   }
@@ -48,7 +70,7 @@
   }
 }
 
-#{example("FormGroupExample")} {
+#{example("FormGroup")} {
   .docs-example {
     flex-direction: column;
   }
@@ -58,11 +80,11 @@
   }
 }
 
-#{example("MenuExample")} .#{$ns}-menu {
+#{example("Menu")} .#{$ns}-menu {
   max-width: 280px;
 }
 
-#{example("DialogExample")} .docs-example-options {
+#{example("Dialog")} .docs-example-options {
   max-width: 260px;
 }
 
@@ -70,7 +92,7 @@
   min-height: 150px;
 }
 
-#{example("TagExample")} {
+#{example("Tag")} {
   .docs-example {
     flex-direction: column;
   }
@@ -178,7 +200,7 @@
   }
 }
 
-#{example("HotkeyTester")} {
+#{example("HotkeyTesterExample")} {
   .docs-hotkey-tester {
     @include pt-flex-container(column, $pt-grid-size);
     align-items: center;
@@ -214,7 +236,7 @@
   }
 }
 
-#{example("OverflowListExample")} {
+#{example("OverflowList")} {
   .#{$ns}-card {
     margin: 0;
     min-width: $pt-grid-size * 7;
@@ -261,7 +283,7 @@
   height: 200%;
 }
 
-#{example("PopoverExample")} {
+#{example("Popover")} {
   .docs-example {
     display: block;
     max-height: 785px;
@@ -285,7 +307,7 @@
   }
 }
 
-#{example("PopoverDismissExample")} {
+#{example("PopoverDismiss")} {
   height: 220px;
 
   .docs-reopen-message {
@@ -307,7 +329,7 @@
   }
 }
 
-#{example("PanelStackExample")} {
+#{example("PanelStack")} {
   .docs-panel-stack-example {
     box-shadow: $pt-elevation-shadow-0;
     height: 240px;
@@ -330,56 +352,73 @@
 }
 
 .docs-popover-placement-example {
+  .docs-example-grid {
+    display: grid;
+    gap: $pt-grid-size;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 2fr 1fr;
+    justify-content: stretch;
+    margin: 0;
+  }
+
+  @each $row-line in (1, 2, 3) {
+    @each $col-line in (1, 2, 3) {
+      .docs-example-grid-#{$row-line}-#{$col-line} {
+        grid-column: #{$col-line}/#{$col-line + 1};
+        grid-row: #{$row-line}/#{$row-line + 1};
+      }
+    }
+  }
+
+  @each $line in (1, 2, 3) {
+    // top row and first col
+    .docs-example-grid-1-#{$line},
+    .docs-example-grid-#{$line}-1 {
+      align-self: end;
+    }
+
+    // middle row and middle col
+    .docs-example-grid-2-#{$line},
+    .docs-example-grid-#{$line}-2 {
+      align-self: stretch;
+    }
+
+    // last row and last col
+    .docs-example-grid-3-#{$line},
+    .docs-example-grid-#{$line}-3 {
+      align-self: start;
+    }
+  }
+
+  // middle area
+  .docs-example-grid-2-2 {
+    align-self: center;
+    text-align: center;
+  }
+
   em {
-    color: $pt-text-color-muted;
     display: inline-block;
-    font-style: italic;
     max-width: 25 * $pt-grid-size;
 
     .#{$ns}-dark & {
       color: $pt-dark-text-color-muted;
     }
   }
+}
 
-  td:nth-child(1) {
-    align-items: flex-end;
-    display: flex;
-    flex-direction: column;
-  }
-
-  td:nth-child(2) {
-    text-align: center;
-  }
-
-  td:nth-child(3) {
-    align-items: flex-start;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .#{$ns}-popover-wrapper {
-    // Add a bit of space between borders of consecutive buttons.
-    margin: $pt-grid-size * 0.5;
-  }
-
+.docs-popover-placement-example-content {
   .#{$ns}-popover-content {
-    align-items: center;
-    display: flex;
-    height: 7 * $pt-grid-size;
-    justify-content: center;
     line-height: 2;
-    padding: $pt-grid-size * 2;
+    padding: $pt-grid-size ($pt-grid-size * 2);
     text-align: center;
-    // big enough to make the shifting arrow position noticeable
-    width: 20 * $pt-grid-size;
+  }
 
-    code {
-      font-weight: 600;
-    }
+  code {
+    font-weight: 600;
   }
 }
 
-.docs-popover-position-value-code-block {
+.docs-popover-placement-value-code-block {
   font-size: $pt-font-size-large;
   font-weight: 600;
   text-align: center;
@@ -463,11 +502,7 @@
   margin-top: $pt-grid-size * 0.5;
 }
 
-.docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
-  line-height: $pt-navbar-height;
-}
-
-#{example("TooltipExample")} {
+#{example("Tooltip")} {
   .docs-example {
     flex-direction: column;
 
@@ -477,25 +512,24 @@
   }
 }
 
-#{example("ButtonGroupExample")},
-#{example("ButtonGroupPopoverExample")} {
+#{example("ButtonGroup")},
+#{example("ButtonGroupPopover")} {
   .docs-example > * {
     margin: 0;
   }
 }
 
-#{example("ToastExample")} {
+#{example("Toast")} {
   .docs-example {
     // necessary for inline Toaster (usePortal={false})
     position: relative;
   }
 }
 
-.docs-text-example-dropdown-menu {
-  max-height: 500px;
-  // force ellipsize: true to do some actual work
-  max-width: 250px;
-  overflow: auto;
+#{example("Tabs")} {
+  .docs-example .#{$ns}-heading {
+    margin-bottom: 0;
+  }
 }
 
 //
@@ -510,7 +544,7 @@
     justify-content: center;
   }
 
-  #{example("TimezoneSelectExample")} .docs-example {
+  #{example("TimezoneSelect")} .docs-example {
     flex-direction: row;
   }
 }
@@ -520,7 +554,7 @@
   align-items: center;
 }
 
-#{example("DateInputExample")} {
+#{example("DateInput")} {
   .docs-example > * {
     margin: 0 0 20px;
   }
@@ -530,14 +564,21 @@
 // DATETIME2
 //
 
-#{example("DateInput2Example")} {
+#{example("DateInput2")} {
   .#{$ns}-date-input {
     // should not grow in vertical direction when fill={true}
     flex-grow: 0;
-    margin: 0;
     min-width: 300px;
   }
 }
+
+// these component examples have a "fill" prop option, which doesn't work nicely with the default margin
+#{example("DateInput2")}, #{example("DateRangeInput2")} {
+  .docs-example > * {
+    margin: 0;
+  }
+}
+
 
 //
 // TABLE

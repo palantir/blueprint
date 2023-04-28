@@ -132,6 +132,11 @@ export interface DateRangePickerState {
     selectedShortcutIndex?: number;
 }
 
+/**
+ * Date range picker component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime/daterangepicker
+ */
 export class DateRangePicker extends AbstractPureComponent<DateRangePickerProps, DateRangePickerState> {
     public static defaultProps: DateRangePickerProps = {
         allowSingleDayRange: false,

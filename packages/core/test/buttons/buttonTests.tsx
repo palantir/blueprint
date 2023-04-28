@@ -114,6 +114,14 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
             checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.SPACE);
         });
 
+        it("calls onClick when enter key released", done => {
+            checkClickTriggeredOnKeyUp(done, {}, { which: Keys.ENTER });
+        });
+
+        it("calls onClick when space key released", done => {
+            checkClickTriggeredOnKeyUp(done, {}, { which: Keys.SPACE });
+        });
+
         it("attaches ref with createRef", () => {
             const ref = React.createRef<HTMLButtonElement>();
             const wrapper = button({ ref });
@@ -146,6 +154,27 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
         function button(props: ButtonProps, ...children: React.ReactNode[]) {
             const element = React.createElement(component, props, ...children);
             return mount(element);
+        }
+
+        function checkClickTriggeredOnKeyUp(
+            done: Mocha.Done,
+            buttonProps: Partial<ButtonProps>,
+            keyEventProps: Partial<React.KeyboardEvent<any>>,
+        ) {
+            const wrapper = button(buttonProps, true);
+
+            // mock the DOM click() function, because enzyme only handles
+            // simulated React events
+            const buttonRef = (wrapper.instance() as any).buttonRef;
+            const onClick = spy(buttonRef, "click");
+
+            wrapper.simulate("keyup", keyEventProps);
+
+            // wait for the whole lifecycle to run
+            setTimeout(() => {
+                assert.equal(onClick.callCount, 1);
+                done();
+            }, 0);
         }
 
         function checkKeyEventCallbackInvoked(callbackPropName: string, eventName: string, keyCode: number) {

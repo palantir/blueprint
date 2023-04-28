@@ -14,52 +14,53 @@
  * limitations under the License.
  */
 
-import React, { useCallback } from "react";
-
-import { ChevronLeft } from "@blueprintjs/icons";
+import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Button } from "../button/buttons";
 import { Text } from "../text/text";
-import { Panel } from "./panelTypes";
+import { Panel, PanelProps } from "./panelTypes";
 
-export interface PanelViewProps {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export interface PanelViewProps<T extends Panel<object>> {
     /**
      * Callback invoked when the user presses the back button or a panel invokes
      * the `closePanel()` injected prop method.
      */
-    onClose: (removedPanel: Panel) => void;
+    onClose: (removedPanel: T) => void;
 
     /**
      * Callback invoked when a panel invokes the `openPanel(panel)` injected
      * prop method.
      */
-    onOpen: (addedPanel: Panel) => void;
+    onOpen: (addedPanel: T) => void;
 
     /** The panel to be displayed. */
-    panel: Panel;
+    panel: T;
 
     /** The previous panel in the stack, for rendering the "back" button. */
-    previousPanel?: Panel;
+    previousPanel?: T;
 
     /** Whether to show the header with the "back" button. */
     showHeader: boolean;
 }
 
 interface PanelViewComponent {
-    (props: PanelViewProps): JSX.Element | null;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    <T extends Panel<object>>(props: PanelViewProps<T>): JSX.Element | null;
     displayName: string;
 }
 
-export const PanelView: PanelViewComponent = (props: PanelViewProps) => {
-    const handleClose = useCallback(() => props.onClose(props.panel), [props.onClose, props.panel]);
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const PanelView: PanelViewComponent = <T extends Panel<object>>(props: PanelViewProps<T>) => {
+    const handleClose = React.useCallback(() => props.onClose(props.panel), [props.onClose, props.panel]);
 
     const maybeBackButton =
         props.previousPanel === undefined ? null : (
             <Button
                 aria-label="Back"
                 className={Classes.PANEL_STACK_HEADER_BACK}
-                icon={<ChevronLeft />}
+                icon="chevron-left"
                 minimal={true}
                 onClick={handleClose}
                 small={true}
@@ -73,10 +74,15 @@ export const PanelView: PanelViewComponent = (props: PanelViewProps) => {
     // those hooks with their own lifecycle through a very simple wrapper component.
     const PanelWrapper: React.FC = React.useMemo(
         () => () =>
+            // N.B. A type cast is required because of error TS2345, where technically `panel.props` could be
+            // instantiated with a type unrelated to our generic constraint `T` here. We know
+            // we're sending the right values here though, and it makes the consumer API for this
+            // component type safe, so it's ok to do this...
             props.panel.renderPanel({
                 closePanel: handleClose,
                 openPanel: props.onOpen,
-            }),
+                ...props.panel.props,
+            } as PanelProps<T>),
         [props.panel, props.onOpen],
     );
 

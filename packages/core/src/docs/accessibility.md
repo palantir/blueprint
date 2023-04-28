@@ -47,7 +47,6 @@ to a container element.
 ```tsx
 import { Classes } from "@blueprintjs/core";
 
-
 const MyComponent = () => ({
     <div classname={Classes.FOCUS_STYLE_MANAGER_IGNORE}>
         // Any components here will always show the focus outline when clicked.

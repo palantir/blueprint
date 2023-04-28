@@ -18,6 +18,7 @@ import { assert } from "chai";
 import classNames from "classnames";
 import { mount, ReactWrapper } from "enzyme";
 import React, { createRef } from "react";
+import ReactDOM from "react-dom";
 import { spy } from "sinon";
 
 import {
@@ -34,12 +35,13 @@ import {
     TooltipProps,
 } from "../../src";
 
-const MENU_ITEMS = [
-    <MenuItem key="left" icon="align-left" text="Align Left" />,
-    <MenuItem key="center" icon="align-center" text="Align Center" />,
-    <MenuItem key="right" icon="align-right" text="Align Right" />,
-];
-const MENU = <Menu>{MENU_ITEMS}</Menu>;
+const MENU = (
+    <Menu>
+        <MenuItem icon="align-left" text="Align Left" />
+        <MenuItem icon="align-center" text="Align Center" />
+        <MenuItem icon="align-right" text="Align Right" />
+    </Menu>
+);
 const TARGET_CLASSNAME = "test-target";
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 const COMMON_TOOLTIP_PROPS: Partial<TooltipProps> = {
@@ -56,7 +58,8 @@ describe("ContextMenu", () => {
         document.body.appendChild(containerElement);
     });
     afterEach(() => {
-        containerElement?.remove();
+        ReactDOM.unmountComponentAtNode(containerElement!);
+        containerElement!.remove();
     });
 
     describe("basic usage", () => {
@@ -112,6 +115,20 @@ describe("ContextMenu", () => {
             ctxMenu.find("[data-testid='item']").hostNodes().simulate("click");
             assert.isTrue(itemClickSpy.calledOnce, "menu item click handler should be called once");
             assert.isFalse(wrapperClickSpy.called, "ctx menu wrapper click handler should not be called");
+        });
+
+        it("allows overrding some Popover2 props", () => {
+            const placement = "top";
+            const popoverClassName = "test-popover-class";
+            const ctxMenu = mountTestMenu({ popoverProps: { placement, popoverClassName } });
+            openCtxMenu(ctxMenu);
+            const popoverWithTopPlacement = document.querySelector(
+                `.${popoverClassName}.${Classes.POPOVER_CONTENT_PLACEMENT}-${placement}`,
+            );
+            assert.exists(
+                popoverWithTopPlacement,
+                `popover element with custom class '${popoverClassName}' and '${placement}' placement should exist`,
+            );
         });
 
         function mountTestMenu(props: Partial<ContextMenuProps> = {}) {
@@ -191,6 +208,7 @@ describe("ContextMenu", () => {
                 ctxMenuPopover.hasClass(Classes.DARK),
                 "ContextMenu popover should be open WITH dark theme applied",
             );
+            closeCtxMenu(wrapper);
         });
 
         it("detects theme change (dark -> light)", () => {
@@ -209,6 +227,7 @@ describe("ContextMenu", () => {
                 ctxMenuPopover.hasClass(Classes.DARK),
                 "ContextMenu popover should be open WITHOUT dark theme applied",
             );
+            closeCtxMenu(wrapper);
         });
     });
 
@@ -488,14 +507,6 @@ describe("ContextMenu", () => {
             }
             target.hostNodes().closest(`.${Classes.POPOVER_TARGET}`).simulate("mouseenter");
         }
-
-        function closeCtxMenu(wrapper: ReactWrapper) {
-            const backdrop = wrapper.find(`.${Classes.CONTEXT_MENU_BACKDROP}`);
-            if (backdrop.exists()) {
-                backdrop.simulate("click");
-                wrapper.update();
-            }
-        }
     });
 
     function openCtxMenu(ctxMenu: ReactWrapper, targetClassName = TARGET_CLASSNAME) {
@@ -508,6 +519,14 @@ describe("ContextMenu", () => {
             .hostNodes()
             .simulate("contextmenu", { defaultPrevented: false, clientX: clientLeft + 10, clientY: clientTop + 10 })
             .update();
+    }
+
+    function closeCtxMenu(wrapper: ReactWrapper) {
+        const backdrop = wrapper.find(`.${Classes.CONTEXT_MENU_BACKDROP}`);
+        if (backdrop.exists()) {
+            backdrop.simulate("click");
+            wrapper.update();
+        }
     }
 
     function renderClickedInfo(targetOffset: ContextMenuContentProps["targetOffset"]) {

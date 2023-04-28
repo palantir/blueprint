@@ -10,6 +10,7 @@ import "@blueprintjs/core/lib/css/blueprint.css";
 // tslint:enable no-submodule-imports
 import "../lib/css/blueprint-select.css";
 
+import "./itemRendererTests";
 import "./listItemsPropsTests";
 import "./multiSelectTests";
 import "./omnibarTests";

@@ -160,6 +160,11 @@ export interface TimePickerState {
     isPm?: boolean;
 }
 
+/**
+ * Time picker component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime/timepicker
+ */
 export class TimePicker extends React.Component<TimePickerProps, TimePickerState> {
     public static defaultProps: TimePickerProps = {
         autoFocus: false,

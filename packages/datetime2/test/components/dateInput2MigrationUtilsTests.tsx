@@ -35,6 +35,13 @@ const controlledDateInputProps: Required<Pick<DateInputProps, "value" | "onChang
     value: new Date(),
 };
 
+const uncontrolledDateInputProps: Required<Pick<DateInputProps, "defaultValue" | "onChange">> = {
+    defaultValue: new Date(),
+    onChange: (_newDate: Date | null, _isUserChange: boolean) => {
+        // nothing
+    },
+};
+
 describe("DateInput2MigrationUtils", () => {
     it("Applying onChange + value adapters renders DateInput2 without error", () => {
         mount(
@@ -70,5 +77,37 @@ describe("DateInput2MigrationUtils", () => {
 
         date.setHours(0, 0, 10, 100);
         assert.notStrictEqual(DateInput2MigrationUtils.valueAdapter(date), valueWithExplicitPrecision);
+    });
+
+    it("Default value adapter works as expected", () => {
+        const precision = TimePrecision.MINUTE;
+        mount(
+            <DateInput2
+                {...dateFormattingProps}
+                timePrecision={precision}
+                onChange={DateInput2MigrationUtils.onChangeAdapter(uncontrolledDateInputProps.onChange)}
+                defaultValue={DateInput2MigrationUtils.defaultValueAdapter(
+                    uncontrolledDateInputProps.defaultValue,
+                    precision,
+                )}
+            />,
+        );
+    });
+
+    it("Adapters work in common usage pattern with React.useCallback + React.useMemo", () => {
+        function TestComponent() {
+            const handleChange = React.useCallback(
+                DateInput2MigrationUtils.onChangeAdapter(controlledDateInputProps.onChange),
+                [controlledDateInputProps.onChange],
+            );
+            const value = React.useMemo(
+                () => DateInput2MigrationUtils.valueAdapter(controlledDateInputProps.value),
+                [controlledDateInputProps.value],
+            );
+
+            return <DateInput2 {...dateFormattingProps} onChange={handleChange} value={value} />;
+        }
+
+        mount(<TestComponent />);
     });
 });

@@ -17,7 +17,7 @@
 import React from "react";
 
 import { FormGroup, H5, InputGroup, Intent, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -54,7 +54,7 @@ export class FormGroupExample extends React.PureComponent<ExampleProps, FormGrou
 
     private handleSubLabelChange = handleBooleanChange(subLabel => this.setState({ subLabel }));
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     public render() {
         const { disabled, helperText, inline, intent, label, subLabel, requiredLabel } = this.state;

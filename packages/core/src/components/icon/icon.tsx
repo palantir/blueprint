@@ -48,8 +48,16 @@ export interface IconProps extends IntentProps, Props, SVGIconProps {
      *   `<Element />` instead.
      */
     icon: IconName | MaybeElement;
+
+    /** Props to apply to the `SVG` element */
+    svgProps?: React.HTMLAttributes<SVGElement>;
 }
 
+/**
+ * Icon component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/icon
+ */
 export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> = forwardRef<any, IconProps>(
     (props, ref) => {
         const { icon } = props;
@@ -67,6 +75,7 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
             icon: _icon,
             intent,
             tagName,
+            svgProps,
             title,
             htmlTitle,
             ...htmlProps
@@ -113,6 +122,7 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
                     title={title}
                     htmlTitle={htmlTitle}
                     ref={ref}
+                    svgProps={svgProps}
                     {...htmlProps}
                 />
             );

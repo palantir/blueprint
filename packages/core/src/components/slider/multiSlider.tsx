@@ -65,14 +65,14 @@ export interface SliderBaseProps extends Props, IntentProps {
     labelPrecision?: number;
 
     /**
-     * Maximum value of the slider.
+     * Maximum value of the slider. Value must be a finite number.
      *
      * @default 10
      */
     max?: number;
 
     /**
-     * Minimum value of the slider.
+     * Minimum value of the slider. Value must be a finite number.
      *
      * @default 0
      */
@@ -132,6 +132,11 @@ export interface SliderState {
     tickSizeRatio: number;
 }
 
+/**
+ * Multi slider component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/sliders.multi-slider
+ */
 export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderState> {
     public static defaultSliderProps: SliderBaseProps = {
         disabled: false,
@@ -219,6 +224,12 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
         }
         if (props.labelStepSize !== undefined && props.labelStepSize! <= 0) {
             throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
+        }
+        if (props.min !== undefined && !isFinite(props.min)) {
+            throw new Error(Errors.SLIDER_MIN);
+        }
+        if (props.max !== undefined && !isFinite(props.max)) {
+            throw new Error(Errors.SLIDER_MAX);
         }
 
         let anyInvalidChildren = false;

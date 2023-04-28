@@ -116,6 +116,11 @@ export enum AnimationStates {
     CLOSED,
 }
 
+/**
+ * Collapse component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/collapse
+ */
 export class Collapse extends AbstractPureComponent<CollapseProps, CollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
@@ -200,7 +205,7 @@ export class Collapse extends AbstractPureComponent<CollapseProps, CollapseState
                 className={Classes.COLLAPSE_BODY}
                 ref={this.contentsRefHandler}
                 style={contentsStyle}
-                aria-hidden={!isContentVisible && this.props.keepChildrenMounted}
+                aria-hidden={!isContentVisible}
             >
                 {shouldRenderChildren ? this.props.children : null}
             </div>,

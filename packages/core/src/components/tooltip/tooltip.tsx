@@ -17,21 +17,29 @@
 import classNames from "classnames";
 import React from "react";
 
-import { DISPLAYNAME_PREFIX, IntentProps } from "../../common";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX, IntentProps } from "../../common";
 import * as Classes from "../../common/classes";
 // eslint-disable-next-line import/no-cycle
 import { Popover, PopoverInteractionKind } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
-import { PopoverSharedProps } from "../popover/popoverSharedProps";
+import { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
 import { TooltipContext, TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 
-export interface TooltipProps<TProps = React.HTMLProps<HTMLElement>>
+export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
     extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose">,
         IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
     content: JSX.Element | string;
+
+    /**
+     * Whether to use a compact appearance, which reduces the visual padding around
+     * tooltip content.
+     *
+     * @default false
+     */
+    compact?: boolean;
 
     /**
      * The amount of time in milliseconds the tooltip should remain open after
@@ -71,22 +79,30 @@ export interface TooltipProps<TProps = React.HTMLProps<HTMLElement>>
     transitionDuration?: number;
 }
 
-export class Tooltip<T> extends React.PureComponent<TooltipProps<T>> {
+/**
+ * Tooltip component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tooltip
+ */
+export class Tooltip<
+    T extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps,
+> extends AbstractPureComponent<TooltipProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
-    // eslint-disable-next-line deprecation/deprecation
     public static defaultProps: Partial<TooltipProps> = {
+        compact: false,
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
+        interactionKind: "hover-target",
         minimal: false,
         transitionDuration: 100,
     };
 
-    private popover: Popover<T> | null = null;
+    private popoverRef = React.createRef<Popover<T>>();
 
     public render() {
         // if we have an ancestor TooltipContext, we should take its state into account in this render path,
-        // it was likely created by a parent ContextMenu2
+        // it was likely created by a parent ContextMenu
         return (
             <TooltipContext.Consumer>
                 {([state]) => <TooltipProvider {...state}>{this.renderPopover}</TooltipProvider>}
@@ -95,24 +111,18 @@ export class Tooltip<T> extends React.PureComponent<TooltipProps<T>> {
     }
 
     public reposition() {
-        if (this.popover != null) {
-            this.popover.reposition();
-        }
+        this.popoverRef.current?.reposition();
     }
 
-    // any descendant ContextMenu2s may update this ctxState
+    // any descendant ContextMenus may update this ctxState
     private renderPopover = (ctxState: TooltipContextState) => {
-        const { children, disabled, intent, popoverClassName, ...restProps } = this.props;
-        const classes = classNames(
-            Classes.TOOLTIP,
-            { [Classes.MINIMAL]: this.props.minimal },
-            Classes.intentClass(intent),
-            popoverClassName,
-        );
+        const { children, compact, disabled, intent, popoverClassName, ...restProps } = this.props;
+        const popoverClasses = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName, {
+            [Classes.COMPACT]: compact,
+        });
 
         return (
             <Popover
-                interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 modifiers={{
                     arrow: {
                         enabled: !this.props.minimal,
@@ -129,9 +139,9 @@ export class Tooltip<T> extends React.PureComponent<TooltipProps<T>> {
                 disabled={ctxState.forceDisabled ?? disabled}
                 enforceFocus={false}
                 lazy={true}
-                popoverClassName={classes}
+                popoverClassName={popoverClasses}
                 portalContainer={this.props.portalContainer}
-                ref={ref => (this.popover = ref)}
+                ref={this.popoverRef}
             >
                 {children}
             </Popover>

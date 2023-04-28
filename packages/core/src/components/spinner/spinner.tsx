@@ -71,6 +71,11 @@ export interface SpinnerProps<T extends HTMLElement = HTMLElement> extends Props
     value?: number;
 }
 
+/**
+ * Spinner component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/spinner
+ */
 export class Spinner extends AbstractPureComponent<SpinnerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
 

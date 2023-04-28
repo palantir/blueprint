@@ -1,7 +1,7 @@
 @# Date range input
 
 <div class="@ns-callout @ns-intent-success @ns-icon-star">
-    <h4 class="@ns-heading">Newer API available</h4>
+    <h5 class="@ns-heading">Newer API available</h5>
 
 There is an updated version of this component available in the new
 [__@blueprintjs/datetime2__ package](#datetime2) called

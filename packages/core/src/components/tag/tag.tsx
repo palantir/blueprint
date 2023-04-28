@@ -110,6 +110,11 @@ export interface TagProps
     htmlTitle?: string;
 }
 
+/**
+ * Tag component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tag
+ */
 export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
     const {
         active,
@@ -153,7 +158,7 @@ export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
             type="button"
             className={Classes.TAG_REMOVE}
             onClick={handleRemoveClick}
-            tabIndex={interactive ? tabIndex : undefined}
+            tabIndex={tabIndex}
         >
             <SmallCross size={isLarge ? IconSize.LARGE : IconSize.STANDARD} />
         </button>

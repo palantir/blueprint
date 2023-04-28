@@ -26,6 +26,7 @@ import {
     InputGroupProps,
     Keys,
     Popover,
+    PopoverClickTargetHandlers,
     PopoverTargetProps,
     PopupKind,
     refHandler,
@@ -54,8 +55,7 @@ export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
 
     /**
      * Whether the component should take up the full width of its container.
-     * This overrides `popoverProps.fill`. You also have to ensure that the child
-     * component has `fill` set to `true` or is styled appropriately.
+     * You also have to ensure that the child component has `fill` set to `true` or is styled appropriately.
      */
     fill?: boolean;
 
@@ -68,21 +68,18 @@ export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
     filterable?: boolean;
 
     /**
-     * Props to spread to the query `InputGroup`. Use `query` and
-     * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
-     * to control this input.
+     * Props to pass to the query [InputGroup component](#core/components/text-inputs.input-group).
+     *
+     * Some properties are unavailable:
+     * - `inputProps.value`: use `query` instead
+     * - `inputProps.onChange`: use `onQueryChange` instead
      */
-    inputProps?: InputGroupProps;
+    inputProps?: Partial<Omit<InputGroupProps, "value" | "onChange">>;
 
     /**
-     * Props to spread to the `Menu` listbox containing the selectable options.
+     * HTML attributes to add to the `Menu` listbox containing the selectable options.
      */
     menuProps?: React.HTMLAttributes<HTMLUListElement>;
-
-    /**
-     * Props to add to the popover target wrapper element.
-     */
-    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -97,6 +94,11 @@ export interface SelectState {
     isOpen: boolean;
 }
 
+/**
+ * Select component.
+ *
+ * @see https://blueprintjs.com/docs/#select/select
+ */
 export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
 
@@ -212,29 +214,34 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         // N.B. pull out `isOpen` so that it's not forwarded to the DOM, but remember not to use it directly
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
-        ({ isOpen: _isOpen, ref, ...targetProps }: PopoverTargetProps & React.HTMLProps<HTMLDivElement>) => {
-            const { popoverTargetProps } = this.props;
+        ({ isOpen: _isOpen, ref, ...targetProps }: PopoverTargetProps & PopoverClickTargetHandlers) => {
+            const { disabled, popoverProps = {}, popoverTargetProps } = this.props;
             const { handleKeyDown, handleKeyUp } = listProps;
-            return (
-                <div
-                    aria-controls={this.listboxId}
-                    {...popoverTargetProps}
-                    {...targetProps}
-                    aria-expanded={isOpen}
+            const { targetTagName = "div" } = popoverProps;
+            return React.createElement(
+                targetTagName,
+                {
+                    "aria-controls": this.listboxId,
+                    ...popoverTargetProps,
+                    ...targetProps,
+                    "aria-disabled": disabled,
+                    "aria-expanded": isOpen,
                     // Note that we must set FILL here in addition to children to get the wrapper element to full width
-                    className={classNames(targetProps.className, popoverTargetProps?.className, {
+                    className: classNames(targetProps.className, popoverTargetProps?.className, {
                         [CoreClasses.FILL]: this.props.fill,
-                    })}
+                    }),
                     // Normally, Popover would also need to attach its own `onKeyDown` handler via `targetProps`,
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
-                    onKeyDown={isOpen ? handleKeyDown : this.handleTargetKeyDown}
-                    onKeyUp={isOpen ? handleKeyUp : undefined}
-                    ref={ref}
-                    role="combobox"
-                >
-                    {this.props.children}
-                </div>
+                    onKeyDown: this.withPopoverTargetPropsHandler(
+                        "keydown",
+                        isOpen ? handleKeyDown : this.handleTargetKeyDown,
+                    ),
+                    onKeyUp: this.withPopoverTargetPropsHandler("keyup", isOpen ? handleKeyUp : undefined),
+                    ref,
+                    role: "combobox",
+                },
+                this.props.children,
             );
         };
 
@@ -249,6 +256,24 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
             />
         ) : undefined;
     }
+
+    private withPopoverTargetPropsHandler = (
+        eventType: "keydown" | "keyup",
+        handler: React.KeyboardEventHandler<HTMLElement> | undefined,
+    ): React.KeyboardEventHandler<HTMLElement> => {
+        switch (eventType) {
+            case "keydown":
+                return event => {
+                    handler?.(event);
+                    this.props.popoverTargetProps?.onKeyDown?.(event);
+                };
+            case "keyup":
+                return event => {
+                    handler?.(event);
+                    this.props.popoverTargetProps?.onKeyUp?.(event);
+                };
+        }
+    };
 
     /**
      * Target wrapper element "keydown" handler while the popover is closed.
@@ -267,7 +292,11 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
-        this.setState({ isOpen: false });
+        const target = event?.target as HTMLElement;
+        const shouldDismiss =
+            target?.closest(`.${CoreClasses.MENU_ITEM}`)?.classList?.contains(CoreClasses.POPOVER_DISMISS) ?? true;
+
+        this.setState({ isOpen: !shouldDismiss });
         this.props.onItemSelect?.(item, event);
     };
 

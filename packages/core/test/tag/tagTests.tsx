@@ -80,16 +80,14 @@ describe("<Tag>", () => {
         assert.deepEqual(handleRemove.args[0][1][DATA_ATTR_FOO], tagProps[DATA_ATTR_FOO]);
     });
 
-    if (typeof React.createRef !== "undefined") {
-        it("supports ref objects", done => {
-            const tagRef = React.createRef<HTMLSpanElement>();
-            const wrapper = mount(<Tag ref={tagRef}>Hello</Tag>);
+    it("supports ref objects", done => {
+        const elementRef = React.createRef<HTMLSpanElement>();
+        const wrapper = mount(<Tag ref={elementRef}>Hello</Tag>);
 
-            // wait for the whole lifecycle to run
-            setTimeout(() => {
-                assert.equal(tagRef.current, wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
-                done();
-            }, 0);
-        });
-    }
+        // wait for the whole lifecycle to run
+        setTimeout(() => {
+            assert.equal(elementRef.current, wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
+            done();
+        }, 0);
+    });
 });

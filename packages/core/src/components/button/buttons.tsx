@@ -30,6 +30,11 @@ export { ButtonProps };
 
 export type AnchorButtonProps = ButtonProps<HTMLAnchorElement>;
 
+/**
+ * Button component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/button
+ */
 export const Button: React.FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     const commonAttributes = useSharedButtonAttributes(props, ref);
 
@@ -41,6 +46,11 @@ export const Button: React.FC<ButtonProps> = forwardRef<HTMLButtonElement, Butto
 });
 Button.displayName = `${DISPLAYNAME_PREFIX}.Button`;
 
+/**
+ * AnchorButton component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/button
+ */
 export const AnchorButton: React.FC<AnchorButtonProps> = forwardRef<HTMLAnchorElement, AnchorButtonProps>(
     (props, ref) => {
         const { href, tabIndex = 0 } = props;
@@ -138,6 +148,7 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
         disabled,
         onBlur: handleBlur,
         onClick: disabled ? undefined : props.onClick,
+        onFocus: disabled ? undefined : props.onFocus,
         onKeyDown: handleKeyDown,
         onKeyUp: handleKeyUp,
         ref: mergeRefs(buttonRef, ref),
@@ -154,8 +165,7 @@ function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(p
     return (
         <>
             {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={IconSize.LARGE} />}
-            {/* The icon is purely decorative if text is provided */}
-            <Icon key="leftIcon" icon={icon} aria-hidden={hasTextContent} tabIndex={hasTextContent ? -1 : undefined} />
+            <Icon key="leftIcon" icon={icon} />
             {hasTextContent && (
                 <span key="text" className={Classes.BUTTON_TEXT}>
                     {text}

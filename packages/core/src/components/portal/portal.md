@@ -39,7 +39,7 @@ Portal is used inside [Overlay](#core/components/overlay) to actually overlay th
 application.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-move">
-    <h4 class="@ns-heading">A note about responsive layouts</h4>
+    <h5 class="@ns-heading">A note about responsive layouts</h5>
 
 For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
 may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead

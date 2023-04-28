@@ -1,5 +1,19 @@
 @# useHotkeys
 
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h5 class="@ns-heading">
+
+Migrating from [HotkeysTarget](#core/components/hotkeys)?
+
+</h5>
+
+`useHotkeys` is a replacement for HotkeysTarget. You are encouraged to use this new API in your function
+components, or the [HotkeysTarget2 component](#core/components/hotkeys-target2) in your component classes,
+as they will become the standard APIs in a future major version of Blueprint. See the full
+[migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration) on the wiki.
+
+</div>
+
 The `useHotkeys` hook adds hotkey / keyboard shortcut interactions to your application using a custom React hook.
 Compared to the deprecated [Hotkeys](#core/components/hotkeys) API, it works with function components and its
 corresponding [context provider](#core/context/hotkeys-provider) allows more customization of the hotkeys dialog.
@@ -16,11 +30,13 @@ React application.
 Then, to register hotkeys and generate the relevant event handlers, use the hook like so:
 
 ```tsx
-import { useHotkeys } from "@blueprintjs/core";
-import React, { createRef, useMemo } from "react";
+import { InputGroup, KeyCombo, useHotkeys } from "@blueprintjs/core";
+import React, { createRef, useCallback, useMemo } from "react";
 
 export default function() {
     const inputRef = createRef<HTMLInputElement>();
+    const handleRefresh = useCallback(() => console.info("Refreshing data..."), []);
+    const handleFocus = useCallback(() => inputRef.current?.focus(), [inputRef]);
 
     // important: hotkeys array must be memoized to avoid infinitely re-binding hotkeys
     const hotkeys = useMemo(() => [
@@ -28,20 +44,20 @@ export default function() {
             combo: "R",
             global: true,
             label: "Refresh data",
-            onKeyDown: () => console.info("Refreshing data..."),
+            onKeyDown: handleRefresh,
         },
         {
             combo: "F",
             group: "Input",
             label: "Focus text input",
-            onKeyDown: inputRef.current?.focus(),
+            onKeyDown: handleFocus,
         },
-    ], []);
+    ], [handleRefresh, handleFocus]);
     const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys);
 
     return (
         <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-            Press "R" to refresh data, "F" to focus the input...
+            Press <KeyCombo combo="R" /> to refresh data, <KeyCombo combo="F" /> to focus the input...
             <InputGroup ref={inputRef} />
         </div>
     );

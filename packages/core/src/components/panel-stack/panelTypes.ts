@@ -17,16 +17,22 @@
 /**
  * An object describing a panel in a `PanelStack`.
  */
-export interface Panel {
+export interface Panel<P> {
     /**
      * The renderer for this panel.
      */
-    renderPanel: (props: PanelProps) => JSX.Element | null;
+    renderPanel: (props: PanelProps<P>) => JSX.Element | null;
 
     /**
      * HTML title to be passed to the <Text> component
      */
     htmlTitle?: string;
+
+    /**
+     * The props passed to the component type when it is rendered. The methods
+     * in `PanelActions` will be injected by `PanelStack`.
+     */
+    props?: P;
 
     /**
      * The title to be displayed above this panel. It is also used as the text
@@ -35,7 +41,7 @@ export interface Panel {
     title?: React.ReactNode;
 }
 
-export interface PanelProps {
+export interface PanelActions {
     /**
      * Call this method to programatically close this panel. If this is the only
      * panel on the stack then this method will do nothing.
@@ -48,5 +54,15 @@ export interface PanelProps {
     /**
      * Call this method to open a new panel on the top of the stack.
      */
-    openPanel(panel: Panel): void;
+    openPanel<P>(panel: Panel<P>): void;
 }
+
+/**
+ * Use this interface in your panel component's props type to access these
+ * panel action callbacks which are injected by `PanelStack`.
+ *
+ * See the code example in the docs website.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/panel-stack2
+ */
+export type PanelProps<P> = P & PanelActions;

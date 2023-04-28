@@ -7,6 +7,8 @@ using `inputProps`.
 
 @reactExample SuggestExample
 
+@## Props interface
+
 @interface SuggestProps
 
 @interface SelectItemRendererProps

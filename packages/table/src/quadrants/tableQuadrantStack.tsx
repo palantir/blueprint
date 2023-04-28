@@ -190,6 +190,8 @@ export interface TableQuadrantStackProps extends Props {
         showFrozenRowsOnly?: boolean,
     ) => JSX.Element | undefined;
 
+    renderScrollIndicatorOverlay?: (scrollBarWidth: number, columnHeaderHeight: number) => JSX.Element | undefined;
+
     /**
      * A callback that receives a `ref` to the main quadrant's row-header container.
      */
@@ -435,6 +437,7 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
 
         return (
             <div className={Classes.TABLE_QUADRANT_STACK}>
+                {this.renderTableOverlay()}
                 <TableQuadrant
                     {...baseProps}
                     bodyRef={this.props.bodyRef}
@@ -478,6 +481,16 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
         ];
         return refHandlers.reduce(reducer, {});
     }
+
+    // Scrolling overlay renderer
+    // ===========================
+
+    private renderTableOverlay = () => {
+        const columnHeaderHeight = this.cache.getColumnHeaderHeight();
+        const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
+        const scrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer!, "vertical");
+        return this.props.renderScrollIndicatorOverlay?.(scrollBarWidth, columnHeaderHeight);
+    };
 
     // Quadrant-specific renderers
     // ===========================

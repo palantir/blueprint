@@ -149,7 +149,7 @@ function isSimplePrimitiveType(value: any) {
     return typeof value === "number" || typeof value === "string" || typeof value === "boolean";
 }
 
-function filterKeys<T>(objA: T, objB: T, keys: KeyDenylist<T> | KeyAllowlist<T>) {
+function filterKeys<T extends object>(objA: T, objB: T, keys: KeyDenylist<T> | KeyAllowlist<T>) {
     if (isAllowlist(keys)) {
         return keys.include;
     } else if (isDenylist(keys)) {

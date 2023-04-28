@@ -39,10 +39,12 @@ import {
     Cell,
     Column,
     ColumnHeaderCell2,
+    CopyCellsMenuItem,
     EditableCell2,
     EditableName,
     FocusedCellCoordinates,
     JSONFormat,
+    MenuContext,
     Region,
     RegionCardinality,
     Regions,
@@ -241,6 +243,7 @@ export interface MutableTableState {
     enableRowResizing?: boolean;
     enableRowSelection?: boolean;
     enableSlowLayout?: boolean;
+    enableScrollingApi?: boolean;
     numCols?: number;
     numFrozenCols?: number;
     numFrozenRows?: number;
@@ -288,6 +291,7 @@ const DEFAULT_STATE: MutableTableState = {
     enableRowReordering: false,
     enableRowResizing: false,
     enableRowSelection: true,
+    enableScrollingApi: false,
     enableSlowLayout: false,
     numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
     numFrozenCols: FROZEN_COLUMN_COUNTS[FROZEN_COLUMN_COUNT_DEFAULT_INDEX],
@@ -319,10 +323,19 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
 
     private tableInstance: Table2;
 
+    private tableWrapperRef: HTMLDivElement;
+
     private stateStore: LocalStore<MutableTableState>;
+
+    private scrollDirection: "UP" | "DOWN";
+
+    private animationRequestId: number;
+
+    private previousTime: number;
 
     private refHandlers = {
         table: (ref: Table2) => (this.tableInstance = ref),
+        tableWrapperRef: (ref: HTMLDivElement) => (this.tableWrapperRef = ref),
     };
 
     // eslint-disable-next-line @typescript-eslint/ban-types
@@ -346,8 +359,13 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
                         rootClassName={classNames("table", { "is-inline": this.state.showInline })}
                         branchClassName="layout-passthrough-fill"
                     >
-                        <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
-                            {this.renderTable()}
+                        <div
+                            className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}
+                            ref={this.refHandlers.tableWrapperRef}
+                            onMouseOver={event => this.checkScrolling(event)}
+                            onMouseLeave={this.cancelAnimation}
+                        >
+                            {this.renderTable()};
                         </div>
                     </SlowLayoutStack>
                     {this.renderSidebar()}
@@ -386,6 +404,54 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
 
     private generateColumnKey = () => {
         return Math.random().toString(36).substring(7);
+    };
+
+    private animate = (time: number) => {
+        this.previousTime = this.previousTime ?? time;
+        if (this.tableInstance) {
+            const deltaTime = time - this.previousTime;
+            if (deltaTime > 100) {
+                if (this.scrollDirection === "UP") {
+                    this.tableInstance.scrollByOffset({ left: 0, top: -10 });
+                } else {
+                    this.tableInstance.scrollByOffset({ left: 0, top: +10 });
+                }
+                this.previousTime = (this.previousTime ?? 0) + 100;
+            }
+        }
+        this.animationRequestId = requestAnimationFrame(this.animate);
+    };
+
+    private cancelAnimation = () => {
+        cancelAnimationFrame(this.animationRequestId);
+        this.animationRequestId = undefined;
+        this.previousTime = undefined;
+        this.tableInstance.scrollByOffset(null);
+    };
+
+    private checkScrolling = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (!this.state.enableScrollingApi) {
+            return;
+        }
+        const top = this.tableWrapperRef.getBoundingClientRect().top;
+        const bottom = this.tableWrapperRef.getBoundingClientRect().bottom;
+        const scrollAbove = top + 0.3 * (bottom - top);
+        const scrollBelow = bottom - 0.3 * (bottom - top);
+        const pos = event.clientY;
+
+        if (pos < scrollAbove && pos > top) {
+            this.scrollDirection = "UP";
+            if (this.animationRequestId === undefined) {
+                requestAnimationFrame(this.animate);
+            }
+        } else if (pos > scrollBelow && pos < bottom) {
+            this.scrollDirection = "DOWN";
+            if (this.animationRequestId === undefined) {
+                requestAnimationFrame(this.animate);
+            }
+        } else {
+            this.cancelAnimation();
+        }
     };
 
     // Renderers
@@ -681,6 +747,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
                 {this.renderSwitch("Callback logs", "showCallbackLogs")}
                 {this.renderSwitch("Full-table selection", "enableFullTableSelection")}
                 {this.renderSwitch("Multi-selection", "enableMultiSelection")}
+                {this.renderSwitch("Demo programmatic scrolling API", "enableScrollingApi")}
                 {selectedRegionTransformPresetMenu}
                 <H6>Scroll to</H6>
                 {this.renderScrollToSection()}
@@ -1042,9 +1109,10 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
         return handleStringChange(value => this.setState({ [stateKey]: value }));
     };
 
-    private renderBodyContextMenu = () => {
+    private renderBodyContextMenu = (context: MenuContext) => {
         const menu = (
             <Menu>
+                <CopyCellsMenuItem context={context} icon="clipboard" getCellData={this.getCellValue} text="Copy" />
                 <MenuItem icon="search-around" text="Item 1" />
                 <MenuItem icon="search" text="Item 2" />
                 <MenuItem icon="graph-remove" text="Item 3" />

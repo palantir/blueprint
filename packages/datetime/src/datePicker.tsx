@@ -107,6 +107,11 @@ export interface DatePickerState {
     selectedShortcutIndex?: number;
 }
 
+/**
+ * Date picker component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime/datepicker
+ */
 export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePickerState> {
     public static defaultProps: DatePickerProps = {
         canClearSelection: true,

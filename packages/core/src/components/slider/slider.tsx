@@ -47,6 +47,11 @@ export interface SliderProps extends SliderBaseProps {
     handleHtmlProps?: HandleHtmlProps;
 }
 
+/**
+ * Slider component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/sliders.slider
+ */
 export class Slider extends AbstractPureComponent<SliderProps> {
     public static defaultProps: SliderProps = {
         ...MultiSlider.defaultSliderProps,

@@ -16,12 +16,13 @@
 
 import React from "react";
 
-import { Button, Classes, Code, Placement, Popover } from "@blueprintjs/core";
+import { Button, Classes, Code, ControlGroup, Placement, Popover } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 const EXAMPLE_CLASS = "docs-popover-placement-example";
 const SIDE_LABEL_CLASS = "docs-popover-placement-label-side";
 const ALIGNMENT_LABEL_CLASS = "docs-popover-placement-label-alignment";
+const CONTENT_CLASS = `${EXAMPLE_CLASS}-content`;
 
 export class PopoverPlacementExample extends React.PureComponent<ExampleProps> {
     public static displayName = "PopoverPlacementExample";
@@ -29,46 +30,45 @@ export class PopoverPlacementExample extends React.PureComponent<ExampleProps> {
     public render() {
         return (
             <Example className={EXAMPLE_CLASS} options={false} {...this.props}>
-                {/* eslint-disable-next-line @blueprintjs/html-components */}
-                <table>
-                    <tbody>
-                        <tr>
-                            <td />
-                            <td>
-                                {this.renderPopover("bottom-start")}
-                                {this.renderPopover("bottom")}
-                                {this.renderPopover("bottom-end")}
-                            </td>
-                            <td />
-                        </tr>
-                        <tr>
-                            <td>
-                                {this.renderPopover("right-start")}
-                                {this.renderPopover("right")}
-                                {this.renderPopover("right-end")}
-                            </td>
-                            <td>
-                                <em className={Classes.TEXT_MUTED}>
-                                    Button positions are flipped here so that all popovers open inward.
-                                </em>
-                            </td>
-                            <td>
-                                {this.renderPopover("left-start")}
-                                {this.renderPopover("left")}
-                                {this.renderPopover("left-end")}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td />
-                            <td>
-                                {this.renderPopover("top-start")}
-                                {this.renderPopover("top")}
-                                {this.renderPopover("top-end")}
-                            </td>
-                            <td />
-                        </tr>
-                    </tbody>
-                </table>
+                <div className="docs-example-grid">
+                    <div className="docs-example-grid-1-1" />
+                    <div className="docs-example-grid-1-2">
+                        <ControlGroup fill={true}>
+                            {this.renderPopover("bottom-start")}
+                            {this.renderPopover("bottom")}
+                            {this.renderPopover("bottom-end")}
+                        </ControlGroup>
+                    </div>
+                    <div className="docs-example-grid-1-3" />
+                    <div className="docs-example-grid-2-1">
+                        <ControlGroup vertical={true}>
+                            {this.renderPopover("right-start")}
+                            {this.renderPopover("right")}
+                            {this.renderPopover("right-end")}
+                        </ControlGroup>
+                    </div>
+                    <div className="docs-example-grid-2-2">
+                        <em className={Classes.TEXT_MUTED}>
+                            Button positions are flipped here so that all popovers open inward.
+                        </em>
+                    </div>
+                    <div className="docs-example-grid-2-3">
+                        <ControlGroup vertical={true}>
+                            {this.renderPopover("left-start")}
+                            {this.renderPopover("left")}
+                            {this.renderPopover("left-end")}
+                        </ControlGroup>
+                    </div>
+                    <div className="docs-example-grid-3-1" />
+                    <div className="docs-example-grid-3-2">
+                        <ControlGroup fill={true}>
+                            {this.renderPopover("top-start")}
+                            {this.renderPopover("top")}
+                            {this.renderPopover("top-end")}
+                        </ControlGroup>
+                    </div>
+                    <div className="docs-example-grid-3-3" />
+                </div>
             </Example>
         );
     }
@@ -109,8 +109,7 @@ export class PopoverPlacementExample extends React.PureComponent<ExampleProps> {
             <Popover
                 content={content}
                 placement={placement}
-                usePortal={false}
-                // tslint:disable-next-line jsx-no-lambda
+                popoverClassName={CONTENT_CLASS}
                 renderTarget={({ isOpen, ...p }) => (
                     <Button {...p} active={isOpen} className={Classes.MONOSPACE_TEXT} text={buttonLabel} />
                 )}

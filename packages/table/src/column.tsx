@@ -56,6 +56,11 @@ export interface ColumnProps extends ColumnNameProps, Props {
     columnHeaderCellRenderer?: ColumnHeaderRenderer;
 }
 
+/**
+ * Column component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.column
+ */
 export class Column extends React.PureComponent<ColumnProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Column`;
 

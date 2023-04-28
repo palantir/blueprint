@@ -21,26 +21,31 @@
  * Panel1 renders either a new Panel2 or Panel3. Panel2 and Panel3 both render a new Panel1.
  */
 
-import React, { useCallback, useState } from "react";
+import React from "react";
 
 import { Button, H5, Intent, NumericInput, Panel, PanelProps, PanelStack, Switch, UL } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-const Panel1: React.FC<PanelProps> = props => {
-    const [counter, setCounter] = useState(0);
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface Panel1Info {
+    // empty
+}
+
+const Panel1: React.FC<PanelProps<Panel1Info>> = props => {
+    const [counter, setCounter] = React.useState(0);
     const shouldOpenPanelType2 = counter % 2 === 0;
 
     const openNewPanel = () => {
         if (shouldOpenPanelType2) {
             props.openPanel({
-                renderPanel: panelProps => <Panel2 {...panelProps} counter={counter} />,
+                props: { counter },
+                renderPanel: Panel2,
                 title: `Panel 2`,
             });
         } else {
             props.openPanel({
-                renderPanel: panelProps => (
-                    <Panel3 {...panelProps} intent={counter % 3 === 0 ? Intent.SUCCESS : Intent.WARNING} />
-                ),
+                props: { intent: counter % 3 === 0 ? Intent.SUCCESS : Intent.WARNING },
+                renderPanel: Panel3,
                 title: `Panel 3`,
             });
         }
@@ -58,13 +63,14 @@ const Panel1: React.FC<PanelProps> = props => {
     );
 };
 
-interface Panel2Props {
+interface Panel2Info {
     counter: number;
 }
 
-const Panel2: React.FC<PanelProps & Panel2Props> = props => {
+const Panel2: React.FC<PanelProps<Panel2Info>> = props => {
     const openNewPanel = () => {
         props.openPanel({
+            props: {},
             renderPanel: Panel1,
             title: `Panel 1`,
         });
@@ -78,13 +84,14 @@ const Panel2: React.FC<PanelProps & Panel2Props> = props => {
     );
 };
 
-interface Panel3Props {
+interface Panel3Info {
     intent: Intent;
 }
 
-const Panel3: React.FC<PanelProps & Panel3Props> = props => {
+const Panel3: React.FC<PanelProps<Panel3Info>> = props => {
     const openNewPanel = () => {
         props.openPanel({
+            props: {},
             renderPanel: Panel1,
             title: `Panel 1`,
         });
@@ -97,20 +104,28 @@ const Panel3: React.FC<PanelProps & Panel3Props> = props => {
     );
 };
 
-const initialPanel: Panel = {
+const initialPanel: Panel<Panel1Info> = {
+    props: {
+        panelNumber: 1,
+    },
     renderPanel: Panel1,
     title: "Panel 1",
 };
 
 export const PanelStackExample: React.FC<ExampleProps> = props => {
-    const [activePanelOnly, setActivePanelOnly] = useState(true);
-    const [showHeader, setShowHeader] = useState(true);
-    const [currentPanelStack, setCurrentPanelStack] = useState<Panel[]>([initialPanel]);
+    const [activePanelOnly, setActivePanelOnly] = React.useState(false);
+    const [showHeader, setShowHeader] = React.useState(true);
+    const [currentPanelStack, setCurrentPanelStack] = React.useState<
+        Array<Panel<Panel1Info | Panel2Info | Panel3Info>>
+    >([initialPanel]);
 
-    const toggleActiveOnly = useCallback(handleBooleanChange(setActivePanelOnly), []);
-    const toggleShowHeader = useCallback(handleBooleanChange(setShowHeader), []);
-    const addToPanelStack = useCallback((newPanel: Panel) => setCurrentPanelStack(stack => [...stack, newPanel]), []);
-    const removeFromPanelStack = useCallback(() => setCurrentPanelStack(stack => stack.slice(0, -1)), []);
+    const toggleActiveOnly = React.useCallback(handleBooleanChange(setActivePanelOnly), []);
+    const toggleShowHeader = React.useCallback(handleBooleanChange(setShowHeader), []);
+    const addToPanelStack = React.useCallback(
+        (newPanel: Panel<Panel1Info | Panel2Info | Panel3Info>) => setCurrentPanelStack(stack => [...stack, newPanel]),
+        [],
+    );
+    const removeFromPanelStack = React.useCallback(() => setCurrentPanelStack(stack => stack.slice(0, -1)), []);
 
     const stackList = (
         <>

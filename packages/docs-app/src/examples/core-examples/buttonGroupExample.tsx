@@ -28,7 +28,7 @@ import {
     Switch,
     Tooltip,
 } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
@@ -58,7 +58,7 @@ export class ButtonGroupExample extends React.PureComponent<ExampleProps, Button
 
     private handleIconOnlyChange = handleBooleanChange(iconOnly => this.setState({ iconOnly }));
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
 

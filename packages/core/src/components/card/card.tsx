@@ -48,6 +48,11 @@ export interface CardProps extends Props, HTMLDivProps {
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
+/**
+ * Card component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/card
+ */
 export class Card extends AbstractPureComponent<CardProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Card`;
 

@@ -334,6 +334,22 @@ describe("<MultiSlider>", () => {
                 expectPropValidationError(MultiSlider, { labelStepSize }, "greater than zero");
             });
         });
+
+        it("throws an error if the min value is not finite", () => {
+            expectPropValidationError(
+                MultiSlider,
+                { min: Number.NEGATIVE_INFINITY },
+                "min prop must be a finite number",
+            );
+        });
+
+        it("throws an error if the max value is not finite", () => {
+            expectPropValidationError(
+                MultiSlider,
+                { max: Number.POSITIVE_INFINITY },
+                "max prop must be a finite number",
+            );
+        });
     });
 
     function renderSlider(joinedProps: MultiSliderProps & { values?: [number, number, number] } = {}) {

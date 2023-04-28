@@ -70,7 +70,7 @@ const FilmSelect: React.FC = () => {
     );
 };
 
-ReactDOM.render(<FilmSelect /> document.querySelector("#root"));
+ReactDOM.render(<FilmSelect />, document.querySelector("#root"));
 ```
 
 In TypeScript, `Select<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type so you can easily define handlers without transformation steps, but most props are required as a result.
@@ -82,7 +82,7 @@ Supply a predicate to automatically query items based on the `InputGroup` value.
 Omitting both `itemPredicate` and `itemListPredicate` props will cause the component to always render all `items`. It will not hide the `InputGroup`; use the `filterable` prop for that. In this case, you can implement your own filtering and simply change the `items` prop.
 
 The **@blueprintjs/select** package exports `ItemPredicate<T>` and `ItemListPredicate<T>` type aliases to simplify the process of implementing these functions.
-See the code sample in [Item Renderer API](#select/Select.item-renderer) below for usage.
+See the code sample in [Item Renderer API](#select/select-component.item-renderer) below for usage.
 
 @### Non-ideal states
 
@@ -108,7 +108,7 @@ By default, `Select` renders the displayed items in a [`Menu`](#core/components/
 
 Note that the non-ideal states of `noResults` and `initialContent` are specific to the default renderer. If you provide the `itemListRenderer` prop, these props will be ignored.
 
-See the code sample in [Item List Renderer API](#select/Select.item-list-renderer) below for usage.
+See the code sample in [Item List Renderer API](#select/select-component.item-list-renderer) below for usage.
 
 @## Controlled usage
 
@@ -138,7 +138,7 @@ data sets.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
-To control the active item when a "Create Item" option is present, See [Controlling the active item](#select/Select.controlling-the-active-item) in the "Creating new items" section below.
+To control the active item when a "Create Item" option is present, See [Controlling the active item](#select/select-component.controlling-the-active-item) in the "Creating new items" section below.
 </div>
 
 @## Creating new items
@@ -153,7 +153,7 @@ in the list, based on the current query string. Use `createNewItemFromQuery` and
     will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
-    <h4 class="@ns-heading">Avoiding type conflicts</h4>
+    <h5 class="@ns-heading">Avoiding type conflicts</h5>
 
 The "Create Item" option is represented by the reserved type `CreateNewItem`
 exported from this package. It is exceedingly unlikely but technically possible
@@ -260,8 +260,15 @@ const FilmSelect: React.FC = () => (
 @### Item renderer
 
 `Select`'s `itemRenderer` will be called for each item and receives the item and a props object containing data specific
-to rendering this item in this frame. The renderer is called for all items, so don't forget to respect
-`modifiers.matchesPredicate` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item, or face React's console wrath!
+to rendering this item in this frame.
+
+A few things to keep in mind:
+
+-   The renderer is called for all items, so don't forget to respect `modifiers.matchesPredicate` to hide items which
+    do not match the predicate.
+-   Make sure to forward the provided `ref` to the rendered element (usually via `<MenuItem ref={ref} />`) to ensure
+    that scrolling to active items works correctly.
+-   Also, don't forget to define a `key` for each item, or face React's console wrath!
 
 ```tsx
 import { Classes, MenuItem } from "@blueprintjs/core";

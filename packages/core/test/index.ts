@@ -27,6 +27,7 @@ import "./common/propsTests";
 import "./common/utils/compareUtilsTests";
 import "./common/utilsTests";
 import "./context-menu/contextMenuTests";
+import "./context-menu/contextMenuSingletonTests";
 import "./controls/controlsTests";
 import "./controls/inputGroupTests";
 import "./controls/numericInputTests";

@@ -29,7 +29,7 @@ export class BreadcrumbsExample extends React.PureComponent {
             <Breadcrumbs
                 currentBreadcrumbRenderer={this.renderCurrentBreadcrumb}
                 items={BREADCRUMBS}
-             />
+            />
         );
     }
 

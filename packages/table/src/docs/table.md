@@ -1,6 +1,6 @@
 @# Table
 
-The [__@blueprintjs/table__ package](https://www.npmjs.com/package/@blueprintjs/select) provides components
+The [__@blueprintjs/table__ package](https://www.npmjs.com/package/@blueprintjs/table) provides components
 to build a highly interactive table or spreadsheet UI.
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
@@ -18,7 +18,7 @@ npm install --save @blueprintjs/table
 Do not forget to include `table.css` on your page:
 
 ```scss
-@import "~@blueprintjs/table/lib/css/table.css";
+@import "@blueprintjs/table/lib/css/table.css";
 ```
 
 ### Features

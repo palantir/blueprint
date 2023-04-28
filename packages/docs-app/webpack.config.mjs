@@ -16,12 +16,15 @@
 // @ts-check
 
 import CopyWebpackPlugin from "copy-webpack-plugin";
+import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
 
 import { baseConfig } from "@blueprintjs/webpack-build-scripts";
 
-export default Object.assign({}, baseConfig, {
+export default {
+    ...baseConfig,
+
     entry: {
         "docs-app": [
             // environment polyfills
@@ -47,5 +50,6 @@ export default Object.assign({}, baseConfig, {
                 { from: "src/assets/favicon.png", to: "assets" },
             ],
         }),
+        new MonacoWebpackPlugin(),
     ]),
-});
+};

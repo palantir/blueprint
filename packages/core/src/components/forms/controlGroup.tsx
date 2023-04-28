@@ -20,6 +20,8 @@ import React from "react";
 import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
+// TODO(adahiya): MUST FIX FOR BLUEPRINT v5.0, add back `ref` prop support by migrating to function component, using React.RefAttributes<HTMLLIElement>
+// see https://github.com/palantir/blueprint/issues/6094
 export interface ControlGroupProps extends Props, HTMLDivProps {
     /** Group contents. */
     children?: React.ReactNode;
@@ -41,6 +43,11 @@ export interface ControlGroupProps extends Props, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
+/**
+ * Control group component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/control-group
+ */
 export class ControlGroup extends AbstractPureComponent<ControlGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ControlGroup`;
 

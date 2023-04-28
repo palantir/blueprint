@@ -154,6 +154,11 @@ export interface SwitchProps extends ControlProps {
     innerLabel?: string;
 }
 
+/**
+ * Switch component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/switch
+ */
 export const Switch: React.FC<SwitchProps> = forwardRef(({ innerLabelChecked, innerLabel, ...controlProps }, ref) => {
     const switchLabels =
         innerLabel || innerLabelChecked
@@ -186,6 +191,11 @@ Switch.displayName = `${DISPLAYNAME_PREFIX}.Switch`;
 
 export type RadioProps = ControlProps;
 
+/**
+ * Radio component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/radio
+ */
 export const Radio: React.FC<RadioProps> = forwardRef((props, ref) =>
     renderControl(
         {
@@ -217,6 +227,11 @@ export interface CheckboxProps extends ControlProps {
     indeterminate?: boolean;
 }
 
+/**
+ * Checkbox component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/checkbox
+ */
 export const Checkbox: React.FC<CheckboxProps> = forwardRef((props, ref) => {
     const { defaultIndeterminate, indeterminate, inputRef: inputRefProp, onChange, ...controlProps } = props;
     const [isIndeterminate, setIsIndeterminate] = useState<boolean>(indeterminate || defaultIndeterminate || false);

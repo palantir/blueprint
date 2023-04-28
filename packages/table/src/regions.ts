@@ -120,6 +120,11 @@ export type NonNullRegion = Required<{
     [P in keyof Region]: NonNullable<Region[P]>;
 }>;
 
+/**
+ * Table Regions API.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.region
+ */
 /* eslint-disable-next-line @typescript-eslint/no-extraneous-class */
 export class Regions {
     /**

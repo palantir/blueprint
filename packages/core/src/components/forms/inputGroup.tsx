@@ -47,6 +47,13 @@ export interface InputGroupProps
     round?: boolean;
 
     /**
+     * Name of the HTML tag that contains the input group.
+     *
+     * @default "div"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
+
+    /**
      * HTML `input` type attribute.
      *
      * @default "text"
@@ -59,6 +66,11 @@ export interface InputGroupState {
     rightElementWidth?: number;
 }
 
+/**
+ * Input group component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/text-inputs.input-group
+ */
 export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
@@ -74,12 +86,26 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
     };
 
     public render() {
-        const { asyncControl = false, className, disabled, fill, inputRef, intent, large, small, round } = this.props;
+        const {
+            asyncControl = false,
+            className,
+            disabled,
+            fill,
+            inputClassName,
+            inputRef,
+            intent,
+            large,
+            readOnly,
+            round,
+            small,
+            tagName = "div",
+        } = this.props;
         const inputGroupClasses = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: disabled,
+                [Classes.READ_ONLY]: readOnly,
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
                 [Classes.SMALL]: small,
@@ -95,20 +121,21 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
         const inputProps = {
             type: "text",
             ...removeNonHTMLProps(this.props),
-            className: Classes.INPUT,
+            className: classNames(Classes.INPUT, inputClassName),
             style,
         };
+        const inputElement = asyncControl ? (
+            <AsyncControllableInput {...inputProps} inputRef={inputRef} />
+        ) : (
+            <input {...inputProps} ref={inputRef} />
+        );
 
-        return (
-            <div className={inputGroupClasses}>
-                {this.maybeRenderLeftElement()}
-                {asyncControl ? (
-                    <AsyncControllableInput {...inputProps} inputRef={inputRef} />
-                ) : (
-                    <input {...inputProps} ref={inputRef} />
-                )}
-                {this.maybeRenderRightElement()}
-            </div>
+        return React.createElement(
+            tagName,
+            { className: inputGroupClasses },
+            this.maybeRenderLeftElement(),
+            inputElement,
+            this.maybeRenderRightElement(),
         );
     }
 

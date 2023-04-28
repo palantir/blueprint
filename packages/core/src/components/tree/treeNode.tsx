@@ -39,6 +39,11 @@ export interface TreeNodeProps<T = {}> extends TreeNodeInfo<T> {
     path: number[];
 }
 
+/**
+ * Tree node component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tree.tree-node
+ */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export class TreeNode<T = {}> extends React.Component<TreeNodeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TreeNode`;

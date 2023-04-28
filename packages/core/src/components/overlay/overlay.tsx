@@ -190,6 +190,11 @@ export interface OverlayState {
     hasEverOpened?: boolean;
 }
 
+/**
+ * Overlay component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/overlay
+ */
 export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 

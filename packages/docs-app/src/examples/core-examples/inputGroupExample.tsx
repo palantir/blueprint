@@ -35,6 +35,7 @@ import { IconSize } from "@blueprintjs/icons";
 
 export interface InputGroupExampleState {
     disabled: boolean;
+    readOnly: boolean;
     filterValue: string;
     large: boolean;
     small: boolean;
@@ -47,12 +48,15 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
         disabled: false,
         filterValue: "",
         large: false,
+        readOnly: false,
         showPassword: false,
         small: false,
         tagValue: "",
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
+    private handleReadOnlyChange = handleBooleanChange(readOnly => this.setState({ readOnly }));
 
     private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
 
@@ -65,7 +69,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
     public render() {
-        const { disabled, filterValue, large, small, showPassword, tagValue } = this.state;
+        const { disabled, filterValue, large, readOnly, small, showPassword, tagValue } = this.state;
 
         const maybeSpinner = filterValue ? <Spinner size={IconSize.STANDARD} /> : undefined;
 
@@ -110,6 +114,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
                         leftIcon="filter"
                         onChange={this.handleFilterChange}
                         placeholder="Filter histogram..."
+                        readOnly={readOnly}
                         rightElement={maybeSpinner}
                         small={small}
                         value={filterValue}
@@ -119,6 +124,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
                     disabled={disabled}
                     large={large}
                     placeholder="Enter your password..."
+                    readOnly={readOnly}
                     rightElement={lockButton}
                     small={small}
                     type={showPassword ? "text" : "password"}
@@ -129,6 +135,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
                     leftElement={<Icon icon="tag" />}
                     onChange={this.handleTagChange}
                     placeholder="Find tags"
+                    readOnly={readOnly}
                     rightElement={resultsTag}
                     small={small}
                     value={tagValue}
@@ -137,6 +144,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
                     disabled={disabled}
                     large={large}
                     placeholder="Add people or groups..."
+                    readOnly={readOnly}
                     rightElement={permissionsMenu}
                     small={small}
                 />
@@ -145,11 +153,12 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
     }
 
     private renderOptions() {
-        const { disabled, large, small } = this.state;
+        const { disabled, readOnly, large, small } = this.state;
         return (
             <>
                 <H5>Props</H5>
                 <Switch label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />
+                <Switch label="Read-only" onChange={this.handleReadOnlyChange} checked={readOnly} />
                 <Switch label="Large" onChange={this.handleLargeChange} checked={large} />
                 <Switch label="Small" onChange={this.handleSmallChange} checked={small} />
             </>

@@ -141,6 +141,11 @@ export interface EditableTextState {
 const BUFFER_WIDTH_DEFAULT = 5;
 const BUFFER_WIDTH_IE = 30;
 
+/**
+ * EditableText component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/editable-text
+ */
 export class EditableText extends AbstractPureComponent<EditableTextProps, EditableTextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableText`;
 

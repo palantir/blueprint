@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import React from "react";
 
-import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Alignment, AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Duplicate, Refresh } from "@blueprintjs/icons";
 
+import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
 import { Size, SizeSelect } from "./common/sizeSelect";
 
-export interface ButtonsExampleState {
+interface ButtonsExampleState {
     active: boolean;
+    alignText: Alignment | undefined;
     disabled: boolean;
+    fill: boolean;
     iconOnly: boolean;
     intent: Intent;
     loading: boolean;
@@ -38,7 +42,9 @@ export interface ButtonsExampleState {
 export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExampleState> {
     public state: ButtonsExampleState = {
         active: false,
+        alignText: undefined,
         disabled: false,
+        fill: false,
         iconOnly: false,
         intent: Intent.NONE,
         loading: false,
@@ -50,7 +56,11 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
 
     private handleActiveChange = handleBooleanChange(active => this.setState({ active }));
 
+    private handleAlignTextChange = (alignText: Alignment) => this.setState({ alignText });
+
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
+    private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
 
     private handleIconOnlyChange = handleBooleanChange(iconOnly => this.setState({ iconOnly }));
 
@@ -62,7 +72,7 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
 
     private handleSizeChange = (size: Size) => this.setState({ size });
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private wiggleTimeoutId: number;
 
@@ -81,6 +91,8 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
                 <Switch label="Loading" checked={this.state.loading} onChange={this.handleLoadingChange} />
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Outlined" checked={this.state.outlined} onChange={this.handleOutlinedChange} />
+                <Switch label="Fill" checked={this.state.fill} onChange={this.handleFillChange} />
+                <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignTextChange} />
                 <SizeSelect size={this.state.size} onChange={this.handleSizeChange} />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
                 <H5>Example</H5>
@@ -90,7 +102,7 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
 
         return (
             <Example options={options} {...this.props}>
-                <div>
+                <div className={classNames({ "docs-flex-column": this.state.fill })}>
                     <p>
                         <Code>Button</Code>
                     </p>
@@ -105,7 +117,7 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
                         {!iconOnly && "Click to wiggle"}
                     </Button>
                 </div>
-                <div>
+                <div className={classNames({ "docs-flex-column": this.state.fill })}>
                     <p>
                         <Code>AnchorButton</Code>
                     </p>

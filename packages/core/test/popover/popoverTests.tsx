@@ -23,7 +23,7 @@ import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src/common";
 import * as Errors from "../../src/common/errors";
-import { Menu, MenuItem, Overlay, Portal } from "../../src/components";
+import { Overlay, Portal } from "../../src/components";
 import { Popover, PopoverInteractionKind, PopoverProps, PopoverState } from "../../src/components/popover/popover";
 import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { PopupKind } from "../../src/components/popover/popupKind";
@@ -76,6 +76,11 @@ describe("<Popover>", () => {
         it("warns if given children and target prop", () => {
             shallow(<Popover renderTarget={() => <span>"boom"</span>}>pow</Popover>);
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
+        });
+
+        it("warns if given targetProps and renderTarget", () => {
+            shallow(<Popover targetProps={{ role: "none" }} renderTarget={() => <span>"boom"</span>} />);
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET));
         });
 
         it("warns if attempting to open a popover with empty content", () => {
@@ -775,17 +780,22 @@ describe("<Popover>", () => {
         });
     });
 
-    // these tests can be removed once Popover is merged into core in v4.0
     describe("compatibility", () => {
-        it("MenuItem from core package is able to dismiss open Popover", () => {
-            wrapper = renderPopover(
-                { defaultIsOpen: true, usePortal: false },
-                <Menu>
-                    <MenuItem text="Close" />
-                </Menu>,
+        it("renderTarget type definition allows sending props to child components", () => {
+            mount(
+                <Popover
+                    usePortal={false}
+                    hoverCloseDelay={0}
+                    hoverOpenDelay={0}
+                    content="content"
+                    renderTarget={({ isOpen, ref, ...props }) => (
+                        <button data-testid="target-button" ref={ref} onClick={props.onClick} {...props}>
+                            Target
+                        </button>
+                    )}
+                />,
+                { attachTo: testsContainerElement },
             );
-            wrapper.find(`.${Classes.MENU_ITEM}`).simulate("click");
-            wrapper.assertIsOpen(false);
         });
     });
 

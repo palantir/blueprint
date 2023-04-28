@@ -17,8 +17,11 @@
 import classNames from "classnames";
 import React from "react";
 
+import { IconName } from "@blueprintjs/icons";
+
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, MaybeElement, Props } from "../../common/props";
+import { TagProps } from "../tag/tag";
 
 export type TabId = string | number;
 
@@ -58,8 +61,28 @@ export interface TabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "on
      * Can also be set via React `children`.
      */
     title?: React.ReactNode;
+
+    /** Name of a Blueprint UI icon (or an icon element) to render before the children. */
+    icon?: IconName | MaybeElement;
+
+    /**
+     * Content to render inside a `<Tag>` after the children.
+     * The tag is `minimal` by default; it can be further modified by using `tagProps`.
+     */
+    tagContent?: TagProps["children"];
+
+    /**
+     * Props to customize the `<Tag>` rendered after the children.
+     * This has no effect if `tagContent` is `undefined`.
+     */
+    tagProps?: Omit<TagProps, "children">;
 }
 
+/**
+ * Tab component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tabs.tab
+ */
 export class Tab extends AbstractPureComponent<TabProps> {
     public static defaultProps: Partial<TabProps> = {
         disabled: false,

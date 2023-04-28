@@ -17,64 +17,78 @@
 import type { ActionProps, Alignment, MaybeElement } from "../../common";
 import type { IconName } from "../icon/icon";
 
-export type ButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement> = ActionProps &
-    React.RefAttributes<E> &
-    (E extends HTMLButtonElement
-        ? React.ButtonHTMLAttributes<HTMLButtonElement>
-        : React.AnchorHTMLAttributes<HTMLAnchorElement>) & {
-        /**
-         * If set to `true`, the button will display in an active state.
-         * This is equivalent to setting `className={Classes.ACTIVE}`.
-         *
-         * @default false
-         */
-        active?: boolean;
+/**
+ * Props interface for both the Button and AnchorButton components.
+ *
+ * Note that it is useful for the props for the two components to be assignable to each other, which we can allow
+ * by omitting the `ref` prop as `DialogStepButton` does. This is mostly for backwards compatibility, but it is
+ * a feature we like to preserve because the components are so similar and distinguishing between them in their event
+ * handlers is usually unnecessary. For this reason, we extend `ActionProps<HTMLElement>` rather than `ActionProps<E>`.
+ *
+ * @see {@link ActionProps}
+ */
+export type ButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement> =
+    ActionProps<HTMLElement> &
+        React.RefAttributes<E> &
+        (E extends HTMLButtonElement
+            ? React.ButtonHTMLAttributes<HTMLButtonElement>
+            : React.AnchorHTMLAttributes<HTMLAnchorElement>) &
+        ButtonSharedProps;
 
-        /**
-         * Text alignment within button. By default, icons and text will be centered
-         * within the button. Passing `"left"` or `"right"` will align the button
-         * text to that side and push `icon` and `rightIcon` to either edge. Passing
-         * `"center"` will center the text and icons together.
-         *
-         * @default Alignment.CENTER
-         */
-        alignText?: Alignment;
+interface ButtonSharedProps {
+    /**
+     * If set to `true`, the button will display in an active state.
+     * This is equivalent to setting `className={Classes.ACTIVE}`.
+     *
+     * @default false
+     */
+    active?: boolean;
 
-        /** Button contents. */
-        children?: React.ReactNode;
+    /**
+     * Text alignment within button. By default, icons and text will be centered
+     * within the button. Passing `"left"` or `"right"` will align the button
+     * text to that side and push `icon` and `rightIcon` to either edge. Passing
+     * `"center"` will center the text and icons together.
+     *
+     * @default Alignment.CENTER
+     */
+    alignText?: Alignment;
 
-        /** Whether this button should expand to fill its container. */
-        fill?: boolean;
+    /** Button contents. */
+    children?: React.ReactNode;
 
-        /** Whether this button should use large styles. */
-        large?: boolean;
+    /** Whether this button should expand to fill its container. */
+    fill?: boolean;
 
-        /**
-         * If set to `true`, the button will display a centered loading spinner instead of its contents
-         * and the button will be disabled (_even if_ `disabled={false}`). The width of the button is
-         * not affected by the value of this prop.
-         *
-         * @default false
-         */
-        loading?: boolean;
+    /** Whether this button should use large styles. */
+    large?: boolean;
 
-        /** Whether this button should use minimal styles. */
-        minimal?: boolean;
+    /**
+     * If set to `true`, the button will display a centered loading spinner instead of its contents
+     * and the button will be disabled (_even if_ `disabled={false}`). The width of the button is
+     * not affected by the value of this prop.
+     *
+     * @default false
+     */
+    loading?: boolean;
 
-        /** Whether this button should use outlined styles. */
-        outlined?: boolean;
+    /** Whether this button should use minimal styles. */
+    minimal?: boolean;
 
-        /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
-        rightIcon?: IconName | MaybeElement;
+    /** Whether this button should use outlined styles. */
+    outlined?: boolean;
 
-        /** Whether this button should use small styles. */
-        small?: boolean;
+    /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
+    rightIcon?: IconName | MaybeElement;
 
-        /**
-         * HTML `type` attribute of button. Accepted values are `"button"`, `"submit"`, and `"reset"`.
-         * Note that this prop has no effect on `AnchorButton`; it only affects `Button`.
-         *
-         * @default "button"
-         */
-        type?: "submit" | "reset" | "button";
-    };
+    /** Whether this button should use small styles. */
+    small?: boolean;
+
+    /**
+     * HTML `type` attribute of button. Accepted values are `"button"`, `"submit"`, and `"reset"`.
+     * Note that this prop has no effect on `AnchorButton`; it only affects `Button`.
+     *
+     * @default "button"
+     */
+    type?: "submit" | "reset" | "button";
+}

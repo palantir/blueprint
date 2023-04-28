@@ -79,6 +79,11 @@ export interface EditableCell2State {
     dirtyValue?: string;
 }
 
+/**
+ * Editable cell (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.editablecell2
+ */
 export class EditableCell2 extends React.Component<EditableCell2Props, EditableCell2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell2`;
 

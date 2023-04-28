@@ -20,6 +20,8 @@ import React from "react";
 import { AbstractPureComponent, Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
+// TODO(adahiya): MUST FIX FOR BLUEPRINT v5.0, add back `ref` prop support by migrating to function component, using React.RefAttributes<HTMLLIElement>
+// see https://github.com/palantir/blueprint/issues/6094
 export interface ButtonGroupProps extends Props, HTMLDivProps {
     /**
      * Text alignment within button. By default, icons and text will be centered
@@ -63,6 +65,11 @@ export interface ButtonGroupProps extends Props, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
+/**
+ * Button group component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/button-group
+ */
 export class ButtonGroup extends AbstractPureComponent<ButtonGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;
 

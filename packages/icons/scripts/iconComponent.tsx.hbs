@@ -25,6 +25,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, S
     size = IconSize.STANDARD,
     title,
     htmlTitle,
+    svgProps,
     tagName = "span",
     ...htmlProps
 }, ref) => {
@@ -55,6 +56,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, S
                 role="img"
                 viewBox={viewBox}
                 width={size}
+                {...svgProps}
                 {...htmlProps}
             >
                 {title && <title id={titleId}>{title}</title>}
@@ -71,7 +73,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, S
                 ref,
                 title: htmlTitle,
             },
-            <svg fill={color} data-icon="{{iconName}}" width={size} height={size} role="img" viewBox={viewBox}>
+            <svg fill={color} data-icon="{{iconName}}" width={size} height={size} role="img" viewBox={viewBox} {...svgProps}>
                 {title && <title>{title}</title>}
                 {path}
             </svg>
