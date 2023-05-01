@@ -1,13 +1,12 @@
 @# Resize sensor
 
-`ResizeSensor` is a component that provides a `"resize"` event for its single
-DOM element child. It is a thin wrapper around
-[`ResizeObserver`][resizeobserver] to provide React bindings.
+ResizeSensor observes the DOM and provides a callback for `"resize"` events on a single child element.
+It is a thin wrapper around [`ResizeObserver`][resizeobserver] to provide React bindings.
 
 [resizeobserver]: https://developers.google.com/web/updates/2016/10/resizeobserver
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">DOM ref required</h4>
+    <h5 class="@ns-heading">DOM ref required</h5>
 
 ResizeSensor's implementation relies on a React ref being attached to a DOM element,
 so the child of this component _must be a native DOM element_ or utilize
@@ -15,6 +14,8 @@ so the child of this component _must be a native DOM element_ or utilize
 injected ref to the underlying DOM element.
 
 </div>
+
+@## Usage
 
 ```tsx
 import { ResizeEntry, ResizeSensor } from "@blueprintjs/core";
@@ -39,8 +40,6 @@ const myRef = React.createRef();
 </ResizeSensor>
 ```
 
-@## Props
-
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h5 class="@ns-heading">Asynchronous behavior</h5>
 
@@ -50,5 +49,7 @@ Therefore, testing behavior that relies on this component involves setting a
 timeout for the next frame.
 
 </div>
+
+@## Props interface
 
 @interface ResizeSensorProps
