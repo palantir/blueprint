@@ -19,9 +19,17 @@ import classNames from "classnames";
 import React from "react";
 import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, HTMLDivProps, Keys, mergeRefs, Utils } from "../../common";
+import {
+    AbstractPureComponent,
+    Classes,
+    DISPLAYNAME_PREFIX,
+    HTMLDivProps,
+    Keys,
+    mergeRefs,
+    refHandler,
+    Utils,
+} from "../../common";
 import * as Errors from "../../common/errors";
-import { refHandler } from "../../common/refs";
 import { Overlay } from "../overlay/overlay";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle

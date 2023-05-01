@@ -16,9 +16,8 @@
 
 import React from "react";
 
-import { AbstractPureComponent, Intent } from "../../common";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX, Intent } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { HandleHtmlProps } from "./handleProps";
 import { MultiSlider, SliderBaseProps } from "./multiSlider";
 

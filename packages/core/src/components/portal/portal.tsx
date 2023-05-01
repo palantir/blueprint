@@ -22,10 +22,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import * as Classes from "../../common/classes";
+import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { PortalContext } from "../../context/portal/portalProvider";
 import { usePrevious } from "../../hooks/usePrevious";
 

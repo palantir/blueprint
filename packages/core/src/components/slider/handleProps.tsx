@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import React from "react";
+import type { CSSProperties, HTMLProps } from "react";
 
-import { Intent, Props } from "../../common";
+import type { Intent, Props } from "../../common";
 
 export const HandleType = {
     /** A full handle appears as a small square. */
@@ -47,7 +47,7 @@ export const HandleInteractionKind = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type HandleInteractionKind = (typeof HandleInteractionKind)[keyof typeof HandleInteractionKind];
 
-export type HandleHtmlProps = Pick<React.HTMLProps<HTMLSpanElement>, "aria-label" | "aria-labelledby">;
+export type HandleHtmlProps = Pick<HTMLProps<HTMLSpanElement>, "aria-label" | "aria-labelledby">;
 
 export interface HandleProps extends Props {
     /** Numeric value of this handle. */
@@ -60,10 +60,10 @@ export interface HandleProps extends Props {
     intentBefore?: Intent;
 
     /** Style to use for the track segment immediately after this handle, taking priority over `trackStyleBefore`. */
-    trackStyleAfter?: React.CSSProperties;
+    trackStyleAfter?: CSSProperties;
 
     /** Style to use for the track segment immediately before this handle */
-    trackStyleBefore?: React.CSSProperties;
+    trackStyleBefore?: CSSProperties;
 
     /**
      * How this handle interacts with other handles.

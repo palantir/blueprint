@@ -17,9 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, Keys } from "../../common";
-import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
-import * as Utils from "../../common/utils";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Keys, Props, Utils } from "../../common";
 import { Tab, TabId, TabProps } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 

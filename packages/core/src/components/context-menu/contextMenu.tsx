@@ -17,8 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { DISPLAYNAME_PREFIX, mergeRefs, Props, Utils } from "../../common";
-import * as Classes from "../../common/classes";
+import { Classes, DISPLAYNAME_PREFIX, mergeRefs, Props, Utils } from "../../common";
 import { TooltipContext, TooltipProvider } from "../popover/tooltipContext";
 import { ContextMenuPopover } from "./contextMenuPopover";
 import { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";

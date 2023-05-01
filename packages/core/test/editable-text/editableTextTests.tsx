@@ -19,8 +19,7 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { EditableText } from "../../src";
-import * as Keys from "../../src/common/keys";
+import { EditableText, Keys } from "../../src";
 
 describe("<EditableText>", () => {
     it("renders value", () => {
