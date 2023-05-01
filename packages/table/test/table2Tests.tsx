@@ -20,7 +20,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import sinon from "sinon";
 
-import { Utils as CoreUtils, Keys } from "@blueprintjs/core";
+import { Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Cell, Column, RegionCardinality, Table2, TableLoadingOption, TableProps } from "../src";
@@ -1224,18 +1224,18 @@ describe("<Table2>", function (this) {
         });
 
         describe("moves a focus cell with arrow keys", () => {
-            runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1, focusSelectionIndex: 0 });
-            runFocusCellMoveTest("down", Keys.ARROW_DOWN, {
+            runFocusCellMoveTest("ArrowUp", { row: 0, col: 1, focusSelectionIndex: 0 });
+            runFocusCellMoveTest("ArrowDown", {
                 col: 1,
                 focusSelectionIndex: 0,
                 row: 2,
             });
-            runFocusCellMoveTest("left", Keys.ARROW_LEFT, {
+            runFocusCellMoveTest("ArrowLeft", {
                 col: 0,
                 focusSelectionIndex: 0,
                 row: 1,
             });
-            runFocusCellMoveTest("right", Keys.ARROW_RIGHT, {
+            runFocusCellMoveTest("ArrowRight", {
                 col: 2,
                 focusSelectionIndex: 0,
                 row: 1,
@@ -1243,14 +1243,14 @@ describe("<Table2>", function (this) {
 
             it("doesn't move a focus cell if modifier key is pressed", () => {
                 const { component } = mountTable();
-                component.simulate("keyDown", createKeyEventConfig(component, "right", Keys.ARROW_RIGHT, true));
+                component.simulate("keyDown", createKeyEventConfig(component, "ArrowRight", true));
                 expect(onFocusedCell.called).to.be.false;
             });
 
-            function runFocusCellMoveTest(key: string, keyCode: number, expectedCoords: FocusedCellCoordinates) {
+            function runFocusCellMoveTest(key: string, expectedCoords: FocusedCellCoordinates) {
                 it(key, () => {
                     const { component } = mountTable();
-                    component.simulate("keyDown", createKeyEventConfig(component, key, keyCode));
+                    component.simulate("keyDown", createKeyEventConfig(component, key));
                     expect(onFocusedCell.called).to.be.true;
                     expect(onFocusedCell.getCall(0).args[0]).to.deep.equal(expectedCoords);
                 });
@@ -1261,7 +1261,6 @@ describe("<Table2>", function (this) {
             function runFocusCellMoveInternalTest(
                 name: string,
                 key: string,
-                keyCode: number,
                 shiftKey: boolean,
                 focusCellCoords: FocusedCellCoordinates,
                 expectedCoords: FocusedCellCoordinates,
@@ -1286,30 +1285,27 @@ describe("<Table2>", function (this) {
                             <Column name="Column4" cellRenderer={renderDummyCell} />
                         </Table2>,
                     );
-                    tableHarness.simulate("keyDown", createKeyEventConfig(tableHarness, key, keyCode, shiftKey));
+                    tableHarness.simulate("keyDown", createKeyEventConfig(tableHarness, key, shiftKey));
                     expect(onFocusedCell.args[0][0]).to.deep.equal(expectedCoords);
                 });
             }
             runFocusCellMoveInternalTest(
                 "moves a focus cell on tab",
-                "tab",
-                Keys.TAB,
+                "Tab",
                 false,
                 { row: 0, col: 0, focusSelectionIndex: 0 },
                 { row: 0, col: 1, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "wraps a focus cell around with tab",
-                "tab",
-                Keys.TAB,
+                "Tab",
                 false,
                 { row: 0, col: 1, focusSelectionIndex: 0 },
                 { row: 1, col: 0, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "moves a focus cell to next region with tab",
-                "tab",
-                Keys.TAB,
+                "Tab",
                 false,
                 { row: 1, col: 1, focusSelectionIndex: 0 },
                 { row: 2, col: 2, focusSelectionIndex: 1 },
@@ -1317,24 +1313,21 @@ describe("<Table2>", function (this) {
 
             runFocusCellMoveInternalTest(
                 "moves a focus cell on enter",
-                "enter",
-                Keys.ENTER,
+                "Enter",
                 false,
                 { row: 0, col: 0, focusSelectionIndex: 0 },
                 { row: 1, col: 0, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "wraps a focus cell around with enter",
-                "enter",
-                Keys.ENTER,
+                "Enter",
                 false,
                 { row: 1, col: 0, focusSelectionIndex: 0 },
                 { row: 0, col: 1, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "moves a focus cell to next region with enter",
-                "enter",
-                Keys.ENTER,
+                "Enter",
                 false,
                 { row: 1, col: 1, focusSelectionIndex: 0 },
                 { row: 2, col: 2, focusSelectionIndex: 1 },
@@ -1342,24 +1335,21 @@ describe("<Table2>", function (this) {
 
             runFocusCellMoveInternalTest(
                 "moves a focus cell on shift+tab",
-                "tab",
-                Keys.TAB,
+                "Tab",
                 true,
                 { row: 0, col: 1, focusSelectionIndex: 0 },
                 { row: 0, col: 0, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "wraps a focus cell around with shift+tab",
-                "tab",
-                Keys.TAB,
+                "Tab",
                 true,
                 { row: 1, col: 0, focusSelectionIndex: 0 },
                 { row: 0, col: 1, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "moves a focus cell to prev region with shift+tab",
-                "tab",
-                Keys.TAB,
+                "Tab",
                 true,
                 { row: 0, col: 0, focusSelectionIndex: 0 },
                 { row: 2, col: 2, focusSelectionIndex: 1 },
@@ -1367,24 +1357,21 @@ describe("<Table2>", function (this) {
 
             runFocusCellMoveInternalTest(
                 "moves a focus cell on shift+enter",
-                "enter",
-                Keys.ENTER,
+                "Enter",
                 true,
                 { row: 1, col: 0, focusSelectionIndex: 0 },
                 { row: 0, col: 0, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "wraps a focus cell around with shift+enter",
-                "enter",
-                Keys.ENTER,
+                "Enter",
                 true,
                 { row: 0, col: 1, focusSelectionIndex: 0 },
                 { row: 1, col: 0, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "moves a focus cell to next region with shift+enter",
-                "enter",
-                Keys.ENTER,
+                "Enter",
                 true,
                 { row: 0, col: 0, focusSelectionIndex: 0 },
                 { row: 2, col: 2, focusSelectionIndex: 1 },
@@ -1392,17 +1379,17 @@ describe("<Table2>", function (this) {
         });
 
         describe("scrolls viewport to fit focused cell after moving it", () => {
-            runFocusCellViewportScrollTest("up", Keys.ARROW_UP, "top", ROW_HEIGHT * 0);
-            runFocusCellViewportScrollTest("down", Keys.ARROW_DOWN, "top", ROW_HEIGHT * 2);
-            runFocusCellViewportScrollTest("left", Keys.ARROW_LEFT, "left", COL_WIDTH * 0);
-            runFocusCellViewportScrollTest("right", Keys.ARROW_RIGHT, "left", COL_WIDTH * 2);
+            runFocusCellViewportScrollTest("ArrowUp", "top", ROW_HEIGHT * 0);
+            runFocusCellViewportScrollTest("ArrowDown", "top", ROW_HEIGHT * 2);
+            runFocusCellViewportScrollTest("ArrowLeft", "left", COL_WIDTH * 0);
+            runFocusCellViewportScrollTest("ArrowRight", "left", COL_WIDTH * 2);
 
             it("keeps top edge of oversized focus cell in view when moving left and right", () => {
                 // subtract one pixel to avoid clipping the focus cell
                 const EXPECTED_TOP_OFFSET = OVERSIZED_ROW_HEIGHT * 1 - 1;
 
                 const { component } = mountTable(OVERSIZED_ROW_HEIGHT, OVERSIZED_COL_WIDTH);
-                const keyEventConfig = createKeyEventConfig(component, "right", Keys.ARROW_RIGHT);
+                const keyEventConfig = createKeyEventConfig(component, "ArrowRight");
 
                 // move right twice, expecting the viewport to snap to the top of the oversize
                 // focused cell both times
@@ -1418,7 +1405,7 @@ describe("<Table2>", function (this) {
                 const EXPECTED_LEFT_OFFSET = OVERSIZED_COL_WIDTH * 1 - 1;
 
                 const { component } = mountTable(OVERSIZED_ROW_HEIGHT, OVERSIZED_COL_WIDTH);
-                const keyEventConfig = createKeyEventConfig(component, "down", Keys.ARROW_DOWN);
+                const keyEventConfig = createKeyEventConfig(component, "ArrowDown");
 
                 // move down twice, expecting the viewport to snap to the left of the oversize
                 // focused cell both times
@@ -1429,15 +1416,10 @@ describe("<Table2>", function (this) {
                 expect(component.state("viewportRect")!.left).to.equal(EXPECTED_LEFT_OFFSET);
             });
 
-            function runFocusCellViewportScrollTest(
-                key: string,
-                keyCode: number,
-                attrToCheck: "top" | "left",
-                expectedOffset: number,
-            ) {
+            function runFocusCellViewportScrollTest(key: string, attrToCheck: "top" | "left", expectedOffset: number) {
                 it(key, () => {
                     const { component } = mountTable();
-                    component.simulate("keyDown", createKeyEventConfig(component, key, keyCode));
+                    component.simulate("keyDown", createKeyEventConfig(component, key));
                     expect(component.state("viewportRect")![attrToCheck]).to.equal(expectedOffset);
                     expect(onVisibleCellsChange.callCount, "onVisibleCellsChange call count").to.equal(6);
 
@@ -2016,7 +1998,7 @@ describe("<Table2>", function (this) {
                 attachTo: containerElement,
             });
 
-            pressKeyWithShiftKey(component, Keys.ARROW_RIGHT);
+            pressKeyWithShiftKey(component, "ArrowRight");
             expect(onSelection.calledOnce).to.be.true;
             expect(onSelection.firstCall.args).to.deep.equal([
                 [Regions.cell(SELECTED_CELL_ROW, SELECTED_CELL_COL, SELECTED_CELL_ROW, SELECTED_CELL_COL + 1)],
@@ -2048,7 +2030,7 @@ describe("<Table2>", function (this) {
             ];
 
             // expand rightward with a RIGHT keypress
-            pressKeyWithShiftKey(component, Keys.ARROW_RIGHT);
+            pressKeyWithShiftKey(component, "ArrowRight");
             expect(onSelection.calledOnce).to.be.true;
             expect(onSelection.firstCall.args).to.deep.equal([expectedSelectedRegions]);
             onSelection.resetHistory();
@@ -2057,7 +2039,7 @@ describe("<Table2>", function (this) {
             component.setProps({ selectedRegions: expectedSelectedRegions });
 
             // undo the resize change with a LEFT keypress
-            pressKeyWithShiftKey(component, Keys.ARROW_LEFT);
+            pressKeyWithShiftKey(component, "ArrowLeft");
             expect(onSelection.calledOnce).to.be.true;
             expect(onSelection.firstCall.args).to.deep.equal([selectedRegions]);
         });
@@ -2072,13 +2054,12 @@ describe("<Table2>", function (this) {
                 attachTo: containerElement,
             });
 
-            pressKeyWithShiftKey(component, Keys.ARROW_RIGHT);
+            pressKeyWithShiftKey(component, "ArrowRight");
             expect(onSelection.calledOnce).to.be.false;
         });
 
-        function pressKeyWithShiftKey(component: ReactWrapper<TableProps>, keyCode: number) {
-            const key = keyCode === Keys.ARROW_LEFT ? "left" : "right";
-            component.simulate("keyDown", createKeyEventConfig(component, key, keyCode, true));
+        function pressKeyWithShiftKey(component: ReactWrapper<TableProps>, key: string) {
+            component.simulate("keyDown", createKeyEventConfig(component, key, true));
         }
     });
 
@@ -2170,10 +2151,9 @@ describe("<Table2>", function (this) {
         setTimeout(callback);
     }
 
-    function createKeyEventConfig(wrapper: ReactWrapper<any, any>, key: string, keyCode: number, shiftKey = false) {
+    function createKeyEventConfig(wrapper: ReactWrapper<any, any>, key: string, shiftKey = false) {
         const eventConfig = {
             key,
-            keyCode,
             preventDefault: () => {
                 /* Empty */
             },
@@ -2182,7 +2162,6 @@ describe("<Table2>", function (this) {
                 /* Empty */
             },
             target: wrapper.instance(),
-            which: keyCode,
         };
         return {
             eventConfig,

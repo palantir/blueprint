@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import React from "react";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses, InputGroup, Keys, MenuItem, Popover } from "@blueprintjs/core";
+import { Classes as CoreClasses, InputGroup, MenuItem, Popover } from "@blueprintjs/core";
 
 import { ItemRendererProps, Select, SelectProps, SelectState } from "../src";
 import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
@@ -115,7 +115,7 @@ describe("<Select>", () => {
         const wrapper = select({ popoverProps: { usePortal: false } });
         // should be closed to start
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
-        wrapper.find("[data-testid='target-button']").simulate("keydown", { which: Keys.ARROW_DOWN });
+        wrapper.find("[data-testid='target-button']").simulate("keydown", { key: "ArrowDown" });
         // ...then open after key down
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
     });

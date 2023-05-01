@@ -19,7 +19,6 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import sinon from "sinon";
 
-import { ARROW_DOWN, ARROW_UP } from "../../src/common/keys";
 import { Handle, HandleState, InternalHandleProps } from "../../src/components/slider/handle";
 import { DRAG_SIZE, simulateMovement } from "./sliderTestUtils";
 
@@ -50,28 +49,28 @@ describe("<Handle>", () => {
         const eventSpy = sinon.spy();
         const handle = mountHandle(0, { disabled: true, onChange: eventSpy, onRelease: eventSpy });
         simulateMovement(handle, { dragTimes: 3 });
-        handle.simulate("keydown", { which: ARROW_UP });
+        handle.simulate("keydown", { key: "ArrowUp" });
         assert.isTrue(eventSpy.notCalled);
     });
 
     describe("keyboard events", () => {
         it("pressing arrow key down reduces value by stepSize", () => {
             const onChange = sinon.spy();
-            mountHandle(3, { onChange, stepSize: 2 }).simulate("keydown", { which: ARROW_DOWN });
+            mountHandle(3, { onChange, stepSize: 2 }).simulate("keydown", { key: "ArrowDown" });
             assert.isTrue(onChange.calledWithExactly(1));
         });
 
         it("pressing arrow key up increases value by stepSize", () => {
             const onChange = sinon.spy();
-            mountHandle(3, { onChange, stepSize: 4 }).simulate("keydown", { which: ARROW_UP });
+            mountHandle(3, { onChange, stepSize: 4 }).simulate("keydown", { key: "ArrowUp" });
             assert.isTrue(onChange.calledWithExactly(7));
         });
 
         it("releasing arrow key calls onRelease with value", () => {
             const onRelease = sinon.spy();
             mountHandle(3, { onRelease, stepSize: 4 })
-                .simulate("keydown", { which: ARROW_UP })
-                .simulate("keyup", { which: ARROW_UP });
+                .simulate("keydown", { key: "ArrowUp" })
+                .simulate("keyup", { key: "ArrowUp" });
             assert.isTrue(onRelease.calledWithExactly(3));
         });
     });

@@ -21,7 +21,7 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses, InputGroup, Keys, Popover, Tag } from "@blueprintjs/core";
+import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
 import { DatePicker, Classes as DatetimeClasses, Months, TimePrecision, TimeUnit } from "@blueprintjs/datetime";
 
 import { Classes, DateInput2, DateInput2Props, TimezoneSelect } from "../../src";
@@ -376,7 +376,7 @@ describe("<DateInput2>", () => {
             assertPopoverIsOpen(wrapper);
 
             // try keyboard-incrementing to a new time
-            wrapper.find(`.${DatetimeClasses.TIMEPICKER_SECOND}`).first().simulate("keydown", { which: Keys.ARROW_UP });
+            wrapper.find(`.${DatetimeClasses.TIMEPICKER_SECOND}`).first().simulate("keydown", { key: "ArrowUp" });
             assertPopoverIsOpen(wrapper);
         });
 

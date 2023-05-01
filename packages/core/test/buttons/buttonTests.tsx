@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { AnchorButton, Button, ButtonProps, Classes, Icon, Keys, Spinner } from "../../src";
+import { AnchorButton, Button, ButtonProps, Classes, Icon, Spinner } from "../../src";
 
 describe("Buttons:", () => {
     buttonTestSuite(Button, "button");
@@ -116,19 +116,19 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
         });
 
         it("pressing enter triggers onKeyDown props with any modifier flags", () => {
-            checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.ENTER);
+            checkKeyEventCallbackInvoked("onKeyDown", "keydown", "Enter");
         });
 
         it("pressing space triggers onKeyDown props with any modifier flags", () => {
-            checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.SPACE);
+            checkKeyEventCallbackInvoked("onKeyDown", "keydown", " ");
         });
 
         it("calls onClick when enter key released", () => {
-            checkClickTriggeredOnKeyUp({ which: Keys.ENTER });
+            checkClickTriggeredOnKeyUp({ key: "Enter" });
         });
 
         it("calls onClick when space key released", () => {
-            checkClickTriggeredOnKeyUp({ which: Keys.SPACE });
+            checkClickTriggeredOnKeyUp({ key: " " });
         });
 
         it("attaches ref with createRef", () => {
@@ -176,14 +176,14 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
             assert.isTrue(onContainerClick.calledOnce, "Expected a click event to bubble up to container element");
         }
 
-        function checkKeyEventCallbackInvoked(callbackPropName: string, eventName: string, keyCode: number) {
+        function checkKeyEventCallbackInvoked(callbackPropName: string, eventName: string, key: string) {
             const callback = spy();
 
             // ButtonProps doesn't include onKeyDown or onKeyUp in its
             // definition, even though Buttons support those props. Casting as
             // `any` gets around that for the purpose of these tests.
             const wrapper = button({ [callbackPropName]: callback } as any);
-            const eventProps = { keyCode, shiftKey: true, metaKey: true };
+            const eventProps = { key, shiftKey: true, metaKey: true };
             wrapper.simulate(eventName, eventProps);
 
             // check that the callback was invoked with modifier key flags included

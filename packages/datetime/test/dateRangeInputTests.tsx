@@ -36,7 +36,6 @@ import {
     HTMLInputProps,
     InputGroup,
     InputGroupProps,
-    Keys,
     Popover,
     PopoverProps,
 } from "@blueprintjs/core";
@@ -164,7 +163,7 @@ describe("<DateRangeInput>", () => {
             root.setState({ isOpen: true });
             expect(root.find(Popover).prop("isOpen")).to.be.true;
 
-            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, "ArrowUp");
             expect(isStartInputFocused(root), "start input focus to be false").to.be.false;
             expect(isEndInputFocused(root), "end input focus to be false").to.be.false;
         });
@@ -184,7 +183,7 @@ describe("<DateRangeInput>", () => {
             root.setState({ isOpen: true });
             root.update();
 
-            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, "ArrowUp");
             root.update();
             expect(root.find(Popover).prop("isOpen")).to.be.true;
         });
@@ -196,9 +195,9 @@ describe("<DateRangeInput>", () => {
             );
 
             root.setState({ isOpen: true });
-            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, "ArrowUp");
             root.update();
-            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP, 1);
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, "ArrowUp", 1);
             root.update();
             expect(root.find(Popover).prop("isOpen")).to.be.true;
         });
@@ -207,10 +206,8 @@ describe("<DateRangeInput>", () => {
             ReactDOM.unmountComponentAtNode(testsContainerElement);
         });
 
-        function keyDownOnInput(className: string, key: number, inputElementIndex: number = 0) {
-            TestUtils.Simulate.keyDown(findTimePickerInputElement(className, inputElementIndex), {
-                which: key,
-            });
+        function keyDownOnInput(className: string, key: string, inputElementIndex: number = 0) {
+            TestUtils.Simulate.keyDown(findTimePickerInputElement(className, inputElementIndex), { key });
         }
 
         function findTimePickerInputElement(className: string, inputElementIndex: number = 0) {
@@ -441,7 +438,7 @@ describe("<DateRangeInput>", () => {
         const startInputProps = { onKeyDown: sinon.spy() };
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ startInputProps }} />);
         const startInput = getStartInput(root);
-        startInput.simulate("keydown", { which: Keys.TAB, shiftKey: true });
+        startInput.simulate("keydown", { key: "Tab", shiftKey: true });
         expect(root.state("isStartInputFocused"), "start input blurred").to.be.false;
         expect(startInputProps.onKeyDown.calledOnce, "onKeyDown called once").to.be.true;
         expect(root.state("isOpen"), "popover closed").to.be.false;
@@ -451,7 +448,7 @@ describe("<DateRangeInput>", () => {
         const endInputProps = { onKeyDown: sinon.spy() };
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ endInputProps }} />);
         const endInput = getEndInput(root);
-        endInput.simulate("keydown", { which: Keys.TAB });
+        endInput.simulate("keydown", { key: "Tab" });
         expect(root.state("isEndInputFocused"), "end input blurred").to.be.false;
         expect(endInputProps.onKeyDown.calledOnce, "onKeyDown called once").to.be.true;
         expect(root.state("isOpen"), "popover closed").to.be.false;
@@ -582,7 +579,7 @@ describe("<DateRangeInput>", () => {
 
             getStartInput(root).simulate("focus");
             getStartInput(root).simulate("change", { target: { value: START_STR } });
-            getStartInput(root).simulate("keydown", { which: Keys.ENTER });
+            getStartInput(root).simulate("keydown", { key: "Enter" });
             expect(startInputProps.onKeyDown.calledOnce, "startInputProps.onKeyDown called once");
             expect(isStartInputFocused(root), "start input still focused").to.be.false;
 
@@ -590,7 +587,7 @@ describe("<DateRangeInput>", () => {
 
             getEndInput(root).simulate("focus");
             getEndInput(root).simulate("change", { target: { value: END_STR } });
-            getEndInput(root).simulate("keydown", { which: Keys.ENTER });
+            getEndInput(root).simulate("keydown", { key: "Enter" });
             expect(endInputProps.onKeyDown.calledOnce, "endInputProps.onKeyDown called once");
             expect(isEndInputFocused(root), "end input still focused").to.be.true;
 
@@ -2317,7 +2314,7 @@ describe("<DateRangeInput>", () => {
             const startInput = getStartInput(root);
             startInput.simulate("focus");
             startInput.simulate("change", { target: { value: START_STR } });
-            startInput.simulate("keydown", { which: Keys.ENTER });
+            startInput.simulate("keydown", { key: "Enter" });
             expect(isStartInputFocused(root), "start input blurred next").to.be.false;
 
             expect(root.state("isOpen"), "popover still open").to.be.true;
@@ -2325,7 +2322,7 @@ describe("<DateRangeInput>", () => {
             const endInput = getEndInput(root);
             expect(isEndInputFocused(root), "end input focused next").to.be.true;
             endInput.simulate("change", { target: { value: END_STR } });
-            endInput.simulate("keydown", { which: Keys.ENTER });
+            endInput.simulate("keydown", { key: "Enter" });
 
             expect(isStartInputFocused(root), "start input blurred at end").to.be.false;
             expect(isEndInputFocused(root), "end input still focused at end").to.be.true;

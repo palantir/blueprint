@@ -67,8 +67,8 @@ describe("<RangeSlider>", () => {
     it("disabled slider does not respond to key presses", () => {
         const changeSpy = sinon.spy();
         const handles = renderSlider(<RangeSlider disabled={true} onChange={changeSpy} />).find(Handle);
-        handles.first().simulate("keydown", { which: ARROW_DOWN });
-        handles.last().simulate("keydown", { which: ARROW_DOWN });
+        handles.first().simulate("keydown", { key: "ArrowDown" });
+        handles.last().simulate("keydown", { key: "ArrowDown" });
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
     });
 

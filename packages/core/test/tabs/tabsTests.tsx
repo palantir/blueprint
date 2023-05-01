@@ -19,7 +19,6 @@ import React from "react";
 import { spy } from "sinon";
 
 import { Classes } from "../../src/common";
-import * as Keys from "../../src/common/keys";
 import { Tab } from "../../src/components/tabs/tab";
 import { Tabs, TabsProps, TabsState } from "../../src/components/tabs/tabs";
 
@@ -208,13 +207,13 @@ describe("<Tabs>", () => {
         const tabElements = testsContainerElement.querySelectorAll<HTMLElement>(TAB);
         tabElements[0].focus();
 
-        tabList.simulate("keydown", { which: Keys.ARROW_RIGHT });
+        tabList.simulate("keydown", { key: "ArrowRight" });
         assert.equal(document.activeElement, tabElements[2], "move right and skip disabled");
-        tabList.simulate("keydown", { which: Keys.ARROW_RIGHT });
+        tabList.simulate("keydown", { key: "ArrowRight" });
         assert.equal(document.activeElement, tabElements[0], "wrap around to first tab");
-        tabList.simulate("keydown", { which: Keys.ARROW_LEFT });
+        tabList.simulate("keydown", { key: "ArrowLeft" });
         assert.equal(document.activeElement, tabElements[2], "wrap around to last tab");
-        tabList.simulate("keydown", { which: Keys.ARROW_LEFT });
+        tabList.simulate("keydown", { key: "ArrowLeft" });
         assert.equal(document.activeElement, tabElements[0], "move left and skip disabled");
     });
 
@@ -230,8 +229,8 @@ describe("<Tabs>", () => {
         const tabElements = testsContainerElement.querySelectorAll<HTMLElement>(TAB);
 
         // must target different elements each time as onChange is only called when id changes
-        tabList.simulate("keypress", { target: tabElements[1], which: Keys.ENTER });
-        tabList.simulate("keypress", { target: tabElements[2], which: Keys.SPACE });
+        tabList.simulate("keypress", { target: tabElements[1], key: "Enter" });
+        tabList.simulate("keypress", { target: tabElements[2], key: " " });
 
         assert.equal(changeSpy.callCount, 2);
         assert.includeDeepMembers(changeSpy.args[0], [TAB_IDS[1], TAB_IDS[0]]);
