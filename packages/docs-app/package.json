@@ -37,12 +37,10 @@
         "monaco-editor": "^0.37.1",
         "normalize.css": "^8.0.1",
         "popper.js": "^1.16.1",
-        "promise": "^8.3.0",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "~2.5.0",
-        "whatwg-fetch": "^3.4.1"
+        "tslib": "~2.5.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^7.1.1",
