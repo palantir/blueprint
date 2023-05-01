@@ -19,9 +19,8 @@ import React from "react";
 
 import { IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
 import { H6 } from "../html/html";

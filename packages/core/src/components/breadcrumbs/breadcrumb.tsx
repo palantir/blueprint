@@ -17,8 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import * as Classes from "../../common/classes";
-import { ActionProps, LinkProps } from "../../common/props";
+import { ActionProps, Classes, LinkProps } from "../../common";
 import { Icon } from "../icon/icon";
 
 export interface BreadcrumbProps extends ActionProps<HTMLAnchorElement>, LinkProps {

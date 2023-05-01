@@ -19,10 +19,10 @@ import React from "react";
 
 import { IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { AbstractPureComponent, Classes, Props } from "../../common";
 import * as Errors from "../../common/errors";
 import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
-import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon } from "../icon/icon";
@@ -100,11 +100,6 @@ export interface DrawerProps extends OverlayableProps, BackdropProps, Props {
     transitionName?: string;
 }
 
-/**
- * Drawer component.
- *
- * @see https://blueprintjs.com/docs/#core/components/drawer
- */
 export class Drawer extends AbstractPureComponent<DrawerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
 

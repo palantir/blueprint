@@ -14,16 +14,29 @@
  * limitations under the License.
  */
 
-export * from "./abstractComponent";
-export * from "./abstractPureComponent";
-export * from "./alignment";
-export * from "./boundary";
-export * from "./constructor";
-export * from "./elevation";
-export * from "./intent";
-export * from "./position";
-export * from "./props";
-export * from "./refs";
+export { AbstractComponent } from "./abstractComponent";
+export { AbstractPureComponent } from "./abstractPureComponent";
+export { Alignment } from "./alignment";
+export { Boundary } from "./boundary";
+// eslint-disable-next-line deprecation/deprecation
+export { Constructor } from "./constructor";
+export { Elevation } from "./elevation";
+export { Intent } from "./intent";
+export { Position } from "./position";
+export {
+    ActionProps,
+    ControlledProps,
+    IntentProps,
+    LinkProps,
+    OptionProps,
+    Props,
+    removeNonHTMLProps,
+    DISPLAYNAME_PREFIX,
+    HTMLDivProps,
+    HTMLInputProps,
+    MaybeElement,
+} from "./props";
+export { getRef, isRefCallback, isRefObject, mergeRefs, refHandler, setRef } from "./refs";
 
 import { Colors } from "@blueprintjs/colors";
 

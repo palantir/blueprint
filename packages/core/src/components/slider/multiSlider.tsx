@@ -17,10 +17,8 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, Intent } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, IntentProps, Props, Utils } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
-import * as Utils from "../../common/utils";
 import { Handle } from "./handle";
 import { HandleInteractionKind, HandleProps, HandleType } from "./handleProps";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";

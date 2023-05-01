@@ -16,9 +16,8 @@
 
 import React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, OptionProps, Props } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, OptionProps, Props } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
 import { Radio, RadioProps } from "./controls";
 

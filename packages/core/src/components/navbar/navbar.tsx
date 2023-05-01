@@ -23,8 +23,6 @@ import { NavbarDivider } from "./navbarDivider";
 import { NavbarGroup } from "./navbarGroup";
 import { NavbarHeading } from "./navbarHeading";
 
-export { NavbarDividerProps } from "./navbarDivider";
-
 export interface NavbarProps extends Props, HTMLDivProps {
     children?: React.ReactNode;
 

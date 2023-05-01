@@ -17,10 +17,8 @@
 import classNames from "classnames";
 import React from "react";
 
-import { Boundary } from "../../common/boundary";
-import * as Classes from "../../common/classes";
+import { Boundary, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";
-import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { shallowCompareKeys } from "../../common/utils";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 

@@ -18,7 +18,7 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import * as Classes from "../../src/common/classes";
+import { Classes } from "../../src/common";
 import * as Keys from "../../src/common/keys";
 import { Tab } from "../../src/components/tabs/tab";
 import { Tabs, TabsProps, TabsState } from "../../src/components/tabs/tabs";

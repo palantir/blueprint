@@ -24,7 +24,7 @@ export {
     throttleEvent,
     throttleReactEventCallback,
 } from "./domUtils";
-export * from "./functionUtils";
+export { isFunction } from "./functionUtils";
 export * from "./jsUtils";
 export * from "./reactUtils";
 export { isDarkTheme } from "./isDarkTheme";
