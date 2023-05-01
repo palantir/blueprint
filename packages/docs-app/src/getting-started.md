@@ -63,8 +63,8 @@ Blueprint can instead be quickly added to a page using the Unpkg CDN.
 
 @### Language features
 
-Blueprint components common ES2015+ language features which are implemented in all modern browsers (Chrome, Firefox,
-Edge, Safari). As of v5.0, we no longer support IE11, so you do _not_ need to polyfill these features.
+Blueprint components use common ES2015+ language features which are implemented in all modern browsers (Chrome, Firefox,
+Edge, Safari). As of v5.0, Blueprint no longer supports IE11, so you do _not_ need to polyfill these features.
 
 -   `Map`
 -   `Set`
