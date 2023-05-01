@@ -2021,7 +2021,7 @@ describe("<Table>", function (this) {
             scrollTop,
         };
 
-        const rowHeadersElement = table.getDOMNode().querySelector(`.${Classes.TABLE_ROW_HEADERS}`) as HTMLElement;
+        const rowHeadersElement = table.getDOMNode().querySelector<HTMLElement>(`.${Classes.TABLE_ROW_HEADERS}`);
         const rowHeaderWidth = rowHeadersElement == null ? 0 : parseInt(rowHeadersElement.style.width, 10);
 
         // the scrollContainerElement *contains* the cellContainerElement, so

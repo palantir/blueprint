@@ -726,7 +726,7 @@ describe("<TimePicker>", () => {
     }
 
     function findInputElement(className: string) {
-        return document.querySelector(`.${Classes.TIMEPICKER_INPUT}.${className}`) as HTMLInputElement;
+        return document.querySelector<HTMLInputElement>(`.${Classes.TIMEPICKER_INPUT}.${className}`);
     }
 
     function changeInputThenBlur(input: HTMLInputElement, value: string) {

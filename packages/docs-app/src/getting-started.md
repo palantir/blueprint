@@ -75,12 +75,6 @@ Blueprint components require the following ES2015 features:
 Popper.js also has some polyfill requirements, [see the docs here](https://popper.js.org/docs/v2/browser-support/).
 We recommend polyfilling these features using [core-js](https://github.com/zloirock/core-js).
 
-@### DOM4
-
-Blueprint relies on a handful of DOM Level 4 API methods: `el.closest()` and `el.contains()`.
-`@blueprintjs/core` depends on a [polyfill library called `dom4`](https://webreflection.github.io/dom4/) to ensure
-these methods are available. This module is conditionally loaded if Blueprint is used in a browser environment.
-
 @## TypeScript
 
 Blueprint is written in TypeScript and therefore its own `.d.ts` type definitions are distributed in
@@ -141,7 +135,7 @@ Blueprint supports the [unpkg CDN](https://unpkg.com). Each package provides a U
 library on the `Blueprint` global variable: `Blueprint.Core`, `Blueprint.Datetime`, etc.
 
 These bundles _do not include_ external dependencies; your application will need to ensure that
-`normalize.css`, `classnames`, `dom4`, `react`, `react-dom`, `react-transition-group`, `@popperjs/core`, and
+`normalize.css`, `classnames`, `react`, `react-dom`, `react-transition-group`, `@popperjs/core`, and
 `react-popper` are available at runtime.
 
 ```html
@@ -161,7 +155,6 @@ These bundles _do not include_ external dependencies; your application will need
     <body>
         <!-- Blueprint dependencies -->
         <script src="https://unpkg.com/classnames@^2.2"></script>
-        <script src="https://unpkg.com/dom4@^2.1"></script>
         <script src="https://unpkg.com/tslib@~2.3.1"></script>
         <script src="https://unpkg.com/react@^16.14.0/umd/react.production.min.js"></script>
         <script src="https://unpkg.com/react-dom@^16.14.0/umd/react-dom.production.min.js"></script>

@@ -67,9 +67,9 @@ describe("Locator", () => {
         );
 
         locator = new LocatorImpl(
-            containerElement.querySelector(".table-wrapper") as HTMLElement,
-            containerElement.querySelector(".body") as HTMLElement,
-            containerElement.querySelector(".body-client") as HTMLElement,
+            containerElement.querySelector<HTMLElement>(".table-wrapper")!,
+            containerElement.querySelector<HTMLElement>(".body")!,
+            containerElement.querySelector<HTMLElement>(".body-client")!,
         );
         locator.setGrid(grid);
     });
@@ -126,7 +126,7 @@ describe("Locator", () => {
             const NUM_ROWS_SCROLLED_OUT_OF_VIEW = 1;
 
             beforeEach(() => {
-                bodyElement = containerElement.querySelector(".body") as HTMLElement;
+                bodyElement = containerElement.querySelector<HTMLElement>(".body")!;
 
                 originalOverflow = bodyElement.style.overflow;
                 originalHeight = bodyElement.style.height;

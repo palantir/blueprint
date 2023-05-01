@@ -95,8 +95,8 @@ describe("Toaster", () => {
             timeout: 0,
         });
         // action is first descendant button
-        const action = document.querySelector(`.${Classes.TOAST} .${Classes.BUTTON}`) as HTMLElement;
-        action.click();
+        const action = document.querySelector<HTMLElement>(`.${Classes.TOAST} .${Classes.BUTTON}`);
+        action?.click();
         assert.isTrue(onClick.calledOnce, "expected onClick to be called once");
     });
 
@@ -108,8 +108,8 @@ describe("Toaster", () => {
             timeout: 0,
         });
         // without action, dismiss is first descendant button
-        const dismiss = document.querySelector(`.${Classes.TOAST} .${Classes.BUTTON}`) as HTMLElement;
-        dismiss.click();
+        const dismiss = document.querySelector<HTMLElement>(`.${Classes.TOAST} .${Classes.BUTTON}`);
+        dismiss?.click();
         assert.isTrue(handleDismiss.calledOnce);
     });
 

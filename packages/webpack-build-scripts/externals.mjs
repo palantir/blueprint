@@ -20,7 +20,6 @@ export const COMMON_EXTERNALS = externalize({
     "@blueprintjs/select": ["Blueprint", "Select"],
     "@blueprintjs/table": ["Blueprint", "Table"],
     classnames: "classNames",
-    dom4: "window",
     "popper.js": "Popper",
     react: "React",
     "react-day-picker": "DayPicker",

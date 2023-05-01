@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import "../common/configureDom4";
-
 export * from "./alert/alert";
 export { Breadcrumb, BreadcrumbProps } from "./breadcrumbs/breadcrumb";
 export { Breadcrumbs, BreadcrumbsProps } from "./breadcrumbs/breadcrumbs";
