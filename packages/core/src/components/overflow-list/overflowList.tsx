@@ -22,13 +22,6 @@ import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";
 import { shallowCompareKeys } from "../../common/utils";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 
-/** @internal - do not expose this type */
-export enum OverflowDirection {
-    NONE,
-    GROW,
-    SHRINK,
-}
-
 export interface OverflowListProps<T> extends Props {
     /**
      * Whether to force the overflowRenderer to always be called, even if there are zero items

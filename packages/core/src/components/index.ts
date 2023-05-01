@@ -62,7 +62,7 @@ export { NavbarDivider, NavbarDividerProps } from "./navbar/navbarDivider";
 export { NavbarGroup, NavbarGroupProps } from "./navbar/navbarGroup";
 export { NavbarHeading, NavbarHeadingProps } from "./navbar/navbarHeading";
 export { NonIdealState, NonIdealStateProps, NonIdealStateIconSize } from "./non-ideal-state/nonIdealState";
-export { OverflowDirection, OverflowList, OverflowListProps } from "./overflow-list/overflowList";
+export { OverflowList, OverflowListProps } from "./overflow-list/overflowList";
 export { Overlay, OverlayLifecycleProps, OverlayProps, OverlayableProps } from "./overlay/overlay";
 export { Text, TextProps } from "./text/text";
 export { PanelStack, PanelStackProps } from "./panel-stack/panelStack";
