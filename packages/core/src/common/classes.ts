@@ -158,8 +158,6 @@ export const HTML_SELECT = `${NS}-html-select`;
 
 export const HTML_TABLE = `${NS}-html-table`;
 export const HTML_TABLE_BORDERED = `${HTML_TABLE}-bordered`;
-/** @deprecated prefer `COMPACT` */
-export const HTML_TABLE_CONDENSED = `${HTML_TABLE}-condensed`;
 export const HTML_TABLE_STRIPED = `${HTML_TABLE}-striped`;
 
 export const INPUT = `${NS}-input`;
