@@ -63,17 +63,21 @@ Blueprint can instead be quickly added to a page using the Unpkg CDN.
 
 @### Language features
 
-Blueprint components require the following ES2015 features:
+Blueprint components common ES2015+ language features which are implemented in all modern browsers (Chrome, Firefox,
+Edge, Safari). As of v5.0, we no longer support IE11, so you do _not_ need to polyfill these features.
 
 -   `Map`
 -   `Set`
 -   `Array.prototype.fill`
 -   `Array.prototype.from`
 -   `String.prototype.startsWith`
+-   `Object.assign`
+-   `Object.entries`
 -   `Object.values`
 
-Popper.js also has some polyfill requirements, [see the docs here](https://popper.js.org/docs/v2/browser-support/).
-We recommend polyfilling these features using [core-js](https://github.com/zloirock/core-js).
+Some of Blueprint's dependencies also have relevant guidance on browser support, see:
+
+-   [Popper.js docs](https://popper.js.org/docs/v2/browser-support/)
 
 @## TypeScript
 

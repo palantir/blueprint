@@ -29,7 +29,6 @@
         "@documentalist/client": "^4.0.0",
         "chroma-js": "^2.4.2",
         "classnames": "^2.3.1",
-        "core-js": "^3.29.1",
         "date-fns": "^2.28.0",
         "downloadjs": "^1.4.7",
         "lodash": "^4.17.21",
