@@ -232,15 +232,15 @@ describe("<EditableText>", () => {
             simulateHelper(wrapper, "meta", { metaKey: true, key: "Enter" });
             wrapper.setState({ isEditing: true });
             simulateHelper(wrapper, "shift", {
+                key: "Enter",
                 preventDefault: (): void => undefined,
                 shiftKey: true,
-                key: "Enter",
             });
             wrapper.setState({ isEditing: true });
             simulateHelper(wrapper, "alt", {
                 altKey: true,
-                preventDefault: (): void => undefined,
                 key: "Enter",
+                preventDefault: (): void => undefined,
             });
             assert.isFalse(wrapper.state("isEditing"));
             assert.strictEqual(confirmSpy.callCount, 4, "onConfirm not called four times");
@@ -272,17 +272,17 @@ describe("<EditableText>", () => {
             simulateHelper(wrapper, "", { metaKey: true, target: textarea, key: "Enter" });
             assert.strictEqual(textarea.value, "\n");
             simulateHelper(wrapper, "", {
+                key: "Enter",
                 preventDefault: (): void => undefined,
                 shiftKey: true,
                 target: textarea,
-                key: "Enter",
             });
             assert.strictEqual(textarea.value, "\n");
             simulateHelper(wrapper, "", {
                 altKey: true,
+                key: "Enter",
                 preventDefault: (): void => undefined,
                 target: textarea,
-                key: "Enter",
             });
             assert.strictEqual(textarea.value, "\n");
             assert.isTrue(wrapper.state("isEditing"));
@@ -293,10 +293,10 @@ describe("<EditableText>", () => {
         interface FakeKeyboardEvent {
             altKey?: boolean;
             ctrlKey?: boolean;
+            key?: string;
             metaKey?: boolean;
             shiftKey?: boolean;
             target?: HTMLTextAreaElement;
-            which?: number;
             preventDefault?(): void;
         }
 

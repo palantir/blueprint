@@ -20,7 +20,6 @@ import React from "react";
 import sinon from "sinon";
 
 import { Classes, Slider } from "../../src";
-import { ARROW_UP } from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
 import { simulateMovement } from "./sliderTestUtils";
 

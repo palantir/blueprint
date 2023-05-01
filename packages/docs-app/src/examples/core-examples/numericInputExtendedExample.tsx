@@ -15,7 +15,7 @@
 
 import React from "react";
 
-import { Keys, NumericInput } from "@blueprintjs/core";
+import { NumericInput } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface NumericInputExtendedExampleState {

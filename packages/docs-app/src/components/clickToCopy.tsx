@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React, { forwardRef, useCallback, useRef, useState } from "react";
 
-import { HTMLDivProps, Keys, Props, removeNonHTMLProps } from "@blueprintjs/core";
+import { HTMLDivProps, Props, removeNonHTMLProps } from "@blueprintjs/core";
 import { createKeyEventHandler } from "@blueprintjs/docs-theme";
 
 export interface ClickToCopyProps extends Props, React.RefAttributes<any>, HTMLDivProps {
