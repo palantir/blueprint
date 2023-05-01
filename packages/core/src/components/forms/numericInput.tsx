@@ -199,7 +199,7 @@ const NON_HTML_PROPS: Array<keyof NumericInputProps> = [
     "stepSize",
 ];
 
-type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<Element>, "onKeyDown" | "onMouseDown">>;
+type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<HTMLElement>, "onKeyDown" | "onMouseDown">>;
 
 /**
  * Numeric input component.
@@ -477,8 +477,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
         return {
             // keydown is fired repeatedly when held so it's implicitly continuous
             onKeyDown: evt => {
-                // eslint-disable-next-line deprecation/deprecation
-                if (!this.props.disabled && Keys.isKeyboardClick(evt.keyCode)) {
+                if (!this.props.disabled && Keys.isKeyboardClick(evt)) {
                     this.handleButtonClick(evt, direction);
                 }
             },
@@ -560,14 +559,11 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
             return;
         }
 
-        // eslint-disable-next-line deprecation/deprecation
-        const { keyCode } = e;
-
         let direction: IncrementDirection | undefined;
 
-        if (keyCode === Keys.ARROW_UP) {
+        if (e.key === "ArrowUp") {
             direction = IncrementDirection.UP;
-        } else if (keyCode === Keys.ARROW_DOWN) {
+        } else if (e.key === "ArrowDown") {
             direction = IncrementDirection.DOWN;
         }
 

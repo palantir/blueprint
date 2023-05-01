@@ -24,7 +24,6 @@ import {
     HTMLSelect,
     Icon,
     Intent,
-    Keys,
     Props,
 } from "@blueprintjs/core";
 
@@ -367,9 +366,9 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
 
     private getInputKeyDownHandler = (unit: TimeUnit) => (e: React.KeyboardEvent<HTMLInputElement>) => {
         handleKeyEvent(e, {
-            [Keys.ARROW_UP]: () => this.incrementTime(unit),
-            [Keys.ARROW_DOWN]: () => this.decrementTime(unit),
-            [Keys.ENTER]: () => {
+            ArrowDown: () => this.decrementTime(unit),
+            ArrowUp: () => this.incrementTime(unit),
+            Enter: () => {
                 (e.currentTarget as HTMLInputElement).blur();
             },
         });
@@ -496,15 +495,12 @@ function getStringValueFromInputEvent(e: React.SyntheticEvent<HTMLInputElement>)
 }
 
 interface KeyEventMap {
-    [key: number]: () => void;
+    [key: string]: () => void;
 }
 
 function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>, actions: KeyEventMap, preventDefault = true) {
-    for (const k of Object.keys(actions)) {
-        const key = Number(k);
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        // eslint-disable-next-line deprecation/deprecation
-        if (e.which === key) {
+    for (const key of Object.keys(actions)) {
+        if (e.key === key) {
             if (preventDefault) {
                 e.preventDefault();
             }

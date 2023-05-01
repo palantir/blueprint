@@ -79,8 +79,8 @@ export const ClickToCopy: React.FC<ClickToCopyProps> = forwardRef<any, ClickToCo
         createKeyEventHandler(
             {
                 all: props.onKeyDown,
-                [Keys.SPACE]: copy,
-                [Keys.ENTER]: copy,
+                Enter: copy,
+                Space: copy,
             },
             true,
         ),

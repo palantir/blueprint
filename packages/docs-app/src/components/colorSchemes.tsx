@@ -191,8 +191,8 @@ export class ColorScheme extends React.PureComponent<ColorSchemeProps, ColorSche
         const clickHandler = this.handlePaletteChange.bind(this, key);
         const keyDownHandler = createKeyEventHandler(
             {
-                [Keys.SPACE]: clickHandler,
-                [Keys.ENTER]: clickHandler,
+                Enter: clickHandler,
+                Space: clickHandler,
             },
             true,
         );

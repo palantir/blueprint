@@ -14,19 +14,37 @@
  * limitations under the License.
  */
 
+/** @deprecated use named keys instead of key codes */
 export const BACKSPACE = 8;
+/** @deprecated use named keys instead of key codes */
 export const TAB = 9;
+/** @deprecated use named keys instead of key codes */
 export const ENTER = 13;
+/** @deprecated use named keys instead of key codes */
 export const SHIFT = 16;
+/** @deprecated use named keys instead of key codes */
 export const ESCAPE = 27;
+/** @deprecated use named keys instead of key codes */
 export const SPACE = 32;
+/** @deprecated use named keys instead of key codes */
 export const ARROW_LEFT = 37;
+/** @deprecated use named keys instead of key codes */
 export const ARROW_UP = 38;
+/** @deprecated use named keys instead of key codes */
 export const ARROW_RIGHT = 39;
+/** @deprecated use named keys instead of key codes */
 export const ARROW_DOWN = 40;
+/** @deprecated use named keys instead of key codes */
 export const DELETE = 46;
 
-/** Returns whether the key code is `enter` or `space`, the two keys that can click a button. */
-export function isKeyboardClick(keyCode: number) {
-    return keyCode === ENTER || keyCode === SPACE;
+/**
+ * Returns whether the keyboard event was triggered by Enter or Space, the two keys that are expected to trigger
+ * interactive elements like buttons.
+ */
+export function isKeyboardClick(event: React.KeyboardEvent<HTMLElement>) {
+    return event.key === "Escape" || event.key === " ";
+}
+
+export function isArrowKey(event: React.KeyboardEvent<HTMLElement>) {
+    return ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(event.key) >= 0;
 }

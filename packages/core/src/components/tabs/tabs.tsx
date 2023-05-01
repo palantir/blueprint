@@ -224,9 +224,9 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     }
 
     private getKeyCodeDirection(e: React.KeyboardEvent<HTMLElement>) {
-        if (isEventKeyCode(e, Keys.ARROW_LEFT, Keys.ARROW_UP)) {
+        if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
             return -1;
-        } else if (isEventKeyCode(e, Keys.ARROW_RIGHT, Keys.ARROW_DOWN)) {
+        } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
             return 1;
         }
         return undefined;
@@ -271,10 +271,8 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     };
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const targetTabElement = (e.target as HTMLElement).closest(TAB_SELECTOR) as HTMLElement;
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        // eslint-disable-next-line deprecation/deprecation
-        if (targetTabElement != null && Keys.isKeyboardClick(e.which)) {
+        const targetTabElement = (e.target as HTMLElement).closest<HTMLElement>(TAB_SELECTOR);
+        if (targetTabElement != null && Keys.isKeyboardClick(e)) {
             e.preventDefault();
             targetTabElement.click();
         }
@@ -348,12 +346,6 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         }
         return child;
     };
-}
-
-function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
-    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-    // eslint-disable-next-line deprecation/deprecation
-    return codes.indexOf(e.which) >= 0;
 }
 
 function isTabElement(child: any): child is TabElement {

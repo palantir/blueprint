@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// alph sorting is unintuitive here
+// tslint:disable object-literal-sort-keys
+
 export interface KeyCodeTable {
     [code: number]: string;
 }
@@ -26,88 +29,12 @@ export interface KeyMap {
     [key: string]: string;
 }
 
-export const KeyCodes: KeyCodeTable = {
-    8: "backspace",
-    9: "tab",
-    13: "enter",
-    20: "capslock",
-    27: "esc",
-    32: "space",
-    33: "pageup",
-    34: "pagedown",
-    35: "end",
-    36: "home",
-    37: "left",
-    38: "up",
-    39: "right",
-    40: "down",
-    45: "ins",
-    46: "del",
-    // number keys
-    48: "0",
-    49: "1",
-    50: "2",
-    51: "3",
-    52: "4",
-    53: "5",
-    54: "6",
-    55: "7",
-    56: "8",
-    57: "9",
-    // alphabet
-    65: "a",
-    66: "b",
-    67: "c",
-    68: "d",
-    69: "e",
-    70: "f",
-    71: "g",
-    72: "h",
-    73: "i",
-    74: "j",
-    75: "k",
-    76: "l",
-    77: "m",
-    78: "n",
-    79: "o",
-    80: "p",
-    81: "q",
-    82: "r",
-    83: "s",
-    84: "t",
-    85: "u",
-    86: "v",
-    87: "w",
-    88: "x",
-    89: "y",
-    90: "z",
-    // punctuation
-    106: "*",
-    107: "+",
-    109: "-",
-    110: ".",
-    111: "/",
-    186: ";",
-    187: "=",
-    188: ",",
-    189: "-",
-    190: ".",
-    191: "/",
-    192: "`",
-    219: "[",
-    220: "\\",
-    221: "]",
-    222: "'",
-};
-
-export const Modifiers: KeyCodeTable = {
-    16: "shift",
-    17: "ctrl",
-    18: "alt",
-    91: "meta",
-    93: "meta",
-    224: "meta",
-};
+/**
+ * Named modifier keys
+ *
+ * @see https://www.w3.org/TR/uievents-key/#keys-modifier
+ */
+const MODIFIER_KEYS = new Set(["Shift", "Control", "Alt", "Meta"]);
 
 export const ModifierBitMasks: KeyCodeReverseTable = {
     alt: 1,
@@ -117,19 +44,17 @@ export const ModifierBitMasks: KeyCodeReverseTable = {
 };
 
 export const Aliases: KeyMap = {
-    cmd: "meta",
-    command: "meta",
-    escape: "esc",
+    cmd: "Meta",
+    command: "Meta",
+    escape: "Escape",
     minus: "-",
-    mod: isMac() ? "meta" : "ctrl",
-    option: "alt",
+    mod: isMac() ? "Meta" : "Control",
+    option: "Alt",
     plus: "+",
-    return: "enter",
-    win: "meta",
+    return: "Enter",
+    win: "Meta",
 };
 
-// alph sorting is unintuitive here
-// tslint:disable object-literal-sort-keys
 export const ShiftKeys: KeyMap = {
     "~": "`",
     "!": "1",
@@ -153,17 +78,6 @@ export const ShiftKeys: KeyMap = {
     ">": ".",
     "?": "/",
 };
-// tslint:enable object-literal-sort-keys
-
-// Function keys
-for (let i = 1; i <= 12; ++i) {
-    KeyCodes[111 + i] = "f" + i;
-}
-
-// Numpad
-for (let i = 0; i <= 9; ++i) {
-    KeyCodes[96 + i] = "num" + i.toString();
-}
 
 export interface KeyCombo {
     key?: string;
@@ -217,28 +131,22 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
 
     // modifiers first
     if (e.ctrlKey) {
-        keys.push("ctrl");
+        keys.push("Ctrl");
     }
     if (e.altKey) {
-        keys.push("alt");
+        keys.push("Alt");
     }
     if (e.shiftKey) {
-        keys.push("shift");
+        keys.push("Shift");
     }
     if (e.metaKey) {
-        keys.push("meta");
+        keys.push("Meta");
     }
 
-    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-    // eslint-disable-next-line deprecation/deprecation
-    const { which } = e;
-    if (Modifiers[which] != null) {
+    if (MODIFIER_KEYS.has(e.key)) {
         // no action key
-    } else if (KeyCodes[which] != null) {
-        keys.push(KeyCodes[which]);
     } else {
-        // eslint-disable-next-line id-blacklist
-        keys.push(String.fromCharCode(which).toLowerCase());
+        keys.push(e.key);
     }
 
     // join keys with plusses
@@ -248,21 +156,15 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
 /**
  * Determines the key combo object from the given keyboard event. Again, a key
  * combo includes zero or more modifiers (represented by a bitmask) and one
- * action key, which we determine from the `e.which` property of the keyboard
+ * action key, which we determine from the `e.key` property of the keyboard
  * event.
  */
 export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     let key: string | undefined;
-    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-    // eslint-disable-next-line deprecation/deprecation
-    const { which } = e;
-    if (Modifiers[which] != null) {
+    if (MODIFIER_KEYS.has(e.key)) {
         // keep key null
-    } else if (KeyCodes[which] != null) {
-        key = KeyCodes[which];
     } else {
-        // eslint-disable-next-line id-blacklist
-        key = String.fromCharCode(which).toLowerCase();
+        key = e.key;
     }
 
     let modifiers = 0;
