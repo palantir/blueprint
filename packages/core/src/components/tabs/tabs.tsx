@@ -297,7 +297,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         }
 
         const tabIdSelector = `${TAB_SELECTOR}[data-tab-id="${this.state.selectedTabId}"]`;
-        const selectedTabElement = this.tablistElement.querySelector(tabIdSelector) as HTMLElement;
+        const selectedTabElement = this.tablistElement.querySelector<HTMLElement>(tabIdSelector);
 
         let indicatorWrapperStyle: React.CSSProperties = { display: "none" };
         if (selectedTabElement != null) {

@@ -215,7 +215,7 @@ export class Popover<
     // popper innerRef gives us a handle on the transition container, since that's what we render as the overlay child,
     // so if we want to look at our actual popover element, we need to reach inside a bit
     private getPopoverElement() {
-        return this.popoverElement?.querySelector(`.${Classes.POPOVER}`);
+        return this.popoverElement?.querySelector<HTMLElement>(`.${Classes.POPOVER}`);
     }
 
     private getIsOpen(props: PopoverProps<T>) {

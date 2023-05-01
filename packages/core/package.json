@@ -10,12 +10,9 @@
     "unpkg": "dist/core.bundle.js",
     "sideEffects": [
         "**/*.css",
-        "lib/esm/components/index.js",
-        "lib/esm/common/configureDom4.js",
-        "lib/esnext/components/index.js",
-        "lib/esnext/common/configureDom4.js",
-        "lib/cjs/components/index.js",
-        "lib/cjs/common/configureDom4.js"
+        "lib/cjs/components/context-menu/contextMenuSingleton.js",
+        "lib/esm/components/context-menu/contextMenuSingleton.js",
+        "lib/esnext/components/context-menu/contextMenuSingleton.js"
     ],
     "bin": {
         "upgrade-blueprint-2.0.0-rename": "scripts/upgrade-blueprint-2.0.0-rename.sh",
@@ -50,9 +47,7 @@
         "@blueprintjs/icons": "^4.15.0",
         "@juggle/resize-observer": "^3.4.0",
         "@popperjs/core": "^2.11.7",
-        "@types/dom4": "^2.0.2",
         "classnames": "^2.3.1",
-        "dom4": "^2.1.5",
         "normalize.css": "^8.0.1",
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",

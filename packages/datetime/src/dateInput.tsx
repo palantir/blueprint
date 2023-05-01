@@ -417,8 +417,8 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
     /* eslint-enable deprecation/deprecation */
 
     private getKeyboardFocusableElements = (): HTMLElement[] => {
-        const elements: HTMLElement[] = Array.from(
-            this.popoverContentElement?.querySelectorAll(
+        const elements = Array.from(
+            this.popoverContentElement?.querySelectorAll<HTMLElement>(
                 "button:not([disabled]),input,[tabindex]:not([tabindex='-1'])",
             ),
         );

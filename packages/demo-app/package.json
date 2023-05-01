@@ -23,7 +23,6 @@
         "@blueprintjs/table": "^4.10.1",
         "classnames": "^2.3.1",
         "core-js": "^3.29.1",
-        "dom4": "^2.1.5",
         "lodash": "^4.17.21",
         "normalize.css": "^8.0.1",
         "react": "^16.14.0",
