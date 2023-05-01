@@ -27,7 +27,6 @@ export default {
     entry: {
         "demo-app": [
             // environment polyfills
-            "dom4",
             "./polyfill.js",
             // bundle entry points
             "./src/index.tsx",
