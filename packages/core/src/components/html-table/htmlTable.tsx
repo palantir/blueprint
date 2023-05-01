@@ -28,13 +28,6 @@ export interface HTMLTableProps
     /** Use compact appearance with less padding. */
     compact?: boolean;
 
-    /**
-     * Use small, condensed appearance.
-     *
-     * @deprecated use `compact` instead
-     */
-    condensed?: boolean;
-
     /** Enable hover styles on rows. */
     interactive?: boolean;
 
@@ -50,15 +43,12 @@ export interface HTMLTableProps
  * @see https://blueprintjs.com/docs/#core/components/html-table
  */
 export const HTMLTable: React.FC<HTMLTableProps> = forwardRef((props, ref) => {
-    // eslint-disable-next-line deprecation/deprecation
-    const { bordered, className, compact, condensed, interactive, striped, ...htmlProps } = props;
+    const { bordered, className, compact, interactive, striped, ...htmlProps } = props;
     const classes = classNames(
         Classes.HTML_TABLE,
         {
             [Classes.COMPACT]: compact,
             [Classes.HTML_TABLE_BORDERED]: bordered,
-            // eslint-disable-next-line deprecation/deprecation
-            [Classes.HTML_TABLE_CONDENSED]: condensed,
             [Classes.HTML_TABLE_STRIPED]: striped,
             [Classes.INTERACTIVE]: interactive,
         },
