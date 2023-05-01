@@ -220,10 +220,10 @@ describe("<NumericInput>", () => {
 
         describe("selectAllOnFocus", () => {
             it("if false (the default), does not select any text on focus", () => {
-                const attachTo = document.createElement("div");
-                mount(<NumericInput value="12345678" />, { attachTo });
+                const containerElement = document.createElement("div");
+                mount(<NumericInput value="12345678" />, { attachTo: containerElement });
 
-                const input = attachTo.querySelector("input") as HTMLInputElement;
+                const input = containerElement.querySelector("input")!;
                 input.focus();
 
                 expect(input.selectionStart).to.equal(input.selectionEnd);
@@ -235,7 +235,7 @@ describe("<NumericInput>", () => {
                     attachTo,
                 }).find("input");
                 input.simulate("focus");
-                const { selectionStart, selectionEnd } = input.getDOMNode() as HTMLInputElement;
+                const { selectionStart, selectionEnd } = input.getDOMNode<HTMLInputElement>();
                 expect(selectionStart).to.equal(0);
                 expect(selectionEnd).to.equal(VALUE.length);
             });
@@ -251,7 +251,7 @@ describe("<NumericInput>", () => {
                 const wrappedInput = component.find(InputGroup).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
-                const input = attachTo.querySelector("input") as HTMLInputElement;
+                const input = attachTo.querySelector<HTMLInputElement>("input")!;
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
@@ -262,7 +262,7 @@ describe("<NumericInput>", () => {
                 const wrappedInput = component.find(InputGroup).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
-                const input = attachTo.querySelector("input") as HTMLInputElement;
+                const input = attachTo.querySelector<HTMLInputElement>("input")!;
                 expect(input.selectionStart).to.equal(0);
                 expect(input.selectionEnd).to.equal(VALUE.length);
             });

@@ -27,6 +27,6 @@ initializeLogo(
     document.getElementById("pt-logo-background") as HTMLCanvasElement,
 );
 
-initializeSVGs(document.querySelector(".landing-wireframes") as HTMLElement);
+initializeSVGs(document.querySelector<HTMLElement>(".landing-wireframes"));
 
 document.getElementById("copyright").innerHTML = `© 2014–${new Date().getFullYear()} Palantir Technologies`;

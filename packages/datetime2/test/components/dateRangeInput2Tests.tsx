@@ -208,9 +208,9 @@ describe("<DateRangeInput2>", () => {
         }
 
         function findTimePickerInputElement(className: string, inputElementIndex: number = 0) {
-            return document.querySelectorAll(`.${DatetimeClasses.TIMEPICKER_INPUT}.${className}`)[
+            return document.querySelectorAll<HTMLInputElement>(`.${DatetimeClasses.TIMEPICKER_INPUT}.${className}`)[
                 inputElementIndex
-            ] as HTMLInputElement;
+            ];
         }
     });
 
@@ -463,7 +463,7 @@ describe("<DateRangeInput2>", () => {
             const startInput = getStartInput(root);
             startInput.simulate("focus");
 
-            const startInputNode = containerElement!.querySelectorAll("input")[0] as HTMLInputElement;
+            const startInputNode = containerElement!.querySelectorAll("input")[0];
             expect(startInputNode.selectionStart).to.equal(startInputNode.selectionEnd);
         });
 
@@ -476,7 +476,7 @@ describe("<DateRangeInput2>", () => {
             const startInput = getStartInput(root);
             startInput.simulate("focus");
 
-            const startInputNode = containerElement!.querySelectorAll("input")[0] as HTMLInputElement;
+            const startInputNode = containerElement!.querySelectorAll("input")[0];
             expect(startInputNode.selectionStart).to.equal(0);
             expect(startInputNode.selectionEnd).to.equal(START_STR.length);
         });
@@ -491,7 +491,7 @@ describe("<DateRangeInput2>", () => {
             // getDay is 0-indexed, but getDayElement is 1-indexed
             getDayElement(START_DATE_2.getDay() + 1).simulate("mouseenter");
 
-            const startInputNode = containerElement!.querySelectorAll("input")[0] as HTMLInputElement;
+            const startInputNode = containerElement!.querySelectorAll("input")[0];
             expect(startInputNode.selectionStart).to.equal(0);
             expect(startInputNode.selectionEnd).to.equal(START_STR.length);
         });

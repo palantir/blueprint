@@ -170,9 +170,9 @@ describe("<EditableText>", () => {
 
         it("caret is placed at the end of the input box", () => {
             // mount into a DOM element so we can get the input to inspect its HTML props
-            const attachTo = document.createElement("div");
-            mount(<EditableText isEditing={true} value="alphabet" />, { attachTo });
-            const input = attachTo.querySelector("input") as HTMLInputElement;
+            const containerElement = document.createElement("div");
+            mount(<EditableText isEditing={true} value="alphabet" />, { attachTo: containerElement });
+            const input = containerElement.querySelector<HTMLInputElement>("input")!;
             assert.strictEqual(input.selectionStart, 8);
             assert.strictEqual(input.selectionEnd, 8);
         });
@@ -180,7 +180,7 @@ describe("<EditableText>", () => {
         it("controlled mode can only change value via props", () => {
             let expected = "alphabet";
             const wrapper = mount(<EditableText isEditing={true} value={expected} />);
-            const inputElement = wrapper.getDOMNode().querySelector("input") as HTMLInputElement;
+            const inputElement = wrapper.getDOMNode().querySelector<HTMLInputElement>("input")!;
 
             const input = wrapper.find("input");
             input.simulate("change", { target: { value: "hello" } });
@@ -201,11 +201,11 @@ describe("<EditableText>", () => {
         });
 
         it("the full input box is highlighted when selectAllOnFocus is true", () => {
-            const attachTo = document.createElement("div");
+            const containerElement = document.createElement("div");
             mount(<EditableText isEditing={true} selectAllOnFocus={true} value="alphabet" />, {
-                attachTo,
+                attachTo: containerElement,
             });
-            const input = attachTo.querySelector("input") as HTMLInputElement;
+            const input = containerElement.querySelector<HTMLInputElement>("input")!;
             assert.strictEqual(input.selectionStart, 0);
             assert.strictEqual(input.selectionEnd, 8);
         });
@@ -267,7 +267,7 @@ describe("<EditableText>", () => {
             const wrapper = mount(
                 <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
-            const textarea = wrapper.getDOMNode().querySelector("textarea") as HTMLTextAreaElement;
+            const textarea = wrapper.getDOMNode().querySelector<HTMLTextAreaElement>("textarea")!;
             simulateHelper(wrapper, "", { ctrlKey: true, target: textarea, which: Keys.ENTER });
             assert.strictEqual(textarea.value, "\n");
             simulateHelper(wrapper, "", { metaKey: true, target: textarea, which: Keys.ENTER });
