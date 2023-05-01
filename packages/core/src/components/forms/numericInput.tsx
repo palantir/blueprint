@@ -25,7 +25,6 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     Intent,
-    Keys,
     Position,
     refHandler,
     removeNonHTMLProps,
@@ -477,7 +476,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
         return {
             // keydown is fired repeatedly when held so it's implicitly continuous
             onKeyDown: evt => {
-                if (!this.props.disabled && Keys.isKeyboardClick(evt)) {
+                if (!this.props.disabled && Utils.isKeyboardClick(evt)) {
                     this.handleButtonClick(evt, direction);
                 }
             },

@@ -19,7 +19,7 @@ import React, { forwardRef, useCallback, useRef, useState } from "react";
 
 import { IconSize } from "@blueprintjs/icons";
 
-import { Classes, Keys, Utils } from "../../common";
+import { Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { mergeRefs } from "../../common/refs";
 import { Icon } from "../icon/icon";
@@ -99,7 +99,7 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     );
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<any>) => {
-            if (Keys.isKeyboardClick(e)) {
+            if (Utils.isKeyboardClick(e)) {
                 e.preventDefault();
                 if (e.key !== currentKeyPressed) {
                     setIsActive(true);
@@ -112,7 +112,7 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     );
     const handleKeyUp = useCallback(
         (e: React.KeyboardEvent<any>) => {
-            if (Keys.isKeyboardClick(e)) {
+            if (Utils.isKeyboardClick(e)) {
                 setIsActive(false);
                 buttonRef.current?.click();
             }

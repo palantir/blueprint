@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, Keys } from "../../common";
+import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp } from "../../common/utils";
 import { HandleProps } from "./handleProps";
@@ -209,7 +209,7 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
     };
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLSpanElement>) => {
-        if (Keys.isArrowKey(event)) {
+        if (Utils.isArrowKey(event)) {
             this.props.onRelease?.(this.props.value);
         }
     };

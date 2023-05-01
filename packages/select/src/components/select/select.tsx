@@ -24,7 +24,6 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps,
-    Keys,
     Popover,
     PopoverClickTargetHandlers,
     PopoverTargetProps,
@@ -283,7 +282,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
             this.setState({ isOpen: true });
-        } else if (Keys.isKeyboardClick(event)) {
+        } else if (Utils.isKeyboardClick(event)) {
             this.setState({ isOpen: true });
         }
     };

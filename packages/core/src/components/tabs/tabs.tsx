@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Keys, Props, Utils } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Props, Utils } from "../../common";
 import { Tab, TabId, TabProps } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
@@ -272,7 +272,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const targetTabElement = (e.target as HTMLElement).closest<HTMLElement>(TAB_SELECTOR);
-        if (targetTabElement != null && Keys.isKeyboardClick(e)) {
+        if (targetTabElement != null && Utils.isKeyboardClick(e)) {
             e.preventDefault();
             targetTabElement.click();
         }

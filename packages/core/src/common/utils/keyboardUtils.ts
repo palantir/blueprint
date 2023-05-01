@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/** @deprecated use named keys instead of key codes */
-export const BACKSPACE = 8;
-/** @deprecated use named keys instead of key codes */
-export const TAB = 9;
-/** @deprecated use named keys instead of key codes */
-export const ENTER = 13;
-/** @deprecated use named keys instead of key codes */
-export const SHIFT = 16;
-/** @deprecated use named keys instead of key codes */
-export const ESCAPE = 27;
-/** @deprecated use named keys instead of key codes */
-export const SPACE = 32;
-/** @deprecated use named keys instead of key codes */
-export const ARROW_LEFT = 37;
-/** @deprecated use named keys instead of key codes */
-export const ARROW_UP = 38;
-/** @deprecated use named keys instead of key codes */
-export const ARROW_RIGHT = 39;
-/** @deprecated use named keys instead of key codes */
-export const ARROW_DOWN = 40;
-/** @deprecated use named keys instead of key codes */
-export const DELETE = 46;
 
 /**
  * Returns whether the keyboard event was triggered by Enter or Space, the two keys that are expected to trigger
