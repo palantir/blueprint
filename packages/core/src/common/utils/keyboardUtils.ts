@@ -19,7 +19,7 @@
  * interactive elements like buttons.
  */
 export function isKeyboardClick(event: React.KeyboardEvent<HTMLElement>) {
-    return event.key === "Escape" || event.key === " ";
+    return event.key === "Enter" || event.key === " ";
 }
 
 export function isArrowKey(event: React.KeyboardEvent<HTMLElement>) {

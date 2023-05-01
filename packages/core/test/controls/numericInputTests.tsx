@@ -477,12 +477,16 @@ describe("<NumericInput>", () => {
     describe("Keyboard interactions on buttons (with Enter key)", () => {
         const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const incrementButton = component.find(Button).first();
-            incrementButton.simulate("keydown", { ...mockEvent, key: "Enter" });
+            const event = { ...mockEvent, key: "Enter" };
+            incrementButton.simulate("keydown", event);
+            incrementButton.simulate("keyup", event);
         };
 
         const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const decrementButton = component.find(Button).last();
-            decrementButton.simulate("keydown", { ...mockEvent, key: "Enter" });
+            const event = { ...mockEvent, key: "Enter" };
+            decrementButton.simulate("keydown", event);
+            decrementButton.simulate("keyup", event);
         };
 
         runInteractionSuite("Press 'ENTER'", "Press 'ENTER'", simulateIncrement, simulateDecrement);

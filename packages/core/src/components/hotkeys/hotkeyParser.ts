@@ -44,15 +44,15 @@ export const ModifierBitMasks: KeyCodeReverseTable = {
 };
 
 export const Aliases: KeyMap = {
-    cmd: "Meta",
-    command: "Meta",
-    escape: "Escape",
+    cmd: "meta",
+    command: "meta",
+    escape: "escape",
     minus: "-",
-    mod: isMac() ? "Meta" : "Control",
-    option: "Alt",
+    mod: isMac() ? "meta" : "ctrl",
+    option: "alt",
     plus: "+",
-    return: "Enter",
-    win: "Meta",
+    return: "enter",
+    win: "meta",
 };
 
 export const ShiftKeys: KeyMap = {
@@ -107,13 +107,13 @@ export const parseKeyCombo = (combo: string): KeyCombo => {
                 Valid key combos look like "cmd + plus", "shift+p", or "!"`);
         }
 
-        if (Aliases[piece] != null) {
+        if (Aliases[piece] !== undefined) {
             piece = Aliases[piece];
         }
 
-        if (ModifierBitMasks[piece] != null) {
+        if (ModifierBitMasks[piece] !== undefined) {
             modifiers += ModifierBitMasks[piece];
-        } else if (ShiftKeys[piece] != null) {
+        } else if (ShiftKeys[piece] !== undefined) {
             modifiers += ModifierBitMasks.shift;
             key = ShiftKeys[piece];
         } else {
@@ -127,30 +127,27 @@ export const parseKeyCombo = (combo: string): KeyCombo => {
  * Converts a keyboard event into a valid combo prop string
  */
 export const getKeyComboString = (e: KeyboardEvent): string => {
-    const keys = [] as string[];
+    const comboParts = [] as string[];
 
     // modifiers first
     if (e.ctrlKey) {
-        keys.push("Ctrl");
+        comboParts.push("ctrl");
     }
     if (e.altKey) {
-        keys.push("Alt");
+        comboParts.push("alt");
     }
     if (e.shiftKey) {
-        keys.push("Shift");
+        comboParts.push("shift");
     }
     if (e.metaKey) {
-        keys.push("Meta");
+        comboParts.push("meta");
     }
 
-    if (MODIFIER_KEYS.has(e.key)) {
-        // no action key
-    } else {
-        keys.push(e.key);
+    if (e.key !== undefined && !MODIFIER_KEYS.has(e.key)) {
+        comboParts.push(e.key);
     }
 
-    // join keys with plusses
-    return keys.join(" + ");
+    return comboParts.join(" + ");
 };
 
 /**
@@ -162,7 +159,7 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
 export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     let key: string | undefined;
     if (MODIFIER_KEYS.has(e.key)) {
-        // keep key null
+        // keep key undefined
     } else {
         key = e.key;
     }
