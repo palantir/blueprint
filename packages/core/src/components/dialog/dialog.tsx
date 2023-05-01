@@ -24,7 +24,7 @@ import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
-import { H5 } from "../html/html";
+import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 import { BackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
 
@@ -98,6 +98,11 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     "aria-describedby"?: string;
 }
 
+/**
+ * Dialog component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/dialog
+ */
 export class Dialog extends AbstractPureComponent<DialogProps> {
     public static defaultProps: DialogProps = {
         canOutsideClickClose: true,
@@ -171,7 +176,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
         return (
             <div className={Classes.DIALOG_HEADER}>
                 <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
-                <H5 id={this.titleId}>{title}</H5>
+                <H6 id={this.titleId}>{title}</H6>
                 {this.maybeRenderCloseButton()}
             </div>
         );

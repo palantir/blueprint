@@ -3,7 +3,7 @@
 This component provides Blueprint styling to native HTML tables.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">This is not @blueprintjs/table</h4>
+    <h5 class="@ns-heading">This is not @blueprintjs/table</h5>
 
 This table component is a simple CSS-only skin for HTML `<table>` elements.
 It is ideal for basic static tables. If you're looking for more complex

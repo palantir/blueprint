@@ -18,6 +18,8 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
+
 import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../../src";
 
 // TODO: button selectors in these tests should not be tied so closely to implementation; we shouldn't
@@ -36,6 +38,7 @@ describe("<MultistepDialog>", () => {
             Classes.MULTISTEP_DIALOG_PANELS,
             Classes.MULTISTEP_DIALOG_LEFT_PANEL,
             Classes.MULTISTEP_DIALOG_RIGHT_PANEL,
+            // eslint-disable-next-line deprecation/deprecation -- need to keep adding this class for backcompat, can be removed in next major version
             Classes.MULTISTEP_DIALOG_FOOTER,
             Classes.DIALOG_STEP,
             Classes.DIALOG_STEP_CONTAINER,
@@ -43,7 +46,7 @@ describe("<MultistepDialog>", () => {
             Classes.DIALOG_STEP_TITLE,
             Classes.DIALOG_FOOTER_ACTIONS,
         ].forEach(className => {
-            assert.lengthOf(dialog.find(`.${className}`), 1, `missing ${className}`);
+            assert.lengthOf(dialog.find(`.${className}`).hostNodes(), 1, `missing ${className}`);
         });
         dialog.unmount();
     });
@@ -160,6 +163,27 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
         assert.strictEqual(steps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
         dialog.unmount();
+    });
+
+    it("pressing enter on older step takes effect", () => {
+        const testsContainerElement = document.createElement("div");
+        document.documentElement.appendChild(testsContainerElement);
+        const dialog = mount(
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} />
+            </MultistepDialog>,
+            { attachTo: testsContainerElement },
+        );
+        assert.strictEqual(dialog.state("selectedIndex"), 0);
+        findButtonWithText(dialog, "Next").simulate("click");
+        assert.strictEqual(dialog.state("selectedIndex"), 1);
+        const step = dialog.find(`.${Classes.DIALOG_STEP}`);
+        step.at(0).simulate("focus");
+        dispatchTestKeyboardEvent(step.at(0).getDOMNode(), "keydown", "Enter");
+        assert.strictEqual(dialog.state("selectedIndex"), 0);
+        dialog.unmount();
+        testsContainerElement.remove();
     });
 
     it("gets by without children", () => {

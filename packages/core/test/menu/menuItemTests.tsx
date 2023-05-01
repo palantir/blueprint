@@ -19,6 +19,8 @@ import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
+
 import {
     Button,
     Classes,
@@ -39,11 +41,14 @@ describe("MenuItem", () => {
     });
 
     it("supports HTML props", () => {
-        const func = () => false;
-        const item = shallow(<MenuItem text="text" onClick={func} onKeyDown={func} onMouseMove={func} />).find("a");
-        assert.strictEqual(item.prop("onClick"), func);
-        assert.strictEqual(item.prop("onKeyDown"), func);
-        assert.strictEqual(item.prop("onMouseMove"), func);
+        const mouseHandler = (_event: React.MouseEvent<HTMLElement>) => false;
+        const keyHandler = (_event: React.KeyboardEvent<HTMLElement>) => false;
+        const item = shallow(
+            <MenuItem text="text" onClick={mouseHandler} onKeyDown={keyHandler} onMouseMove={mouseHandler} />,
+        ).find("a");
+        assert.strictEqual(item.prop("onClick"), mouseHandler);
+        assert.strictEqual(item.prop("onKeyDown"), keyHandler);
+        assert.strictEqual(item.prop("onMouseMove"), mouseHandler);
     });
 
     it("children appear in submenu", () => {
@@ -67,6 +72,18 @@ describe("MenuItem", () => {
     it("can set roleStructure to change role prop structure to that of a listbox or select item", () => {
         const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" />);
         assert.equal(wrapper.find("li").prop("role"), "option");
+        assert.equal(wrapper.find("a").prop("role"), undefined);
+    });
+
+    it("can set roleStructure to change role prop structure to that of a list item", () => {
+        const wrapper = mount(<MenuItem text="Roles" roleStructure="listitem" />);
+        assert.equal(wrapper.find("li").prop("role"), undefined);
+        assert.equal(wrapper.find("a").prop("role"), undefined);
+    });
+
+    it('can set roleStructure to change role prop structure to void li role (set role="none")', () => {
+        const wrapper = mount(<MenuItem text="Roles" roleStructure="none" />);
+        assert.equal(wrapper.find("li").prop("role"), "none");
         assert.equal(wrapper.find("a").prop("role"), undefined);
     });
 
@@ -95,6 +112,15 @@ describe("MenuItem", () => {
         shallow(<MenuItem text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("click");
+        assert.isTrue(onClick.calledOnce);
+    });
+
+    it("pressing enter on MenuItem triggers onClick prop", () => {
+        const testsContainerElement = document.createElement("div");
+        document.documentElement.appendChild(testsContainerElement);
+        const onClick = spy();
+        const wrapper = mount(<MenuItem text="Graph" onClick={onClick} />, { attachTo: testsContainerElement });
+        dispatchTestKeyboardEvent(wrapper.find("a").getDOMNode(), "keydown", "Enter");
         assert.isTrue(onClick.calledOnce);
     });
 

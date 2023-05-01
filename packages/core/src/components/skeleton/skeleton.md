@@ -15,7 +15,7 @@ Apply the class `.@ns-skeleton` to elements that you would like to cover up with
 a loading animation.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Manually disable focusable elements</h4>
+    <h5 class="@ns-heading">Manually disable focusable elements</h5>
 
 When using the `.@ns-skeleton` class on focusable elements such as inputs
 and buttons, be sure to disable the element, via either the `disabled` or

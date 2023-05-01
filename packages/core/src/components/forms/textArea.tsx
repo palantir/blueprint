@@ -53,6 +53,11 @@ export interface TextAreaState {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
+/**
+ * Text area component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/text-inputs.text-area
+ */
 export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
@@ -67,14 +72,17 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
         this.props.inputRef,
     );
 
-    public componentDidMount() {
-        if (this.props.growVertically && this.textareaElement !== null) {
-            // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
-            /* eslint-disable-next-line react/no-did-mount-set-state */
-            this.setState({
-                height: this.textareaElement?.scrollHeight,
-            });
+    private maybeSyncHeightToScrollHeight = () => {
+        if (this.props.growVertically && this.textareaElement != null) {
+            const { scrollHeight } = this.textareaElement;
+            if (scrollHeight > 0) {
+                this.setState({ height: scrollHeight });
+            }
         }
+    };
+
+    public componentDidMount() {
+        this.maybeSyncHeightToScrollHeight();
     }
 
     public componentDidUpdate(prevProps: TextAreaProps) {
@@ -82,6 +90,10 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             setRef(prevProps.inputRef, null);
             this.handleRef = refHandler(this, "textareaElement", this.props.inputRef);
             setRef(this.props.inputRef, this.textareaElement);
+        }
+
+        if (prevProps.value !== this.props.value || prevProps.style !== this.props.style) {
+            this.maybeSyncHeightToScrollHeight();
         }
     }
 
@@ -122,14 +134,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
     }
 
     private handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        if (this.props.growVertically) {
-            this.setState({
-                height: e.target.scrollHeight,
-            });
-        }
-
-        if (this.props.onChange != null) {
-            this.props.onChange(e);
-        }
+        this.maybeSyncHeightToScrollHeight();
+        this.props.onChange?.(e);
     };
 }

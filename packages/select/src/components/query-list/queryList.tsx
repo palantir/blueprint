@@ -142,6 +142,11 @@ export interface QueryListState<T> {
     query: string;
 }
 
+/**
+ * Query list component.
+ *
+ * @see https://blueprintjs.com/docs/#select/query-list
+ */
 export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 
@@ -156,6 +161,8 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     }
 
     private itemsParentRef?: HTMLElement | null;
+
+    private itemRefs = new Map<number, HTMLElement>();
 
     private refHandlers = {
         itemsParent: (ref: HTMLElement | null) => (this.itemsParentRef = ref),
@@ -322,7 +329,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
 
         if (shouldUpdateActiveItem) {
             // if the `createNewItem` is first, that should be the first active item.
-            if (this.isCreateItemRendered() && this.isCreateItemFirst()) {
+            if (this.isCreateItemRendered(createNewItem) && this.isCreateItemFirst()) {
                 this.setActiveItem(getCreateNewItem());
             } else {
                 this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
@@ -382,6 +389,13 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                 index,
                 modifiers,
                 query,
+                ref: node => {
+                    if (node) {
+                        this.itemRefs.set(index, node);
+                    } else {
+                        this.itemRefs.delete(index);
+                    }
+                },
             });
         }
 
@@ -389,7 +403,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     };
 
     private renderCreateItemMenuItem = () => {
-        if (this.isCreateItemRendered()) {
+        if (this.isCreateItemRendered(this.state.createNewItem)) {
             const { activeItem, query } = this.state;
             const trimmedQuery = query.trim();
             const handleClick: React.MouseEventHandler<HTMLElement> = evt => {
@@ -410,7 +424,9 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                 return this.itemsParentRef.children.item(index) as HTMLElement;
             } else {
                 const activeIndex = this.getActiveIndex();
-                return this.itemsParentRef.children.item(activeIndex) as HTMLElement;
+                return (
+                    this.itemRefs.get(activeIndex) ?? (this.itemsParentRef.children.item(activeIndex) as HTMLElement)
+                );
             }
         }
         return undefined;
@@ -553,7 +569,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
      * @param startIndex item to start iteration
      */
     private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | CreateNewItem | null {
-        if (this.isCreateItemRendered()) {
+        if (this.isCreateItemRendered(this.state.createNewItem)) {
             const reachedCreate =
                 (startIndex === 0 && direction === -1) ||
                 (startIndex === this.state.filteredItems.length - 1 && direction === 1);
@@ -564,14 +580,18 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
     }
 
-    private isCreateItemRendered(): boolean {
+    /**
+     * @param createNewItem Checks if this item would match the current query. Cannot check this.state.createNewItem
+     *  every time since state may not have been updated yet.
+     */
+    private isCreateItemRendered(createNewItem?: T | T[]): boolean {
         return (
             this.canCreateItems() &&
             this.state.query !== "" &&
             // this check is unfortunately O(N) on the number of items, but
             // alas, hiding the "Create Item" option when it exactly matches an
             // existing item is much clearer.
-            !this.wouldCreatedItemMatchSomeExistingItem()
+            !this.wouldCreatedItemMatchSomeExistingItem(createNewItem)
         );
     }
 
@@ -583,13 +603,11 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         return this.props.createNewItemFromQuery != null && this.props.createNewItemRenderer != null;
     }
 
-    private wouldCreatedItemMatchSomeExistingItem() {
+    private wouldCreatedItemMatchSomeExistingItem(createNewItem?: T | T[]) {
         // search only the filtered items, not the full items list, because we
         // only need to check items that match the current query.
         return this.state.filteredItems.some(item => {
-            const newItems = Array.isArray(this.state.createNewItem)
-                ? this.state.createNewItem
-                : [this.state.createNewItem];
+            const newItems = Array.isArray(createNewItem) ? createNewItem : [createNewItem];
             return newItems.some(newItem => executeItemsEqual(this.props.itemsEqual, item, newItem));
         });
     }

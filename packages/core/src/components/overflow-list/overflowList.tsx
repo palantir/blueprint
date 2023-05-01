@@ -123,6 +123,11 @@ export interface OverflowListState<T> {
     lastChopSize: number | null;
 }
 
+/**
+ * Overflow list component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/overflow-list
+ */
 export class OverflowList<T> extends React.Component<OverflowListProps<T>, OverflowListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.OverflowList`;
 

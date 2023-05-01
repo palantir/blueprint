@@ -80,6 +80,11 @@ export interface OverlayToasterState {
     toasts: ToastOptions[];
 }
 
+/**
+ * OverlayToaster component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/toast
+ */
 export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, OverlayToasterState> implements Toaster {
     public static displayName = `${DISPLAYNAME_PREFIX}.OverlayToaster`;
 

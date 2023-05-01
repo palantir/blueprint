@@ -104,6 +104,8 @@ export interface HotkeysProviderProps {
 
 /**
  * Hotkeys context provider, necessary for the `useHotkeys` hook.
+ *
+ * @see https://blueprintjs.com/docs/#core/context/hotkeys-provider
  */
 export const HotkeysProvider = ({ children, dialogProps, renderDialog, value }: HotkeysProviderProps) => {
     const hasExistingContext = value != null;

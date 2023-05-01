@@ -143,6 +143,15 @@ export interface NumericInputProps extends InputSharedProps {
     selectAllOnIncrement?: boolean;
 
     /**
+     * If set to `true`, the input will display with smaller styling.
+     * This is equivalent to setting `Classes.SMALL` via className on the
+     * parent control group and on the child input group.
+     *
+     * @default false
+     */
+    small?: boolean;
+
+    /**
      * The increment between successive values when no modifier keys are held.
      *
      * @default 1
@@ -192,6 +201,11 @@ const NON_HTML_PROPS: Array<keyof NumericInputProps> = [
 
 type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<Element>, "onKeyDown" | "onMouseDown">>;
 
+/**
+ * Numeric input component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/numeric-input
+ */
 export class NumericInput extends AbstractPureComponent<HTMLInputProps & NumericInputProps, NumericInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 
@@ -211,6 +225,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
         minorStepSize: 0.1,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
+        small: false,
         stepSize: 1,
     };
 
@@ -298,8 +313,12 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
     private getCurrentValueAsNumber = () => Number(parseStringToStringNumber(this.state.value, this.props.locale));
 
     public render() {
-        const { buttonPosition, className, fill, large } = this.props;
-        const containerClasses = classNames(Classes.NUMERIC_INPUT, { [Classes.LARGE]: large }, className);
+        const { buttonPosition, className, fill, large, small } = this.props;
+        const containerClasses = classNames(
+            Classes.NUMERIC_INPUT,
+            { [Classes.LARGE]: large, [Classes.SMALL]: small },
+            className,
+        );
         const buttons = this.renderButtons();
         return (
             <ControlGroup className={containerClasses} fill={fill}>
@@ -431,6 +450,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
                 aria-valuemin={this.props.min}
                 aria-valuenow={valueAsNumber}
                 intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
+                inputClassName={this.props.inputClassName}
                 inputRef={this.inputRef}
                 large={this.props.large}
                 leftElement={this.props.leftElement}
@@ -444,6 +464,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
                 onKeyPress={this.handleInputKeyPress}
                 onPaste={this.handleInputPaste}
                 rightElement={this.props.rightElement}
+                small={this.props.small}
                 value={this.state.value}
             />
         );

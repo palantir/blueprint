@@ -12,7 +12,7 @@ import { createWriteStream } from "node:fs";
 import { basename, resolve } from "node:path";
 import { argv, cwd, env, exit, stderr, stdout } from "node:process";
 
-import { junitReportPath } from "./utils.mjs";
+import { junitReportPath } from "./src/utils.mjs";
 
 let format = "codeframe";
 let outputPath;

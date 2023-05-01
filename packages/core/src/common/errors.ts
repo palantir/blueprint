@@ -67,6 +67,8 @@ export const POPOVER_WARN_HAS_BACKDROP_INLINE = ns + ` <Popover usePortal={false
 export const POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX =
     ns + ` <Popover> supports either placement or position prop, not both.`;
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onInteraction is ignored when uncontrolled.`;
+export const POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET =
+    ns + ` <Popover> targetProps value is ignored when renderTarget API is used.`;
 
 export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
 export const PORTAL_LEGACY_CONTEXT_API =
@@ -77,6 +79,8 @@ export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
 
 export const SLIDER_ZERO_STEP = ns + ` <Slider> stepSize must be greater than zero.`;
 export const SLIDER_ZERO_LABEL_STEP = ns + ` <Slider> labelStepSize must be greater than zero.`;
+export const SLIDER_MIN = ns + ` <Slider> min prop must be a finite number.`;
+export const SLIDER_MAX = ns + ` <Slider> max prop must be a finite number.`;
 export const RANGESLIDER_NULL_VALUE = ns + ` <RangeSlider> value prop must be an array of two non-null numbers.`;
 export const MULTISLIDER_INVALID_CHILD = ns + ` <MultiSlider> children must be <SliderHandle>s or <SliderTrackStop>s`;
 export const MULTISLIDER_WARN_LABEL_STEP_SIZE_LABEL_VALUES_MUTEX =

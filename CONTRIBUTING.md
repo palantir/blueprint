@@ -26,7 +26,7 @@ build. Make sure you have an [SSH key set up with your Github account](https://d
 git clone git@github.com:<username>/blueprint.git
 cd blueprint
 yarn
-yarn build
+yarn compile
 yarn dist
 ```
 
@@ -68,4 +68,3 @@ A typical contributor workflow looks like this:
     - Please respond to comments in a timely fashion (even if to tell us you need more time).
     - _Do not_ amend commits and `push --force` as they break the PR history. Please add more commits; we squash each PR to a single commit on merge.
 1. Hooray, you contributed! :tophat:
-

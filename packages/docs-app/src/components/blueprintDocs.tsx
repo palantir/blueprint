@@ -22,6 +22,7 @@ import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
 import { DocsCompleteData } from "@blueprintjs/docs-data";
 import { Banner, Documentation, DocumentationProps, NavMenuItem, NavMenuItemProps } from "@blueprintjs/docs-theme";
 
+import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
@@ -177,16 +178,20 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
 
     // This function is called whenever the documentation page changes and should be used to
     // run non-React code on the newly rendered sections.
-    private handleComponentUpdate = () => {
+    private handleComponentUpdate = async () => {
         // indeterminate checkbox styles must be applied via JavaScript.
         Array.from(document.querySelectorAll<HTMLInputElement>(`.${Classes.CHECKBOX} input[indeterminate]`)).forEach(
             (el: HTMLInputElement) => (el.indeterminate = true),
         );
+
+        await highlightCodeBlocks();
     };
 
-    private handleToggleDark = (useDark: boolean) => {
+    private handleToggleDark = async (useDark: boolean) => {
         const nextThemeName = useDark ? DARK_THEME : LIGHT_THEME;
         setTheme(nextThemeName);
         this.setState({ themeName: nextThemeName });
+
+        await highlightCodeBlocks();
     };
 }

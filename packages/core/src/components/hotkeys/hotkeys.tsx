@@ -35,6 +35,11 @@ export interface HotkeysProps extends Props {
     tabIndex?: number;
 }
 
+/**
+ * Hotkeys component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/hotkeys
+ */
 export class Hotkeys extends AbstractPureComponent<HotkeysProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkeys`;
 

@@ -61,6 +61,11 @@ export interface HTMLSelectProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
+/**
+ * HTML select component
+ *
+ * @see https://blueprintjs.com/docs/#core/components/html-select
+ */
 export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => {
     const { className, children, disabled, fill, iconProps, large, minimal, options = [], value, ...htmlProps } = props;
     const classes = classNames(

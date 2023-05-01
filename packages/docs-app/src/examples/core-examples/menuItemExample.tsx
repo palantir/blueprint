@@ -25,6 +25,7 @@ import { IntentSelect } from "./common/intentSelect";
 
 export function MenuItemExample(props: ExampleProps) {
     const [large, setLarge] = React.useState(false);
+    const [active, setActive] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [selected, setSelected] = React.useState<boolean | undefined>(undefined);
     const [intent, setIntent] = React.useState<Intent>("none");
@@ -36,8 +37,10 @@ export function MenuItemExample(props: ExampleProps) {
 
     const options = (
         <>
-            <H5>Props</H5>
+            <H5>Menu props</H5>
             <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
+            <H5>MenuItem props</H5>
+            <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
             <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
             <PropCodeTooltip
                 content={
@@ -58,7 +61,7 @@ export function MenuItemExample(props: ExampleProps) {
             </PropCodeTooltip>
             <Switch label="Enable icon" checked={iconEnabled} onChange={handleBooleanChange(setIconEnabled)} />
             <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
-            <IntentSelect intent={intent} onChange={handleValueChange(setIntent)} />
+            <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
             <Label>
                 Role structure
                 <HTMLSelect
@@ -74,6 +77,7 @@ export function MenuItemExample(props: ExampleProps) {
         <Example className="docs-menu-example" options={options} {...props}>
             <Menu className={Classes.ELEVATION_1} large={large}>
                 <MenuItem
+                    active={active}
                     disabled={disabled}
                     icon={iconEnabled ? "cog" : undefined}
                     intent={intent}

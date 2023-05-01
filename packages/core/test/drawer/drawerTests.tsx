@@ -270,7 +270,7 @@ describe("<Drawer>", () => {
                 </p>
             </div>,
             <div className={Classes.DRAWER_FOOTER} key={2}>
-                <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+                <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
                     <Button text="Secondary" />
                     <Button className={Classes.INTENT_PRIMARY} type="submit" text="Primary" />
                 </div>

@@ -35,7 +35,7 @@ There are three ways to use the `OverlayToaster` component:
 1. `<OverlayToaster ref={toaster => toaster.show({ ...toast })} />`: Render a `<OverlayToaster>` element and use the `ref` prop to access its instance methods.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Working with multiple toasters</h4>
+    <h5 class="@ns-heading">Working with multiple toasters</h5>
 
 You can have multiple toasters in a single application, but you must ensure that each has a unique
 `position` to prevent overlap.
@@ -43,7 +43,7 @@ You can have multiple toasters in a single application, but you must ensure that
 </div>
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Toaster focus</h4>
+    <h5 class="@ns-heading">Toaster focus</h5>
 
 `OverlayToaster` always disables `Overlay`'s `enforceFocus` behavior (meaning that you're not blocked
 from accessing other parts of the application while a toast is active), and by default also
@@ -84,7 +84,8 @@ Your application can contain several `Toaster` instances and easily share them a
 The following code samples demonstrate our preferred pattern for intergrating a toaster into a React application:
 
 #### `toaster.ts`
-```tsx
+
+```ts
 import { Position, OverlayToaster } from "@blueprintjs/core";
 
 /** Singleton toaster instance. Create separate instances for different options. */
@@ -94,7 +95,8 @@ export const AppToaster = OverlayToaster.create({
 });
 ```
 
-#### `application.ts`
+#### `application.tsx`
+
 ```tsx
 import { Button } from "@blueprintjs/core";
 import React from "react";

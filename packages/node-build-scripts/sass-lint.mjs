@@ -12,7 +12,7 @@ import { argv, exit } from "node:process";
 import stylelint from "stylelint";
 import stylelintJUnitFormater from "stylelint-junit-formatter";
 
-import { getRootDir, junitReportPath } from "./utils.mjs";
+import { getRootDir, junitReportPath } from "./src/utils.mjs";
 
 // emit JUnit XML report to <cwd>/<reports>/<pkg>/stylelint.xml when env.JUNIT_REPORT_PATH is set
 const reportPath = junitReportPath("stylelint");

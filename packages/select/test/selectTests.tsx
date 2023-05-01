@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, Keys, MenuItem, Popover } from "@blueprintjs/core";
+import { Classes as CoreClasses, InputGroup, Keys, MenuItem, Popover } from "@blueprintjs/core";
 
 import { ItemRendererProps, Select, SelectProps, SelectState } from "../src";
 import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
@@ -93,6 +93,7 @@ describe("<Select>", () => {
 
     it("inputProps value and onChange are ignored", () => {
         const inputProps = { value: "nailed it", onChange: sinon.spy() };
+        // @ts-expect-error - value and onChange are now omitted from the props type
         const input = select({ inputProps }).find("input");
         assert.notEqual(input.prop("onChange"), inputProps.onChange);
         assert.notEqual(input.prop("value"), inputProps.value);
@@ -124,6 +125,42 @@ describe("<Select>", () => {
         const wrapper = select();
         wrapper.find(Popover).find(MenuItem).first().simulate("click");
         assert.isTrue(handlers.onItemSelect.calledOnce);
+    });
+
+    it("closes the popover when selecting first menu item", () => {
+        const itemRenderer = (film: Film) => {
+            return <MenuItem text={`${film.rank}. ${film.title}`} shouldDismissPopover={true} />;
+        };
+        const wrapper = select({ itemRenderer, popoverProps: { usePortal: false } });
+
+        // popover should start closed
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+
+        // popover should open after clicking the button
+        wrapper.find("[data-testid='target-button']").simulate("click");
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+
+        // and should close after the a menu item is clicked
+        wrapper.find(Popover).find(`.${CoreClasses.MENU_ITEM}`).first().simulate("click");
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+    });
+
+    it("does not close the popover when selecting a menu item with shouldDismissPopover", () => {
+        const itemRenderer = (film: Film) => {
+            return <MenuItem text={`${film.rank}. ${film.title}`} shouldDismissPopover={false} />;
+        };
+        const wrapper = select({ itemRenderer, popoverProps: { usePortal: false } });
+
+        // popover should start closed
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+
+        // popover should open after clicking the button
+        wrapper.find("[data-testid='target-button']").simulate("click");
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+
+        // and should not close after the a menu item is clicked
+        wrapper.find(Popover).find(`.${CoreClasses.MENU_ITEM}`).first().simulate("click");
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
     });
 
     function select(props: Partial<SelectProps<Film>> = {}, query?: string) {

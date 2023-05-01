@@ -18,11 +18,11 @@ yarn-error.log
 .sass-cache/
 
 # Blueprint
-build
-dist
-lib
-generated
-coverage
+build/
+dist/
+lib/
+generated/
+coverage/
 /docs
 docs-static/**/*.d.ts
 

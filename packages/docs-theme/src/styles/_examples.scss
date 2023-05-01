@@ -96,7 +96,8 @@ $dark-options-background-color: $dark-gray4;
 .docs-example-markup {
   margin-top: $example-frame-spacing;
 
-  .editor {
+  .editor,
+  .#{$ns}-docs-code-block {
     background: $code-background-color;
     border-radius: $example-frame-border-radius;
     box-shadow: none;

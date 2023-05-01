@@ -28,7 +28,7 @@ export const PopoverPosition = {
     AUTO_START: "auto-start" as "auto-start",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type PopoverPosition = typeof PopoverPosition[keyof typeof PopoverPosition];
+export type PopoverPosition = (typeof PopoverPosition)[keyof typeof PopoverPosition];
 
 export { Boundary as PopperBoundary, Placement, placements as PopperPlacements };
 // copied from @popperjs/core, where it is not exported as public
@@ -43,7 +43,31 @@ export type PopperModifierOverrides = Partial<{
     [M in StrictModifierNames]: Partial<Omit<StrictModifier<M>, "name">>;
 }>;
 
-export interface PopoverTargetProps {
+/**
+ * Custom popper.js v2 modifier for Popover and Tooltip.
+ *
+ * @see https://popper.js.org/docs/v2/modifiers/#custom-modifiers
+ */
+export type PopperCustomModifer = Partial<Modifier<any, object>>;
+
+/**
+ * Default props interface for the Popover target element.
+ *
+ * These props are applied to the generated target element (whose tag name is customizable via `targetTagName`)
+ * or, when the `renderTarget` API is used, sent as props to that render function.
+ *
+ * This interface is generic enough to be compatible with the various HTML attributes Popover needs in
+ * order to function properly, including things like event handlers and ARIA accessibility attributes.
+ */
+export type DefaultPopoverTargetHTMLProps = React.HTMLProps<HTMLElement>;
+
+/**
+ * Properties injected by Popover when rendering custom targets via the `renderTarget` API.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/popover.structure
+ */
+export interface PopoverTargetProps
+    extends Pick<React.HTMLAttributes<HTMLElement>, "aria-haspopup" | "className" | "tabIndex"> {
     /** Target ref. */
     ref: React.Ref<any>;
 
@@ -52,12 +76,24 @@ export interface PopoverTargetProps {
 }
 
 /**
+ * Event handlers injected by Popover for hover interaction popovers.
+ */
+export type PopoverHoverTargetHandlers<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps> =
+    Pick<TProps, "onBlur" | "onContextMenu" | "onFocus" | "onMouseEnter" | "onMouseLeave">;
+
+/**
+ * Event handlers injected by Popover for click interaction popovers.
+ */
+export type PopoverClickTargetHandlers<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps> =
+    Pick<TProps, "onClick" | "onKeyDown">;
+
+/**
  * Props shared between `Popover` and `Tooltip`.
  *
  * @template TProps HTML props interface for target element,
- *                  defaults to props for HTMLElement in PopoverProps and TooltipProps
+ *                  defaults to props for HTMLElement in IPopoverProps and ITooltipProps
  */
-export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
+export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps> extends OverlayableProps, Props {
     /** Interactive element which will trigger the popover. */
     children?: React.ReactNode;
 
@@ -171,7 +207,7 @@ export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
      *
      * @see https://popper.js.org/docs/v2/modifiers/#custom-modifiers
      */
-    modifiersCustom?: ReadonlyArray<Partial<Modifier<any, object>>>;
+    modifiersCustom?: readonly PopperCustomModifer[];
 
     /**
      * Callback invoked in controlled mode when the popover open state *would*
@@ -202,7 +238,15 @@ export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
      *
      * Mutually exclusive with `children` and `targetTagName` props.
      */
-    renderTarget?: (props: PopoverTargetProps & TProps) => JSX.Element;
+    renderTarget?: (
+        // N.B. we would like to discriminate between "hover" and "click" popovers here, so that we can be clear
+        // about exactly which event handlers are passed here to be rendered on the target element, but unfortunately
+        // we can't do that without breaking backwards-compatibility in the renderTarget API. Besides, that kind of
+        // improvement would be better implemented if we added another type param to Popover, something like
+        // Popover<TProps, "click" | "hover">. Instead of discriminating, we union the different possible event handlers
+        // that may be passed (they are all optional properties anyway).
+        props: PopoverTargetProps & PopoverHoverTargetHandlers<TProps> & PopoverClickTargetHandlers<TProps>,
+    ) => JSX.Element;
 
     /**
      * A root boundary element supplied to the "flip" and "preventOverflow" modifiers.
@@ -249,11 +293,27 @@ export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
      * By default, a `<span>` tag is used so popovers appear as inline-block
      * elements and can be nested in text. Use `<div>` tag for a block element.
      *
-     * Mutually exclusive with renderTarget.
+     * If `fill` is set to `true`, this prop's default value will become `"div"`
+     * instead of `"span"`.
      *
-     * @default "span" ("div" if fill={true})
+     * Note that _not all HTML tags are supported_; you will need to make sure
+     * the tag you choose supports the HTML attributes Popover applies to the
+     * target element.
+     *
+     * This prop is mutually exclusive with the `renderTarget` API.
+     *
+     * @default "span" ("div" if `fill={true}`)
      */
     targetTagName?: keyof JSX.IntrinsicElements;
+
+    /**
+     * HTML props for the target element. This is useful in some cases where you
+     * need to render some simple attributes on the generated target element.
+     *
+     * For more complex use cases, consider using the `renderTarget` API instead.
+     * This prop will be ignored if `renderTarget` is used.
+     */
+    targetProps?: TProps;
 
     /**
      * Whether the popover should be rendered inside a `Portal` attached to

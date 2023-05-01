@@ -15,13 +15,7 @@
  */
 
 import { assert, expect } from "chai";
-import {
-    MountRendererProps,
-    ShallowRendererProps,
-    ShallowWrapper,
-    mount as untypedMount,
-    shallow as untypedShallow,
-} from "enzyme";
+import { MountRendererProps, ReactWrapper, mount as untypedMount } from "enzyme";
 import React from "react";
 import sinon from "sinon";
 
@@ -32,19 +26,17 @@ import { Button, Classes, Intent, Keys, Tag, TagInput, TagInputProps } from "../
  */
 const mount = (el: React.ReactElement<TagInputProps>, options?: MountRendererProps) =>
     untypedMount<TagInput>(el, options);
-const shallow = (el: React.ReactElement<TagInputProps>, options?: ShallowRendererProps) =>
-    untypedShallow<TagInput>(el, options);
 
 const VALUES = ["one", "two", "three"];
 
 describe("<TagInput>", () => {
     it("passes inputProps to input element", () => {
         const onBlur = sinon.spy();
-        const input = shallow(<TagInput values={VALUES} inputProps={{ autoFocus: true, onBlur }} />).find("input");
+        const input = mount(<TagInput values={VALUES} inputProps={{ autoFocus: true, onBlur }} />).find("input");
         assert.isTrue(input.prop("autoFocus"));
         // check that event handler is proxied
         const fakeEvent = { flag: "yes" };
-        input.simulate("blur", fakeEvent);
+        input.prop("onBlur")?.(fakeEvent as any);
         assert.strictEqual(onBlur.args[0][0], fakeEvent);
     });
 
@@ -267,7 +259,7 @@ describe("<TagInput>", () => {
         });
 
         function mountTagInput(onAdd: sinon.SinonStub, props?: Partial<TagInputProps>) {
-            return shallow(<TagInput onAdd={onAdd} values={VALUES} {...props} />);
+            return mount(<TagInput onAdd={onAdd} values={VALUES} {...props} />);
         }
     });
 
@@ -349,14 +341,14 @@ describe("<TagInput>", () => {
 
         it("is not invoked on enter when input is empty", () => {
             const onChange = sinon.stub();
-            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} />);
+            const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             pressEnterInInput(wrapper, "");
             assert.isTrue(onChange.notCalled);
         });
 
         it("is invoked on enter with non-empty input", () => {
             const onChange = sinon.stub();
-            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} />);
+            const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.isTrue(onChange.calledOnce);
             assert.deepEqual(onChange.args[0][0], [...VALUES, NEW_VALUE]);
@@ -364,7 +356,7 @@ describe("<TagInput>", () => {
 
         it("can add multiple tags at once with separator", () => {
             const onChange = sinon.stub();
-            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} />);
+            const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             pressEnterInInput(wrapper, [NEW_VALUE, NEW_VALUE, NEW_VALUE].join(", "));
             assert.isTrue(onChange.calledOnce);
             assert.deepEqual(onChange.args[0][0], [...VALUES, NEW_VALUE, NEW_VALUE, NEW_VALUE]);
@@ -391,7 +383,7 @@ describe("<TagInput>", () => {
 
         it("does not clear the input if onChange returns false", () => {
             const onChange = sinon.stub().returns(false);
-            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} />);
+            const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             wrapper.setState({ inputValue: NEW_VALUE });
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
@@ -399,7 +391,7 @@ describe("<TagInput>", () => {
 
         it("clears the input if onChange returns true", () => {
             const onChange = sinon.stub().returns(true);
-            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} />);
+            const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             wrapper.setState({ inputValue: NEW_VALUE });
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.strictEqual(wrapper.state().inputValue, "");
@@ -407,7 +399,7 @@ describe("<TagInput>", () => {
 
         it("clears the input if onChange returns nothing", () => {
             const onChange = sinon.spy();
-            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} />);
+            const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             wrapper.setState({ inputValue: NEW_VALUE });
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.strictEqual(wrapper.state().inputValue, "");
@@ -415,7 +407,7 @@ describe("<TagInput>", () => {
 
         it("does not clear the input if the input is controlled", () => {
             const onChange = sinon.stub();
-            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} inputValue={NEW_VALUE} />);
+            const wrapper = mount(<TagInput onChange={onChange} values={VALUES} inputValue={NEW_VALUE} />);
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
         });
@@ -443,7 +435,7 @@ describe("<TagInput>", () => {
 
     describe("placeholder", () => {
         it("appears only when values is empty", () => {
-            const wrapper = shallow(<TagInput placeholder="hold the door" values={[]} />);
+            const wrapper = mount(<TagInput placeholder="hold the door" values={[]} />);
             assert.strictEqual(wrapper.find("input").prop("placeholder"), "hold the door", "empty array");
             wrapper.setProps({ values: [undefined] });
             assert.strictEqual(wrapper.find("input").prop("placeholder"), "hold the door", "[undefined]");
@@ -452,14 +444,14 @@ describe("<TagInput>", () => {
         });
 
         it("inputProps.placeholder appears all the time", () => {
-            const wrapper = shallow(<TagInput inputProps={{ placeholder: "hold the door" }} values={[]} />);
+            const wrapper = mount(<TagInput inputProps={{ placeholder: "hold the door" }} values={[]} />);
             assert.strictEqual(wrapper.find("input").prop("placeholder"), "hold the door");
             wrapper.setProps({ values: VALUES });
             assert.strictEqual(wrapper.find("input").prop("placeholder"), "hold the door");
         });
 
         it("setting both shows placeholder when empty and inputProps.placeholder otherwise", () => {
-            const wrapper = shallow(
+            const wrapper = mount(
                 <TagInput inputProps={{ placeholder: "inputProps" }} placeholder="props" values={[]} />,
             );
             assert.strictEqual(wrapper.find("input").prop("placeholder"), "props");
@@ -471,7 +463,7 @@ describe("<TagInput>", () => {
     describe("when input is not empty", () => {
         it("pressing backspace does not remove item", () => {
             const onRemove = sinon.spy();
-            const wrapper = shallow(<TagInput onRemove={onRemove} values={VALUES} />);
+            const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
             wrapper.find("input").simulate("keydown", createInputKeydownEventMetadata("text", Keys.BACKSPACE));
             assert.isTrue(onRemove.notCalled);
         });
@@ -528,15 +520,15 @@ describe("<TagInput>", () => {
     describe("onInputChange", () => {
         it("is not invoked on enter when input is empty", () => {
             const onInputChange = sinon.stub();
-            const wrapper = shallow(<TagInput onInputChange={onInputChange} values={VALUES} />);
+            const wrapper = mount(<TagInput onInputChange={onInputChange} values={VALUES} />);
             pressEnterInInput(wrapper, "");
             assert.isTrue(onInputChange.notCalled);
         });
 
         it("is invoked when input text changes", () => {
             const changeSpy: any = sinon.spy();
-            const wrapper = shallow(<TagInput onInputChange={changeSpy} values={VALUES} />);
-            wrapper.find("input").simulate("change", { currentTarget: { value: "hello" } });
+            const wrapper = mount(<TagInput onInputChange={changeSpy} values={VALUES} />);
+            wrapper.find("input").prop("onChange")?.({ currentTarget: { value: "hello" } } as any);
             assert.isTrue(changeSpy.calledOnce, "onChange called");
             assert.equal("hello", changeSpy.args[0][0].currentTarget.value);
         });
@@ -545,7 +537,7 @@ describe("<TagInput>", () => {
     describe("inputValue", () => {
         const NEW_VALUE = "new item";
         it("passes initial inputValue to input element", () => {
-            const input = shallow(<TagInput values={VALUES} inputValue={NEW_VALUE} />).find("input");
+            const input = mount(<TagInput values={VALUES} inputValue={NEW_VALUE} />).find("input");
             expect(input.prop("value")).to.equal(NEW_VALUE);
             expect(input.prop("value")).to.equal(NEW_VALUE);
         });
@@ -568,13 +560,32 @@ describe("<TagInput>", () => {
         });
 
         it("has a default empty string value", () => {
-            const input = shallow(<TagInput values={VALUES} />).find("input");
+            const input = mount(<TagInput values={VALUES} />).find("input");
             expect(input.prop("value")).to.equal("");
         });
     });
 
-    function pressEnterInInput(wrapper: ShallowWrapper<any, any>, value: string) {
-        wrapper.find("input").simulate("keydown", createInputKeydownEventMetadata(value, Keys.ENTER));
+    describe("when autoResize={true}", () => {
+        it("passes inputProps to input element", () => {
+            const onBlur = sinon.spy();
+            const input = mount(
+                <TagInput autoResize={true} values={VALUES} inputProps={{ autoFocus: true, onBlur }} />,
+            ).find("input");
+            assert.isTrue(input.prop("autoFocus"));
+            // check that event handler is proxied
+            const fakeEvent = { flag: "yes" };
+            input.prop("onBlur")?.(fakeEvent as any);
+            assert.strictEqual(onBlur.args[0][0], fakeEvent);
+        });
+
+        it("renders a Tag for each value", () => {
+            const wrapper = mount(<TagInput autoResize={true} values={VALUES} />);
+            assert.lengthOf(wrapper.find(Tag), VALUES.length);
+        });
+    });
+
+    function pressEnterInInput(wrapper: ReactWrapper<any, any>, value: string) {
+        wrapper.find("input").prop("onKeyDown")?.(createInputKeydownEventMetadata(value, Keys.ENTER) as any);
     }
 
     function createInputKeydownEventMetadata(value: string, which: number) {

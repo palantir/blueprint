@@ -87,6 +87,18 @@ export interface TabsProps extends Props {
     vertical?: boolean;
 
     /**
+     * Whether to make the tabs list fill the height of its parent.
+     *
+     * This has no effect when `vertical={true}`.
+     * This is not recommended when tab panels are defined within this component subtree, as the height computation will
+     * include the panel height, which is usually not intended. Instead, it works well if the panels are rendered
+     * elsewhere in the React tree.
+     *
+     * @default false
+     */
+    fill?: boolean;
+
+    /**
      * A callback function that is invoked when a tab in the tab list is clicked.
      */
     onChange?(newTabId: TabId, prevTabId: TabId | undefined, event: React.MouseEvent<HTMLElement>): void;
@@ -97,6 +109,11 @@ export interface TabsState {
     selectedTabId?: TabId;
 }
 
+/**
+ * Tabs component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tabs
+ */
 export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;
@@ -105,6 +122,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
 
     public static defaultProps: Partial<TabsProps> = {
         animate: true,
+        fill: false,
         large: false,
         renderActiveTabPanelOnly: false,
         vertical: false,
@@ -147,7 +165,10 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
             </div>
         ) : null;
 
-        const classes = classNames(Classes.TABS, { [Classes.VERTICAL]: this.props.vertical }, this.props.className);
+        const classes = classNames(Classes.TABS, this.props.className, {
+            [Classes.VERTICAL]: this.props.vertical,
+            [Classes.FILL]: this.props.fill,
+        });
         const tabListClasses = classNames(Classes.TAB_LIST, {
             [Classes.LARGE]: this.props.large,
         });

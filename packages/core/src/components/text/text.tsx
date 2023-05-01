@@ -44,6 +44,11 @@ export interface TextProps extends Props {
     title?: string;
 }
 
+/**
+ * Text component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/text
+ */
 export const Text: React.FC<TextProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> = ({
     children,
     tagName = "div",

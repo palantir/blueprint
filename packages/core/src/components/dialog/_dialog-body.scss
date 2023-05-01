@@ -1,0 +1,18 @@
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+.#{$ns}-dialog-body {
+  flex: 1 1 auto;
+  // We'd like to use padding instead of margin here to be consistent with the -dialog-body-scroll-container class,
+  // but we need to keep this margin style for backwards-compatibility. This may change in a future major version.
+  // TODO(adahiya): migrate from margin to padding style (CSS breaking change)
+  margin: $dialog-padding;
+}
+
+// modifier for -dialog-body class, works similarly to -overlay-scroll-container
+.#{$ns}-dialog-body-scroll-container {
+  margin: 0;
+  max-height: 70vh;
+  overflow: auto;
+  padding: $dialog-padding;
+}

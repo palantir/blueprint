@@ -48,8 +48,16 @@ export interface IconProps extends IntentProps, Props, SVGIconProps {
      *   `<Element />` instead.
      */
     icon: IconName | MaybeElement;
+
+    /** Props to apply to the `SVG` element */
+    svgProps?: React.HTMLAttributes<SVGElement>;
 }
 
+/**
+ * Icon component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/icon
+ */
 export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> = forwardRef<any, IconProps>(
     (props, ref) => {
         const { icon } = props;
@@ -67,6 +75,7 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
             icon: _icon,
             intent,
             tagName,
+            svgProps,
             title,
             htmlTitle,
             ...htmlProps
@@ -95,10 +104,22 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
 
         if (Component == null) {
             // fall back to icon font if unloaded or unable to load SVG implementation
+            const sizeClass =
+                size === IconSize.STANDARD
+                    ? Classes.ICON_STANDARD
+                    : size === IconSize.LARGE
+                    ? Classes.ICON_LARGE
+                    : undefined;
             return React.createElement(tagName!, {
                 ...htmlProps,
                 "aria-hidden": title ? undefined : true,
-                className: classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className),
+                className: classNames(
+                    Classes.ICON,
+                    sizeClass,
+                    Classes.iconClass(icon),
+                    Classes.intentClass(intent),
+                    className,
+                ),
                 "data-icon": icon,
                 ref,
                 title: htmlTitle,
@@ -106,13 +127,15 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
         } else {
             return (
                 <Component
-                    className={classNames(Classes.iconClass(icon), Classes.intentClass(intent), className)}
+                    // don't forward Classes.iconClass(icon) here, since the component template will render that class
+                    className={classNames(Classes.intentClass(intent), className)}
                     color={color}
                     size={size}
                     tagName={tagName}
                     title={title}
                     htmlTitle={htmlTitle}
                     ref={ref}
+                    svgProps={svgProps}
                     {...htmlProps}
                 />
             );

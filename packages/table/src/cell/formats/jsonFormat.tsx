@@ -42,6 +42,11 @@ export interface JSONFormatProps extends TruncatedFormatProps {
 }
 
 /* istanbul ignore next */
+/**
+ * JSON cell format component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.jsonformat
+ */
 export class JSONFormat extends React.Component<JSONFormatProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat`;
 

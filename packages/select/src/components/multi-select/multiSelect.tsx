@@ -24,6 +24,7 @@ import {
     Keys,
     mergeRefs,
     Popover,
+    PopoverClickTargetHandlers,
     PopoverTargetProps,
     PopupKind,
     refHandler,
@@ -48,7 +49,6 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
 
     /**
      * Whether the component should take up the full width of its container.
-     * This overrides `popoverProps.fill` and `tagInputProps.fill`.
      */
     fill?: boolean;
 
@@ -94,25 +94,27 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      */
     placeholder?: string;
 
-    /**
-     * Props to add to the `div` that wraps the TagInput
-     */
-    popoverTargetProps?: React.HTMLAttributes<HTMLDivElement>;
-
     /** Controlled selected values. */
     selectedItems: T[];
 
     /**
-     * Props to spread to `TagInput`.
-     * If you wish to control the value of the input, use `query` and `onQueryChange` instead.
+     * Props to pass to the [TagInput component](##core/components/tag-input).
+     *
+     * Some properties are unavailable:
+     * - `tagInputProps.inputValue`: use `query` instead
+     * - `tagInputProps.onInputChange`: use `onQueryChange` instead
+     *
+     * Some properties are available, but discouraged. If you find yourself using these due to a bug in MultiSelect
+     * or some edge case which is not handled by `onItemSelect`, `onItemsPaste`, `onRemove`, and `onClear`, please
+     * file a bug in the Blueprint repo:
+     * - `tagInputProps.onChange`
      *
      * Notes for `tagInputProps.rightElement`:
-     * - you are responsible for disabling any elements you may render here when the overall
-     *   `MultiSelect` is disabled.
+     * - you are responsible for disabling any elements you may render here when the overall `MultiSelect` is disabled
      * - if the `onClear` prop is defined, this element will override/replace the default rightElement,
      *   which is a "clear" button that removes all items from the current selection.
      */
-    tagInputProps?: Partial<TagInputProps>;
+    tagInputProps?: Partial<Omit<TagInputProps, "inputValue" | "onInputChange">>;
 
     /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;
@@ -122,6 +124,11 @@ export interface MultiSelectState {
     isOpen: boolean;
 }
 
+/**
+ * Multi select component.
+ *
+ * @see https://blueprintjs.com/docs/#select/multi-select
+ */
 export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, MultiSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
 
@@ -148,7 +155,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
     private refHandlers: {
         input: React.RefCallback<HTMLInputElement>;
-        popover: React.RefObject<Popover<React.HTMLProps<HTMLDivElement>>>;
+        popover: React.RefObject<Popover>;
         queryList: React.RefCallback<QueryList<T>>;
     } = {
         input: refHandler(this, "input", this.props.tagInputProps?.inputRef),
@@ -235,12 +242,13 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         // N.B. pull out `isOpen` so that it's not forwarded to the DOM, but remember not to use it directly
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
-        ({ isOpen: _isOpen, ref, ...targetProps }: PopoverTargetProps & React.HTMLProps<HTMLDivElement>) => {
+        ({ isOpen: _isOpen, ref, ...targetProps }: PopoverTargetProps & PopoverClickTargetHandlers) => {
             const {
                 disabled,
                 fill,
                 onClear,
                 placeholder,
+                popoverProps = {},
                 popoverTargetProps = {},
                 selectedItems,
                 tagInputProps = {},
@@ -274,39 +282,42 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                     />
                 ) : undefined;
 
-            return (
-                <div
-                    aria-autocomplete="list"
-                    aria-controls={this.listboxId}
-                    {...popoverTargetProps}
-                    {...targetProps}
-                    aria-expanded={isOpen}
+            const { targetTagName = "div" } = popoverProps;
+
+            return React.createElement(
+                targetTagName,
+                {
+                    "aria-autocomplete": "list",
+                    "aria-controls": this.listboxId,
+                    ...popoverTargetProps,
+                    ...targetProps,
+                    "aria-disabled": disabled,
+                    "aria-expanded": isOpen,
                     // Note that we must set FILL here in addition to TagInput to get the wrapper element to full width
-                    className={classNames(targetProps.className, popoverTargetProps.className, {
+                    className: classNames(targetProps.className, popoverTargetProps.className, {
                         [CoreClasses.FILL]: fill,
-                    })}
+                    }),
                     // Normally, Popover would also need to attach its own `onKeyDown` handler via `targetProps`,
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
-                    onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}
-                    onKeyUp={this.getTagInputKeyUpHandler(handleKeyUp)}
-                    ref={ref}
-                    role="combobox"
-                >
-                    <TagInput
-                        placeholder={placeholder}
-                        rightElement={maybeClearButton}
-                        {...tagInputProps}
-                        className={classNames(Classes.MULTISELECT, tagInputProps.className)}
-                        inputRef={this.refHandlers.input}
-                        inputProps={inputProps}
-                        inputValue={listProps.query}
-                        onAdd={this.getTagInputAddHandler(listProps)}
-                        onInputChange={listProps.handleQueryChange}
-                        onRemove={this.handleTagRemove}
-                        values={selectedItems.map(this.props.tagRenderer)}
-                    />
-                </div>
+                    onKeyDown: this.getTagInputKeyDownHandler(handleKeyDown),
+                    onKeyUp: this.getTagInputKeyUpHandler(handleKeyUp),
+                    ref,
+                    role: "combobox",
+                },
+                <TagInput
+                    placeholder={placeholder}
+                    rightElement={maybeClearButton}
+                    {...tagInputProps}
+                    className={classNames(Classes.MULTISELECT, tagInputProps.className)}
+                    inputRef={this.refHandlers.input}
+                    inputProps={inputProps}
+                    inputValue={listProps.query}
+                    onAdd={this.getTagInputAddHandler(listProps)}
+                    onInputChange={listProps.handleQueryChange}
+                    onRemove={this.handleTagRemove}
+                    values={selectedItems.map(this.props.tagRenderer)}
+                />,
             );
         };
 
@@ -384,6 +395,8 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
             if (this.state.isOpen && !isTargetingTagRemoveButton) {
                 handleQueryListKeyDown?.(e);
             }
+
+            this.props.popoverTargetProps?.onKeyDown?.(e);
         };
     };
 
@@ -396,6 +409,8 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
             if (this.state.isOpen && isTargetingInput) {
                 handleQueryListKeyUp?.(e);
             }
+
+            this.props.popoverTargetProps?.onKeyDown?.(e);
         };
     };
 

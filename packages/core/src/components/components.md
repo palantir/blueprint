@@ -52,6 +52,7 @@
 @page portal
 @page alert
 @page context-menu
+@page context-menu-popover
 @page dialog
 @page drawer
 @page popover

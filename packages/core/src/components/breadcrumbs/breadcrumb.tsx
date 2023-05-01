@@ -21,7 +21,7 @@ import * as Classes from "../../common/classes";
 import { ActionProps, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 
-export interface BreadcrumbProps extends ActionProps, LinkProps {
+export interface BreadcrumbProps extends ActionProps<HTMLAnchorElement>, LinkProps {
     children?: React.ReactNode;
 
     /** Whether this breadcrumb is the current breadcrumb. */
@@ -34,6 +34,11 @@ export interface BreadcrumbProps extends ActionProps, LinkProps {
     iconTitle?: string;
 }
 
+/**
+ * Breadcrumb component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/breadcrumbs
+ */
 export const Breadcrumb: React.FC<BreadcrumbProps> = props => {
     const classes = classNames(
         Classes.BREADCRUMB,
@@ -60,6 +65,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = props => {
             className={classes}
             href={props.href}
             onClick={props.disabled ? undefined : props.onClick}
+            onFocus={props.disabled ? undefined : props.onFocus}
             tabIndex={props.disabled ? undefined : 0}
             target={props.target}
         >

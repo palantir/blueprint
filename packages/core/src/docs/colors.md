@@ -2,31 +2,37 @@
 
 @## Gray scale
 
-Black, white and everything in between. The gray scale should be used for
-the main UI frame: containers, headers, sections, boxes, etc.
+Black, white and everything in between.
+
+The gray scale should be used for the main UI frame: containers, headers, sections, boxes, etc.
+
 If you need to call attention to a particular element (buttons, icons, tooltips, etc.),
-use one of the [core colors](#core/colors.core-colors).
+use one of the [core colors](#core/colors.core-colors) instead.
 
 @reactDocs BlackWhitePalette
 @reactDocs GrayscalePalette
 
 @## Core colors
 
-Core colors are reserved for user interface design. Use these to help call
-attention to specific UI elements, such as buttons, callouts, icons, etc.
-Each core color is mapped to what we call a __visual intent__. We use intents
-to convey the status of UI elements:
+Core colors are used to support user interface design by calling
+attention to specific elements, such as buttons, callouts, icons, etc.
+
+Each core color is mapped to what we call a __visual intent__. Intents
+are used to convey the status and tone of UI elements:
 
 - _Blue_ (intent: primary) elevates elements from the typical gray scale UI frame.
 - _Green_ (intent: success) indicates successful operations.
 - _Orange_ (intent: warning) indicates warnings and intermediate states.
 - _Red_ (intent: danger) indicates errors and potentially destructive operations.
 
-Core colors are also designed to:
+Blueprint's core colors are designed to:
 
 - go well together and be used alongside each other in any application.
 - adhere to [WCAG 2.0](https://www.w3.org/TR/WCAG20/) standards, and therefore are
 highly accessible to visually impaired and color blind users.
+
+Many Blueprint components support the `intent` prop, which may be set to a string
+literal constant such as `intent="primary"`.
 
 @reactDocs CoreColorsPalette
 
@@ -47,8 +53,8 @@ Blueprint provides variables for colors in Sass, Less, and JavaScript.
 
 Example in Sass:
 
-```css.scss
-@import "~@blueprintjs/core/lib/scss/variables";
+```scss
+@import "@blueprintjs/core/lib/scss/variables";
 
 .rule {
     color: $pt-link-color;
@@ -58,8 +64,8 @@ Example in Sass:
 
 Example in Less:
 
-```css.less
-@import "~@blueprintjs/core/lib/less/variables";
+```less
+@import "@blueprintjs/core/lib/less/variables";
 
 .rule {
     color: @pt-link-color;

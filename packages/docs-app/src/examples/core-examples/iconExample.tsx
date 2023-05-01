@@ -17,7 +17,7 @@
 import React from "react";
 
 import { H5, Icon, Intent, Label, Slider } from "@blueprintjs/core";
-import { Example, ExampleProps, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { IconName, IconSize } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
@@ -36,7 +36,7 @@ export class IconExample extends React.PureComponent<ExampleProps, IconExampleSt
         intent: Intent.NONE,
     };
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private handleIconSizeChange = (iconSize: number) => this.setState({ iconSize });
 

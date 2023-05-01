@@ -61,9 +61,13 @@ export interface SVGIconProps extends React.RefAttributes<any> {
      * aural feedback.
      *
      * If this value is nullish, `false`, or an empty string, the component will assume
-     * that the icon is decorative and `aria-hidden="true"` will be applied.
+     * that the icon is decorative and `aria-hidden="true"` will be applied (can be overridden
+     * by manually passing `aria-hidden` prop).
      *
      * @see https://www.w3.org/WAI/tutorials/images/decorative/
      */
     title?: string | false | null;
+
+    /** Props to apply to the `SVG` element */
+    svgProps?: React.HTMLAttributes<SVGElement>;
 }

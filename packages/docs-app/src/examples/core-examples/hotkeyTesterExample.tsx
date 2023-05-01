@@ -23,7 +23,7 @@ export interface HotkeyTesterState {
     combo: string;
 }
 
-export class HotkeyTester extends React.PureComponent<ExampleProps, HotkeyTesterState> {
+export class HotkeyTesterExample extends React.PureComponent<ExampleProps, HotkeyTesterState> {
     public state: HotkeyTesterState = {
         combo: null,
     };

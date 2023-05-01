@@ -19,7 +19,7 @@ npm install --save @blueprintjs/icons
 Import CSS with a bundler like webpack:
 
 ```js
-@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+@import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 ```
 
 ...or in plain HTML:

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { Classes, H5, Icon, Switch, Tag } from "@blueprintjs/core";
+import { Classes, Code, H5, Icon, Switch, Tag } from "@blueprintjs/core";
 import { DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
 import { DateInput2 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
@@ -139,10 +139,12 @@ export class DateInput2Example extends React.PureComponent<ExampleProps, DateInp
 
         return (
             <>
-                <H5>Props</H5>
+                <H5>Behavior props</H5>
                 <PropCodeTooltip snippet={`closeOnSelection={${closeOnSelection.toString()}}`}>
                     <Switch label="Close on selection" checked={closeOnSelection} onChange={this.toggleSelection} />
                 </PropCodeTooltip>
+
+                <H5>Date picker props</H5>
                 <PropCodeTooltip snippet={`shortcuts={${shortcuts.toString()}}`}>
                     <Switch
                         checked={shortcuts}
@@ -159,19 +161,35 @@ export class DateInput2Example extends React.PureComponent<ExampleProps, DateInp
                         onChange={this.toggleActionsBar}
                     />
                 </PropCodeTooltip>
+                <PropCodeTooltip snippet={`reverseMonthAndYearMenus={${reverse.toString()}}`}>
+                    <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
+                </PropCodeTooltip>
+
+                <H5>Input appearance props</H5>
+                <PropCodeTooltip snippet={`disabled={${disabled.toString()}}`}>
+                    <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`fill={${fill.toString()}}`}>
+                    <Switch label="Fill container width" checked={fill} onChange={this.toggleFill} />
+                </PropCodeTooltip>
+                <PropCodeTooltip
+                    content={
+                        <>
+                            <Code>rightElement</Code> is {showRightElement ? "defined" : "undefined"}
+                        </>
+                    }
+                >
+                    <Switch label="Show right element" checked={showRightElement} onChange={this.toggleRightElement} />
+                </PropCodeTooltip>
+                <DateFnsFormatSelector format={format} onChange={this.handleFormatChange} />
+
+                <H5>Time picker props</H5>
                 <PrecisionSelect
                     allowNone={true}
                     label="Time precision"
                     onChange={this.handleTimePrecisionChange}
                     value={timePrecision}
                 />
-
-                <H5>Appearance props</H5>
-                <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
-                <Switch label="Fill" checked={fill} onChange={this.toggleFill} />
-                <PropCodeTooltip snippet={`reverseMonthAndYearMenus={${reverse.toString()}}`}>
-                    <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
-                </PropCodeTooltip>
                 <PropCodeTooltip
                     snippet={`timePickerProps={{ showArrowButtons: ${showTimePickerArrows.toString()} }}`}
                     disabled={!isTimePickerShown}
@@ -194,32 +212,30 @@ export class DateInput2Example extends React.PureComponent<ExampleProps, DateInp
                         onChange={this.toggleUseAmPm}
                     />
                 </PropCodeTooltip>
-                <Switch label="Show right element" checked={showRightElement} onChange={this.toggleRightElement} />
-                <DateFnsFormatSelector format={format} onChange={this.handleFormatChange} />
 
                 <H5 className={classNames({ [Classes.TEXT_DISABLED]: timePrecision === undefined })}>
-                    TimezoneSelect props
+                    Timezone select props
                 </H5>
-                <PropCodeTooltip
-                    snippet={`disableTimezoneSelect={${disableTimezoneSelect.toString()}}`}
-                    disabled={!isTimePickerShown}
-                >
-                    <Switch
-                        label="Disable timezone select"
-                        checked={disableTimezoneSelect}
-                        disabled={!isTimePickerShown}
-                        onChange={this.toggleDisableTimezoneSelect}
-                    />
-                </PropCodeTooltip>
                 <PropCodeTooltip
                     snippet={`showTimezoneSelect={${showTimezoneSelect.toString()}}`}
                     disabled={!isTimePickerShown}
                 >
                     <Switch
-                        label="Show timezone select"
+                        label={`Show timezone${disableTimezoneSelect ? "" : " select"}`}
                         checked={showTimezoneSelect}
                         disabled={!isTimePickerShown}
                         onChange={this.toggleShowTimezoneSelect}
+                    />
+                </PropCodeTooltip>
+                <PropCodeTooltip
+                    snippet={`disableTimezoneSelect={${disableTimezoneSelect.toString()}}`}
+                    disabled={!isTimePickerShown || !showTimezoneSelect}
+                >
+                    <Switch
+                        label="Disable timezone select"
+                        checked={disableTimezoneSelect}
+                        disabled={!isTimePickerShown || !showTimezoneSelect}
+                        onChange={this.toggleDisableTimezoneSelect}
                     />
                 </PropCodeTooltip>
             </>

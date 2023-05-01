@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { useCallback } from "react";
+import React from "react";
 
 import {
     Classes,
@@ -30,7 +30,7 @@ import {
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export const ContextMenuExample: React.FC<ExampleProps> = props => {
-    const renderContent = useCallback(
+    const renderContent = React.useCallback(
         ({ targetOffset }: ContextMenuContentProps) => (
             <Menu>
                 <MenuItem icon="select" text="Select all" />
@@ -77,7 +77,7 @@ export const ContextMenuExample: React.FC<ExampleProps> = props => {
 };
 
 const GraphNode: React.FC = () => {
-    const children = useCallback(
+    const children = React.useCallback(
         (props: ContextMenuChildrenProps) => (
             <div
                 className={classNames("docs-context-menu-node", props.className, {

@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { Button, Classes, Dialog } from "@blueprintjs/core";
+import { Button, Dialog, DialogBody } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -44,11 +44,11 @@ export class DialogExample extends React.PureComponent<DialogExampleProps, Dialo
                     icon="info-sign"
                     title="Dialog header"
                 >
-                    <div className={Classes.DIALOG_BODY}>
+                    <DialogBody>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                         labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
                         laboris nisi ut aliquip ex ea commodo consequat
-                    </div>
+                    </DialogBody>
                 </Dialog>
             </ExampleCard>
         );

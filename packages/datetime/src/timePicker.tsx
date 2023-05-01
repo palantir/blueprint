@@ -50,7 +50,7 @@ export const TimePrecision = {
     SECOND: "second" as "second",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type TimePrecision = typeof TimePrecision[keyof typeof TimePrecision];
+export type TimePrecision = (typeof TimePrecision)[keyof typeof TimePrecision];
 
 export interface TimePickerProps extends Props {
     /**
@@ -160,6 +160,11 @@ export interface TimePickerState {
     isPm?: boolean;
 }
 
+/**
+ * Time picker component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime/timepicker
+ */
 export class TimePicker extends React.Component<TimePickerProps, TimePickerState> {
     public static defaultProps: TimePickerProps = {
         autoFocus: false,

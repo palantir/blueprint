@@ -35,25 +35,31 @@ type SettingsPanelInfo = { /* ...  */ };
 type AccountSettingsPanelInfo = { /* ...  */ };
 type NotificationSettingsPanelInfo = { /* ...  */ };
 
-const AccountSettingsPanel: React.FC<PanelProps & AccountSettingsPanelInfo> = props => {
+const AccountSettingsPanel: React.FC<PanelProps<AccountSettingsPanelInfo>> = props => {
     // implementation
 };
 
-const NotificationSettingsPanel: React.FC<PanelProps & NotificationSettingsPanelInfo> = props => {
+const NotificationSettingsPanel: React.FC<PanelProps<NotificationSettingsPanelInfo>> = props => {
     // implementation
 };
 
-const SettingsPanel: React.FC<PanelProps & SettingsPanelInfo> = props => {
+const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
     const { openPanel, closePanel, ...info } = props;
 
     const openAccountSettings = () =>
         openPanel({
-            renderPanel: panelProps => <AccountSettingsPanel {...panelProps} {...} />,
+            props: {
+                /* ... */
+            },
+            renderPanel: AccountSettingsPanel,
             title: "Account settings",
         });
     const openNotificationSettings = () =>
         openPanel({
-            renderPanel: panelProps => <NotificationSettingsPanel {...panelProps} {...} />,
+            props: {
+                /* ... */
+            },
+            renderPanel: NotificationSettingsPanel,
             title: "Notification settings",
         });
 
@@ -68,7 +74,7 @@ const SettingsPanel: React.FC<PanelProps & SettingsPanelInfo> = props => {
 
 @interface Panel
 
-@interface PanelProps
+@interface PanelActions
 
 @## Props
 

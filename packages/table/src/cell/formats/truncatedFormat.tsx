@@ -150,6 +150,11 @@ export interface TruncatedFormatState {
     isPopoverOpen?: boolean;
 }
 
+/**
+ * Truncated cell format component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.truncatedformat
+ */
 export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, TruncatedFormatState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TruncatedFormat`;
 
