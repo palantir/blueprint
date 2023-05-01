@@ -10,12 +10,9 @@
     "unpkg": "dist/core.bundle.js",
     "sideEffects": [
         "**/*.css",
-        "lib/esm/components/index.js",
-        "lib/esm/common/configureDom4.js",
-        "lib/esnext/components/index.js",
-        "lib/esnext/common/configureDom4.js",
-        "lib/cjs/components/index.js",
-        "lib/cjs/common/configureDom4.js"
+        "lib/cjs/components/context-menu/contextMenuSingleton.js",
+        "lib/esm/components/context-menu/contextMenuSingleton.js",
+        "lib/esnext/components/context-menu/contextMenuSingleton.js"
     ],
     "bin": {
         "upgrade-blueprint-2.0.0-rename": "scripts/upgrade-blueprint-2.0.0-rename.sh",
