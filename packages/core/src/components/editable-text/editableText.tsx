@@ -20,7 +20,6 @@ import React from "react";
 import { AbstractPureComponent, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import { clamp } from "../../common/utils";
-import { Browser } from "../../compatibility";
 
 export interface EditableTextProps extends IntentProps, Props {
     /**
@@ -139,7 +138,6 @@ export interface EditableTextState {
 }
 
 const BUFFER_WIDTH_DEFAULT = 5;
-const BUFFER_WIDTH_IE = 30;
 
 /**
  * EditableText component.
@@ -420,8 +418,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
             // The computed scrollHeight must also account for a larger inherited line-height from the parent.
             scrollHeight = Math.max(scrollHeight, getFontSize(this.valueElement) + 1, getLineHeight(parentElement!));
             // Need to add a small buffer so text does not shift prior to resizing, causing an infinite loop.
-            // IE needs a larger buffer than other browsers.
-            scrollWidth += Browser.isInternetExplorer() ? BUFFER_WIDTH_IE : BUFFER_WIDTH_DEFAULT;
+            scrollWidth += BUFFER_WIDTH_DEFAULT;
 
             this.setState({
                 inputHeight: scrollHeight,

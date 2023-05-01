@@ -63,16 +63,9 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
         }
     }
 
-    (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, ctrlKey, false, false, metaKey);
-
-    // Hack around these readonly properties in WebKit and Chrome
-    if (Browser.isWebkit()) {
-        (event as any).key = key;
-        (event as any).which = keyCode;
-    } else {
-        Object.defineProperty(event, "key", { get: () => key });
-        Object.defineProperty(event, "which", { get: () => keyCode });
-    }
+    event.initKeyboardEvent(eventType, true, true, window, key, 0, ctrlKey, false, false, metaKey);
+    Object.defineProperty(event, "key", { get: () => key });
+    Object.defineProperty(event, "which", { get: () => keyCode });
 
     target.dispatchEvent(event);
 }
