@@ -17,7 +17,7 @@
 import { assert } from "chai";
 import classNames from "classnames";
 import { mount, ReactWrapper } from "enzyme";
-import React, { createRef } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { spy } from "sinon";
 
@@ -81,7 +81,7 @@ describe("ContextMenu", () => {
         });
 
         it("supports custom refs", () => {
-            const ref = createRef<HTMLElement>();
+            const ref = React.createRef<HTMLElement>();
             mountTestMenu({ className: "test-container", ref });
             assert.isDefined(ref.current);
             assert.isTrue(ref.current?.classList.contains("test-container"));
@@ -117,7 +117,7 @@ describe("ContextMenu", () => {
             assert.isFalse(wrapperClickSpy.called, "ctx menu wrapper click handler should not be called");
         });
 
-        it("allows overrding some Popover2 props", () => {
+        it("allows overrding some Popover props", () => {
             const placement = "top";
             const popoverClassName = "test-popover-class";
             const ctxMenu = mountTestMenu({ popoverProps: { placement, popoverClassName } });
@@ -483,7 +483,7 @@ describe("ContextMenu", () => {
                 const nonExistentPopover = wrapper.find(`.${POPOVER_CLASSNAME}`).hostNodes();
                 assert.isFalse(
                     nonExistentPopover.exists(),
-                    "ContextMenu2 popover should not be open before triggering contextmenu event",
+                    "ContextMenu popover should not be open before triggering contextmenu event",
                 );
 
                 const targetRect = target.getDOMNode().getBoundingClientRect();
@@ -496,7 +496,7 @@ describe("ContextMenu", () => {
                 };
                 target.simulate("contextmenu", simulateArgs);
                 const popover = wrapper.find(`.${POPOVER_CLASSNAME}`).hostNodes();
-                assert.isTrue(popover.exists(), "ContextMenu2 popover should be open");
+                assert.isTrue(popover.exists(), "ContextMenu popover should be open");
             });
         });
 
@@ -524,7 +524,7 @@ describe("ContextMenu", () => {
     function closeCtxMenu(wrapper: ReactWrapper) {
         const backdrop = wrapper.find(`.${Classes.CONTEXT_MENU_BACKDROP}`);
         if (backdrop.exists()) {
-            backdrop.simulate("click");
+            backdrop.simulate("mousedown");
             wrapper.update();
         }
     }

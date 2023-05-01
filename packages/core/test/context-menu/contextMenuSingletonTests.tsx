@@ -17,10 +17,9 @@
 import { assert } from "chai";
 import React from "react";
 
-import { Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes, hideContextMenu, showContextMenu } from "../../src";
+import { Classes, hideContextMenu, Menu, MenuItem, showContextMenu } from "../../src";
 
 const TEST_MENU_CLASS_NAME = "test-menu";
 const MENU = (
@@ -43,10 +42,10 @@ function assertMenuState(isOpen = true) {
     const ctxMenuElement = document.querySelectorAll<HTMLElement>(`.${TEST_MENU_CLASS_NAME}`);
     if (isOpen) {
         assert.isTrue(ctxMenuElement.length === 1, "Expected menu to be rendered on the page");
-        assert.isNotNull(ctxMenuElement[0].closest(`.${CoreClasses.OVERLAY_OPEN}`), "Expected overlay to be open");
+        assert.isNotNull(ctxMenuElement[0].closest(`.${Classes.OVERLAY_OPEN}`), "Expected overlay to be open");
     } else {
         if (ctxMenuElement.length > 0) {
-            assert.isNull(ctxMenuElement[0].closest(`.${CoreClasses.OVERLAY_OPEN}`), "Expected overlay to be closed");
+            assert.isNull(ctxMenuElement[0].closest(`.${Classes.OVERLAY_OPEN}`), "Expected overlay to be closed");
         }
     }
 }
