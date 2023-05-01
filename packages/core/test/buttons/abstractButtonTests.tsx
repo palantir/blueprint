@@ -20,7 +20,7 @@ import React from "react";
 import { Alignment, AnchorButton, Button } from "../../src";
 
 describe("ButtonProps", () => {
-    describe("(without elementRef) should be assignable to", () => {
+    describe("(omitting 'ref' prop) should be assignable to", () => {
         const buttonProps = {
             active: true,
             alignText: Alignment.LEFT,

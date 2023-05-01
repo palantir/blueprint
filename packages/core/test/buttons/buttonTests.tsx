@@ -29,6 +29,16 @@ describe("Buttons:", () => {
 
 function buttonTestSuite(component: React.FC<any>, tagName: string) {
     describe(`<${component.displayName!.split(".")[1]}>`, () => {
+        let containerElement: HTMLElement | undefined;
+
+        beforeEach(() => {
+            containerElement = document.createElement("div");
+            document.body.appendChild(containerElement);
+        });
+        afterEach(() => {
+            containerElement?.remove();
+        });
+
         it("renders its contents", () => {
             const wrapper = button({ className: "foo" });
             const el = wrapper.find(tagName);
@@ -114,12 +124,12 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
             checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.SPACE);
         });
 
-        it("calls onClick when enter key released", done => {
-            checkClickTriggeredOnKeyUp(done, {}, { which: Keys.ENTER });
+        it("calls onClick when enter key released", () => {
+            checkClickTriggeredOnKeyUp({ which: Keys.ENTER });
         });
 
-        it("calls onClick when space key released", done => {
-            checkClickTriggeredOnKeyUp(done, {}, { which: Keys.SPACE });
+        it("calls onClick when space key released", () => {
+            checkClickTriggeredOnKeyUp({ which: Keys.SPACE });
         });
 
         it("attaches ref with createRef", () => {
@@ -153,28 +163,18 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
 
         function button(props: ButtonProps, ...children: React.ReactNode[]) {
             const element = React.createElement(component, props, ...children);
-            return mount(element);
+            return mount(element, { attachTo: containerElement });
         }
 
-        function checkClickTriggeredOnKeyUp(
-            done: Mocha.Done,
-            buttonProps: Partial<ButtonProps>,
-            keyEventProps: Partial<React.KeyboardEvent<any>>,
-        ) {
-            const wrapper = button(buttonProps, true);
+        function checkClickTriggeredOnKeyUp(keyEventProps: Partial<React.KeyboardEvent<any>>) {
+            // we need to listen for real DOM events here, since the implementation of this feature uses
+            // HTMLElement#click() - see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click
+            const onContainerClick = spy();
+            containerElement?.addEventListener("click", onContainerClick);
+            const wrapper = button({ text: "Test" });
 
-            // mock the DOM click() function, because enzyme only handles
-            // simulated React events
-            const buttonRef = (wrapper.instance() as any).buttonRef;
-            const onClick = spy(buttonRef, "click");
-
-            wrapper.simulate("keyup", keyEventProps);
-
-            // wait for the whole lifecycle to run
-            setTimeout(() => {
-                assert.equal(onClick.callCount, 1);
-                done();
-            }, 0);
+            wrapper.find(`.${Classes.BUTTON}`).hostNodes().simulate("keyup", keyEventProps);
+            assert.isTrue(onContainerClick.calledOnce, "Expected a click event to bubble up to container element");
         }
 
         function checkKeyEventCallbackInvoked(callbackPropName: string, eventName: string, keyCode: number) {
