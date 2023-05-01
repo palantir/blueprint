@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, Keys, MenuItem, Popover } from "@blueprintjs/core";
+import { Classes as CoreClasses, InputGroup, Keys, MenuItem, Popover } from "@blueprintjs/core";
 
 import { ItemRendererProps, Select, SelectProps, SelectState } from "../src";
 import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
@@ -133,7 +133,7 @@ describe("<Select>", () => {
         };
         const wrapper = select({ itemRenderer, popoverProps: { usePortal: false } });
 
-        // popover should start close
+        // popover should start closed
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
 
         // popover should open after clicking the button
@@ -141,7 +141,7 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
 
         // and should close after the a menu item is clicked
-        wrapper.find(Popover).find(".bp4-menu-item").first().simulate("click");
+        wrapper.find(Popover).find(`.${CoreClasses.MENU_ITEM}`).first().simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
     });
 
@@ -159,7 +159,7 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
 
         // and should not close after the a menu item is clicked
-        wrapper.find(Popover).find(".bp4-menu-item").first().simulate("click");
+        wrapper.find(Popover).find(`.${CoreClasses.MENU_ITEM}`).first().simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
     });
 
