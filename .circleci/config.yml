@@ -139,7 +139,7 @@ jobs:
     docker: *docker-node-browsers-image
     environment:
       JUNIT_REPORT_PATH: reports
-    parallelism: 5
+    parallelism: 6
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
@@ -161,8 +161,9 @@ jobs:
             0) yarn lerna run test:typeCheck ;; \
             1) yarn lerna run --scope "@blueprintjs/core" test:karma ;; \
             2) yarn lerna run --scope "@blueprintjs/datetime" test:karma ;; \
-            3) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
-            4) yarn lerna run --scope "@blueprintjs/table" test:karma
+            3) yarn lerna run --scope "@blueprintjs/datetime2" test:karma ;; \
+            4) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
+            5) yarn lerna run --scope "@blueprintjs/table" test:karma
             esac
           when: always
       - store_test_results: { path: ./reports }
