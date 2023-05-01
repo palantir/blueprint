@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import React, { forwardRef } from "react";
 import type { SVGIconProps } from "../../svgIconProps";
 import { IconSize } from "../../iconSize";
@@ -69,7 +70,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, S
             {
                 ...htmlProps,
                 "aria-hidden": title ? undefined : true,
-                className: `${className} ${Classes.ICON}`,
+                className: classNames(Classes.ICON, `${Classes.ICON}-{{iconName}}`, className),
                 ref,
                 title: htmlTitle,
             },
