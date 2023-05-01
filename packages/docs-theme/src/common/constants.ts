@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export const COMPONENT_DISPLAY_NAMESPACE = "Docs4";
+export const COMPONENT_DISPLAY_NAMESPACE = "Docs5";
