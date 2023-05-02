@@ -566,6 +566,7 @@ describe("<DateRangeInput>", () => {
         });
 
         // HACKHACK: https://github.com/palantir/blueprint/issues/6109
+        // N.B. this test passes locally
         it.skip("Pressing Enter saves the inputted date and closes the popover", () => {
             const startInputProps = { onKeyDown: sinon.spy() };
             const endInputProps = { onKeyDown: sinon.spy() };
