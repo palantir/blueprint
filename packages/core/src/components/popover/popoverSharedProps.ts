@@ -48,7 +48,7 @@ export type PopperModifierOverrides = Partial<{
  *
  * @see https://popper.js.org/docs/v2/modifiers/#custom-modifiers
  */
-export type PopperCustomModifer = Partial<Modifier<any, object>>;
+export type PopperCustomModifier = Partial<Modifier<any, object>>;
 
 /**
  * Default props interface for the Popover target element.
@@ -207,7 +207,7 @@ export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps
      *
      * @see https://popper.js.org/docs/v2/modifiers/#custom-modifiers
      */
-    modifiersCustom?: readonly PopperCustomModifer[];
+    modifiersCustom?: readonly PopperCustomModifier[];
 
     /**
      * Callback invoked in controlled mode when the popover open state *would*

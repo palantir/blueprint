@@ -22,7 +22,7 @@
         "dev:select": "lerna run dev --scope \"@blueprintjs/{select,docs-app}\"",
         "dev:table": "lerna run dev --scope \"@blueprintjs/{table,table-dev-app}\"",
         "dist": "run-s dist:libs dist:apps",
-        "dist:libs": "lerna run dist --scope \"@blueprintjs/{colors,core,datetime,datetime2,docs-theme,icons,select,table}\"",
+        "dist:libs": "lerna run dist --scope \"@blueprintjs/{colors,core,datetime,datetime2,docs-theme,icons,popover2,select,table}\"",
         "dist:apps": "lerna run dist --scope \"@blueprintjs/{docs-app,landing-app,table-dev-app,demo-app}\"",
         "docs-data": "lerna run compile --scope \"@blueprintjs/docs-data\"",
         "format": "prettier --write \"./**/*.{ts,tsx,json}\"",
