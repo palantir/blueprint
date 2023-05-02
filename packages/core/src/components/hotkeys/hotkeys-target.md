@@ -44,7 +44,7 @@ export default class extends React.PureComponent {
                 {({ handleKeyDown, handleKeyUp }) => (
                     <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         Press "R" to refresh data, "F" to focus the input...
-                        <InputGroup ref={this.inputRef} />
+                        <InputGroup inputRef={this.inputRef} />
                     </div>
                 )}
             </HotkeysTarget>

@@ -23,7 +23,7 @@ import { TABLE_COPY_FAILED } from "../../common/errors";
 import { Regions } from "../../regions";
 import { MenuContext } from "./menuContext";
 
-export interface CopyCellsMenuItemProps extends MenuItemProps {
+export interface CopyCellsMenuItemProps extends Omit<MenuItemProps, "onCopy"> {
     /**
      * The `MenuContext` that launched the menu.
      */

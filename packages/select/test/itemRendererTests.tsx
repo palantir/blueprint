@@ -26,15 +26,14 @@ describe("ItemRenderer", () => {
     // N.B. don't use `renderFilm` here from the src/__examples__ directory, since we are specifically trying to
     // test the ergonomics and type definitions of the item renderer API by defining custom renderers.
     describe("allows defining basic item renderers", () => {
-        const myItemRenderer: ItemRenderer<Film> = (item, { modifiers, handleClick, handleFocus }) => {
+        const myItemRenderer: ItemRenderer<Film> = (item, { modifiers, handleClick, handleFocus, ref }) => {
             return (
                 <MenuItem
                     active={modifiers.active}
                     key={item.title}
                     onClick={handleClick}
                     onFocus={handleFocus}
-                    // TODO(adahiya): MUST FIX FOR BLUEPRINT v5.0, add back `ref` prop support
-                    // see https://github.com/palantir/blueprint/issues/6094
+                    ref={ref}
                     text={item.title}
                 />
             );

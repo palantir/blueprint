@@ -140,7 +140,7 @@ export const TOP_100_FILMS: Film[] = [
  */
 export function getFilmItemProps(
     film: Film,
-    { handleClick, handleFocus, modifiers, query }: ItemRendererProps,
+    { handleClick, handleFocus, modifiers, query, ref }: ItemRendererProps,
 ): MenuItemProps & React.Attributes {
     return {
         active: modifiers.active,
@@ -149,8 +149,7 @@ export function getFilmItemProps(
         label: film.year.toString(),
         onClick: handleClick,
         onFocus: handleFocus,
-        // TODO(adahiya): MUST FIX FOR BLUEPRINT v5.0, add back `ref` prop support
-        // see https://github.com/palantir/blueprint/issues/6094
+        ref,
         roleStructure: "listoption",
         text: highlightText(`${film.rank}. ${film.title}`, query),
     };

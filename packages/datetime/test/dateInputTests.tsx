@@ -71,9 +71,9 @@ describe("<DateInput>", () => {
     });
 
     it("supports inputProps.inputRef", () => {
-        let input: HTMLInputElement | null = null;
-        mount(<DateInput {...DATE_FORMAT} inputProps={{ inputRef: ref => (input = ref) }} />);
-        assert.instanceOf(input, HTMLInputElement);
+        const inputRef = React.createRef<HTMLInputElement>();
+        mount(<DateInput {...DATE_FORMAT} inputProps={{ inputRef }} />);
+        assert.instanceOf(inputRef.current, HTMLInputElement);
     });
 
     it("Popover opens on input focus", () => {

@@ -20,7 +20,7 @@ import React, { forwardRef, useCallback, useEffect, useRef, useState } from "rea
 import { Alignment, Classes, mergeRefs } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, Props } from "../../common/props";
 
-export interface ControlProps extends Props, HTMLInputProps, React.RefAttributes<any> {
+export interface ControlProps extends Props, HTMLInputProps, React.RefAttributes<HTMLInputElement> {
     // NOTE: HTML props are duplicated here to provide control-specific documentation
 
     /**
@@ -41,9 +41,6 @@ export interface ControlProps extends Props, HTMLInputProps, React.RefAttributes
 
     /** Whether the control is non-interactive. */
     disabled?: boolean;
-
-    /** Ref handler that receives HTML `<input>` element backing this component. */
-    inputRef?: React.Ref<HTMLInputElement>;
 
     /** Whether the control should appear as an inline element. */
     inline?: boolean;
@@ -94,14 +91,13 @@ interface ControlInternalProps extends ControlProps {
  * Renders common control elements, with additional props to customize appearance.
  * This function is not exported and is only used within this module for `Checkbox`, `Radio`, and `Switch` below.
  */
-function renderControl(props: ControlInternalProps, ref: React.Ref<any>) {
+function renderControl(props: ControlInternalProps, ref: React.Ref<HTMLInputElement>) {
     const {
         alignIndicator,
         children,
         className,
         indicatorChildren,
         inline,
-        inputRef,
         label,
         labelElement,
         large,
@@ -126,7 +122,7 @@ function renderControl(props: ControlInternalProps, ref: React.Ref<any>) {
     return React.createElement(
         tagName,
         { className: classes, style, ref },
-        <input {...htmlProps} ref={inputRef} type={type} />,
+        <input {...htmlProps} ref={ref} type={type} />,
         <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>,
         label,
         labelElement,
@@ -233,9 +229,9 @@ export interface CheckboxProps extends ControlProps {
  * @see https://blueprintjs.com/docs/#core/components/checkbox
  */
 export const Checkbox: React.FC<CheckboxProps> = forwardRef((props, ref) => {
-    const { defaultIndeterminate, indeterminate, inputRef: inputRefProp, onChange, ...controlProps } = props;
+    const { defaultIndeterminate, indeterminate, onChange, ...controlProps } = props;
     const [isIndeterminate, setIsIndeterminate] = useState<boolean>(indeterminate || defaultIndeterminate || false);
-    const inputRefLocal = useRef<HTMLInputElement>(null);
+    const localRef = useRef<HTMLInputElement>(null);
     const handleChange = useCallback(
         (evt: React.ChangeEvent<HTMLInputElement>) => {
             // update state immediately only if uncontrolled
@@ -255,20 +251,19 @@ export const Checkbox: React.FC<CheckboxProps> = forwardRef((props, ref) => {
     }, [indeterminate]);
 
     useEffect(() => {
-        if (inputRefLocal.current != null) {
-            inputRefLocal.current.indeterminate = isIndeterminate;
+        if (localRef.current != null) {
+            localRef.current.indeterminate = isIndeterminate;
         }
-    }, [inputRefLocal, isIndeterminate]);
+    }, [localRef, isIndeterminate]);
 
     return renderControl(
         {
             ...controlProps,
-            inputRef: inputRefProp === undefined ? inputRefLocal : mergeRefs(inputRefLocal, inputRefProp),
             onChange: handleChange,
             type: "checkbox",
             typeClassName: Classes.CHECKBOX,
         },
-        ref,
+        mergeRefs(ref, localRef),
     );
 });
 Checkbox.displayName = `${DISPLAYNAME_PREFIX}.Checkbox`;

@@ -17,12 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-// TODO(adahiya): MUST FIX FOR BLUEPRINT v5.0, add back `ref` prop support by migrating to function component, using React.RefAttributes<HTMLLIElement>
-// see https://github.com/palantir/blueprint/issues/6094
-export interface ControlGroupProps extends Props, HTMLDivProps {
+export interface ControlGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /** Group contents. */
     children?: React.ReactNode;
 
@@ -48,11 +46,9 @@ export interface ControlGroupProps extends Props, HTMLDivProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/control-group
  */
-export class ControlGroup extends AbstractPureComponent<ControlGroupProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.ControlGroup`;
-
-    public render() {
-        const { children, className, fill, vertical, ...htmlProps } = this.props;
+export const ControlGroup: React.FC<ControlGroupProps> = React.forwardRef<HTMLDivElement, ControlGroupProps>(
+    (props, ref) => {
+        const { children, className, fill, vertical, ...htmlProps } = props;
 
         const rootClasses = classNames(
             Classes.CONTROL_GROUP,
@@ -64,9 +60,10 @@ export class ControlGroup extends AbstractPureComponent<ControlGroupProps> {
         );
 
         return (
-            <div {...htmlProps} className={rootClasses}>
+            <div {...htmlProps} ref={ref} className={rootClasses}>
                 {children}
             </div>
         );
-    }
-}
+    },
+);
+ControlGroup.displayName = `${DISPLAYNAME_PREFIX}.ControlGroup`;
