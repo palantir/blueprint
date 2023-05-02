@@ -21,8 +21,9 @@ import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, MenuItem, Popover } from "@blueprintjs/core";
 
-import { ItemRendererProps, Select, SelectProps, SelectState } from "../src";
+import { ItemRendererProps, Select, SelectProps } from "../src";
 import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
+import type { SelectState } from "../src/components/select/select";
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 

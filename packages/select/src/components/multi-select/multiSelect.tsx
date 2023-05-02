@@ -119,6 +119,7 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
     tagRenderer: (item: T) => React.ReactNode;
 }
 
+/** Exported for testing, not part of public API */
 export interface MultiSelectState {
     isOpen: boolean;
 }
