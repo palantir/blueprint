@@ -24,11 +24,7 @@ import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { mergeRefs } from "../../common/refs";
 import { Icon } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
-import { ButtonProps } from "./buttonProps";
-
-export { ButtonProps };
-
-export type AnchorButtonProps = ButtonProps<HTMLAnchorElement>;
+import { AnchorButtonProps, ButtonProps } from "./buttonProps";
 
 /**
  * Button component.
@@ -75,7 +71,7 @@ AnchorButton.displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
  * Most of the button logic lives in this shared hook.
  */
 function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonElement>(
-    props: ButtonProps<E>,
+    props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
     ref: React.Ref<E>,
 ) {
     const { active = false, alignText, fill, large, loading = false, outlined, minimal, small, tabIndex } = props;
@@ -159,7 +155,9 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
 /**
  * Shared rendering code for button contents.
  */
-function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(props: ButtonProps<E>) {
+function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(
+    props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
+) {
     const { children, icon, loading, rightIcon, text } = props;
     const hasTextContent = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
     return (
