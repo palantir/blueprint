@@ -58,7 +58,7 @@ export default function() {
     return (
         <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
             Press <KeyCombo combo="R" /> to refresh data, <KeyCombo combo="F" /> to focus the input...
-            <InputGroup ref={inputRef} />
+            <InputGroup inputRef={inputRef} />
         </div>
     );
 }

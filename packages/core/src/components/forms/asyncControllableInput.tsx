@@ -18,10 +18,9 @@ import * as React from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
 
-export interface AsyncControllableInputProps
-    extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
-    inputRef?: React.LegacyRef<HTMLInputElement>;
-}
+export type AsyncControllableInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+    inputRef?: React.Ref<HTMLInputElement>;
+};
 
 type InputValue = AsyncControllableInputProps["value"];
 

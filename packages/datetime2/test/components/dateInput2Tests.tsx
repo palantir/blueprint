@@ -103,9 +103,9 @@ describe("<DateInput2>", () => {
         });
 
         it("supports inputProps.inputRef", () => {
-            let input: HTMLInputElement | null = null;
-            mount(<DateInput2 {...DEFAULT_PROPS} inputProps={{ inputRef: ref => (input = ref) }} />);
-            assert.instanceOf(input, HTMLInputElement);
+            const inputRef = React.createRef<HTMLInputElement>();
+            mount(<DateInput2 {...DEFAULT_PROPS} inputProps={{ inputRef }} />);
+            assert.instanceOf(inputRef.current, HTMLInputElement);
         });
 
         it("does not render a TimezoneSelect if timePrecision is undefined", () => {

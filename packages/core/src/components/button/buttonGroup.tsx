@@ -17,12 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Alignment, Classes } from "../../common";
+import { Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-// TODO(adahiya): MUST FIX FOR BLUEPRINT v5.0, add back `ref` prop support by migrating to function component, using React.RefAttributes<HTMLLIElement>
-// see https://github.com/palantir/blueprint/issues/6094
-export interface ButtonGroupProps extends Props, HTMLDivProps {
+export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
      * Text alignment within button. By default, icons and text will be centered
      * within the button. Passing `"left"` or `"right"` will align the button
@@ -70,11 +68,9 @@ export interface ButtonGroupProps extends Props, HTMLDivProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/button-group
  */
-export class ButtonGroup extends AbstractPureComponent<ButtonGroupProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;
-
-    public render() {
-        const { alignText, className, fill, minimal, large, vertical, ...htmlProps } = this.props;
+export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
+    (props, ref) => {
+        const { alignText, className, fill, minimal, large, vertical, ...htmlProps } = props;
         const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,
             {
@@ -87,9 +83,10 @@ export class ButtonGroup extends AbstractPureComponent<ButtonGroupProps> {
             className,
         );
         return (
-            <div {...htmlProps} className={buttonGroupClasses}>
-                {this.props.children}
+            <div {...htmlProps} ref={ref} className={buttonGroupClasses}>
+                {props.children}
             </div>
         );
-    }
-}
+    },
+);
+ButtonGroup.displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;

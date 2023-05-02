@@ -26,17 +26,16 @@ type ControlType = typeof Checkbox | typeof Radio | typeof Switch;
 describe("Controls:", () => {
     controlsTests(Checkbox, "checkbox", Classes.CHECKBOX, () => {
         describe("indeterminate", () => {
-            let input: HTMLInputElement | null = null;
-            const handleInputRef = (ref: HTMLInputElement | null) => (input = ref);
+            const inputRef = React.createRef<HTMLInputElement>();
 
             it("prop sets element state", () => {
-                mount(<Checkbox indeterminate={true} inputRef={handleInputRef} />);
-                assert.isTrue(input?.indeterminate);
+                mount(<Checkbox indeterminate={true} ref={inputRef} />);
+                assert.isTrue(inputRef.current?.indeterminate);
             });
 
             it("default prop sets element state", () => {
-                mount(<Checkbox defaultIndeterminate={true} inputRef={handleInputRef} />);
-                assert.isTrue(input?.indeterminate);
+                mount(<Checkbox defaultIndeterminate={true} ref={inputRef} />);
+                assert.isTrue(inputRef.current?.indeterminate);
             });
         });
     });
