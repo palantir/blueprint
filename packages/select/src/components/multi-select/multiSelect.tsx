@@ -21,7 +21,6 @@ import {
     Button,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
-    Keys,
     mergeRefs,
     Popover,
     PopoverClickTargetHandlers,
@@ -375,18 +374,14 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
     private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-            // eslint-disable-next-line deprecation/deprecation
-            const { which } = e;
-
-            if (which === Keys.ESCAPE || which === Keys.TAB) {
+            if (e.key === "Escape" || e.key === "Tab") {
                 // By default the escape key will not trigger a blur on the
                 // input element. It must be done explicitly.
                 if (this.input != null) {
                     this.input.blur();
                 }
                 this.setState({ isOpen: false });
-            } else if (!(which === Keys.BACKSPACE || which === Keys.ARROW_LEFT || which === Keys.ARROW_RIGHT)) {
+            } else if (!(e.key === "Backspace" || e.key === "ArrowLeft" || e.key === "ArrowRight")) {
                 this.setState({ isOpen: true });
             }
 

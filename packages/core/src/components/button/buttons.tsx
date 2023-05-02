@@ -19,16 +19,12 @@ import React, { forwardRef, useCallback, useRef, useState } from "react";
 
 import { IconSize } from "@blueprintjs/icons";
 
-import { Classes, Keys, Utils } from "../../common";
+import { Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { mergeRefs } from "../../common/refs";
 import { Icon } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
-import { ButtonProps } from "./buttonProps";
-
-export { ButtonProps };
-
-export type AnchorButtonProps = ButtonProps<HTMLAnchorElement>;
+import { AnchorButtonProps, ButtonProps } from "./buttonProps";
 
 /**
  * Button component.
@@ -75,14 +71,14 @@ AnchorButton.displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
  * Most of the button logic lives in this shared hook.
  */
 function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonElement>(
-    props: ButtonProps<E>,
+    props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
     ref: React.Ref<E>,
 ) {
     const { active = false, alignText, fill, large, loading = false, outlined, minimal, small, tabIndex } = props;
     const disabled = props.disabled || loading;
 
     // the current key being pressed
-    const [currentKeyDown, setCurrentKeyDown] = useState<number | undefined>();
+    const [currentKeyPressed, setCurrentKeyPressed] = useState<string | undefined>();
     // whether the button is in "active" state
     const [isActive, setIsActive] = useState(false);
     // our local ref for the button element, merged with the consumer's own ref (if supplied) in this hook's return value
@@ -99,28 +95,24 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     );
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<any>) => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-            /* eslint-disable deprecation/deprecation */
-            if (Keys.isKeyboardClick(e.which)) {
+            if (Utils.isKeyboardClick(e)) {
                 e.preventDefault();
-                if (e.which !== currentKeyDown) {
+                if (e.key !== currentKeyPressed) {
                     setIsActive(true);
                 }
             }
-            setCurrentKeyDown(e.which);
+            setCurrentKeyPressed(e.key);
             props.onKeyDown?.(e);
         },
-        [currentKeyDown, props.onKeyDown],
+        [currentKeyPressed, props.onKeyDown],
     );
     const handleKeyUp = useCallback(
         (e: React.KeyboardEvent<any>) => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-            /* eslint-disable deprecation/deprecation */
-            if (Keys.isKeyboardClick(e.which)) {
+            if (Utils.isKeyboardClick(e)) {
                 setIsActive(false);
                 buttonRef.current?.click();
             }
-            setCurrentKeyDown(undefined);
+            setCurrentKeyPressed(undefined);
             props.onKeyUp?.(e);
         },
         [props.onKeyUp],
@@ -159,7 +151,9 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
 /**
  * Shared rendering code for button contents.
  */
-function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(props: ButtonProps<E>) {
+function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(
+    props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
+) {
     const { children, icon, loading, rightIcon, text } = props;
     const hasTextContent = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
     return (

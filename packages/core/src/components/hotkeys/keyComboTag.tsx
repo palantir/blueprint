@@ -21,18 +21,26 @@ import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Props } from "../..
 import { Icon, IconName } from "../icon/icon";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
-const KeyIcons: { [key: string]: { icon: IconName; iconTitle: string } } = {
+const KEY_ICONS: Record<string, { icon: IconName; iconTitle: string }> = {
+    ArrowDown: { icon: "arrow-down", iconTitle: "Down key" },
+    ArrowLeft: { icon: "arrow-left", iconTitle: "Left key" },
+    ArrowRight: { icon: "arrow-right", iconTitle: "Right key" },
+    ArrowUp: { icon: "arrow-up", iconTitle: "Up key" },
     alt: { icon: "key-option", iconTitle: "Alt/Option key" },
     cmd: { icon: "key-command", iconTitle: "Command key" },
     ctrl: { icon: "key-control", iconTitle: "Control key" },
     delete: { icon: "key-delete", iconTitle: "Delete key" },
-    down: { icon: "arrow-down", iconTitle: "Down key" },
     enter: { icon: "key-enter", iconTitle: "Enter key" },
-    left: { icon: "arrow-left", iconTitle: "Left key" },
     meta: { icon: "key-command", iconTitle: "Command key" },
-    right: { icon: "arrow-right", iconTitle: "Right key" },
     shift: { icon: "key-shift", iconTitle: "Shift key" },
-    up: { icon: "arrow-up", iconTitle: "Up key" },
+};
+
+/** Reverse table of some CONFIG_ALIASES fields, for display by KeyComboTag */
+export const DISPLAY_ALIASES: Record<string, string> = {
+    ArrowDown: "down",
+    ArrowLeft: "left",
+    ArrowRight: "right",
+    ArrowUp: "up",
 };
 
 export interface KeyComboTagProps extends Props {
@@ -61,18 +69,19 @@ export class KeyComboTag extends AbstractPureComponent<KeyComboTagProps> {
     }
 
     private renderKey = (key: string, index: number) => {
-        const icon = KeyIcons[key];
+        const keyString = DISPLAY_ALIASES[key] ?? key;
+        const icon = KEY_ICONS[key];
         const reactKey = `key-${index}`;
         return (
             <kbd className={classNames(Classes.KEY, { [Classes.MODIFIER_KEY]: icon != null })} key={reactKey}>
                 {icon != null && <Icon icon={icon.icon} title={icon.iconTitle} />}
-                {key}
+                {keyString}
             </kbd>
         );
     };
 
     private renderMinimalKey = (key: string, index: number) => {
-        const icon = KeyIcons[key];
+        const icon = KEY_ICONS[key];
         return icon == null ? key : <Icon icon={icon.icon} title={icon.iconTitle} key={`key-${index}`} />;
     };
 }

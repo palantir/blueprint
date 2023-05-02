@@ -27,7 +27,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 
-import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover } from "@blueprintjs/core";
+import { Classes as CoreClasses, InputGroup, Intent, Popover } from "@blueprintjs/core";
 
 import { Classes, DateInput, DateInputProps, DatePicker, TimePicker, TimePrecision } from "../src";
 import { Months } from "../src/common/months";
@@ -92,7 +92,7 @@ describe("<DateInput>", () => {
         const wrapper = mount(<DateInput {...DATE_FORMAT} />);
         wrapper.setState({ isOpen: true });
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
-        wrapper.find("input").simulate("keydown", { which: Keys.ESCAPE });
+        wrapper.find("input").simulate("keydown", { key: "Escape" });
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
@@ -328,7 +328,7 @@ describe("<DateInput>", () => {
             });
             const input = wrapper.find("input").first();
             input.simulate("change", { target: { value: IMPROPERLY_FORMATTED_DATE_STRING } });
-            input.simulate("keydown", { which: Keys.ENTER });
+            input.simulate("keydown", { key: "Enter" });
             assert.isFalse(wrapper.state("isOpen"), "popover closed");
             assert.isTrue(wrapper.state("isInputFocused"), "input still focused");
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), PROPERLY_FORMATTED_DATE_STRING);
@@ -422,7 +422,7 @@ describe("<DateInput>", () => {
             assert.isTrue(wrapper.find(Popover).prop("isOpen"));
 
             // try keyboard-incrementing to a new time
-            wrapper.find(`.${Classes.TIMEPICKER_MILLISECOND}`).simulate("keydown", { which: Keys.ARROW_UP });
+            wrapper.find(`.${Classes.TIMEPICKER_MILLISECOND}`).simulate("keydown", { key: "ArrowUp" });
             assert.isTrue(wrapper.find(Popover).prop("isOpen"));
         });
 
@@ -542,7 +542,7 @@ describe("<DateInput>", () => {
 
             const input = root.find("input").first();
             input.simulate("change", { target: { value: DATE2_STR } });
-            input.simulate("keydown", { which: Keys.ENTER });
+            input.simulate("keydown", { key: "Enter" });
 
             // onChange is called once on change, once on Enter
             assert.isTrue(onChange.calledTwice, "onChange called twice");

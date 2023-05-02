@@ -18,7 +18,7 @@ import chroma from "chroma-js";
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Keys, RadioGroup } from "@blueprintjs/core";
+import { Classes, RadioGroup } from "@blueprintjs/core";
 import { createKeyEventHandler, handleNumberChange } from "@blueprintjs/docs-theme";
 
 import { ColorBar } from "./colorPalettes";
@@ -191,8 +191,8 @@ export class ColorScheme extends React.PureComponent<ColorSchemeProps, ColorSche
         const clickHandler = this.handlePaletteChange.bind(this, key);
         const keyDownHandler = createKeyEventHandler(
             {
-                [Keys.SPACE]: clickHandler,
-                [Keys.ENTER]: clickHandler,
+                Enter: clickHandler,
+                Space: clickHandler,
             },
             true,
         );

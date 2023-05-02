@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, Keys } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import { clamp } from "../../common/utils";
 
@@ -341,16 +341,14 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
     };
 
     private handleKeyEvent = (event: React.KeyboardEvent<HTMLElement>) => {
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable-next-line deprecation/deprecation */
-        const { altKey, ctrlKey, metaKey, shiftKey, which } = event;
-        if (which === Keys.ESCAPE) {
+        const { altKey, ctrlKey, metaKey, shiftKey } = event;
+        if (event.key === "Escape") {
             this.cancelEditing();
             return;
         }
 
         const hasModifierKey = altKey || ctrlKey || metaKey || shiftKey;
-        if (which === Keys.ENTER) {
+        if (event.key === "Enter") {
             // prevent IE11 from full screening with alt + enter
             // shift + enter adds a newline by default
             if (altKey || shiftKey) {

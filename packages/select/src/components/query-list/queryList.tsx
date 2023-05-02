@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { AbstractComponent, DISPLAYNAME_PREFIX, Keys, Menu, Props, Utils } from "@blueprintjs/core";
+import { AbstractComponent, DISPLAYNAME_PREFIX, Menu, Props, Utils } from "@blueprintjs/core";
 
 import {
     CreateNewItem,
@@ -518,15 +518,14 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     };
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        // eslint-disable-next-line deprecation/deprecation
-        const { keyCode } = event;
-        if (keyCode === Keys.ARROW_UP || keyCode === Keys.ARROW_DOWN) {
+        const { key } = event;
+        if (key === "ArrowUp" || key === "ArrowDown") {
             event.preventDefault();
-            const nextActiveItem = this.getNextActiveItem(keyCode === Keys.ARROW_UP ? -1 : 1);
+            const nextActiveItem = this.getNextActiveItem(key === "ArrowUp" ? -1 : 1);
             if (nextActiveItem != null) {
                 this.setActiveItem(nextActiveItem);
             }
-        } else if (keyCode === Keys.ENTER) {
+        } else if (key === "Enter") {
             this.isEnterKeyPressed = true;
         }
 
@@ -537,8 +536,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         const { onKeyUp } = this.props;
         const { activeItem } = this.state;
 
-        // eslint-disable-next-line deprecation/deprecation
-        if (event.keyCode === Keys.ENTER && this.isEnterKeyPressed) {
+        if (event.key === "Enter" && this.isEnterKeyPressed) {
             // We handle ENTER in keyup here to play nice with the Button component's keyboard
             // clicking. Button is commonly used as the only child of Select. If we were to
             // instead process ENTER on keydown, then Button would click itself on keyup and

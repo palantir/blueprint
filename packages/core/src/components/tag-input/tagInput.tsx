@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { IconName, IconSize } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes, Keys, refHandler, setRef, Utils } from "../../common";
+import { AbstractPureComponent, Classes, refHandler, setRef, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, MaybeElement, Props } from "../../common/props";
 import { getActiveElement } from "../../common/utils";
 import { Icon } from "../icon/icon";
@@ -409,29 +409,26 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
     };
 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable deprecation/deprecation */
-
         const { selectionEnd, value } = event.currentTarget;
         const { activeIndex } = this.state;
 
         let activeIndexToEmit = activeIndex;
 
-        if (event.which === Keys.ENTER && value.length > 0) {
+        if (event.key === "Enter" && value.length > 0) {
             this.addTags(value, "default");
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
             // cursor at beginning of input allows interaction with tags.
             // use selectionEnd to verify cursor position and no text selection.
-            if (event.which === Keys.ARROW_LEFT || event.which === Keys.ARROW_RIGHT) {
-                const nextActiveIndex = this.getNextActiveIndex(event.which === Keys.ARROW_RIGHT ? 1 : -1);
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+                const nextActiveIndex = this.getNextActiveIndex(event.key === "ArrowRight" ? 1 : -1);
                 if (nextActiveIndex !== activeIndex) {
                     event.stopPropagation();
                     activeIndexToEmit = nextActiveIndex;
                     this.setState({ activeIndex: nextActiveIndex });
                 }
-            } else if (event.which === Keys.BACKSPACE) {
+            } else if (event.key === "Backspace") {
                 this.handleBackspaceToRemove(event);
-            } else if (event.which === Keys.DELETE) {
+            } else if (event.key === "Delete") {
                 this.handleDeleteToRemove(event);
             }
         }

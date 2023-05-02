@@ -24,7 +24,6 @@ import {
     InputGroup,
     InputGroupProps,
     Intent,
-    Keys,
     Popover,
     PopoverProps,
     Props,
@@ -395,26 +394,23 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
         this.safeInvokeInputProp("onBlur", e);
     };
 
-    /* eslint-disable deprecation/deprecation */
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        if (e.which === Keys.ENTER) {
+        if (e.key === "Enter") {
             const nextDate = this.parseDate(this.state.valueString);
             this.handleDateChange(nextDate, true, true);
-        } else if (e.which === Keys.TAB && e.shiftKey) {
+        } else if (e.key === "Tab" && e.shiftKey) {
             // close popover on SHIFT+TAB key press
             this.handleClosePopover();
-        } else if (e.which === Keys.TAB && this.state.isOpen) {
+        } else if (e.key === "Tab" && this.state.isOpen) {
             this.getKeyboardFocusableElements().shift()?.focus();
             // necessary to prevent focusing the second focusable element
             e.preventDefault();
-        } else if (e.which === Keys.ESCAPE) {
+        } else if (e.key === "Escape") {
             this.setState({ isOpen: false });
             this.inputElement?.blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
     };
-    /* eslint-enable deprecation/deprecation */
 
     private getKeyboardFocusableElements = (): HTMLElement[] => {
         const elements = Array.from(

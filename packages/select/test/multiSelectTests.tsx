@@ -19,8 +19,8 @@ import { mount } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 
-import { Classes as CoreClasses, Keys, Tag } from "@blueprintjs/core";
-import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
+import { Classes as CoreClasses, Tag } from "@blueprintjs/core";
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
 import { ItemRendererProps, MultiSelect, MultiSelectProps, MultiSelectState } from "../src";
 import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
@@ -89,7 +89,7 @@ describe("<MultiSelect>", () => {
         });
 
         const firstTagRemoveButton = wrapper.find(`.${CoreClasses.TAG_REMOVE}`).at(0).getDOMNode();
-        dispatchTestKeyboardEventWithCode(firstTagRemoveButton, "keyup", "Enter", Keys.ENTER);
+        dispatchTestKeyboardEvent(firstTagRemoveButton, "keyup", "Enter");
 
         // checks for the bug in https://github.com/palantir/blueprint/issues/3674
         // where the first item in the dropdown list would get selected upon hitting Enter inside

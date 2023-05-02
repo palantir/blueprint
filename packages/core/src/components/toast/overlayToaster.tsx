@@ -20,7 +20,6 @@ import * as ReactDOM from "react-dom";
 
 import { AbstractPureComponent, Classes, Position } from "../../common";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
-import { ESCAPE } from "../../common/keys";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
@@ -227,9 +226,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
 
     private handleClose = (e: React.SyntheticEvent<HTMLElement>) => {
         // NOTE that `e` isn't always a KeyboardEvent but that's the only type we care about
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable-next-line deprecation/deprecation */
-        if ((e as React.KeyboardEvent<HTMLElement>).which === ESCAPE) {
+        if ((e as React.KeyboardEvent<HTMLElement>).key === "Escape") {
             this.clear();
         }
     };

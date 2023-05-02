@@ -14,28 +14,12 @@
  * limitations under the License.
  */
 
+import React from "react";
+
 import type { ActionProps, Alignment, MaybeElement } from "../../common";
 import type { IconName } from "../icon/icon";
 
-/**
- * Props interface for both the Button and AnchorButton components.
- *
- * Note that it is useful for the props for the two components to be assignable to each other, which we can allow
- * by omitting the `ref` prop as `DialogStepButton` does. This is mostly for backwards compatibility, but it is
- * a feature we like to preserve because the components are so similar and distinguishing between them in their event
- * handlers is usually unnecessary. For this reason, we extend `ActionProps<HTMLElement>` rather than `ActionProps<E>`.
- *
- * @see {@link ActionProps}
- */
-export type ButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement> =
-    ActionProps<HTMLElement> &
-        React.RefAttributes<E> &
-        (E extends HTMLButtonElement
-            ? React.ButtonHTMLAttributes<HTMLButtonElement>
-            : React.AnchorHTMLAttributes<HTMLAnchorElement>) &
-        ButtonSharedProps;
-
-interface ButtonSharedProps {
+export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /**
      * If set to `true`, the button will display in an active state.
      * This is equivalent to setting `className={Classes.ACTIVE}`.
@@ -92,3 +76,19 @@ interface ButtonSharedProps {
      */
     type?: "submit" | "reset" | "button";
 }
+
+/**
+ * Props interface assignable to both the Button and AnchorButton components.
+ *
+ * It is useful for the props for the two components to be assignable to each other because the components
+ * are so similar and distinguishing between them in their event handlers is usually unnecessary.
+ */
+export type ButtonSharedPropsAndAttributes = ButtonSharedProps & React.HTMLAttributes<HTMLElement>;
+
+export type ButtonProps = ButtonSharedProps &
+    React.ButtonHTMLAttributes<HTMLButtonElement> &
+    React.RefAttributes<HTMLButtonElement>;
+
+export type AnchorButtonProps = ButtonSharedProps &
+    React.AnchorHTMLAttributes<HTMLAnchorElement> &
+    React.RefAttributes<HTMLAnchorElement>;

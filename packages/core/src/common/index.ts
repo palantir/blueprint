@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+export { Colors } from "@blueprintjs/colors";
+
 export { AbstractComponent } from "./abstractComponent";
 export { AbstractPureComponent } from "./abstractPureComponent";
 export { Alignment } from "./alignment";
@@ -22,6 +24,8 @@ export { Boundary } from "./boundary";
 export { Constructor } from "./constructor";
 export { Elevation } from "./elevation";
 export { Intent } from "./intent";
+// eslint-disable-next-line deprecation/deprecation
+export { KeyCodes as Keys } from "./keyCodes";
 export { Position } from "./position";
 export {
     ActionProps,
@@ -38,11 +42,7 @@ export {
 } from "./props";
 export { getRef, isRefCallback, isRefObject, mergeRefs, refHandler, setRef } from "./refs";
 
-import { Colors } from "@blueprintjs/colors";
-
 import * as Classes from "./classes";
-import * as Keys from "./keys";
 import * as Utils from "./utils";
-
-export { Classes, Keys, Utils, Colors };
+export { Classes, Utils };
 // NOTE: Errors is not exported in public API

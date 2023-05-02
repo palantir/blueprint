@@ -15,7 +15,7 @@
 
 import * as React from "react";
 
-import { Keys, NumericInput } from "@blueprintjs/core";
+import { NumericInput } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface NumericInputExtendedExampleState {
@@ -58,8 +58,7 @@ export class NumericInputExtendedExample extends React.PureComponent<ExampleProp
     };
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // eslint-disable-next-line deprecation/deprecation
-        if (e.keyCode === Keys.ENTER) {
+        if (e.key === "Enter") {
             this.handleConfirm((e.target as HTMLInputElement).value);
         }
     };
