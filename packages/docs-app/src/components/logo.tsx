@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 export const Logo: React.FC = () => (
     <svg width="65" height="76" xmlns="http://www.w3.org/2000/svg">

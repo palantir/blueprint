@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { ActionProps, Classes, LinkProps } from "../../common";
 import { Icon } from "../icon/icon";

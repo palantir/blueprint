@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import { Clipboard } from "./common/clipboard";

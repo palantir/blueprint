@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, shallow } from "enzyme";
-import React from "react";
+import * as React from "react";
 
 import { Classes, MenuItem } from "../../src";
 import { AnimationStates, Collapse } from "../../src/components/collapse/collapse";

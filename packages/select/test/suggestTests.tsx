@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import React from "react";
+import * as React from "react";
 import * as sinon from "sinon";
 
 import { InputGroup, MenuItem, Popover, PopoverProps } from "@blueprintjs/core";

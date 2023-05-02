@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { H5, Position, Radio, RadioGroup, Switch } from "@blueprintjs/core";
 import { TimezoneDisplayFormat, TimezoneSelect } from "@blueprintjs/datetime2";

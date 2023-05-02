@@ -23,7 +23,7 @@
 /* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 import DayPicker from "react-day-picker";
 
 import {

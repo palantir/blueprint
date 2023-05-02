@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { HOTKEYS_PROVIDER_NOT_FOUND } from "../../common/errors";
 import { elementIsTextInput } from "../../common/utils/domUtils";

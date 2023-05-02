@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Classes, EditableText, FormGroup, H1, H5, Intent, NumericInput, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";

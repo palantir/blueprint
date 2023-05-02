@@ -15,7 +15,7 @@
  */
 
 import { format, Locale, parse } from "date-fns";
-import React from "react";
+import * as React from "react";
 
 import { DateFormatProps } from "@blueprintjs/datetime";
 

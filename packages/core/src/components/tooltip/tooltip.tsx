@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX, IntentProps } from "../../common";
 import * as Classes from "../../common/classes";

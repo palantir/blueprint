@@ -19,8 +19,8 @@
  * will be removed in Blueprint v6.0.
  */
 
-import React from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { ValidationMap } from "../../common/context";

@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { intlFormat, isEqual, parseISO } from "date-fns";
 import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import { mount, ReactWrapper } from "enzyme";
-import React from "react";
+import * as React from "react";
 import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";

@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, shallow, ShallowWrapper } from "enzyme";
-import React from "react";
+import * as React from "react";
 import { SinonStub, spy, stub } from "sinon";
 
 import { WarningSign } from "@blueprintjs/icons";

@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { Classes, HTMLSelect } from "@blueprintjs/core";
 import { TimePrecision } from "@blueprintjs/datetime";

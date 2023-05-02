@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, OptionProps, Props } from "../../common";
 import * as Errors from "../../common/errors";

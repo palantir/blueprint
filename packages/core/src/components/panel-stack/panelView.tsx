@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Button } from "../button/buttons";

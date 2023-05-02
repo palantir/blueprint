@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Button, Classes, Menu, MenuDivider, MenuItem, Popover } from "@blueprintjs/core";
 

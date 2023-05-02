@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 export function usePrevious<T>(value: T) {
     const ref = React.useRef<T>();

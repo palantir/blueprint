@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { AbstractComponent, ContextMenu, ContextMenuContentProps, Utils as CoreUtils } from "@blueprintjs/core";
 

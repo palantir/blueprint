@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { Boundary, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";

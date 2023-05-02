@@ -14,7 +14,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { Classes as CoreClasses, Utils as CoreUtils, DISPLAYNAME_PREFIX, IntentProps, Props } from "@blueprintjs/core";
 

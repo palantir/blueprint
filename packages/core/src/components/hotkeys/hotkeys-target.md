@@ -17,7 +17,7 @@ React application.
 Then, to register hotkeys and generate the relevant event handlers, use the component like so:
 
 ```tsx
-import React from "react";
+import * as React from "react";
 import { HotkeysTarget, InputGroup } from "@blueprintjs/core";
 
 export default class extends React.PureComponent {

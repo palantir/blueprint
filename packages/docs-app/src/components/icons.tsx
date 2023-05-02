@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Classes, H3, InputGroup, NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
