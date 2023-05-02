@@ -14,8 +14,8 @@ configure a [HotkeysProvider](#core/context/hotkeys-provider) in your applicatio
 ```tsx
 import { HotkeysProvider } from "@blueprintjs/core";
 import { Column, Table2 } from "@blueprintjs/table";
-import React from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 ReactDOM.render(
     <HotkeysProvider>

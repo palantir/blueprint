@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, mergeRefs, Props, Utils } from "../../common";
 import { TooltipContext, TooltipProvider } from "../popover/tooltipContext";

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 export function isRefObject<T>(value: React.Ref<T> | undefined): value is React.RefObject<T> {
     return value != null && typeof value !== "function";

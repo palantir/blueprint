@@ -16,8 +16,8 @@
 
 /* eslint-disable  max-classes-per-file */
 
-import React from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave";
 export type KeyboardEventType = "keypress" | "keydown" | "keyup";

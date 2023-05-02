@@ -15,7 +15,7 @@
  */
 
 import { expect } from "chai";
-import React from "react";
+import * as React from "react";
 
 import { Cell, Column, ColumnLoadingOption, Table2 } from "../src";
 import * as Classes from "../src/common/classes";

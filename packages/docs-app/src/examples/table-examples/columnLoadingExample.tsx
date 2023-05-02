@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { HTMLSelect, Label } from "@blueprintjs/core";
 import { Example, ExampleProps, handleNumberChange } from "@blueprintjs/docs-theme";

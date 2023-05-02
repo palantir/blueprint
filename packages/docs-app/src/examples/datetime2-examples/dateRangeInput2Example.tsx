@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Callout, Code, H5, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateRange, TimePrecision } from "@blueprintjs/datetime";

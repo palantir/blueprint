@@ -16,7 +16,7 @@
 
 import { expect } from "chai";
 import { mount } from "enzyme";
-import React from "react";
+import * as React from "react";
 import sinon from "sinon";
 
 import { EditableText } from "@blueprintjs/core";

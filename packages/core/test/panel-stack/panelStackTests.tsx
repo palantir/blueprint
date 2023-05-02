@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import React from "react";
+import * as React from "react";
 import { spy } from "sinon";
 
 import { Classes, NumericInput, Panel, PanelProps, PanelStack, PanelStackProps } from "../../src";

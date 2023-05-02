@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Button, Classes, Code, ControlGroup, Placement, Popover } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";

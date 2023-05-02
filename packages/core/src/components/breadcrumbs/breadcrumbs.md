@@ -15,7 +15,7 @@ breadcrumbs that do not fit in the available space.
 
 ```tsx
 import { Breadcrumbs, BreadcrumbProps, Icon } from "@blueprintjs/core";
-import React from "react";
+import * as React from "react";
 
 const BREADCRUMBS: BreadcrumbProps[] = [
     { href: "/users", icon: "folder-close", text: "Users" },

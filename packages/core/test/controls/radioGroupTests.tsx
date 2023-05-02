@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { EnzymePropSelector, mount, ReactWrapper } from "enzyme";
-import React from "react";
+import * as React from "react";
 import { spy, stub } from "sinon";
 
 import { OptionProps, Radio, RadioGroup } from "../../src";

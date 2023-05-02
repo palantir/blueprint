@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { ButtonSharedPropsAndAttributes } from "../button/buttonProps";
 import { AnchorButton } from "../button/buttons";

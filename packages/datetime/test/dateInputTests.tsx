@@ -24,7 +24,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import React from "react";
+import * as React from "react";
 import sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Intent, Popover } from "@blueprintjs/core";

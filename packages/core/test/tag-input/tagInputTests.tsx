@@ -16,7 +16,7 @@
 
 import { assert, expect } from "chai";
 import { MountRendererProps, ReactWrapper, mount as untypedMount } from "enzyme";
-import React from "react";
+import * as React from "react";
 import sinon from "sinon";
 
 import { Button, Classes, Intent, Tag, TagInput, TagInputProps } from "../../src";

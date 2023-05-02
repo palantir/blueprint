@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { H5, HandleInteractionKind, Intent, MultiSlider, Radio, RadioGroup, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";

@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import moment from "moment";
-import React from "react";
+import * as React from "react";
 
 import { Icon, Intent, Props, Tag } from "@blueprintjs/core";
 import { DateRange } from "@blueprintjs/datetime";

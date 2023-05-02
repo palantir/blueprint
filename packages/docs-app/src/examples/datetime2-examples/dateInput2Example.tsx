@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { Classes, Code, H5, Icon, Switch, Tag } from "@blueprintjs/core";
 import { DateFormatProps, TimePrecision } from "@blueprintjs/datetime";

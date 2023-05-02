@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Collapse } from "../collapse/collapse";

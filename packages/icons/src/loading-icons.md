@@ -17,7 +17,7 @@ from the icons package.
 ```tsx
 import { Button } from "@blueprintjs/core";
 import { Download } from "@blueprintjs/icons";
-import ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom";
 
 ReactDOM.render(
     <Button text="Download" icon={<Download size={16} />} />,
@@ -42,7 +42,7 @@ It looks like this in your render code path:
 
 ```tsx
 import { Button } from "@blueprintjs/core";
-import ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom";
 
 ReactDOM.render(
     <Button text="Download" icon="download" />,

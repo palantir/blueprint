@@ -11,8 +11,8 @@ You may provide a predicate to customize the filtering algorithm. The value of a
 ```tsx
 import { Button, MenuItem } from "@blueprintjs/core";
 import { ItemPredicate, ItemRenderer, Select } from "@blueprintjs/select";
-import React from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 export interface Film {
     title: string;

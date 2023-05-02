@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
-import React from "react";
+import * as React from "react";
 import sinon from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";

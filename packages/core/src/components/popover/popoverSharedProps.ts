@@ -15,7 +15,7 @@
  */
 
 import { Boundary, Modifier, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
-import React from "react";
+import * as React from "react";
 import { StrictModifier } from "react-popper";
 
 import { Position, Props } from "../../common";

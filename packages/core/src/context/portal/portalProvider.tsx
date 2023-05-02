@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 export interface PortalContextOptions {
     /** Additional CSS classes to add to all `Portal` elements in this React context. */

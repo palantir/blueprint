@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import { format, isValid } from "date-fns";
-import React from "react";
+import * as React from "react";
 
 import { Icon, Intent, Props, Tag } from "@blueprintjs/core";
 import { DateRange } from "@blueprintjs/datetime";

@@ -16,7 +16,7 @@
 
 import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "@documentalist/client";
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
 import { DocsCompleteData } from "@blueprintjs/docs-data";

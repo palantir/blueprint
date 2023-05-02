@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table2, Utils } from "@blueprintjs/table";

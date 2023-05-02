@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Utils } from "./common/utils";
 import type { TablePropsWithDefaults } from "./tableProps";

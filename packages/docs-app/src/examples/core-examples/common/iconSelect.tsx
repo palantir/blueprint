@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { Alignment, Button, Classes, MenuItem } from "@blueprintjs/core";
 import { IconName } from "@blueprintjs/icons";

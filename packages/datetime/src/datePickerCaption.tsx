@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 import { CaptionElementProps } from "react-day-picker";
 
 import { AbstractPureComponent, Divider, HTMLSelect, OptionProps } from "@blueprintjs/core";
