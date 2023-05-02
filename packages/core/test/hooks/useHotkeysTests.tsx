@@ -101,61 +101,61 @@ describe("useHotkeys", () => {
     it("binds local hotkey", () => {
         render(<TestComponentContainer />);
         const target = screen.getByTestId("target-inside-component");
-        dispatchTestKeyboardEvent(target, "keydown", "A");
-        expect(onKeyASpy.calledOnce).to.be.true;
+        dispatchTestKeyboardEvent(target, "keydown", "a");
+        expect(onKeyASpy.callCount).to.equal(1, "hotkey a should be called once");
     });
 
     it("binds global hotkey", () => {
         render(<TestComponentContainer />);
         const target = screen.getByTestId("target-outside-component");
-        dispatchTestKeyboardEvent(target, "keydown", "B");
-        expect(onKeyBSpy.calledOnce).to.be.true;
+        dispatchTestKeyboardEvent(target, "keydown", "b");
+        expect(onKeyBSpy.callCount).to.equal(1, "hotkey b should be called once");
     });
 
     it("binds new local hotkeys when hook arg is updated", () => {
         const { rerender } = render(<TestComponentContainer />);
         rerender(<TestComponentContainer bindExtraKeys={true} />);
         const target = screen.getByTestId("target-inside-component");
-        dispatchTestKeyboardEvent(target, "keydown", "A", true);
-        expect(onKeyASpy.calledOnce).to.be.true;
+        dispatchTestKeyboardEvent(target, "keydown", "a", true);
+        expect(onKeyASpy.callCount).to.equal(1, "hotkey A should be called once");
     });
 
     it("binds new global hotkeys when hook arg is updated", () => {
         const { rerender } = render(<TestComponentContainer />);
         rerender(<TestComponentContainer bindExtraKeys={true} />);
         const target = screen.getByTestId("target-outside-component");
-        dispatchTestKeyboardEvent(target, "keydown", "B", true);
-        expect(onKeyBSpy.calledOnce).to.be.true;
+        dispatchTestKeyboardEvent(target, "keydown", "b", true);
+        expect(onKeyBSpy.callCount).to.equal(1, "hotkey B should be called once");
     });
 
     it("removes local hotkeys when hook arg is updated", () => {
         const { rerender } = render(<TestComponentContainer bindExtraKeys={true} />);
         rerender(<TestComponentContainer />);
         const target = screen.getByTestId("target-inside-component");
-        dispatchTestKeyboardEvent(target, "keydown", "A", true);
-        expect(onKeyASpy.notCalled).to.be.true;
+        dispatchTestKeyboardEvent(target, "keydown", "a", true);
+        expect(onKeyASpy.callCount).to.equal(0, "hotkey A should not be called");
     });
 
     it("removes global hotkeys when hook arg is updated", () => {
         const { rerender } = render(<TestComponentContainer bindExtraKeys={true} />);
         rerender(<TestComponentContainer />);
         const target = screen.getByTestId("target-outside-component");
-        dispatchTestKeyboardEvent(target, "keydown", "B", true);
-        expect(onKeyBSpy.notCalled).to.be.true;
+        dispatchTestKeyboardEvent(target, "keydown", "b", true);
+        expect(onKeyBSpy.callCount).to.equal(0, "hotkey B should not be called");
     });
 
     it("does not trigger hotkeys inside text inputs", () => {
         render(<TestComponentContainer />);
         const target = screen.getByTestId("input-target");
-        dispatchTestKeyboardEvent(target, "keydown", "A");
-        expect(onKeyASpy.notCalled).to.be.true;
+        dispatchTestKeyboardEvent(target, "keydown", "a");
+        expect(onKeyASpy.callCount).to.equal(0, "hotkey A should not be called");
     });
 
     it("does trigger hotkeys inside readonly text inputs", () => {
         render(<TestComponentContainer isInputReadOnly={true} />);
         const target = screen.getByTestId("input-target");
-        dispatchTestKeyboardEvent(target, "keydown", "A");
-        expect(onKeyASpy.calledOnce).to.be.true;
+        dispatchTestKeyboardEvent(target, "keydown", "a");
+        expect(onKeyASpy.callCount).to.equal(1, "hotkey A should be called once");
     });
 
     describe("working with HotkeysProvider", () => {

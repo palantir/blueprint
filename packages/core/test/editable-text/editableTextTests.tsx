@@ -19,7 +19,7 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { EditableText, Keys } from "../../src";
+import { EditableText } from "../../src";
 
 describe("<EditableText>", () => {
     it("renders value", () => {
@@ -84,7 +84,7 @@ describe("<EditableText>", () => {
             mount(<EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." defaultValue="alphabet" />)
                 .find("input")
                 .simulate("change", { target: { value: "hello" } })
-                .simulate("keydown", { which: Keys.ESCAPE });
+                .simulate("keydown", { key: "Escape" });
             assert.equal(changeSpy.callCount, 2, "onChange not called twice"); // change & escape
             assert.deepEqual(changeSpy.args[1], ["alphabet"], `unexpected argument "${changeSpy.args[1][0]}"`);
         });
@@ -102,7 +102,7 @@ describe("<EditableText>", () => {
             component
                 .find("input")
                 .simulate("change", { target: { value: NEW_VALUE } })
-                .simulate("keydown", { which: Keys.ESCAPE });
+                .simulate("keydown", { key: "Escape" });
 
             assert.isTrue(confirmSpy.notCalled, "onConfirm called");
             assert.isTrue(cancelSpy.calledOnce, "onCancel not called once");
@@ -123,7 +123,7 @@ describe("<EditableText>", () => {
             component
                 .find("input")
                 .simulate("change", { target: { value: NEW_VALUE } })
-                .simulate("keydown", { which: Keys.ENTER });
+                .simulate("keydown", { key: "Enter" });
 
             assert.isTrue(cancelSpy.notCalled, "onCancel called");
             assert.isTrue(confirmSpy.calledOnce, "onConfirm not called once");
@@ -145,7 +145,7 @@ describe("<EditableText>", () => {
                 .find("input")
                 .simulate("change", { target: { value: NEW_VALUE } }) // change
                 .simulate("change", { target: { value: OLD_VALUE } }) // revert
-                .simulate("keydown", { which: Keys.ENTER });
+                .simulate("keydown", { key: "Enter" });
 
             assert.isTrue(cancelSpy.notCalled, "onCancel called");
             assert.isTrue(confirmSpy.calledOnce, "onConfirm not called once");
@@ -220,27 +220,27 @@ describe("<EditableText>", () => {
             mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />)
                 .find("textarea")
                 .simulate("change", { target: { value: "hello" } })
-                .simulate("keydown", { which: Keys.ENTER });
+                .simulate("keydown", { key: "Enter" });
             assert.isTrue(confirmSpy.notCalled, "onConfirm called");
         });
 
         it("calls onConfirm when cmd+, ctrl+, shift+, or alt+ enter is pressed", () => {
             const confirmSpy = spy();
             const wrapper = mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />);
-            simulateHelper(wrapper, "control", { ctrlKey: true, which: Keys.ENTER });
+            simulateHelper(wrapper, "control", { ctrlKey: true, key: "Enter" });
             wrapper.setState({ isEditing: true });
-            simulateHelper(wrapper, "meta", { metaKey: true, which: Keys.ENTER });
+            simulateHelper(wrapper, "meta", { metaKey: true, key: "Enter" });
             wrapper.setState({ isEditing: true });
             simulateHelper(wrapper, "shift", {
+                key: "Enter",
                 preventDefault: (): void => undefined,
                 shiftKey: true,
-                which: Keys.ENTER,
             });
             wrapper.setState({ isEditing: true });
             simulateHelper(wrapper, "alt", {
                 altKey: true,
+                key: "Enter",
                 preventDefault: (): void => undefined,
-                which: Keys.ENTER,
             });
             assert.isFalse(wrapper.state("isEditing"));
             assert.strictEqual(confirmSpy.callCount, 4, "onConfirm not called four times");
@@ -255,7 +255,7 @@ describe("<EditableText>", () => {
             const wrapper = mount(
                 <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
-            simulateHelper(wrapper, "control", { which: Keys.ENTER });
+            simulateHelper(wrapper, "control", { key: "Enter" });
             assert.isFalse(wrapper.state("isEditing"));
             assert.isTrue(confirmSpy.calledOnce, "onConfirm not called");
             assert.strictEqual(confirmSpy.firstCall.args[0], "control");
@@ -267,22 +267,22 @@ describe("<EditableText>", () => {
                 <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
             const textarea = wrapper.getDOMNode().querySelector<HTMLTextAreaElement>("textarea")!;
-            simulateHelper(wrapper, "", { ctrlKey: true, target: textarea, which: Keys.ENTER });
+            simulateHelper(wrapper, "", { ctrlKey: true, target: textarea, key: "Enter" });
             assert.strictEqual(textarea.value, "\n");
-            simulateHelper(wrapper, "", { metaKey: true, target: textarea, which: Keys.ENTER });
+            simulateHelper(wrapper, "", { metaKey: true, target: textarea, key: "Enter" });
             assert.strictEqual(textarea.value, "\n");
             simulateHelper(wrapper, "", {
+                key: "Enter",
                 preventDefault: (): void => undefined,
                 shiftKey: true,
                 target: textarea,
-                which: Keys.ENTER,
             });
             assert.strictEqual(textarea.value, "\n");
             simulateHelper(wrapper, "", {
                 altKey: true,
+                key: "Enter",
                 preventDefault: (): void => undefined,
                 target: textarea,
-                which: Keys.ENTER,
             });
             assert.strictEqual(textarea.value, "\n");
             assert.isTrue(wrapper.state("isEditing"));
@@ -293,10 +293,10 @@ describe("<EditableText>", () => {
         interface FakeKeyboardEvent {
             altKey?: boolean;
             ctrlKey?: boolean;
+            key?: string;
             metaKey?: boolean;
             shiftKey?: boolean;
             target?: HTMLTextAreaElement;
-            which?: number;
             preventDefault?(): void;
         }
 

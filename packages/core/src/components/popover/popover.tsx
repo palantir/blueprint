@@ -24,7 +24,6 @@ import {
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
-    Keys,
     mergeRefs,
     refHandler,
     Utils,
@@ -348,8 +347,7 @@ export class Popover<
                       onClick: this.handleTargetClick,
                       // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
                       onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>
-                          // eslint-disable-next-line deprecation/deprecation
-                          Keys.isKeyboardClick(event.keyCode) && this.handleTargetClick(event),
+                          Utils.isKeyboardClick(event) && this.handleTargetClick(event),
                   };
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
@@ -438,8 +436,7 @@ export class Popover<
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
             // treat ENTER/SPACE keys the same as a click for accessibility
-            // eslint-disable-next-line deprecation/deprecation
-            onKeyDown: event => Keys.isKeyboardClick(event.keyCode) && this.handlePopoverClick(event),
+            onKeyDown: event => Utils.isKeyboardClick(event) && this.handlePopoverClick(event),
         };
         if (
             interactionKind === PopoverInteractionKind.HOVER ||

@@ -18,7 +18,7 @@ import classNames from "classnames";
 import React, { cloneElement, createRef } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import { AbstractPureComponent, Classes, Keys } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 import { getActiveElement, isFunction } from "../../common/utils";
 import { Portal } from "../portal/portal";
@@ -461,9 +461,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         if (!this.props.enforceFocus) {
             return;
         }
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable-next-line deprecation/deprecation */
-        if (e.shiftKey && e.which === Keys.TAB) {
+        if (e.shiftKey && e.key === "Tab") {
             const lastFocusableElement = this.getKeyboardFocusableElements().pop();
             if (lastFocusableElement != null) {
                 lastFocusableElement.focus();

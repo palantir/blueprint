@@ -22,7 +22,6 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps,
-    Keys,
     mergeRefs,
     Popover,
     PopoverClickTargetHandlers,
@@ -365,28 +364,24 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
     private getTargetKeyDownHandler = (
         handleQueryListKeyDown: React.EventHandler<React.KeyboardEvent<HTMLElement>>,
     ) => {
-        return (evt: React.KeyboardEvent<HTMLInputElement>) => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-            // eslint-disable-next-line deprecation/deprecation
-            const { which } = evt;
-
-            if (which === Keys.ESCAPE || which === Keys.TAB) {
+        return (e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === "Escape" || e.key === "Tab") {
                 this.inputElement?.blur();
                 this.setState({ isOpen: false });
             } else if (
                 this.props.openOnKeyDown &&
-                which !== Keys.BACKSPACE &&
-                which !== Keys.ARROW_LEFT &&
-                which !== Keys.ARROW_RIGHT
+                e.key !== "Backspace" &&
+                e.key !== "ArrowLeft" &&
+                e.key !== "ArrowRight"
             ) {
                 this.setState({ isOpen: true });
             }
 
             if (this.state.isOpen) {
-                handleQueryListKeyDown?.(evt);
+                handleQueryListKeyDown?.(e);
             }
 
-            this.props.inputProps?.onKeyDown?.(evt);
+            this.props.inputProps?.onKeyDown?.(e);
         };
     };
 

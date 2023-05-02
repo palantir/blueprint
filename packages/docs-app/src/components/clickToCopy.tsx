@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React, { forwardRef, useCallback, useRef, useState } from "react";
 
-import { HTMLDivProps, Keys, Props, removeNonHTMLProps } from "@blueprintjs/core";
+import { HTMLDivProps, Props, removeNonHTMLProps } from "@blueprintjs/core";
 import { createKeyEventHandler } from "@blueprintjs/docs-theme";
 
 export interface ClickToCopyProps extends Props, React.RefAttributes<any>, HTMLDivProps {
@@ -78,9 +78,9 @@ export const ClickToCopy: React.FC<ClickToCopyProps> = forwardRef<any, ClickToCo
     const handleKeyDown = useCallback(
         createKeyEventHandler(
             {
+                Enter: copy,
+                Space: copy,
                 all: props.onKeyDown,
-                [Keys.SPACE]: copy,
-                [Keys.ENTER]: copy,
             },
             true,
         ),

@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-export const BACKSPACE = 8;
-export const TAB = 9;
-export const ENTER = 13;
-export const SHIFT = 16;
-export const ESCAPE = 27;
-export const SPACE = 32;
-export const ARROW_LEFT = 37;
-export const ARROW_UP = 38;
-export const ARROW_RIGHT = 39;
-export const ARROW_DOWN = 40;
-export const DELETE = 46;
+// tslint:disable object-literal-sort-keys
 
-/** Returns whether the key code is `enter` or `space`, the two keys that can click a button. */
-export function isKeyboardClick(keyCode: number) {
-    return keyCode === ENTER || keyCode === SPACE;
-}
+/** @deprecated use named keys instead of key codes */
+export const KeyCodes = {
+    BACKSPACE: 8,
+    TAB: 9,
+    ENTER: 13,
+    SHIFT: 16,
+    ESCAPE: 27,
+    SPACE: 32,
+    ARROW_LEFT: 37,
+    ARROW_UP: 38,
+    ARROW_RIGHT: 39,
+    ARROW_DOWN: 40,
+    DELETE: 46,
+};

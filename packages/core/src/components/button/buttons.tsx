@@ -19,7 +19,7 @@ import React, { forwardRef, useCallback, useRef, useState } from "react";
 
 import { IconSize } from "@blueprintjs/icons";
 
-import { Classes, Keys, Utils } from "../../common";
+import { Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { mergeRefs } from "../../common/refs";
 import { Icon } from "../icon/icon";
@@ -78,7 +78,7 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     const disabled = props.disabled || loading;
 
     // the current key being pressed
-    const [currentKeyDown, setCurrentKeyDown] = useState<number | undefined>();
+    const [currentKeyPressed, setCurrentKeyPressed] = useState<string | undefined>();
     // whether the button is in "active" state
     const [isActive, setIsActive] = useState(false);
     // our local ref for the button element, merged with the consumer's own ref (if supplied) in this hook's return value
@@ -95,28 +95,24 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     );
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<any>) => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-            /* eslint-disable deprecation/deprecation */
-            if (Keys.isKeyboardClick(e.which)) {
+            if (Utils.isKeyboardClick(e)) {
                 e.preventDefault();
-                if (e.which !== currentKeyDown) {
+                if (e.key !== currentKeyPressed) {
                     setIsActive(true);
                 }
             }
-            setCurrentKeyDown(e.which);
+            setCurrentKeyPressed(e.key);
             props.onKeyDown?.(e);
         },
-        [currentKeyDown, props.onKeyDown],
+        [currentKeyPressed, props.onKeyDown],
     );
     const handleKeyUp = useCallback(
         (e: React.KeyboardEvent<any>) => {
-            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-            /* eslint-disable deprecation/deprecation */
-            if (Keys.isKeyboardClick(e.which)) {
+            if (Utils.isKeyboardClick(e)) {
                 setIsActive(false);
                 buttonRef.current?.click();
             }
-            setCurrentKeyDown(undefined);
+            setCurrentKeyPressed(undefined);
             props.onKeyUp?.(e);
         },
         [props.onKeyUp],

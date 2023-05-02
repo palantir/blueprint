@@ -15,20 +15,21 @@
  */
 
 export interface KeyEventMap<T = HTMLElement> {
-    /** event handler invoked on all events */
+    /** Event handler invoked on all events */
     all?: React.KeyboardEventHandler<T>;
 
-    /** map keycodes to specific event handlers */
-    [keyCode: number]: React.KeyboardEventHandler<T>;
+    /** Event handler invoked on spacebar key press */
+    Space?: React.KeyboardEventHandler<T>;
+
+    /** Map key names to specific event handlers */
+    [keyCode: string]: React.KeyboardEventHandler<T>;
 }
 
 export function createKeyEventHandler<T = HTMLElement>(actions: KeyEventMap<T>, preventDefault = false) {
     return (e: React.KeyboardEvent<T>) => {
-        for (const k of Object.keys(actions)) {
-            const key = Number(k);
-            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-            // eslint-disable-next-line deprecation/deprecation
-            if (e.which === key) {
+        for (const key of Object.keys(actions)) {
+            const isSpacebarEvent = e.key === " ";
+            if (e.key === key || (isSpacebarEvent && key === "Space")) {
                 if (preventDefault) {
                     e.preventDefault();
                 }

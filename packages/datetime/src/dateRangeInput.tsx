@@ -34,7 +34,6 @@ import {
     InputGroup,
     InputGroupProps,
     Intent,
-    Keys,
     Popover,
     PopoverProps,
     Props,
@@ -595,9 +594,8 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
     // - if focused in start field, Tab moves focus to end field
     // - if focused in end field, Shift+Tab moves focus to start field
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        const isTabPressed = e.which === Keys.TAB;
-        const isEnterPressed = e.which === Keys.ENTER;
+        const isTabPressed = e.key === "Tab";
+        const isEnterPressed = e.key === "Enter";
         const isShiftPressed = e.shiftKey;
 
         const { selectedStart, selectedEnd } = this.state;

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, Keys } from "../../common";
+import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp } from "../../common/utils";
 import { HandleProps } from "./handleProps";
@@ -197,23 +197,19 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
         const { stepSize, value } = this.props;
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable-next-line deprecation/deprecation */
-        const { which } = event;
-        if (which === Keys.ARROW_DOWN || which === Keys.ARROW_LEFT) {
+        const { key } = event;
+        if (key === "ArrowDown" || key === "ArrowLeft") {
             this.changeValue(value - stepSize);
             // this key event has been handled! prevent browser scroll on up/down
             event.preventDefault();
-        } else if (which === Keys.ARROW_UP || which === Keys.ARROW_RIGHT) {
+        } else if (key === "ArrowUp" || key === "ArrowRight") {
             this.changeValue(value + stepSize);
             event.preventDefault();
         }
     };
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLSpanElement>) => {
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable-next-line deprecation/deprecation */
-        if ([Keys.ARROW_UP, Keys.ARROW_DOWN, Keys.ARROW_LEFT, Keys.ARROW_RIGHT].indexOf(event.which) >= 0) {
+        if (Utils.isArrowKey(event)) {
             this.props.onRelease?.(this.props.value);
         }
     };

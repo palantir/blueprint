@@ -24,7 +24,6 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     InputGroupProps,
-    Keys,
     Popover,
     PopoverClickTargetHandlers,
     PopoverTargetProps,
@@ -280,15 +279,12 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
      */
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         // open popover when arrow key pressed on target while closed
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable deprecation/deprecation */
-        if (event.which === Keys.ARROW_UP || event.which === Keys.ARROW_DOWN) {
+        if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
             this.setState({ isOpen: true });
-        } else if (Keys.isKeyboardClick(event.keyCode)) {
+        } else if (Utils.isKeyboardClick(event)) {
             this.setState({ isOpen: true });
         }
-        /* eslint-enable deprecation/deprecation */
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {

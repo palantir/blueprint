@@ -19,7 +19,7 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, Keys, MenuItem, Popover, PopoverProps } from "@blueprintjs/core";
+import { InputGroup, MenuItem, Popover, PopoverProps } from "@blueprintjs/core";
 
 import { ItemRendererProps, QueryList } from "../src";
 import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
@@ -80,24 +80,24 @@ describe("Suggest", () => {
         });
 
         describe("when ESCAPE key pressed", () => {
-            runEscTabKeyDownTests(Keys.ESCAPE);
+            runEscTabKeyDownTests("Escape");
         });
 
         describe("when TAB key pressed", () => {
-            runEscTabKeyDownTests(Keys.TAB);
+            runEscTabKeyDownTests("Tab");
         });
 
         it("does not open popover on BACKSPACE, ARROW_LEFT, or ARROW_RIGHT", () => {
             const wrapper = suggest({ openOnKeyDown: true, popoverProps: { usePortal: false } });
             simulateFocus(wrapper);
-            checkKeyDownDoesNotOpenPopover(wrapper, Keys.BACKSPACE);
-            checkKeyDownDoesNotOpenPopover(wrapper, Keys.ARROW_LEFT);
-            checkKeyDownDoesNotOpenPopover(wrapper, Keys.ARROW_RIGHT);
+            checkKeyDownDoesNotOpenPopover(wrapper, "Backspace");
+            checkKeyDownDoesNotOpenPopover(wrapper, "ArrowLeft");
+            checkKeyDownDoesNotOpenPopover(wrapper, "ArrowRight");
         });
 
         it("opens popover if any other key pressed", () => {
             const wrapper = suggest({ openOnKeyDown: true });
-            simulateKeyDown(wrapper, Keys.SPACE);
+            simulateKeyDown(wrapper, " ");
             assert.isTrue(wrapper.state().isOpen, "should open popover");
         });
 
@@ -132,7 +132,7 @@ describe("Suggest", () => {
             queryList.setActiveItem(newActiveItem);
             assert.deepEqual(queryList.state.activeItem, newActiveItem);
 
-            simulateKeyDown(wrapper, Keys.ESCAPE);
+            simulateKeyDown(wrapper, "Escape");
             assert.isFalse(wrapper.state().isOpen);
 
             wrapper.update();
@@ -143,16 +143,16 @@ describe("Suggest", () => {
             }, 10);
         });
 
-        function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper<any, any>, which: number) {
-            simulateKeyDown(wrapper, which);
+        function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper<any, any>, key: string) {
+            simulateKeyDown(wrapper, key);
             assert.isFalse(wrapper.state().isOpen, "should not open popover");
         }
 
-        function runEscTabKeyDownTests(which: number) {
+        function runEscTabKeyDownTests(key: string) {
             it("closes popover", () => {
                 const wrapper = suggest();
                 simulateFocus(wrapper);
-                simulateKeyDown(wrapper, which);
+                simulateKeyDown(wrapper, key);
                 assert.isFalse(wrapper.state().isOpen, "should close popover");
             });
 
@@ -162,10 +162,10 @@ describe("Suggest", () => {
                 const wrapper = suggest({ closeOnSelect: false });
                 simulateFocus(wrapper);
                 selectItem(wrapper, ITEM_INDEX);
-                simulateKeyDown(wrapper, which);
+                simulateKeyDown(wrapper, key);
                 assert.strictEqual(wrapper.state().selectedItem, expectedItem, "before typing");
                 simulateChange(wrapper, "new query"); // type something
-                simulateKeyDown(wrapper, which);
+                simulateKeyDown(wrapper, key);
                 assert.strictEqual(wrapper.state().selectedItem, expectedItem, "after typing");
             });
         }
@@ -362,10 +362,10 @@ function simulateFocus(wrapper: ReactWrapper<any, any>) {
     wrapper.find("input").simulate("focus");
 }
 
-function simulateKeyDown(wrapper: ReactWrapper<any, any>, which = Keys.SPACE) {
-    wrapper.find("input").simulate("keydown", { which });
+function simulateKeyDown(wrapper: ReactWrapper<any, any>, key = " ") {
+    wrapper.find("input").simulate("keydown", { key });
 }
 
-function simulateKeyUp(wrapper: ReactWrapper<any, any>, which = Keys.SPACE) {
-    wrapper.find("input").simulate("keyup", { which });
+function simulateKeyUp(wrapper: ReactWrapper<any, any>, key = " ") {
+    wrapper.find("input").simulate("keyup", { key });
 }
