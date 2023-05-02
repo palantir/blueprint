@@ -79,6 +79,7 @@ export {
     PopoverClickTargetHandlers,
     PopoverHoverTargetHandlers,
     PopperBoundary,
+    PopperCustomModifier,
     PopperModifierOverrides,
     Placement,
     PopperPlacements,
