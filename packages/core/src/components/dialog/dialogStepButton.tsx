@@ -16,20 +16,17 @@
 
 import React from "react";
 
-import { AnchorButton, ButtonProps } from "../button/buttons";
+import { ButtonSharedPropsAndAttributes } from "../button/buttonProps";
+import { AnchorButton } from "../button/buttons";
 import { Tooltip, TooltipProps } from "../tooltip/tooltip";
 
-// omit "ref", which is the only property with a different type in ButtonProps vs. AnchorButtonProps
-export type DialogStepButtonProps = Partial<Omit<ButtonProps, "ref">> & {
+export type DialogStepButtonProps = Partial<ButtonSharedPropsAndAttributes> & {
     /** If defined, the button will be wrapped with a tooltip with the specified content. */
     // eslint-disable-next-line deprecation/deprecation
     tooltipContent?: TooltipProps["content"];
 };
 
 export function DialogStepButton({ tooltipContent, ...props }: DialogStepButtonProps) {
-    // TODO(adahiya): MUST FIX FOR Blueprint v5 (tsc suppression)
-    // see https://github.com/palantir/blueprint/issues/6094
-    // @ts-ignore
     const button = <AnchorButton {...props} />;
 
     if (tooltipContent !== undefined) {

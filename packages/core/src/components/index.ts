@@ -17,7 +17,13 @@
 export { Alert, AlertProps } from "./alert/alert";
 export { Breadcrumb, BreadcrumbProps } from "./breadcrumbs/breadcrumb";
 export { Breadcrumbs, BreadcrumbsProps } from "./breadcrumbs/breadcrumbs";
-export { AnchorButton, AnchorButtonProps, Button, ButtonProps } from "./button/buttons";
+export { AnchorButton, Button } from "./button/buttons";
+export type {
+    AnchorButtonProps,
+    ButtonProps,
+    ButtonSharedProps,
+    ButtonSharedPropsAndAttributes,
+} from "./button/buttonProps";
 export { ButtonGroup, ButtonGroupProps } from "./button/buttonGroup";
 export { Callout, CalloutProps } from "./callout/callout";
 export { Card, CardProps } from "./card/card";
