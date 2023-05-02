@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { Card, Classes, H4, H5 } from "@blueprintjs/core";
 

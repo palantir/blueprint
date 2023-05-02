@@ -21,7 +21,7 @@
  * Panel1 renders either a new Panel2 or Panel3. Panel2 and Panel3 both render a new Panel1.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Button, H5, Intent, NumericInput, Panel, PanelProps, PanelStack, Switch, UL } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";

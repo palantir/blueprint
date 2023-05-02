@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 

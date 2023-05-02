@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { ReactWrapper } from "enzyme";
-import React from "react";
+import * as React from "react";
 import sinon from "sinon";
 
 import { Classes, HTMLInputProps, Keys } from "@blueprintjs/core";

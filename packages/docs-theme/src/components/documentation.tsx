@@ -16,7 +16,7 @@
 
 import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } from "@documentalist/client";
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { Classes, Drawer, FocusStyleManager, HotkeysTarget, Props } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";

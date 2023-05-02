@@ -24,8 +24,8 @@ by navigating around and triggering the dialog with the <kbd>?</kbd> key.
 
 ```tsx
 import { HotkeysProvider } from "@blueprintjs/core";
-import React from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 ReactDOM.render(
     <HotkeysProvider>
@@ -51,7 +51,7 @@ import {
     HotkeysTarget2
 } from "@blueprintjs/core";
 import React, { useContext, useEffect, useRef } from "react";
-import ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom";
 
 function App() {
     const appHotkeys: HotkeyConfig[] = [

@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import React from "react";
+import * as React from "react";
 import ReactDayPicker from "react-day-picker";
 import sinon from "sinon";
 

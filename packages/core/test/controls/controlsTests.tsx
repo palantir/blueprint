@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import React from "react";
+import * as React from "react";
 
 import { Classes } from "../../src";
 import { Checkbox, ControlProps, Radio, Switch } from "../../src/components/forms/controls";

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { AbstractComponent, Utils as CoreUtils, Props, setRef } from "@blueprintjs/core";
 

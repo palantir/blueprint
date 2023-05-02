@@ -21,7 +21,7 @@ import {
     mount as untypedMount,
     shallow as untypedShallow,
 } from "enzyme";
-import React from "react";
+import * as React from "react";
 import { SinonStub, spy, stub } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";

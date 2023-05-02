@@ -16,7 +16,7 @@
 
 import { IHeadingNode, IPageNode } from "@documentalist/client";
 import { filter } from "fuzzaldrin-plus";
-import React from "react";
+import * as React from "react";
 
 import { Classes, MenuItem } from "@blueprintjs/core";
 import { CaretRight } from "@blueprintjs/icons";

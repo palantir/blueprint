@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import React from "react";
+import * as React from "react";
 import { spy } from "sinon";
 
 import { OverflowList, OverflowListProps, OverflowListState } from "../../src/components/overflow-list/overflowList";

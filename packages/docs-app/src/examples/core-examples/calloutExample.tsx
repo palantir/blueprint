@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Callout, Code, H5, Intent, Switch } from "@blueprintjs/core";
 import { DocsExampleProps, Example, handleBooleanChange } from "@blueprintjs/docs-theme";

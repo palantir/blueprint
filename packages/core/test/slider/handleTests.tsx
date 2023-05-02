@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import React from "react";
+import * as React from "react";
 import sinon from "sinon";
 
 import { ARROW_DOWN, ARROW_UP } from "../../src/common/keys";

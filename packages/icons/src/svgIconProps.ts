@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 export interface SVGIconProps extends React.RefAttributes<any> {
     /** A space-delimited list of class names to pass along to the SVG element. */

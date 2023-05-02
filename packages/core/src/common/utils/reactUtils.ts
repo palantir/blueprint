@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 /**
  * Returns true if `node` is null/undefined, false, empty string, or an array

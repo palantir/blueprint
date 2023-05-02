@@ -16,7 +16,7 @@
 
 import chroma from "chroma-js";
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { Classes, Keys, RadioGroup } from "@blueprintjs/core";
 import { createKeyEventHandler, handleNumberChange } from "@blueprintjs/docs-theme";

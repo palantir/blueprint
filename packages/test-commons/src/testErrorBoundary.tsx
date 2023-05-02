@@ -14,7 +14,7 @@
  */
 
 import { expect } from "chai";
-import React from "react";
+import * as React from "react";
 
 export interface TestErrorBoundaryProps {
     children?: React.ReactNode;

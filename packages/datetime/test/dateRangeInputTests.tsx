@@ -24,8 +24,8 @@
 
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import React from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 

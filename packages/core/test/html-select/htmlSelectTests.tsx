@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import React from "react";
+import * as React from "react";
 
 import { HTMLSelect, OptionProps } from "../../src";
 

@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import { isSameDay, isValid } from "date-fns";
-import React from "react";
+import * as React from "react";
 
 import {
     AbstractPureComponent,

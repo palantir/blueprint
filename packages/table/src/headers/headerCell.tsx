@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 import { ContextMenu, Classes as CoreClasses, Utils as CoreUtils, Props } from "@blueprintjs/core";
 

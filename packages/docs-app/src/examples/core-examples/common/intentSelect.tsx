@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Button, ControlGroup, HTMLSelect, Intent, Label } from "@blueprintjs/core";
 import { handleValueChange } from "@blueprintjs/docs-theme";

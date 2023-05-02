@@ -16,7 +16,7 @@
 
 import { State as PopperState, PositioningStrategy } from "@popperjs/core";
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
 import {

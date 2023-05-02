@@ -16,7 +16,7 @@
 
 /* eslint-disable deprecation/deprecation */
 
-import React from "react";
+import * as React from "react";
 
 import { Classes, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 
