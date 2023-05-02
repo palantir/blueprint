@@ -54,7 +54,8 @@ export interface ItemRendererProps<T extends HTMLElement = HTMLLIElement> {
      */
     handleFocus?: () => void;
 
-    index?: number;
+    /** Index of the item in the QueryList items array. */
+    index: number;
 
     /** Modifiers that describe how to render this item, such as `active` or `disabled`. */
     modifiers: ItemModifiers;
