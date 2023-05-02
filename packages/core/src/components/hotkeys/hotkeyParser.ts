@@ -36,14 +36,14 @@ export interface KeyMap {
  */
 const MODIFIER_KEYS = new Set(["Shift", "Control", "Alt", "Meta"]);
 
-export const ModifierBitMasks: KeyCodeReverseTable = {
+export const MODIFIER_BIT_MASKS: KeyCodeReverseTable = {
     alt: 1,
     ctrl: 2,
     meta: 4,
     shift: 8,
 };
 
-export const Aliases: KeyMap = {
+export const CONFIG_ALIASES: KeyMap = {
     cmd: "meta",
     command: "meta",
     escape: "escape",
@@ -53,9 +53,14 @@ export const Aliases: KeyMap = {
     plus: "+",
     return: "enter",
     win: "meta",
+    // need these direction aliases for backwards-compatibility (but they're also convenient)
+    up: "ArrowUp",
+    left: "ArrowLeft",
+    down: "ArrowDown",
+    right: "ArrowRight",
 };
 
-export const ShiftKeys: KeyMap = {
+export const SHIFT_KEYS: KeyMap = {
     "~": "`",
     "!": "1",
     "@": "2",
@@ -107,15 +112,15 @@ export const parseKeyCombo = (combo: string): KeyCombo => {
                 Valid key combos look like "cmd + plus", "shift+p", or "!"`);
         }
 
-        if (Aliases[piece] !== undefined) {
-            piece = Aliases[piece];
+        if (CONFIG_ALIASES[piece] !== undefined) {
+            piece = CONFIG_ALIASES[piece];
         }
 
-        if (ModifierBitMasks[piece] !== undefined) {
-            modifiers += ModifierBitMasks[piece];
-        } else if (ShiftKeys[piece] !== undefined) {
-            modifiers += ModifierBitMasks.shift;
-            key = ShiftKeys[piece];
+        if (MODIFIER_BIT_MASKS[piece] !== undefined) {
+            modifiers += MODIFIER_BIT_MASKS[piece];
+        } else if (SHIFT_KEYS[piece] !== undefined) {
+            modifiers += MODIFIER_BIT_MASKS.shift;
+            key = SHIFT_KEYS[piece];
         } else {
             key = piece.toLowerCase();
         }
@@ -144,7 +149,7 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
     }
 
     if (e.key !== undefined && !MODIFIER_KEYS.has(e.key)) {
-        comboParts.push(e.key);
+        comboParts.push(e.key.toLowerCase());
     }
 
     return comboParts.join(" + ");
@@ -161,21 +166,24 @@ export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     if (MODIFIER_KEYS.has(e.key)) {
         // keep key undefined
     } else {
-        key = e.key;
+        key = e.key?.toLowerCase();
     }
 
     let modifiers = 0;
     if (e.altKey) {
-        modifiers += ModifierBitMasks.alt;
+        modifiers += MODIFIER_BIT_MASKS.alt;
     }
     if (e.ctrlKey) {
-        modifiers += ModifierBitMasks.ctrl;
+        modifiers += MODIFIER_BIT_MASKS.ctrl;
     }
     if (e.metaKey) {
-        modifiers += ModifierBitMasks.meta;
+        modifiers += MODIFIER_BIT_MASKS.meta;
     }
     if (e.shiftKey) {
-        modifiers += ModifierBitMasks.shift;
+        modifiers += MODIFIER_BIT_MASKS.shift;
+        if (SHIFT_KEYS[e.key] !== undefined) {
+            key = SHIFT_KEYS[e.key];
+        }
     }
 
     return { modifiers, key };
@@ -191,7 +199,7 @@ export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
 export const normalizeKeyCombo = (combo: string, platformOverride?: string): string[] => {
     const keys = combo.replace(/\s/g, "").split("+");
     return keys.map(key => {
-        const keyName = Aliases[key] != null ? Aliases[key] : key;
+        const keyName = CONFIG_ALIASES[key] != null ? CONFIG_ALIASES[key] : key;
         return keyName === "meta" ? (isMac(platformOverride) ? "cmd" : "ctrl") : keyName;
     });
 };
