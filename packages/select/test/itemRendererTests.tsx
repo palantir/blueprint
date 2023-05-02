@@ -41,11 +41,12 @@ describe("ItemRenderer", () => {
         };
 
         it("without ref prop", () => {
-            function getItemProps(_item: Film): ItemRendererProps {
+            function getItemProps(_item: Film, index: number): ItemRendererProps {
                 return {
                     handleClick: (_event: React.MouseEvent<HTMLElement>) => {
                         /* noop */
                     },
+                    index,
                     modifiers: {
                         active: false,
                         disabled: false,
@@ -55,7 +56,9 @@ describe("ItemRenderer", () => {
                 };
             }
             const MyList: React.FC = () => {
-                return <Menu>{TOP_100_FILMS.map(item => myItemRenderer(item, getItemProps(item)))}</Menu>;
+                return (
+                    <Menu>{TOP_100_FILMS.map((item, index) => myItemRenderer(item, getItemProps(item, index)))}</Menu>
+                );
             };
             shallow(<MyList />);
         });
