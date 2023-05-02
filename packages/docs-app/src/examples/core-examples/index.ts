@@ -49,6 +49,7 @@ export * from "./nonIdealStateExample";
 export * from "./overflowListExample";
 export * from "./overlayExample";
 export { PanelStackExample } from "./panelStackExample";
+export { PanelStack2Example } from "./panelStack2Example";
 export * from "./popoverDismissExample";
 export * from "./popoverExample";
 export * from "./popoverInteractionKindExample";

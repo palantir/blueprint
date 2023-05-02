@@ -69,8 +69,12 @@ export { NonIdealState, NonIdealStateProps, NonIdealStateIconSize } from "./non-
 export { OverflowList, OverflowListProps } from "./overflow-list/overflowList";
 export { Overlay, OverlayLifecycleProps, OverlayProps, OverlayableProps } from "./overlay/overlay";
 export { Text, TextProps } from "./text/text";
+// eslint-disable-next-line deprecation/deprecation
 export { PanelStack, PanelStackProps } from "./panel-stack/panelStack";
-export { Panel, PanelProps } from "./panel-stack/panelTypes";
+// eslint-disable-next-line deprecation/deprecation
+export { IPanel, IPanelProps } from "./panel-stack/panelProps";
+export { PanelStack2, PanelStack2Props } from "./panel-stack2/panelStack2";
+export { Panel, PanelProps } from "./panel-stack2/panelTypes";
 export { PopoverProps, Popover, PopoverInteractionKind } from "./popover/popover";
 export {
     DefaultPopoverTargetHTMLProps,
