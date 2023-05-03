@@ -18,7 +18,7 @@ import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } f
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Drawer, FocusStyleManager, HotkeysTarget, Props } from "@blueprintjs/core";
+import { Classes, Drawer, FocusStyleManager, HotkeysTarget2, Props } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
 import { DocsData, DocumentationContext, DocumentationContextApi, hasTypescriptData } from "../common/context";
@@ -159,7 +159,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         const apiClasses = classNames("docs-api-drawer", this.props.className);
         return (
             <DocumentationContext.Provider value={this.getDocumentationContextApi()}>
-                <HotkeysTarget
+                <HotkeysTarget2
                     hotkeys={[
                         {
                             combo: "shift+s",
@@ -236,7 +236,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
                             />
                         </div>
                     </div>
-                </HotkeysTarget>
+                </HotkeysTarget2>
             </DocumentationContext.Provider>
         );
     }

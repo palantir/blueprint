@@ -12,7 +12,7 @@
 @page editable-text
 @page html
 @page html-table
-@page hotkeys-target
+@page hotkeys-target2
 @page icon
 @page menu
 @page navbar

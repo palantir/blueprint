@@ -18,5 +18,7 @@ export { Hotkey, HotkeyProps } from "./hotkey";
 export { Hotkeys, HotkeysProps } from "./hotkeys";
 export { KeyComboTag, KeyComboTagProps } from "./keyComboTag";
 export { KeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
-export { HotkeysDialog } from "./hotkeysDialog";
-export { HotkeysTarget, HotkeysTargetProps } from "./hotkeysTarget";
+
+// N.B. "V1" variants of these APIs are exported from src/legacy/
+export { HotkeysDialog2 } from "./hotkeysDialog2";
+export { HotkeysTarget2, HotkeysTarget2Props, HotkeysTarget2RenderProps } from "./hotkeysTarget2";

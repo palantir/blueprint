@@ -24,9 +24,8 @@ import { KeyComboTag } from "./keyComboTag";
 export type HotkeyProps = Props & HotkeyConfig;
 
 /**
- * Hotkey component.
- *
- * @see https://blueprintjs.com/docs/#core/components/hotkeys
+ * Hotkey component used to display a hotkey in the HotkeysDialog.
+ * Should not be used by consumers directly.
  */
 export class Hotkey extends AbstractPureComponent<HotkeyProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkey`;

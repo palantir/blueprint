@@ -36,9 +36,8 @@ export interface HotkeysProps extends Props {
 }
 
 /**
- * Hotkeys component.
- *
- * @see https://blueprintjs.com/docs/#core/components/hotkeys
+ * Hotkeys component used to display a list of hotkeys in the HotkeysDialog.
+ * Should not be used by consumers directly.
  */
 export class Hotkeys extends AbstractPureComponent<HotkeysProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkeys`;

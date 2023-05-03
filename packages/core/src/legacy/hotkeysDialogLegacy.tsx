@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to HotkeysDialog2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation */
+
 import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -35,6 +42,7 @@ interface HotkeysDialogProps extends DialogProps {
  */
 const DELAY_IN_MS = 10;
 
+/** @deprecated use HotkeysDialog2 */
 class HotkeysDialogLegacy {
     public componentProps = {
         globalHotkeysGroup: "Global hotkeys",

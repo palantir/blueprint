@@ -22,3 +22,4 @@ You must include the icons CSS file in your app alongside the core CSS file.
 @page components
 @page context
 @page hooks
+@page legacy

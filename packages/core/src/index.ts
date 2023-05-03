@@ -21,5 +21,8 @@ export * from "./context";
 export * from "./hooks";
 
 /* eslint-disable deprecation/deprecation */
-export { HotkeysTargetLegacy, HotkeysTargetLegacyComponent } from "./legacy/hotkeysTargetLegacy";
+export {
+    HotkeysTargetLegacy as HotkeysTarget,
+    HotkeysTargetLegacyComponent as IHotkeysTargetComponent,
+} from "./legacy/hotkeysTargetLegacy";
 export { ContextMenuTargetLegacy, ContextMenuTargetLegacyComponent } from "./legacy/contextMenuTargetLegacy";

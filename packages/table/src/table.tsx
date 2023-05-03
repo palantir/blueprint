@@ -31,7 +31,7 @@ import {
     DISPLAYNAME_PREFIX,
     Hotkey,
     Hotkeys,
-    HotkeysTargetLegacy,
+    HotkeysTarget,
 } from "@blueprintjs/core";
 
 import { CellRenderer } from "./cell/cell";
@@ -68,7 +68,7 @@ import type { TableSnapshot, TableState } from "./tableState";
 import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./tableUtils";
 
 /** @deprecated use Table2, which supports usage of the new hotkeys API in the same application */
-@HotkeysTargetLegacy
+@HotkeysTarget
 export class Table extends AbstractComponent<TableProps, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 

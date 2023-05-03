@@ -31,7 +31,7 @@ export const HOTKEYS_PROVIDER_NOT_FOUND =
     ` useHotkeys() was used outside of a <HotkeysProvider> context. These hotkeys will not be shown in the hotkeys help dialog.`;
 export const HOTKEYS_TARGET_CHILDREN_LOCAL_HOTKEYS =
     ns +
-    ` <HotkeysTarget> was configured with local hotkeys, but you did not use the generated event handlers to bind their event handlers. Try using a render function as the child of this component.`;
+    ` <HotkeysTarget2> was configured with local hotkeys, but you did not use the generated event handlers to bind their event handlers. Try using a render function as the child of this component.`;
 
 export const INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX =
     ns + ` <InputGroup> leftElement and leftIcon prop are mutually exclusive, with leftElement taking priority.`;

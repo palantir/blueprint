@@ -23,7 +23,7 @@ import {
     EditableTextProps,
     Hotkey,
     Hotkeys,
-    HotkeysTargetLegacy,
+    HotkeysTarget,
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
@@ -81,7 +81,7 @@ export interface EditableCellState {
 
 // HACKHACK(adahiya): fix for Blueprint 6.0
 // eslint-disable-next-line deprecation/deprecation
-@HotkeysTargetLegacy
+@HotkeysTarget
 export class EditableCell extends React.Component<EditableCellProps, EditableCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell`;
 
