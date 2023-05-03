@@ -40,7 +40,7 @@
             "outputs": ["{projectRoot}/lib/css"]
         },
         "dev": {
-            "dependsOn": ["^dev"]
+            "dependsOn": ["^compile"]
         },
         "compile:cjs": {
             "dependsOn": ["^compile:cjs"],
@@ -55,10 +55,10 @@
             "outputs": ["{projectRoot}/dist"]
         },
         "test:karma": {
-            "dependsOn": ["^test:karma"]
+            "dependsOn": ["^compile"]
         },
         "test:karma:debug": {
-            "dependsOn": ["^test:karma:debug"]
+            "dependsOn": ["^compile"]
         },
         "bundle": {
             "dependsOn": ["^bundle"],
