@@ -1,13 +1,28 @@
-@# HotkeysTarget
+@# HotkeysTarget2
 
-The `HotkeysTarget` component is a utility component which allows you to use the
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h5 class="@ns-heading">
+
+Migrating from [HotkeysTarget](#core/legacy/hotkeys-legacy)?
+
+</h5>
+
+HotkeysTarget2 is a replacement for HotkeysTarget. You are encouraged to use this new API, or
+the `useHotkeys` hook directly in your function components, as they will become the standard
+APIs in a future major version of Blueprint. See the full
+[migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration) on the wiki.
+
+</div>
+
+
+The `HotkeysTarget2` component is a utility component which allows you to use the new
 [`useHotkeys` hook](#core/hooks/use-hotkeys) inside a React component class. It's useful
 if you want to switch to the new hotkeys API without refactoring your class components
 into functional components.
 
 Focus on the piano below to try its hotkeys. The global hotkeys dialog can be shown using the "?" key.
 
-@reactExample HotkeysTargetExample
+@reactExample HotkeysTarget2Example
 
 @## Usage
 
@@ -18,7 +33,7 @@ Then, to register hotkeys and generate the relevant event handlers, use the comp
 
 ```tsx
 import * as React from "react";
-import { HotkeysTarget, InputGroup } from "@blueprintjs/core";
+import { HotkeysTarget2, InputGroup } from "@blueprintjs/core";
 
 export default class extends React.PureComponent {
     private inputRef = React.createRef<HTMLInputElement>();
@@ -40,14 +55,14 @@ export default class extends React.PureComponent {
 
     public render() {
         return (
-            <HotkeysTarget hotkeys={this.hotkeys}>
+            <HotkeysTarget2 hotkeys={this.hotkeys}>
                 {({ handleKeyDown, handleKeyUp }) => (
                     <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         Press "R" to refresh data, "F" to focus the input...
                         <InputGroup inputRef={this.inputRef} />
                     </div>
                 )}
-            </HotkeysTarget>
+            </HotkeysTarget2>
         )
     }
 }
@@ -59,12 +74,12 @@ event handlers with the `handleKeyDown` and `handleKeyUp` functions in the child
 you will likely have to set a non-negative `tabIndex` on the DOM node to which these local event handlers are
 bound for them to work correctly.
 
-`<HotkeysTarget>` takes an optional `options: UseHotkeysOptions` prop which can customize some of the hook's
+`<HotkeysTarget2>` takes an optional `options: UseHotkeysOptions` prop which can customize some of the hook's
 default behavior.
 
-@## Props
+@## Props interface
 
-@interface HotkeysTargetProps
+@interface HotkeysTarget2Props
 
 @interface HotkeyConfig
 

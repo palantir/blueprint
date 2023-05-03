@@ -3,7 +3,7 @@
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h5 class="@ns-heading">
 
-Migrating from [HotkeysTarget](#core/components/hotkeys)?
+Migrating from [HotkeysTarget](#core/legacy/hotkeys-legacy)?
 
 </h5>
 
@@ -113,6 +113,6 @@ function PluginSlot(props) {
 }
 ```
 
-@## Props
+@## Props interface
 
 @interface HotkeysProviderProps

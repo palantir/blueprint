@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to HotkeysTarget2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation */
+
 import * as React from "react";
 
 import { isFunction } from "../common/utils";
@@ -34,8 +41,6 @@ export interface HotkeysTargetLegacyComponent extends React.Component {
      */
     renderHotkeys: () => React.ReactElement<HotkeysProps>;
 }
-
-/* eslint-disable deprecation/deprecation */
 
 /** @deprecated use `useHotkeys` hook or `<HotkeysTarget2>` component */
 export function HotkeysTargetLegacy<T extends Constructor<HotkeysTargetLegacyComponent>>(WrappedComponent: T) {

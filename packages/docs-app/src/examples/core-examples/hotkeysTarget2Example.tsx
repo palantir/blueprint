@@ -16,12 +16,12 @@
 
 import * as React from "react";
 
-import { HotkeyProps, HotkeysTarget } from "@blueprintjs/core";
+import { HotkeyProps, HotkeysTarget2 } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { PianoKey } from "./audio";
 
-export interface HotkeysTargetExampleState {
+export interface HotkeysTarget2ExampleState {
     audioContext?: AudioContext;
     // pressed state of each key
     keys: boolean[];
@@ -31,8 +31,8 @@ export interface HotkeysTargetExampleState {
  * Similar to UseHotkeysExample, but using a component class API pattern.
  * We may deprecate and remove this in the future if we encourage everyone to switch to hooks.
  */
-export class HotkeysTargetExample extends React.PureComponent<ExampleProps, HotkeysTargetExampleState> {
-    public state: HotkeysTargetExampleState = {
+export class HotkeysTarget2Example extends React.PureComponent<ExampleProps, HotkeysTarget2ExampleState> {
+    public state: HotkeysTarget2ExampleState = {
         keys: Array.apply(null, Array(24)).map(() => false),
     };
 
@@ -239,7 +239,7 @@ export class HotkeysTargetExample extends React.PureComponent<ExampleProps, Hotk
 
         return (
             <Example className="docs-hotkeys-target-2-example" options={false} {...this.props}>
-                <HotkeysTarget hotkeys={this.hotkeys}>
+                <HotkeysTarget2 hotkeys={this.hotkeys}>
                     {({ handleKeyDown, handleKeyUp }) => (
                         <div
                             tabIndex={0}
@@ -279,7 +279,7 @@ export class HotkeysTargetExample extends React.PureComponent<ExampleProps, Hotk
                             </div>
                         </div>
                     )}
-                </HotkeysTarget>
+                </HotkeysTarget2>
             </Example>
         );
     }

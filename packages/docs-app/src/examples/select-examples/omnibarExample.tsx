@@ -17,7 +17,7 @@ import * as React from "react";
 import {
     Button,
     H5,
-    HotkeysTarget,
+    HotkeysTarget2,
     KeyComboTag,
     MenuItem,
     OverlayToaster,
@@ -67,7 +67,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExa
         const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmMenuItem : null;
 
         return (
-            <HotkeysTarget
+            <HotkeysTarget2
                 hotkeys={[
                     {
                         combo: "shift + o",
@@ -100,7 +100,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExa
                     />
                     <OverlayToaster position={Position.TOP} ref={this.refHandlers.toaster} />
                 </Example>
-            </HotkeysTarget>
+            </HotkeysTarget2>
         );
     }
 
