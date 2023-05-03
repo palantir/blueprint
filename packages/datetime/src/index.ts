@@ -16,25 +16,21 @@
 
 import { DayModifiers as DatePickerDayModifiers, LocaleUtils } from "react-day-picker";
 
-import * as classes from "./common/classes";
-import * as DateUtils from "./common/dateUtils";
+export * from "./common";
 
 // re-exporting these symbols to preserve compatibility
-
 type DatePickerLocaleUtils = typeof LocaleUtils;
-export { DateUtils, DatePickerLocaleUtils, DatePickerDayModifiers };
+export { DatePickerLocaleUtils, DatePickerDayModifiers };
 
-export const Classes = classes;
+export { DateFormatProps } from "./common/dateFormatProps";
+export { TimePickerProps, TimePrecision } from "./common/timePickerProps";
 
-export { DateRange } from "./common/dateRange";
-export { Months } from "./common/months";
-export { TimeUnit } from "./common/timeUnit";
-export { DateFormatProps } from "./dateFormat";
-export { DateInput, DateInputProps } from "./dateInput";
-export { DatePicker, DatePickerProps } from "./datePicker";
-export { DatePickerUtils } from "./datePickerUtils";
-export { DatePickerBaseProps, DatePickerModifiers } from "./datePickerCore";
-export { DateRangeInput, DateRangeInputProps } from "./dateRangeInput";
-export { DateRangePicker, DateRangePickerProps } from "./dateRangePicker";
-export { TimePickerProps, TimePicker, TimePrecision } from "./timePicker";
-export { DatePickerShortcut, DateRangeShortcut } from "./shortcuts";
+export { DateInput, DateInputProps } from "./components/date-input/dateInput";
+export { DatePicker, DatePickerProps } from "./components/date-picker/datePicker";
+export { DatePickerUtils } from "./components/date-picker/datePickerUtils";
+export { DatePickerBaseProps, DatePickerModifiers } from "./common/datePickerBaseProps";
+export { DateRangeInput, DateRangeInputProps } from "./components/date-range-input/dateRangeInput";
+export { DateRangePicker, DateRangePickerProps } from "./components/date-range-picker/dateRangePicker";
+export { TimePicker } from "./components/time-picker/timePicker";
+export { DatePickerShortcut, DateRangeShortcut } from "./components/shortcuts/shortcuts";
+export { TimezoneSelect, TimezoneSelectProps } from "./components/timezone-select/timezoneSelect";

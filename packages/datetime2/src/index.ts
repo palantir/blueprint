@@ -14,5 +14,15 @@
  * limitations under the License.
  */
 
-export * from "./common";
-export * from "./components";
+export {
+    Classes,
+    DateFormatProps,
+    DateInput as DateInput2,
+    DateInputProps as DateInput2Props,
+    DateRangeInput as DateRangeInput2,
+    DateRangeInputProps as DateRangeInput2Props,
+    TimezoneSelect,
+    TimezoneSelectProps,
+} from "@blueprintjs/datetime";
+
+export * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";
