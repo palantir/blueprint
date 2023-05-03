@@ -26,7 +26,7 @@ apply `position: absolute` to the `<body>` tag.
 
 @interface PortalProps
 
-@## Portal context options
+@## React context options
 
 __Portal__ supports some customization through [React context](https://reactjs.org/docs/context.html).
 Using this API can be helpful if you need to apply some custom styling or logic to _all_ Blueprint
@@ -53,14 +53,14 @@ ReactDOM.render(
 
 @## Legacy context options
 
-<div class="@ns-callout @ns-intent-error @ns-icon-danger">
-    <h5 class="@ns-heading">React legacy API</h5>
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h5 class="@ns-heading">Legacy React API</h5>
 
 This feature uses React's legacy context API. Support for this API will be removed in Blueprint v6.0.
 
 </div>
 
-__Portal__ supports the following options on its [React (legacy) context](https://reactjs.org/docs/legacy-context.html).
+__Portal__ supports the following options via the [React legacy context API](https://reactjs.org/docs/legacy-context.html).
 To use them, supply a child context to a subtree that contains the Portals you want to customize.
 
 @interface PortalLegacyContext
