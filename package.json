@@ -18,7 +18,6 @@
         "dev:core": "lerna run dev --scope \"@blueprintjs/{core,icons,docs-app}\"",
         "dev:docs": "lerna run dev --scope \"@blueprintjs/{core,docs-app,docs-theme}\"",
         "dev:datetime": "lerna run dev --scope \"@blueprintjs/{datetime,timezone,docs-app}\"",
-        "dev:datetime2": "lerna run dev --scope \"@blueprintjs/{datetime2,docs-app}\"",
         "dev:select": "lerna run dev --scope \"@blueprintjs/{select,docs-app}\"",
         "dev:table": "lerna run dev --scope \"@blueprintjs/{table,table-dev-app}\"",
         "dist": "run-s dist:libs dist:apps",

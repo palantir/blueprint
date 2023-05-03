@@ -556,16 +556,6 @@
 }
 
 #{example("DateInput")} {
-  .docs-example > * {
-    margin: 0 0 20px;
-  }
-}
-
-//
-// DATETIME2
-//
-
-#{example("DateInput2")} {
   .#{$ns}-date-input {
     // should not grow in vertical direction when fill={true}
     flex-grow: 0;
@@ -574,7 +564,7 @@
 }
 
 // these component examples have a "fill" prop option, which doesn't work nicely with the default margin
-#{example("DateInput2")}, #{example("DateRangeInput2")} {
+#{example("DateInput")}, #{example("DateRangeInput")} {
   .docs-example > * {
     margin: 0;
   }

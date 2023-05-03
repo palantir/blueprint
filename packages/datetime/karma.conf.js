@@ -7,6 +7,15 @@ module.exports = async function (config) {
     config.set(
         createKarmaConfig({
             dirname: __dirname,
+            coverageExcludes: [
+                // not worth coverage, fairly simple implementation
+                "src/common/timezoneDisplayFormat.ts",
+            ],
+            coverageOverrides: {
+                "src/components/timezone-select/timezoneSelect.tsx": {
+                    statements: 75,
+                },
+            },
         }),
     );
 };
