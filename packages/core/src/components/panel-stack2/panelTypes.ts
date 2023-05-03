@@ -15,7 +15,7 @@
  */
 
 /**
- * An object describing a panel in a `PanelStack`.
+ * An object describing a panel in a `PanelStack2`.
  */
 export interface Panel<P> {
     /**
@@ -30,7 +30,7 @@ export interface Panel<P> {
 
     /**
      * The props passed to the component type when it is rendered. The methods
-     * in `PanelActions` will be injected by `PanelStack`.
+     * in `PanelActions` will be injected by `PanelStack2`.
      */
     props?: P;
 
@@ -59,7 +59,7 @@ export interface PanelActions {
 
 /**
  * Use this interface in your panel component's props type to access these
- * panel action callbacks which are injected by `PanelStack`.
+ * panel action callbacks which are injected by `PanelStack2`.
  *
  * See the code example in the docs website.
  *
