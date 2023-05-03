@@ -1,6 +1,6 @@
-@# DateInput
+@# Date input
 
-The DateInput component is an [InputGroup](#core/components/text-inputs.input-group)
+The __DateInput__ component is an [InputGroup](#core/components/text-inputs.input-group)
 that shows a [DatePicker](#datetime/datepicker) inside a [Popover](#core/components/popover)
 on focus. It optionally shows a [TimezoneSelect](#datetime/timezone-select) on the right side of
 the InputGroup, allowing the user to change the timezone of the selected date.
@@ -9,18 +9,18 @@ the InputGroup, allowing the user to change the timezone of the selected date.
 
 @## Usage
 
-DateInput supports both controlled and uncontrolled usage. You can control
+__DateInput__ supports both controlled and uncontrolled usage. You can control
 the selected date by setting the `value` prop, or use the component in
 uncontrolled mode and specify an initial date by setting `defaultValue`.
 Use the `onChange` prop callback to listen for changes to the selected day and
 the `onError` prop to react to invalid dates entered in the text input.
 
-Unlike the `DateInput` component, this component uses ISO strings to represent timestamp values.
-This data type is used in the `value` prop and the `onChange` callback.
+This component uses ISO strings to represent timestamp values in the `value` & `defaultValue` props
+and the `onChange` callback.
 
 @## Date formatting
 
-DateInput requires two props for parsing and formatting dates. These are essentially the plumbing
+__DateInput__ requires two props for parsing and formatting dates. These are essentially the plumbing
 between the text input and the DatePicker.
 
 - `formatDate(date, locale?)` receives the current `Date` and returns a string representation of it.

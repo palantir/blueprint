@@ -1,8 +1,8 @@
-@# TimezoneSelect
+@# Timezone select
 
-`TimezoneSelect` allows the user to select from a list of timezones. The list is coded into the library itself, so it
-does not depend on any external packages for the list of timezones. It uses [date-fns-tz](https://github.com/marnusw/date-fns-tz)
-for display formatting.
+__TimezoneSelect__ allows the user to select from a list of timezones. The list is coded into the
+library itself, so it does not depend on any external packages for the list of timezones.
+It uses [date-fns-tz](https://github.com/marnusw/date-fns-tz) for display formatting.
 
 @reactExample TimezoneSelectExample
 

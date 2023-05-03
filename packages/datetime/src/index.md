@@ -38,8 +38,8 @@ Import the package stylesheet in Sass:
 ```
 
 @page datepicker
-@page daterangepicker
-@page timepicker
 @page date-input
+@page daterangepicker
 @page date-range-input
+@page timepicker
 @page timezone-select
