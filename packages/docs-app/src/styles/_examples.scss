@@ -564,7 +564,7 @@
 }
 
 // these component examples have a "fill" prop option, which doesn't work nicely with the default margin
-#{example("DateInput")}, #{example("DateRangeInput2")} {
+#{example("DateInput")}, #{example("DateRangeInput")} {
   .docs-example > * {
     margin: 0;
   }

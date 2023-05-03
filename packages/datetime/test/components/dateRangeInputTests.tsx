@@ -523,8 +523,7 @@ describe("<DateRangeInput>", () => {
             };
             const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
             expect(popover.prop("backdropProps")).to.equal(popoverProps.backdropProps);
-            /* eslint-disable-next-line deprecation/deprecation */
-            expect(popover.prop("position")).to.equal(popoverProps.position);
+            expect(popover.prop("placement")).to.equal(popoverProps.placement);
         });
 
         it("ignores autoFocus, enforceFocus, and content in custom popoverProps", () => {

@@ -14,14 +14,24 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 export {
+    /** @deprecated import from @blueprintjs/datetime instead */
     Classes,
+    /** @deprecated import from @blueprintjs/datetime instead */
     DateFormatProps,
+    /** @deprecated import from @blueprintjs/datetime instead */
     DateInput as DateInput2,
+    /** @deprecated import from @blueprintjs/datetime instead */
     DateInputProps as DateInput2Props,
+    /** @deprecated import from @blueprintjs/datetime instead */
     DateRangeInput as DateRangeInput2,
+    /** @deprecated import from @blueprintjs/datetime instead */
     DateRangeInputProps as DateRangeInput2Props,
+    /** @deprecated import from @blueprintjs/datetime instead */
     TimezoneSelect,
+    /** @deprecated import from @blueprintjs/datetime instead */
     TimezoneSelectProps,
 } from "@blueprintjs/datetime";
 
