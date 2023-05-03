@@ -15,6 +15,11 @@
 
 import "@blueprintjs/test-commons/bootstrap";
 
+// common
+import "./common/propsTests";
+import "./common/utils/compareUtilsTests";
+import "./common/utilsTests";
+
 // components
 import "./alert/alertTests";
 import "./breadcrumbs/breadcrumbsTests";
@@ -23,9 +28,6 @@ import "./buttons/buttonTests";
 import "./callout/calloutTests";
 import "./card/cardTests";
 import "./collapse/collapseTests";
-import "./common/propsTests";
-import "./common/utils/compareUtilsTests";
-import "./common/utilsTests";
 import "./context-menu/contextMenuTests";
 import "./context-menu/contextMenuSingletonTests";
 import "./controls/controlsTests";

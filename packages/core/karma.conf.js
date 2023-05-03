@@ -22,9 +22,6 @@ module.exports = async function (config) {
                 // HACKHACK: need to add hotkeys tests
                 "src/components/hotkeys/*",
                 "src/context/hotkeys/hotkeysProvider.tsx",
-
-                // HACKHACK: see https://github.com/palantir/blueprint/issues/5511
-                "src/context/portal/portalProvider.tsx",
             ],
             coverageOverrides: {
                 "src/components/editable-text/editableText.tsx": {
