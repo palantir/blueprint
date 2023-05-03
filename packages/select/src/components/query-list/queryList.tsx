@@ -123,6 +123,7 @@ export interface QueryListRendererProps<T> // Omit `createNewItem`, because it's
     itemList: React.ReactNode;
 }
 
+/** Exported for testing, not part of public API */
 export interface QueryListState<T> {
     /** The currently focused item (for keyboard interactions). */
     activeItem: T | CreateNewItem | null;

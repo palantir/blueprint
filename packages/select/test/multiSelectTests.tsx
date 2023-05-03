@@ -22,8 +22,9 @@ import sinon from "sinon";
 import { Classes as CoreClasses, Tag } from "@blueprintjs/core";
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
-import { ItemRendererProps, MultiSelect, MultiSelectProps, MultiSelectState } from "../src";
+import { ItemRendererProps, MultiSelect, MultiSelectProps } from "../src";
 import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
+import type { MultiSelectState } from "../src/components/multi-select/multiSelect";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<MultiSelect>", () => {

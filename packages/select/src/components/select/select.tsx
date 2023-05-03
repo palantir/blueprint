@@ -89,6 +89,7 @@ export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
     resetOnClose?: boolean;
 }
 
+/** Exported for testing, not part of public API */
 export interface SelectState {
     isOpen: boolean;
 }
