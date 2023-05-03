@@ -1,16 +1,38 @@
 @# Portal
 
-The Portal component renders its children into a new "subtree" outside of the current component
-hierarchy. It is an essential piece of [Overlay](#core/components/overlay), responsible for ensuring that
-the overlay contents cover the application below. In most cases you do not need to use a Portal
-directly; this documentation is provided simply for reference.
+The __Portal__ component renders its children into a new DOM "subtree" outside of the current component
+hierarchy. It is an essential piece of the [Overlay](#core/components/overlay) component, responsible for
+ensuring that the overlay contents appear above the rest of the application. In most cases, you do not
+need to use a Portal directly; this documentation is provided simply for reference.
 
-@## Portal context options
+@## DOM Behavior
 
-`Portal` supports some customization through [React context](https://reactjs.org/docs/context.html).
+__Portal__ component functions like a declarative `appendChild()`, or jQuery's
+`$.fn.appendTo()`. The children of a __Portal__ are inserted into a new child of the document `<body>`.
+
+__Portal__ is used inside [Overlay](#core/components/overlay) to actually overlay the content on the
+application.
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-move">
+    <h5 class="@ns-heading">A note about responsive layouts</h5>
+
+For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
+may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead
+apply `position: absolute` to the `<body>` tag.
+
+</div>
+
+@## Props interface
+
+@interface PortalProps
+
+@## React context options
+
+__Portal__ supports some customization through [React context](https://reactjs.org/docs/context.html).
 Using this API can be helpful if you need to apply some custom styling or logic to _all_ Blueprint
 components which use portals (popovers, tooltips, dialogs, etc.). You can do so by rendering a
-`<PortalProvider>` in your React tree (usually, this should be done near the root of your application).
+[PortalProvider](#core/context/portal/portal-provider) in your React tree
+(usually, this should be done near the root of your application).
 
 ```tsx
 import { Button, Popover, PortalProvider } from "@blueprintjs/core";
@@ -27,24 +49,18 @@ ReactDOM.render(
 );
 ```
 
-@interface PortalProviderProps
+@interface PortalContextOptions
 
-@## Props
+@## Legacy context options
 
-The Portal component functions like a declarative `appendChild()`, or jQuery's
-`$.fn.appendTo()`. The children of a `Portal` component are inserted into a new
-child of the `<body>`.
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h5 class="@ns-heading">Legacy React API</h5>
 
-Portal is used inside [Overlay](#core/components/overlay) to actually overlay the content on the
-application.
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-move">
-    <h5 class="@ns-heading">A note about responsive layouts</h5>
-
-For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
-may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead
-apply `position: absolute` to the `<body>` tag.
+This feature uses React's legacy context API. Support for this API will be removed in Blueprint v6.0.
 
 </div>
 
-@interface PortalProps
+__Portal__ supports the following options via the [React legacy context API](https://reactjs.org/docs/legacy-context.html).
+To use them, supply a child context to a subtree that contains the Portals you want to customize.
+
+@interface PortalLegacyContext

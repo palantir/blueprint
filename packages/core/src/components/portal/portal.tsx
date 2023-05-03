@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * Portal supports both the newer React context API and the legacy context API. Support for the legacy context API
- * will be removed in Blueprint v6.0.
- */
-
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -50,7 +45,8 @@ export interface PortalLegacyContext {
     blueprintPortalClassName?: string;
 }
 
-const REACT_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
+/** @deprecated will be removed in Blueprint v6.0 */
+const PORTAL_LEGACY_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
     blueprintPortalClassName: (obj: PortalLegacyContext, key: keyof PortalLegacyContext) => {
         if (obj[key] != null && typeof obj[key] !== "string") {
             return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
@@ -66,6 +62,9 @@ const REACT_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
  * Any class names passed to this element will be propagated to the new container element on document.body.
  *
+ * Portal supports both the newer React context API and the legacy context API.
+ * Support for the legacy context API will be removed in Blueprint v6.0.
+ *
  * @see https://blueprintjs.com/docs/#core/components/portal
  */
 export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = {}) {
@@ -80,6 +79,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
         maybeAddClass(container.classList, props.className); // directly added to this portal element
         maybeAddClass(container.classList, context.portalClassName); // added via PortalProvider context
 
+        // TODO: remove legacy context support in Blueprint v6.0
         const { blueprintPortalClassName } = legacyContext;
         if (blueprintPortalClassName != null && blueprintPortalClassName !== "") {
             console.error(Errors.PORTAL_LEGACY_CONTEXT_API);
@@ -135,7 +135,8 @@ Portal.defaultProps = {
     container: typeof document !== "undefined" ? document.body : undefined,
 };
 Portal.displayName = `${DISPLAYNAME_PREFIX}.Portal`;
-Portal.contextTypes = REACT_CONTEXT_TYPES;
+// eslint-disable-next-line deprecation/deprecation
+Portal.contextTypes = PORTAL_LEGACY_CONTEXT_TYPES;
 
 function maybeRemoveClass(classList: DOMTokenList, className?: string) {
     if (className != null && className !== "") {
