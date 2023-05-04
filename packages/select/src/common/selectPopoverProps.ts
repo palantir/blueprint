@@ -42,7 +42,7 @@ export interface SelectPopoverProps {
      * Optional ref for the Popover component instance.
      * This is sometimes useful to reposition the popover.
      *
-     * Note that this is defined as a specific kind of Popover2 which should be compatible with
+     * Note that this is defined as a specific kind of Popover instance which should be compatible with
      * most use cases, since it uses the default target props interface.
      */
     popoverRef?: React.RefObject<Popover<DefaultPopoverTargetHTMLProps>>;

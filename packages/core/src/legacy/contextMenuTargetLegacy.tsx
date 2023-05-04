@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to ContextMenu2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation */
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -29,8 +36,6 @@ export interface ContextMenuTargetLegacyComponent extends React.Component {
     renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element | undefined;
     onContextMenuClose?: () => void;
 }
-
-/* eslint-disable deprecation/deprecation */
 
 /**
  * ContextMenuTarget decorator.

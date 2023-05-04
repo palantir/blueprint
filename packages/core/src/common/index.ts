@@ -20,8 +20,6 @@ export { AbstractComponent } from "./abstractComponent";
 export { AbstractPureComponent } from "./abstractPureComponent";
 export { Alignment } from "./alignment";
 export { Boundary } from "./boundary";
-// eslint-disable-next-line deprecation/deprecation
-export { Constructor } from "./constructor";
 export { Elevation } from "./elevation";
 export { Intent } from "./intent";
 // eslint-disable-next-line deprecation/deprecation

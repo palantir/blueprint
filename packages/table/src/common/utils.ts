@@ -133,30 +133,6 @@ export const Utils = {
     },
 
     /**
-     * Returns a copy of the array that will have a length of the supplied parameter.
-     * If the array is too long, it will be truncated. If it is too short, it will be
-     * filled with the suppleid `fillValue` argument.
-     *
-     * @param array - the `Array` to copy and adjust
-     * @param length - the target length of the array
-     * @param fillValue - the value to add to the array if it is too short
-     *
-     * @deprecated this function is no longer used in the table component, so it will be removed in a future major version
-     */
-    // eslint-disable-next-line deprecation/deprecation
-    arrayOfLength<T>(array: T[], length: number, fillValue: T): T[] {
-        if (array.length > length) {
-            return array.slice(0, length);
-        }
-
-        array = array.slice();
-        while (array.length < length) {
-            array.push(fillValue);
-        }
-        return array;
-    },
-
-    /**
      * Takes in one full array of values and one sparse array of the same
      * length and type. Returns a copy of the `defaults` array, where each
      * value is replaced with the corresponding non-null value at the same

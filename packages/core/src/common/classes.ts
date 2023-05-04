@@ -208,8 +208,6 @@ export const MULTISTEP_DIALOG = `${NS}-multistep-dialog`;
 export const MULTISTEP_DIALOG_PANELS = `${MULTISTEP_DIALOG}-panels`;
 export const MULTISTEP_DIALOG_LEFT_PANEL = `${MULTISTEP_DIALOG}-left-panel`;
 export const MULTISTEP_DIALOG_RIGHT_PANEL = `${MULTISTEP_DIALOG}-right-panel`;
-/** @deprecated use `Classes.DIALOG_FOOTER` instead */
-export const MULTISTEP_DIALOG_FOOTER = `${MULTISTEP_DIALOG}-footer`;
 export const MULTISTEP_DIALOG_NAV_TOP = `${MULTISTEP_DIALOG}-nav-top`;
 export const MULTISTEP_DIALOG_NAV_RIGHT = `${MULTISTEP_DIALOG}-nav-right`;
 

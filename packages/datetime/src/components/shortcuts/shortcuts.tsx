@@ -85,8 +85,6 @@ export class Shortcuts extends React.PureComponent<ShortcutsProps> {
                 : this.props.shortcuts;
 
         const shortcutElements = shortcuts.map((shortcut, index) => (
-            // ok to use this here because it doesn't have a submenu
-            // eslint-disable-next-line deprecation/deprecation, @blueprintjs/no-deprecated-components
             <MenuItem
                 active={this.props.selectedShortcutIndex === index}
                 disabled={!this.isShortcutInRange(shortcut.dateRange)}

@@ -22,7 +22,6 @@ import { Tooltip, TooltipProps } from "../tooltip/tooltip";
 
 export type DialogStepButtonProps = Partial<ButtonSharedPropsAndAttributes> & {
     /** If defined, the button will be wrapped with a tooltip with the specified content. */
-    // eslint-disable-next-line deprecation/deprecation
     tooltipContent?: TooltipProps["content"];
 };
 
@@ -30,7 +29,6 @@ export function DialogStepButton({ tooltipContent, ...props }: DialogStepButtonP
     const button = <AnchorButton {...props} />;
 
     if (tooltipContent !== undefined) {
-        // eslint-disable-next-line deprecation/deprecation
         return <Tooltip content={tooltipContent}>{button}</Tooltip>;
     } else {
         return button;

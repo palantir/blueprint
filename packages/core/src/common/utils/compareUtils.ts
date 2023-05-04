@@ -25,8 +25,6 @@ export interface KeyDenylist<T> {
     exclude: Array<keyof T>;
 }
 
-/* eslint-enable deprecation/deprecation */
-
 /**
  * Returns true if the arrays are equal. Elements will be shallowly compared by
  * default, or they will be compared using the custom `compare` function if one

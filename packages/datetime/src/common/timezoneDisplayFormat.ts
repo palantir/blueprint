@@ -42,12 +42,6 @@ export const TimezoneDisplayFormat = {
     LONG_NAME: "long-name" as "long-name",
 
     /**
-     * @deprecated use {@link TimezoneDisplayFormat.CODE} instead
-     */
-    // eslint-disable-next-line deprecation/deprecation
-    NAME: "name" as "name",
-
-    /**
      * Offset format: "-10:00", "-5:00", etc.
      */
     OFFSET: "offset" as "offset",
@@ -68,9 +62,6 @@ export function formatTimezone(
     switch (displayFormat) {
         case TimezoneDisplayFormat.ABBREVIATION:
             return timezone.shortName;
-        // eslint-disable-next-line deprecation/deprecation
-        case TimezoneDisplayFormat.NAME:
-            return timezone.ianaCode;
         case TimezoneDisplayFormat.OFFSET:
             return timezone.offset;
         case TimezoneDisplayFormat.CODE:
@@ -83,5 +74,7 @@ export function formatTimezone(
             return /[-\+]/.test(shortName) || shortName === timezone.label
                 ? `${timezone.label} ${timezone.offset}`
                 : `${timezone.label} (${timezone.shortName}) ${timezone.offset}`;
+        default:
+            return undefined;
     }
 }

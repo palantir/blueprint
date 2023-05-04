@@ -60,6 +60,8 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
         }
     }
 
+    // HACKHACK: need to move away from custom test harness infrastructure in @blueprintjs/table package
+    // eslint-disable-next-line deprecation/deprecation
     event.initKeyboardEvent(eventType, true, true, window, key, 0, ctrlKey, false, false, metaKey);
     Object.defineProperty(event, "key", { get: () => key });
     Object.defineProperty(event, "which", { get: () => keyCode });
@@ -178,6 +180,8 @@ export class ElementHarness {
 
             // Apparently onChange listeners are listening for "input" events.
             const event = document.createEvent("HTMLEvents");
+            // HACKHACK: need to move away from custom test harness infrastructure in @blueprintjs/table package
+            // eslint-disable-next-line deprecation/deprecation
             event.initEvent("input", true, true);
             this.element!.dispatchEvent(event);
         }

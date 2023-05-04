@@ -48,7 +48,6 @@ describe("<Collapse>", () => {
     });
 
     it("supports custom Component", () => {
-        // eslint-disable-next-line deprecation/deprecation
         assert.isTrue(shallow(<Collapse component={MenuItem} />).is(MenuItem));
     });
 
