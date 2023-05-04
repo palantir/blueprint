@@ -19,12 +19,7 @@ import * as React from "react";
 
 import { Props } from "@blueprintjs/core";
 
-/** @deprecated use ExampleProps */
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type IExampleProps<T = {}> = ExampleProps<T>;
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export interface ExampleProps<T = {}> extends Props {
+export interface ExampleProps<T = Record<string, never>> extends Props {
     /**
      * Identifier of this example.
      * This will appear as the `data-example-id` attribute on the DOM element.

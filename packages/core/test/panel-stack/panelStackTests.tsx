@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to PanelStack2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation */
+
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
 import { Classes, IPanel, IPanelProps, PanelStack, PanelStackProps } from "../../src";
-
-/* eslint-disable deprecation/deprecation */
 
 export class TestPanel extends React.Component<IPanelProps> {
     public render() {

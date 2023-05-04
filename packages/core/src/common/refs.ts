@@ -36,11 +36,6 @@ export function setRef<T>(refTarget: React.Ref<T> | undefined, ref: T | null): v
     }
 }
 
-/** @deprecated use mergeRefs() instead */
-export function combineRefs<T>(ref1: React.RefCallback<T>, ref2: React.RefCallback<T>) {
-    return mergeRefs(ref1, ref2);
-}
-
 /**
  * Utility for merging refs into one singular callback ref.
  * If using in a functional component, would recomend using `useMemo` to preserve function identity.

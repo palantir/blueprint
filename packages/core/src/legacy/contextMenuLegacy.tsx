@@ -19,6 +19,8 @@
  * All changes & bugfixes should be made to ContextMenu2 instead.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -65,7 +67,6 @@ class ContextMenuLegacy extends AbstractPureComponent<ContextMenuLegacyProps, Co
 
         // wrap the popover in a positioned div to make sure it is properly
         // offset on the screen.
-        /* eslint-disable deprecation/deprecation */
         return (
             <div className={Classes.CONTEXT_MENU} style={this.state.offset}>
                 <Popover
@@ -87,7 +88,6 @@ class ContextMenuLegacy extends AbstractPureComponent<ContextMenuLegacyProps, Co
                 </Popover>
             </div>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 
     public show(menu: JSX.Element, offset: Offset, onClose?: () => void, isDarkTheme = false) {
@@ -127,7 +127,6 @@ class ContextMenuLegacy extends AbstractPureComponent<ContextMenuLegacyProps, Co
 }
 
 let contextMenuElement: HTMLElement | undefined;
-// eslint-disable-next-line deprecation/deprecation
 let contextMenu: ContextMenuLegacy | undefined;
 
 /**
@@ -142,12 +141,10 @@ export function show(menu: JSX.Element, offset: Offset, onClose?: () => void, is
         contextMenuElement = document.createElement("div");
         contextMenuElement.classList.add(Classes.CONTEXT_MENU);
         document.body.appendChild(contextMenuElement);
-        /* eslint-disable deprecation/deprecation */
         contextMenu = ReactDOM.render<ContextMenuLegacyProps>(
             <ContextMenuLegacy onClosed={remove} />,
             contextMenuElement,
         ) as ContextMenuLegacy;
-        /* eslint-enable deprecation/deprecation */
     }
 
     contextMenu!.show(menu, offset, onClose, isDarkTheme);
