@@ -24,8 +24,7 @@ import { IndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
 import { Header, HeaderProps } from "./header";
-import type { RowHeaderCellProps } from "./rowHeaderCell";
-import { RowHeaderCell2 } from "./rowHeaderCell2";
+import { RowHeaderCell, RowHeaderCellProps } from "./rowHeaderCell";
 
 export type RowHeaderRenderer = (rowIndex: number) => React.ReactElement<RowHeaderCellProps>;
 
@@ -177,7 +176,7 @@ export class RowHeader extends React.Component<RowHeaderProps> {
     private renderGhostCell = (index: number, extremaClasses: string[]) => {
         const rect = this.props.grid.getGhostCellRect(index, 0);
         return (
-            <RowHeaderCell2
+            <RowHeaderCell
                 className={classNames(extremaClasses)}
                 index={index}
                 key={Classes.rowIndexClass(index)}
@@ -198,5 +197,5 @@ export class RowHeader extends React.Component<RowHeaderProps> {
  * numbers for each row.
  */
 export function renderDefaultRowHeader(rowIndex: number) {
-    return <RowHeaderCell2 index={rowIndex} name={`${rowIndex + 1}`} />;
+    return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`} />;
 }

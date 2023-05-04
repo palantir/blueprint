@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import * as React from "react";
 import { ContextMenu, Classes as CoreClasses, Utils as CoreUtils, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { ResizeHandle } from "../interactions/resizeHandle";
+import type { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface HeaderCellProps extends Props {
     children?: React.ReactNode;
@@ -84,6 +84,8 @@ export interface InternalHeaderCellProps extends HeaderCellProps {
 
     /**
      * Specifies if the cell is selected.
+     *
+     * @internal
      */
     isSelected?: boolean;
 }
@@ -97,41 +99,33 @@ export class HeaderCell extends React.Component<InternalHeaderCellProps, HeaderC
         isActive: false,
     };
 
-    public shouldComponentUpdate(nextProps: HeaderCellProps) {
+    public shouldComponentUpdate(nextProps: InternalHeaderCellProps) {
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
             !CoreUtils.deepCompareKeys(this.props, nextProps, ["style"])
         );
     }
 
-    public renderContextMenu() {
-        const { menuRenderer } = this.props;
-
-        if (CoreUtils.isFunction(menuRenderer)) {
-            // the preferred way (a consistent function instance that won't cause as many re-renders)
-            return menuRenderer(this.props.index);
-        } else {
-            return undefined;
-        }
-    }
-
     public render() {
-        const { children, index, isActive, isSelected, loading, menuRenderer, style } = this.props;
         const classes = classNames(
             Classes.TABLE_HEADER,
             {
-                [Classes.TABLE_HEADER_ACTIVE]: isActive || isActive,
-                [Classes.TABLE_HEADER_SELECTED]: isSelected,
-                [CoreClasses.LOADING]: loading,
+                [Classes.TABLE_HEADER_ACTIVE]: this.props.isActive || this.state.isActive,
+                [Classes.TABLE_HEADER_SELECTED]: this.props.isSelected,
+                [CoreClasses.LOADING]: this.props.loading,
             },
             this.props.className,
         );
+        const hasMenu = this.props.menuRenderer !== undefined;
 
         return (
-            <ContextMenu content={menuRenderer?.(index) ?? undefined}>
-                <div className={classes} style={style}>
-                    {children}
-                </div>
+            <ContextMenu
+                className={classes}
+                content={this.props.menuRenderer?.(this.props.index)}
+                disabled={!hasMenu}
+                style={this.props.style}
+            >
+                {this.props.children}
             </ContextMenu>
         );
     }

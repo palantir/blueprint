@@ -1,5 +1,6 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,13 +14,16 @@
  * limitations under the License.
  */
 
-import * as PropTypes from "prop-types";
-import * as React from "react";
+export {
+    /** @deprecated import ColumnHeaderCell instead */
+    ColumnHeaderCell as ColumnHeaderCell2,
+    /** @deprecated import ColumnHeaderCellProps instead */
+    ColumnHeaderCellProps as ColumnHeaderCellProps2,
+} from "./headers/columnHeaderCell";
 
-export interface ColumnInteractionBarContextTypes {
-    enableColumnInteractionBar: boolean | null | undefined;
-}
-
-export const columnInteractionBarContextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> = {
-    enableColumnInteractionBar: PropTypes.bool,
-};
+export {
+    /** @deprecated import RowHeaderCell instead */
+    RowHeaderCell as RowHeaderCell2,
+    /** @deprecated import RowHeaderCellProps instead */
+    RowHeaderCellProps as RowHeaderCellProps2,
+} from "./headers/rowHeaderCell";

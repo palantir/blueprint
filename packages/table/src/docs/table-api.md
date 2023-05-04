@@ -4,7 +4,7 @@ reference: api
 
 @# JavaScript API
 
-The `Table`, `Column`, `Cell`, `ColumnHeaderCell2`, `EditableName`, and `EditableCell2`
+The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell2`
 components are available in the __@blueprintjs/table__ package.
 
 @## Table
@@ -55,21 +55,21 @@ returned from the `cellRenderer` method of each `Column`.
 
 @interface CellProps
 
-@## ColumnHeaderCell2
+@## ColumnHeaderCell
 
 Optionally customize how each column header is displayed.
 
 The `columnHeaderCellRenderer` method on each `Column` should return a
-`ColumnHeaderCell2`. Children of a `ColumnHeaderCell2` are rendered below
+`ColumnHeaderCell`. Children of a `ColumnHeaderCell` are rendered below
 the name of the column. If you want to override the render behavior of the
-name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell2`.
+name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell`.
 
 @interface ColumnHeaderCellProps
 
 @## EditableName
 
 Return a `EditableName` component from the `nameRenderer` prop on a
-`ColumnHeaderCell2` to enable click-to-edit functionality in the column
+`ColumnHeaderCell` to enable click-to-edit functionality in the column
 header.
 
 @interface EditableNameProps
@@ -81,11 +81,11 @@ Return an `EditableCell2` component from the `cellRenderer` prop on a
 
 @interface EditableCell2Props
 
-@## RowHeaderCell2
+@## RowHeaderCell
 
 Optionally customize how each row header is displayed.
 
-In order to use this API, supply a custom renderer function which returns a `RowHeaderCell2` to the
+In order to use this API, supply a custom renderer function which returns a `RowHeaderCell` to the
 `rowHeaderCellRenderer` prop on the overall `Table2`.
 
 @interface RowHeaderCellProps
@@ -195,7 +195,7 @@ return <Cell><TruncatedFormat>{content}</TruncatedFormat></Cell>
 
 @interface TruncatedFormatProps
 
-@## JSONFormat2
+@## JSONFormat
 
 Wrap your JavaScript object cell contents with a `JSONFormat` component like so:
 

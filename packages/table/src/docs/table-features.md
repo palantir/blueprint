@@ -56,7 +56,7 @@ To make your table editable, use the [`EditableCell2`](#table/table2.editablecel
 `EditableName` components to create editable table cells and column names.
 
 To further extend the interactivity of the column headers, you can
-add children components to each `ColumnHeaderCell2` defined in the
+add children components to each `ColumnHeaderCell` defined in the
 `columnHeaderCellRenderer` prop of `Column`.
 
 The following example renders a table with editable column names (single
@@ -144,7 +144,7 @@ individual column's header and body cells. Try selecting a different column in t
 
 @### Cells
 
-`Cell`, `EditableCell2`, `ColumnHeaderCell2`, and `RowHeaderCell2` expose a `loading` prop for granular
+`Cell`, `EditableCell2`, `ColumnHeaderCell`, and `RowHeaderCell` expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading
 configuration.
 

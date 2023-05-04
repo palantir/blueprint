@@ -51,14 +51,11 @@ export type { ColumnHeaderRenderer } from "./headers/columnHeader";
 
 export type { RowHeaderRenderer } from "./headers/rowHeader";
 
-// eslint-disable-next-line deprecation/deprecation
-export { ColumnHeaderCell, type ColumnHeaderCellProps, HorizontalCellDivider } from "./headers/columnHeaderCell";
+export { ColumnHeaderCell, type ColumnHeaderCellProps } from "./headers/columnHeaderCell";
 
-export { ColumnHeaderCell2, type ColumnHeaderCell2Props } from "./headers/columnHeaderCell2";
+export { HorizontalCellDivider } from "./headers/horizontalCellDivider";
 
 export { type RowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
-
-export { RowHeaderCell2 } from "./headers/rowHeaderCell2";
 
 export { type EditableNameProps, EditableName } from "./headers/editableName";
 
@@ -81,3 +78,5 @@ export { Table } from "./table";
 export type { TableProps } from "./tableProps";
 
 export { Table2, type Table2Props } from "./table2";
+
+export * from "./deprecatedAliases";

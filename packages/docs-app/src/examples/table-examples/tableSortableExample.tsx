@@ -23,7 +23,7 @@ import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import {
     Cell,
     Column,
-    ColumnHeaderCell2,
+    ColumnHeaderCell,
     CopyCellsMenuItem,
     MenuContext,
     SelectionModes,
@@ -49,7 +49,7 @@ abstract class AbstractSortableColumn implements SortableColumn {
             <Cell>{getCellData(rowIndex, columnIndex)}</Cell>
         );
         const menuRenderer = this.renderMenu.bind(this, sortColumn);
-        const columnHeaderCellRenderer = () => <ColumnHeaderCell2 name={this.name} menuRenderer={menuRenderer} />;
+        const columnHeaderCellRenderer = () => <ColumnHeaderCell name={this.name} menuRenderer={menuRenderer} />;
         return (
             <Column
                 cellRenderer={cellRenderer}

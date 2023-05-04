@@ -38,7 +38,6 @@ import { CellRenderer } from "./cell/cell";
 import { Column, ColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
-import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "./common/context";
 import * as Errors from "./common/errors";
 import { CellMapper, Grid } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
@@ -96,9 +95,6 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         rowHeaderCellRenderer: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
-
-    public static childContextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> =
-        columnInteractionBarContextTypes;
 
     public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState) {
         const {
@@ -404,12 +400,6 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
     // React lifecycle
     // ===============
-
-    public getChildContext(): ColumnInteractionBarContextTypes {
-        return {
-            enableColumnInteractionBar: this.props.enableColumnInteractionBar,
-        };
-    }
 
     public shouldComponentUpdate(nextProps: TableProps, nextState: TableState) {
         const propKeysDenylist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_DENYLIST };
@@ -888,12 +878,14 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
             if (columnHeaderCell != null) {
                 return React.cloneElement(columnHeaderCell, {
+                    enableColumnInteractionBar: this.props.enableColumnInteractionBar,
                     loading: columnHeaderCell.props.loading ?? columnLoading,
                 });
             }
         }
 
         const baseProps: ColumnHeaderCellProps = {
+            enableColumnInteractionBar: this.props.enableColumnInteractionBar,
             index: columnIndex,
             loading: columnLoading,
             ...spreadableProps,

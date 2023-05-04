@@ -51,7 +51,7 @@ export interface ColumnProps extends ColumnNameProps, Props {
 
     /**
      * An instance of `ColumnHeaderRenderer`, a function that takes a column
-     * index and returns a `ColumnHeaderCell2` React element.
+     * index and returns a `ColumnHeaderCell` React element.
      */
     columnHeaderCellRenderer?: ColumnHeaderRenderer;
 }

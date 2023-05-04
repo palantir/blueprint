@@ -1,7 +1,6 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+ * * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -14,13 +13,6 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to ColumnHeaderCell2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import classNames from "classnames";
 import * as React from "react";
 
@@ -30,15 +22,17 @@ import {
     DISPLAYNAME_PREFIX,
     Icon,
     IconName,
+    OverlayLifecycleProps,
     Popover,
+    PopoverProps,
     Props,
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "../common/context";
 import { LoadableContent } from "../common/loadableContent";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { HeaderCell, HeaderCellProps } from "./headerCell";
+import { HorizontalCellDivider } from "./horizontalCellDivider";
 
 export interface ColumnNameProps {
     /**
@@ -48,7 +42,7 @@ export interface ColumnNameProps {
 
     /**
      * A callback to override the default name rendering behavior. The default
-     * behavior is to simply use the `ColumnHeaderCell2`s name prop.
+     * behavior is to simply use the `ColumnHeaderCell`s name prop.
      *
      * This render callback can be used, for example, to provide a
      * `EditableName` component for editing column names.
@@ -63,6 +57,14 @@ export interface ColumnNameProps {
 }
 
 export interface ColumnHeaderCellProps extends HeaderCellProps, ColumnNameProps {
+    /**
+     * If `true`, adds an interaction bar on top of all column header cells, and
+     * moves interaction triggers into it.
+     *
+     * @default false
+     */
+    enableColumnInteractionBar?: boolean;
+
     /**
      * Specifies if the column is reorderable.
      */
@@ -79,27 +81,40 @@ export interface ColumnHeaderCellProps extends HeaderCellProps, ColumnNameProps 
      * @default "chevron-down"
      */
     menuIcon?: IconName | JSX.Element;
+
+    /**
+     * Optional props to forward to the dropdown menu popover.
+     * This has no effect if `menuRenderer` is undefined.
+     */
+    menuPopoverProps?: Omit<PopoverProps, "content" | keyof OverlayLifecycleProps>;
+
+    /**
+     * If `true`, clicks on the header menu target element will cause the column's
+     * cells to be selected.
+     *
+     * @default true
+     */
+    selectCellsOnMenuClick?: boolean;
 }
 
 export interface ColumnHeaderCellState {
     isActive?: boolean;
 }
 
-export function HorizontalCellDivider(): JSX.Element {
-    return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER} />;
-}
-
-/** @deprecated use ColumnHeaderCell2 instead */
+/**
+ * Column header cell component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.columnheadercell
+ */
 export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProps, ColumnHeaderCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ColumnHeaderCell`;
 
     public static defaultProps: ColumnHeaderCellProps = {
+        enableColumnInteractionBar: false,
         isActive: false,
         menuIcon: "chevron-down",
+        selectCellsOnMenuClick: true,
     };
-
-    public static contextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> =
-        columnInteractionBarContextTypes;
 
     /**
      * This method determines if a `MouseEvent` was triggered on a target that
@@ -117,38 +132,30 @@ export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProp
         );
     }
 
-    public context: ColumnInteractionBarContextTypes = {
-        enableColumnInteractionBar: false,
-    };
-
     public state = {
         isActive: false,
     };
 
     public render() {
         const {
-            // from ColumnHeaderCellProps
+            enableColumnInteractionBar,
             enableColumnReordering,
             isColumnSelected,
             menuIcon,
-
-            // from ColumnNameProps
             name,
             nameRenderer,
-
-            // from HeaderProps
             ...spreadableProps
         } = this.props;
 
         const classes = classNames(spreadableProps.className, Classes.TABLE_COLUMN_HEADER_CELL, {
-            [Classes.TABLE_HAS_INTERACTION_BAR]: this.context.enableColumnInteractionBar,
+            [Classes.TABLE_HAS_INTERACTION_BAR]: enableColumnInteractionBar,
             [Classes.TABLE_HAS_REORDER_HANDLE]: this.props.reorderHandle != null,
         });
 
         return (
             <HeaderCell
-                isReorderable={this.props.enableColumnReordering}
-                isSelected={this.props.isColumnSelected}
+                isReorderable={enableColumnReordering}
+                isSelected={isColumnSelected}
                 {...spreadableProps}
                 className={classes}
             >
@@ -160,7 +167,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProp
     }
 
     private renderName() {
-        const { index, loading, name, nameRenderer, reorderHandle } = this.props;
+        const { enableColumnInteractionBar, index, loading, name, nameRenderer, reorderHandle } = this.props;
 
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
@@ -171,7 +178,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProp
             </LoadableContent>
         );
 
-        if (this.context.enableColumnInteractionBar) {
+        if (enableColumnInteractionBar) {
             return (
                 <div className={Classes.TABLE_COLUMN_NAME} title={name}>
                     <div className={Classes.TABLE_INTERACTION_BAR}>
@@ -202,7 +209,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProp
     }
 
     private maybeRenderDropdownMenu() {
-        const { index, menuIcon, menuRenderer } = this.props;
+        const { index, menuIcon, menuPopoverProps, menuRenderer, selectCellsOnMenuClick } = this.props;
 
         if (!CoreUtils.isFunction(menuRenderer)) {
             return undefined;
@@ -210,17 +217,20 @@ export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProp
 
         const classes = classNames(Classes.TABLE_TH_MENU_CONTAINER, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT, {
             [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
+            [Classes.TABLE_TH_MENU_SELECT_CELLS]: selectCellsOnMenuClick,
         });
 
         return (
             <div className={classes}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
                 <Popover
+                    className={classNames(Classes.TABLE_TH_MENU, menuPopoverProps?.className)}
                     content={menuRenderer(index)}
-                    placement="bottom"
-                    className={Classes.TABLE_TH_MENU}
-                    onOpened={this.handlePopoverOpened}
                     onClosing={this.handlePopoverClosing}
+                    onOpened={this.handlePopoverOpened}
+                    placement="bottom"
+                    rootBoundary="document"
+                    {...menuPopoverProps}
                 >
                     <Icon icon={menuIcon} />
                 </Popover>
