@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { Props } from "@blueprintjs/core";
 
-export interface ExampleProps<T = Record<string, never>> extends Props {
+export interface ExampleProps<T = object> extends Props {
     /**
      * Identifier of this example.
      * This will appear as the `data-example-id` attribute on the DOM element.
