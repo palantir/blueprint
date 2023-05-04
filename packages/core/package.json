@@ -8,6 +8,12 @@
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/blueprint.css",
     "unpkg": "dist/core.bundle.js",
+    "files": [
+        "dist",
+        "lib",
+        "scripts",
+        "src"
+    ],
     "sideEffects": [
         "**/*.css",
         "lib/esm/components/index.js",

@@ -11,6 +11,10 @@
     "sideEffects": [
         "**/*.css"
     ],
+    "files": [
+        "lib",
+        "src"
+    ],
     "scripts": {
         "clean": "rm -rf dist/* && rm -rf lib/*",
         "compile": "run-p \"compile:*\"",
