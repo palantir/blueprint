@@ -54,11 +54,14 @@
             "dependsOn": ["^dist:bundle"],
             "outputs": ["{projectRoot}/dist"]
         },
-        "test:karma": {
+        "test": {
             "dependsOn": ["^compile"]
         },
+        "test:karma": {
+            "dependsOn": []
+        },
         "test:karma:debug": {
-            "dependsOn": ["^compile"]
+            "dependsOn": []
         },
         "bundle": {
             "dependsOn": ["^bundle"],
