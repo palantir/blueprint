@@ -4,6 +4,9 @@
     "description": "Webpack build scripts for @blueprintjs packages",
     "type": "module",
     "main": "index.mjs",
+    "files": [
+        "*.mjs"
+    ],
     "scripts": {
         "test": "exit 0"
     },
