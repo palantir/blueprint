@@ -38,6 +38,14 @@ export interface PortalProps extends Props {
      * @default document.body
      */
     container?: HTMLElement;
+
+    /**
+     * A list of DOM events which should be stopped from propagating through this portal element.
+     *
+     * @see https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals
+     * @see https://github.com/palantir/blueprint/issues/6124
+     */
+    stopPropagationEvents?: Array<keyof HTMLElementEventMap>;
 }
 
 export interface PortalLegacyContext {
@@ -78,6 +86,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
         container.classList.add(Classes.PORTAL);
         maybeAddClass(container.classList, props.className); // directly added to this portal element
         maybeAddClass(container.classList, context.portalClassName); // added via PortalProvider context
+        addStopPropagationListeners(container, props.stopPropagationEvents);
 
         // TODO: remove legacy context support in Blueprint v6.0
         const { blueprintPortalClassName } = legacyContext;
@@ -100,6 +109,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
         setHasMounted(true);
 
         return () => {
+            removeStopPropagationListeners(newPortalElement, props.stopPropagationEvents);
             newPortalElement.remove();
             setHasMounted(false);
             setPortalElement(undefined);
@@ -121,6 +131,15 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
             maybeAddClass(portalElement.classList, props.className);
         }
     }, [props.className]);
+
+    // update stopPropagation listeners when props change
+    const prevStopPropagationEvents = usePrevious(props.stopPropagationEvents);
+    React.useEffect(() => {
+        if (portalElement != null) {
+            removeStopPropagationListeners(portalElement, prevStopPropagationEvents);
+            addStopPropagationListeners(portalElement, props.stopPropagationEvents);
+        }
+    }, [props.stopPropagationEvents]);
 
     // Only render `children` once this component has mounted in a browser environment, so they are
     // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
@@ -148,4 +167,16 @@ function maybeAddClass(classList: DOMTokenList, className?: string) {
     if (className != null && className !== "") {
         classList.add(...className.split(" "));
     }
+}
+
+function addStopPropagationListeners(portalElement: HTMLElement, eventNames?: Array<keyof HTMLElementEventMap>) {
+    eventNames?.forEach(event => portalElement.addEventListener(event, handleStopProgation));
+}
+
+function removeStopPropagationListeners(portalElement: HTMLElement, events?: Array<keyof HTMLElementEventMap>) {
+    events?.forEach(event => portalElement.removeEventListener(event, handleStopProgation));
+}
+
+function handleStopProgation(e: Event) {
+    e.stopPropagation();
 }
