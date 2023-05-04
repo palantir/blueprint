@@ -110,11 +110,13 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
     portalContainer?: HTMLElement;
 
     /**
-     * A list of DOM events to pass to the portal to stop propagation on.
+     * A list of DOM events which should be stopped from propagating through the Portal.
      * This prop is ignored if `usePortal` is `false`.
-     * Stopgap resolution for https://github.com/facebook/react/issues/11387
+     *
+     * @see https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals
+     * @see https://github.com/palantir/blueprint/issues/6124
      */
-    stopPropagationEvents?: Array<keyof HTMLElementEventMap>;
+    portalStopPropagationEvents?: Array<keyof HTMLElementEventMap>;
 
     /**
      * A callback that is invoked when user interaction causes the overlay to close, such as
@@ -328,7 +330,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                 <Portal
                     className={this.props.portalClassName}
                     container={this.props.portalContainer}
-                    stopPropagationEvents={this.props.stopPropagationEvents}
+                    stopPropagationEvents={this.props.portalStopPropagationEvents}
                 >
                     {transitionGroup}
                 </Portal>

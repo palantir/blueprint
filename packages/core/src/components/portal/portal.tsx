@@ -42,8 +42,10 @@ export interface IPortalProps extends Props {
     container?: HTMLElement;
 
     /**
-     * A list of DOM events to stop propagation on.
-     * Stopgap resolution for https://github.com/facebook/react/issues/11387
+     * A list of DOM events which should be stopped from propagating through this portal element.
+     *
+     * @see https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals
+     * @see https://github.com/palantir/blueprint/issues/6124
      */
     stopPropagationEvents?: Array<keyof HTMLElementEventMap>;
 }
@@ -109,7 +111,7 @@ export class Portal extends React.Component<PortalProps, IPortalState> {
         }
         this.portalElement = this.createContainerElement();
         this.props.container.appendChild(this.portalElement);
-        this.addEventListeners(this.props.stopPropagationEvents);
+        this.addStopPropagationListeners(this.props.stopPropagationEvents);
         /* eslint-disable-next-line react/no-did-mount-set-state */
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
     }
@@ -120,14 +122,15 @@ export class Portal extends React.Component<PortalProps, IPortalState> {
             maybeRemoveClass(this.portalElement.classList, prevProps.className);
             maybeAddClass(this.portalElement.classList, this.props.className);
         }
-        if(this.portalElement != null && prevProps.stopPropagationEvents !== this.props.stopPropagationEvents) {
-            this.removeEventListeners(prevProps.stopPropagationEvents);
-            this.addEventListeners(this.props.stopPropagationEvents);
+
+        if (this.portalElement != null && prevProps.stopPropagationEvents !== this.props.stopPropagationEvents) {
+            this.removeStopPropagationListeners(prevProps.stopPropagationEvents);
+            this.addStopPropagationListeners(this.props.stopPropagationEvents);
         }
     }
 
     public componentWillUnmount() {
-        this.removeEventListeners(this.props.stopPropagationEvents);
+        this.removeStopPropagationListeners(this.props.stopPropagationEvents);
         this.portalElement?.remove();
     }
 
@@ -141,18 +144,12 @@ export class Portal extends React.Component<PortalProps, IPortalState> {
         return container;
     }
 
-    private addEventListeners(events?: Array<keyof HTMLElementEventMap>) {
-        if (events == null || events.length === 0) {
-            return;
-        }
-        events.map(event => this.portalElement?.addEventListener(event, handleStopProgation));
+    private addStopPropagationListeners(eventNames?: Array<keyof HTMLElementEventMap>) {
+        eventNames?.forEach(event => this.portalElement?.addEventListener(event, handleStopProgation));
     }
 
-    private removeEventListeners(events?: Array<keyof HTMLElementEventMap>) {
-        if (events == null || events.length === 0) {
-            return;
-        }
-        events.map(event => this.portalElement?.removeEventListener(event, handleStopProgation));
+    private removeStopPropagationListeners(events?: Array<keyof HTMLElementEventMap>) {
+        events?.forEach(event => this.portalElement?.removeEventListener(event, handleStopProgation));
     }
 }
 
