@@ -32,18 +32,6 @@ ReactDOM.render(
 For more information, see the [Popover documentation](#core/components/popover) and
 [hotkeys migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration).
 
-@## ColumnHeaderCell2
-
-If you are customizing column header cells, you will need to migrate from ColumnHeaderCell to
-[ColumnHeaderCell2](#table/api.columnheadercell2), which uses the latest hotkeys API.
-There are no component API changes.
-
-@## RowHeaderCell2
-
-If you are customizing row header cells, you will need to migrate from RowHeaderCell to
-[RowHeaderCell2](#table/api.rowheadercell2), which uses the latest hotkeys API.
-There are no component API changes.
-
 @## EditableCell2
 
 If you render EditableCell within your table, you will need to migrate to its successor,

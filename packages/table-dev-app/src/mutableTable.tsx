@@ -38,7 +38,7 @@ import {
 import {
     Cell,
     Column,
-    ColumnHeaderCell2,
+    ColumnHeaderCell,
     CopyCellsMenuItem,
     EditableCell2,
     EditableName,
@@ -49,7 +49,7 @@ import {
     RegionCardinality,
     Regions,
     RenderMode,
-    RowHeaderCell2,
+    RowHeaderCell,
     StyledRegionGroup,
     Table2,
     TableLoadingOption,
@@ -513,7 +513,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
 
     private renderColumnHeaderCell = (columnIndex: number) => {
         return (
-            <ColumnHeaderCell2
+            <ColumnHeaderCell
                 index={columnIndex}
                 name={this.store.getColumnName(columnIndex)}
                 menuRenderer={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
@@ -584,7 +584,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
     };
 
     private renderRowHeader = (rowIndex: number) => {
-        return <RowHeaderCell2 index={rowIndex} name={`${rowIndex + 1}`} menuRenderer={this.renderRowMenu} />;
+        return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`} menuRenderer={this.renderRowMenu} />;
     };
 
     private renderRowMenu = (rowIndex: number) => {

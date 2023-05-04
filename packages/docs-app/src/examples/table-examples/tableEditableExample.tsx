@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Intent } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { Column, ColumnHeaderCell2, EditableCell2, EditableName, Table2 } from "@blueprintjs/table";
+import { Column, ColumnHeaderCell, EditableCell2, EditableName, Table2 } from "@blueprintjs/table";
 
 export interface TableEditableExampleState {
     columnNames?: string[];
@@ -83,7 +83,7 @@ export class TableEditableExample extends React.PureComponent<ExampleProps, Tabl
                 />
             );
         };
-        return <ColumnHeaderCell2 name={this.state.columnNames[columnIndex]} nameRenderer={nameRenderer} />;
+        return <ColumnHeaderCell name={this.state.columnNames[columnIndex]} nameRenderer={nameRenderer} />;
     };
 
     private isValidValue(value: string) {

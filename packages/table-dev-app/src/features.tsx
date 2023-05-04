@@ -24,8 +24,8 @@ import { Button, Classes, H4, Intent, Menu, MenuDivider, MenuItem } from "@bluep
 import {
     Cell,
     Column,
-    ColumnHeaderCell2,
-    ColumnHeaderCell2Props,
+    ColumnHeaderCell,
+    ColumnHeaderCellProps,
     CopyCellsMenuItem,
     EditableCell2,
     EditableName,
@@ -34,7 +34,7 @@ import {
     Region,
     RegionCardinality,
     Regions,
-    RowHeaderCell2,
+    RowHeaderCell,
     SelectionModes,
     Table2,
     Utils,
@@ -237,7 +237,7 @@ class EditableTable extends React.Component<{}, EditableTableState> {
             );
         };
         return (
-            <ColumnHeaderCell2
+            <ColumnHeaderCell
                 menuRenderer={renderTestMenu}
                 name={this.state.names[columnIndex]}
                 nameRenderer={nameRenderer}
@@ -498,7 +498,7 @@ ReactDOM.render(
         {},
         {
             renderRowHeaderCell: (rowIndex: number) => {
-                return <RowHeaderCell2 name={customRowHeaders[rowIndex]} />;
+                return <RowHeaderCell name={customRowHeaders[rowIndex]} />;
             },
         },
     ),
@@ -511,7 +511,7 @@ ReactDOM.render(
         7,
         {
             columnHeaderCellRenderer: (columnIndex: number) => {
-                return <ColumnHeaderCell2 name={Utils.toBase26Alpha(columnIndex)} isActive={columnIndex % 3 === 0} />;
+                return <ColumnHeaderCell name={Utils.toBase26Alpha(columnIndex)} isActive={columnIndex % 3 === 0} />;
             },
         },
         {
@@ -534,28 +534,28 @@ ReactDOM.render(
             columnHeaderCellRenderer: (columnIndex: number) => {
                 const alpha = Utils.toBase26Alpha(columnIndex);
                 return (
-                    <ColumnHeaderCell2
+                    <ColumnHeaderCell
                         name={`${alpha} Column with a substantially long header name`}
                         menuRenderer={renderTestMenu}
                     >
                         <H4>Header {alpha}</H4>
                         <p>Whatever interactive header content goes here lorem ipsum.</p>
-                    </ColumnHeaderCell2>
+                    </ColumnHeaderCell>
                 );
             },
         },
         {
             renderRowHeaderCell: (rowIndex: number) => {
-                return <RowHeaderCell2 name={`${rowIndex + 1}`} menuRenderer={renderTestMenu} />;
+                return <RowHeaderCell name={`${rowIndex + 1}`} menuRenderer={renderTestMenu} />;
             },
         },
     ),
     document.getElementById("table-6"),
 );
 
-class CustomHeaderCell extends React.Component<ColumnHeaderCell2Props> {
+class CustomHeaderCell extends React.Component<ColumnHeaderCellProps> {
     public render() {
-        return <ColumnHeaderCell2 {...this.props}>Hey dawg.</ColumnHeaderCell2>;
+        return <ColumnHeaderCell {...this.props}>Hey dawg.</ColumnHeaderCell>;
     }
 }
 
@@ -686,7 +686,7 @@ ReactDOM.render(<ReorderableTableExample />, document.getElementById("table-10")
 ReactDOM.render(
     <div style={{ height: 335, width: 300 }}>
         <Table2 numRows={10} defaultRowHeight={30} enableGhostCells={true}>
-            <Column columnHeaderCellRenderer={() => <ColumnHeaderCell2 nameRenderer={renderName} />} />
+            <Column columnHeaderCellRenderer={() => <ColumnHeaderCell nameRenderer={renderName} />} />
         </Table2>
     </div>,
     document.getElementById("table-11"),

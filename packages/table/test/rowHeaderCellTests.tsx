@@ -14,13 +14,6 @@
  * limitations under the License.```
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to RowHeaderCell2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";

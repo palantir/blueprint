@@ -6,9 +6,7 @@ import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponents
 
 export const tableComponentsMigrationMapping = {
     // TODO(@adidahiya): Blueprint v6
-    // ColumnHeaderCell: "ColumnHeaderCell2",
     // EditableCell: "EditableCell2",
-    // RowHeaderCell: "RowHeaderCell2",
     // Table: "Table2",
 };
 

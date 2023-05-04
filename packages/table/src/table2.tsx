@@ -39,7 +39,7 @@ import { RenderMode } from "./common/renderMode";
 import { ScrollDirection } from "./common/scrollDirection";
 import { Utils } from "./common/utils";
 import { ColumnHeader } from "./headers/columnHeader";
-import { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./headers/columnHeaderCell2";
+import { ColumnHeaderCell, ColumnHeaderCellProps } from "./headers/columnHeaderCell";
 import { renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { GuideLayer } from "./layers/guides";
@@ -836,7 +836,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
             }
         }
 
-        const baseProps: ColumnHeaderCell2Props = {
+        const baseProps: ColumnHeaderCellProps = {
             enableColumnInteractionBar: this.props.enableColumnInteractionBar,
             index: columnIndex,
             loading: columnLoading,
@@ -844,9 +844,9 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         };
 
         if (columnProps.name != null) {
-            return <ColumnHeaderCell2 {...baseProps} />;
+            return <ColumnHeaderCell {...baseProps} />;
         } else {
-            return <ColumnHeaderCell2 {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
+            return <ColumnHeaderCell {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
         }
     };
 

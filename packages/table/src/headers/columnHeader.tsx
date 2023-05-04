@@ -24,10 +24,10 @@ import { ClientCoordinates } from "../interactions/dragTypes";
 import { IndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
-import { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./columnHeaderCell2";
+import { ColumnHeaderCell, ColumnHeaderCellProps } from "./columnHeaderCell";
 import { Header, HeaderProps } from "./header";
 
-export type ColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<ColumnHeaderCell2Props> | null;
+export type ColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<ColumnHeaderCellProps> | null;
 
 export interface ColumnWidths {
     minColumnWidth: number;
@@ -39,8 +39,8 @@ export interface ColumnHeaderProps extends HeaderProps, ColumnWidths, ColumnIndi
     /**
      * A ColumnHeaderRenderer that, for each `<Column>`, will delegate to:
      * 1. The `columnHeaderCellRenderer` method from the `<Column>`
-     * 2. A `<ColumnHeaderCell2>` using the `name` prop from the `<Column>`
-     * 3. A `<ColumnHeaderCell2>` with a `name` generated from `Utils.toBase26Alpha`
+     * 2. A `<ColumnHeaderCell>` using the `name` prop from the `<Column>`
+     * 3. A `<ColumnHeaderCell>` with a `name` generated from `Utils.toBase26Alpha`
      */
     cellRenderer: ColumnHeaderRenderer;
 
@@ -206,7 +206,7 @@ export class ColumnHeader extends React.Component<ColumnHeaderProps> {
             width: `${rect.width}px`,
         };
         return (
-            <ColumnHeaderCell2
+            <ColumnHeaderCell
                 className={classNames(extremaClasses)}
                 index={index}
                 key={Classes.columnIndexClass(index)}
