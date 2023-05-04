@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/tslint-config",
-    "version": "3.3.2",
+    "version": "4.0.0-alpha.0",
     "description": "TSLint configuration for @blueprintjs packages",
     "scripts": {
         "compile": "tsc -p ./src",

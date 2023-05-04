@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-app",
-    "version": "4.18.1",
+    "version": "5.0.0-alpha.0",
     "description": "Blueprint Documentation Site",
     "private": true,
     "scripts": {
@@ -16,16 +16,16 @@
         "verify": "run-p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.18.0",
-        "@blueprintjs/datetime": "^4.4.28",
-        "@blueprintjs/datetime2": "^0.9.27",
-        "@blueprintjs/docs-data": "^4.18.1",
-        "@blueprintjs/docs-theme": "^4.5.16",
-        "@blueprintjs/icons": "^4.15.0",
-        "@blueprintjs/monaco-editor-theme": "^0.2.0",
-        "@blueprintjs/select": "^4.9.14",
-        "@blueprintjs/table": "^4.10.1",
-        "@blueprintjs/test-commons": "^1.1.16",
+        "@blueprintjs/core": "^5.0.0-alpha.0",
+        "@blueprintjs/datetime": "^5.0.0-alpha.0",
+        "@blueprintjs/datetime2": "^1.0.0-alpha.0",
+        "@blueprintjs/docs-data": "^5.0.0-alpha.0",
+        "@blueprintjs/docs-theme": "^5.0.0-alpha.0",
+        "@blueprintjs/icons": "^5.0.0-alpha.0",
+        "@blueprintjs/monaco-editor-theme": "^1.0.0-alpha.0",
+        "@blueprintjs/select": "^5.0.0-alpha.0",
+        "@blueprintjs/table": "^5.0.0-alpha.0",
+        "@blueprintjs/test-commons": "^2.0.0-alpha.0",
         "@documentalist/client": "^4.0.0",
         "chroma-js": "^2.4.2",
         "classnames": "^2.3.1",
@@ -42,8 +42,8 @@
         "tslib": "~2.5.0"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^7.1.1",
-        "@blueprintjs/webpack-build-scripts": "^4.3.7",
+        "@blueprintjs/node-build-scripts": "^8.0.0-alpha.0",
+        "@blueprintjs/webpack-build-scripts": "^5.0.0-alpha.0",
         "@types/chroma-js": "~2.4.0",
         "@types/downloadjs": "~1.4.3",
         "@types/lodash": "~4.14.191",
