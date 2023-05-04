@@ -7,6 +7,10 @@
     "esnext": "lib/esnext/index.js",
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/blueprint-popover2.css",
+    "files": [
+        "lib",
+        "src"
+    ],
     "sideEffects": [
         "**/*.css"
     ],

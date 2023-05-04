@@ -8,6 +8,11 @@
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/table.css",
     "unpkg": "dist/table.bundle.js",
+    "files": [
+        "dist",
+        "lib",
+        "src"
+    ],
     "sideEffects": [
         "**/*.css"
     ],

@@ -6,6 +6,10 @@
     "module": "lib/esm/index.js",
     "esnext": "lib/esnext/index.js",
     "typings": "lib/esm/index.d.ts",
+    "files": [
+        "lib",
+        "src"
+    ],
     "sideEffects": [],
     "scripts": {
         "clean": "rm -rf dist/* && rm -rf lib/*",
