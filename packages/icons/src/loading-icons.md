@@ -1,6 +1,10 @@
+---
+tag: new
+---
+
 @# Loading icons
 
-As of Blueprint v4.0, icons are no longer loaded by default through the main package entry points. This allows you the flexibility
+As of Blueprint v5.0, icons are no longer loaded by default through the main package entry points. This allows you the flexibility
 to bundle only the icons you use in your application. There are a few different ways to load icons, and you may mix some of the
 approaches.
 
@@ -60,15 +64,18 @@ The following strategies assume you are bundling with Webpack; if you are using 
 to its available APIs.
 </div>
 
-1. Load all icons statically, similar to Blueprint v4.x behavior. This results in the largest bundle size for your main chunk.
+1. Load all icons statically, similar to behavior in Blueprint versions prior to v5.x. This results in the largest bundle size for your main chunk.
 
     In the entry point for your bundle, use `Icons.loadAll()` with its default annotated icon loader function _or_ specify
     a custom one. This will to ensure that webpack will bundle all the icon modules in your main chunk
     (see [relevant Webpack docs here](https://webpack.js.org/api/module-methods/#magic-comments)):
 
     ```ts
+    // use the default annotated Webpack loader
+    Icons.loadAll();
+
+    // or, optionally specify a custom loader function optimized for loading all icons statically
     Icons.loadAll({
-        // (OPTIONAL) specify a custom loader function optimized for loading all icons statically
         loader: async name => {
             return (
                 await import(
