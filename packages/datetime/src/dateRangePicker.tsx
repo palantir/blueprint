@@ -358,6 +358,8 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
         if (timePrecision == null && timePickerProps === DateRangePicker.defaultProps.timePickerProps) {
             return null;
         }
+        const { maxTime, ...leftTimePickerProps } = timePickerProps;
+        const { minTime, ...rightTimePickerProps } = timePickerProps;
 
         if (isShowingOneMonth) {
             return (
@@ -373,13 +375,13 @@ export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps
                 <div className={DateClasses.DATERANGEPICKER_TIMEPICKERS}>
                     <TimePicker
                         precision={timePrecision}
-                        {...timePickerProps}
+                        {...leftTimePickerProps}
                         onChange={this.handleTimeChangeLeftCalendar}
                         value={this.state.time[0]}
                     />
                     <TimePicker
                         precision={timePrecision}
-                        {...timePickerProps}
+                        {...rightTimePickerProps}
                         onChange={this.handleTimeChangeRightCalendar}
                         value={this.state.time[1]}
                     />
