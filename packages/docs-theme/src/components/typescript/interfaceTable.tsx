@@ -24,7 +24,7 @@ import {
     ITsSignature,
 } from "@documentalist/client";
 import classNames from "classnames";
-import React, { useCallback, useContext } from "react";
+import * as React from "react";
 
 import { Classes, Intent, Props, Tag } from "@blueprintjs/core";
 
@@ -45,9 +45,9 @@ export interface InterfaceTableProps extends Props {
 /* eslint-disable @blueprintjs/html-components */
 
 export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data, title }) => {
-    const { renderBlock, renderType } = useContext(DocumentationContext);
+    const { renderBlock, renderType } = React.useContext(DocumentationContext);
 
-    const renderPropRow = useCallback((entry: ITsProperty | ITsMethod) => {
+    const renderPropRow = React.useCallback((entry: ITsProperty | ITsMethod) => {
         const {
             flags: { isDeprecated, isExternal, isOptional },
             name,
@@ -103,7 +103,7 @@ export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data,
         );
     }, []);
 
-    const renderIndexSignature = useCallback((entry?: ITsSignature) => {
+    const renderIndexSignature = React.useCallback((entry?: ITsSignature) => {
         if (entry == null) {
             return null;
         }

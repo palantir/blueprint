@@ -16,7 +16,7 @@
 
 import { IKssPluginData, ITag } from "@documentalist/client";
 import classNames from "classnames";
-import React, { useCallback, useContext, useState } from "react";
+import * as React from "react";
 
 import { Checkbox, Classes, Code } from "@blueprintjs/core";
 
@@ -28,8 +28,8 @@ const MODIFIER_ATTR_REGEXP = /\{\{:modifier}}/g;
 const MODIFIER_CLASS_REGEXP = /\{\{\.modifier}}/g;
 
 export const CssExample: React.FC<ITag> = ({ value }) => {
-    const { getDocsData } = useContext(DocumentationContext);
-    const [activeModifiers, setActiveModifiers] = useState<Set<string>>(new Set());
+    const { getDocsData } = React.useContext(DocumentationContext);
+    const [activeModifiers, setActiveModifiers] = React.useState<Set<string>>(new Set());
 
     const getModifierToggleHandler = (modifier: string) => {
         return () => {
@@ -60,7 +60,7 @@ export const CssExample: React.FC<ITag> = ({ value }) => {
         </Checkbox>
     ));
 
-    const getModifiers = useCallback(
+    const getModifiers = React.useCallback(
         (prefix: "." | ":") => {
             return Array.from(activeModifiers.keys())
                 .filter(mod => mod.charAt(0) === prefix)

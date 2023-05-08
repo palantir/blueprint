@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
+import * as React from "react";
 
 import { Alignment, Classes, mergeRefs } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, Props } from "../../common/props";
@@ -155,30 +155,32 @@ export interface SwitchProps extends ControlProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/switch
  */
-export const Switch: React.FC<SwitchProps> = forwardRef(({ innerLabelChecked, innerLabel, ...controlProps }, ref) => {
-    const switchLabels =
-        innerLabel || innerLabelChecked
-            ? [
-                  <div key="checked" className={Classes.CONTROL_INDICATOR_CHILD}>
-                      <div className={Classes.SWITCH_INNER_TEXT}>
-                          {innerLabelChecked ? innerLabelChecked : innerLabel}
-                      </div>
-                  </div>,
-                  <div key="unchecked" className={Classes.CONTROL_INDICATOR_CHILD}>
-                      <div className={Classes.SWITCH_INNER_TEXT}>{innerLabel}</div>
-                  </div>,
-              ]
-            : null;
-    return renderControl(
-        {
-            ...controlProps,
-            indicatorChildren: switchLabels,
-            type: "checkbox",
-            typeClassName: Classes.SWITCH,
-        },
-        ref,
-    );
-});
+export const Switch: React.FC<SwitchProps> = React.forwardRef(
+    ({ innerLabelChecked, innerLabel, ...controlProps }, ref) => {
+        const switchLabels =
+            innerLabel || innerLabelChecked
+                ? [
+                      <div key="checked" className={Classes.CONTROL_INDICATOR_CHILD}>
+                          <div className={Classes.SWITCH_INNER_TEXT}>
+                              {innerLabelChecked ? innerLabelChecked : innerLabel}
+                          </div>
+                      </div>,
+                      <div key="unchecked" className={Classes.CONTROL_INDICATOR_CHILD}>
+                          <div className={Classes.SWITCH_INNER_TEXT}>{innerLabel}</div>
+                      </div>,
+                  ]
+                : null;
+        return renderControl(
+            {
+                ...controlProps,
+                indicatorChildren: switchLabels,
+                type: "checkbox",
+                typeClassName: Classes.SWITCH,
+            },
+            ref,
+        );
+    },
+);
 Switch.displayName = `${DISPLAYNAME_PREFIX}.Switch`;
 
 //
@@ -192,7 +194,7 @@ export type RadioProps = ControlProps;
  *
  * @see https://blueprintjs.com/docs/#core/components/radio
  */
-export const Radio: React.FC<RadioProps> = forwardRef((props, ref) =>
+export const Radio: React.FC<RadioProps> = React.forwardRef((props, ref) =>
     renderControl(
         {
             ...props,
@@ -228,11 +230,13 @@ export interface CheckboxProps extends ControlProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/checkbox
  */
-export const Checkbox: React.FC<CheckboxProps> = forwardRef((props, ref) => {
+export const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props, ref) => {
     const { defaultIndeterminate, indeterminate, onChange, ...controlProps } = props;
-    const [isIndeterminate, setIsIndeterminate] = useState<boolean>(indeterminate || defaultIndeterminate || false);
-    const localRef = useRef<HTMLInputElement>(null);
-    const handleChange = useCallback(
+    const [isIndeterminate, setIsIndeterminate] = React.useState<boolean>(
+        indeterminate || defaultIndeterminate || false,
+    );
+    const localRef = React.useRef<HTMLInputElement>(null);
+    const handleChange = React.useCallback(
         (evt: React.ChangeEvent<HTMLInputElement>) => {
             // update state immediately only if uncontrolled
             if (indeterminate === undefined) {
@@ -244,13 +248,13 @@ export const Checkbox: React.FC<CheckboxProps> = forwardRef((props, ref) => {
         [onChange],
     );
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (indeterminate !== undefined) {
             setIsIndeterminate(indeterminate);
         }
     }, [indeterminate]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (localRef.current != null) {
             localRef.current.indeterminate = isIndeterminate;
         }

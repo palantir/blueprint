@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { cloneElement, createRef } from "react";
+import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { AbstractPureComponent, Classes } from "../../common";
@@ -242,13 +242,13 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     };
 
     /** Ref for container element, containing all children and the backdrop */
-    public containerElement = createRef<HTMLDivElement>();
+    public containerElement = React.createRef<HTMLDivElement>();
 
     // An empty, keyboard-focusable div at the beginning of the Overlay content
-    private startFocusTrapElement = createRef<HTMLDivElement>();
+    private startFocusTrapElement = React.createRef<HTMLDivElement>();
 
     // An empty, keyboard-focusable div at the end of the Overlay content
-    private endFocusTrapElement = createRef<HTMLDivElement>();
+    private endFocusTrapElement = React.createRef<HTMLDivElement>();
 
     public render() {
         // oh snap! no reason to render anything at all if we're being truly lazy
@@ -378,7 +378,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         const tabIndex = this.props.enforceFocus || this.props.autoFocus ? 0 : undefined;
         const decoratedChild =
             typeof child === "object" ? (
-                cloneElement(child as React.ReactElement, {
+                React.cloneElement(child as React.ReactElement, {
                     className: classNames((child as React.ReactElement).props.className, Classes.OVERLAY_CONTENT),
                     tabIndex,
                 })
