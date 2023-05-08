@@ -2,15 +2,15 @@
 
 Popovers display floating content next to a target element.
 
-`Popover` is built on top of the [**Popper.js**](https://popper.js.org) library.
+The __Popover__ component is built on top of the [**Popper.js**](https://popper.js.org) library.
 Popper.js is a small library that offers a powerful, customizable
 positioning engine and operates at blazing speed (`~60fps`).
 
 @reactExample PopoverExample
 
-@## Props
+@## Usage
 
-`Popover` supports controlled and uncontrolled usage through `isOpen` and
+__Popover__ supports controlled and uncontrolled usage through `isOpen` and
 `defaultIsOpen`, respectively. Use `onInteraction` in controlled mode to respond
 to changes in the `isOpen` state.
 
@@ -18,7 +18,9 @@ Supported user interactions are dictated by the `interactionKind` prop.
 
 This component is quite powerful and has a wide range of features. Explore the
 [**Concepts**](#core/components/popover.concepts) section below for more advanced
-guides.
+usage guides.
+
+@## Props interface
 
 @interface PopoverProps
 
@@ -34,10 +36,10 @@ as the trigger for the popover; user interaction will show the popover based on 
 In Popper.js terms, this is the popper "reference". There are two ways to render a Popover target, resulting
 in different DOM layout depending on your application's needs:
 
--   The simplest way is with `children`, an API unchanged from `<Popover>`. Provide a single React child to
+-   The simplest way to specify a target is via `children`. Provide a single React child to
     `<Popover>` and the component will render that child wrapped in a `@ns-popover-target` HTML element.
     This wrapper is configured with event handling logic necessary for the Popover to function. Its tag name
-    (e.g. `div`, `span`) can be customized with the `targetTagName` prop.
+    (e.g. `div`, `span`) and props can be customized with the `targetTagName` and `targetProps` props, respectively.
 
 -   A more advanced API is available through the `renderTarget` prop. Here, Popover provides you with all the
     information necessary to render a functional popover with a [render prop](https://reactjs.org/docs/render-props.html).
@@ -142,7 +144,7 @@ automatically by enabling the modifiers `flip` and `preventOverflow`.
 
 @### Modifiers
 
-Modifiers allow us to customize Popper.js's positioning behavior. `Popover` configures several of Popper.js's built-in modifiers
+Modifiers allow us to customize Popper.js's positioning behavior. __Popover__ configures several of Popper.js's built-in modifiers
 to handle things such as flipping, preventing overflow from a boundary element, and positioning the arrow.
 
 You may override the default modifiers with the `modifiers` prop, which is an object with key-value pairs representing the
@@ -173,7 +175,7 @@ user interaction under the current `interactionKind`.
 Note that there are cases where `onInteraction` is invoked with an unchanged open state.
 It is important to pay attention to the value of the `nextOpenState` parameter and determine
 in your application logic whether you should care about a particular invocation (for instance,
-if the `nextOpenState` is not the same as the `Popover`'s current state).
+if the `nextOpenState` is not the same as the __Popover__'s current state).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h5 class="@ns-heading">Disabling controlled popovers</h5>
@@ -347,15 +349,15 @@ everything else on the page without needing to manually adjust z-indices, and Po
 
 @### Dark theme
 
-`Popover` automatically detects whether its trigger is nested inside a `.@ns-dark` container and applies the
+__Popover__ automatically detects whether its trigger is nested inside a `.@ns-dark` container and applies the
 same class to itself. You can also explicitly apply the dark theme to the React component by providing the prop
 `popoverClassName="@ns-dark"`.
 
-As a result, any component that you place inside a `Popover` (such as a `Menu`) automatically
-inherits the dark theme styles. Note that [`Tooltip`](#core/components/tooltip) uses `Popover` internally,
+As a result, any component that you place inside a __Popover__ (such as a `Menu`) automatically
+inherits the dark theme styles. Note that [`Tooltip`](#core/components/tooltip) uses __Popover__ internally,
 so it also benefits from this behavior.
 
-This behavior can be disabled (if the `Popover` uses a `Portal`) via the `inheritDarkTheme` prop.
+This behavior can be disabled (if the __Popover__ uses a `Portal`) via the `inheritDarkTheme` prop.
 
 @### Sizing
 
@@ -402,7 +404,7 @@ Your best resource for strategies in popover testing is
 
 #### Animation delays
 
-`Popover` can be difficult to test because it uses `Portal` to inject its contents elsewhere in the
+__Popover__ can be difficult to test because it uses `Portal` to inject its contents elsewhere in the
 DOM (outside the usual flow); this can be simplified by setting `usePortal={false}` in tests.
 Hover interactions can also be tricky due to delays and transitions; this can be resolved by
 zeroing the default hover delays.
@@ -415,7 +417,7 @@ zeroing the default hover delays.
 
 #### Rendering delays
 
-`Popover` delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to the target,
+__Popover__ delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to the target,
 which may require special handling depending on the current [`interactionKind`](#core/components/popover.interactions).
 Popper.js also throttles rendering updates to improve performance. If your components are not updating in a synchronous fashion
 as expected, you may need to introduce a `setTimeout` to wait for asynchronous Popover rendering to catch up:
@@ -447,7 +449,7 @@ setTimeout(() => {
 
 #### Element refs
 
-If `usePortal={false}` rendering is not an option, `Popover` instances expose `popoverElement` and
+If `usePortal={false}` rendering is not an option, __Popover__ instances expose `popoverElement` and
 `targetElement` refs of the actual DOM elements. Importantly, `popoverElement` points to the
 `.@ns-popover` element inside the `Portal` so you can use it to easily query popover contents without
 knowing precisely where they are in the DOM. These properties exist primarily to simplify testing;
