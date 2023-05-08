@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { useLayoutEffect, useRef, useState } from "react";
+import * as React from "react";
 
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
@@ -57,13 +57,13 @@ export const Text: React.FC<TextProps & Omit<React.HTMLAttributes<HTMLElement>, 
     ellipsize,
     ...htmlProps
 }) => {
-    const textRef = useRef<HTMLElement>();
-    const [textContent, setTextContent] = useState<string>("");
-    const [isContentOverflowing, setIsContentOverflowing] = useState<boolean>();
+    const textRef = React.useRef<HTMLElement>();
+    const [textContent, setTextContent] = React.useState<string>("");
+    const [isContentOverflowing, setIsContentOverflowing] = React.useState<boolean>();
 
     // try to be conservative about running this effect, since querying scrollWidth causes the browser to reflow / recalculate styles,
     // which can be very expensive for long lists (for example, in long Menus)
-    useLayoutEffect(() => {
+    React.useLayoutEffect(() => {
         if (textRef.current?.textContent != null) {
             setIsContentOverflowing(ellipsize! && textRef.current.scrollWidth > textRef.current.clientWidth);
             setTextContent(textRef.current.textContent);

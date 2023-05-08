@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { forwardRef, useEffect, useState } from "react";
+import * as React from "react";
 
 import { IconComponent, IconName, Icons, IconSize, SVGIconProps } from "@blueprintjs/icons";
 
@@ -58,90 +58,91 @@ export interface IconProps extends IntentProps, Props, SVGIconProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/icon
  */
-export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> = forwardRef<any, IconProps>(
-    (props, ref) => {
-        const { icon } = props;
-        if (icon == null || typeof icon === "boolean") {
-            return null;
-        } else if (typeof icon !== "string") {
-            return icon;
-        }
+export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> = React.forwardRef<
+    any,
+    IconProps
+>((props, ref) => {
+    const { icon } = props;
+    if (icon == null || typeof icon === "boolean") {
+        return null;
+    } else if (typeof icon !== "string") {
+        return icon;
+    }
 
-        const {
-            autoLoad,
-            className,
-            color,
-            size,
-            icon: _icon,
-            intent,
-            tagName,
-            svgProps,
-            title,
-            htmlTitle,
-            ...htmlProps
-        } = props;
-        const [Component, setIconComponent] = useState<IconComponent>();
+    const {
+        autoLoad,
+        className,
+        color,
+        size,
+        icon: _icon,
+        intent,
+        tagName,
+        svgProps,
+        title,
+        htmlTitle,
+        ...htmlProps
+    } = props;
+    const [Component, setIconComponent] = React.useState<IconComponent>();
 
-        useEffect(() => {
-            let shouldCancelIconLoading = false;
-            if (typeof icon === "string") {
-                if (autoLoad) {
-                    // load the module to get the component (it will be cached if it's the same icon)
-                    Icons.load(icon).then(() => {
-                        // if this effect expired by the time icon loaded, then don't set state
-                        if (!shouldCancelIconLoading) {
-                            setIconComponent(Icons.getComponent(icon));
-                        }
-                    });
-                } else {
-                    setIconComponent(Icons.getComponent(icon));
-                }
+    React.useEffect(() => {
+        let shouldCancelIconLoading = false;
+        if (typeof icon === "string") {
+            if (autoLoad) {
+                // load the module to get the component (it will be cached if it's the same icon)
+                Icons.load(icon).then(() => {
+                    // if this effect expired by the time icon loaded, then don't set state
+                    if (!shouldCancelIconLoading) {
+                        setIconComponent(Icons.getComponent(icon));
+                    }
+                });
+            } else {
+                setIconComponent(Icons.getComponent(icon));
             }
-            return () => {
-                shouldCancelIconLoading = true;
-            };
-        }, [autoLoad, icon]);
-
-        if (Component == null) {
-            // fall back to icon font if unloaded or unable to load SVG implementation
-            const sizeClass =
-                size === IconSize.STANDARD
-                    ? Classes.ICON_STANDARD
-                    : size === IconSize.LARGE
-                    ? Classes.ICON_LARGE
-                    : undefined;
-            return React.createElement(tagName!, {
-                ...htmlProps,
-                "aria-hidden": title ? undefined : true,
-                className: classNames(
-                    Classes.ICON,
-                    sizeClass,
-                    Classes.iconClass(icon),
-                    Classes.intentClass(intent),
-                    className,
-                ),
-                "data-icon": icon,
-                ref,
-                title: htmlTitle,
-            });
-        } else {
-            return (
-                <Component
-                    // don't forward Classes.iconClass(icon) here, since the component template will render that class
-                    className={classNames(Classes.intentClass(intent), className)}
-                    color={color}
-                    size={size}
-                    tagName={tagName}
-                    title={title}
-                    htmlTitle={htmlTitle}
-                    ref={ref}
-                    svgProps={svgProps}
-                    {...htmlProps}
-                />
-            );
         }
-    },
-);
+        return () => {
+            shouldCancelIconLoading = true;
+        };
+    }, [autoLoad, icon]);
+
+    if (Component == null) {
+        // fall back to icon font if unloaded or unable to load SVG implementation
+        const sizeClass =
+            size === IconSize.STANDARD
+                ? Classes.ICON_STANDARD
+                : size === IconSize.LARGE
+                ? Classes.ICON_LARGE
+                : undefined;
+        return React.createElement(tagName!, {
+            ...htmlProps,
+            "aria-hidden": title ? undefined : true,
+            className: classNames(
+                Classes.ICON,
+                sizeClass,
+                Classes.iconClass(icon),
+                Classes.intentClass(intent),
+                className,
+            ),
+            "data-icon": icon,
+            ref,
+            title: htmlTitle,
+        });
+    } else {
+        return (
+            <Component
+                // don't forward Classes.iconClass(icon) here, since the component template will render that class
+                className={classNames(Classes.intentClass(intent), className)}
+                color={color}
+                size={size}
+                tagName={tagName}
+                title={title}
+                htmlTitle={htmlTitle}
+                ref={ref}
+                svgProps={svgProps}
+                {...htmlProps}
+            />
+        );
+    }
+});
 Icon.defaultProps = {
     autoLoad: true,
     size: IconSize.STANDARD,

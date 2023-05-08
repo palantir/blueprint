@@ -15,7 +15,7 @@
  */
 
 import { ResizeObserver, ResizeObserverEntry } from "@juggle/resize-observer";
-import React, { cloneElement, createRef } from "react";
+import * as React from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
 
@@ -68,7 +68,7 @@ export interface ResizeSensorProps {
 export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
-    private targetRef = createRef<HTMLElement>();
+    private targetRef = React.createRef<HTMLElement>();
 
     private prevElement: HTMLElement | undefined = undefined;
 
@@ -82,7 +82,7 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
             return onlyChild;
         }
 
-        return cloneElement(onlyChild, { ref: this.targetRef });
+        return React.cloneElement(onlyChild, { ref: this.targetRef });
     }
 
     public componentDidMount() {

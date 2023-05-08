@@ -15,7 +15,7 @@
  */
 
 import cloneDeep from "lodash/cloneDeep";
-import React, { useCallback, useReducer } from "react";
+import * as React from "react";
 
 import { Classes, ContextMenu, Icon, Intent, Tooltip, Tree, TreeNodeInfo } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
@@ -62,27 +62,30 @@ function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
 }
 
 export const TreeExample: React.FC<ExampleProps> = props => {
-    const [nodes, dispatch] = useReducer(treeExampleReducer, INITIAL_STATE);
+    const [nodes, dispatch] = React.useReducer(treeExampleReducer, INITIAL_STATE);
 
-    const handleNodeClick = useCallback((node: TreeNodeInfo, nodePath: NodePath, e: React.MouseEvent<HTMLElement>) => {
-        const originallySelected = node.isSelected;
-        if (!e.shiftKey) {
-            dispatch({ type: "DESELECT_ALL" });
-        }
-        dispatch({
-            payload: { path: nodePath, isSelected: originallySelected == null ? true : !originallySelected },
-            type: "SET_IS_SELECTED",
-        });
-    }, []);
+    const handleNodeClick = React.useCallback(
+        (node: TreeNodeInfo, nodePath: NodePath, e: React.MouseEvent<HTMLElement>) => {
+            const originallySelected = node.isSelected;
+            if (!e.shiftKey) {
+                dispatch({ type: "DESELECT_ALL" });
+            }
+            dispatch({
+                payload: { path: nodePath, isSelected: originallySelected == null ? true : !originallySelected },
+                type: "SET_IS_SELECTED",
+            });
+        },
+        [],
+    );
 
-    const handleNodeCollapse = useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
+    const handleNodeCollapse = React.useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
         dispatch({
             payload: { path: nodePath, isExpanded: false },
             type: "SET_IS_EXPANDED",
         });
     }, []);
 
-    const handleNodeExpand = useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
+    const handleNodeExpand = React.useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
         dispatch({
             payload: { path: nodePath, isExpanded: true },
             type: "SET_IS_EXPANDED",

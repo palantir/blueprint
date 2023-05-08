@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { forwardRef, useCallback, useRef, useState } from "react";
+import * as React from "react";
 
 import { HTMLDivProps, Props, removeNonHTMLProps } from "@blueprintjs/core";
 import { createKeyEventHandler } from "@blueprintjs/docs-theme";
@@ -44,18 +44,18 @@ export interface ClickToCopyProps extends Props, React.RefAttributes<any>, HTMLD
  *  - `[data-copied-message="<message>"]` will be shown when the element has been copied.
  * The message is reset to default when the user mouses off the element after copying it.
  */
-export const ClickToCopy: React.FC<ClickToCopyProps> = forwardRef<any, ClickToCopyProps>((props, ref) => {
+export const ClickToCopy: React.FC<ClickToCopyProps> = React.forwardRef<any, ClickToCopyProps>((props, ref) => {
     const { className, children, copiedClassName, value } = props;
-    const [hasCopied, setHasCopied] = useState(false);
-    const inputRef = useRef<HTMLInputElement>();
+    const [hasCopied, setHasCopied] = React.useState(false);
+    const inputRef = React.useRef<HTMLInputElement>();
 
-    const copy = useCallback(async () => {
+    const copy = React.useCallback(async () => {
         inputRef.current?.select();
         await navigator.clipboard.writeText(inputRef.current.value);
         setHasCopied(true);
     }, [inputRef]);
 
-    const handleClick = useCallback(
+    const handleClick = React.useCallback(
         async (e: React.MouseEvent<HTMLDivElement>) => {
             await copy();
             props.onClick?.(e);
@@ -63,7 +63,7 @@ export const ClickToCopy: React.FC<ClickToCopyProps> = forwardRef<any, ClickToCo
         [copy, props.onClick],
     );
 
-    const handleMouseLeave = useCallback(
+    const handleMouseLeave = React.useCallback(
         (e: React.MouseEvent<HTMLDivElement>) => {
             setHasCopied(false);
             props.onMouseLeave?.(e);
@@ -71,11 +71,11 @@ export const ClickToCopy: React.FC<ClickToCopyProps> = forwardRef<any, ClickToCo
         [props.onMouseLeave],
     );
 
-    const handleInputBlur = useCallback(() => {
+    const handleInputBlur = React.useCallback(() => {
         setHasCopied(false);
     }, []);
 
-    const handleKeyDown = useCallback(
+    const handleKeyDown = React.useCallback(
         createKeyEventHandler(
             {
                 Enter: copy,

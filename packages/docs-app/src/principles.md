@@ -2,11 +2,9 @@
 
 @## Browser support
 
-**Blueprint supports Chrome, Firefox, Safari, IE 11, and Microsoft Edge.**
+**Blueprint supports Chrome, Firefox, Safari, and Microsoft Edge.**
 
-You may experience degraded visuals in IE.
-IE 10 and below are unsupported due to their lack of support for CSS Flexbox Layout.
-These browsers were deprecated by Microsoft (end of support) in [January 2016](https://www.microsoft.com/en-us/WindowsForBusiness/End-of-IE-support).
+Internet Explorer (IE) is no longer supported as of Blueprint v5.0 (its support was ended by Microsoft in June 2022).
 
 @## API Contract
 

@@ -15,7 +15,7 @@
  */
 
 import { isTsClass, isTsMethod, ITag, ITsClass, ITypescriptPluginData } from "@documentalist/client";
-import React, { useContext } from "react";
+import * as React from "react";
 
 import { Props } from "@blueprintjs/core";
 
@@ -24,7 +24,7 @@ import { DocumentationContext } from "../common/context";
 import { MethodTable } from "../components/typescript/methodTable";
 
 export const Method: React.FC<ITag & Props> = ({ className, value }) => {
-    const { getDocsData } = useContext(DocumentationContext);
+    const { getDocsData } = React.useContext(DocumentationContext);
     const { typescript } = getDocsData() as ITypescriptPluginData;
     const member = typescript[value];
 
