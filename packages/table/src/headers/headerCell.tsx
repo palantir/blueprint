@@ -72,6 +72,11 @@ export interface HeaderCellProps extends Props {
      * CSS styles for the top level element.
      */
     style?: React.CSSProperties;
+
+    /**
+     * Required for Draggable to attach a DOM ref.
+     */
+    targetRef?: React.RefObject<HTMLElement>;
 }
 
 export interface InternalHeaderCellProps extends HeaderCellProps {
@@ -124,6 +129,7 @@ export class HeaderCell extends React.Component<InternalHeaderCellProps, HeaderC
                 content={this.props.menuRenderer?.(this.props.index)}
                 disabled={!hasMenu}
                 style={this.props.style}
+                ref={this.props.targetRef}
             >
                 {this.props.children}
             </ContextMenu>

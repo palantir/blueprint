@@ -55,6 +55,14 @@ export interface EditableTextProps extends IntentProps, Props {
      */
     disabled?: boolean;
 
+    /**
+     * Ref to attach to the root element rendered by this component.
+     *
+     * N.B. this may be renamed to simply `ref` in a future major version of Blueprint, when this class component is
+     * refactored into a function.
+     */
+    elementRef?: React.RefObject<HTMLDivElement>;
+
     /** Whether the component is currently being edited. */
     isEditing?: boolean;
 
@@ -205,7 +213,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
     }
 
     public render() {
-        const { alwaysRenderInput, disabled, multiline, contentId } = this.props;
+        const { alwaysRenderInput, disabled, elementRef, multiline, contentId } = this.props;
         const value = this.props.value ?? this.state.value;
         const hasValue = value != null && value !== "";
 
@@ -247,7 +255,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         const spanProps: React.HTMLProps<HTMLSpanElement> = contentId != null ? { id: contentId } : {};
 
         return (
-            <div className={classes} onFocus={this.handleFocus} tabIndex={tabIndex}>
+            <div className={classes} onFocus={this.handleFocus} tabIndex={tabIndex} ref={elementRef}>
                 {alwaysRenderInput || this.state.isEditing ? this.renderInput(value) : undefined}
                 {shouldHideContents ? undefined : (
                     <span

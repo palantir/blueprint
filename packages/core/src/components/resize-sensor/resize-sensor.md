@@ -1,6 +1,6 @@
 @# Resize sensor
 
-ResizeSensor observes the DOM and provides a callback for `"resize"` events on a single child element.
+__ResizeSensor__ observes the DOM and provides a callback for `"resize"` events on a single child element.
 It is a thin wrapper around [`ResizeObserver`][resizeobserver] to provide React bindings.
 
 [resizeobserver]: https://developers.google.com/web/updates/2016/10/resizeobserver

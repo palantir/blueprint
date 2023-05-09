@@ -39,6 +39,8 @@ export class TableBody2 extends AbstractComponent<TableBodyProps> {
 
     private activationCell: CellCoordinates | null = null;
 
+    private containerRef = React.createRef<HTMLDivElement>();
+
     public shouldComponentUpdate(nextProps: TableBodyProps) {
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: DEEP_COMPARE_KEYS }) ||
@@ -66,12 +68,14 @@ export class TableBody2 extends AbstractComponent<TableBodyProps> {
                 onSelectionEnd={this.handleSelectionEnd}
                 selectedRegions={this.props.selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
+                targetRef={this.containerRef}
             >
                 <ContextMenu
                     className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
                     content={this.renderContextMenu}
                     disabled={this.props.bodyContextMenuRenderer === undefined}
                     onContextMenu={this.handleContextMenu}
+                    ref={this.containerRef}
                     style={style}
                 >
                     <TableBodyCells

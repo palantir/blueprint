@@ -55,7 +55,7 @@ export interface ResizeSensorProps {
      * If you attach a `ref` to the child yourself when rendering it, you must pass the
      * same value here (otherwise, ResizeSensor won't be able to attach its own).
      */
-    targetRef?: React.Ref<any>;
+    targetRef?: React.RefObject<HTMLElement>;
 }
 
 /**
@@ -68,7 +68,7 @@ export interface ResizeSensorProps {
 export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
-    private targetRef = React.createRef<HTMLElement>();
+    private targetRef = this.props.targetRef ?? React.createRef<HTMLElement>();
 
     private prevElement: HTMLElement | undefined = undefined;
 

@@ -100,6 +100,7 @@ export class ResizeHandle extends React.PureComponent<ResizeHandleProps, ResizeH
                 onDoubleClick={this.handleDoubleClick}
                 onDragEnd={this.handleDragEnd}
                 onDragMove={this.handleDragMove}
+                // N.B. no need to specify targetRef since the child is a native DOM element that accepts ref injection
             >
                 <div className={targetClasses}>
                     <div className={handleClasses} />

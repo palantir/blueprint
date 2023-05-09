@@ -21,8 +21,8 @@ import { Utils as CoreUtils } from "@blueprintjs/core";
 import type { FocusedCellCoordinates } from "../common/cellTypes";
 import { Utils } from "../common/utils";
 import { Region, RegionCardinality, Regions } from "../regions";
-import { Draggable, DraggableProps } from "./draggable";
-import { CoordinateData } from "./dragTypes";
+import { Draggable } from "./draggable";
+import { CoordinateData, DraggableChildrenProps, DragHandler } from "./dragTypes";
 
 export interface ReorderableProps {
     /**
@@ -64,10 +64,7 @@ export interface ReorderableProps {
     selectedRegions?: Region[];
 }
 
-export interface DragReorderable extends ReorderableProps {
-    /** Element to drag & reorder. */
-    children?: React.ReactNode;
-
+export interface DragReorderable extends ReorderableProps, DraggableChildrenProps {
     /**
      * Whether the reordering behavior is disabled.
      *
@@ -105,15 +102,15 @@ export class DragReorderable extends React.PureComponent<DragReorderable> {
     private selectedRegionLength: number = 0;
 
     public render() {
-        const draggableProps = this.getDraggableProps();
+        const draggableProps = this.getDraggableHandlers();
         return (
-            <Draggable {...draggableProps} preventDefault={false}>
+            <Draggable {...draggableProps} preventDefault={false} targetRef={this.props.targetRef}>
                 {this.props.children}
             </Draggable>
         );
     }
 
-    private getDraggableProps(): DraggableProps {
+    private getDraggableHandlers(): DragHandler {
         return this.props.onReordered == null
             ? {}
             : {

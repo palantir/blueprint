@@ -827,7 +827,7 @@ describe("<Popover>", () => {
 
         const instance = wrapper.instance() as Popover<React.HTMLProps<HTMLButtonElement>>;
         wrapper.popoverElement = instance.popoverElement!;
-        wrapper.targetElement = instance.targetElement!;
+        wrapper.targetElement = instance.targetRef.current!;
         wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
             const actual = wrapper!.findClass(className);
             if (expected) {
