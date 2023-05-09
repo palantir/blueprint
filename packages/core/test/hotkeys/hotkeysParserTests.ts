@@ -34,12 +34,12 @@ describe("HotkeysParser", () => {
             parsedKeyCombo: KeyCombo;
         }
 
-        const makeComboTest = (combo: string, event: KeyboardEvent) => {
+        const makeComboTest = (combo: string, event: Partial<KeyboardEvent>) => {
             return {
                 combo,
-                eventKeyCombo: getKeyCombo(event),
+                eventKeyCombo: getKeyCombo(event as KeyboardEvent),
                 parsedKeyCombo: parseKeyCombo(combo),
-                stringKeyCombo: getKeyComboString(event),
+                stringKeyCombo: getKeyComboString(event as KeyboardEvent),
             };
         };
 
@@ -58,8 +58,7 @@ describe("HotkeysParser", () => {
                 Array.apply(null, Array(26)).map((_: any, i: number) => {
                     const charString = String.fromCharCode(alpha + i).toLowerCase();
                     const combo = charString;
-                    const event: KeyboardEvent = { key: charString } as any;
-                    return makeComboTest(combo, event);
+                    return makeComboTest(combo, { key: charString });
                 }),
             );
         });
@@ -70,8 +69,7 @@ describe("HotkeysParser", () => {
                 Array.apply(null, Array(26)).map((_: any, i: number) => {
                     const charString = String.fromCharCode(alpha + i).toLowerCase();
                     const combo = charString.toUpperCase();
-                    const event: KeyboardEvent = { key: charString } as any;
-                    return makeComboTest(combo, event);
+                    return makeComboTest(combo, { key: charString });
                 }),
                 false,
             ); // don't compare string combos
@@ -83,8 +81,7 @@ describe("HotkeysParser", () => {
                 Array.apply(null, Array(26)).map((_: any, i: number) => {
                     const charString = String.fromCharCode(alpha + i).toLowerCase();
                     const combo = "shift + " + charString;
-                    const event: KeyboardEvent = { shiftKey: true, key: charString } as any;
-                    return makeComboTest(combo, event);
+                    return makeComboTest(combo, { shiftKey: true, key: charString });
                 }),
             );
         });
@@ -111,9 +108,9 @@ describe("HotkeysParser", () => {
         // these tests no longer make sense with the migration from key codes to named keys, they can likely be deleted
         it.skip("adds Shift to keys that imply it", () => {
             const tests = [] as ComboTest[];
-            tests.push(makeComboTest("!", { shiftKey: true, key: "!" } as any as KeyboardEvent));
-            tests.push(makeComboTest("@", { shiftKey: true, key: "@" } as any as KeyboardEvent));
-            tests.push(makeComboTest("{", { shiftKey: true, key: "{" } as any as KeyboardEvent));
+            tests.push(makeComboTest("!", { shiftKey: true, key: "!" }));
+            tests.push(makeComboTest("@", { shiftKey: true, key: "@" }));
+            tests.push(makeComboTest("{", { shiftKey: true, key: "{" }));
             // don't verify the strings because these will be converted to
             // `Shift + 1`, etc.
             verifyCombos(tests, false);
@@ -123,6 +120,15 @@ describe("HotkeysParser", () => {
             expect(() => parseKeyCombo("ctrl + +")).to.throw(/failed to parse/i);
 
             expect(comboMatches(parseKeyCombo("cmd + plus"), parseKeyCombo("meta + plus"))).to.be.true;
+        });
+
+        it("handles space key", () => {
+            const tests = [] as ComboTest[];
+            tests.push(
+                makeComboTest("space", { key: " " }),
+                makeComboTest("ctrl + space", { ctrlKey: true, key: " " }),
+            );
+            verifyCombos(tests);
         });
 
         it("applies aliases", () => {
