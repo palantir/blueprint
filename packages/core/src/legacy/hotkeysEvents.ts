@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to HotkeysDialog2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation */
+
 import { Children, ReactNode } from "react";
 
 import { isElementOfType } from "../common/utils";
