@@ -166,14 +166,20 @@ export class Popover<
      * DOM element that contains the popover.
      * When `usePortal={true}`, this element will be portaled outside the usual DOM flow,
      * so this reference can be very useful for testing.
+     *
+     * @public for testing
      */
     public popoverElement: HTMLElement | null = null;
 
     /** Popover ref handler */
     private popoverRef: React.Ref<HTMLDivElement> = refHandler(this, "popoverElement", this.props.popoverRef);
 
-    /** Target DOM element ref */
-    private targetRef = React.createRef<HTMLElement>();
+    /**
+     * Target DOM element ref.
+     *
+     * @public for testing
+     */
+    public targetRef = React.createRef<HTMLElement>();
 
     private cancelOpenTimeout?: () => void;
 
