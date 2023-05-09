@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { forwardRef } from "react";
+import * as React from "react";
 
 import { IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
@@ -115,7 +115,7 @@ export interface TagProps
  *
  * @see https://blueprintjs.com/docs/#core/components/tag
  */
-export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
+export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
     const {
         active,
         children,

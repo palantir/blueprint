@@ -15,13 +15,13 @@
  */
 
 import { ITag } from "@documentalist/client";
-import React, { useContext } from "react";
+import * as React from "react";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 import { DocumentationContext } from "../common/context";
 
 export const SeeTag: React.FC<ITag> = ({ value }) => {
-    const { renderType } = useContext(DocumentationContext);
+    const { renderType } = React.useContext(DocumentationContext);
     return <p>See: {renderType(value)}</p>;
 };
 SeeTag.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.SeeTag`;

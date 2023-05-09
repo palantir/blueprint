@@ -16,7 +16,7 @@
 
 import { isTag, ITsMethod, ITsParameter, ITsSignature } from "@documentalist/client";
 import classNames from "classnames";
-import React, { useCallback, useContext } from "react";
+import * as React from "react";
 
 import { Code, Intent, Props, Tag } from "@blueprintjs/core";
 
@@ -33,9 +33,9 @@ export interface MethodTableProps extends Props {
 }
 
 export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => {
-    const { renderBlock, renderType } = useContext(DocumentationContext);
+    const { renderBlock, renderType } = React.useContext(DocumentationContext);
 
-    const renderPropRow = useCallback((parameter: ITsParameter) => {
+    const renderPropRow = React.useCallback((parameter: ITsParameter) => {
         const {
             flags: { isDeprecated, isExternal, isOptional },
             name,
@@ -80,7 +80,7 @@ export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => 
         );
     }, []);
 
-    const renderReturnSignature = useCallback((entry?: ITsSignature) => {
+    const renderReturnSignature = React.useCallback((entry?: ITsSignature) => {
         if (entry == null) {
             return null;
         }

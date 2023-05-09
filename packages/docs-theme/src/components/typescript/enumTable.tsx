@@ -16,7 +16,7 @@
 
 import { ITsEnum, ITsEnumMember } from "@documentalist/client";
 import classNames from "classnames";
-import React, { useCallback, useContext } from "react";
+import * as React from "react";
 
 import { Props } from "@blueprintjs/core";
 
@@ -33,9 +33,9 @@ export interface EnumTableProps extends Props {
 }
 
 export const EnumTable: React.FC<EnumTableProps> = props => {
-    const { renderBlock } = useContext(DocumentationContext);
+    const { renderBlock } = React.useContext(DocumentationContext);
 
-    const renderPropRow = useCallback(
+    const renderPropRow = React.useCallback(
         (entry: ITsEnumMember) => {
             const {
                 flags: { isDeprecated, isExternal },

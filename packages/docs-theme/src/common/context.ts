@@ -22,7 +22,7 @@ import {
     ITsDocBase,
     ITypescriptPluginData,
 } from "@documentalist/client";
-import React, { createContext } from "react";
+import * as React from "react";
 
 /* eslint-disable @typescript-eslint/ban-types */
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
@@ -68,7 +68,7 @@ export interface DocumentationContextApi {
     showApiDocs: (name: string) => void;
 }
 
-export const DocumentationContext = createContext<DocumentationContextApi>({
+export const DocumentationContext = React.createContext<DocumentationContextApi>({
     getDocsData: () => ({} as DocsData),
     renderBlock: (_block: IBlock) => undefined,
     renderType: (type: string) => type,

@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { useEffect, useState } from "react";
+import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
 
@@ -31,10 +31,10 @@ interface PianoKeyProps {
 }
 
 export const PianoKey: React.FC<PianoKeyProps> = ({ context, hotkey, note, pressed }) => {
-    const [envelope, setEnvelope] = useState<Envelope>();
+    const [envelope, setEnvelope] = React.useState<Envelope>();
 
     // only create oscillator and envelop once on mount
-    useEffect(() => {
+    React.useEffect(() => {
         if (context !== undefined) {
             const oscillator = new Oscillator(context, Scale[note]);
             const newEnvelope = new Envelope(context);
@@ -45,7 +45,7 @@ export const PianoKey: React.FC<PianoKeyProps> = ({ context, hotkey, note, press
     }, [context]);
 
     // start/stop envelope when this key is pressed down/up
-    useEffect(() => {
+    React.useEffect(() => {
         if (pressed) {
             envelope?.on();
         } else {

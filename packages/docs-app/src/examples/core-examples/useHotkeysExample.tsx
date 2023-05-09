@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import * as React from "react";
 
 import { useHotkeys } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
@@ -22,10 +22,10 @@ import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { PianoKey } from "./audio";
 
 export const UseHotkeysExample: React.FC<ExampleProps> = props => {
-    const [audioContext, setAudioContext] = useState<AudioContext>();
+    const [audioContext, setAudioContext] = React.useState<AudioContext>();
 
-    const pianoRef = useRef<HTMLDivElement>();
-    const focusPiano = useCallback(() => {
+    const pianoRef = React.useRef<HTMLDivElement>();
+    const focusPiano = React.useCallback(() => {
         pianoRef?.current.focus();
         if (typeof window.AudioContext !== "undefined" && audioContext === undefined) {
             setAudioContext(new AudioContext());
@@ -34,13 +34,13 @@ export const UseHotkeysExample: React.FC<ExampleProps> = props => {
 
     // create a dictionary of key states and updater functions
     const keys = Array.apply(null, Array(24))
-        .map(() => useState(() => false), [])
+        .map(() => React.useState(() => false), [])
         .map(([pressed, setPressed]) => ({
             pressed,
             setPressed,
         }));
 
-    const hotkeys = useMemo(
+    const hotkeys = React.useMemo(
         () => [
             {
                 combo: "shift + P",

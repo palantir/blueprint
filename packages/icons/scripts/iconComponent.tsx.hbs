@@ -14,13 +14,13 @@
  */
 
 import classNames from "classnames";
-import React, { forwardRef } from "react";
+import * as React from "react";
 import type { SVGIconProps } from "../../svgIconProps";
 import { IconSize } from "../../iconSize";
 import * as Classes from "../../classes";
 import { uniqueId } from "../../jsUtils";
 
-export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, SVGIconProps>(({
+export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<any, SVGIconProps>(({
     className,
     color,
     size = IconSize.STANDARD,

@@ -15,7 +15,7 @@
  */
 
 import { isTsClass, isTsInterface, ITsDocBase } from "@documentalist/client";
-import React, { useContext } from "react";
+import * as React from "react";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContext } from "../../common/context";
@@ -25,7 +25,7 @@ interface ApiHeaderProps extends ITsDocBase {
 }
 
 export const ApiHeader: React.FC<ApiHeaderProps> = props => {
-    const { renderType, renderViewSourceLinkText } = useContext(DocumentationContext);
+    const { renderType, renderViewSourceLinkText } = React.useContext(DocumentationContext);
     let inheritance: React.ReactNode = "";
 
     if (isTsClass(props) || isTsInterface(props)) {

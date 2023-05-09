@@ -115,6 +115,7 @@ const INVALID_PROPS = [
     "asyncControl", // InputGroupProps
     "containerRef",
     "current",
+    "elementRef", // not used anymore in Blueprint v5.x, but kept for backcompat if consumers use this naming pattern
     "fill",
     "icon",
     "inputClassName",

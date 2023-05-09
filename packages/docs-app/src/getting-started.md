@@ -6,10 +6,9 @@ Blueprint is available as a collection of NPM packages under the `@blueprintjs`
 scope. Each package appears at the top level of the sidebar to the left, along
 with its current version.
 
-Each package contains a CSS file and a collection of CommonJS modules exposing React components.
-The `main` module exports all symbols from all modules so you don't have to import individual files
-(though you can if you want to). The JavaScript components are stable and their APIs adhere to
-[semantic versioning](http://semver.org/).
+Each package contains a CSS file and a collection of ES modules exposing React components (CommonJS modules are
+also available, for backwards-compatibility). The `main` module exports all symbols that are considered public API.
+The JavaScript components are stable and their APIs adhere to [semantic versioning](http://semver.org/).
 
 1.  Install the core package and its peer dependencies with an NPM client like
     `npm` or `yarn`, pulling in all relevant dependencies:
