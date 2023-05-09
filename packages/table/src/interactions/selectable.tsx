@@ -25,7 +25,7 @@ import { Utils } from "../common/utils";
 import { Region, Regions } from "../regions";
 import { DragEvents } from "./dragEvents";
 import { Draggable } from "./draggable";
-import { CoordinateData, DragHandler } from "./dragTypes";
+import { CoordinateData, DraggableChildrenProps, DragHandler } from "./dragTypes";
 
 export type SelectedRegionTransform = (
     region: Region,
@@ -87,12 +87,7 @@ export interface SelectableProps {
     selectedRegionTransform?: SelectedRegionTransform;
 }
 
-export interface DragSelectableProps extends SelectableProps {
-    /**
-     * Single child, must be an element and not a string or fragment.
-     */
-    children: JSX.Element;
-
+export interface DragSelectableProps extends SelectableProps, DraggableChildrenProps {
     /**
      * A list of CSS selectors that should _not_ trigger selection when a `mousedown` occurs inside of them.
      */
@@ -133,7 +128,7 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
     public render() {
         const draggableProps = this.getDraggableHandlers();
         return (
-            <Draggable {...draggableProps} preventDefault={false}>
+            <Draggable {...draggableProps} preventDefault={false} targetRef={this.props.targetRef}>
                 {this.props.children}
             </Draggable>
         );

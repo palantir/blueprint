@@ -18,12 +18,12 @@ export {
     /** @deprecated import ColumnHeaderCell instead */
     ColumnHeaderCell as ColumnHeaderCell2,
     /** @deprecated import ColumnHeaderCellProps instead */
-    ColumnHeaderCellProps as ColumnHeaderCellProps2,
+    type ColumnHeaderCellProps as ColumnHeaderCellProps2,
 } from "./headers/columnHeaderCell";
 
 export {
     /** @deprecated import RowHeaderCell instead */
     RowHeaderCell as RowHeaderCell2,
     /** @deprecated import RowHeaderCellProps instead */
-    RowHeaderCellProps as RowHeaderCellProps2,
+    type RowHeaderCellProps as RowHeaderCellProps2,
 } from "./headers/rowHeaderCell";

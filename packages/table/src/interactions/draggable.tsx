@@ -19,14 +19,9 @@ import * as React from "react";
 import { Utils as CoreUtils, Props } from "@blueprintjs/core";
 
 import { DragEvents } from "./dragEvents";
-import { DragHandler } from "./dragTypes";
+import { DraggableChildrenProps, DragHandler } from "./dragTypes";
 
-export interface DraggableProps extends Props, DragHandler {
-    /**
-     * Single child, must be an element and not a string or fragment.
-     */
-    children: JSX.Element;
-}
+export type DraggableProps = Props & DragHandler & DraggableChildrenProps;
 
 const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof DraggableProps>;
 
@@ -65,10 +60,16 @@ export class Draggable extends React.PureComponent<DraggableProps> {
 
     private events = new DragEvents();
 
-    private targetRef = React.createRef<HTMLElement>();
+    private targetRef = this.props.targetRef ?? React.createRef<HTMLElement>();
 
     public render() {
         const onlyChild = React.Children.only(this.props.children);
+
+        // if we're provided a ref to the child already, we don't need to attach one ourselves
+        if (this.props.targetRef !== undefined) {
+            return onlyChild;
+        }
+
         return React.cloneElement(onlyChild, { ref: this.targetRef });
     }
 

@@ -29,6 +29,7 @@ export interface ContextMenuTargetWrapperProps extends Props {
     children?: React.ReactNode;
     renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element | undefined;
     style: React.CSSProperties;
+    targetRef?: React.RefObject<HTMLDivElement>;
 }
 
 /**
@@ -40,9 +41,9 @@ export interface ContextMenuTargetWrapperProps extends Props {
 @ContextMenuTargetLegacy
 export class ContextMenuTargetWrapper extends React.PureComponent<ContextMenuTargetWrapperProps> {
     public render() {
-        const { className, children, style } = this.props;
+        const { className, children, targetRef, style } = this.props;
         return (
-            <div className={className} style={style}>
+            <div className={className} style={style} ref={targetRef}>
                 {children}
             </div>
         );

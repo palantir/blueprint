@@ -22,7 +22,7 @@ import type { FocusedCellCoordinates } from "../common/cellTypes";
 import { Utils } from "../common/utils";
 import { Region, RegionCardinality, Regions } from "../regions";
 import { Draggable } from "./draggable";
-import { CoordinateData, DragHandler } from "./dragTypes";
+import { CoordinateData, DraggableChildrenProps, DragHandler } from "./dragTypes";
 
 export interface ReorderableProps {
     /**
@@ -64,12 +64,7 @@ export interface ReorderableProps {
     selectedRegions?: Region[];
 }
 
-export interface DragReorderable extends ReorderableProps {
-    /**
-     * Single child, must be an element and not a string or fragment.
-     */
-    children: JSX.Element;
-
+export interface DragReorderable extends ReorderableProps, DraggableChildrenProps {
     /**
      * Whether the reordering behavior is disabled.
      *
@@ -109,7 +104,7 @@ export class DragReorderable extends React.PureComponent<DragReorderable> {
     public render() {
         const draggableProps = this.getDraggableHandlers();
         return (
-            <Draggable {...draggableProps} preventDefault={false}>
+            <Draggable {...draggableProps} preventDefault={false} targetRef={this.props.targetRef}>
                 {this.props.children}
             </Draggable>
         );
