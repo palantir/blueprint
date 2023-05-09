@@ -153,10 +153,12 @@ class HotkeysDialogLegacy {
 // singleton instance
 const HOTKEYS_DIALOG = new HotkeysDialogLegacy();
 
+/** @deprecated use HotkeysProvider */
 export function isHotkeysDialogShowing() {
     return HOTKEYS_DIALOG.isShowing();
 }
 
+/** @deprecated use HotkeysProvider */
 export function setHotkeysDialogProps(props: Partial<HotkeysDialogProps>) {
     for (const key in props) {
         if (props.hasOwnProperty(key)) {
@@ -165,10 +167,12 @@ export function setHotkeysDialogProps(props: Partial<HotkeysDialogProps>) {
     }
 }
 
+/** @deprecated use HotkeysProvider */
 export function showHotkeysDialog(hotkeys: HotkeyProps[]) {
     HOTKEYS_DIALOG.enqueueHotkeysForDisplay(hotkeys);
 }
 
+/** @deprecated use HotkeysProvider */
 export function hideHotkeysDialog() {
     HOTKEYS_DIALOG.hide();
 }
@@ -177,6 +181,8 @@ export function hideHotkeysDialog() {
  * Use this function instead of `hideHotkeysDialog` if you need to ensure that all hotkey listeners
  * have time to execute with the dialog in a consistent open state. This can avoid flickering the
  * dialog between open and closed states as successive listeners fire.
+ *
+ * @deprecated use HotkeysProvider
  */
 export function hideHotkeysDialogAfterDelay() {
     HOTKEYS_DIALOG.hideAfterDelay();
