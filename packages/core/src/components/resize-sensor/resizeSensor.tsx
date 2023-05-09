@@ -17,7 +17,7 @@
 import { ResizeObserver, ResizeObserverEntry } from "@juggle/resize-observer";
 import * as React from "react";
 
-import { AbstractPureComponent, DISPLAYNAME_PREFIX, mergeRefs } from "../../common";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
 
 /** `ResizeSensor` requires a single DOM element child and will error otherwise. */
 export interface ResizeSensorProps {
@@ -55,7 +55,7 @@ export interface ResizeSensorProps {
      * If you attach a `ref` to the child yourself when rendering it, you must pass the
      * same value here (otherwise, ResizeSensor won't be able to attach its own).
      */
-    targetRef?: React.Ref<HTMLElement>;
+    targetRef?: React.RefObject<HTMLElement>;
 }
 
 /**
@@ -68,7 +68,7 @@ export interface ResizeSensorProps {
 export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
-    private targetRef = React.createRef<HTMLElement>();
+    private targetRef = this.props.targetRef ?? React.createRef<HTMLElement>();
 
     private prevElement: HTMLElement | undefined = undefined;
 
@@ -76,10 +76,13 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
 
     public render() {
         const onlyChild = React.Children.only(this.props.children);
-        const ref =
-            this.props.targetRef === undefined ? this.targetRef : mergeRefs(this.targetRef, this.props.targetRef);
 
-        return React.cloneElement(onlyChild, { ref });
+        // if we're provided a ref to the child already, we don't need to attach one ourselves
+        if (this.props.targetRef !== undefined) {
+            return onlyChild;
+        }
+
+        return React.cloneElement(onlyChild, { ref: this.targetRef });
     }
 
     public componentDidMount() {
