@@ -118,6 +118,7 @@ const INVALID_PROPS = [
     "elementRef", // not used anymore in Blueprint v5.x, but kept for backcompat if consumers use this naming pattern
     "fill",
     "icon",
+    "iconSize",
     "inputClassName",
     "inputRef",
     "intent",
@@ -135,6 +136,7 @@ const INVALID_PROPS = [
     "rightElement",
     "rightIcon",
     "round",
+    "size",
     "small",
     "tagName",
     "text",

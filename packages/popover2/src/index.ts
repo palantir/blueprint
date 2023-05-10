@@ -66,8 +66,13 @@ export {
     PopoverTargetProps as Popover2TargetProps,
     /** @deprecated import from @blueprintjs/core instead */
     PopperBoundary,
-    /** @deprecated import from @blueprintjs/core instead */
-    PopperCustomModifier,
+    /**
+     * N.B. this misspelling was present in @blueprintjs/popover2 v4, we'll keep it around for now since it will
+     * be getting migrated to the correct spelling in @blueprintjs/core v5 anyway.
+     *
+     * @deprecated import from @blueprintjs/core instead (with corrected spelling)
+     */
+    PopperCustomModifier as PopperCustomModifer,
     /** @deprecated import from @blueprintjs/core instead */
     PopperModifierOverrides,
     /** @deprecated import from @blueprintjs/core instead */
