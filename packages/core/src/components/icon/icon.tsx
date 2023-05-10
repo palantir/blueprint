@@ -19,12 +19,14 @@ import * as React from "react";
 
 import { IconComponent, IconName, Icons, IconSize, SVGIconProps } from "@blueprintjs/icons";
 
-import { Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props, removeNonHTMLProps } from "../../common";
 
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
 export { IconName, IconSize };
 
-export interface IconProps extends IntentProps, Props, SVGIconProps {
+export type IconHTMLAttributes = Omit<React.HTMLAttributes<HTMLElement>, "children" | "title">;
+
+export interface IconProps extends IntentProps, Props, SVGIconProps, IconHTMLAttributes {
     /**
      * Whether the component should automatically load icon contents using an async import.
      *
@@ -49,6 +51,14 @@ export interface IconProps extends IntentProps, Props, SVGIconProps {
      */
     icon: IconName | MaybeElement;
 
+    /**
+     * Alias for `size` prop. Kept around for backwards-compatibility with Blueprint v4.x,
+     * will be removed in v6.0.
+     *
+     * @deprecated use `size` prop instead
+     */
+    iconSize?: number;
+
     /** Props to apply to the `SVG` element */
     svgProps?: React.HTMLAttributes<SVGElement>;
 }
@@ -58,10 +68,7 @@ export interface IconProps extends IntentProps, Props, SVGIconProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/icon
  */
-export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> = React.forwardRef<
-    any,
-    IconProps
->((props, ref) => {
+export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props, ref) => {
     const { icon } = props;
     if (icon == null || typeof icon === "boolean") {
         return null;
@@ -73,7 +80,6 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
         autoLoad,
         className,
         color,
-        size,
         icon: _icon,
         intent,
         tagName,
@@ -83,6 +89,8 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
         ...htmlProps
     } = props;
     const [Component, setIconComponent] = React.useState<IconComponent>();
+    // eslint-disable-next-line deprecation/deprecation
+    const size = props.size ?? props.iconSize;
 
     React.useEffect(() => {
         let shouldCancelIconLoading = false;
@@ -113,7 +121,7 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
                 ? Classes.ICON_LARGE
                 : undefined;
         return React.createElement(tagName!, {
-            ...htmlProps,
+            ...removeNonHTMLProps(htmlProps),
             "aria-hidden": title ? undefined : true,
             className: classNames(
                 Classes.ICON,
@@ -138,7 +146,7 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
                 htmlTitle={htmlTitle}
                 ref={ref}
                 svgProps={svgProps}
-                {...htmlProps}
+                {...removeNonHTMLProps(htmlProps)}
             />
         );
     }

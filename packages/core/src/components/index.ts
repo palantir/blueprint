@@ -78,6 +78,7 @@ export { Panel, PanelProps } from "./panel-stack2/panelTypes";
 export { PopoverProps, Popover, PopoverInteractionKind } from "./popover/popover";
 export {
     DefaultPopoverTargetHTMLProps,
+    PopoverPosition,
     PopoverSharedProps,
     PopoverTargetProps,
     PopoverClickTargetHandlers,
@@ -104,7 +105,8 @@ export { Tag, TagProps } from "./tag/tag";
 export { TagInput, TagInputProps, TagInputAddMethod } from "./tag-input/tagInput";
 export { OverlayToaster, OverlayToasterProps } from "./toast/overlayToaster";
 export { Toast, ToastProps } from "./toast/toast";
-export { Toaster, ToastOptions, ToasterPosition } from "./toast/toaster";
+// eslint-disable-next-line deprecation/deprecation
+export { Toaster, ToasterInstance, ToastOptions, ToasterPosition } from "./toast/toaster";
 export { TooltipProps, Tooltip } from "./tooltip/tooltip";
 export { Tree, TreeProps } from "./tree/tree";
 export { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";

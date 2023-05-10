@@ -44,3 +44,6 @@ export interface Toaster {
     /** Returns the props for all current toasts. */
     getToasts(): ToastOptions[];
 }
+
+/** @deprecated use `Toaster` type instead */
+export type ToasterInstance = Toaster;
