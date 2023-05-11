@@ -313,6 +313,8 @@ $dark-menu-item-intent-colors: (
   border-top: 1px solid $pt-divider-black;
   display: block;
   margin: $half-grid-size;
+  margin-left: -$half-grid-size + 1px;
+  width: calc(100% + $pt-grid-size - 2px);
 
   .#{$ns}-dark & {
     border-top-color: $pt-dark-divider-white;
@@ -322,7 +324,7 @@ $dark-menu-item-intent-colors: (
 @mixin menu-header($heading-selector: null) {
   @include menu-divider();
   cursor: default;
-  padding-left: $menu-item-padding - $half-grid-size;
+  padding-left: $menu-item-padding;
 
   @if $heading-selector != null {
     &:first-of-type {
