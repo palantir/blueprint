@@ -59,7 +59,8 @@ export interface ToasterInstance {
 
 /**
  * Props supported by the `OverlayToaster` component.
- * These props can be passed as an argument to the static `Toaster.create(props?, container?)` method.
+ *
+ * These props can be passed as an argument to the static `OverlayToaster.create(props?, container?)` method.
  */
 export interface OverlayToasterProps extends Props {
     /**
@@ -85,7 +86,7 @@ export interface OverlayToasterProps extends Props {
      * Whether the toaster should be rendered into a new element attached to `document.body`.
      * If `false`, then positioning will be relative to the parent element.
      *
-     * This prop is ignored by `Toaster.create()` as that method always appends a new element
+     * This prop is ignored by `OverlayToaster.create()` as that method always appends a new element
      * to the container.
      *
      * @default true
@@ -273,6 +274,9 @@ export class OverlayToaster
 
 /** @deprecated use the new, more specific component name `OverlayToaster` instead (forwards-compatible with v5) */
 export const Toaster = OverlayToaster;
+/** @deprecated use the new, more specific type `ToasterInstance` instead (forwards-compatible with v5) */
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export type Toaster = ToasterInstance;
 // eslint-disable-next-line deprecation/deprecation
 Toaster.displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
 /** @deprecated use `OverlayToasterProps` instead */

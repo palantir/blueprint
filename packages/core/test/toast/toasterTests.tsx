@@ -22,17 +22,17 @@ import { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, Toaster, ToasterInstance } from "../../src";
+import { Classes, OverlayToaster, ToasterInstance } from "../../src";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
 
-describe("Toaster", () => {
+describe("OverlayToaster", () => {
     let testsContainerElement: HTMLElement;
     let toaster: ToasterInstance;
 
     before(() => {
         testsContainerElement = document.createElement("div");
         document.documentElement.appendChild(testsContainerElement);
-        toaster = Toaster.create({}, testsContainerElement);
+        toaster = OverlayToaster.create({}, testsContainerElement);
     });
 
     afterEach(() => {
@@ -129,7 +129,7 @@ describe("Toaster", () => {
 
     it("reusing props object does not produce React errors", () => {
         const errorSpy = spy(console, "error");
-        // if Toaster doesn't clone the props object before injecting key then there will be a
+        // if OverlayToaster doesn't clone the props object before injecting key then there will be a
         // React error that both toasts have the same key, because both instances refer to the
         // same object.
         const toast = { message: "repeat" };
@@ -139,7 +139,7 @@ describe("Toaster", () => {
     });
 
     it("does not exceed the maximum toast limit set", () => {
-        toaster = Toaster.create({ maxToasts: 3 });
+        toaster = OverlayToaster.create({ maxToasts: 3 });
         toaster.show({ message: "one" });
         toaster.show({ message: "two" });
         toaster.show({ message: "three" });
@@ -149,7 +149,7 @@ describe("Toaster", () => {
 
     describe("validation", () => {
         it("throws an error when max toast is set to a number less than 1", () => {
-            expectPropValidationError(Toaster, { maxToasts: 0 }, TOASTER_MAX_TOASTS_INVALID);
+            expectPropValidationError(OverlayToaster, { maxToasts: 0 }, TOASTER_MAX_TOASTS_INVALID);
         });
     });
 
@@ -157,7 +157,7 @@ describe("Toaster", () => {
         before(() => {
             testsContainerElement = document.createElement("div");
             document.documentElement.appendChild(testsContainerElement);
-            toaster = Toaster.create({ autoFocus: true }, testsContainerElement);
+            toaster = OverlayToaster.create({ autoFocus: true }, testsContainerElement);
         });
 
         it("focuses inside toast container", done => {
@@ -179,7 +179,7 @@ describe("Toaster", () => {
 
             public componentDidMount() {
                 try {
-                    Toaster.create();
+                    OverlayToaster.create();
                 } catch (err: any) {
                     assert.equal(err.message, TOASTER_CREATE_NULL);
                 }

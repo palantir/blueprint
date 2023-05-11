@@ -105,9 +105,10 @@ export const SPINNER_WARN_CLASSES_SIZE = ns + ` <Spinner> Classes.SMALL/LARGE ar
 
 export const TOASTER_CREATE_NULL =
     ns +
-    ` Toaster.create() is not supported inside React lifecycle methods in React 16.` +
+    ` OverlayToaster.create() is not supported inside React lifecycle methods in React 16.` +
     ` See usage example on the docs site.`;
-export const TOASTER_WARN_INLINE = ns + ` Toaster.create() ignores inline prop as it always creates a new element.`;
+export const TOASTER_WARN_INLINE =
+    ns + ` OverlayToaster.create() ignores inline prop as it always creates a new element.`;
 
 export const DIALOG_WARN_NO_HEADER_ICON = ns + ` <Dialog> iconName is ignored if title is omitted.`;
 export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
