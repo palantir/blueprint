@@ -47,9 +47,9 @@ export class MenuExample extends React.PureComponent<ExampleProps> {
                         <MenuItem icon="align-justify" text="Justify" />
                     </MenuItem>
                     <MenuItem icon="style" text="Style">
-                        <MenuItem icon="bold" text="Bold" />
-                        <MenuItem icon="italic" text="Italic" />
-                        <MenuItem icon="underline" text="Underline" />
+                        <MenuItem showTick={true} icon="bold" text="Bold" />
+                        <MenuItem indent={true} icon="italic" text="Italic" />
+                        <MenuItem indent={true} icon="underline" text="Underline" />
                     </MenuItem>
                     <MenuItem icon="asterisk" text="Miscellaneous">
                         <MenuItem icon="badge" text="Badge" />

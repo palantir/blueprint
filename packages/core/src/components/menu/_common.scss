@@ -112,6 +112,7 @@ $dark-menu-item-intent-colors: (
 
     .#{$ns}-menu-item-tick {
       margin: 0 $menu-item-selected-icon-spacing !important;
+      color: $pt-icon-color;
     }
   }
   /* stylelint-enable declaration-no-important */
