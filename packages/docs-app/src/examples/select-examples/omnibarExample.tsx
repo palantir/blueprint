@@ -14,7 +14,7 @@
 
 import * as React from "react";
 
-import { Button, H5, HotkeysTarget2, KeyCombo, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
+import { Button, H5, HotkeysTarget2, KeyComboTag, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 import {
@@ -73,7 +73,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, IOmnibarEx
                     <span>
                         <Button text="Click to show Omnibar" onClick={this.handleClick} />
                         {" or press "}
-                        <KeyCombo combo="shift + o" />
+                        <KeyComboTag combo="shift + o" />
                     </span>
 
                     <Omnibar<Film>

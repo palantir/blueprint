@@ -9,6 +9,7 @@ export const coreComponentsMigrationMapping = {
     AbstractPureComponent: "AbstractPureComponent2",
     Breadcrumbs: "Breadcrumbs2",
     CollapsibleList: "OverflowList",
+    KeyCombo: "KeyComboTag",
     "MenuItem.popoverProps": "MenuItem2",
     // TODO(@adidahiya): Blueprint v6
     // PanelStack: "PanelStack2",
