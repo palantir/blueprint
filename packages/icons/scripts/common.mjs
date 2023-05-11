@@ -15,13 +15,13 @@
 
 // @ts-check
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const scriptsDir = fileURLToPath(new URL(".", import.meta.url));
 export const iconResourcesDir = resolve(scriptsDir, "../../../resources/icons");
-export const generatedSrcDir = resolve(scriptsDir, "../src/generated");
+export const generatedSrcDir = resolve(scriptsDir, "../src/generated-icons");
 export const NS = "bp4";
 
 /**
@@ -30,13 +30,13 @@ export const NS = "bp4";
  * @property {string} iconName - `icon-name` for IconName and CSS class
  * @property {string} tags - comma separated list of tags describing this icon
  * @property {string} group - group to which this icon belongs
- * @property {string} content - unicode character for icon glyph in font
  * @property {number} codepoint - icon font codepoint
  */
 
-// TODO(adahiya): replace this with `await import("../icons.json", { assert: { type: "json" } })` in Node 17.5+
+const { default: iconsMetadataJson } = await import("../icons.json", { assert: { type: "json" }});
+
 /** @type {IconMetadata[]} */
-export const iconsMetadata = JSON.parse(readFileSync(resolve(scriptsDir, "../icons.json"), { encoding: "utf8" })).sort(
+export const iconsMetadata = iconsMetadataJson.sort(
     (a, b) => a.iconName.localeCompare(b.iconName),
 );
 

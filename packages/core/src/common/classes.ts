@@ -28,6 +28,7 @@ if (typeof process !== "undefined") {
 export const ACTIVE = `${NS}-active`;
 export const ALIGN_LEFT = `${NS}-align-left`;
 export const ALIGN_RIGHT = `${NS}-align-right`;
+export const COMPACT = `${NS}-compact`;
 export const DARK = `${NS}-dark`;
 export const DISABLED = `${NS}-disabled`;
 export const FILL = `${NS}-fill`;
@@ -40,6 +41,7 @@ export const LOADING = `${NS}-loading`;
 export const MINIMAL = `${NS}-minimal`;
 export const OUTLINED = `${NS}-outlined`;
 export const MULTILINE = `${NS}-multiline`;
+export const READ_ONLY = `${NS}-read-only`;
 export const ROUND = `${NS}-round`;
 export const SELECTED = `${NS}-selected`;
 export const SMALL = `${NS}-small`;
@@ -115,11 +117,14 @@ export const CONTROL_GROUP = `${NS}-control-group`;
 
 export const DIALOG = `${NS}-dialog`;
 export const DIALOG_CONTAINER = `${DIALOG}-container`;
+export const DIALOG_HEADER = `${DIALOG}-header`;
 export const DIALOG_BODY = `${DIALOG}-body`;
+export const DIALOG_BODY_SCROLL_CONTAINER = `${DIALOG}-body-scroll-container`;
 export const DIALOG_CLOSE_BUTTON = `${DIALOG}-close-button`;
 export const DIALOG_FOOTER = `${DIALOG}-footer`;
+export const DIALOG_FOOTER_FIXED = `${DIALOG}-footer-fixed`;
+export const DIALOG_FOOTER_MAIN_SECTION = `${DIALOG}-footer-main-section`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
-export const DIALOG_HEADER = `${DIALOG}-header`;
 
 export const DIALOG_STEP = `${NS}-dialog-step`;
 export const DIALOG_STEP_CONTAINER = `${DIALOG_STEP}-container`;
@@ -148,6 +153,7 @@ export const SELECT = `${NS}-select`;
 
 export const HTML_TABLE = `${NS}-html-table`;
 export const HTML_TABLE_BORDERED = `${HTML_TABLE}-bordered`;
+/** @deprecated prefer `COMPACT` */
 export const HTML_TABLE_CONDENSED = `${HTML_TABLE}-condensed`;
 export const HTML_TABLE_STRIPED = `${HTML_TABLE}-striped`;
 
@@ -156,6 +162,8 @@ export const INPUT_GHOST = `${INPUT}-ghost`;
 export const INPUT_GROUP = `${INPUT}-group`;
 export const INPUT_LEFT_CONTAINER = `${INPUT}-left-container`;
 export const INPUT_ACTION = `${INPUT}-action`;
+
+export const RESIZABLE_INPUT_SPAN = `${NS}-resizable-input-span`;
 
 export const CONTROL = `${NS}-control`;
 export const CONTROL_INDICATOR = `${CONTROL}-indicator`;
@@ -202,6 +210,7 @@ export const MULTISTEP_DIALOG = `${NS}-multistep-dialog`;
 export const MULTISTEP_DIALOG_PANELS = `${MULTISTEP_DIALOG}-panels`;
 export const MULTISTEP_DIALOG_LEFT_PANEL = `${MULTISTEP_DIALOG}-left-panel`;
 export const MULTISTEP_DIALOG_RIGHT_PANEL = `${MULTISTEP_DIALOG}-right-panel`;
+/** @deprecated use `Classes.DIALOG_FOOTER` instead */
 export const MULTISTEP_DIALOG_FOOTER = `${MULTISTEP_DIALOG}-footer`;
 export const MULTISTEP_DIALOG_NAV_TOP = `${MULTISTEP_DIALOG}-nav-top`;
 export const MULTISTEP_DIALOG_NAV_RIGHT = `${MULTISTEP_DIALOG}-nav-right`;
@@ -279,6 +288,8 @@ export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
 
 export const TAB = `${NS}-tab`;
+export const TAB_ICON = `${TAB}-icon`;
+export const TAB_TAG = `${TAB}-tag`;
 export const TAB_INDICATOR = `${TAB}-indicator`;
 export const TAB_INDICATOR_WRAPPER = `${TAB_INDICATOR}-wrapper`;
 export const TAB_LIST = `${TAB}-list`;

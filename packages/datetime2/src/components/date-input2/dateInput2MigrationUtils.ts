@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { isValid } from "date-fns";
+
 import { DateInputProps, TimePrecision } from "@blueprintjs/datetime";
 
 import { getCurrentTimezone } from "../../common/getTimezone";
@@ -48,7 +50,7 @@ export function onChangeAdapter(
  * @returns DateInput2 value
  */
 export function valueAdapter(value: DateInputProps["value"], timePrecision?: TimePrecision): DateInput2Props["value"] {
-    if (value == null) {
+    if (value == null || !isValid(value)) {
         return null;
     }
     return convertDateToDateString(value, timePrecision);
@@ -65,7 +67,7 @@ export function defaultValueAdapter(
     defaultValue: DateInputProps["defaultValue"],
     timePrecision?: TimePrecision,
 ): DateInput2Props["defaultValue"] {
-    if (defaultValue === undefined) {
+    if (defaultValue === undefined || !isValid(defaultValue)) {
         return undefined;
     }
     return convertDateToDateString(defaultValue, timePrecision);

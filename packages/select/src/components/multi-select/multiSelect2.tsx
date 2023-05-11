@@ -30,7 +30,7 @@ import {
     TagInputProps,
     Utils,
 } from "@blueprintjs/core";
-import { DefaultPopover2TargetHTMLProps, Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
+import { Popover2, Popover2ClickTargetHandlers, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { QueryList, QueryListRendererProps } from "../query-list/queryList";
@@ -121,6 +121,11 @@ export interface MultiSelect2State {
     isOpen: boolean;
 }
 
+/**
+ * Multi select (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#select/multi-select2
+ */
 export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>, MultiSelect2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect2`;
 
@@ -147,7 +152,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
 
     private refHandlers: {
         input: React.RefCallback<HTMLInputElement>;
-        popover: React.RefObject<Popover2<DefaultPopover2TargetHTMLProps>>;
+        popover: React.RefObject<Popover2>;
         queryList: React.RefCallback<QueryList<T>>;
     } = {
         input: refHandler(this, "input", this.props.tagInputProps?.inputRef),
@@ -234,7 +239,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
         // N.B. pull out `isOpen` so that it's not forwarded to the DOM, but remember not to use it directly
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
-        ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
+        ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & Popover2ClickTargetHandlers) => {
             const {
                 disabled,
                 fill,
@@ -283,6 +288,7 @@ export class MultiSelect2<T> extends AbstractPureComponent2<MultiSelect2Props<T>
                     "aria-controls": this.listboxId,
                     ...popoverTargetProps,
                     ...targetProps,
+                    "aria-disabled": disabled,
                     "aria-expanded": isOpen,
                     // Note that we must set FILL here in addition to TagInput to get the wrapper element to full width
                     className: classNames(targetProps.className, popoverTargetProps.className, {

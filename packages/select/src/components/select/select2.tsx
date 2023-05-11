@@ -31,7 +31,13 @@ import {
     setRef,
     Utils,
 } from "@blueprintjs/core";
-import { Popover2, Popover2TargetProps, PopupKind } from "@blueprintjs/popover2";
+import {
+    Popover2,
+    Classes as Popover2Classes,
+    Popover2ClickTargetHandlers,
+    Popover2TargetProps,
+    PopupKind,
+} from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { QueryList, QueryListRendererProps } from "../query-list/queryList";
@@ -93,6 +99,11 @@ export interface Select2State {
     isOpen: boolean;
 }
 
+/**
+ * Select (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#select/select2
+ */
 export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select2`;
 
@@ -208,8 +219,8 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         // N.B. pull out `isOpen` so that it's not forwarded to the DOM, but remember not to use it directly
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
-        ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & React.HTMLProps<HTMLDivElement>) => {
-            const { popoverProps = {}, popoverTargetProps } = this.props;
+        ({ isOpen: _isOpen, ref, ...targetProps }: Popover2TargetProps & Popover2ClickTargetHandlers) => {
+            const { disabled, popoverProps = {}, popoverTargetProps } = this.props;
             const { handleKeyDown, handleKeyUp } = listProps;
             const { targetTagName = "div" } = popoverProps;
             return React.createElement(
@@ -218,6 +229,7 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
                     "aria-controls": this.listboxId,
                     ...popoverTargetProps,
                     ...targetProps,
+                    "aria-disabled": disabled,
                     "aria-expanded": isOpen,
                     // Note that we must set FILL here in addition to children to get the wrapper element to full width
                     className: classNames(targetProps.className, popoverTargetProps?.className, {
@@ -285,7 +297,11 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
-        this.setState({ isOpen: false });
+        const target = event?.target as HTMLElement;
+        const shouldDismiss =
+            target?.closest(`.${CoreClasses.MENU_ITEM}`)?.classList?.contains(Popover2Classes.POPOVER2_DISMISS) ?? true;
+
+        this.setState({ isOpen: !shouldDismiss });
         this.props.onItemSelect?.(item, event);
     };
 

@@ -68,6 +68,11 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
     onInputChange?: React.FormEventHandler<HTMLInputElement>;
 
     /**
+     * Whether the file input should appear with small styling.
+     */
+    small?: boolean;
+
+    /**
      * The text to display.
      *
      * @default "Choose file..."
@@ -84,6 +89,11 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
 
 // this is a simple component, unit tests would be mostly tautological
 /* istanbul ignore next */
+/**
+ * File input component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/file-input
+ */
 export class FileInput extends AbstractPureComponent2<FileInputProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 
@@ -103,6 +113,7 @@ export class FileInput extends AbstractPureComponent2<FileInputProps> {
             inputProps,
             large,
             onInputChange,
+            small,
             text,
             ...htmlProps
         } = this.props;
@@ -114,6 +125,7 @@ export class FileInput extends AbstractPureComponent2<FileInputProps> {
                 [Classes.DISABLED]: disabled,
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
+                [Classes.SMALL]: small,
             },
             className,
         );

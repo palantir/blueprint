@@ -41,7 +41,7 @@ required `text` prop for `MenuItem` content.
 
 @reactExample MenuItemExample
 
-@interface IMenuItemProps
+@interface MenuItemProps
 
 @## Menu divider
 
@@ -55,18 +55,22 @@ The `Menu` component by itself simply renders a list of items. To make a
 dropdown menu, compose a `Menu` as the `content` property of a `Popover`:
 
 ```tsx
-<Popover content={<Menu>...</Menu>} position={Position.RIGHT_TOP}>
-    <Button icon="share" text="Open in..." />
+<Popover content={<Menu>...</Menu>} placement="bottom">
+    <Button alignText="left" icon="applications" rightIcon="caret-down" text="Open with..." />
 </Popover>
 ```
 
-By default, the popover is automatically dismissed when the user clicks a menu
-item ([Popover docs](#core/components/popover.closing-on-click) have more
-details). If you want to opt out of this behavior, set
-`shouldDismissPopover={false}` on a `MenuItem`.
+Some tips for designing dropdown menus:
 
-In the example below, clicking the menu item labeled "Table" will not dismiss
-the `Popover`.
+* __Appearance__: it's often useful to style the target Button with `fill={true}`,
+  `alignText="left"`, and `rightIcon="caret-down"`. This makes it appear more like an
+  [HTML `<select>`](#core/components/html-select) dropdown.
+
+* __Interactions__: by default, the popover is automatically dismissed when the user clicks a menu
+  item ([Popover docs](#core/components/popover.closing-on-click) have more
+  details). If you want to opt out of this behavior, set
+  `shouldDismissPopover={false}` on a `MenuItem`. For example, clicking the "Table"
+  item in this dropdown menu will not dismiss the `Popover`:
 
 @reactExample DropdownMenuExample
 
@@ -87,11 +91,11 @@ there is not enough room to the right.
 ```
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated prop `popoverProps`: use [MenuItem2](#popover2-package/menu-item2)
 
-</h4>
+</h5>
 
 Usage of `<MenuItem popoverProps={...}>` is **deprecated since @blueprintjs/core v4.7.0**
 in favor of the new MenuItem2 component, which uses Popover2 instead of Popover under the hood.

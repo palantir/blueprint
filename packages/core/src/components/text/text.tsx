@@ -52,6 +52,11 @@ export interface ITextState {
     isContentOverflowing: boolean;
 }
 
+/**
+ * Text component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/text
+ */
 export class Text extends AbstractPureComponent2<
     TextProps & Omit<React.HTMLAttributes<HTMLElement>, "title">,
     ITextState

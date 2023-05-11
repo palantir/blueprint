@@ -26,6 +26,8 @@ export {
     ContextMenu2ContentProps,
     ContextMenu2RenderProps,
 } from "./contextMenu2";
+export { ContextMenu2Popover, ContextMenu2PopoverProps } from "./contextMenu2Popover";
+export { showContextMenu, hideContextMenu } from "./contextMenu2Singleton";
 export { MenuItem2, MenuItem2Props } from "./menuItem2";
 export {
     DefaultPopover2TargetHTMLProps,
@@ -33,6 +35,8 @@ export {
     IPopover2TargetProps,
     Popover2SharedProps,
     Popover2TargetProps,
+    Popover2ClickTargetHandlers,
+    Popover2HoverTargetHandlers,
     PopperBoundary,
     PopperModifierOverrides,
     PopperCustomModifer,

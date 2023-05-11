@@ -121,6 +121,11 @@ export interface ITagProps
     htmlTitle?: string;
 }
 
+/**
+ * Tag component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tag
+ */
 export class Tag extends AbstractPureComponent2<TagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 
@@ -165,7 +170,7 @@ export class Tag extends AbstractPureComponent2<TagProps> {
                 type="button"
                 className={Classes.TAG_REMOVE}
                 onClick={this.onRemoveClick}
-                tabIndex={interactive ? tabIndex : undefined}
+                tabIndex={tabIndex}
             >
                 <Icon icon="small-cross" size={isLarge ? IconSize.LARGE : IconSize.STANDARD} />
             </button>

@@ -17,6 +17,7 @@
 import * as React from "react";
 
 import { HOTKEYS_PROVIDER_NOT_FOUND } from "../../common/errors";
+import { elementIsTextInput } from "../../common/utils/domUtils";
 import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "../../components/hotkeys/hotkeyParser";
 import { HotkeysContext } from "../../context";
 import { HotkeyConfig } from "./hotkeyConfig";
@@ -46,6 +47,7 @@ export interface UseHotkeysReturnValue {
 /**
  * React hook to register global and local hotkeys for a component.
  *
+ * @see https://blueprintjs.com/docs/#core/hooks/use-hotkeys
  * @param keys list of hotkeys to configure
  * @param options hook options
  */
@@ -92,7 +94,7 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
         callbackName: "onKeyDown" | "onKeyUp",
         e: KeyboardEvent,
     ) => {
-        const isTextInput = isTargetATextInput(e);
+        const isTextInput = elementIsTextInput(e.target as HTMLElement);
         for (const key of global ? globalKeys : localKeys) {
             const {
                 allowInInput = false,
@@ -119,7 +121,7 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
         (e: KeyboardEvent) => {
             // special case for global keydown: if '?' is pressed, open the hotkeys dialog
             const combo = getKeyCombo(e);
-            const isTextInput = isTargetATextInput(e);
+            const isTextInput = elementIsTextInput(e.target as HTMLElement);
             if (!isTextInput && comboMatches(parseKeyCombo(showDialogKeyCombo), combo)) {
                 dispatch({ type: "OPEN_DIALOG" });
             } else {
@@ -155,39 +157,6 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
     }, [handleGlobalKeyDown, handleGlobalKeyUp]);
 
     return { handleKeyDown: handleLocalKeyDown, handleKeyUp: handleLocalKeyUp };
-}
-
-/**
- * @returns true if the event target is a text input which should take priority over hotkey bindings
- */
-function isTargetATextInput(e: KeyboardEvent) {
-    const elem = e.target as HTMLElement;
-    // we check these cases for unit testing, but this should not happen
-    // during normal operation
-    if (elem == null || elem.closest == null) {
-        return false;
-    }
-
-    const editable = elem.closest("input, textarea, [contenteditable=true]");
-
-    if (editable == null) {
-        return false;
-    }
-
-    // don't let checkboxes, switches, and radio buttons prevent hotkey behavior
-    if (editable.tagName.toLowerCase() === "input") {
-        const inputType = (editable as HTMLInputElement).type;
-        if (inputType === "checkbox" || inputType === "radio") {
-            return false;
-        }
-    }
-
-    // don't let read-only fields prevent hotkey behavior
-    if ((editable as HTMLInputElement).readOnly) {
-        return false;
-    }
-
-    return true;
 }
 
 function getDefaultDocument(): Document | undefined {

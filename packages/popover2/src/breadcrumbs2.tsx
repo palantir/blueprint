@@ -90,6 +90,11 @@ export interface Breadcrumbs2Props extends Props {
     >;
 }
 
+/**
+ * Breadcrumbs (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#popover2-package/breadcrumbs2
+ */
 export class Breadcrumbs2 extends AbstractPureComponent2<Breadcrumbs2Props> {
     public static defaultProps: Partial<Breadcrumbs2Props> = {
         collapseFrom: Boundary.START,

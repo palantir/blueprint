@@ -18,12 +18,12 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Callout, Classes, H4, Icon, Intent } from "../../src";
+import { Callout, Classes, H5, Icon, Intent } from "../../src";
 
 describe("<Callout>", () => {
     it("supports className", () => {
         const wrapper = shallow(<Callout className="foo" />);
-        assert.isFalse(wrapper.find(H4).exists(), "expected no H4");
+        assert.isFalse(wrapper.find(H5).exists(), "expected no H5");
         assert.isTrue(wrapper.hasClass(Classes.CALLOUT));
         assert.isTrue(wrapper.hasClass("foo"));
     });
@@ -50,7 +50,7 @@ describe("<Callout>", () => {
 
     it("renders optional title element", () => {
         const wrapper = shallow(<Callout title="title" />);
-        assert.isTrue(wrapper.find(H4).exists());
+        assert.isTrue(wrapper.find(H5).exists());
         // NOTE: JSX cannot be passed through `title` prop due to conflict with HTML props
         // shallow(<Callout title={<em>typings fail</em>} />);
     });

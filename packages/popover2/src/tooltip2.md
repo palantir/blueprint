@@ -1,11 +1,11 @@
 @# Tooltip2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [Tooltip](#core/components/tooltip)?
 
-</h4>
+</h5>
 
 Tooltip2 is a replacement for Tooltip and will become the standard Popover API in Blueprint core v5.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
@@ -63,21 +63,15 @@ import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 some exceptions. Notably, it only supports hover interactions.
 
 When creating a tooltip, you must specify both its **content** (via the `content` prop) and
-its **target** (via the `renderTarget` prop).
-
-The **target** is rendered at the location of the Tooltip2 component in the React component tree. It acts
-as the trigger for the tooltip; hover interaction will show the tooltip based on the `interactionKind` prop.
-In Popper.js terms, this is the popper "reference". In order to add its interaction logic to the target,
-Tooltip2 supplies an object of props to the `renderTarget` function. These props should be
-[spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_object_literals)
-out to the `JSX.Element` returned from `renderTarget`.
+its **target** (either as children, or via the `renderTarget` prop). See the
+[Popover2 "Structure" docs](#popover2-package/popover2.structure) for more info on rendering a tooltip target.
 
 The **content** will be shown inside the tooltip itself. When opened, the tooltip will always be
-positioned on the page next to the target; the `position` prop determines its relative position (on
+positioned on the page next to the target; the `placement` prop determines its relative placement (on
 which side of the target).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Button targets</h4>
+    <h5 class="@ns-heading">Button targets</h5>
 
 Buttons make great tooltip targets, but the `disabled` attribute will prevent all
 events so the enclosing `Tooltip2` will not know when to respond.

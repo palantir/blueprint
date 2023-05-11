@@ -27,6 +27,7 @@ import { Size, SizeSelect } from "../core-examples/common/sizeSelect";
 
 export function MenuItem2Example(props: ExampleProps) {
     const [size, setSize] = React.useState<Size>("regular");
+    const [active, setActive] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [selected, setSelected] = React.useState<boolean | undefined>(undefined);
     const [intent, setIntent] = React.useState<Intent>("none");
@@ -40,6 +41,9 @@ export function MenuItem2Example(props: ExampleProps) {
         <>
             <H5>Props</H5>
             <SizeSelect size={size} onChange={setSize} />
+
+            <H5>MenuItem2 props</H5>
+            <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
             <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
             <PropCodeTooltip
                 content={
@@ -60,7 +64,7 @@ export function MenuItem2Example(props: ExampleProps) {
             </PropCodeTooltip>
             <Switch label="Enable icon" checked={iconEnabled} onChange={handleBooleanChange(setIconEnabled)} />
             <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
-            <IntentSelect intent={intent} onChange={handleValueChange(setIntent)} />
+            <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
             <Label>
                 Role structure
                 <HTMLSelect
@@ -76,6 +80,7 @@ export function MenuItem2Example(props: ExampleProps) {
         <Example className="docs-menu-example" options={options} {...props}>
             <Menu className={Classes.ELEVATION_1} large={size === "large"} small={size === "small"}>
                 <MenuItem2
+                    active={active}
                     disabled={disabled}
                     icon={iconEnabled ? "cog" : undefined}
                     intent={intent}

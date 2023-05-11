@@ -1,9 +1,10 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/lib/scss/variables";
-@import "~@blueprintjs/core/src/common/react-transition";
-@import "~@blueprintjs/core/src/components/icon/icon-mixins";
+@import "@blueprintjs/core/src/common/react-transition";
+@import "@blueprintjs/core/src/common/variables-extended";
+@import "@blueprintjs/core/src/components/icon/icon-mixins";
+@import "@blueprintjs/icons/lib/scss/variables";
 
 // Generate a selector for a page ID by reference
 @function page($ref, $comparator: "$=") {
@@ -15,7 +16,15 @@
   @return '[data-example-id#{$comparator}"#{$ComponentName}Example"]';
 }
 
-// Specific example customizations
+// Common modifiers, incubating usage before they can be incorporated into @blueprintjs/docs-theme
+
+.docs-flex-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+// Example-specific customizations
 
 //
 // CORE
@@ -33,6 +42,19 @@
 }
 
 #{example("Buttons")} {
+  .docs-example {
+    flex-direction: column;
+    gap: $pt-grid-size * 3;
+
+    > * {
+      margin: 0;
+    }
+
+    p {
+      text-align: center;
+    }
+  }
+
   .docs-wiggle {
     animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
   }
@@ -178,7 +200,7 @@
   }
 }
 
-#{example("HotkeyTester")} {
+#{example("HotkeyTesterExample")} {
   .docs-hotkey-tester {
     @include pt-flex-container(column, $pt-grid-size);
     align-items: center;
@@ -334,19 +356,8 @@
   }
 }
 
-.docs-popover2-placement-example,
+// deprecated example layout
 .docs-popover-position-example {
-  em {
-    color: $pt-text-color-muted;
-    display: inline-block;
-    font-style: italic;
-    max-width: 25 * $pt-grid-size;
-
-    .#{$ns}-dark & {
-      color: $pt-dark-text-color-muted;
-    }
-  }
-
   td:nth-child(1) {
     align-items: flex-end;
     display: flex;
@@ -363,26 +374,80 @@
     flex-direction: column;
   }
 
-  .#{$ns}-popover-wrapper,
-  .#{$ns}-popover2-wrapper {
+  .#{$ns}-popover-wrapper {
     // Add a bit of space between borders of consecutive buttons.
     margin: $pt-grid-size * 0.5;
   }
+}
 
-  .#{$ns}-popover-content,
-  .#{$ns}-popover2-content {
-    align-items: center;
-    display: flex;
-    height: 7 * $pt-grid-size;
-    justify-content: center;
-    line-height: 2;
-    padding: $pt-grid-size * 2;
+.docs-popover2-placement-example {
+  .docs-example-grid {
+    display: grid;
+    gap: $pt-grid-size;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 2fr 1fr;
+    justify-content: stretch;
+    margin: 0;
+  }
+
+  @each $row-line in (1, 2, 3) {
+    @each $col-line in (1, 2, 3) {
+      .docs-example-grid-#{$row-line}-#{$col-line} {
+        grid-column: #{$col-line}/#{$col-line + 1};
+        grid-row: #{$row-line}/#{$row-line + 1};
+      }
+    }
+  }
+
+  @each $line in (1, 2, 3) {
+    // top row and first col
+    .docs-example-grid-1-#{$line},
+    .docs-example-grid-#{$line}-1 {
+      align-self: end;
+    }
+
+    // middle row and middle col
+    .docs-example-grid-2-#{$line},
+    .docs-example-grid-#{$line}-2 {
+      align-self: stretch;
+    }
+
+    // last row and last col
+    .docs-example-grid-3-#{$line},
+    .docs-example-grid-#{$line}-3 {
+      align-self: start;
+    }
+  }
+
+  // middle area
+  .docs-example-grid-2-2 {
+    align-self: center;
     text-align: center;
-    // big enough to make the shifting arrow position noticeable
-    width: 20 * $pt-grid-size;
+  }
+}
 
-    code {
-      font-weight: 600;
+.docs-popover2-placement-example-content,
+.docs-popover-position-example-content {
+  .#{$ns}-popover2-content,
+  .#{$ns}-popover-content {
+    line-height: 2;
+    padding: $pt-grid-size ($pt-grid-size * 2);
+    text-align: center;
+  }
+
+  code {
+    font-weight: 600;
+  }
+}
+
+.docs-popover2-placement-example,
+.docs-popover-position-example {
+  em {
+    display: inline-block;
+    max-width: 25 * $pt-grid-size;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-muted;
     }
   }
 }
@@ -482,10 +547,6 @@
   margin-top: $pt-grid-size * 0.5;
 }
 
-.docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
-  line-height: $pt-navbar-height;
-}
-
 #{example("Tooltip2")},
 #{example("Tooltip")} {
   .docs-example {
@@ -508,6 +569,12 @@
   .docs-example {
     // necessary for inline Toaster (usePortal={false})
     position: relative;
+  }
+}
+
+#{example("Tabs")} {
+  .docs-example .#{$ns}-heading {
+    margin-bottom: 0;
   }
 }
 

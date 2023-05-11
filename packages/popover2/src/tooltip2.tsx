@@ -26,16 +26,26 @@ import { TOOLTIP_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { DefaultPopover2TargetHTMLProps, Popover2SharedProps } from "./popover2SharedProps";
 import { Tooltip2Context, Tooltip2ContextState, Tooltip2Provider } from "./tooltip2Context";
 
-// eslint-disable-next-line deprecation/deprecation
-export type Tooltip2Props<TProps = DefaultPopover2TargetHTMLProps> = ITooltip2Props<TProps>;
+export type Tooltip2Props<TProps extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps> =
+    // eslint-disable-next-line deprecation/deprecation
+    ITooltip2Props<TProps>;
+
 /** @deprecated use Tooltip2Props */
-export interface ITooltip2Props<TProps = DefaultPopover2TargetHTMLProps>
+export interface ITooltip2Props<TProps extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps>
     extends Omit<Popover2SharedProps<TProps>, "shouldReturnFocusOnClose">,
         IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
     content: JSX.Element | string;
+
+    /**
+     * Whether to use a compact appearance, which reduces the visual padding around
+     * tooltip content.
+     *
+     * @default false
+     */
+    compact?: boolean;
 
     /**
      * The amount of time in milliseconds the tooltip should remain open after
@@ -75,17 +85,26 @@ export interface ITooltip2Props<TProps = DefaultPopover2TargetHTMLProps>
     transitionDuration?: number;
 }
 
-export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
+/**
+ * Tooltip (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#popover2-package/tooltip2
+ */
+export class Tooltip2<
+    T extends DefaultPopover2TargetHTMLProps = DefaultPopover2TargetHTMLProps,
+> extends React.PureComponent<Tooltip2Props<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip2`;
 
     public static defaultProps: Partial<Tooltip2Props> = {
+        compact: false,
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
+        interactionKind: "hover-target",
         minimal: false,
         transitionDuration: 100,
     };
 
-    private popover: Popover2<T> | null = null;
+    private popoverRef = React.createRef<Popover2<T>>();
 
     public render() {
         // if we have an ancestor Tooltip2Context, we should take its state into account in this render path,
@@ -98,24 +117,18 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
     }
 
     public reposition() {
-        if (this.popover != null) {
-            this.popover.reposition();
-        }
+        this.popoverRef.current?.reposition();
     }
 
     // any descendant ContextMenu2s may update this ctxState
     private renderPopover = (ctxState: Tooltip2ContextState) => {
-        const { children, disabled, intent, popoverClassName, ...restProps } = this.props;
-        const classes = classNames(
-            Classes.TOOLTIP2,
-            { [CoreClasses.MINIMAL]: this.props.minimal },
-            CoreClasses.intentClass(intent),
-            popoverClassName,
-        );
+        const { children, compact, disabled, intent, popoverClassName, ...restProps } = this.props;
+        const popoverClasses = classNames(Classes.TOOLTIP2, CoreClasses.intentClass(intent), popoverClassName, {
+            [CoreClasses.COMPACT]: compact,
+        });
 
         return (
             <Popover2
-                interactionKind={Popover2InteractionKind.HOVER_TARGET_ONLY}
                 modifiers={{
                     arrow: {
                         enabled: !this.props.minimal,
@@ -132,9 +145,9 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
                 disabled={ctxState.forceDisabled ?? disabled}
                 enforceFocus={false}
                 lazy={true}
-                popoverClassName={classes}
+                popoverClassName={popoverClasses}
                 portalContainer={this.props.portalContainer}
-                ref={ref => (this.popover = ref)}
+                ref={this.popoverRef}
             >
                 {children}
             </Popover2>

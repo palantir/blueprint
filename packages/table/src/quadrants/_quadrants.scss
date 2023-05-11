@@ -1,4 +1,4 @@
-@import "~@blueprintjs/core/src/common/mixins";
+@import "@blueprintjs/core/src/common/mixins";
 @import "../common/variables";
 
 $table-quadrant-z-index-main: 0;
@@ -49,6 +49,41 @@ $table-quadrant-scroll-container-overflow: 20px;
   .#{$ns}-table-no-horizontal-scroll & {
     overflow-x: hidden;
   }
+}
+
+.#{$ns}-table-body-scrolling-indicator-overlay {
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+%table-is-scrolling {
+  opacity: 1;
+  transition: opacity 0.2s linear;
+}
+
+.#{$ns}-table-body-is-scrolling-top {
+  @extend %table-is-scrolling;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 15%) 0%, transparent 10%);
+}
+
+.#{$ns}-table-body-is-scrolling-right {
+  @extend %table-is-scrolling;
+  background: linear-gradient(270deg, rgba(0, 0, 0, 15%) 0%, transparent 10%);
+}
+
+.#{$ns}-table-body-is-scrolling-bottom {
+  @extend %table-is-scrolling;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 15%) 0%, transparent 10%);
+}
+
+.#{$ns}-table-body-is-scrolling-left {
+  @extend %table-is-scrolling;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 15%) 0%, transparent 10%);
 }
 
 .#{$ns}-table-quadrant-body-container {

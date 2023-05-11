@@ -9,6 +9,8 @@ import { createRequire } from "node:module";
 import { cwd } from "node:process";
 import webpack from "webpack";
 
+import { sassNodeModulesLoadPaths } from "@blueprintjs/node-build-scripts";
+
 // import.meta.resolve is still experimental under a CLI flag, so we create a require fn instead
 // see https://nodejs.org/docs/latest-v16.x/api/esm.html#importmetaresolvespecifier-parent
 const require = createRequire(import.meta.url);
@@ -58,6 +60,22 @@ export default {
                 },
             },
             {
+                // allow some custom styles to be written for tests (sometimes just for debugging purposes)
+                test: /\.scss$/,
+                use: [
+                    require.resolve("style-loader"),
+                    require.resolve("css-loader"),
+                    {
+                        loader: require.resolve("sass-loader"),
+                        options: {
+                            sassOptions: {
+                                includePaths: sassNodeModulesLoadPaths,
+                            },
+                        },
+                    },
+                ],
+            },
+            {
                 test: /\.(eot|ttf|woff|woff2|svg|png)$/,
                 type: "asset/resource",
                 generator: {
@@ -70,7 +88,7 @@ export default {
     plugins: [
         // HACKHACK: we should use an alternative to `process` in frontend code
         new webpack.ProvidePlugin({
-            process: "process/browser",
+            process: "process/browser.js",
         }),
 
         new ForkTsCheckerWebpackPlugin({

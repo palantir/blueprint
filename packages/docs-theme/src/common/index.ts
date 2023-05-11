@@ -14,4 +14,6 @@
  * limitations under the License.
  */
 
+import * as Classes from "./classes";
+export { Classes };
 export * from "./utils";

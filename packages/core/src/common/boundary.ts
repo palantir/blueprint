@@ -21,4 +21,4 @@ export const Boundary = {
     END: "end" as "end",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type Boundary = typeof Boundary[keyof typeof Boundary];
+export type Boundary = (typeof Boundary)[keyof typeof Boundary];

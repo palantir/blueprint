@@ -11,6 +11,8 @@
 @import "context-menu/context-menu";
 @import "divider/divider";
 @import "dialog/dialog";
+@import "dialog/dialog-body";
+@import "dialog/dialog-footer";
 @import "dialog/multistep-dialog";
 @import "drawer/drawer";
 @import "editable-text/editable-text";
@@ -35,6 +37,7 @@
 @import "tabs/tabs";
 @import "tag/tag";
 @import "tag-input/tag-input";
+@import "tag-input/resizable-input";
 @import "toast/toast";
 @import "tooltip/tooltip";
 @import "tree/tree";

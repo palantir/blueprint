@@ -17,17 +17,22 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Utils as CoreUtils, DISPLAYNAME_PREFIX, Icon } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import {
+    AbstractPureComponent2,
+    Utils as CoreUtils,
+    DISPLAYNAME_PREFIX,
+    Icon,
+    OverlayLifecycleProps,
+} from "@blueprintjs/core";
+import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
-import { HorizontalCellDivider, IColumnHeaderCellProps, IColumnHeaderCellState } from "./columnHeaderCell";
+import { ColumnHeaderCellProps, HorizontalCellDivider, IColumnHeaderCellState } from "./columnHeaderCell";
 import { HeaderCell2 } from "./headerCell2";
 
-// eslint-disable-next-line deprecation/deprecation
-export interface ColumnHeaderCell2Props extends IColumnHeaderCellProps {
+export interface ColumnHeaderCell2Props extends ColumnHeaderCellProps {
     /**
      * If `true`, adds an interaction bar on top of all column header cells, and
      * moves interaction triggers into it.
@@ -35,8 +40,27 @@ export interface ColumnHeaderCell2Props extends IColumnHeaderCellProps {
      * @default false
      */
     enableColumnInteractionBar?: boolean;
+
+    /**
+     * Optional props to forward to the dropdown menu popover.
+     * This has no effect if `menuRenderer` is undefined.
+     */
+    menuPopoverProps?: Omit<Popover2Props, "content" | keyof OverlayLifecycleProps>;
+
+    /**
+     * If `true`, clicks on the header menu target element will cause the column's
+     * cells to be selected.
+     *
+     * @default true
+     */
+    selectCellsOnMenuClick?: boolean;
 }
 
+/**
+ * Column header cell (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.columnheadercell2
+ */
 export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCell2Props, IColumnHeaderCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ColumnHeaderCell2`;
 
@@ -44,6 +68,7 @@ export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCell2P
         enableColumnInteractionBar: false,
         isActive: false,
         menuIcon: "chevron-down",
+        selectCellsOnMenuClick: true,
     };
 
     /**
@@ -139,7 +164,7 @@ export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCell2P
     }
 
     private maybeRenderDropdownMenu() {
-        const { index, menuIcon, menuRenderer } = this.props;
+        const { index, menuIcon, menuPopoverProps, menuRenderer, selectCellsOnMenuClick } = this.props;
 
         if (!CoreUtils.isFunction(menuRenderer)) {
             return undefined;
@@ -147,18 +172,20 @@ export class ColumnHeaderCell2 extends AbstractPureComponent2<ColumnHeaderCell2P
 
         const classes = classNames(Classes.TABLE_TH_MENU_CONTAINER, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT, {
             [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
+            [Classes.TABLE_TH_MENU_SELECT_CELLS]: selectCellsOnMenuClick,
         });
 
         return (
             <div className={classes}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
                 <Popover2
-                    className={Classes.TABLE_TH_MENU}
+                    className={classNames(Classes.TABLE_TH_MENU, menuPopoverProps?.className)}
                     content={menuRenderer(index)}
                     onClosing={this.handlePopoverClosing}
                     onOpened={this.handlePopoverOpened}
                     placement="bottom"
                     rootBoundary="document"
+                    {...menuPopoverProps}
                 >
                     <Icon icon={menuIcon} />
                 </Popover2>

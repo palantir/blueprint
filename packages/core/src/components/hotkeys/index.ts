@@ -19,7 +19,7 @@
 export * from "./hotkeysTypes";
 export * from "./hotkeys";
 export { Hotkey, IHotkeyProps } from "./hotkey";
-export { KeyCombo, KeyComboTagProps, IKeyComboProps } from "./keyCombo";
+export { KeyCombo, KeyComboTag, KeyComboTagProps, IKeyComboProps } from "./keyComboTag";
 // eslint-disable-next-line import/no-cycle
 export { HotkeysTarget, IHotkeysTargetComponent } from "./hotkeysTarget";
 export { IKeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";

@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Classes, H5, Intent, Menu, MenuItem, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 import { Size, SizeSelect } from "./common/sizeSelect";
@@ -40,7 +40,7 @@ export function MenuItemExample(props: ExampleProps) {
             <Switch label="Enable icon" checked={iconEnabled} onChange={handleBooleanChange(setIconEnabled)} />
             <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
             <Switch label="Enable tick" checked={tickEnabled} onChange={handleBooleanChange(setTickEnabled)} />
-            <IntentSelect intent={intent} onChange={handleValueChange(setIntent)} />
+            <IntentSelect intent={intent} onChange={setIntent} />
         </>
     );
 

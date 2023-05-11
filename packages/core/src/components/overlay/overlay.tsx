@@ -110,6 +110,15 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
     portalContainer?: HTMLElement;
 
     /**
+     * A list of DOM events which should be stopped from propagating through the Portal.
+     * This prop is ignored if `usePortal` is `false`.
+     *
+     * @see https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals
+     * @see https://github.com/palantir/blueprint/issues/6124
+     */
+    portalStopPropagationEvents?: Array<keyof HTMLElementEventMap>;
+
+    /**
      * A callback that is invoked when user interaction causes the overlay to close, such as
      * clicking on the overlay or pressing the `esc` key (if enabled).
      *
@@ -199,6 +208,11 @@ export interface IOverlayState {
     hasEverOpened?: boolean;
 }
 
+/**
+ * Overlay component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/overlay
+ */
 export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 
@@ -313,7 +327,11 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         );
         if (usePortal) {
             return (
-                <Portal className={this.props.portalClassName} container={this.props.portalContainer}>
+                <Portal
+                    className={this.props.portalClassName}
+                    container={this.props.portalContainer}
+                    stopPropagationEvents={this.props.portalStopPropagationEvents}
+                >
                     {transitionGroup}
                 </Portal>
             );

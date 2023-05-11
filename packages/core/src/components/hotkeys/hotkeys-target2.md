@@ -5,11 +5,11 @@ tag: new
 @# HotkeysTarget2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Migrating from [HotkeysTarget](#core/components/hotkeys)?
 
-</h4>
+</h5>
 
 HotkeysTarget2 is a replacement for HotkeysTarget. You are encouraged to use this new API, or
 the `useHotkeys` hook directly in your function components, as they will become the standard
@@ -40,8 +40,7 @@ import React from "react";
 import { HotkeysTarget2, InputGroup } from "@blueprintjs/core";
 
 export default class extends React.PureComponent {
-    private inputEl: HTMLInputElement | null = null;
-    private handleInputRef = (el: HTMLInputElement) => (this.inputEl = el);
+    private inputRef = React.createRef<HTMLInputElement>();
 
     private hotkeys = [
         {
@@ -54,7 +53,7 @@ export default class extends React.PureComponent {
             combo: "F",
             group: "Input",
             label: "Focus text input",
-            onKeyDown: this.inputEl?.focus(),
+            onKeyDown: this.inputRef.current?.focus(),
         },
     ];
 
@@ -64,7 +63,7 @@ export default class extends React.PureComponent {
                 {({ handleKeyDown, handleKeyUp }) => (
                     <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         Press "R" to refresh data, "F" to focus the input...
-                        <InputGroup ref={this.handleInputRef} />
+                        <InputGroup ref={this.inputRef} />
                     </div>
                 )}
             </HotkeysTarget2>

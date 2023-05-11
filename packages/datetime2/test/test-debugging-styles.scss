@@ -1,0 +1,11 @@
+// Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "@blueprintjs/core/src/common/variables";
+
+.#{$ns}-date-range-input-popover {
+  // popover does not position itself corectly in tests sometimes... we add this margin so that we can see
+  // the input while the popover is open when debugging tests
+  margin-top: 50px;
+}

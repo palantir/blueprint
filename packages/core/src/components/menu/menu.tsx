@@ -40,6 +40,11 @@ export interface IMenuProps extends Props, React.HTMLAttributes<HTMLUListElement
     noPadding?: boolean;
 }
 
+/**
+ * Menu component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/menu
+ */
 export class Menu extends AbstractPureComponent2<MenuProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
 

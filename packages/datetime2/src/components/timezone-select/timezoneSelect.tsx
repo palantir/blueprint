@@ -32,7 +32,8 @@ import { ItemListPredicate, ItemRenderer, Select2, SelectPopoverProps } from "@b
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "../../common/timezoneDisplayFormat";
 import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
-import { getInitialTimezoneItems, mapTimezonesWithNames, TimezoneWithNames } from "../../common/timezoneNameUtils";
+import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../common/timezoneNameUtils";
+import { TimezoneWithNames } from "../../common/timezoneTypes";
 
 export interface TimezoneSelectProps extends Props {
     /**
@@ -125,6 +126,11 @@ export interface TimezoneSelectState {
     query: string;
 }
 
+/**
+ * Timezone select component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime2/timezone-select
+ */
 export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, TimezoneSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezoneSelect`;
 
@@ -232,7 +238,6 @@ export class TimezoneSelect extends AbstractPureComponent2<TimezoneSelectProps, 
                 text={`${item.label}, ${item.longName}`}
                 onClick={handleClick}
                 label={item.shortName}
-                shouldDismissPopover={false}
             />
         );
     };
