@@ -18,7 +18,7 @@ import {
     Button,
     H5,
     HotkeysTarget2,
-    KeyCombo,
+    KeyComboTag,
     MenuItem,
     OverlayToaster,
     Position,
@@ -83,7 +83,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, IOmnibarEx
                     <span>
                         <Button text="Click to show Omnibar" onClick={this.handleClick} />
                         {" or press "}
-                        <KeyCombo combo="shift + o" />
+                        <KeyComboTag combo="shift + o" />
                     </span>
 
                     <Omnibar<Film>

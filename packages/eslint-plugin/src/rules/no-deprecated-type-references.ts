@@ -102,6 +102,7 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "IDateInputProps",
         "IDatePickerProps",
         "IDatePickerModifiers",
+        "IDatePickerShortcut",
         "IDateRangeInputProps",
         "IDateRangeShortcut",
         "ITimePickerProps",

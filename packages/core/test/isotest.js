@@ -61,6 +61,9 @@ describe("Core isomorphic rendering", () => {
         KeyCombo: {
             props: { combo: "?" },
         },
+        KeyComboTag: {
+            props: { combo: "?" },
+        },
         OverflowList: {
             props: { items: [], overflowRenderer: () => null, visibleItemRenderer: () => null },
         },
