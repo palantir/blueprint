@@ -75,6 +75,7 @@ $dark-menu-item-intent-colors: (
 
   &::before,
   .#{$ns}-menu-item-icon,
+  .#{$ns}-menu-item-tick,
   .#{$ns}-submenu-icon {
     color: $pt-icon-color;
   }
@@ -112,7 +113,6 @@ $dark-menu-item-intent-colors: (
 
     .#{$ns}-menu-item-tick {
       margin: 0 $menu-item-selected-icon-spacing !important;
-      color: $pt-icon-color;
     }
   }
   /* stylelint-enable declaration-no-important */
@@ -152,6 +152,7 @@ $dark-menu-item-intent-colors: (
 
   &::before,
   .#{$ns}-menu-item-icon,
+  .#{$ns}-menu-item-tick,
   .#{$ns}-submenu-icon {
     color: $pt-dark-icon-color;
   }
@@ -265,6 +266,7 @@ $dark-menu-item-intent-colors: (
 
     &::before,
     .#{$ns}-menu-item-icon,
+    .#{$ns}-menu-item-tick,
     .#{$ns}-submenu-icon,
     .#{$ns}-menu-item-label {
       color: inherit;
@@ -314,8 +316,6 @@ $dark-menu-item-intent-colors: (
   border-top: 1px solid $pt-divider-black;
   display: block;
   margin: $half-grid-size;
-  margin-left: -$half-grid-size + 1px;
-  width: calc(100% + $pt-grid-size - 2px);
 
   .#{$ns}-dark & {
     border-top-color: $pt-dark-divider-white;
@@ -325,7 +325,7 @@ $dark-menu-item-intent-colors: (
 @mixin menu-header($heading-selector: null) {
   @include menu-divider();
   cursor: default;
-  padding-left: $menu-item-padding;
+  padding-left: $menu-item-padding - $half-grid-size;
 
   @if $heading-selector != null {
     &:first-of-type {
