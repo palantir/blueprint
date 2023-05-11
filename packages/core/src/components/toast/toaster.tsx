@@ -143,7 +143,7 @@ export class OverlayToaster
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
         const toaster = ReactDOM.render<OverlayToasterProps>(
-            <Overlay {...props} usePortal={false} />,
+            <OverlayToaster {...props} usePortal={false} />,
             containerElement,
         ) as OverlayToaster;
         if (toaster == null) {
