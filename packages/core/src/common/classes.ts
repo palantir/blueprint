@@ -185,6 +185,8 @@ export const FORM_HELPER_TEXT = `${NS}-form-helper-text`;
 export const FORM_GROUP_SUB_LABEL = `${NS}-form-group-sub-label`;
 
 export const MENU = `${NS}-menu`;
+export const MENU_NO_PADDING = `${MENU}-no-padding`;
+export const MENU_SECTION = `${MENU}-section`;
 export const MENU_ITEM = `${MENU}-item`;
 export const MENU_ITEM_INDENT = `${MENU_ITEM}-indent`;
 export const MENU_ITEM_TICKED = `${MENU_ITEM}-ticked`;

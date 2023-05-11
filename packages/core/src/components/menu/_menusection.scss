@@ -1,0 +1,16 @@
+@import "../../common/variables";
+
+.#{$ns}-menu-section {
+  border-bottom: 1px solid $pt-divider-black;
+  padding: $half-grid-size;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.#{$ns}-dark {
+  .#{$ns}-menu-section {
+    border-color: $pt-dark-divider-white;
+  }
+}

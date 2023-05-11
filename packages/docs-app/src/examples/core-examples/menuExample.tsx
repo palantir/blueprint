@@ -18,7 +18,7 @@
 
 import * as React from "react";
 
-import { Classes, Icon, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Classes, Icon, Menu, MenuDivider, MenuItem, MenuSection } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export class MenuExample extends React.PureComponent<ExampleProps> {
@@ -34,38 +34,91 @@ export class MenuExample extends React.PureComponent<ExampleProps> {
                     <MenuDivider />
                     <MenuItem icon="cog" labelElement={<Icon icon="share" />} text="Settings..." intent="primary" />
                 </Menu>
-                <Menu className={Classes.ELEVATION_1}>
-                    <MenuDivider title="Edit" />
-                    <MenuItem icon="cut" text="Cut" label="⌘X" />
-                    <MenuItem icon="duplicate" text="Copy" label="⌘C" />
-                    <MenuItem icon="clipboard" text="Paste" label="⌘V" disabled={true} />
-                    <MenuDivider title="Text" />
-                    <MenuItem disabled={true} icon="align-left" text="Alignment">
-                        <MenuItem icon="align-left" text="Left" />
-                        <MenuItem icon="align-center" text="Center" />
-                        <MenuItem icon="align-right" text="Right" />
-                        <MenuItem icon="align-justify" text="Justify" />
-                    </MenuItem>
-                    <MenuItem icon="style" text="Style">
-                        <MenuItem showTick={true} icon="bold" text="Bold" />
-                        <MenuItem indent={true} icon="italic" text="Italic" />
-                        <MenuItem indent={true} icon="underline" text="Underline" />
-                    </MenuItem>
-                    <MenuItem icon="asterisk" text="Miscellaneous">
-                        <MenuItem icon="badge" text="Badge" />
-                        <MenuItem icon="book" text="Long items will truncate when they reach max-width" />
-                        <MenuItem icon="more" text="Look in here for even more items">
-                            <MenuItem icon="briefcase" text="Briefcase" />
-                            <MenuItem icon="calculator" text="Calculator" />
-                            <MenuItem icon="dollar" text="Dollar" />
-                            <MenuItem icon="dot" text="Shapes">
-                                <MenuItem icon="full-circle" text="Full circle" />
-                                <MenuItem icon="heart" text="Heart" />
-                                <MenuItem icon="ring" text="Ring" />
-                                <MenuItem icon="square" text="Square" />
-                            </MenuItem>
-                        </MenuItem>
-                    </MenuItem>
+                <Menu className={Classes.ELEVATION_1} noPadding={true}>
+                    <MenuSection sectionTitle="Edit" items={[
+                        {
+                            id: "cut",
+                            icon: "cut",
+                            text: "Cut",
+                            label:"⌘X"
+                        },
+                        {
+                            id: "duplicate",
+                            icon: "duplicate",
+                            text: "Copy",
+                            label:"⌘C"
+                        },
+                        {
+                            id: "clipboard",
+                            icon: "clipboard",
+                            text: "Paste",
+                            label:"⌘V",
+                            disabled: true,
+                        }
+                    ]} />
+                    <MenuSection sectionTitle="Text" items={[
+                        {
+                            id: "align-left",
+                            icon: "align-left",
+                            text: "Left",
+                            indent: true
+                        },
+                        {
+                            id: "align-center",
+                            icon: "align-center",
+                            text: "Center",
+                            indent: true
+                        },
+                        {
+                            id: "align-right",
+                            icon: "align-right",
+                            text: "Right",
+                            showTick: true
+                        },
+                        {
+                            id: "align-justify",
+                            icon: "align-justify",
+                            text: "Justify",
+                            disabled: true,
+                            indent: true
+                        }
+                    ]} />
+                    <MenuSection sectionTitle="Style" items={[
+                        {
+                            id: "style",
+                            icon: "style",
+                            text: "Style",
+                            children: (
+                                <>
+                                    <MenuItem showTick={true} icon="bold" text="Bold" />
+                                    <MenuItem indent={true} icon="italic" text="Italic" />
+                                    <MenuItem indent={true} icon="underline" text="Underline" />
+                                </>
+                            )
+                        },
+                        {
+                            id: "asterisk",
+                            icon: "asterisk",
+                            text: "Miscellaneous",
+                            children: (
+                                <>
+                                    <MenuItem icon="badge" text="Badge" />
+                                    <MenuItem icon="book" text="Long items will truncate when they reach max-width" />
+                                    <MenuItem icon="more" text="Look in here for even more items">
+                                        <MenuItem icon="briefcase" text="Briefcase" />
+                                        <MenuItem icon="calculator" text="Calculator" />
+                                        <MenuItem icon="dollar" text="Dollar" />
+                                        <MenuItem icon="dot" text="Shapes">
+                                            <MenuItem icon="full-circle" text="Full circle" />
+                                            <MenuItem icon="heart" text="Heart" />
+                                            <MenuItem icon="ring" text="Ring" />
+                                            <MenuItem icon="square" text="Square" />
+                                        </MenuItem>
+                                    </MenuItem>
+                                </>
+                            )
+                        },
+                    ]} />
                 </Menu>
             </Example>
         );

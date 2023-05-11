@@ -7,6 +7,7 @@
 
 @import "./common";
 @import "./submenu";
+@import "./menusection";
 
 /*
 Menus
@@ -74,6 +75,10 @@ Styleguide menu
   .#{$ns}-small & {
     @include menu-item-small();
   }
+}
+
+.#{$ns}-menu-no-padding {
+  padding: 0;
 }
 
 button.#{$ns}-menu-item {

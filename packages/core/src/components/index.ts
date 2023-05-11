@@ -50,6 +50,7 @@ export * from "./html-table/htmlTable";
 export * from "./hotkeys/index";
 export * from "./icon/icon";
 export * from "./menu/menu";
+export * from "./menu/menuSection";
 export * from "./menu/menuDivider";
 export * from "./menu/menuItem";
 export * from "./navbar/navbar";

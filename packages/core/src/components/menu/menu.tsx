@@ -35,14 +35,17 @@ export interface IMenuProps extends Props, React.HTMLAttributes<HTMLUListElement
 
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
     ulRef?: React.Ref<HTMLUListElement>;
+
+    /** Removes padding, set to true when using MenuSection */
+    noPadding?: boolean;
 }
 
 export class Menu extends AbstractPureComponent2<MenuProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
 
     public render() {
-        const { className, children, large, small, ulRef, ...htmlProps } = this.props;
-        const classes = classNames(Classes.MENU, { [Classes.LARGE]: large, [Classes.SMALL]: small }, className);
+        const { className, children, large, small, noPadding, ulRef, ...htmlProps } = this.props;
+        const classes = classNames(Classes.MENU, { [Classes.LARGE]: large, [Classes.SMALL]: small, [Classes.MENU_NO_PADDING]: noPadding  }, className);
         return (
             <ul role="menu" {...htmlProps} className={classes} ref={ulRef}>
                 {children}
