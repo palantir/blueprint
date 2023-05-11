@@ -26,6 +26,7 @@ import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
 import { Menu, MenuProps } from "./menu";
+import { IconNames } from "@blueprintjs/icons";
 
 export type MenuItemProps = IMenuItemProps;
 /** @deprecated use MenuItemProps */
@@ -101,6 +102,11 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     multiline?: boolean;
 
     /**
+     * Indent the content. Set true for all items when another item has "showTick" set to true.
+     */
+    indent?: boolean;
+
+    /**
      * Props to spread to `Popover`. Note that `content` and `minimal` cannot be
      * changed and `usePortal` defaults to `false` so all submenus will live in
      * the same container.
@@ -118,6 +124,11 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
      * @default true
      */
     shouldDismissPopover?: boolean;
+
+    /**
+     * Whether this item should render a tick.
+     */
+    showTick?: boolean;
 
     /**
      * Props to spread to the child `Menu` component if this item has a submenu.
@@ -176,6 +187,8 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
             textClassName,
             tagName = "a",
             htmlTitle,
+            showTick,
+            indent,
             ...htmlProps
         } = this.props;
 
@@ -183,6 +196,9 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const hasSubmenu = children != null;
 
         const intentClass = Classes.intentClass(intent);
+
+        const selectedOrActive = selected || (active && intentClass === undefined);
+
         const anchorClasses = classNames(
             Classes.MENU_ITEM,
             intentClass,
@@ -191,7 +207,9 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 [Classes.DISABLED]: disabled,
                 // prevent popover from closing when clicking on submenu trigger or disabled item
                 [Classes.POPOVER_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
-                [Classes.SELECTED]: selected || (active && intentClass === undefined),
+                [Classes.SELECTED]: selectedOrActive,
+                [Classes.MENU_ITEM_TICKED]: showTick,
+                [Classes.MENU_ITEM_INDENT]: !showTick && indent
             },
             className,
         );
@@ -210,6 +228,11 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 ...(disabled ? DISABLED_PROPS : {}),
                 className: anchorClasses,
             },
+            showTick ? (
+                <span className={Classes.MENU_ITEM_TICK}>
+                    <Icon icon={IconNames.SmallTick} />
+                </span>
+            ) : undefined,
             hasIcon ? (
                 // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
                 // so that we always render this class

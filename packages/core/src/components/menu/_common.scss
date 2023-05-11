@@ -25,6 +25,8 @@ $menu-item-padding-vertical-large:
 $menu-item-padding-small: ($pt-button-height-small - $pt-icon-size-standard) * 0.5 !default;
 $menu-item-padding-vertical-small:
   ($pt-button-height-small - $menu-item-line-height) * 0.5 !default;
+$menu-item-selected-icon-spacing: 2px;
+$menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2;
 
 $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray3 !default;
@@ -101,6 +103,21 @@ $dark-menu-item-intent-colors: (
     &:active {
       @include menu-item-selected-active(false);
     }
+  }
+
+  // pt-disable always overrides over styles
+  /* stylelint-disable declaration-no-important */
+  &.#{$ns}-menu-item-ticked {
+    padding-left: 0 !important;
+
+    .#{$ns}-menu-item-tick {
+      margin: 0 $menu-item-selected-icon-spacing !important;
+    }
+  }
+  /* stylelint-enable declaration-no-important */
+
+  &.#{$ns}-menu-item-indent {
+    padding-left: $menu-item-indent !important;
   }
 
   // pt-disable always overrides over styles
@@ -291,7 +308,6 @@ $dark-menu-item-intent-colors: (
 @mixin menu-item-small() {
   padding: $menu-item-padding-vertical-small $menu-item-padding;
 }
-
 
 @mixin menu-divider() {
   border-top: 1px solid $pt-divider-black;

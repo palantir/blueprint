@@ -31,6 +31,7 @@ import {
 
 import * as Classes from "./classes";
 import { Popover2, Popover2Props } from "./popover2";
+import { IconNames } from "@blueprintjs/icons";
 
 export interface MenuItem2Props extends ActionProps, LinkProps {
     /** Item text, required for usability. */
@@ -106,6 +107,11 @@ export interface MenuItem2Props extends ActionProps, LinkProps {
     multiline?: boolean;
 
     /**
+     * Indent the content. Set true for all items when another item has "showTick" set to true.
+     */
+    indent?: boolean;
+
+    /**
      * Props to spread to the submenu popover. Note that `content` and `minimal` cannot be
      * changed and `usePortal` defaults to `false` so all submenus will live in
      * the same container.
@@ -128,6 +134,11 @@ export interface MenuItem2Props extends ActionProps, LinkProps {
      * @default true
      */
     shouldDismissPopover?: boolean;
+
+    /**
+     * Whether this item should render a tick.
+     */
+    showTick?: boolean;
 
     /**
      * Props to spread to the child `Menu` component if this item has a submenu.
@@ -184,6 +195,8 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
             textClassName,
             tagName = "a",
             htmlTitle,
+            showTick,
+            indent,
             ...htmlProps
         } = this.props;
 
@@ -208,6 +221,9 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
         const hasSubmenu = children != null;
 
         const intentClass = CoreClasses.intentClass(intent);
+
+        const selectedOrActive = selected || (active && intentClass === undefined);
+
         const anchorClasses = classNames(
             CoreClasses.MENU_ITEM,
             intentClass,
@@ -216,7 +232,9 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
                 [CoreClasses.DISABLED]: disabled,
                 // prevent popover from closing when clicking on submenu trigger or disabled item
                 [Classes.POPOVER2_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
-                [CoreClasses.SELECTED]: active && intentClass === undefined,
+                [CoreClasses.SELECTED]: selectedOrActive,
+                [CoreClasses.MENU_ITEM_TICKED]: showTick,
+                [CoreClasses.MENU_ITEM_INDENT]: !showTick && indent
             },
             className,
         );
@@ -230,6 +248,11 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
                 ...(disabled ? DISABLED_PROPS : {}),
                 className: anchorClasses,
             },
+            showTick ? (
+                <span className={CoreClasses.MENU_ITEM_TICK}>
+                    <Icon icon={IconNames.SmallTick} />
+                </span>
+            ) : undefined,
             hasIcon ? (
                 // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
                 // so that we always render this class

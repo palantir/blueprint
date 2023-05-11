@@ -28,6 +28,7 @@ export function MenuItemExample(props: ExampleProps) {
     const [selected, setSelected] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>("none");
     const [iconEnabled, setIconEnabled] = React.useState(true);
+    const [tickEnabled, setTickEnabled] = React.useState(true);
     const [submenuEnabled, setSubmenuEnabled] = React.useState(false);
 
     const options = (
@@ -38,6 +39,7 @@ export function MenuItemExample(props: ExampleProps) {
             <Switch label="Selected" checked={selected} onChange={handleBooleanChange(setSelected)} />
             <Switch label="Enable icon" checked={iconEnabled} onChange={handleBooleanChange(setIconEnabled)} />
             <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
+            <Switch label="Enable tick" checked={tickEnabled} onChange={handleBooleanChange(setTickEnabled)} />
             <IntentSelect intent={intent} onChange={handleValueChange(setIntent)} />
         </>
     );
@@ -47,11 +49,29 @@ export function MenuItemExample(props: ExampleProps) {
             <Menu className={Classes.ELEVATION_1} large={size === "large"} small={size === "small"}>
                 <MenuItem
                     disabled={disabled}
-                    selected={selected}
-                    text="Settings"
-                    icon={iconEnabled ? "cog" : undefined}
+                    text="Show hidden items"
+                    icon={iconEnabled ? "eye-open" : undefined}
                     intent={intent}
                     labelElement={submenuEnabled ? undefined : "⌘,"}
+                    indent={tickEnabled && selected}
+                    children={
+                        submenuEnabled ? (
+                            <>
+                                <MenuItem icon="add" text="Add new application" />
+                                <MenuItem icon="remove" text="Remove application" />
+                            </>
+                        ) : undefined
+                    }
+                />
+                <MenuItem
+                    disabled={disabled}
+                    text="Enable debug mode"
+                    icon={iconEnabled ? "bug" : undefined}
+                    intent={intent}
+                    labelElement={submenuEnabled ? undefined : "⌘,"}
+                    indent={tickEnabled && selected}
+                    showTick={tickEnabled && selected}
+                    selected={selected}
                     children={
                         submenuEnabled ? (
                             <>
