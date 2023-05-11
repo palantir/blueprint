@@ -107,6 +107,8 @@ export const TOASTER_CREATE_NULL =
     ns +
     ` OverlayToaster.create() is not supported inside React lifecycle methods in React 16.` +
     ` See usage example on the docs site.`;
+export const TOASTER_MAX_TOASTS_INVALID =
+    ns + ` <OverlayToaster> maxToasts is set to an invalid number, must be greater than 0`;
 export const TOASTER_WARN_INLINE =
     ns + ` OverlayToaster.create() ignores inline prop as it always creates a new element.`;
 
@@ -116,6 +118,3 @@ export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
 
 export const DRAWER_ANGLE_POSITIONS_ARE_CASTED =
     ns + ` <Drawer> all angle positions are casted into pure position (TOP, BOTTOM, LEFT or RIGHT)`;
-
-export const TOASTER_MAX_TOASTS_INVALID =
-    ns + ` <Toaster> maxToasts is set to an invalid number, must be greater than 0`;

@@ -38,7 +38,7 @@ export type ToasterPosition =
 /** @deprecated use ToasterInstance */
 export type IToaster = ToasterInstance;
 
-/** Public API methods available on a `<Toaster>` component instance. */
+/** Public API methods available on a `<OverlayToaster>` component instance. */
 export interface ToasterInstance {
     /**
      * Shows a new toast to the user, or updates an existing toast corresponding to the provided key (optional).
