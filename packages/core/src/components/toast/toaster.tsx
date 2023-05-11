@@ -58,10 +58,10 @@ export interface ToasterInstance {
 }
 
 /**
- * Props supported by the `<Toaster>` component.
+ * Props supported by the `OverlayToaster` component.
  * These props can be passed as an argument to the static `Toaster.create(props?, container?)` method.
  */
-export interface IToasterProps extends Props {
+export interface OverlayToasterProps extends Props {
     /**
      * Whether a toast should acquire application focus when it first opens.
      * This is disabled by default so that toasts do not interrupt the user's flow.
@@ -114,14 +114,17 @@ export interface IToasterState {
 }
 
 /**
- * Toaster component.
+ * Default Toaster component which renders toasts inside an Overlay.
  *
  * @see https://blueprintjs.com/docs/#core/components/toast.toaster
  */
-export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState> implements ToasterInstance {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
+export class OverlayToaster
+    extends AbstractPureComponent2<OverlayToasterProps, IToasterState>
+    implements ToasterInstance
+{
+    public static displayName = `${DISPLAYNAME_PREFIX}.OverlayToaster`;
 
-    public static defaultProps: IToasterProps = {
+    public static defaultProps: OverlayToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
         position: Position.TOP,
@@ -132,16 +135,16 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
      * Create a new `Toaster` instance that can be shared around your application.
      * The `Toaster` will be rendered into a new element appended to the given container.
      */
-    public static create(props?: IToasterProps, container = document.body): ToasterInstance {
+    public static create(props?: OverlayToasterProps, container = document.body): ToasterInstance {
         if (props != null && props.usePortal != null && !isNodeEnv("production")) {
             console.warn(TOASTER_WARN_INLINE);
         }
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
-        const toaster = ReactDOM.render<IToasterProps>(
-            <Toaster {...props} usePortal={false} />,
+        const toaster = ReactDOM.render<OverlayToasterProps>(
+            <Overlay {...props} usePortal={false} />,
             containerElement,
-        ) as Toaster;
+        ) as OverlayToaster;
         if (toaster == null) {
             throw new Error(TOASTER_CREATE_NULL);
         }
@@ -218,7 +221,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
         );
     }
 
-    protected validateProps({ maxToasts }: IToasterProps) {
+    protected validateProps({ maxToasts }: OverlayToasterProps) {
         // maximum number of toasts should not be a number less than 1
         if (maxToasts !== undefined && maxToasts < 1) {
             throw new Error(TOASTER_MAX_TOASTS_INVALID);
@@ -268,5 +271,9 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     };
 }
 
-export const OverlayToaster = Toaster;
-export type OverlayToasterProps = IToasterProps;
+/** @deprecated use the new, more specific component name `OverlayToaster` instead (forwards-compatible with v5) */
+export const Toaster = OverlayToaster;
+// eslint-disable-next-line deprecation/deprecation
+Toaster.displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
+/** @deprecated use `OverlayToasterProps` instead */
+export type IToasterProps = OverlayToasterProps;
