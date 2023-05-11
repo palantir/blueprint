@@ -23,9 +23,10 @@ import { MenuItem2, MenuItem2Props } from "@blueprintjs/popover2";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { IntentSelect } from "../core-examples/common/intentSelect";
 import { BooleanOrUndefinedSelect } from "./booleanOrUndefinedSelect";
+import { Size, SizeSelect } from "../core-examples/common/sizeSelect";
 
 export function MenuItem2Example(props: ExampleProps) {
-    const [large, setLarge] = React.useState(false);
+    const [size, setSize] = React.useState<Size>("regular");
     const [disabled, setDisabled] = React.useState(false);
     const [selected, setSelected] = React.useState<boolean | undefined>(undefined);
     const [intent, setIntent] = React.useState<Intent>("none");
@@ -38,7 +39,7 @@ export function MenuItem2Example(props: ExampleProps) {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
+            <SizeSelect size={size} onChange={setSize} />
             <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
             <PropCodeTooltip
                 content={
@@ -73,7 +74,7 @@ export function MenuItem2Example(props: ExampleProps) {
 
     return (
         <Example className="docs-menu-example" options={options} {...props}>
-            <Menu className={Classes.ELEVATION_1} large={large}>
+            <Menu className={Classes.ELEVATION_1} large={size === "large"} small={size === "small"}>
                 <MenuItem2
                     disabled={disabled}
                     icon={iconEnabled ? "cog" : undefined}

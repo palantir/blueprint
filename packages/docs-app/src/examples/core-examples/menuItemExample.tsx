@@ -20,9 +20,10 @@ import { Classes, H5, Intent, Menu, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
+import { Size, SizeSelect } from "./common/sizeSelect";
 
 export function MenuItemExample(props: ExampleProps) {
-    const [large, setLarge] = React.useState(false);
+    const [size, setSize] = React.useState<Size>("regular");
     const [disabled, setDisabled] = React.useState(false);
     const [selected, setSelected] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>("none");
@@ -32,7 +33,7 @@ export function MenuItemExample(props: ExampleProps) {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
+            <SizeSelect size={size} onChange={setSize} />
             <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
             <Switch label="Selected" checked={selected} onChange={handleBooleanChange(setSelected)} />
             <Switch label="Enable icon" checked={iconEnabled} onChange={handleBooleanChange(setIconEnabled)} />
@@ -43,7 +44,7 @@ export function MenuItemExample(props: ExampleProps) {
 
     return (
         <Example className="docs-menu-example" options={options} {...props}>
-            <Menu className={Classes.ELEVATION_1} large={large}>
+            <Menu className={Classes.ELEVATION_1} large={size === "large"} small={size === "small"}>
                 <MenuItem
                     disabled={disabled}
                     selected={selected}

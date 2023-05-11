@@ -29,6 +29,7 @@ Markup:
 </ul>
 
 .#{$ns}-large - Large size (only supported on <code>.#{$ns}-menu</code>)
+.#{$ns}-small - Snall size (only supported on <code>.#{$ns}-menu</code>)
 
 Styleguide menu
 */
@@ -68,6 +69,10 @@ Styleguide menu
       @include pt-icon($pt-icon-size-large);
       margin-right: $menu-item-padding-large;
     }
+  }
+
+  .#{$ns}-small & {
+    @include menu-item-small();
   }
 }
 

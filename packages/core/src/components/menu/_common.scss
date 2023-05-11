@@ -22,6 +22,9 @@ $menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 
 $menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 !default;
 $menu-item-padding-vertical-large:
   ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
+$menu-item-padding-small: ($pt-button-height-small - $pt-icon-size-standard) * 0.5 !default;
+$menu-item-padding-vertical-small:
+  ($pt-button-height-small - $menu-item-line-height) * 0.5 !default;
 
 $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray3 !default;
@@ -284,6 +287,11 @@ $dark-menu-item-intent-colors: (
     margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) * 0.5;
   }
 }
+
+@mixin menu-item-small() {
+  padding: $menu-item-padding-vertical-small $menu-item-padding;
+}
+
 
 @mixin menu-divider() {
   border-top: 1px solid $pt-divider-black;
