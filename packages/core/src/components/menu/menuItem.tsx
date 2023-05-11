@@ -197,8 +197,6 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
 
         const intentClass = Classes.intentClass(intent);
 
-        const selectedOrActive = selected || (active && intentClass === undefined);
-
         const anchorClasses = classNames(
             Classes.MENU_ITEM,
             intentClass,
@@ -207,7 +205,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
                 [Classes.DISABLED]: disabled,
                 // prevent popover from closing when clicking on submenu trigger or disabled item
                 [Classes.POPOVER_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
-                [Classes.SELECTED]: selectedOrActive,
+                [Classes.SELECTED]: selected || (active && intentClass === undefined),
                 [Classes.MENU_ITEM_TICKED]: showTick,
                 [Classes.MENU_ITEM_INDENT]: !showTick && indent
             },
