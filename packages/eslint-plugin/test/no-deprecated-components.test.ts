@@ -106,6 +106,19 @@ ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
                 },
             ],
         },
+        {
+            code: dedent`
+                import { KeyCombo } from "@blueprintjs/core";
+
+                return <KeyCombo />;
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: { deprecatedComponentName: "KeyCombo", newComponentName: "KeyComboTag" },
+                },
+            ],
+        },
     ],
     valid: [
         {

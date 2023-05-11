@@ -52,8 +52,8 @@ export interface IKeyComboProps extends Props {
     minimal?: boolean;
 }
 
-export class KeyCombo extends AbstractPureComponent2<KeyComboTagProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.KeyCombo`;
+export class KeyComboTag extends AbstractPureComponent2<KeyComboTagProps> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.KeyComboTag`;
 
     public render() {
         const { className, combo, minimal } = this.props;
@@ -79,3 +79,8 @@ export class KeyCombo extends AbstractPureComponent2<KeyComboTagProps> {
         return icon == null ? key : <Icon icon={icon.icon} title={icon.iconTitle} key={`key-${index}`} />;
     };
 }
+
+/** @deprecated use the new, more specific component name `KeyComboTag` instead (forwards-compatible with v5) */
+export const KeyCombo = KeyComboTag;
+// eslint-disable-next-line deprecation/deprecation
+KeyCombo.displayName = `${DISPLAYNAME_PREFIX}.KeyCombo`;
