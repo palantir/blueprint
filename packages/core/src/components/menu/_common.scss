@@ -237,6 +237,7 @@ $dark-menu-item-intent-colors: (
 
   &::before,
   .#{$ns}-menu-item-icon,
+  .#{$ns}-menu-item-tick,
   .#{$ns}-submenu-icon {
     color: nth(map-get($intent-colors, "primary"), 2);
   }
