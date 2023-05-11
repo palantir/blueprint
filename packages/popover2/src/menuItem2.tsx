@@ -258,7 +258,6 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
         const hasSubmenu = children != null;
 
         const intentClass = CoreClasses.intentClass(intent);
-
         const anchorClasses = classNames(
             CoreClasses.MENU_ITEM,
             intentClass,

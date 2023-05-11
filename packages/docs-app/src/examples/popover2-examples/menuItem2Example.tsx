@@ -39,7 +39,7 @@ export function MenuItem2Example(props: ExampleProps) {
 
     const options = (
         <>
-            <H5>Props</H5>
+            <H5>Menu props</H5>
             <SizeSelect size={size} onChange={setSize} />
 
             <H5>MenuItem2 props</H5>
