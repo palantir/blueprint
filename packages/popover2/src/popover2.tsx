@@ -711,7 +711,8 @@ export class Popover2<
     private handleTargetClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         // Target element(s) may fire simulated click event upon pressing ENTER/SPACE, which we should ignore
         // see: https://github.com/palantir/blueprint/issues/5775
-        if (!this.isSimulatedButtonClick(e) || !this.lastKeyWasKeyboardClick) {
+        const shouldIgnoreClick = this.lastKeyWasKeyboardClick && this.isSimulatedButtonClick(e);
+        if (!shouldIgnoreClick) {
             // ensure click did not originate from within inline popover before closing
             if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
                 if (this.props.isOpen == null) {
@@ -725,8 +726,8 @@ export class Popover2<
         this.lastKeyWasKeyboardClick = false;
     };
 
-    private isSimulatedButtonClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>): boolean => {
-        return !e.isTrusted && e.currentTarget.matches(CoreClasses.BUTTON);
+    private isSimulatedButtonClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        return !e.isTrusted && (e.target as HTMLElement).matches(`.${CoreClasses.BUTTON}`);
     };
 
     // a wrapper around setState({ isOpen }) that will call props.onInteraction instead when in controlled mode.
