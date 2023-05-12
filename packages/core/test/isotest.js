@@ -61,6 +61,9 @@ describe("Core isomorphic rendering", () => {
         KeyCombo: {
             props: { combo: "?" },
         },
+        KeyComboTag: {
+            props: { combo: "?" },
+        },
         OverflowList: {
             props: { items: [], overflowRenderer: () => null, visibleItemRenderer: () => null },
         },
@@ -68,7 +71,8 @@ describe("Core isomorphic rendering", () => {
             props: { lazy: false, usePortal: false },
         },
         OverlayToaster: {
-            skip: true,
+            props: { usePortal: false },
+            children: React.createElement(Core.Toast, { message: "Toast" }),
         },
         PanelStack: {
             props: {
@@ -97,8 +101,7 @@ describe("Core isomorphic rendering", () => {
             children: requiredChild,
         },
         Toaster: {
-            props: { usePortal: false },
-            children: React.createElement(Core.Toast, { message: "Toast" }),
+            skip: true,
         },
     });
 });

@@ -8,6 +8,11 @@
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/blueprint-popover2.css",
     "unpkg": "dist/popover2.bundle.js",
+    "files": [
+        "dist",
+        "lib",
+        "src"
+    ],
     "sideEffects": [
         "**/*.css"
     ],
