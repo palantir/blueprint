@@ -19,7 +19,7 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Button, Classes as CoreClasses, Menu, MenuItem, Overlay, Portal } from "@blueprintjs/core";
+import { Button, Classes as CoreClasses, Keys, Menu, MenuItem, Overlay, Portal } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes, Errors } from "../src";
@@ -780,6 +780,47 @@ describe("<Popover2>", () => {
         });
     });
 
+    describe("key interactions on Button target", () => {
+        const SPACE_KEYSTROKE = { keyCode: Keys.SPACE, which: Keys.SPACE };
+
+        describe("Enter key down opens click interaction popover", () => {
+            it("when autoFocus={true}", done => {
+                wrapper = renderPopover({ autoFocus: true });
+                const button = wrapper.find("[data-testid='target-button']").hostNodes();
+                (button.getDOMNode() as HTMLElement).focus();
+                button.simulate("keyDown", SPACE_KEYSTROKE);
+                // Wait for focus to change
+                wrapper.then(wrap => {
+                    // Expect focus is now within popover, so keyup would not happen on the button
+                    assert.isFalse(
+                        wrap.targetElement.contains(document.activeElement),
+                        "Focus was unexpectedly in target",
+                    );
+                    wrap.simulateContent("keyUp", SPACE_KEYSTROKE);
+                    wrap.assertIsOpen();
+                }, done);
+            });
+
+            it("when autoFocus={false}", done => {
+                wrapper = renderPopover({ autoFocus: false });
+                const button = wrapper.find("[data-testid='target-button']").hostNodes();
+                (button.getDOMNode() as HTMLElement).focus();
+                button.simulate("keyDown", SPACE_KEYSTROKE);
+
+                // Wait for focus to change (it shouldn't)
+                wrapper.then(wrap => {
+                    // Expect focus is still on button
+                    assert.isTrue(
+                        wrap.targetElement.contains(document.activeElement),
+                        "Focus was expected to be in target",
+                    );
+                    wrap.simulateContent("keyUp", SPACE_KEYSTROKE);
+                    wrap.assertIsOpen();
+                }, done);
+            });
+        });
+    });
+
     describe("compatibility", () => {
         // this test can be removed once Popover2 is merged into core in v5.0
         it("MenuItem from core package is able to dismiss open Popover2", () => {
@@ -823,6 +864,7 @@ describe("<Popover2>", () => {
         assertFindClass(className: string, expected?: boolean, msg?: string): this;
         assertIsOpen(isOpen?: boolean): this;
         assertOnInteractionCalled(called?: boolean): this;
+        simulateContent(eventName: string, ...args: any[]): this;
         simulateTarget(eventName: string, ...args: any[]): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
@@ -830,14 +872,14 @@ describe("<Popover2>", () => {
     }
 
     function renderPopover(props: Partial<IPopover2Props> = {}, content?: any) {
+        const contentElement = (
+            <div tabIndex={0} className="test-content">
+                Text {content}
+            </div>
+        );
+
         wrapper = mount(
-            <Popover2
-                usePortal={false}
-                {...props}
-                hoverCloseDelay={0}
-                hoverOpenDelay={0}
-                content={<div>Text {content}</div>}
-            >
+            <Popover2 usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0} content={contentElement}>
                 <Button data-testid="target-button" text="Target" />
             </Popover2>,
             { attachTo: testsContainerElement },
@@ -865,6 +907,10 @@ describe("<Popover2>", () => {
             return wrapper!;
         };
         wrapper.findClass = (className: string) => wrapper!.find(`.${className}`).hostNodes();
+        wrapper.simulateContent = (eventName: string, ...args) => {
+            wrapper!.findClass("test-content").simulate(eventName, ...args);
+            return wrapper!;
+        };
         wrapper.simulateTarget = (eventName: string, ...args) => {
             wrapper!.findClass(Classes.POPOVER2_TARGET).simulate(eventName, ...args);
             return wrapper!;
