@@ -121,14 +121,53 @@ describe("<Select2>", () => {
         assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), true);
     });
 
-    // HACKHACK: see https://github.com/palantir/blueprint/issues/5364
-    it.skip("invokes onItemSelect when clicking first MenuItem", () => {
+    it("invokes onItemSelect when clicking first MenuItem", () => {
         const wrapper = select();
-        wrapper.find(Popover2).find(MenuItem).first().simulate("click");
+        // N.B. need to trigger interaction on nested <a> element, where item onClick is actually attached to the DOM
+        wrapper.find(Popover2).find(MenuItem2).first().find("a").simulate("click");
         assert.isTrue(handlers.onItemSelect.calledOnce);
     });
 
+    // N.B. it's not worth refactoring these tests to be DRY since there will soon
+    // only be 1 MenuItem component in Blueprint v5
+
     it("closes the popover when selecting first MenuItem", () => {
+        const itemRenderer = (film: Film) => {
+            return <MenuItem text={`${film.rank}. ${film.title}`} shouldDismissPopover={true} />;
+        };
+        const wrapper = select({ itemRenderer, popoverProps: { usePortal: false } });
+
+        // popover should start close
+        assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), false);
+
+        // popover should open after clicking the button
+        wrapper.find("[data-testid='target-button']").simulate("click");
+        assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), true);
+
+        // and should close after the a menu item is clicked
+        wrapper.find(Popover2).find(".bp4-menu-item").first().simulate("click");
+        assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), false);
+    });
+
+    it("does not close the popover when selecting a MenuItem with shouldDismissPopover", () => {
+        const itemRenderer = (film: Film) => {
+            return <MenuItem text={`${film.rank}. ${film.title}`} shouldDismissPopover={false} />;
+        };
+        const wrapper = select({ itemRenderer, popoverProps: { usePortal: false } });
+
+        // popover should start closed
+        assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), false);
+
+        // popover should open after clicking the button
+        wrapper.find("[data-testid='target-button']").simulate("click");
+        assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), true);
+
+        // and should not close after the a menu item is clicked
+        wrapper.find(Popover2).find(".bp4-menu-item").first().simulate("click");
+        assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), true);
+    });
+
+    it("closes the popover when selecting first MenuItem2", () => {
         const itemRenderer = (film: Film) => {
             return <MenuItem2 text={`${film.rank}. ${film.title}`} shouldDismissPopover={true} />;
         };
@@ -146,7 +185,7 @@ describe("<Select2>", () => {
         assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), false);
     });
 
-    it("does not close the popover when selecting a MenuItem with shouldDismissPopover", () => {
+    it("does not close the popover when selecting a MenuItem2 with shouldDismissPopover", () => {
         const itemRenderer = (film: Film) => {
             return <MenuItem2 text={`${film.rank}. ${film.title}`} shouldDismissPopover={false} />;
         };
@@ -169,6 +208,7 @@ describe("<Select2>", () => {
             <Select2<Film> {...defaultProps} {...handlers} {...props}>
                 <button data-testid="target-button">Target</button>
             </Select2>,
+            { attachTo: testsContainerElement },
         );
         if (query !== undefined) {
             wrapper.setState({ query });
