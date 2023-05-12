@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Alert, Button, H5, Intent, Switch, Toaster, ToasterInstance } from "@blueprintjs/core";
+import { Alert, Button, H5, Intent, OverlayToaster, Switch, ToasterInstance } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IBlueprintExampleData } from "../../tags/types";
@@ -106,7 +106,7 @@ export class AlertExample extends React.PureComponent<ExampleProps<IBlueprintExa
                     </p>
                 </Alert>
 
-                <Toaster ref={ref => (this.toaster = ref)} />
+                <OverlayToaster ref={ref => (this.toaster = ref)} />
             </Example>
         );
     }

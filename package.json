@@ -37,7 +37,7 @@
         "verify": "npm-run-all -s compile dist:libs dist:apps -p test lint format-check"
     },
     "dependencies": {
-        "@types/chai": "~4.3.4",
+        "@types/chai": "~4.3.5",
         "@types/enzyme": "~3.10.12",
         "@types/enzyme-adapter-react-16": "~1.0.6",
         "@types/mocha": "~10.0.1",

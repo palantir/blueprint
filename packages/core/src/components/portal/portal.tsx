@@ -40,6 +40,14 @@ export interface IPortalProps extends Props {
      * @default document.body
      */
     container?: HTMLElement;
+
+    /**
+     * A list of DOM events which should be stopped from propagating through this portal element.
+     *
+     * @see https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals
+     * @see https://github.com/palantir/blueprint/issues/6124
+     */
+    stopPropagationEvents?: Array<keyof HTMLElementEventMap>;
 }
 
 export interface IPortalState {
@@ -103,6 +111,7 @@ export class Portal extends React.Component<PortalProps, IPortalState> {
         }
         this.portalElement = this.createContainerElement();
         this.props.container.appendChild(this.portalElement);
+        this.addStopPropagationListeners(this.props.stopPropagationEvents);
         /* eslint-disable-next-line react/no-did-mount-set-state */
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
     }
@@ -113,9 +122,15 @@ export class Portal extends React.Component<PortalProps, IPortalState> {
             maybeRemoveClass(this.portalElement.classList, prevProps.className);
             maybeAddClass(this.portalElement.classList, this.props.className);
         }
+
+        if (this.portalElement != null && prevProps.stopPropagationEvents !== this.props.stopPropagationEvents) {
+            this.removeStopPropagationListeners(prevProps.stopPropagationEvents);
+            this.addStopPropagationListeners(this.props.stopPropagationEvents);
+        }
     }
 
     public componentWillUnmount() {
+        this.removeStopPropagationListeners(this.props.stopPropagationEvents);
         this.portalElement?.remove();
     }
 
@@ -127,6 +142,14 @@ export class Portal extends React.Component<PortalProps, IPortalState> {
             maybeAddClass(container.classList, this.context.blueprintPortalClassName);
         }
         return container;
+    }
+
+    private addStopPropagationListeners(eventNames?: Array<keyof HTMLElementEventMap>) {
+        eventNames?.forEach(event => this.portalElement?.addEventListener(event, handleStopProgation));
+    }
+
+    private removeStopPropagationListeners(events?: Array<keyof HTMLElementEventMap>) {
+        events?.forEach(event => this.portalElement?.removeEventListener(event, handleStopProgation));
     }
 }
 
@@ -140,4 +163,8 @@ function maybeAddClass(classList: DOMTokenList, className?: string) {
     if (className != null && className !== "") {
         classList.add(...className.split(" "));
     }
+}
+
+function handleStopProgation(e: Event) {
+    e.stopPropagation();
 }

@@ -14,7 +14,17 @@
 
 import * as React from "react";
 
-import { Button, H5, HotkeysTarget2, KeyCombo, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
+import {
+    Button,
+    H5,
+    HotkeysTarget2,
+    KeyComboTag,
+    MenuItem,
+    OverlayToaster,
+    Position,
+    Switch,
+    ToasterInstance,
+} from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 import {
@@ -44,10 +54,10 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, IOmnibarEx
 
     private handleResetChange = handleBooleanChange(resetOnSelect => this.setState({ resetOnSelect }));
 
-    private toaster: Toaster;
+    private toaster: ToasterInstance;
 
     private refHandlers = {
-        toaster: (ref: Toaster) => (this.toaster = ref),
+        toaster: (ref: ToasterInstance) => (this.toaster = ref),
     };
 
     public render() {
@@ -73,7 +83,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, IOmnibarEx
                     <span>
                         <Button text="Click to show Omnibar" onClick={this.handleClick} />
                         {" or press "}
-                        <KeyCombo combo="shift + o" />
+                        <KeyComboTag combo="shift + o" />
                     </span>
 
                     <Omnibar<Film>
@@ -88,7 +98,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, IOmnibarEx
                         onClose={this.handleClose}
                         onItemSelect={this.handleItemSelect}
                     />
-                    <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
+                    <OverlayToaster position={Position.TOP} ref={this.refHandlers.toaster} />
                 </Example>
             </HotkeysTarget2>
         );
