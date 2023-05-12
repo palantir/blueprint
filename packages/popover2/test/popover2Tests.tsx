@@ -19,7 +19,7 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses, Menu, MenuItem, Overlay, Portal } from "@blueprintjs/core";
+import { Button, Classes as CoreClasses, Menu, MenuItem, Overlay, Portal } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes, Errors } from "../src";
@@ -104,7 +104,7 @@ describe("<Popover2>", () => {
         it("warns and disables if given empty content", () => {
             const popover = mount(
                 <Popover2 content={undefined} isOpen={true}>
-                    <button />
+                    <Button />
                 </Popover2>,
             );
             assert.isFalse(popover.find(Overlay).exists(), "not open for undefined content");
@@ -132,7 +132,7 @@ describe("<Popover2>", () => {
                             hasBackdrop={true}
                             interactionKind={Popover2InteractionKind[interactionKindKey]}
                         >
-                            <button />
+                            <Button />
                         </Popover2>,
                     );
                     assert.isTrue(warnSpy.calledWith(Errors.POPOVER2_HAS_BACKDROP_INTERACTION));
@@ -373,7 +373,7 @@ describe("<Popover2>", () => {
 
         function assertPopoverTargetTabIndex(shouldTabIndexExist: boolean, popoverProps: Partial<IPopover2Props>) {
             wrapper = renderPopover({ ...popoverProps, usePortal: true });
-            const targetElement = wrapper.find("[data-testid='target-button']").getDOMNode();
+            const targetElement = wrapper.find("[data-testid='target-button']").hostNodes().getDOMNode();
 
             if (shouldTabIndexExist) {
                 assert.equal(targetElement.getAttribute("tabindex"), "0");
@@ -478,7 +478,7 @@ describe("<Popover2>", () => {
             it("is invoked with `false` when clicking POPOVER2_DISMISS", () => {
                 renderPopover(
                     { isOpen: true, onInteraction },
-                    <button className={Classes.POPOVER2_DISMISS}>Dismiss</button>,
+                    <Button className={Classes.POPOVER2_DISMISS}>Dismiss</Button>,
                 )
                     .findClass(Classes.POPOVER2_DISMISS)
                     .simulate("click");
@@ -563,16 +563,16 @@ describe("<Popover2>", () => {
         it("clicking POPOVER2_DISMISS closes popover when usePortal=true", () => {
             wrapper = renderPopover(
                 { defaultIsOpen: true, usePortal: true },
-                <button className={Classes.POPOVER2_DISMISS}>Dismiss</button>,
+                <Button className={Classes.POPOVER2_DISMISS}>Dismiss</Button>,
             );
-            wrapper.find(Portal).find(`.${Classes.POPOVER2_DISMISS}`).simulate("click");
+            wrapper.find(Portal).find(`.${Classes.POPOVER2_DISMISS}`).hostNodes().simulate("click");
             wrapper.update().assertIsOpen(false);
         });
 
         it("clicking POPOVER2_DISMISS closes popover when usePortal=false", () => {
             wrapper = renderPopover(
                 { defaultIsOpen: true, usePortal: false },
-                <button className={Classes.POPOVER2_DISMISS}>Dismiss</button>,
+                <Button className={Classes.POPOVER2_DISMISS}>Dismiss</Button>,
             );
             wrapper.findClass(Classes.POPOVER2_DISMISS).simulate("click");
             wrapper.assertIsOpen(false);
@@ -624,7 +624,7 @@ describe("<Popover2>", () => {
             root = mount(
                 <Popover2 content="popover" hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
                     <Tooltip2 content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
-                        <button>Target</button>
+                        <Button text="Target" />
                     </Tooltip2>
                 </Popover2>,
                 { attachTo: testsContainerElement },
@@ -661,8 +661,8 @@ describe("<Popover2>", () => {
 
         it("matches target width via custom modifier", () => {
             wrapper = renderPopover({ matchTargetWidth: true, isOpen: true, placement: "bottom" });
-            const targetElement = wrapper.find("[data-testid='target-button']").getDOMNode();
-            const popoverElement = wrapper.find(`.${Classes.POPOVER2}`).getDOMNode();
+            const targetElement = wrapper.find("[data-testid='target-button']").hostNodes().getDOMNode();
+            const popoverElement = wrapper.find(`.${Classes.POPOVER2}`).hostNodes().getDOMNode();
             assert.closeTo(
                 popoverElement.clientWidth,
                 targetElement.clientWidth,
@@ -675,27 +675,27 @@ describe("<Popover2>", () => {
     describe("closing on click", () => {
         it("Classes.POPOVER2_DISMISS closes on click", () =>
             assertClickToClose(
-                <button className={Classes.POPOVER2_DISMISS} id="btn">
+                <Button className={Classes.POPOVER2_DISMISS} id="btn">
                     Dismiss
-                </button>,
+                </Button>,
                 false,
             ));
 
         it("Classes.POPOVER2_DISMISS_OVERRIDE does not close", () =>
             assertClickToClose(
                 <span className={Classes.POPOVER2_DISMISS}>
-                    <button className={Classes.POPOVER2_DISMISS_OVERRIDE} id="btn">
+                    <Button className={Classes.POPOVER2_DISMISS_OVERRIDE} id="btn">
                         Dismiss
-                    </button>
+                    </Button>
                 </span>,
                 true,
             ));
 
         it(":disabled does not close", () =>
             assertClickToClose(
-                <button className={Classes.POPOVER2_DISMISS} disabled={true} id="btn">
+                <Button className={Classes.POPOVER2_DISMISS} disabled={true} id="btn">
                     Dismiss
-                </button>,
+                </Button>,
                 true,
             ));
 
@@ -703,9 +703,9 @@ describe("<Popover2>", () => {
             assertClickToClose(
                 // testing nested behavior too
                 <div className={CoreClasses.DISABLED}>
-                    <button className={Classes.POPOVER2_DISMISS} id="btn">
+                    <Button className={Classes.POPOVER2_DISMISS} id="btn">
                         Dismiss
-                    </button>
+                    </Button>
                 </div>,
                 true,
             ));
@@ -717,12 +717,12 @@ describe("<Popover2>", () => {
                     defaultIsOpen={true}
                     usePortal={false}
                     content={
-                        <button className={Classes.POPOVER2_DISMISS} id="btn">
+                        <Button className={Classes.POPOVER2_DISMISS} id="btn">
                             Dismiss
-                        </button>
+                        </Button>
                     }
                 >
-                    <button>Target</button>
+                    <Button>Target</Button>
                 </Popover2>,
                 true,
             ));
@@ -734,19 +734,19 @@ describe("<Popover2>", () => {
                     defaultIsOpen={true}
                     usePortal={false}
                     content={
-                        <button className={Classes.POPOVER2_DISMISS} id="btn">
+                        <Button className={Classes.POPOVER2_DISMISS} id="btn">
                             Dismiss
-                        </button>
+                        </Button>
                     }
                 >
-                    <button>Target</button>
+                    <Button>Target</Button>
                 </Popover2>,
                 false,
             ));
 
         function assertClickToClose(children: React.ReactNode, expectedIsOpen: boolean) {
             wrapper = renderPopover({ defaultIsOpen: true }, children);
-            wrapper.find("#btn").simulate("click");
+            wrapper.find("#btn").hostNodes().simulate("click");
             wrapper.assertIsOpen(expectedIsOpen);
         }
     });
@@ -801,10 +801,15 @@ describe("<Popover2>", () => {
                     hoverCloseDelay={0}
                     hoverOpenDelay={0}
                     content="content"
+                    popoverClassName={Classes.POPOVER2_CONTENT_SIZING}
                     renderTarget={({ isOpen, ref, ...props }) => (
-                        <button data-testid="target-button" ref={ref} onClick={props.onClick} {...props}>
-                            Target
-                        </button>
+                        <Button
+                            data-testid="target-button"
+                            elementRef={ref}
+                            onClick={props.onClick}
+                            text="Target"
+                            {...props}
+                        />
                     )}
                 />,
                 { attachTo: testsContainerElement },
@@ -818,7 +823,7 @@ describe("<Popover2>", () => {
         assertFindClass(className: string, expected?: boolean, msg?: string): this;
         assertIsOpen(isOpen?: boolean): this;
         assertOnInteractionCalled(called?: boolean): this;
-        simulateTarget(eventName: string): this;
+        simulateTarget(eventName: string, ...args: any[]): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
         then(next: (wrap: IPopover2Wrapper) => void, done: Mocha.Done): this;
@@ -833,7 +838,7 @@ describe("<Popover2>", () => {
                 hoverOpenDelay={0}
                 content={<div>Text {content}</div>}
             >
-                <button data-testid="target-button">Target</button>
+                <Button data-testid="target-button" text="Target" />
             </Popover2>,
             { attachTo: testsContainerElement },
         ) as IPopover2Wrapper;
@@ -860,8 +865,8 @@ describe("<Popover2>", () => {
             return wrapper!;
         };
         wrapper.findClass = (className: string) => wrapper!.find(`.${className}`).hostNodes();
-        wrapper.simulateTarget = (eventName: string) => {
-            wrapper!.findClass(Classes.POPOVER2_TARGET).simulate(eventName);
+        wrapper.simulateTarget = (eventName: string, ...args) => {
+            wrapper!.findClass(Classes.POPOVER2_TARGET).simulate(eventName, ...args);
             return wrapper!;
         };
         wrapper.sendEscapeKey = () => {
