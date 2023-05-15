@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, MenuItem, Popover } from "@blueprintjs/core";
+import { Classes, InputGroup, MenuItem, Popover } from "@blueprintjs/core";
 
 import { ItemRendererProps, Select, SelectProps } from "../src";
 import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
@@ -145,7 +145,7 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
 
         // and should close after the a menu item is clicked
-        wrapper.find(Popover).find(".bp4-menu-item").first().simulate("click");
+        wrapper.find(Popover).find(`.${Classes.MENU_ITEM}`).first().simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
     });
 
@@ -163,7 +163,7 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
 
         // and should not close after the a menu item is clicked
-        wrapper.find(Popover).find(".bp4-menu-item").first().simulate("click");
+        wrapper.find(Popover).find(`.${Classes.MENU_ITEM}`).first().simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
     });
 
