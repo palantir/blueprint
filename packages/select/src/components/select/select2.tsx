@@ -298,12 +298,12 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         const target = event?.target as HTMLElement;
-        const shouldDismiss =
-            target === this.inputElement
-                ? false
-                : target?.closest(`.${CoreClasses.MENU_ITEM}`)?.classList?.contains(Popover2Classes.POPOVER2_DISMISS) ??
-                  true;
-        this.setState({ isOpen: !shouldDismiss });
+        const menuItem = target?.closest(`.${CoreClasses.MENU_ITEM}`);
+        const menuItemDismiss =
+            menuItem?.matches(`.${Popover2Classes.POPOVER2_DISMISS}`) ||
+            menuItem?.matches(`.${CoreClasses.POPOVER_DISMISS}`);
+
+        this.setState({ isOpen: !menuItemDismiss ?? false });
         this.props.onItemSelect?.(item, event);
     };
 
