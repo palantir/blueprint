@@ -927,7 +927,7 @@ describe("<Popover2>", () => {
                 wrapper!.update();
                 next(wrapper!);
                 done();
-            });
+            }, 40);
             return wrapper!;
         };
         return wrapper;
