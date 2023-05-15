@@ -241,13 +241,9 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         );
     }
 
-    public componentWillMount() {
+    public componentDidMount() {
         addScrollbarStyle();
         this.updateHash();
-    }
-
-    public componentDidMount() {
-        // hooray! so you don't have to!
         FocusStyleManager.onlyShowFocusOnTabs();
         this.scrollToActiveSection();
         this.props.onComponentUpdate?.(this.state.activePageId);
@@ -301,7 +297,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
                 page: location.pathname + location.search + location.hash,
             });
         }
-        // Don't call componentWillMount since the HotkeysTarget decorator will be invoked on every hashchange.
+        // Don't call componentDidMount since the HotkeysTarget decorator will be invoked on every hashchange.
         this.updateHash();
     };
 
