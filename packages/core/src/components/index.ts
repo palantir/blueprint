@@ -93,7 +93,7 @@ export {
 export { PopupKind } from "./popover/popupKind";
 export { Portal, PortalProps } from "./portal/portal";
 export { ProgressBar, ProgressBarProps } from "./progress-bar/progressBar";
-export { ResizeSensor, ResizeSensorProps } from "./resize-sensor/resizeSensor";
+export { ResizeEntry, ResizeSensor, ResizeSensorProps } from "./resize-sensor/resizeSensor";
 export { HandleHtmlProps, HandleInteractionKind, HandleProps, HandleType } from "./slider/handleProps";
 export { MultiSlider, MultiSliderProps } from "./slider/multiSlider";
 export { NumberRange, RangeSlider, RangeSliderProps } from "./slider/rangeSlider";
