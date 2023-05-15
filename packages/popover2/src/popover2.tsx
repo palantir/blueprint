@@ -203,9 +203,6 @@ export class Popover2<
     // element on the same page.
     private lostFocusOnSamePage = true;
 
-    // Tracks when previous onKeyUp was a keyboard click
-    private lastKeyWasKeyboardClick = false;
-
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate?: () => Promise<Partial<PopperState> | null>;
 
@@ -702,16 +699,12 @@ export class Popover2<
         if (isKeyboardClick) {
             this.handleTargetClick(e);
         }
-
-        // Target element(s) may fire simulated click event upon pressing ENTER/SPACE, which we should ignore later
-        // see: https://github.com/palantir/blueprint/issues/5775
-        this.lastKeyWasKeyboardClick = isKeyboardClick;
     };
 
     private handleTargetClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         // Target element(s) may fire simulated click event upon pressing ENTER/SPACE, which we should ignore
         // see: https://github.com/palantir/blueprint/issues/5775
-        const shouldIgnoreClick = this.lastKeyWasKeyboardClick && this.isSimulatedButtonClick(e);
+        const shouldIgnoreClick = this.state.isOpen && this.isSimulatedButtonClick(e);
         if (!shouldIgnoreClick) {
             // ensure click did not originate from within inline popover before closing
             if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
@@ -722,8 +715,6 @@ export class Popover2<
                 }
             }
         }
-
-        this.lastKeyWasKeyboardClick = false;
     };
 
     private isSimulatedButtonClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
