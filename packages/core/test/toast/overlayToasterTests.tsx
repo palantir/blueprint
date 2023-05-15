@@ -25,7 +25,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { Classes, OverlayToaster, Toaster } from "../../src";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
 
-describe("Toaster", () => {
+describe("OverlayToaster", () => {
     let testsContainerElement: HTMLElement;
     let toaster: Toaster;
 

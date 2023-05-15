@@ -58,7 +58,7 @@ export interface KeyComboTagProps extends Props {
 }
 
 export class KeyComboTag extends AbstractPureComponent<KeyComboTagProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.KeyCombo`;
+    public static displayName = `${DISPLAYNAME_PREFIX}.KeyComboTag`;
 
     public render() {
         const { className, combo, minimal } = this.props;

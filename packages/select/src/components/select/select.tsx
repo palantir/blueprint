@@ -290,10 +290,10 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         const target = event?.target as HTMLElement;
-        const shouldDismiss =
-            target?.closest(`.${CoreClasses.MENU_ITEM}`)?.classList?.contains(CoreClasses.POPOVER_DISMISS) ?? true;
+        const menuItem = target?.closest(`.${CoreClasses.MENU_ITEM}`);
+        const menuItemDismiss = menuItem?.matches(`.${CoreClasses.POPOVER_DISMISS}`);
 
-        this.setState({ isOpen: !shouldDismiss });
+        this.setState({ isOpen: !menuItemDismiss ?? false });
         this.props.onItemSelect?.(item, event);
     };
 

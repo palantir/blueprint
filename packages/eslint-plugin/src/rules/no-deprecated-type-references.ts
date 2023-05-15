@@ -93,6 +93,7 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "ITreeProps",
         ["IPortalContext", "PortalLegacyContext"],
         ["IToaster", "ToasterInstance"],
+        ["IToasterProps", "OverlayToasterProps"],
         ["ITreeNode", "TreeNodeInfo"],
     ],
 
@@ -101,6 +102,7 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "IDateInputProps",
         "IDatePickerProps",
         "IDatePickerModifiers",
+        "IDatePickerShortcut",
         "IDateRangeInputProps",
         "IDateRangeShortcut",
         "ITimePickerProps",
