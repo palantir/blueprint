@@ -93,7 +93,7 @@ export {
 export { PopupKind } from "./popover/popupKind";
 export { Portal, PortalProps } from "./portal/portal";
 export { ProgressBar, ProgressBarProps } from "./progress-bar/progressBar";
-export { ResizeSensor, ResizeSensorProps } from "./resize-sensor/resizeSensor";
+export { ResizeEntry, ResizeSensor, ResizeSensorProps } from "./resize-sensor/resizeSensor";
 export { HandleHtmlProps, HandleInteractionKind, HandleProps, HandleType } from "./slider/handleProps";
 export { MultiSlider, MultiSliderProps } from "./slider/multiSlider";
 export { NumberRange, RangeSlider, RangeSliderProps } from "./slider/rangeSlider";
@@ -105,8 +105,7 @@ export { Tag, TagProps } from "./tag/tag";
 export { TagInput, TagInputProps, TagInputAddMethod } from "./tag-input/tagInput";
 export { OverlayToaster, OverlayToasterProps } from "./toast/overlayToaster";
 export { Toast, ToastProps } from "./toast/toast";
-// eslint-disable-next-line deprecation/deprecation
-export { Toaster, ToasterInstance, ToastOptions, ToasterPosition } from "./toast/toaster";
+export { Toaster, ToastOptions, ToasterPosition } from "./toast/toaster";
 export { TooltipProps, Tooltip } from "./tooltip/tooltip";
 export { Tree, TreeProps } from "./tree/tree";
 export { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";

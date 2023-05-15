@@ -33,6 +33,8 @@ export {
     TimezoneSelect,
     /** @deprecated import from @blueprintjs/datetime instead */
     TimezoneSelectProps,
+    /** @deprecated import from @blueprintjs/datetime instead */
+    TimezoneDisplayFormat,
 } from "@blueprintjs/datetime";
 
 export * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";

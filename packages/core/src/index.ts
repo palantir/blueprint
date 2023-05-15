@@ -21,6 +21,8 @@ export * from "./context";
 export * from "./hooks";
 
 /* eslint-disable deprecation/deprecation */
+export * from "./deprecatedTypeAliases";
+
 export {
     HotkeysTargetLegacy as HotkeysTarget,
     type HotkeysTargetLegacyComponent as IHotkeysTargetComponent,
