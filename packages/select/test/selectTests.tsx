@@ -27,7 +27,7 @@ import type { SelectState } from "../src/components/select/select";
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
-describe.only("<Select>", () => {
+describe("<Select>", () => {
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
