@@ -36,7 +36,7 @@ describe("Hotkey", () => {
 
         it("logs an error for non-global hotkey without a group", () => {
             render(<Hotkey combo="cmd+C" label="test copy me" />);
-            expect(consoleError.calledOnce).to.be.true;
+            expect(consoleError.callCount).to.equal(1);
         });
     });
 });

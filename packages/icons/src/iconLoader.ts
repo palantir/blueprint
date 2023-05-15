@@ -83,14 +83,11 @@ export class Icons {
     }
 
     /**
-     * Get the icon SVG component.
+     * Get the icon SVG component. Returns `undefined` if the icon has not been loaded yet.
      */
     public static getComponent(icon: IconName): IconComponent | undefined {
         if (!this.isValidIconName(icon)) {
             // don't warn, since this.load() will have warned already
-            return undefined;
-        } else if (!singleton.loadedIcons.has(icon)) {
-            console.error(`[Blueprint] Icon '${icon}' not loaded yet, did you call Icons.load('${icon}')?`);
             return undefined;
         }
 

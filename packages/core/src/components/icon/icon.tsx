@@ -104,12 +104,20 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
             if (loadedIconComponent !== undefined) {
                 setIconComponent(loadedIconComponent);
             } else if (autoLoad) {
-                Icons.load(icon).then(() => {
-                    // if this effect expired by the time icon loaded, then don't set state
-                    if (!shouldCancelIconLoading) {
-                        setIconComponent(Icons.getComponent(icon));
-                    }
-                });
+                Icons.load(icon)
+                    .then(() => {
+                        // if this effect expired by the time icon loaded, then don't set state
+                        if (!shouldCancelIconLoading) {
+                            setIconComponent(Icons.getComponent(icon));
+                        }
+                    })
+                    .catch(reason => {
+                        console.error(`[Blueprint] Icon '${icon}' could not be loaded.`, reason);
+                    });
+            } else {
+                console.error(
+                    `[Blueprint] Icon '${icon}' is not loaded yet and autoLoad={false}, did you call Icons.load('${icon}')?`,
+                );
             }
         }
         return () => {
