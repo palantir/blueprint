@@ -95,16 +95,21 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
     React.useEffect(() => {
         let shouldCancelIconLoading = false;
         if (typeof icon === "string") {
-            if (autoLoad) {
-                // load the module to get the component (it will be cached if it's the same icon)
+            // The icon may have been loaded already, in which case we can simply grab it.
+            // N.B. when `autoLoad={true}`, we can't rely on simply calling Icons.load() here to re-load an icon module
+            // which has already been loaded & cached, since it may have been loaded with special loading options which
+            // this component knows nothing about.
+            const loadedIconComponent = Icons.getComponent(icon);
+
+            if (loadedIconComponent !== undefined) {
+                setIconComponent(loadedIconComponent);
+            } else if (autoLoad) {
                 Icons.load(icon).then(() => {
                     // if this effect expired by the time icon loaded, then don't set state
                     if (!shouldCancelIconLoading) {
                         setIconComponent(Icons.getComponent(icon));
                     }
                 });
-            } else {
-                setIconComponent(Icons.getComponent(icon));
             }
         }
         return () => {
