@@ -60,21 +60,18 @@ describe("<TagInput>", () => {
     });
 
     it("leftIcon renders an icon as first child", () => {
-        const wrapper = mount(<TagInput leftIcon="add" values={VALUES} />);
+        const leftIcon = "add";
+        const wrapper = mount(<TagInput leftIcon={leftIcon} values={VALUES} />);
 
-        // use a helper since Enzyme 3 (1) includes React wrappers in .childAt()
-        // calls, making them convoluted, and (2) does not preserve referential
-        // identity, meaning we have to re-query elements to detect changes.
-        const assertLeftIconHasClass = (className: string, errorMessage: string) => {
-            const hasClass = wrapper
+        assert.isTrue(
+            wrapper
                 .childAt(0) // TagInput's root <div> element
                 .childAt(0) // left-icon React wrapper
                 .childAt(0) // left-icon <div> element
-                .hasClass(className);
-            assert.isTrue(hasClass, errorMessage);
-        };
-
-        assertLeftIconHasClass(Classes.ICON, "icon");
+                .find(`.${Classes.ICON}`)
+                .hasClass(Classes.iconClass(leftIcon)),
+            `Expected .${Classes.ICON} element to have .${Classes.iconClass(leftIcon)} class`,
+        );
     });
 
     it("rightElement appears as last child", () => {
