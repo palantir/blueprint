@@ -10,7 +10,7 @@ It is optimized for building complex, data-dense web interfaces for _desktop app
 
 [**View the full documentation ▸**](http://blueprintjs.com/docs)
 
-[**Try it out on CodeSandbox ▸**](https://codesandbox.io/p/sandbox/naughty-diffie-wy0ojy)
+[**Try it out on CodeSandbox ▸**](https://codesandbox.io/p/sandbox/wy0ojy)
 
 [**Read frequently asked questions (FAQ) on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
