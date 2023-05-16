@@ -275,8 +275,9 @@ export class OverlayToaster
 /** @deprecated use the new, more specific component name `OverlayToaster` instead (forwards-compatible with v5) */
 export const Toaster = OverlayToaster;
 /** @deprecated use the new, more specific type `ToasterInstance` instead (forwards-compatible with v5) */
+// N.B. we use the type of the whole OverlayToaster class instead of only ToasterInstance here, for backcompat
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type Toaster = ToasterInstance;
+export type Toaster = typeof OverlayToaster;
 // eslint-disable-next-line deprecation/deprecation
 Toaster.displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
 /** @deprecated use `OverlayToasterProps` instead */
