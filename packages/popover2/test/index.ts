@@ -13,6 +13,10 @@
  * limitations under the License.
  */
 
+// eslint-disable-next-line @typescript-eslint/tslint/config
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "../lib/css/blueprint-popover2.css";
+
 import "@blueprintjs/test-commons/bootstrap";
 
 import "./breadcrumbs2Tests";
