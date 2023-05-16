@@ -302,8 +302,9 @@ export class Select2<T> extends AbstractPureComponent2<Select2Props<T>, Select2S
         const menuItemDismiss =
             menuItem?.matches(`.${Popover2Classes.POPOVER2_DISMISS}`) ||
             menuItem?.matches(`.${CoreClasses.POPOVER_DISMISS}`);
+        const shouldDismiss = menuItemDismiss ?? true;
 
-        this.setState({ isOpen: !menuItemDismiss ?? false });
+        this.setState({ isOpen: !shouldDismiss });
         this.props.onItemSelect?.(item, event);
     };
 
