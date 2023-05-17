@@ -32,7 +32,7 @@ There are three ways to use __OverlayToaster__:
 
 1. `OverlayToaster.create(props)` static method returns a new `ToasterInstance` instance. Use the instance method `toaster.show()` to manipulate this instance. __(recommended)__
 1. `<OverlayToaster><Toast />...</OverlayToaster>`: Render a `<OverlayToaster>` element with React `children`.
-1. `<OverlayToaster ref={(ref: ToasterInstance) => ref.show({ ...toast })} />`: Render a `<OverlayToaster>` element and use the `ref` prop to access its instance methods.
+1. `<OverlayToaster ref={(ref: ToasterInstance) => ref.show({ ...toast })} />`: Render a `<OverlayToaster>` element and use a `ref` callback to access its instance methods. Note that if you use a ref object, you will have to use the more specific `OverlayToaster` type (e.g. `const myToaster = React.createRef<OverlayToaster>()`).
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h5 class="@ns-heading">Working with multiple toasters</h5>

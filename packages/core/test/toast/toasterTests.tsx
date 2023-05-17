@@ -188,6 +188,24 @@ describe("OverlayToaster", () => {
         mount(React.createElement(LifecycleToaster));
     });
 
+    it("ref callback is assignable to ToasterInstance", () => {
+        const handleToasterRef = (_toaster: ToasterInstance | null) => {
+            /* no-op */
+        };
+        const refSpy = spy(handleToasterRef);
+        mount(<OverlayToaster ref={refSpy} />);
+        assert.isTrue(refSpy.calledOnce);
+    });
+
+    it("ref object is assignable to OverlayToaster", () => {
+        const toasterInstance = React.createRef<ToasterInstance>();
+        const overlayToaster = React.createRef<OverlayToaster>();
+        // @ts-expect-error
+        const invalidToaster = <OverlayToaster ref={toasterInstance} />;
+        mount(<OverlayToaster ref={overlayToaster} />);
+        assert.isDefined(overlayToaster.current);
+    });
+
     // this type compatibility test can be removed in Blueprint v5.0
     it("ref is backwards-compatible with (deprecated) Toaster type", () => {
         // N.B. without `export type Toaster = ...`, the following `Toaster` reference will be invalid
