@@ -22,7 +22,7 @@ import { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, OverlayToaster, ToasterInstance } from "../../src";
+import { Classes, OverlayToaster, Toaster, ToasterInstance } from "../../src";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
 
 describe("OverlayToaster", () => {
@@ -186,5 +186,42 @@ describe("OverlayToaster", () => {
             }
         }
         mount(React.createElement(LifecycleToaster));
+    });
+
+    it("ref callback is assignable to ToasterInstance", () => {
+        const handleToasterRef = (_toaster: ToasterInstance | null) => {
+            /* no-op */
+        };
+        const refSpy = spy(handleToasterRef);
+        mount(<OverlayToaster ref={refSpy} />);
+        assert.isTrue(refSpy.calledOnce);
+    });
+
+    it("ref object is assignable to OverlayToaster", () => {
+        const toasterInstance = React.createRef<ToasterInstance>();
+        const overlayToaster = React.createRef<OverlayToaster>();
+        // @ts-expect-error
+        const invalidToaster = <OverlayToaster ref={toasterInstance} />;
+        mount(<OverlayToaster ref={overlayToaster} />);
+        assert.isDefined(overlayToaster.current);
+    });
+
+    // this type compatibility test can be removed in Blueprint v5.0
+    it("<Toaster> ref callback is backwards-compatible with (deprecated) Toaster type", () => {
+        // N.B. without `export type Toaster = ...`, the following `Toaster` reference will be invalid
+        const deprecatedToasterRef = React.createRef<Toaster>();
+        // N.B. `Toaster` type needs to be identical to the `OverlayToaster` type for this ref to type check properly
+        mount(<Toaster ref={deprecatedToasterRef} />);
+    });
+
+    // this type compatibility test can be removed in Blueprint v5.0
+    it("<Toaster> ref callback is compatible with ToasterInstance type", () => {
+        mount(
+            <Toaster
+                ref={(_instance: ToasterInstance | null) => {
+                    /* no-op */
+                }}
+            />,
+        );
     });
 });

@@ -145,7 +145,7 @@ export class OverlayToaster
         const toaster = ReactDOM.render<OverlayToasterProps>(
             <OverlayToaster {...props} usePortal={false} />,
             containerElement,
-        ) as OverlayToaster;
+        ) as OverlayToaster as ToasterInstance;
         if (toaster == null) {
             throw new Error(TOASTER_CREATE_NULL);
         }
@@ -276,8 +276,6 @@ export class OverlayToaster
 export const Toaster = OverlayToaster;
 /** @deprecated use the new, more specific type `ToasterInstance` instead (forwards-compatible with v5) */
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type Toaster = ToasterInstance;
-// eslint-disable-next-line deprecation/deprecation
-Toaster.displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
+export type Toaster = OverlayToaster;
 /** @deprecated use `OverlayToasterProps` instead */
 export type IToasterProps = OverlayToasterProps;
