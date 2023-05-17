@@ -47,7 +47,7 @@ There are three ways to use __OverlayToaster__:
 3. Use a ref callback or object to access toaster instance methods.
     - Example with ref callback:
     ```ts
-    render(<OverlayToaster ref={(ref: ToasterInstance) => ref.show({ ...toastOptions })} />, targetElement);
+    render(<OverlayToaster ref={(ref: ToasterInstance | null) => ref?.show({ ...toastOptions })} />, targetElement);
     ```
     - Example with ref object (note that React type constraints require us to use the more specific `OverlayToaster` type):
     ```ts

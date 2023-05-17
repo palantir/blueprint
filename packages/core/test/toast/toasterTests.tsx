@@ -207,10 +207,21 @@ describe("OverlayToaster", () => {
     });
 
     // this type compatibility test can be removed in Blueprint v5.0
-    it("ref is backwards-compatible with (deprecated) Toaster type", () => {
+    it("<Toaster> ref callback is backwards-compatible with (deprecated) Toaster type", () => {
         // N.B. without `export type Toaster = ...`, the following `Toaster` reference will be invalid
         const deprecatedToasterRef = React.createRef<Toaster>();
         // N.B. `Toaster` type needs to be identical to the `OverlayToaster` type for this ref to type check properly
         mount(<Toaster ref={deprecatedToasterRef} />);
+    });
+
+    // this type compatibility test can be removed in Blueprint v5.0
+    it("<Toaster> ref callback is compatible with ToasterInstance type", () => {
+        mount(
+            <Toaster
+                ref={(_instance: ToasterInstance | null) => {
+                    /* no-op */
+                }}
+            />,
+        );
     });
 });
