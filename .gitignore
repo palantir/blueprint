@@ -26,6 +26,7 @@ generated-icons/
 coverage/
 /docs
 docs-static/**/*.d.ts
+packages/colors/esm/
 
 # exclude site except for site/docs/versions
 site/*
