@@ -7,8 +7,8 @@
     "scripts": {
         "clean": "rm -rf lib/*",
         "compile": "run-p \"compile:*\"",
-        "compile:cjs": "tsc -p src/ -m commonjs --outDir lib",
         "compile:esm": "tsc -p src/",
+        "compile:cjs": "tsc -p src/ -m commonjs --outDir lib",
         "compile:css": "sass-compile ./src",
         "compile:css-colors": "generate-css-variables --retainDefault true --outputFileName colors _colors.scss",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
