@@ -3,9 +3,11 @@
     "version": "4.1.23",
     "description": "Blueprint color definitions",
     "main": "lib/index.js",
+    "module": "esm/index.js",
     "scripts": {
         "clean": "rm -rf lib/*",
         "compile": "run-p \"compile:*\"",
+        "compile:cjs": "tsc -p src/ -m commonjs --outDir lib",
         "compile:esm": "tsc -p src/",
         "compile:css": "sass-compile ./src",
         "compile:css-colors": "generate-css-variables --retainDefault true --outputFileName colors _colors.scss",
