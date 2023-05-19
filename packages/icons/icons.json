@@ -4009,5 +4009,19 @@
         "tags": "model, ml",
         "group": "action",
         "codepoint": 62269
+    },
+    {
+        "displayName": "Detection",
+        "iconName": "detection",
+        "tags": "model, ml, scan",
+        "group": "miscellaneous",
+        "codepoint": 62270
+    }, 
+    {
+        "displayName": "Ammunition",
+        "iconName": "ammunition",
+        "tags": "bullets, munition, rockets",
+        "group": "miscellaneous",
+        "codepoint": 62271
     }
 ]
