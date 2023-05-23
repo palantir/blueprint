@@ -174,7 +174,8 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
 
 // N.B. we could do something fancier by detecting the exact width of the scroll bar and setting that value
 // as the overflow dimension, but this is good enough for most use cases.
-@media (max-device-pixel-ratio: 1.5) {
+/* stylelint-disable-next-line media-feature-name-no-vendor-prefix */
+@media (-webkit-max-device-pixel-ratio: 1.5) {
   // low dpi screen has larger scrollbars relative to quadrant dimensions
   .#{$ns}-table-quadrant-top .#{$ns}-table-quadrant-scroll-container {
     bottom: -$scroll-container-overflow-low-dpi;
@@ -190,7 +191,8 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
   }
 }
 
-@media (min-device-pixel-ratio: 2.5) {
+/* stylelint-disable-next-line media-feature-name-no-vendor-prefix */
+@media (-webkit-min-device-pixel-ratio: 2.5) {
   // high dpi screen has smaller scrollbars relative to quadrant dimensions
   .#{$ns}-table-quadrant-top .#{$ns}-table-quadrant-scroll-container {
     bottom: -$scroll-container-overflow-high-dpi;
