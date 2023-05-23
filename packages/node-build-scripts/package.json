@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/node-build-scripts",
-    "version": "7.1.2",
+    "version": "7.1.3",
     "description": "Node.js build scripts for @blueprintjs packages",
     "module": "./index.mjs",
     "exports": {
