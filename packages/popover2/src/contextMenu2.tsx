@@ -186,15 +186,22 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
                 return;
             }
 
+            const hasMenuContent = menu !== undefined;
+
             // If disabled, we should avoid this extra work.
             // Otherwise: if using the child or content function APIs, we need to make sure contentProps gets updated,
             // so we handle the event regardless of whether the consumer returned an undefined menu.
             const shouldHandleEvent =
-                !disabled &&
-                (CoreUtils.isFunction(children) || CoreUtils.isFunction(content) || maybePopover !== undefined);
+                !disabled && (CoreUtils.isFunction(children) || CoreUtils.isFunction(content) || hasMenuContent);
+
+            // If there is no menu content, we shouldn't automatically swallow the contextmenu event, since the
+            // user probably wants to fall back to default browser behavior. If they still want to disable the
+            // native context menu in that case, they can do so with their own `onContextMenu` handler.
+            if (hasMenuContent) {
+                e.preventDefault();
+            }
 
             if (shouldHandleEvent) {
-                e.preventDefault();
                 e.persist();
                 setMouseEvent(e);
                 setTargetOffset({ left: e.clientX, top: e.clientY });
@@ -204,7 +211,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
 
             onContextMenu?.(e);
         },
-        [onContextMenu, disabled],
+        [children, content, disabled, onContextMenu, menu],
     );
 
     const containerClassName = classNames(className, Classes.CONTEXT_MENU2);
