@@ -211,7 +211,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
 
             onContextMenu?.(e);
         },
-        [onContextMenu, disabled],
+        [children, content, disabled, onContextMenu, menu],
     );
 
     const containerClassName = classNames(className, Classes.CONTEXT_MENU2);
