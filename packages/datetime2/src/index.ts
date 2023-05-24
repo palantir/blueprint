@@ -30,6 +30,8 @@ export {
     /** @deprecated import from @blueprintjs/datetime instead */
     DateRangeInputProps as DateRangeInput2Props,
     /** @deprecated import from @blueprintjs/datetime instead */
+    getTimezoneMetadata,
+    /** @deprecated import from @blueprintjs/datetime instead */
     TimezoneSelect,
     /** @deprecated import from @blueprintjs/datetime instead */
     TimezoneSelectProps,

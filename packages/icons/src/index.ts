@@ -19,3 +19,4 @@ export { SVGIconProps } from "./svgIconProps";
 export { getIconContentString, IconCodepoints } from "./iconCodepoints";
 export { IconName, IconNames } from "./iconNames";
 export { IconSize } from "./iconSize";
+export { IconSvgPaths16, IconSvgPaths20, iconNameToPathsRecordKey } from "./iconSvgPaths";
