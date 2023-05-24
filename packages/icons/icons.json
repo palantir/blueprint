@@ -4009,5 +4009,26 @@
         "tags": "model, ml",
         "group": "action",
         "codepoint": 62269
+    },
+    {
+        "displayName": "Lengthen",
+        "iconName": "lengthen",
+        "tags": "lengthen, text",
+        "group": "editor",
+        "codepoint": 62270
+    },
+    {
+        "displayName": "Shorten",
+        "iconName": "shorten",
+        "tags": "shorten, text",
+        "group": "editor",
+        "codepoint": 62271
+    },
+    {
+        "displayName": "Spell check",
+        "iconName": "spell-check",
+        "tags": "spell-check, grammar, text",
+        "group": "editor",
+        "codepoint": 62272
     }
 ]
