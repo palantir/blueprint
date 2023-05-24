@@ -70,6 +70,7 @@ import "./tag/tagTests";
 import "./text/textTests";
 import "./toast/overlayToasterTests";
 import "./toast/toastTests";
+import "./toast/toasterTests";
 import "./tooltip/tooltipTests";
 import "./tree/treeTests";
 

@@ -14,18 +14,11 @@
  * limitations under the License.
  */
 
-import { Position } from "../../common";
-import { ToastProps } from "./toast";
+import { OverlayToaster } from "./overlayToaster";
+import type { OverlayToasterProps } from "./overlayToasterProps";
+import type { ToastProps } from "./toast";
 
 export type ToastOptions = ToastProps & { key: string };
-export type ToasterPosition =
-    | typeof Position.TOP
-    | typeof Position.TOP_LEFT
-    | typeof Position.TOP_RIGHT
-    | typeof Position.BOTTOM
-    | typeof Position.BOTTOM_LEFT
-    | typeof Position.BOTTOM_RIGHT;
-
 /** Instance methods available on a toaster component instance. */
 export interface Toaster {
     /**
@@ -45,5 +38,16 @@ export interface Toaster {
     getToasts(): ToastOptions[];
 }
 
-/** @deprecated use `Toaster` type instead */
 export type ToasterInstance = Toaster;
+// merges with declaration of `Toaster` type in `toasterTypes.ts`
+// kept for backwards-compatibility with v4.x
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const Toaster = {
+    // eslint-disable-next-line deprecation/deprecation
+    create: deprecatedToasterCreate,
+};
+
+/** @deprecated use OverlayToaster.create() instead */
+function deprecatedToasterCreate(props?: OverlayToasterProps, container = document.body): Toaster {
+    return OverlayToaster.create(props, container);
+}
