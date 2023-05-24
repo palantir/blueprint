@@ -17,10 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, Elevation } from "../../common";
+import { Classes, Elevation } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-export interface CardProps extends Props, HTMLDivProps {
+export interface CardProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
      * Controls the intensity of the drop shadow beneath the card: the higher
      * the elevation, the higher the drop shadow. At elevation `0`, no drop
@@ -53,22 +53,18 @@ export interface CardProps extends Props, HTMLDivProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/card
  */
-export class Card extends AbstractPureComponent<CardProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Card`;
-
-    public static defaultProps: CardProps = {
-        elevation: Elevation.ZERO,
-        interactive: false,
-    };
-
-    public render() {
-        const { className, elevation, interactive, ...htmlProps } = this.props;
-        const classes = classNames(
-            Classes.CARD,
-            { [Classes.INTERACTIVE]: interactive },
-            Classes.elevationClass(elevation!),
-            className,
-        );
-        return <div className={classes} {...htmlProps} />;
-    }
-}
+export const Card: React.FC<CardProps> = React.forwardRef((props, ref) => {
+    const { className, elevation, interactive, ...htmlProps } = props;
+    const classes = classNames(
+        Classes.CARD,
+        { [Classes.INTERACTIVE]: interactive },
+        Classes.elevationClass(elevation!),
+        className,
+    );
+    return <div className={classes} ref={ref} {...htmlProps} />;
+});
+Card.defaultProps = {
+    elevation: Elevation.ZERO,
+    interactive: false,
+};
+Card.displayName = `${DISPLAYNAME_PREFIX}.Card`;
