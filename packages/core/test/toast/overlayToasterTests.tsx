@@ -22,7 +22,7 @@ import { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, OverlayToaster, Toaster } from "../../src";
+import { Classes, OverlayToaster, type Toaster } from "../../src";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
 
 describe("OverlayToaster", () => {

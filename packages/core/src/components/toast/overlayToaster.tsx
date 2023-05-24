@@ -20,60 +20,12 @@ import * as ReactDOM from "react-dom";
 
 import { AbstractPureComponent, Classes, Position } from "../../common";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
-import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
+import type { OverlayToasterProps } from "./overlayToasterProps";
 import { Toast, ToastProps } from "./toast";
-import { Toaster, ToasterPosition, ToastOptions } from "./toaster";
-
-/**
- * Props supported by the `<Toaster>` component.
- * These props can be passed as an argument to the static `Toaster.create(props?, container?)` method.
- */
-export interface OverlayToasterProps extends Props {
-    /**
-     * Whether a toast should acquire application focus when it first opens.
-     * This is disabled by default so that toasts do not interrupt the user's flow.
-     * Note that `enforceFocus` is always disabled for `Toaster`s.
-     *
-     * @default false
-     */
-    autoFocus?: boolean;
-
-    /**
-     * Whether pressing the `esc` key should clear all active toasts.
-     *
-     * @default true
-     */
-    canEscapeKeyClear?: boolean;
-
-    /**
-     * Whether the toaster should be rendered into a new element attached to `document.body`.
-     * If `false`, then positioning will be relative to the parent element.
-     *
-     * This prop is ignored by `Toaster.create()` as that method always appends a new element
-     * to the container.
-     *
-     * @default true
-     */
-    usePortal?: boolean;
-
-    /**
-     * Position of `Toaster` within its container.
-     *
-     * @default Position.TOP
-     */
-    position?: ToasterPosition;
-
-    /**
-     * The maximum number of active toasts that can be displayed at once.
-     *
-     * When the limit is about to be exceeded, the oldest active toast is removed.
-     *
-     * @default undefined
-     */
-    maxToasts?: number;
-}
+import type { Toaster, ToastOptions } from "./toaster";
 
 export interface OverlayToasterState {
     toasts: ToastOptions[];
