@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-data",
-    "version": "5.0.0-alpha.4",
+    "version": "5.0.0-alpha.5",
     "main": "src/index.js",
     "types": "src/index.d.ts",
     "private": true,
@@ -10,8 +10,8 @@
         "test": "exit 0"
     },
     "dependencies": {
-        "@blueprintjs/core": "^5.0.0-alpha.4",
-        "@blueprintjs/docs-theme": "^5.0.0-alpha.4",
+        "@blueprintjs/core": "^5.0.0-alpha.5",
+        "@blueprintjs/docs-theme": "^5.0.0-alpha.5",
         "@documentalist/compiler": "^4.0.0",
         "escape-html": "^1.0.3",
         "glob": "^8.1.0",
