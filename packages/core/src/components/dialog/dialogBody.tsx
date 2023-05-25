@@ -45,7 +45,6 @@ export class DialogBody extends AbstractPureComponent2<DialogBodyProps> {
     public render() {
         return (
             <div
-                role="dialogbody"
                 className={classNames(Classes.DIALOG_BODY, this.props.className, {
                     [Classes.DIALOG_BODY_SCROLL_CONTAINER]: this.props.useOverflowScrollContainer,
                 })}

@@ -4011,17 +4011,38 @@
         "codepoint": 62269
     },
     {
+        "displayName": "Lengthen text",
+        "iconName": "lengthen-text",
+        "tags": "long, longer, more, words, symbols",
+        "group": "editor",
+        "codepoint": 62270
+    },
+    {
+        "displayName": "Shorten text",
+        "iconName": "shorten-text",
+        "tags": "short, shorter, less, words, symbols",
+        "group": "editor",
+        "codepoint": 62271
+    },
+    {
+        "displayName": "Spell check",
+        "iconName": "spell-check",
+        "tags": "check, spelling, verify, validate, words, dictionary, grammar, text, edit",
+        "group": "editor",
+        "codepoint": 62272
+    },
+    {
         "displayName": "Detection",
         "iconName": "detection",
         "tags": "model, ml, scan",
         "group": "miscellaneous",
-        "codepoint": 62270
-    }, 
+        "codepoint": 62273
+    },
     {
         "displayName": "Ammunition",
         "iconName": "ammunition",
         "tags": "bullets, munition, rockets",
         "group": "miscellaneous",
-        "codepoint": 62271
+        "codepoint": 62274
     }
 ]
