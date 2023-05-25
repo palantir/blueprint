@@ -33,9 +33,11 @@ import {
     PopoverInteractionKind,
     Tooltip,
     TooltipProps,
+    Utils,
 } from "../../src";
 
-const MENU_CLASSNAME = "test-menu";
+// use a unique ID to avoid collisons with other tests
+const MENU_CLASSNAME = Utils.uniqueId("test-menu");
 const MENU = (
     <Menu className={MENU_CLASSNAME}>
         <MenuItem icon="align-left" text="Align Left" />
@@ -199,10 +201,11 @@ describe("ContextMenu", () => {
                 assert.isTrue(e.defaultPrevented);
                 done();
             };
-            const ctxMenu = mountTestMenu({ onContextMenu });
-            assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
-            openCtxMenu(ctxMenu);
-            assert.isTrue(ctxMenu.find(`.${MENU_CLASSNAME}`).exists());
+            const wrapper = mountTestMenu({ onContextMenu });
+            assert.isTrue(wrapper.find(`.${TARGET_CLASSNAME}`).exists());
+            openCtxMenu(wrapper);
+            assert.isTrue(wrapper.find(`.${MENU_CLASSNAME}`).exists());
+            closeCtxMenu(wrapper);
         });
 
         it("triggers native context menu if content function returns undefined", done => {
@@ -210,11 +213,12 @@ describe("ContextMenu", () => {
                 assert.isFalse(e.defaultPrevented);
                 done();
             };
-            const ctxMenu = mountTestMenu({
+            const wrapper = mountTestMenu({
                 content: () => undefined,
                 onContextMenu,
             });
-            openCtxMenu(ctxMenu);
+            openCtxMenu(wrapper);
+            closeCtxMenu(wrapper);
         });
 
         function renderContent() {
