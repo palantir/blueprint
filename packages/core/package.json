@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "4.19.4",
+    "version": "4.19.5",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -52,7 +52,7 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/colors": "^4.2.0",
+        "@blueprintjs/colors": "^4.2.1",
         "@blueprintjs/icons": "^4.16.0",
         "@juggle/resize-observer": "^3.4.0",
         "@types/dom4": "^2.0.2",

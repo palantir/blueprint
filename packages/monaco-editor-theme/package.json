@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/monaco-editor-theme",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "description": "Blueprint theme for monaco-editor",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -26,7 +26,7 @@
         "verify": "npm-run-all compile -p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/colors": "^4.2.0",
+        "@blueprintjs/colors": "^4.2.1",
         "monaco-editor": "^0.37.1"
     },
     "devDependencies": {
