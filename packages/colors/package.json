@@ -2,11 +2,20 @@
     "name": "@blueprintjs/colors",
     "version": "5.0.0-alpha.2",
     "description": "Blueprint color definitions",
-    "main": "lib/index.js",
+    "main": "lib/cjs/index.js",
+    "module": "lib/esm/index.js",
+    "esnext": "lib/esnext/index.js",
+    "typings": "lib/esm/index.d.ts",
+    "files": [
+        "lib",
+        "src"
+    ],
     "scripts": {
         "clean": "rm -rf lib/*",
         "compile": "run-p \"compile:*\"",
-        "compile:esm": "tsc -p src/",
+        "compile:esm": "tsc -p ./src",
+        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
         "compile:css-colors": "generate-css-variables --retainDefault true --outputFileName colors _colors.scss",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",

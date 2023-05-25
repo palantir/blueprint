@@ -35,8 +35,9 @@ import {
     TooltipProps,
 } from "../../src";
 
+const MENU_CLASSNAME = "test-menu";
 const MENU = (
-    <Menu>
+    <Menu className={MENU_CLASSNAME}>
         <MenuItem icon="align-left" text="Align Left" />
         <MenuItem icon="align-center" text="Align Center" />
         <MenuItem icon="align-right" text="Align Right" />
@@ -186,6 +187,44 @@ describe("ContextMenu", () => {
                             </span>
                         </div>
                     )}
+                </ContextMenu>,
+                { attachTo: containerElement },
+            );
+        }
+    });
+
+    describe("advanced usage (content render function API)", () => {
+        it("renders children and menu content, prevents default context menu handler", done => {
+            const onContextMenu = (e: React.MouseEvent) => {
+                assert.isTrue(e.defaultPrevented);
+                done();
+            };
+            const ctxMenu = mountTestMenu({ onContextMenu });
+            assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
+            openCtxMenu(ctxMenu);
+            assert.isTrue(ctxMenu.find(`.${MENU_CLASSNAME}`).exists());
+        });
+
+        it("triggers native context menu if content function returns undefined", done => {
+            const onContextMenu = (e: React.MouseEvent) => {
+                assert.isFalse(e.defaultPrevented);
+                done();
+            };
+            const ctxMenu = mountTestMenu({
+                content: () => undefined,
+                onContextMenu,
+            });
+            openCtxMenu(ctxMenu);
+        });
+
+        function renderContent() {
+            return MENU;
+        }
+
+        function mountTestMenu(props?: Partial<ContextMenuProps>) {
+            return mount(
+                <ContextMenu content={renderContent} popoverProps={{ transitionDuration: 0 }} {...props}>
+                    <div className={TARGET_CLASSNAME} />
                 </ContextMenu>,
                 { attachTo: containerElement },
             );

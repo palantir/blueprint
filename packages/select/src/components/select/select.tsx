@@ -292,8 +292,9 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         const target = event?.target as HTMLElement;
         const menuItem = target?.closest(`.${CoreClasses.MENU_ITEM}`);
         const menuItemDismiss = menuItem?.matches(`.${CoreClasses.POPOVER_DISMISS}`);
+        const shouldDismiss = menuItemDismiss ?? true;
 
-        this.setState({ isOpen: !menuItemDismiss ?? false });
+        this.setState({ isOpen: !shouldDismiss });
         this.props.onItemSelect?.(item, event);
     };
 
