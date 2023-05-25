@@ -339,8 +339,7 @@ export class Popover<
                       // CLICK needs only one handler
                       onClick: this.handleTargetClick,
                       // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
-                      onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>
-                          Utils.isKeyboardClick(event) && this.handleTargetClick(event),
+                      onKeyDown: this.handleKeyDown,
                   };
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
@@ -677,15 +676,33 @@ export class Popover<
         }
     };
 
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+        const isKeyboardClick = Utils.isKeyboardClick(e);
+
+        // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
+        if (isKeyboardClick) {
+            this.handleTargetClick(e);
+        }
+    };
+
     private handleTargetClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-        // ensure click did not originate from within inline popover before closing
-        if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
-            if (this.props.isOpen == null) {
-                this.setState(prevState => ({ isOpen: !prevState.isOpen }));
-            } else {
-                this.setOpenState(!this.props.isOpen, e);
+        // Target element(s) may fire simulated click event upon pressing ENTER/SPACE, which we should ignore
+        // see: https://github.com/palantir/blueprint/issues/5775
+        const shouldIgnoreClick = this.state.isOpen && this.isSimulatedButtonClick(e);
+        if (!shouldIgnoreClick) {
+            // ensure click did not originate from within inline popover before closing
+            if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
+                if (this.props.isOpen == null) {
+                    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+                } else {
+                    this.setOpenState(!this.props.isOpen, e);
+                }
             }
         }
+    };
+
+    private isSimulatedButtonClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        return !e.isTrusted && (e.target as HTMLElement).matches(`.${Classes.BUTTON}`);
     };
 
     // a wrapper around setState({ isOpen }) that will call props.onInteraction instead when in controlled mode.

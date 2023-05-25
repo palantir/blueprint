@@ -23,16 +23,38 @@ You can also apply the same visual intent styles to `Toast`s that you can to [`B
 
 @### OverlayToaster
 
-The __OverlayToaster__ component is a stateful container for a single list of toasts. Internally, it
-uses the [Overlay](#core/components/overlay) component to manage children and transitions. It can be vertically
+The __OverlayToaster__ component (previously named __Toaster__) is a stateful container for a single list of toasts.
+Internally, it uses [__Overlay__](#core/components/overlay) to manage children and transitions. It can be vertically
 aligned along the top or bottom edge of its container (new toasts will slide in from that edge) and
 horizontally aligned along the left edge, center, or right edge of its container.
 
 There are three ways to use __OverlayToaster__:
 
-1. `OverlayToaster.create(props)` static method returns a new `Toaster` instance. Use the instance method `toaster.show()` to manipulate this instance. __(recommended)__
-1. `<OverlayToaster><Toast />...</OverlayToaster>`: Render a `<OverlayToaster>` element with React `children`.
-1. `<OverlayToaster ref={(ref: Toaster) => ref.show({ ...toast })} />`: Render a `<OverlayToaster>` element and use the `ref` prop to access its instance methods.
+1. __Recommended__: use the `OverlayToaster.create()` static method to create a new `Toaster` instance:
+    ```ts
+    const myToaster: Toaster = OverlayToaster.create({ position: "bottom" });
+    myToaster.show({ ...toastOptions });
+    ```
+2. Render an `<OverlayToaster>` with `<Toast>` children:
+    ```ts
+    render(
+        <OverlayToaster>
+            <Toast {...toastOptions} />
+        </OverlayToaster>,
+        targetElement,
+    );
+    ```
+3. Use a ref callback or object to access toaster instance methods.
+    - Example with ref callback:
+    ```ts
+    render(<OverlayToaster ref={(ref: Toaster | null) => ref?.show({ ...toastOptions })} />, targetElement);
+    ```
+    - Example with ref object (note that React type constraints require us to use the more specific `OverlayToaster` type):
+    ```ts
+    const myToaster = React.createRef<OverlayToaster>();
+    render(<OverlayToaster ref={myToaster} />, targetElement);
+    myToaster.current?.show({ ...toastOptions });
+    ```
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h5 class="@ns-heading">Working with multiple toasters</h5>

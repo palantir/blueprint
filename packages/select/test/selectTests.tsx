@@ -15,11 +15,11 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { HTMLAttributes, mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes, InputGroup, MenuItem, Popover } from "@blueprintjs/core";
+import { Button, Classes, InputGroup, MenuItem, Popover } from "@blueprintjs/core";
 
 import { ItemRendererProps, Select, SelectProps } from "../src";
 import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
@@ -105,7 +105,7 @@ describe("<Select>", () => {
         const onOpening = sinon.spy();
         const modifiers = {}; // our own instance
         const wrapper = select({ popoverProps: { onOpening, modifiers } });
-        wrapper.find("[data-testid='target-button']").simulate("click");
+        findTargetButton(wrapper).simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
         assert.isTrue(onOpening.calledOnce);
     });
@@ -116,7 +116,7 @@ describe("<Select>", () => {
         const wrapper = select({ popoverProps: { usePortal: false } });
         // should be closed to start
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
-        wrapper.find("[data-testid='target-button']").simulate("keydown", { key: "ArrowDown" });
+        findTargetButton(wrapper).simulate("keydown", { key: "ArrowDown" });
         // ...then open after key down
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
     });
@@ -126,6 +126,17 @@ describe("<Select>", () => {
         // N.B. need to trigger interaction on nested <a> element, where item onClick is actually attached to the DOM
         wrapper.find(Popover).find(MenuItem).first().find("a").simulate("click");
         assert.isTrue(handlers.onItemSelect.calledOnce);
+    });
+
+    it("closes Popover after selecting active item with the Enter key", () => {
+        // override isOpen in defaultProps so that the popover can actually be closed
+        const wrapper = select({
+            popoverProps: { usePortal: true },
+        });
+        findTargetButton(wrapper).simulate("click");
+        wrapper.find("input").simulate("keydown", { key: "Enter" });
+        wrapper.find("input").simulate("keyup", { key: "Enter" });
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
     });
 
     // N.B. it's not worth refactoring these tests to be DRY since there will soon
@@ -141,7 +152,7 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
 
         // popover should open after clicking the button
-        wrapper.find("[data-testid='target-button']").simulate("click");
+        findTargetButton(wrapper).simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
 
         // and should close after the a menu item is clicked
@@ -159,7 +170,7 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
 
         // popover should open after clicking the button
-        wrapper.find("[data-testid='target-button']").simulate("click");
+        findTargetButton(wrapper).simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
 
         // and should not close after the a menu item is clicked
@@ -170,7 +181,7 @@ describe("<Select>", () => {
     function select(props: Partial<SelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
             <Select<Film> {...defaultProps} {...handlers} {...props}>
-                <button data-testid="target-button">Target</button>
+                <Button data-testid="target-button" text="Target" />
             </Select>,
             { attachTo: testsContainerElement },
         );
@@ -178,6 +189,10 @@ describe("<Select>", () => {
             wrapper.setState({ query });
         }
         return wrapper;
+    }
+
+    function findTargetButton(wrapper: ReactWrapper): ReactWrapper<HTMLAttributes> {
+        return wrapper.find("[data-testid='target-button']").hostNodes();
     }
 });
 
