@@ -39,6 +39,7 @@ export * from "./formGroupExample";
 export * from "./hotkeyPiano";
 export * from "./hotkeyTesterExample";
 export { HotkeysTarget2Example } from "./hotkeysTarget2Example";
+export { HTMLSelectExample } from "./htmlSelectExample";
 export * from "./iconExample";
 export * from "./menuExample";
 export { MenuItemExample } from "./menuItemExample";
