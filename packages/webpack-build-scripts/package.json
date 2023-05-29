@@ -28,7 +28,7 @@
         "sass-loader": "^13.2.2",
         "source-map-loader": "^4.0.1",
         "stream-browserify": "^3.0.0",
-        "style-loader": "^3.3.2",
+        "style-loader": "^3.3.3",
         "ts-loader": "^9.4.2",
         "webpack": "^5.76.2",
         "webpack-bundle-analyzer": "^4.8.0",
