@@ -32,6 +32,10 @@ import { argMin, fillValues, formatPercentage } from "./sliderUtils";
 const MultiSliderHandle: React.FC<HandleProps> = () => null;
 MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 
+// eslint-disable-next-line deprecation/deprecation
+export type SliderBaseProps = ISliderBaseProps;
+
+/** @deprecated use SliderBaseProps */
 export interface ISliderBaseProps extends Props, IntentProps {
     children?: React.ReactNode;
 
@@ -116,7 +120,7 @@ export interface ISliderBaseProps extends Props, IntentProps {
 // eslint-disable-next-line deprecation/deprecation
 export type MultiSliderProps = IMultiSliderProps;
 /** @deprecated use MultiSliderProps */
-export interface IMultiSliderProps extends ISliderBaseProps {
+export interface IMultiSliderProps extends SliderBaseProps {
     /** Default intent of a track segment, used only if no handle specifies `intentBefore/After`. */
     defaultTrackIntent?: Intent;
 
@@ -141,7 +145,7 @@ export interface ISliderState {
  * @see https://blueprintjs.com/docs/#core/components/sliders.multi-slider
  */
 export class MultiSlider extends AbstractPureComponent2<MultiSliderProps, ISliderState> {
-    public static defaultSliderProps: ISliderBaseProps = {
+    public static defaultSliderProps: SliderBaseProps = {
         disabled: false,
         max: 10,
         min: 0,

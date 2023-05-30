@@ -20,7 +20,7 @@ import { AbstractPureComponent2, Intent } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { HandleHtmlProps } from "./handleProps";
-import { ISliderBaseProps, MultiSlider } from "./multiSlider";
+import { MultiSlider, SliderBaseProps } from "./multiSlider";
 
 export type NumberRange = [number, number];
 
@@ -32,7 +32,7 @@ enum RangeIndex {
 // eslint-disable-next-line deprecation/deprecation
 export type RangeSliderProps = IRangeSliderProps;
 /** @deprecated use RangeSliderProps */
-export interface IRangeSliderProps extends ISliderBaseProps {
+export interface IRangeSliderProps extends SliderBaseProps {
     /**
      * Range value of slider. Handles will be rendered at each position in the range.
      *
