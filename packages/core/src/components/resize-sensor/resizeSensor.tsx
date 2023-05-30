@@ -77,7 +77,7 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
 
     private observer = new ResizeObserver(entries => this.props.onResize?.(entries));
 
-    public render() {
+    public render(): React.ReactNode {
         const onlyChild = React.Children.only(this.props.children);
 
         // if we're provided a ref to the child already, we don't need to attach one ourselves
@@ -98,6 +98,7 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
 
     public componentWillUnmount() {
         this.observer.disconnect();
+        this.prevElement = undefined;
     }
 
     /**
