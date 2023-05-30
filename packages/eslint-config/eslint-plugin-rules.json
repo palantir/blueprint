@@ -28,7 +28,16 @@
     ],
     "jsdoc/check-alignment": "error",
     "jsdoc/check-indentation": "off",
-    "jsdoc/newline-after-description": "error",
+    "jsdoc/tag-lines": [
+        "error",
+        "always",
+        {
+            "applyToEndTag": false,
+            "count": 0,
+            "startLines": 1,
+            "endLines": 0
+        }
+    ],
     "react/display-name": "error",
     "react/jsx-boolean-value": ["error", "always"],
     "react/jsx-key": [

@@ -25,6 +25,9 @@
         "lint-fix": "es-lint --fix && sass-lint --fix",
         "verify": "npm-run-all compile -p dist lint"
     },
+    "dependencies": {
+        "tslib": "~2.5.0"
+    },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^8.0.0-alpha.3",
         "mocha": "^10.2.0",
