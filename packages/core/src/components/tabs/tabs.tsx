@@ -21,7 +21,13 @@ import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Props, Utils } from
 import { Tab, TabId, TabProps } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
-export const Expander: React.FC = () => <div className={Classes.FLEX_EXPANDER} />;
+/**
+ * Component that may be inserted between any two children of `<Tabs>` to right-align all subsequent children.
+ */
+export const TabsExpander: React.FC = () => <div className={Classes.FLEX_EXPANDER} />;
+
+/** @deprecated use `TabsExpander` instead */
+export const Expander = TabsExpander;
 
 type TabElement = React.ReactElement<TabProps & { children: React.ReactNode }>;
 
@@ -114,7 +120,7 @@ export interface TabsState {
  */
 export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
-    public static Expander = Expander;
+    public static Expander = TabsExpander;
 
     public static Tab = Tab;
 

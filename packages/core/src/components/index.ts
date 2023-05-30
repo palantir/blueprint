@@ -91,16 +91,17 @@ export {
     StrictModifierNames,
 } from "./popover/popoverSharedProps";
 export { PopupKind } from "./popover/popupKind";
-export { Portal, PortalProps } from "./portal/portal";
+export { Portal, PortalProps, PortalLegacyContext } from "./portal/portal";
 export { ProgressBar, ProgressBarProps } from "./progress-bar/progressBar";
 export { ResizeEntry, ResizeSensor, ResizeSensorProps } from "./resize-sensor/resizeSensor";
 export { HandleHtmlProps, HandleInteractionKind, HandleProps, HandleType } from "./slider/handleProps";
-export { MultiSlider, MultiSliderProps } from "./slider/multiSlider";
+export { MultiSlider, MultiSliderProps, SliderBaseProps } from "./slider/multiSlider";
 export { NumberRange, RangeSlider, RangeSliderProps } from "./slider/rangeSlider";
 export { Slider, SliderProps } from "./slider/slider";
 export { Spinner, SpinnerProps, SpinnerSize } from "./spinner/spinner";
 export { Tab, TabId, TabProps } from "./tabs/tab";
-export { Tabs, TabsProps } from "./tabs/tabs";
+// eslint-disable-next-line deprecation/deprecation
+export { Tabs, TabsProps, TabsExpander, Expander } from "./tabs/tabs";
 export { Tag, TagProps } from "./tag/tag";
 export { TagInput, TagInputProps, TagInputAddMethod } from "./tag-input/tagInput";
 export { OverlayToaster } from "./toast/overlayToaster";
