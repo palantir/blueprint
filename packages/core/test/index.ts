@@ -44,6 +44,7 @@ import "./forms/textAreaTests";
 import "./hotkeys/hotkeyTests";
 import "./hotkeys/hotkeysParserTests";
 import "./hotkeys/keyComboTagTests";
+import "./html/htmlTests";
 import "./html-select/htmlSelectTests";
 import "./icon/iconTests";
 import "./menu/menuItemTests";
