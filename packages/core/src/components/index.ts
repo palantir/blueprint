@@ -54,7 +54,7 @@ export { NumericInput, NumericInputProps } from "./forms/numericInput";
 export { RadioGroup, RadioGroupProps } from "./forms/radioGroup";
 export { TextArea, TextAreaProps } from "./forms/textArea";
 export { Blockquote, Code, H1, H2, H3, H4, H5, H6, Label, OL, Pre, UL } from "./html/html";
-export { HTMLSelect, HTMLSelectProps } from "./html-select/htmlSelect";
+export { HTMLSelect, HTMLSelectIconName, HTMLSelectProps } from "./html-select/htmlSelect";
 export { HTMLTable, HTMLTableProps } from "./html-table/htmlTable";
 export * from "./hotkeys";
 export { Icon, IconName, IconProps, IconSize } from "./icon/icon";
