@@ -95,6 +95,7 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         ["IPortalContext", "PortalLegacyContext"],
         ["IToaster", "ToasterInstance"],
         ["IToasterProps", "OverlayToasterProps"],
+        "IToastOptions",
         ["ITreeNode", "TreeNodeInfo"],
     ],
 

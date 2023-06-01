@@ -26,7 +26,11 @@ import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import { Toast, ToastProps } from "./toast";
 
+// eslint-disable-next-line deprecation/deprecation
+export type ToastOptions = IToastOptions;
+/** @deprecated use ToastOptions */
 export type IToastOptions = ToastProps & { key: string };
+
 export type ToasterPosition =
     | typeof Position.TOP
     | typeof Position.TOP_LEFT
@@ -54,7 +58,7 @@ export interface ToasterInstance {
     clear(): void;
 
     /** Returns the props for all current toasts. */
-    getToasts(): IToastOptions[];
+    getToasts(): ToastOptions[];
 }
 
 /**
@@ -111,7 +115,7 @@ export interface OverlayToasterProps extends Props {
 }
 
 export interface IToasterState {
-    toasts: IToastOptions[];
+    toasts: ToastOptions[];
 }
 
 /**
@@ -240,7 +244,7 @@ export class OverlayToaster
         }
     }
 
-    private renderToast = (toast: IToastOptions) => {
+    private renderToast = (toast: ToastOptions) => {
         return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
     };
 
@@ -258,7 +262,7 @@ export class OverlayToaster
         ];
     }
 
-    private getDismissHandler = (toast: IToastOptions) => (timeoutExpired: boolean) => {
+    private getDismissHandler = (toast: ToastOptions) => (timeoutExpired: boolean) => {
         this.dismiss(toast.key, timeoutExpired);
     };
 
