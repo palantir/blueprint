@@ -21,13 +21,13 @@ import { MenuItem, MenuItemProps } from "@blueprintjs/core";
 import { Clipboard } from "../../common/clipboard";
 import { TABLE_COPY_FAILED } from "../../common/errors";
 import { Regions } from "../../regions";
-import { IMenuContext } from "./menuContext";
+import { MenuContext } from "./menuContext";
 
 export interface ICopyCellsMenuItemProps extends MenuItemProps {
     /**
-     * The `IMenuContext` that launched the menu.
+     * The `MenuContext` that launched the menu.
      */
-    context: IMenuContext;
+    context: MenuContext;
 
     /**
      * A callback that returns the data for a specific cell. This need not

@@ -44,6 +44,7 @@ import {
     EditableName,
     FocusedCellCoordinates,
     JSONFormat2,
+    MenuContext,
     Region,
     RegionCardinality,
     Regions,
@@ -56,7 +57,6 @@ import {
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
-import { IMenuContext } from "@blueprintjs/table/src";
 import type { ColumnIndices, RowIndices } from "@blueprintjs/table/src/common/grid";
 
 import { DenseGridMutableStore } from "./denseGridMutableStore";
@@ -1111,7 +1111,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         return handleStringChange(value => this.setState({ [stateKey]: value }));
     };
 
-    private renderBodyContextMenu = (context: IMenuContext) => {
+    private renderBodyContextMenu = (context: MenuContext) => {
         const menu = (
             <Menu>
                 <CopyCellsMenuItem context={context} icon="clipboard" getCellData={this.getCellValue} text="Copy" />

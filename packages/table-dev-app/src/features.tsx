@@ -29,8 +29,8 @@ import {
     CopyCellsMenuItem,
     EditableCell2,
     EditableName,
-    IMenuContext,
     JSONFormat2,
+    MenuContext,
     Region,
     RegionCardinality,
     Regions,
@@ -449,7 +449,7 @@ ReactDOM.render(
     document.getElementById("table-1"),
 );
 
-const bodyContextMenuRenderer = (context: IMenuContext) => {
+const bodyContextMenuRenderer = (context: MenuContext) => {
     const getCellData = (row: number, col: number) => {
         return Utils.toBase26Alpha(col) + (row + 1);
     };

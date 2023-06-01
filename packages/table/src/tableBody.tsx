@@ -31,7 +31,7 @@ import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { RenderMode } from "./common/renderMode";
 import { ICoordinateData } from "./interactions/dragTypes";
-import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
+import { ContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
 import { Region, Regions } from "./regions";
@@ -42,10 +42,10 @@ export type TableBodyProps = ITableBodyProps;
 export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps {
     /**
      * An optional callback for displaying a context menu when right-clicking
-     * on the table body. The callback is supplied with an `IMenuContext`
+     * on the table body. The callback is supplied with an `MenuContext`
      * containing the `Region`s of interest.
      */
-    bodyContextMenuRenderer?: IContextMenuRenderer;
+    bodyContextMenuRenderer?: ContextMenuRenderer;
 
     /**
      * Locates the row/column/cell given a mouse event.
