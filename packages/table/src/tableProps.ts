@@ -23,7 +23,7 @@ import type { ColumnIndices, RowIndices } from "./common/grid";
 import type { RenderMode } from "./common/renderMode";
 import type { IColumnWidths } from "./headers/columnHeader";
 import type { IRowHeights, RowHeaderRenderer } from "./headers/rowHeader";
-import type { IContextMenuRenderer } from "./interactions/menus";
+import type { ContextMenuRenderer } from "./interactions/menus";
 import type { IIndexedResizeCallback } from "./interactions/resizable";
 import type { ISelectedRegionTransform } from "./interactions/selectable";
 import type { Region, RegionCardinality, StyledRegionGroup, TableLoadingOption } from "./regions";
@@ -53,7 +53,7 @@ export interface ITableProps extends Props, Partial<IRowHeights>, Partial<IColum
      * contain all selected regions. Otherwise it will have one `Region` that
      * represents the clicked cell.
      */
-    bodyContextMenuRenderer?: IContextMenuRenderer;
+    bodyContextMenuRenderer?: ContextMenuRenderer;
 
     /**
      * If `true`, adds an interaction bar on top of all column header cells, and

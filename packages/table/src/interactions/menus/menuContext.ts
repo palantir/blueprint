@@ -52,6 +52,7 @@ export interface IMenuContext {
     getUniqueCells: () => CellCoordinate[];
 }
 
+// eslint-disable-next-line deprecation/deprecation
 export class MenuContext implements IMenuContext {
     private regions: Region[];
 

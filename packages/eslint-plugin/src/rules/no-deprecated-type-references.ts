@@ -142,6 +142,7 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "IColumnHeaderCellRenderer",
         "IColumnHeaderRenderer",
         "IColumnProps",
+        "IContextMenuRenderer",
         "ICoordinateData",
         "IFocusedCellCoordinates",
         "IJSONFormatProps",
