@@ -17,7 +17,8 @@
 import { CellCoordinate, Region, Regions } from "../../regions";
 
 /** @deprecated use `ContextMenuRenderer` */
-export type IContextMenuRenderer = (context: MenuContext) => JSX.Element;
+// eslint-disable-next-line deprecation/deprecation
+export type IContextMenuRenderer = (context: IMenuContext) => JSX.Element;
 // eslint-disable-next-line deprecation/deprecation
 export type ContextMenuRenderer = IContextMenuRenderer;
 
