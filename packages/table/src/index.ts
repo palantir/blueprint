@@ -61,6 +61,7 @@ export type {
 
 export {
     CopyCellsMenuItem,
+    MenuContext,
     type IContextMenuRenderer,
     type ContextMenuRenderer,
     type IMenuContext,

@@ -16,9 +16,12 @@
 
 import { CellCoordinate, Region, Regions } from "../../regions";
 
-export type IContextMenuRenderer = (context: IMenuContext) => JSX.Element;
+/** @deprecated use `ContextMenuRenderer` */
+export type IContextMenuRenderer = (context: MenuContext) => JSX.Element;
+// eslint-disable-next-line deprecation/deprecation
 export type ContextMenuRenderer = IContextMenuRenderer;
 
+/** @deprecated use `MenuContext`, which is forwards-compatible with Blueprint v5.0 */
 export interface IMenuContext {
     /**
      * Returns an array of `Region`s that represent the user-intended context

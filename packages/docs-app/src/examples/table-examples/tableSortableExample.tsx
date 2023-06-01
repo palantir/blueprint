@@ -25,7 +25,7 @@ import {
     Column,
     ColumnHeaderCell2,
     CopyCellsMenuItem,
-    IMenuContext,
+    MenuContext,
     SelectionModes,
     Table2,
     Utils,
@@ -230,7 +230,7 @@ export class TableSortableExample extends React.PureComponent<ExampleProps> {
         return this.state.data[rowIndex][columnIndex];
     };
 
-    private renderBodyContextMenu = (context: IMenuContext) => {
+    private renderBodyContextMenu = (context: MenuContext) => {
         return (
             <Menu>
                 <CopyCellsMenuItem context={context} getCellData={this.getCellData} text="Copy" />
