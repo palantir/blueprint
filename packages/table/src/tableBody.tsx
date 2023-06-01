@@ -31,7 +31,7 @@ import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { RenderMode } from "./common/renderMode";
 import { ICoordinateData } from "./interactions/dragTypes";
-import { ContextMenuRenderer, MenuContext } from "./interactions/menus";
+import { ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
 import { Region, Regions } from "./regions";
@@ -159,7 +159,7 @@ export class TableBody extends AbstractComponent2<TableBodyProps> {
             onFocusedCell(nextFocusedCell);
         }
 
-        const menuContext = new MenuContext(targetRegion, nextSelectedRegions, numRows, numCols);
+        const menuContext = new MenuContextImpl(targetRegion, nextSelectedRegions, numRows, numCols);
         const contextMenu = bodyContextMenuRenderer(menuContext);
 
         return contextMenu == null ? undefined : contextMenu;

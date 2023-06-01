@@ -17,12 +17,11 @@
 import { CellCoordinate, Region, Regions } from "../../regions";
 
 /** @deprecated use `ContextMenuRenderer` */
-// eslint-disable-next-line deprecation/deprecation
-export type IContextMenuRenderer = (context: IMenuContext) => JSX.Element;
+export type IContextMenuRenderer = (context: MenuContext) => JSX.Element;
 // eslint-disable-next-line deprecation/deprecation
 export type ContextMenuRenderer = IContextMenuRenderer;
 
-/** @deprecated use `MenuContext`, which is forwards-compatible with Blueprint v5.0 */
+/** @deprecated use `MenuContext` */
 export interface IMenuContext {
     /**
      * Returns an array of `Region`s that represent the user-intended context
@@ -52,9 +51,11 @@ export interface IMenuContext {
      */
     getUniqueCells: () => CellCoordinate[];
 }
+// eslint-disable-next-line deprecation/deprecation
+export type MenuContext = IMenuContext;
 
 // eslint-disable-next-line deprecation/deprecation
-export class MenuContext implements IMenuContext {
+export class MenuContextImpl implements MenuContext {
     private regions: Region[];
 
     constructor(
