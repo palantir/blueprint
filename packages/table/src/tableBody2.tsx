@@ -24,7 +24,7 @@ import type { CellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { RenderMode } from "./common/renderMode";
 import type { CoordinateData } from "./interactions/dragTypes";
-import { MenuContext } from "./interactions/menus";
+import { MenuContextImpl } from "./interactions/menus";
 import { DragSelectable } from "./interactions/selectable";
 import { Region, Regions } from "./regions";
 import type { TableBodyProps } from "./tableBody";
@@ -118,7 +118,7 @@ export class TableBody2 extends AbstractComponent2<TableBodyProps> {
             nextSelectedRegions = [targetRegion];
         }
 
-        const menuContext = new MenuContext(targetRegion, nextSelectedRegions, numRows, numCols);
+        const menuContext = new MenuContextImpl(targetRegion, nextSelectedRegions, numRows, numCols);
         const contextMenu = bodyContextMenuRenderer(menuContext);
 
         return contextMenu == null ? undefined : contextMenu;
