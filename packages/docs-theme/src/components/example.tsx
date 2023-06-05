@@ -45,11 +45,14 @@ export interface ExampleProps<T = {}> extends Props {
     data?: T;
 }
 
+/** @deprecated use DocsExampleProps */
+export type IDocsExampleProps = DocsExampleProps;
+
 /**
  * Props supported by the `Example` component.
  * Additional props will be spread to the root `<div>` element.
  */
-export interface IDocsExampleProps extends ExampleProps {
+export interface DocsExampleProps extends ExampleProps {
     children?: React.ReactNode;
 
     /**
@@ -107,8 +110,8 @@ export interface IDocsExampleProps extends ExampleProps {
  *     }
  * ```
  */
-export class Example extends React.PureComponent<IDocsExampleProps> {
-    public static defaultProps: Partial<IDocsExampleProps> = {
+export class Example extends React.PureComponent<DocsExampleProps> {
+    public static defaultProps: Partial<DocsExampleProps> = {
         forceUpdate: true,
         showOptionsBelowExample: false,
     };
