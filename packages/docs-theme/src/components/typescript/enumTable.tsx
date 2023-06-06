@@ -37,14 +37,11 @@ export const EnumTable: React.FC<EnumTableProps> = props => {
 
     const renderPropRow = React.useCallback(
         (entry: ITsEnumMember) => {
-            const {
-                flags: { isDeprecated, isExternal },
-                name,
-            } = entry;
+            const { flags, name } = entry;
 
             const classes = classNames("docs-prop-name", {
-                "docs-prop-is-deprecated": !!isDeprecated,
-                "docs-prop-is-internal": !isExternal,
+                "docs-prop-is-deprecated": !!flags?.isDeprecated,
+                "docs-prop-is-internal": !flags?.isExternal,
             });
 
             // this is inside RUNNING_TEXT
@@ -58,9 +55,9 @@ export const EnumTable: React.FC<EnumTableProps> = props => {
                         <code className="docs-prop-type">
                             <strong>{entry.defaultValue}</strong>
                         </code>
-                        <div className="docs-prop-description">{renderBlock(entry.documentation)}</div>
+                        <div className="docs-prop-description">{renderBlock(entry.documentation!)}</div>
                         <div className="docs-prop-tags">
-                            <DeprecatedTag isDeprecated={isDeprecated} />
+                            <DeprecatedTag isDeprecated={flags?.isDeprecated} />
                         </div>
                     </td>
                 </tr>
@@ -72,7 +69,7 @@ export const EnumTable: React.FC<EnumTableProps> = props => {
     return (
         <div className={classNames("docs-modifiers", props.className)}>
             <ApiHeader {...props.data} />
-            {renderBlock(props.data.documentation)}
+            {renderBlock(props.data.documentation!)}
             <ModifierTable emptyMessage="This enum is empty." title="Members">
                 {props.data.members.map(renderPropRow)}
             </ModifierTable>

@@ -48,7 +48,7 @@ export interface NavigationSection {
 }
 
 export class Navigator extends React.PureComponent<NavigatorProps> {
-    private sections: NavigationSection[];
+    private sections: NavigationSection[] | undefined;
 
     public componentDidMount() {
         this.sections = [];
@@ -59,14 +59,15 @@ export class Navigator extends React.PureComponent<NavigatorProps> {
             }
             const { route, title } = node;
             const path = parents.map(p => p.title).reverse();
-            this.sections.push({ path, route, title });
+            this.sections!.push({ path, route, title });
         });
     }
 
     public render() {
-        if (!this.sections) {
+        if (this.sections === undefined) {
             return null;
         }
+
         return (
             <Omnibar<NavigationSection>
                 className="docs-navigator-menu"

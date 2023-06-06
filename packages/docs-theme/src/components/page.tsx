@@ -24,7 +24,7 @@ import { renderBlock } from "./block";
 
 export interface PageProps {
     page: IPageData;
-    renderActions: (page: IPageData) => React.ReactNode;
+    renderActions?: (page: IPageData) => React.ReactNode;
     tagRenderers: TagRendererMap;
 }
 
