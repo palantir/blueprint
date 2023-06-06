@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Alignment, Classes } from "../../common";
+import { Alignment, Classes, mergeRefs } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, Props } from "../../common/props";
 
 export interface ControlProps extends Props, HTMLInputProps, React.RefAttributes<HTMLLabelElement> {
@@ -239,7 +239,10 @@ export const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props, ref) =
     const [isIndeterminate, setIsIndeterminate] = React.useState<boolean>(
         indeterminate || defaultIndeterminate || false,
     );
-    const inputRef = React.useRef<HTMLInputElement>(null);
+
+    const localInputRef = React.useRef<HTMLInputElement>(null);
+    const inputRef = props.inputRef === undefined ? localInputRef : mergeRefs(props.inputRef, localInputRef);
+
     const handleChange = React.useCallback(
         (evt: React.ChangeEvent<HTMLInputElement>) => {
             // update state immediately only if uncontrolled
@@ -259,10 +262,10 @@ export const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props, ref) =
     }, [indeterminate]);
 
     React.useEffect(() => {
-        if (inputRef.current != null) {
-            inputRef.current.indeterminate = isIndeterminate;
+        if (localInputRef.current != null) {
+            localInputRef.current.indeterminate = isIndeterminate;
         }
-    }, [inputRef, isIndeterminate]);
+    }, [localInputRef, isIndeterminate]);
 
     return renderControl(
         {
