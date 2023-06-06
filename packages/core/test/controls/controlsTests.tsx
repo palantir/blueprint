@@ -29,12 +29,12 @@ describe("Controls:", () => {
             const inputRef = React.createRef<HTMLInputElement>();
 
             it("prop sets element state", () => {
-                mount(<Checkbox indeterminate={true} ref={inputRef} />);
+                mount(<Checkbox indeterminate={true} inputRef={inputRef} />);
                 assert.isTrue(inputRef.current?.indeterminate);
             });
 
             it("default prop sets element state", () => {
-                mount(<Checkbox defaultIndeterminate={true} ref={inputRef} />);
+                mount(<Checkbox defaultIndeterminate={true} inputRef={inputRef} />);
                 assert.isTrue(inputRef.current?.indeterminate);
             });
         });
