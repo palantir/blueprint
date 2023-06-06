@@ -121,13 +121,13 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
 
-    private contentElement: HTMLElement;
+    private contentElement: HTMLElement | null = null;
 
-    private navElement: HTMLElement;
+    private navElement: HTMLElement | null = null;
 
     private refHandlers = {
-        content: (ref: HTMLElement) => (this.contentElement = ref),
-        nav: (ref: HTMLElement) => (this.navElement = ref),
+        content: (ref: HTMLElement | null) => (this.contentElement = ref),
+        nav: (ref: HTMLElement | null) => (this.navElement = ref),
     };
 
     public constructor(props: DocumentationProps) {
@@ -143,7 +143,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         // build up static map of all references to their page, for navigation / routing
         this.routeToPage = {};
         eachLayoutNode(this.props.docs.nav, (node, parents) => {
-            const { reference } = isPageNode(node) ? node : parents[0];
+            const { reference } = isPageNode(node) ? node : parents[0]!;
             this.routeToPage[node.route] = reference;
         });
     }
@@ -216,7 +216,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
                                 role="main"
                             >
                                 <Page
-                                    page={pages[activePageId]}
+                                    page={pages[activePageId]!}
                                     renderActions={this.props.renderPageActions}
                                     tagRenderers={this.props.tagRenderers}
                                 />
@@ -328,10 +328,14 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
     };
 
     private maybeScrollToActivePageMenuItem() {
+        if (this.navElement == null) {
+            return;
+        }
+
         const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navItemElement = this.navElement.querySelector<HTMLElement>(`a[href="#${activeSectionId}"]`);
+        const navItemElement = this.navElement.querySelector<HTMLElement>(`a[href="#${activeSectionId}"]`)!;
         const scrollOffset = navItemElement.offsetTop - this.navElement.scrollTop;
         if (scrollOffset < 0 || scrollOffset > this.navElement.offsetHeight) {
             // reveal two items above this item in list
@@ -354,7 +358,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         const index = sections.indexOf(currentSectionId);
         const newIndex = index === -1 ? 0 : (index + direction + sections.length) % sections.length;
         // updating hash triggers event listener which sets new state.
-        location.hash = sections[newIndex];
+        location.hash = sections[newIndex]!;
     }
 
     private handleApiBrowserOpen = (activeApiMember: string) =>
@@ -379,7 +383,7 @@ function getScrolledReference(offset: number, scrollContainer: HTMLElement = doc
         const element = headings.pop() as HTMLElement;
         if (element.offsetTop < scrollContainer.scrollTop + offset) {
             // relying on DOM structure to get reference
-            return element.querySelector("[data-route]").getAttribute("data-route");
+            return element.querySelector("[data-route]")?.getAttribute("data-route");
         }
     }
     return undefined;

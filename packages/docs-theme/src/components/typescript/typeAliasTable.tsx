@@ -38,7 +38,7 @@ export const TypeAliasTable: React.FC<TypeAliasTableProps> = ({ className, data 
     return (
         <div className={classNames("docs-modifiers", className)}>
             <ApiHeader {...data} />
-            {renderBlock(data.documentation)}
+            {renderBlock(data.documentation!)}
             <div className="docs-type-alias docs-code">{aliases}</div>
         </div>
     );

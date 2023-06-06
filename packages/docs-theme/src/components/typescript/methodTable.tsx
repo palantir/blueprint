@@ -36,10 +36,7 @@ export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => 
     const { renderBlock, renderType } = React.useContext(DocumentationContext);
 
     const renderPropRow = React.useCallback((parameter: ITsParameter) => {
-        const {
-            flags: { isDeprecated, isExternal, isOptional },
-            name,
-        } = parameter;
+        const { flags, name } = parameter;
         const { documentation } = parameter;
 
         // ignore props marked with `@internal` tag (this tag is in contents instead of in flags)
@@ -52,9 +49,9 @@ export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => 
         }
 
         const classes = classNames("docs-prop-name", {
-            "docs-prop-is-deprecated": isDeprecated === true || typeof isDeprecated === "string",
-            "docs-prop-is-internal": !isExternal,
-            "docs-prop-is-required": !isOptional,
+            "docs-prop-is-deprecated": flags?.isDeprecated === true || typeof flags?.isDeprecated === "string",
+            "docs-prop-is-internal": !flags?.isExternal,
+            "docs-prop-is-required": !flags?.isOptional,
         });
 
         const typeInfo = (
@@ -70,10 +67,10 @@ export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => 
                 </td>
                 <td className="docs-prop-details">
                     <Code className="docs-prop-type">{typeInfo}</Code>
-                    <div className="docs-prop-description">{renderBlock(documentation)}</div>
+                    <div className="docs-prop-description">{renderBlock(documentation!)}</div>
                     <div className="docs-prop-tags">
-                        {!isOptional && <Tag children="Required" intent={Intent.SUCCESS} minimal={true} />}
-                        <DeprecatedTag isDeprecated={isDeprecated} />
+                        {!flags?.isOptional && <Tag children="Required" intent={Intent.SUCCESS} minimal={true} />}
+                        <DeprecatedTag isDeprecated={flags?.isDeprecated} />
                     </div>
                 </td>
             </tr>
@@ -91,7 +88,7 @@ export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => 
                     <Code className="docs-prop-type">{renderType(entry.returnType)}</Code>
                 </td>
                 <td className="docs-prop-details">
-                    <div className="docs-prop-description">{renderBlock(entry.documentation)}</div>
+                    <div className="docs-prop-description">{renderBlock(entry.documentation!)}</div>
                 </td>
             </tr>
         );
