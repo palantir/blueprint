@@ -31,7 +31,7 @@
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^8.0.0-alpha.3",
         "mocha": "^10.2.0",
-        "typescript": "~4.8.4"
+        "typescript": "~4.9.5"
     },
     "repository": {
         "type": "git",
