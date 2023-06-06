@@ -26,7 +26,7 @@ import { Regions } from "../src/regions";
 import { ReactHarness } from "./harness";
 
 describe("Menus", () => {
-    describe("MenuContext", () => {
+    describe("MenuContextImpl", () => {
         it("uses selected regions if clicked inside selection", () => {
             const context = new MenuContextImpl(Regions.cell(1, 1), [Regions.column(1)], 3, 3);
             expect(context.getRegions()).to.deep.equal([Regions.column(1)]);

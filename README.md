@@ -26,9 +26,11 @@ This repository contains multiple projects in the `packages/` directory that fal
 
 These are the component libraries we publish to NPM.
 
+-   [![npm](https://img.shields.io/npm/v/@blueprintjs/colors.svg?label=@blueprintjs/colors)](https://www.npmjs.com/package/@blueprintjs/colors) &ndash; Design system color variables.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/core.svg?label=@blueprintjs/core)](https://www.npmjs.com/package/@blueprintjs/core) &ndash; Core styles & components.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/datetime.svg?label=@blueprintjs/datetime)](https://www.npmjs.com/package/@blueprintjs/datetime) &ndash; Timezone-aware components for interacting with dates and times.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/icons.svg?label=@blueprintjs/icons)](https://www.npmjs.com/package/@blueprintjs/icons) &ndash; Components for generating and displaying icons.
+-   [![npm](https://img.shields.io/npm/v/@blueprintjs/monaco-editor-theme.svg?label=@blueprintjs/monaco-editor-theme)](https://www.npmjs.com/package/@blueprintjs/monaco-editor-theme) &ndash; Theme for monaco-editor (:warning: experimental).
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/select.svg?label=@blueprintjs/select)](https://www.npmjs.com/package/@blueprintjs/select) &ndash; Components for selecting items from a list.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable interactive table component.
 

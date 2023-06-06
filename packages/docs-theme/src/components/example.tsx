@@ -40,6 +40,9 @@ export interface ExampleProps<T = object> extends Props {
     data?: T;
 }
 
+/** @deprecated use DocsExampleProps */
+export type IDocsExampleProps = DocsExampleProps;
+
 /**
  * Props supported by the `Example` component.
  * Additional props will be spread to the root `<div>` element.
