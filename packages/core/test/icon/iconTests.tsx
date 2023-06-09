@@ -19,7 +19,9 @@ import { mount } from "enzyme";
 import * as React from "react";
 import Sinon, { stub } from "sinon";
 
-import { Add, Airplane, Calendar, Graph, IconName, Icons, IconSize } from "@blueprintjs/icons";
+import { IconName, Icons, IconSize } from "@blueprintjs/icons";
+// eslint-disable-next-line @typescript-eslint/tslint/config
+import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
 
 import { Classes, Icon, IconProps, Intent } from "../../src";
 
@@ -29,12 +31,12 @@ describe("<Icon>", () => {
     before(() => {
         stub(Icons, "load").resolves(undefined);
         // stub the dynamic icon loader with a synchronous, static one
-        iconLoader = stub(Icons, "getComponent");
+        iconLoader = stub(Icons, "getPaths");
         iconLoader.returns(undefined);
-        iconLoader.withArgs("graph").returns(Graph);
         iconLoader.withArgs("add").returns(Add);
-        iconLoader.withArgs("calendar").returns(Calendar);
         iconLoader.withArgs("airplane").returns(Airplane);
+        iconLoader.withArgs("calendar").returns(Calendar);
+        iconLoader.withArgs("graph").returns(Graph);
     });
 
     afterEach(() => {
