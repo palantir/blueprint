@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export { Icons, IconLoaderOptions, IconPathsLoader as IconComponentLoader } from "./iconLoader";
+export { Icons, IconLoaderOptions, IconPathsLoader } from "./iconLoader";
 export { SVGIconProps } from "./svgIconProps";
 export { SVGIconContainer, SVGIconContainerProps } from "./svgIconContainer";
 export { getIconContentString, IconCodepoints } from "./iconCodepoints";
