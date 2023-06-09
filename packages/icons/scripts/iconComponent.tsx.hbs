@@ -13,73 +13,23 @@
  * limitations under the License.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 import type { SVGIconProps } from "../../svgIconProps";
 import { IconSize } from "../../iconSize";
-import * as Classes from "../../classes";
-import { uniqueId } from "../../jsUtils";
+import { SVGIconContainer } from "../../svgIconContainer";
 
-export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<any, SVGIconProps>(({
-    className,
-    color,
-    size = IconSize.STANDARD,
-    title,
-    htmlTitle,
-    svgProps,
-    tagName = "span",
-    ...htmlProps
-}, ref) => {
-    const isLarge = size >= IconSize.LARGE;
-    const pixelGridSize =  isLarge ? IconSize.LARGE : IconSize.STANDARD;
-    const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
-    const titleId = uniqueId("iconTitle");
-    const path = (
+export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<any, SVGIconProps>((props, ref) => (
+    <SVGIconContainer iconName="{{iconName}}" ref={ref} {...props}>
         <path
             d={
-                isLarge
-                    ? "{{icon20pxPath}}"
-                    : "{{icon16pxPath}}"
+                props.size === undefined || props.size < IconSize.LARGE
+                    ? "{{icon16pxPath}}"
+                    : "{{icon20pxPath}}"
             }
             fillRule="evenodd"
             transform="scale({{pathScaleFactor}} {{pathScaleFactor}})"
         />
-    );
-
-    if (tagName === null) {
-        return (
-            <svg
-                aria-labelledby={title ? titleId : undefined}
-                data-icon="{{iconName}}"
-                fill={color}
-                height={size}
-                ref={ref}
-                role="img"
-                viewBox={viewBox}
-                width={size}
-                {...svgProps}
-                {...htmlProps}
-            >
-                {title && <title id={titleId}>{title}</title>}
-                {path}
-            </svg>
-        );
-    } else {
-        return React.createElement(
-            tagName,
-            {
-                ...htmlProps,
-                "aria-hidden": title ? undefined : true,
-                className: classNames(Classes.ICON, `${Classes.ICON}-{{iconName}}`, className),
-                ref,
-                title: htmlTitle,
-            },
-            <svg fill={color} data-icon="{{iconName}}" width={size} height={size} role="img" viewBox={viewBox} {...svgProps}>
-                {title && <title>{title}</title>}
-                {path}
-            </svg>
-        );
-    }
-});
+    </SVGIconContainer>
+));
 {{pascalCase iconName}}.displayName = `Blueprint5.Icon.{{pascalCase iconName}}`;
 export default {{pascalCase iconName}};

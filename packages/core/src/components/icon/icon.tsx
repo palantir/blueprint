@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconComponent, IconName, Icons, IconSize, SVGIconProps } from "@blueprintjs/icons";
+import { IconName, IconPaths, Icons, IconSize, SVGIconContainer, SVGIconProps } from "@blueprintjs/icons";
 
 import { Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props, removeNonHTMLProps } from "../../common";
 
@@ -88,9 +88,9 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
         htmlTitle,
         ...htmlProps
     } = props;
-    const [Component, setIconComponent] = React.useState<IconComponent>();
+    const [iconPaths, setIconPaths] = React.useState<IconPaths>();
     // eslint-disable-next-line deprecation/deprecation
-    const size = props.size ?? props.iconSize;
+    const size = (props.size ?? props.iconSize)!;
 
     React.useEffect(() => {
         let shouldCancelIconLoading = false;
@@ -99,33 +99,33 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
             // N.B. when `autoLoad={true}`, we can't rely on simply calling Icons.load() here to re-load an icon module
             // which has already been loaded & cached, since it may have been loaded with special loading options which
             // this component knows nothing about.
-            const loadedIconComponent = Icons.getComponent(icon);
+            const loadedIconPaths = Icons.getPaths(icon, size);
 
-            if (loadedIconComponent !== undefined) {
-                setIconComponent(loadedIconComponent);
+            if (loadedIconPaths !== undefined) {
+                setIconPaths(loadedIconPaths);
             } else if (autoLoad) {
-                Icons.load(icon)
+                Icons.load(icon, size)
                     .then(() => {
                         // if this effect expired by the time icon loaded, then don't set state
                         if (!shouldCancelIconLoading) {
-                            setIconComponent(Icons.getComponent(icon));
+                            setIconPaths(Icons.getPaths(icon, size));
                         }
                     })
                     .catch(reason => {
-                        console.error(`[Blueprint] Icon '${icon}' could not be loaded.`, reason);
+                        console.error(`[Blueprint] Icon '${icon}' (${size}px) could not be loaded.`, reason);
                     });
             } else {
                 console.error(
-                    `[Blueprint] Icon '${icon}' is not loaded yet and autoLoad={false}, did you call Icons.load('${icon}')?`,
+                    `[Blueprint] Icon '${icon}' (${size}px) is not loaded yet and autoLoad={false}, did you call Icons.load('${icon}', ${size})?`,
                 );
             }
         }
         return () => {
             shouldCancelIconLoading = true;
         };
-    }, [autoLoad, icon]);
+    }, [autoLoad, icon, size]);
 
-    if (Component == null) {
+    if (iconPaths == null) {
         // fall back to icon font if unloaded or unable to load SVG implementation
         const sizeClass =
             size === IconSize.STANDARD
@@ -148,11 +148,13 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
             title: htmlTitle,
         });
     } else {
+        const pathElements = iconPaths.map((d, i) => <path d={d} key={i} fillRule="evenodd" />);
         return (
-            <Component
-                // don't forward Classes.iconClass(icon) here, since the component template will render that class
+            <SVGIconContainer
+                // don't forward Classes.iconClass(icon) here, since the container will render that class
                 className={classNames(Classes.intentClass(intent), className)}
                 color={color}
+                iconName={icon}
                 size={size}
                 tagName={tagName}
                 title={title}
@@ -160,7 +162,9 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
                 ref={ref}
                 svgProps={svgProps}
                 {...removeNonHTMLProps(htmlProps)}
-            />
+            >
+                {pathElements}
+            </SVGIconContainer>
         );
     }
 });
