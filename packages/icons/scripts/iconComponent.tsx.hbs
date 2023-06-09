@@ -18,18 +18,25 @@ import type { SVGIconProps } from "../../svgIconProps";
 import { IconSize } from "../../iconSize";
 import { SVGIconContainer } from "../../svgIconContainer";
 
-export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<any, SVGIconProps>((props, ref) => (
-    <SVGIconContainer iconName="{{iconName}}" ref={ref} {...props}>
-        <path
-            d={
-                props.size === undefined || props.size < IconSize.LARGE
-                    ? "{{icon16pxPath}}"
-                    : "{{icon20pxPath}}"
-            }
-            fillRule="evenodd"
-            transform="scale({{pathScaleFactor}} {{pathScaleFactor}})"
-        />
-    </SVGIconContainer>
-));
+export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<any, SVGIconProps>((props, ref) => {
+    const translation = `${-1 * props.size! / {{pathScaleFactor}} / 2}`;
+    return (
+        <SVGIconContainer iconName="{{iconName}}" ref={ref}  {...props}>
+            <path
+                d={
+                    props.size! < IconSize.LARGE
+                        ? "{{icon16pxPath}}"
+                        : "{{icon20pxPath}}"
+                }
+                fillRule="evenodd"
+                transform-origin="center"
+                transform={`scale({{pathScaleFactor}}, -{{pathScaleFactor}}) translate(${translation}, ${translation})`}
+            />
+        </SVGIconContainer>
+   )
+});
+{{pascalCase iconName}}.defaultProps = {
+    size: IconSize.STANDARD,
+};
 {{pascalCase iconName}}.displayName = `Blueprint5.Icon.{{pascalCase iconName}}`;
 export default {{pascalCase iconName}};

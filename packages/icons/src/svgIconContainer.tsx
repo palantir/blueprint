@@ -22,27 +22,30 @@ import { IconSize } from "./iconSize";
 import { uniqueId } from "./jsUtils";
 import type { SVGIconProps } from "./svgIconProps";
 
-/**
- * Interface for an SVG icon container component.
- * Contents should be loaded via `IconLoader` and specified as `<path>` JSX elements in `props.children`.
- */
 export interface SVGIconContainerProps extends Omit<SVGIconProps, "children"> {
+    /**
+     * Icon name.
+     */
     iconName: IconName;
+
+    /**
+     * Icon contents, loaded via `IconLoader` and specified as `<path>` elements.
+     */
     children: JSX.Element | JSX.Element[];
 }
 
 export const SVGIconContainer: React.FC<SVGIconContainerProps> = React.forwardRef<any, SVGIconContainerProps>(
     (props, ref) => {
         const {
+            children,
             className,
             color,
-            children,
-            size = IconSize.STANDARD,
-            title,
             htmlTitle,
             iconName,
+            size = IconSize.STANDARD,
             svgProps,
             tagName = "span",
+            title,
             ...htmlProps
         } = props;
 
@@ -50,21 +53,19 @@ export const SVGIconContainer: React.FC<SVGIconContainerProps> = React.forwardRe
         const pixelGridSize = isLarge ? IconSize.LARGE : IconSize.STANDARD;
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
         const titleId = uniqueId("iconTitle");
+        const sharedSvgProps = {
+            "data-icon": iconName,
+            fill: color,
+            height: size,
+            role: "img",
+            viewBox,
+            width: size,
+            ...svgProps,
+        };
 
         if (tagName === null) {
             return (
-                <svg
-                    aria-labelledby={title ? titleId : undefined}
-                    data-icon="{{iconName}}"
-                    fill={color}
-                    height={size}
-                    ref={ref}
-                    role="img"
-                    viewBox={viewBox}
-                    width={size}
-                    {...svgProps}
-                    {...htmlProps}
-                >
+                <svg aria-labelledby={title ? titleId : undefined} ref={ref} {...sharedSvgProps} {...htmlProps}>
                     {title && <title id={titleId}>{title}</title>}
                     {children}
                 </svg>
@@ -75,19 +76,11 @@ export const SVGIconContainer: React.FC<SVGIconContainerProps> = React.forwardRe
                 {
                     ...htmlProps,
                     "aria-hidden": title ? undefined : true,
-                    className: classNames(Classes.ICON, `${Classes.ICON}-{{iconName}}`, className),
+                    className: classNames(Classes.ICON, `${Classes.ICON}-${iconName}`, className),
                     ref,
                     title: htmlTitle,
                 },
-                <svg
-                    fill={color}
-                    data-icon="{{iconName}}"
-                    width={size}
-                    height={size}
-                    role="img"
-                    viewBox={viewBox}
-                    {...svgProps}
-                >
+                <svg {...sharedSvgProps}>
                     {title && <title>{title}</title>}
                     {children}
                 </svg>,
