@@ -35,12 +35,12 @@ const tagRenderers = {
 
 // this compiles all the icon modules into this chunk, so async Icon.load() calls don't block later
 Icons.loadAll({
-    loader: async name => {
+    loader: async (name, size) => {
         return (
             await import(
                 /* webpackInclude: /\.js$/ */
                 /* webpackMode: "eager" */
-                `@blueprintjs/icons/lib/esm/generated/components/${name}`
+                `@blueprintjs/icons/lib/esm/generated/${size}px/paths/${name}`
             )
         ).default;
     },

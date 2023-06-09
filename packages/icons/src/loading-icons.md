@@ -64,7 +64,7 @@ The following strategies assume you are bundling with Webpack; if you are using 
 to its available APIs.
 </div>
 
-1. Load all icons statically, similar to behavior in Blueprint versions prior to v5.x. This results in the largest bundle size for your main chunk.
+1. Load all icon paths statically, similar to behavior in Blueprint versions prior to v5.x. This results in the largest bundle size for your main chunk.
 
     In the entry point for your bundle, use `Icons.loadAll()` with its default annotated icon loader function _or_ specify
     a custom one. This will to ensure that webpack will bundle all the icon modules in your main chunk
@@ -76,19 +76,19 @@ to its available APIs.
 
     // or, optionally specify a custom loader function optimized for loading all icons statically
     Icons.loadAll({
-        loader: async name => {
+        loader: async (name, size) => {
             return (
                 await import(
                     /* webpackInclude: /\.js$/ */
                     /* webpackMode: "eager" */
-                    `@blueprintjs/icons/lib/esm/generated/components/${name}`
+                    `@blueprintjs/icons/lib/esm/generated/${size}px/paths/${name}`
                 )
             ).default;
         },
     });
     ```
 
-2. Load some icons up front (but still dynamically) with network requests, and the rest lazily/on-demand.
+2. Load some icon paths up front (but still dynamically) with network requests, and the rest lazily/on-demand.
 
     In the entry point for your bundle:
 

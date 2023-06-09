@@ -14,36 +14,33 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { IconName, IconNames } from "./iconNames";
+import { IconSize } from "./iconSize";
+import type { IconPaths } from "./iconSvgPaths";
 import { wrapWithTimer } from "./loaderUtils";
-import { SVGIconProps } from "./svgIconProps";
 
-export type IconComponent = React.FC<SVGIconProps>;
-
-/** Given an icon name and size, loads the icon component from the generated source module in this package. */
-export type IconComponentLoader = (iconName: IconName) => Promise<IconComponent>;
+/** Given an icon name and size, loads the icon paths that define it. */
+export type IconPathsLoader = (iconName: IconName, iconSize: IconSize) => Promise<IconPaths>;
 
 export interface IconLoaderOptions {
     /*
-     * Optional custom loader for icon contents, useful if the default loader which uses a
+     * Optional custom loader for icon path, useful if the default loader which uses a
      * webpack-configured dynamic import() is not suitable for some reason.
      */
-    loader?: IconComponentLoader;
+    loader?: IconPathsLoader;
 }
 
 /**
- * The default icon contents loader implementation, optimized for webpack.
+ * The default icon paths loader implementation, optimized for webpack.
  *
  * @see https://webpack.js.org/api/module-methods/#magic-comments for dynamic import() reference
  */
-const defaultIconContentsLoader: IconComponentLoader = async name => {
+const defaultIconPathsLoader: IconPathsLoader = async (name, size) => {
     return (
         await import(
             /* webpackInclude: /\.js$/ */
             /* webpackMode: "lazy-once" */
-            `./generated/components/${name}`
+            `./generated/${size}px/paths/${name}`
         )
     ).default;
 };
@@ -53,24 +50,27 @@ const defaultIconContentsLoader: IconComponentLoader = async name => {
  */
 export class Icons {
     /** @internal */
-    public loadedIcons: Map<IconName, IconComponent> = new Map();
+    public loadedIconPaths16: Map<IconName, IconPaths> = new Map();
+
+    /** @internal */
+    public loadedIconPaths20: Map<IconName, IconPaths> = new Map();
 
     /**
      * Load a single icon for use in Blueprint components.
      */
-    public static async load(icon: IconName, options?: IconLoaderOptions): Promise<void>;
+    public static async load(icon: IconName, size: IconSize, options?: IconLoaderOptions): Promise<void>;
     /**
      * Load a set of icons for use in Blueprint components.
      */
     // buggy rule implementation for TS
     // eslint-disable-next-line @typescript-eslint/unified-signatures
-    public static async load(icons: IconName[], options?: IconLoaderOptions): Promise<void>;
-    public static async load(icons: IconName | IconName[], options?: IconLoaderOptions) {
+    public static async load(icons: IconName[], size: number, options?: IconLoaderOptions): Promise<void>;
+    public static async load(icons: IconName | IconName[], size: number, options?: IconLoaderOptions) {
         if (!Array.isArray(icons)) {
             icons = [icons];
         }
 
-        await Promise.all(icons.map(icon => this.loadImpl(icon, options)));
+        await Promise.all(icons.map(icon => this.loadImpl(icon, size, options)));
         return;
     }
 
@@ -79,39 +79,49 @@ export class Icons {
      */
     public static async loadAll(options?: IconLoaderOptions) {
         const allIcons = Object.values(IconNames);
-        wrapWithTimer(`[Blueprint] loading all icons`, () => this.load(allIcons, options));
+        wrapWithTimer(`[Blueprint] loading all icons`, async () => {
+            await Promise.all([
+                this.load(allIcons, IconSize.STANDARD, options),
+                this.load(allIcons, IconSize.LARGE, options),
+            ]);
+        });
     }
 
     /**
-     * Get the icon SVG component. Returns `undefined` if the icon has not been loaded yet.
+     * Get the icon SVG paths. Returns `undefined` if the icon has not been loaded yet.
      */
-    public static getComponent(icon: IconName): IconComponent | undefined {
+    public static getPaths(icon: IconName, size: IconSize): IconPaths | undefined {
         if (!this.isValidIconName(icon)) {
             // don't warn, since this.load() will have warned already
             return undefined;
         }
 
-        return singleton.loadedIcons.get(icon);
+        const loadedIcons = size < IconSize.LARGE ? singleton.loadedIconPaths16 : singleton.loadedIconPaths20;
+        return loadedIcons.get(icon);
     }
 
-    private static async loadImpl(icon: IconName, options?: IconLoaderOptions) {
+    private static async loadImpl(icon: IconName, size: number, options?: IconLoaderOptions) {
         if (!this.isValidIconName(icon)) {
             console.error(`[Blueprint] Unknown icon '${icon}'`);
             return;
-        } else if (singleton.loadedIcons.has(icon)) {
+        }
+
+        const loadedIcons = size < IconSize.LARGE ? singleton.loadedIconPaths16 : singleton.loadedIconPaths20;
+
+        if (loadedIcons.has(icon)) {
             // already loaded, no-op
             return;
         }
 
         // use a custom loader if specified, otherwise use the default one
-        const load = options?.loader ?? defaultIconContentsLoader;
+        const load = options?.loader ?? defaultIconPathsLoader;
 
         try {
-            // load both sizes in parallel
-            const component = await load(icon);
-            singleton.loadedIcons.set(icon, component);
+            const supportedSize = size < IconSize.LARGE ? IconSize.STANDARD : IconSize.LARGE;
+            const paths = await load(icon, supportedSize);
+            loadedIcons.set(icon, paths);
         } catch (e) {
-            console.error(`[Blueprint] Unable to load icon '${icon}'`, e);
+            console.error(`[Blueprint] Unable to load ${size}px icon '${icon}'`, e);
         }
     }
 

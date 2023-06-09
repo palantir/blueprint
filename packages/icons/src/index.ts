@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-export { Icons, IconComponent, IconLoaderOptions, IconComponentLoader } from "./iconLoader";
+export { Icons, IconLoaderOptions, IconPathsLoader } from "./iconLoader";
 export { SVGIconProps } from "./svgIconProps";
+export { SVGIconContainer, SVGIconContainerProps } from "./svgIconContainer";
 export { getIconContentString, IconCodepoints } from "./iconCodepoints";
 export { IconName, IconNames } from "./iconNames";
 export { IconSize } from "./iconSize";
-export { IconSvgPaths16, IconSvgPaths20, iconNameToPathsRecordKey } from "./iconSvgPaths";
+export { getIconPaths, IconPaths, IconSvgPaths16, IconSvgPaths20, iconNameToPathsRecordKey } from "./iconSvgPaths";
