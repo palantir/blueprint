@@ -31,10 +31,10 @@ import {
     Text,
     Utils,
 } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 
 import * as Classes from "./classes";
 import { Popover2, Popover2Props } from "./popover2";
-import { IconNames } from "@blueprintjs/icons";
 
 // eslint-disable-next-line deprecation/deprecation
 export interface MenuItem2Props extends ActionProps, LinkProps, IElementRefProps<HTMLLIElement> {
@@ -254,9 +254,8 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
                 [CoreClasses.DISABLED]: disabled,
                 // prevent popover from closing when clicking on submenu trigger or disabled item
                 [Classes.POPOVER2_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
-                [CoreClasses.SELECTED]: selected || (active && intentClass === undefined),
                 [CoreClasses.MENU_ITEM_TICKED]: showTick,
-                [CoreClasses.MENU_ITEM_INDENT]: showTick === false
+                [CoreClasses.MENU_ITEM_INDENT]: showTick === false,
             },
             className,
         );

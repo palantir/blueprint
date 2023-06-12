@@ -32,7 +32,6 @@ $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray3 !default;
 
 $menu-item-color-hover: rgba($gray3, 0.15) !default;
-$menu-item-color-active: rgba($gray3, 0.3) !default;
 
 $menu-item-intent-colors: (
   "primary": (/* bg */ $blue3, /* fg */ $blue2, /* fg active */ $blue1),
@@ -91,11 +90,7 @@ $dark-menu-item-intent-colors: (
 
   &:active,
   &.#{$ns}-active {
-    background-color: $menu-item-color-active;
-
-    .#{$ns}-menu-item-label {
-      color: $pt-text-color;
-    }
+    @include menu-item-active(false);
   }
 
   // pt-disable always overrides over styles
@@ -109,9 +104,12 @@ $dark-menu-item-intent-colors: (
   }
   /* stylelint-enable declaration-no-important */
 
+  // pt-disable always overrides over styles
+  /* stylelint-disable declaration-no-important */
   &.#{$ns}-menu-item-indent {
     padding-left: $menu-item-indent !important;
   }
+  /* stylelint-enable declaration-no-important */
 
   // pt-disable always overrides over styles
   /* stylelint-disable declaration-no-important */
@@ -182,7 +180,7 @@ $dark-menu-item-intent-colors: (
   background-color: $menu-item-color-hover;
   color: inherit;
   cursor: pointer;
-  text-decoration: none;
+
 }
 
 @mixin dark-menu-item-hover() {
