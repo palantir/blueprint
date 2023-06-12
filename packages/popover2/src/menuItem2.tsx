@@ -218,28 +218,28 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
                 ? [
                       "option",
                       undefined, // target should have no role
-                      Boolean(selected),
+                      selected,
                       Boolean(selected), // aria-selected prop
                   ]
                 : roleStructure === "menuitem" // "menuitem": parent has menu role
                 ? [
                       "none",
                       "menuitem",
-                      false,
+                      undefined,
                       undefined, // don't set aria-selected prop
                   ]
                 : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
                 ? [
                       "none",
                       undefined, // target should have no role
-                      false,
+                      undefined,
                       undefined, // don't set aria-selected prop
                   ]
                 : // roleStructure === "listitem"
                   [
                       undefined, // needs no role prop, li is listitem by default
                       undefined,
-                      false,
+                      undefined,
                       undefined, // don't set aria-selected prop
                   ];
 
@@ -256,7 +256,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
                 [Classes.POPOVER2_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
                 [CoreClasses.SELECTED]: selected || (active && intentClass === undefined),
                 [CoreClasses.MENU_ITEM_TICKED]: showTick,
-                [CoreClasses.MENU_ITEM_INDENT]: !showTick
+                [CoreClasses.MENU_ITEM_INDENT]: showTick === false
             },
             className,
         );
