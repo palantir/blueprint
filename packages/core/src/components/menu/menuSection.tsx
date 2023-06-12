@@ -19,16 +19,16 @@ import * as React from "react";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { Props } from "../../common/props";
-import { MenuItem, MenuItemProps } from "./menuItem";
 import { H6 } from "../html/html";
+import { MenuItem, MenuItemProps } from "./menuItem";
 
 // eslint-disable-next-line deprecation/deprecation
 export type MenuSectionProps = IMenuSectionProps;
 
 export type MenuItemPropsWithId = MenuItemProps & {
-    // Unique identifier 
+    // Unique identifier
     id: string;
-}
+};
 
 /** @deprecated use MenuSectionProps */
 export interface IMenuSectionProps extends Props, React.HTMLAttributes<HTMLUListElement> {
@@ -41,20 +41,20 @@ export interface IMenuSectionProps extends Props, React.HTMLAttributes<HTMLUList
 
 export class MenuSection extends AbstractPureComponent2<MenuSectionProps> {
     public render() {
-        const { items, className, sectionTitle } = this.props;
+        const { items, className, sectionTitle, id } = this.props;
         const classes = classNames(Classes.MENU_SECTION, className);
-        
+
         return (
             <div className={classes}>
-                {sectionTitle &&
+                {sectionTitle && (
                     <div className={Classes.MENU_HEADER}>
                         <H6>{sectionTitle}</H6>
                     </div>
-                }
+                )}
                 {items.map(item => {
-                    return <MenuItem {...item} />
+                    return <MenuItem key={id} {...item} />;
                 })}
             </div>
-        )
+        );
     }
 }
