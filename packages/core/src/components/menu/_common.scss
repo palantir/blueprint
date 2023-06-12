@@ -98,14 +98,6 @@ $dark-menu-item-intent-colors: (
     }
   }
 
-  &.#{$ns}-selected {
-    &,
-    &:hover,
-    &:active {
-      @include menu-item-selected-active(false);
-    }
-  }
-
   // pt-disable always overrides over styles
   /* stylelint-disable declaration-no-important */
   &.#{$ns}-menu-item-ticked {
@@ -168,14 +160,6 @@ $dark-menu-item-intent-colors: (
     }
   }
 
-  &.#{$ns}-selected {
-    &,
-    &:hover,
-    &:active {
-      @include menu-item-selected-active(true);
-    }
-  }
-
   // pt-disable always overrides over styles
   /* stylelint-disable declaration-no-important */
   &.#{$ns}-disabled {
@@ -199,10 +183,6 @@ $dark-menu-item-intent-colors: (
   color: inherit;
   cursor: pointer;
   text-decoration: none;
-
-  &.#{ns}-selected {
-    @include menu-item-selected-active(false);
-  }
 }
 
 @mixin dark-menu-item-hover() {
@@ -213,13 +193,9 @@ $dark-menu-item-intent-colors: (
   .#{$ns}-submenu-icon {
     color: $pt-dark-icon-color;
   }
-
-  &.#{ns}-selected {
-    @include menu-item-selected-active(true);
-  }
 }
 
-@mixin menu-item-selected-active($is-dark) {
+@mixin menu-item-active($is-dark) {
   $intent-colors: $menu-item-intent-colors;
   $background-alpha: 0.1;
 
