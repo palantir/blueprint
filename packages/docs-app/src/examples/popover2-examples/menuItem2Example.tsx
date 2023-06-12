@@ -35,7 +35,7 @@ export function MenuItem2Example(props: ExampleProps) {
     const [submenuEnabled, setSubmenuEnabled] = React.useState(true);
     const [roleStructure, setRoleStructure] = React.useState<MenuItem2Props["roleStructure"]>("menuitem");
 
-    const isSelectedOptionAvailable = roleStructure === "listoption" && !iconEnabled;
+    const isSelectedOptionAvailable = roleStructure === "listoption";
 
     const options = (
         <>
@@ -50,7 +50,7 @@ export function MenuItem2Example(props: ExampleProps) {
                     isSelectedOptionAvailable ? undefined : (
                         <>
                             <Code>selected</Code> prop has no effect when <br />
-                            <Code>roleStructure="menuitem"</Code> or when an icon is set
+                            <Code>roleStructure="menuitem"</Code> is set
                         </>
                     )
                 }

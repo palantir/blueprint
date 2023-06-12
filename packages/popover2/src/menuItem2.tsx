@@ -125,11 +125,6 @@ export interface MenuItem2Props extends ActionProps, LinkProps, IElementRefProps
     multiline?: boolean;
 
     /**
-     * Indent the content. Set true for all items when another item has "showTick" set to true.
-     */
-    indent?: boolean;
-
-    /**
      * Props to spread to the submenu popover. Note that `content` and `minimal` cannot be
      * changed and `usePortal` defaults to `false` so all submenus will live in
      * the same container.
@@ -152,11 +147,6 @@ export interface MenuItem2Props extends ActionProps, LinkProps, IElementRefProps
      * @default true
      */
     shouldDismissPopover?: boolean;
-
-    /**
-     * Whether this item should render a tick.
-     */
-    showTick?: boolean;
 
     /**
      * Props to spread to the child `Menu` component if this item has a submenu.
@@ -206,6 +196,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
             children,
             disabled,
             elementRef,
+            icon,
             intent,
             labelClassName,
             labelElement,
@@ -219,42 +210,39 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
             textClassName,
             tagName = "a",
             htmlTitle,
-            showTick,
-            indent,
             ...htmlProps
         } = this.props;
 
-        const [liRole, targetRole, icon, ariaSelected] =
+        const [liRole, targetRole, showTick, ariaSelected] =
             roleStructure === "listoption" // "listoption": parent has listbox role, or is a <select>
                 ? [
                       "option",
                       undefined, // target should have no role
-                      this.props.icon ?? (selected === undefined ? undefined : selected ? "small-tick" : "blank"),
+                      Boolean(selected),
                       Boolean(selected), // aria-selected prop
                   ]
                 : roleStructure === "menuitem" // "menuitem": parent has menu role
                 ? [
                       "none",
                       "menuitem",
-                      this.props.icon,
+                      false,
                       undefined, // don't set aria-selected prop
                   ]
                 : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
                 ? [
                       "none",
                       undefined, // target should have no role
-                      this.props.icon,
+                      false,
                       undefined, // don't set aria-selected prop
                   ]
                 : // roleStructure === "listitem"
                   [
                       undefined, // needs no role prop, li is listitem by default
                       undefined,
-                      this.props.icon,
+                      false,
                       undefined, // don't set aria-selected prop
                   ];
 
-        const hasIcon = icon != null;
         const hasSubmenu = children != null;
 
         const intentClass = CoreClasses.intentClass(intent);
@@ -268,7 +256,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
                 [Classes.POPOVER2_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
                 [CoreClasses.SELECTED]: selected || (active && intentClass === undefined),
                 [CoreClasses.MENU_ITEM_TICKED]: showTick,
-                [CoreClasses.MENU_ITEM_INDENT]: !showTick && indent
+                [CoreClasses.MENU_ITEM_INDENT]: !showTick
             },
             className,
         );
@@ -290,7 +278,7 @@ export class MenuItem2 extends AbstractPureComponent2<MenuItem2Props & React.Anc
                     <Icon icon={IconNames.SmallTick} />
                 </span>
             ) : undefined,
-            hasIcon ? (
+            icon ? (
                 // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
                 // so that we always render this class
                 <span className={CoreClasses.MENU_ITEM_ICON}>

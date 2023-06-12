@@ -61,26 +61,22 @@ export class MenuExample extends React.PureComponent<ExampleProps> {
                             id: "align-left",
                             icon: "align-left",
                             text: "Left",
-                            indent: true
                         },
                         {
                             id: "align-center",
                             icon: "align-center",
                             text: "Center",
-                            indent: true
                         },
                         {
                             id: "align-right",
                             icon: "align-right",
                             text: "Right",
-                            showTick: true
                         },
                         {
                             id: "align-justify",
                             icon: "align-justify",
                             text: "Justify",
                             disabled: true,
-                            indent: true
                         }
                     ]} />
                     <MenuSection sectionTitle="Style" items={[
@@ -90,9 +86,9 @@ export class MenuExample extends React.PureComponent<ExampleProps> {
                             text: "Style",
                             children: (
                                 <>
-                                    <MenuItem showTick={true} icon="bold" text="Bold" />
-                                    <MenuItem indent={true} icon="italic" text="Italic" />
-                                    <MenuItem indent={true} icon="underline" text="Underline" />
+                                    <MenuItem icon="bold" text="Bold" />
+                                    <MenuItem icon="italic" text="Italic" />
+                                    <MenuItem icon="underline" text="Underline" />
                                 </>
                             )
                         },

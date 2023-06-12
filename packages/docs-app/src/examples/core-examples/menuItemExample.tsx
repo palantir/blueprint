@@ -53,7 +53,6 @@ export function MenuItemExample(props: ExampleProps) {
                     icon={iconEnabled ? "eye-open" : undefined}
                     intent={intent}
                     labelElement={submenuEnabled ? undefined : "⌘,"}
-                    indent={tickEnabled && selected}
                     children={
                         submenuEnabled ? (
                             <>
@@ -69,8 +68,6 @@ export function MenuItemExample(props: ExampleProps) {
                     icon={iconEnabled ? "bug" : undefined}
                     intent={intent}
                     labelElement={submenuEnabled ? undefined : "⌘,"}
-                    indent={tickEnabled && selected}
-                    showTick={tickEnabled && selected}
                     selected={selected}
                     children={
                         submenuEnabled ? (
