@@ -22,8 +22,8 @@ import { MenuItem2, MenuItem2Props } from "@blueprintjs/popover2";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { IntentSelect } from "../core-examples/common/intentSelect";
-import { BooleanOrUndefinedSelect } from "./booleanOrUndefinedSelect";
 import { Size, SizeSelect } from "../core-examples/common/sizeSelect";
+import { BooleanOrUndefinedSelect } from "./booleanOrUndefinedSelect";
 
 export function MenuItem2Example(props: ExampleProps) {
     const [size, setSize] = React.useState<Size>("regular");

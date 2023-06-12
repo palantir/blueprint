@@ -35,86 +35,98 @@ export class MenuExample extends React.PureComponent<ExampleProps> {
                     <MenuItem icon="cog" labelElement={<Icon icon="share" />} text="Settings..." intent="primary" />
                 </Menu>
                 <Menu className={Classes.ELEVATION_1} noPadding={true}>
-                    <MenuSection sectionTitle="Edit" items={[
-                        {
-                            id: "cut",
-                            icon: "cut",
-                            text: "Cut",
-                            label:"⌘X"
-                        },
-                        {
-                            id: "duplicate",
-                            icon: "duplicate",
-                            text: "Copy",
-                            label:"⌘C"
-                        },
-                        {
-                            id: "clipboard",
-                            icon: "clipboard",
-                            text: "Paste",
-                            label:"⌘V",
-                            disabled: true,
-                        }
-                    ]} />
-                    <MenuSection sectionTitle="Text" items={[
-                        {
-                            id: "align-left",
-                            icon: "align-left",
-                            text: "Left",
-                        },
-                        {
-                            id: "align-center",
-                            icon: "align-center",
-                            text: "Center",
-                        },
-                        {
-                            id: "align-right",
-                            icon: "align-right",
-                            text: "Right",
-                        },
-                        {
-                            id: "align-justify",
-                            icon: "align-justify",
-                            text: "Justify",
-                            disabled: true,
-                        }
-                    ]} />
-                    <MenuSection sectionTitle="Style" items={[
-                        {
-                            id: "style",
-                            icon: "style",
-                            text: "Style",
-                            children: (
-                                <>
-                                    <MenuItem icon="bold" text="Bold" />
-                                    <MenuItem icon="italic" text="Italic" />
-                                    <MenuItem icon="underline" text="Underline" />
-                                </>
-                            )
-                        },
-                        {
-                            id: "asterisk",
-                            icon: "asterisk",
-                            text: "Miscellaneous",
-                            children: (
-                                <>
-                                    <MenuItem icon="badge" text="Badge" />
-                                    <MenuItem icon="book" text="Long items will truncate when they reach max-width" />
-                                    <MenuItem icon="more" text="Look in here for even more items">
-                                        <MenuItem icon="briefcase" text="Briefcase" />
-                                        <MenuItem icon="calculator" text="Calculator" />
-                                        <MenuItem icon="dollar" text="Dollar" />
-                                        <MenuItem icon="dot" text="Shapes">
-                                            <MenuItem icon="full-circle" text="Full circle" />
-                                            <MenuItem icon="heart" text="Heart" />
-                                            <MenuItem icon="ring" text="Ring" />
-                                            <MenuItem icon="square" text="Square" />
+                    <MenuSection
+                        sectionTitle="Edit"
+                        items={[
+                            {
+                                icon: "cut",
+                                id: "cut",
+                                label: "⌘X",
+                                text: "Cut",
+                            },
+                            {
+                                icon: "duplicate",
+                                id: "duplicate",
+                                label: "⌘C",
+                                text: "Copy",
+                            },
+                            {
+                                disabled: true,
+                                icon: "clipboard",
+                                id: "clipboard",
+                                label: "⌘V",
+                                text: "Paste",
+                            },
+                        ]}
+                    />
+                    <MenuSection
+                        sectionTitle="Text"
+                        items={[
+                            {
+                                icon: "align-left",
+                                id: "align-left",
+                                text: "Left",
+                            },
+                            {
+                                icon: "align-center",
+                                id: "align-center",
+                                text: "Center",
+                            },
+                            {
+                                icon: "align-right",
+                                id: "align-right",
+                                text: "Right",
+                            },
+                            {
+                                disabled: true,
+                                icon: "align-justify",
+                                id: "align-justify",
+                                text: "Justify",
+                            },
+                        ]}
+                    />
+                    <MenuSection
+                        sectionTitle="Style"
+                        items={[
+                            {
+                                children: (
+                                    <>
+                                        <MenuItem icon="bold" text="Bold" />
+                                        <MenuItem icon="italic" text="Italic" />
+                                        <MenuItem icon="underline" text="Underline" />
+                                    </>
+                                ),
+                                icon: "style",
+                                id: "style",
+                                text: "Style",
+                            },
+                            {
+                                children: (
+                                    <>
+                                        <MenuItem icon="badge" text="Badge" />
+                                        <MenuItem
+                                            icon="book"
+                                            text="Long items will truncate when they reach max-width"
+                                        />
+                                        <MenuItem icon="more" text="Look in here for even more items">
+                                            <MenuItem icon="briefcase" text="Briefcase" />
+                                            <MenuItem icon="calculator" text="Calculator" />
+                                            <MenuItem icon="dollar" text="Dollar" />
+                                            <MenuItem icon="dot" text="Shapes">
+                                                <MenuItem icon="full-circle" text="Full circle" />
+                                                <MenuItem icon="heart" text="Heart" />
+                                                <MenuItem icon="ring" text="Ring" />
+                                                <MenuItem icon="square" text="Square" />
+                                            </MenuItem>
                                         </MenuItem>
-                                    </MenuItem>
-                                </>
-                            )
-                        },
-                    ]} />
+                                    </>
+                                ),
+                                icon: "asterisk",
+                                id: "asterisk",
+                                text: "Miscellaneous",
+                            },
+                        ]}
+                    />
                 </Menu>
             </Example>
         );
