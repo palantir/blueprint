@@ -32,6 +32,7 @@ $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray3 !default;
 
 $menu-item-color-hover: rgba($gray3, 0.15) !default;
+$menu-item-color-active: rgba($gray3, 0.3) !default;
 
 $menu-item-intent-colors: (
   "primary": (/* bg */ $blue3, /* fg */ $blue2, /* fg active */ $blue1),
@@ -180,7 +181,7 @@ $dark-menu-item-intent-colors: (
   background-color: $menu-item-color-hover;
   color: inherit;
   cursor: pointer;
-
+  text-decoration: none;
 }
 
 @mixin dark-menu-item-hover() {
