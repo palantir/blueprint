@@ -22,20 +22,18 @@ import { Props } from "../../common/props";
 import { H6 } from "../html/html";
 import { MenuItem, MenuItemProps } from "./menuItem";
 
-// eslint-disable-next-line deprecation/deprecation
 export type MenuSectionProps = IMenuSectionProps;
 
 export type MenuItemPropsWithId = MenuItemProps & {
-    // Unique identifier
+    /** Unique identifier */
     id: string;
 };
 
-/** @deprecated use MenuSectionProps */
 export interface IMenuSectionProps extends Props, React.HTMLAttributes<HTMLUListElement> {
-    /** Menu items. */
+    /** Menu items */
     items: MenuItemPropsWithId[];
 
-    /** Optional header title. */
+    /** Optional header title */
     sectionTitle?: React.ReactNode;
 }
 
