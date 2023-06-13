@@ -18,7 +18,7 @@ import type { IconPathsLoader } from "./iconLoader";
 import { IconSize } from "./iconTypes";
 
 /**
- * The default icon paths loader implementation, optimized for webpack.
+ * The default icon paths loader, using webpack's "lazy-once" mode.
  *
  * @see https://webpack.js.org/api/module-methods/#magic-comments for dynamic import() reference
  */
@@ -35,6 +35,29 @@ export const webpackLazyOncePathsLoader: IconPathsLoader = async (name, size) =>
                   /* webpackChunkName: "blueprint-icons-20px" */
                   /* webpackInclude: /\.js$/ */
                   /* webpackMode: "lazy-once" */
+                  `./generated/20px/paths/${name}`
+              )
+    ).default;
+};
+
+/**
+ * A "lazy" webpack module loader.
+ *
+ * @see https://webpack.js.org/api/module-methods/#magic-comments for dynamic import() reference
+ */
+export const webpackLazyPathsLoader: IconPathsLoader = async (name, size) => {
+    return (
+        size === IconSize.STANDARD
+            ? await import(
+                  /* webpackChunkName: "blueprint-icons-16px" */
+                  /* webpackInclude: /\.js$/ */
+                  /* webpackMode: "lazy" */
+                  `./generated/16px/paths/${name}`
+              )
+            : await import(
+                  /* webpackChunkName: "blueprint-icons-20px" */
+                  /* webpackInclude: /\.js$/ */
+                  /* webpackMode: "lazy" */
                   `./generated/20px/paths/${name}`
               )
     ).default;

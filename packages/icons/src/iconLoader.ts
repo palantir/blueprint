@@ -17,7 +17,7 @@
 import { type IconName, IconNames } from "./iconNames";
 import { type IconPaths, IconSize } from "./iconTypes";
 import { wrapWithTimer } from "./loaderUtils";
-import { webpackEagerPathsLoader, webpackLazyOncePathsLoader } from "./webpackIconLoaders";
+import { webpackEagerPathsLoader, webpackLazyOncePathsLoader, webpackLazyPathsLoader } from "./webpackIconLoaders";
 
 /** Given an icon name and size, loads the icon paths that define it. */
 export type IconPathsLoader = (iconName: IconName, iconSize: IconSize) => Promise<IconPaths>;
@@ -29,7 +29,7 @@ export interface IconLoaderOptions {
      * @see https://blueprintjs.com/docs/versions/5/#icons/loading-icons
      * @default "webpack-lazy-once"
      */
-    loader?: "webpack-lazy-once" | "webpack-eager" | IconPathsLoader;
+    loader?: "webpack-lazy-once" | "webpack-lazy" | "webpack-eager" | IconPathsLoader;
 }
 
 /**
@@ -109,6 +109,8 @@ export class Icons {
                 ? options.loader
                 : options.loader === "webpack-eager"
                 ? webpackEagerPathsLoader
+                : options.loader === "webpack-lazy"
+                ? webpackLazyPathsLoader
                 : webpackLazyOncePathsLoader;
 
         try {

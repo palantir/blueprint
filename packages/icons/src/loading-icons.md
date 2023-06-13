@@ -123,3 +123,5 @@ to its available APIs.
         ),
     });
     ```
+
+@interface IconLoaderOptions
