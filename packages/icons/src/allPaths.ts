@@ -16,23 +16,13 @@
 
 import { pascalCase } from "change-case";
 
+// N.B. this statically loads all icon path modules
 import * as IconSvgPaths16 from "./generated/16px/paths";
 import * as IconSvgPaths20 from "./generated/20px/paths";
-import type { IconName } from "./iconNames";
-import { IconSize } from "./iconSize";
+import { IconName } from "./iconNames";
+import { IconPaths, IconSize } from "./iconTypes";
 import type { PascalCase } from "./type-utils";
-
 export { IconSvgPaths16, IconSvgPaths20 };
-
-export type IconPaths = string[];
-
-/**
- * Type safe string literal conversion of snake-case icon names to PascalCase icon names.
- * This is useful for indexing into the SVG paths record to extract a single icon's SVG path definition.
- */
-export function iconNameToPathsRecordKey(name: IconName): PascalCase<IconName> {
-    return pascalCase(name) as PascalCase<IconName>;
-}
 
 /**
  * Get the list of vector paths that define a given icon. These path strings are used to render `<path>`
@@ -40,10 +30,10 @@ export function iconNameToPathsRecordKey(name: IconName): PascalCase<IconName> {
  * handlebars template and `generate-icon-components` script in the __@blueprintjs/icons__ package.
  *
  * Note: this function loads all icon definitions __statically__, which means every icon is included in your
- * JS bundle. If you are looking for a dynamic icon loader which loads icon definitions on-demand, use
- * `{ Icons } from "@blueprintjs/icons"`.
+ * JS bundle. Only use this API if your app is likely to use all Blueprint icons at runtime. If you are looking for a
+ * dynamic icon loader which loads icon definitions on-demand, use `{ Icons } from "@blueprintjs/icons"` instead.
  */
 export function getIconPaths(name: IconName, size: IconSize): IconPaths {
-    const key = iconNameToPathsRecordKey(name);
+    const key = pascalCase(name) as PascalCase<IconName>;
     return size === IconSize.STANDARD ? IconSvgPaths16[key] : IconSvgPaths20[key];
 }

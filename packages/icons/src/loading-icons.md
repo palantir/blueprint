@@ -66,25 +66,24 @@ to its available APIs.
 
 1. Load all icon paths statically, similar to behavior in Blueprint versions prior to v5.x. This results in the largest bundle size for your main chunk.
 
-    In the entry point for your bundle, use `Icons.loadAll()` with its default annotated icon loader function _or_ specify
-    a custom one. This will to ensure that webpack will bundle all the icon modules in your main chunk
+    In the entry point for your bundle, use `Icons.loadAll()` with one of the built-in webpack-annotated loader functions.
+    This will to ensure that webpack will bundle all the icon modules in your main chunk
     (see [relevant Webpack docs here](https://webpack.js.org/api/module-methods/#magic-comments)):
 
     ```ts
-    // use the default annotated Webpack loader
-    Icons.loadAll();
+    import { Icons } from "@blueprintjs/icons";
 
-    // or, optionally specify a custom loader function optimized for loading all icons statically
-    Icons.loadAll({
-        loader: async (name, size) => {
-            return (
-                await import(
-                    /* webpackInclude: /\.js$/ */
-                    /* webpackMode: "eager" */
-                    `@blueprintjs/icons/lib/esm/generated/${size}px/paths/${name}`
-                )
-            ).default;
-        },
+    // use the default annotated Webpack loader, which uses the "lazy-once" mode
+    await Icons.loadAll();
+
+    // use an "eager" Webpack loader, which bundles icon modules in a way that mimics Blueprint v4.x behavior
+    await Icons.loadAll({ loader: "webpack-eager" });
+
+    // a more rudimentary approach with static imports from a public submodule API:
+    import { getIconPaths } from "@blueprintjs/icons/allPaths";
+
+    await Icons.loadAll({
+        loader: async (name, size) => getIconPaths(name, size),
     });
     ```
 
@@ -93,10 +92,34 @@ to its available APIs.
     In the entry point for your bundle:
 
     ```ts
-    Icons.load(["download", "caret-down", "endorsed", "help", "lock"]);
+    import { Icons } from "@blueprintjs/icons";
+
+    await Icons.load(["download", "caret-down", "endorsed", "help", "lock"]);
     ```
 
 3. Load all icons lazily.
 
     This is the default behavior, where any usage of `<Icon icon="..." />` will trigger a network request to
     fetch the icon contents chunk.
+
+4. Use a custom loader for more control.
+
+    ```ts
+    // specify a custom loader function for an alternative bundler, for example Vite
+    // see https://vitejs.dev/guide/features.html#glob-import
+    import { Icons, IconPaths } from "@blueprintjs/icons";
+
+    const iconModules: Record<string, { default: IconPaths[] }> =
+        import.meta.glob([
+            "../node_modules/@blueprintjs/icons/lib/esm/generated/16px/paths/*.js",
+            "../node_modules/@blueprintjs/icons/lib/esm/generated/20px/paths/*.js",
+        ]);
+
+    await Icons.loadAll({
+        loader: async (name, size) => (
+            iconModules[
+                `../node_modules/@blueprintjs/icons/lib/esm/generated/${size}px/paths/${name}.js`
+            ].default,
+        ),
+    });
+    ```

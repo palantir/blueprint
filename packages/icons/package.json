@@ -9,6 +9,8 @@
     "style": "lib/css/blueprint-icons.css",
     "unpkg": "dist/icons.bundle.js",
     "files": [
+        "allPaths.js",
+        "allPaths.mjs",
         "dist",
         "lib",
         "src",

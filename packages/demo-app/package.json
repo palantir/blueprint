@@ -5,6 +5,7 @@
     "private": true,
     "scripts": {
         "bundle": "webpack",
+        "bundle:analyze": "webpack --profile --json > dist/stats.json && webpack-bundle-analyzer dist/stats.json",
         "clean": "rm -rf dist/*",
         "dev": "webpack-dev-server",
         "dist": "cross-env NODE_ENV=production yarn bundle",

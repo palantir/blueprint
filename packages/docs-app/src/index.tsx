@@ -18,7 +18,6 @@ import * as ReactDOM from "react-dom";
 
 import { docsData } from "@blueprintjs/docs-data";
 import { createDefaultRenderers, ReactDocsTagRenderer, ReactExampleTagRenderer } from "@blueprintjs/docs-theme";
-import { Icons } from "@blueprintjs/icons";
 
 import { BlueprintDocs } from "./components/blueprintDocs";
 import * as ReactDocs from "./tags/reactDocs";
@@ -32,19 +31,6 @@ const tagRenderers = {
     reactDocs: reactDocs.render,
     reactExample: reactExample.render,
 };
-
-// this compiles all the icon modules into this chunk, so async Icon.load() calls don't block later
-Icons.loadAll({
-    loader: async (name, size) => {
-        return (
-            await import(
-                /* webpackInclude: /\.js$/ */
-                /* webpackMode: "eager" */
-                `@blueprintjs/icons/lib/esm/generated/${size}px/paths/${name}`
-            )
-        ).default;
-    },
-});
 
 ReactDOM.render(
     <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={true} />,

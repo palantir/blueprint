@@ -18,7 +18,7 @@ import * as React from "react";
 
 import * as Classes from "./classes";
 import type { IconName } from "./iconNames";
-import { IconSize } from "./iconSize";
+import { IconSize } from "./iconTypes";
 import { uniqueId } from "./jsUtils";
 import type { SVGIconProps } from "./svgIconProps";
 

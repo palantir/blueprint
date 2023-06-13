@@ -14,36 +14,23 @@
  * limitations under the License.
  */
 
-import { IconName, IconNames } from "./iconNames";
-import { IconSize } from "./iconSize";
-import type { IconPaths } from "./iconSvgPaths";
+import { type IconName, IconNames } from "./iconNames";
+import { type IconPaths, IconSize } from "./iconTypes";
 import { wrapWithTimer } from "./loaderUtils";
+import { webpackEagerPathsLoader, webpackLazyOncePathsLoader } from "./webpackIconLoaders";
 
 /** Given an icon name and size, loads the icon paths that define it. */
 export type IconPathsLoader = (iconName: IconName, iconSize: IconSize) => Promise<IconPaths>;
 
 export interface IconLoaderOptions {
-    /*
-     * Optional custom loader for icon path, useful if the default loader which uses a
-     * webpack-configured dynamic import() is not suitable for some reason.
+    /**
+     * The id of a built-in loader, or a custom loader function.
+     *
+     * @see https://blueprintjs.com/docs/versions/5/#icons/loading-icons
+     * @default "webpack-lazy-once"
      */
-    loader?: IconPathsLoader;
+    loader?: "webpack-lazy-once" | "webpack-eager" | IconPathsLoader;
 }
-
-/**
- * The default icon paths loader implementation, optimized for webpack.
- *
- * @see https://webpack.js.org/api/module-methods/#magic-comments for dynamic import() reference
- */
-const defaultIconPathsLoader: IconPathsLoader = async (name, size) => {
-    return (
-        await import(
-            /* webpackInclude: /\.js$/ */
-            /* webpackMode: "lazy-once" */
-            `./generated/${size}px/paths/${name}`
-        )
-    ).default;
-};
 
 /**
  * Blueprint icons loader.
@@ -100,7 +87,11 @@ export class Icons {
         return loadedIcons.get(icon);
     }
 
-    private static async loadImpl(icon: IconName, size: number, options?: IconLoaderOptions) {
+    private static async loadImpl(
+        icon: IconName,
+        size: number,
+        options: IconLoaderOptions = { loader: "webpack-lazy-once" },
+    ) {
         if (!this.isValidIconName(icon)) {
             console.error(`[Blueprint] Unknown icon '${icon}'`);
             return;
@@ -113,12 +104,16 @@ export class Icons {
             return;
         }
 
-        // use a custom loader if specified, otherwise use the default one
-        const load = options?.loader ?? defaultIconPathsLoader;
+        const loaderFn =
+            options.loader === "webpack-lazy-once"
+                ? webpackLazyOncePathsLoader
+                : options.loader === "webpack-eager"
+                ? webpackEagerPathsLoader
+                : options.loader!;
 
         try {
             const supportedSize = size < IconSize.LARGE ? IconSize.STANDARD : IconSize.LARGE;
-            const paths = await load(icon, supportedSize);
+            const paths = await loaderFn(icon, supportedSize);
             loadedIcons.set(icon, paths);
         } catch (e) {
             console.error(`[Blueprint] Unable to load ${size}px icon '${icon}'`, e);

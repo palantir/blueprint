@@ -20,7 +20,7 @@ import * as React from "react";
 import Sinon, { stub } from "sinon";
 
 import { IconName, Icons, IconSize } from "@blueprintjs/icons";
-// eslint-disable-next-line @typescript-eslint/tslint/config
+// tslint:disable-next-line no-submodule-imports
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
 
 import { Classes, Icon, IconProps, Intent } from "../../src";
