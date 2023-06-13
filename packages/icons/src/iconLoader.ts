@@ -105,11 +105,11 @@ export class Icons {
         }
 
         const loaderFn =
-            options.loader === "webpack-lazy-once"
-                ? webpackLazyOncePathsLoader
+            typeof options.loader == "function"
+                ? options.loader
                 : options.loader === "webpack-eager"
                 ? webpackEagerPathsLoader
-                : options.loader!;
+                : webpackLazyOncePathsLoader;
 
         try {
             const supportedSize = size < IconSize.LARGE ? IconSize.STANDARD : IconSize.LARGE;

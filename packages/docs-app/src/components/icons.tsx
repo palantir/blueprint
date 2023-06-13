@@ -23,17 +23,7 @@ import { Icons as IconLoader } from "@blueprintjs/icons";
 import { DocsIcon, DocsIconProps as Icon } from "./docsIcon";
 
 // this compiles all the icon modules into this chunk, so async Icon.load() calls don't block later
-IconLoader.loadAll({
-    loader: async (name, size) => {
-        return (
-            await import(
-                /* webpackInclude: /\.js$/ */
-                /* webpackMode: "eager" */
-                `@blueprintjs/icons/lib/esm/generated/${size}px/paths/${name}`
-            )
-        ).default;
-    },
-});
+IconLoader.loadAll({ loader: "webpack-eager" });
 
 const ICONS_PER_ROW = 5;
 
