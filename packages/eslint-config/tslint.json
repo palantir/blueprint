@@ -8,7 +8,6 @@
                 "lodash",
                 "react-dom",
                 "@blueprintjs/icons/icons.json",
-                "@blueprintjs/icons/allPaths",
                 "@blueprintjs/select/examples",
                 "@blueprintjs/table/src",
                 "@blueprintjs/test-commons/bootstrap",
