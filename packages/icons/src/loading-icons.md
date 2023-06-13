@@ -99,7 +99,7 @@ to its available APIs.
     ```ts
     import { Icons } from "@blueprintjs/icons";
 
-    Icons.setOptions({ loader: "webpack-lazy" });
+    Icons.setLoaderOptions({ loader: "webpack-lazy" });
     ```
 
 4. Load some icon paths up front (dynamically) with network requests, and the rest lazily/on-demand.
@@ -107,7 +107,7 @@ to its available APIs.
     ```ts
     import { Icons } from "@blueprintjs/icons";
 
-    Icons.setOptions({ loader: "webpack-lazy" });
+    Icons.setLoaderOptions({ loader: "webpack-lazy" });
     await Icons.load(["download", "caret-down", "endorsed", "help", "lock"]);
     ```
 

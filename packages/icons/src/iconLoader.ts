@@ -47,7 +47,7 @@ export class Icons {
     /**
      * Set global icon loading options for all subsequent `Icons.load()` calls.
      */
-    public static setOptions(options: IconLoaderOptions) {
+    public static setLoaderOptions(options: IconLoaderOptions) {
         if (options.loader !== undefined) {
             defaultLoader = options.loader;
         }
