@@ -16,7 +16,6 @@
 
 import { pascalCase } from "change-case";
 
-// N.B. this statically loads all icon path modules
 import * as IconSvgPaths16 from "./generated/16px/paths";
 import * as IconSvgPaths20 from "./generated/20px/paths";
 import { IconName } from "./iconNames";
@@ -36,4 +35,14 @@ export { IconSvgPaths16, IconSvgPaths20 };
 export function getIconPaths(name: IconName, size: IconSize): IconPaths {
     const key = pascalCase(name) as PascalCase<IconName>;
     return size === IconSize.STANDARD ? IconSvgPaths16[key] : IconSvgPaths20[key];
+}
+
+/**
+ * Type safe string literal conversion of snake-case icon names to PascalCase icon names.
+ * This is useful for indexing into the SVG paths record to extract a single icon's SVG path definition.
+ *
+ * @deprecated use `getIconPaths` instead
+ */
+export function iconNameToPathsRecordKey(name: IconName): PascalCase<IconName> {
+    return pascalCase(name) as PascalCase<IconName>;
 }

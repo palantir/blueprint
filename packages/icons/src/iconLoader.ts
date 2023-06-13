@@ -32,6 +32,8 @@ export interface IconLoaderOptions {
     loader?: "webpack-lazy-once" | "webpack-lazy" | "webpack-eager" | IconPathsLoader;
 }
 
+let defaultLoader: Required<IconLoaderOptions>["loader"] = "webpack-lazy-once";
+
 /**
  * Blueprint icons loader.
  */
@@ -41,6 +43,15 @@ export class Icons {
 
     /** @internal */
     public loadedIconPaths20: Map<IconName, IconPaths> = new Map();
+
+    /**
+     * Set global icon loading options for all subsequent `Icons.load()` calls.
+     */
+    public static setOptions(options: IconLoaderOptions) {
+        if (options.loader !== undefined) {
+            defaultLoader = options.loader;
+        }
+    }
 
     /**
      * Load a single icon for use in Blueprint components.
@@ -87,11 +98,7 @@ export class Icons {
         return loadedIcons.get(icon);
     }
 
-    private static async loadImpl(
-        icon: IconName,
-        size: number,
-        options: IconLoaderOptions = { loader: "webpack-lazy-once" },
-    ) {
+    private static async loadImpl(icon: IconName, size: number, options: IconLoaderOptions = {}) {
         if (!this.isValidIconName(icon)) {
             console.error(`[Blueprint] Unknown icon '${icon}'`);
             return;
@@ -104,14 +111,23 @@ export class Icons {
             return;
         }
 
+        const { loader = defaultLoader } = options;
+
         const loaderFn =
-            typeof options.loader == "function"
-                ? options.loader
-                : options.loader === "webpack-eager"
+            typeof loader == "function"
+                ? loader
+                : loader === "webpack-eager"
                 ? webpackEagerPathsLoader
-                : options.loader === "webpack-lazy"
+                : loader === "webpack-lazy"
                 ? webpackLazyPathsLoader
-                : webpackLazyOncePathsLoader;
+                : loader === "webpack-lazy-once"
+                ? webpackLazyOncePathsLoader
+                : undefined;
+
+        if (loaderFn === undefined) {
+            console.error(`[Blueprint] Unknown icon loader: ${loader}`);
+            return;
+        }
 
         try {
             const supportedSize = size < IconSize.LARGE ? IconSize.STANDARD : IconSize.LARGE;

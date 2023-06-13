@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// N.B. these named imports will trigger bundlers to statically loads all icon path modules
+export { IconSvgPaths16, IconSvgPaths20, getIconPaths } from "./iconPaths";
+
 export { Icons, IconLoaderOptions, IconPathsLoader } from "./iconLoader";
 export { SVGIconProps } from "./svgIconProps";
 export { SVGIconContainer, SVGIconContainerProps } from "./svgIconContainer";
