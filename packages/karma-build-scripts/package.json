@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/karma-build-scripts",
-    "version": "5.0.0-alpha.6",
+    "version": "5.0.0-beta.1",
     "description": "Karma build scripts for @blueprintjs packages",
     "type": "module",
     "main": "index.mjs",
@@ -8,7 +8,7 @@
         "test": "exit 0"
     },
     "dependencies": {
-        "@blueprintjs/webpack-build-scripts": "^5.0.0-alpha.6",
+        "@blueprintjs/webpack-build-scripts": "^5.0.0-beta.1",
         "istanbul-instrumenter-loader": "^3.0.1",
         "karma": "^6.4.1",
         "karma-chrome-launcher": "^3.2.0",
