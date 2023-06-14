@@ -1,6 +1,9 @@
 #!/usr/bin/env node
+/*
+ * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
+ */
+
 /**
- * @license Copyright 2019 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Runs ESLint, with support for generating JUnit report
  */
 
