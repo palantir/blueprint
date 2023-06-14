@@ -32,12 +32,13 @@ export interface IconLoaderOptions {
     loader?: "webpack-lazy-once" | "webpack-lazy" | "webpack-eager" | IconPathsLoader;
 }
 
-let defaultLoader: Required<IconLoaderOptions>["loader"] = "webpack-lazy-once";
-
 /**
  * Blueprint icons loader.
  */
 export class Icons {
+    /** @internal */
+    public defaultLoader: Required<IconLoaderOptions>["loader"] = "webpack-lazy-once";
+
     /** @internal */
     public loadedIconPaths16: Map<IconName, IconPaths> = new Map();
 
@@ -49,7 +50,7 @@ export class Icons {
      */
     public static setLoaderOptions(options: IconLoaderOptions) {
         if (options.loader !== undefined) {
-            defaultLoader = options.loader;
+            singleton.defaultLoader = options.loader;
         }
     }
 
@@ -111,7 +112,7 @@ export class Icons {
             return;
         }
 
-        const { loader = defaultLoader } = options;
+        const { loader = singleton.defaultLoader } = options;
 
         const loaderFn =
             typeof loader == "function"
@@ -138,9 +139,12 @@ export class Icons {
         }
     }
 
-    private static isValidIconName(icon: IconName): boolean {
+    /**
+     * @returns true if the given string is a valid {@link IconName}
+     */
+    public static isValidIconName(iconName: string): iconName is IconName {
         const allIcons: IconName[] = Object.values(IconNames);
-        return allIcons.indexOf(icon) >= 0;
+        return allIcons.indexOf(iconName as IconName) >= 0;
     }
 }
 
