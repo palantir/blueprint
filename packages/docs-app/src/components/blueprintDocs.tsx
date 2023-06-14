@@ -20,7 +20,7 @@ import * as React from "react";
 
 import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
 import { IDocsCompleteData } from "@blueprintjs/docs-data";
-import { Banner, Documentation, IDocumentationProps, NavMenuItem, NavMenuItemProps } from "@blueprintjs/docs-theme";
+import { Banner, Documentation, DocumentationProps, NavMenuItem, NavMenuItemProps } from "@blueprintjs/docs-theme";
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 import { NavHeader } from "./navHeader";
@@ -57,8 +57,8 @@ export function setTheme(themeName: string) {
 
 export interface IBlueprintDocsProps {
     docs: IDocsCompleteData;
-    defaultPageId: IDocumentationProps["defaultPageId"];
-    tagRenderers: IDocumentationProps["tagRenderers"];
+    defaultPageId: DocumentationProps["defaultPageId"];
+    tagRenderers: DocumentationProps["tagRenderers"];
     /** Whether to use `next` versions for packages (as opposed to `latest`). */
     useNextVersion: boolean;
 }

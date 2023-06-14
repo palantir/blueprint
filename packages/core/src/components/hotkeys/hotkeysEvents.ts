@@ -17,7 +17,7 @@
 import { Children, ReactNode } from "react";
 
 import { isElementOfType } from "../../common/utils";
-import { Hotkey, IHotkeyProps } from "./hotkey";
+import { Hotkey, HotkeyProps } from "./hotkey";
 import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "./hotkeyParser";
 import { hideHotkeysDialogAfterDelay, isHotkeysDialogShowing, showHotkeysDialog } from "./hotkeysDialog";
 import { IHotkeysProps } from "./hotkeysTypes";
@@ -31,7 +31,7 @@ export enum HotkeyScope {
 
 export interface IHotkeyAction {
     combo: IKeyCombo;
-    props: IHotkeyProps;
+    props: HotkeyProps;
 }
 
 export class HotkeysEvents {

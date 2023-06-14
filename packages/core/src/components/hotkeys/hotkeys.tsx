@@ -21,7 +21,7 @@ import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX } from "../../commo
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { isElementOfType, isReactChildrenElementOrElements } from "../../common/utils";
 import { H4 } from "../html/html";
-import { Hotkey, IHotkeyProps } from "./hotkey";
+import { Hotkey, HotkeyProps } from "./hotkey";
 import { IHotkeysProps } from "./hotkeysTypes";
 
 /**
@@ -43,7 +43,7 @@ export class Hotkeys extends AbstractPureComponent2<IHotkeysProps> {
 
         const hotkeys = React.Children.map(
             this.props.children,
-            (child: React.ReactElement<IHotkeyProps>) => child.props,
+            (child: React.ReactElement<HotkeyProps>) => child.props,
         );
 
         // sort by group label alphabetically, prioritize globals

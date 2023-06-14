@@ -20,7 +20,7 @@ import * as ReactDOM from "react-dom";
 
 import { Classes } from "../../common";
 import { Dialog, DialogBody, DialogProps } from "../../components";
-import { Hotkey, IHotkeyProps } from "./hotkey";
+import { Hotkey, HotkeyProps } from "./hotkey";
 import { Hotkeys } from "./hotkeys";
 
 export interface IHotkeysDialogProps extends DialogProps {
@@ -44,7 +44,7 @@ class HotkeysDialog {
 
     private container: HTMLElement | null = null;
 
-    private hotkeysQueue = [] as IHotkeyProps[][];
+    private hotkeysQueue = [] as HotkeyProps[][];
 
     private isDialogShowing = false;
 
@@ -75,7 +75,7 @@ class HotkeysDialog {
      * 10msec after the last listener adds their hotkeys, we render the dialog
      * and clear the queue.
      */
-    public enqueueHotkeysForDisplay(hotkeys: IHotkeyProps[]) {
+    public enqueueHotkeysForDisplay(hotkeys: HotkeyProps[]) {
         this.hotkeysQueue.push(hotkeys);
 
         // reset timeout for debounce
@@ -159,7 +159,7 @@ export function setHotkeysDialogProps(props: Partial<IHotkeysDialogProps>) {
     }
 }
 
-export function showHotkeysDialog(hotkeys: IHotkeyProps[]) {
+export function showHotkeysDialog(hotkeys: HotkeyProps[]) {
     HOTKEYS_DIALOG.enqueueHotkeysForDisplay(hotkeys);
 }
 

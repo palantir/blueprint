@@ -28,12 +28,15 @@ export interface IExample {
 
 // construct a map of package name to all examples defined in that package.
 // packageName must match directory name as it is used to generate sourceUrl.
+/** @deprecated use ExampleMap */
 export interface IExampleMap {
     [componentName: string]: IExample;
 }
+// eslint-disable-next-line deprecation/deprecation
+export type ExampleMap = IExampleMap;
 
 export class ReactExampleTagRenderer {
-    constructor(private examples: IExampleMap) {}
+    constructor(private examples: ExampleMap) {}
 
     /**
      * Given the name of an example component, like `"AlertExample"`, attempts to resolve

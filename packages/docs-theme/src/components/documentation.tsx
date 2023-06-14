@@ -32,6 +32,7 @@ import { Page } from "./page";
 import { addScrollbarStyle } from "./scrollbar";
 import { ApiLink } from "./typescript/apiLink";
 
+/** @deprecated use DocumentationProps */
 export interface IDocumentationProps extends Props {
     /**
      * An element to place above the documentation, along the top of the viewport.
@@ -108,6 +109,9 @@ export interface IDocumentationProps extends Props {
     tagRenderers: TagRendererMap;
 }
 
+// eslint-disable-next-line deprecation/deprecation
+export type DocumentationProps = IDocumentationProps;
+
 export interface IDocumentationState {
     activeApiMember: string;
     activePageId: string;
@@ -116,7 +120,7 @@ export interface IDocumentationState {
     isNavigatorOpen: boolean;
 }
 
-export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
+export class Documentation extends React.PureComponent<DocumentationProps, IDocumentationState> {
     public static childContextTypes = DocumentationContextTypes;
 
     /** Map of section route to containing page reference. */
@@ -131,7 +135,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         nav: (ref: HTMLElement) => (this.navElement = ref),
     };
 
-    public constructor(props: IDocumentationProps) {
+    public constructor(props: DocumentationProps) {
         super(props);
         this.state = {
             activeApiMember: "",
@@ -271,7 +275,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         document.removeEventListener("scroll", this.handleScroll);
     }
 
-    public componentDidUpdate(_prevProps: IDocumentationProps, prevState: IDocumentationState) {
+    public componentDidUpdate(_prevProps: DocumentationProps, prevState: IDocumentationState) {
         const { activePageId } = this.state;
 
         // only scroll to heading when switching pages, but always check if nav item needs scrolling.
