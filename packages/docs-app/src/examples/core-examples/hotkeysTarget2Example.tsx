@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { HotkeysTarget2, IHotkeyProps } from "@blueprintjs/core";
+import { HotkeyProps, HotkeysTarget2 } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { PianoKey } from "./audio";
@@ -57,7 +57,7 @@ export class HotkeysTarget2Example extends React.PureComponent<ExampleProps, IHo
         };
     };
 
-    private hotkeys: IHotkeyProps[] = [
+    private hotkeys: HotkeyProps[] = [
         {
             combo: "shift + P",
             global: true,

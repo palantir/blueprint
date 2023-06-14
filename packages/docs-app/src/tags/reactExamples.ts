@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { ExampleProps, IExampleMap } from "@blueprintjs/docs-theme";
+import { ExampleMap, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { getTheme } from "../components/blueprintDocs";
 import * as CoreExamples from "../examples/core-examples";
@@ -34,7 +34,7 @@ function getPackageExamples(
     packageName: string,
     packageExamples: { [name: string]: React.ComponentClass<ExampleProps<IBlueprintExampleData>> },
 ) {
-    const ret: IExampleMap = {};
+    const ret: ExampleMap = {};
     for (const exampleName of Object.keys(packageExamples)) {
         const example = packageExamples[exampleName];
         const fileName = exampleName.charAt(0).toLowerCase() + exampleName.slice(1) + ".tsx";
@@ -46,7 +46,7 @@ function getPackageExamples(
     return ret;
 }
 
-export const reactExamples: IExampleMap = (() => {
+export const reactExamples: ExampleMap = (() => {
     return {
         ...getPackageExamples("core", CoreExamples as any),
         ...getPackageExamples("datetime", DateExamples as any),
