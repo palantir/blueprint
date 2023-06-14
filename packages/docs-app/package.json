@@ -22,7 +22,7 @@
         "@blueprintjs/datetime2": "^1.0.0-beta.1",
         "@blueprintjs/docs-data": "^5.0.0-beta.1",
         "@blueprintjs/docs-theme": "^5.0.0-beta.1",
-        "@blueprintjs/icons": "^5.0.0-beta.1",
+        "@blueprintjs/icons": "^5.0.0-beta.2",
         "@blueprintjs/monaco-editor-theme": "^1.0.0-beta.1",
         "@blueprintjs/select": "^5.0.0-beta.1",
         "@blueprintjs/table": "^5.0.0-beta.1",
