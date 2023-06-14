@@ -75,11 +75,12 @@ to its available APIs.
     ```ts
     import { Icons } from "@blueprintjs/icons";
 
-    // using the default annotated Webpack loader, which uses the "lazy-once" mode
+    // using the default dynamic loader, which uses Webpack's "lazy-once" mode
     await Icons.loadAll();
 
-    // using an "eager" Webpack loader, which bundles icon modules in a way that mimics Blueprint v4.x behavior
-    await Icons.loadAll({ loader: "webpack-eager" });
+    // using a "simple" loader, which uses a dynamic import without any path arguments and thus does not require
+    // knowlege of any JS bundler specifics
+    await Icons.loadAll({ loader: "simple" });
     ```
 
 2. Use static imports to load all icon paths statically (simpler, does not require knowledge of bundler specifics).
@@ -97,9 +98,27 @@ to its available APIs.
     Any usage of `<Icon icon="..." />` will trigger a network request to fetch the individual icon contents chunk.
 
     ```ts
-    import { Icons } from "@blueprintjs/icons";
+    import { Icons, IconSize, IconPathsLoader } from "@blueprintjs/icons";
 
-    Icons.setLoaderOptions({ loader: "webpack-lazy" });
+    const lazyLoader: IconPathsLoader = async (name, size) => {
+        return (
+            size === IconSize.STANDARD
+                ? await import(
+                    /* webpackChunkName: "blueprint-icons-16px" */
+                    /* webpackInclude: /\.js$/ */
+                    /* webpackMode: "lazy" */
+                    `@blueprintjs/icons/lib/esm/generated/16px/paths/${name}`
+                )
+                : await import(
+                    /* webpackChunkName: "blueprint-icons-20px" */
+                    /* webpackInclude: /\.js$/ */
+                    /* webpackMode: "lazy" */
+                    `@blueprintjs/icons/lib/esm/generated/20px/paths/${name}`
+                )
+        ).default;
+    };
+
+    Icons.setLoaderOptions({ loader: lazyLoader });
     ```
 
 4. Load some icon paths up front (dynamically) with network requests, and the rest lazily/on-demand.
@@ -107,11 +126,11 @@ to its available APIs.
     ```ts
     import { Icons } from "@blueprintjs/icons";
 
-    Icons.setLoaderOptions({ loader: "webpack-lazy" });
+    Icons.setLoaderOptions({ loader: lazyLoader });
     await Icons.load(["download", "caret-down", "endorsed", "help", "lock"]);
     ```
 
-5. Use a custom loader for more control.
+5. Custom loaders allow usage with other bundlers, like Vite for example.
 
     ```ts
     // specify a custom loader function for an alternative bundler, for example Vite

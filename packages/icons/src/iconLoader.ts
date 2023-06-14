@@ -26,9 +26,9 @@ export interface IconLoaderOptions {
      * The id of a built-in loader, or a custom loader function.
      *
      * @see https://blueprintjs.com/docs/versions/5/#icons/loading-icons
-     * @default "webpack-lazy-once"
+     * @default undefined
      */
-    loader?: "webpack-lazy-once" | "webpack-lazy" | "webpack-eager" | IconPathsLoader;
+    loader?: "static" | "webpack-lazy-once" | IconPathsLoader;
 }
 
 async function getLoaderFn(options: IconLoaderOptions): Promise<IconPathsLoader> {
@@ -36,16 +36,10 @@ async function getLoaderFn(options: IconLoaderOptions): Promise<IconPathsLoader>
 
     if (typeof loader === "function") {
         return loader;
-    } else if (loader === "webpack-eager") {
-        return (await import("./webpack-loaders/webpackEagerPathsLoader")).webpackEagerPathsLoader;
-    } else if (loader === "webpack-lazy") {
-        return (await import("./webpack-loaders/webpackLazyPathsLoader")).webpackLazyPathsLoader;
     } else if (loader === "webpack-lazy-once") {
-        return (await import("./webpack-loaders/webpackLazyOncePathsLoader")).webpackLazyOncePathsLoader;
+        return (await import("./paths-loaders/webpackLazyOncePathsLoader")).webpackLazyOncePathsLoader;
     } else {
-        // no bundler-aware dynamic loader available, so we fall back to a static one
-        const { getIconPaths } = await import("./iconPaths");
-        return async (name, size) => getIconPaths(name, size);
+        return (await import("./paths-loaders/simplePathsLoader")).simplePathsLoader;
     }
 }
 
@@ -54,7 +48,7 @@ async function getLoaderFn(options: IconLoaderOptions): Promise<IconPathsLoader>
  */
 export class Icons {
     /** @internal */
-    public defaultLoader: Required<IconLoaderOptions>["loader"] = "webpack-lazy-once";
+    public defaultLoader: IconLoaderOptions["loader"] = "webpack-lazy-once";
 
     /** @internal */
     public loadedIconPaths16: Map<IconName, IconPaths> = new Map();
