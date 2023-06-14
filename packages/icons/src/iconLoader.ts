@@ -26,9 +26,9 @@ export interface IconLoaderOptions {
      * The id of a built-in loader, or a custom loader function.
      *
      * @see https://blueprintjs.com/docs/versions/5/#icons/loading-icons
-     * @default undefined
+     * @default undefined (equivalent to "simple")
      */
-    loader?: "static" | "webpack-lazy-once" | IconPathsLoader;
+    loader?: "simple" | "webpack-lazy-once" | IconPathsLoader;
 }
 
 async function getLoaderFn(options: IconLoaderOptions): Promise<IconPathsLoader> {
