@@ -17,13 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconSize } from "@blueprintjs/icons";
-
 import { Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { mergeRefs } from "../../common/refs";
 import { Icon } from "../icon/icon";
-import { Spinner } from "../spinner/spinner";
+import { Spinner, SpinnerSize } from "../spinner/spinner";
 import { AnchorButtonProps, ButtonProps } from "./buttonProps";
 
 /**
@@ -158,7 +156,7 @@ function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(
     const hasTextContent = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
     return (
         <>
-            {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={IconSize.LARGE} />}
+            {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={SpinnerSize.SMALL} />}
             <Icon key="leftIcon" icon={icon} />
             {hasTextContent && (
                 <span key="text" className={Classes.BUTTON_TEXT}>

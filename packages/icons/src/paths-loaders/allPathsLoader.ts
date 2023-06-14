@@ -17,12 +17,12 @@
 import type { IconPathsLoader } from "../iconLoader";
 
 /**
- * A simple module loader for icon paths that does not require any knowledge of JS bundlers.
+ * A simple module loader which concatenates all icon paths into a single chunk.
  */
-export const simplePathsLoader: IconPathsLoader = async (name, size) => {
+export const allPathsLoader: IconPathsLoader = async (name, size) => {
     const { getIconPaths } = await import(
         /* webpackChunkName: "blueprint-icons-all-paths" */
-        "../iconPaths"
+        "../allPaths"
     );
     return getIconPaths(name, size);
 };

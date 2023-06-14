@@ -26,9 +26,9 @@ export interface IconLoaderOptions {
      * The id of a built-in loader, or a custom loader function.
      *
      * @see https://blueprintjs.com/docs/versions/5/#icons/loading-icons
-     * @default undefined (equivalent to "simple")
+     * @default undefined (equivalent to "split-by-size")
      */
-    loader?: "simple" | "webpack-lazy-once" | IconPathsLoader;
+    loader?: "split-by-size" | "all" | IconPathsLoader;
 }
 
 async function getLoaderFn(options: IconLoaderOptions): Promise<IconPathsLoader> {
@@ -36,10 +36,10 @@ async function getLoaderFn(options: IconLoaderOptions): Promise<IconPathsLoader>
 
     if (typeof loader === "function") {
         return loader;
-    } else if (loader === "webpack-lazy-once") {
-        return (await import("./paths-loaders/webpackLazyOncePathsLoader")).webpackLazyOncePathsLoader;
+    } else if (loader === "all") {
+        return (await import("./paths-loaders/allPathsLoader")).allPathsLoader;
     } else {
-        return (await import("./paths-loaders/simplePathsLoader")).simplePathsLoader;
+        return (await import("./paths-loaders/splitPathsBySizeLoader")).splitPathsBySizeLoader;
     }
 }
 
@@ -48,7 +48,7 @@ async function getLoaderFn(options: IconLoaderOptions): Promise<IconPathsLoader>
  */
 export class Icons {
     /** @internal */
-    public defaultLoader: IconLoaderOptions["loader"] = "webpack-lazy-once";
+    public defaultLoader: IconLoaderOptions["loader"] = "split-by-size";
 
     /** @internal */
     public loadedIconPaths16: Map<IconName, IconPaths> = new Map();

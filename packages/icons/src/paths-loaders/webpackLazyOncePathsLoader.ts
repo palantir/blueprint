@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-import type { IconPathsLoader } from "../iconLoader";
-import { IconSize } from "../iconTypes";
+// import type { IconPathsLoader } from "../iconLoader";
+// import { IconSize } from "../iconTypes";
 
-/**
- * The default icon paths loader, using webpack's "lazy-once" mode.
- *
- * @see https://webpack.js.org/api/module-methods/#magic-comments for dynamic import() reference
- */
-export const webpackLazyOncePathsLoader: IconPathsLoader = async (name, size) => {
-    return (
-        size === IconSize.STANDARD
-            ? await import(
-                  /* webpackChunkName: "blueprint-icons-16px" */
-                  /* webpackInclude: /\.js$/ */
-                  /* webpackMode: "lazy-once" */
-                  `../generated/16px/paths/${name}`
-              )
-            : await import(
-                  /* webpackChunkName: "blueprint-icons-20px" */
-                  /* webpackInclude: /\.js$/ */
-                  /* webpackMode: "lazy-once" */
-                  `../generated/20px/paths/${name}`
-              )
-    ).default;
-};
+// /**
+//  * The default icon paths loader, using webpack's "lazy-once" mode.
+//  *
+//  * @see https://webpack.js.org/api/module-methods/#magic-comments for dynamic import() reference
+//  */
+// export const webpackLazyOncePathsLoader: IconPathsLoader = async (name, size) => {
+//     return (
+//         size === IconSize.STANDARD
+//             ? await import(
+//                   /* webpackChunkName: "blueprint-icons-16px" */
+//                   /* webpackInclude: /\.js$/ */
+//                   /* webpackMode: "lazy-once" */
+//                   `../generated/16px/paths/${name}`
+//               )
+//             : await import(
+//                   /* webpackChunkName: "blueprint-icons-20px" */
+//                   /* webpackInclude: /\.js$/ */
+//                   /* webpackMode: "lazy-once" */
+//                   `../generated/20px/paths/${name}`
+//               )
+//     ).default;
+// };

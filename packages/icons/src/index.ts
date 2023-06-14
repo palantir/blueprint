@@ -15,7 +15,7 @@
  */
 
 // N.B. these named imports will trigger bundlers to statically loads all icon path modules
-export { IconSvgPaths16, IconSvgPaths20, getIconPaths } from "./iconPaths";
+export { IconSvgPaths16, IconSvgPaths20, getIconPaths } from "./allPaths";
 
 export { Icons, IconLoaderOptions, IconPathsLoader } from "./iconLoader";
 export { SVGIconProps } from "./svgIconProps";
