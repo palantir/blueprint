@@ -107,7 +107,7 @@ export class HotkeysEvents {
         }
     }
 
-    private isScope(props: IHotkeyProps) {
+    private isScope(props: HotkeyProps) {
         return (props.global ? HotkeyScope.GLOBAL : HotkeyScope.LOCAL) === this.scope;
     }
 
