@@ -29,13 +29,13 @@ export const webpackEagerPathsLoader: IconPathsLoader = async (name, size) => {
                   /* webpackChunkName: "blueprint-icons-16px" */
                   /* webpackInclude: /\.js$/ */
                   /* webpackMode: "eager" */
-                  `./generated/16px/paths/${name}`
+                  `../generated/16px/paths/${name}`
               )
             : await import(
                   /* webpackChunkName: "blueprint-icons-20px" */
                   /* webpackInclude: /\.js$/ */
                   /* webpackMode: "eager" */
-                  `./generated/20px/paths/${name}`
+                  `../generated/20px/paths/${name}`
               )
     ).default;
 };
