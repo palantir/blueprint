@@ -138,9 +138,12 @@ export class Icons {
         }
     }
 
-    private static isValidIconName(icon: IconName): boolean {
+    /**
+     * @returns true if the given string is a valid {@link IconName}
+     */
+    public static isValidIconName(iconName: string): iconName is IconName {
         const allIcons: IconName[] = Object.values(IconNames);
-        return allIcons.indexOf(icon) >= 0;
+        return allIcons.indexOf(iconName as IconName) >= 0;
     }
 }
 
