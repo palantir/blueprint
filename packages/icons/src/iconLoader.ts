@@ -17,7 +17,6 @@
 import { type IconName, IconNames } from "./iconNames";
 import { type IconPaths, IconSize } from "./iconTypes";
 import { wrapWithTimer } from "./loaderUtils";
-import { webpackEagerPathsLoader, webpackLazyOncePathsLoader, webpackLazyPathsLoader } from "./webpackIconLoaders";
 
 /** Given an icon name and size, loads the icon paths that define it. */
 export type IconPathsLoader = (iconName: IconName, iconSize: IconSize) => Promise<IconPaths>;
@@ -27,9 +26,21 @@ export interface IconLoaderOptions {
      * The id of a built-in loader, or a custom loader function.
      *
      * @see https://blueprintjs.com/docs/versions/5/#icons/loading-icons
-     * @default "webpack-lazy-once"
+     * @default undefined (equivalent to "split-by-size")
      */
-    loader?: "webpack-lazy-once" | "webpack-lazy" | "webpack-eager" | IconPathsLoader;
+    loader?: "split-by-size" | "all" | IconPathsLoader;
+}
+
+async function getLoaderFn(options: IconLoaderOptions): Promise<IconPathsLoader> {
+    const { loader = singleton.defaultLoader } = options;
+
+    if (typeof loader === "function") {
+        return loader;
+    } else if (loader === "all") {
+        return (await import("./paths-loaders/allPathsLoader")).allPathsLoader;
+    } else {
+        return (await import("./paths-loaders/splitPathsBySizeLoader")).splitPathsBySizeLoader;
+    }
 }
 
 /**
@@ -37,7 +48,7 @@ export interface IconLoaderOptions {
  */
 export class Icons {
     /** @internal */
-    public defaultLoader: Required<IconLoaderOptions>["loader"] = "webpack-lazy-once";
+    public defaultLoader: IconLoaderOptions["loader"] = "split-by-size";
 
     /** @internal */
     public loadedIconPaths16: Map<IconName, IconPaths> = new Map();
@@ -112,23 +123,7 @@ export class Icons {
             return;
         }
 
-        const { loader = singleton.defaultLoader } = options;
-
-        const loaderFn =
-            typeof loader == "function"
-                ? loader
-                : loader === "webpack-eager"
-                ? webpackEagerPathsLoader
-                : loader === "webpack-lazy"
-                ? webpackLazyPathsLoader
-                : loader === "webpack-lazy-once"
-                ? webpackLazyOncePathsLoader
-                : undefined;
-
-        if (loaderFn === undefined) {
-            console.error(`[Blueprint] Unknown icon loader: ${loader}`);
-            return;
-        }
+        const loaderFn = await getLoaderFn(options);
 
         try {
             const supportedSize = size < IconSize.LARGE ? IconSize.STANDARD : IconSize.LARGE;

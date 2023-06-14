@@ -66,6 +66,9 @@ for (const [iconName, icon16pxPath] of Object.entries(iconPaths[16])) {
     }
     writeFileSync(
         join(generatedSrcDir, `components/${iconName}.tsx`),
+        // Notes on icon component template implementation:
+        //  - path "translation" transform must use "viewbox" dimensions, not "size", in order to avoid issues
+        //    like https://github.com/palantir/blueprint/issues/6220
         iconComponentTemplate({
             iconName,
             icon16pxPath,

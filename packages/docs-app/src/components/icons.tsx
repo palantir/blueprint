@@ -18,12 +18,8 @@ import * as React from "react";
 
 import { Classes, H3, InputGroup, NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
-import { Icons as IconLoader } from "@blueprintjs/icons";
 
 import { DocsIcon, DocsIconProps as Icon } from "./docsIcon";
-
-// this compiles all the icon modules into this chunk, so async Icon.load() calls don't block later
-IconLoader.loadAll({ loader: "webpack-eager" });
 
 const ICONS_PER_ROW = 5;
 
