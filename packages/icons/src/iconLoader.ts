@@ -17,7 +17,6 @@
 import { type IconName, IconNames } from "./iconNames";
 import { type IconPaths, IconSize } from "./iconTypes";
 import { wrapWithTimer } from "./loaderUtils";
-import { webpackEagerPathsLoader, webpackLazyOncePathsLoader, webpackLazyPathsLoader } from "./webpackIconLoaders";
 
 /** Given an icon name and size, loads the icon paths that define it. */
 export type IconPathsLoader = (iconName: IconName, iconSize: IconSize) => Promise<IconPaths>;
@@ -30,6 +29,24 @@ export interface IconLoaderOptions {
      * @default "webpack-lazy-once"
      */
     loader?: "webpack-lazy-once" | "webpack-lazy" | "webpack-eager" | IconPathsLoader;
+}
+
+async function getLoaderFn(options: IconLoaderOptions): Promise<IconPathsLoader> {
+    const { loader = singleton.defaultLoader } = options;
+
+    if (typeof loader === "function") {
+        return loader;
+    } else if (loader === "webpack-eager") {
+        return (await import("./webpack-loaders/webpackEagerPathsLoader")).webpackEagerPathsLoader;
+    } else if (loader === "webpack-lazy") {
+        return (await import("./webpack-loaders/webpackLazyPathsLoader")).webpackLazyPathsLoader;
+    } else if (loader === "webpack-lazy-once") {
+        return (await import("./webpack-loaders/webpackLazyOncePathsLoader")).webpackLazyOncePathsLoader;
+    } else {
+        // no bundler-aware dynamic loader available, so we fall back to a static one
+        const { getIconPaths } = await import("./iconPaths");
+        return async (name, size) => getIconPaths(name, size);
+    }
 }
 
 /**
@@ -112,23 +129,7 @@ export class Icons {
             return;
         }
 
-        const { loader = singleton.defaultLoader } = options;
-
-        const loaderFn =
-            typeof loader == "function"
-                ? loader
-                : loader === "webpack-eager"
-                ? webpackEagerPathsLoader
-                : loader === "webpack-lazy"
-                ? webpackLazyPathsLoader
-                : loader === "webpack-lazy-once"
-                ? webpackLazyOncePathsLoader
-                : undefined;
-
-        if (loaderFn === undefined) {
-            console.error(`[Blueprint] Unknown icon loader: ${loader}`);
-            return;
-        }
+        const loaderFn = await getLoaderFn(options);
 
         try {
             const supportedSize = size < IconSize.LARGE ? IconSize.STANDARD : IconSize.LARGE;
