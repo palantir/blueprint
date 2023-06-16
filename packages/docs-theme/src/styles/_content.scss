@@ -32,6 +32,7 @@ $attribute-modifier-color: $violet5;
 
 .docs-anchor-link {
   @include pt-icon-colors();
+  @include pt-icon-colors-hover();
   left: 0;
   line-height: $pt-icon-size-standard;
   opacity: 0;
