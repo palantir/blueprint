@@ -125,6 +125,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
                     onClear={this.state.showClearButton ? this.handleClear : undefined}
                     onItemSelect={this.handleFilmSelect}
                     onItemsPaste={this.handleFilmsPaste}
+                    onItemsBlur={this.handleFilmsBlur}
                     popoverProps={{ matchTargetWidth, minimal: popoverMinimal }}
                     popoverRef={this.popoverRef}
                     tagRenderer={this.renderTag}
@@ -306,6 +307,12 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
     };
 
     private handleFilmsPaste = (films: Film[]) => {
+        // On paste, don't bother with deselecting already selected values, just
+        // add the new ones.
+        this.selectFilms(films);
+    };
+
+    private handleFilmsBlur = (films: Film[]) => {
         // On paste, don't bother with deselecting already selected values, just
         // add the new ones.
         this.selectFilms(films);

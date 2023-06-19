@@ -163,6 +163,11 @@ export interface ListItemsProps<T> extends Props {
     onItemsPaste?: (items: T[]) => void;
 
     /**
+     * Callback invoked when item blur.
+     */
+    onItemsBlur?: (items: T[]) => void;
+
+    /**
      * Callback invoked when the query string changes.
      */
     onQueryChange?: (query: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
