@@ -196,6 +196,8 @@ describe("ContextMenu", () => {
     });
 
     describe("advanced usage (content render function API)", () => {
+        const ALT_CONTENT_WRAPPER = "alternative-content-wrapper";
+
         it("renders children and menu content, prevents default context menu handler", done => {
             const onContextMenu = (e: React.MouseEvent) => {
                 assert.isTrue(e.defaultPrevented);
@@ -221,8 +223,35 @@ describe("ContextMenu", () => {
             closeCtxMenu(wrapper);
         });
 
-        function renderContent() {
+        it("updates menu if content prop value changes", () => {
+            const ctxMenu = mountTestMenu();
+            openCtxMenu(ctxMenu);
+            assert.isTrue(ctxMenu.find(`.${MENU_CLASSNAME}`).exists());
+            assert.isFalse(ctxMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
+            ctxMenu.setProps({ content: renderAlternativeContent });
+            assert.isTrue(ctxMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
+        });
+
+        it("updates menu if content render function return value changes", () => {
+            const testMenu = mount(<TestMenuWithChangingContent useAltContent={false} />, {
+                attachTo: containerElement,
+            });
+            openCtxMenu(testMenu);
+            assert.isTrue(testMenu.find(`.${MENU_CLASSNAME}`).exists());
+            assert.isFalse(testMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
+            testMenu.setProps({ useAltContent: true });
+            assert.isTrue(testMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
+        });
+
+        function renderContent({ mouseEvent, targetOffset }: ContextMenuContentProps) {
+            if (mouseEvent === undefined || targetOffset === undefined) {
+                return undefined;
+            }
             return MENU;
+        }
+
+        function renderAlternativeContent() {
+            return <div className={ALT_CONTENT_WRAPPER}>{MENU}</div>;
         }
 
         function mountTestMenu(props?: Partial<ContextMenuProps>) {
@@ -231,6 +260,19 @@ describe("ContextMenu", () => {
                     <div className={TARGET_CLASSNAME} />
                 </ContextMenu>,
                 { attachTo: containerElement },
+            );
+        }
+
+        function TestMenuWithChangingContent({ useAltContent } = { useAltContent: false }) {
+            const content = React.useCallback(
+                (contentProps: ContextMenuContentProps) =>
+                    useAltContent ? renderAlternativeContent() : renderContent(contentProps),
+                [useAltContent],
+            );
+            return (
+                <ContextMenu content={content} popoverProps={{ transitionDuration: 0 }}>
+                    <div className={TARGET_CLASSNAME} />
+                </ContextMenu>
             );
         }
     });
