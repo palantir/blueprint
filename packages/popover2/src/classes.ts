@@ -16,7 +16,7 @@
 
 import { Classes as CoreClasses } from "@blueprintjs/core";
 
-/** @deprecated import from @blueprintjs/core instead */
+/** @deprecated use { Classes } from @blueprintjs/core instead */
 export const Classes = {
     CONTEXT_MENU2: CoreClasses.CONTEXT_MENU,
     CONTEXT_MENU2_BACKDROP: CoreClasses.CONTEXT_MENU_BACKDROP,

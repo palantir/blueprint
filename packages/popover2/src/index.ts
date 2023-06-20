@@ -51,8 +51,6 @@ export {
     /** @deprecated import from @blueprintjs/core instead */
     Placement,
     /** @deprecated import from @blueprintjs/core instead */
-    Popover as Popover2,
-    /** @deprecated import from @blueprintjs/core instead */
     PopoverClickTargetHandlers as Popover2ClickTargetHandlers,
     /** @deprecated import from @blueprintjs/core instead */
     PopoverHoverTargetHandlers as Popover2HoverTargetHandlers,
@@ -94,3 +92,4 @@ export {
 } from "@blueprintjs/core";
 
 export { Classes } from "./classes";
+export { Popover2 } from "./popover2";
