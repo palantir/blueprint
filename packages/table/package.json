@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/table",
-    "version": "4.10.11",
+    "version": "4.10.12",
     "description": "Scalable interactive table component",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -41,7 +41,7 @@
     },
     "dependencies": {
         "@blueprintjs/core": "^4.20.2",
-        "@blueprintjs/popover2": "^1.14.10",
+        "@blueprintjs/popover2": "^1.14.11",
         "classnames": "^2.3.1",
         "prop-types": "^15.7.2",
         "react-innertext": "^1.1.5",
