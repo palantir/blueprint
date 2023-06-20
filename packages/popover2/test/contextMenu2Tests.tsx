@@ -216,7 +216,10 @@ describe("ContextMenu2", () => {
             openCtxMenu(ctxMenu);
         });
 
-        function renderContent() {
+        function renderContent({ mouseEvent, targetOffset }: ContextMenu2ContentProps) {
+            if (mouseEvent === undefined || targetOffset === undefined) {
+                return undefined;
+            }
             return MENU;
         }
 
