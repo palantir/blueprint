@@ -32,8 +32,6 @@ export interface ExampleRenderInfo {
 export interface ExampleMap {
     [componentName: string]: ExampleRenderInfo;
 }
-// eslint-disable-next-line deprecation/deprecation
-export type ExampleMap = IExampleMap;
 
 export class ReactExampleTagRenderer {
     constructor(private examples: ExampleMap) {}
