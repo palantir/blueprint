@@ -31,7 +31,7 @@ const POPOVER2_TARGET = `${NS}-popover2-target`;
 /** @deprecated use { PopoverProps } from @blueprintjs/core instead */
 export interface Popover2Props<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
     extends PopoverProps<TProps> {
-    ref?: React.Ref<Popover<TProps>>;
+    ref?: React.Ref<Popover2<TProps>>;
 }
 
 /** @deprecated use { Popover } from @blueprintjs/core instead */
@@ -49,7 +49,7 @@ export class Popover2<
             <Popover
                 className={classNames(POPOVER2_TARGET, className)}
                 popoverClassName={classNames(POPOVER2, popoverClassName)}
-                ref={ref === undefined ? this.ref : mergeRefs(ref, this.ref)}
+                ref={ref === undefined ? this.ref : mergeRefs(ref as React.Ref<Popover<T>>, this.ref)}
                 {...props}
             />
         );
