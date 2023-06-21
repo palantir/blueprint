@@ -57,8 +57,6 @@ export {
     /** @deprecated import from @blueprintjs/core instead */
     PopoverInteractionKind as Popover2InteractionKind,
     /** @deprecated import from @blueprintjs/core instead */
-    PopoverProps as Popover2Props,
-    /** @deprecated import from @blueprintjs/core instead */
     PopoverSharedProps as Popover2SharedProps,
     /** @deprecated import from @blueprintjs/core instead */
     PopoverTargetProps as Popover2TargetProps,
@@ -92,4 +90,4 @@ export {
 } from "@blueprintjs/core";
 
 export { Classes } from "./classes";
-export { Popover2 } from "./popover2";
+export { Popover2, Popover2Props } from "./popover2";

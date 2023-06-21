@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, DefaultPopoverTargetHTMLProps, Popover, PopoverProps } from "@blueprintjs/core";
+import { Classes, DefaultPopoverTargetHTMLProps, mergeRefs, Popover, PopoverProps } from "@blueprintjs/core";
 
 // Legacy classes from @blueprintjs/popover2 v1.x. Note that these are distinct from the `Classes` aliases in
 // "./classes.ts" - those strings will continue to work with Popover in Blueprint v5.x, while these values are
@@ -26,12 +28,20 @@ const NS = Classes.getClassNamespace();
 const POPOVER2 = `${NS}-popover2`;
 const POPOVER2_TARGET = `${NS}-popover2-target`;
 
+/** @deprecated use { PopoverProps } from @blueprintjs/core instead */
+export interface Popover2Props<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
+    extends PopoverProps<TProps> {
+    ref?: React.Ref<Popover<TProps>>;
+}
+
 /** @deprecated use { Popover } from @blueprintjs/core instead */
 export class Popover2<
     T extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps,
-> extends React.PureComponent<PopoverProps<T>> {
+> extends React.PureComponent<Popover2Props<T>> {
+    private ref = React.createRef<Popover<T>>();
+
     public render() {
-        const { className, popoverClassName, ...props } = this.props;
+        const { className, popoverClassName, ref, ...props } = this.props;
         // Inject two classes commonly referenced in CSS selectors in user code which was compatible with
         // @blueprintjs/popover2 v1.x. Users should ideally migrate to the "-popover-" classes instead, but we want
         // to allow some of their custom styles to continue working when upgrading from Blueprint v4 -> v5.
@@ -39,8 +49,12 @@ export class Popover2<
             <Popover
                 className={classNames(POPOVER2_TARGET, className)}
                 popoverClassName={classNames(POPOVER2, popoverClassName)}
+                ref={ref === undefined ? this.ref : mergeRefs(ref, this.ref)}
                 {...props}
             />
         );
     }
+
+    // Add support for the one public instance method available on the popover component
+    public reposition = () => this.ref.current?.reposition();
 }
