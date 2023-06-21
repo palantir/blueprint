@@ -45,10 +45,14 @@ export class MenuDivider extends React.Component<MenuDividerProps> {
 
     public render() {
         const { className, title, titleId } = this.props;
+        const hasTitle = title !== null;
 
         return (
-            <li className={classNames(Classes.MENU_HEADER, className)} role="separator">
-                {title !== null && <H6 id={titleId}>{title}</H6>}
+            <li
+                className={classNames(hasTitle ? Classes.MENU_HEADER : Classes.MENU_DIVIDER, className)}
+                role="separator"
+            >
+                {hasTitle && <H6 id={titleId}>{title}</H6>}
             </li>
         );
     }
