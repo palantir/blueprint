@@ -19,7 +19,9 @@ import * as React from "react";
  * Interface used for generated icon components which already have their name and path defined
  * (through the rendered Handlebars template).
  */
-export interface SVGIconProps extends React.RefAttributes<any> {
+export interface SVGIconProps
+    extends React.RefAttributes<any>,
+        Omit<React.DOMAttributes<HTMLElement | SVGSVGElement>, "children" | "dangerouslySetInnerHTML"> {
     /** A space-delimited list of class names to pass along to the SVG element. */
     className?: string;
 
