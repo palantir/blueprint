@@ -45,7 +45,6 @@
     "dependencies": {
         "@blueprintjs/colors": "^4.1.22",
         "@blueprintjs/icons": "^4.15.0",
-        "@juggle/resize-observer": "^3.4.0",
         "@popperjs/core": "^2.11.7",
         "classnames": "^2.3.1",
         "normalize.css": "^8.0.1",

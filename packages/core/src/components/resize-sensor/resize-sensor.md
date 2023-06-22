@@ -3,7 +3,7 @@
 ResizeSensor observes the DOM and provides a callback for `"resize"` events on a single child element.
 It is a thin wrapper around [`ResizeObserver`][resizeobserver] to provide React bindings.
 
-[resizeobserver]: https://developers.google.com/web/updates/2016/10/resizeobserver
+[resizeobserver]: https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h5 class="@ns-heading">DOM ref required</h5>

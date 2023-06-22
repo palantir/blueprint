@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { ResizeObserver, ResizeObserverEntry } from "@juggle/resize-observer";
 import React, { cloneElement, createRef } from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
@@ -72,7 +71,8 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
 
     private prevElement: HTMLElement | undefined = undefined;
 
-    private observer = new ResizeObserver(entries => this.props.onResize?.(entries));
+    private observer =
+        globalThis.ResizeObserver != null ? new ResizeObserver(entries => this.props.onResize?.(entries)) : undefined;
 
     public render() {
         const onlyChild = React.Children.only(this.props.children);
@@ -94,7 +94,7 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     }
 
     public componentWillUnmount() {
-        this.observer.disconnect();
+        this.observer?.disconnect();
     }
 
     /**
@@ -103,6 +103,10 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
      * re-observe.
      */
     private observeElement(force = false) {
+        if (this.observer == null) {
+            return;
+        }
+
         if (!(this.targetRef.current instanceof Element)) {
             // stop everything if not defined
             this.observer.disconnect();
