@@ -16,7 +16,7 @@
         "escape-html": "^1.0.3",
         "glob": "^8.1.0",
         "marked": "^4.2.5",
-        "semver": "^7.3.8"
+        "semver": "^7.5.2"
     },
     "devDependencies": {
         "@types/marked": "^4.0.8"
