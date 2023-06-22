@@ -89,7 +89,7 @@ install typings for Blueprint's dependencies before you can consume it:
 npm install --save @types/react @types/react-dom
 ```
 
-Blueprint's declaration files require **TypeScript 3.8 or newer** for certain language features (like type-only imports/exports).
+Blueprint's declaration files require **TypeScript 4.0 or newer** for certain language features (like type-only imports/exports).
 We strive to be compatible with most TypeScript versions, but sometimes there are `lib.d.ts` changes which can create
 compiler incompatibilities if you are using a `tsc` version different from the one used to build Blueprint (currently v4.1).
 
