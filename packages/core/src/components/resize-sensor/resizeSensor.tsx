@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-import { ResizeObserver, ResizeObserverEntry } from "@juggle/resize-observer";
 import * as React from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
 
 // backwards-compatible with @blueprintjs/core v4.x
-export { ResizeObserverEntry as ResizeEntry };
+export type ResizeEntry = ResizeObserverEntry;
 
 /** `ResizeSensor` requires a single DOM element child and will error otherwise. */
 export interface ResizeSensorProps {
@@ -75,7 +74,8 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
 
     private prevElement: HTMLElement | undefined = undefined;
 
-    private observer = new ResizeObserver(entries => this.props.onResize?.(entries));
+    private observer =
+        globalThis.ResizeObserver != null ? new ResizeObserver(entries => this.props.onResize?.(entries)) : undefined;
 
     public render(): React.ReactNode {
         const onlyChild = React.Children.only(this.props.children);
@@ -97,7 +97,7 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     }
 
     public componentWillUnmount() {
-        this.observer.disconnect();
+        this.observer?.disconnect();
         this.prevElement = undefined;
     }
 
@@ -107,6 +107,10 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
      * re-observe.
      */
     private observeElement(force = false) {
+        if (this.observer == null) {
+            return;
+        }
+
         if (!(this.targetRef.current instanceof Element)) {
             // stop everything if not defined
             this.observer.disconnect();
