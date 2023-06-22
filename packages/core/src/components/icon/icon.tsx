@@ -24,7 +24,7 @@ import { Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props, removeNo
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
 export { IconName, IconSize };
 
-export type IconHTMLAttributes = Omit<React.HTMLAttributes<HTMLElement>, "children" | "title">;
+export type IconHTMLAttributes = Omit<React.HTMLAttributes<HTMLElement | SVGSVGElement>, "children" | "title">;
 
 export interface IconProps extends IntentProps, Props, SVGIconProps, IconHTMLAttributes {
     /**

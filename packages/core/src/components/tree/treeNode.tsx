@@ -17,6 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { ChevronRight } from "@blueprintjs/icons";
+
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Collapse } from "../collapse/collapse";
 import { Icon } from "../icon/icon";
@@ -100,13 +102,11 @@ export class TreeNode<T = {}> extends React.Component<TreeNodeProps<T>> {
                 Classes.TREE_NODE_CARET,
                 isExpanded ? Classes.TREE_NODE_CARET_OPEN : Classes.TREE_NODE_CARET_CLOSED,
             );
-            const onClick = disabled === true ? undefined : this.handleCaretClick;
             return (
-                <Icon
+                <ChevronRight
                     title={isExpanded ? "Collapse group" : "Expand group"}
                     className={caretClasses}
-                    onClick={onClick}
-                    icon={"chevron-right"}
+                    onClick={disabled === true ? undefined : this.handleCaretClick}
                 />
             );
         }
