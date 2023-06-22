@@ -1,13 +1,9 @@
----
-tag: new
----
-
 @# HotkeysProvider
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h5 class="@ns-heading">
 
-Migrating from [HotkeysTarget](#core/components/hotkeys)?
+Migrating from [HotkeysTarget](#core/legacy/hotkeys-legacy)?
 
 </h5>
 
@@ -28,8 +24,8 @@ by navigating around and triggering the dialog with the <kbd>?</kbd> key.
 
 ```tsx
 import { HotkeysProvider } from "@blueprintjs/core";
-import React from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 ReactDOM.render(
     <HotkeysProvider>
@@ -55,7 +51,7 @@ import {
     HotkeysTarget2
 } from "@blueprintjs/core";
 import React, { useContext, useEffect, useRef } from "react";
-import ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom";
 
 function App() {
     const appHotkeys: HotkeyConfig[] = [
@@ -117,6 +113,6 @@ function PluginSlot(props) {
 }
 ```
 
-@## Props
+@## Props interface
 
 @interface HotkeysProviderProps

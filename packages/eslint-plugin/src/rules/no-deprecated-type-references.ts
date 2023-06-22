@@ -156,8 +156,6 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "ITableProps",
         "ITruncatedFormatProps",
     ],
-
-    "@blueprintjs/timezone": ["ITimezoneItem", "ITimezonePickerProps"],
 };
 
 /**

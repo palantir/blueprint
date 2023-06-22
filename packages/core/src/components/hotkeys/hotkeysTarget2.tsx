@@ -51,7 +51,7 @@ export const HotkeysTarget2 = ({ children, hotkeys, options }: HotkeysTarget2Pro
     React.useEffect(() => {
         if (!isNodeEnv("production")) {
             if (typeof children !== "function" && hotkeys.some(h => !h.global)) {
-                console.error(Errors.HOTKEYS_TARGET2_CHILDREN_LOCAL_HOTKEYS);
+                console.error(Errors.HOTKEYS_TARGET_CHILDREN_LOCAL_HOTKEYS);
             }
         }
     }, [hotkeys]);

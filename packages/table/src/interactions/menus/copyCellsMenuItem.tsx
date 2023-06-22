@@ -23,7 +23,7 @@ import { TABLE_COPY_FAILED } from "../../common/errors";
 import { Regions } from "../../regions";
 import { MenuContext } from "./menuContext";
 
-export interface ICopyCellsMenuItemProps extends MenuItemProps {
+export interface CopyCellsMenuItemProps extends Omit<MenuItemProps, "onCopy"> {
     /**
      * The menu context that launched the menu.
      */
@@ -48,7 +48,7 @@ export interface ICopyCellsMenuItemProps extends MenuItemProps {
     onCopy?: (success: boolean) => void;
 }
 
-export class CopyCellsMenuItem extends React.PureComponent<ICopyCellsMenuItemProps> {
+export class CopyCellsMenuItem extends React.PureComponent<CopyCellsMenuItemProps> {
     public render() {
         const { context, getCellData, onCopy, ...menuItemProps } = this.props;
         return <MenuItem {...menuItemProps} onClick={this.handleClick} />;

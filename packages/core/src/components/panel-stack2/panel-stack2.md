@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Panel stack (v2)
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
@@ -95,7 +91,7 @@ const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
 
 @interface PanelActions
 
-@## Props
+@## Props interface
 
 PanelStack2 can be operated as a controlled or uncontrolled component.
 

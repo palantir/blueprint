@@ -14,30 +14,33 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation */
-
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { Classes } from "../../src/common";
 import { Boundary } from "../../src/common/boundary";
-import { Breadcrumb, IBreadcrumbProps } from "../../src/components/breadcrumbs/breadcrumb";
+import { Breadcrumb, BreadcrumbProps } from "../../src/components/breadcrumbs/breadcrumb";
 import { Breadcrumbs } from "../../src/components/breadcrumbs/breadcrumbs";
 import { MenuItem } from "../../src/components/menu/menuItem";
-import { IOverflowListProps, OverflowList } from "../../src/components/overflow-list/overflowList";
+import { OverflowList, OverflowListProps } from "../../src/components/overflow-list/overflowList";
 
-const ITEMS: IBreadcrumbProps[] = [{ text: "1" }, { text: "2" }, { text: "3" }];
-
-// Note that the `Breadcrumbs` component in these tests is not actually mounted into the document.
-// That means the `OverflowList` will always render all items into the overflow (since it detects
-// its own size as 0), except for the `minVisibleItems` prop. Due to this detail, we use the
-// `minVisibleItems` prop to set the exact number of visible/overflown breadcrumbs.
+const ITEMS: BreadcrumbProps[] = [{ text: "1" }, { text: "2" }, { text: "3" }];
 
 describe("Breadcrumbs", () => {
+    let containerElement: HTMLElement | undefined;
+
+    beforeEach(() => {
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+    });
+    afterEach(() => {
+        containerElement?.remove();
+    });
+
     it("passes through props to the OverflowList", () => {
-        const overflowListProps = mount(
+        const wrapper = mount(
             <Breadcrumbs
                 className="breadcrumbs-class"
                 collapseFrom={Boundary.END}
@@ -45,9 +48,9 @@ describe("Breadcrumbs", () => {
                 minVisibleItems={7}
                 overflowListProps={{ className: "overflow-list-class", tagName: "article" }}
             />,
-        )
-            .find<IOverflowListProps<IBreadcrumbProps>>(OverflowList)
-            .props();
+            { attachTo: containerElement },
+        );
+        const overflowListProps = wrapper.find<OverflowListProps<BreadcrumbProps>>(OverflowList).props();
         assert.equal(overflowListProps.className, `${Classes.BREADCRUMBS} overflow-list-class breadcrumbs-class`);
         assert.equal(overflowListProps.collapseFrom, Boundary.END);
         assert.equal(overflowListProps.minVisibleItems, 7);
@@ -55,53 +58,76 @@ describe("Breadcrumbs", () => {
     });
 
     it("makes the last breadcrumb current", () => {
-        const breadcrumbs = mount(<Breadcrumbs items={ITEMS} minVisibleItems={ITEMS.length} />).find(Breadcrumb);
+        const wrapper = mount(<Breadcrumbs items={ITEMS} minVisibleItems={ITEMS.length} />, {
+            attachTo: containerElement,
+        });
+        const breadcrumbs = wrapper.find(Breadcrumb);
         assert.lengthOf(breadcrumbs, ITEMS.length);
         assert.isFalse(breadcrumbs.get(0).props.current);
         assert.isTrue(breadcrumbs.get(ITEMS.length - 1).props.current);
     });
 
-    it("renders overflow indicator", () => {
-        assert.lengthOf(
-            mount(<Breadcrumbs items={ITEMS} minVisibleItems={1} />).find(`.${Classes.BREADCRUMBS_COLLAPSED}`),
-            1,
+    it("renders overflow/collapsed indicator when items don't fit", () => {
+        const wrapper = mount(
+            // 70px is just enough to show one item
+            <div style={{ width: 70 }}>
+                <Breadcrumbs items={ITEMS} />
+            </div>,
+            { attachTo: containerElement },
         );
+        assert.lengthOf(wrapper.find(`.${Classes.BREADCRUMBS_COLLAPSED}`), 1);
     });
 
     it("renders the correct overflow menu items", () => {
-        const menuItems = mount(
-            <Breadcrumbs items={ITEMS} minVisibleItems={1} popoverProps={{ isOpen: true, usePortal: false }} />,
-        ).find(MenuItem);
+        const wrapper = mount(
+            // 70px is just enough to show one item
+            <div style={{ width: 70 }}>
+                <Breadcrumbs items={ITEMS} popoverProps={{ isOpen: true, usePortal: false }} />
+            </div>,
+            { attachTo: containerElement },
+        );
+        const menuItems = wrapper.find(MenuItem);
         assert.lengthOf(menuItems, ITEMS.length - 1);
         assert.equal(menuItems.get(0).props.text, "2");
         assert.equal(menuItems.get(1).props.text, "1");
     });
 
     it("renders the correct overflow menu items when collapsing from END", () => {
-        const menuItems = mount(
-            <Breadcrumbs
-                collapseFrom={Boundary.END}
-                items={ITEMS}
-                minVisibleItems={1}
-                popoverProps={{ isOpen: true, usePortal: false }}
-            />,
-        ).find(MenuItem);
+        const wrapper = mount(
+            // 70px is just enough to show one item
+            <div style={{ width: 70 }}>
+                <Breadcrumbs
+                    collapseFrom={Boundary.END}
+                    items={ITEMS}
+                    popoverProps={{ isOpen: true, usePortal: false }}
+                />
+            </div>,
+            { attachTo: containerElement },
+        );
+        const menuItems = wrapper.find(MenuItem);
         assert.lengthOf(menuItems, ITEMS.length - 1);
         assert.equal(menuItems.get(0).props.text, "2");
         assert.equal(menuItems.get(1).props.text, "3");
     });
 
     it("disables menu item when it is not clickable", () => {
-        const menuItems = mount(<Breadcrumbs items={ITEMS} popoverProps={{ isOpen: true, usePortal: false }} />).find(
-            MenuItem,
+        const wrapper = mount(
+            // 10px is too small to show any items
+            <div style={{ width: 10 }}>
+                <Breadcrumbs items={ITEMS} popoverProps={{ isOpen: true, usePortal: false }} />
+            </div>,
+            { attachTo: containerElement },
         );
+        const menuItems = wrapper.find(MenuItem);
         assert.lengthOf(menuItems, ITEMS.length);
         assert.isTrue(menuItems.get(0).props.disabled);
     });
 
     it("calls currentBreadcrumbRenderer (only) for the current breadcrumb", () => {
         const spy = sinon.spy();
-        mount(<Breadcrumbs currentBreadcrumbRenderer={spy} items={ITEMS} minVisibleItems={ITEMS.length} />);
+        mount(<Breadcrumbs currentBreadcrumbRenderer={spy} items={ITEMS} minVisibleItems={ITEMS.length} />, {
+            attachTo: containerElement,
+        });
         assert.isTrue(spy.calledOnce);
         assert.isTrue(spy.calledWith(ITEMS[ITEMS.length - 1]));
     });
@@ -115,6 +141,7 @@ describe("Breadcrumbs", () => {
                 items={ITEMS}
                 minVisibleItems={ITEMS.length}
             />,
+            { attachTo: containerElement },
         );
         assert.equal(spy.callCount, ITEMS.length - 1);
         assert.isTrue(spy.neverCalledWith(ITEMS[ITEMS.length - 1]));
@@ -122,7 +149,9 @@ describe("Breadcrumbs", () => {
 
     it("calls breadcrumbRenderer", () => {
         const spy = sinon.spy();
-        mount(<Breadcrumbs breadcrumbRenderer={spy} items={ITEMS} minVisibleItems={ITEMS.length} />);
+        mount(<Breadcrumbs breadcrumbRenderer={spy} items={ITEMS} minVisibleItems={ITEMS.length} />, {
+            attachTo: containerElement,
+        });
         assert.equal(spy.callCount, ITEMS.length);
     });
 });

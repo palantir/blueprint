@@ -79,37 +79,25 @@ export enum TableLoadingOption {
     ROW_HEADERS = "row-header",
 }
 
-/** @deprecated use StyledRegionGroup */
-export interface IStyledRegionGroup {
+export interface StyledRegionGroup {
     className?: string;
     regions: Region[];
 }
-// eslint-disable-next-line deprecation/deprecation
-export type StyledRegionGroup = IStyledRegionGroup;
 
 /**
  * An _inclusive_ interval of ZERO-indexed cell indices.
- *
- * @deprecated use CellInterval
  */
-export type ICellInterval = [number, number];
-// eslint-disable-next-line deprecation/deprecation
-export type CellInterval = ICellInterval;
+export type CellInterval = [number, number];
 
 /**
  * Small datastructure for storing cell coordinates [row, column]
- *
- * @deprecated use CellCoordinate
  */
-export type ICellCoordinate = [number, number];
-// eslint-disable-next-line deprecation/deprecation
-export type CellCoordinate = ICellCoordinate;
+export type CellCoordinate = [number, number];
 
 /**
  * @see Regions.getRegionCardinality for more about the format of this object.
- * @deprecated use Region
  */
-export interface IRegion {
+export interface Region {
     /**
      * The first and last row indices in the region, inclusive and zero-indexed.
      * If `rows` is `null`, then all rows are understood to be included in the
@@ -124,8 +112,6 @@ export interface IRegion {
      */
     cols?: CellInterval | null;
 }
-// eslint-disable-next-line deprecation/deprecation
-export type Region = IRegion;
 
 /**
  * A fully-defined cells `Region`, with both column and row bounds.

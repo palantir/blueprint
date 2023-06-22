@@ -16,7 +16,7 @@
 // Namespace appended to the beginning of each CSS class: `.#{$ns}-button`.
 // N.B. No quotes around this string value, for Less syntax compatibility. Also, this cannot be overriden
 // (the JS components have this class prefix hard-coded), so it does not have the `!default` modifier.
-$ns: bp4;
+$ns: bp5;
 // Alias for BP users outside this repo
 $bp-ns: $ns;
 

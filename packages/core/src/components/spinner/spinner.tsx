@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import { clamp } from "../../common/utils";
@@ -41,10 +41,7 @@ const MIN_SIZE = 10;
 const STROKE_WIDTH = 4;
 const MIN_STROKE_WIDTH = 16;
 
-// eslint-disable-next-line deprecation/deprecation
-export type SpinnerProps = (ISpinnerProps & React.HTMLAttributes<any>) | (ISpinnerProps & React.SVGAttributes<any>);
-/** @deprecated use SpinnerProps */
-export interface ISpinnerProps extends Props, IntentProps {
+export interface SpinnerProps<T extends HTMLElement = HTMLElement> extends Props, IntentProps, React.HTMLAttributes<T> {
     /**
      * Width and height of the spinner in pixels. The size cannot be less than
      * 10px.
@@ -79,7 +76,7 @@ export interface ISpinnerProps extends Props, IntentProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/spinner
  */
-export class Spinner extends AbstractPureComponent2<SpinnerProps> {
+export class Spinner extends AbstractPureComponent<SpinnerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
 
     public componentDidUpdate(prevProps: SpinnerProps) {

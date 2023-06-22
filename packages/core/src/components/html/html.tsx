@@ -17,27 +17,25 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IElementRefProps } from "../../common";
 import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LABEL, LIST } from "../../common/classes";
 
 function htmlElement<E extends HTMLElement>(
     tagName: keyof JSX.IntrinsicElements,
     tagClassName: string,
-    // eslint-disable-next-line deprecation/deprecation
-): React.FC<React.HTMLProps<E> & IElementRefProps<E> & { children?: React.ReactNode }> {
+): React.FC<React.AllHTMLAttributes<E> & React.RefAttributes<E>> {
     /* eslint-disable-next-line react/display-name */
-    return props => {
-        const { className, elementRef, children, ...htmlProps } = props;
+    return React.forwardRef<E, React.AllHTMLAttributes<E>>((props, ref) => {
+        const { className, children, ...htmlProps } = props;
         return React.createElement(
             tagName,
             {
                 ...htmlProps,
                 className: classNames(tagClassName, className),
-                ref: elementRef,
+                ref,
             },
             children,
         );
-    };
+    });
 }
 
 // the following components are linted by blueprint-html-components because

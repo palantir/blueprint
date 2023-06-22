@@ -20,15 +20,14 @@ import { DISPLAYNAME_PREFIX, Props } from "@blueprintjs/core";
 
 import { CellRenderer, emptyCellRenderer } from "./cell/cell";
 import { ColumnHeaderRenderer } from "./headers/columnHeader";
-import { IColumnNameProps } from "./headers/columnHeaderCell";
+import { ColumnNameProps } from "./headers/columnHeaderCell";
 import { ColumnLoadingOption } from "./regions";
 
-export type ColumnProps = IColumnProps;
-export interface IColumnProps extends IColumnNameProps, Props {
+export interface ColumnProps extends ColumnNameProps, Props {
     /**
      * A unique ID, similar to React's `key`. This is used, for example, to
      * maintain the width of a column between re-ordering and rendering. If no
-     * IDs are provided, widths will be persisted across renders using a
+     * Dsare provided, widths will be persisted across renders using a
      * column's index only. Columns widths can also be persisted outside the
      * `Table` component, then passed in with the `columnWidths` prop.
      */
@@ -52,7 +51,7 @@ export interface IColumnProps extends IColumnNameProps, Props {
 
     /**
      * An instance of `ColumnHeaderRenderer`, a function that takes a column
-     * index and returns a `ColumnHeaderCell2` React element.
+     * index and returns a `ColumnHeaderCell` React element.
      */
     columnHeaderCellRenderer?: ColumnHeaderRenderer;
 }
@@ -62,10 +61,10 @@ export interface IColumnProps extends IColumnNameProps, Props {
  *
  * @see https://blueprintjs.com/docs/#table/api.column
  */
-export class Column extends React.PureComponent<IColumnProps> {
+export class Column extends React.PureComponent<ColumnProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Column`;
 
-    public static defaultProps: IColumnProps = {
+    public static defaultProps: ColumnProps = {
         cellRenderer: emptyCellRenderer,
     };
 }

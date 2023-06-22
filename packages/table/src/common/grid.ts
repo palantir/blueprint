@@ -21,9 +21,9 @@ import * as Classes from "./classes";
 import { Rect } from "./rect";
 import { Utils } from "./utils";
 
-export type ICellMapper<T> = (rowIndex: number, columnIndex: number) => T;
-export type IRowMapper<T> = (rowIndex: number) => T;
-export type IColumnMapper<T> = (columnIndex: number) => T;
+export type CellMapper<T> = (rowIndex: number, columnIndex: number) => T;
+export type RowMapper<T> = (rowIndex: number) => T;
+export type ColumnMapper<T> = (columnIndex: number) => T;
 
 export interface RowIndices {
     rowIndexStart: number;
@@ -209,7 +209,7 @@ export class Grid {
      * in a runtime of `O(log(rows) + log(cols))` plus the `O(irows * icols)`
      * iteration of intersecting cells.
      */
-    public mapCellsInRect<T>(rect: Rect, callback: ICellMapper<T>): T[] {
+    public mapCellsInRect<T>(rect: Rect, callback: CellMapper<T>): T[] {
         const results: T[] = [];
         if (rect == null) {
             return results;
@@ -230,7 +230,7 @@ export class Grid {
      *
      * See Grid.mapCellsInRect for more details.
      */
-    public mapRowsInRect<T>(rect: Rect, callback: IRowMapper<T>): T[] {
+    public mapRowsInRect<T>(rect: Rect, callback: RowMapper<T>): T[] {
         const results: T[] = [];
         if (rect == null) {
             return results;
@@ -248,7 +248,7 @@ export class Grid {
      *
      * See Grid.mapCellsInRect for more details.
      */
-    public mapColumnsInRect<T>(rect: Rect, callback: IColumnMapper<T>): T[] {
+    public mapColumnsInRect<T>(rect: Rect, callback: ColumnMapper<T>): T[] {
         const results: T[] = [];
         if (rect == null) {
             return results;

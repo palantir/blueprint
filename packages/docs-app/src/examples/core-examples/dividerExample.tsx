@@ -19,12 +19,12 @@ import * as React from "react";
 import { Button, ButtonGroup, Divider, H5, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-export interface IDividerExampleState {
+export interface DividerExampleState {
     vertical: boolean;
 }
 
-export class DividerExample extends React.PureComponent<ExampleProps, IDividerExampleState> {
-    public state: IDividerExampleState = { vertical: false };
+export class DividerExample extends React.PureComponent<ExampleProps, DividerExampleState> {
+    public state: DividerExampleState = { vertical: false };
 
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
 

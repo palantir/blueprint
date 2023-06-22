@@ -17,14 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import { clamp } from "../../common/utils";
 
-// eslint-disable-next-line deprecation/deprecation
-export type ProgressBarProps = IProgressBarProps;
-/** @deprecated use ProgressBarProps */
-export interface IProgressBarProps extends Props, IntentProps {
+export interface ProgressBarProps extends Props, IntentProps {
     /**
      * Whether the background should animate.
      *
@@ -52,7 +49,7 @@ export interface IProgressBarProps extends Props, IntentProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/progress-bar
  */
-export class ProgressBar extends AbstractPureComponent2<ProgressBarProps> {
+export class ProgressBar extends AbstractPureComponent<ProgressBarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ProgressBar`;
 
     public render() {

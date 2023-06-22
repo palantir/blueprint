@@ -33,9 +33,6 @@ export type ItemsEqualComparator<T> = (itemA: T, itemB: T) => boolean;
  */
 export type ItemsEqualProp<T> = ItemsEqualComparator<T> | keyof T;
 
-/** @deprecated use ListItemsProps */
-export type IListItemsProps<T> = ListItemsProps<T>;
-
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface ListItemsProps<T> extends Props {
     /**

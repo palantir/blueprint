@@ -11,7 +11,7 @@ The `<Callout>` component is a simple wrapper around the CSS API that provides p
 modifiers and an optional title element. Any additional HTML props will be spread to the
 rendered `<div>` element.
 
-@interface ICalloutProps
+@interface CalloutProps
 
 @## CSS
 

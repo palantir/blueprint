@@ -20,30 +20,27 @@ import * as React from "react";
 import * as Classes from "../common/classes";
 import { ColumnIndices } from "../common/grid";
 import { Utils } from "../common/index";
-import { IClientCoordinates } from "../interactions/dragTypes";
-import { IIndexedResizeCallback } from "../interactions/resizable";
+import { ClientCoordinates } from "../interactions/dragTypes";
+import { IndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
-import { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./columnHeaderCell2";
-import { Header, IHeaderProps } from "./header";
+import { ColumnHeaderCell, ColumnHeaderCellProps } from "./columnHeaderCell";
+import { Header, HeaderProps } from "./header";
 
-/** @deprecated use ColumnHeaderRenderer */
-export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<ColumnHeaderCell2Props> | null;
-// eslint-disable-next-line deprecation/deprecation
-export type ColumnHeaderRenderer = IColumnHeaderRenderer;
+export type ColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<ColumnHeaderCellProps> | null;
 
-export interface IColumnWidths {
+export interface ColumnWidths {
     minColumnWidth: number;
     maxColumnWidth: number;
     defaultColumnWidth: number;
 }
 
-export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, ColumnIndices {
+export interface ColumnHeaderProps extends HeaderProps, ColumnWidths, ColumnIndices {
     /**
      * A ColumnHeaderRenderer that, for each `<Column>`, will delegate to:
      * 1. The `columnHeaderCellRenderer` method from the `<Column>`
-     * 2. A `<ColumnHeaderCell2>` using the `name` prop from the `<Column>`
-     * 3. A `<ColumnHeaderCell2>` with a `name` generated from `Utils.toBase26Alpha`
+     * 2. A `<ColumnHeaderCell>` using the `name` prop from the `<Column>`
+     * 3. A `<ColumnHeaderCell>` with a `name` generated from `Utils.toBase26Alpha`
      */
     cellRenderer: ColumnHeaderRenderer;
 
@@ -56,7 +53,7 @@ export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, ColumnI
     /**
      * A callback invoked when user is done resizing the column
      */
-    onColumnWidthChanged: IIndexedResizeCallback;
+    onColumnWidthChanged: IndexedResizeCallback;
 
     /**
      * Called on component mount.
@@ -64,7 +61,7 @@ export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, ColumnI
     onMount?: (whichHeader: "column" | "row") => void;
 }
 
-export class ColumnHeader extends React.Component<IColumnHeaderProps> {
+export class ColumnHeader extends React.Component<ColumnHeaderProps> {
     public static defaultProps = {
         isReorderable: false,
         isResizable: true,
@@ -77,11 +74,11 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
 
     public render() {
         const {
-            // from IColumnHeaderProps
+            // from ColumnHeaderProps
             cellRenderer: renderHeaderCell,
             onColumnWidthChanged,
 
-            // from IColumnWidths
+            // from ColumnWidths
             minColumnWidth: minSize,
             maxColumnWidth: maxSize,
             defaultColumnWidth,
@@ -90,7 +87,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
             columnIndexStart: indexStart,
             columnIndexEnd: indexEnd,
 
-            // from IHeaderProps
+            // from HeaderProps
             ...spreadableProps
         } = this.props;
 
@@ -165,7 +162,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
         return this.props.grid.getColumnRect(index).width;
     };
 
-    private getDragCoordinate = (clientCoords: IClientCoordinates) => {
+    private getDragCoordinate = (clientCoords: ClientCoordinates) => {
         return clientCoords[0]; // x-coordinate
     };
 
@@ -209,7 +206,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps> {
             width: `${rect.width}px`,
         };
         return (
-            <ColumnHeaderCell2
+            <ColumnHeaderCell
                 className={classNames(extremaClasses)}
                 index={index}
                 key={Classes.columnIndexClass(index)}

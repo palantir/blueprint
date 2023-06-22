@@ -16,20 +16,20 @@
 
 import { Utils } from "@blueprintjs/table/src";
 
-interface IDataRow<T> {
+interface DataRow<T> {
     [key: string]: T;
 }
 
-interface IColumnNameDict<T> {
+interface ColumnNameDict<T> {
     [key: string]: T;
 }
 
-type Data<T> = Array<IDataRow<T>>;
+type Data<T> = Array<DataRow<T>>;
 
 export class DenseGridMutableStore<T> {
     private data: Data<T>;
 
-    private columnNameDict: IColumnNameDict<T>;
+    private columnNameDict: ColumnNameDict<T>;
 
     private orderedColumnKeys: string[];
 
@@ -136,8 +136,8 @@ export class DenseGridMutableStore<T> {
     // Private helpers
     // ===============
 
-    private createRow(): IDataRow<T> {
-        return this.orderedColumnKeys.reduce((agg: IDataRow<T>, columnKey) => {
+    private createRow(): DataRow<T> {
+        return this.orderedColumnKeys.reduce((agg: DataRow<T>, columnKey) => {
             agg[columnKey] = this.DEFAULT_CELL_VALUE;
             return agg;
         }, {});

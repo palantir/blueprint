@@ -20,9 +20,10 @@ import * as React from "react";
 
 import { Classes, Props } from "@blueprintjs/core";
 
+import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 import { NavMenuItem, NavMenuItemProps } from "./navMenuItem";
 
-export interface INavMenuProps extends Props {
+export interface NavMenuProps extends Props {
     activePageId: string;
     activeSectionId: string;
     level: number;
@@ -31,7 +32,7 @@ export interface INavMenuProps extends Props {
     renderNavMenuItem?: (props: NavMenuItemProps) => JSX.Element;
 }
 
-export const NavMenu: React.FC<INavMenuProps> = props => {
+export const NavMenu: React.FunctionComponent<NavMenuProps> = props => {
     const { renderNavMenuItem = NavMenuItem } = props;
     const menu = props.items.map(section => {
         const isActive = props.activeSectionId === section.route;
@@ -59,7 +60,7 @@ export const NavMenu: React.FC<INavMenuProps> = props => {
     const classes = classNames("docs-nav-menu", Classes.LIST_UNSTYLED, props.className);
     return <ul className={classes}>{menu}</ul>;
 };
-NavMenu.displayName = "Docs2.NavMenu";
+NavMenu.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.NavMenu`;
 
 function isParentOfRoute(parent: string, route: string) {
     return route.indexOf(parent + "/") === 0 || route.indexOf(parent + ".") === 0;

@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { AbstractComponent2, DISPLAYNAME_PREFIX, Keys, Menu, Props, Utils } from "@blueprintjs/core";
+import { AbstractComponent, DISPLAYNAME_PREFIX, Menu, Props, Utils } from "@blueprintjs/core";
 
 import {
     CreateNewItem,
@@ -30,10 +30,7 @@ import {
     renderFilteredItems,
 } from "../../common";
 
-// eslint-disable-next-line deprecation/deprecation
-export type QueryListProps<T> = IQueryListProps<T>;
-/** @deprecated use QueryListProps */
-export interface IQueryListProps<T> extends ListItemsProps<T> {
+export interface QueryListProps<T> extends ListItemsProps<T> {
     /**
      * Initial active item, useful if the parent component is controlling its selectedItem but
      * not activeItem.
@@ -73,16 +70,12 @@ export interface IQueryListProps<T> extends ListItemsProps<T> {
     disabled?: boolean;
 }
 
-// eslint-disable-next-line deprecation/deprecation
-export type QueryListRendererProps<T> = IQueryListRendererProps<T>;
 /**
  * An object describing how to render a `QueryList`.
  * A `QueryList` `renderer` receives this object as its sole argument.
- *
- * @deprecated use QueryListRendererProps
  */
-export interface IQueryListRendererProps<T> // Omit `createNewItem`, because it's used strictly for internal tracking.
-    extends Pick<IQueryListState<T>, "activeItem" | "filteredItems" | "query">,
+export interface QueryListRendererProps<T> // Omit `createNewItem`, because it's used strictly for internal tracking.
+    extends Pick<QueryListState<T>, "activeItem" | "filteredItems" | "query">,
         Props {
     /**
      * Selection handler that should be invoked when a new item has been chosen,
@@ -130,7 +123,8 @@ export interface IQueryListRendererProps<T> // Omit `createNewItem`, because it'
     itemList: React.ReactNode;
 }
 
-export interface IQueryListState<T> {
+/** Exported for testing, not part of public API */
+export interface QueryListState<T> {
     /** The currently focused item (for keyboard interactions). */
     activeItem: T | CreateNewItem | null;
 
@@ -154,7 +148,7 @@ export interface IQueryListState<T> {
  *
  * @see https://blueprintjs.com/docs/#select/query-list
  */
-export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryListState<T>> {
+export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 
     public static defaultProps = {
@@ -204,8 +198,8 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
      */
     private isEnterKeyPressed = false;
 
-    public constructor(props: QueryListProps<T>, context?: any) {
-        super(props, context);
+    public constructor(props: QueryListProps<T>) {
+        super(props);
 
         const { query = "" } = props;
         const createNewItem = props.createNewItemFromQuery?.(query);
@@ -525,15 +519,14 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     };
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        // eslint-disable-next-line deprecation/deprecation
-        const { keyCode } = event;
-        if (keyCode === Keys.ARROW_UP || keyCode === Keys.ARROW_DOWN) {
+        const { key } = event;
+        if (key === "ArrowUp" || key === "ArrowDown") {
             event.preventDefault();
-            const nextActiveItem = this.getNextActiveItem(keyCode === Keys.ARROW_UP ? -1 : 1);
+            const nextActiveItem = this.getNextActiveItem(key === "ArrowUp" ? -1 : 1);
             if (nextActiveItem != null) {
                 this.setActiveItem(nextActiveItem);
             }
-        } else if (keyCode === Keys.ENTER) {
+        } else if (key === "Enter") {
             this.isEnterKeyPressed = true;
         }
 
@@ -544,8 +537,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
         const { onKeyUp } = this.props;
         const { activeItem } = this.state;
 
-        // eslint-disable-next-line deprecation/deprecation
-        if (event.keyCode === Keys.ENTER && this.isEnterKeyPressed) {
+        if (event.key === "Enter" && this.isEnterKeyPressed) {
             // We handle ENTER in keyup here to play nice with the Button component's keyboard
             // clicking. Button is commonly used as the only child of Select. If we were to
             // instead process ENTER on keydown, then Button would click itself on keyup and

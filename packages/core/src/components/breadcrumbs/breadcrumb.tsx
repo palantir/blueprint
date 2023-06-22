@@ -17,14 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import * as Classes from "../../common/classes";
-import { ActionProps, LinkProps } from "../../common/props";
+import { ActionProps, Classes, LinkProps } from "../../common";
 import { Icon } from "../icon/icon";
 
-// eslint-disable-next-line deprecation/deprecation
-export type BreadcrumbProps = IBreadcrumbProps;
-/** @deprecated use BreadcrumbProps */
-export interface IBreadcrumbProps extends ActionProps<HTMLAnchorElement>, LinkProps {
+export interface BreadcrumbProps extends ActionProps<HTMLAnchorElement>, LinkProps {
     children?: React.ReactNode;
 
     /** Whether this breadcrumb is the current breadcrumb. */

@@ -86,9 +86,13 @@ export default {
     },
 
     plugins: [
-        // HACKHACK: we should use an alternative to `process` in frontend code
+        // Karma requires process.env to be defined
         new webpack.ProvidePlugin({
             process: "process/browser.js",
+        }),
+
+        new webpack.DefinePlugin({
+            NODE_ENV: JSON.stringify("test"),
         }),
 
         new ForkTsCheckerWebpackPlugin({

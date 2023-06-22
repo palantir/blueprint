@@ -28,7 +28,6 @@ describe("Props", () => {
                 banana: true,
                 cat: true,
                 containerRef: true,
-                elementRef: true,
                 icon: true,
                 intent: true,
                 round: true,
@@ -48,7 +47,6 @@ describe("Props", () => {
             assert.deepEqual(removeNonHTMLProps(props, ["apple", "banana"]), {
                 cat: true,
                 containerRef: true,
-                elementRef: true,
                 icon: true,
                 intent: true,
                 round: true,

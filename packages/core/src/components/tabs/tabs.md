@@ -38,7 +38,7 @@ children are simply rendered in order; interactions are your responsibility.
 Insert a `<Tabs.Expander />` between any two children to right-align all
 subsequent children (or bottom-align when `vertical`).
 
-@interface ITabsProps
+@interface TabsProps
 
 @### Tab
 
@@ -50,7 +50,7 @@ The associated tab `panel` will be visible when the `Tab` is active. Omitting
 `panel` is supported and can be useful when you want the associated panel to
 appear elsewhere in the DOM (by rendering it yourself as needed).
 
-@interface ITabProps
+@interface TabProps
 
 @## CSS
 

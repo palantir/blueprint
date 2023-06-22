@@ -17,16 +17,13 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 import type { DialogStepButtonProps } from "./dialogStepButton";
 
 export type DialogStepId = string | number;
 
-// eslint-disable-next-line deprecation/deprecation
-export type DialogStepProps = IDialogStepProps;
-/** @deprecated use DialogStepProps */
-export interface IDialogStepProps extends Props, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
+export interface DialogStepProps extends Props, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
      * Unique identifier used to identify which step is selected.
      */
@@ -63,7 +60,7 @@ export interface IDialogStepProps extends Props, Omit<HTMLDivProps, "id" | "titl
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog.dialogstep
  */
-export class DialogStep extends AbstractPureComponent2<DialogStepProps> {
+export class DialogStep extends AbstractPureComponent<DialogStepProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DialogStep`;
 
     // this component is never rendered directly; see MultistepDialog#renderDialogStepPanel()

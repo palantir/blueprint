@@ -19,16 +19,13 @@ import * as React from "react";
 
 import { IconName } from "@blueprintjs/icons";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, MaybeElement, Props } from "../../common/props";
 import { TagProps } from "../tag/tag";
 
 export type TabId = string | number;
 
-// eslint-disable-next-line deprecation/deprecation
-export type TabProps = ITabProps;
-/** @deprecated use TabProps */
-export interface ITabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
+export interface TabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
      * Content of tab title, rendered in a list above the active panel.
      * Can also be set via the `title` prop.
@@ -86,7 +83,7 @@ export interface ITabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "o
  *
  * @see https://blueprintjs.com/docs/#core/components/tabs.tab
  */
-export class Tab extends AbstractPureComponent2<TabProps> {
+export class Tab extends AbstractPureComponent<TabProps> {
     public static defaultProps: Partial<TabProps> = {
         disabled: false,
     };

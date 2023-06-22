@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { Suggest2 } from "@blueprintjs/select";
+import { Suggest } from "@blueprintjs/select";
 import {
     areFilmsEqual,
     createFilm,
@@ -92,7 +92,7 @@ export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExa
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <Suggest2<Film>
+                <Suggest<Film>
                     {...flags}
                     createNewItemFromQuery={maybeCreateNewItemFromQuery}
                     createNewItemRenderer={maybeCreateNewItemRenderer}

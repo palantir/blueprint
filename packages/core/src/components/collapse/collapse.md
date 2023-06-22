@@ -46,4 +46,4 @@ export class CollapseExample extends React.Component<{}, CollapseExampleState> {
 }
 ```
 
-@interface ICollapseProps
+@interface CollapseProps

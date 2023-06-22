@@ -463,7 +463,7 @@ export class Corner extends Transformable<Corner> {
     }
 }
 
-export type IRenderableVisitor = (object: any, transform: Matrix) => void;
+export type RenderableVisitor = (object: any, transform: Matrix) => void;
 
 export class SceneModel extends Transformable<SceneModel> {
     public static ISOMETRIC = (() => {
@@ -509,7 +509,7 @@ export class SceneModel extends Transformable<SceneModel> {
         return model;
     }
 
-    public eachRenderable(transform: Matrix, callback: IRenderableVisitor) {
+    public eachRenderable(transform: Matrix, callback: RenderableVisitor) {
         transform = this.xform.copy().multiply(transform);
         for (const child of this.children) {
             if (child instanceof SceneModel) {

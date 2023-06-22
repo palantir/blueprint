@@ -69,7 +69,8 @@ Optional secondary options:
 
 Enforce usage of the `bp-ns` constant over namespaced string literals.
 
-The `@blueprintjs` package exports a `bp-ns` CSS variable which contains the prefix for the current version of Blueprint (`bp3` for Blueprint 3, `bp4` for Blueprint 4, and etc). Using the variable instead of hardcoding the prefix means that your code will still work when new major version of Blueprint is released.
+The `@blueprintjs` package exports a `bp-ns` CSS variable which contains the prefix for the current version of Blueprint (`bp3` for Blueprint 3, `bp4` for Blueprint 4, and etc).
+Using the variable instead of hardcoding the prefix means that your code will still work when new major version of Blueprint is released.
 
 ```json
 {

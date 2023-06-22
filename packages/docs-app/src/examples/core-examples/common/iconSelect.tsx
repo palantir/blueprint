@@ -19,25 +19,25 @@ import * as React from "react";
 
 import { Alignment, Button, Classes, MenuItem } from "@blueprintjs/core";
 import { IconName } from "@blueprintjs/icons";
-import { ItemRenderer, Select2 } from "@blueprintjs/select";
+import { ItemRenderer, Select } from "@blueprintjs/select";
 
 import { getIconNames, IconNameOrNone, NONE } from "./iconNames";
 
 const ICON_NAMES = getIconNames();
 
-export interface IIconSelectProps {
+export interface IconSelectProps {
     disabled?: boolean;
     iconName?: IconName;
     onChange: (iconName?: IconName) => void;
 }
 
-export class IconSelect extends React.PureComponent<IIconSelectProps> {
+export class IconSelect extends React.PureComponent<IconSelectProps> {
     public render() {
         const { disabled, iconName } = this.props;
         return (
             <label className={classNames(Classes.LABEL, { [Classes.DISABLED]: disabled })}>
                 Icon
-                <Select2<IconNameOrNone>
+                <Select<IconNameOrNone>
                     disabled={disabled}
                     items={ICON_NAMES}
                     itemPredicate={this.filterIconName}
@@ -55,7 +55,7 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
                         text={iconName || NONE}
                         rightIcon="caret-down"
                     />
-                </Select2>
+                </Select>
             </label>
         );
     }

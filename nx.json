@@ -83,7 +83,7 @@
             "outputs": ["{projectRoot}/lib/css"]
         },
         "generate-icon-src": {
-            "outputs": ["{projectRoot}/src/generated-icons"]
+            "outputs": ["{projectRoot}/src/generated"]
         }
     }
 }

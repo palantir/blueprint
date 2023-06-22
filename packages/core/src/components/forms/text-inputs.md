@@ -36,7 +36,7 @@ but there is basic support for it using the `asyncControl` prop. Note that the i
 to the end of the input if the speed of text entry (time between change events) is faster than the
 speed of the async update.
 
-@interface InputGroupProps2
+@interface InputGroupProps
 
 @### CSS
 
@@ -77,7 +77,7 @@ Alternatively, you may apply `Classes.INPUT` to a `<textarea>` element.
 
 @css textarea
 
-@interface ITextAreaProps
+@interface TextAreaProps
 
 @## Search field
 

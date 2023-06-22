@@ -1,10 +1,8 @@
-// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-.#{$ns}-context-menu .#{$ns}-popover-target {
-  display: block;
-}
+@import "../../common/variables";
 
-.#{$ns}-context-menu-popover-target {
+.#{$ns}-context-menu-virtual-target {
   position: fixed;
 }

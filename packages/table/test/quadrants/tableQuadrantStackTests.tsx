@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import * as Classes from "../../src/common/classes";
 import { Grid } from "../../src/common/grid";
@@ -134,8 +134,10 @@ describe("TableQuadrantStack", () => {
 
         // measure the scrollbar size for our test environment.
         // we assume this utility works, because it's unit-tested elsewhere.
-        const mainScrollContainer = mainQuadrant.querySelector(`.${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`);
-        const scrollbarSize = ScrollUtils.measureScrollBarThickness(mainScrollContainer as HTMLElement, "vertical");
+        const mainScrollContainer = mainQuadrant.querySelector<HTMLElement>(
+            `.${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`,
+        )!;
+        const scrollbarSize = ScrollUtils.measureScrollBarThickness(mainScrollContainer, "vertical");
 
         const { width: mainWidth, height: mainHeight } = mainQuadrant.getBoundingClientRect();
         expect(mainWidth).to.equal(containerWidth);
@@ -684,9 +686,7 @@ describe("TableQuadrantStack", () => {
 
         function findQuadrantScrollContainer(element: HTMLElement, quadrantType: QuadrantType) {
             const quadrantClass = getQuadrantCssClass(quadrantType);
-            return element.querySelector(
-                `.${quadrantClass} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`,
-            ) as HTMLElement;
+            return element.querySelector<HTMLElement>(`.${quadrantClass} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`)!;
         }
 
         function getQuadrantCssClass(quadrantType: QuadrantType) {
@@ -710,10 +710,10 @@ describe("TableQuadrantStack", () => {
         // this order is clearer than alphabetical order
         // tslint:disable:object-literal-sort-keys
         return {
-            mainQuadrant: htmlElement.querySelector(`.${Classes.TABLE_QUADRANT_MAIN}`) as HTMLElement,
-            leftQuadrant: htmlElement.querySelector(`.${Classes.TABLE_QUADRANT_LEFT}`) as HTMLElement,
-            topQuadrant: htmlElement.querySelector(`.${Classes.TABLE_QUADRANT_TOP}`) as HTMLElement,
-            topLeftQuadrant: htmlElement.querySelector(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`) as HTMLElement,
+            mainQuadrant: htmlElement.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_MAIN}`)!,
+            leftQuadrant: htmlElement.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_LEFT}`)!,
+            topQuadrant: htmlElement.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP}`)!,
+            topLeftQuadrant: htmlElement.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)!,
         };
         // tslint:enable:object-literal-sort-keys
     }

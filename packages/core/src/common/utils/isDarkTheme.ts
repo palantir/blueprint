@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import "../configureDom4";
-
 import * as Classes from "../classes";
 
 export function isDarkTheme(element: Element | Text | null | undefined): boolean {

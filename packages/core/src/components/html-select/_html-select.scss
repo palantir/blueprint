@@ -82,7 +82,7 @@ Styleguide select
     }
 
     option {
-      background-color: $dark-popover-background-color;
+      background-color: $pt-dark-popover-background-color;
       color: $pt-dark-text-color;
     }
 
@@ -102,7 +102,7 @@ Styleguide select
   }
 }
 
-// N.B. this icon implementation is deprecated and will be removed in Blueprint 5.0
+// N.B. this icon implementation is deprecated and will be removed in Blueprint 6.0
 .#{$ns}-select {
   &::after {
     @extend %pt-select-arrow;

@@ -21,19 +21,6 @@ Do not forget to include `table.css` on your page:
 @import "@blueprintjs/table/lib/css/table.css";
 ```
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-
-<h5 class="@ns-heading">Additional CSS required</h5>
-
-__ColumnHeaderCell2__, __JSONFormat2__, and __TruncatedFormat2__ (available since @blueprintjs/table v4.6.0)
-depend on @blueprintjs/popover2 styles, so you must also import this CSS file for those components
-to display properly:
-
-```scss
-@import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
-```
-</div>
-
 ### Features
 
 * High-scale, data-agnostic

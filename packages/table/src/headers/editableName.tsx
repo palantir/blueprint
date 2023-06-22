@@ -21,8 +21,7 @@ import { EditableText, IntentProps, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 
-export type EditableNameProps = IEditableNameProps;
-export interface IEditableNameProps extends IntentProps, Props {
+export interface EditableNameProps extends IntentProps, Props {
     /**
      * The name displayed in the text box. Be sure to update this value when
      * rendering this component after a confirmed change.
@@ -55,7 +54,7 @@ export interface IEditableNameProps extends IntentProps, Props {
     index?: number;
 }
 
-export interface IEditableNameState {
+export interface EditableNameState {
     isEditing?: boolean;
     savedName?: string;
     dirtyName?: string;
@@ -66,8 +65,8 @@ export interface IEditableNameState {
  *
  * @see https://blueprintjs.com/docs/#table/api.editablename
  */
-export class EditableName extends React.PureComponent<IEditableNameProps, IEditableNameState> {
-    public constructor(props: IEditableNameProps) {
+export class EditableName extends React.PureComponent<EditableNameProps, EditableNameState> {
+    public constructor(props: EditableNameProps) {
         super(props);
         this.state = {
             dirtyName: props.name,
@@ -76,7 +75,7 @@ export class EditableName extends React.PureComponent<IEditableNameProps, IEdita
         };
     }
 
-    public componentDidUpdate(prevProps: IEditableNameProps) {
+    public componentDidUpdate(prevProps: EditableNameProps) {
         const { name } = this.props;
         if (name !== prevProps.name) {
             this.setState({ savedName: name, dirtyName: name });

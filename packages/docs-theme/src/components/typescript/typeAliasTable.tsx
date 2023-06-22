@@ -20,34 +20,27 @@ import * as React from "react";
 
 import { Props } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
+import { DocumentationContext } from "../../common/context";
 import { ApiHeader } from "./apiHeader";
 
-export interface ITypeAliasTableProps extends Props {
+export interface TypeAliasTableProps extends Props {
     data: ITsTypeAlias;
 }
 
-export class TypeAliasTable extends React.PureComponent<ITypeAliasTableProps> {
-    public static contextTypes = DocumentationContextTypes;
-
-    public static displayName = "Docs2.TypeAliasTable";
-
-    public declare context: IDocumentationContext;
-
-    public render() {
-        const { data } = this.props;
-        const { renderBlock, renderType } = this.context;
-        const aliases = data.type.split(" | ").map((type, i) => (
-            <div key={i}>
-                {i === 0 ? "=" : "|"} {renderType(type)}
-            </div>
-        ));
-        return (
-            <div className={classNames("docs-modifiers", this.props.className)}>
-                <ApiHeader {...data} />
-                {renderBlock(data.documentation)}
-                <div className="docs-type-alias docs-code">{aliases}</div>
-            </div>
-        );
-    }
-}
+export const TypeAliasTable: React.FC<TypeAliasTableProps> = ({ className, data }) => {
+    const { renderBlock, renderType } = React.useContext(DocumentationContext);
+    const aliases = data.type.split(" | ").map((type, i) => (
+        <div key={i}>
+            {i === 0 ? "=" : "|"} {renderType(type)}
+        </div>
+    ));
+    return (
+        <div className={classNames("docs-modifiers", className)}>
+            <ApiHeader {...data} />
+            {renderBlock(data.documentation!)}
+            <div className="docs-type-alias docs-code">{aliases}</div>
+        </div>
+    );
+};
+TypeAliasTable.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.TypeAliasTable`;

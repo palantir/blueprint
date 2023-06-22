@@ -17,10 +17,10 @@
 import * as React from "react";
 
 import { Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, IBaseExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table2, Utils } from "@blueprintjs/table";
 
-export interface ITableReorderableExampleState {
+export interface TableReorderableExampleState {
     columns?: JSX.Element[];
     data?: any[];
     enableColumnInteractionBar?: boolean;
@@ -34,8 +34,8 @@ const REORDERABLE_TABLE_DATA = [
     ["E", "Eggplant", "Elk", "Eritrea", "El Paso"],
 ].map(([letter, fruit, animal, country, city]) => ({ letter, fruit, animal, country, city }));
 
-export class TableReorderableExample extends React.PureComponent<ExampleProps, ITableReorderableExampleState> {
-    public state: ITableReorderableExampleState = {
+export class TableReorderableExample extends React.PureComponent<ExampleProps, TableReorderableExampleState> {
+    public state: TableReorderableExampleState = {
         columns: [
             // these cellRenderers are only created once and then cloned on updates
             <Column key="1" name="Letter" cellRenderer={this.getCellRenderer("letter")} />,
@@ -52,7 +52,7 @@ export class TableReorderableExample extends React.PureComponent<ExampleProps, I
         this.setState({ enableColumnInteractionBar }),
     );
 
-    public componentDidUpdate(_nextProps: IBaseExampleProps, nextState: ITableReorderableExampleState) {
+    public componentDidUpdate(_nextProps: ExampleProps, nextState: TableReorderableExampleState) {
         const { enableColumnInteractionBar } = this.state;
         if (nextState.enableColumnInteractionBar !== enableColumnInteractionBar) {
             const nextColumns = React.Children.map(this.state.columns, (column: JSX.Element) => {

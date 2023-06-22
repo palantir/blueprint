@@ -30,15 +30,15 @@ import {
     Position,
     ProgressBar,
     Switch,
-    ToasterInstance,
+    Toaster,
     ToasterPosition,
     ToastProps,
 } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
-import { IBlueprintExampleData } from "../../tags/types";
+import { BlueprintExampleData } from "../../tags/types";
 
-type IToastDemo = ToastProps & { button: string };
+type ToastDemo = ToastProps & { button: string };
 
 const POSITIONS = [
     Position.TOP_LEFT,
@@ -49,7 +49,7 @@ const POSITIONS = [
     Position.BOTTOM_RIGHT,
 ];
 
-export class ToastExample extends React.PureComponent<ExampleProps<IBlueprintExampleData>, OverlayToasterProps> {
+export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, OverlayToasterProps> {
     public state: OverlayToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
@@ -57,7 +57,7 @@ export class ToastExample extends React.PureComponent<ExampleProps<IBlueprintExa
         usePortal: true,
     };
 
-    private TOAST_BUILDERS: IToastDemo[] = [
+    private TOAST_BUILDERS: ToastDemo[] = [
         {
             action: {
                 href: "https://www.google.com/search?q=toast&source=lnms&tbm=isch",
@@ -127,10 +127,10 @@ export class ToastExample extends React.PureComponent<ExampleProps<IBlueprintExa
         },
     ];
 
-    private toaster: ToasterInstance;
+    private toaster: Toaster;
 
     private refHandlers = {
-        toaster: (ref: ToasterInstance) => (this.toaster = ref),
+        toaster: (ref: Toaster) => (this.toaster = ref),
     };
 
     private progressToastInterval?: number;
@@ -179,7 +179,8 @@ export class ToastExample extends React.PureComponent<ExampleProps<IBlueprintExa
         );
     }
 
-    private renderToastDemo = (toast: IToastDemo, index: number) => {
+    private renderToastDemo = (toast: ToastDemo, index: number) => {
+        // tslint:disable-next-line:jsx-no-lambda
         return <Button intent={toast.intent} key={index} text={toast.button} onClick={() => this.addToast(toast)} />;
     };
 

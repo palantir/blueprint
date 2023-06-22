@@ -17,12 +17,11 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes, RangeSlider } from "../../src";
-import { ARROW_DOWN } from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
 
 const STEP_SIZE = 20;
@@ -67,8 +66,8 @@ describe("<RangeSlider>", () => {
     it("disabled slider does not respond to key presses", () => {
         const changeSpy = sinon.spy();
         const handles = renderSlider(<RangeSlider disabled={true} onChange={changeSpy} />).find(Handle);
-        handles.first().simulate("keydown", { which: ARROW_DOWN });
-        handles.last().simulate("keydown", { which: ARROW_DOWN });
+        handles.first().simulate("keydown", { key: "ArrowDown" });
+        handles.last().simulate("keydown", { key: "ArrowDown" });
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
     });
 

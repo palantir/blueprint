@@ -16,13 +16,9 @@
 
 import { CellCoordinate, Region, Regions } from "../../regions";
 
-/** @deprecated use `ContextMenuRenderer` */
-export type IContextMenuRenderer = (context: MenuContext) => JSX.Element;
-// eslint-disable-next-line deprecation/deprecation
-export type ContextMenuRenderer = IContextMenuRenderer;
+export type ContextMenuRenderer = (context: MenuContext) => JSX.Element;
 
-/** @deprecated use `MenuContext` */
-export interface IMenuContext {
+export interface MenuContext {
     /**
      * Returns an array of `Region`s that represent the user-intended context
      * of this menu. If the mouse click was on a selection, the array will
@@ -51,10 +47,7 @@ export interface IMenuContext {
      */
     getUniqueCells: () => CellCoordinate[];
 }
-// eslint-disable-next-line deprecation/deprecation
-export type MenuContext = IMenuContext;
 
-// eslint-disable-next-line deprecation/deprecation
 export class MenuContextImpl implements MenuContext {
     private regions: Region[];
 

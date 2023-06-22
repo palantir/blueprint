@@ -156,7 +156,15 @@ export default {
 Once you have this build configuration set up, you can proceed to customize Sass and JS variables:
 
 1. Define the `$ns` Sass variable in your app styles _before_ importing `blueprint.scss`.
-1. When bundling your JS code, set the `BLUEPRINT_NAMESPACE` environment variable to the same value to update the generated `Classes` constants. The easiest way to do this is on the command line: `BLUEPRINT_NAMESPACE="custom" webpack ...args`
+1. When bundling your JS JS code, define the `BLUEPRINT_NAMESPACE` variable to the same value; this will update the generated `Classes` constants. The easiest way to do is with webpack's [DefinePlugin](https://webpack.js.org/plugins/define-plugin/).
+
+```js
+plugins: [
+    new webpack.DefinePlugin({
+        BLUEPRINT_NAMESPACE: "my-custom-namespace",
+    }),
+];
+```
 
 @## Linting
 

@@ -18,11 +18,11 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
+import { Classes, MultiSlider, MultiSliderProps } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 
@@ -352,7 +352,7 @@ describe("<MultiSlider>", () => {
         });
     });
 
-    function renderSlider(joinedProps: IMultiSliderProps & { values?: [number, number, number] } = {}) {
+    function renderSlider(joinedProps: MultiSliderProps & { values?: [number, number, number] } = {}) {
         const { values = [0, 5, 10], ...props } = joinedProps;
         return mount(
             <MultiSlider {...props}>

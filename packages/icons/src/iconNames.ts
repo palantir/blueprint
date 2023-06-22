@@ -19,7 +19,7 @@
 import { pascalCase, snakeCase } from "change-case";
 
 // The two icon sets are identical aside from SVG paths, so we only need to import info for the 16px set
-import { BlueprintIcons_16, BlueprintIcons_16Id as IconName } from "./generated-icons/16px/blueprint-icons-16";
+import { BlueprintIcons_16, BlueprintIcons_16Id as IconName } from "./generated/16px/blueprint-icons-16";
 import type { PascalCase, ScreamingSnakeCase } from "./type-utils";
 
 export type { IconName };

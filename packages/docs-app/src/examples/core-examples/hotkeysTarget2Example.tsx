@@ -21,7 +21,7 @@ import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { PianoKey } from "./audio";
 
-export interface IHotkeysTarget2ExampleState {
+export interface HotkeysTarget2ExampleState {
     audioContext?: AudioContext;
     // pressed state of each key
     keys: boolean[];
@@ -31,8 +31,8 @@ export interface IHotkeysTarget2ExampleState {
  * Similar to UseHotkeysExample, but using a component class API pattern.
  * We may deprecate and remove this in the future if we encourage everyone to switch to hooks.
  */
-export class HotkeysTarget2Example extends React.PureComponent<ExampleProps, IHotkeysTarget2ExampleState> {
-    public state: IHotkeysTarget2ExampleState = {
+export class HotkeysTarget2Example extends React.PureComponent<ExampleProps, HotkeysTarget2ExampleState> {
+    public state: HotkeysTarget2ExampleState = {
         keys: Array.apply(null, Array(24)).map(() => false),
     };
 
@@ -66,168 +66,168 @@ export class HotkeysTarget2Example extends React.PureComponent<ExampleProps, IHo
         },
         {
             combo: "Q",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a C5",
             onKeyDown: this.getKeySetter(0, true),
             onKeyUp: this.getKeySetter(0, false),
         },
         {
             combo: "2",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a C#5",
             onKeyDown: this.getKeySetter(1, true),
             onKeyUp: this.getKeySetter(1, false),
         },
         {
             combo: "W",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a D5",
             onKeyDown: this.getKeySetter(2, true),
             onKeyUp: this.getKeySetter(2, false),
         },
         {
             combo: "3",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a D#5",
             onKeyDown: this.getKeySetter(3, true),
             onKeyUp: this.getKeySetter(3, false),
         },
         {
             combo: "E",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a E5",
             onKeyDown: this.getKeySetter(4, true),
             onKeyUp: this.getKeySetter(4, false),
         },
         {
             combo: "R",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a F5",
             onKeyDown: this.getKeySetter(5, true),
             onKeyUp: this.getKeySetter(5, false),
         },
         {
             combo: "5",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a F#5",
             onKeyDown: this.getKeySetter(6, true),
             onKeyUp: this.getKeySetter(6, false),
         },
         {
             combo: "T",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a G5",
             onKeyDown: this.getKeySetter(7, true),
             onKeyUp: this.getKeySetter(7, false),
         },
         {
             combo: "6",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a G#5",
             onKeyDown: this.getKeySetter(8, true),
             onKeyUp: this.getKeySetter(8, false),
         },
         {
             combo: "Y",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a A5",
             onKeyDown: this.getKeySetter(9, true),
             onKeyUp: this.getKeySetter(9, false),
         },
         {
             combo: "7",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a A#5",
             onKeyDown: this.getKeySetter(10, true),
             onKeyUp: this.getKeySetter(10, false),
         },
         {
             combo: "U",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a B5",
             onKeyDown: this.getKeySetter(11, true),
             onKeyUp: this.getKeySetter(11, false),
         },
         {
             combo: "Z",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a C4",
             onKeyDown: this.getKeySetter(12, true),
             onKeyUp: this.getKeySetter(12, false),
         },
         {
             combo: "S",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a C#4",
             onKeyDown: this.getKeySetter(13, true),
             onKeyUp: this.getKeySetter(13, false),
         },
         {
             combo: "X",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a D4",
             onKeyDown: this.getKeySetter(14, true),
             onKeyUp: this.getKeySetter(14, false),
         },
         {
             combo: "D",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a D#4",
             onKeyDown: this.getKeySetter(15, true),
             onKeyUp: this.getKeySetter(15, false),
         },
         {
             combo: "C",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a E4",
             onKeyDown: this.getKeySetter(16, true),
             onKeyUp: this.getKeySetter(16, false),
         },
         {
             combo: "V",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a F4",
             onKeyDown: this.getKeySetter(17, true),
             onKeyUp: this.getKeySetter(17, false),
         },
         {
             combo: "G",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a F#4",
             onKeyDown: this.getKeySetter(18, true),
             onKeyUp: this.getKeySetter(18, false),
         },
         {
             combo: "B",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a G4",
             onKeyDown: this.getKeySetter(19, true),
             onKeyUp: this.getKeySetter(19, false),
         },
         {
             combo: "H",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a G#4",
             onKeyDown: this.getKeySetter(20, true),
             onKeyUp: this.getKeySetter(20, false),
         },
         {
             combo: "N",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a A4",
             onKeyDown: this.getKeySetter(21, true),
             onKeyUp: this.getKeySetter(21, false),
         },
         {
             combo: "J",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a A#4",
             onKeyDown: this.getKeySetter(22, true),
             onKeyUp: this.getKeySetter(22, false),
         },
         {
             combo: "M",
-            group: "HotkeysTarget2 Example",
+            group: "HotkeysTarget Example",
             label: "Play a B4",
             onKeyDown: this.getKeySetter(23, true),
             onKeyUp: this.getKeySetter(23, false),

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,35 +16,78 @@
 
 /* eslint-disable deprecation/deprecation */
 
-export * as Classes from "./classes";
-export * as Errors from "./errors";
-export { Breadcrumbs2, Breadcrumbs2Props, BreadcrumbProps } from "./breadcrumbs2";
 export {
-    ContextMenu2,
-    ContextMenu2Props,
-    ContextMenu2ChildrenProps,
-    ContextMenu2ContentProps,
-    ContextMenu2RenderProps,
-} from "./contextMenu2";
-export { ContextMenu2Popover, ContextMenu2PopoverProps } from "./contextMenu2Popover";
-export { showContextMenu, hideContextMenu } from "./contextMenu2Singleton";
-export { MenuItem2, MenuItem2Props } from "./menuItem2";
-export {
-    DefaultPopover2TargetHTMLProps,
-    IPopover2SharedProps,
-    IPopover2TargetProps,
-    Popover2SharedProps,
-    Popover2TargetProps,
-    Popover2ClickTargetHandlers,
-    Popover2HoverTargetHandlers,
-    PopperBoundary,
-    PopperModifierOverrides,
-    PopperCustomModifer,
+    /** @deprecated import from @blueprintjs/core instead */
+    BreadcrumbProps,
+    /** @deprecated import from @blueprintjs/core instead */
+    Breadcrumbs as Breadcrumbs2,
+    /** @deprecated import from @blueprintjs/core instead */
+    BreadcrumbsProps as Breadcrumbs2Props,
+
+    /** @deprecated import from @blueprintjs/core instead */
+    ContextMenu as ContextMenu2,
+    /** @deprecated import from @blueprintjs/core instead */
+    ContextMenuChildrenProps as ContextMenu2ChildrenProps,
+    /** @deprecated import from @blueprintjs/core instead */
+    ContextMenuContentProps as ContextMenu2ContentProps,
+    /** @deprecated import from @blueprintjs/core instead */
+    ContextMenuPopover as ContextMenu2Popover,
+    /** @deprecated import from @blueprintjs/core instead */
+    ContextMenuPopoverProps as ContextMenu2PopoverProps,
+    /** @deprecated import from @blueprintjs/core instead */
+    ContextMenuProps as ContextMenu2Props,
+    /** @deprecated import from @blueprintjs/core instead */
+    hideContextMenu,
+    /** @deprecated import from @blueprintjs/core instead */
+    showContextMenu,
+
+    /** @deprecated import from @blueprintjs/core instead */
+    MenuItem as MenuItem2,
+    /** @deprecated import from @blueprintjs/core instead */
+    MenuItemProps as MenuItem2Props,
+
+    /** @deprecated import from @blueprintjs/core instead */
+    DefaultPopoverTargetHTMLProps as DefaultPopover2TargetHTMLProps,
+    /** @deprecated import from @blueprintjs/core instead */
     Placement,
-    PlacementOptions,
+    /** @deprecated import from @blueprintjs/core instead */
+    PopoverClickTargetHandlers as Popover2ClickTargetHandlers,
+    /** @deprecated import from @blueprintjs/core instead */
+    PopoverHoverTargetHandlers as Popover2HoverTargetHandlers,
+    /** @deprecated import from @blueprintjs/core instead */
+    PopoverInteractionKind as Popover2InteractionKind,
+    /** @deprecated import from @blueprintjs/core instead */
+    PopoverSharedProps as Popover2SharedProps,
+    /** @deprecated import from @blueprintjs/core instead */
+    PopoverTargetProps as Popover2TargetProps,
+    /** @deprecated import from @blueprintjs/core instead */
+    PopperBoundary,
+    /**
+     * N.B. this misspelling was present in @blueprintjs/popover2 v4, we'll keep it around for now since it will
+     * be getting migrated to the correct spelling in @blueprintjs/core v5 anyway.
+     *
+     * @deprecated import from @blueprintjs/core instead (with corrected spelling)
+     */
+    PopperCustomModifier as PopperCustomModifer,
+    /** @deprecated import from @blueprintjs/core instead */
+    PopperModifierOverrides,
+    /** @deprecated import from @blueprintjs/core instead */
+    PopperPlacements as PlacementOptions,
+    /** @deprecated import from @blueprintjs/core instead */
+    PopupKind,
+    /** @deprecated import from @blueprintjs/core instead */
     StrictModifierNames,
-} from "./popover2SharedProps";
-export { IPopover2Props, Popover2Props, Popover2, Popover2InteractionKind } from "./popover2";
-export { PopupKind } from "./popupKind";
-export { ResizeSensor2, ResizeSensor2Props } from "./resizeSensor2";
-export { ITooltip2Props, Tooltip2Props, Tooltip2 } from "./tooltip2";
+
+    /** @deprecated import from @blueprintjs/core instead */
+    ResizeSensor as ResizeSensor2,
+    /** @deprecated import from @blueprintjs/core instead */
+    ResizeSensorProps as ResizeSensor2Props,
+
+    /** @deprecated import from @blueprintjs/core instead */
+    Tooltip as Tooltip2,
+    /** @deprecated import from @blueprintjs/core instead */
+    TooltipProps as Tooltip2Props,
+} from "@blueprintjs/core";
+
+export { Classes } from "./classes";
+export { Popover2, Popover2Props } from "./popover2";

@@ -25,16 +25,16 @@ import {
     Button,
     Classes,
     Icon,
-    IMenuItemProps,
-    IMenuProps,
     MenuItem,
+    MenuItemProps,
+    MenuProps,
     Popover,
     PopoverInteractionKind,
     Text,
 } from "../../src";
 
 describe("MenuItem", () => {
-    it("React renders MenuItem", () => {
+    it("basic rendering", () => {
         const wrapper = shallow(<MenuItem icon="graph" text="Graph" />);
         assert.isTrue(wrapper.find(Icon).exists());
         assert.strictEqual(findText(wrapper).text(), "Graph");
@@ -70,9 +70,8 @@ describe("MenuItem", () => {
     });
 
     it("can set roleStructure to change role prop structure to that of a listbox or select item", () => {
-        const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" selected={true} />);
+        const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" />);
         assert.equal(wrapper.find("li").prop("role"), "option");
-        assert.equal(wrapper.find("li").prop("aria-selected"), true);
         assert.equal(wrapper.find("a").prop("role"), undefined);
     });
 
@@ -96,7 +95,6 @@ describe("MenuItem", () => {
                 <MenuItem icon="underline" text="Underline" />
             </MenuItem>,
         );
-        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(wrapper.find(Popover).prop("disabled"));
     });
 
@@ -109,7 +107,7 @@ describe("MenuItem", () => {
         assert.strictEqual(mouseSpy.callCount, 0);
     });
 
-    it("Clicking MenuItem triggers onClick prop", () => {
+    it("clicking MenuItem triggers onClick prop", () => {
         const onClick = spy();
         shallow(<MenuItem text="Graph" onClick={onClick} />)
             .find("a")
@@ -126,7 +124,7 @@ describe("MenuItem", () => {
         assert.isTrue(onClick.calledOnce);
     });
 
-    it("Clicking disabled MenuItem does not trigger onClick prop", () => {
+    it("clicking disabled MenuItem does not trigger onClick prop", () => {
         const onClick = spy();
         shallow(<MenuItem disabled={true} text="Graph" onClick={onClick} />)
             .find("a")
@@ -137,13 +135,11 @@ describe("MenuItem", () => {
     it("shouldDismissPopover=false prevents a clicked MenuItem from closing the Popover automatically", () => {
         const handleClose = spy();
         const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
-        /* eslint-disable deprecation/deprecation */
         const wrapper = mount(
             <Popover content={menu} isOpen={true} onInteraction={handleClose} usePortal={false}>
                 <Button />
             </Popover>,
         );
-        /* eslint-enable deprecation/deprecation */
         wrapper.find(MenuItem).find("a").simulate("click");
         assert.isTrue(handleClose.notCalled);
     });
@@ -168,20 +164,17 @@ describe("MenuItem", () => {
             popoverClassName: "CUSTOM_POPOVER_CLASS_NAME",
         };
         const wrapper = shallow(
-            // eslint-disable-next-line @blueprintjs/no-deprecated-components
             <MenuItem icon="style" text="Style" popoverProps={popoverProps}>
                 <MenuItem text="one" />
                 <MenuItem text="two" />
             </MenuItem>,
         );
-        /* eslint-disable deprecation/deprecation */
         assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
         assert.notStrictEqual(
             wrapper.find(Popover).prop("popoverClassName")!.indexOf(popoverProps.popoverClassName),
             0,
         );
         assert.notStrictEqual(wrapper.find(Popover).prop("content"), popoverProps.content);
-        /* eslint-enable deprecation/deprecation */
     });
 
     it("multiline prop determines if long content is ellipsized", () => {
@@ -208,9 +201,8 @@ describe("MenuItem", () => {
 });
 
 function findSubmenu(wrapper: ShallowWrapper<any, any>) {
-    /* eslint-disable-next-line deprecation/deprecation */
     return wrapper.find(Popover).prop("content") as React.ReactElement<
-        IMenuProps & { children: Array<React.ReactElement<IMenuItemProps>> }
+        MenuProps & { children: Array<React.ReactElement<MenuItemProps>> }
     >;
 }
 

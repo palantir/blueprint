@@ -1,6 +1,9 @@
 #!/usr/bin/env node
+/*
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ */
+
 /**
- * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Asserts that all library packages adhere to the layout spec.
  */
 

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent2, Props } from "@blueprintjs/core";
+import { AbstractComponent, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -46,7 +46,7 @@ export enum QuadrantType {
     TOP_LEFT = "top-left",
 }
 
-export interface ITableQuadrantProps extends Props {
+export interface TableQuadrantProps extends Props {
     /**
      * A callback that receives a `ref` to the quadrant's body-wrapping element. Will need to be
      * provided only for the MAIN quadrant, because that quadrant contains the main table body.
@@ -133,10 +133,10 @@ export interface ITableQuadrantProps extends Props {
     enableColumnHeader?: boolean;
 }
 
-export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
+export class TableQuadrant extends AbstractComponent<TableQuadrantProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
-    public static defaultProps: Partial<ITableQuadrantProps> = {
+    public static defaultProps: Partial<TableQuadrantProps> = {
         enableColumnHeader: true,
         enableRowHeader: true,
     };
@@ -183,7 +183,7 @@ export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
         );
     }
 
-    protected validateProps(nextProps: ITableQuadrantProps) {
+    protected validateProps(nextProps: TableQuadrantProps) {
         const { quadrantType } = nextProps;
         if (nextProps.onScroll != null && quadrantType != null && quadrantType !== QuadrantType.MAIN) {
             console.warn(Errors.QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED);

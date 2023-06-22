@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,25 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to Popover2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import * as React from "react";
 
-import { Button, Popover, Position } from "@blueprintjs/core";
+import { Button, Popover } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "./common/fileMenu";
 
 export class PopoverSizingExample extends React.PureComponent<ExampleProps> {
+    public static displayName = "PopoverSizingExample";
+
     public render() {
         return (
             <Example options={false} {...this.props}>
-                <Popover content={<FileMenu className="docs-popover-sizing-example" />} position={Position.BOTTOM_LEFT}>
-                    <Button>Open...</Button>
-                </Popover>
+                <Popover
+                    content={<FileMenu className="docs-popover-sizing-example" />}
+                    placement="bottom-end"
+                    // tslint:disable-next-line jsx-no-lambda
+                    renderTarget={({ isOpen, ...p }) => <Button {...p} active={isOpen} text="Open..." />}
+                />
             </Example>
         );
     }

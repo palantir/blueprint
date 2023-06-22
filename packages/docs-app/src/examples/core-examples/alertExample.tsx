@@ -16,12 +16,12 @@
 
 import * as React from "react";
 
-import { Alert, Button, H5, Intent, OverlayToaster, Switch, ToasterInstance } from "@blueprintjs/core";
+import { Alert, Button, H5, Intent, OverlayToaster, Switch, Toaster } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-import { IBlueprintExampleData } from "../../tags/types";
+import { BlueprintExampleData } from "../../tags/types";
 
-export interface IAlertExampleState {
+export interface AlertExampleState {
     canEscapeKeyCancel: boolean;
     canOutsideClickCancel: boolean;
     isLoading: boolean;
@@ -30,8 +30,8 @@ export interface IAlertExampleState {
     willLoad: boolean;
 }
 
-export class AlertExample extends React.PureComponent<ExampleProps<IBlueprintExampleData>, IAlertExampleState> {
-    public state: IAlertExampleState = {
+export class AlertExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, AlertExampleState> {
+    public state: AlertExampleState = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,
         isLoading: false,
@@ -40,7 +40,7 @@ export class AlertExample extends React.PureComponent<ExampleProps<IBlueprintExa
         willLoad: false,
     };
 
-    private toaster: ToasterInstance;
+    private toaster: Toaster;
 
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyCancel => this.setState({ canEscapeKeyCancel }));
 

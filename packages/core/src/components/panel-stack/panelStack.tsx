@@ -18,15 +18,15 @@ import classNames from "classnames";
 import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { IProps } from "../../common/props";
+import { Props } from "../../common/props";
 import { IPanel } from "./panelProps";
 import { PanelView } from "./panelView";
 
 /* eslint-disable deprecation/deprecation */
 
-export interface IPanelStackProps extends IProps {
+export interface PanelStackProps extends Props {
     /**
      * The initial panel to show on mount. This panel cannot be removed from the
      * stack and will appear when the stack is empty.
@@ -70,7 +70,7 @@ export interface IPanelStackProps extends IProps {
     stack?: Array<IPanel<any>>;
 }
 
-export interface IPanelStackState {
+export interface PanelStackState {
     /** Whether the stack is currently animating the push or pop of a panel. */
     direction: "push" | "pop";
 
@@ -85,8 +85,8 @@ export interface IPanelStackState {
  * @deprecated use `PanelStack2<T>`
  */
 
-export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelStackState> {
-    public state: IPanelStackState = {
+export class PanelStack extends AbstractPureComponent<PanelStackProps, PanelStackState> {
+    public state: PanelStackState = {
         direction: "push",
         stack:
             this.props.stack != null
@@ -96,7 +96,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
                 : [],
     };
 
-    public componentDidUpdate(prevProps: IPanelStackProps, prevState: IPanelStackState) {
+    public componentDidUpdate(prevProps: PanelStackProps, prevState: PanelStackState) {
         super.componentDidUpdate(prevProps, prevState);
 
         // Always update local stack if stack prop changes
@@ -127,7 +127,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         );
     }
 
-    protected validateProps(props: IPanelStackProps) {
+    protected validateProps(props: PanelStackProps) {
         if (
             (props.initialPanel == null && props.stack == null) ||
             (props.initialPanel != null && props.stack != null)

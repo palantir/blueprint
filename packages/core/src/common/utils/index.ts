@@ -24,9 +24,10 @@ export {
     throttleEvent,
     throttleReactEventCallback,
 } from "./domUtils";
-export * from "./functionUtils";
+export { isFunction } from "./functionUtils";
 export * from "./jsUtils";
 export * from "./reactUtils";
+export { isArrowKey, isKeyboardClick } from "./keyboardUtils";
 export { Extends } from "./typeUtils";
 export { isDarkTheme } from "./isDarkTheme";
 

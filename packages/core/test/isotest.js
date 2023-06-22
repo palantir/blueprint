@@ -16,7 +16,6 @@
 // @ts-check
 
 require("@blueprintjs/test-commons/bootstrap");
-
 const React = require("react");
 
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
@@ -33,6 +32,9 @@ describe("Core isomorphic rendering", () => {
         },
         Breadcrumbs: {
             props: { items: [] },
+        },
+        ContextMenu: {
+            props: { children: React.createElement("div"), content: React.createElement("div") },
         },
         Dialog: {
             props: { isOpen: true, usePortal: false },
@@ -57,9 +59,6 @@ describe("Core isomorphic rendering", () => {
                 title: "Step one",
                 panel: React.createElement("div"),
             }),
-        },
-        KeyCombo: {
-            props: { combo: "?" },
         },
         KeyComboTag: {
             props: { combo: "?" },
@@ -99,9 +98,6 @@ describe("Core isomorphic rendering", () => {
         Tooltip: {
             props: { content: React.createElement("h1", {}, "content") },
             children: requiredChild,
-        },
-        Toaster: {
-            skip: true,
         },
     });
 });

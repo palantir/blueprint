@@ -17,21 +17,17 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { HotkeyConfig } from "../../hooks";
 import { KeyComboTag } from "./keyComboTag";
 
-/** @deprecated */
-export type IHotkeyProps = Props & HotkeyConfig;
-// eslint-disable-next-line deprecation/deprecation
-export type HotkeyProps = IHotkeyProps;
+export type HotkeyProps = Props & HotkeyConfig;
 
 /**
- * Hotkey component.
- *
- * @see https://blueprintjs.com/docs/#core/components/hotkeys
+ * Hotkey component used to display a hotkey in the HotkeysDialog.
+ * Should not be used by consumers directly.
  */
-export class Hotkey extends AbstractPureComponent2<HotkeyProps> {
+export class Hotkey extends AbstractPureComponent<HotkeyProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkey`;
 
     public static defaultProps = {
@@ -56,7 +52,7 @@ export class Hotkey extends AbstractPureComponent2<HotkeyProps> {
 
     protected validateProps(props: HotkeyProps) {
         if (props.global !== true && props.group == null) {
-            console.error("non-global <Hotkey>s must define a group");
+            console.error("non-global Hotkeys must define a group");
         }
     }
 }

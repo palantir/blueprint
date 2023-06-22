@@ -27,7 +27,7 @@ The Menu API includes three React components:
 
 A `Menu` is a `<ul>` container for menu items and dividers.
 
-@interface IMenuProps
+@interface MenuProps
 
 @## Menu item
 
@@ -47,7 +47,7 @@ required `text` prop for `MenuItem` content.
 
 Use `MenuDivider` to separate menu sections. Optionally, add a title to the divider.
 
-@interface IMenuDividerProps
+@interface MenuDividerProps
 
 @## Dropdowns
 
@@ -89,20 +89,6 @@ there is not enough room to the right.
     </MenuItem>
 </Menu>
 ```
-
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h5 class="@ns-heading">
-
-Deprecated prop `popoverProps`: use [MenuItem2](#popover2-package/menu-item2)
-
-</h5>
-
-Usage of `<MenuItem popoverProps={...}>` is **deprecated since @blueprintjs/core v4.7.0**
-in favor of the new MenuItem2 component, which uses Popover2 instead of Popover under the hood.
-If you use customize the layout of submenus using this prop, you should migrate to the new API
-which will become the standard in Blueprint v5.
-
-</div>
 
 @## CSS
 

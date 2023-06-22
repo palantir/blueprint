@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { Cell, Column, ColumnHeaderCell2, Table2 } from "@blueprintjs/table";
+import { Cell, Column, ColumnHeaderCell, Table2 } from "@blueprintjs/table";
 
 // this will obviously get outdated, it's valid only as of August 2021
 const USD_TO_EURO_CONVERSION = 0.85;
@@ -42,7 +42,7 @@ export class TableDollarExample extends React.PureComponent<ExampleProps> {
 
 function renderColumnHeader(index: number) {
     const name = ["Dollars", "Euros"][index]!;
-    return <ColumnHeaderCell2 name={name} index={index} nameRenderer={renderName} />;
+    return <ColumnHeaderCell name={name} index={index} nameRenderer={renderName} />;
 }
 
 function renderName(name: string) {

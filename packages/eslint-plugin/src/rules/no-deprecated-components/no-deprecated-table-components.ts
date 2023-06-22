@@ -5,12 +5,8 @@
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
 export const tableComponentsMigrationMapping = {
-    JSONFormat: "JSONFormat2",
-    TruncatedFormat: "TruncatedFormat2",
     // TODO(@adidahiya): Blueprint v6
-    // ColumnHeaderCell: "ColumnHeaderCell2",
     // EditableCell: "EditableCell2",
-    // RowHeaderCell: "RowHeaderCell2",
     // Table: "Table2",
 };
 

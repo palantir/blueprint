@@ -19,6 +19,7 @@ import * as React from "react";
 
 import { Alignment, AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Duplicate, Refresh } from "@blueprintjs/icons";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
@@ -107,7 +108,7 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
                     </p>
                     <Button
                         className={this.state.wiggling ? "docs-wiggle" : ""}
-                        icon="refresh"
+                        icon={<Refresh />}
                         onClick={this.beginWiggling}
                         small={size === "small"}
                         large={size === "large"}
@@ -121,8 +122,8 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
                         <Code>AnchorButton</Code>
                     </p>
                     <AnchorButton
-                        href="#core/components/button"
-                        icon="duplicate"
+                        href="#core/components/buttons"
+                        icon={<Duplicate />}
                         rightIcon="share"
                         target="_blank"
                         text={iconOnly ? undefined : "Duplicate this page"}

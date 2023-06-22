@@ -30,7 +30,7 @@ This component supports the full range of HTML props.
 <input className={Classes.INPUT} id="input-b" placeholder="Placeholder text" />
 ```
 
-@interface ILabelProps
+@interface LabelProps
 
 @## CSS
 

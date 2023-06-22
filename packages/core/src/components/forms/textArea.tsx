@@ -17,13 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, refHandler, setRef } from "../../common";
+import { AbstractPureComponent, Classes, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type TextAreaProps = ITextAreaProps;
-/** @deprecated use TextAreaProps */
-export interface ITextAreaProps extends IntentProps, Props, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     /**
      * Whether the text area should take up the full width of its container.
      */
@@ -61,7 +58,7 @@ export interface TextAreaState {
  *
  * @see https://blueprintjs.com/docs/#core/components/text-inputs.text-area
  */
-export class TextArea extends AbstractPureComponent2<TextAreaProps, TextAreaState> {
+export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
     public state: TextAreaState = {};

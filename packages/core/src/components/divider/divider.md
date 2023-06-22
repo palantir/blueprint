@@ -10,4 +10,4 @@ block element.
 
 @## Props
 
-@interface IDividerProps
+@interface DividerProps

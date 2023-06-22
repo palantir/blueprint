@@ -26,11 +26,11 @@ import {
     DialogProps,
     H5,
     Switch,
+    Tooltip,
 } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
-import { Tooltip2 } from "@blueprintjs/popover2";
 
-import { IBlueprintExampleData } from "../../tags/types";
+import { BlueprintExampleData } from "../../tags/types";
 
 export interface DialogExampleState {
     autoFocus: boolean;
@@ -40,8 +40,7 @@ export interface DialogExampleState {
     shouldReturnFocusOnClose: boolean;
     usePortal: boolean;
 }
-
-export class DialogExample extends React.PureComponent<ExampleProps<IBlueprintExampleData>, DialogExampleState> {
+export class DialogExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, DialogExampleState> {
     public state: DialogExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,
@@ -145,9 +144,9 @@ function ButtonWithDialog({
     const handleClose = React.useCallback(() => setIsOpen(false), []);
     const footerActions = (
         <>
-            <Tooltip2 content="This button is hooked up to close the dialog.">
+            <Tooltip content="This button is hooked up to close the dialog.">
                 <Button onClick={handleClose}>Close</Button>
-            </Tooltip2>
+            </Tooltip>
             <VisitFoundryWebsiteAnchorButton />
         </>
     );
@@ -194,7 +193,7 @@ function ButtonWithDialog({
 
 function VisitFoundryWebsiteAnchorButton(props: { fill?: boolean }) {
     return (
-        <Tooltip2 content="Opens link in a new page" fill={props.fill}>
+        <Tooltip content="Opens link in a new page" fill={props.fill}>
             <AnchorButton
                 intent="primary"
                 href="https://www.palantir.com/palantir-foundry/"
@@ -204,6 +203,6 @@ function VisitFoundryWebsiteAnchorButton(props: { fill?: boolean }) {
             >
                 Visit the Foundry website
             </AnchorButton>
-        </Tooltip2>
+        </Tooltip>
     );
 }

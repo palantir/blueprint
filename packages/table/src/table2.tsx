@@ -18,7 +18,7 @@ import * as React from "react";
 import innerText from "react-innertext";
 
 import {
-    AbstractComponent2,
+    AbstractComponent,
     Utils as CoreUtils,
     DISPLAYNAME_PREFIX,
     HotkeyConfig,
@@ -31,7 +31,7 @@ import { Column, ColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import * as Errors from "./common/errors";
-import { Grid, ICellMapper } from "./common/grid";
+import { CellMapper, Grid } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
 import { Rect } from "./common/rect";
@@ -39,18 +39,18 @@ import { RenderMode } from "./common/renderMode";
 import { ScrollDirection } from "./common/scrollDirection";
 import { Utils } from "./common/utils";
 import { ColumnHeader } from "./headers/columnHeader";
-import { ColumnHeaderCell2, ColumnHeaderCell2Props } from "./headers/columnHeaderCell2";
+import { ColumnHeaderCell, ColumnHeaderCellProps } from "./headers/columnHeaderCell";
 import { renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { GuideLayer } from "./layers/guides";
 import { RegionLayer, RegionStyler } from "./layers/regions";
-import { Locator } from "./locator";
+import { Locator, LocatorImpl } from "./locator";
 import { QuadrantType } from "./quadrants/tableQuadrant";
 import { TableQuadrantStack } from "./quadrants/tableQuadrantStack";
 import { ColumnLoadingOption, Region, RegionCardinality, Regions, SelectionModes, TableLoadingOption } from "./regions";
 import {
-    IResizeRowsByApproximateHeightOptions,
     resizeRowsByApproximateHeight,
+    ResizeRowsByApproximateHeightOptions,
     resizeRowsByTallestCell,
 } from "./resizeRows";
 import { compareChildren, getHotkeysFromProps, isSelectionModeEnabled } from "./table2Utils";
@@ -74,7 +74,7 @@ export interface Table2Props extends TableProps {
  *
  * @see https://blueprintjs.com/docs/#table/table2
  */
-export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSnapshot> {
+export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table2`;
 
     public static defaultProps: TablePropsDefaults = {
@@ -266,8 +266,8 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
      */
     private didCompletelyMount = false;
 
-    public constructor(props: TablePropsWithDefaults, context?: any) {
-        super(props, context);
+    public constructor(props: TablePropsWithDefaults) {
+        super(props);
 
         const {
             children,
@@ -351,8 +351,8 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
      * Table font styles.
      */
     public resizeRowsByApproximateHeight(
-        getCellText: ICellMapper<string>,
-        options?: IResizeRowsByApproximateHeightOptions,
+        getCellText: CellMapper<string>,
+        options?: ResizeRowsByApproximateHeightOptions,
     ) {
         const rowHeights = resizeRowsByApproximateHeight(
             this.props.numRows!,
@@ -586,7 +586,11 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         this.validateGrid();
 
         if (this.rootTableElement != null && this.scrollContainerElement != null && this.cellContainerElement != null) {
-            this.locator = new Locator(this.rootTableElement, this.scrollContainerElement, this.cellContainerElement);
+            this.locator = new LocatorImpl(
+                this.rootTableElement,
+                this.scrollContainerElement,
+                this.cellContainerElement,
+            );
             this.updateLocator();
             this.updateViewportRect(this.locator.getViewportRect());
             this.resizeSensorDetach = ResizeSensor.attach(this.rootTableElement, () => {
@@ -832,7 +836,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
             }
         }
 
-        const baseProps: ColumnHeaderCell2Props = {
+        const baseProps: ColumnHeaderCellProps = {
             enableColumnInteractionBar: this.props.enableColumnInteractionBar,
             index: columnIndex,
             loading: columnLoading,
@@ -840,9 +844,9 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
         };
 
         if (columnProps.name != null) {
-            return <ColumnHeaderCell2 {...baseProps} />;
+            return <ColumnHeaderCell {...baseProps} />;
         } else {
-            return <ColumnHeaderCell2 {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
+            return <ColumnHeaderCell {...baseProps} name={Utils.toBase26Alpha(columnIndex)} />;
         }
     };
 
@@ -1594,7 +1598,7 @@ export class Table2 extends AbstractComponent2<Table2Props, TableState, TableSna
     /**
      * Normalizes RenderMode.BATCH_ON_UPDATE into RenderMode.{BATCH,NONE}. We do
      * this because there are actually multiple updates required before the
-     * <Table> is considered fully "mounted," and adding that knowledge to child
+     * <Table2> is considered fully "mounted," and adding that knowledge to child
      * components would lead to tight coupling. Thus, keep it simple for them.
      */
     private getNormalizedRenderMode(): RenderMode.BATCH | RenderMode.NONE {

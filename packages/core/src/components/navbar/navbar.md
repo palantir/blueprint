@@ -52,13 +52,13 @@ the full range of HTML `<div>` props.
 </Navbar>
 ```
 
-@interface INavbarProps
+@interface NavbarProps
 
-@interface INavbarGroupProps
+@interface NavbarGroupProps
 
-@interface INavbarHeadingProps
+@interface NavbarHeadingProps
 
-@interface INavbarDividerProps
+@interface NavbarDividerProps
 
 @## CSS
 

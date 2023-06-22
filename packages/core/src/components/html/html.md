@@ -25,7 +25,7 @@ The following elements should be used in this manner:
 | `HTMLTable`  | `table`      | `HTML_TABLE` - see [HTML Table](#core/components/html-table) |
 
 The React components listed above each support the full set of relevant HTML attributes **and an
-optional `elementRef` prop** to access the instance of the HTML element itself
+optional `ref` prop** (via `React.forwardRef`) to access the instance of the HTML element itself
 (not the React component).
 
 @## Nested usage

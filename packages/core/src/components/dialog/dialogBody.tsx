@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { Props } from "../../common/props";
 
 export interface DialogBodyProps extends Props {
@@ -37,7 +37,7 @@ export interface DialogBodyProps extends Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog.dialog-body-props
  */
-export class DialogBody extends AbstractPureComponent2<DialogBodyProps> {
+export class DialogBody extends AbstractPureComponent<DialogBodyProps> {
     public static defaultProps: DialogBodyProps = {
         useOverflowScrollContainer: true,
     };

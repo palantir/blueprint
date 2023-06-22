@@ -21,14 +21,14 @@ import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-th
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface IProgressExampleState {
+export interface ProgressExampleState {
     hasValue: boolean;
     intent?: Intent;
     value: number;
 }
 
-export class ProgressExample extends React.PureComponent<ExampleProps, IProgressExampleState> {
-    public state: IProgressExampleState = {
+export class ProgressExample extends React.PureComponent<ExampleProps, ProgressExampleState> {
+    public state: ProgressExampleState = {
         hasValue: false,
         value: 0.7,
     };

@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to MultiSelect2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
-import { Classes as CoreClasses, Keys, Tag } from "@blueprintjs/core";
-import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
+import { Classes as CoreClasses, Tag } from "@blueprintjs/core";
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
-import { IMultiSelectProps, IMultiSelectState, ItemRendererProps, MultiSelect } from "../src";
+import { ItemRendererProps, MultiSelect, MultiSelectProps } from "../src";
 import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
+import type { MultiSelectState } from "../src/components/multi-select/multiSelect";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<MultiSelect>", () => {
@@ -55,8 +49,15 @@ describe("<MultiSelect>", () => {
         };
     });
 
-    selectComponentSuite<IMultiSelectProps<Film>, IMultiSelectState>(props =>
-        mount(<MultiSelect {...props} popoverProps={{ isOpen: true, usePortal: false }} tagRenderer={renderTag} />),
+    selectComponentSuite<MultiSelectProps<Film>, MultiSelectState>(props =>
+        mount(
+            <MultiSelect<Film>
+                selectedItems={[]}
+                {...props}
+                popoverProps={{ isOpen: true, usePortal: false }}
+                tagRenderer={renderTag}
+            />,
+        ),
     );
 
     it("placeholder can be controlled with placeholder prop", () => {
@@ -81,12 +82,6 @@ describe("<MultiSelect>", () => {
         assert.equal(wrapper.find(Tag).find("strong").length, 1);
     });
 
-    // N.B. this is not good behavior, we shouldn't support this since the component is controlled.
-    // we keep it around for backcompat but expect that nobody actually uses the component this way.
-    it("selectedItems is optional", () => {
-        assert.doesNotThrow(() => multiselect({ selectedItems: undefined }));
-    });
-
     it("only triggers QueryList key up events when focus is on TagInput's <input>", () => {
         const itemSelectSpy = sinon.spy();
         const wrapper = multiselect({
@@ -95,7 +90,7 @@ describe("<MultiSelect>", () => {
         });
 
         const firstTagRemoveButton = wrapper.find(`.${CoreClasses.TAG_REMOVE}`).at(0).getDOMNode();
-        dispatchTestKeyboardEventWithCode(firstTagRemoveButton, "keyup", "Enter", Keys.ENTER);
+        dispatchTestKeyboardEvent(firstTagRemoveButton, "keyup", "Enter");
 
         // checks for the bug in https://github.com/palantir/blueprint/issues/3674
         // where the first item in the dropdown list would get selected upon hitting Enter inside
@@ -113,7 +108,7 @@ describe("<MultiSelect>", () => {
         assert.isTrue(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1));
     });
 
-    function multiselect(props: Partial<IMultiSelectProps<Film>> = {}, query?: string) {
+    function multiselect(props: Partial<MultiSelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
             <MultiSelect<Film> {...defaultProps} {...handlers} {...props}>
                 <article />

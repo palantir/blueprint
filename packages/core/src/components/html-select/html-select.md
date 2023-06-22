@@ -22,7 +22,7 @@ full flexibility or via the `options` prop for simple shorthand.
 
 @## Props interface
 
-@interface IHTMLSelectProps
+@interface HTMLSelectProps
 
 @## CSS
 

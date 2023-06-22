@@ -3,8 +3,6 @@
  */
 
 // Note: using CommonJS syntax here so this can be used in the isomorphic tests, which must run in a server environment.
-require("./polyfill");
-
 const Enzyme = require("enzyme");
 // test against React 15 with REACT=15 env variable.
 // this module is swapped out using webpack aliases in webpack.config.karma.js

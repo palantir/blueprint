@@ -30,9 +30,9 @@ horizontally aligned along the left edge, center, or right edge of its container
 
 There are three ways to use __OverlayToaster__:
 
-1. __Recommended__: use the `OverlayToaster.create()` static method to access a new `ToasterInstance`:
+1. __Recommended__: use the `OverlayToaster.create()` static method to create a new `Toaster` instance:
     ```ts
-    const myToaster: ToasterInstance = OverlayToaster.create({ position: "bottom" });
+    const myToaster: Toaster = OverlayToaster.create({ position: "bottom" });
     myToaster.show({ ...toastOptions });
     ```
 2. Render an `<OverlayToaster>` with `<Toast>` children:
@@ -47,7 +47,7 @@ There are three ways to use __OverlayToaster__:
 3. Use a ref callback or object to access toaster instance methods.
     - Example with ref callback:
     ```ts
-    render(<OverlayToaster ref={(ref: ToasterInstance | null) => ref?.show({ ...toastOptions })} />, targetElement);
+    render(<OverlayToaster ref={(ref: Toaster | null) => ref?.show({ ...toastOptions })} />, targetElement);
     ```
     - Example with ref object (note that React type constraints require us to use the more specific `OverlayToaster` type):
     ```ts
@@ -70,7 +70,7 @@ You can have multiple toasters in a single application, but you must ensure that
 __OverlayToaster__ always disables Overlay's `enforceFocus` behavior (meaning that you're not blocked
 from accessing other parts of the application while a toast is active), and by default also
 disables `autoFocus` (meaning that focus will not switch to a toast when it appears). You can
-enable `autoFocus` for an individual `Toaster` via a prop, if desired.
+enable `autoFocus` for an individual `OverlayToaster` via a prop, if desired.
 
 </div>
 
@@ -79,31 +79,24 @@ enable `autoFocus` for an individual `Toaster` via a prop, if desired.
 
 @## Static usage
 
-__OverlayToaster__ provides the static `create` method that returns a new `ToasterInstance`, rendered into an
+__OverlayToaster__ provides the static `create` method that returns a new `Toaster`, rendered into an
 element attached to `<body>`. A toaster instance has a collection of methods to show and hide toasts in its given container.
 
 ```ts
-OverlayToaster.create(props?: IToasterProps, container = document.body): ToasterInstance
+OverlayOverlayToaster.create(props?: ToasterProps, container = document.body): Toaster
 ```
 
 The toaster will be rendered into a new element appended to the given `container`.
 The `container` determines which element toasts are positioned relative to; the default value of `<body>` allows them to use the entire viewport.
 
-Note that the return type is `ToasterInstance`, which is a minimal interface that exposes only the instance
+Note that the return type is `Toaster`, which is a minimal interface that exposes only the instance
 methods detailed below. It can be thought of as `OverlayToaster` minus the `React.Component` methods,
 because the `OverlayToaster` should not be treated as a normal React component.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h5 class="@ns-heading">React 16 usage</h5>
+Note that `OverlayToaster.create()` will throw an error if invoked inside a component lifecycle method, as
+`ReactDOM.render()` will return `null` resulting in an inaccessible toaster instance.
 
-`OverlayToaster.create()` will throw an error if invoked inside a component lifecycle method in React 16,
-as `ReactDOM.render()` will return `null` resulting in an inaccessible toaster instance. See the second bullet
-point on the [React 16 release notes](https://reactjs.org/blog/2017/09/26/react-v16.0.html#breaking-changes)
-for more information.
-
-</div>
-
-@interface ToasterInstance
+@interface Toaster
 
 @### Example
 
@@ -152,15 +145,15 @@ optionally attach a `ref` handler to access the instance methods, but we strongl
 `ref.show()`.
 
 ```tsx
-import { Button, OverlayToaster, Position, Toast, ToasterInstance } from "@blueprintjs/core";
+import { Button, OverlayToaster, Position, Toast, Toaster } from "@blueprintjs/core";
 import * as React from "react";
 
 class MyComponent extends React.PureComponent {
     public state = { toasts: [ /* ToastProps[] */ ] }
 
-    private toaster: ToasterInstance;
+    private toaster: Toaster;
     private refHandlers = {
-        toaster: (ref: ToasterInstance) => this.toaster = ref,
+        toaster: (ref: Toaster) => this.toaster = ref,
     };
 
     public render() {

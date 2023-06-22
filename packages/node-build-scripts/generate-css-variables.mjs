@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-/**
- * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+/*
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
 // @ts-check

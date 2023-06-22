@@ -17,7 +17,7 @@ The `<HTMLTable>` component provides modifier props to apply styles to an HTML
 `<table>` element. Note that you are responsible for rendering `<thead>` and
 `<tbody>` elements as children.
 
-@interface IHTMLTableProps
+@interface HTMLTableProps
 
 @## CSS
 
