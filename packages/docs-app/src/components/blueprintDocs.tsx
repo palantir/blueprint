@@ -68,9 +68,8 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
 
     public render() {
         const banner = (
-            <Banner href="https://blueprintjs.com/docs/">
-                This is a pre-release version of Blueprint v5.x. Click here to view the docs for the latest stable
-                release (v4.x) &rarr;
+            <Banner href="https://blueprintjs.com/docs/versions/4">
+                Blueprint v5.0 is now in stable release. Still using v4.x? Click here to view the legacy docs &rarr;
             </Banner>
         );
         const footer = (

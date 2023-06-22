@@ -7,7 +7,7 @@ It is optimized for building complex data-dense interfaces for desktop applicati
 @reactDocs Welcome
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-star">
-<h5 class="@ns-heading">Blueprint v5.0 is almost here!</h5>
+<h5 class="@ns-heading">Blueprint v5.0 is now available</h5>
 
 Check out the [migration guides to upgrade from v4.x &rarr;](https://github.com/palantir/blueprint/wiki/Blueprint-5.0)
 
