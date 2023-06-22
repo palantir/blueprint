@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { forwardRef } from "react";
+import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 
@@ -42,7 +42,7 @@ export interface HTMLTableProps
  *
  * @see https://blueprintjs.com/docs/#core/components/html-table
  */
-export const HTMLTable: React.FC<HTMLTableProps> = forwardRef((props, ref) => {
+export const HTMLTable: React.FC<HTMLTableProps> = React.forwardRef((props, ref) => {
     const { bordered, className, compact, interactive, striped, ...htmlProps } = props;
     const classes = classNames(
         Classes.HTML_TABLE,

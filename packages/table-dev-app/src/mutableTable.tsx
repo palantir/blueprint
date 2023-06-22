@@ -343,6 +343,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
         super(props);
         this.stateStore = new LocalStore<MutableTableState>("BP_TABLE_MUTABLE_TABLE_DEV_PREVIEW", true);
         this.state = this.stateStore.getWithDefaults(DEFAULT_STATE);
+        this.resetCellContent();
     }
 
     // React Lifecycle
@@ -372,10 +373,6 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
                 </div>
             </HotkeysProvider>
         );
-    }
-
-    public componentWillMount() {
-        this.resetCellContent();
     }
 
     public componentDidMount() {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { createContext } from "react";
+import * as React from "react";
 
 import { shallowCompareKeys } from "../../common/utils";
 import { HotkeysDialog2, HotkeysDialogProps } from "../../components/hotkeys/hotkeysDialog2";
@@ -54,7 +54,7 @@ const noOpDispatch: React.Dispatch<HotkeysAction> = () => null;
  *
  * For more information, see the [HotkeysProvider documentation](https://blueprintjs.com/docs/#core/context/hotkeys-provider).
  */
-export const HotkeysContext = createContext<HotkeysContextInstance>([initialHotkeysState, noOpDispatch]);
+export const HotkeysContext = React.createContext<HotkeysContextInstance>([initialHotkeysState, noOpDispatch]);
 
 const hotkeysReducer = (state: HotkeysContextState, action: HotkeysAction) => {
     switch (action.type) {

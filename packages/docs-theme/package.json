@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-theme",
-    "version": "4.5.16",
+    "version": "5.0.0-beta.2",
     "description": "Blueprint theme for documentalist",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -8,6 +8,11 @@
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/docs-theme.css",
     "unpkg": "dist/docs-theme.bundle.js",
+    "files": [
+        "dist",
+        "lib",
+        "src"
+    ],
     "sideEffects": [
         "**/*.css"
     ],
@@ -30,9 +35,9 @@
         "verify": "npm-run-all compile -p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/colors": "^4.1.22",
-        "@blueprintjs/core": "^4.18.0",
-        "@blueprintjs/select": "^4.9.14",
+        "@blueprintjs/colors": "^5.0.0-beta.1",
+        "@blueprintjs/core": "^5.0.0-beta.2",
+        "@blueprintjs/select": "^5.0.0-beta.2",
         "@documentalist/client": "^4.0.0",
         "classnames": "^2.3.1",
         "fuzzaldrin-plus": "^0.6.0",
@@ -49,12 +54,12 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^7.1.1",
+        "@blueprintjs/node-build-scripts": "^8.0.0-beta.1",
         "@types/fuzzaldrin-plus": "~0.6.2",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
-        "typescript": "~4.8.4",
+        "typescript": "~4.9.5",
         "webpack-cli": "^5.0.1"
     },
     "repository": {

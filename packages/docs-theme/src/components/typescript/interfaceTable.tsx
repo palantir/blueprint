@@ -24,7 +24,7 @@ import {
     ITsSignature,
 } from "@documentalist/client";
 import classNames from "classnames";
-import React, { useCallback, useContext } from "react";
+import * as React from "react";
 
 import { Classes, Intent, Props, Tag } from "@blueprintjs/core";
 
@@ -45,15 +45,11 @@ export interface InterfaceTableProps extends Props {
 /* eslint-disable @blueprintjs/html-components */
 
 export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data, title }) => {
-    const { renderBlock, renderType } = useContext(DocumentationContext);
+    const { renderBlock, renderType } = React.useContext(DocumentationContext);
 
-    const renderPropRow = useCallback((entry: ITsProperty | ITsMethod) => {
-        const {
-            flags: { isDeprecated, isExternal, isOptional },
-            name,
-            inheritedFrom,
-        } = entry;
-        const { documentation } = isTsProperty(entry) ? entry : entry.signatures[0];
+    const renderPropRow = React.useCallback((entry: ITsProperty | ITsMethod) => {
+        const { flags, name, inheritedFrom } = entry;
+        const { documentation } = isTsProperty(entry) ? entry : entry.signatures[0]!;
 
         // ignore props marked with `@internal` tag (this tag is in contents instead of in flags)
         if (
@@ -65,9 +61,9 @@ export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data,
         }
 
         const classes = classNames("docs-prop-name", {
-            "docs-prop-is-deprecated": isDeprecated === true || typeof isDeprecated === "string",
-            "docs-prop-is-internal": !isExternal,
-            "docs-prop-is-required": !isOptional,
+            "docs-prop-is-deprecated": flags?.isDeprecated === true || typeof flags?.isDeprecated === "string",
+            "docs-prop-is-internal": !flags?.isExternal,
+            "docs-prop-is-required": !flags?.isOptional,
         });
 
         const typeInfo = isTsProperty(entry) ? (
@@ -77,7 +73,7 @@ export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data,
             </>
         ) : (
             <>
-                <strong>{renderType(entry.signatures[0].type)}</strong>
+                <strong>{renderType(entry.signatures[0]!.type)}</strong>
             </>
         );
 
@@ -88,10 +84,10 @@ export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data,
                 </td>
                 <td className="docs-prop-details">
                     <code className="docs-prop-type">{typeInfo}</code>
-                    <div className="docs-prop-description">{renderBlock(documentation)}</div>
+                    <div className="docs-prop-description">{documentation && renderBlock(documentation)}</div>
                     <div className="docs-prop-tags">
-                        {!isOptional && <Tag children="Required" intent={Intent.SUCCESS} minimal={true} />}
-                        <DeprecatedTag isDeprecated={isDeprecated} />
+                        {!flags?.isOptional && <Tag children="Required" intent={Intent.SUCCESS} minimal={true} />}
+                        <DeprecatedTag isDeprecated={flags?.isDeprecated} />
                         {inheritedFrom && (
                             <Tag minimal={true}>
                                 Inherited from <code>{renderType(inheritedFrom)}</code>
@@ -103,7 +99,7 @@ export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data,
         );
     }, []);
 
-    const renderIndexSignature = useCallback((entry?: ITsSignature) => {
+    const renderIndexSignature = React.useCallback((entry?: ITsSignature) => {
         if (entry == null) {
             return null;
         }
@@ -113,11 +109,11 @@ export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data,
         return (
             <tr key={entry.name}>
                 <td className="docs-prop-name">
-                    <code>{renderType(signature)}]</code>
+                    <code>{renderType(signature!)}]</code>
                 </td>
                 <td className="docs-prop-details">
-                    <code className="docs-prop-type">{renderType(returnType)}</code>
-                    <div className="docs-prop-description">{renderBlock(entry.documentation)}</div>
+                    <code className="docs-prop-type">{renderType(returnType!)}</code>
+                    <div className="docs-prop-description">{renderBlock(entry.documentation!)}</div>
                 </td>
             </tr>
         );
@@ -130,7 +126,7 @@ export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data,
     return (
         <div className={classNames("docs-modifiers", className)}>
             <ApiHeader {...data} />
-            {renderBlock(data.documentation)}
+            {renderBlock(data.documentation!)}
             <ModifierTable emptyMessage="This interface is empty." title={title}>
                 {propRows}
                 {renderIndexSignature(data.indexSignature)}

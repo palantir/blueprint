@@ -24,6 +24,9 @@ import { BlueprintDocs } from "./components/blueprintDocs";
 import * as ReactDocs from "./tags/reactDocs";
 import { reactExamples } from "./tags/reactExamples";
 
+// load all icons up front so that they do not experience a flash of unstyled content (but we don't need to block on this promise)
+Icons.loadAll();
+
 const reactDocs = new ReactDocsTagRenderer(ReactDocs as any);
 const reactExample = new ReactExampleTagRenderer(reactExamples);
 
@@ -32,19 +35,6 @@ const tagRenderers = {
     reactDocs: reactDocs.render,
     reactExample: reactExample.render,
 };
-
-// this compiles all the icon modules into this chunk, so async Icon.load() calls don't block later
-Icons.loadAll({
-    loader: async name => {
-        return (
-            await import(
-                /* webpackInclude: /\.js$/ */
-                /* webpackMode: "eager" */
-                `@blueprintjs/icons/lib/esm/generated/components/${name}`
-            )
-        ).default;
-    },
-});
 
 ReactDOM.render(
     <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={true} />,

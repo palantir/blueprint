@@ -53,11 +53,12 @@ export const CONFIG_ALIASES: KeyMap = {
     plus: "+",
     return: "enter",
     win: "meta",
-    // need these direction aliases for backwards-compatibility (but they're also convenient)
+    // need these aliases for backwards-compatibility (but they're also convenient)
     up: "ArrowUp",
     left: "ArrowLeft",
     down: "ArrowDown",
     right: "ArrowRight",
+    space: " ",
 };
 
 export const SHIFT_KEYS: KeyMap = {
@@ -148,8 +149,15 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
         comboParts.push("meta");
     }
 
-    if (e.key !== undefined && !MODIFIER_KEYS.has(e.key)) {
-        comboParts.push(e.key.toLowerCase());
+    if (e.key !== undefined) {
+        if (e.key === " ") {
+            // special case for "space" key, which would otherwise be printed as illegible whitespace
+            comboParts.push("space");
+        } else if (MODIFIER_KEYS.has(e.key)) {
+            // do nothing
+        } else {
+            comboParts.push(e.key.toLowerCase());
+        }
     }
 
     return comboParts.join(" + ");

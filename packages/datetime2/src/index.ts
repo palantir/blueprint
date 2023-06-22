@@ -26,13 +26,19 @@ export {
     /** @deprecated import from @blueprintjs/datetime instead */
     DateInputProps as DateInput2Props,
     /** @deprecated import from @blueprintjs/datetime instead */
+    DateRange,
+    /** @deprecated import from @blueprintjs/datetime instead */
     DateRangeInput as DateRangeInput2,
     /** @deprecated import from @blueprintjs/datetime instead */
     DateRangeInputProps as DateRangeInput2Props,
     /** @deprecated import from @blueprintjs/datetime instead */
+    getTimezoneMetadata,
+    /** @deprecated import from @blueprintjs/datetime instead */
     TimezoneSelect,
     /** @deprecated import from @blueprintjs/datetime instead */
     TimezoneSelectProps,
+    /** @deprecated import from @blueprintjs/datetime instead */
+    TimezoneDisplayFormat,
 } from "@blueprintjs/datetime";
 
 export * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";

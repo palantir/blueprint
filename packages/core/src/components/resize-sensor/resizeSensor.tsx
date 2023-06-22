@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-import React, { cloneElement, createRef } from "react";
+import * as React from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
+
+// backwards-compatible with @blueprintjs/core v4.x
+export { ResizeObserverEntry as ResizeEntry };
 
 /** `ResizeSensor` requires a single DOM element child and will error otherwise. */
 export interface ResizeSensorProps {
@@ -54,7 +57,7 @@ export interface ResizeSensorProps {
      * If you attach a `ref` to the child yourself when rendering it, you must pass the
      * same value here (otherwise, ResizeSensor won't be able to attach its own).
      */
-    targetRef?: React.Ref<any>;
+    targetRef?: React.RefObject<HTMLElement>;
 }
 
 /**
@@ -67,14 +70,14 @@ export interface ResizeSensorProps {
 export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
-    private targetRef = createRef<HTMLElement>();
+    private targetRef = this.props.targetRef ?? React.createRef<HTMLElement>();
 
     private prevElement: HTMLElement | undefined = undefined;
 
     private observer =
         globalThis.ResizeObserver != null ? new ResizeObserver(entries => this.props.onResize?.(entries)) : undefined;
 
-    public render() {
+    public render(): React.ReactNode {
         const onlyChild = React.Children.only(this.props.children);
 
         // if we're provided a ref to the child already, we don't need to attach one ourselves
@@ -82,7 +85,7 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
             return onlyChild;
         }
 
-        return cloneElement(onlyChild, { ref: this.targetRef });
+        return React.cloneElement(onlyChild, { ref: this.targetRef });
     }
 
     public componentDidMount() {
@@ -95,6 +98,7 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
 
     public componentWillUnmount() {
         this.observer?.disconnect();
+        this.prevElement = undefined;
     }
 
     /**

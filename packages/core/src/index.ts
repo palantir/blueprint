@@ -21,8 +21,17 @@ export * from "./context";
 export * from "./hooks";
 
 /* eslint-disable deprecation/deprecation */
+export * from "./deprecatedTypeAliases";
+
 export {
     HotkeysTargetLegacy as HotkeysTarget,
-    HotkeysTargetLegacyComponent as IHotkeysTargetComponent,
+    type HotkeysTargetLegacyComponent as IHotkeysTargetComponent,
 } from "./legacy/hotkeysTargetLegacy";
+export {
+    isHotkeysDialogShowing,
+    setHotkeysDialogProps,
+    showHotkeysDialog,
+    hideHotkeysDialog,
+    hideHotkeysDialogAfterDelay,
+} from "./legacy/hotkeysDialogLegacy";
 export { ContextMenuTargetLegacy, ContextMenuTargetLegacyComponent } from "./legacy/contextMenuTargetLegacy";

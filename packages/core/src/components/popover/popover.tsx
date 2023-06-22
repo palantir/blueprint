@@ -19,15 +19,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import {
-    AbstractPureComponent,
-    Classes,
-    DISPLAYNAME_PREFIX,
-    HTMLDivProps,
-    mergeRefs,
-    refHandler,
-    Utils,
-} from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, HTMLDivProps, refHandler, Utils } from "../../common";
 import * as Errors from "../../common/errors";
 import { Overlay } from "../overlay/overlay";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
@@ -174,17 +166,20 @@ export class Popover<
      * DOM element that contains the popover.
      * When `usePortal={true}`, this element will be portaled outside the usual DOM flow,
      * so this reference can be very useful for testing.
+     *
+     * @public for testing
      */
     public popoverElement: HTMLElement | null = null;
-
-    /** DOM element that contains the target. */
-    public targetElement: HTMLElement | null = null;
 
     /** Popover ref handler */
     private popoverRef: React.Ref<HTMLDivElement> = refHandler(this, "popoverElement", this.props.popoverRef);
 
-    /** Target ref handler */
-    private targetRef: React.Ref<HTMLElement> = el => (this.targetElement = el);
+    /**
+     * Target DOM element ref.
+     *
+     * @public for testing
+     */
+    public targetRef = React.createRef<HTMLElement>();
 
     private cancelOpenTimeout?: () => void;
 
@@ -243,7 +238,7 @@ export class Popover<
 
         return (
             <Manager>
-                <Reference>{this.renderTarget}</Reference>
+                <Reference innerRef={this.targetRef}>{this.renderTarget}</Reference>
                 <Popper
                     innerRef={this.popoverRef}
                     placement={placement ?? positionToPlacement(position)}
@@ -319,7 +314,7 @@ export class Popover<
      */
     public reposition = () => this.popperScheduleUpdate?.();
 
-    private renderTarget = ({ ref: popperChildRef }: ReferenceChildrenProps) => {
+    private renderTarget = ({ ref }: ReferenceChildrenProps) => {
         const { children, className, fill, openOnTargetFocus, renderTarget } = this.props;
         const { isOpen } = this.state;
         const isControlled = this.isControlled();
@@ -329,8 +324,6 @@ export class Popover<
         if (fill) {
             targetTagName = "div";
         }
-
-        const ref = mergeRefs(popperChildRef, this.targetRef);
 
         const targetEventHandlers: PopoverHoverTargetHandlers<T> | PopoverClickTargetHandlers<T> =
             isHoverInteractionKind
@@ -346,8 +339,7 @@ export class Popover<
                       // CLICK needs only one handler
                       onClick: this.handleTargetClick,
                       // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
-                      onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>
-                          Utils.isKeyboardClick(event) && this.handleTargetClick(event),
+                      onKeyDown: this.handleKeyDown,
                   };
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
@@ -412,8 +404,10 @@ export class Popover<
             target = wrappedTarget;
         }
 
+        // N.B. we must attach the ref ('wrapped' with react-popper functionality) to the DOM element here and
+        // let ResizeSensor know about it
         return (
-            <ResizeSensor targetRef={ref} onResize={this.reposition}>
+            <ResizeSensor targetRef={this.targetRef} onResize={this.reposition}>
                 {target}
             </ResizeSensor>
         );
@@ -670,27 +664,45 @@ export class Popover<
     };
 
     private handleOverlayClose = (e?: React.SyntheticEvent<HTMLElement>) => {
-        if (this.targetElement === null || e === undefined) {
+        if (this.targetRef.current == null || e === undefined) {
             return;
         }
 
         const event = (e.nativeEvent ?? e) as Event;
         const eventTarget = (event.composed ? event.composedPath()[0] : event.target) as HTMLElement;
         // if click was in target, target event listener will handle things, so don't close
-        if (!Utils.elementIsOrContains(this.targetElement, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
+        if (!Utils.elementIsOrContains(this.targetRef.current, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
             this.setOpenState(false, e);
         }
     };
 
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+        const isKeyboardClick = Utils.isKeyboardClick(e);
+
+        // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
+        if (isKeyboardClick) {
+            this.handleTargetClick(e);
+        }
+    };
+
     private handleTargetClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-        // ensure click did not originate from within inline popover before closing
-        if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
-            if (this.props.isOpen == null) {
-                this.setState(prevState => ({ isOpen: !prevState.isOpen }));
-            } else {
-                this.setOpenState(!this.props.isOpen, e);
+        // Target element(s) may fire simulated click event upon pressing ENTER/SPACE, which we should ignore
+        // see: https://github.com/palantir/blueprint/issues/5775
+        const shouldIgnoreClick = this.state.isOpen && this.isSimulatedButtonClick(e);
+        if (!shouldIgnoreClick) {
+            // ensure click did not originate from within inline popover before closing
+            if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
+                if (this.props.isOpen == null) {
+                    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+                } else {
+                    this.setOpenState(!this.props.isOpen, e);
+                }
             }
         }
+    };
+
+    private isSimulatedButtonClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        return !e.isTrusted && (e.target as HTMLElement).matches(`.${Classes.BUTTON}`);
     };
 
     // a wrapper around setState({ isOpen }) that will call props.onInteraction instead when in controlled mode.
@@ -716,7 +728,8 @@ export class Popover<
 
     private updateDarkParent() {
         if (this.props.usePortal && this.state.isOpen) {
-            const hasDarkParent = this.targetElement != null && this.targetElement.closest(`.${Classes.DARK}`) != null;
+            const hasDarkParent =
+                this.targetRef.current != null && this.targetRef.current.closest(`.${Classes.DARK}`) != null;
             this.setState({ hasDarkParent });
         }
     }

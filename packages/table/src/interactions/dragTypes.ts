@@ -103,3 +103,34 @@ export interface DragHandler {
      */
     stopPropagation?: boolean;
 }
+
+export interface DraggableChildrenProps {
+    /**
+     * Single child, must be an element and not a string or fragment.
+     */
+    children: JSX.Element;
+
+    /**
+     * You must provide provide this ref so that Draggable can access its child DOM node if:
+     *
+     *  - You are already attaching your own `ref` to the child element
+     *  - The child element is not a native DOM element
+     *  - The child element _does not_ use React.forwardRef to allow refs to pass through to the DOM
+     *
+     * This may look something like:
+     *
+     *  ```tsx
+     *  import * as React from "react";
+     *
+     *  function MyDraggableComponent() {
+     *      const myRef = React.createRef<HTMLElement();
+     *      return (
+     *          <Draggable targetRef={myRef}>
+     *              <div ref={myRef} />
+     *          </Draggable>
+     *      );
+     *  }
+     *  ```
+     */
+    targetRef?: React.RefObject<HTMLElement>;
+}

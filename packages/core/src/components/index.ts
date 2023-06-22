@@ -54,7 +54,7 @@ export { NumericInput, NumericInputProps } from "./forms/numericInput";
 export { RadioGroup, RadioGroupProps } from "./forms/radioGroup";
 export { TextArea, TextAreaProps } from "./forms/textArea";
 export { Blockquote, Code, H1, H2, H3, H4, H5, H6, Label, OL, Pre, UL } from "./html/html";
-export { HTMLSelect, HTMLSelectProps } from "./html-select/htmlSelect";
+export { HTMLSelect, HTMLSelectIconName, HTMLSelectProps } from "./html-select/htmlSelect";
 export { HTMLTable, HTMLTableProps } from "./html-table/htmlTable";
 export * from "./hotkeys";
 export { Icon, IconName, IconProps, IconSize } from "./icon/icon";
@@ -78,6 +78,7 @@ export { Panel, PanelProps } from "./panel-stack2/panelTypes";
 export { PopoverProps, Popover, PopoverInteractionKind } from "./popover/popover";
 export {
     DefaultPopoverTargetHTMLProps,
+    PopoverPosition,
     PopoverSharedProps,
     PopoverTargetProps,
     PopoverClickTargetHandlers,
@@ -90,21 +91,23 @@ export {
     StrictModifierNames,
 } from "./popover/popoverSharedProps";
 export { PopupKind } from "./popover/popupKind";
-export { Portal, PortalProps } from "./portal/portal";
+export { Portal, PortalProps, PortalLegacyContext } from "./portal/portal";
 export { ProgressBar, ProgressBarProps } from "./progress-bar/progressBar";
-export { ResizeSensor, ResizeSensorProps } from "./resize-sensor/resizeSensor";
+export { ResizeEntry, ResizeSensor, ResizeSensorProps } from "./resize-sensor/resizeSensor";
 export { HandleHtmlProps, HandleInteractionKind, HandleProps, HandleType } from "./slider/handleProps";
-export { MultiSlider, MultiSliderProps } from "./slider/multiSlider";
+export { MultiSlider, MultiSliderProps, SliderBaseProps } from "./slider/multiSlider";
 export { NumberRange, RangeSlider, RangeSliderProps } from "./slider/rangeSlider";
 export { Slider, SliderProps } from "./slider/slider";
 export { Spinner, SpinnerProps, SpinnerSize } from "./spinner/spinner";
 export { Tab, TabId, TabProps } from "./tabs/tab";
-export { Tabs, TabsProps } from "./tabs/tabs";
+// eslint-disable-next-line deprecation/deprecation
+export { Tabs, TabsProps, TabsExpander, Expander } from "./tabs/tabs";
 export { Tag, TagProps } from "./tag/tag";
 export { TagInput, TagInputProps, TagInputAddMethod } from "./tag-input/tagInput";
-export { OverlayToaster, OverlayToasterProps } from "./toast/overlayToaster";
+export { OverlayToaster } from "./toast/overlayToaster";
+export type { OverlayToasterProps, ToasterPosition } from "./toast/overlayToasterProps";
 export { Toast, ToastProps } from "./toast/toast";
-export { Toaster, ToastOptions, ToasterPosition } from "./toast/toaster";
+export { Toaster, ToastOptions } from "./toast/toaster";
 export { TooltipProps, Tooltip } from "./tooltip/tooltip";
 export { Tree, TreeProps } from "./tree/tree";
 export { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";

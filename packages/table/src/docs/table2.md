@@ -29,8 +29,7 @@ ReactDOM.render(
 );
 ```
 
-For more information, see the [Popover documentation](#core/components/popover) and
-[hotkeys migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration).
+For more information, see the [hotkeys migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration).
 
 @## EditableCell2
 

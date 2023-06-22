@@ -2,18 +2,18 @@
  * (c) Copyright 2022 Palantir Technologies Inc. All rights reserved.
  */
 
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, HTMLInputProps } from "../../common";
 
 export type Ref = HTMLInputElement;
 
-export const ResizableInput = forwardRef<Ref, HTMLInputProps>(function ResizableInput(props, ref) {
-    const [content, setContent] = useState("");
-    const [width, setWidth] = useState(0);
-    const span = useRef<HTMLSpanElement>(null);
+export const ResizableInput = React.forwardRef<Ref, HTMLInputProps>(function ResizableInput(props, ref) {
+    const [content, setContent] = React.useState("");
+    const [width, setWidth] = React.useState(0);
+    const span = React.useRef<HTMLSpanElement>(null);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (span.current != null) {
             setWidth(span.current.offsetWidth);
         }

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/icons",
-    "version": "4.15.0",
+    "version": "5.0.0-beta.2",
     "description": "Components, fonts, icons, and css files for creating and displaying icons.",
     "main": "lib/cjs/generated/index.js",
     "module": "lib/esm/generated/index.js",
@@ -11,7 +11,8 @@
     "files": [
         "dist",
         "lib",
-        "src"
+        "src",
+        "icons.json"
     ],
     "sideEffects": [
         "**/*.css"
@@ -46,12 +47,18 @@
         "tslib": "~2.5.0"
     },
     "peerDependencies": {
-        "react": "^16.8 || 17",
-        "react-dom": "^16.8 || 17"
+        "@types/react": "^16.14.32 || 17 || 18",
+        "react": "^16.8 || 17 || 18",
+        "react-dom": "^16.8 || 17 || 18"
+    },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^7.1.1",
-        "@blueprintjs/test-commons": "^1.1.16",
+        "@blueprintjs/node-build-scripts": "^8.0.0-beta.1",
+        "@blueprintjs/test-commons": "^2.0.0-beta.1",
         "@types/handlebars": "^4.1.0",
         "enzyme": "^3.11.0",
         "fantasticon": "^1.2.3",
@@ -62,7 +69,7 @@
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
         "svg-parser": "^2.0.4",
-        "typescript": "~4.8.4",
+        "typescript": "~4.9.5",
         "webpack-cli": "^5.0.1"
     },
     "repository": {

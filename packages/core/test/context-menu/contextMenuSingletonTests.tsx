@@ -19,11 +19,12 @@ import * as React from "react";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes, hideContextMenu, Menu, MenuItem, showContextMenu } from "../../src";
+import { Classes, hideContextMenu, Menu, MenuItem, showContextMenu, Utils } from "../../src";
 
-const TEST_MENU_CLASS_NAME = "test-menu";
+// use a unique ID to avoid collisons with other tests
+const MENU_CLASSNAME = Utils.uniqueId("test-menu");
 const MENU = (
-    <Menu className={TEST_MENU_CLASS_NAME}>
+    <Menu className={MENU_CLASSNAME}>
         <MenuItem icon="align-left" text="Align Left" />
         <MenuItem icon="align-center" text="Align Center" />
         <MenuItem icon="align-right" text="Align Right" />
@@ -39,7 +40,7 @@ const DEFAULT_CONTEXT_MENU_POPOVER_PROPS = {
 };
 
 function assertMenuState(isOpen = true) {
-    const ctxMenuElement = document.querySelectorAll<HTMLElement>(`.${TEST_MENU_CLASS_NAME}`);
+    const ctxMenuElement = document.querySelectorAll<HTMLElement>(`.${MENU_CLASSNAME}`);
     if (isOpen) {
         assert.isTrue(ctxMenuElement.length === 1, "Expected menu to be rendered on the page");
         assert.isNotNull(ctxMenuElement[0].closest(`.${Classes.OVERLAY_OPEN}`), "Expected overlay to be open");

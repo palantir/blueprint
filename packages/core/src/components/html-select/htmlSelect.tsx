@@ -15,12 +15,15 @@
  */
 
 import classNames from "classnames";
-import React, { forwardRef } from "react";
+import * as React from "react";
 
-import { DoubleCaretVertical, SVGIconProps } from "@blueprintjs/icons";
+import { CaretDown, DoubleCaretVertical, IconName, SVGIconProps } from "@blueprintjs/icons";
 
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
 import { DISPLAYNAME_PREFIX, OptionProps } from "../../common/props";
+import { Extends } from "../../common/utils";
+
+export type HTMLSelectIconName = Extends<IconName, "double-caret-vertical" | "caret-down">;
 
 export interface HTMLSelectProps
     extends React.RefAttributes<HTMLSelectElement>,
@@ -33,7 +36,16 @@ export interface HTMLSelectProps
     /** Whether this element should fill its container. */
     fill?: boolean;
 
-    /** Props to spread to the icon element. */
+    /**
+     * Name of one of the supported icons for this component to display on the right side of the element.
+     *
+     * @default "double-caret-vertical"
+     */
+    iconName?: HTMLSelectIconName;
+
+    /**
+     * Props to spread to the icon element displayed on the right side of the element.
+     */
     iconProps?: Partial<SVGIconProps>;
 
     /** Whether to use large styles. */
@@ -66,8 +78,20 @@ export interface HTMLSelectProps
  *
  * @see https://blueprintjs.com/docs/#core/components/html-select
  */
-export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => {
-    const { className, children, disabled, fill, iconProps, large, minimal, options = [], value, ...htmlProps } = props;
+export const HTMLSelect: React.FC<HTMLSelectProps> = React.forwardRef((props, ref) => {
+    const {
+        className,
+        children,
+        disabled,
+        fill,
+        iconName = "double-caret-vertical",
+        iconProps,
+        large,
+        minimal,
+        options = [],
+        value,
+        ...htmlProps
+    } = props;
     const classes = classNames(
         HTML_SELECT,
         {
@@ -78,6 +102,14 @@ export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => 
         },
         className,
     );
+
+    const iconTitle = "Open dropdown";
+    const rightIcon =
+        iconName === "double-caret-vertical" ? (
+            <DoubleCaretVertical title={iconTitle} {...iconProps} />
+        ) : (
+            <CaretDown title={iconTitle} {...iconProps} />
+        );
 
     const optionChildren = options.map(option => {
         const optionProps: OptionProps = typeof option === "object" ? option : { value: option };
@@ -90,7 +122,7 @@ export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => 
                 {optionChildren}
                 {children}
             </select>
-            <DoubleCaretVertical title="Open dropdown" {...iconProps} />
+            {rightIcon}
         </div>
     );
 });

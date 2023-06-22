@@ -241,6 +241,10 @@ const SHALLOW_COMPARE_PROP_KEYS_DENYLIST: Array<keyof InternalHeaderProps> = ["f
 export class Header extends React.Component<InternalHeaderProps, HeaderState> {
     protected activationIndex: number | null = null;
 
+    private cellRefs: Map<number, React.RefObject<HTMLElement>> = new Map();
+
+    private reorderHandleRefs: Map<number, React.RefObject<HTMLDivElement>> = new Map();
+
     public constructor(props: InternalHeaderProps) {
         super(props);
         this.state = { hasValidSelection: this.isSelectedRegionsControlledAndNonEmpty(props) };
@@ -347,6 +351,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
             cell.props.className,
         );
 
+        const cellTargetRef = getOrCreateRef(this.cellRefs, index);
         const cellProps: HeaderCellProps = {
             className,
             index,
@@ -354,6 +359,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
             [this.props.headerCellIsReorderablePropName]: isEntireCellTargetReorderable,
             loading: isLoading,
             reorderHandle: this.maybeRenderReorderHandle(index),
+            targetRef: cellTargetRef,
         };
 
         const modifiedHandleSizeChanged = (size: number) => this.props.handleSizeChanged(index, size);
@@ -374,6 +380,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
                 onSelectionEnd={this.handleDragSelectableSelectionEnd}
                 selectedRegions={selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
+                targetRef={cellTargetRef}
             >
                 <Resizable
                     isResizable={this.props.isResizable}
@@ -396,7 +403,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
 
         return this.isReorderHandleEnabled()
             ? baseChildren // reordering will be handled by interacting with the reorder handle
-            : this.wrapInDragReorderable(index, baseChildren, this.isDragReorderableDisabled);
+            : this.wrapInDragReorderable(index, baseChildren, this.isDragReorderableDisabled, cellTargetRef);
     };
 
     private isReorderHandleEnabled() {
@@ -405,11 +412,12 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
     }
 
     private maybeRenderReorderHandle(index: number) {
+        const handleTargetRef = getOrCreateRef(this.reorderHandleRefs, index);
         return !this.isReorderHandleEnabled()
             ? undefined
             : this.wrapInDragReorderable(
                   index,
-                  <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
+                  <div className={Classes.TABLE_REORDER_HANDLE_TARGET} ref={handleTargetRef}>
                       <div
                           className={classNames(Classes.TABLE_REORDER_HANDLE, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT)}
                       >
@@ -417,6 +425,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
                       </div>
                   </div>,
                   false,
+                  handleTargetRef,
               );
     }
 
@@ -428,6 +437,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
         index: number,
         children: JSX.Element,
         disabled: boolean | ((event: MouseEvent) => boolean),
+        targetRef: React.RefObject<HTMLElement>,
     ) {
         return (
             <DragReorderable
@@ -440,6 +450,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
                 onSelection={this.props.onSelection}
                 onFocusedCell={this.props.onFocusedCell}
                 selectedRegions={this.props.selectedRegions}
+                targetRef={targetRef}
                 toRegion={this.props.toRegion}
             >
                 {children}
@@ -502,4 +513,14 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
             !this.isReorderHandleEnabled()
         );
     };
+}
+
+function getOrCreateRef<T>(refMap: Map<number, React.RefObject<T>>, index: number): React.RefObject<T> {
+    if (refMap.has(index)) {
+        return refMap.get(index)!;
+    } else {
+        const newRef = React.createRef<T>();
+        refMap.set(index, newRef);
+        return newRef;
+    }
 }

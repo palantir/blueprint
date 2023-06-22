@@ -15,7 +15,7 @@
  */
 
 import { isTsClass, isTsEnum, isTsInterface, isTsTypeAlias, ITag, ITypescriptPluginData } from "@documentalist/client";
-import React, { useContext } from "react";
+import * as React from "react";
 
 import { Props } from "@blueprintjs/core";
 
@@ -26,7 +26,7 @@ import { InterfaceTable } from "../components/typescript/interfaceTable";
 import { TypeAliasTable } from "../components/typescript/typeAliasTable";
 
 export const TypescriptExample: React.FC<ITag & Props> = ({ className, value }) => {
-    const { getDocsData } = useContext(DocumentationContext);
+    const { getDocsData } = React.useContext(DocumentationContext);
     const { typescript } = getDocsData() as ITypescriptPluginData;
     if (typescript == null || typescript[value] == null) {
         return null;

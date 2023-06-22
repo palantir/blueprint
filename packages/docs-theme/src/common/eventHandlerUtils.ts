@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-export interface KeyEventMap<T = HTMLElement> {
+export type KeyEventMap<T = HTMLElement> = {
     /** Event handler invoked on all events */
     all?: React.KeyboardEventHandler<T>;
 
     /** Event handler invoked on spacebar key press */
     Space?: React.KeyboardEventHandler<T>;
-
+} & {
     /** Map key names to specific event handlers */
     [keyCode: string]: React.KeyboardEventHandler<T>;
-}
+};
 
 export function createKeyEventHandler<T = HTMLElement>(actions: KeyEventMap<T>, preventDefault = false) {
     return (e: React.KeyboardEvent<T>) => {
@@ -33,7 +33,7 @@ export function createKeyEventHandler<T = HTMLElement>(actions: KeyEventMap<T>, 
                 if (preventDefault) {
                     e.preventDefault();
                 }
-                actions[key](e);
+                actions[key]?.(e);
             }
         }
         actions.all?.(e);

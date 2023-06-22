@@ -6,6 +6,10 @@
   margin: ($content-padding * 2) 0;
   text-align: center;
 
+  .blueprint-welcome-card {
+    flex-grow: 1;
+  }
+
   .#{$ns}-heading {
     color: inherit;
     margin: $content-padding 0 0;

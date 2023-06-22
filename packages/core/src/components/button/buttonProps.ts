@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import type { ActionProps, Alignment, MaybeElement } from "../../common";
 import type { IconName } from "../icon/icon";

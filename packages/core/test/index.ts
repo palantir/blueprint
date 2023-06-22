@@ -44,6 +44,7 @@ import "./forms/textAreaTests";
 import "./hotkeys/hotkeyTests";
 import "./hotkeys/hotkeysParserTests";
 import "./hotkeys/keyComboTagTests";
+import "./html/htmlTests";
 import "./html-select/htmlSelectTests";
 import "./icon/iconTests";
 import "./menu/menuItemTests";
@@ -70,6 +71,7 @@ import "./tag/tagTests";
 import "./text/textTests";
 import "./toast/overlayToasterTests";
 import "./toast/toastTests";
+import "./toast/toasterTests";
 import "./tooltip/tooltipTests";
 import "./tree/treeTests";
 

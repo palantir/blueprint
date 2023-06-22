@@ -33,10 +33,13 @@ import {
     PopoverInteractionKind,
     Tooltip,
     TooltipProps,
+    Utils,
 } from "../../src";
 
+// use a unique ID to avoid collisons with other tests
+const MENU_CLASSNAME = Utils.uniqueId("test-menu");
 const MENU = (
-    <Menu>
+    <Menu className={MENU_CLASSNAME}>
         <MenuItem icon="align-left" text="Align Left" />
         <MenuItem icon="align-center" text="Align Center" />
         <MenuItem icon="align-right" text="Align Right" />
@@ -188,6 +191,88 @@ describe("ContextMenu", () => {
                     )}
                 </ContextMenu>,
                 { attachTo: containerElement },
+            );
+        }
+    });
+
+    describe("advanced usage (content render function API)", () => {
+        const ALT_CONTENT_WRAPPER = "alternative-content-wrapper";
+
+        it("renders children and menu content, prevents default context menu handler", done => {
+            const onContextMenu = (e: React.MouseEvent) => {
+                assert.isTrue(e.defaultPrevented);
+                done();
+            };
+            const wrapper = mountTestMenu({ onContextMenu });
+            assert.isTrue(wrapper.find(`.${TARGET_CLASSNAME}`).exists());
+            openCtxMenu(wrapper);
+            assert.isTrue(wrapper.find(`.${MENU_CLASSNAME}`).exists());
+            closeCtxMenu(wrapper);
+        });
+
+        it("triggers native context menu if content function returns undefined", done => {
+            const onContextMenu = (e: React.MouseEvent) => {
+                assert.isFalse(e.defaultPrevented);
+                done();
+            };
+            const wrapper = mountTestMenu({
+                content: () => undefined,
+                onContextMenu,
+            });
+            openCtxMenu(wrapper);
+            closeCtxMenu(wrapper);
+        });
+
+        it("updates menu if content prop value changes", () => {
+            const ctxMenu = mountTestMenu();
+            openCtxMenu(ctxMenu);
+            assert.isTrue(ctxMenu.find(`.${MENU_CLASSNAME}`).exists());
+            assert.isFalse(ctxMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
+            ctxMenu.setProps({ content: renderAlternativeContent });
+            assert.isTrue(ctxMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
+        });
+
+        it("updates menu if content render function return value changes", () => {
+            const testMenu = mount(<TestMenuWithChangingContent useAltContent={false} />, {
+                attachTo: containerElement,
+            });
+            openCtxMenu(testMenu);
+            assert.isTrue(testMenu.find(`.${MENU_CLASSNAME}`).exists());
+            assert.isFalse(testMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
+            testMenu.setProps({ useAltContent: true });
+            assert.isTrue(testMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
+        });
+
+        function renderContent({ mouseEvent, targetOffset }: ContextMenuContentProps) {
+            if (mouseEvent === undefined || targetOffset === undefined) {
+                return undefined;
+            }
+            return MENU;
+        }
+
+        function renderAlternativeContent() {
+            return <div className={ALT_CONTENT_WRAPPER}>{MENU}</div>;
+        }
+
+        function mountTestMenu(props?: Partial<ContextMenuProps>) {
+            return mount(
+                <ContextMenu content={renderContent} popoverProps={{ transitionDuration: 0 }} {...props}>
+                    <div className={TARGET_CLASSNAME} />
+                </ContextMenu>,
+                { attachTo: containerElement },
+            );
+        }
+
+        function TestMenuWithChangingContent({ useAltContent } = { useAltContent: false }) {
+            const content = React.useCallback(
+                (contentProps: ContextMenuContentProps) =>
+                    useAltContent ? renderAlternativeContent() : renderContent(contentProps),
+                [useAltContent],
+            );
+            return (
+                <ContextMenu content={content} popoverProps={{ transitionDuration: 0 }}>
+                    <div className={TARGET_CLASSNAME} />
+                </ContextMenu>
             );
         }
     });

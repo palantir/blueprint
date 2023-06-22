@@ -16,7 +16,7 @@
 
 import { ITsTypeAlias } from "@documentalist/client";
 import classNames from "classnames";
-import React, { useContext } from "react";
+import * as React from "react";
 
 import { Props } from "@blueprintjs/core";
 
@@ -29,7 +29,7 @@ export interface TypeAliasTableProps extends Props {
 }
 
 export const TypeAliasTable: React.FC<TypeAliasTableProps> = ({ className, data }) => {
-    const { renderBlock, renderType } = useContext(DocumentationContext);
+    const { renderBlock, renderType } = React.useContext(DocumentationContext);
     const aliases = data.type.split(" | ").map((type, i) => (
         <div key={i}>
             {i === 0 ? "=" : "|"} {renderType(type)}
@@ -38,7 +38,7 @@ export const TypeAliasTable: React.FC<TypeAliasTableProps> = ({ className, data 
     return (
         <div className={classNames("docs-modifiers", className)}>
             <ApiHeader {...data} />
-            {renderBlock(data.documentation)}
+            {renderBlock(data.documentation!)}
             <div className="docs-type-alias docs-code">{aliases}</div>
         </div>
     );

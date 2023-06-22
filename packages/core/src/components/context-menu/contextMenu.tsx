@@ -158,15 +158,30 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
     // if the menu was just opened, we should check for dark theme (but don't do this on every render)
     const isDarkTheme = React.useMemo(() => Utils.isDarkTheme(childRef.current), [childRef, isOpen]);
 
+    const contentProps: ContextMenuContentProps = React.useMemo(
+        () => ({
+            isOpen,
+            mouseEvent,
+            targetOffset,
+        }),
+        [isOpen, mouseEvent, targetOffset],
+    );
+    // create a memoized function to render the menu so that we can call it if necessary in the "contextmenu" event
+    // handler which runs before this render function has a chance to re-run and update the `menu` variable
+    const renderMenu = React.useCallback(
+        (menuContentProps: ContextMenuContentProps) =>
+            disabled ? undefined : Utils.isFunction(content) ? content(menuContentProps) : content,
+        [disabled, content],
+    );
+    const menuContent = React.useMemo(() => renderMenu(contentProps), [contentProps, renderMenu]);
+
     // only render the popover if there is content in the context menu;
     // this avoid doing unnecessary rendering & computation
-    const contentProps: ContextMenuContentProps = { isOpen, mouseEvent, targetOffset };
-    const menu = disabled ? undefined : Utils.isFunction(content) ? content(contentProps) : content;
     const maybePopover =
-        menu === undefined ? undefined : (
+        menuContent === undefined ? undefined : (
             <ContextMenuPopover
                 {...popoverProps}
-                content={menu}
+                content={menuContent}
                 isDarkTheme={isDarkTheme}
                 isOpen={isOpen}
                 targetOffset={targetOffset}
@@ -181,24 +196,34 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
                 return;
             }
 
-            // If disabled, we should avoid this extra work.
+            // If disabled, we should avoid the extra work in this event handler.
             // Otherwise: if using the child or content function APIs, we need to make sure contentProps gets updated,
             // so we handle the event regardless of whether the consumer returned an undefined menu.
             const shouldHandleEvent =
-                !disabled && (Utils.isFunction(children) || Utils.isFunction(content) || maybePopover !== undefined);
+                !disabled && (Utils.isFunction(children) || Utils.isFunction(content) || content !== undefined);
 
             if (shouldHandleEvent) {
-                e.preventDefault();
+                setIsOpen(true);
                 e.persist();
                 setMouseEvent(e);
-                setTargetOffset({ left: e.clientX, top: e.clientY });
-                setIsOpen(true);
+                const newTargetOffset = { left: e.clientX, top: e.clientY };
+                setTargetOffset(newTargetOffset);
                 tooltipCtxDispatch({ type: "FORCE_DISABLED_STATE" });
+
+                const newMenuContent = renderMenu({ isOpen: true, mouseEvent: e, targetOffset: newTargetOffset });
+
+                if (newMenuContent === undefined) {
+                    // If there is no menu content, we shouldn't automatically swallow the contextmenu event, since the
+                    // user probably wants to fall back to default browser behavior. If they still want to disable the
+                    // native context menu in that case, they can do so with their own `onContextMenu` handler.
+                } else {
+                    e.preventDefault();
+                }
             }
 
             onContextMenu?.(e);
         },
-        [onContextMenu, disabled],
+        [children, onContextMenu, menuContent, renderMenu],
     );
 
     const containerClassName = classNames(className, Classes.CONTEXT_MENU);

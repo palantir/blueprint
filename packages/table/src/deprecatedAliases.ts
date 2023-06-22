@@ -18,12 +18,26 @@ export {
     /** @deprecated import ColumnHeaderCell instead */
     ColumnHeaderCell as ColumnHeaderCell2,
     /** @deprecated import ColumnHeaderCellProps instead */
-    ColumnHeaderCellProps as ColumnHeaderCellProps2,
+    type ColumnHeaderCellProps as ColumnHeaderCell2Props,
 } from "./headers/columnHeaderCell";
 
 export {
     /** @deprecated import RowHeaderCell instead */
     RowHeaderCell as RowHeaderCell2,
     /** @deprecated import RowHeaderCellProps instead */
-    RowHeaderCellProps as RowHeaderCellProps2,
+    type RowHeaderCellProps as RowHeaderCell2Props,
 } from "./headers/rowHeaderCell";
+
+export {
+    /** @deprecated import JSONFormat instead */
+    JSONFormat as JSONFormat2,
+    /** @deprecated import JSONFormatProps instead */
+    JSONFormatProps as JSONFormat2Props,
+} from "./cell/formats/jsonFormat";
+
+export {
+    /** @deprecated import TruncatedFormat instead */
+    TruncatedFormat as TruncatedFormat2,
+    /** @deprecated import TruncatedFormatProps instead */
+    TruncatedFormatProps as TruncatedFormat2Props,
+} from "./cell/formats/truncatedFormat";

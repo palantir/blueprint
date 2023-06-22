@@ -15,15 +15,13 @@
  */
 
 import classNames from "classnames";
-import React, { forwardRef, useCallback, useRef, useState } from "react";
-
-import { IconSize } from "@blueprintjs/icons";
+import * as React from "react";
 
 import { Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { mergeRefs } from "../../common/refs";
 import { Icon } from "../icon/icon";
-import { Spinner } from "../spinner/spinner";
+import { Spinner, SpinnerSize } from "../spinner/spinner";
 import { AnchorButtonProps, ButtonProps } from "./buttonProps";
 
 /**
@@ -31,7 +29,7 @@ import { AnchorButtonProps, ButtonProps } from "./buttonProps";
  *
  * @see https://blueprintjs.com/docs/#core/components/button
  */
-export const Button: React.FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+export const Button: React.FC<ButtonProps> = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     const commonAttributes = useSharedButtonAttributes(props, ref);
 
     return (
@@ -47,7 +45,7 @@ Button.displayName = `${DISPLAYNAME_PREFIX}.Button`;
  *
  * @see https://blueprintjs.com/docs/#core/components/button
  */
-export const AnchorButton: React.FC<AnchorButtonProps> = forwardRef<HTMLAnchorElement, AnchorButtonProps>(
+export const AnchorButton: React.FC<AnchorButtonProps> = React.forwardRef<HTMLAnchorElement, AnchorButtonProps>(
     (props, ref) => {
         const { href, tabIndex = 0 } = props;
         const commonProps = useSharedButtonAttributes(props, ref);
@@ -78,13 +76,13 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     const disabled = props.disabled || loading;
 
     // the current key being pressed
-    const [currentKeyPressed, setCurrentKeyPressed] = useState<string | undefined>();
+    const [currentKeyPressed, setCurrentKeyPressed] = React.useState<string | undefined>();
     // whether the button is in "active" state
-    const [isActive, setIsActive] = useState(false);
+    const [isActive, setIsActive] = React.useState(false);
     // our local ref for the button element, merged with the consumer's own ref (if supplied) in this hook's return value
-    const buttonRef = useRef<E | null>(null);
+    const buttonRef = React.useRef<E | null>(null);
 
-    const handleBlur = useCallback(
+    const handleBlur = React.useCallback(
         (e: React.FocusEvent<any>) => {
             if (isActive) {
                 setIsActive(false);
@@ -93,7 +91,7 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
         },
         [isActive, props.onBlur],
     );
-    const handleKeyDown = useCallback(
+    const handleKeyDown = React.useCallback(
         (e: React.KeyboardEvent<any>) => {
             if (Utils.isKeyboardClick(e)) {
                 e.preventDefault();
@@ -106,7 +104,7 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
         },
         [currentKeyPressed, props.onKeyDown],
     );
-    const handleKeyUp = useCallback(
+    const handleKeyUp = React.useCallback(
         (e: React.KeyboardEvent<any>) => {
             if (Utils.isKeyboardClick(e)) {
                 setIsActive(false);
@@ -158,7 +156,7 @@ function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(
     const hasTextContent = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
     return (
         <>
-            {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={IconSize.LARGE} />}
+            {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={SpinnerSize.SMALL} />}
             <Icon key="leftIcon" icon={icon} />
             {hasTextContent && (
                 <span key="text" className={Classes.BUTTON_TEXT}>

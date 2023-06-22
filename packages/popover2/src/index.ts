@@ -51,23 +51,24 @@ export {
     /** @deprecated import from @blueprintjs/core instead */
     Placement,
     /** @deprecated import from @blueprintjs/core instead */
-    Popover as Popover2,
-    /** @deprecated import from @blueprintjs/core instead */
     PopoverClickTargetHandlers as Popover2ClickTargetHandlers,
     /** @deprecated import from @blueprintjs/core instead */
     PopoverHoverTargetHandlers as Popover2HoverTargetHandlers,
     /** @deprecated import from @blueprintjs/core instead */
     PopoverInteractionKind as Popover2InteractionKind,
     /** @deprecated import from @blueprintjs/core instead */
-    PopoverProps as Popover2Props,
-    /** @deprecated import from @blueprintjs/core instead */
     PopoverSharedProps as Popover2SharedProps,
     /** @deprecated import from @blueprintjs/core instead */
     PopoverTargetProps as Popover2TargetProps,
     /** @deprecated import from @blueprintjs/core instead */
     PopperBoundary,
-    /** @deprecated import from @blueprintjs/core instead */
-    PopperCustomModifier,
+    /**
+     * N.B. this misspelling was present in @blueprintjs/popover2 v4, we'll keep it around for now since it will
+     * be getting migrated to the correct spelling in @blueprintjs/core v5 anyway.
+     *
+     * @deprecated import from @blueprintjs/core instead (with corrected spelling)
+     */
+    PopperCustomModifier as PopperCustomModifer,
     /** @deprecated import from @blueprintjs/core instead */
     PopperModifierOverrides,
     /** @deprecated import from @blueprintjs/core instead */
@@ -89,3 +90,4 @@ export {
 } from "@blueprintjs/core";
 
 export { Classes } from "./classes";
+export { Popover2, Popover2Props } from "./popover2";

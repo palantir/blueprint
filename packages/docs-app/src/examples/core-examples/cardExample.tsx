@@ -51,9 +51,7 @@ export class CardExample extends React.PureComponent<ExampleProps, CardExampleSt
         return (
             <Example options={options} {...this.props}>
                 <Card {...this.state}>
-                    <H5>
-                        <a href="#">Analytical applications</a>
-                    </H5>
+                    <H5>Analytical applications</H5>
                     <p>
                         User interfaces that enable people to interact smoothly with data, ask better questions, and
                         make better decisions.

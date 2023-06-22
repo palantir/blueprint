@@ -15,16 +15,16 @@
  */
 
 import classNames from "classnames";
-import React, { forwardRef } from "react";
+import * as React from "react";
 
 import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LABEL, LIST } from "../../common/classes";
 
 function htmlElement<E extends HTMLElement>(
     tagName: keyof JSX.IntrinsicElements,
     tagClassName: string,
-): React.FC<React.HTMLAttributes<E> & React.RefAttributes<E>> {
+): React.FC<React.AllHTMLAttributes<E> & React.RefAttributes<E>> {
     /* eslint-disable-next-line react/display-name */
-    return forwardRef<E, React.HTMLAttributes<E>>((props, ref) => {
+    return React.forwardRef<E, React.AllHTMLAttributes<E>>((props, ref) => {
         const { className, children, ...htmlProps } = props;
         return React.createElement(
             tagName,

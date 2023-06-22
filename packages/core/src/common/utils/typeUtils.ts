@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,5 @@
  * limitations under the License.
  */
 
-// icon sets should be identical aside from SVG paths, so we just import the info for the 16px set
-import {
-    BLUEPRINT_ICONS_16_CODEPOINTS as IconCodepoints,
-    BlueprintIcons_16Id as IconName,
-    BlueprintIcons_16 as IconNames,
-} from "./generated/16px/blueprint-icons-16";
-
-export { IconCodepoints, IconName, IconNames };
-export * from "./generated/components";
+/** Useful to create a subset of a string union type */
+export type Extends<T, U extends T> = U;

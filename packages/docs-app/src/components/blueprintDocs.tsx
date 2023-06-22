@@ -38,8 +38,12 @@ const NPM_URL = "https://www.npmjs.com/package";
 const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
 const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
 const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
+const LEGACY_PATTERN = /\/legacy(\.[\w-]+)?$/;
 const isNavSection = ({ route }: IHeadingNode) =>
-    COMPONENTS_PATTERN.test(route) || CONTEXT_PATTERN.test(route) || HOOKS_PATTERN.test(route);
+    COMPONENTS_PATTERN.test(route) ||
+    CONTEXT_PATTERN.test(route) ||
+    HOOKS_PATTERN.test(route) ||
+    LEGACY_PATTERN.test(route);
 
 /** Return the current theme className. */
 export function getTheme(): string {
