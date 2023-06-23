@@ -99,6 +99,7 @@ Styleguide select
 .#{$ns}-html-select {
   .#{$ns}-icon {
     @extend %pt-select-arrow;
+    margin-right: 2px;
   }
 }
 
