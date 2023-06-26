@@ -69,7 +69,7 @@ $section-small-padding: 15px;
       padding: 7px 7px 7px $section-small-padding;
     }
 
-    .#{$ns}-section-content {
+    .#{$ns}-section-content.#{$ns}-padded {
       padding: $section-small-padding;
     }
   }
