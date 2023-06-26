@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
 
 import classNames from "classnames";
 import * as React from "react";
@@ -28,13 +28,13 @@ const NS = Classes.getClassNamespace();
 const POPOVER2 = `${NS}-popover2`;
 const POPOVER2_TARGET = `${NS}-popover2-target`;
 
-/** @deprecated use { PopoverProps } from @blueprintjs/core instead */
+/** @deprecated use `{ PopoverProps } from "@blueprintjs/core"` instead */
 export interface Popover2Props<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
     extends PopoverProps<TProps> {
     ref?: React.Ref<Popover2<TProps>>;
 }
 
-/** @deprecated use { Popover } from @blueprintjs/core instead */
+/** @deprecated use `{ Popover } from "blueprintjs/core"` instead */
 export class Popover2<
     T extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps,
 > extends React.PureComponent<Popover2Props<T>> {
