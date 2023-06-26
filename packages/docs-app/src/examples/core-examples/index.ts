@@ -64,6 +64,7 @@ export * from "./popoverSizingExample";
 export * from "./progressExample";
 export * from "./rangeSliderExample";
 export * from "./radioExample";
+export * from "./sectionExample";
 export * from "./sliderExample";
 export * from "./switchExample";
 export * from "./tagInputExample";
