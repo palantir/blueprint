@@ -72,6 +72,8 @@ export const INTENT_DANGER = intentClass(Intent.DANGER)!;
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
 export const FOCUS_STYLE_MANAGER_IGNORE = `${NS}-focus-style-manager-ignore`;
 
+export const CONTAINED = `${NS}-contained`;
+
 // text utilities
 export const UI_TEXT = `${NS}-ui-text`;
 export const RUNNING_TEXT = `${NS}-running-text`;
@@ -114,6 +116,8 @@ export const CARD = `${NS}-card`;
 
 export const COLLAPSE = `${NS}-collapse`;
 export const COLLAPSE_BODY = `${COLLAPSE}-body`;
+
+export const CARD_LIST = `${NS}-card-list`;
 
 export const CONTEXT_MENU = `${NS}-context-menu`;
 export const CONTEXT_MENU_VIRTUAL_TARGET = `${CONTEXT_MENU}-virtual-target`;
