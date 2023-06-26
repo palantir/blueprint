@@ -1,0 +1,20 @@
+@import "../../common/variables";
+
+.card-list {
+  &:not(.contained) {
+      border-radius: $pt-border-radius;
+  }
+
+  & > .#{$ns}-card {
+      border-radius: 0;
+      box-shadow: none;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $pt-divider-black;
+
+        .#{$ns}-dark & {
+          border-color: $pt-dark-divider-white;
+        }
+      }
+  }
+}
