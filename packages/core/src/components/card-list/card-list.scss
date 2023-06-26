@@ -1,5 +1,11 @@
 @import "../../common/variables";
 
+$card-default-min-height: 50px;
+$card-default-padding: 10px 20px;
+
+$card-small-min-height: 40px;
+$card-small-padding: 7px 15px;
+
 .#{$ns}-card-list {
   width: 100%;
   overflow: auto;
@@ -23,13 +29,13 @@
     > .#{$ns}-card {
       border-radius: 0;
       box-shadow: none;
-      min-height: 50px;
-      padding-top: 10px;
-      padding-bottom: 10px;
+      min-height: $card-default-min-height;
+      padding: $card-default-padding;
       display: flex;
       align-items: center;
 
-      &.#{$ns}-interactive:hover {
+      &.#{$ns}-interactive:hover,
+      &.#{$ns}-interactive:active {
         background-color: $light-gray5;
         box-shadow: none;
 
@@ -40,11 +46,16 @@
     }
 
     &:not(:last-child) > .#{$ns}-card {
-      border-bottom: 1px solid $pt-divider-black;
+      border-bottom: 1px solid $pt-divider-black-muted;
 
       .#{$ns}-dark & {
-        border-color: $pt-dark-divider-white;
+        border-color: $pt-dark-divider-white-muted;
       }
     }
+  }
+
+  &.#{$ns}-small .#{$ns}-card-list-item > .#{$ns}-card {
+    min-height: $card-small-min-height;
+    padding: $card-small-padding;
   }
 }

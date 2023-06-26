@@ -16,60 +16,83 @@
 
 import * as React from "react";
 
-import { Button, Card, CardList, Classes, Icon, Intent, Section, SectionContent, Tag } from "@blueprintjs/core";
+import { Button, Card, CardList, Classes, H5, Icon, Intent, Section, SectionContent, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
-export class CardListExample extends React.PureComponent<ExampleProps> {
-    public render() {
-        return (
-            <Example {...this.props}>
-                <Section sectionTitle="My recipes">
-                    <SectionContent padded={false}>
-                        <CardList contained={true}>
-                            <Card interactive={true} style={{ justifyContent: "space-between" }}>
-                                <span>Chicken Basquaise</span>
-                                <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
-                            </Card>
-                            <Card interactive={true} style={{ justifyContent: "space-between" }}>
-                                <span>Tarte Flambée</span>
-                                <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
-                            </Card>
-                            <Card interactive={true} style={{ justifyContent: "space-between" }}>
-                                <span>Pain au Chocolat</span>
-                                <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
-                            </Card>
-                        </CardList>
-                    </SectionContent>
-                </Section>
+export interface CardListExampleState {
+    isContained: boolean;
+    hasInteractiveCards: boolean;
+    isSmall: boolean;
+}
 
-                <CardList>
-                    <Card style={{ justifyContent: "space-between" }}>
-                        <span>Olive oil</span>
-                        <Button minimal={true} intent={Intent.PRIMARY}>
-                            Add
-                        </Button>
-                    </Card>
-                    <Card style={{ justifyContent: "space-between" }}>
-                        <span>Ground black pepper</span>
-                        <Button minimal={true} intent={Intent.PRIMARY}>
-                            Add
-                        </Button>
-                    </Card>
-                    <Card style={{ justifyContent: "space-between" }}>
-                        <span>Carrots</span>
-                        <Tag intent={Intent.SUCCESS} minimal={true}>
-                            Added
-                        </Tag>
-                    </Card>
-                    <Card style={{ justifyContent: "space-between" }}>
-                        <span>Onions</span>
-                        <Button minimal={true} intent={Intent.PRIMARY}>
-                            Add
-                        </Button>
-                    </Card>
-                </CardList>
+export class CardListExample extends React.PureComponent<ExampleProps> {
+    public state: CardListExampleState = {
+        hasInteractiveCards: true,
+        isContained: false,
+        isSmall: false,
+    };
+
+    public render() {
+        const { isContained, hasInteractiveCards, isSmall } = this.state;
+
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch checked={isContained} label="Contained" onChange={this.handleContainedChange} />
+                <Switch checked={isSmall} label="Small" onChange={this.handleSmallChange} />
+                <H5>Example</H5>
+                <Switch
+                    checked={hasInteractiveCards}
+                    label="Interactive cards"
+                    onChange={this.handleInteractiveCardsChange}
+                />
+            </>
+        );
+
+        return (
+            <Example options={options} {...this.props}>
+                {isContained ? (
+                    <Section sectionTitle="Ingredients">
+                        <SectionContent padded={false}>{this.renderList()}</SectionContent>
+                    </Section>
+                ) : (
+                    this.renderList()
+                )}
             </Example>
         );
     }
+
+    private renderList() {
+        const { hasInteractiveCards, isContained, isSmall } = this.state;
+        const ingredients: string[] = ["Olive oil", "Ground black pepper", "Carrots", "Onions"];
+
+        return (
+            <CardList contained={isContained} small={isSmall}>
+                {ingredients.map(ingredient => (
+                    <Card
+                        style={{ justifyContent: "space-between" }}
+                        interactive={hasInteractiveCards}
+                        key={ingredient}
+                    >
+                        <span>{ingredient}</span>
+                        {hasInteractiveCards ? (
+                            <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
+                        ) : (
+                            <Button minimal={true} intent={Intent.PRIMARY} small={isSmall}>
+                                Add
+                            </Button>
+                        )}
+                    </Card>
+                ))}
+            </CardList>
+        );
+    }
+
+    private handleSmallChange = () => this.setState({ isSmall: !this.state.isSmall });
+
+    private handleContainedChange = () => this.setState({ isContained: !this.state.isContained });
+
+    private handleInteractiveCardsChange = () =>
+        this.setState({ hasInteractiveCards: !this.state.hasInteractiveCards });
 }

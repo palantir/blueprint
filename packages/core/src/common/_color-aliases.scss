@@ -43,8 +43,11 @@ $pt-dark-icon-color-disabled: $pt-dark-text-color-disabled !default;
 $pt-dark-icon-color-selected: $pt-intent-primary !default;
 
 $pt-divider-black: rgba($black, 0.15) !default;
+$pt-divider-black-muted: rgba($black, 0.1) !default;
 $pt-dark-divider-black: rgba($black, 0.4) !default;
+$pt-dark-divider-black-muted: rgba($black, 0.2) !default;
 $pt-dark-divider-white: rgba($white, 0.2) !default;
+$pt-dark-divider-white-muted: rgba($white, 0.1) !default;
 
 $pt-code-text-color: $pt-text-color-muted !default;
 $pt-dark-code-text-color: $pt-dark-text-color-muted !default;

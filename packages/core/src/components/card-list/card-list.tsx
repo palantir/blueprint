@@ -26,13 +26,21 @@ export interface CardListProps extends Props, HTMLDivProps, React.RefAttributes<
      * Elevation and border radius will be removed.
      */
     contained?: boolean;
+
+    /** Whether card list items should use small styles. */
+    small?: boolean;
 }
 
 export const CardList: React.FC<CardListProps> = React.forwardRef((props, ref) => {
-    const { className, contained, children, ...htmlProps } = props;
+    const { className, contained, children, small, ...htmlProps } = props;
 
-    const renderableChildren = React.Children.toArray(children); // .filter(isRenderable);
-    const classes = classNames(Classes.CARD_LIST, { [Classes.CONTAINED]: contained }, className);
+    const renderableChildren = React.Children.toArray(children);
+    const classes = classNames(
+        Classes.CARD_LIST,
+        { [Classes.CONTAINED]: contained },
+        { [Classes.SMALL]: small },
+        className,
+    );
 
     return renderableChildren.length > 0 ? (
         <Card role="list" elevation={Elevation.ZERO} className={classes} {...htmlProps} ref={ref}>
@@ -47,7 +55,6 @@ export const CardList: React.FC<CardListProps> = React.forwardRef((props, ref) =
 
 CardList.defaultProps = {
     contained: false,
+    small: false,
 };
 CardList.displayName = `${DISPLAYNAME_PREFIX}.CardList`;
-
-// const isRenderable = <T>(o: T | undefined | null | boolean) => isNonNullable(o) && isNotBoolean(o);
