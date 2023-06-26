@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Card, CardList, Classes, H6, Icon, Intent, Tag } from "@blueprintjs/core";
+import { Button, Card, CardList, Classes, Icon, Intent, Section, SectionContent, Tag } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
@@ -24,25 +24,24 @@ export class CardListExample extends React.PureComponent<ExampleProps> {
     public render() {
         return (
             <Example {...this.props}>
-                <Card style={{ padding: 0, width: "100%" }}>
-                    <div style={{ padding: "10px 20px" }}>
-                        <H6 style={{ marginBottom: 0 }}>My french reciepes</H6>
-                    </div>
-                    <CardList contained={true}>
-                        <Card interactive={true} style={{ justifyContent: "space-between" }}>
-                            <span>Chicken Basquaise</span>
-                            <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
-                        </Card>
-                        <Card interactive={true} style={{ justifyContent: "space-between" }}>
-                            <span>Tarte Flambée</span>
-                            <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
-                        </Card>
-                        <Card interactive={true} style={{ justifyContent: "space-between" }}>
-                            <span>Pain au Chocolat</span>
-                            <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
-                        </Card>
-                    </CardList>
-                </Card>
+                <Section sectionTitle="My recipes">
+                    <SectionContent padded={false}>
+                        <CardList contained={true}>
+                            <Card interactive={true} style={{ justifyContent: "space-between" }}>
+                                <span>Chicken Basquaise</span>
+                                <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
+                            </Card>
+                            <Card interactive={true} style={{ justifyContent: "space-between" }}>
+                                <span>Tarte Flambée</span>
+                                <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
+                            </Card>
+                            <Card interactive={true} style={{ justifyContent: "space-between" }}>
+                                <span>Pain au Chocolat</span>
+                                <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
+                            </Card>
+                        </CardList>
+                    </SectionContent>
+                </Section>
 
                 <CardList>
                     <Card style={{ justifyContent: "space-between" }}>
