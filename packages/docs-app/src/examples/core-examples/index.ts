@@ -67,6 +67,7 @@ export * from "./radioExample";
 export * from "./sectionExample";
 export * from "./sliderExample";
 export * from "./switchExample";
+export * from "./switchCardExample";
 export * from "./tagInputExample";
 export * from "./textAreaExample";
 export * from "./textExample";

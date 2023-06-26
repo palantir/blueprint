@@ -38,3 +38,7 @@ interactions. When you hover over cards with this class applied, the mouse
 changes to a pointer and increases the elevation shadow on the card.
 
 @css card
+
+@# Switch Card
+
+@reactExample SwitchCardExample

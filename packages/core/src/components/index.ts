@@ -102,6 +102,7 @@ export { Section, SectionProps } from "./section/section";
 export { SectionContent, SectionContentProps } from "./section/section-content";
 export { Slider, SliderProps } from "./slider/slider";
 export { Spinner, SpinnerProps, SpinnerSize } from "./spinner/spinner";
+export { SwitchCard, SwitchCardProps } from "./card/switch-card";
 export { Tab, TabId, TabProps } from "./tabs/tab";
 // eslint-disable-next-line deprecation/deprecation
 export { Tabs, TabsProps, TabsExpander, Expander } from "./tabs/tabs";

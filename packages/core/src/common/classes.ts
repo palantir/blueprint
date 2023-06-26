@@ -115,6 +115,8 @@ export const CALLOUT_ICON = `${CALLOUT}-icon`;
 
 export const CARD = `${NS}-card`;
 
+export const CARD_SWITCH = `${NS}-card-switch`;
+
 export const CARD_LIST = `${NS}-card-list`;
 export const CARD_LIST_ITEM = `${CARD_LIST}-item`;
 

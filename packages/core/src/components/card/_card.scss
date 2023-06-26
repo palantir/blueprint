@@ -99,3 +99,10 @@ $dark-elevation-shadows: (
     }
   }
 }
+
+.#{$ns}-card-switch {
+  & > .#{$ns}-switch.#{$ns}-control.#{$ns}-inline {
+    margin: 0;
+    width: 100%;
+  }
+}
