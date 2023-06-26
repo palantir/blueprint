@@ -1,6 +1,6 @@
 @# Section
 
-todo
+Structure information using sections. One section usually represent details for a given concept.
 
 @reactExample SectionExample
 
@@ -10,7 +10,7 @@ todo
 
 @# Section Content
 
-- Multiple section content can be added under one section, they will be stacked.
+Multiple sectionContent can be added under one section, they will be stacked. This can be used to further group information.
 
 @## Props
 
