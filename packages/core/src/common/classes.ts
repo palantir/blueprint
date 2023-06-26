@@ -114,10 +114,11 @@ export const CALLOUT_ICON = `${CALLOUT}-icon`;
 
 export const CARD = `${NS}-card`;
 
+export const CARD_LIST = `${NS}-card-list`;
+export const CARD_LIST_ITEM = `${CARD_LIST}-item`;
+
 export const COLLAPSE = `${NS}-collapse`;
 export const COLLAPSE_BODY = `${COLLAPSE}-body`;
-
-export const CARD_LIST = `${NS}-card-list`;
 
 export const CONTEXT_MENU = `${NS}-context-menu`;
 export const CONTEXT_MENU_VIRTUAL_TARGET = `${CONTEXT_MENU}-virtual-target`;

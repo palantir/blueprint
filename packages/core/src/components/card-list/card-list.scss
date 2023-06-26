@@ -1,20 +1,50 @@
 @import "../../common/variables";
 
-.card-list {
-  &:not(.contained) {
-      border-radius: $pt-border-radius;
+.#{$ns}-card-list {
+  width: 100%;
+  overflow: auto;
+  padding: 0;
+
+  &.#{$ns}-contained {
+    box-shadow: none;
+    border-radius: 0;
   }
 
-  & > .#{$ns}-card {
+  // HACK: The card dark mode border is inset, adding margin / padding to prevent items from going over it
+  .#{$ns}-dark & {
+    padding: 1px;
+
+    &.#{$ns}-contained {
+      margin: 1px;
+    }
+  }
+
+  &-item {
+    > .#{$ns}-card {
       border-radius: 0;
       box-shadow: none;
+      min-height: 50px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      display: flex;
+      align-items: center;
 
-      &:not(:last-child) {
-        border-bottom: 1px solid $pt-divider-black;
+      &.#{$ns}-interactive:hover {
+        background-color: $light-gray5;
+        box-shadow: none;
 
         .#{$ns}-dark & {
-          border-color: $pt-dark-divider-white;
+          background-color: $dark-gray4;
         }
       }
+    }
+
+    &:not(:last-child) > .#{$ns}-card {
+      border-bottom: 1px solid $pt-divider-black;
+
+      .#{$ns}-dark & {
+        border-color: $pt-dark-divider-white;
+      }
+    }
   }
 }
