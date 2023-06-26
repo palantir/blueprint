@@ -7,6 +7,7 @@
 @page button-group
 @page callout
 @page card
+@page card-list
 @page collapse
 @page divider
 @page editable-text
