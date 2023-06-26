@@ -25,6 +25,7 @@ export interface SectionExampleState {
     hasDescription: boolean;
     hasRightItem: boolean;
     hasMultipleSectionContent: boolean;
+    isSmall: boolean;
 }
 
 export class SectionExample extends React.PureComponent<ExampleProps, SectionExampleState> {
@@ -33,14 +34,16 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         hasIcon: false,
         hasMultipleSectionContent: false,
         hasRightItem: true,
+        isSmall: true,
     };
 
     public render() {
-        const { hasDescription, hasIcon, hasRightItem, hasMultipleSectionContent } = this.state;
+        const { hasDescription, hasIcon, hasRightItem, hasMultipleSectionContent, isSmall } = this.state;
 
         const options = (
             <>
                 <H5>Props</H5>
+                <Switch checked={isSmall} label="Small" onChange={this.handleSmallChange} />
                 <Switch checked={hasIcon} label="Icon" onChange={this.handleIconChange} />
                 <Switch checked={hasDescription} label="Description" onChange={this.handleDescriptionChange} />
                 <Switch checked={hasRightItem} label="Right item" onChange={this.handleRightItemChange} />
@@ -55,6 +58,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         return (
             <Example options={options} {...this.props}>
                 <Section
+                    small={isSmall}
                     sectionTitle="Basil"
                     subtitle={hasDescription ? "Ocimum basilicum" : undefined}
                     icon={hasIcon ? IconNames.BOOK : undefined}
@@ -94,6 +98,8 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
             </Example>
         );
     }
+
+    private handleSmallChange = () => this.setState({ isSmall: !this.state.isSmall });
 
     private handleIconChange = () => this.setState({ hasIcon: !this.state.hasIcon });
 
