@@ -17,10 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, Intent } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, IntentProps, Props, Utils } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
-import * as Utils from "../../common/utils";
 import { Handle } from "./handle";
 import { HandleInteractionKind, HandleProps, HandleType } from "./handleProps";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";
@@ -32,7 +30,7 @@ import { argMin, fillValues, formatPercentage } from "./sliderUtils";
 const MultiSliderHandle: React.FC<HandleProps> = () => null;
 MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 
-export interface ISliderBaseProps extends Props, IntentProps {
+export interface SliderBaseProps extends Props, IntentProps {
     children?: React.ReactNode;
 
     /**
@@ -65,14 +63,14 @@ export interface ISliderBaseProps extends Props, IntentProps {
     labelPrecision?: number;
 
     /**
-     * Maximum value of the slider.
+     * Maximum value of the slider. Value must be a finite number.
      *
      * @default 10
      */
     max?: number;
 
     /**
-     * Minimum value of the slider.
+     * Minimum value of the slider. Value must be a finite number.
      *
      * @default 0
      */
@@ -113,10 +111,7 @@ export interface ISliderBaseProps extends Props, IntentProps {
     vertical?: boolean;
 }
 
-// eslint-disable-next-line deprecation/deprecation
-export type MultiSliderProps = IMultiSliderProps;
-/** @deprecated use MultiSliderProps */
-export interface IMultiSliderProps extends ISliderBaseProps {
+export interface MultiSliderProps extends SliderBaseProps {
     /** Default intent of a track segment, used only if no handle specifies `intentBefore/After`. */
     defaultTrackIntent?: Intent;
 
@@ -127,7 +122,7 @@ export interface IMultiSliderProps extends ISliderBaseProps {
     onRelease?(values: number[]): void;
 }
 
-export interface ISliderState {
+export interface SliderState {
     labelPrecision: number;
     /** the client size, in pixels, of one tick */
     tickSize: number;
@@ -135,8 +130,13 @@ export interface ISliderState {
     tickSizeRatio: number;
 }
 
-export class MultiSlider extends AbstractPureComponent2<MultiSliderProps, ISliderState> {
-    public static defaultSliderProps: ISliderBaseProps = {
+/**
+ * Multi slider component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/sliders.multi-slider
+ */
+export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderState> {
+    public static defaultSliderProps: SliderBaseProps = {
         disabled: false,
         max: 10,
         min: 0,
@@ -163,7 +163,7 @@ export class MultiSlider extends AbstractPureComponent2<MultiSliderProps, ISlide
         return labelPrecision == null ? Utils.countDecimalPlaces(stepSize!) : labelPrecision;
     }
 
-    public state: ISliderState = {
+    public state: SliderState = {
         labelPrecision: getLabelPrecision(this.props),
         tickSize: 0,
         tickSizeRatio: 0,
@@ -208,7 +208,7 @@ export class MultiSlider extends AbstractPureComponent2<MultiSliderProps, ISlide
         this.updateTickSize();
     }
 
-    public componentDidUpdate(prevProps: MultiSliderProps, prevState: ISliderState) {
+    public componentDidUpdate(prevProps: MultiSliderProps, prevState: SliderState) {
         super.componentDidUpdate(prevProps, prevState);
         this.updateTickSize();
     }
@@ -222,6 +222,12 @@ export class MultiSlider extends AbstractPureComponent2<MultiSliderProps, ISlide
         }
         if (props.labelStepSize !== undefined && props.labelStepSize! <= 0) {
             throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
+        }
+        if (props.min !== undefined && !isFinite(props.min)) {
+            throw new Error(Errors.SLIDER_MIN);
+        }
+        if (props.max !== undefined && !isFinite(props.max)) {
+            throw new Error(Errors.SLIDER_MAX);
         }
 
         let anyInvalidChildren = false;

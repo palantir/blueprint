@@ -1,4 +1,4 @@
-@import "~@blueprintjs/core/src/common/mixins";
+@import "@blueprintjs/core/src/common/mixins";
 @import "../common/variables";
 
 $table-quadrant-z-index-main: 0;
@@ -6,10 +6,16 @@ $table-quadrant-z-index-top: $table-quadrant-z-index-main + 1;
 $table-quadrant-z-index-left: $table-quadrant-z-index-top + 1;
 $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
 
-// we mask the scrollable container with a smaller parent div to hide the scrollbars in the TOP,
+// We mask the scrollable container with a smaller parent div to hide the scrollbars in the TOP,
 // LEFT, and TOP_LEFT quadrants. this value specifies the distance the scroll containers should
 // overflow within their parents; it should be large enough to hide a scrollbar of typical width.
-$table-quadrant-scroll-container-overflow: 20px;
+// Note that we require multiple values for different screen zoom levels (detectable via -webkit-device-pixel-ratio).
+// See:
+//  - https://developer.mozilla.org/en-US/docs/Web/CSS/@media/-webkit-device-pixel-ratio
+//  - https://github.com/palantir/blueprint/issues/6172
+$scroll-container-overflow-default: 20px; // for standard device pixel ratio
+$scroll-container-overflow-low-dpi: 50px; // for device-pixel-ratio <1.5
+$scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
 
 .#{$ns}-table-quadrant-stack {
   display: flex;
@@ -51,6 +57,41 @@ $table-quadrant-scroll-container-overflow: 20px;
   }
 }
 
+.#{$ns}-table-body-scrolling-indicator-overlay {
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+%table-is-scrolling {
+  opacity: 1;
+  transition: opacity 0.2s linear;
+}
+
+.#{$ns}-table-body-is-scrolling-top {
+  @extend %table-is-scrolling;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 15%) 0%, transparent 10%);
+}
+
+.#{$ns}-table-body-is-scrolling-right {
+  @extend %table-is-scrolling;
+  background: linear-gradient(270deg, rgba(0, 0, 0, 15%) 0%, transparent 10%);
+}
+
+.#{$ns}-table-body-is-scrolling-bottom {
+  @extend %table-is-scrolling;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 15%) 0%, transparent 10%);
+}
+
+.#{$ns}-table-body-is-scrolling-left {
+  @extend %table-is-scrolling;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 15%) 0%, transparent 10%);
+}
+
 .#{$ns}-table-quadrant-body-container {
   position: relative;
 }
@@ -83,7 +124,7 @@ $table-quadrant-scroll-container-overflow: 20px;
   z-index: $table-quadrant-z-index-top;
 
   .#{$ns}-table-quadrant-scroll-container {
-    bottom: -$table-quadrant-scroll-container-overflow;
+    bottom: -$scroll-container-overflow-default;
     overflow-y: hidden;
   }
 }
@@ -100,7 +141,7 @@ $table-quadrant-scroll-container-overflow: 20px;
     height: auto;
     overflow-x: hidden;
     position: absolute;
-    right: -$table-quadrant-scroll-container-overflow;
+    right: -$scroll-container-overflow-default;
     top: 0;
   }
 
@@ -119,14 +160,50 @@ $table-quadrant-scroll-container-overflow: 20px;
   z-index: $table-quadrant-z-index-top-left;
 
   .#{$ns}-table-quadrant-scroll-container {
-    bottom: -$table-quadrant-scroll-container-overflow;
+    bottom: -$scroll-container-overflow-default;
     overflow-x: hidden;
     overflow-y: hidden;
-    right: -$table-quadrant-scroll-container-overflow;
+    right: -$scroll-container-overflow-default;
   }
 
   // correct missing bottom-right corner in the menu-element (addresses #1444).
   .#{$ns}-table-body-virtual-client {
     min-width: 1px;
+  }
+}
+
+// N.B. we could do something fancier by detecting the exact width of the scroll bar and setting that value
+// as the overflow dimension, but this is good enough for most use cases.
+/* stylelint-disable-next-line media-feature-name-no-vendor-prefix */
+@media (-webkit-max-device-pixel-ratio: 1.5) {
+  // low dpi screen has larger scrollbars relative to quadrant dimensions
+  .#{$ns}-table-quadrant-top .#{$ns}-table-quadrant-scroll-container {
+    bottom: -$scroll-container-overflow-low-dpi;
+  }
+
+  .#{$ns}-table-quadrant-left .#{$ns}-table-quadrant-scroll-container {
+    right: -$scroll-container-overflow-low-dpi;
+  }
+
+  .#{$ns}-table-quadrant-top-left .#{$ns}-table-quadrant-scroll-container {
+    bottom: -$scroll-container-overflow-low-dpi;
+    right: -$scroll-container-overflow-low-dpi;
+  }
+}
+
+/* stylelint-disable-next-line media-feature-name-no-vendor-prefix */
+@media (-webkit-min-device-pixel-ratio: 2.5) {
+  // high dpi screen has smaller scrollbars relative to quadrant dimensions
+  .#{$ns}-table-quadrant-top .#{$ns}-table-quadrant-scroll-container {
+    bottom: -$scroll-container-overflow-high-dpi;
+  }
+
+  .#{$ns}-table-quadrant-left .#{$ns}-table-quadrant-scroll-container {
+    right: -$scroll-container-overflow-high-dpi;
+  }
+
+  .#{$ns}-table-quadrant-top-left .#{$ns}-table-quadrant-scroll-container {
+    bottom: -$scroll-container-overflow-high-dpi;
+    right: -$scroll-container-overflow-high-dpi;
   }
 }

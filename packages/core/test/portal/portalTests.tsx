@@ -83,21 +83,7 @@ describe("<Portal>", () => {
         assert.exists(portal.find(".class-two"));
     });
 
-    it("respects blueprintPortalClassName on legacy context", () => {
-        const CLASS_TO_TEST = "bp-test-klass bp-other-class";
-        portal = mount(
-            <Portal>
-                <p>test</p>
-            </Portal>,
-            { attachTo: rootElement, context: { blueprintPortalClassName: CLASS_TO_TEST } },
-        );
-
-        const portalElement = document.querySelector(`.${CLASS_TO_TEST.replace(" ", ".")}`);
-        assert.isTrue(portalElement?.classList.contains(Classes.PORTAL));
-    });
-
-    // HACKHACK, see https://github.com/palantir/blueprint/issues/5511
-    it.skip("respects portalClassName on new context API", () => {
+    it("respects portalClassName on <PortalProvider> context", () => {
         const CLASS_TO_TEST = "bp-test-klass bp-other-class";
         portal = mount(
             <PortalProvider portalClassName={CLASS_TO_TEST}>
@@ -146,5 +132,19 @@ describe("<Portal>", () => {
             </Portal>,
             { attachTo: rootElement },
         );
+    });
+
+    // TODO: remove legacy context support in Blueprint v6.0
+    it("respects blueprintPortalClassName on legacy context", () => {
+        const CLASS_TO_TEST = "bp-test-klass bp-other-class";
+        portal = mount(
+            <Portal>
+                <p>test</p>
+            </Portal>,
+            { attachTo: rootElement, context: { blueprintPortalClassName: CLASS_TO_TEST } },
+        );
+
+        const portalElement = document.querySelector(`.${CLASS_TO_TEST.replace(" ", ".")}`);
+        assert.isTrue(portalElement?.classList.contains(Classes.PORTAL));
     });
 });

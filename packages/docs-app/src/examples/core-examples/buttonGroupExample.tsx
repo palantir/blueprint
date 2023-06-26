@@ -16,14 +16,24 @@
 
 import * as React from "react";
 
-import { Alignment, AnchorButton, Button, ButtonGroup, Classes, H5, Icon, Intent, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
-import { Tooltip2 } from "@blueprintjs/popover2";
+import {
+    Alignment,
+    AnchorButton,
+    Button,
+    ButtonGroup,
+    Classes,
+    H5,
+    Icon,
+    Intent,
+    Switch,
+    Tooltip,
+} from "@blueprintjs/core";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
 
-export interface IButtonGroupExampleState {
+export interface ButtonGroupExampleState {
     alignText: Alignment;
     fill: boolean;
     iconOnly: boolean;
@@ -33,8 +43,8 @@ export interface IButtonGroupExampleState {
     vertical: boolean;
 }
 
-export class ButtonGroupExample extends React.PureComponent<ExampleProps, IButtonGroupExampleState> {
-    public state: IButtonGroupExampleState = {
+export class ButtonGroupExample extends React.PureComponent<ExampleProps, ButtonGroupExampleState> {
+    public state: ButtonGroupExampleState = {
         alignText: Alignment.CENTER,
         fill: false,
         iconOnly: false,
@@ -48,7 +58,7 @@ export class ButtonGroupExample extends React.PureComponent<ExampleProps, IButto
 
     private handleIconOnlyChange = handleBooleanChange(iconOnly => this.setState({ iconOnly }));
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
 
@@ -62,7 +72,7 @@ export class ButtonGroupExample extends React.PureComponent<ExampleProps, IButto
         const buttonProps = { intent };
 
         const intentLabelInfo = (
-            <Tooltip2
+            <Tooltip
                 content={
                     <span className={Classes.TEXT_SMALL}>
                         Intents are set individually on each button <br />
@@ -78,7 +88,7 @@ export class ButtonGroupExample extends React.PureComponent<ExampleProps, IButto
                         <Icon className={Classes.TEXT_MUTED} icon="info-sign" size={12} />
                     </span>
                 </span>
-            </Tooltip2>
+            </Tooltip>
         );
         const options = (
             <>

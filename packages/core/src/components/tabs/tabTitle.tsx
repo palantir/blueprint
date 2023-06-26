@@ -17,14 +17,13 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
+import { Icon } from "../icon/icon";
+import { Tag } from "../tag/tag";
 import { TabId, TabProps } from "./tab";
 
-// eslint-disable-next-line deprecation/deprecation
-export type TabTitleProps = ITabTitleProps;
-/** @deprecated use TabTitleProps */
-export interface ITabTitleProps extends TabProps {
+export interface TabTitleProps extends TabProps {
     /** Optional contents. */
     children?: React.ReactNode;
 
@@ -38,11 +37,25 @@ export interface ITabTitleProps extends TabProps {
     selected: boolean;
 }
 
-export class TabTitle extends AbstractPureComponent2<TabTitleProps> {
+export class TabTitle extends AbstractPureComponent<TabTitleProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TabTitle`;
 
     public render() {
-        const { className, children, disabled, id, parentId, selected, title, ...htmlProps } = this.props;
+        const {
+            className,
+            children,
+            disabled,
+            id,
+            parentId,
+            selected,
+            title,
+            icon,
+            tagContent,
+            tagProps,
+            ...htmlProps
+        } = this.props;
+        const intent = selected ? Intent.PRIMARY : Intent.NONE;
+
         return (
             <div
                 {...removeNonHTMLProps(htmlProps)}
@@ -57,8 +70,19 @@ export class TabTitle extends AbstractPureComponent2<TabTitleProps> {
                 role="tab"
                 tabIndex={disabled ? undefined : selected ? 0 : -1}
             >
+                {icon != null && <Icon icon={icon} intent={intent} className={Classes.TAB_ICON} />}
                 {title}
                 {children}
+                {tagContent != null && (
+                    <Tag
+                        minimal={true}
+                        intent={intent}
+                        {...tagProps}
+                        className={classNames(Classes.TAB_TAG, tagProps?.className)}
+                    >
+                        {tagContent}
+                    </Tag>
+                )}
             </div>
         );
     }

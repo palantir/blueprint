@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to JSONFormat2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import classNames from "classnames";
 import * as React from "react";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
 import * as Classes from "../../common/classes";
-import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
+import { TruncatedFormat, TruncatedFormatProps, TruncatedPopoverMode } from "./truncatedFormat";
 
-export type JSONFormatProps = IJSONFormatProps;
-export interface IJSONFormatProps extends ITruncatedFormatProps {
+export interface JSONFormatProps extends TruncatedFormatProps {
     children?: any;
 
     /**
@@ -50,11 +42,15 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
 }
 
 /* istanbul ignore next */
-/** @deprecated use JSONFormat2 */
-export class JSONFormat extends React.Component<IJSONFormatProps> {
+/**
+ * JSON cell format component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.jsonformat
+ */
+export class JSONFormat extends React.Component<JSONFormatProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat`;
 
-    public static defaultProps: IJSONFormatProps = {
+    public static defaultProps: JSONFormatProps = {
         omitQuotesOnStrings: true,
         stringify: (obj: any) => JSON.stringify(obj, null, 2),
     };

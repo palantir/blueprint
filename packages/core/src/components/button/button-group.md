@@ -54,7 +54,7 @@ The component also supports all HTML `<div>` props.
 </ButtonGroup>
 ```
 
-@interface IButtonGroupProps
+@interface ButtonGroupProps
 
 @## CSS
 

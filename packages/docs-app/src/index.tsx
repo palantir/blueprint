@@ -18,10 +18,14 @@ import * as ReactDOM from "react-dom";
 
 import { docsData } from "@blueprintjs/docs-data";
 import { createDefaultRenderers, ReactDocsTagRenderer, ReactExampleTagRenderer } from "@blueprintjs/docs-theme";
+import { Icons } from "@blueprintjs/icons";
 
 import { BlueprintDocs } from "./components/blueprintDocs";
 import * as ReactDocs from "./tags/reactDocs";
 import { reactExamples } from "./tags/reactExamples";
+
+// load all icons up front so that they do not experience a flash of unstyled content (but we don't need to block on this promise)
+Icons.loadAll();
 
 const reactDocs = new ReactDocsTagRenderer(ReactDocs as any);
 const reactExample = new ReactExampleTagRenderer(reactExamples);
@@ -33,6 +37,6 @@ const tagRenderers = {
 };
 
 ReactDOM.render(
-    <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />,
+    <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={true} />,
     document.querySelector("#blueprint-documentation"),
 );

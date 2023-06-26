@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Intent, MaybeElement, Props } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, MaybeElement, Props } from "../../common";
 import {
     ALERT_WARN_CANCEL_ESCAPE_KEY,
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
@@ -26,12 +26,9 @@ import {
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
 import { Icon, IconName } from "../icon/icon";
-import { IOverlayLifecycleProps } from "../overlay/overlay";
+import { OverlayLifecycleProps } from "../overlay/overlay";
 
-// eslint-disable-next-line deprecation/deprecation
-export type AlertProps = IAlertProps;
-/** @deprecated use AlertProps */
-export interface IAlertProps extends IOverlayLifecycleProps, Props {
+export interface AlertProps extends OverlayLifecycleProps, Props {
     /**
      * Whether pressing <kbd>escape</kbd> when focused on the Alert should cancel the alert.
      * If this prop is enabled, then either `onCancel` or `onClose` must also be defined.
@@ -135,7 +132,12 @@ export interface IAlertProps extends IOverlayLifecycleProps, Props {
     onClose?(confirmed: boolean, evt?: React.SyntheticEvent<HTMLElement>): void;
 }
 
-export class Alert extends AbstractPureComponent2<AlertProps> {
+/**
+ * Alert component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/alert
+ */
+export class Alert extends AbstractPureComponent<AlertProps> {
     public static defaultProps: AlertProps = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,

@@ -17,9 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
+import { AbstractPureComponent, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { clickElementOnKeyPress } from "../../common/utils";
 import { Dialog, DialogProps } from "./dialog";
+import { DialogFooter } from "./dialogFooter";
 import { DialogStep, DialogStepId, DialogStepProps } from "./dialogStep";
 import { DialogStepButton, DialogStepButtonProps } from "./dialogStepButton";
 
@@ -27,10 +29,7 @@ type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.
 
 export type MultistepDialogNavPosition = typeof Position.TOP | typeof Position.LEFT | typeof Position.RIGHT;
 
-// eslint-disable-next-line deprecation/deprecation
-export type MultistepDialogProps = IMultistepDialogProps;
-/** @deprecated use MultistepDialogProps */
-export interface IMultistepDialogProps extends DialogProps {
+export interface MultistepDialogProps extends DialogProps {
     /**
      * Props for the back button.
      */
@@ -40,7 +39,7 @@ export interface IMultistepDialogProps extends DialogProps {
     children?: React.ReactNode;
 
     /**
-     * Props for the close button that appears in the footer when there is no title.
+     * Props for the close button that appears in the footer.
      */
     closeButtonProps?: DialogStepButtonProps;
 
@@ -79,9 +78,8 @@ export interface IMultistepDialogProps extends DialogProps {
     resetOnClose?: boolean;
 
     /**
-     * Whether the footer close button is shown. The button will only appear if
-     * `isCloseButtonShown` is `true`. The close button in the dialog title will
-     * not be shown when this is `true`.
+     * Whether the footer close button is shown. When this value is true, the button will appear
+     * regardless of the value of `isCloseButtonShown`.
      *
      * @default false
      */
@@ -95,7 +93,7 @@ export interface IMultistepDialogProps extends DialogProps {
     initialStepIndex?: number;
 }
 
-interface IMultistepDialogState {
+interface MultistepDialogState {
     lastViewedIndex: number;
     selectedIndex: number;
 }
@@ -104,7 +102,12 @@ const PADDING_BOTTOM = 0;
 
 const MIN_WIDTH = 800;
 
-export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps, IMultistepDialogState> {
+/**
+ * Multi-step dialog component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/dialog.multistep-dialog
+ */
+export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps, MultistepDialogState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultistepDialog`;
 
     public static defaultProps: Partial<MultistepDialogProps> = {
@@ -115,19 +118,15 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         showCloseButtonInFooter: false,
     };
 
-    public state: IMultistepDialogState = this.getInitialIndexFromProps(this.props);
+    public state: MultistepDialogState = this.getInitialIndexFromProps(this.props);
 
     public render() {
         const { className, navigationPosition, showCloseButtonInFooter, isCloseButtonShown, ...otherProps } =
             this.props;
 
-        // Only one close button should be displayed. If the footer close button
-        // is shown, we need to ensure the dialog close button is not displayed.
-        const isCloseButtonVisible = !showCloseButtonInFooter && isCloseButtonShown;
-
         return (
             <Dialog
-                isCloseButtonShown={isCloseButtonVisible}
+                isCloseButtonShown={isCloseButtonShown}
                 {...otherProps}
                 className={classNames(
                     {
@@ -162,7 +161,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
     private renderLeftPanel() {
         return (
-            <div className={Classes.MULTISTEP_DIALOG_LEFT_PANEL}>
+            <div className={Classes.MULTISTEP_DIALOG_LEFT_PANEL} role="tablist" aria-label="steps">
                 {this.getDialogStepChildren().filter(isDialogStepElement).map(this.renderDialogStep)}
             </div>
         );
@@ -172,6 +171,8 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         const stepNumber = index + 1;
         const hasBeenViewed = this.state.lastViewedIndex >= index;
         const currentlySelected = this.state.selectedIndex === index;
+        const handleClickDialogStep =
+            index > this.state.lastViewedIndex ? undefined : this.getDialogStepChangeHandler(index);
         return (
             <div
                 className={classNames(Classes.DIALOG_STEP_CONTAINER, {
@@ -179,20 +180,21 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
                     [Classes.DIALOG_STEP_VIEWED]: hasBeenViewed,
                 })}
                 key={index}
+                aria-selected={currentlySelected}
+                role="tab"
             >
-                <div className={Classes.DIALOG_STEP} onClick={this.handleClickDialogStep(index)}>
+                <div
+                    className={Classes.DIALOG_STEP}
+                    onClick={handleClickDialogStep}
+                    tabIndex={handleClickDialogStep ? 0 : -1}
+                    // enable enter key to take effect on the div as if it were a button
+                    onKeyDown={clickElementOnKeyPress(["Enter", " "])}
+                >
                     <div className={Classes.DIALOG_STEP_ICON}>{stepNumber}</div>
                     <div className={Classes.DIALOG_STEP_TITLE}>{step.props.title}</div>
                 </div>
             </div>
         );
-    };
-
-    private handleClickDialogStep = (index: number) => {
-        if (index > this.state.lastViewedIndex) {
-            return;
-        }
-        return this.getDialogStepChangeHandler(index);
     };
 
     private maybeRenderRightPanel() {
@@ -211,17 +213,11 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
     }
 
     private renderFooter() {
-        const { closeButtonProps, isCloseButtonShown, showCloseButtonInFooter, onClose } = this.props;
-        const isFooterCloseButtonVisible = showCloseButtonInFooter && isCloseButtonShown;
-        const maybeCloseButton = !isFooterCloseButtonVisible ? undefined : (
+        const { closeButtonProps, showCloseButtonInFooter, onClose } = this.props;
+        const maybeCloseButton = !showCloseButtonInFooter ? undefined : (
             <DialogStepButton text="Close" onClick={onClose} {...closeButtonProps} />
         );
-        return (
-            <div className={Classes.MULTISTEP_DIALOG_FOOTER}>
-                {maybeCloseButton}
-                <div className={Classes.DIALOG_FOOTER_ACTIONS}>{this.renderButtons()}</div>
-            </div>
-        );
+        return <DialogFooter actions={this.renderButtons()}>{maybeCloseButton}</DialogFooter>;
     }
 
     private renderButtons() {

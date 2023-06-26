@@ -12,7 +12,7 @@ mkdir -p "$OUTPUT"
 iconSizes=(16 20)
 
 for size in "${iconSizes[@]}"; do
-    for font in "$INPUT"/"$size"px/*.{eot,ttf,woff,woff2}; do
+    for font in "$INPUT"/"$size"px/*.{eot,ttf,svg,woff,woff2}; do
         cp "$font" "$OUTPUT/"
     done
 done

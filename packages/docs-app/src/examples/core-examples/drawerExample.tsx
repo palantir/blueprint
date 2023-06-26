@@ -20,6 +20,7 @@ import {
     Button,
     Classes,
     Code,
+    ContextMenu,
     Divider,
     Drawer,
     DrawerSize,
@@ -39,11 +40,10 @@ import {
     handleStringChange,
     handleValueChange,
 } from "@blueprintjs/docs-theme";
-import { ContextMenu2 } from "@blueprintjs/popover2";
 
-import { IBlueprintExampleData } from "../../tags/types";
+import { BlueprintExampleData } from "../../tags/types";
 
-export interface IDrawerExampleState {
+export interface DrawerExampleState {
     autoFocus: boolean;
     canEscapeKeyClose: boolean;
     canOutsideClickClose: boolean;
@@ -54,8 +54,8 @@ export interface IDrawerExampleState {
     size: string;
     usePortal: boolean;
 }
-export class DrawerExample extends React.PureComponent<ExampleProps<IBlueprintExampleData>, IDrawerExampleState> {
-    public state: IDrawerExampleState = {
+export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, DrawerExampleState> {
+    public state: DrawerExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,
         canOutsideClickClose: true,
@@ -95,6 +95,7 @@ export class DrawerExample extends React.PureComponent<ExampleProps<IBlueprintEx
                     {...this.state}
                 >
                     <div className={Classes.DRAWER_BODY}>
+                        {/* HACKHACK: strange use of unrelated dialog class, should be refactored */}
                         <div className={Classes.DIALOG_BODY}>
                             <p>
                                 <strong>
@@ -122,7 +123,7 @@ export class DrawerExample extends React.PureComponent<ExampleProps<IBlueprintEx
                                 can build upon. And the enterprise data foundation goes where the business drives it.
                             </p>
                             <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
-                            <ContextMenu2
+                            <ContextMenu
                                 content={
                                     <Menu>
                                         <MenuItem text="Menu Item 1" />
@@ -130,9 +131,9 @@ export class DrawerExample extends React.PureComponent<ExampleProps<IBlueprintEx
                                 }
                             >
                                 <Button onClick={this.handleClose}>
-                                    Right Click for a <Code>&lt;ContextMenu2 /&gt;</Code>
+                                    Right Click for a <Code>&lt;ContextMenu /&gt;</Code>
                                 </Button>
-                            </ContextMenu2>
+                            </ContextMenu>
                         </div>
                     </div>
                     <div className={Classes.DRAWER_FOOTER}>Footer</div>

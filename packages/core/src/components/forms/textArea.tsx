@@ -17,13 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, refHandler, setRef } from "../../common";
+import { AbstractPureComponent, Classes, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type TextAreaProps = ITextAreaProps;
-/** @deprecated use TextAreaProps */
-export interface ITextAreaProps extends IntentProps, Props, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     /**
      * Whether the text area should take up the full width of its container.
      */
@@ -50,16 +47,21 @@ export interface ITextAreaProps extends IntentProps, Props, React.TextareaHTMLAt
     inputRef?: React.Ref<HTMLTextAreaElement>;
 }
 
-export interface ITextAreaState {
+export interface TextAreaState {
     height?: number;
 }
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class TextArea extends AbstractPureComponent2<TextAreaProps, ITextAreaState> {
+/**
+ * Text area component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/text-inputs.text-area
+ */
+export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
-    public state: ITextAreaState = {};
+    public state: TextAreaState = {};
 
     // used to measure and set the height of the component on first mount
     public textareaElement: HTMLTextAreaElement | null = null;
@@ -70,14 +72,17 @@ export class TextArea extends AbstractPureComponent2<TextAreaProps, ITextAreaSta
         this.props.inputRef,
     );
 
-    public componentDidMount() {
-        if (this.props.growVertically && this.textareaElement !== null) {
-            // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
-            /* eslint-disable-next-line react/no-did-mount-set-state */
-            this.setState({
-                height: this.textareaElement?.scrollHeight,
-            });
+    private maybeSyncHeightToScrollHeight = () => {
+        if (this.props.growVertically && this.textareaElement != null) {
+            const { scrollHeight } = this.textareaElement;
+            if (scrollHeight > 0) {
+                this.setState({ height: scrollHeight });
+            }
         }
+    };
+
+    public componentDidMount() {
+        this.maybeSyncHeightToScrollHeight();
     }
 
     public componentDidUpdate(prevProps: TextAreaProps) {
@@ -85,6 +90,10 @@ export class TextArea extends AbstractPureComponent2<TextAreaProps, ITextAreaSta
             setRef(prevProps.inputRef, null);
             this.handleRef = refHandler(this, "textareaElement", this.props.inputRef);
             setRef(this.props.inputRef, this.textareaElement);
+        }
+
+        if (prevProps.value !== this.props.value || prevProps.style !== this.props.style) {
+            this.maybeSyncHeightToScrollHeight();
         }
     }
 
@@ -125,14 +134,7 @@ export class TextArea extends AbstractPureComponent2<TextAreaProps, ITextAreaSta
     }
 
     private handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        if (this.props.growVertically) {
-            this.setState({
-                height: e.target.scrollHeight,
-            });
-        }
-
-        if (this.props.onChange != null) {
-            this.props.onChange(e);
-        }
+        this.maybeSyncHeightToScrollHeight();
+        this.props.onChange?.(e);
     };
 }

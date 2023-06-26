@@ -15,14 +15,27 @@
 
 // @ts-check
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const scriptsDir = fileURLToPath(new URL(".", import.meta.url));
 export const iconResourcesDir = resolve(scriptsDir, "../../../resources/icons");
 export const generatedSrcDir = resolve(scriptsDir, "../src/generated");
-export const NS = "bp4";
+export const NS = "bp5";
+/** @type { [16, 20] } */
+export const ICON_SIZES = [16, 20];
+
+/**
+ * We need to scale up the icon paths during conversion so that the icons do not get visually degraded
+ * or compressed through rounding errors (svgicons2svgfont rasterizes the icons in order to convert them).
+ *
+ * After generating the icon font files, we also need to take care to scale the paths _back down_ by this
+ * factor in the icon component SVG paths, since we read the upscaled paths from SVG font at that point.
+ *
+ * @see https://github.com/palantir/blueprint/issues/5002
+ */
+export const ICON_RASTER_SCALING_FACTOR = 20;
 
 /**
  * @typedef {Object} IconMetadata
@@ -30,13 +43,13 @@ export const NS = "bp4";
  * @property {string} iconName - `icon-name` for IconName and CSS class
  * @property {string} tags - comma separated list of tags describing this icon
  * @property {string} group - group to which this icon belongs
- * @property {string} content - unicode character for icon glyph in font
  * @property {number} codepoint - icon font codepoint
  */
 
-// TODO(adahiya): replace this with `await import("../icons.json", { assert: { type: "json" } })` in Node 17.5+
+const { default: iconsMetadataJson } = await import("../icons.json", { assert: { type: "json" }});
+
 /** @type {IconMetadata[]} */
-export const iconsMetadata = JSON.parse(readFileSync(resolve(scriptsDir, "../icons.json"), { encoding: "utf8" })).sort(
+export const iconsMetadata = iconsMetadataJson.sort(
     (a, b) => a.iconName.localeCompare(b.iconName),
 );
 

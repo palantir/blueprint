@@ -25,8 +25,11 @@ import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { cwd, env } from "node:process";
 import ReactRefreshTypeScript from "react-refresh-typescript";
+import TerserPlugin from "terser-webpack-plugin";
 import webpack from "webpack";
 import WebpackNotifierPlugin from "webpack-notifier";
+
+import { sassNodeModulesLoadPaths } from "@blueprintjs/node-build-scripts";
 
 import { getPackageName } from "./utils.mjs";
 
@@ -61,7 +64,7 @@ const plugins = [
     // CSS extraction is only enabled in production (see scssLoaders below).
     new MiniCssExtractPlugin({ filename: "[name].css" }),
 
-    // pipe env variables to FE build, setting defaults where appropriate (null means optional)
+    // pipe env variables to FE build, with these default values (null means optional)
     new webpack.EnvironmentPlugin({
         NODE_ENV: "development",
         BLUEPRINT_NAMESPACE: null,
@@ -81,9 +84,8 @@ if (!IS_PRODUCTION) {
 // see https://nodejs.org/docs/latest-v16.x/api/esm.html#importmetaresolvespecifier-parent
 const require = createRequire(import.meta.url);
 
-// Module loaders for .scss files, used in reverse order:
-// compile Sass, apply PostCSS, interpret CSS as modules.
-const scssLoaders = [
+// Module loaders for CSS files, used in reverse order: apply PostCSS, then interpret CSS as ES modules
+const cssLoaders = [
     // Only extract CSS to separate file in production mode.
     IS_PRODUCTION
         ? {
@@ -105,7 +107,19 @@ const scssLoaders = [
             },
         },
     },
-    require.resolve("sass-loader"),
+];
+
+// Module loaders for Sass/SCSS files, used in reverse order: compile Sass, then apply CSS loaders
+const scssLoaders = [
+    ...cssLoaders,
+    {
+        loader: require.resolve("sass-loader"),
+        options: {
+            sassOptions: {
+                includePaths: sassNodeModulesLoadPaths,
+            },
+        },
+    },
 ];
 
 export default {
@@ -158,6 +172,10 @@ export default {
                 },
             },
             {
+                test: /\.css$/,
+                use: cssLoaders,
+            },
+            {
                 test: /\.scss$/,
                 use: scssLoaders,
             },
@@ -168,6 +186,20 @@ export default {
                     filename: "assets/[name][ext][query][hash]",
                 },
             },
+        ],
+    },
+
+    optimization: {
+        minimize: IS_PRODUCTION,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+                terserOptions: {
+                    format: {
+                        comments: false,
+                    },
+                },
+            }),
         ],
     },
 

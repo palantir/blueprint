@@ -17,17 +17,16 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2 } from "../../common";
-import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
-import { IElementRefProps, OptionProps } from "../../common/props";
-import { Icon, IconProps } from "../icon/icon";
+import { CaretDown, DoubleCaretVertical, IconName, SVGIconProps } from "@blueprintjs/icons";
 
-// eslint-disable-next-line deprecation/deprecation
-export type HTMLSelectProps = IHTMLSelectProps;
-/** @deprecated use HTMLSelectProps */
-export interface IHTMLSelectProps
-    // eslint-disable-next-line deprecation/deprecation
-    extends IElementRefProps<HTMLSelectElement>,
+import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
+import { DISPLAYNAME_PREFIX, OptionProps } from "../../common/props";
+import { Extends } from "../../common/utils";
+
+export type HTMLSelectIconName = Extends<IconName, "double-caret-vertical" | "caret-down">;
+
+export interface HTMLSelectProps
+    extends React.RefAttributes<HTMLSelectElement>,
         React.SelectHTMLAttributes<HTMLSelectElement> {
     children?: React.ReactNode;
 
@@ -37,8 +36,17 @@ export interface IHTMLSelectProps
     /** Whether this element should fill its container. */
     fill?: boolean;
 
-    /** Props to spread to the `<Icon>` element. */
-    iconProps?: Partial<IconProps>;
+    /**
+     * Name of one of the supported icons for this component to display on the right side of the element.
+     *
+     * @default "double-caret-vertical"
+     */
+    iconName?: HTMLSelectIconName;
+
+    /**
+     * Props to spread to the icon element displayed on the right side of the element.
+     */
+    iconProps?: Partial<SVGIconProps>;
 
     /** Whether to use large styles. */
     large?: boolean;
@@ -65,43 +73,57 @@ export interface IHTMLSelectProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class HTMLSelect extends AbstractPureComponent2<HTMLSelectProps> {
-    public render() {
-        const {
-            className,
-            disabled,
-            elementRef,
-            fill,
-            iconProps,
-            large,
-            minimal,
-            options = [],
-            ...htmlProps
-        } = this.props;
-        const classes = classNames(
-            HTML_SELECT,
-            {
-                [DISABLED]: disabled,
-                [FILL]: fill,
-                [LARGE]: large,
-                [MINIMAL]: minimal,
-            },
-            className,
+/**
+ * HTML select component
+ *
+ * @see https://blueprintjs.com/docs/#core/components/html-select
+ */
+export const HTMLSelect: React.FC<HTMLSelectProps> = React.forwardRef((props, ref) => {
+    const {
+        className,
+        children,
+        disabled,
+        fill,
+        iconName = "double-caret-vertical",
+        iconProps,
+        large,
+        minimal,
+        options = [],
+        value,
+        ...htmlProps
+    } = props;
+    const classes = classNames(
+        HTML_SELECT,
+        {
+            [DISABLED]: disabled,
+            [FILL]: fill,
+            [LARGE]: large,
+            [MINIMAL]: minimal,
+        },
+        className,
+    );
+
+    const iconTitle = "Open dropdown";
+    const rightIcon =
+        iconName === "double-caret-vertical" ? (
+            <DoubleCaretVertical title={iconTitle} {...iconProps} />
+        ) : (
+            <CaretDown title={iconTitle} {...iconProps} />
         );
 
-        const optionChildren = options.map(option => {
-            const props: OptionProps = typeof option === "object" ? option : { value: option };
-            return <option {...props} key={props.value} children={props.label || props.value} />;
-        });
+    const optionChildren = options.map(option => {
+        const optionProps: OptionProps = typeof option === "object" ? option : { value: option };
+        return <option {...optionProps} key={optionProps.value} children={optionProps.label || optionProps.value} />;
+    });
 
-        return (
-            <div className={classes}>
-                <select disabled={disabled} ref={elementRef} value={this.props.value} {...htmlProps} multiple={false}>
-                    {optionChildren}
-                    {htmlProps.children}
-                </select>
-                <Icon icon="double-caret-vertical" title="Open dropdown" {...iconProps} />
-            </div>
-        );
-    }
-}
+    return (
+        <div className={classes}>
+            <select disabled={disabled} ref={ref} value={value} {...htmlProps} multiple={false}>
+                {optionChildren}
+                {children}
+            </select>
+            {rightIcon}
+        </div>
+    );
+});
+HTMLSelect.displayName = `${DISPLAYNAME_PREFIX}.HTMLSelect`;

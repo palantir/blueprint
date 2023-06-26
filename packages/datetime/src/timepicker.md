@@ -15,4 +15,4 @@ setting `defaultValue`.
 
 `TimePicker` uses `Date` objects across its API but ignores their year, month, and day fields.
 
-@interface ITimePickerProps
+@interface TimePickerProps

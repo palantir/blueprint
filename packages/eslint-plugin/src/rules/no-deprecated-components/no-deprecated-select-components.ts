@@ -5,9 +5,7 @@
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
 export const selectComponentsMigrationMapping = {
-    MultiSelect: "MultiSelect2",
-    Select: "Select2",
-    Suggest: "Suggest2",
+    // nothing, for now
 };
 
 /**

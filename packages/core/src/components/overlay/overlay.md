@@ -27,7 +27,7 @@ be hidden. Fortunately, making an overlay scrollable is very easy: simply pass
 care of the rest.
 
 ```tsx
-<Overlay className={Classes.OVERLAY_SCROLL_CONTAINER} ... />
+<Overlay className={Classes.OVERLAY_SCROLL_CONTAINER} />
 ```
 
 The `Dialog` component applies this CSS class automatically.
@@ -43,7 +43,7 @@ to close, but your application is responsible for updating the state that
 actually closes the overlay.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">A note about overlay content positioning</h4>
+    <h5 class="@ns-heading">A note about overlay content positioning</h5>
 
 When rendered inline, content will automatically be set to `position: absolute` to respect
 document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
@@ -58,4 +58,4 @@ document flow. Otherwise, content will be set to `position: fixed` to cover the 
 </div>
 ```
 
-@interface IOverlayProps
+@interface OverlayProps

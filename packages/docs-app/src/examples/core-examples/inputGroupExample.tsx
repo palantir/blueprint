@@ -20,20 +20,22 @@ import {
     Button,
     H5,
     Icon,
-    IconSize,
     InputGroup,
     Intent,
     Menu,
     MenuItem,
+    Popover,
     Spinner,
     Switch,
     Tag,
+    Tooltip,
 } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
-import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
+import { IconSize } from "@blueprintjs/icons";
 
-export interface IInputGroupExampleState {
+export interface InputGroupExampleState {
     disabled: boolean;
+    readOnly: boolean;
     filterValue: string;
     large: boolean;
     small: boolean;
@@ -41,17 +43,20 @@ export interface IInputGroupExampleState {
     tagValue: string;
 }
 
-export class InputGroupExample extends React.PureComponent<ExampleProps, IInputGroupExampleState> {
-    public state: IInputGroupExampleState = {
+export class InputGroupExample extends React.PureComponent<ExampleProps, InputGroupExampleState> {
+    public state: InputGroupExampleState = {
         disabled: false,
         filterValue: "",
         large: false,
+        readOnly: false,
         showPassword: false,
         small: false,
         tagValue: "",
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
+    private handleReadOnlyChange = handleBooleanChange(readOnly => this.setState({ readOnly }));
 
     private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
 
@@ -64,12 +69,12 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, IInputG
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
     public render() {
-        const { disabled, filterValue, large, small, showPassword, tagValue } = this.state;
+        const { disabled, filterValue, large, readOnly, small, showPassword, tagValue } = this.state;
 
         const maybeSpinner = filterValue ? <Spinner size={IconSize.STANDARD} /> : undefined;
 
         const lockButton = (
-            <Tooltip2 content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>
+            <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>
                 <Button
                     disabled={disabled}
                     icon={showPassword ? "unlock" : "lock"}
@@ -77,11 +82,11 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, IInputG
                     minimal={true}
                     onClick={this.handleLockClick}
                 />
-            </Tooltip2>
+            </Tooltip>
         );
 
         const permissionsMenu = (
-            <Popover2
+            <Popover
                 content={
                     <Menu>
                         <MenuItem text="can edit" />
@@ -94,14 +99,14 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, IInputG
                 <Button disabled={disabled} minimal={true} rightIcon="caret-down">
                     can edit
                 </Button>
-            </Popover2>
+            </Popover>
         );
 
         const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <Tooltip2 content="My input value state is updated asynchronously with a 10ms delay">
+                <Tooltip content="My input value state is updated asynchronously with a 10ms delay">
                     <InputGroup
                         asyncControl={true}
                         disabled={disabled}
@@ -109,15 +114,17 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, IInputG
                         leftIcon="filter"
                         onChange={this.handleFilterChange}
                         placeholder="Filter histogram..."
+                        readOnly={readOnly}
                         rightElement={maybeSpinner}
                         small={small}
                         value={filterValue}
                     />
-                </Tooltip2>
+                </Tooltip>
                 <InputGroup
                     disabled={disabled}
                     large={large}
                     placeholder="Enter your password..."
+                    readOnly={readOnly}
                     rightElement={lockButton}
                     small={small}
                     type={showPassword ? "text" : "password"}
@@ -128,6 +135,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, IInputG
                     leftElement={<Icon icon="tag" />}
                     onChange={this.handleTagChange}
                     placeholder="Find tags"
+                    readOnly={readOnly}
                     rightElement={resultsTag}
                     small={small}
                     value={tagValue}
@@ -136,6 +144,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, IInputG
                     disabled={disabled}
                     large={large}
                     placeholder="Add people or groups..."
+                    readOnly={readOnly}
                     rightElement={permissionsMenu}
                     small={small}
                 />
@@ -144,11 +153,12 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, IInputG
     }
 
     private renderOptions() {
-        const { disabled, large, small } = this.state;
+        const { disabled, readOnly, large, small } = this.state;
         return (
             <>
                 <H5>Props</H5>
                 <Switch label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />
+                <Switch label="Read-only" onChange={this.handleReadOnlyChange} checked={readOnly} />
                 <Switch label="Large" onChange={this.handleLargeChange} checked={large} />
                 <Switch label="Small" onChange={this.handleSmallChange} checked={small} />
             </>

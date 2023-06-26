@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { AbstractComponent2, DISPLAYNAME_PREFIX, Keys, Menu, Props, Utils } from "@blueprintjs/core";
+import { AbstractComponent, DISPLAYNAME_PREFIX, Menu, Props, Utils } from "@blueprintjs/core";
 
 import {
     CreateNewItem,
@@ -30,10 +30,7 @@ import {
     renderFilteredItems,
 } from "../../common";
 
-// eslint-disable-next-line deprecation/deprecation
-export type QueryListProps<T> = IQueryListProps<T>;
-/** @deprecated use QueryListProps */
-export interface IQueryListProps<T> extends ListItemsProps<T> {
+export interface QueryListProps<T> extends ListItemsProps<T> {
     /**
      * Initial active item, useful if the parent component is controlling its selectedItem but
      * not activeItem.
@@ -73,16 +70,12 @@ export interface IQueryListProps<T> extends ListItemsProps<T> {
     disabled?: boolean;
 }
 
-// eslint-disable-next-line deprecation/deprecation
-export type QueryListRendererProps<T> = IQueryListRendererProps<T>;
 /**
  * An object describing how to render a `QueryList`.
  * A `QueryList` `renderer` receives this object as its sole argument.
- *
- * @deprecated use QueryListRendererProps
  */
-export interface IQueryListRendererProps<T> // Omit `createNewItem`, because it's used strictly for internal tracking.
-    extends Pick<IQueryListState<T>, "activeItem" | "filteredItems" | "query">,
+export interface QueryListRendererProps<T> // Omit `createNewItem`, because it's used strictly for internal tracking.
+    extends Pick<QueryListState<T>, "activeItem" | "filteredItems" | "query">,
         Props {
     /**
      * Selection handler that should be invoked when a new item has been chosen,
@@ -130,7 +123,8 @@ export interface IQueryListRendererProps<T> // Omit `createNewItem`, because it'
     itemList: React.ReactNode;
 }
 
-export interface IQueryListState<T> {
+/** Exported for testing, not part of public API */
+export interface QueryListState<T> {
     /** The currently focused item (for keyboard interactions). */
     activeItem: T | CreateNewItem | null;
 
@@ -149,7 +143,12 @@ export interface IQueryListState<T> {
     query: string;
 }
 
-export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryListState<T>> {
+/**
+ * Query list component.
+ *
+ * @see https://blueprintjs.com/docs/#select/query-list
+ */
+export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 
     public static defaultProps = {
@@ -163,6 +162,8 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     }
 
     private itemsParentRef?: HTMLElement | null;
+
+    private itemRefs = new Map<number, HTMLElement>();
 
     private refHandlers = {
         itemsParent: (ref: HTMLElement | null) => (this.itemsParentRef = ref),
@@ -197,8 +198,8 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
      */
     private isEnterKeyPressed = false;
 
-    public constructor(props: QueryListProps<T>, context?: any) {
-        super(props, context);
+    public constructor(props: QueryListProps<T>) {
+        super(props);
 
         const { query = "" } = props;
         const createNewItem = props.createNewItemFromQuery?.(query);
@@ -329,7 +330,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
 
         if (shouldUpdateActiveItem) {
             // if the `createNewItem` is first, that should be the first active item.
-            if (this.isCreateItemRendered() && this.isCreateItemFirst()) {
+            if (this.isCreateItemRendered(createNewItem) && this.isCreateItemFirst()) {
                 this.setActiveItem(getCreateNewItem());
             } else {
                 this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
@@ -389,6 +390,13 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
                 index,
                 modifiers,
                 query,
+                ref: node => {
+                    if (node) {
+                        this.itemRefs.set(index, node);
+                    } else {
+                        this.itemRefs.delete(index);
+                    }
+                },
             });
         }
 
@@ -396,7 +404,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     };
 
     private renderCreateItemMenuItem = () => {
-        if (this.isCreateItemRendered()) {
+        if (this.isCreateItemRendered(this.state.createNewItem)) {
             const { activeItem, query } = this.state;
             const trimmedQuery = query.trim();
             const handleClick: React.MouseEventHandler<HTMLElement> = evt => {
@@ -417,7 +425,9 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
                 return this.itemsParentRef.children.item(index) as HTMLElement;
             } else {
                 const activeIndex = this.getActiveIndex();
-                return this.itemsParentRef.children.item(activeIndex) as HTMLElement;
+                return (
+                    this.itemRefs.get(activeIndex) ?? (this.itemsParentRef.children.item(activeIndex) as HTMLElement)
+                );
             }
         }
         return undefined;
@@ -509,15 +519,14 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
     };
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        // eslint-disable-next-line deprecation/deprecation
-        const { keyCode } = event;
-        if (keyCode === Keys.ARROW_UP || keyCode === Keys.ARROW_DOWN) {
+        const { key } = event;
+        if (key === "ArrowUp" || key === "ArrowDown") {
             event.preventDefault();
-            const nextActiveItem = this.getNextActiveItem(keyCode === Keys.ARROW_UP ? -1 : 1);
+            const nextActiveItem = this.getNextActiveItem(key === "ArrowUp" ? -1 : 1);
             if (nextActiveItem != null) {
                 this.setActiveItem(nextActiveItem);
             }
-        } else if (keyCode === Keys.ENTER) {
+        } else if (key === "Enter") {
             this.isEnterKeyPressed = true;
         }
 
@@ -528,8 +537,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
         const { onKeyUp } = this.props;
         const { activeItem } = this.state;
 
-        // eslint-disable-next-line deprecation/deprecation
-        if (event.keyCode === Keys.ENTER && this.isEnterKeyPressed) {
+        if (event.key === "Enter" && this.isEnterKeyPressed) {
             // We handle ENTER in keyup here to play nice with the Button component's keyboard
             // clicking. Button is commonly used as the only child of Select. If we were to
             // instead process ENTER on keydown, then Button would click itself on keyup and
@@ -560,7 +568,7 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
      * @param startIndex item to start iteration
      */
     private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | CreateNewItem | null {
-        if (this.isCreateItemRendered()) {
+        if (this.isCreateItemRendered(this.state.createNewItem)) {
             const reachedCreate =
                 (startIndex === 0 && direction === -1) ||
                 (startIndex === this.state.filteredItems.length - 1 && direction === 1);
@@ -571,14 +579,18 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
         return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
     }
 
-    private isCreateItemRendered(): boolean {
+    /**
+     * @param createNewItem Checks if this item would match the current query. Cannot check this.state.createNewItem
+     *  every time since state may not have been updated yet.
+     */
+    private isCreateItemRendered(createNewItem?: T | T[]): boolean {
         return (
             this.canCreateItems() &&
             this.state.query !== "" &&
             // this check is unfortunately O(N) on the number of items, but
             // alas, hiding the "Create Item" option when it exactly matches an
             // existing item is much clearer.
-            !this.wouldCreatedItemMatchSomeExistingItem()
+            !this.wouldCreatedItemMatchSomeExistingItem(createNewItem)
         );
     }
 
@@ -590,13 +602,11 @@ export class QueryList<T> extends AbstractComponent2<QueryListProps<T>, IQueryLi
         return this.props.createNewItemFromQuery != null && this.props.createNewItemRenderer != null;
     }
 
-    private wouldCreatedItemMatchSomeExistingItem() {
+    private wouldCreatedItemMatchSomeExistingItem(createNewItem?: T | T[]) {
         // search only the filtered items, not the full items list, because we
         // only need to check items that match the current query.
         return this.state.filteredItems.some(item => {
-            const newItems = Array.isArray(this.state.createNewItem)
-                ? this.state.createNewItem
-                : [this.state.createNewItem];
+            const newItems = Array.isArray(createNewItem) ? createNewItem : [createNewItem];
             return newItems.some(newItem => executeItemsEqual(this.props.itemsEqual, item, newItem));
         });
     }

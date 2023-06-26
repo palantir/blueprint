@@ -16,15 +16,12 @@
 
 import * as React from "react";
 
-import { AbstractPureComponent2, Intent } from "../../common";
+import { AbstractPureComponent, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { HandleHtmlProps } from "./handleProps";
-import { ISliderBaseProps, MultiSlider } from "./multiSlider";
+import { MultiSlider, SliderBaseProps } from "./multiSlider";
 
-// eslint-disable-next-line deprecation/deprecation
-export type SliderProps = ISliderProps;
-/** @deprecated use SliderProps */
-export interface ISliderProps extends ISliderBaseProps {
+export interface SliderProps extends SliderBaseProps {
     /**
      * Initial value of the slider. This determines the other end of the
      * track fill: from `initialValue` to `value`.
@@ -50,7 +47,12 @@ export interface ISliderProps extends ISliderBaseProps {
     handleHtmlProps?: HandleHtmlProps;
 }
 
-export class Slider extends AbstractPureComponent2<SliderProps> {
+/**
+ * Slider component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/sliders.slider
+ */
+export class Slider extends AbstractPureComponent<SliderProps> {
     public static defaultProps: SliderProps = {
         ...MultiSlider.defaultSliderProps,
         initialValue: 0,

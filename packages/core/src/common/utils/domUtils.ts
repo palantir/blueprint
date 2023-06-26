@@ -19,6 +19,42 @@ export function elementIsOrContains(element: HTMLElement, testElement: HTMLEleme
 }
 
 /**
+ * Checks whether the given element is inside something that looks like a text input.
+ * This is particularly useful to determine if a keyboard event inside this element should take priority over hotkey
+ * bindings / keyboard shortcut handlers.
+ *
+ * @returns true if the element is inside a text input
+ */
+export function elementIsTextInput(elem: HTMLElement) {
+    // we check these cases for unit testing, but this should not happen
+    // during normal operation
+    if (elem == null || elem.closest == null) {
+        return false;
+    }
+
+    const editable = elem.closest("input, textarea, [contenteditable=true]");
+
+    if (editable == null) {
+        return false;
+    }
+
+    // don't let checkboxes, switches, and radio buttons prevent hotkey behavior
+    if (editable.tagName.toLowerCase() === "input") {
+        const inputType = (editable as HTMLInputElement).type;
+        if (inputType === "checkbox" || inputType === "radio") {
+            return false;
+        }
+    }
+
+    // don't let read-only fields prevent hotkey behavior
+    if ((editable as HTMLInputElement).readOnly) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
  * Gets the active element in the document or shadow root (if an element is provided, and it's in the shadow DOM).
  */
 export function getActiveElement(element?: HTMLElement | null, options?: GetRootNodeOptions) {
@@ -46,7 +82,7 @@ export function throttleEvent(target: EventTarget, eventName: string, newEventNa
     return throttledFunc;
 }
 
-export interface IThrottledReactEventOptions {
+export interface ThrottledReactEventOptions {
     preventDefault?: boolean;
 }
 
@@ -58,7 +94,7 @@ export interface IThrottledReactEventOptions {
  */
 export function throttleReactEventCallback<E extends React.SyntheticEvent = React.SyntheticEvent>(
     callback: (event: E, ...otherArgs: any[]) => any,
-    options: IThrottledReactEventOptions = {},
+    options: ThrottledReactEventOptions = {},
 ) {
     const throttledFunc = throttleImpl(
         callback,
@@ -105,4 +141,9 @@ function throttleImpl<T extends Function>(
         });
     };
     return func as any as T;
+}
+
+export function clickElementOnKeyPress(keys: string[]) {
+    return (e: React.KeyboardEvent) =>
+        keys.some(key => e.key === key) && e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }));
 }

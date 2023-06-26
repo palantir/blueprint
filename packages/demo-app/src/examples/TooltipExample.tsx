@@ -16,8 +16,7 @@
 
 import * as React from "react";
 
-import { Icon } from "@blueprintjs/core";
-import { Classes, Tooltip2 } from "@blueprintjs/popover2";
+import { Classes, Icon, Tooltip } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -25,8 +24,8 @@ export class TooltipExample extends React.PureComponent {
     public render() {
         return (
             <ExampleCard label="Tooltip" width={200}>
-                <Tooltip2
-                    className={Classes.TOOLTIP2_INDICATOR}
+                <Tooltip
+                    className={Classes.TOOLTIP_INDICATOR}
                     content={
                         <span>
                             <Icon icon="tick-circle" intent="success" style={{ marginRight: 7 }} />
@@ -36,10 +35,10 @@ export class TooltipExample extends React.PureComponent {
                     isOpen={true}
                 >
                     Always open target
-                </Tooltip2>
-                <Tooltip2 className={Classes.TOOLTIP2_INDICATOR} content={<span>Regular tooltip</span>}>
+                </Tooltip>
+                <Tooltip className={Classes.TOOLTIP_INDICATOR} content={<span>Regular tooltip</span>}>
                     Regular target
-                </Tooltip2>
+                </Tooltip>
             </ExampleCard>
         );
     }

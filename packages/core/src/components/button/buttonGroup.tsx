@@ -17,13 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Alignment, Classes } from "../../common";
+import { Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type ButtonGroupProps = IButtonGroupProps;
-/** @deprecated use ButtonGroupProps */
-export interface IButtonGroupProps extends Props, HTMLDivProps {
+export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
      * Text alignment within button. By default, icons and text will be centered
      * within the button. Passing `"left"` or `"right"` will align the button
@@ -66,12 +63,14 @@ export interface IButtonGroupProps extends Props, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-
-export class ButtonGroup extends AbstractPureComponent2<ButtonGroupProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;
-
-    public render() {
-        const { alignText, className, fill, minimal, large, vertical, ...htmlProps } = this.props;
+/**
+ * Button group component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/button-group
+ */
+export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
+    (props, ref) => {
+        const { alignText, className, fill, minimal, large, vertical, ...htmlProps } = props;
         const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,
             {
@@ -84,9 +83,10 @@ export class ButtonGroup extends AbstractPureComponent2<ButtonGroupProps> {
             className,
         );
         return (
-            <div {...htmlProps} className={buttonGroupClasses}>
-                {this.props.children}
+            <div {...htmlProps} ref={ref} className={buttonGroupClasses}>
+                {props.children}
             </div>
         );
-    }
-}
+    },
+);
+ButtonGroup.displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;

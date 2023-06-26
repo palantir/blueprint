@@ -17,19 +17,17 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { IconName, IconSize, SmallCross } from "@blueprintjs/icons";
+
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
-import { H5 } from "../html/html";
-import { Icon, IconName, IconSize } from "../icon/icon";
-import { IBackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
+import { H6 } from "../html/html";
+import { Icon } from "../icon/icon";
+import { BackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
 
-// eslint-disable-next-line deprecation/deprecation
-export type DialogProps = IDialogProps;
-/** @deprecated use DialogProps */
-export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
+export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /** Dialog contents. */
     children?: React.ReactNode;
 
@@ -99,7 +97,12 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     "aria-describedby"?: string;
 }
 
-export class Dialog extends AbstractPureComponent2<DialogProps> {
+/**
+ * Dialog component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/dialog
+ */
+export class Dialog extends AbstractPureComponent<DialogProps> {
     public static defaultProps: DialogProps = {
         canOutsideClickClose: true,
         isOpen: false,
@@ -154,7 +157,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<Icon icon="cross" size={IconSize.STANDARD} />}
+                    icon={<SmallCross size={IconSize.STANDARD} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -172,7 +175,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
         return (
             <div className={Classes.DIALOG_HEADER}>
                 <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
-                <H5 id={this.titleId}>{title}</H5>
+                <H6 id={this.titleId}>{title}</H6>
                 {this.maybeRenderCloseButton()}
             </div>
         );

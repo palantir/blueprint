@@ -14,7 +14,7 @@ You should not use `EditableText` when a static always-editable `<input>` or
 @reactExample EditableTextExample
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">Centering the component</h4>
+    <h5 class="@ns-heading">Centering the component</h5>
 
 **Do not center this component** using `text-align: center`, as it will cause an infinite loop
 in the browser ([more details](https://github.com/JedWatson/react-select/issues/540)). Instead,
@@ -56,4 +56,4 @@ confirm the current value, or presses `esc` to cancel. Canceling resets the
 field to the last confirmed value. Neither callback is invoked if the value is
 unchanged.
 
-@interface IEditableTextProps
+@interface EditableTextProps

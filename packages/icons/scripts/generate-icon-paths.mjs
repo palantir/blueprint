@@ -24,19 +24,11 @@
 import { pascalCase } from "change-case";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-// Note: we had issues with this approach using svgo v2.x, so for now we stick with v1.x
-// With v2.x, some shapes within the icon SVGs would not get converted to paths correctly,
-// resulting in invalid d="..." attributes rendered by the <Icon> component.
-import SVGO from "svgo";
 
-import { iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
+import { svgOptimizer } from "@blueprintjs/node-build-scripts";
 
-const svgo = new SVGO({ plugins: [{ convertShapeToPath: { convertArcs: true } }] });
-
+import { ICON_SIZES, iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
 const ICON_NAMES = iconsMetadata.map(icon => icon.iconName);
-
-/** @type {[16, 20]} */
-const ICON_SIZES = [16, 20];
 
 for (const iconSize of ICON_SIZES) {
     const iconPaths = await getIconPaths(iconSize);
@@ -71,7 +63,7 @@ async function getIconPaths(iconSize) {
     for (const iconName of ICON_NAMES) {
         const filepath = join(iconResourcesDir, `${iconSize}px/${iconName}.svg`);
         const svg = readFileSync(filepath, "utf-8");
-        const optimizedSvg = await svgo.optimize(svg, { path: filepath });
+        const optimizedSvg = await svgOptimizer.optimize(svg, { path: filepath });
         const pathStrings = (optimizedSvg.data.match(/ d="[^"]+"/g) || [])
             // strip off leading 'd="'
             .map(s => s.slice(3))

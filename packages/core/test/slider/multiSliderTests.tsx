@@ -18,11 +18,11 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
+import { Classes, MultiSlider, MultiSliderProps } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 
@@ -334,9 +334,25 @@ describe("<MultiSlider>", () => {
                 expectPropValidationError(MultiSlider, { labelStepSize }, "greater than zero");
             });
         });
+
+        it("throws an error if the min value is not finite", () => {
+            expectPropValidationError(
+                MultiSlider,
+                { min: Number.NEGATIVE_INFINITY },
+                "min prop must be a finite number",
+            );
+        });
+
+        it("throws an error if the max value is not finite", () => {
+            expectPropValidationError(
+                MultiSlider,
+                { max: Number.POSITIVE_INFINITY },
+                "max prop must be a finite number",
+            );
+        });
     });
 
-    function renderSlider(joinedProps: IMultiSliderProps & { values?: [number, number, number] } = {}) {
+    function renderSlider(joinedProps: MultiSliderProps & { values?: [number, number, number] } = {}) {
         const { values = [0, 5, 10], ...props } = joinedProps;
         return mount(
             <MultiSlider {...props}>

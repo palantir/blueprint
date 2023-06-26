@@ -24,6 +24,8 @@ describe("<MenuDivider>", () => {
     it("React renders MenuDivider", () => {
         const divider = shallow(<MenuDivider />);
         assert.isTrue(divider.hasClass(Classes.MENU_DIVIDER));
+        assert.isFalse(divider.hasClass(Classes.MENU_HEADER));
+        assert.isFalse(divider.find(H6).exists());
     });
 
     it("React renders MenuDivider with title", () => {
@@ -33,8 +35,6 @@ describe("<MenuDivider>", () => {
         assert.isTrue(divider.find(H6).exists());
     });
 });
-
-/* eslint-disable deprecation/deprecation */
 
 describe("<Menu>", () => {
     it("React renders Menu with children", () => {

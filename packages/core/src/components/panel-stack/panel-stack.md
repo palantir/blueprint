@@ -1,11 +1,11 @@
 @# Panel stack
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">
+    <h5 class="@ns-heading">
 
 Deprecated: use [PanelStack2](#core/components/panel-stack2)
 
-</h4>
+</h5>
 
 This API is **deprecated since @blueprintjs/core v3.40.0** in favor of the new
 PanelStack2 component. You should migrate to the new API which will become the
@@ -70,9 +70,8 @@ class SettingsPanel extends React.Component<IPanelProps & { enabled: boolean }> 
 
 @interface IPanelProps
 
-@## Props
+@## Props interface
 
 PanelStack can be operated as a controlled or uncontrolled component.
 
 @interface IPanelStackProps
-

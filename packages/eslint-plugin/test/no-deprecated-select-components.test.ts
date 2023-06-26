@@ -35,23 +35,14 @@ const ruleTester = new TSESLint.RuleTester({
 ruleTester.run("no-deprecated-core-components", noDeprecatedSelectComponentsRule, {
     // N.B. most other deprecated components are tested by no-deprecated-components.test.ts, this suite just tests
     // for more specific violations which involve certain syntax
-    invalid: [
+    invalid: [],
+    valid: [
         {
             code: dedent`
                 import { MultiSelect } from "@blueprintjs/select";
 
                 const MyMultiSelect = MultiSelect.ofType<any>();
             `,
-            errors: [
-                {
-                    messageId: "migration",
-                    data: {
-                        deprecatedComponentName: "MultiSelect",
-                        newComponentName: "MultiSelect2",
-                    },
-                },
-            ],
         },
     ],
-    valid: [],
 });

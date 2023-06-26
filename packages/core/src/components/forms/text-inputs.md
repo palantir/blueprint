@@ -36,7 +36,7 @@ but there is basic support for it using the `asyncControl` prop. Note that the i
 to the end of the input if the speed of text entry (time between change events) is faster than the
 speed of the async update.
 
-@interface IInputGroupProps
+@interface InputGroupProps
 
 @### CSS
 
@@ -46,7 +46,7 @@ vice versa. You do not need to apply sizing classes to the children&mdash;they i
 the parent input.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Icons only</h4>
+    <h5 class="@ns-heading">Icons only</h5>
 
 You cannot use buttons with text in the CSS API for input groups. The padding for text inputs
 in CSS cannot accommodate buttons whose width varies due to text content. You should use icons on
@@ -69,21 +69,15 @@ Apply `Classes.INPUT` on an `input[type="text"]`. You should also specify `dir="
 
 @## Text area
 
-Apply `Classes.INPUT` on a `<textarea>`, or use the `TextArea` React component.
+Use the `<TextArea>` React component, which can be controlled similar to an `<InputGroup>` or `<input>` element.
 
-```tsx
-<TextArea
-    growVertically={true}
-    large={true}
-    intent={Intent.PRIMARY}
-    onChange={this.handleChange}
-    value={this.state.value}
-/>
-```
+@reactExample TextAreaExample
+
+Alternatively, you may apply `Classes.INPUT` to a `<textarea>` element.
 
 @css textarea
 
-@interface ITextAreaProps
+@interface TextAreaProps
 
 @## Search field
 

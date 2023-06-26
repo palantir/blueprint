@@ -8,7 +8,7 @@ on the container will focus the text input for seamless interaction.
 @reactExample TagInputExample
 
 <div class="@ns-callout @ns-intent-success @ns-icon-info-sign">
-    <h4 class="@ns-heading">Looking for a dropdown menu?</h4>
+    <h5 class="@ns-heading">Looking for a dropdown menu?</h5>
 
 [`MultiSelect` in the **@blueprintjs/select** package](#select/multi-select)
 composes this component with a dropdown menu of suggestions.
@@ -46,7 +46,7 @@ The `<input>` element can be controlled directly via the `inputValue` and
 be applied to the input via `inputProps`.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Handling long words</h4>
+    <h5 class="@ns-heading">Handling long words</h5>
 
 Set an explicit `width` on the container element to cause long tags to wrap onto multiple lines.
 Either supply a specific pixel value, or use `<TagInput className={Classes.FILL}>`
@@ -55,7 +55,7 @@ to fill its container's width (try this in the example above).
 </div>
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Disabling a tag input</h4>
+    <h5 class="@ns-heading">Disabling a tag input</h5>
 
 Disabling this component requires setting the `disabled` prop to `true`
 and separately disabling the component's `rightElement` as appropriate
@@ -63,4 +63,4 @@ and separately disabling the component's `rightElement` as appropriate
 
 </div>
 
-@interface ITagInputProps
+@interface TagInputProps

@@ -17,14 +17,13 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { Cross } from "@blueprintjs/icons";
+
+import { AbstractPureComponent, Classes } from "../../common";
 import { ActionProps, DISPLAYNAME_PREFIX, IntentProps, LinkProps, MaybeElement, Props } from "../../common/props";
 import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
 import { Icon, IconName } from "../icon/icon";
-
-/** @deprecated use ToastProps */
-export type IToastProps = ToastProps;
 
 export interface ToastProps extends Props, IntentProps {
     /**
@@ -63,7 +62,12 @@ export interface ToastProps extends Props, IntentProps {
     timeout?: number;
 }
 
-export class Toast extends AbstractPureComponent2<ToastProps> {
+/**
+ * Toast component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/toast
+ */
+export class Toast extends AbstractPureComponent<ToastProps> {
     public static defaultProps: ToastProps = {
         className: "",
         isCloseButtonShown: true,
@@ -90,7 +94,9 @@ export class Toast extends AbstractPureComponent2<ToastProps> {
                 </span>
                 <ButtonGroup minimal={true}>
                     {this.maybeRenderActionButton()}
-                    {isCloseButtonShown && <Button aria-label="Close" icon="cross" onClick={this.handleCloseClick} />}
+                    {isCloseButtonShown && (
+                        <Button aria-label="Close" icon={<Cross />} onClick={this.handleCloseClick} />
+                    )}
                 </ButtonGroup>
             </div>
         );

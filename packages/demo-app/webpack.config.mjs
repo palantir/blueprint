@@ -21,15 +21,11 @@ import { cwd } from "node:process";
 
 import { baseConfig } from "@blueprintjs/webpack-build-scripts";
 
-export default Object.assign({}, baseConfig, {
+export default {
+    ...baseConfig,
+
     entry: {
-        "demo-app": [
-            // environment polyfills
-            "dom4",
-            "./polyfill.js",
-            // bundle entry points
-            "./src/index.tsx",
-        ],
+        "demo-app": "./src/index.tsx",
     },
 
     output: {
@@ -47,4 +43,4 @@ export default Object.assign({}, baseConfig, {
             ],
         }),
     ]),
-});
+};

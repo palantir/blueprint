@@ -17,19 +17,19 @@
 import * as React from "react";
 
 import { H5, Intent, Label, Slider, Spinner, SpinnerSize, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface ISpinnerExampleState {
+export interface SpinnerExampleState {
     hasValue: boolean;
     intent?: Intent;
     size: number;
     value: number;
 }
 
-export class SpinnerExample extends React.PureComponent<ExampleProps, ISpinnerExampleState> {
-    public state: ISpinnerExampleState = {
+export class SpinnerExample extends React.PureComponent<ExampleProps, SpinnerExampleState> {
+    public state: SpinnerExampleState = {
         hasValue: false,
         size: SpinnerSize.STANDARD,
         value: 0.7,
@@ -37,7 +37,7 @@ export class SpinnerExample extends React.PureComponent<ExampleProps, ISpinnerEx
 
     private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
 
-    private handleModifierChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     public render() {
         const { size, hasValue, intent, value } = this.state;
@@ -60,7 +60,7 @@ export class SpinnerExample extends React.PureComponent<ExampleProps, ISpinnerEx
         return (
             <>
                 <H5>Props</H5>
-                <IntentSelect intent={intent} onChange={this.handleModifierChange} />
+                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
                 <Label id={this.spinnerSizeLabelId}>Size</Label>
                 <Slider
                     labelStepSize={50}

@@ -17,21 +17,13 @@
 // we use the empty object {} a lot in this public API
 /* eslint-disable @typescript-eslint/ban-types */
 
-/* eslint-disable deprecation/deprecation */
-
-/** @deprecated use KeyAllowlist */
-export interface IKeyAllowlist<T> {
+export interface KeyAllowlist<T> {
     include: Array<keyof T>;
 }
-export type KeyAllowlist<T> = IKeyAllowlist<T>;
 
-/** @deprecated use KeyDenylist */
-export interface IKeyDenylist<T> {
+export interface KeyDenylist<T> {
     exclude: Array<keyof T>;
 }
-export type KeyDenylist<T> = IKeyDenylist<T>;
-
-/* eslint-enable deprecation/deprecation */
 
 /**
  * Returns true if the arrays are equal. Elements will be shallowly compared by
@@ -155,7 +147,7 @@ function isSimplePrimitiveType(value: any) {
     return typeof value === "number" || typeof value === "string" || typeof value === "boolean";
 }
 
-function filterKeys<T>(objA: T, objB: T, keys: KeyDenylist<T> | KeyAllowlist<T>) {
+function filterKeys<T extends object>(objA: T, objB: T, keys: KeyDenylist<T> | KeyAllowlist<T>) {
     if (isAllowlist(keys)) {
         return keys.include;
     } else if (isDenylist(keys)) {

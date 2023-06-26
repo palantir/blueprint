@@ -10,7 +10,7 @@ which contain an `<input type="file">`. It supports the full range of HTML `<lab
 Use `inputProps` to apply props to the `<input>` element.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Static file name</h4>
+    <h5 class="@ns-heading">Static file name</h5>
 
 File name does not update on file selection. To get this behavior,
 you must implement it separately in JS.
@@ -21,7 +21,7 @@ you must implement it separately in JS.
 <FileInput disabled={true} text="Choose file..." onInputChange={...} />
 ```
 
-@interface IFileInputProps
+@interface FileInputProps
 
 @## CSS
 

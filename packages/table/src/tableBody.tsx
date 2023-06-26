@@ -14,43 +14,34 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to TableBody2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent2, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent, Utils as CoreUtils } from "@blueprintjs/core";
 
 import type { CellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { RenderMode } from "./common/renderMode";
-import { ICoordinateData } from "./interactions/dragTypes";
-import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
-import { DragSelectable, ISelectableProps } from "./interactions/selectable";
-import { ILocator } from "./locator";
+import { CoordinateData } from "./interactions/dragTypes";
+import { ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
+import { DragSelectable, SelectableProps } from "./interactions/selectable";
+import { Locator } from "./locator";
 import { Region, Regions } from "./regions";
-import { cellClassNames, ITableBodyCellsProps, TableBodyCells } from "./tableBodyCells";
+import { TableBodyCells, TableBodyCellsProps } from "./tableBodyCells";
 
-export type TableBodyProps = ITableBodyProps;
-/** @deprecated use TableBodyProps */
-export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps {
+export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
     /**
      * An optional callback for displaying a context menu when right-clicking
-     * on the table body. The callback is supplied with an `IMenuContext`
+     * on the table body. The callback is supplied with a `MenuContext`
      * containing the `Region`s of interest.
      */
-    bodyContextMenuRenderer?: IContextMenuRenderer;
+    bodyContextMenuRenderer?: ContextMenuRenderer;
 
     /**
      * Locates the row/column/cell given a mouse event.
      */
-    locator: ILocator;
+    locator: Locator;
 
     /**
      * The number of columns to freeze to the left side of the table, counting from the leftmost column.
@@ -65,23 +56,17 @@ export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps 
 
 const DEEP_COMPARE_KEYS: Array<keyof TableBodyProps> = ["selectedRegions"];
 
-/** @deprecated use TableBody2 instead */
-export class TableBody extends AbstractComponent2<TableBodyProps> {
+export class TableBody extends AbstractComponent<TableBodyProps> {
     public static defaultProps = {
         loading: false,
         renderMode: RenderMode.BATCH,
     };
 
-    /**
-     * @deprecated, will be removed from public API in the next major version
-     */
-    public static cellClassNames(rowIndex: number, columnIndex: number) {
-        return cellClassNames(rowIndex, columnIndex);
-    }
-
     private activationCell: CellCoordinates | null = null;
 
-    public shouldComponentUpdate(nextProps: ITableBodyProps) {
+    private wrapperRef = React.createRef<HTMLDivElement>();
+
+    public shouldComponentUpdate(nextProps: TableBodyProps) {
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: DEEP_COMPARE_KEYS }) ||
             !CoreUtils.deepCompareKeys(this.props, nextProps, DEEP_COMPARE_KEYS)
@@ -108,11 +93,13 @@ export class TableBody extends AbstractComponent2<TableBodyProps> {
                 onSelectionEnd={this.handleSelectionEnd}
                 selectedRegions={this.props.selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
+                targetRef={this.wrapperRef}
             >
                 <ContextMenuTargetWrapper
                     className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
                     renderContextMenu={this.renderContextMenu}
                     style={style}
+                    targetRef={this.wrapperRef}
                 >
                     <TableBodyCells
                         cellRenderer={this.props.cellRenderer}
@@ -159,7 +146,7 @@ export class TableBody extends AbstractComponent2<TableBodyProps> {
             onFocusedCell(nextFocusedCell);
         }
 
-        const menuContext = new MenuContext(targetRegion, nextSelectedRegions, numRows, numCols);
+        const menuContext = new MenuContextImpl(targetRegion, nextSelectedRegions, numRows, numCols);
         const contextMenu = bodyContextMenuRenderer(menuContext);
 
         return contextMenu == null ? undefined : contextMenu;
@@ -177,7 +164,7 @@ export class TableBody extends AbstractComponent2<TableBodyProps> {
         return Regions.cell(this.activationCell.row, this.activationCell.col);
     };
 
-    private locateDrag = (_event: MouseEvent, coords: ICoordinateData, returnEndOnly = false) => {
+    private locateDrag = (_event: MouseEvent, coords: CoordinateData, returnEndOnly = false) => {
         if (this.activationCell === null) {
             return undefined;
         }

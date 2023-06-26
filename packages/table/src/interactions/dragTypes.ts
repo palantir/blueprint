@@ -14,43 +14,40 @@
  * limitations under the License.
  */
 
-export type IClientCoordinates = [number, number];
-export type ClientCoordinates = IClientCoordinates;
+export type ClientCoordinates = [number, number];
 
-export type CoordinateData = ICoordinateData;
 /**
  * Various useful coordinate values are pre-computed for you and supplied to
  * onDragMove and onDragEnd callbacks.
  */
-export interface ICoordinateData {
+export interface CoordinateData {
     /**
      * The client coordinates where the interaction was activated.
      */
-    activation: IClientCoordinates;
+    activation: ClientCoordinates;
 
     /**
      * The client coordinates of the current mouse event.
      */
-    current: IClientCoordinates;
+    current: ClientCoordinates;
 
     /**
      * The difference between current and last client coordinates.
      */
-    delta: IClientCoordinates;
+    delta: ClientCoordinates;
 
     /**
      * The client coordinates of the previous mouse event.
      */
-    last: IClientCoordinates;
+    last: ClientCoordinates;
 
     /**
      * The difference between current and activation client coordinates.
      */
-    offset: IClientCoordinates;
+    offset: ClientCoordinates;
 }
 
-export type DragHandler = IDragHandler;
-export interface IDragHandler {
+export interface DragHandler {
     /**
      * Called when the mouse is pressed down. Drag and click operations may
      * be cancelled at this point by returning false from this method.
@@ -62,13 +59,13 @@ export interface IDragHandler {
      * mouse is released. This method is also called on the last even when the
      * mouse is released.
      */
-    onDragMove?: (event: MouseEvent, coords: ICoordinateData) => void;
+    onDragMove?: (event: MouseEvent, coords: CoordinateData) => void;
 
     /**
      * Called when the mouse is released iff the mouse was dragged after
      * activation.
      */
-    onDragEnd?: (event: MouseEvent, coords: ICoordinateData) => void;
+    onDragEnd?: (event: MouseEvent, coords: CoordinateData) => void;
 
     /**
      * Called when the mouse is released iff the mouse was NOT dragged after
@@ -105,4 +102,35 @@ export interface IDragHandler {
      * @default false
      */
     stopPropagation?: boolean;
+}
+
+export interface DraggableChildrenProps {
+    /**
+     * Single child, must be an element and not a string or fragment.
+     */
+    children: JSX.Element;
+
+    /**
+     * You must provide provide this ref so that Draggable can access its child DOM node if:
+     *
+     *  - You are already attaching your own `ref` to the child element
+     *  - The child element is not a native DOM element
+     *  - The child element _does not_ use React.forwardRef to allow refs to pass through to the DOM
+     *
+     * This may look something like:
+     *
+     *  ```tsx
+     *  import * as React from "react";
+     *
+     *  function MyDraggableComponent() {
+     *      const myRef = React.createRef<HTMLElement();
+     *      return (
+     *          <Draggable targetRef={myRef}>
+     *              <div ref={myRef} />
+     *          </Draggable>
+     *      );
+     *  }
+     *  ```
+     */
+    targetRef?: React.RefObject<HTMLElement>;
 }

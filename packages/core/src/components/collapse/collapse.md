@@ -16,11 +16,11 @@ Once the component is in the closed state, the children are no longer rendered, 
 `keepChildrenMounted` prop is true.
 
 ```tsx
-export interface ICollapseExampleState {
+export interface CollapseExampleState {
     isOpen?: boolean;
 };
 
-export class CollapseExample extends React.Component<{}, ICollapseExampleState> {
+export class CollapseExample extends React.Component<{}, CollapseExampleState> {
     public state = {
         isOpen: false,
     };
@@ -46,4 +46,4 @@ export class CollapseExample extends React.Component<{}, ICollapseExampleState> 
 }
 ```
 
-@interface ICollapseProps
+@interface CollapseProps

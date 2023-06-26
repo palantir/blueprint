@@ -7,7 +7,7 @@ where the user can click to activate the control. Notice how in the examples
 below, clicking a label focuses its `<input>`.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Prefer form groups over labels</h4>
+    <h5 class="@ns-heading">Prefer form groups over labels</h5>
 
 The [React `FormGroup` component](#core/components/form-group) provides
 additional functionality such as helper text and modifier props as well as
@@ -30,7 +30,7 @@ This component supports the full range of HTML props.
 <input className={Classes.INPUT} id="input-b" placeholder="Placeholder text" />
 ```
 
-@interface ILabelProps
+@interface LabelProps
 
 @## CSS
 

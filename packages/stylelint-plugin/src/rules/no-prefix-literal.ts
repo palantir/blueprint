@@ -16,7 +16,7 @@
 import type { Root } from "postcss";
 import selectorParser from "postcss-selector-parser";
 import stylelint from "stylelint";
-import type { PluginContext, PostcssResult } from "stylelint";
+import type { PostcssResult, RuleContext } from "stylelint";
 
 import { checkImportExists } from "../utils/checkImportExists";
 import {
@@ -35,7 +35,7 @@ const messages = stylelint.utils.ruleMessages(ruleName, {
     expected: (unfixed: any, fixed: any) => `Use the \`${fixed}\` variable instead of the \`${unfixed}\` literal`,
 });
 
-const bannedPrefixes = ["bp3", "bp4"];
+const bannedPrefixes = ["bp3", "bp4", "bp5"];
 
 interface Options {
     disableFix?: boolean;
@@ -43,7 +43,7 @@ interface Options {
 }
 
 const ruleImpl =
-    (enabled: boolean, options: Options | undefined, context: PluginContext) => (root: Root, result: PostcssResult) => {
+    (enabled: boolean, options: Options | undefined, context: RuleContext) => (root: Root, result: PostcssResult) => {
         if (!enabled) {
             return;
         }

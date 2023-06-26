@@ -17,13 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type CollapseProps = ICollapseProps;
-/** @deprecated use CollapseProps */
-export interface ICollapseProps extends Props {
+export interface CollapseProps extends Props {
     /** Contents to collapse. */
     children?: React.ReactNode;
 
@@ -61,7 +58,7 @@ export interface ICollapseProps extends Props {
     transitionDuration?: number;
 }
 
-export interface ICollapseState {
+export interface CollapseState {
     /** The state the element is currently in. */
     animationState: AnimationStates;
 
@@ -119,7 +116,12 @@ export enum AnimationStates {
     CLOSED,
 }
 
-export class Collapse extends AbstractPureComponent2<CollapseProps, ICollapseState> {
+/**
+ * Collapse component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/collapse
+ */
+export class Collapse extends AbstractPureComponent<CollapseProps, CollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
     public static defaultProps: Partial<CollapseProps> = {
@@ -129,7 +131,7 @@ export class Collapse extends AbstractPureComponent2<CollapseProps, ICollapseSta
         transitionDuration: 200,
     };
 
-    public static getDerivedStateFromProps(props: CollapseProps, state: ICollapseState) {
+    public static getDerivedStateFromProps(props: CollapseProps, state: CollapseState) {
         const { isOpen } = props;
         const { animationState } = state;
 
@@ -164,7 +166,7 @@ export class Collapse extends AbstractPureComponent2<CollapseProps, ICollapseSta
         return null;
     }
 
-    public state: ICollapseState = {
+    public state: CollapseState = {
         animationState: this.props.isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
         height: undefined,
         heightWhenOpen: undefined,
@@ -203,7 +205,7 @@ export class Collapse extends AbstractPureComponent2<CollapseProps, ICollapseSta
                 className={Classes.COLLAPSE_BODY}
                 ref={this.contentsRefHandler}
                 style={contentsStyle}
-                aria-hidden={!isContentVisible && this.props.keepChildrenMounted}
+                aria-hidden={!isContentVisible}
             >
                 {shouldRenderChildren ? this.props.children : null}
             </div>,

@@ -13,7 +13,7 @@ stays at the top of the screen as the user scrolls through the document.
 This modifier is not illustrated here because it breaks the document flow.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">Body padding required</h4>
+    <h5 class="@ns-heading">Body padding required</h5>
 
 The fixed navbar will lie on top of your other content unless you add padding to the top of the
 `<body>` element equal to the height of the navbar. Use the `$pt-navbar-height` Sass variable.
@@ -52,13 +52,13 @@ the full range of HTML `<div>` props.
 </Navbar>
 ```
 
-@interface INavbarProps
+@interface NavbarProps
 
-@interface INavbarGroupProps
+@interface NavbarGroupProps
 
-@interface INavbarHeadingProps
+@interface NavbarHeadingProps
 
-@interface INavbarDividerProps
+@interface NavbarDividerProps
 
 @## CSS
 

@@ -19,13 +19,13 @@ import * as React from "react";
 import { Button, Card, Classes, Elevation, H5, Label, Slider, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface ICardExampleState {
+export interface CardExampleState {
     elevation: Elevation;
     interactive: boolean;
 }
 
-export class CardExample extends React.PureComponent<ExampleProps, ICardExampleState> {
-    public state: ICardExampleState = {
+export class CardExample extends React.PureComponent<ExampleProps, CardExampleState> {
+    public state: CardExampleState = {
         elevation: 0,
         interactive: false,
     };
@@ -51,9 +51,7 @@ export class CardExample extends React.PureComponent<ExampleProps, ICardExampleS
         return (
             <Example options={options} {...this.props}>
                 <Card {...this.state}>
-                    <H5>
-                        <a href="#">Analytical applications</a>
-                    </H5>
+                    <H5>Analytical applications</H5>
                     <p>
                         User interfaces that enable people to interact smoothly with data, ask better questions, and
                         make better decisions.

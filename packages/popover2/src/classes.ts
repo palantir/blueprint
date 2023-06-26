@@ -14,30 +14,31 @@
  * limitations under the License.
  */
 
-import { Classes } from "@blueprintjs/core";
+import { Classes as CoreClasses } from "@blueprintjs/core";
 
-const NS = Classes.getClassNamespace();
+/** @deprecated use { Classes } from @blueprintjs/core instead */
+export const Classes = {
+    CONTEXT_MENU2: CoreClasses.CONTEXT_MENU,
+    CONTEXT_MENU2_BACKDROP: CoreClasses.CONTEXT_MENU_BACKDROP,
+    CONTEXT_MENU2_POPOVER2: CoreClasses.CONTEXT_MENU_POPOVER,
+    CONTEXT_MENU2_VIRTUAL_TARGET: CoreClasses.CONTEXT_MENU_VIRTUAL_TARGET,
 
-export const CONTEXT_MENU2 = `${NS}-context-menu2`;
-export const CONTEXT_MENU2_VIRTUAL_TARGET = `${CONTEXT_MENU2}-virtual-target`;
-export const CONTEXT_MENU2_POPOVER2 = `${CONTEXT_MENU2}-popover2`;
-export const CONTEXT_MENU2_BACKDROP = `${CONTEXT_MENU2}-backdrop`;
+    POPOVER2: CoreClasses.POPOVER,
+    POPOVER2_ARROW: CoreClasses.POPOVER_ARROW,
+    POPOVER2_BACKDROP: CoreClasses.POPOVER_BACKDROP,
+    POPOVER2_CAPTURING_DISMISS: CoreClasses.POPOVER_CAPTURING_DISMISS,
+    POPOVER2_CONTENT: CoreClasses.POPOVER_CONTENT,
+    POPOVER2_CONTENT_PLACEMENT: CoreClasses.POPOVER_CONTENT_PLACEMENT,
+    POPOVER2_CONTENT_SIZING: CoreClasses.POPOVER_CONTENT_SIZING,
+    POPOVER2_DISMISS: CoreClasses.POPOVER_DISMISS,
+    POPOVER2_DISMISS_OVERRIDE: CoreClasses.POPOVER_DISMISS_OVERRIDE,
+    POPOVER2_MATCH_TARGET_WIDTH: CoreClasses.POPOVER_MATCH_TARGET_WIDTH,
+    POPOVER2_OPEN: CoreClasses.POPOVER_OPEN,
+    POPOVER2_POPPER_ESCAPED: CoreClasses.POPOVER_POPPER_ESCAPED,
+    POPOVER2_REFERENCE_HIDDEN: CoreClasses.POPOVER_REFERENCE_HIDDEN,
+    POPOVER2_TARGET: CoreClasses.POPOVER_TARGET,
+    POPOVER2_TRANSITION_CONTAINER: CoreClasses.POPOVER_TRANSITION_CONTAINER,
 
-export const POPOVER2 = `${NS}-popover2`;
-export const POPOVER2_ARROW = `${POPOVER2}-arrow`;
-export const POPOVER2_BACKDROP = `${POPOVER2}-backdrop`;
-export const POPOVER2_CAPTURING_DISMISS = `${POPOVER2}-capturing-dismiss`;
-export const POPOVER2_CONTENT = `${POPOVER2}-content`;
-export const POPOVER2_CONTENT_PLACEMENT = `${POPOVER2}-placement`;
-export const POPOVER2_CONTENT_SIZING = `${POPOVER2_CONTENT}-sizing`;
-export const POPOVER2_DISMISS = `${POPOVER2}-dismiss`;
-export const POPOVER2_DISMISS_OVERRIDE = `${POPOVER2_DISMISS}-override`;
-export const POPOVER2_MATCH_TARGET_WIDTH = `${POPOVER2}-match-target-width`;
-export const POPOVER2_OPEN = `${POPOVER2}-open`;
-export const POPOVER2_POPPER_ESCAPED = `${POPOVER2}-popper-escaped`;
-export const POPOVER2_REFERENCE_HIDDEN = `${POPOVER2}-reference-hidden`;
-export const POPOVER2_TARGET = `${POPOVER2}-target`;
-export const POPOVER2_TRANSITION_CONTAINER = `${POPOVER2}-transition-container`;
-
-export const TOOLTIP2 = `${NS}-tooltip2`;
-export const TOOLTIP2_INDICATOR = `${TOOLTIP2}-indicator`;
+    TOOLTIP2: CoreClasses.TOOLTIP,
+    TOOLTIP2_INDICATOR: CoreClasses.TOOLTIP_INDICATOR,
+};

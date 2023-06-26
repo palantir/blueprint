@@ -17,13 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type TextProps = ITextProps;
-/** @deprecated use TextProps */
-export interface ITextProps extends Props {
+export interface TextProps extends Props {
     children?: React.ReactNode;
 
     /**
@@ -47,62 +44,49 @@ export interface ITextProps extends Props {
     title?: string;
 }
 
-export interface ITextState {
-    textContent: string;
-    isContentOverflowing: boolean;
-}
+/**
+ * Text component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/text
+ */
+export const Text: React.FC<TextProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> = ({
+    children,
+    tagName = "div",
+    title,
+    className,
+    ellipsize,
+    ...htmlProps
+}) => {
+    const textRef = React.useRef<HTMLElement>();
+    const [textContent, setTextContent] = React.useState<string>("");
+    const [isContentOverflowing, setIsContentOverflowing] = React.useState<boolean>();
 
-export class Text extends AbstractPureComponent2<
-    TextProps & Omit<React.HTMLAttributes<HTMLElement>, "title">,
-    ITextState
-> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Text`;
-
-    public static defaultProps: Partial<TextProps> = {
-        ellipsize: false,
-    };
-
-    public state: ITextState = {
-        isContentOverflowing: false,
-        textContent: "",
-    };
-
-    private textRef: HTMLElement | null = null;
-
-    public componentDidMount() {
-        this.update();
-    }
-
-    public componentDidUpdate() {
-        this.update();
-    }
-
-    public render() {
-        const { children, className, ellipsize, tagName = "div", title, ...htmlProps } = this.props;
-        const classes = classNames(className, {
-            [Classes.TEXT_OVERFLOW_ELLIPSIS]: ellipsize,
-        });
-
-        return React.createElement(
-            tagName,
-            {
-                ...htmlProps,
-                className: classes,
-                ref: (ref: HTMLElement | null) => (this.textRef = ref),
-                title: title ?? (this.state.isContentOverflowing ? this.state.textContent : undefined),
-            },
-            children,
-        );
-    }
-
-    private update() {
-        if (this.textRef?.textContent == null) {
-            return;
+    // try to be conservative about running this effect, since querying scrollWidth causes the browser to reflow / recalculate styles,
+    // which can be very expensive for long lists (for example, in long Menus)
+    React.useLayoutEffect(() => {
+        if (textRef.current?.textContent != null) {
+            setIsContentOverflowing(ellipsize! && textRef.current.scrollWidth > textRef.current.clientWidth);
+            setTextContent(textRef.current.textContent);
         }
-        const newState = {
-            isContentOverflowing: this.props.ellipsize! && this.textRef.scrollWidth > this.textRef.clientWidth,
-            textContent: this.textRef.textContent,
-        };
-        this.setState(newState);
-    }
-}
+    }, [textRef, children, ellipsize]);
+
+    return React.createElement(
+        tagName,
+        {
+            ...htmlProps,
+            className: classNames(
+                {
+                    [Classes.TEXT_OVERFLOW_ELLIPSIS]: ellipsize,
+                },
+                className,
+            ),
+            ref: textRef,
+            title: title ?? (isContentOverflowing ? textContent : undefined),
+        },
+        children,
+    );
+};
+Text.defaultProps = {
+    ellipsize: false,
+};
+Text.displayName = `${DISPLAYNAME_PREFIX}.Text`;

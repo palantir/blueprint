@@ -16,10 +16,9 @@
 
 import * as React from "react";
 
-import { Code, H5, Intent, MenuItem, Switch, TagProps } from "@blueprintjs/core";
+import { Code, H5, Intent, MenuItem, Popover, Switch, TagProps } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { DefaultPopover2TargetHTMLProps, Popover2 } from "@blueprintjs/popover2";
-import { ItemRenderer, MultiSelect2 } from "@blueprintjs/select";
+import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
 import {
     areFilmsEqual,
     arrayContainsFilm,
@@ -37,7 +36,7 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
-export interface IMultiSelectExampleState {
+export interface MultiSelectExampleState {
     allowCreate: boolean;
     createdItems: Film[];
     disabled: boolean;
@@ -54,8 +53,8 @@ export interface IMultiSelectExampleState {
     tagMinimal: boolean;
 }
 
-export class MultiSelectExample extends React.PureComponent<ExampleProps, IMultiSelectExampleState> {
-    public state: IMultiSelectExampleState = {
+export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiSelectExampleState> {
+    public state: MultiSelectExampleState = {
         allowCreate: false,
         createdItems: [],
         disabled: false,
@@ -72,7 +71,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
         tagMinimal: false,
     };
 
-    private popoverRef: React.RefObject<Popover2<DefaultPopover2TargetHTMLProps>> = React.createRef();
+    private popoverRef: React.RefObject<Popover> = React.createRef();
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
 
@@ -111,7 +110,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <MultiSelect2<Film>
+                <MultiSelect<Film>
                     {...flags}
                     createNewItemFromQuery={allowCreate ? createFilms : undefined}
                     createNewItemRenderer={allowCreate ? renderCreateFilmsMenuItem : null}
@@ -311,7 +310,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, IMulti
         this.selectFilms(films);
     };
 
-    private handleSwitchChange(prop: keyof IMultiSelectExampleState) {
+    private handleSwitchChange(prop: keyof MultiSelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {
             const checked = event.currentTarget.checked;
             this.setState(state => ({ ...state, [prop]: checked }));

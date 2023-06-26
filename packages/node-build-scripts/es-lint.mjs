@@ -1,6 +1,9 @@
 #!/usr/bin/env node
+/*
+ * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
+ */
+
 /**
- * @license Copyright 2019 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Runs ESLint, with support for generating JUnit report
  */
 
@@ -12,7 +15,7 @@ import { createWriteStream } from "node:fs";
 import { basename, resolve } from "node:path";
 import { argv, cwd, env, exit, stderr, stdout } from "node:process";
 
-import { junitReportPath } from "./utils.mjs";
+import { junitReportPath } from "./src/utils.mjs";
 
 let format = "codeframe";
 let outputPath;

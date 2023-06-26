@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to Popover2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
 
 import * as React from "react";
 
@@ -36,13 +29,14 @@ import {
     Menu,
     MenuDivider,
     MenuItem,
+    Placement,
     Popover,
     PopoverInteractionKind,
-    PopoverPosition,
-    PopperBoundary,
-    PopperModifiers,
+    PopperModifierOverrides,
+    PopperPlacements,
     RadioGroup,
     Slider,
+    StrictModifierNames,
     Switch,
 } from "@blueprintjs/core";
 import {
@@ -52,84 +46,91 @@ import {
     handleNumberChange,
     handleValueChange,
 } from "@blueprintjs/docs-theme";
+import { FilmSelect } from "@blueprintjs/select/examples";
+
+const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
 
 const INTERACTION_KINDS = [
-    { label: "Click", value: PopoverInteractionKind.CLICK.toString() },
-    { label: "Click (target only)", value: PopoverInteractionKind.CLICK_TARGET_ONLY.toString() },
-    { label: "Hover", value: PopoverInteractionKind.HOVER.toString() },
-    { label: "Hover (target only)", value: PopoverInteractionKind.HOVER_TARGET_ONLY.toString() },
+    { label: "Click", value: "click" },
+    { label: "Click (target only)", value: "click-target" },
+    { label: "Hover", value: "hover" },
+    { label: "Hover (target only)", value: "hover-target" },
 ];
 
-const VALID_POSITIONS: PopoverPosition[] = [
-    PopoverPosition.AUTO,
-    PopoverPosition.AUTO_START,
-    PopoverPosition.AUTO_END,
-    PopoverPosition.TOP_LEFT,
-    PopoverPosition.TOP,
-    PopoverPosition.TOP_RIGHT,
-    PopoverPosition.RIGHT_TOP,
-    PopoverPosition.RIGHT,
-    PopoverPosition.RIGHT_BOTTOM,
-    PopoverPosition.BOTTOM_LEFT,
-    PopoverPosition.BOTTOM,
-    PopoverPosition.BOTTOM_RIGHT,
-    PopoverPosition.LEFT_TOP,
-    PopoverPosition.LEFT,
-    PopoverPosition.LEFT_BOTTOM,
-];
-
-const POPPER_DOCS = "https://popper.js.org/popper-documentation.html#modifiers";
-
-export interface IPopoverExampleState {
-    boundary?: PopperBoundary;
+export interface PopoverExampleState {
+    boundary?: "scrollParent" | "body" | "clippingParents";
+    buttonText: string;
     canEscapeKeyClose?: boolean;
     exampleIndex?: number;
     hasBackdrop?: boolean;
     inheritDarkTheme?: boolean;
     interactionKind?: PopoverInteractionKind;
+    isControlled: boolean;
     isOpen?: boolean;
+    matchTargetWidth: boolean;
     minimal?: boolean;
-    modifiers?: PopperModifiers;
-    position?: PopoverPosition;
+    modifiers?: PopperModifierOverrides;
+    placement?: Placement;
     sliderValue?: number;
     usePortal?: boolean;
 }
 
-export class PopoverExample extends React.PureComponent<ExampleProps, IPopoverExampleState> {
-    public state: IPopoverExampleState = {
-        boundary: "viewport",
+export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExampleState> {
+    public static displayName = "PopoverExample";
+
+    public state: PopoverExampleState = {
+        boundary: "scrollParent",
+        buttonText: "Popover target",
         canEscapeKeyClose: true,
         exampleIndex: 0,
         hasBackdrop: false,
         inheritDarkTheme: true,
-        interactionKind: PopoverInteractionKind.CLICK,
+        interactionKind: "click",
+        isControlled: false,
         isOpen: false,
+        matchTargetWidth: false,
         minimal: false,
         modifiers: {
             arrow: { enabled: true },
             flip: { enabled: true },
-            keepTogether: { enabled: true },
             preventOverflow: { enabled: true },
         },
-        position: "auto",
+        placement: "auto",
         sliderValue: 5,
         usePortal: true,
     };
 
+    private scrollParentElement: HTMLElement | null = null;
+
+    private bodyElement: HTMLElement | null = null;
+
+    private handleSliderChange = (value: number) => this.setState({ sliderValue: value });
+
     private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
 
     private handleInteractionChange = handleValueChange((interactionKind: PopoverInteractionKind) => {
-        const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
+        const hasBackdrop = this.state.hasBackdrop && interactionKind === "click";
         this.setState({ interactionKind, hasBackdrop });
     });
 
-    private handlePositionChange = handleValueChange((position: PopoverPosition) => this.setState({ position }));
+    private handlePlacementChange = handleValueChange((placement: Placement) => this.setState({ placement }));
 
-    private handleBoundaryChange = handleValueChange((boundary: PopperBoundary) => this.setState({ boundary }));
+    private handleBoundaryChange = handleValueChange((boundary: PopoverExampleState["boundary"]) =>
+        this.setState({ boundary }),
+    );
 
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
 
+    private toggleIsControlled = handleBooleanChange(isControlled => this.setState({ isControlled }));
+
     private toggleIsOpen = handleBooleanChange(isOpen => this.setState({ isOpen }));
+
+    private toggleMatchTargetWidth = handleBooleanChange(matchTargetWidth => {
+        this.setState({
+            buttonText: matchTargetWidth ? "(Slightly wider) popover target" : "Popover target",
+            matchTargetWidth,
+        });
+    });
 
     private toggleMinimal = handleBooleanChange(minimal => this.setState({ minimal }));
 
@@ -140,8 +141,23 @@ export class PopoverExample extends React.PureComponent<ExampleProps, IPopoverEx
         this.setState({ usePortal });
     });
 
+    private getModifierChangeHandler<Name extends StrictModifierNames>(name: Name) {
+        return handleBooleanChange(enabled => {
+            this.setState({
+                modifiers: {
+                    ...this.state.modifiers,
+                    [name]: { ...this.state.modifiers[name], enabled },
+                },
+            });
+        });
+    }
+
+    public componentDidMount() {
+        this.bodyElement = document.body;
+    }
+
     public render() {
-        const { exampleIndex, sliderValue, ...popoverProps } = this.state;
+        const { boundary, buttonText, exampleIndex, sliderValue, ...popoverProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
@@ -149,11 +165,18 @@ export class PopoverExample extends React.PureComponent<ExampleProps, IPopoverEx
                         popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}
                         portalClassName="foo"
                         {...popoverProps}
+                        boundary={
+                            boundary === "scrollParent"
+                                ? this.scrollParentElement ?? undefined
+                                : boundary === "body"
+                                ? this.bodyElement ?? undefined
+                                : boundary
+                        }
                         enforceFocus={false}
-                        isOpen={this.state.isOpen === true ? /* Controlled */ true : /* Uncontrolled */ undefined}
+                        isOpen={this.state.isControlled ? this.state.isOpen : undefined}
+                        content={this.getContents(exampleIndex)}
                     >
-                        <Button intent={Intent.PRIMARY} text="Popover target" />
-                        {this.getContents(exampleIndex)}
+                        <Button intent={Intent.PRIMARY} text={buttonText} tabIndex={0} />
                     </Popover>
                     <p>
                         Scroll around this container to experiment
@@ -166,7 +189,12 @@ export class PopoverExample extends React.PureComponent<ExampleProps, IPopoverEx
     }
 
     private renderOptions() {
-        const { arrow, flip, preventOverflow } = this.state.modifiers;
+        const { matchTargetWidth, modifiers, placement } = this.state;
+        const { arrow, flip, preventOverflow } = modifiers;
+
+        // popper.js requires this modiifer for "auto" placement
+        const forceFlipEnabled = placement.startsWith("auto");
+
         return (
             <>
                 <H5>Appearance</H5>
@@ -176,9 +204,9 @@ export class PopoverExample extends React.PureComponent<ExampleProps, IPopoverEx
                     labelFor="position"
                 >
                     <HTMLSelect
-                        value={this.state.position}
-                        onChange={this.handlePositionChange}
-                        options={VALID_POSITIONS}
+                        value={this.state.placement}
+                        onChange={this.handlePlacementChange}
+                        options={PopperPlacements}
                     />
                 </FormGroup>
                 <Label>
@@ -188,14 +216,23 @@ export class PopoverExample extends React.PureComponent<ExampleProps, IPopoverEx
                         <option value="1">Input</option>
                         <option value="2">Slider</option>
                         <option value="3">Menu</option>
-                        <option value="4">Empty</option>
+                        <option value="4">Select</option>
+                        <option value="5">Empty</option>
                     </HTMLSelect>
                 </Label>
                 <Switch checked={this.state.usePortal} onChange={this.toggleUsePortal}>
                     Use <Code>Portal</Code>
                 </Switch>
                 <Switch checked={this.state.minimal} label="Minimal appearance" onChange={this.toggleMinimal} />
-                <Switch checked={this.state.isOpen} label="Open (controlled mode)" onChange={this.toggleIsOpen} />
+
+                <H5>Control</H5>
+                <Switch checked={this.state.isControlled} label="Is controlled" onChange={this.toggleIsControlled} />
+                <Switch
+                    checked={this.state.isOpen}
+                    disabled={!this.state.isControlled}
+                    label="Open"
+                    onChange={this.toggleIsOpen}
+                />
 
                 <H5>Interactions</H5>
                 <RadioGroup
@@ -212,7 +249,12 @@ export class PopoverExample extends React.PureComponent<ExampleProps, IPopoverEx
 
                 <H5>Modifiers</H5>
                 <Switch checked={arrow.enabled} label="Arrow" onChange={this.getModifierChangeHandler("arrow")} />
-                <Switch checked={flip.enabled} label="Flip" onChange={this.getModifierChangeHandler("flip")} />
+                <Switch
+                    checked={flip.enabled || forceFlipEnabled}
+                    disabled={forceFlipEnabled}
+                    label="Flip"
+                    onChange={this.getModifierChangeHandler("flip")}
+                />
                 <Switch
                     checked={preventOverflow.enabled}
                     label="Prevent overflow"
@@ -226,13 +268,14 @@ export class PopoverExample extends React.PureComponent<ExampleProps, IPopoverEx
                         onChange={this.handleBoundaryChange}
                     >
                         <option value="scrollParent">scrollParent</option>
-                        <option value="viewport">viewport</option>
                         <option value="window">window</option>
                     </HTMLSelect>
                 </Switch>
+                <Switch checked={matchTargetWidth} label="Match target width" onChange={this.toggleMatchTargetWidth} />
+
                 <Label>
                     <AnchorButton
-                        href={POPPER_DOCS}
+                        href={POPPER_DOCS_URL}
                         fill={true}
                         intent={Intent.PRIMARY}
                         minimal={true}
@@ -286,30 +329,22 @@ export class PopoverExample extends React.PureComponent<ExampleProps, IPopoverEx
                     <MenuItem icon="underline" text="Underline" />
                 </MenuItem>
             </Menu>,
+            <div key="filmselect" style={{ padding: 20 }}>
+                <FilmSelect popoverProps={{ captureDismiss: true }} />
+            </div>,
         ][index];
     }
 
-    private handleSliderChange = (value: number) => this.setState({ sliderValue: value });
+    private centerScroll = (overflowingDiv: HTMLDivElement) => {
+        this.scrollParentElement = overflowingDiv?.parentElement;
 
-    private getModifierChangeHandler(name: keyof PopperModifiers) {
-        return handleBooleanChange(enabled => {
-            this.setState({
-                modifiers: {
-                    ...this.state.modifiers,
-                    [name]: { ...this.state.modifiers[name], enabled },
-                },
-            });
-        });
-    }
-
-    private centerScroll = (div: HTMLDivElement) => {
-        if (div != null) {
+        if (overflowingDiv != null) {
             // if we don't requestAnimationFrame, this function apparently executes
             // before styles are applied to the page, so the centering is way off.
             requestAnimationFrame(() => {
-                const container = div.parentElement;
-                container.scrollTop = div.clientHeight / 4;
-                container.scrollLeft = div.clientWidth / 4;
+                const container = overflowingDiv.parentElement;
+                container.scrollLeft = overflowingDiv.clientWidth / 2 - container.clientWidth / 2;
+                container.scrollTop = overflowingDiv.clientHeight / 2 - container.clientHeight / 2;
             });
         }
     };

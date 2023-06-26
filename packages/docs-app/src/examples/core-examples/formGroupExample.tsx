@@ -17,11 +17,11 @@
 import * as React from "react";
 
 import { FormGroup, H5, InputGroup, Intent, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface IFormGroupExampleState {
+export interface FormGroupExampleState {
     disabled: boolean;
     helperText: boolean;
     inline: boolean;
@@ -31,8 +31,8 @@ export interface IFormGroupExampleState {
     requiredLabel: boolean;
 }
 
-export class FormGroupExample extends React.PureComponent<ExampleProps, IFormGroupExampleState> {
-    public state: IFormGroupExampleState = {
+export class FormGroupExample extends React.PureComponent<ExampleProps, FormGroupExampleState> {
+    public state: FormGroupExampleState = {
         disabled: false,
         helperText: false,
         inline: false,
@@ -54,7 +54,7 @@ export class FormGroupExample extends React.PureComponent<ExampleProps, IFormGro
 
     private handleSubLabelChange = handleBooleanChange(subLabel => this.setState({ subLabel }));
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     public render() {
         const { disabled, helperText, inline, intent, label, subLabel, requiredLabel } = this.state;

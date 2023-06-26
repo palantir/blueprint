@@ -18,8 +18,8 @@ import classNames from "classnames";
 import download from "downloadjs";
 import * as React from "react";
 
-import { Classes, Icon, IconName, IconSize, Menu, MenuItem } from "@blueprintjs/core";
-import { ContextMenu2 } from "@blueprintjs/popover2";
+import { Classes, ContextMenu, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
+import { IconSize } from "@blueprintjs/icons";
 
 import { ClickToCopy } from "./clickToCopy";
 
@@ -40,7 +40,7 @@ export class DocsIcon extends React.PureComponent<DocsIconProps> {
     public render() {
         const { iconName, displayName, tags } = this.props;
         return (
-            <ContextMenu2 className="docs-icon-container" content={this.renderContextMenu()}>
+            <ContextMenu className="docs-icon-container" content={this.renderContextMenu()}>
                 <ClickToCopy className="docs-icon" data-tags={tags} value={iconName}>
                     <Icon icon={iconName} size={IconSize.LARGE} />
                     <div className="docs-icon-name">{displayName}</div>
@@ -53,7 +53,7 @@ export class DocsIcon extends React.PureComponent<DocsIconProps> {
                         />
                     </div>
                 </ClickToCopy>
-            </ContextMenu2>
+            </ContextMenu>
         );
     }
 

@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
+import type { IconName } from "@blueprintjs/icons";
+
 import type { IntentProps, MaybeElement, Props } from "../../common/props";
-import type { IconName } from "../icon/icon";
 
 /**
  * Shared props interface for text & numeric inputs.
  */
 export interface InputSharedProps extends IntentProps, Props {
     /**
-     * Whether the input is non-interactive.
+     * Whether the input is disabled.
      *
-     * Note that the content in `rightElement` must be disabled separately if defined;
-     * this prop will not affect it.
+     * Note that `rightElement` must be disabled separately; this prop will not affect it.
      *
      * @default false
      */
@@ -35,6 +35,11 @@ export interface InputSharedProps extends IntentProps, Props {
      * Whether the component should take up the full width of its container.
      */
     fill?: boolean;
+
+    /**
+     * Class name to apply to the `<input>` element (not the InputGroup container).
+     */
+    inputClassName?: string;
 
     /**
      * Ref attached to the HTML `<input>` element backing this component.
@@ -61,6 +66,16 @@ export interface InputSharedProps extends IntentProps, Props {
      * Placeholder text in the absence of any value.
      */
     placeholder?: string;
+
+    /**
+     * Whether the input is read-only.
+     *
+     * Note that `rightElement` must be disabled or made read-only separately;
+     * this prop will not affect it.
+     *
+     * @default false
+     */
+    readOnly?: boolean;
 
     /**
      * Element to render on right side of input.

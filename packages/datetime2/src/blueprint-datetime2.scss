@@ -1,31 +1,4 @@
 // Copyright 2022 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/colors/lib/scss/colors";
-@import "~@blueprintjs/core/src/common/variables";
-
-.#{$ns}-datepicker-timepicker-wrapper {
-  // Ensure some padding around the timepicker elements. We need this when precision="millisecond" and
-  // useAmPm={true} - all four inputs and an HTMLSelect are rendered, which results in the timepicker
-  // being slightly wider than the datepicker. Without this padding, things look a bit too cramped.
-  padding: 0 2px;
-}
-
-.#{$ns}-timezone-select-popover {
-  min-width: 370px;
-}
-
-.#{$ns}-timezone-select-target {
-  user-select: none;
-}
-
-.#{$ns}-date-input {
-  .#{$ns}-input-action {
-    // we need these elements to lay out next to each other if there are multiple
-    display: flex;
-  }
-}
-
-.#{$ns}-date-input-timezone-select {
-  width: 100%;
-}
+// This file intentionaly left blank

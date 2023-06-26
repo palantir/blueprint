@@ -17,13 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type MenuProps = IMenuProps;
-/** @deprecated use MenuProps */
-export interface IMenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
+export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
     /** Menu items. */
     children?: React.ReactNode;
 
@@ -34,7 +31,12 @@ export interface IMenuProps extends Props, React.HTMLAttributes<HTMLUListElement
     ulRef?: React.Ref<HTMLUListElement>;
 }
 
-export class Menu extends AbstractPureComponent2<MenuProps> {
+/**
+ * Menu component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/menu
+ */
+export class Menu extends AbstractPureComponent<MenuProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
 
     public render() {

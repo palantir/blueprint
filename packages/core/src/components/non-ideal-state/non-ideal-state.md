@@ -31,7 +31,12 @@ By default, a vertical layout is used, but you can make it horizontal with `layo
 Icons take on a muted appearance inside this component, but their shape contrast is preserved
 by adding a small stroke to the SVG paths.
 
-@interface INonIdealStateProps
+By default, a vertical layout is used, but you can make it horizontal with `layout="horizontal"`.
+
+Icons take on a muted appearance inside this component, but their shape contrast is preserved
+by adding a small stroke to the SVG paths.
+
+@interface NonIdealStateProps
 
 @## CSS
 
@@ -43,7 +48,7 @@ for text, which is enclosed in a `.@ns-non-ideal-state-text` wrapper element). T
 constraint ensures proper spacing between each child.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Limited CSS API support</h4>
+    <h5 class="@ns-heading">Limited CSS API support</h5>
 
 Note that you are required to set the `font-size` and `line-height` styles for
 the icon element to render it properly.

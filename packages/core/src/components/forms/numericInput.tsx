@@ -17,13 +17,14 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { ChevronDown, ChevronUp } from "@blueprintjs/icons";
+
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     Intent,
-    Keys,
     Position,
     refHandler,
     removeNonHTMLProps,
@@ -47,10 +48,7 @@ import {
     toMaxPrecision,
 } from "./numericInputUtils";
 
-// eslint-disable-next-line deprecation/deprecation
-export type NumericInputProps = INumericInputProps;
-/** @deprecated use NumericInputProps */
-export interface INumericInputProps extends InputSharedProps {
+export interface NumericInputProps extends InputSharedProps {
     /**
      * Whether to allow only floating-point number characters in the field,
      * mimicking the native `input[type="number"]`.
@@ -90,7 +88,6 @@ export interface INumericInputProps extends InputSharedProps {
      * @default ""
      */
     defaultValue?: number | string;
-
     /**
      * If set to `true`, the input will display with larger styling.
      * This is equivalent to setting `Classes.LARGE` via className on the
@@ -145,6 +142,15 @@ export interface INumericInputProps extends InputSharedProps {
     selectAllOnIncrement?: boolean;
 
     /**
+     * If set to `true`, the input will display with smaller styling.
+     * This is equivalent to setting `Classes.SMALL` via className on the
+     * parent control group and on the child input group.
+     *
+     * @default false
+     */
+    small?: boolean;
+
+    /**
      * The increment between successive values when no modifier keys are held.
      *
      * @default 1
@@ -163,7 +169,7 @@ export interface INumericInputProps extends InputSharedProps {
     onValueChange?(valueAsNumber: number, valueAsString: string, inputElement: HTMLInputElement | null): void;
 }
 
-export interface INumericInputState {
+export interface NumericInputState {
     currentImeInputInvalid: boolean;
     prevMinProp?: number;
     prevMaxProp?: number;
@@ -192,9 +198,14 @@ const NON_HTML_PROPS: Array<keyof NumericInputProps> = [
     "stepSize",
 ];
 
-type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<Element>, "onKeyDown" | "onMouseDown">>;
+type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<HTMLElement>, "onKeyDown" | "onMouseDown">>;
 
-export class NumericInput extends AbstractPureComponent2<HTMLInputProps & NumericInputProps, INumericInputState> {
+/**
+ * Numeric input component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/numeric-input
+ */
+export class NumericInput extends AbstractPureComponent<HTMLInputProps & NumericInputProps, NumericInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 
     public static VALUE_EMPTY = "";
@@ -213,10 +224,11 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
         minorStepSize: 0.1,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
+        small: false,
         stepSize: 1,
     };
 
-    public static getDerivedStateFromProps(props: NumericInputProps, state: INumericInputState) {
+    public static getDerivedStateFromProps(props: NumericInputProps, state: NumericInputState) {
         const nextState = {
             prevMaxProp: props.max,
             prevMinProp: props.min,
@@ -275,7 +287,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
         return toLocaleString(clampedValue, locale);
     }
 
-    public state: INumericInputState = {
+    public state: NumericInputState = {
         currentImeInputInvalid: false,
         shouldSelectAfterUpdate: false,
         stepMaxPrecision: NumericInput.getStepMaxPrecision(this.props),
@@ -300,8 +312,12 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
     private getCurrentValueAsNumber = () => Number(parseStringToStringNumber(this.state.value, this.props.locale));
 
     public render() {
-        const { buttonPosition, className, fill, large } = this.props;
-        const containerClasses = classNames(Classes.NUMERIC_INPUT, { [Classes.LARGE]: large }, className);
+        const { buttonPosition, className, fill, large, small } = this.props;
+        const containerClasses = classNames(
+            Classes.NUMERIC_INPUT,
+            { [Classes.LARGE]: large, [Classes.SMALL]: small },
+            className,
+        );
         const buttons = this.renderButtons();
         return (
             <ControlGroup className={containerClasses} fill={fill}>
@@ -312,7 +328,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
         );
     }
 
-    public componentDidUpdate(prevProps: NumericInputProps, prevState: INumericInputState) {
+    public componentDidUpdate(prevProps: NumericInputProps, prevState: NumericInputState) {
         super.componentDidUpdate(prevProps, prevState);
 
         if (prevProps.inputRef !== this.props.inputRef) {
@@ -402,7 +418,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                     aria-label="increment"
                     aria-controls={this.numericInputId}
                     disabled={disabled || isIncrementDisabled}
-                    icon="chevron-up"
+                    icon={<ChevronUp />}
                     intent={intent}
                     {...this.incrementButtonHandlers}
                 />
@@ -410,7 +426,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                     aria-label="decrement"
                     aria-controls={this.numericInputId}
                     disabled={disabled || isDecrementDisabled}
-                    icon="chevron-down"
+                    icon={<ChevronDown />}
                     intent={intent}
                     {...this.decrementButtonHandlers}
                 />
@@ -433,6 +449,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                 aria-valuemin={this.props.min}
                 aria-valuenow={valueAsNumber}
                 intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
+                inputClassName={this.props.inputClassName}
                 inputRef={this.inputRef}
                 large={this.props.large}
                 leftElement={this.props.leftElement}
@@ -446,6 +463,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
                 onKeyPress={this.handleInputKeyPress}
                 onPaste={this.handleInputPaste}
                 rightElement={this.props.rightElement}
+                small={this.props.small}
                 value={this.state.value}
             />
         );
@@ -458,8 +476,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
         return {
             // keydown is fired repeatedly when held so it's implicitly continuous
             onKeyDown: evt => {
-                // eslint-disable-next-line deprecation/deprecation
-                if (!this.props.disabled && Keys.isKeyboardClick(evt.keyCode)) {
+                if (!this.props.disabled && Utils.isKeyboardClick(evt)) {
                     this.handleButtonClick(evt, direction);
                 }
             },
@@ -541,14 +558,11 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & Numeri
             return;
         }
 
-        // eslint-disable-next-line deprecation/deprecation
-        const { keyCode } = e;
-
         let direction: IncrementDirection | undefined;
 
-        if (keyCode === Keys.ARROW_UP) {
+        if (e.key === "ArrowUp") {
             direction = IncrementDirection.UP;
-        } else if (keyCode === Keys.ARROW_DOWN) {
+        } else if (e.key === "ArrowDown") {
             direction = IncrementDirection.DOWN;
         }
 

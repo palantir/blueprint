@@ -17,13 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Alignment, Classes } from "../../common";
+import { AbstractPureComponent, Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type NavbarGroupProps = INavbarGroupProps;
-/** @deprecated use NavbarGroupProps */
-export interface INavbarGroupProps extends Props, HTMLDivProps {
+export interface NavbarGroupProps extends Props, HTMLDivProps {
     /**
      * The side of the navbar on which the group should appear.
      * The `Alignment` enum provides constants for these values.
@@ -37,7 +34,8 @@ export interface INavbarGroupProps extends Props, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class NavbarGroup extends AbstractPureComponent2<NavbarGroupProps> {
+
+export class NavbarGroup extends AbstractPureComponent<NavbarGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NavbarGroup`;
 
     public static defaultProps: NavbarGroupProps = {

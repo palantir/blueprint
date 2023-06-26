@@ -140,8 +140,8 @@ export const TOP_100_FILMS: Film[] = [
  */
 export function getFilmItemProps(
     film: Film,
-    { handleClick, handleFocus, modifiers, query }: ItemRendererProps,
-): MenuItemProps & React.Attributes & React.HTMLAttributes<HTMLAnchorElement> {
+    { handleClick, handleFocus, modifiers, query, ref }: ItemRendererProps,
+): MenuItemProps & React.Attributes {
     return {
         active: modifiers.active,
         disabled: modifiers.disabled,
@@ -149,6 +149,7 @@ export function getFilmItemProps(
         label: film.year.toString(),
         onClick: handleClick,
         onFocus: handleFocus,
+        ref,
         roleStructure: "listoption",
         text: highlightText(`${film.rank}. ${film.title}`, query),
     };

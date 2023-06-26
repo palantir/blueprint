@@ -17,21 +17,19 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, InputGroup, InputGroupProps2, Overlay, OverlayProps } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, InputGroup, InputGroupProps, Overlay, OverlayProps } from "@blueprintjs/core";
+import { Search } from "@blueprintjs/icons";
 
 import { Classes, ListItemsProps } from "../../common";
 import { QueryList, QueryListRendererProps } from "../query-list/queryList";
 
-// eslint-disable-next-line deprecation/deprecation
-export type OmnibarProps<T> = IOmnibarProps<T>;
-/** @deprecated use OmnibarProps */
-export interface IOmnibarProps<T> extends ListItemsProps<T> {
+export interface OmnibarProps<T> extends ListItemsProps<T> {
     /**
      * Props to spread to the query `InputGroup`. Use `query` and
      * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
      * to control this input.
      */
-    inputProps?: InputGroupProps2;
+    inputProps?: InputGroupProps;
 
     /**
      * Toggles the visibility of the omnibar.
@@ -55,6 +53,11 @@ export interface IOmnibarProps<T> extends ListItemsProps<T> {
     overlayProps?: Partial<OverlayProps>;
 }
 
+/**
+ * Omnibar component.
+ *
+ * @see https://blueprintjs.com/docs/#select/omnibar
+ */
 export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Omnibar`;
 
@@ -87,7 +90,7 @@ export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
                     <InputGroup
                         autoFocus={true}
                         large={true}
-                        leftIcon="search"
+                        leftIcon={<Search />}
                         placeholder="Search..."
                         {...inputProps}
                         onChange={listProps.handleQueryChange}

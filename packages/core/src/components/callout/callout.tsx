@@ -17,8 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { IconName } from "@blueprintjs/icons";
+
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
@@ -27,13 +29,11 @@ import {
     MaybeElement,
     Props,
 } from "../../common";
-import { H4 } from "../html/html";
-import { Icon, IconName, IconSize } from "../icon/icon";
+import { H5 } from "../html/html";
+import { Icon } from "../icon/icon";
 
-// eslint-disable-next-line deprecation/deprecation
-export type CalloutProps = ICalloutProps;
-/** @deprecated use CalloutProps */
-export interface ICalloutProps extends IntentProps, Props, HTMLDivProps {
+/** This component also supports the full range of HTML `<div>` props. */
+export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
     /** Callout contents. */
     children?: React.ReactNode;
 
@@ -63,7 +63,12 @@ export interface ICalloutProps extends IntentProps, Props, HTMLDivProps {
     title?: string;
 }
 
-export class Callout extends AbstractPureComponent2<CalloutProps> {
+/**
+ * Callout component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/callout
+ */
+export class Callout extends AbstractPureComponent<CalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
     public render() {
@@ -78,8 +83,8 @@ export class Callout extends AbstractPureComponent2<CalloutProps> {
 
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && <Icon icon={iconName} size={IconSize.LARGE} aria-hidden={true} tabIndex={-1} />}
-                {title && <H4>{title}</H4>}
+                {iconName && <Icon icon={iconName} aria-hidden={true} tabIndex={-1} />}
+                {title && <H5>{title}</H5>}
                 {children}
             </div>
         );

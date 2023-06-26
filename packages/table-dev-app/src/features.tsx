@@ -24,17 +24,17 @@ import { Button, Classes, H4, Intent, Menu, MenuDivider, MenuItem } from "@bluep
 import {
     Cell,
     Column,
-    ColumnHeaderCell2,
-    ColumnHeaderCell2Props,
+    ColumnHeaderCell,
+    ColumnHeaderCellProps,
     CopyCellsMenuItem,
     EditableCell2,
     EditableName,
-    IMenuContext,
-    JSONFormat2,
+    JSONFormat,
+    MenuContext,
     Region,
     RegionCardinality,
     Regions,
-    RowHeaderCell2,
+    RowHeaderCell,
     SelectionModes,
     Table2,
     Utils,
@@ -152,26 +152,26 @@ class FormatsTable extends React.Component {
 
     private renderJSONCell = (row: number) => (
         <Cell>
-            <JSONFormat2 preformatted={true}>{this.objects[row]}</JSONFormat2>
+            <JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat>
         </Cell>
     );
 
     private renderJSONCellWrappedText = (row: number) => (
         <Cell wrapText={true}>
-            <JSONFormat2 preformatted={true}>{this.objects[row]}</JSONFormat2>
+            <JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat>
         </Cell>
     );
 
     private renderJSONWrappedCell = (row: number) => (
         <Cell>
-            <JSONFormat2 preformatted={false}>{this.objects[row]}</JSONFormat2>
+            <JSONFormat preformatted={false}>{this.objects[row]}</JSONFormat>
         </Cell>
     );
 }
 
 ReactDOM.render(<FormatsTable />, document.getElementById("table-formats"));
 
-interface IEditableTableState {
+interface EditableTableState {
     intents: Intent[];
     names: string[];
     sparseCellData: { [key: string]: string };
@@ -179,12 +179,12 @@ interface IEditableTableState {
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-class EditableTable extends React.Component<{}, IEditableTableState> {
+class EditableTable extends React.Component<{}, EditableTableState> {
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
     };
 
-    public state: IEditableTableState = {
+    public state: EditableTableState = {
         intents: [],
         names: ["Please", "Rename", "Me"],
         sparseCellData: {},
@@ -237,7 +237,7 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
             );
         };
         return (
-            <ColumnHeaderCell2
+            <ColumnHeaderCell
                 menuRenderer={renderTestMenu}
                 name={this.state.names[columnIndex]}
                 nameRenderer={nameRenderer}
@@ -449,7 +449,7 @@ ReactDOM.render(
     document.getElementById("table-1"),
 );
 
-const bodyContextMenuRenderer = (context: IMenuContext) => {
+const bodyContextMenuRenderer = (context: MenuContext) => {
     const getCellData = (row: number, col: number) => {
         return Utils.toBase26Alpha(col) + (row + 1);
     };
@@ -498,7 +498,7 @@ ReactDOM.render(
         {},
         {
             renderRowHeaderCell: (rowIndex: number) => {
-                return <RowHeaderCell2 name={customRowHeaders[rowIndex]} />;
+                return <RowHeaderCell name={customRowHeaders[rowIndex]} />;
             },
         },
     ),
@@ -511,7 +511,7 @@ ReactDOM.render(
         7,
         {
             columnHeaderCellRenderer: (columnIndex: number) => {
-                return <ColumnHeaderCell2 name={Utils.toBase26Alpha(columnIndex)} isActive={columnIndex % 3 === 0} />;
+                return <ColumnHeaderCell name={Utils.toBase26Alpha(columnIndex)} isActive={columnIndex % 3 === 0} />;
             },
         },
         {
@@ -534,28 +534,28 @@ ReactDOM.render(
             columnHeaderCellRenderer: (columnIndex: number) => {
                 const alpha = Utils.toBase26Alpha(columnIndex);
                 return (
-                    <ColumnHeaderCell2
+                    <ColumnHeaderCell
                         name={`${alpha} Column with a substantially long header name`}
                         menuRenderer={renderTestMenu}
                     >
                         <H4>Header {alpha}</H4>
                         <p>Whatever interactive header content goes here lorem ipsum.</p>
-                    </ColumnHeaderCell2>
+                    </ColumnHeaderCell>
                 );
             },
         },
         {
             renderRowHeaderCell: (rowIndex: number) => {
-                return <RowHeaderCell2 name={`${rowIndex + 1}`} menuRenderer={renderTestMenu} />;
+                return <RowHeaderCell name={`${rowIndex + 1}`} menuRenderer={renderTestMenu} />;
             },
         },
     ),
     document.getElementById("table-6"),
 );
 
-class CustomHeaderCell extends React.Component<ColumnHeaderCell2Props> {
+class CustomHeaderCell extends React.Component<ColumnHeaderCellProps> {
     public render() {
-        return <ColumnHeaderCell2 {...this.props}>Hey dawg.</ColumnHeaderCell2>;
+        return <ColumnHeaderCell {...this.props}>Hey dawg.</ColumnHeaderCell>;
     }
 }
 
@@ -581,7 +581,7 @@ const longContentRenderCell = () => {
 ReactDOM.render(
     <Table2 numRows={4}>
         <Column name="My" />
-        <Column name="Table2" cellRenderer={longContentRenderCell} />
+        <Column name="Table" cellRenderer={longContentRenderCell} />
     </Table2>,
     document.getElementById("table-8"),
 );
@@ -611,7 +611,7 @@ ReactDOM.render(
     document.getElementById("table-9"),
 );
 
-interface IReorderableTableExampleState {
+interface ReorderableTableExampleState {
     children?: JSX.Element[];
     data?: any[];
 }
@@ -625,8 +625,8 @@ const REORDERABLE_TABLE_DATA = [
 ].map(([letter, fruit, animal, country, city]) => ({ letter, fruit, animal, country, city }));
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-class ReorderableTableExample extends React.Component<{}, IReorderableTableExampleState> {
-    public state: IReorderableTableExampleState = {
+class ReorderableTableExample extends React.Component<{}, ReorderableTableExampleState> {
+    public state: ReorderableTableExampleState = {
         data: REORDERABLE_TABLE_DATA,
     };
 
@@ -686,7 +686,7 @@ ReactDOM.render(<ReorderableTableExample />, document.getElementById("table-10")
 ReactDOM.render(
     <div style={{ height: 335, width: 300 }}>
         <Table2 numRows={10} defaultRowHeight={30} enableGhostCells={true}>
-            <Column columnHeaderCellRenderer={() => <ColumnHeaderCell2 nameRenderer={renderName} />} />
+            <Column columnHeaderCellRenderer={() => <ColumnHeaderCell nameRenderer={renderName} />} />
         </Table2>
     </div>,
     document.getElementById("table-11"),

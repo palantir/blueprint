@@ -14,123 +14,54 @@
  * limitations under the License.
  */
 
-export interface IKeyCodeTable {
+// alph sorting is unintuitive here
+// tslint:disable object-literal-sort-keys
+
+export interface KeyCodeTable {
     [code: number]: string;
 }
 
-export interface IKeyCodeReverseTable {
+export interface KeyCodeReverseTable {
     [key: string]: number;
 }
 
-export interface IKeyMap {
+export interface KeyMap {
     [key: string]: string;
 }
 
-export const KeyCodes: IKeyCodeTable = {
-    8: "backspace",
-    9: "tab",
-    13: "enter",
-    20: "capslock",
-    27: "esc",
-    32: "space",
-    33: "pageup",
-    34: "pagedown",
-    35: "end",
-    36: "home",
-    37: "left",
-    38: "up",
-    39: "right",
-    40: "down",
-    45: "ins",
-    46: "del",
-    // number keys
-    48: "0",
-    49: "1",
-    50: "2",
-    51: "3",
-    52: "4",
-    53: "5",
-    54: "6",
-    55: "7",
-    56: "8",
-    57: "9",
-    // alphabet
-    65: "a",
-    66: "b",
-    67: "c",
-    68: "d",
-    69: "e",
-    70: "f",
-    71: "g",
-    72: "h",
-    73: "i",
-    74: "j",
-    75: "k",
-    76: "l",
-    77: "m",
-    78: "n",
-    79: "o",
-    80: "p",
-    81: "q",
-    82: "r",
-    83: "s",
-    84: "t",
-    85: "u",
-    86: "v",
-    87: "w",
-    88: "x",
-    89: "y",
-    90: "z",
-    // punctuation
-    106: "*",
-    107: "+",
-    109: "-",
-    110: ".",
-    111: "/",
-    186: ";",
-    187: "=",
-    188: ",",
-    189: "-",
-    190: ".",
-    191: "/",
-    192: "`",
-    219: "[",
-    220: "\\",
-    221: "]",
-    222: "'",
-};
+/**
+ * Named modifier keys
+ *
+ * @see https://www.w3.org/TR/uievents-key/#keys-modifier
+ */
+const MODIFIER_KEYS = new Set(["Shift", "Control", "Alt", "Meta"]);
 
-export const Modifiers: IKeyCodeTable = {
-    16: "shift",
-    17: "ctrl",
-    18: "alt",
-    91: "meta",
-    93: "meta",
-    224: "meta",
-};
-
-export const ModifierBitMasks: IKeyCodeReverseTable = {
+export const MODIFIER_BIT_MASKS: KeyCodeReverseTable = {
     alt: 1,
     ctrl: 2,
     meta: 4,
     shift: 8,
 };
 
-export const Aliases: IKeyMap = {
+export const CONFIG_ALIASES: KeyMap = {
     cmd: "meta",
     command: "meta",
-    escape: "esc",
+    escape: "escape",
     minus: "-",
     mod: isMac() ? "meta" : "ctrl",
     option: "alt",
     plus: "+",
     return: "enter",
     win: "meta",
+    // need these aliases for backwards-compatibility (but they're also convenient)
+    up: "ArrowUp",
+    left: "ArrowLeft",
+    down: "ArrowDown",
+    right: "ArrowRight",
+    space: " ",
 };
 
-// alph sorting is unintuitive here
-// tslint:disable object-literal-sort-keys
-export const ShiftKeys: IKeyMap = {
+export const SHIFT_KEYS: KeyMap = {
     "~": "`",
     "!": "1",
     "@": "2",
@@ -153,24 +84,13 @@ export const ShiftKeys: IKeyMap = {
     ">": ".",
     "?": "/",
 };
-// tslint:enable object-literal-sort-keys
 
-// Function keys
-for (let i = 1; i <= 12; ++i) {
-    KeyCodes[111 + i] = "f" + i;
-}
-
-// Numpad
-for (let i = 0; i <= 9; ++i) {
-    KeyCodes[96 + i] = "num" + i.toString();
-}
-
-export interface IKeyCombo {
+export interface KeyCombo {
     key?: string;
     modifiers: number;
 }
 
-export function comboMatches(a: IKeyCombo, b: IKeyCombo) {
+export function comboMatches(a: KeyCombo, b: KeyCombo) {
     return a.modifiers === b.modifiers && a.key === b.key;
 }
 
@@ -183,7 +103,7 @@ export function comboMatches(a: IKeyCombo, b: IKeyCombo) {
  * necessary `shift` modifier and automatically convert the action key to the
  * unshifted version. For example, `@` is equivalent to `shift+2`.
  */
-export const parseKeyCombo = (combo: string): IKeyCombo => {
+export const parseKeyCombo = (combo: string): KeyCombo => {
     const pieces = combo.replace(/\s/g, "").toLowerCase().split("+");
     let modifiers = 0;
     let key: string | undefined;
@@ -193,15 +113,15 @@ export const parseKeyCombo = (combo: string): IKeyCombo => {
                 Valid key combos look like "cmd + plus", "shift+p", or "!"`);
         }
 
-        if (Aliases[piece] != null) {
-            piece = Aliases[piece];
+        if (CONFIG_ALIASES[piece] !== undefined) {
+            piece = CONFIG_ALIASES[piece];
         }
 
-        if (ModifierBitMasks[piece] != null) {
-            modifiers += ModifierBitMasks[piece];
-        } else if (ShiftKeys[piece] != null) {
-            modifiers += ModifierBitMasks.shift;
-            key = ShiftKeys[piece];
+        if (MODIFIER_BIT_MASKS[piece] !== undefined) {
+            modifiers += MODIFIER_BIT_MASKS[piece];
+        } else if (SHIFT_KEYS[piece] !== undefined) {
+            modifiers += MODIFIER_BIT_MASKS.shift;
+            key = SHIFT_KEYS[piece];
         } else {
             key = piece.toLowerCase();
         }
@@ -213,70 +133,65 @@ export const parseKeyCombo = (combo: string): IKeyCombo => {
  * Converts a keyboard event into a valid combo prop string
  */
 export const getKeyComboString = (e: KeyboardEvent): string => {
-    const keys = [] as string[];
+    const comboParts = [] as string[];
 
     // modifiers first
     if (e.ctrlKey) {
-        keys.push("ctrl");
+        comboParts.push("ctrl");
     }
     if (e.altKey) {
-        keys.push("alt");
+        comboParts.push("alt");
     }
     if (e.shiftKey) {
-        keys.push("shift");
+        comboParts.push("shift");
     }
     if (e.metaKey) {
-        keys.push("meta");
+        comboParts.push("meta");
     }
 
-    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-    // eslint-disable-next-line deprecation/deprecation
-    const { which } = e;
-    if (Modifiers[which] != null) {
-        // no action key
-    } else if (KeyCodes[which] != null) {
-        keys.push(KeyCodes[which]);
-    } else {
-        // eslint-disable-next-line id-blacklist
-        keys.push(String.fromCharCode(which).toLowerCase());
+    if (e.key !== undefined) {
+        if (e.key === " ") {
+            // special case for "space" key, which would otherwise be printed as illegible whitespace
+            comboParts.push("space");
+        } else if (MODIFIER_KEYS.has(e.key)) {
+            // do nothing
+        } else {
+            comboParts.push(e.key.toLowerCase());
+        }
     }
 
-    // join keys with plusses
-    return keys.join(" + ");
+    return comboParts.join(" + ");
 };
 
 /**
  * Determines the key combo object from the given keyboard event. Again, a key
  * combo includes zero or more modifiers (represented by a bitmask) and one
- * action key, which we determine from the `e.which` property of the keyboard
+ * action key, which we determine from the `e.key` property of the keyboard
  * event.
  */
-export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
+export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     let key: string | undefined;
-    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-    // eslint-disable-next-line deprecation/deprecation
-    const { which } = e;
-    if (Modifiers[which] != null) {
-        // keep key null
-    } else if (KeyCodes[which] != null) {
-        key = KeyCodes[which];
+    if (MODIFIER_KEYS.has(e.key)) {
+        // keep key undefined
     } else {
-        // eslint-disable-next-line id-blacklist
-        key = String.fromCharCode(which).toLowerCase();
+        key = e.key?.toLowerCase();
     }
 
     let modifiers = 0;
     if (e.altKey) {
-        modifiers += ModifierBitMasks.alt;
+        modifiers += MODIFIER_BIT_MASKS.alt;
     }
     if (e.ctrlKey) {
-        modifiers += ModifierBitMasks.ctrl;
+        modifiers += MODIFIER_BIT_MASKS.ctrl;
     }
     if (e.metaKey) {
-        modifiers += ModifierBitMasks.meta;
+        modifiers += MODIFIER_BIT_MASKS.meta;
     }
     if (e.shiftKey) {
-        modifiers += ModifierBitMasks.shift;
+        modifiers += MODIFIER_BIT_MASKS.shift;
+        if (SHIFT_KEYS[e.key] !== undefined) {
+            key = SHIFT_KEYS[e.key];
+        }
     }
 
     return { modifiers, key };
@@ -292,7 +207,7 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
 export const normalizeKeyCombo = (combo: string, platformOverride?: string): string[] => {
     const keys = combo.replace(/\s/g, "").split("+");
     return keys.map(key => {
-        const keyName = Aliases[key] != null ? Aliases[key] : key;
+        const keyName = CONFIG_ALIASES[key] != null ? CONFIG_ALIASES[key] : key;
         return keyName === "meta" ? (isMac(platformOverride) ? "cmd" : "ctrl") : keyName;
     });
 };

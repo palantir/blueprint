@@ -26,7 +26,6 @@ describe("<Toast>", () => {
         const { action, dismiss } = wrap(<Toast message="Hello World" />);
         assert.lengthOf(action, 0);
         assert.lengthOf(dismiss, 1);
-        assert.strictEqual(dismiss.prop("icon"), "cross");
     });
 
     it("clicking dismiss button triggers onDismiss callback with `false`", () => {

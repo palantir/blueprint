@@ -19,15 +19,23 @@ import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
 
-let NS = "bp4";
-if (typeof process !== "undefined") {
-    NS = process.env?.BLUEPRINT_NAMESPACE ?? process.env?.REACT_APP_BLUEPRINT_NAMESPACE ?? NS;
+// injected by webpack.DefinePlugin
+declare let BLUEPRINT_NAMESPACE: string | undefined;
+declare let REACT_APP_BLUEPRINT_NAMESPACE: string | undefined;
+
+let NS = "bp5";
+
+if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
+    NS = BLUEPRINT_NAMESPACE;
+} else if (typeof REACT_APP_BLUEPRINT_NAMESPACE !== "undefined") {
+    NS = REACT_APP_BLUEPRINT_NAMESPACE;
 }
 
 // modifiers
 export const ACTIVE = `${NS}-active`;
 export const ALIGN_LEFT = `${NS}-align-left`;
 export const ALIGN_RIGHT = `${NS}-align-right`;
+export const COMPACT = `${NS}-compact`;
 export const DARK = `${NS}-dark`;
 export const DISABLED = `${NS}-disabled`;
 export const FILL = `${NS}-fill`;
@@ -40,6 +48,7 @@ export const LOADING = `${NS}-loading`;
 export const MINIMAL = `${NS}-minimal`;
 export const OUTLINED = `${NS}-outlined`;
 export const MULTILINE = `${NS}-multiline`;
+export const READ_ONLY = `${NS}-read-only`;
 export const ROUND = `${NS}-round`;
 export const SELECTED = `${NS}-selected`;
 export const SMALL = `${NS}-small`;
@@ -110,20 +119,23 @@ export const CARD_LIST = `${NS}-card`;
 export const COLLAPSE = `${NS}-collapse`;
 export const COLLAPSE_BODY = `${COLLAPSE}-body`;
 
-export const COLLAPSIBLE_LIST = `${NS}-collapse-list`;
-
 export const CONTEXT_MENU = `${NS}-context-menu`;
-export const CONTEXT_MENU_POPOVER_TARGET = `${CONTEXT_MENU}-popover-target`;
+export const CONTEXT_MENU_VIRTUAL_TARGET = `${CONTEXT_MENU}-virtual-target`;
+export const CONTEXT_MENU_POPOVER = `${CONTEXT_MENU}-popover`;
+export const CONTEXT_MENU_BACKDROP = `${CONTEXT_MENU}-backdrop`;
 
 export const CONTROL_GROUP = `${NS}-control-group`;
 
 export const DIALOG = `${NS}-dialog`;
 export const DIALOG_CONTAINER = `${DIALOG}-container`;
+export const DIALOG_HEADER = `${DIALOG}-header`;
 export const DIALOG_BODY = `${DIALOG}-body`;
+export const DIALOG_BODY_SCROLL_CONTAINER = `${DIALOG}-body-scroll-container`;
 export const DIALOG_CLOSE_BUTTON = `${DIALOG}-close-button`;
 export const DIALOG_FOOTER = `${DIALOG}-footer`;
+export const DIALOG_FOOTER_FIXED = `${DIALOG}-footer-fixed`;
+export const DIALOG_FOOTER_MAIN_SECTION = `${DIALOG}-footer-main-section`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
-export const DIALOG_HEADER = `${DIALOG}-header`;
 
 export const DIALOG_STEP = `${NS}-dialog-step`;
 export const DIALOG_STEP_CONTAINER = `${DIALOG_STEP}-container`;
@@ -147,12 +159,11 @@ export const EDITABLE_TEXT_PLACEHOLDER = `${EDITABLE_TEXT}-placeholder`;
 export const FLEX_EXPANDER = `${NS}-flex-expander`;
 
 export const HTML_SELECT = `${NS}-html-select`;
-/** @deprecated prefer `<HTMLSelect>` component */
+/** @deprecated use `<HTMLSelect>` component or `Classes.HTML_SELECT` instead */
 export const SELECT = `${NS}-select`;
 
 export const HTML_TABLE = `${NS}-html-table`;
 export const HTML_TABLE_BORDERED = `${HTML_TABLE}-bordered`;
-export const HTML_TABLE_CONDENSED = `${HTML_TABLE}-condensed`;
 export const HTML_TABLE_STRIPED = `${HTML_TABLE}-striped`;
 
 export const INPUT = `${NS}-input`;
@@ -160,6 +171,8 @@ export const INPUT_GHOST = `${INPUT}-ghost`;
 export const INPUT_GROUP = `${INPUT}-group`;
 export const INPUT_LEFT_CONTAINER = `${INPUT}-left-container`;
 export const INPUT_ACTION = `${INPUT}-action`;
+
+export const RESIZABLE_INPUT_SPAN = `${NS}-resizable-input-span`;
 
 export const CONTROL = `${NS}-control`;
 export const CONTROL_INDICATOR = `${CONTROL}-indicator`;
@@ -201,7 +214,6 @@ export const MULTISTEP_DIALOG = `${NS}-multistep-dialog`;
 export const MULTISTEP_DIALOG_PANELS = `${MULTISTEP_DIALOG}-panels`;
 export const MULTISTEP_DIALOG_LEFT_PANEL = `${MULTISTEP_DIALOG}-left-panel`;
 export const MULTISTEP_DIALOG_RIGHT_PANEL = `${MULTISTEP_DIALOG}-right-panel`;
-export const MULTISTEP_DIALOG_FOOTER = `${MULTISTEP_DIALOG}-footer`;
 export const MULTISTEP_DIALOG_NAV_TOP = `${MULTISTEP_DIALOG}-nav-top`;
 export const MULTISTEP_DIALOG_NAV_RIGHT = `${MULTISTEP_DIALOG}-nav-right`;
 
@@ -244,14 +256,18 @@ export const POPOVER_ARROW = `${POPOVER}-arrow`;
 export const POPOVER_BACKDROP = `${POPOVER}-backdrop`;
 export const POPOVER_CAPTURING_DISMISS = `${POPOVER}-capturing-dismiss`;
 export const POPOVER_CONTENT = `${POPOVER}-content`;
+export const POPOVER_CONTENT_PLACEMENT = `${POPOVER}-placement`;
 export const POPOVER_CONTENT_SIZING = `${POPOVER_CONTENT}-sizing`;
 export const POPOVER_DISMISS = `${POPOVER}-dismiss`;
 export const POPOVER_DISMISS_OVERRIDE = `${POPOVER_DISMISS}-override`;
+export const POPOVER_MATCH_TARGET_WIDTH = `${POPOVER}-match-target-width`;
 export const POPOVER_OPEN = `${POPOVER}-open`;
-export const POPOVER_OUT_OF_BOUNDARIES = `${POPOVER}-out-of-boundaries`;
+export const POPOVER_POPPER_ESCAPED = `${POPOVER}-popper-escaped`;
+export const POPOVER_REFERENCE_HIDDEN = `${POPOVER}-reference-hidden`;
 export const POPOVER_TARGET = `${POPOVER}-target`;
+export const POPOVER_TRANSITION_CONTAINER = `${POPOVER}-transition-container`;
+/** @deprecated, no longer used in Blueprint v5.x */
 export const POPOVER_WRAPPER = `${POPOVER}-wrapper`;
-export const TRANSITION_CONTAINER = `${NS}-transition-container`;
 
 export const PROGRESS_BAR = `${NS}-progress-bar`;
 export const PROGRESS_METER = `${NS}-progress-meter`;
@@ -278,6 +294,8 @@ export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
 
 export const TAB = `${NS}-tab`;
+export const TAB_ICON = `${TAB}-icon`;
+export const TAB_TAG = `${TAB}-tag`;
 export const TAB_INDICATOR = `${TAB}-indicator`;
 export const TAB_INDICATOR_WRAPPER = `${TAB_INDICATOR}-wrapper`;
 export const TAB_LIST = `${TAB}-list`;
@@ -319,7 +337,7 @@ export const ICON_LARGE = `${ICON}-large`;
 
 /**
  * Returns the namespace prefix for all Blueprint CSS classes.
- * Customize this namespace at build time with the `process.env.BLUEPRINT_NAMESPACE` environment variable.
+ * Customize this namespace at build time by defining it with `webpack.DefinePlugin`.
  */
 export function getClassNamespace() {
     return NS;
