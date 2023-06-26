@@ -53,7 +53,7 @@ export class CardListExample extends React.PureComponent<ExampleProps> {
         return (
             <Example options={options} {...this.props}>
                 {isContained ? (
-                    <Section sectionTitle="Ingredients">
+                    <Section sectionTitle="Ingredients" small={isSmall}>
                         <SectionContent padded={false}>{this.renderList()}</SectionContent>
                     </Section>
                 ) : (
