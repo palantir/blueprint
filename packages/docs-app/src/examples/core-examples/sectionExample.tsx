@@ -47,6 +47,8 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                 <Switch checked={hasIcon} label="Icon" onChange={this.handleIconChange} />
                 <Switch checked={hasDescription} label="Description" onChange={this.handleDescriptionChange} />
                 <Switch checked={hasRightItem} label="Right item" onChange={this.handleRightItemChange} />
+
+                <H5>Example</H5>
                 <Switch
                     checked={hasMultipleSectionContent}
                     label="Multiple section content"
