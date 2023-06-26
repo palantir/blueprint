@@ -1,6 +1,12 @@
 @use "sass:math";
 @import "../../common/variables";
 
+$section-default-min-height: 50px;
+$section-default-padding: $pt-grid-size * 2;
+
+$section-small-min-height: 40px;
+$section-small-padding: 15px;
+
 .#{$ns}-section {
   padding: 0;
   width: 100%;
@@ -12,8 +18,8 @@
     position: relative;
     width: 100%;
     gap: $pt-grid-size;
-    min-height: 50px;
-    padding: $pt-grid-size $pt-grid-size $pt-grid-size $pt-grid-size * 2;
+    min-height: $section-default-min-height;
+    padding: $pt-grid-size $pt-grid-size $pt-grid-size $section-default-padding;
 
     border-bottom: 1px solid $pt-divider-black;
 
@@ -44,7 +50,7 @@
 
   &-content {
     &.#{$ns}-padded {
-      padding: $pt-grid-size * 2;
+      padding: $section-default-padding;
     }
 
     &:not(:last-child) {
@@ -54,6 +60,17 @@
       .#{$ns}-dark & {
         border-color: $pt-dark-divider-white;
       }
+    }
+  }
+
+  &.#{$ns}-small {
+    .#{$ns}-section-header {
+      min-height: $section-small-min-height;
+      padding: 7px 7px 7px $section-small-padding;
+    }
+
+    .#{$ns}-section-content {
+      padding: $section-small-padding;
     }
   }
 }

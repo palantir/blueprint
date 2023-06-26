@@ -52,6 +52,9 @@ export interface SectionProps
      * Element to render on the right side of the section header
      */
     rightItem?: JSX.Element;
+
+    /** Whether this section should use small styles. */
+    small?: boolean;
 }
 
 /**
@@ -60,8 +63,8 @@ export interface SectionProps
  * @see https://blueprintjs.com/docs/#core/components/section
  */
 export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => {
-    const { className, icon, sectionTitle, rightItem, subtitle, children, ...cardProps } = props;
-    const classes = classNames(Classes.SECTION, className);
+    const { className, icon, sectionTitle, rightItem, subtitle, children, small, ...cardProps } = props;
+    const classes = classNames(Classes.SECTION, { [Classes.SMALL]: small }, className);
     return (
         <Card elevation={Elevation.ZERO} className={classes} ref={ref} {...cardProps}>
             <div className={SECTION_HEADER}>
