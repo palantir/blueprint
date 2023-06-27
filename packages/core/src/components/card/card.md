@@ -12,7 +12,7 @@ height in the UI. Five elevations are supported, from 0 to 4.
 The `Classes.ELEVATION_*` constants can be used on any element (not just a
 `Card`) to apply the drop shadow.
 
-@## Props
+@## Props interface
 
 This component is a simple stateless container for its children.
 
@@ -28,7 +28,7 @@ import { Button, Card, Elevation } from "@blueprintjs/core";
 
 @interface CardProps
 
-@## CSS
+@## CSS API
 
 Start with `.@ns-card` and add an elevation class `.@ns-elevation-*` to apply a
 drop shadow that simulates height in the UI.
@@ -39,6 +39,6 @@ changes to a pointer and increases the elevation shadow on the card.
 
 @css card
 
-@# Switch Card
+@## Switch Card
 
 @reactExample SwitchCardExample

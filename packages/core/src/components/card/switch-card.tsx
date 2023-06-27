@@ -22,7 +22,7 @@ import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { Switch, SwitchProps } from "../forms/controls";
 import { Card, CardProps } from "./card";
 
-export interface SwitchCardProps extends SwitchProps {
+export interface SwitchCardProps extends Omit<SwitchProps, "labelElement"> {
     cardProps?: CardProps;
 }
 
@@ -32,32 +32,12 @@ export interface SwitchCardProps extends SwitchProps {
  * @see https://blueprintjs.com/docs/#core/components/card#switch-card
  */
 export const SwitchCard: React.FC<SwitchCardProps> = React.forwardRef(props => {
-    const { className, cardProps, children, onChange, ...switchProps } = props;
+    const { className, cardProps, children, ...switchProps } = props;
     const classes = classNames(Classes.CARD_SWITCH, className);
 
-    const isControlled = switchProps.checked !== undefined;
-
-    const handleChange = React.useCallback(
-        evemt => {
-            if (isControlled && onChange != null) {
-                onChange(evemt);
-                console.log("change");
-                evemt?.stopPropagation();
-            }
-        },
-        [onChange, isControlled],
-    );
-
     return (
-        <Card interactive={isControlled} className={classes} onClick={handleChange} {...cardProps}>
-            <Switch
-                labelElement={children}
-                inline={true}
-                onChange={isControlled ? undefined : onChange}
-                alignIndicator={Alignment.RIGHT}
-                checked={switchProps.checked}
-                {...switchProps}
-            />
+        <Card interactive={true} className={classes} {...cardProps}>
+            <Switch labelElement={children} inline={true} alignIndicator={Alignment.RIGHT} {...switchProps} />
         </Card>
     );
 });

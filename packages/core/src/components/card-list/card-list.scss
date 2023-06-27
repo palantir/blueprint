@@ -52,6 +52,12 @@ $card-small-padding: 7px 15px;
         border-color: $pt-dark-divider-white-muted;
       }
     }
+
+    > .#{$ns}-card-switch {
+      // Make the label take up the full size so that we can use the control's onChange instead of a "click" handler
+      // on any container element. This is partially to work around https://github.com/palantir/blueprint/issues/6251
+      padding: 0;
+    }
   }
 
   &.#{$ns}-small .#{$ns}-card-list-item > .#{$ns}-card {

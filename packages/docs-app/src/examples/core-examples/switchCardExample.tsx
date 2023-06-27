@@ -41,25 +41,25 @@ export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchC
                         width: "100%",
                     }}
                 >
-                    <SwitchCard onChange={this.handleSetCheckedState(0)} checked={switchChecked[0]}>
+                    <SwitchCard onChange={this.getSwitchChangeHandler(0)} checked={switchChecked[0]}>
                         Wifi
                     </SwitchCard>
-                    <SwitchCard onChange={this.handleSetCheckedState(1)} checked={switchChecked[1]}>
+                    <SwitchCard onChange={this.getSwitchChangeHandler(1)} checked={switchChecked[1]}>
                         Bluetooth
                     </SwitchCard>
-                    <SwitchCard onChange={this.handleSetCheckedState(2)} checked={switchChecked[2]}>
+                    <SwitchCard onChange={this.getSwitchChangeHandler(2)} checked={switchChecked[2]}>
                         NFC
                     </SwitchCard>
                 </div>
 
                 <CardList>
-                    <SwitchCard onChange={this.handleSetCheckedState(3)} checked={switchChecked[3]}>
+                    <SwitchCard onChange={this.getSwitchChangeHandler(3)} checked={switchChecked[3]}>
                         Wifi
                     </SwitchCard>
-                    <SwitchCard onChange={this.handleSetCheckedState(4)} checked={switchChecked[4]}>
+                    <SwitchCard onChange={this.getSwitchChangeHandler(4)} checked={switchChecked[4]}>
                         Bluetooth
                     </SwitchCard>
-                    <SwitchCard onChange={this.handleSetCheckedState(5)} checked={switchChecked[5]}>
+                    <SwitchCard onChange={this.getSwitchChangeHandler(5)} checked={switchChecked[5]}>
                         NFC
                     </SwitchCard>
                 </CardList>
@@ -67,7 +67,7 @@ export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchC
         );
     }
 
-    private handleSetCheckedState = (index: number) => () => {
+    private getSwitchChangeHandler = (index: number) => () => {
         const switchChecked = [...this.state.switchChecked];
         switchChecked[index] = !this.state.switchChecked[index];
 
