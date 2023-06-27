@@ -73,6 +73,7 @@ export const FOCUS_DISABLED = `${NS}-focus-disabled`;
 export const FOCUS_STYLE_MANAGER_IGNORE = `${NS}-focus-style-manager-ignore`;
 
 export const PADDED = `${NS}-padded`;
+export const COLLAPSED = `${NS}-collapsed`;
 
 // text utilities
 export const UI_TEXT = `${NS}-ui-text`;

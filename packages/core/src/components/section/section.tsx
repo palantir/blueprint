@@ -17,10 +17,9 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconName } from "@blueprintjs/icons";
+import { IconName, IconNames } from "@blueprintjs/icons";
 
 import { Classes, Elevation } from "../../common";
-import { SECTION_HEADER } from "../../common/classes";
 import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { Card, CardProps } from "../card/card";
 import { H6 } from "../html/html";
@@ -64,6 +63,10 @@ export interface SectionProps
 
     /** Whether this section should use small styles. */
     small?: boolean;
+
+    collapsible?: boolean;
+
+    collapsedByDefault?: boolean;
 }
 
 /**
@@ -72,12 +75,34 @@ export interface SectionProps
  * @see https://blueprintjs.com/docs/#core/components/section
  */
 export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => {
-    const { className, icon, title, rightItem, subtitle, children, tabDefinitions, tabsProps, small, ...cardProps } =
-        props;
+    const {
+        className,
+        icon,
+        title,
+        rightItem,
+        subtitle,
+        children,
+        tabDefinitions,
+        tabsProps,
+        small,
+        collapsible,
+        collapsedByDefault,
+        ...cardProps
+    } = props;
     const classes = classNames(Classes.SECTION, { [Classes.SMALL]: small }, className);
 
     const controlledSelectedTabId = tabsProps?.selectedTabId;
     const [selectedTabId, setSelectedTabId] = React.useState<TabId | undefined>(tabsProps?.defaultSelectedTabId);
+
+    const [collapsed, setCollapsed] = React.useState<boolean | undefined>(collapsedByDefault ?? false);
+    const toggleCollapsed = React.useCallback(() => setCollapsed(!collapsed), [collapsed]);
+    const showContent = React.useMemo(() => {
+        if (collapsible && collapsed) {
+            return false;
+        }
+
+        return true;
+    }, [collapsible, collapsed]);
 
     const maybeActieTabPanel: JSX.Element | undefined = tabDefinitions?.find(tab =>
         controlledSelectedTabId != null ? tab.id === controlledSelectedTabId : tab.id === selectedTabId,
@@ -85,7 +110,15 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
 
     return (
         <Card elevation={Elevation.ZERO} className={classes} ref={ref} {...cardProps}>
-            <div className={SECTION_HEADER}>
+            <div
+                role={collapsible != null ? "button" : undefined}
+                aria-pressed={collapsible != null ? collapsed : undefined}
+                className={classNames(Classes.SECTION_HEADER, {
+                    [Classes.INTERACTIVE]: collapsible,
+                    [Classes.COLLAPSED]: !showContent,
+                })}
+                onClick={collapsible != null ? toggleCollapsed : undefined}
+            >
                 {(title != null || icon != null || subtitle != null) && (
                     <div className={Classes.SECTION_HEADER_LEFT}>
                         {title && icon && (
@@ -114,8 +147,15 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                 )}
 
                 {rightItem && <div className={Classes.SECTION_HEADER_RIGHT}>{rightItem}</div>}
+
+                {collapsible && (
+                    <Icon
+                        className={Classes.TEXT_MUTED}
+                        icon={collapsed ? IconNames.CHEVRON_DOWN : IconNames.CHEVRON_UP}
+                    />
+                )}
             </div>
-            {maybeActieTabPanel != null ? maybeActieTabPanel : children}
+            {showContent && (maybeActieTabPanel != null ? maybeActieTabPanel : children)}
         </Card>
     );
 });

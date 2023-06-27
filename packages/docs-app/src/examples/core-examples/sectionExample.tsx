@@ -27,10 +27,12 @@ export interface SectionExampleState {
     hasMultipleSectionContent: boolean;
     isSmall: boolean;
     showTabs: boolean;
+    collapsible: boolean;
 }
 
 export class SectionExample extends React.PureComponent<ExampleProps, SectionExampleState> {
     public state: SectionExampleState = {
+        collapsible: false,
         hasDescription: false,
         hasIcon: false,
         hasMultipleSectionContent: false,
@@ -40,7 +42,8 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
     };
 
     public render() {
-        const { hasDescription, hasIcon, hasRightItem, hasMultipleSectionContent, showTabs, isSmall } = this.state;
+        const { collapsible, hasDescription, hasIcon, hasRightItem, hasMultipleSectionContent, showTabs, isSmall } =
+            this.state;
 
         const options = (
             <>
@@ -50,10 +53,12 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                 <Switch checked={hasDescription} label="Description" onChange={this.handleDescriptionChange} />
                 <Switch checked={hasRightItem} label="Right item" onChange={this.handleRightItemChange} />
                 <Switch checked={showTabs} label="Tabs" onChange={this.handleShowTabsChange} />
+                <Switch checked={collapsible} label="Collapsible" onChange={this.handleCollapsibleChange} />
 
                 <H5>Example</H5>
                 <Switch
                     checked={hasMultipleSectionContent}
+                    disabled={showTabs}
                     label="Multiple section content"
                     onChange={this.handleMultpleSectionContentChange}
                 />
@@ -111,6 +116,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                         ) : undefined
                     }
                     tabDefinitions={showTabs ? tabDefinitions : undefined}
+                    collapsible={collapsible}
                 >
                     <SectionContent>{descriptionContent}</SectionContent>
 
@@ -132,4 +138,6 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         this.setState({ hasMultipleSectionContent: !this.state.hasMultipleSectionContent });
 
     private handleShowTabsChange = () => this.setState({ showTabs: !this.state.showTabs });
+
+    private handleCollapsibleChange = () => this.setState({ collapsible: !this.state.collapsible });
 }

@@ -14,6 +14,7 @@ $section-small-content-padding: $pt-grid-size * 1.5;
 .#{$ns}-section {
   padding: 0;
   width: 100%;
+  overflow: hidden;
 
   &-header {
     align-items: center;
@@ -54,6 +55,24 @@ $section-small-content-padding: $pt-grid-size * 1.5;
       margin-left: auto;
       align-items: center;
       display: flex;
+    }
+
+    &.#{$ns}-interactive {
+      cursor: pointer;
+
+      &:hover,
+      &:active {
+        background: $light-gray5;
+
+        &.#{$ns}-dark,
+        .#{$ns}-dark & {
+          background: $dark-gray4;
+        }
+      }
+    }
+
+    &.#{$ns}-collapsed {
+      border: none;
     }
   }
 
