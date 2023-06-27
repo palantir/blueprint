@@ -19,8 +19,18 @@ import * as React from "react";
 import { CardList, SwitchCard } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-export class SwitchCardExample extends React.PureComponent<ExampleProps> {
+export interface SwitchCardExampleState {
+    switchChecked: boolean[];
+}
+
+export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchCardExampleState> {
+    public state: SwitchCardExampleState = {
+        switchChecked: [false, true, false, true, true, false],
+    };
+
     public render() {
+        const { switchChecked } = this.state;
+
         return (
             <Example {...this.props}>
                 <div
@@ -31,17 +41,36 @@ export class SwitchCardExample extends React.PureComponent<ExampleProps> {
                         width: "100%",
                     }}
                 >
-                    <SwitchCard checked={true}>Wifi</SwitchCard>
-                    <SwitchCard checked={true}>Bluetooth</SwitchCard>
-                    <SwitchCard checked={true}>NFC</SwitchCard>
+                    <SwitchCard onChange={this.handleSetCheckedState(0)} checked={switchChecked[0]}>
+                        Wifi
+                    </SwitchCard>
+                    <SwitchCard onChange={this.handleSetCheckedState(1)} checked={switchChecked[1]}>
+                        Bluetooth
+                    </SwitchCard>
+                    <SwitchCard onChange={this.handleSetCheckedState(2)} checked={switchChecked[2]}>
+                        NFC
+                    </SwitchCard>
                 </div>
 
                 <CardList>
-                    <SwitchCard checked={true}>Wifi</SwitchCard>
-                    <SwitchCard checked={true}>Bluetooth</SwitchCard>
-                    <SwitchCard checked={true}>NFC</SwitchCard>
+                    <SwitchCard onChange={this.handleSetCheckedState(3)} checked={switchChecked[3]}>
+                        Wifi
+                    </SwitchCard>
+                    <SwitchCard onChange={this.handleSetCheckedState(4)} checked={switchChecked[4]}>
+                        Bluetooth
+                    </SwitchCard>
+                    <SwitchCard onChange={this.handleSetCheckedState(5)} checked={switchChecked[5]}>
+                        NFC
+                    </SwitchCard>
                 </CardList>
             </Example>
         );
     }
+
+    private handleSetCheckedState = (index: number) => () => {
+        const switchChecked = [...this.state.switchChecked];
+        switchChecked[index] = !this.state.switchChecked[index];
+
+        this.setState({ switchChecked });
+    };
 }

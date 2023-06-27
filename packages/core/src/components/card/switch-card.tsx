@@ -18,11 +18,11 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Alignment, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { Switch, SwitchProps } from "../forms/controls";
 import { Card, CardProps } from "./card";
 
-export interface SwitchCardProps extends Props, SwitchProps {
+export interface SwitchCardProps extends SwitchProps {
     cardProps?: CardProps;
 }
 
@@ -32,23 +32,32 @@ export interface SwitchCardProps extends Props, SwitchProps {
  * @see https://blueprintjs.com/docs/#core/components/card#switch-card
  */
 export const SwitchCard: React.FC<SwitchCardProps> = React.forwardRef(props => {
-    const { className, cardProps, children, ...switchProps } = props;
+    const { className, cardProps, children, onChange, ...switchProps } = props;
     const classes = classNames(Classes.CARD_SWITCH, className);
 
-    const isControlled = switchProps.checked != null;
+    const isControlled = switchProps.checked !== undefined;
 
     const handleChange = React.useCallback(
         evemt => {
-            if (isControlled && switchProps.onChange != null) {
-                switchProps?.onChange(evemt);
+            if (isControlled && onChange != null) {
+                onChange(evemt);
+                console.log("change");
+                evemt?.stopPropagation();
             }
         },
-        [switchProps],
+        [onChange, isControlled],
     );
 
     return (
         <Card interactive={isControlled} className={classes} onClick={handleChange} {...cardProps}>
-            <Switch labelElement={children} inline={true} alignIndicator={Alignment.RIGHT} {...switchProps} />
+            <Switch
+                labelElement={children}
+                inline={true}
+                onChange={isControlled ? undefined : onChange}
+                alignIndicator={Alignment.RIGHT}
+                checked={switchProps.checked}
+                {...switchProps}
+            />
         </Card>
     );
 });
