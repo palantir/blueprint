@@ -12,14 +12,14 @@ $section-small-padding: 15px;
   width: 100%;
 
   &-header {
-    align-items: stretch;
+    align-items: center;
     display: flex;
     justify-content: space-between;
     position: relative;
     width: 100%;
-    gap: $pt-grid-size;
+    gap: $pt-grid-size * 2;
     min-height: $section-default-min-height;
-    padding: $pt-grid-size $pt-grid-size $pt-grid-size $section-default-padding;
+    padding: 0 $pt-grid-size 0 $section-default-padding;
 
     border-bottom: 1px solid $pt-divider-black;
 
@@ -32,6 +32,7 @@ $section-small-padding: 15px;
       align-items: center;
       display: flex;
       gap: $pt-grid-size;
+      padding: $pt-grid-size 0;
     }
 
     &-title {
@@ -42,7 +43,12 @@ $section-small-padding: 15px;
       margin-top: 2px;
     }
 
+    &-tabs {
+      align-self: stretch;
+    }
+
     &-right {
+      margin-left: auto;
       align-items: center;
       display: flex;
     }
@@ -66,7 +72,11 @@ $section-small-padding: 15px;
   &.#{$ns}-small {
     .#{$ns}-section-header {
       min-height: $section-small-min-height;
-      padding: 7px 7px 7px $section-small-padding;
+      padding: 0 7px 0 $section-small-padding;
+
+      &-left {
+        padding: 7px 0;
+      }
     }
 
     .#{$ns}-section-content.#{$ns}-padded {

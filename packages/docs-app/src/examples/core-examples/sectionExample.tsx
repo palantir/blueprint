@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Classes, H5, Intent, Section, SectionContent, Switch, Text } from "@blueprintjs/core";
+import { Button, Classes, H5, Intent, Section, SectionContent, Switch, TabProps, Text } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
@@ -26,6 +26,7 @@ export interface SectionExampleState {
     hasRightItem: boolean;
     hasMultipleSectionContent: boolean;
     isSmall: boolean;
+    showTabs: boolean;
 }
 
 export class SectionExample extends React.PureComponent<ExampleProps, SectionExampleState> {
@@ -35,10 +36,11 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         hasMultipleSectionContent: false,
         hasRightItem: true,
         isSmall: true,
+        showTabs: false,
     };
 
     public render() {
-        const { hasDescription, hasIcon, hasRightItem, hasMultipleSectionContent, isSmall } = this.state;
+        const { hasDescription, hasIcon, hasRightItem, hasMultipleSectionContent, showTabs, isSmall } = this.state;
 
         const options = (
             <>
@@ -47,6 +49,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                 <Switch checked={hasIcon} label="Icon" onChange={this.handleIconChange} />
                 <Switch checked={hasDescription} label="Description" onChange={this.handleDescriptionChange} />
                 <Switch checked={hasRightItem} label="Right item" onChange={this.handleRightItemChange} />
+                <Switch checked={showTabs} label="Tabs" onChange={this.handleShowTabsChange} />
 
                 <H5>Example</H5>
                 <Switch
@@ -57,11 +60,47 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
             </>
         );
 
+        const descriptionContent = (
+            <Text>
+                Basil; Ocimum basilicum, also called great basil, is a culinary herb of the family Lamiaceae (mints). It
+                is a tender plant, and is used in cuisines worldwide. In Western cuisine, the generic term "basil"
+                refers to the variety also known as sweet basil or Genovese basil. Basil is native to tropical regions
+                from Central Africa to Southeast Asia.
+            </Text>
+        );
+
+        const metadataContent = (
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span className={Classes.TEXT_MUTED}>Kingdom</span>Plantae
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span className={Classes.TEXT_MUTED}>Clade</span>Tracheophytes
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span className={Classes.TEXT_MUTED}>Family</span>Lamiaceae
+                </div>
+            </div>
+        );
+
+        const tabDefinitions: TabProps[] = [
+            {
+                id: "description",
+                panel: <SectionContent>{descriptionContent}</SectionContent>,
+                title: "Description",
+            },
+            {
+                id: "metadata",
+                panel: <SectionContent>{metadataContent}</SectionContent>,
+                title: "Metadata",
+            },
+        ];
+
         return (
             <Example options={options} {...this.props}>
                 <Section
                     small={isSmall}
-                    sectionTitle="Basil"
+                    title="Basil"
                     subtitle={hasDescription ? "Ocimum basilicum" : undefined}
                     icon={hasIcon ? IconNames.BOOK : undefined}
                     rightItem={
@@ -71,31 +110,11 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                             </Button>
                         ) : undefined
                     }
+                    tabDefinitions={showTabs ? tabDefinitions : undefined}
                 >
-                    <SectionContent>
-                        <Text>
-                            Basil; Ocimum basilicum, also called great basil, is a culinary herb of the family Lamiaceae
-                            (mints). It is a tender plant, and is used in cuisines worldwide. In Western cuisine, the
-                            generic term "basil" refers to the variety also known as sweet basil or Genovese basil.
-                            Basil is native to tropical regions from Central Africa to Southeast Asia.
-                        </Text>
-                    </SectionContent>
+                    <SectionContent>{descriptionContent}</SectionContent>
 
-                    {hasMultipleSectionContent && (
-                        <SectionContent>
-                            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                    <span className={Classes.TEXT_MUTED}>Kingdom</span>Plantae
-                                </div>
-                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                    <span className={Classes.TEXT_MUTED}>Clade</span>Tracheophytes
-                                </div>
-                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                    <span className={Classes.TEXT_MUTED}>Family</span>Lamiaceae
-                                </div>
-                            </div>
-                        </SectionContent>
-                    )}
+                    {hasMultipleSectionContent && <SectionContent>{metadataContent}</SectionContent>}
                 </Section>
             </Example>
         );
@@ -111,4 +130,6 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
 
     private handleMultpleSectionContentChange = () =>
         this.setState({ hasMultipleSectionContent: !this.state.hasMultipleSectionContent });
+
+    private handleShowTabsChange = () => this.setState({ showTabs: !this.state.showTabs });
 }
