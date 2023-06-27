@@ -55,7 +55,7 @@ export interface SectionProps
      */
     tabDefinitions?: TabProps[];
 
-    tabsProps?: Omit<TabsProps, "vertical" | "children" | "large" | "fill">;
+    tabsProps?: Omit<TabsProps, "vertical" | "children" | "large" | "fill" | "id">;
 
     /**
      * Element to render on the right side of the section header
@@ -76,9 +76,12 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         props;
     const classes = classNames(Classes.SECTION, { [Classes.SMALL]: small }, className);
 
+    const controlledSelectedTabId = tabsProps?.selectedTabId;
     const [selectedTabId, setSelectedTabId] = React.useState<TabId | undefined>(tabsProps?.defaultSelectedTabId);
 
-    const maybeActieTabPanel: JSX.Element | undefined = tabDefinitions?.find(tab => tab.id === selectedTabId)?.panel;
+    const maybeActieTabPanel: JSX.Element | undefined = tabDefinitions?.find(tab =>
+        controlledSelectedTabId != null ? tab.id === controlledSelectedTabId : tab.id === selectedTabId,
+    )?.panel;
 
     return (
         <Card elevation={Elevation.ZERO} className={classes} ref={ref} {...cardProps}>

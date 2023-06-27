@@ -35,7 +35,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         hasIcon: false,
         hasMultipleSectionContent: false,
         hasRightItem: true,
-        isSmall: true,
+        isSmall: false,
         showTabs: false,
     };
 

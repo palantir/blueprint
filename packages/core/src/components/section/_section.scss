@@ -1,11 +1,15 @@
 @use "sass:math";
 @import "../../common/variables";
 
-$section-default-min-height: 50px;
-$section-default-padding: $pt-grid-size * 2;
+$section-default-min-height: $pt-grid-size * 5;
+$section-default-vertical-padding: $pt-grid-size;
+$section-default-horizontal-padding: $pt-grid-size * 2;
+$section-default-content-padding: $pt-grid-size * 2;
 
-$section-small-min-height: 40px;
-$section-small-padding: 15px;
+$section-small-min-height: $pt-grid-size * 4;
+$section-small-vertical-padding: 7px;
+$section-small-horizontal-padding: 15px;
+$section-small-content-padding: $pt-grid-size * 1.5;
 
 .#{$ns}-section {
   padding: 0;
@@ -19,8 +23,7 @@ $section-small-padding: 15px;
     width: 100%;
     gap: $pt-grid-size * 2;
     min-height: $section-default-min-height;
-    padding: 0 $pt-grid-size 0 $section-default-padding;
-
+    padding: 0 $section-default-horizontal-padding;
     border-bottom: 1px solid $pt-divider-black;
 
     &.#{$ns}-dark,
@@ -32,7 +35,7 @@ $section-small-padding: 15px;
       align-items: center;
       display: flex;
       gap: $pt-grid-size;
-      padding: $pt-grid-size 0;
+      padding: $section-default-vertical-padding 0;
     }
 
     &-title {
@@ -56,7 +59,7 @@ $section-small-padding: 15px;
 
   &-content {
     &.#{$ns}-padded {
-      padding: $section-default-padding;
+      padding: $section-default-content-padding;
     }
 
     &:not(:last-child) {
@@ -72,15 +75,15 @@ $section-small-padding: 15px;
   &.#{$ns}-small {
     .#{$ns}-section-header {
       min-height: $section-small-min-height;
-      padding: 0 7px 0 $section-small-padding;
+      padding: 0 $section-small-horizontal-padding;
 
       &-left {
-        padding: 7px 0;
+        padding: $section-small-vertical-padding 0;
       }
     }
 
     .#{$ns}-section-content.#{$ns}-padded {
-      padding: $section-small-padding;
+      padding: $section-small-content-padding;
     }
   }
 }
