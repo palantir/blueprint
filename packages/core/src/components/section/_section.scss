@@ -54,6 +54,7 @@ $section-small-content-padding: $pt-grid-size * 1.5;
     &-right {
       margin-left: auto;
       align-items: center;
+      gap: $pt-grid-size;
       display: flex;
     }
 

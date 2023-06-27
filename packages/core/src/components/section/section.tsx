@@ -109,6 +109,8 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         controlledSelectedTabId != null ? tab.id === controlledSelectedTabId : tab.id === selectedTabId,
     )?.panel;
 
+    const tabsLeftAligned = rightItem || collapsible;
+
     return (
         <Card elevation={Elevation.ZERO} className={classes} ref={ref} {...cardProps}>
             <div
@@ -137,7 +139,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                             </div>
                         </div>
 
-                        {tabDefinitions && <Divider className={Classes.SECTION_HEADER_DIVIDER} />}
+                        {tabDefinitions && tabsLeftAligned && <Divider className={Classes.SECTION_HEADER_DIVIDER} />}
                     </>
                 )}
 
@@ -151,13 +153,16 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                     </div>
                 )}
 
-                {rightItem && <div className={Classes.SECTION_HEADER_RIGHT}>{rightItem}</div>}
-
-                {collapsible && (
-                    <Icon
-                        className={Classes.TEXT_MUTED}
-                        icon={collapsed ? IconNames.CHEVRON_DOWN : IconNames.CHEVRON_UP}
-                    />
+                {(rightItem || collapsible) && (
+                    <div className={Classes.SECTION_HEADER_RIGHT}>
+                        {rightItem}
+                        {collapsible && (
+                            <Icon
+                                className={Classes.TEXT_MUTED}
+                                icon={collapsed ? IconNames.CHEVRON_DOWN : IconNames.CHEVRON_UP}
+                            />
+                        )}
+                    </div>
                 )}
             </div>
             {showContent && (maybeActieTabPanel != null ? maybeActieTabPanel : children)}
