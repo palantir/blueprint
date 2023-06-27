@@ -57,6 +57,11 @@ $section-small-content-padding: $pt-grid-size * 1.5;
       display: flex;
     }
 
+    &-divider {
+      align-self: stretch;
+      margin: $pt-grid-size * 1.5 0;
+    }
+
     &.#{$ns}-interactive {
       cursor: pointer;
 

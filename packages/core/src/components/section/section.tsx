@@ -22,6 +22,7 @@ import { IconName, IconNames } from "@blueprintjs/icons";
 import { Classes, Elevation } from "../../common";
 import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
 import { Card, CardProps } from "../card/card";
+import { Divider } from "../divider/divider";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 import { Tab, TabId, TabProps } from "../tabs/tab";
@@ -120,20 +121,24 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                 onClick={collapsible != null ? toggleCollapsed : undefined}
             >
                 {(title != null || icon != null || subtitle != null) && (
-                    <div className={Classes.SECTION_HEADER_LEFT}>
-                        {title && icon && (
-                            <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />
-                        )}
-
-                        <div>
-                            {title && <H6 className={Classes.SECTION_HEADER_TITLE}>{title}</H6>}
-                            {title && subtitle && (
-                                <div className={classNames(Classes.TEXT_MUTED, Classes.SECTION_HEADER_SUB_TITLE)}>
-                                    {subtitle}
-                                </div>
+                    <>
+                        <div className={Classes.SECTION_HEADER_LEFT}>
+                            {title && icon && (
+                                <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />
                             )}
+
+                            <div>
+                                {title && <H6 className={Classes.SECTION_HEADER_TITLE}>{title}</H6>}
+                                {title && subtitle && (
+                                    <div className={classNames(Classes.TEXT_MUTED, Classes.SECTION_HEADER_SUB_TITLE)}>
+                                        {subtitle}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
+
+                        {tabDefinitions && <Divider className={Classes.SECTION_HEADER_DIVIDER} />}
+                    </>
                 )}
 
                 {tabDefinitions && (

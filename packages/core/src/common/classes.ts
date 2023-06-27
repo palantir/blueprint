@@ -221,6 +221,7 @@ export const SECTION_HEADER = `${SECTION}-header`;
 export const SECTION_HEADER_LEFT = `${SECTION_HEADER}-left`;
 export const SECTION_HEADER_TITLE = `${SECTION_HEADER}-title`;
 export const SECTION_HEADER_SUB_TITLE = `${SECTION_HEADER}-sub-title`;
+export const SECTION_HEADER_DIVIDER = `${SECTION_HEADER}-divider`;
 export const SECTION_HEADER_TABS = `${SECTION_HEADER}-tabs`;
 export const SECTION_HEADER_RIGHT = `${SECTION_HEADER}-right`;
 export const SECTION_CONTENT = `${SECTION}-content`;
