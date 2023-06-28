@@ -18,7 +18,9 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Callout, Classes, H5, Icon, Intent } from "../../src";
+import { IconNames } from "@blueprintjs/icons";
+
+import { Callout, Classes, H5, Intent } from "../../src";
 
 describe("<Callout>", () => {
     it("supports className", () => {
@@ -29,8 +31,8 @@ describe("<Callout>", () => {
     });
 
     it("supports icon", () => {
-        const wrapper = shallow(<Callout icon="graph" />);
-        assert.isTrue(wrapper.find(Icon).exists());
+        const wrapper = shallow(<Callout icon={IconNames.GRAPH} />);
+        assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRAPH}"]`).exists());
     });
 
     it("supports intent", () => {
@@ -38,14 +40,14 @@ describe("<Callout>", () => {
         assert.isTrue(wrapper.hasClass(Classes.INTENT_DANGER));
     });
 
-    it("intent renders default icon", () => {
+    it("intent='primary' renders the associated default icon", () => {
         const wrapper = shallow(<Callout intent={Intent.PRIMARY} />);
-        assert.isTrue(wrapper.find(Icon).exists());
+        assert.isTrue(wrapper.find(`[data-icon="${IconNames.INFO_SIGN}"]`).exists());
     });
 
     it("icon=null removes intent icon", () => {
         const wrapper = shallow(<Callout icon={null} intent={Intent.PRIMARY} />);
-        assert.isFalse(wrapper.find(Icon).exists());
+        assert.isTrue(wrapper.find(`[data-icon]`).exists());
     });
 
     it("renders optional title element", () => {
