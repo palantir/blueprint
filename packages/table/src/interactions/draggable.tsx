@@ -74,19 +74,34 @@ export class Draggable extends React.PureComponent<DraggableProps> {
     }
 
     public componentDidUpdate(prevProps: DraggableProps) {
-        const propsWhitelist = { include: REATTACH_PROPS_KEYS };
-        if (!CoreUtils.shallowCompareKeys(prevProps, this.props, propsWhitelist) && this.targetRef.current != null) {
+        const didEventHandlerPropsChange = !CoreUtils.shallowCompareKeys(prevProps, this.props, {
+            include: REATTACH_PROPS_KEYS,
+        });
+        if (didEventHandlerPropsChange && isValidTarget(this.targetRef.current)) {
             this.events.attach(this.targetRef.current, this.props);
         }
     }
 
     public componentDidMount() {
-        if (this.targetRef.current != null) {
+        if (isValidTarget(this.targetRef.current)) {
             this.events.attach(this.targetRef.current, this.props);
         }
     }
 
     public componentWillUnmount() {
-        this.events?.detach();
+        if (isValidTarget(this.targetRef.current)) {
+            this.events?.detach();
+        }
     }
+}
+
+/**
+ * Used to ensure that target elements are valid at runtime for use by DragEvents.
+ * This check is done at runtime instead of compile time because of our use of `React.cloneElement<any>()`
+ * and the associated untyped `ref` injection.
+ *
+ * @see https://github.com/palantir/blueprint/issues/6248
+ */
+function isValidTarget(refElement: React.RefObject<HTMLElement>["current"]): refElement is HTMLElement {
+    return refElement != null && refElement instanceof HTMLElement;
 }
