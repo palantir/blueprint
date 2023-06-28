@@ -89,8 +89,10 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
         ...htmlProps
     } = props;
     const [iconPaths, setIconPaths] = React.useState<IconPaths>();
+
+    // Preserve Blueprint v4.x behavior: iconSize prop takes predecence, then size prop, then fall back to default value
     // eslint-disable-next-line deprecation/deprecation
-    const size = (props.size ?? props.iconSize)!;
+    const size = props.iconSize ?? props.size ?? IconSize.STANDARD;
 
     React.useEffect(() => {
         let shouldCancelIconLoading = false;
@@ -170,7 +172,6 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
 });
 Icon.defaultProps = {
     autoLoad: true,
-    size: IconSize.STANDARD,
     tagName: "span",
 };
 Icon.displayName = `${DISPLAYNAME_PREFIX}.Icon`;
