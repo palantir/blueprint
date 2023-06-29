@@ -4044,5 +4044,12 @@
         "tags": "bullets, munition, rockets",
         "group": "miscellaneous",
         "codepoint": 62274
+    },
+    {
+        "displayName": "Microphone",
+        "iconName": "microphone",
+        "tags": "microphone, mic, speaker",
+        "group": "media",
+        "codepoint": 62275
     }
 ]
