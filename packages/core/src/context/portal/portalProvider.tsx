@@ -34,10 +34,17 @@ export const PortalContext = React.createContext<PortalContextOptions>({});
  *
  * @see https://blueprintjs.com/docs/#core/context/portal-provider
  */
-export const PortalProvider = ({ children, portalClassName, portalContainer }: React.PropsWithChildren<PortalContextOptions>) => {
-    const contextOptions = React.useMemo<PortalContextOptions>(() => ({
-        portalClassName,
-        portalContainer
-    }), [portalClassName, portalContainer])
+export const PortalProvider = ({
+    children,
+    portalClassName,
+    portalContainer,
+}: React.PropsWithChildren<PortalContextOptions>) => {
+    const contextOptions = React.useMemo<PortalContextOptions>(
+        () => ({
+            portalClassName,
+            portalContainer,
+        }),
+        [portalClassName, portalContainer],
+    );
     return <PortalContext.Provider value={contextOptions}>{children}</PortalContext.Provider>;
 };

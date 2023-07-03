@@ -77,7 +77,7 @@ const PORTAL_LEGACY_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
 export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = {}) {
     const context = React.useContext(PortalContext);
 
-    const portalContainer =  props.container ?? context.portalContainer ?? document?.body
+    const portalContainer = props.container ?? context.portalContainer ?? document?.body;
 
     const [portalElement, setPortalElement] = React.useState<HTMLElement>();
 
@@ -126,7 +126,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
             maybeAddClass(portalElement.classList, props.className);
             return () => maybeRemoveClass(portalElement.classList, props.className);
         }
-        return undefined
+        return undefined;
     }, [props.className]);
 
     React.useEffect(() => {
@@ -134,7 +134,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
             addStopPropagationListeners(portalElement, props.stopPropagationEvents);
             return () => removeStopPropagationListeners(portalElement, props.stopPropagationEvents);
         }
-        return undefined
+        return undefined;
     }, [props.stopPropagationEvents]);
 
     // Only render `children` once this component has mounted in a browser environment, so they are
