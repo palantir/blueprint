@@ -78,33 +78,35 @@ const PORTAL_LEGACY_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
 export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = {}) {
     const context = React.useContext(PortalContext);
 
+    const container =  props.container ?? context.portalContainer ?? document?.body
+
     const [hasMounted, setHasMounted] = React.useState(false);
     const [portalElement, setPortalElement] = React.useState<HTMLElement>();
 
     const createContainerElement = React.useCallback(() => {
-        const container = document.createElement("div");
-        container.classList.add(Classes.PORTAL);
-        maybeAddClass(container.classList, props.className); // directly added to this portal element
-        maybeAddClass(container.classList, context.portalClassName); // added via PortalProvider context
-        addStopPropagationListeners(container, props.stopPropagationEvents);
+        const newContainer = document.createElement("div");
+        newContainer.classList.add(Classes.PORTAL);
+        maybeAddClass(newContainer.classList, props.className); // directly added to this portal element
+        maybeAddClass(newContainer.classList, context.portalClassName); // added via PortalProvider context
+        addStopPropagationListeners(newContainer, props.stopPropagationEvents);
 
         // TODO: remove legacy context support in Blueprint v6.0
         const { blueprintPortalClassName } = legacyContext;
         if (blueprintPortalClassName != null && blueprintPortalClassName !== "") {
             console.error(Errors.PORTAL_LEGACY_CONTEXT_API);
-            maybeAddClass(container.classList, blueprintPortalClassName); // added via legacy context
+            maybeAddClass(newContainer.classList, blueprintPortalClassName); // added via legacy context
         }
 
-        return container;
+        return newContainer;
     }, [props.className, context.portalClassName]);
 
     // create the container element & attach it to the DOM
     React.useEffect(() => {
-        if (props.container == null) {
+        if (container == null) {
             return;
         }
         const newPortalElement = createContainerElement();
-        props.container.appendChild(newPortalElement);
+        container.appendChild(newPortalElement);
         setPortalElement(newPortalElement);
         setHasMounted(true);
 
@@ -114,7 +116,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
             setHasMounted(false);
             setPortalElement(undefined);
         };
-    }, [props.container, createContainerElement]);
+    }, [container, createContainerElement]);
 
     // wait until next successful render to invoke onChildrenMount callback
     React.useEffect(() => {
@@ -123,21 +125,17 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
         }
     }, [hasMounted, props.onChildrenMount]);
 
-    // update className prop on portal DOM element when props change
-    const prevClassName = usePrevious(props.className);
     React.useEffect(() => {
         if (portalElement != null) {
-            maybeRemoveClass(portalElement.classList, prevClassName);
             maybeAddClass(portalElement.classList, props.className);
+            return () => maybeRemoveClass(portalElement.classList, props.className);
         }
     }, [props.className]);
 
-    // update stopPropagation listeners when props change
-    const prevStopPropagationEvents = usePrevious(props.stopPropagationEvents);
     React.useEffect(() => {
         if (portalElement != null) {
-            removeStopPropagationListeners(portalElement, prevStopPropagationEvents);
             addStopPropagationListeners(portalElement, props.stopPropagationEvents);
+            return () => removeStopPropagationListeners(portalElement, props.stopPropagationEvents);
         }
     }, [props.stopPropagationEvents]);
 
@@ -150,9 +148,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
         return ReactDOM.createPortal(props.children, portalElement);
     }
 }
-Portal.defaultProps = {
-    container: typeof document !== "undefined" ? document.body : undefined,
-};
+
 Portal.displayName = `${DISPLAYNAME_PREFIX}.Portal`;
 // eslint-disable-next-line deprecation/deprecation
 Portal.contextTypes = PORTAL_LEGACY_CONTEXT_TYPES;
