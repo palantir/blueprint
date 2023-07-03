@@ -21,7 +21,6 @@ import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
 import { PortalContext } from "../../context/portal/portalProvider";
-import { usePrevious } from "../../hooks/usePrevious";
 
 export interface PortalProps extends Props {
     /** Contents to send through the portal. */
@@ -127,6 +126,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
             maybeAddClass(portalElement.classList, props.className);
             return () => maybeRemoveClass(portalElement.classList, props.className);
         }
+        return undefined
     }, [props.className]);
 
     React.useEffect(() => {
@@ -134,6 +134,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
             addStopPropagationListeners(portalElement, props.stopPropagationEvents);
             return () => removeStopPropagationListeners(portalElement, props.stopPropagationEvents);
         }
+        return undefined
     }, [props.stopPropagationEvents]);
 
     // Only render `children` once this component has mounted in a browser environment, so they are
