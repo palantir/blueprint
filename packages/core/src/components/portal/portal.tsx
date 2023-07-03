@@ -81,7 +81,6 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
     const container =  props.container ?? context.portalContainer ?? document?.body
 
     const [portalElement, setPortalElement] = React.useState<HTMLElement>();
-    const hasMounted = portalElement != null
 
     const createContainerElement = React.useCallback(() => {
         const newContainer = document.createElement("div");
@@ -118,10 +117,10 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
 
     // wait until next successful render to invoke onChildrenMount callback
     React.useEffect(() => {
-        if (hasMounted) {
+        if (portalElement != null) {
             props.onChildrenMount?.();
         }
-    }, [hasMounted, props.onChildrenMount]);
+    }, [props.onChildrenMount]);
 
     React.useEffect(() => {
         if (portalElement != null) {
@@ -140,7 +139,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
     // Only render `children` once this component has mounted in a browser environment, so they are
     // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
     // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
-    if (typeof document === "undefined" || !hasMounted || portalElement == null) {
+    if (typeof document === "undefined" || portalElement == null) {
         return null;
     } else {
         return ReactDOM.createPortal(props.children, portalElement);
