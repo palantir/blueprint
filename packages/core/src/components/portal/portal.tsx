@@ -80,8 +80,8 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
 
     const container =  props.container ?? context.portalContainer ?? document?.body
 
-    const [hasMounted, setHasMounted] = React.useState(false);
     const [portalElement, setPortalElement] = React.useState<HTMLElement>();
+    const hasMounted = portalElement != null
 
     const createContainerElement = React.useCallback(() => {
         const newContainer = document.createElement("div");
@@ -108,12 +108,10 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
         const newPortalElement = createContainerElement();
         container.appendChild(newPortalElement);
         setPortalElement(newPortalElement);
-        setHasMounted(true);
 
         return () => {
             removeStopPropagationListeners(newPortalElement, props.stopPropagationEvents);
             newPortalElement.remove();
-            setHasMounted(false);
             setPortalElement(undefined);
         };
     }, [container, createContainerElement]);
