@@ -35,7 +35,7 @@ export interface PortalProps extends Props {
     /**
      * The HTML element that children will be mounted to.
      *
-     * @default document.body
+     * @default PortalContext.portalContainer ?? document.body
      */
     container?: HTMLElement;
 
@@ -78,7 +78,7 @@ const PORTAL_LEGACY_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
 export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = {}) {
     const context = React.useContext(PortalContext);
 
-    const container =  props.container ?? context.portalContainer ?? document?.body
+    const portalContainer =  props.container ?? context.portalContainer ?? document?.body
 
     const [portalElement, setPortalElement] = React.useState<HTMLElement>();
 
@@ -101,11 +101,11 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
 
     // create the container element & attach it to the DOM
     React.useEffect(() => {
-        if (container == null) {
+        if (portalContainer == null) {
             return;
         }
         const newPortalElement = createPortalElement();
-        container.appendChild(newPortalElement);
+        portalContainer.appendChild(newPortalElement);
         setPortalElement(newPortalElement);
 
         return () => {
@@ -113,7 +113,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
             newPortalElement.remove();
             setPortalElement(undefined);
         };
-    }, [container, createPortalElement]);
+    }, [portalContainer, createPortalElement]);
 
     // wait until next successful render to invoke onChildrenMount callback
     React.useEffect(() => {

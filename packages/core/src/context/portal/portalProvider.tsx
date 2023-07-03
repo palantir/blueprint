@@ -19,7 +19,7 @@ import * as React from "react";
 export interface PortalContextOptions {
     /** Additional CSS classes to add to all `Portal` elements in this React context. */
     portalClassName?: string;
-    /** Portal container element which the default parent for all `Portal` elements in this React context */
+    /** The HTML element that all `Portal` elements in this React context will be mounted to.  */
     portalContainer?: HTMLElement;
 }
 
