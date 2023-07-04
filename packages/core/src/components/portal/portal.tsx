@@ -74,19 +74,22 @@ const PORTAL_LEGACY_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
  *
  * @see https://blueprintjs.com/docs/#core/components/portal
  */
-export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = {}) {
+export function Portal(
+    { className, stopPropagationEvents, container, onChildrenMount, children }: PortalProps,
+    legacyContext: PortalLegacyContext = {},
+) {
     const context = React.useContext(PortalContext);
 
-    const portalContainer = props.container ?? context.portalContainer ?? document?.body;
+    const portalContainer = container ?? context.portalContainer ?? document?.body;
 
     const [portalElement, setPortalElement] = React.useState<HTMLElement>();
 
     const createPortalElement = React.useCallback(() => {
         const newPortalElement = document.createElement("div");
         newPortalElement.classList.add(Classes.PORTAL);
-        maybeAddClass(newPortalElement.classList, props.className); // directly added to this portal element
+        maybeAddClass(newPortalElement.classList, className); // directly added to this portal element
         maybeAddClass(newPortalElement.classList, context.portalClassName); // added via PortalProvider context
-        addStopPropagationListeners(newPortalElement, props.stopPropagationEvents);
+        addStopPropagationListeners(newPortalElement, stopPropagationEvents);
 
         // TODO: remove legacy context support in Blueprint v6.0
         const { blueprintPortalClassName } = legacyContext;
@@ -96,7 +99,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
         }
 
         return newPortalElement;
-    }, [props.className, props.stopPropagationEvents, context.portalClassName, legacyContext]);
+    }, [className, context.portalClassName, stopPropagationEvents, legacyContext]);
 
     // create the container element & attach it to the DOM
     React.useEffect(() => {
@@ -108,34 +111,34 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
         setPortalElement(newPortalElement);
 
         return () => {
-            removeStopPropagationListeners(newPortalElement, props.stopPropagationEvents);
+            removeStopPropagationListeners(newPortalElement, stopPropagationEvents);
             newPortalElement.remove();
             setPortalElement(undefined);
         };
-    }, [portalContainer, createPortalElement, props.stopPropagationEvents]);
+    }, [portalContainer, createPortalElement, stopPropagationEvents]);
 
     // wait until next successful render to invoke onChildrenMount callback
     React.useEffect(() => {
         if (portalElement != null) {
-            props.onChildrenMount?.();
+            onChildrenMount?.();
         }
-    }, [portalElement, props, props.onChildrenMount]);
+    }, [portalElement, onChildrenMount]);
 
     React.useEffect(() => {
         if (portalElement != null) {
-            maybeAddClass(portalElement.classList, props.className);
-            return () => maybeRemoveClass(portalElement.classList, props.className);
+            maybeAddClass(portalElement.classList, className);
+            return () => maybeRemoveClass(portalElement.classList, className);
         }
         return undefined;
-    }, [portalElement, props.className]);
+    }, [className, portalElement]);
 
     React.useEffect(() => {
         if (portalElement != null) {
-            addStopPropagationListeners(portalElement, props.stopPropagationEvents);
-            return () => removeStopPropagationListeners(portalElement, props.stopPropagationEvents);
+            addStopPropagationListeners(portalElement, stopPropagationEvents);
+            return () => removeStopPropagationListeners(portalElement, stopPropagationEvents);
         }
         return undefined;
-    }, [portalElement, props.stopPropagationEvents]);
+    }, [portalElement, stopPropagationEvents]);
 
     // Only render `children` once this component has mounted in a browser environment, so they are
     // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
@@ -143,7 +146,7 @@ export function Portal(props: PortalProps, legacyContext: PortalLegacyContext = 
     if (typeof document === "undefined" || portalElement == null) {
         return null;
     } else {
-        return ReactDOM.createPortal(props.children, portalElement);
+        return ReactDOM.createPortal(children, portalElement);
     }
 }
 
