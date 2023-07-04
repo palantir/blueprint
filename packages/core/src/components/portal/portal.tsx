@@ -92,14 +92,14 @@ export function Portal(
         addStopPropagationListeners(newPortalElement, stopPropagationEvents);
 
         // TODO: remove legacy context support in Blueprint v6.0
-        const { blueprintPortalClassName } = legacyContext;
+        const blueprintPortalClassName = legacyContext.blueprintPortalClassName;
         if (blueprintPortalClassName != null && blueprintPortalClassName !== "") {
             console.error(Errors.PORTAL_LEGACY_CONTEXT_API);
             maybeAddClass(newPortalElement.classList, blueprintPortalClassName); // added via legacy context
         }
 
         return newPortalElement;
-    }, [className, context.portalClassName, stopPropagationEvents, legacyContext]);
+    }, [className, context.portalClassName, legacyContext.blueprintPortalClassName, stopPropagationEvents]);
 
     // create the container element & attach it to the DOM
     React.useEffect(() => {
