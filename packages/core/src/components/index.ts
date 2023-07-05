@@ -98,7 +98,7 @@ export { HandleHtmlProps, HandleInteractionKind, HandleProps, HandleType } from 
 export { MultiSlider, MultiSliderProps, SliderBaseProps } from "./slider/multiSlider";
 export { NumberRange, RangeSlider, RangeSliderProps } from "./slider/rangeSlider";
 export { Section, SectionProps } from "./section/section";
-export { SectionContent, SectionContentProps } from "./section/section-content";
+export { SectionContent, SectionContentProps } from "./section/sectionContent";
 export { Slider, SliderProps } from "./slider/slider";
 export { Spinner, SpinnerProps, SpinnerSize } from "./spinner/spinner";
 export { Tab, TabId, TabProps } from "./tabs/tab";

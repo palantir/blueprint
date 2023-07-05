@@ -1,17 +1,26 @@
 @# Section
 
-Structure information using sections. One section usually represent details for a given concept.
+The __Section__ component can be used to contain, structure, and create hierarchy for information in your UI. It makes use of some concepts from other more atomic Blueprint components:
+
+- The overall appearance looks like a [__Card__](#core/components/card)
+- The header can optionally contain [__Tabs__](#core/components/tabs) which switch between different content panels
+- Contents may be collapsible like the [__Collapse__](#core/components/collapse) component
 
 @reactExample SectionExample
 
-@## Props
+@## Props interface
 
 @interface SectionProps
 
-@# Section Content
+@## SectionContent
 
-Multiple sectionContent can be added under one section, they will be stacked. This can be used to further group information.
+Multiple __SectionContent__ child components can be added under one __Section__, they will be stacked. This can be used to further group information.
 
-@## Props
+```tsx
+<Section>
+    <SectionContent>{/* ... */}</SectionContent>
+    <SectionContent>{/* ... */}</SectionContent>
+</Section>
+```
 
 @interface SectionContentProps

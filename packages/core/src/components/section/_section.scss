@@ -6,26 +6,26 @@ $section-default-vertical-padding: $pt-grid-size;
 $section-default-horizontal-padding: $pt-grid-size * 2;
 $section-default-content-padding: $pt-grid-size * 2;
 
-$section-small-min-height: $pt-grid-size * 4;
-$section-small-vertical-padding: 7px;
-$section-small-horizontal-padding: 15px;
-$section-small-content-padding: $pt-grid-size * 1.5;
+$section-compact-min-height: $pt-grid-size * 4;
+$section-compact-vertical-padding: 7px;
+$section-compact-horizontal-padding: 15px;
+$section-compact-content-padding: $pt-grid-size * 1.5;
 
 .#{$ns}-section {
+  overflow: hidden;
   padding: 0;
   width: 100%;
-  overflow: hidden;
 
   &-header {
     align-items: center;
+    border-bottom: 1px solid $pt-divider-black;
     display: flex;
-    justify-content: space-between;
-    position: relative;
-    width: 100%;
     gap: $pt-grid-size * 2;
+    justify-content: space-between;
     min-height: $section-default-min-height;
     padding: 0 $section-default-horizontal-padding;
-    border-bottom: 1px solid $pt-divider-black;
+    position: relative;
+    width: 100%;
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
@@ -49,13 +49,14 @@ $section-small-content-padding: $pt-grid-size * 1.5;
 
     &-tabs {
       align-self: stretch;
+      flex: 1 0;
     }
 
     &-right {
-      margin-left: auto;
       align-items: center;
-      gap: $pt-grid-size;
       display: flex;
+      gap: $pt-grid-size;
+      margin-left: auto;
     }
 
     &-divider {
@@ -97,18 +98,18 @@ $section-small-content-padding: $pt-grid-size * 1.5;
     }
   }
 
-  &.#{$ns}-small {
+  &.#{$ns}-compact {
     .#{$ns}-section-header {
-      min-height: $section-small-min-height;
-      padding: 0 $section-small-horizontal-padding;
+      min-height: $section-compact-min-height;
+      padding: 0 $section-compact-horizontal-padding;
 
       &-left {
-        padding: $section-small-vertical-padding 0;
+        padding: $section-compact-vertical-padding 0;
       }
     }
 
     .#{$ns}-section-content.#{$ns}-padded {
-      padding: $section-small-content-padding;
+      padding: $section-compact-content-padding;
     }
   }
 }

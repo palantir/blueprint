@@ -23,9 +23,9 @@ import { IconNames } from "@blueprintjs/icons";
 export interface SectionExampleState {
     hasIcon: boolean;
     hasDescription: boolean;
-    hasRightItem: boolean;
+    hasRightElement: boolean;
     hasMultipleSectionContent: boolean;
-    isSmall: boolean;
+    isCompact: boolean;
     showTabs: boolean;
     collapsible: boolean;
 }
@@ -36,22 +36,29 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         hasDescription: false,
         hasIcon: false,
         hasMultipleSectionContent: false,
-        hasRightItem: true,
-        isSmall: false,
+        hasRightElement: true,
+        isCompact: false,
         showTabs: false,
     };
 
     public render() {
-        const { collapsible, hasDescription, hasIcon, hasRightItem, hasMultipleSectionContent, showTabs, isSmall } =
-            this.state;
+        const {
+            collapsible,
+            hasDescription,
+            hasIcon,
+            hasRightElement,
+            hasMultipleSectionContent,
+            showTabs,
+            isCompact,
+        } = this.state;
 
         const options = (
             <>
                 <H5>Props</H5>
-                <Switch checked={isSmall} label="Small" onChange={this.handleSmallChange} />
+                <Switch checked={isCompact} label="Compact" onChange={this.handleSmallChange} />
                 <Switch checked={hasIcon} label="Icon" onChange={this.handleIconChange} />
                 <Switch checked={hasDescription} label="Description" onChange={this.handleDescriptionChange} />
-                <Switch checked={hasRightItem} label="Right item" onChange={this.handleRightItemChange} />
+                <Switch checked={hasRightElement} label="Right item" onChange={this.handleRightItemChange} />
                 <Switch checked={showTabs} label="Tabs" onChange={this.handleShowTabsChange} />
                 <Switch checked={collapsible} label="Collapsible" onChange={this.handleCollapsibleChange} />
 
@@ -104,12 +111,12 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         return (
             <Example options={options} {...this.props}>
                 <Section
-                    small={isSmall}
+                    compact={isCompact}
                     title="Basil"
                     subtitle={hasDescription ? "Ocimum basilicum" : undefined}
                     icon={hasIcon ? IconNames.BOOK : undefined}
-                    rightItem={
-                        hasRightItem ? (
+                    rightElement={
+                        hasRightElement ? (
                             <Button minimal={true} intent={Intent.PRIMARY}>
                                 Edit
                             </Button>
@@ -126,13 +133,13 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         );
     }
 
-    private handleSmallChange = () => this.setState({ isSmall: !this.state.isSmall });
+    private handleSmallChange = () => this.setState({ isCompact: !this.state.isCompact });
 
     private handleIconChange = () => this.setState({ hasIcon: !this.state.hasIcon });
 
     private handleDescriptionChange = () => this.setState({ hasDescription: !this.state.hasDescription });
 
-    private handleRightItemChange = () => this.setState({ hasRightItem: !this.state.hasRightItem });
+    private handleRightItemChange = () => this.setState({ hasRightElement: !this.state.hasRightElement });
 
     private handleMultpleSectionContentChange = () =>
         this.setState({ hasMultipleSectionContent: !this.state.hasMultipleSectionContent });

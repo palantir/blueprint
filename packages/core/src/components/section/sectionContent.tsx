@@ -21,6 +21,11 @@ import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
 export interface SectionContentProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
+    /**
+     * Whether to apply visual padding inside the content container element.
+     *
+     * @default true
+     */
     padded?: boolean;
 }
 

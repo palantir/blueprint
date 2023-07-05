@@ -17,36 +17,53 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconNames } from "@blueprintjs/icons";
+import { ChevronDown, ChevronUp, IconName } from "@blueprintjs/icons";
 
 import { Classes, Elevation } from "../../common";
-import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
-import { Card, CardProps } from "../card/card";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, MaybeElement, Props } from "../../common/props";
+import { Card } from "../card/card";
 import { Divider } from "../divider/divider";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 import { Tab, TabId, TabProps } from "../tabs/tab";
 import { Tabs, TabsProps } from "../tabs/tabs";
 
-export interface SectionProps
-    extends Props,
-        Omit<CardProps, "interactive" | "onClick" | "elevation" | "title">,
-        Omit<React.RefAttributes<HTMLDivElement>, "title"> {
+export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.RefAttributes<HTMLDivElement> {
     /**
-     * Name of a Blueprint UI icon (or an icon element) to render in the
-     * section's header. Note that the header will only be rendered if `sectionTitle` is
-     * provided.
+     * Whether this section's contents should be collapsible.
+     *
+     * @default false
+     */
+    collapsible?: boolean;
+
+    /**
+     * If `collapsible={true}`, this sets the default open state of the `<Collapse>` contents.
+     *
+     * @default false
+     */
+    collapsedByDefault?: boolean;
+
+    /**
+     * Whether this section should use compact styles.
+     *
+     * @default false
+     */
+    compact?: boolean;
+
+    /**
+     * Name of a Blueprint UI icon (or an icon element) to render in the section's header.
+     * Note that the header will only be rendered if `title` is provided.
      */
     icon?: IconName | MaybeElement;
 
     /**
-     * Title of the section.
+     * Element to render on the right side of the section header.
      */
-    title?: JSX.Element | string;
+    rightElement?: JSX.Element;
 
     /**
      * Sub-title of the section.
-     * Note that the header will only be rendered if `sectionTitle` is provided.
+     * Note that the header will only be rendered if `title` is provided.
      */
     subtitle?: JSX.Element | string;
 
@@ -55,19 +72,17 @@ export interface SectionProps
      */
     tabDefinitions?: TabProps[];
 
+    /**
+     * Subset of props to forward to the `<Tabs>` component.
+     * Note that tabs will only be rendered if `tabDefinitions` is provided.
+     */
     tabsProps?: Omit<TabsProps, "vertical" | "children" | "large" | "fill" | "id">;
 
     /**
-     * Element to render on the right side of the section header
+     * Title of the section.
+     * Note that the header will only be rendered if `title` is provided.
      */
-    rightItem?: JSX.Element;
-
-    /** Whether this section should use small styles. */
-    small?: boolean;
-
-    collapsible?: boolean;
-
-    collapsedByDefault?: boolean;
+    title?: JSX.Element | string;
 }
 
 /**
@@ -77,20 +92,20 @@ export interface SectionProps
  */
 export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => {
     const {
-        className,
-        icon,
-        title,
-        rightItem,
-        subtitle,
         children,
+        className,
+        collapsedByDefault,
+        collapsible,
+        compact,
+        icon,
+        rightElement,
+        subtitle,
         tabDefinitions,
         tabsProps,
-        small,
-        collapsible,
-        collapsedByDefault,
+        title,
         ...cardProps
     } = props;
-    const classes = classNames(Classes.SECTION, { [Classes.SMALL]: small }, className);
+    const classes = classNames(Classes.SECTION, { [Classes.COMPACT]: compact }, className);
 
     const controlledSelectedTabId = tabsProps?.selectedTabId;
     const [selectedTabId, setSelectedTabId] = React.useState<TabId | undefined>(tabsProps?.defaultSelectedTabId);
@@ -105,24 +120,25 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         return true;
     }, [collapsible, collapsed]);
 
-    const maybeActieTabPanel: JSX.Element | undefined = tabDefinitions?.find(tab =>
+    const maybeActiveTabPanel: JSX.Element | undefined = tabDefinitions?.find(tab =>
         controlledSelectedTabId != null ? tab.id === controlledSelectedTabId : tab.id === selectedTabId,
     )?.panel;
 
-    const tabsLeftAligned = rightItem || collapsible;
+    const isHeaderLeftContainerVisible = title != null || icon != null || subtitle != null;
+    const isHeaderRightContainerVisible = rightElement != null || collapsible;
 
     return (
         <Card elevation={Elevation.ZERO} className={classes} ref={ref} {...cardProps}>
             <div
-                role={collapsible != null ? "button" : undefined}
-                aria-pressed={collapsible != null ? collapsed : undefined}
+                role={collapsible ? "button" : undefined}
+                aria-pressed={collapsible ? collapsed : undefined}
                 className={classNames(Classes.SECTION_HEADER, {
                     [Classes.INTERACTIVE]: collapsible,
                     [Classes.COLLAPSED]: !showContent,
                 })}
                 onClick={collapsible != null ? toggleCollapsed : undefined}
             >
-                {(title != null || icon != null || subtitle != null) && (
+                {isHeaderLeftContainerVisible && (
                     <>
                         <div className={Classes.SECTION_HEADER_LEFT}>
                             {title && icon && (
@@ -139,12 +155,14 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                             </div>
                         </div>
 
-                        {tabDefinitions && tabsLeftAligned && <Divider className={Classes.SECTION_HEADER_DIVIDER} />}
+                        {tabDefinitions && isHeaderRightContainerVisible && (
+                            <Divider className={Classes.SECTION_HEADER_DIVIDER} />
+                        )}
                     </>
                 )}
 
                 {tabDefinitions && (
-                    <div style={{ alignSelf: "stretch" }}>
+                    <div className={Classes.SECTION_HEADER_TABS}>
                         <Tabs selectedTabId={selectedTabId} onChange={setSelectedTabId} fill={true} {...tabsProps}>
                             {tabDefinitions.map(tabDefinition => (
                                 <Tab key={tabDefinition.id} {...tabDefinition} panel={undefined} />
@@ -153,21 +171,24 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                     </div>
                 )}
 
-                {(rightItem || collapsible) && (
+                {isHeaderRightContainerVisible && (
                     <div className={Classes.SECTION_HEADER_RIGHT}>
-                        {rightItem}
-                        {collapsible && (
-                            <Icon
-                                className={Classes.TEXT_MUTED}
-                                icon={collapsed ? IconNames.CHEVRON_DOWN : IconNames.CHEVRON_UP}
-                            />
-                        )}
+                        {rightElement}
+                        {collapsible &&
+                            (collapsed ? (
+                                <ChevronDown className={Classes.TEXT_MUTED} />
+                            ) : (
+                                <ChevronUp className={Classes.TEXT_MUTED} />
+                            ))}
                     </div>
                 )}
             </div>
-            {showContent && (maybeActieTabPanel != null ? maybeActieTabPanel : children)}
+            {showContent && (maybeActiveTabPanel ?? children)}
         </Card>
     );
 });
-Section.defaultProps = {};
+Section.defaultProps = {
+    collapsedByDefault: false,
+    compact: false,
+};
 Section.displayName = `${DISPLAYNAME_PREFIX}.Section`;
