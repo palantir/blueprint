@@ -93,7 +93,7 @@ for a custom Sass compiler that can import Blueprint `.scss` sources:
 
 ```js
 import { sassNodeModulesLoadPaths, sassSvgInlinerFactory } from "@blueprintjs/node-build-scripts";
-import sass from "sass";
+import * as sass from "sass";
 
 const result = await sass.compileAsync("path/to/input.scss", {
     loadPaths: sassNodeModulesLoadPaths,
@@ -118,7 +118,7 @@ In addition to the JS API, you can specify this configuration with Webpack's sas
 // webpack.config.mjs
 
 import { sassNodeModulesLoadPaths, sassSvgInlinerFactory } from "@blueprintjs/node-build-scripts";
-import sass from "sass";
+import * as sass from "sass";
 
 const functions = {
     /**

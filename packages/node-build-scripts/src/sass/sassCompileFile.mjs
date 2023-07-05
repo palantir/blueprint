@@ -6,7 +6,7 @@
 
 import fsExtra from "fs-extra";
 import { dirname, join, parse as parsePath, relative } from "node:path";
-import sass from "sass";
+import * as sass from "sass";
 import { SourceMapGenerator } from "source-map-js";
 
 import defaultCustomFunctions from "./sassCustomFunctions.mjs";
