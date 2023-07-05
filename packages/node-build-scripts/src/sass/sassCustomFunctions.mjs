@@ -4,7 +4,7 @@
 
 // @ts-check
 
-import sass from "sass";
+import * as sass from "sass";
 
 import { sassSvgInlinerFactory } from "./sassSvgInliner.mjs";
 

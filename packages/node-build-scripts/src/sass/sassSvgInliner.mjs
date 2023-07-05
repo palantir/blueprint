@@ -15,7 +15,7 @@ import { parseDocument } from "htmlparser2";
 import svgToDataUri from "mini-svg-data-uri";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import sass from "sass";
+import * as sass from "sass";
 
 import { svgOptimizer } from "../svg/svgOptimizer.mjs";
 
