@@ -34,7 +34,7 @@ export interface PortalProps extends Props {
     /**
      * The HTML element that children will be mounted to.
      *
-     * @default PortalContext.portalContainer ?? document.body
+     * @default PortalProvider#portalContainer ?? document.body
      */
     container?: HTMLElement;
 
