@@ -70,11 +70,6 @@ export interface IconProps extends IntentProps, Props, SVGIconProps, IconHTMLAtt
  */
 export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props, ref) => {
     const { icon } = props;
-    if (icon == null || typeof icon === "boolean") {
-        return null;
-    } else if (typeof icon !== "string") {
-        return icon;
-    }
 
     const {
         autoLoad,
@@ -126,6 +121,12 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
             shouldCancelIconLoading = true;
         };
     }, [autoLoad, icon, size]);
+
+    if (icon == null || typeof icon === "boolean") {
+        return null;
+    } else if (typeof icon !== "string") {
+        return icon;
+    }
 
     if (iconPaths == null) {
         // fall back to icon font if unloaded or unable to load SVG implementation
