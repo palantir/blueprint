@@ -57,7 +57,7 @@ custom evaluation code has not been tested robustly.
 The `NumericInput` component is available in the **@blueprintjs/core** package.
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
-@interface INumericInputProps
+@interface NumericInputProps
 
 @### Responsive numeric inputs
 

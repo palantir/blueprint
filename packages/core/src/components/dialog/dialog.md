@@ -42,7 +42,7 @@ to structure its contents:
 The children you provide to this component are rendered as contents inside the
 `Classes.DIALOG` element.
 
-@interface IDialogProps
+@interface DialogProps
 
 @### Dialog body props
 
@@ -81,7 +81,7 @@ This component expects `DialogStep` children: each "step" is rendered in order
 and its panel is shown as the dialog body content when the corresponding step is selected
 in the navigation panel.
 
-@interface IMultistepDialogProps
+@interface MultistepDialogProps
 
 @### DialogStep
 
@@ -89,4 +89,4 @@ in the navigation panel.
 parent `MultistepDialog` wrapper. Typically, you should render a `<DialogBody>` element as the `panel`
 element. A step's title text can be set via the `title` prop.
 
-@interface IDialogStepProps
+@interface DialogStepProps

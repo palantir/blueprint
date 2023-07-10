@@ -31,7 +31,12 @@ By default, a vertical layout is used, but you can make it horizontal with `layo
 Icons take on a muted appearance inside this component, but their shape contrast is preserved
 by adding a small stroke to the SVG paths.
 
-@interface INonIdealStateProps
+By default, a vertical layout is used, but you can make it horizontal with `layout="horizontal"`.
+
+Icons take on a muted appearance inside this component, but their shape contrast is preserved
+by adding a small stroke to the SVG paths.
+
+@interface NonIdealStateProps
 
 @## CSS
 

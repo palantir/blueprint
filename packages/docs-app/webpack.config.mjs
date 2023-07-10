@@ -27,9 +27,6 @@ export default {
 
     entry: {
         "docs-app": [
-            // environment polyfills
-            "dom4",
-            "./polyfill.js",
             // bundle entry points
             "./src/index.tsx",
             "./src/index.scss",

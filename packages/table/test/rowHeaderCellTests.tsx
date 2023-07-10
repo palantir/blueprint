@@ -14,21 +14,14 @@
  * limitations under the License.```
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to RowHeaderCell2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { H4 } from "@blueprintjs/core";
 
-import { IRowHeaderCellProps, RowHeaderCell } from "../src";
+import { RowHeaderCell } from "../src";
 import * as Classes from "../src/common/classes";
 import { ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
@@ -99,32 +92,5 @@ describe("<RowHeaderCell>", () => {
                 "Row Header",
             );
         });
-    });
-
-    // TODO: re-enable these tests when we switch to enzyme's testing harness instead of our own,
-    // so that we can supply a react context with enableColumnInteractionBar: true
-    // see https://github.com/palantir/blueprint/issues/2076
-    describe.skip("Reorder handle", () => {
-        const REORDER_HANDLE_CLASS = Classes.TABLE_REORDER_HANDLE_TARGET;
-
-        it("shows reorder handle in interaction bar if reordering and interaction bar are enabled", () => {
-            const element = mount({ enableRowReordering: true });
-            expect(element.find(`.${Classes.TABLE_INTERACTION_BAR} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
-        });
-
-        it("shows reorder handle next to row name if reordering enabled but interaction bar disabled", () => {
-            const element = mount({ enableRowReordering: true });
-            expect(element.find(`.${Classes.TABLE_ROW_NAME} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
-        });
-
-        function mount(props: Partial<IRowHeaderCellProps>) {
-            const element = harness.mount(
-                <RowHeaderCell
-                    enableRowReordering={props.enableRowReordering}
-                    reorderHandle={<div className={REORDER_HANDLE_CLASS} />}
-                />,
-            );
-            return element;
-        }
     });
 });

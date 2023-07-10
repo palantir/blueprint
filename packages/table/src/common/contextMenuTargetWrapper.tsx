@@ -23,12 +23,13 @@
 
 import * as React from "react";
 
-import { ContextMenuTarget, IProps } from "@blueprintjs/core";
+import { ContextMenuTargetLegacy, Props } from "@blueprintjs/core";
 
-export interface IContextMenuTargetWrapper extends IProps {
+export interface ContextMenuTargetWrapperProps extends Props {
     children?: React.ReactNode;
     renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element | undefined;
     style: React.CSSProperties;
+    targetRef?: React.RefObject<HTMLDivElement>;
 }
 
 /**
@@ -36,15 +37,13 @@ export interface IContextMenuTargetWrapper extends IProps {
  * `element.addEventListener`, the prop can be lost. This wrapper helps us
  * maintain context menu fuctionality when doing fancy React.cloneElement
  * chains.
- *
- * @deprecated use ContextMenu2 instead
  */
-@ContextMenuTarget
-export class ContextMenuTargetWrapper extends React.PureComponent<IContextMenuTargetWrapper> {
+@ContextMenuTargetLegacy
+export class ContextMenuTargetWrapper extends React.PureComponent<ContextMenuTargetWrapperProps> {
     public render() {
-        const { className, children, style } = this.props;
+        const { className, children, targetRef, style } = this.props;
         return (
-            <div className={className} style={style}>
+            <div className={className} style={style} ref={targetRef}>
                 {children}
             </div>
         );

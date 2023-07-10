@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent2, Utils as CoreUtils, Props } from "@blueprintjs/core";
+import { AbstractComponent, Utils as CoreUtils, Props } from "@blueprintjs/core";
 
 import { CellRenderer, emptyCellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
@@ -27,7 +27,7 @@ import { ColumnIndices, Grid, RowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 
-export interface ITableBodyCellsProps extends RowIndices, ColumnIndices, Props {
+export interface TableBodyCellsProps extends RowIndices, ColumnIndices, Props {
     /**
      * A cell renderer for the cells in the body.
      */
@@ -73,20 +73,20 @@ export interface ITableBodyCellsProps extends RowIndices, ColumnIndices, Props {
     viewportRect: Rect;
 }
 
-const SHALLOW_COMPARE_DENYLIST: Array<keyof ITableBodyCellsProps> = ["viewportRect"];
+const SHALLOW_COMPARE_DENYLIST: Array<keyof TableBodyCellsProps> = ["viewportRect"];
 
 /**
  * We don't want to reset the batcher when this set of keys changes. Any other
  * changes should reset the batcher's internal cache.
  */
-const BATCHER_RESET_PROP_KEYS_DENYLIST: Array<keyof ITableBodyCellsProps> = [
+const BATCHER_RESET_PROP_KEYS_DENYLIST: Array<keyof TableBodyCellsProps> = [
     "columnIndexEnd",
     "columnIndexStart",
     "rowIndexEnd",
     "rowIndexStart",
 ];
 
-export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
+export class TableBodyCells extends AbstractComponent<TableBodyCellsProps> {
     public static defaultProps = {
         renderMode: RenderMode.BATCH,
     };
@@ -107,7 +107,7 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
         this.maybeInvokeOnCompleteRender();
     }
 
-    public shouldComponentUpdate(nextProps: ITableBodyCellsProps) {
+    public shouldComponentUpdate(nextProps: TableBodyCellsProps) {
         return (
             !CoreUtils.shallowCompareKeys(nextProps, this.props, {
                 exclude: SHALLOW_COMPARE_DENYLIST,
@@ -118,7 +118,7 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
         );
     }
 
-    public componentDidUpdate(prevProps: ITableBodyCellsProps) {
+    public componentDidUpdate(prevProps: TableBodyCellsProps) {
         if (this.didForceUpdate) {
             this.didForceUpdate = false;
             return;

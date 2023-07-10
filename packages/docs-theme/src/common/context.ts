@@ -22,41 +22,38 @@ import {
     ITsDocBase,
     ITypescriptPluginData,
 } from "@documentalist/client";
-
-import { Utils } from "@blueprintjs/core";
+import * as React from "react";
 
 /* eslint-disable @typescript-eslint/ban-types */
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
-export type IDocsData = IMarkdownPluginData &
+export type DocsData = IMarkdownPluginData &
     (ITypescriptPluginData | {}) &
     (IKssPluginData | {}) &
     (INpmPluginData | {});
 /* eslint-enable @typescript-eslint/ban-types */
 
-export function hasTypescriptData(docs: IDocsData): docs is IMarkdownPluginData & ITypescriptPluginData {
+export function hasTypescriptData(docs: DocsData): docs is IMarkdownPluginData & ITypescriptPluginData {
     return docs != null && (docs as ITypescriptPluginData).typescript != null;
 }
 
-export function hasNpmData(docs: IDocsData): docs is IMarkdownPluginData & INpmPluginData {
+export function hasNpmData(docs: DocsData): docs is IMarkdownPluginData & INpmPluginData {
     return docs != null && (docs as INpmPluginData).npm != null;
 }
 
-export function hasKssData(docs: IDocsData): docs is IMarkdownPluginData & IKssPluginData {
+export function hasKssData(docs: DocsData): docs is IMarkdownPluginData & IKssPluginData {
     return docs != null && (docs as IKssPluginData).css != null;
 }
 
 /**
- * Use React context to transparently provide helpful functions to children.
- * This is basically the pauper's Redux store connector: some central state from the root
- * `Documentation` component is exposed to its children so those in the know can speak
- * directly to their parent.
+ * Use React context to provide data and rendering functions from the root `Documentation`
+ * component to other ancestor components defined by the docs-theme package.
  */
-export interface IDocumentationContext {
+export interface DocumentationContextApi {
     /**
      * Get the Documentalist data.
      * Use the `hasTypescriptData` and `hasKssData` typeguards before accessing those plugins' data.
      */
-    getDocsData: () => IDocsData;
+    getDocsData: () => DocsData;
 
     /** Render a block of Documentalist documentation to a React node. */
     renderBlock: (block: IBlock) => React.ReactNode;
@@ -71,34 +68,10 @@ export interface IDocumentationContext {
     showApiDocs: (name: string) => void;
 }
 
-/**
- * To enable context access in a React component, assign `static contextTypes` and declare `context` type:
- *
- * ```tsx
- * export class ContextComponent extends React.PureComponent<IApiLinkProps> {
- *     public static contextTypes = DocumentationContextTypes;
- *     public declare context: IDocumentationContext;
- *
- *     public render() {
- *         return this.context.renderBlock(this.props.block);
- *     }
- * }
- * ```
- *
- * NOTE: This does not reference prop-types to avoid copious "cannot be named" errors.
- */
-export const DocumentationContextTypes = {
-    getDocsData: assertFunctionProp,
-    renderBlock: assertFunctionProp,
-    renderType: assertFunctionProp,
-    renderViewSourceLinkText: assertFunctionProp,
-    showApiDocs: assertFunctionProp,
-};
-
-// simple alternative to prop-types dependency
-function assertFunctionProp<T>(obj: T, key: keyof T) {
-    if (obj[key] != null && Utils.isFunction(obj[key])) {
-        return null;
-    }
-    return new Error(`[Blueprint] Documentation context ${key.toString()} must be function.`);
-}
+export const DocumentationContext = React.createContext<DocumentationContextApi>({
+    getDocsData: () => ({} as DocsData),
+    renderBlock: (_block: IBlock) => undefined,
+    renderType: (type: string) => type,
+    renderViewSourceLinkText: (entry: ITsDocBase) => entry.sourceUrl,
+    showApiDocs: () => void 0,
+});

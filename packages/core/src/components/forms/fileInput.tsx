@@ -17,13 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type FileInputProps = IFileInputProps;
-/** @deprecated use FileInputProps */
-export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, Props {
+export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, Props {
     /**
      * Whether the file input is non-interactive.
      * Setting this to `true` will automatically disable the child input too.
@@ -94,7 +91,7 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
  *
  * @see https://blueprintjs.com/docs/#core/components/file-input
  */
-export class FileInput extends AbstractPureComponent2<FileInputProps> {
+export class FileInput extends AbstractPureComponent<FileInputProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 
     public static defaultProps: FileInputProps = {

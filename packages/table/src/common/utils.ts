@@ -29,10 +29,10 @@ const CSS_FONT_PROPERTIES = ["font-style", "font-variant", "font-weight", "font-
 
 // the functions using these interfaces now live in core. it's not clear how to
 // import interfaces from core and re-export them here, so just redefine them.
-export interface IKeyAllowlist<T> {
+export interface KeyAllowlist<T> {
     include: Array<keyof T>;
 }
-export interface IKeyDenylist<T> {
+export interface KeyDenylist<T> {
     exclude: Array<keyof T>;
 }
 
@@ -130,30 +130,6 @@ export const Utils = {
             }
         }
         return high;
-    },
-
-    /**
-     * Returns a copy of the array that will have a length of the supplied parameter.
-     * If the array is too long, it will be truncated. If it is too short, it will be
-     * filled with the suppleid `fillValue` argument.
-     *
-     * @param array - the `Array` to copy and adjust
-     * @param length - the target length of the array
-     * @param fillValue - the value to add to the array if it is too short
-     *
-     * @deprecated this function is no longer used in the table component, so it will be removed in a future major version
-     */
-    // eslint-disable-next-line deprecation/deprecation
-    arrayOfLength<T>(array: T[], length: number, fillValue: T): T[] {
-        if (array.length > length) {
-            return array.slice(0, length);
-        }
-
-        array = array.slice();
-        while (array.length < length) {
-            array.push(fillValue);
-        }
-        return array;
     },
 
     /**

@@ -26,7 +26,7 @@ import * as React from "react";
 import innerText from "react-innertext";
 
 import {
-    AbstractComponent2,
+    AbstractComponent,
     Utils as CoreUtils,
     DISPLAYNAME_PREFIX,
     Hotkey,
@@ -35,30 +35,29 @@ import {
 } from "@blueprintjs/core";
 
 import { CellRenderer } from "./cell/cell";
-import { Column, IColumnProps } from "./column";
-import type { IFocusedCellCoordinates } from "./common/cellTypes";
+import { Column, ColumnProps } from "./column";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
-import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "./common/context";
 import * as Errors from "./common/errors";
-import { Grid, ICellMapper } from "./common/grid";
+import { CellMapper, Grid } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
 import { ColumnHeader } from "./headers/columnHeader";
-import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
+import { ColumnHeaderCell, ColumnHeaderCellProps } from "./headers/columnHeaderCell";
 import { renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { GuideLayer } from "./layers/guides";
 import { RegionLayer, RegionStyler } from "./layers/regions";
-import { Locator } from "./locator";
+import { Locator, LocatorImpl } from "./locator";
 import { QuadrantType } from "./quadrants/tableQuadrant";
 import { TableQuadrantStack } from "./quadrants/tableQuadrantStack";
 import { ColumnLoadingOption, Region, RegionCardinality, Regions, SelectionModes, TableLoadingOption } from "./regions";
 import {
-    IResizeRowsByApproximateHeightOptions,
     resizeRowsByApproximateHeight,
+    ResizeRowsByApproximateHeightOptions,
     resizeRowsByTallestCell,
 } from "./resizeRows";
 import { TableBody } from "./tableBody";
@@ -69,7 +68,7 @@ import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./t
 
 /** @deprecated use Table2, which supports usage of the new hotkeys API in the same application */
 @HotkeysTarget
-export class Table extends AbstractComponent2<TableProps, TableState, TableSnapshot> {
+export class Table extends AbstractComponent<TableProps, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 
     public static defaultProps: TablePropsDefaults = {
@@ -97,9 +96,6 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         selectionModes: SelectionModes.ALL,
     };
 
-    public static childContextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> =
-        columnInteractionBarContextTypes;
-
     public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState) {
         const {
             children,
@@ -121,7 +117,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             rowHeights = state.rowHeights;
         }
 
-        const newChildrenArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
+        const newChildrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
         const didChildrenChange = newChildrenArray !== state.childrenArray;
         const numCols = newChildrenArray.length;
 
@@ -131,7 +127,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             // column that had the same `ID` prop. If none is found, use the
             // previous width at the same index.
             const previousColumnWidths = newChildrenArray.map(
-                (child: React.ReactElement<IColumnProps>, index: number) => {
+                (child: React.ReactElement<ColumnProps>, index: number) => {
                     const mappedIndex =
                         child.props.id === undefined ? index : state.columnIdToIndex[String(child.props.id)];
                     return state.columnWidths[mappedIndex];
@@ -254,12 +250,12 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
      */
     private didCompletelyMount = false;
 
-    public constructor(props: TablePropsWithDefaults, context?: any) {
-        super(props, context);
+    public constructor(props: TablePropsWithDefaults) {
+        super(props);
 
         const { children, columnWidths, defaultRowHeight, defaultColumnWidth, numRows, rowHeights } = props;
 
-        const childrenArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
+        const childrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
         const columnIdToIndex = Table.createColumnIdIndex(childrenArray);
 
         // Create height/width arrays using the lengths from props and
@@ -321,8 +317,8 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
      * Table font styles.
      */
     public resizeRowsByApproximateHeight(
-        getCellText: ICellMapper<string>,
-        options?: IResizeRowsByApproximateHeightOptions,
+        getCellText: CellMapper<string>,
+        options?: ResizeRowsByApproximateHeightOptions,
     ) {
         const rowHeights = resizeRowsByApproximateHeight(
             this.props.numRows!,
@@ -404,12 +400,6 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
 
     // React lifecycle
     // ===============
-
-    public getChildContext(): ColumnInteractionBarContextTypes {
-        return {
-            enableColumnInteractionBar: this.props.enableColumnInteractionBar,
-        };
-    }
 
     public shouldComponentUpdate(nextProps: TableProps, nextState: TableState) {
         const propKeysDenylist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_DENYLIST };
@@ -514,7 +504,11 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         this.validateGrid();
 
         if (this.rootTableElement != null && this.scrollContainerElement != null && this.cellContainerElement != null) {
-            this.locator = new Locator(this.rootTableElement, this.scrollContainerElement, this.cellContainerElement);
+            this.locator = new LocatorImpl(
+                this.rootTableElement,
+                this.scrollContainerElement,
+                this.cellContainerElement,
+            );
             this.updateLocator();
             this.updateViewportRect(this.locator.getViewportRect());
             this.resizeSensorDetach = ResizeSensor.attach(this.rootTableElement, () => {
@@ -566,7 +560,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         this.hotkeysImpl.setProps(this.props);
 
         const didChildrenChange =
-            (React.Children.toArray(this.props.children) as Array<React.ReactElement<IColumnProps>>) !==
+            (React.Children.toArray(this.props.children) as Array<React.ReactElement<ColumnProps>>) !==
             this.state.childrenArray;
 
         const shouldInvalidateGrid =
@@ -864,7 +858,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     };
 
     private getColumnProps(columnIndex: number) {
-        const column = this.state.childrenArray[columnIndex] as React.ReactElement<IColumnProps>;
+        const column = this.state.childrenArray[columnIndex] as React.ReactElement<ColumnProps>;
         return column === undefined ? undefined : column.props;
     }
 
@@ -884,12 +878,14 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
             const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
             if (columnHeaderCell != null) {
                 return React.cloneElement(columnHeaderCell, {
+                    enableColumnInteractionBar: this.props.enableColumnInteractionBar,
                     loading: columnHeaderCell.props.loading ?? columnLoading,
                 });
             }
         }
 
-        const baseProps: IColumnHeaderCellProps = {
+        const baseProps: ColumnHeaderCellProps = {
+            enableColumnInteractionBar: this.props.enableColumnInteractionBar,
             index: columnIndex,
             loading: columnLoading,
             ...spreadableProps,
@@ -1440,7 +1436,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         }
     };
 
-    private handleFocus = (focusedCell: IFocusedCellCoordinates) => {
+    private handleFocus = (focusedCell: FocusedCellCoordinates) => {
         if (!this.props.enableFocusedCell) {
             // don't set focus state if focus is not allowed
             return;

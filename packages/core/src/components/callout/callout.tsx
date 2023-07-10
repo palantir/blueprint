@@ -17,8 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { Error, IconName, InfoSign, Tick, WarningSign } from "@blueprintjs/icons";
+
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
@@ -28,12 +30,10 @@ import {
     Props,
 } from "../../common";
 import { H5 } from "../html/html";
-import { Icon, IconName } from "../icon/icon";
+import { Icon } from "../icon/icon";
 
-// eslint-disable-next-line deprecation/deprecation
-export type CalloutProps = ICalloutProps;
-/** @deprecated use CalloutProps */
-export interface ICalloutProps extends IntentProps, Props, HTMLDivProps {
+/** This component also supports the full range of HTML `<div>` props. */
+export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
     /** Callout contents. */
     children?: React.ReactNode;
 
@@ -68,47 +68,51 @@ export interface ICalloutProps extends IntentProps, Props, HTMLDivProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/callout
  */
-export class Callout extends AbstractPureComponent2<CalloutProps> {
+export class Callout extends AbstractPureComponent<CalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
     public render() {
         const { className, children, icon, intent, title, ...htmlProps } = this.props;
-        const iconName = this.getIconName(icon, intent);
+        const iconElement = this.renderIcon(icon, intent);
         const classes = classNames(
             Classes.CALLOUT,
             Classes.intentClass(intent),
-            { [Classes.CALLOUT_ICON]: iconName != null },
+            { [Classes.CALLOUT_ICON]: iconElement != null },
             className,
         );
 
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && <Icon icon={iconName} aria-hidden={true} tabIndex={-1} />}
+                {iconElement}
                 {title && <H5>{title}</H5>}
                 {children}
             </div>
         );
     }
 
-    private getIconName(icon?: CalloutProps["icon"], intent?: Intent): IconName | MaybeElement {
+    private renderIcon(icon?: CalloutProps["icon"], intent?: Intent): IconName | MaybeElement {
         // 1. no icon
-        if (icon === null) {
+        if (icon === null || icon === false) {
             return undefined;
         }
-        // 2. defined iconName prop
+
+        const iconProps = { "aria-hidden": true, tabIndex: -1 };
+
+        // 2. icon specified by name or as a custom SVG element
         if (icon !== undefined) {
-            return icon;
+            return <Icon icon={icon} {...iconProps} />;
         }
-        // 3. default intent icon
+
+        // 3. icon specified by intent prop
         switch (intent) {
             case Intent.DANGER:
-                return "error";
+                return <Error {...iconProps} />;
             case Intent.PRIMARY:
-                return "info-sign";
+                return <InfoSign {...iconProps} />;
             case Intent.WARNING:
-                return "warning-sign";
+                return <WarningSign {...iconProps} />;
             case Intent.SUCCESS:
-                return "tick";
+                return <Tick {...iconProps} />;
             default:
                 return undefined;
         }

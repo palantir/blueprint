@@ -71,7 +71,7 @@ export class Rect {
     }
 
     /**
-     * Given a ClientRect or Rect object, returns a Rect object.
+     * Given a DOMRect or Rect object, returns a Rect object.
      */
     public static wrap(rect: AnyRect): Rect {
         if (rect instanceof Rect) {

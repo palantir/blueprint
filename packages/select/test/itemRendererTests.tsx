@@ -17,8 +17,7 @@
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Menu } from "@blueprintjs/core";
-import { MenuItem2 } from "@blueprintjs/popover2";
+import { Menu, MenuItem } from "@blueprintjs/core";
 
 import { ItemRenderer, ItemRendererProps } from "../src";
 import { Film, TOP_100_FILMS } from "../src/__examples__";
@@ -27,25 +26,26 @@ describe("ItemRenderer", () => {
     // N.B. don't use `renderFilm` here from the src/__examples__ directory, since we are specifically trying to
     // test the ergonomics and type definitions of the item renderer API by defining custom renderers.
     describe("allows defining basic item renderers", () => {
-        const myItemRenderer: ItemRenderer<Film> = (item, { ref, modifiers, handleClick, handleFocus }) => {
+        const myItemRenderer: ItemRenderer<Film> = (item, { modifiers, handleClick, handleFocus, ref }) => {
             return (
-                <MenuItem2
+                <MenuItem
                     active={modifiers.active}
-                    elementRef={ref}
                     key={item.title}
                     onClick={handleClick}
                     onFocus={handleFocus}
+                    ref={ref}
                     text={item.title}
                 />
             );
         };
 
         it("without ref prop", () => {
-            function getItemProps(_item: Film): ItemRendererProps {
+            function getItemProps(_item: Film, index: number): ItemRendererProps {
                 return {
                     handleClick: (_event: React.MouseEvent<HTMLElement>) => {
                         /* noop */
                     },
+                    index,
                     modifiers: {
                         active: false,
                         disabled: false,
@@ -55,7 +55,9 @@ describe("ItemRenderer", () => {
                 };
             }
             const MyList: React.FC = () => {
-                return <Menu>{TOP_100_FILMS.map(item => myItemRenderer(item, getItemProps(item)))}</Menu>;
+                return (
+                    <Menu>{TOP_100_FILMS.map((item, index) => myItemRenderer(item, getItemProps(item, index)))}</Menu>
+                );
             };
             shallow(<MyList />);
         });

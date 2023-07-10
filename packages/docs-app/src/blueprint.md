@@ -7,10 +7,9 @@ It is optimized for building complex data-dense interfaces for desktop applicati
 @reactDocs Welcome
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-star">
-<h5 class="@ns-heading">Blueprint v5.0 is coming soon</h5>
+<h5 class="@ns-heading">Blueprint v5.0 is now available</h5>
 
-Check out the [migration guides to upgrade from v4.x](https://github.com/palantir/blueprint/wiki/Blueprint-5.0)
-and [v5.0 pre-release documentation](https://blueprintjs.com/docs/versions/5) &rarr;
+Check out the [migration guides to upgrade from v4.x &rarr;](https://github.com/palantir/blueprint/wiki/Blueprint-5.0)
 
 </div>
 
@@ -29,7 +28,6 @@ yarn add @blueprintjs/core react react-dom
 Additional UI components and APIs are available in:
 - [**@blueprintjs/icons**](https://www.npmjs.com/package/@blueprintjs/icons)
 - [**@blueprintjs/datetime**](https://www.npmjs.com/package/@blueprintjs/datetime)
-- [**@blueprintjs/popover2**](https://www.npmjs.com/package/@blueprintjs/popover2)
 - [**@blueprintjs/select**](https://www.npmjs.com/package/@blueprintjs/select)
 - [**@blueprintjs/table**](https://www.npmjs.com/package/@blueprintjs/table)
 

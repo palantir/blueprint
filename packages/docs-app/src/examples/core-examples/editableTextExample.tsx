@@ -23,7 +23,7 @@ import { IntentSelect } from "./common/intentSelect";
 
 const INPUT_ID = "EditableTextExample-max-length";
 
-export interface IEditableTextExampleState {
+export interface EditableTextExampleState {
     alwaysRenderInput?: boolean;
     confirmOnEnterKey?: boolean;
     disabled?: boolean;
@@ -33,8 +33,8 @@ export interface IEditableTextExampleState {
     selectAllOnFocus?: boolean;
 }
 
-export class EditableTextExample extends React.PureComponent<ExampleProps, IEditableTextExampleState> {
-    public state: IEditableTextExampleState = {
+export class EditableTextExample extends React.PureComponent<ExampleProps, EditableTextExampleState> {
+    public state: EditableTextExampleState = {
         alwaysRenderInput: false,
         confirmOnEnterKey: false,
         disabled: false,

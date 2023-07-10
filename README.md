@@ -10,7 +10,7 @@ It is optimized for building complex, data-dense web interfaces for _desktop app
 
 [**View the full documentation ▸**](http://blueprintjs.com/docs)
 
-[**Try it out on CodeSandbox ▸**](https://codesandbox.io/p/sandbox/blueprint-sandbox-2023-fjo3z4)
+[**Try it out on CodeSandbox ▸**](https://codesandbox.io/p/sandbox/wy0ojy)
 
 [**Read frequently asked questions (FAQ) on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
@@ -26,14 +26,13 @@ This repository contains multiple projects in the `packages/` directory that fal
 
 These are the component libraries we publish to NPM.
 
+-   [![npm](https://img.shields.io/npm/v/@blueprintjs/colors.svg?label=@blueprintjs/colors)](https://www.npmjs.com/package/@blueprintjs/colors) &ndash; Design system color variables.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/core.svg?label=@blueprintjs/core)](https://www.npmjs.com/package/@blueprintjs/core) &ndash; Core styles & components.
--   [![npm](https://img.shields.io/npm/v/@blueprintjs/datetime.svg?label=@blueprintjs/datetime)](https://www.npmjs.com/package/@blueprintjs/datetime) &ndash; Components for interacting with dates and times.
--   [![npm](https://img.shields.io/npm/v/@blueprintjs/datetime2.svg?label=@blueprintjs/datetime2)](https://www.npmjs.com/package/@blueprintjs/datetime2) &ndash; Next-generation timezone-aware components for interacting with dates and times.
+-   [![npm](https://img.shields.io/npm/v/@blueprintjs/datetime.svg?label=@blueprintjs/datetime)](https://www.npmjs.com/package/@blueprintjs/datetime) &ndash; Timezone-aware components for interacting with dates and times.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/icons.svg?label=@blueprintjs/icons)](https://www.npmjs.com/package/@blueprintjs/icons) &ndash; Components for generating and displaying icons.
--   [![npm](https://img.shields.io/npm/v/@blueprintjs/popover2.svg?label=@blueprintjs/popover2)](https://www.npmjs.com/package/@blueprintjs/popover2) &ndash; Popover2 and Tooltip2 components.
+-   [![npm](https://img.shields.io/npm/v/@blueprintjs/monaco-editor-theme.svg?label=@blueprintjs/monaco-editor-theme)](https://www.npmjs.com/package/@blueprintjs/monaco-editor-theme) &ndash; Theme for monaco-editor (:warning: experimental).
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/select.svg?label=@blueprintjs/select)](https://www.npmjs.com/package/@blueprintjs/select) &ndash; Components for selecting items from a list.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable interactive table component.
--   [![npm](https://img.shields.io/npm/v/@blueprintjs/timezone.svg?label=@blueprintjs/timezone)](https://www.npmjs.com/package/@blueprintjs/timezone) &ndash; Components for picking timezones (:warning: deprecated).
 
 ### Applications
 
@@ -106,8 +105,6 @@ There are a few ways to run development scripts, here they are listed from simpl
     -   `yarn dev:core`
     -   `yarn dev:docs`
     -   `yarn dev:datetime`
-    -   `yarn dev:datetime2`
-    -   `yarn dev:popover2`
     -   `yarn dev:select`
     -   `yarn dev:table`
 -   Lastly, if you want to control exaclty which dev scripts are run and view the console output in the cleanest way, we recommend opening separate terminal windows or splits and running local package dev tasks in each one. This is the recommended workflow for frequent contributors and advanced developers. For example, to test changes in the core + icons packages, you would run the following in separate terminals:

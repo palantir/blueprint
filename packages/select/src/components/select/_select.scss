@@ -4,8 +4,7 @@
 @import "../../common/variables";
 
 .#{$ns}-select-popover {
-  .#{$ns}-popover-content,
-  .#{$ns}-popover2-content {
+  .#{$ns}-popover-content {
     // use padding on container rather than margin on input group
     // because top margin leaves some empty space with no background color.
     padding: $pt-grid-size * 0.5;
@@ -27,8 +26,7 @@
     }
   }
 
-  &.#{$ns}-popover2-match-target-width,
-  &.#{$ns}-select-match-target-width { // deprecated: this class is only used by <Select>
+  &.#{$ns}-popover-match-target-width {
     width: 100%;
 
     .#{$ns}-menu {

@@ -16,16 +16,15 @@
 
 import * as React from "react";
 
-import { AbstractPureComponent2, DISPLAYNAME_PREFIX } from "../../common";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
 
-export interface IAsyncControllableInputProps
-    extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
-    inputRef?: React.LegacyRef<HTMLInputElement>;
-}
+export type AsyncControllableInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+    inputRef?: React.Ref<HTMLInputElement>;
+};
 
-type InputValue = IAsyncControllableInputProps["value"];
+type InputValue = AsyncControllableInputProps["value"];
 
-export interface IAsyncControllableInputState {
+export interface AsyncControllableInputState {
     /**
      * Whether we are in the middle of a composition event.
      *
@@ -63,9 +62,9 @@ export interface IAsyncControllableInputState {
  *
  * Note: this component does not apply any Blueprint-specific styling.
  */
-export class AsyncControllableInput extends AbstractPureComponent2<
-    IAsyncControllableInputProps,
-    IAsyncControllableInputState
+export class AsyncControllableInput extends AbstractPureComponent<
+    AsyncControllableInputProps,
+    AsyncControllableInputState
 > {
     public static displayName = `${DISPLAYNAME_PREFIX}.AsyncControllableInput`;
 
@@ -75,7 +74,7 @@ export class AsyncControllableInput extends AbstractPureComponent2<
      */
     public static COMPOSITION_END_DELAY = 10;
 
-    public state: IAsyncControllableInputState = {
+    public state: AsyncControllableInputState = {
         hasPendingUpdate: false,
         isComposing: false,
         nextValue: this.props.value,
@@ -85,9 +84,9 @@ export class AsyncControllableInput extends AbstractPureComponent2<
     private cancelPendingCompositionEnd: (() => void) | null = null;
 
     public static getDerivedStateFromProps(
-        nextProps: IAsyncControllableInputProps,
-        nextState: IAsyncControllableInputState,
-    ): Partial<IAsyncControllableInputState> | null {
+        nextProps: AsyncControllableInputProps,
+        nextState: AsyncControllableInputState,
+    ): Partial<AsyncControllableInputState> | null {
         if (nextState.isComposing || nextProps.value === undefined) {
             // don't derive anything from props if:
             // - in uncontrolled mode, OR

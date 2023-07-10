@@ -12,13 +12,17 @@ supports custom filtering logic and item rendering.
 
 </div>
 
-@## Props
+@## Usage
 
 Use `HTMLSelect` exactly like you would use a native `<select>` with `value` (or
 `defaultValue`) and `onChange`. Options can be passed as `<option>` children for
 full flexibility or via the `options` prop for simple shorthand.
 
-@interface IHTMLSelectProps
+@reactExample HTMLSelectExample
+
+@## Props interface
+
+@interface HTMLSelectProps
 
 @## CSS
 

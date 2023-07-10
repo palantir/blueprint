@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { Props } from "../../common/props";
 import { H6 } from "../html/html";
 import { MenuItem, MenuItemProps } from "./menuItem";
@@ -37,7 +37,7 @@ export interface IMenuSectionProps extends Props, React.HTMLAttributes<HTMLUList
     sectionTitle?: React.ReactNode;
 }
 
-export class MenuSection extends AbstractPureComponent2<MenuSectionProps> {
+export class MenuSection extends AbstractPureComponent<MenuSectionProps> {
     public render() {
         const { items, className, sectionTitle, id } = this.props;
         const classes = classNames(Classes.MENU_SECTION, className);

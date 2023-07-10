@@ -26,7 +26,7 @@ import { Button, Card, Elevation } from "@blueprintjs/core";
 </Card>
 ```
 
-@interface ICardProps
+@interface CardProps
 
 @## CSS
 

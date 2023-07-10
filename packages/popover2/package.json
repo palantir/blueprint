@@ -1,15 +1,13 @@
 {
     "name": "@blueprintjs/popover2",
-    "version": "1.14.1",
-    "description": "Popover2 and dependent components",
+    "version": "2.0.1",
+    "description": "Re-exports of popover-related components from @blueprintjs/core",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
     "esnext": "lib/esnext/index.js",
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/blueprint-popover2.css",
-    "unpkg": "dist/popover2.bundle.js",
     "files": [
-        "dist",
         "lib",
         "src"
     ],
@@ -25,27 +23,18 @@
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "cross-env NODE_ENV=production webpack",
         "dist:css": "css-dist lib/css/*.css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix && sass-lint --fix",
-        "test": "run-s test:typeCheck test:iso test:karma",
-        "test:typeCheck": "tsc -p ./test",
-        "test:iso": "mocha test/isotest.js",
-        "test:karma": "karma start",
-        "test:karma:debug": "karma start --single-run=false --reporters=helpful --debug",
+        "test": "exit 0",
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.18.0",
-        "@juggle/resize-observer": "^3.4.0",
-        "@popperjs/core": "^2.11.7",
+        "@blueprintjs/core": "^5.0.1",
         "classnames": "^2.3.1",
-        "dom4": "^2.1.5",
-        "react-popper": "^2.3.0",
         "tslib": "~2.5.0"
     },
     "peerDependencies": {
@@ -59,24 +48,16 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/karma-build-scripts": "^4.0.19",
-        "@blueprintjs/node-build-scripts": "^7.1.1",
-        "@blueprintjs/test-commons": "^1.1.16",
-        "enzyme": "^3.11.0",
-        "karma": "^6.4.1",
-        "mocha": "^10.2.0",
+        "@blueprintjs/node-build-scripts": "^8.0.0",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
-        "react-test-renderer": "^16.13.1",
-        "sass-inline-svg": "^1.2.3",
-        "typescript": "~4.8.4",
-        "webpack-cli": "^5.0.1"
+        "typescript": "~4.9.5"
     },
     "repository": {
         "type": "git",
         "url": "git@github.com:palantir/blueprint.git",
-        "directory": "packages/core"
+        "directory": "packages/popover2"
     },
     "keywords": [
         "palantir",

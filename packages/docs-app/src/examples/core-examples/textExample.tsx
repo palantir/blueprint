@@ -16,15 +16,16 @@
 
 import * as React from "react";
 
-import { Text, TextArea } from "@blueprintjs/core";
+import { Button, Menu, MenuItem, Popover, Text, TextArea } from "@blueprintjs/core";
 import { Example, ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
+import { Film, TOP_100_FILMS } from "@blueprintjs/select/examples";
 
-export interface ITextExampleState {
+export interface TextExampleState {
     textContent: string;
 }
 
-export class TextExample extends React.PureComponent<ExampleProps, ITextExampleState> {
-    public state: ITextExampleState = {
+export class TextExample extends React.PureComponent<ExampleProps, TextExampleState> {
+    public state: TextExampleState = {
         textContent:
             "You can change the text in the input below. Hover to see full text. " +
             "If the text is long enough, then the content will overflow. This is done by setting " +
@@ -34,6 +35,13 @@ export class TextExample extends React.PureComponent<ExampleProps, ITextExampleS
     private onInputChange = handleStringChange((textContent: string) => this.setState({ textContent }));
 
     public render() {
+        const exampleMenu = (
+            <Menu className="docs-text-example-dropdown-menu">
+                {TOP_100_FILMS.map((film: Film) => (
+                    <MenuItem key={film.rank} text={film.title} />
+                ))}
+            </Menu>
+        );
         return (
             <Example options={false} {...this.props}>
                 <Text ellipsize={true}>
@@ -41,6 +49,9 @@ export class TextExample extends React.PureComponent<ExampleProps, ITextExampleS
                     &nbsp;
                 </Text>
                 <TextArea fill={true} onChange={this.onInputChange} value={this.state.textContent} />
+                <Popover content={exampleMenu} placement="bottom">
+                    <Button icon="media" text="Text is used in MenuItems, and is performant at scale in long lists" />
+                </Popover>
             </Example>
         );
     }

@@ -41,5 +41,4 @@ updates:
     versioning-strategy: widen
     allow:
       - dependency-name: "date-fns"
-      - dependency-name: "moment"
       - dependency-name: "lodash"

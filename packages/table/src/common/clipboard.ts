@@ -14,26 +14,9 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation */
 /* istanbul ignore next */
 
 export const Clipboard = {
-    /**
-     * Overrides the inherited CSS of the element to make sure it is
-     * selectable. This method also makes the element pseudo-invisible.
-     *
-     * @deprecated will be removed in v4.0
-     */
-    applySelectableStyles(elem: HTMLElement) {
-        elem.style.overflow = "hidden";
-        elem.style.height = "0px";
-        elem.style.setProperty("-webkit-user-select", "all");
-        elem.style.setProperty("-moz-user-select", "all");
-        elem.style.setProperty("-ms-user-select", "all");
-        elem.style.setProperty("user-select", "all");
-        return elem;
-    },
-
     /**
      * Copies table cells to the clipboard. The parameter is a row-major
      * 2-dimensional `Array` of strings and can contain nulls. We assume all

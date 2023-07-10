@@ -21,7 +21,7 @@ import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { PianoKey } from "./audio";
 
-export interface IHotkeyPianoState {
+export interface HotkeyPianoState {
     keys: boolean[];
 }
 
@@ -30,8 +30,8 @@ const AUDIO_CONTEXT = (window as any)["AudioContext"] != null ? new AudioContext
 
 // eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
-export class HotkeyPiano extends React.PureComponent<ExampleProps, IHotkeyPianoState> {
-    public state: IHotkeyPianoState = {
+export class HotkeyPiano extends React.PureComponent<ExampleProps, HotkeyPianoState> {
+    public state: HotkeyPianoState = {
         // Use feature detection to disable example if we have to
         keys: Array.apply(null, Array(24)).map(() => false),
     };

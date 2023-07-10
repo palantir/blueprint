@@ -16,9 +16,6 @@
 
 import * as React from "react";
 
-/** @deprecated use ItemModifiers */
-export type IItemModifiers = ItemModifiers;
-
 export interface ItemModifiers {
     /** Whether this is the "active" (focused) item, meaning keyboard interactions will act upon it. */
     active: boolean;
@@ -30,14 +27,11 @@ export interface ItemModifiers {
     matchesPredicate: boolean;
 }
 
-/** @deprecated use ItemRendererProps */
-export type IItemRendererProps = ItemRendererProps;
-
 /**
  * An object describing how to render a particular item.
  * An `itemRenderer` receives the item as its first argument, and this object as its second argument.
  *
- * Make sure to forward the provided `ref` to the rendered element (usually via the `elementRef` prop on `MenuItem`/`MenuItem2`)
+ * Make sure to forward the provided `ref` to the rendered element (usually via `<MenuItem ref={ref} />`)
  * to ensure that scrolling to active items works correctly.
  *
  * @template T type of the DOM element rendered for this item to which we can attach a ref (defaults to MenuItem's HTMLLIElement)
@@ -60,7 +54,8 @@ export interface ItemRendererProps<T extends HTMLElement = HTMLLIElement> {
      */
     handleFocus?: () => void;
 
-    index?: number;
+    /** Index of the item in the QueryList items array. */
+    index: number;
 
     /** Modifiers that describe how to render this item, such as `active` or `disabled`. */
     modifiers: ItemModifiers;

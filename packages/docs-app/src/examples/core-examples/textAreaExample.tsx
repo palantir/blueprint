@@ -16,9 +16,8 @@
 
 import * as React from "react";
 
-import { AnchorButton, ControlGroup, H5, Switch, TextArea } from "@blueprintjs/core";
+import { AnchorButton, ControlGroup, H5, Switch, TextArea, Tooltip } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
-import { Tooltip2 } from "@blueprintjs/popover2";
 
 const INTITIAL_CONTROLLED_TEXT = "In a galaxy far, far away...";
 const CONTROLLED_TEXT_TO_APPEND =
@@ -96,9 +95,9 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
                         icon="plus"
                         onClick={this.appendControlledText}
                     />
-                    <Tooltip2 content="Reset text" placement="bottom-end">
+                    <Tooltip content="Reset text" placement="bottom-end">
                         <AnchorButton disabled={!controlled} icon="reset" onClick={this.resetControlledText} />
-                    </Tooltip2>
+                    </Tooltip>
                 </ControlGroup>
             </>
         );

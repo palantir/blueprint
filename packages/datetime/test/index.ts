@@ -2,13 +2,21 @@
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  */
 
+// tslint:disable no-submodule-imports
+import "@blueprintjs/core/lib/css/blueprint.css";
+// tslint:enable no-submodule-imports
+import "../lib/css/blueprint-datetime.css";
+import "./test-debugging-styles.scss";
+
 import "@blueprintjs/test-commons/bootstrap";
 
 import "./common/dateUtilsTests";
-import "./dateInputTests";
-import "./datePickerCaptionTests";
-import "./datePickerTests";
-import "./dateRangeInputTests";
-import "./dateRangePickerTests";
-import "./dateTimePickerTests";
-import "./timePickerTests";
+import "./common/timezoneUtilsTest";
+import "./common/timezoneMetadataTests";
+
+import "./components/dateInputTests";
+import "./components/dateRangeInputTests";
+import "./components/datePickerCaptionTests";
+import "./components/datePickerTests";
+import "./components/dateRangePickerTests";
+import "./components/timePickerTests";

@@ -4,4 +4,4 @@
 
 import "@blueprintjs/test-commons/bootstrap";
 
-// no tests
+import "iconLoaderTests";

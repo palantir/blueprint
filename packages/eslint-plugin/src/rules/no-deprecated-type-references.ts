@@ -82,6 +82,7 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "IHandleProps",
         "IMultiSliderProps",
         "IRangeSliderProps",
+        "ISliderBaseProps",
         "ISliderProps",
         "ITabProps",
         "ITabsProps",
@@ -93,6 +94,8 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "ITreeProps",
         ["IPortalContext", "PortalLegacyContext"],
         ["IToaster", "ToasterInstance"],
+        ["IToasterProps", "OverlayToasterProps"],
+        "IToastOptions",
         ["ITreeNode", "TreeNodeInfo"],
     ],
 
@@ -107,7 +110,7 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "ITimePickerProps",
     ],
 
-    "@blueprintjs/docs-theme": ["IExampleProps", "INavMenuItemProps", "ITagRendererMap"],
+    "@blueprintjs/docs-theme": ["IDocsExampleProps", "IExampleProps", "INavMenuItemProps", "ITagRendererMap"],
 
     "@blueprintjs/popover2": [
         "IPopover2Props",
@@ -132,22 +135,27 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
     ],
 
     "@blueprintjs/table": [
-        "IStyledRegionGroup",
-        "ICellInterval",
         "ICellCoordinate",
+        "ICellInterval",
+        "ICellProps",
+        "ICellRenderer",
+        "IColumnHeaderCellProps",
+        "IColumnHeaderCellRenderer",
+        "IColumnHeaderRenderer",
+        "IColumnProps",
+        "IContextMenuRenderer",
+        "ICoordinateData",
+        "IFocusedCellCoordinates",
+        "IJSONFormatProps",
+        "IMenuContext",
         "IRegion",
+        "IRowHeaderCellProps",
+        "IRowHeaderRenderer",
+        "IStyledRegionGroup",
         "ITableBodyProps",
         "ITableProps",
-        "ICellRenderer",
-        "IJSONFormatProps",
         "ITruncatedFormatProps",
-        "IColumnHeaderCellRenderer",
-        "IColumnHeaderCellProps",
-        "IRowHeaderRenderer",
-        "IRowHeaderCellProps",
     ],
-
-    "@blueprintjs/timezone": ["ITimezoneItem", "ITimezonePickerProps"],
 };
 
 /**

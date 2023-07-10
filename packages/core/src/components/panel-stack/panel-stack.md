@@ -70,9 +70,8 @@ class SettingsPanel extends React.Component<IPanelProps & { enabled: boolean }> 
 
 @interface IPanelProps
 
-@## Props
+@## Props interface
 
 PanelStack can be operated as a controlled or uncontrolled component.
 
 @interface IPanelStackProps
-

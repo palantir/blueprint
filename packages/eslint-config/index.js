@@ -20,7 +20,8 @@ const eslintPluginRules = require("./eslint-plugin-rules.json");
 const tsEslintRules = require("./typescript-eslint-rules.json");
 
 /**
- * Enable @blueprintjs/eslint-plugin.
+ * Enables @blueprintjs/eslint-plugin.
+ *
  * For TS files, configure typescript-eslint, including type-aware lint rules which use the TS program.
  */
 module.exports = {

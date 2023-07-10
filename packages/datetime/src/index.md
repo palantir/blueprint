@@ -13,13 +13,10 @@ provides React components for interacting with dates and times:
 
 - [TimePicker](#datetime/timepicker) for selecting a time (hour, minute, second, millisecond).
 
-- [DateTimePicker](#datetime/datetimepicker), which composes DatePicker and
-    TimePicker to select a date and time together (DEPRECATED).
+- [DateInput](#datetime/date-input), which composes a text input with a DatePicker in
+  a Popover, for use in forms.
 
-- [DateInput](#datetime/dateinput), which composes a text input with a DatePicker in
-    a Popover, for use in forms (DEPRECATED).
-
-- [DateRangeInput](#datetime/daterangeinput), which composes two text inputs with a
+- [DateRangeInput](#datetime/date-range-input), which composes two text inputs with a
     DateRangePicker in a Popover, for use in forms.
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
@@ -41,8 +38,8 @@ Import the package stylesheet in Sass:
 ```
 
 @page datepicker
+@page date-input
 @page daterangepicker
+@page date-range-input
 @page timepicker
-@page datetimepicker
-@page dateinput
-@page daterangeinput
+@page timezone-select

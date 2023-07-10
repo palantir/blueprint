@@ -4,7 +4,7 @@ reference: api
 
 @# JavaScript API
 
-The `Table`, `Column`, `Cell`, `ColumnHeaderCell2`, `EditableName`, and `EditableCell2`
+The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell2`
 components are available in the __@blueprintjs/table__ package.
 
 @## Table
@@ -22,12 +22,12 @@ number of rows (`numRows` prop) as well as a set of `Column` children.
 @method Table.resizeRowsByApproximateHeight
 
 
-`ICellMapper` is just a function that takes a cell-coordinate and returns a generic type:
+`CellMapper` is just a function that takes a cell-coordinate and returns a generic type:
 
 
 
 ```ts
-type ICellMapper<T> = (rowIndex: number, columnIndex: number) => T;
+type CellMapper<T> = (rowIndex: number, columnIndex: number) => T;
 ```
 
 
@@ -46,45 +46,33 @@ Because of this, the table's children are a list of `Column` components.
 
 Use the `rowHeaderCellRenderer` prop of `Table` to define row headers.
 
-@interface IColumnProps
+@interface ColumnProps
 
 @## Cell
 
 The `Cell` component renders content in the table body. `Cell`s should be
 returned from the `cellRenderer` method of each `Column`.
 
-@interface ICellProps
+@interface CellProps
 
-@## ColumnHeaderCell2
+@## ColumnHeaderCell
 
 Optionally customize how each column header is displayed.
 
 The `columnHeaderCellRenderer` method on each `Column` should return a
-`ColumnHeaderCell2`. Children of a `ColumnHeaderCell2` are rendered below
+`ColumnHeaderCell`. Children of a `ColumnHeaderCell` are rendered below
 the name of the column. If you want to override the render behavior of the
-name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell2`.
+name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell`.
 
-<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
-
-<h5 class="@ns-heading">Additional CSS required</h5>
-
-__ColumnHeaderCell2__ depends on @blueprintjs/popover2 styles, so you must remember to import
-that package's stylesheet in your application in addition to `table.css`:
-
-```scss
-@import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
-```
-</div>
-
-@interface IColumnHeaderCellProps
+@interface ColumnHeaderCellProps
 
 @## EditableName
 
 Return a `EditableName` component from the `nameRenderer` prop on a
-`ColumnHeaderCell2` to enable click-to-edit functionality in the column
+`ColumnHeaderCell` to enable click-to-edit functionality in the column
 header.
 
-@interface IEditableNameProps
+@interface EditableNameProps
 
 @## EditableCell2
 
@@ -93,26 +81,14 @@ Return an `EditableCell2` component from the `cellRenderer` prop on a
 
 @interface EditableCell2Props
 
-@## RowHeaderCell2
+@## RowHeaderCell
 
 Optionally customize how each row header is displayed.
 
-In order to use this API, supply a custom renderer function which returns a `RowHeaderCell2` to the
+In order to use this API, supply a custom renderer function which returns a `RowHeaderCell` to the
 `rowHeaderCellRenderer` prop on the overall `Table2`.
 
-<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
-
-<h5 class="@ns-heading">Additional CSS required</h5>
-
-__RowHeaderCell2__ depends on @blueprintjs/popover2 styles, so you must remember to import
-that package's stylesheet in your application in addition to `table.css`:
-
-```scss
-@import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
-```
-</div>
-
-@interface IRowHeaderCellProps
+@interface RowHeaderCellProps
 
 @## Region
 
@@ -131,7 +107,7 @@ There are four different types of regions:
 
 Regions are defined in code according to the `IRegion` interface:
 
-@interface IRegion
+@interface Region
 
 You can construct region objects manually according to this interface, but we
 recommend using our exported __factory methods__ to help you construct the
@@ -208,24 +184,24 @@ const cardinalities = [
 
 @method Regions.getRegionCardinality
 
-@## TruncatedFormat2
+@## TruncatedFormat
 
-Wrap your cell contents with a `TruncatedFormat2` component like so:
+Wrap your cell contents with a `TruncatedFormat` component like so:
 
 ```tsx
 const content = "A very long string...";
-return <Cell><TruncatedFormat2>{content}</TruncatedFormat2></Cell>
+return <Cell><TruncatedFormat>{content}</TruncatedFormat></Cell>
 ```
 
-@interface ITruncatedFormatProps
+@interface TruncatedFormatProps
 
-@## JSONFormat2
+@## JSONFormat
 
-Wrap your JavaScript object cell contents with a `JSONFormat2` component like so:
+Wrap your JavaScript object cell contents with a `JSONFormat` component like so:
 
 ```tsx
 const content = { any: "javascript variable", even: [null, "is", "okay", "too"] };
-return <Cell><JSONFormat2>{content}</JSONFormat2></Cell>
+return <Cell><JSONFormat>{content}</JSONFormat></Cell>
 ```
 
-@interface IJSONFormatProps
+@interface JSONFormatProps

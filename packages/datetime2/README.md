@@ -4,28 +4,15 @@
 
 Blueprint is a React UI toolkit for the web.
 
-This package contains a collection of React components for working with dates
-and times. These are modern variants of the components available in the
-`@blueprintjs/datetime` package; they will become the standard date & time
-components in a future major version of Blueprint.
+This package contains re-exports of components from @blueprintjs/datetime2. These "V2" components were
+previously available in @blueprintjs/datetime2 v4.x, but they were promoted to the standard "V1" components in
+@blueprintjs/datetime v5.x.
 
-Compared to their "V1" counterparts, these components:
-- use Popover2 instead of Popover under the hood
-- have better timezone awareness
-- utilize lightweight dependencies for manipulating dates and displaying
-  the list of available timezones
-- no longer use the deprecated moment.js library
+Once you upgrade to Blueprint v5.0, you should migrate your imports to the @blueprintjs/datetime package.
 
-At the moment, `@blueprintjs/datetime` is a dependency of this
-package, as it delegates to the `<DatePicker>` and `<DateRangePicker>`
-implementation exported from there. When these "V2" components graduate
-to become the standard API, all Blueprint date/time components will
-be collected into a single package, `@blueprintjs/datetime@5.x`.
-
-## Installation
-
-```
-npm install --save @blueprintjs/datetime2
+```diff
+- import { DateInput2 } from "@blueprintjs/datetime2";
++ import { DateInput } from "@blueprintjs/datetime";
 ```
 
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

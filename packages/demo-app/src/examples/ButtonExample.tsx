@@ -17,7 +17,6 @@
 import * as React from "react";
 
 import { Button, Intent } from "@blueprintjs/core";
-import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -38,9 +37,7 @@ export class ButtonExample extends React.PureComponent {
                             key={`${intent}-button`}
                             intent={intent as Intent}
                             text="Button"
-                            // this kind of `IconNames` reference is discouraged (we prefer the plain string literal instead),
-                            // but we keep it here to test the type of `IconNames` at compile time
-                            icon={IconNames.ADD}
+                            icon="add"
                         />
                     ))}
                 </ExampleCard>

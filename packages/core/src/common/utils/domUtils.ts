@@ -82,7 +82,7 @@ export function throttleEvent(target: EventTarget, eventName: string, newEventNa
     return throttledFunc;
 }
 
-export interface IThrottledReactEventOptions {
+export interface ThrottledReactEventOptions {
     preventDefault?: boolean;
 }
 
@@ -94,7 +94,7 @@ export interface IThrottledReactEventOptions {
  */
 export function throttleReactEventCallback<E extends React.SyntheticEvent = React.SyntheticEvent>(
     callback: (event: E, ...otherArgs: any[]) => any,
-    options: IThrottledReactEventOptions = {},
+    options: ThrottledReactEventOptions = {},
 ) {
     const throttledFunc = throttleImpl(
         callback,

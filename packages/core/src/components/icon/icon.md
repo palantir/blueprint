@@ -6,6 +6,9 @@ See the [**Icons package**](#icons) for a searchable list of all available UI ic
 
 </div>
 
+Blueprint provides icons in two formats (SVG and fonts). It's easy to change their color
+or apply effects like text shadows via standard SVG or CSS properties.
+
 This section describes two ways of using Blueprint's UI icons:
 via the `Icon` component to render SVG images or via CSS classes to use the icon font.
 
@@ -20,7 +23,13 @@ the name as a string, these components render `<Icon icon="..." />` under the ho
 Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon`
 prop is typed such that editors can offer autocomplete for known icon names. The
 optional `size` prop determines the exact width and height of the icon
-image; the icon element itself can be sized separately using CSS.
+image; the icon element itself can be also be sized using CSS.
+
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+
+Icons may be configured to load in various ways, see ["Loading icons"](#icons/loading-icons).
+
+</div>
 
 The HTML element rendered by `<Icon>` can be customized with the `tagName` prop
 (defaults to `span`), and additional props are passed to this element.
@@ -41,7 +50,7 @@ import { Icon, IconSize } from "@blueprintjs/core";
 <Icon icon="cross" />
 <Icon icon="globe" size={20} />
 
-// constants are provided for name and size
+// constants are provided for standard sizes
 <Icon icon="graph" size={IconSize.LARGE} intent="primary" />
 
 // you can also pass all valid HTML props
@@ -51,7 +60,7 @@ import { Icon, IconSize } from "@blueprintjs/core";
 Custom sizes are supported. The following React component:
 
 ```tsx
-<Icon icon="globe" iconSize={30} />
+<Icon icon="globe" size={30} />
 ```
 
 ...renders this HTML markup:
@@ -63,11 +72,21 @@ Custom sizes are supported. The following React component:
 </svg>
 ```
 
-@## Props
+@interface IconProps
 
-@interface IIconProps
+@## Static components
 
-@## CSS
+The `<Icon>` component loads icon paths via dynamic module imports by default. An alternative API
+is available in the __@blueprintjs/icons__ package which provides static imports of each icon as
+a React component. The example below uses the `<Calendar>` component.
+
+Note that some `<Icon>` props are not yet supported for these components, such as `intent`.
+
+@reactExample IconGeneratedComponentExample
+
+@interface SVGIconProps
+
+@## CSS API
 
 The CSS-only icons API uses the __icon fonts__ from the __@blueprintjs/icons__ package.
 Note that _none of Blueprint's React components use the icon font_; it is only provided

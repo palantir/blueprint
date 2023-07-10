@@ -21,12 +21,9 @@ import { Classes as CoreClasses, Utils as CoreUtils, DISPLAYNAME_PREFIX, IntentP
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
 import { JSONFormat } from "./formats/jsonFormat";
-import { JSONFormat2 } from "./formats/jsonFormat2";
 import { TruncatedFormat } from "./formats/truncatedFormat";
-import { TruncatedFormat2 } from "./formats/truncatedFormat2";
 
-export type CellProps = ICellProps;
-export interface ICellProps extends IntentProps, Props {
+export interface CellProps extends IntentProps, Props {
     key?: string;
 
     children?: React.ReactNode;
@@ -108,10 +105,7 @@ export interface ICellProps extends IntentProps, Props {
     cellRef?: React.Ref<HTMLDivElement>;
 }
 
-/** @deprecated use CellRenderer */
-export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps> | undefined;
-// eslint-disable-next-line deprecation/deprecation
-export type CellRenderer = ICellRenderer;
+export type CellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<CellProps> | undefined;
 
 export const emptyCellRenderer = () => <Cell />;
 
@@ -120,7 +114,7 @@ export const emptyCellRenderer = () => <Cell />;
  *
  * @see https://blueprintjs.com/docs/#table/api.cell
  */
-export class Cell extends React.Component<ICellProps> {
+export class Cell extends React.Component<CellProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Cell`;
 
     public static defaultProps = {
@@ -128,7 +122,7 @@ export class Cell extends React.Component<ICellProps> {
         wrapText: false,
     };
 
-    public shouldComponentUpdate(nextProps: ICellProps) {
+    public shouldComponentUpdate(nextProps: CellProps) {
         // deeply compare "style," because a new but identical object might have been provided.
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
@@ -173,12 +167,7 @@ export class Cell extends React.Component<ICellProps> {
         // note: these aren't actually used by truncated format, just in shouldComponentUpdate
         const modifiedChildren = React.Children.map(this.props.children, child => {
             const isFormatElement =
-                // eslint-disable-next-line deprecation/deprecation
-                CoreUtils.isElementOfType(child, TruncatedFormat) ||
-                CoreUtils.isElementOfType(child, TruncatedFormat2) ||
-                // eslint-disable-next-line deprecation/deprecation
-                CoreUtils.isElementOfType(child, JSONFormat) ||
-                CoreUtils.isElementOfType(child, JSONFormat2);
+                CoreUtils.isElementOfType(child, TruncatedFormat) || CoreUtils.isElementOfType(child, JSONFormat);
             if (style != null && React.isValidElement(child) && isFormatElement) {
                 return React.cloneElement(child as React.ReactElement<any>, {
                     parentCellHeight: style.height === undefined ? undefined : parseInt(style.height.toString(), 10),

@@ -23,7 +23,6 @@ import {
     noDeprecatedDatetimeComponentsRule,
     noDeprecatedSelectComponentsRule,
     noDeprecatedTableComponentsRule,
-    noDeprecatedTimezoneComponentsRule,
 } from "./no-deprecated-components";
 import { noDeprecatedTypeReferencesRule } from "./no-deprecated-type-references";
 
@@ -37,6 +36,5 @@ export default {
     "no-deprecated-datetime-components": noDeprecatedDatetimeComponentsRule,
     "no-deprecated-select-components": noDeprecatedSelectComponentsRule,
     "no-deprecated-table-components": noDeprecatedTableComponentsRule,
-    "no-deprecated-timezone-components": noDeprecatedTimezoneComponentsRule,
     "no-deprecated-type-references": noDeprecatedTypeReferencesRule,
 };

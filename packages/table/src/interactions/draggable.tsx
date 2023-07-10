@@ -15,22 +15,21 @@
  */
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 
 import { Utils as CoreUtils, Props } from "@blueprintjs/core";
 
 import { DragEvents } from "./dragEvents";
-import { IDragHandler } from "./dragTypes";
+import { DraggableChildrenProps, DragHandler } from "./dragTypes";
 
-export interface IDraggableProps extends Props, IDragHandler {
-    children?: React.ReactNode;
-}
+export type DraggableProps = Props & DragHandler & DraggableChildrenProps;
 
-const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof IDraggableProps>;
+const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof DraggableProps>;
 
 /**
- * This component provides a simple interface for combined drag and/or click
- * events.
+ * This component provides a simple interface for combined drag and/or click events.
+ *
+ * Like ResizeSensor, this component expects a single child element so that it can
+ * clone it and attach a ref to it.
  *
  * Since the mouse interactions for drag and click are overloaded, here are
  * the events that will fire in these cases:
@@ -53,36 +52,56 @@ const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof
  * If `false` is returned from the onActivate callback, no further events
  * will be fired until the next activation.
  */
-export class Draggable extends React.PureComponent<IDraggableProps> {
+export class Draggable extends React.PureComponent<DraggableProps> {
     public static defaultProps = {
         preventDefault: true,
         stopPropagation: false,
     };
 
-    private events?: DragEvents;
+    private events = new DragEvents();
+
+    private targetRef = this.props.targetRef ?? React.createRef<HTMLElement>();
 
     public render() {
-        return React.Children.only(this.props.children);
+        const onlyChild = React.Children.only(this.props.children);
+
+        // if we're provided a ref to the child already, we don't need to attach one ourselves
+        if (this.props.targetRef !== undefined) {
+            return onlyChild;
+        }
+
+        return React.cloneElement(onlyChild, { ref: this.targetRef });
     }
 
-    public componentDidUpdate(prevProps: IDraggableProps) {
-        const propsWhitelist = { include: REATTACH_PROPS_KEYS };
-        if (this.events !== undefined && !CoreUtils.shallowCompareKeys(prevProps, this.props, propsWhitelist)) {
-            // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
-            // eslint-disable-next-line react/no-find-dom-node
-            this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, this.props);
+    public componentDidUpdate(prevProps: DraggableProps) {
+        const didEventHandlerPropsChange = !CoreUtils.shallowCompareKeys(prevProps, this.props, {
+            include: REATTACH_PROPS_KEYS,
+        });
+        if (didEventHandlerPropsChange && isValidTarget(this.targetRef.current)) {
+            this.events.attach(this.targetRef.current, this.props);
         }
     }
 
     public componentDidMount() {
-        this.events = new DragEvents();
-        // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
-        // eslint-disable-next-line react/no-find-dom-node
-        this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, this.props);
+        if (isValidTarget(this.targetRef.current)) {
+            this.events.attach(this.targetRef.current, this.props);
+        }
     }
 
     public componentWillUnmount() {
-        this.events?.detach();
-        delete this.events;
+        if (isValidTarget(this.targetRef.current)) {
+            this.events?.detach();
+        }
     }
+}
+
+/**
+ * Used to ensure that target elements are valid at runtime for use by DragEvents.
+ * This check is done at runtime instead of compile time because of our use of `React.cloneElement<any>()`
+ * and the associated untyped `ref` injection.
+ *
+ * @see https://github.com/palantir/blueprint/issues/6248
+ */
+function isValidTarget(refElement: React.RefObject<HTMLElement>["current"]): refElement is HTMLElement {
+    return refElement != null && refElement instanceof HTMLElement;
 }

@@ -75,7 +75,7 @@ $dark-menu-item-intent-colors: (
 
   &::before,
   .#{$ns}-menu-item-icon,
-  .#{$ns}-menu-item-tick,
+  .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
     color: $pt-icon-color;
   }
@@ -94,25 +94,19 @@ $dark-menu-item-intent-colors: (
     @include menu-item-active(false);
   }
 
-  // pt-disable always overrides over styles
-  /* stylelint-disable declaration-no-important */
-  &.#{$ns}-menu-item-ticked {
-    padding-left: 0 !important;
+  &.#{$ns}-menu-item-is-selectable {
+    padding-left: $menu-item-indent;
 
-    .#{$ns}-menu-item-tick {
-      margin: 0 $menu-item-selected-icon-spacing !important;
+    &.#{$ns}-selected {
+      padding-left: 0;
+    }
+
+    .#{$ns}-menu-item-selected-icon {
+      margin: 0 $menu-item-selected-icon-spacing;
     }
   }
-  /* stylelint-enable declaration-no-important */
 
-  // pt-disable always overrides over styles
-  /* stylelint-disable declaration-no-important */
-  &.#{$ns}-menu-item-indent {
-    padding-left: $menu-item-indent !important;
-  }
-  /* stylelint-enable declaration-no-important */
-
-  // pt-disable always overrides over styles
+  // disabled class needs to always overrides other styles
   /* stylelint-disable declaration-no-important */
   &.#{$ns}-disabled {
     background-color: inherit !important;
@@ -143,7 +137,7 @@ $dark-menu-item-intent-colors: (
 
   &::before,
   .#{$ns}-menu-item-icon,
-  .#{$ns}-menu-item-tick,
+  .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
     color: $pt-dark-icon-color;
   }
@@ -212,7 +206,7 @@ $dark-menu-item-intent-colors: (
 
   &::before,
   .#{$ns}-menu-item-icon,
-  .#{$ns}-menu-item-tick,
+  .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
     color: nth(map-get($intent-colors, "primary"), 2);
   }
@@ -242,7 +236,7 @@ $dark-menu-item-intent-colors: (
 
     &::before,
     .#{$ns}-menu-item-icon,
-    .#{$ns}-menu-item-tick,
+    .#{$ns}-menu-item-selected-icon,
     .#{$ns}-submenu-icon,
     .#{$ns}-menu-item-label {
       color: inherit;
@@ -271,7 +265,8 @@ $dark-menu-item-intent-colors: (
 @mixin menu-item-large() {
   font-size: $pt-font-size-large;
   line-height: $menu-item-line-height-large;
-  padding: $menu-item-padding-vertical-large $menu-item-padding;
+  padding-bottom: $menu-item-padding-vertical-large;
+  padding-top: $menu-item-padding-vertical-large;
 
   .#{$ns}-menu-item-icon {
     height: $menu-item-line-height-large;
@@ -285,7 +280,8 @@ $dark-menu-item-intent-colors: (
 }
 
 @mixin menu-item-small() {
-  padding: $menu-item-padding-vertical-small $menu-item-padding;
+  padding-bottom: $menu-item-padding-vertical-small;
+  padding-top: $menu-item-padding-vertical-small;
 }
 
 @mixin menu-divider() {

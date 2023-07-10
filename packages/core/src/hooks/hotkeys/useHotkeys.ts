@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { HOTKEYS_PROVIDER_NOT_FOUND } from "../../common/errors";
 import { elementIsTextInput } from "../../common/utils/domUtils";
-import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "../../components/hotkeys/hotkeyParser";
+import { comboMatches, getKeyCombo, KeyCombo, parseKeyCombo } from "../../components/hotkeys/hotkeyParser";
 import { HotkeysContext } from "../../context";
 import { HotkeyConfig } from "./hotkeyConfig";
 
@@ -90,7 +90,7 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
 
     const invokeNamedCallbackIfComboRecognized = (
         global: boolean,
-        combo: IKeyCombo,
+        combo: KeyCombo,
         callbackName: "onKeyDown" | "onKeyUp",
         e: KeyboardEvent,
     ) => {

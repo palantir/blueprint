@@ -1,13 +1,9 @@
----
-tag: new
----
-
 @# HotkeysTarget2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h5 class="@ns-heading">
 
-Migrating from [HotkeysTarget](#core/components/hotkeys)?
+Migrating from [HotkeysTarget](#core/legacy/hotkeys-legacy)?
 
 </h5>
 
@@ -36,7 +32,7 @@ React application.
 Then, to register hotkeys and generate the relevant event handlers, use the component like so:
 
 ```tsx
-import React from "react";
+import * as React from "react";
 import { HotkeysTarget2, InputGroup } from "@blueprintjs/core";
 
 export default class extends React.PureComponent {
@@ -63,7 +59,7 @@ export default class extends React.PureComponent {
                 {({ handleKeyDown, handleKeyUp }) => (
                     <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         Press "R" to refresh data, "F" to focus the input...
-                        <InputGroup ref={this.inputRef} />
+                        <InputGroup inputRef={this.inputRef} />
                     </div>
                 )}
             </HotkeysTarget2>
@@ -81,7 +77,7 @@ bound for them to work correctly.
 `<HotkeysTarget2>` takes an optional `options: UseHotkeysOptions` prop which can customize some of the hook's
 default behavior.
 
-@## Props
+@## Props interface
 
 @interface HotkeysTarget2Props
 

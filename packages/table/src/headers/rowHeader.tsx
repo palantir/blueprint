@@ -19,30 +19,26 @@ import * as React from "react";
 
 import * as Classes from "../common/classes";
 import { RowIndices } from "../common/grid";
-import { IClientCoordinates } from "../interactions/dragTypes";
-import { IIndexedResizeCallback } from "../interactions/resizable";
+import { ClientCoordinates } from "../interactions/dragTypes";
+import { IndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
-import { Header, IHeaderProps } from "./header";
-import type { RowHeaderCellProps } from "./rowHeaderCell";
-import { RowHeaderCell2 } from "./rowHeaderCell2";
+import { Header, HeaderProps } from "./header";
+import { RowHeaderCell, RowHeaderCellProps } from "./rowHeaderCell";
 
-/** @deprecated use RowHeaderRenderer */
-export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<RowHeaderCellProps>;
-// eslint-disable-next-line deprecation/deprecation
-export type RowHeaderRenderer = IRowHeaderRenderer;
+export type RowHeaderRenderer = (rowIndex: number) => React.ReactElement<RowHeaderCellProps>;
 
-export interface IRowHeights {
+export interface RowHeights {
     minRowHeight: number;
     maxRowHeight: number;
     defaultRowHeight: number;
 }
 
-export interface IRowHeaderProps extends IHeaderProps, IRowHeights, RowIndices {
+export interface RowHeaderProps extends HeaderProps, RowHeights, RowIndices {
     /**
      * A callback invoked when user is done resizing the column
      */
-    onRowHeightChanged: IIndexedResizeCallback;
+    onRowHeightChanged: IndexedResizeCallback;
 
     /**
      * Renders the cell for each row header
@@ -55,7 +51,7 @@ export interface IRowHeaderProps extends IHeaderProps, IRowHeights, RowIndices {
     onMount?: (whichHeader: "column" | "row") => void;
 }
 
-export class RowHeader extends React.Component<IRowHeaderProps> {
+export class RowHeader extends React.Component<RowHeaderProps> {
     public static defaultProps = {
         rowHeaderCellRenderer: renderDefaultRowHeader,
     };
@@ -66,20 +62,20 @@ export class RowHeader extends React.Component<IRowHeaderProps> {
 
     public render() {
         const {
-            // from IRowHeaderProps
+            // from RowHeaderProps
             onRowHeightChanged,
             rowHeaderCellRenderer,
 
-            // from IRowHeights
+            // from RowHeights
             minRowHeight: minSize,
             maxRowHeight: maxSize,
             defaultRowHeight,
 
-            // from IRowIndices
+            // from RowIndices
             rowIndexStart: indexStart,
             rowIndexEnd: indexEnd,
 
-            // from IHeaderProps
+            // from HeaderProps
             ...spreadableProps
         } = this.props;
 
@@ -151,7 +147,7 @@ export class RowHeader extends React.Component<IRowHeaderProps> {
         return this.props.grid.getRowRect(index).height;
     };
 
-    private getDragCoordinate = (clientCoords: IClientCoordinates) => {
+    private getDragCoordinate = (clientCoords: ClientCoordinates) => {
         return clientCoords[1]; // y-coordinate
     };
 
@@ -180,7 +176,7 @@ export class RowHeader extends React.Component<IRowHeaderProps> {
     private renderGhostCell = (index: number, extremaClasses: string[]) => {
         const rect = this.props.grid.getGhostCellRect(index, 0);
         return (
-            <RowHeaderCell2
+            <RowHeaderCell
                 className={classNames(extremaClasses)}
                 index={index}
                 key={Classes.rowIndexClass(index)}
@@ -201,5 +197,5 @@ export class RowHeader extends React.Component<IRowHeaderProps> {
  * numbers for each row.
  */
 export function renderDefaultRowHeader(rowIndex: number) {
-    return <RowHeaderCell2 index={rowIndex} name={`${rowIndex + 1}`} />;
+    return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`} />;
 }

@@ -18,15 +18,15 @@ import * as React from "react";
 import { FileInput, FormGroup, H5, InputGroup, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-interface IFileInputExampleState {
+interface FileInputExampleState {
     buttonText?: string;
     text?: string;
     large?: boolean;
     small?: boolean;
 }
 
-export class FileInputExample extends React.PureComponent<ExampleProps, IFileInputExampleState> {
-    public state: IFileInputExampleState = {
+export class FileInputExample extends React.PureComponent<ExampleProps, FileInputExampleState> {
+    public state: FileInputExampleState = {
         large: false,
         small: false,
     };
