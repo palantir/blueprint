@@ -198,8 +198,6 @@ export const FORM_HELPER_TEXT = `${NS}-form-helper-text`;
 export const FORM_GROUP_SUB_LABEL = `${NS}-form-group-sub-label`;
 
 export const MENU = `${NS}-menu`;
-export const MENU_NO_PADDING = `${MENU}-no-padding`;
-export const MENU_SECTION = `${MENU}-section`;
 export const MENU_ITEM = `${MENU}-item`;
 export const MENU_ITEM_IS_SELECTABLE = `${MENU_ITEM}-is-selectable`;
 export const MENU_ITEM_SELECTED_ICON = `${MENU_ITEM}-selected-icon`;

@@ -61,7 +61,6 @@ export { Icon, IconName, IconProps, IconSize } from "./icon/icon";
 export { Menu, MenuProps } from "./menu/menu";
 export { MenuDivider, MenuDividerProps } from "./menu/menuDivider";
 export { MenuItem, MenuItemProps } from "./menu/menuItem";
-export { MenuSection, MenuSectionProps } from "./menu/menuSection";
 export { Navbar, NavbarProps } from "./navbar/navbar";
 export { NavbarDivider, NavbarDividerProps } from "./navbar/navbarDivider";
 export { NavbarGroup, NavbarGroupProps } from "./navbar/navbarGroup";
