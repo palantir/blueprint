@@ -65,7 +65,13 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
             if (!props.modifiers.matchesPredicate) {
                 return null;
             }
-            return <MenuItem {...getFilmItemProps(film, props)} selected={film === selectedFilm} />;
+            return (
+                <MenuItem
+                    {...getFilmItemProps(film, props)}
+                    roleStructure="listoption"
+                    selected={film === selectedFilm}
+                />
+            );
         },
         [selectedFilm],
     );

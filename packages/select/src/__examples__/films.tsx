@@ -150,13 +150,12 @@ export function getFilmItemProps(
         onClick: handleClick,
         onFocus: handleFocus,
         ref,
-        roleStructure: "listoption",
         text: highlightText(`${film.rank}. ${film.title}`, query),
     };
 }
 
 /**
- * Simple film item renderer _without_ support for "selected" appearance.
+ * Simple film item renderer for "menu" containers. Does not support "selected" appearance.
  */
 export const renderFilm: ItemRenderer<Film> = (film, props) => {
     if (!props.modifiers.matchesPredicate) {

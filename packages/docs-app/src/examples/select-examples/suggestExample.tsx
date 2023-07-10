@@ -18,16 +18,16 @@ import * as React from "react";
 
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { Suggest } from "@blueprintjs/select";
+import { ItemRenderer, Suggest } from "@blueprintjs/select";
 import {
     areFilmsEqual,
     createFilm,
     Film,
     filterFilm,
+    getFilmItemProps,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
     renderCreateFilmMenuItem,
-    renderFilm,
     TOP_100_FILMS,
 } from "@blueprintjs/select/examples";
 
@@ -37,7 +37,6 @@ export interface SuggestExampleState {
     createdItems: Film[];
     disabled: boolean;
     fill: boolean;
-    film: Film;
     items: Film[];
     matchTargetWidth: boolean;
     minimal: boolean;
@@ -45,6 +44,7 @@ export interface SuggestExampleState {
     resetOnClose: boolean;
     resetOnQuery: boolean;
     resetOnSelect: boolean;
+    selectedFilm: Film;
 }
 
 export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExampleState> {
@@ -54,7 +54,6 @@ export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExa
         createdItems: [],
         disabled: false,
         fill: false,
-        film: TOP_100_FILMS[0],
         items: [...TOP_100_FILMS],
         matchTargetWidth: false,
         minimal: true,
@@ -62,6 +61,7 @@ export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExa
         resetOnClose: false,
         resetOnQuery: true,
         resetOnSelect: false,
+        selectedFilm: TOP_100_FILMS[0],
     };
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
@@ -85,7 +85,7 @@ export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExa
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
     public render() {
-        const { allowCreate, film, matchTargetWidth, minimal, ...flags } = this.state;
+        const { allowCreate, selectedFilm, matchTargetWidth, minimal, ...flags } = this.state;
 
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
         const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmMenuItem : null;
@@ -100,7 +100,7 @@ export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExa
                     items={this.state.items}
                     itemsEqual={areFilmsEqual}
                     itemPredicate={filterFilm}
-                    itemRenderer={renderFilm}
+                    itemRenderer={this.renderFilmItem}
                     noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
                     onItemSelect={this.handleValueChange}
                     popoverProps={{ matchTargetWidth, minimal }}
@@ -161,6 +161,19 @@ export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExa
         );
     }
 
+    private renderFilmItem: ItemRenderer<Film> = (film, props) => {
+        if (!props.modifiers.matchesPredicate) {
+            return null;
+        }
+        return (
+            <MenuItem
+                {...getFilmItemProps(film, props)}
+                roleStructure="listoption"
+                selected={film === this.state.selectedFilm}
+            />
+        );
+    };
+
     private renderInputValue = (film: Film) => film.title;
 
     private handleValueChange = (film: Film) => {
@@ -168,7 +181,7 @@ export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExa
         const { createdItems, items } = maybeDeleteCreatedFilmFromArrays(
             this.state.items,
             this.state.createdItems,
-            this.state.film,
+            this.state.selectedFilm,
         );
         // add the new film to the list if it is newly created
         const { createdItems: nextCreatedItems, items: nextItems } = maybeAddCreatedFilmToArrays(
@@ -176,7 +189,7 @@ export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExa
             createdItems,
             film,
         );
-        this.setState({ createdItems: nextCreatedItems, film, items: nextItems });
+        this.setState({ createdItems: nextCreatedItems, selectedFilm: film, items: nextItems });
     };
 
     private handleSwitchChange(prop: keyof SuggestExampleState) {
