@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Classes, H5, Intent, Section, SectionContent, Switch, TabProps, Text } from "@blueprintjs/core";
+import { Button, Classes, H5, Intent, Section, SectionContent, Switch, Text } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
@@ -26,7 +26,6 @@ export interface SectionExampleState {
     hasRightElement: boolean;
     hasMultipleSectionContent: boolean;
     isCompact: boolean;
-    showTabs: boolean;
     collapsible: boolean;
 }
 
@@ -38,19 +37,11 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         hasMultipleSectionContent: false,
         hasRightElement: true,
         isCompact: false,
-        showTabs: false,
     };
 
     public render() {
-        const {
-            collapsible,
-            hasDescription,
-            hasIcon,
-            hasRightElement,
-            hasMultipleSectionContent,
-            showTabs,
-            isCompact,
-        } = this.state;
+        const { collapsible, hasDescription, hasIcon, hasRightElement, hasMultipleSectionContent, isCompact } =
+            this.state;
 
         const options = (
             <>
@@ -59,13 +50,11 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                 <Switch checked={hasIcon} label="Icon" onChange={this.handleIconChange} />
                 <Switch checked={hasDescription} label="Description" onChange={this.handleDescriptionChange} />
                 <Switch checked={hasRightElement} label="Right element" onChange={this.handleRightElementChange} />
-                <Switch checked={showTabs} label="Tabs" onChange={this.handleShowTabsChange} />
                 <Switch checked={collapsible} label="Collapsible" onChange={this.handleCollapsibleChange} />
 
                 <H5>Example</H5>
                 <Switch
                     checked={hasMultipleSectionContent}
-                    disabled={showTabs}
                     label="Multiple section content"
                     onChange={this.handleMultipleSectionContentChange}
                 />
@@ -95,19 +84,6 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
             </div>
         );
 
-        const tabDefinitions: TabProps[] = [
-            {
-                id: "description",
-                panel: <SectionContent>{descriptionContent}</SectionContent>,
-                title: "Description",
-            },
-            {
-                id: "metadata",
-                panel: <SectionContent>{metadataContent}</SectionContent>,
-                title: "Metadata",
-            },
-        ];
-
         return (
             <Example options={options} {...this.props}>
                 <Section
@@ -122,7 +98,6 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                             </Button>
                         ) : undefined
                     }
-                    tabDefinitions={showTabs ? tabDefinitions : undefined}
                     collapsible={collapsible}
                 >
                     <SectionContent>{descriptionContent}</SectionContent>
@@ -143,8 +118,6 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
 
     private handleMultipleSectionContentChange = () =>
         this.setState({ hasMultipleSectionContent: !this.state.hasMultipleSectionContent });
-
-    private handleShowTabsChange = () => this.setState({ showTabs: !this.state.showTabs });
 
     private handleCollapsibleChange = () => this.setState({ collapsible: !this.state.collapsible });
 }

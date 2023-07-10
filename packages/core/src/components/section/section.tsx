@@ -23,11 +23,8 @@ import { Classes, Elevation } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, MaybeElement, Props } from "../../common/props";
 import { Card } from "../card/card";
 import { Collapse } from "../collapse/collapse";
-import { Divider } from "../divider/divider";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
-import { Tab, TabId, TabProps } from "../tabs/tab";
-import { Tabs, TabsProps } from "../tabs/tabs";
 
 export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.RefAttributes<HTMLDivElement> {
     /**
@@ -69,17 +66,6 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
     subtitle?: JSX.Element | string;
 
     /**
-     * Use tabs to define the content. If enabled, children will be ignored.
-     */
-    tabDefinitions?: TabProps[];
-
-    /**
-     * Subset of props to forward to the `<Tabs>` component.
-     * Note that tabs will only be rendered if `tabDefinitions` is provided.
-     */
-    tabsProps?: Omit<TabsProps, "vertical" | "children" | "large" | "fill" | "id">;
-
-    /**
      * Title of the section.
      * Note that the header will only be rendered if `title` is provided.
      */
@@ -101,15 +87,10 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         icon,
         rightElement,
         subtitle,
-        tabDefinitions,
-        tabsProps,
         title,
         ...cardProps
     } = props;
     const classes = classNames(Classes.SECTION, { [Classes.COMPACT]: compact }, className);
-
-    const controlledSelectedTabId = tabsProps?.selectedTabId;
-    const [selectedTabId, setSelectedTabId] = React.useState<TabId | undefined>(tabsProps?.defaultSelectedTabId);
 
     const [collapsed, setCollapsed] = React.useState<boolean>(collapsedByDefault ?? false);
     const toggleCollapsed = React.useCallback(() => setCollapsed(!collapsed), [collapsed]);
@@ -120,11 +101,6 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
 
         return true;
     }, [collapsible, collapsed]);
-
-    const maybeActiveTabPanel: JSX.Element | undefined = tabDefinitions?.find(tab =>
-        controlledSelectedTabId != null ? tab.id === controlledSelectedTabId : tab.id === selectedTabId,
-    )?.panel;
-    const content = maybeActiveTabPanel ?? children;
 
     const isHeaderLeftContainerVisible = title != null || icon != null || subtitle != null;
     const isHeaderRightContainerVisible = rightElement != null || collapsible;
@@ -156,28 +132,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                                 )}
                             </div>
                         </div>
-
-                        {tabDefinitions && isHeaderRightContainerVisible && (
-                            <Divider className={Classes.SECTION_HEADER_DIVIDER} />
-                        )}
                     </>
-                )}
-
-                {tabDefinitions && (
-                    <div className={Classes.SECTION_HEADER_TABS}>
-                        <Tabs
-                            selectedTabId={selectedTabId}
-                            onChange={setSelectedTabId}
-                            fill={true}
-                            // use a key to force render & re-compute available height when the 'compact' prop changes
-                            key={`section-header-tabs-${compact}`}
-                            {...tabsProps}
-                        >
-                            {tabDefinitions.map(tabDefinition => (
-                                <Tab key={tabDefinition.id} {...tabDefinition} panel={undefined} />
-                            ))}
-                        </Tabs>
-                    </div>
                 )}
 
                 {isHeaderRightContainerVisible && (
@@ -193,7 +148,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                 )}
             </div>
 
-            {collapsible ? <Collapse isOpen={!collapsed}>{content}</Collapse> : content}
+            {collapsible ? <Collapse isOpen={!collapsed}>{children}</Collapse> : children}
         </Card>
     );
 });
