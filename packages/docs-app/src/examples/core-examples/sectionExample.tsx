@@ -58,7 +58,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                 <Switch checked={isCompact} label="Compact" onChange={this.handleSmallChange} />
                 <Switch checked={hasIcon} label="Icon" onChange={this.handleIconChange} />
                 <Switch checked={hasDescription} label="Description" onChange={this.handleDescriptionChange} />
-                <Switch checked={hasRightElement} label="Right item" onChange={this.handleRightItemChange} />
+                <Switch checked={hasRightElement} label="Right element" onChange={this.handleRightElementChange} />
                 <Switch checked={showTabs} label="Tabs" onChange={this.handleShowTabsChange} />
                 <Switch checked={collapsible} label="Collapsible" onChange={this.handleCollapsibleChange} />
 
@@ -67,7 +67,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                     checked={hasMultipleSectionContent}
                     disabled={showTabs}
                     label="Multiple section content"
-                    onChange={this.handleMultpleSectionContentChange}
+                    onChange={this.handleMultipleSectionContentChange}
                 />
             </>
         );
@@ -139,9 +139,9 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
 
     private handleDescriptionChange = () => this.setState({ hasDescription: !this.state.hasDescription });
 
-    private handleRightItemChange = () => this.setState({ hasRightElement: !this.state.hasRightElement });
+    private handleRightElementChange = () => this.setState({ hasRightElement: !this.state.hasRightElement });
 
-    private handleMultpleSectionContentChange = () =>
+    private handleMultipleSectionContentChange = () =>
         this.setState({ hasMultipleSectionContent: !this.state.hasMultipleSectionContent });
 
     private handleShowTabsChange = () => this.setState({ showTabs: !this.state.showTabs });
