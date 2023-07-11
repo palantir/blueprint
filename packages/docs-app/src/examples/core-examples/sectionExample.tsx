@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import dedent from "dedent";
 import * as React from "react";
 
-import { Button, Classes, H5, Intent, Section, SectionPanel, Switch, Text } from "@blueprintjs/core";
+import { Button, Classes, EditableText, H5, Section, SectionPanel, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
@@ -27,8 +28,15 @@ export interface SectionExampleState {
     hasMultiplePanels: boolean;
     hasRightElement: boolean;
     isCompact: boolean;
-    panelIsPadded: boolean;
+    isPanelPadded: boolean;
 }
+
+const BASIL_DESCRIPTION_TEXT = dedent`
+    Ocimum basilicum, also called great basil, is a culinary herb of the family Lamiaceae (mints). It \
+    is a tender plant, and is used in cuisines worldwide. In Western cuisine, the generic term "basil" \
+    refers to the variety also known as sweet basil or Genovese basil. Basil is native to tropical regions \
+    from Central Africa to Southeast Asia.
+`;
 
 export class SectionExample extends React.PureComponent<ExampleProps, SectionExampleState> {
     public state: SectionExampleState = {
@@ -38,11 +46,13 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         hasMultiplePanels: false,
         hasRightElement: true,
         isCompact: false,
-        panelIsPadded: true,
+        isPanelPadded: true,
     };
 
+    private editableTextRef = React.createRef<HTMLDivElement>();
+
     public render() {
-        const { collapsible, hasDescription, hasIcon, hasRightElement, hasMultiplePanels, isCompact, panelIsPadded } =
+        const { collapsible, hasDescription, hasIcon, hasRightElement, hasMultiplePanels, isCompact, isPanelPadded } =
             this.state;
 
         const options = (
@@ -62,17 +72,17 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                 />
 
                 <H5>SectionPanel Props</H5>
-                <Switch checked={panelIsPadded} label="Padded" onChange={this.togglePanelIsPadded} />
+                <Switch checked={isPanelPadded} label="Padded" onChange={this.togglePanelIsPadded} />
             </>
         );
 
         const descriptionContent = (
-            <Text>
-                Basil; Ocimum basilicum, also called great basil, is a culinary herb of the family Lamiaceae (mints). It
-                is a tender plant, and is used in cuisines worldwide. In Western cuisine, the generic term "basil"
-                refers to the variety also known as sweet basil or Genovese basil. Basil is native to tropical regions
-                from Central Africa to Southeast Asia.
-            </Text>
+            <EditableText
+                defaultValue={BASIL_DESCRIPTION_TEXT}
+                disabled={!hasRightElement}
+                elementRef={this.editableTextRef}
+                multiline={true}
+            />
         );
 
         const metadataContent = (
@@ -98,16 +108,18 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                     icon={hasIcon ? IconNames.BOOK : undefined}
                     rightElement={
                         hasRightElement ? (
-                            <Button minimal={true} intent={Intent.PRIMARY}>
-                                Edit
-                            </Button>
+                            <Button
+                                minimal={true}
+                                intent="primary"
+                                onClick={this.handleEditContent}
+                                text="Edit description"
+                            />
                         ) : undefined
                     }
                     collapsible={collapsible}
                 >
-                    <SectionPanel padded={panelIsPadded}>{descriptionContent}</SectionPanel>
-
-                    {hasMultiplePanels && <SectionPanel padded={panelIsPadded}>{metadataContent}</SectionPanel>}
+                    <SectionPanel padded={isPanelPadded}>{descriptionContent}</SectionPanel>
+                    {hasMultiplePanels && <SectionPanel padded={isPanelPadded}>{metadataContent}</SectionPanel>}
                 </Section>
             </Example>
         );
@@ -125,5 +137,11 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
 
     private toggleCollapsible = () => this.setState({ collapsible: !this.state.collapsible });
 
-    private togglePanelIsPadded = () => this.setState({ panelIsPadded: !this.state.panelIsPadded });
+    private togglePanelIsPadded = () => this.setState({ isPanelPadded: !this.state.isPanelPadded });
+
+    private handleEditContent = (event: React.MouseEvent) => {
+        // prevent this event from toggling the collapse state
+        event.stopPropagation();
+        this.editableTextRef?.current?.focus();
+    };
 }
