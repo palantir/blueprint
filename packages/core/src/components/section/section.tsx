@@ -22,7 +22,7 @@ import { ChevronDown, ChevronUp, IconName } from "@blueprintjs/icons";
 import { Classes, Elevation } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, MaybeElement, Props } from "../../common/props";
 import { Card } from "../card/card";
-import { Collapse } from "../collapse/collapse";
+import { Collapse, CollapseProps } from "../collapse/collapse";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 
@@ -35,11 +35,14 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
     collapsible?: boolean;
 
     /**
-     * If `collapsible={true}`, this sets the default open state of the `<Collapse>` contents.
+     * Subset of props to forward to the underlying {@link Collapse} component, with the addition of a
+     * `defaultIsOpen` option which sets the default open state of the component.
      *
-     * @default false
+     * This prop has no effect if `collapsible={false}`.
      */
-    collapsedByDefault?: boolean;
+    collapseProps?: Pick<CollapseProps, "className" | "keepChildrenMounted" | "transitionDuration"> & {
+        defaultIsOpen?: boolean;
+    };
 
     /**
      * Whether this section should use compact styles.
@@ -81,7 +84,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
     const {
         children,
         className,
-        collapsedByDefault,
+        collapseProps,
         collapsible,
         compact,
         icon,
@@ -92,7 +95,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
     } = props;
     const classes = classNames(Classes.SECTION, { [Classes.COMPACT]: compact }, className);
 
-    const [collapsed, setCollapsed] = React.useState<boolean>(collapsedByDefault ?? false);
+    const [collapsed, setCollapsed] = React.useState<boolean>(collapseProps?.defaultIsOpen ?? false);
     const toggleCollapsed = React.useCallback(() => setCollapsed(!collapsed), [collapsed]);
     const showContent = React.useMemo(() => {
         if (collapsible && collapsed) {
@@ -148,12 +151,17 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                 )}
             </div>
 
-            {collapsible ? <Collapse isOpen={!collapsed}>{children}</Collapse> : children}
+            {collapsible ? (
+                <Collapse {...collapseProps} isOpen={!collapsed}>
+                    {children}
+                </Collapse>
+            ) : (
+                children
+            )}
         </Card>
     );
 });
 Section.defaultProps = {
-    collapsedByDefault: false,
     compact: false,
 };
 Section.displayName = `${DISPLAYNAME_PREFIX}.Section`;

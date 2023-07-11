@@ -52,7 +52,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                 <Switch checked={hasRightElement} label="Right element" onChange={this.handleRightElementChange} />
                 <Switch checked={collapsible} label="Collapsible" onChange={this.handleCollapsibleChange} />
 
-                <H5>Example</H5>
+                <H5>Children</H5>
                 <Switch
                     checked={hasMultipleSectionContent}
                     label="Multiple section content"
@@ -71,14 +71,14 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         );
 
         const metadataContent = (
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="metadata-panel">
+                <div>
                     <span className={Classes.TEXT_MUTED}>Kingdom</span>Plantae
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div>
                     <span className={Classes.TEXT_MUTED}>Clade</span>Tracheophytes
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div>
                     <span className={Classes.TEXT_MUTED}>Family</span>Lamiaceae
                 </div>
             </div>
