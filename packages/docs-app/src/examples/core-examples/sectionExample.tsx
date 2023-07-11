@@ -16,17 +16,18 @@
 
 import * as React from "react";
 
-import { Button, Classes, H5, Intent, Section, SectionContent, Switch, Text } from "@blueprintjs/core";
+import { Button, Classes, H5, Intent, Section, SectionPanel, Switch, Text } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 export interface SectionExampleState {
-    hasIcon: boolean;
-    hasDescription: boolean;
-    hasRightElement: boolean;
-    hasMultipleSectionContent: boolean;
-    isCompact: boolean;
     collapsible: boolean;
+    hasDescription: boolean;
+    hasIcon: boolean;
+    hasMultiplePanels: boolean;
+    hasRightElement: boolean;
+    isCompact: boolean;
+    panelIsPadded: boolean;
 }
 
 export class SectionExample extends React.PureComponent<ExampleProps, SectionExampleState> {
@@ -34,30 +35,34 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         collapsible: false,
         hasDescription: false,
         hasIcon: false,
-        hasMultipleSectionContent: false,
+        hasMultiplePanels: false,
         hasRightElement: true,
         isCompact: false,
+        panelIsPadded: true,
     };
 
     public render() {
-        const { collapsible, hasDescription, hasIcon, hasRightElement, hasMultipleSectionContent, isCompact } =
+        const { collapsible, hasDescription, hasIcon, hasRightElement, hasMultiplePanels, isCompact, panelIsPadded } =
             this.state;
 
         const options = (
             <>
-                <H5>Props</H5>
-                <Switch checked={isCompact} label="Compact" onChange={this.handleSmallChange} />
-                <Switch checked={hasIcon} label="Icon" onChange={this.handleIconChange} />
-                <Switch checked={hasDescription} label="Description" onChange={this.handleDescriptionChange} />
-                <Switch checked={hasRightElement} label="Right element" onChange={this.handleRightElementChange} />
-                <Switch checked={collapsible} label="Collapsible" onChange={this.handleCollapsibleChange} />
+                <H5>Section Props</H5>
+                <Switch checked={isCompact} label="Compact" onChange={this.toggleIsCompact} />
+                <Switch checked={hasIcon} label="Icon" onChange={this.toggleHasIcon} />
+                <Switch checked={hasDescription} label="Description" onChange={this.toggleHasDescription} />
+                <Switch checked={hasRightElement} label="Right element" onChange={this.toggleHasRightElement} />
+                <Switch checked={collapsible} label="Collapsible" onChange={this.toggleCollapsible} />
 
                 <H5>Children</H5>
                 <Switch
-                    checked={hasMultipleSectionContent}
-                    label="Multiple section content"
-                    onChange={this.handleMultipleSectionContentChange}
+                    checked={hasMultiplePanels}
+                    label="Multiple section panels"
+                    onChange={this.toggleMultiplePanels}
                 />
+
+                <H5>SectionPanel Props</H5>
+                <Switch checked={panelIsPadded} label="Padded" onChange={this.togglePanelIsPadded} />
             </>
         );
 
@@ -100,24 +105,25 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                     }
                     collapsible={collapsible}
                 >
-                    <SectionContent>{descriptionContent}</SectionContent>
+                    <SectionPanel padded={panelIsPadded}>{descriptionContent}</SectionPanel>
 
-                    {hasMultipleSectionContent && <SectionContent>{metadataContent}</SectionContent>}
+                    {hasMultiplePanels && <SectionPanel padded={panelIsPadded}>{metadataContent}</SectionPanel>}
                 </Section>
             </Example>
         );
     }
 
-    private handleSmallChange = () => this.setState({ isCompact: !this.state.isCompact });
+    private toggleIsCompact = () => this.setState({ isCompact: !this.state.isCompact });
 
-    private handleIconChange = () => this.setState({ hasIcon: !this.state.hasIcon });
+    private toggleHasIcon = () => this.setState({ hasIcon: !this.state.hasIcon });
 
-    private handleDescriptionChange = () => this.setState({ hasDescription: !this.state.hasDescription });
+    private toggleHasDescription = () => this.setState({ hasDescription: !this.state.hasDescription });
 
-    private handleRightElementChange = () => this.setState({ hasRightElement: !this.state.hasRightElement });
+    private toggleHasRightElement = () => this.setState({ hasRightElement: !this.state.hasRightElement });
 
-    private handleMultipleSectionContentChange = () =>
-        this.setState({ hasMultipleSectionContent: !this.state.hasMultipleSectionContent });
+    private toggleMultiplePanels = () => this.setState({ hasMultiplePanels: !this.state.hasMultiplePanels });
 
-    private handleCollapsibleChange = () => this.setState({ collapsible: !this.state.collapsible });
+    private toggleCollapsible = () => this.setState({ collapsible: !this.state.collapsible });
+
+    private togglePanelIsPadded = () => this.setState({ panelIsPadded: !this.state.panelIsPadded });
 }

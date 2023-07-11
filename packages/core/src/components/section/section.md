@@ -11,15 +11,15 @@ The __Section__ component can be used to contain, structure, and create hierarch
 
 @interface SectionProps
 
-@## SectionContent
+@## SectionPanel
 
-Multiple __SectionContent__ child components can be added under one __Section__, they will be stacked. This can be used to further group information.
+Multiple __SectionPanel__ child components can be added under one __Section__, they will be stacked vertically. This layout can be used to further group information.
 
 ```tsx
 <Section>
-    <SectionContent>{/* ... */}</SectionContent>
-    <SectionContent>{/* ... */}</SectionContent>
+    <SectionPanel>{/* ... */}</SectionPanel>
+    <SectionPanel>{/* ... */}</SectionPanel>
 </Section>
 ```
 
-@interface SectionContentProps
+@interface SectionPanelProps
