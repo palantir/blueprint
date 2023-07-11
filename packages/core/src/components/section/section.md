@@ -11,7 +11,7 @@ The __Section__ component can be used to contain, structure, and create hierarch
 
 @interface SectionProps
 
-@## SectionPanel
+@## Section panel
 
 Multiple __SectionPanel__ child components can be added under one __Section__, they will be stacked vertically. This layout can be used to further group information.
 

@@ -32,7 +32,7 @@ export interface SectionPanelProps extends Props, HTMLDivProps, React.RefAttribu
 /**
  * Section panel component.
  *
- * @see https://blueprintjs.com/docs/#core/components/section-panel
+ * @see https://blueprintjs.com/docs/#core/components/section.section-panel
  */
 export const SectionPanel: React.FC<SectionPanelProps> = React.forwardRef((props, ref) => {
     const { className, children, padded, ...htmlProps } = props;
