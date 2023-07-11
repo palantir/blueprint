@@ -47,6 +47,7 @@ export const LARGE = `${NS}-large`;
 export const LOADING = `${NS}-loading`;
 export const MINIMAL = `${NS}-minimal`;
 export const OUTLINED = `${NS}-outlined`;
+export const PADDED = `${NS}-padded`;
 export const MULTILINE = `${NS}-multiline`;
 export const READ_ONLY = `${NS}-read-only`;
 export const ROUND = `${NS}-round`;
@@ -71,9 +72,6 @@ export const INTENT_DANGER = intentClass(Intent.DANGER)!;
 
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
 export const FOCUS_STYLE_MANAGER_IGNORE = `${NS}-focus-style-manager-ignore`;
-
-export const PADDED = `${NS}-padded`;
-export const COLLAPSED = `${NS}-collapsed`;
 
 // text utilities
 export const UI_TEXT = `${NS}-ui-text`;
