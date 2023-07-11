@@ -36,7 +36,7 @@ export interface SectionPanelProps extends Props, HTMLDivProps, React.RefAttribu
  */
 export const SectionPanel: React.FC<SectionPanelProps> = React.forwardRef((props, ref) => {
     const { className, children, padded, ...htmlProps } = props;
-    const classes = classNames(Classes.SECTION_CONTENT, { [Classes.PADDED]: padded }, className);
+    const classes = classNames(Classes.SECTION_PANEL, { [Classes.PADDED]: padded }, className);
     return (
         <div className={classes} ref={ref} {...htmlProps}>
             {children}

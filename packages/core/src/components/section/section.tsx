@@ -93,31 +93,29 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         title,
         ...cardProps
     } = props;
-    const classes = classNames(Classes.SECTION, { [Classes.COMPACT]: compact }, className);
-
-    const [collapsed, setCollapsed] = React.useState<boolean>(collapseProps?.defaultIsOpen ?? false);
-    const toggleCollapsed = React.useCallback(() => setCollapsed(!collapsed), [collapsed]);
-    const showContent = React.useMemo(() => {
-        if (collapsible && collapsed) {
-            return false;
-        }
-
-        return true;
-    }, [collapsible, collapsed]);
+    const [isCollapsed, setIsCollapsed] = React.useState<boolean>(collapseProps?.defaultIsOpen ?? false);
+    const toggleIsCollapsed = React.useCallback(() => setIsCollapsed(!isCollapsed), [isCollapsed]);
 
     const isHeaderLeftContainerVisible = title != null || icon != null || subtitle != null;
     const isHeaderRightContainerVisible = rightElement != null || collapsible;
 
     return (
-        <Card elevation={Elevation.ZERO} className={classes} ref={ref} {...cardProps}>
+        <Card
+            elevation={Elevation.ZERO}
+            className={classNames(className, Classes.SECTION, {
+                [Classes.COMPACT]: compact,
+                [Classes.SECTION_COLLAPSED]: collapsible && isCollapsed,
+            })}
+            ref={ref}
+            {...cardProps}
+        >
             <div
                 role={collapsible ? "button" : undefined}
-                aria-pressed={collapsible ? collapsed : undefined}
+                aria-pressed={collapsible ? isCollapsed : undefined}
                 className={classNames(Classes.SECTION_HEADER, {
                     [Classes.INTERACTIVE]: collapsible,
-                    [Classes.COLLAPSED]: !showContent,
                 })}
-                onClick={collapsible != null ? toggleCollapsed : undefined}
+                onClick={collapsible != null ? toggleIsCollapsed : undefined}
             >
                 {isHeaderLeftContainerVisible && (
                     <>
@@ -142,7 +140,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                     <div className={Classes.SECTION_HEADER_RIGHT}>
                         {rightElement}
                         {collapsible &&
-                            (collapsed ? (
+                            (isCollapsed ? (
                                 <ChevronDown className={Classes.TEXT_MUTED} />
                             ) : (
                                 <ChevronUp className={Classes.TEXT_MUTED} />
@@ -152,7 +150,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
             </div>
 
             {collapsible ? (
-                <Collapse {...collapseProps} isOpen={!collapsed}>
+                <Collapse {...collapseProps} isOpen={!isCollapsed}>
                     {children}
                 </Collapse>
             ) : (

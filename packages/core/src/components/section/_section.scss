@@ -1,15 +1,15 @@
 @use "sass:math";
 @import "../../common/variables";
 
-$section-default-min-height: $pt-grid-size * 5;
-$section-default-vertical-padding: $pt-grid-size;
-$section-default-horizontal-padding: $pt-grid-size * 2;
-$section-default-content-padding: $pt-grid-size * 2;
+$section-min-height: $pt-grid-size * 5 !default;
+$section-vertical-padding: $pt-grid-size !default;
+$section-horizontal-padding: $pt-grid-size * 2 !default;
+$section-panel-padding: $pt-grid-size * 2 !default;
 
-$section-compact-min-height: $pt-grid-size * 4;
-$section-compact-vertical-padding: 7px;
-$section-compact-horizontal-padding: 15px;
-$section-compact-content-padding: $pt-grid-size * 1.5;
+$section-compact-min-height: $pt-grid-size * 4 !default;
+$section-compact-vertical-padding: 7px !default;
+$section-compact-horizontal-padding: 15px !default;
+$section-compact-panel-padding: $pt-grid-size * 1.5 !default;
 
 .#{$ns}-section {
   overflow: hidden;
@@ -22,8 +22,8 @@ $section-compact-content-padding: $pt-grid-size * 1.5;
     display: flex;
     gap: $pt-grid-size * 2;
     justify-content: space-between;
-    min-height: $section-default-min-height;
-    padding: 0 $section-default-horizontal-padding;
+    min-height: $section-min-height;
+    padding: 0 $section-horizontal-padding;
     position: relative;
     width: 100%;
 
@@ -36,7 +36,7 @@ $section-compact-content-padding: $pt-grid-size * 1.5;
       align-items: center;
       display: flex;
       gap: $pt-grid-size;
-      padding: $section-default-vertical-padding 0;
+      padding: $section-vertical-padding 0;
     }
 
     &-title {
@@ -72,15 +72,11 @@ $section-compact-content-padding: $pt-grid-size * 1.5;
         }
       }
     }
-
-    &.#{$ns}-collapsed {
-      border: none;
-    }
   }
 
-  &-content {
+  &-panel {
     &.#{$ns}-padded {
-      padding: $section-default-content-padding;
+      padding: $section-panel-padding;
     }
 
     &:not(:last-child) {
@@ -90,6 +86,12 @@ $section-compact-content-padding: $pt-grid-size * 1.5;
       .#{$ns}-dark & {
         border-color: $pt-dark-divider-white;
       }
+    }
+  }
+
+  &.#{$ns}-section-collapsed {
+    .#{$ns}-section-header {
+      border: none;
     }
   }
 
@@ -103,8 +105,8 @@ $section-compact-content-padding: $pt-grid-size * 1.5;
       }
     }
 
-    .#{$ns}-section-content.#{$ns}-padded {
-      padding: $section-compact-content-padding;
+    .#{$ns}-section-panel.#{$ns}-padded {
+      padding: $section-compact-panel-padding;
     }
   }
 }
