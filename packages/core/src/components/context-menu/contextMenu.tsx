@@ -60,7 +60,7 @@ export interface ContextMenuChildrenProps {
 }
 
 export interface ContextMenuProps
-    extends Omit<React.HTMLAttributes<HTMLElement>, "children" | "className" | "onContextMenu">,
+    extends Omit<React.HTMLAttributes<HTMLElement>, "children" | "className" | "content" | "onContextMenu">,
         React.RefAttributes<any>,
         Props {
     /**
