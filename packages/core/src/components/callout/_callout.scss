@@ -1,7 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@import "../../common/variables-extended";
 
 /*
 Callout
@@ -63,12 +63,12 @@ $callout-header-margin-top: $pt-grid-size * 0.2;
 
   .#{$ns}-heading {
     line-height: $pt-icon-size-standard;
-    margin-bottom: $pt-grid-size * 0.5;
+    margin-bottom: 0;
     margin-top: $callout-header-margin-top;
+  }
 
-    &:last-child {
-      margin-bottom: 0;
-    }
+  .#{$ns}-callout-body {
+    margin-top: $half-grid-size;
   }
 
   .#{$ns}-dark & {
