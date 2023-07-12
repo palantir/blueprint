@@ -200,6 +200,8 @@ export const FORM_GROUP_SUB_LABEL = `${NS}-form-group-sub-label`;
 
 export const MENU = `${NS}-menu`;
 export const MENU_ITEM = `${MENU}-item`;
+export const MENU_ITEM_IS_SELECTABLE = `${MENU_ITEM}-is-selectable`;
+export const MENU_ITEM_SELECTED_ICON = `${MENU_ITEM}-selected-icon`;
 export const MENU_ITEM_ICON = `${MENU_ITEM}-icon`;
 export const MENU_ITEM_LABEL = `${MENU_ITEM}-label`;
 export const MENU_SUBMENU = `${NS}-submenu`;

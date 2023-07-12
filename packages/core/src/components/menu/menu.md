@@ -90,11 +90,21 @@ there is not enough room to the right.
 </Menu>
 ```
 
-@## CSS
+@## CSS API
 
-Menus can be constructed manually using the HTML markup and `@ns-menu-*` classes below. However, you
-should use the menu [React components](#core/components/menu.javscript-api) instead wherever possible,
-as they abstract away the tedious parts of implementing a menu.
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h5 class="@ns-heading">
+
+Deprecated API: use [`<Menu>` and `<MenuItem>`](#core/components/menu)
+
+</h5>
+
+CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
+often fall out of sync as the design system is updated. You should use the React component APIs instead.
+
+</div>
+
+Menus can be constructed manually using the following HTML markup and `@ns-menu-*` classes (available in JS/TS as `Classes.MENU_*`):
 
 * Begin with a `ul.@ns-menu`. Each `li` child denotes a single entry in the menu.
 

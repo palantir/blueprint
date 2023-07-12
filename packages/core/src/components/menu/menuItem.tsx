@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { CaretRight } from "@blueprintjs/icons";
+import { CaretRight, SmallTick } from "@blueprintjs/icons";
 
 import { Classes } from "../../common";
 import { ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
@@ -84,29 +84,25 @@ export interface MenuItemProps
      *
      * If `menuitem`, role structure becomes:
      *
-     * `<li role="none"`
-     *     `<a role="menuitem"`
+     * `<li role="none"><a role="menuitem" /></li>`
      *
      * which is proper role structure for a `<ul role="menu"` parent (this is the default `role` of a `Menu`).
      *
      * If `listoption`, role structure becomes:
      *
-     * `<li role="option"`
-     *     `<a role=undefined`
+     * `<li role="option"><a role={undefined} /></li>`
      *
      * which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
      *
      * If `listitem`, role structure becomes:
      *
-     * `<li role=undefined`
-     *     `<a role=undefined`
+     * `<li role={undefined}><a role={undefined} /></li>`
      *
      * which can be used if this item is within a basic `<ul/>` (or `role="list"`) parent.
      *
      * If `none`, role structure becomes:
      *
-     * `<li role="none"`
-     *     `<a role=undefined`
+     * `<li role="none"><a role={undefined} /></li>`
      *
      * which can be used if wrapping this item in a custom `<li>` parent.
      *
@@ -180,6 +176,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
         className,
         children,
         disabled,
+        icon,
         intent,
         labelClassName,
         labelElement,
@@ -196,36 +193,34 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
         ...htmlProps
     } = props;
 
-    const [liRole, targetRole, icon, ariaSelected] =
+    const [liRole, targetRole, ariaSelected] =
         roleStructure === "listoption" // "listoption": parent has listbox role, or is a <select>
             ? [
                   "option",
                   undefined, // target should have no role
-                  props.icon ?? (selected === undefined ? undefined : selected ? "small-tick" : "blank"),
                   Boolean(selected), // aria-selected prop
               ]
             : roleStructure === "menuitem" // "menuitem": parent has menu role
             ? [
                   "none",
                   "menuitem",
-                  props.icon,
                   undefined, // don't set aria-selected prop
               ]
             : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
             ? [
                   "none",
                   undefined, // target should have no role
-                  props.icon,
                   undefined, // don't set aria-selected prop
               ]
             : // roleStructure === "listitem"
               [
                   undefined, // needs no role prop, li is listitem by default
                   undefined,
-                  props.icon,
                   undefined, // don't set aria-selected prop
               ];
 
+    const isSelectable = roleStructure === "listoption";
+    const isSelected = isSelectable && selected;
     const hasIcon = icon != null;
     const hasSubmenu = children != null;
 
@@ -238,7 +233,8 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
             [Classes.DISABLED]: disabled,
             // prevent popover from closing when clicking on submenu trigger or disabled item
             [Classes.POPOVER_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
-            [Classes.SELECTED]: active && intentClass === undefined,
+            [Classes.MENU_ITEM_IS_SELECTABLE]: isSelectable,
+            [Classes.SELECTED]: isSelected,
         },
         className,
     );
@@ -263,6 +259,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
             ...(disabled ? DISABLED_PROPS : {}),
             className: anchorClasses,
         },
+        isSelected ? <SmallTick className={Classes.MENU_ITEM_SELECTED_ICON} /> : undefined,
         hasIcon ? (
             // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
             // so that we always render this class
