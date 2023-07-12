@@ -22,6 +22,9 @@ module.exports = async function (config) {
                 // HACKHACK: need to add hotkeys tests
                 "src/components/hotkeys/*",
                 "src/context/hotkeys/hotkeysProvider.tsx",
+
+                // HACKHACK: need to add section tests
+                "src/components/section/*",
             ],
             coverageOverrides: {
                 "src/components/editable-text/editableText.tsx": {

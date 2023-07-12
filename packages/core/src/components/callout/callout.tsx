@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconName } from "@blueprintjs/icons";
+import { Error, IconName, InfoSign, Tick, WarningSign } from "@blueprintjs/icons";
 
 import {
     AbstractPureComponent,
@@ -73,42 +73,46 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
 
     public render() {
         const { className, children, icon, intent, title, ...htmlProps } = this.props;
-        const iconName = this.getIconName(icon, intent);
+        const iconElement = this.renderIcon(icon, intent);
         const classes = classNames(
             Classes.CALLOUT,
             Classes.intentClass(intent),
-            { [Classes.CALLOUT_ICON]: iconName != null },
+            { [Classes.CALLOUT_ICON]: iconElement != null },
             className,
         );
 
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && <Icon icon={iconName} aria-hidden={true} tabIndex={-1} />}
+                {iconElement}
                 {title && <H5>{title}</H5>}
                 {children}
             </div>
         );
     }
 
-    private getIconName(icon?: CalloutProps["icon"], intent?: Intent): IconName | MaybeElement {
+    private renderIcon(icon?: CalloutProps["icon"], intent?: Intent): IconName | MaybeElement {
         // 1. no icon
-        if (icon === null) {
+        if (icon === null || icon === false) {
             return undefined;
         }
-        // 2. defined iconName prop
+
+        const iconProps = { "aria-hidden": true, tabIndex: -1 };
+
+        // 2. icon specified by name or as a custom SVG element
         if (icon !== undefined) {
-            return icon;
+            return <Icon icon={icon} {...iconProps} />;
         }
-        // 3. default intent icon
+
+        // 3. icon specified by intent prop
         switch (intent) {
             case Intent.DANGER:
-                return "error";
+                return <Error {...iconProps} />;
             case Intent.PRIMARY:
-                return "info-sign";
+                return <InfoSign {...iconProps} />;
             case Intent.WARNING:
-                return "warning-sign";
+                return <WarningSign {...iconProps} />;
             case Intent.SUCCESS:
-                return "tick";
+                return <Tick {...iconProps} />;
             default:
                 return undefined;
         }

@@ -17,44 +17,62 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconName } from "@blueprintjs/icons";
+import { ChevronDown, ChevronUp, IconName } from "@blueprintjs/icons";
 
 import { Classes, Elevation } from "../../common";
-import { SECTION_HEADER } from "../../common/classes";
-import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
-import { Card, CardProps } from "../card/card";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, MaybeElement, Props } from "../../common/props";
+import { Card } from "../card/card";
+import { Collapse, CollapseProps } from "../collapse/collapse";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 
-export interface SectionProps
-    extends Props,
-        Omit<CardProps, "interactive" | "onClick" | "elevation">,
-        React.RefAttributes<HTMLDivElement> {
+export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.RefAttributes<HTMLDivElement> {
     /**
-     * Name of a Blueprint UI icon (or an icon element) to render in the
-     * section's header. Note that the header will only be rendered if `sectionTitle` is
-     * provided.
+     * Whether this section's contents should be collapsible.
+     *
+     * @default false
+     */
+    collapsible?: boolean;
+
+    /**
+     * Subset of props to forward to the underlying {@link Collapse} component, with the addition of a
+     * `defaultIsOpen` option which sets the default open state of the component.
+     *
+     * This prop has no effect if `collapsible={false}`.
+     */
+    collapseProps?: Pick<CollapseProps, "className" | "keepChildrenMounted" | "transitionDuration"> & {
+        defaultIsOpen?: boolean;
+    };
+
+    /**
+     * Whether this section should use compact styles.
+     *
+     * @default false
+     */
+    compact?: boolean;
+
+    /**
+     * Name of a Blueprint UI icon (or an icon element) to render in the section's header.
+     * Note that the header will only be rendered if `title` is provided.
      */
     icon?: IconName | MaybeElement;
 
     /**
-     * Title of the section.
+     * Element to render on the right side of the section header.
      */
-    sectionTitle?: JSX.Element | string;
+    rightElement?: JSX.Element;
 
     /**
      * Sub-title of the section.
-     * Note that the header will only be rendered if `sectionTitle` is provided.
+     * Note that the header will only be rendered if `title` is provided.
      */
     subtitle?: JSX.Element | string;
 
     /**
-     * Element to render on the right side of the section header
+     * Title of the section.
+     * Note that the header will only be rendered if `title` is provided.
      */
-    rightItem?: JSX.Element;
-
-    /** Whether this section should use small styles. */
-    small?: boolean;
+    title?: JSX.Element | string;
 }
 
 /**
@@ -63,30 +81,85 @@ export interface SectionProps
  * @see https://blueprintjs.com/docs/#core/components/section
  */
 export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => {
-    const { className, icon, sectionTitle, rightItem, subtitle, children, small, ...cardProps } = props;
-    const classes = classNames(Classes.SECTION, { [Classes.SMALL]: small }, className);
+    const {
+        children,
+        className,
+        collapseProps,
+        collapsible,
+        compact,
+        icon,
+        rightElement,
+        subtitle,
+        title,
+        ...cardProps
+    } = props;
+    const [isCollapsed, setIsCollapsed] = React.useState<boolean>(collapseProps?.defaultIsOpen ?? false);
+    const toggleIsCollapsed = React.useCallback(() => setIsCollapsed(!isCollapsed), [isCollapsed]);
+
+    const isHeaderLeftContainerVisible = title != null || icon != null || subtitle != null;
+    const isHeaderRightContainerVisible = rightElement != null || collapsible;
+
     return (
-        <Card elevation={Elevation.ZERO} className={classes} ref={ref} {...cardProps}>
-            <div className={SECTION_HEADER}>
-                <div className={Classes.SECTION_HEADER_LEFT}>
-                    {sectionTitle && icon && (
-                        <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />
-                    )}
-                    <div>
-                        {sectionTitle && <H6 className={Classes.SECTION_HEADER_TITLE}>{sectionTitle}</H6>}
-                        {sectionTitle && subtitle && (
-                            <div className={classNames(Classes.TEXT_MUTED, Classes.SECTION_HEADER_SUB_TITLE)}>
-                                {subtitle}
+        <Card
+            elevation={Elevation.ZERO}
+            className={classNames(className, Classes.SECTION, {
+                [Classes.COMPACT]: compact,
+                [Classes.SECTION_COLLAPSED]: collapsible && isCollapsed,
+            })}
+            ref={ref}
+            {...cardProps}
+        >
+            <div
+                role={collapsible ? "button" : undefined}
+                aria-pressed={collapsible ? isCollapsed : undefined}
+                className={classNames(Classes.SECTION_HEADER, {
+                    [Classes.INTERACTIVE]: collapsible,
+                })}
+                onClick={collapsible != null ? toggleIsCollapsed : undefined}
+            >
+                {isHeaderLeftContainerVisible && (
+                    <>
+                        <div className={Classes.SECTION_HEADER_LEFT}>
+                            {title && icon && (
+                                <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />
+                            )}
+
+                            <div>
+                                {title && <H6 className={Classes.SECTION_HEADER_TITLE}>{title}</H6>}
+                                {title && subtitle && (
+                                    <div className={classNames(Classes.TEXT_MUTED, Classes.SECTION_HEADER_SUB_TITLE)}>
+                                        {subtitle}
+                                    </div>
+                                )}
                             </div>
-                        )}
+                        </div>
+                    </>
+                )}
+
+                {isHeaderRightContainerVisible && (
+                    <div className={Classes.SECTION_HEADER_RIGHT}>
+                        {rightElement}
+                        {collapsible &&
+                            (isCollapsed ? (
+                                <ChevronDown className={Classes.TEXT_MUTED} />
+                            ) : (
+                                <ChevronUp className={Classes.TEXT_MUTED} />
+                            ))}
                     </div>
-                </div>
-                {rightItem && <div className={Classes.SECTION_HEADER_LEFT}>{rightItem}</div>}
+                )}
             </div>
 
-            {children}
+            {collapsible ? (
+                <Collapse {...collapseProps} isOpen={!isCollapsed}>
+                    {children}
+                </Collapse>
+            ) : (
+                children
+            )}
         </Card>
     );
 });
-Section.defaultProps = {};
+Section.defaultProps = {
+    compact: false,
+};
 Section.displayName = `${DISPLAYNAME_PREFIX}.Section`;

@@ -19,6 +19,8 @@ import * as React from "react";
 export interface PortalContextOptions {
     /** Additional CSS classes to add to all `Portal` elements in this React context. */
     portalClassName?: string;
+    /** The HTML element that all `Portal` elements in this React context will be added as children to  */
+    portalContainer?: HTMLElement;
 }
 
 /**
@@ -32,6 +34,17 @@ export const PortalContext = React.createContext<PortalContextOptions>({});
  *
  * @see https://blueprintjs.com/docs/#core/context/portal-provider
  */
-export const PortalProvider = ({ children, ...options }: React.PropsWithChildren<PortalContextOptions>) => {
-    return <PortalContext.Provider value={options}>{children}</PortalContext.Provider>;
+export const PortalProvider = ({
+    children,
+    portalClassName,
+    portalContainer,
+}: React.PropsWithChildren<PortalContextOptions>) => {
+    const contextOptions = React.useMemo<PortalContextOptions>(
+        () => ({
+            portalClassName,
+            portalContainer,
+        }),
+        [portalClassName, portalContainer],
+    );
+    return <PortalContext.Provider value={contextOptions}>{children}</PortalContext.Provider>;
 };

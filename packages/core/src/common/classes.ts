@@ -47,6 +47,7 @@ export const LARGE = `${NS}-large`;
 export const LOADING = `${NS}-loading`;
 export const MINIMAL = `${NS}-minimal`;
 export const OUTLINED = `${NS}-outlined`;
+export const PADDED = `${NS}-padded`;
 export const MULTILINE = `${NS}-multiline`;
 export const READ_ONLY = `${NS}-read-only`;
 export const ROUND = `${NS}-round`;
@@ -220,12 +221,15 @@ export const MULTISTEP_DIALOG_NAV_TOP = `${MULTISTEP_DIALOG}-nav-top`;
 export const MULTISTEP_DIALOG_NAV_RIGHT = `${MULTISTEP_DIALOG}-nav-right`;
 
 export const SECTION = `${NS}-section`;
+export const SECTION_COLLAPSED = `${SECTION}-collapsed`;
 export const SECTION_HEADER = `${SECTION}-header`;
 export const SECTION_HEADER_LEFT = `${SECTION_HEADER}-left`;
 export const SECTION_HEADER_TITLE = `${SECTION_HEADER}-title`;
 export const SECTION_HEADER_SUB_TITLE = `${SECTION_HEADER}-sub-title`;
+export const SECTION_HEADER_DIVIDER = `${SECTION_HEADER}-divider`;
+export const SECTION_HEADER_TABS = `${SECTION_HEADER}-tabs`;
 export const SECTION_HEADER_RIGHT = `${SECTION_HEADER}-right`;
-export const SECTION_CONTENT = `${SECTION}-content`;
+export const SECTION_PANEL = `${SECTION}-panel`;
 
 export const NAVBAR = `${NS}-navbar`;
 export const NAVBAR_GROUP = `${NAVBAR}-group`;

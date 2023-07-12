@@ -61,7 +61,7 @@ export interface EditableTextProps extends IntentProps, Props {
      * N.B. this may be renamed to simply `ref` in a future major version of Blueprint, when this class component is
      * refactored into a function.
      */
-    elementRef?: React.RefObject<HTMLDivElement>;
+    elementRef?: React.Ref<HTMLDivElement>;
 
     /** Whether the component is currently being edited. */
     isEditing?: boolean;

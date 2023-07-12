@@ -533,6 +533,23 @@
   }
 }
 
+#{example("Section")} {
+  .docs-example {
+    align-items: start;
+  }
+
+  .metadata-panel {
+    display: flex;
+    flex-direction: column;
+    gap: $pt-grid-size;
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
 //
 // DATETIME
 //

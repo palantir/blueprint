@@ -70,11 +70,6 @@ export interface IconProps extends IntentProps, Props, SVGIconProps, IconHTMLAtt
  */
 export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props, ref) => {
     const { icon } = props;
-    if (icon == null || typeof icon === "boolean") {
-        return null;
-    } else if (typeof icon !== "string") {
-        return icon;
-    }
 
     const {
         autoLoad,
@@ -89,8 +84,10 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
         ...htmlProps
     } = props;
     const [iconPaths, setIconPaths] = React.useState<IconPaths>();
+
+    // Preserve Blueprint v4.x behavior: iconSize prop takes predecence, then size prop, then fall back to default value
     // eslint-disable-next-line deprecation/deprecation
-    const size = (props.size ?? props.iconSize)!;
+    const size = props.iconSize ?? props.size ?? IconSize.STANDARD;
 
     React.useEffect(() => {
         let shouldCancelIconLoading = false;
@@ -124,6 +121,12 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
             shouldCancelIconLoading = true;
         };
     }, [autoLoad, icon, size]);
+
+    if (icon == null || typeof icon === "boolean") {
+        return null;
+    } else if (typeof icon !== "string") {
+        return icon;
+    }
 
     if (iconPaths == null) {
         // fall back to icon font if unloaded or unable to load SVG implementation
@@ -170,7 +173,6 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
 });
 Icon.defaultProps = {
     autoLoad: true,
-    size: IconSize.STANDARD,
     tagName: "span",
 };
 Icon.displayName = `${DISPLAYNAME_PREFIX}.Icon`;
