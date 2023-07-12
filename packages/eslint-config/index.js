@@ -25,7 +25,7 @@ const tsEslintRules = require("./typescript-eslint-rules.json");
  * For TS files, configure typescript-eslint, including type-aware lint rules which use the TS program.
  */
 module.exports = {
-    plugins: ["@blueprintjs", "header", "import", "jsdoc", "react"],
+    plugins: ["@blueprintjs", "header", "import", "jsdoc", "react", "react-hooks"],
     extends: ["plugin:@blueprintjs/recommended", "plugin:import/typescript"],
     parserOptions: { ecmaVersion: 2022 },
     settings: {
