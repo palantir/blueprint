@@ -102,7 +102,6 @@ describe("<Icon>", () => {
 
     it("title sets content of <title> element", async () => {
         const wrapper = mount(<Icon icon="airplane" title="bird" />);
-        await waitUntilSpyCalledOnce(iconLoader);
         wrapper.update();
         assert.equal(wrapper.find("title").text(), "bird");
     });
@@ -128,7 +127,6 @@ describe("<Icon>", () => {
     /** Asserts that rendered icon has width/height equal to size. */
     async function assertIconSize(icon: React.ReactElement<IconProps>, size: number) {
         const wrapper = mount(icon);
-        await waitUntilSpyCalledOnce(iconLoader);
         wrapper.update();
         const svg = wrapper.find("svg");
         assert.strictEqual(svg.prop("width"), size);
@@ -138,18 +136,8 @@ describe("<Icon>", () => {
     /** Asserts that rendered icon has color equal to color. */
     async function assertIconColor(icon: React.ReactElement<IconProps>, color?: string) {
         const wrapper = mount(icon);
-        await waitUntilSpyCalledOnce(iconLoader);
         wrapper.update();
         const svg = wrapper.find("svg");
         assert.deepEqual(svg.prop("fill"), color);
     }
 });
-
-async function waitUntilSpyCalledOnce(spy: Sinon.SinonSpy, timeout = 1000, interval = 50): Promise<void> {
-    await new Promise(resolve => setTimeout(resolve, interval));
-    if (spy.calledOnce) {
-        return;
-    } else {
-        return waitUntilSpyCalledOnce(spy, timeout - interval, interval);
-    }
-}
