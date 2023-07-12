@@ -1,10 +1,10 @@
 @import "../../common/variables";
 
-$card-default-min-height: 50px;
-$card-default-padding: 10px 20px;
+$card-list-item-default-min-height: 50px;
+$card-list-item-default-padding: 10px 20px;
 
-$card-small-min-height: 40px;
-$card-small-padding: 7px 15px;
+$card-list-item-small-min-height: 40px;
+$card-list-item-small-padding: 7px 15px;
 
 .#{$ns}-card-list {
   width: 100%;
@@ -25,27 +25,25 @@ $card-small-padding: 7px 15px;
     }
   }
 
-  &-item {
-    > .#{$ns}-card {
-      border-radius: 0;
+  & > .#{$ns}-card {
+    border-radius: 0;
+    box-shadow: none;
+    min-height: $card-list-item-default-min-height;
+    padding: $card-list-item-default-padding;
+    display: flex;
+    align-items: center;
+
+    &.#{$ns}-interactive:hover,
+    &.#{$ns}-interactive:active {
+      background-color: $light-gray5;
       box-shadow: none;
-      min-height: $card-default-min-height;
-      padding: $card-default-padding;
-      display: flex;
-      align-items: center;
 
-      &.#{$ns}-interactive:hover,
-      &.#{$ns}-interactive:active {
-        background-color: $light-gray5;
-        box-shadow: none;
-
-        .#{$ns}-dark & {
-          background-color: $dark-gray4;
-        }
+      .#{$ns}-dark & {
+        background-color: $dark-gray4;
       }
     }
 
-    &:not(:last-child) > .#{$ns}-card {
+    &:not(:last-child) {
       border-bottom: 1px solid $pt-divider-black-muted;
 
       .#{$ns}-dark & {
@@ -54,8 +52,8 @@ $card-small-padding: 7px 15px;
     }
   }
 
-  &.#{$ns}-small .#{$ns}-card-list-item > .#{$ns}-card {
-    min-height: $card-small-min-height;
-    padding: $card-small-padding;
+  &.#{$ns}-compact > .#{$ns}-card {
+    min-height: $card-list-item-small-min-height;
+    padding: $card-list-item-small-padding;
   }
 }

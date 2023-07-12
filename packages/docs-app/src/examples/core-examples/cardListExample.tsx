@@ -16,31 +16,31 @@
 
 import * as React from "react";
 
-import { Button, Card, CardList, Classes, H5, Icon, Intent, Section, SectionContent, Switch } from "@blueprintjs/core";
+import { Button, Card, CardList, Classes, H5, Icon, Intent, Section, SectionPanel, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 export interface CardListExampleState {
     isContained: boolean;
     hasInteractiveCards: boolean;
-    isSmall: boolean;
+    isCompact: boolean;
 }
 
 export class CardListExample extends React.PureComponent<ExampleProps> {
     public state: CardListExampleState = {
         hasInteractiveCards: true,
+        isCompact: false,
         isContained: false,
-        isSmall: false,
     };
 
     public render() {
-        const { isContained, hasInteractiveCards, isSmall } = this.state;
+        const { isContained, hasInteractiveCards, isCompact } = this.state;
 
         const options = (
             <>
                 <H5>Props</H5>
                 <Switch checked={isContained} label="Contained" onChange={this.handleContainedChange} />
-                <Switch checked={isSmall} label="Small" onChange={this.handleSmallChange} />
+                <Switch checked={isCompact} label="Compact" onChange={this.handleSmallChange} />
                 <H5>Example</H5>
                 <Switch
                     checked={hasInteractiveCards}
@@ -53,8 +53,8 @@ export class CardListExample extends React.PureComponent<ExampleProps> {
         return (
             <Example options={options} {...this.props}>
                 {isContained ? (
-                    <Section sectionTitle="Ingredients" small={isSmall}>
-                        <SectionContent padded={false}>{this.renderList()}</SectionContent>
+                    <Section title="Ingredients" compact={isCompact}>
+                        <SectionPanel padded={false}>{this.renderList()}</SectionPanel>
                     </Section>
                 ) : (
                     this.renderList()
@@ -64,11 +64,11 @@ export class CardListExample extends React.PureComponent<ExampleProps> {
     }
 
     private renderList() {
-        const { hasInteractiveCards, isContained, isSmall } = this.state;
+        const { hasInteractiveCards, isContained, isCompact } = this.state;
         const ingredients: string[] = ["Olive oil", "Ground black pepper", "Carrots", "Onions"];
 
         return (
-            <CardList contained={isContained} small={isSmall}>
+            <CardList contained={isContained} compact={isCompact}>
                 {ingredients.map(ingredient => (
                     <Card
                         style={{ justifyContent: "space-between" }}
@@ -79,7 +79,7 @@ export class CardListExample extends React.PureComponent<ExampleProps> {
                         {hasInteractiveCards ? (
                             <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
                         ) : (
-                            <Button minimal={true} intent={Intent.PRIMARY} small={isSmall}>
+                            <Button minimal={true} intent={Intent.PRIMARY} small={isCompact}>
                                 Add
                             </Button>
                         )}
@@ -89,7 +89,7 @@ export class CardListExample extends React.PureComponent<ExampleProps> {
         );
     }
 
-    private handleSmallChange = () => this.setState({ isSmall: !this.state.isSmall });
+    private handleSmallChange = () => this.setState({ isCompact: !this.state.isCompact });
 
     private handleContainedChange = () => this.setState({ isContained: !this.state.isContained });
 

@@ -1,15 +1,6 @@
 @use "sass:math";
 @import "../../common/variables";
 
-<<<<<<< HEAD
-$section-default-min-height: 50px;
-$section-default-padding: $pt-grid-size * 2;
-
-$section-small-min-height: 40px;
-$section-small-padding: 15px;
-
-.#{$ns}-section {
-=======
 $section-min-height: $pt-grid-size * 5 !default;
 $section-vertical-padding: $pt-grid-size !default;
 $section-horizontal-padding: $pt-grid-size * 2 !default;
@@ -22,7 +13,6 @@ $section-compact-panel-padding: $pt-grid-size * 1.5 !default;
 
 .#{$ns}-section {
   overflow: hidden;
->>>>>>> 253ad84de41afc11eb2e702a20c55b300ff3db44
   padding: 0;
   width: 100%;
 

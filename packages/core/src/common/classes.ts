@@ -35,6 +35,7 @@ if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
 export const ACTIVE = `${NS}-active`;
 export const ALIGN_LEFT = `${NS}-align-left`;
 export const ALIGN_RIGHT = `${NS}-align-right`;
+export const CONTAINED = `${NS}-contained`;
 export const COMPACT = `${NS}-compact`;
 export const DARK = `${NS}-dark`;
 export const DISABLED = `${NS}-disabled`;
@@ -72,9 +73,6 @@ export const INTENT_DANGER = intentClass(Intent.DANGER)!;
 
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
 export const FOCUS_STYLE_MANAGER_IGNORE = `${NS}-focus-style-manager-ignore`;
-
-export const CONTAINED = `${NS}-contained`;
-export const PADDED = `${NS}-padded`;
 
 // text utilities
 export const UI_TEXT = `${NS}-ui-text`;
