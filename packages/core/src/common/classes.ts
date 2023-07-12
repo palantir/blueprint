@@ -223,7 +223,7 @@ export const SECTION_HEADER_SUB_TITLE = `${SECTION_HEADER}-sub-title`;
 export const SECTION_HEADER_DIVIDER = `${SECTION_HEADER}-divider`;
 export const SECTION_HEADER_TABS = `${SECTION_HEADER}-tabs`;
 export const SECTION_HEADER_RIGHT = `${SECTION_HEADER}-right`;
-export const SECTION_PANEL = `${SECTION}-panel`;
+export const SECTION_CARD = `${SECTION}-card`;
 
 export const NAVBAR = `${NS}-navbar`;
 export const NAVBAR_GROUP = `${NAVBAR}-group`;
