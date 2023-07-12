@@ -89,7 +89,17 @@ $dark-menu-item-intent-colors: (
     @include menu-item-hover();
   }
 
-  &:active,
+  // N.B. mouse interaction :active appearance is different from the .#{$ns}-active modifier class.
+  // The latter is often used to indicate keyboard navigation, and it's helpful to distinguish between keyboard
+  // and mouse interactions.
+  &:active {
+    background-color: $menu-item-color-active;
+
+    .#{$ns}-menu-item-label {
+      color: $pt-text-color;
+    }
+  }
+
   &.#{$ns}-active {
     @include menu-item-active(false);
   }
@@ -147,11 +157,18 @@ $dark-menu-item-intent-colors: (
     @include dark-menu-item-hover();
   }
 
-  &:active,
-  &.#{$ns}-active {
+  // N.B. mouse interaction :active appearance is different from the .#{$ns}-active modifier class.
+  &:active {
+    // we can use the same color as light theme due to transparency
+    background-color: $menu-item-color-active;
+
     .#{$ns}-menu-item-label {
       color: $pt-dark-text-color;
     }
+  }
+
+  &.#{$ns}-active {
+    @include menu-item-active(true);
   }
 
   // pt-disable always overrides over styles
