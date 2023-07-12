@@ -84,29 +84,25 @@ export interface MenuItemProps
      *
      * If `menuitem`, role structure becomes:
      *
-     * `<li role="none"`
-     *     `<a role="menuitem"`
+     * `<li role="none"><a role="menuitem" /></li>`
      *
      * which is proper role structure for a `<ul role="menu"` parent (this is the default `role` of a `Menu`).
      *
      * If `listoption`, role structure becomes:
      *
-     * `<li role="option"`
-     *     `<a role=undefined`
+     * `<li role="option"><a role={undefined} /></li>`
      *
      * which is proper role structure for a `<ul role="listbox"` parent, or a `<select>` parent.
      *
      * If `listitem`, role structure becomes:
      *
-     * `<li role=undefined`
-     *     `<a role=undefined`
+     * `<li role={undefined}><a role={undefined} /></li>`
      *
      * which can be used if this item is within a basic `<ul/>` (or `role="list"`) parent.
      *
      * If `none`, role structure becomes:
      *
-     * `<li role="none"`
-     *     `<a role=undefined`
+     * `<li role="none"><a role={undefined} /></li>`
      *
      * which can be used if wrapping this item in a custom `<li>` parent.
      *
@@ -263,11 +259,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
             ...(disabled ? DISABLED_PROPS : {}),
             className: anchorClasses,
         },
-        isSelected ? (
-            <span className={Classes.MENU_ITEM_SELECTED_ICON}>
-                <SmallTick />
-            </span>
-        ) : undefined,
+        isSelected ? <SmallTick className={Classes.MENU_ITEM_SELECTED_ICON} /> : undefined,
         hasIcon ? (
             // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
             // so that we always render this class

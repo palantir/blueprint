@@ -176,7 +176,7 @@ export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExa
 
     private renderInputValue = (film: Film) => film.title;
 
-    private handleValueChange = (film: Film) => {
+    private handleValueChange = (selectedFilm: Film) => {
         // delete the old film from the list if it was newly created
         const { createdItems, items } = maybeDeleteCreatedFilmFromArrays(
             this.state.items,
@@ -187,9 +187,9 @@ export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExa
         const { createdItems: nextCreatedItems, items: nextItems } = maybeAddCreatedFilmToArrays(
             items,
             createdItems,
-            film,
+            selectedFilm,
         );
-        this.setState({ createdItems: nextCreatedItems, selectedFilm: film, items: nextItems });
+        this.setState({ createdItems: nextCreatedItems, selectedFilm, items: nextItems });
     };
 
     private handleSwitchChange(prop: keyof SuggestExampleState) {

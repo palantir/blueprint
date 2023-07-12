@@ -22,10 +22,8 @@ import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { BooleanOrUndefinedSelect } from "./common/booleanOrUndefinedSelect";
 import { IntentSelect } from "./common/intentSelect";
-import { Size, SizeSelect } from "./common/sizeSelect";
 
 export function MenuItemExample(props: ExampleProps) {
-    const [size, setSize] = React.useState<Size>("regular");
     const [active, setActive] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [selected, setSelected] = React.useState<boolean | undefined>(undefined);
@@ -38,9 +36,7 @@ export function MenuItemExample(props: ExampleProps) {
 
     const options = (
         <>
-            <H5>Menu props</H5>
-            <SizeSelect size={size} onChange={setSize} />
-            <H5>MenuItem props</H5>
+            <H5>Props</H5>
             <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
             <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
             <PropCodeTooltip
@@ -61,7 +57,7 @@ export function MenuItemExample(props: ExampleProps) {
                     onChange={setSelected}
                 />
             </PropCodeTooltip>
-            <Switch label="Show custom icon" checked={iconEnabled} onChange={handleBooleanChange(setIconEnabled)} />
+            <Switch label="Enable icon" checked={iconEnabled} onChange={handleBooleanChange(setIconEnabled)} />
             <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
             <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
             <Label>
@@ -77,16 +73,16 @@ export function MenuItemExample(props: ExampleProps) {
 
     return (
         <Example className="docs-menu-example" options={options} {...props}>
-            <Menu className={Classes.ELEVATION_1} large={size === "large"} small={size === "small"}>
+            <Menu className={Classes.ELEVATION_1}>
                 <MenuItem
                     active={active}
                     disabled={disabled}
-                    icon={iconEnabled ? "cog" : undefined}
+                    icon={iconEnabled ? "applications" : undefined}
                     intent={intent}
                     labelElement={submenuEnabled ? undefined : "⌘,"}
                     roleStructure={roleStructure}
                     selected={selected}
-                    text="Settings"
+                    text="Applications"
                     children={
                         submenuEnabled ? (
                             <>

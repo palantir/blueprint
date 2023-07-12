@@ -102,6 +102,7 @@ $dark-menu-item-intent-colors: (
     }
 
     .#{$ns}-menu-item-selected-icon {
+      align-self: center;
       margin: 0 $menu-item-selected-icon-spacing;
     }
   }
