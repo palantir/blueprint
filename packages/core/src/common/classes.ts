@@ -115,7 +115,6 @@ export const CALLOUT_ICON = `${CALLOUT}-icon`;
 export const CARD = `${NS}-card`;
 
 export const CARD_LIST = `${NS}-card-list`;
-export const CARD_LIST_ITEM = `${CARD_LIST}-item`;
 
 export const COLLAPSE = `${NS}-collapse`;
 export const COLLAPSE_BODY = `${COLLAPSE}-body`;
