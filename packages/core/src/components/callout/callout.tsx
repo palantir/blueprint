@@ -85,7 +85,7 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
             <div className={classes} {...htmlProps}>
                 {iconElement}
                 {title && <H5>{title}</H5>}
-                {children}
+                {this.hasEmptyContent() ? undefined : <div className={Classes.CALLOUT_BODY}>{children}</div>}
             </div>
         );
     }
@@ -116,5 +116,10 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
             default:
                 return undefined;
         }
+    }
+
+    private hasEmptyContent() {
+        const { children } = this.props;
+        return children == null || (typeof children === "string" && children.trim().length === 0);
     }
 }
