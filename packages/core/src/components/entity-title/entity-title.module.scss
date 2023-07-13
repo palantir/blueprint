@@ -1,0 +1,94 @@
+@import "../../common/variables";
+@import "../../common/variables-extended";
+@import "../../typography";
+
+.#{$ns}-entity-title {
+  align-items: center;
+  display: flex;
+  gap: 7px;
+
+  &-icon-container {
+      &.#{$ns}-entity-title-has-description {
+          align-self: flex-start;
+      }
+
+      &:not(.#{$ns}-entity-title-has-description) {
+          align-items: center;
+          display: flex;
+      }
+  }
+
+  &-right {
+      display: flex;
+      flex-direction: column;
+  }
+
+  &-top-line {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: $half-grid-size;
+  }
+
+  &-tags-container {
+      display: flex;
+      gap: 2px;
+      margin-left: $half-grid-size;
+  }
+
+  &-title {
+      margin-bottom: 0;
+  }
+
+  &-subtitle {
+      display: flex;
+      font-size: $pt-font-size-small;
+  }
+
+  @each $tag, $props in $headings {
+    &.#{$tag} .#{$ns}-icon-container {
+      align-items: center;
+      display: flex;
+
+      // Aligning icon which has unknown dimensions on the title size
+      height: nth($props, 2);
+    }
+  }
+
+  &.h2,
+  &.h3 {
+      gap: 15px;
+
+      .status-tag {
+          margin-left: $pt-grid-size;
+      }
+
+      .subtitle {
+          font-size: $pt-font-size;
+      }
+  }
+
+  &.h4,
+  &.h5,
+  &.h6 {
+      gap: $pt-grid-size;
+
+      .subtitle {
+          font-size: $pt-font-size;
+      }
+  }
+
+  .skeleton-icon {
+      height: $pt-icon-size-standard;
+      width: $pt-icon-size-standard;
+  }
+
+  .skeleton-title {
+      margin-bottom: $half-grid-size;
+      min-width: 100px;
+  }
+
+  .skeleton-subtitle {
+      margin-top: $half-grid-size;
+  }
+}
