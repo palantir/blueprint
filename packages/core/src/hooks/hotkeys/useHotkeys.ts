@@ -77,9 +77,11 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
     // register keys with global context
     const [state, dispatch] = React.useContext(HotkeysContext);
 
-    if (!state.hasProvider) {
-        React.useEffect(() => console.warn(HOTKEYS_PROVIDER_NOT_FOUND), []);
-    }
+    React.useEffect(() => {
+        if (!state.hasProvider) {
+            console.warn(HOTKEYS_PROVIDER_NOT_FOUND);
+        }
+    }, []);
 
     // we can still bind the hotkeys if there is no HotkeysProvider, they just won't show up in the dialog
     React.useEffect(() => {
