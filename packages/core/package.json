@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "5.1.1",
+    "version": "5.1.2",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -50,7 +50,7 @@
     },
     "dependencies": {
         "@blueprintjs/colors": "^5.0.1",
-        "@blueprintjs/icons": "^5.1.0",
+        "@blueprintjs/icons": "^5.1.1",
         "@popperjs/core": "^2.11.7",
         "classnames": "^2.3.1",
         "normalize.css": "^8.0.1",
