@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { ChevronDown, ChevronUp, IconName } from "@blueprintjs/icons";
 
-import { Classes, Elevation } from "../../common";
+import { Classes, Elevation, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, MaybeElement, Props } from "../../common/props";
 import { Card } from "../card/card";
 import { Collapse, CollapseProps } from "../collapse/collapse";
@@ -119,8 +119,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         <Card
             className={classNames(className, Classes.SECTION, {
                 [Classes.COMPACT]: compact,
-                [Classes.SECTION_COLLAPSED]:
-                    (collapsible && isCollapsed) || React.Children.toArray(children).length === 0,
+                [Classes.SECTION_COLLAPSED]: (collapsible && isCollapsed) || Utils.isReactNodeEmpty(children),
             })}
             elevation={elevation}
             ref={ref}
