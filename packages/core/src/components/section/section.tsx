@@ -104,7 +104,8 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
             elevation={Elevation.ZERO}
             className={classNames(className, Classes.SECTION, {
                 [Classes.COMPACT]: compact,
-                [Classes.SECTION_COLLAPSED]: collapsible && isCollapsed,
+                [Classes.SECTION_COLLAPSED]:
+                    (collapsible && isCollapsed) || React.Children.toArray(children).length === 0,
             })}
             ref={ref}
             {...cardProps}
