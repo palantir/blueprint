@@ -28,6 +28,7 @@ import {
     IntentProps,
     MaybeElement,
     Props,
+    Utils,
 } from "../../common";
 import { H5 } from "../html/html";
 import { Icon } from "../icon/icon";
@@ -85,7 +86,7 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
             <div className={classes} {...htmlProps}>
                 {iconElement}
                 {title && <H5>{title}</H5>}
-                {this.hasEmptyContent() ? undefined : <div className={Classes.CALLOUT_BODY}>{children}</div>}
+                {Utils.isReactNodeEmpty(children) ? undefined : <div className={Classes.CALLOUT_BODY}>{children}</div>}
             </div>
         );
     }
@@ -116,10 +117,5 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
             default:
                 return undefined;
         }
-    }
-
-    private hasEmptyContent() {
-        const { children } = this.props;
-        return children == null || (typeof children === "string" && children.trim().length === 0);
     }
 }
