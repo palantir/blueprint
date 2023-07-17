@@ -21,7 +21,7 @@ import * as React from "react";
  */
 export interface SVGIconProps
     extends React.RefAttributes<any>,
-        Omit<React.DOMAttributes<HTMLElement | SVGSVGElement>, "children" | "dangerouslySetInnerHTML"> {
+        Omit<React.DOMAttributes<HTMLOrSVGElement>, "children" | "dangerouslySetInnerHTML"> {
     /** A space-delimited list of class names to pass along to the SVG element. */
     className?: string;
 
