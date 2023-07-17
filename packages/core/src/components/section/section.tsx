@@ -26,6 +26,14 @@ import { Collapse, CollapseProps } from "../collapse/collapse";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 
+/**
+ * Subset of {@link Elevation} options which are visually supported by the {@link Section} component.
+ *
+ * Note that an elevation greater than 1 creates too much visual clutter/noise in the UI, especially when
+ * multiple Sections are shown on a single page.
+ */
+export type SectionElevation = typeof Elevation.ZERO | typeof Elevation.ONE;
+
 export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.RefAttributes<HTMLDivElement> {
     /**
      * Whether this section's contents should be collapsible.
@@ -50,6 +58,13 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
      * @default false
      */
     compact?: boolean;
+
+    /**
+     * Visual elevation of this container element.
+     *
+     * @default Elevation.ZERO
+     */
+    elevation?: SectionElevation;
 
     /**
      * Name of a Blueprint UI icon (or an icon element) to render in the section's header.
@@ -87,11 +102,12 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         collapseProps,
         collapsible,
         compact,
+        elevation,
         icon,
         rightElement,
         subtitle,
         title,
-        ...cardProps
+        ...htmlProps
     } = props;
     const [isCollapsed, setIsCollapsed] = React.useState<boolean>(collapseProps?.defaultIsOpen ?? false);
     const toggleIsCollapsed = React.useCallback(() => setIsCollapsed(!isCollapsed), [isCollapsed]);
@@ -101,14 +117,14 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
 
     return (
         <Card
-            elevation={Elevation.ZERO}
             className={classNames(className, Classes.SECTION, {
                 [Classes.COMPACT]: compact,
                 [Classes.SECTION_COLLAPSED]:
                     (collapsible && isCollapsed) || React.Children.toArray(children).length === 0,
             })}
+            elevation={elevation}
             ref={ref}
-            {...cardProps}
+            {...htmlProps}
         >
             <div
                 role={collapsible ? "button" : undefined}
@@ -162,5 +178,6 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
 });
 Section.defaultProps = {
     compact: false,
+    elevation: Elevation.ZERO,
 };
 Section.displayName = `${DISPLAYNAME_PREFIX}.Section`;

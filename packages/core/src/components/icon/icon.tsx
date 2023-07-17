@@ -69,25 +69,15 @@ export interface IconProps extends IntentProps, Props, SVGIconProps, IconHTMLAtt
  * @see https://blueprintjs.com/docs/#core/components/icon
  */
 export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props, ref) => {
-    const { icon } = props;
-
-    const {
-        autoLoad,
-        className,
-        color,
-        icon: _icon,
-        intent,
-        tagName,
-        svgProps,
-        title,
-        htmlTitle,
-        ...htmlProps
-    } = props;
-    const [iconPaths, setIconPaths] = React.useState<IconPaths>();
+    const { autoLoad, className, color, icon, intent, tagName, svgProps, title, htmlTitle, ...htmlProps } = props;
 
     // Preserve Blueprint v4.x behavior: iconSize prop takes predecence, then size prop, then fall back to default value
     // eslint-disable-next-line deprecation/deprecation
     const size = props.iconSize ?? props.size ?? IconSize.STANDARD;
+
+    const [iconPaths, setIconPaths] = React.useState<IconPaths | undefined>(() =>
+        typeof icon === "string" ? Icons.getPaths(icon, size) : undefined,
+    );
 
     React.useEffect(() => {
         let shouldCancelIconLoading = false;
