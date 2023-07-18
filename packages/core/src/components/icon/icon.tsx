@@ -17,56 +17,57 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import {
-    IconName,
-    IconPaths,
-    Icons,
-    IconSize,
-    SVGIconAttributes,
-    SVGIconContainer,
-    SVGIconProps,
-} from "@blueprintjs/icons";
+import { IconName, IconPaths, Icons, IconSize, SVGIconContainer, SVGIconProps } from "@blueprintjs/icons";
 
 import { Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props, removeNonHTMLProps } from "../../common";
 
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
 export { IconName, IconSize };
 
-export interface IconProps extends IntentProps, Props, SVGIconProps, SVGIconAttributes {
-    /**
-     * Whether the component should automatically load icon contents using an async import.
-     *
-     * @default true
-     */
-    autoLoad?: boolean;
+export type IconProps<T extends Element = Element> = IntentProps &
+    Props &
+    SVGIconProps<T> & {
+        /**
+         * Whether the component should automatically load icon contents using an async import.
+         *
+         * @default true
+         */
+        autoLoad?: boolean;
 
-    /**
-     * Name of a Blueprint UI icon, or an icon element, to render. This prop is
-     * required because it determines the content of the component, but it can
-     * be explicitly set to falsy values to render nothing.
-     *
-     * - If `null` or `undefined` or `false`, this component will render nothing.
-     * - If given an `IconName` (a string literal union of all icon names), that
-     *   icon will be rendered as an `<svg>` with `<path>` tags. Unknown strings
-     *   will render a blank icon to occupy space.
-     * - If given a `JSX.Element`, that element will be rendered and _all other
-     *   props on this component are ignored._ This type is supported to
-     *   simplify icon support in other Blueprint components. As a consumer, you
-     *   should avoid using `<Icon icon={<Element />}` directly; simply render
-     *   `<Element />` instead.
-     */
-    icon: IconName | MaybeElement;
+        /**
+         * Name of a Blueprint UI icon, or an icon element, to render. This prop is
+         * required because it determines the content of the component, but it can
+         * be explicitly set to falsy values to render nothing.
+         *
+         * - If `null` or `undefined` or `false`, this component will render nothing.
+         * - If given an `IconName` (a string literal union of all icon names), that
+         *   icon will be rendered as an `<svg>` with `<path>` tags. Unknown strings
+         *   will render a blank icon to occupy space.
+         * - If given a `JSX.Element`, that element will be rendered and _all other
+         *   props on this component are ignored._ This type is supported to
+         *   simplify icon support in other Blueprint components. As a consumer, you
+         *   should avoid using `<Icon icon={<Element />}` directly; simply render
+         *   `<Element />` instead.
+         */
+        icon: IconName | MaybeElement;
 
-    /**
-     * Alias for `size` prop. Kept around for backwards-compatibility with Blueprint v4.x,
-     * will be removed in v6.0.
-     *
-     * @deprecated use `size` prop instead
-     */
-    iconSize?: number;
+        /**
+         * Alias for `size` prop. Kept around for backwards-compatibility with Blueprint v4.x,
+         * will be removed in v6.0.
+         *
+         * @deprecated use `size` prop instead
+         */
+        iconSize?: number;
 
-    /** Props to apply to the `SVG` element */
-    svgProps?: React.HTMLAttributes<SVGElement>;
+        /** Props to apply to the `SVG` element */
+        svgProps?: React.HTMLAttributes<SVGElement>;
+    };
+
+// Type hack required to make forwardRef work with generic components. Note that this slows down TypeScript
+// compilation quite a bit, but it better than the alternative of globally augmenting "@types/react".
+// see https://stackoverflow.com/a/73795494/7406866
+interface GenericIcon extends React.FC<IconProps<Element>> {
+    <T extends Element = Element>(props: IconProps<T>): React.ReactElement | null;
 }
 
 /**
@@ -74,7 +75,8 @@ export interface IconProps extends IntentProps, Props, SVGIconProps, SVGIconAttr
  *
  * @see https://blueprintjs.com/docs/#core/components/icon
  */
-export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props, ref) => {
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const Icon: GenericIcon = React.forwardRef(function <T extends Element>(props: IconProps<T>, ref: React.Ref<T>) {
     const { autoLoad, className, color, icon, intent, tagName, svgProps, title, htmlTitle, ...htmlProps } = props;
 
     // Preserve Blueprint v4.x behavior: iconSize prop takes predecence, then size prop, then fall back to default value
@@ -148,22 +150,24 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
         });
     } else {
         const pathElements = iconPaths.map((d, i) => <path d={d} key={i} fillRule="evenodd" />);
+        // HACKHACK: there is no good way to narrow the type of SVGIconContainerProps here because of the use
+        // of a conditional type within the type union that defines that interface. So we cast to <any>.
+        // see https://github.com/microsoft/TypeScript/issues/24929, https://github.com/microsoft/TypeScript/issues/33014
         return (
-            <SVGIconContainer
+            <SVGIconContainer<any>
+                children={pathElements}
                 // don't forward Classes.iconClass(icon) here, since the container will render that class
                 className={classNames(Classes.intentClass(intent), className)}
                 color={color}
+                htmlTitle={htmlTitle}
                 iconName={icon}
+                ref={ref}
                 size={size}
+                svgProps={svgProps}
                 tagName={tagName}
                 title={title}
-                htmlTitle={htmlTitle}
-                ref={ref}
-                svgProps={svgProps}
                 {...removeNonHTMLProps(htmlProps)}
-            >
-                {pathElements}
-            </SVGIconContainer>
+            />
         );
     }
 });

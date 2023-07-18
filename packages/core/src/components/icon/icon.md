@@ -72,7 +72,33 @@ Custom sizes are supported. The following React component:
 </svg>
 ```
 
+@## Props interface
+
 @interface IconProps
+
+@## Root element DOM attributes
+
+The `<Icon>` component forwards extra HTML attributes to its root DOM element. By default,
+the root element is a `<span>` wrapper around the icon `<svg>`. The tag name of this element
+may be customized via the `tagName` prop as either:
+
+- a custom HTML tag name (for example `<div>` instead of the default `<span>` wrapper), or
+- `null`, which makes the component omit the wrapper element and only render the `<svg>` as its root element
+
+By default, `<Icon>` supports a limited set of HTML attributes which are assignable to all HTML and SVG
+elements. In some cases, you may want to specify more specific attributes which are only available on HTML elements
+or SVG elements. The `<Icon>` component has a generic type which allows for this more advanced usage. You can
+specify a type parameter on the component opening tag to, for example, set an HTML-only attribute:
+
+```tsx
+import { Icon } from "@blueprintjs/core";
+import * as React from "react";
+
+function Example() {
+    const [isDraggable, setIsDraggable] = React.useState();
+    return <Icon<HTMLSpanElement> icon="drag-handle-horizontal" draggable={isDraggable} />;
+}
+```
 
 @## Static components
 

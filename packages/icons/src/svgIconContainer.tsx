@@ -22,7 +22,7 @@ import { IconSize } from "./iconTypes";
 import { uniqueId } from "./jsUtils";
 import type { SVGIconProps } from "./svgIconProps";
 
-export interface SVGIconContainerProps extends Omit<SVGIconProps, "children"> {
+export type SVGIconContainerProps<T extends Element> = Omit<SVGIconProps<T>, "children"> & {
     /**
      * Icon name.
      */
@@ -32,60 +32,73 @@ export interface SVGIconContainerProps extends Omit<SVGIconProps, "children"> {
      * Icon contents, loaded via `IconLoader` and specified as `<path>` elements.
      */
     children: JSX.Element | JSX.Element[];
+};
+
+// Type hack required to make forwardRef work with generic components. Note that this slows down TypeScript
+// compilation quite a bit, but it better than the alternative of globally augmenting "@types/react".
+// see https://stackoverflow.com/a/73795494/7406866
+interface GenericSVGIconContainer extends React.FC<SVGIconContainerProps<Element>> {
+    <T extends Element = Element>(props: SVGIconContainerProps<T>): React.ReactElement | null;
 }
 
-export const SVGIconContainer: React.FC<SVGIconContainerProps> = React.forwardRef<any, SVGIconContainerProps>(
-    (props, ref) => {
-        const {
-            children,
-            className,
-            color,
-            htmlTitle,
-            iconName,
-            size = IconSize.STANDARD,
-            svgProps,
-            tagName = "span",
-            title,
-            ...htmlProps
-        } = props;
+export const SVGIconContainer: GenericSVGIconContainer = React.forwardRef(function <T extends Element>(
+    props: SVGIconContainerProps<T>,
+    ref: React.Ref<T>,
+) {
+    const {
+        children,
+        className,
+        color,
+        htmlTitle,
+        iconName,
+        size = IconSize.STANDARD,
+        svgProps,
+        tagName = "span",
+        title,
+        ...htmlProps
+    } = props;
 
-        const isLarge = size >= IconSize.LARGE;
-        const pixelGridSize = isLarge ? IconSize.LARGE : IconSize.STANDARD;
-        const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
-        const titleId = uniqueId("iconTitle");
-        const sharedSvgProps = {
-            "data-icon": iconName,
-            fill: color,
-            height: size,
-            role: "img",
-            viewBox,
-            width: size,
-            ...svgProps,
-        };
+    const isLarge = size >= IconSize.LARGE;
+    const pixelGridSize = isLarge ? IconSize.LARGE : IconSize.STANDARD;
+    const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
+    const titleId = uniqueId("iconTitle");
+    const sharedSvgProps = {
+        "data-icon": iconName,
+        fill: color,
+        height: size,
+        role: "img",
+        viewBox,
+        width: size,
+        ...svgProps,
+    };
 
-        if (tagName === null) {
-            return (
-                <svg aria-labelledby={title ? titleId : undefined} ref={ref} {...sharedSvgProps} {...htmlProps}>
-                    {title && <title id={titleId}>{title}</title>}
-                    {children}
-                </svg>
-            );
-        } else {
-            return React.createElement(
-                tagName,
-                {
-                    ...htmlProps,
-                    "aria-hidden": title ? undefined : true,
-                    className: classNames(Classes.ICON, `${Classes.ICON}-${iconName}`, className),
-                    ref,
-                    title: htmlTitle,
-                },
-                <svg {...sharedSvgProps}>
-                    {title && <title>{title}</title>}
-                    {children}
-                </svg>,
-            );
-        }
-    },
-);
+    if (tagName === null) {
+        return (
+            <svg
+                aria-labelledby={title ? titleId : undefined}
+                ref={ref as React.Ref<SVGSVGElement>}
+                {...sharedSvgProps}
+                {...htmlProps}
+            >
+                {title && <title id={titleId}>{title}</title>}
+                {children}
+            </svg>
+        );
+    } else {
+        return React.createElement(
+            tagName,
+            {
+                ...htmlProps,
+                "aria-hidden": title ? undefined : true,
+                className: classNames(Classes.ICON, `${Classes.ICON}-${iconName}`, className),
+                ref,
+                title: htmlTitle,
+            },
+            <svg {...sharedSvgProps}>
+                {title && <title>{title}</title>}
+                {children}
+            </svg>,
+        );
+    }
+});
 SVGIconContainer.displayName = "Blueprint5.SVGIconContainer";
