@@ -18,7 +18,7 @@
 export { IconSvgPaths16, IconSvgPaths20, getIconPaths } from "./allPaths";
 
 export { Icons, IconLoaderOptions, IconPathsLoader } from "./iconLoader";
-export { SVGIconProps } from "./svgIconProps";
+export { SVGIconAttributes, SVGIconProps } from "./svgIconProps";
 export { SVGIconContainer, SVGIconContainerProps } from "./svgIconContainer";
 export { getIconContentString, IconCodepoints } from "./iconCodepoints";
 export { IconName, IconNames } from "./iconNames";

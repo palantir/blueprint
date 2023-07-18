@@ -16,12 +16,18 @@
 import * as React from "react";
 
 /**
+ * DOM attributes assignable as props to the root element rendered by an SVG icon component
+ * (which may be a `<span>`, `<svg>` or some custom HTML element).
+ */
+export type SVGIconAttributes = React.AriaAttributes &
+    Omit<React.DOMAttributes<Element>, "children" | "dangerouslySetInnerHTML"> &
+    Pick<React.HTMLAttributes<Element>, "id" | "style" | "tabIndex" | "role">;
+
+/**
  * Interface used for generated icon components which already have their name and path defined
  * (through the rendered Handlebars template).
  */
-export interface SVGIconProps
-    extends React.RefAttributes<any>,
-        Omit<React.DOMAttributes<HTMLOrSVGElement>, "children" | "dangerouslySetInnerHTML"> {
+export interface SVGIconProps extends React.RefAttributes<any>, SVGIconAttributes {
     /** A space-delimited list of class names to pass along to the SVG element. */
     className?: string;
 

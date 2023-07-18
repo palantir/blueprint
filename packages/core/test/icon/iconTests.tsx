@@ -116,6 +116,13 @@ describe("<Icon>", () => {
         assert.isTrue(icon.find(`.${Classes.ICON}`).hostNodes().prop("aria-hidden"));
     });
 
+    it("supports mouse event handlers of type React.MouseEventHandler", () => {
+        const handleClick: React.MouseEventHandler = () => {
+            return;
+        };
+        mount(<Icon icon="add" onClick={handleClick} />);
+    });
+
     /** Asserts that rendered icon has an SVG path. */
     async function assertIconHasPath(icon: React.ReactElement<IconProps>, iconName: IconName) {
         const wrapper = mount(icon);
