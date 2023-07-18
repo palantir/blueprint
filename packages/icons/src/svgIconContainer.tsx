@@ -41,6 +41,7 @@ interface GenericSVGIconContainer extends React.FC<SVGIconContainerProps<Element
     <T extends Element = Element>(props: SVGIconContainerProps<T>): React.ReactElement | null;
 }
 
+// eslint-disable-next-line prefer-arrow-callback
 export const SVGIconContainer: GenericSVGIconContainer = React.forwardRef(function <T extends Element>(
     props: SVGIconContainerProps<T>,
     ref: React.Ref<T>,
