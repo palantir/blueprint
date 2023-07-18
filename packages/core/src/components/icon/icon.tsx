@@ -75,7 +75,6 @@ interface GenericIcon extends React.FC<IconProps<Element>> {
  *
  * @see https://blueprintjs.com/docs/#core/components/icon
  */
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Icon: GenericIcon = React.forwardRef(function <T extends Element>(props: IconProps<T>, ref: React.Ref<T>) {
     const { autoLoad, className, color, icon, intent, tagName, svgProps, title, htmlTitle, ...htmlProps } = props;
 
