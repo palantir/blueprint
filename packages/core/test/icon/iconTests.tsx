@@ -117,10 +117,22 @@ describe("<Icon>", () => {
     });
 
     it("supports mouse event handlers of type React.MouseEventHandler", () => {
-        const handleClick: React.MouseEventHandler = () => {
-            return;
-        };
+        const handleClick: React.MouseEventHandler = () => undefined;
         mount(<Icon icon="add" onClick={handleClick} />);
+    });
+
+    it("accepts HTML attributes", () => {
+        mount(<Icon<HTMLSpanElement> icon="drag-handle-vertical" draggable={false} />);
+    });
+
+    it("accepts generic type param specifying the type of the root element", () => {
+        const handleClick: React.MouseEventHandler<HTMLSpanElement> = () => undefined;
+        mount(<Icon<HTMLSpanElement> icon="add" onClick={handleClick} />);
+    });
+
+    it("allows specifying the root element as <svg> when tagName={null}", () => {
+        const handleClick: React.MouseEventHandler<SVGSVGElement> = () => undefined;
+        mount(<Icon<SVGSVGElement> icon="add" onClick={handleClick} tagName={null} />);
     });
 
     /** Asserts that rendered icon has an SVG path. */

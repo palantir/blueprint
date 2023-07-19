@@ -18,11 +18,11 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    DefaultSVGIconProps,
     IconName,
     IconPaths,
     Icons,
     IconSize,
-    SVGIconAttributes,
     SVGIconContainer,
     SVGIconProps,
 } from "@blueprintjs/icons";
@@ -32,7 +32,7 @@ import { Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props, removeNo
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
 export { IconName, IconSize };
 
-export interface IconProps extends IntentProps, Props, SVGIconProps, SVGIconAttributes {
+export interface IconOwnProps {
     /**
      * Whether the component should automatically load icon contents using an async import.
      *
@@ -69,12 +69,37 @@ export interface IconProps extends IntentProps, Props, SVGIconProps, SVGIconAttr
     svgProps?: React.HTMLAttributes<SVGElement>;
 }
 
+// N.B. the following inteface is defined as a type alias instead of an interface due to a TypeScript limitation
+// where interfaces cannot extend conditionally-defined union types.
+/**
+ * Generic interface for the `<Icon>` component which may be parameterized by its root element type.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/icon.dom-attributes
+ */
+export type IconProps<T extends Element = Element> = IntentProps & Props & SVGIconProps<T> & IconOwnProps;
+
+/**
+ * The default `<Icon>` props interface, equivalent to `IconProps` with its default type parameter.
+ * This is primarly exported for documentation purposes; users should reference `IconProps<T>` instead.
+ */
+export interface DefaultIconProps extends IntentProps, Props, DefaultSVGIconProps, IconOwnProps {
+    // empty interface for documentation purposes (documentalist handles this better than the IconProps<T> type alias)
+}
+
+// Type hack required to make forwardRef work with generic components. Note that this slows down TypeScript
+// compilation, but it better than the alternative of globally augmenting "@types/react".
+// see https://stackoverflow.com/a/73795494/7406866
+interface GenericIcon extends React.FC<IconProps<Element>> {
+    <T extends Element = Element>(props: IconProps<T>): React.ReactElement | null;
+}
+
 /**
  * Icon component.
  *
  * @see https://blueprintjs.com/docs/#core/components/icon
  */
-export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props, ref) => {
+// eslint-disable-next-line prefer-arrow-callback
+export const Icon: GenericIcon = React.forwardRef(function <T extends Element>(props: IconProps<T>, ref: React.Ref<T>) {
     const { autoLoad, className, color, icon, intent, tagName, svgProps, title, htmlTitle, ...htmlProps } = props;
 
     // Preserve Blueprint v4.x behavior: iconSize prop takes predecence, then size prop, then fall back to default value
@@ -148,22 +173,24 @@ export const Icon: React.FC<IconProps> = React.forwardRef<any, IconProps>((props
         });
     } else {
         const pathElements = iconPaths.map((d, i) => <path d={d} key={i} fillRule="evenodd" />);
+        // HACKHACK: there is no good way to narrow the type of SVGIconContainerProps here because of the use
+        // of a conditional type within the type union that defines that interface. So we cast to <any>.
+        // see https://github.com/microsoft/TypeScript/issues/24929, https://github.com/microsoft/TypeScript/issues/33014
         return (
-            <SVGIconContainer
+            <SVGIconContainer<any>
+                children={pathElements}
                 // don't forward Classes.iconClass(icon) here, since the container will render that class
                 className={classNames(Classes.intentClass(intent), className)}
                 color={color}
+                htmlTitle={htmlTitle}
                 iconName={icon}
+                ref={ref}
                 size={size}
+                svgProps={svgProps}
                 tagName={tagName}
                 title={title}
-                htmlTitle={htmlTitle}
-                ref={ref}
-                svgProps={svgProps}
                 {...removeNonHTMLProps(htmlProps)}
-            >
-                {pathElements}
-            </SVGIconContainer>
+            />
         );
     }
 });
