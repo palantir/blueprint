@@ -1,21 +1,30 @@
 @# Switch
 
-A switch is simply an alternate appearance for a [checkbox](#core/components/checkbox) that
-simulates on/off instead of checked/unchecked.
+__Switch__ is a form control for toggling between boolean states. It is similar to
+[__Checkbox__](#core/components/checkbox), but presents a more skeuomorphic appearance that mimics a physical switch.
+
+Its whole label is interactive and it supports a few visual modifiers for different UI layouts.
 
 @reactExample SwitchExample
 
-@## Props
-
-```tsx
-<Switch checked={this.state.isPublic} label="Public" onChange={this.handlePublicChange} />
-```
-
-This component supports the full range of HTML `<input>` props.
-The most common props are detailed below.
+@## Props interface
 
 @interface SwitchProps
 
 @## CSS API
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h5 class="@ns-heading">
+
+Deprecated API: use [`<Switch>`](#core/components/switch)
+
+</h5>
+<div class="@ns-callout-body">
+
+CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
+often fall out of sync as the design system is updated. You should use the React component APIs instead.
+
+</div>
+</div>
 
 @css switch

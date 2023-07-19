@@ -3,7 +3,7 @@
 The __Portal__ component renders its children into a new DOM "subtree" outside of the current component
 hierarchy. It is an essential piece of the [Overlay](#core/components/overlay) component, responsible for
 ensuring that the overlay contents appear above the rest of the application. In most cases, you do not
-need to use a Portal directly; this documentation is provided simply for reference.
+need to use a Portal directly; this documentation is provided only for reference.
 
 @## DOM Behavior
 
@@ -18,11 +18,13 @@ application.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-move">
     <h5 class="@ns-heading">A note about responsive layouts</h5>
+<div class="@ns-callout-body">
 
 For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
 may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead
 apply `position: absolute` to the `<body>` tag.
 
+</div>
 </div>
 
 @## Props interface
@@ -58,9 +60,11 @@ ReactDOM.render(
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
     <h5 class="@ns-heading">Legacy React API</h5>
+<div class="@ns-callout-body">
 
 This feature uses React's legacy context API. Support for this API will be removed in Blueprint v6.0.
 
+</div>
 </div>
 
 __Portal__ supports the following options via the [React legacy context API](https://reactjs.org/docs/legacy-context.html).

@@ -10,6 +10,7 @@ provides  provides over 500 vector UI icons in two sizes (16px and 20px) and two
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
 See the [**`Icon` component documentation**](#core/components/icon) (in the `@blueprintjs/core` package) for React API details.
+
 </div>
 
 ```sh

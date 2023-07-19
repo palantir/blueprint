@@ -33,7 +33,7 @@ import {
 import { H5 } from "../html/html";
 import { Icon } from "../icon/icon";
 
-/** This component also supports the full range of HTML `<div>` props. */
+/** This component also supports the full range of HTML `<div>` attributes. */
 export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
     /** Callout contents. */
     children?: React.ReactNode;

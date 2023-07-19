@@ -6,27 +6,28 @@
 Migrating from [HotkeysTarget](#core/legacy/hotkeys-legacy)?
 
 </h5>
+<div class="@ns-callout-body">
 
-HotkeysTarget2 is a replacement for HotkeysTarget. You are encouraged to use this new API, or
+__HotkeysTarget2__ is a replacement for HotkeysTarget. You are encouraged to use this new API, or
 the `useHotkeys` hook directly in your function components, as they will become the standard
 APIs in a future major version of Blueprint. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration) on the wiki.
 
 </div>
+</div>
 
 
-The `HotkeysTarget2` component is a utility component which allows you to use the new
-[`useHotkeys` hook](#core/hooks/use-hotkeys) inside a React component class. It's useful
-if you want to switch to the new hotkeys API without refactoring your class components
-into functional components.
+The __HotkeysTarget2__ component is a utility component which allows you to use the
+[`useHotkeys` hook](#core/hooks/use-hotkeys) inside a React component class. It's useful if you want to switch to the
+new hotkeys API without refactoring your class components into functional components.
 
-Focus on the piano below to try its hotkeys. The global hotkeys dialog can be shown using the "?" key.
+Focus on the piano below to try its hotkeys. The global hotkeys dialog can be shown using the <kbd>?</kbd> key.
 
 @reactExample HotkeysTarget2Example
 
 @## Usage
 
-First, make sure [HotkeysProvider](#core/context/hotkeys-provider) is configured correctly at the root of your
+First, make sure [__HotkeysProvider__](#core/context/hotkeys-provider) is configured correctly at the root of your
 React application.
 
 Then, to register hotkeys and generate the relevant event handlers, use the component like so:
@@ -74,7 +75,7 @@ event handlers with the `handleKeyDown` and `handleKeyUp` functions in the child
 you will likely have to set a non-negative `tabIndex` on the DOM node to which these local event handlers are
 bound for them to work correctly.
 
-`<HotkeysTarget2>` takes an optional `options: UseHotkeysOptions` prop which can customize some of the hook's
+__HotkeysTarget2__ takes an optional `options: UseHotkeysOptions` prop which can customize some of the hook's
 default behavior.
 
 @## Props interface

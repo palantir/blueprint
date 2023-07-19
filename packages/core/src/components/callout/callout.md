@@ -17,10 +17,12 @@ a title, an icon and content. Each intent has a default icon associated with it.
 Deprecated API: use [`<Callout>`](#core/components/callout)
 
 </h5>
+<div class="@ns-callout-body">
 
 CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
 often fall out of sync as the design system is updated. You should use the React component APIs instead.
 
+</div>
 </div>
 
 Callouts use the same visual intent modifier classes as buttons. If you need a heading, use the `<h5>`

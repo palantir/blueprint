@@ -4,7 +4,8 @@
 
 Blueprint is a React-based UI toolkit for the web.
 
-It is optimized for building complex, data-dense web interfaces for _desktop applications_ which run in modern browsers. This is not a mobile-first UI toolkit.
+It is optimized for building complex, data-dense web interfaces for _desktop applications_ which run in modern browsers.
+This is not a mobile-first UI toolkit.
 
 [**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
 
@@ -16,7 +17,8 @@ It is optimized for building complex, data-dense web interfaces for _desktop app
 
 ## Changelog
 
-Blueprint's change log and migration guides for major versions live on the repo's [Github wiki](https://github.com/palantir/blueprint/wiki/3.x-Changelog).
+Blueprint's change log and migration guides for major versions live on the repo's
+[Github wiki](https://github.com/palantir/blueprint/wiki/5.x-Changelog).
 
 ## Packages
 
@@ -94,37 +96,47 @@ If you were previously in a working state and have just pulled new code from `de
 -   If there were package dependency changes, run `yarn` at the root.
     -   This command is very quick if there are no new things to install.
 -   Run `yarn compile` to get the latest built versions of the library packages in this repo.
-    -   This command is quicker than `yarn verify` since it doesn't build the application packages (`docs-app`, `landing-app`, etc.) or run tests
+    -   This command is quicker than `yarn verify` since it doesn't build the application packages (`docs-app`,
+        `landing-app`, etc.) or run tests
 
 ### Developing libraries
 
 There are a few ways to run development scripts, here they are listed from simplest to more advanced usage:
 
--   Run `yarn dev` from the root directory to watch changes across all packages and run the docs application with webpack-dev-server.
--   Alternately, most libraries have a corresponding dev script to run the docs app and watch changes to just that package:
+-   Run `yarn dev` from the root directory to watch changes across all packages and run the docs application with
+    webpack-dev-server.
+-   Alternately, most libraries have a dev script to run the docs app _and_ watch changes to only that package:
     -   `yarn dev:core`
     -   `yarn dev:docs`
     -   `yarn dev:datetime`
     -   `yarn dev:select`
     -   `yarn dev:table`
--   Lastly, if you want to control exaclty which dev scripts are run and view the console output in the cleanest way, we recommend opening separate terminal windows or splits and running local package dev tasks in each one. This is the recommended workflow for frequent contributors and advanced developers. For example, to test changes in the core + icons packages, you would run the following in separate terminals:
+-   Lastly, if you want to control exaclty which dev scripts are run and view the console output in the cleanest way,
+    we recommend opening separate terminal windows or splits and running local package dev tasks in each one. This is
+    the recommended workflow for frequent contributors and advanced developers. For example, to test changes in the core
+    and icons packages, you would run the following in separate terminals:
     -   `cd packages/core && yarn dev`
     -   `cd packages/icons && yarn dev`
     -   `cd packages/docs-app && yarn dev`
 
 ### Updating documentation
 
-Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/).
+Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx` files and KSS markup in `.scss`
+files. This documentation is extracted and converted into static JSON data using
+[documentalist](https://github.com/palantir/documentalist/).
 
-If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app` or the docs theme in `packages/docs-theme`), you'll need to run `yarn compile` from `packages/docs-data` to see changes reflected in the application. For simplicity, an alias script `yarn docs-data` exists in the root to minimize directory hopping.
+If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app` or the docs theme
+in `packages/docs-theme`), you'll need to run `yarn compile` from `packages/docs-data` to see changes reflected in the
+application. For simplicity, an alias script `yarn docs-data` exists in the root to minimize directory hopping.
 
 ### Updating icons
 
-The [One-time setup](#one-time-setup) and [Incorporating upstream changes](#incorporating-upstream-changes) steps should produce the generated
-source code in this repo used to build the icons documentation. This is sufficient for most development workflows.
+The [One-time setup](#one-time-setup) and [Incorporating upstream changes](#incorporating-upstream-changes) steps should
+produce the generated source code in this repo used to build the icons documentation. This is sufficient for most
+development workflows.
 
-If you are updating icons or adding new ones, you'll need to run `yarn compile` in `packages/icons` to see those changes reflected before
-running any of the dev scripts.
+If you are updating icons or adding new ones, you'll need to run `yarn compile` in `packages/icons` to see those changes
+reflected before running any of the dev scripts.
 
 ## License
 

@@ -14,10 +14,12 @@ This modifier is not illustrated here because it breaks the document flow.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
     <h5 class="@ns-heading">Body padding required</h5>
+<div class="@ns-callout-body">
 
 The fixed navbar will lie on top of your other content unless you add padding to the top of the
 `<body>` element equal to the height of the navbar. Use the `$pt-navbar-height` Sass variable.
 
+</div>
 </div>
 
 @### Fixed width
