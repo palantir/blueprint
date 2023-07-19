@@ -1,8 +1,8 @@
 @# Date input
 
-The __DateInput__ component is an [InputGroup](#core/components/text-inputs.input-group)
-that shows a [DatePicker](#datetime/datepicker) inside a [Popover](#core/components/popover)
-on focus. It optionally shows a [TimezoneSelect](#datetime/timezone-select) on the right side of
+The __DateInput__ component is an [__InputGroup__](#core/components/text-inputs.input-group)
+that shows a [__DatePicker__](#datetime/datepicker) inside a [__Popover__](#core/components/popover)
+on focus. It optionally shows a [__TimezoneSelect__](#datetime/timezone-select) on the right side of
 the InputGroup, allowing the user to change the timezone of the selected date.
 
 @reactExample DateInputExample

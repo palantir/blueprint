@@ -3,19 +3,21 @@
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h5 class="@ns-heading">
 
-Migrating from [HotkeysTarget](#core/legacy/hotkeys-legacy)?
+Migrating from [__HotkeysTarget__](#core/legacy/hotkeys-legacy)?
 
 </h5>
+<div class="@ns-callout-body">
 
-`useHotkeys` is a replacement for HotkeysTarget. You are encouraged to use this new API in your function
-components, or the [HotkeysTarget2 component](#core/components/hotkeys-target2) in your component classes,
+`useHotkeys` is a replacement for __HotkeysTarget__. You are encouraged to use this new API in your function
+components, or the [__HotkeysTarget2__ component](#core/components/hotkeys-target2) in your component classes,
 as they will become the standard APIs in a future major version of Blueprint. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration) on the wiki.
 
 </div>
+</div>
 
 The `useHotkeys` hook adds hotkey / keyboard shortcut interactions to your application using a custom React hook.
-Compared to the deprecated [Hotkeys](#core/legacy/hotkeys-legacy) API, it works with function components and its
+Compared to the deprecated [Hotkeys API](#core/legacy/hotkeys-legacy), it works with function components and its
 corresponding [context provider](#core/context/hotkeys-provider) allows more customization of the hotkeys dialog.
 
 Focus on the piano below to try its hotkeys. The global hotkeys dialog can be shown using the "?" key.
@@ -24,7 +26,7 @@ Focus on the piano below to try its hotkeys. The global hotkeys dialog can be sh
 
 @## Usage
 
-First, make sure [HotkeysProvider](#core/context/hotkeys-provider) is configured correctly at the root of your
+First, make sure [__HotkeysProvider__](#core/context/hotkeys-provider) is configured correctly at the root of your
 React application.
 
 Then, to register hotkeys and generate the relevant event handlers, use the hook like so:

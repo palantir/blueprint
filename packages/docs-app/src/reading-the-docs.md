@@ -37,6 +37,7 @@ Familiarity with the syntax is suggested so you can follow our examples source c
 
 For more information, see the TypeScript Handbook for [basic types][basic-types]
 and [consuming declaration files][decl-files].
+
 </div>
 
 [basic-types]: https://www.typescriptlang.org/docs/handbook/basic-types.html

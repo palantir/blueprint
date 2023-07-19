@@ -1,22 +1,24 @@
 @# Dialogs
 
-Dialogs present content overlaid over other parts of the UI.
+__Dialog__ presents content overlaid over other parts of the UI.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h5 class="@ns-heading">Terminology note</h5>
 
-The term "modal" is sometimes used to mean "dialog," but this is a misnomer.
-_Modal_ is an adjective that describes parts of a UI.
-An element is considered modal if it
-[blocks interaction with the rest of the application](https://en.wikipedia.org/wiki/Modal_window).
-We use the term "dialog" to avoid confusion with the adjective.
+<div class="@ns-callout-body">
 
+The term "modal" is sometimes used to mean "dialog," but this is a misnomer.
+_Modal_ is an adjective that describes parts of a UI. An element is considered to be "modal" if it
+[blocks interaction with the rest of the application](https://en.wikipedia.org/wiki/Modal_window).
+We use the term "dialog" in Blueprint to avoid confusion with the adjective.
+
+</div>
 </div>
 
 Blueprint provides two types of dialogs:
 
-1. Standard dialog: show single view using the `Dialog` component
-1. Multi-step dialog: show multiple sequential views using the `MultistepDialog` component.
+1.  Standard dialog: show single view using the `<Dialog>` component
+1.  Multi-step dialog: show multiple sequential views using the `<MultistepDialog>` component.
 
 @## Dialog
 
@@ -58,13 +60,21 @@ towards the right side of the footer container element.
 
 @interface DialogFooterProps
 
-@### CSS
+@### CSS API
 
-You can create dialogs manually using the HTML markup and `@ns-dialog-*` classes below.
-However, you should use the [`Dialog` component](#core/components/dialog.props)
-whenever possible, as they automatically generate some of this markup.
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h5 class="@ns-heading">
 
-More examples of dialog content are shown below.
+Deprecated API: use `<Dialog>`
+
+</h5>
+<div class="@ns-callout-body">
+
+CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
+often fall out of sync as the design system is updated. You should use the React component APIs instead.
+
+</div>
+</div>
 
 @css dialog
 
@@ -74,19 +84,18 @@ More examples of dialog content are shown below.
 
 @### Multistep dialog props
 
-`MultistepDialog` is a wrapper around `Dialog` that displays a dialog with multiple steps
-Each step has a corresponding panel.
+__MultistepDialog__ is a wrapper around __Dialog__ that displays a dialog with multiple steps. Each step has a
+corresponding panel.
 
-This component expects `DialogStep` children: each "step" is rendered in order
-and its panel is shown as the dialog body content when the corresponding step is selected
-in the navigation panel.
+This component expects `<DialogStep>` child elements: each "step" is rendered in order and its panel is shown as the
+dialog body content when the corresponding step is selected in the navigation panel.
 
 @interface MultistepDialogProps
 
 @### DialogStep
 
-`DialogStep` is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
-parent `MultistepDialog` wrapper. Typically, you should render a `<DialogBody>` element as the `panel`
-element. A step's title text can be set via the `title` prop.
+__DialogStep__ is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its parent
+__MultistepDialog__ container. Typically, you should render a `<DialogBody>` element as the `panel` element. A step's
+title text can be set via the `title` prop.
 
 @interface DialogStepProps
