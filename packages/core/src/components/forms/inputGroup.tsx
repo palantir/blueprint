@@ -40,6 +40,9 @@ export interface InputGroupProps
     /** Whether this input should use large styles. */
     large?: boolean;
 
+    /** The callback invoked when the value changes.
+    onValueChange?(valueAsString: string/*, inputElement: HTMLInputElement | null*/): void;
+
     /** Whether this input should use small styles. */
     small?: boolean;
 
@@ -65,6 +68,10 @@ export interface InputGroupState {
     leftElementWidth?: number;
     rightElementWidth?: number;
 }
+
+const NON_HTML_PROPS: Array<keyof InputGroupProps> = [
+    "onValueChange",
+];
 
 /**
  * Input group component.
@@ -120,8 +127,9 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
         };
         const inputProps = {
             type: "text",
-            ...removeNonHTMLProps(this.props),
+            ...removeNonHTMLProps(this.props, NON_HTML_PROPS, true),
             className: classNames(Classes.INPUT, inputClassName),
+            onChange: this.handleInputChange,
             style,
         };
         const inputElement = asyncControl ? (
@@ -155,6 +163,12 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
             console.warn(Errors.INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX);
         }
     }
+
+    private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.currentTarget.value;
+        this.props.onChange?.(event);
+        this.props.onValueChange?.(value/*, this.inputElement*/);
+    };
 
     private maybeRenderLeftElement() {
         const { leftElement, leftIcon } = this.props;
