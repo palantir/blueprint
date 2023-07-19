@@ -35,13 +35,12 @@ The HTML element rendered by `<Icon>` can be customized with the `tagName` prop
 (defaults to `span`), and additional props are passed to this element.
 
 Data files in the __@blueprintjs/icons__ package provide SVG path information
-for Blueprint's 300+ icons for 16px and 20px grids. The `icon` prop dictates
-which SVG is rendered and `size` determines which pixel grid is used:
-`size >= 20` will use the 20px grid and smaller icons will use the 16px
-grid.
+for Blueprint's 500+ icons for 16px and 20px grids. The `icon` prop specifies
+which SVG is rendered and the `size` prop determines which pixel grid is used:
+`size >= 20` will use the 20px grid and smaller icons will use the 16px grid.
 
-If `title` is not provided to an Icon, `aria-hidden` will be set to true as
-it will be assumed that the icon is decorative if not labeled.
+If `title` is _not_ provided to an `<Icon>`, `aria-hidden` will be set to true as
+it will be assumed that the icon is decorative since it is unlabeled.
 
 ```tsx
 import { Icon, IconSize } from "@blueprintjs/core";
@@ -57,7 +56,7 @@ import { Icon, IconSize } from "@blueprintjs/core";
 <Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys} />
 ```
 
-Custom sizes are supported. The following React component:
+Custom sizes are supported. The following React element:
 
 ```tsx
 <Icon icon="globe" size={30} />
@@ -65,18 +64,19 @@ Custom sizes are supported. The following React component:
 
 ...renders this HTML markup:
 
-```html
-<svg class="@ns-icon" data-icon="globe" width="30" height="30" viewBox="0 0 20 20">
-    <title>globe</title>
-    <path d="..."></path>
-</svg>
+```xml
+<span class="@ns-icon @ns-icon-globe" aria-hidden="true">
+    <svg data-icon="globe" width="30" height="30" viewBox="0 0 20 20" role="img">
+        <path d="..."></path>
+    </svg>
+</span>
 ```
 
 @## Props interface
 
-@interface IconProps
+@interface DefaultIconProps
 
-@## Root element DOM attributes
+@## DOM attributes
 
 The `<Icon>` component forwards extra HTML attributes to its root DOM element. By default,
 the root element is a `<span>` wrapper around the icon `<svg>`. The tag name of this element
@@ -85,10 +85,10 @@ may be customized via the `tagName` prop as either:
 - a custom HTML tag name (for example `<div>` instead of the default `<span>` wrapper), or
 - `null`, which makes the component omit the wrapper element and only render the `<svg>` as its root element
 
-By default, `<Icon>` supports a limited set of HTML attributes which are assignable to all HTML and SVG
-elements. In some cases, you may want to specify more specific attributes which are only available on HTML elements
+By default, `<Icon>` supports a limited set of DOM attributes which are assignable to _all_ HTML and SVG
+elements. In some cases, you may want to use more specific attributes which are only available on HTML elements
 or SVG elements. The `<Icon>` component has a generic type which allows for this more advanced usage. You can
-specify a type parameter on the component opening tag to, for example, set an HTML-only attribute:
+specify a type parameter on the component opening tag to (for example) set an HTML-only attribute:
 
 ```tsx
 import { Icon } from "@blueprintjs/core";
@@ -96,7 +96,22 @@ import * as React from "react";
 
 function Example() {
     const [isDraggable, setIsDraggable] = React.useState();
+    // explicitly declare type of the root element so that we can set the "draggable" DOM attribute
     return <Icon<HTMLSpanElement> icon="drag-handle-horizontal" draggable={isDraggable} />;
+}
+```
+
+Another use case for this type parameter API may be to get the correct type definition for an event handler
+on the root element when _omitting_ the icon wrapper element:
+
+```tsx
+import { Icon } from "@blueprintjs/core";
+import * as React from "react";
+
+function Example() {
+    const handleClick: React.MouseEventHandler<SVGSVGElement> = () => { /* ... */ };
+    // explicitly declare type of the root element so that we can narrow the type of the event handler
+    return <Icon<SVGSVGElement> icon="add" onClick={handleClick} tagName={null} />;
 }
 ```
 
@@ -110,7 +125,7 @@ Note that some `<Icon>` props are not yet supported for these components, such a
 
 @reactExample IconGeneratedComponentExample
 
-@interface SVGIconProps
+@interface DefaultSVGIconProps
 
 @## CSS API
 
