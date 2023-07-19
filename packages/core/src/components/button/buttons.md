@@ -65,7 +65,7 @@ The two button components each support arbitrary HTML attributes for their under
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h5 class="@ns-heading">
 
-Deprecated API: use [`<Button>`](#core/components/button)
+Deprecated API: use `<Button>` or `<AnchorButton>`
 
 </h5>
 <div class="@ns-callout-body">

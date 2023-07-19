@@ -33,7 +33,7 @@ see the [callout here](#core/components/button.props) for more details.
 
 @interface TooltipProps
 
-@## Combining with [__Popover__](#core/components/popover)
+@## Combining with Popover
 
 A single target can be wrapped in both a popover and a tooltip.
 
