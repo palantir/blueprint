@@ -34,15 +34,19 @@ export type SVGIconContainerProps<T extends Element> = Omit<SVGIconProps<T>, "ch
     children: JSX.Element | JSX.Element[];
 };
 
-// Type hack required to make forwardRef work with generic components. Note that this slows down TypeScript
-// compilation, but it better than the alternative of globally augmenting "@types/react".
-// see https://stackoverflow.com/a/73795494/7406866
-interface GenericSVGIconContainer extends React.FC<SVGIconContainerProps<Element>> {
+/**
+ * Generic icon container component type. This is essentially a type hack required to make forwardRef work with generic
+ * components. Note that this slows down TypeScript compilation, but it better than the alternative of globally
+ * augmenting "@types/react".
+ *
+ * @see https://stackoverflow.com/a/73795494/7406866
+ */
+export interface SVGIconContainerComponent extends React.FC<SVGIconContainerProps<Element>> {
     <T extends Element = Element>(props: SVGIconContainerProps<T>): React.ReactElement | null;
 }
 
 // eslint-disable-next-line prefer-arrow-callback
-export const SVGIconContainer: GenericSVGIconContainer = React.forwardRef(function <T extends Element>(
+export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(function <T extends Element>(
     props: SVGIconContainerProps<T>,
     ref: React.Ref<T>,
 ) {

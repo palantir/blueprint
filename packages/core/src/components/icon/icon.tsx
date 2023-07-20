@@ -86,10 +86,14 @@ export interface DefaultIconProps extends IntentProps, Props, DefaultSVGIconProp
     // empty interface for documentation purposes (documentalist handles this better than the IconProps<T> type alias)
 }
 
-// Type hack required to make forwardRef work with generic components. Note that this slows down TypeScript
-// compilation, but it better than the alternative of globally augmenting "@types/react".
-// see https://stackoverflow.com/a/73795494/7406866
-interface GenericIcon extends React.FC<IconProps<Element>> {
+/**
+ * Generic icon component type. This is essentially a type hack required to make forwardRef work with generic
+ * components. Note that this slows down TypeScript compilation, but it better than the alternative of globally
+ * augmenting "@types/react".
+ *
+ * @see https://stackoverflow.com/a/73795494/7406866
+ */
+export interface IconComponent extends React.FC<IconProps<Element>> {
     <T extends Element = Element>(props: IconProps<T>): React.ReactElement | null;
 }
 
@@ -99,7 +103,10 @@ interface GenericIcon extends React.FC<IconProps<Element>> {
  * @see https://blueprintjs.com/docs/#core/components/icon
  */
 // eslint-disable-next-line prefer-arrow-callback
-export const Icon: GenericIcon = React.forwardRef(function <T extends Element>(props: IconProps<T>, ref: React.Ref<T>) {
+export const Icon: IconComponent = React.forwardRef(function <T extends Element>(
+    props: IconProps<T>,
+    ref: React.Ref<T>,
+) {
     const { autoLoad, className, color, icon, intent, tagName, svgProps, title, htmlTitle, ...htmlProps } = props;
 
     // Preserve Blueprint v4.x behavior: iconSize prop takes predecence, then size prop, then fall back to default value
