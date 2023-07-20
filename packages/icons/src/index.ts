@@ -19,7 +19,7 @@ export { IconSvgPaths16, IconSvgPaths20, getIconPaths } from "./allPaths";
 
 export { Icons, IconLoaderOptions, IconPathsLoader } from "./iconLoader";
 export { DefaultSVGIconAttributes, DefaultSVGIconProps, SVGIconAttributes, SVGIconProps } from "./svgIconProps";
-export { SVGIconContainer, SVGIconContainerProps } from "./svgIconContainer";
+export { SVGIconContainer, SVGIconContainerComponent, SVGIconContainerProps } from "./svgIconContainer";
 export { getIconContentString, IconCodepoints } from "./iconCodepoints";
 export { IconName, IconNames } from "./iconNames";
 export { IconSize, IconPaths } from "./iconTypes";
