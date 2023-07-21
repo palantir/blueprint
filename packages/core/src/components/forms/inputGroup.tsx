@@ -40,7 +40,7 @@ export interface InputGroupProps
     /** Whether this input should use large styles. */
     large?: boolean;
 
-    /** The callback invoked when the value changes.
+    /** The callback invoked when the value changes. */
     onValueChange?(valueAsString: string/*, inputElement: HTMLInputElement | null*/): void;
 
     /** Whether this input should use small styles. */
