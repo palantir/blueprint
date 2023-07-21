@@ -109,7 +109,7 @@ export const BUTTON_SPINNER = `${BUTTON}-spinner`;
 export const BUTTON_TEXT = `${BUTTON}-text`;
 
 export const CALLOUT = `${NS}-callout`;
-export const CALLOUT_HAS_BODY_TEXT = `${CALLOUT}-has-body-text`;
+export const CALLOUT_HAS_BODY_CONTENT = `${CALLOUT}-has-body-content`;
 export const CALLOUT_ICON = `${CALLOUT}-icon`;
 
 export const CARD = `${NS}-card`;

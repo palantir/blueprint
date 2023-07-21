@@ -67,7 +67,7 @@ $callout-header-margin-top: $pt-grid-size * 0.2;
     margin-top: $callout-header-margin-top;
   }
 
-  &.#{$ns}-callout-has-body-text {
+  &.#{$ns}-callout-has-body-content {
     .#{$ns}-heading {
       margin-bottom: $half-grid-size;
     }
