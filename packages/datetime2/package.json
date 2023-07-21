@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/datetime2",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "Re-exports of @blueprintjs/datetime APIs",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -36,8 +36,8 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^5.1.4",
-        "@blueprintjs/datetime": "^5.0.6",
+        "@blueprintjs/core": "^5.1.5",
+        "@blueprintjs/datetime": "^5.0.7",
         "date-fns": "^2.28.0",
         "tslib": "~2.5.0"
     },

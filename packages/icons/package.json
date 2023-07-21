@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/icons",
-    "version": "5.1.3",
+    "version": "5.1.4",
     "description": "Components, fonts, icons, and css files for creating and displaying icons.",
     "main": "lib/cjs/generated/index.js",
     "module": "lib/esm/generated/index.js",
