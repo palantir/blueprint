@@ -109,8 +109,8 @@ export const BUTTON_SPINNER = `${BUTTON}-spinner`;
 export const BUTTON_TEXT = `${BUTTON}-text`;
 
 export const CALLOUT = `${NS}-callout`;
+export const CALLOUT_HAS_BODY_TEXT = `${CALLOUT}-has-body-text`;
 export const CALLOUT_ICON = `${CALLOUT}-icon`;
-export const CALLOUT_BODY = `${CALLOUT}-body`;
 
 export const CARD = `${NS}-card`;
 
