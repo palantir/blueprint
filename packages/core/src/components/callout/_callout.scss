@@ -65,9 +65,11 @@ $callout-header-margin-top: $pt-grid-size * 0.2;
     line-height: $pt-icon-size-standard;
     margin-bottom: 0;
     margin-top: $callout-header-margin-top;
+  }
 
-    + .#{$ns}-callout-body {
-      margin-top: $half-grid-size;
+  &.#{$ns}-callout-has-body-content {
+    .#{$ns}-heading {
+      margin-bottom: $half-grid-size;
     }
   }
 

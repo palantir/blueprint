@@ -75,18 +75,16 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
     public render() {
         const { className, children, icon, intent, title, ...htmlProps } = this.props;
         const iconElement = this.renderIcon(icon, intent);
-        const classes = classNames(
-            Classes.CALLOUT,
-            Classes.intentClass(intent),
-            { [Classes.CALLOUT_ICON]: iconElement != null },
-            className,
-        );
+        const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className, {
+            [Classes.CALLOUT_HAS_BODY_CONTENT]: !Utils.isReactNodeEmpty(children),
+            [Classes.CALLOUT_ICON]: iconElement != null,
+        });
 
         return (
             <div className={classes} {...htmlProps}>
                 {iconElement}
                 {title && <H5>{title}</H5>}
-                {Utils.isReactNodeEmpty(children) ? undefined : <div className={Classes.CALLOUT_BODY}>{children}</div>}
+                {children}
             </div>
         );
     }
