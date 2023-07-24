@@ -7,16 +7,16 @@ $card-list-item-small-min-height: 40px;
 $card-list-item-small-padding: 7px 15px;
 
 .#{$ns}-card-list {
-  width: 100%;
   overflow: auto;
   padding: 0;
+  width: 100%;
 
   &.#{$ns}-contained {
-    box-shadow: none;
     border-radius: 0;
+    box-shadow: none;
   }
 
-  // HACK: The card dark mode border is inset, adding margin / padding to prevent items from going over it
+  // The card border is inset in dark theme, so we need to add margin / padding to prevent items from going over it
   .#{$ns}-dark & {
     padding: 1px;
 
@@ -25,13 +25,13 @@ $card-list-item-small-padding: 7px 15px;
     }
   }
 
-  & > .#{$ns}-card {
+  > .#{$ns}-card {
+    align-items: center;
     border-radius: 0;
     box-shadow: none;
+    display: flex;
     min-height: $card-list-item-default-min-height;
     padding: $card-list-item-default-padding;
-    display: flex;
-    align-items: center;
 
     &.#{$ns}-interactive:hover,
     &.#{$ns}-interactive:active {
