@@ -22,14 +22,6 @@ import { Card } from "../card/card";
 
 export interface CardListProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
-     * Set true if the list is in a container without padding.
-     * Elevation and border radius will be removed.
-     *
-     * @default false
-     */
-    contained?: boolean;
-
-    /**
      * Whether this component should use compact styles.
      *
      * @default false
@@ -38,11 +30,10 @@ export interface CardListProps extends Props, HTMLDivProps, React.RefAttributes<
 }
 
 export const CardList: React.FC<CardListProps> = React.forwardRef((props, ref) => {
-    const { className, contained, children, compact, ...htmlProps } = props;
+    const { className, children, compact, ...htmlProps } = props;
 
     const classes = classNames(Classes.CARD_LIST, className, {
         [Classes.COMPACT]: compact,
-        [Classes.CONTAINED]: contained,
     });
 
     return (
@@ -53,6 +44,5 @@ export const CardList: React.FC<CardListProps> = React.forwardRef((props, ref) =
 });
 CardList.defaultProps = {
     compact: false,
-    contained: false,
 };
 CardList.displayName = `${DISPLAYNAME_PREFIX}.CardList`;

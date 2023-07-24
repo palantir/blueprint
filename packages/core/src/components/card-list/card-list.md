@@ -16,9 +16,12 @@ be styled with CSS to scroll vertically.
 import { Card, CardList } from "@blueprintjs/core";
 
 <CardList>
+    <Card>Basil</Card>
     <Card>Olive oil</Card>
-    <Card>Ground black pepper</Card>
-    <Card>Carrots</Card>
+    <Card>Kosher Salt</Card>
+    <Card>Garlic</Card>
+    <Card>Pine nuts</Card>
+    <Card>Parmigiano Reggiano</Card>
 </CardList>
 ```
 
@@ -28,14 +31,16 @@ __CardList__ may be used as content for the [__Section__](#core/components/secti
 features like a title & description.
 
 ```tsx
-import { Card, CardList, Section } from "@blueprintjs/core";
+import { Card, CardList, Section, SectionCard } from "@blueprintjs/core";
 
-<Section title="Ingredients" collapsible={true}>
-    <CardList>
-        <Card>Olive oil</Card>
-        <Card>Ground black pepper</Card>
-        <Card>Carrots</Card>
-    </CardList>
+<Section title="Traditional pesto">
+    <SectionCard padded={false}>
+        <CardList>
+            <Card>Basil</Card>
+            <Card>Olive oil</Card>
+            {/* ... */}
+        </CardList>
+    </SectionCard>
 </Section>
 ```
 

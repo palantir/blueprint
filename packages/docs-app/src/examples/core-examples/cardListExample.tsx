@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
 import { Button, Card, CardList, Classes, Code, H5, Section, SectionCard, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { ChevronRight } from "@blueprintjs/icons";
 
 export interface CardListExampleState {
     isCompact: boolean;
     useInteractiveCards: boolean;
+    useScrollableContainer: boolean;
     useSectionContainer: boolean;
 }
 
@@ -30,11 +32,12 @@ export class CardListExample extends React.PureComponent<ExampleProps, CardListE
     public state: CardListExampleState = {
         isCompact: false,
         useInteractiveCards: true,
+        useScrollableContainer: false,
         useSectionContainer: false,
     };
 
     public render() {
-        const { isCompact, useInteractiveCards, useSectionContainer } = this.state;
+        const { isCompact, useInteractiveCards, useScrollableContainer, useSectionContainer } = this.state;
 
         const options = (
             <>
@@ -48,6 +51,12 @@ export class CardListExample extends React.PureComponent<ExampleProps, CardListE
                     }
                     onChange={this.toggleUseSectionContainer}
                 />
+                <Switch
+                    disabled={!useSectionContainer}
+                    checked={useScrollableContainer}
+                    label="Use scrollable container"
+                    onChange={this.toggleUseScrollableContainer}
+                />
                 <H5>CardList Props</H5>
                 <Switch checked={isCompact} label="Compact" onChange={this.toggleIsCompact} />
                 <H5>Card Props</H5>
@@ -55,11 +64,17 @@ export class CardListExample extends React.PureComponent<ExampleProps, CardListE
             </>
         );
 
+        const sectionCardClasses = classNames("docs-section-card", {
+            "docs-section-card-limited-height": useScrollableContainer,
+        });
+
         return (
             <Example options={options} {...this.props}>
                 {useSectionContainer ? (
-                    <Section title="Ingredients" compact={isCompact}>
-                        <SectionCard padded={false}>{this.renderList()}</SectionCard>
+                    <Section title="Traditional pesto" subtitle="Ingredients" compact={isCompact}>
+                        <SectionCard className={sectionCardClasses} padded={false}>
+                            {this.renderList()}
+                        </SectionCard>
                     </Section>
                 ) : (
                     this.renderList()
@@ -69,11 +84,11 @@ export class CardListExample extends React.PureComponent<ExampleProps, CardListE
     }
 
     private renderList() {
-        const { isCompact, useInteractiveCards, useSectionContainer } = this.state;
-        const ingredients: string[] = ["Olive oil", "Ground black pepper", "Carrots", "Onions"];
+        const { isCompact, useInteractiveCards } = this.state;
+        const ingredients = ["Basil", "Olive oil", "Kosher salt", "Garlic", "Pine nuts", "Parmigiano Reggiano"];
 
         return (
-            <CardList contained={useSectionContainer} compact={isCompact}>
+            <CardList compact={isCompact}>
                 {ingredients.map(ingredient => (
                     <Card interactive={useInteractiveCards} key={ingredient}>
                         <span>{ingredient}</span>
@@ -88,9 +103,17 @@ export class CardListExample extends React.PureComponent<ExampleProps, CardListE
         );
     }
 
-    private toggleIsCompact = () => this.setState({ isCompact: !this.state.isCompact });
+    private toggleIsCompact = handleBooleanChange(isCompact => this.setState({ isCompact }));
 
-    private toggleUseInteractiveCards = () => this.setState({ useInteractiveCards: !this.state.useInteractiveCards });
+    private toggleUseInteractiveCards = handleBooleanChange(useInteractiveCards =>
+        this.setState({ useInteractiveCards }),
+    );
 
-    private toggleUseSectionContainer = () => this.setState({ useSectionContainer: !this.state.useSectionContainer });
+    private toggleUseScrollableContainer = handleBooleanChange(useScrollableContainer =>
+        this.setState({ useScrollableContainer }),
+    );
+
+    private toggleUseSectionContainer = handleBooleanChange(useSectionContainer =>
+        this.setState({ useSectionContainer }),
+    );
 }

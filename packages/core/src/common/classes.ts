@@ -35,7 +35,6 @@ if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
 export const ACTIVE = `${NS}-active`;
 export const ALIGN_LEFT = `${NS}-align-left`;
 export const ALIGN_RIGHT = `${NS}-align-right`;
-export const CONTAINED = `${NS}-contained`;
 export const COMPACT = `${NS}-compact`;
 export const DARK = `${NS}-dark`;
 export const DISABLED = `${NS}-disabled`;

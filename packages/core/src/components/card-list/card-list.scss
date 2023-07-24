@@ -1,31 +1,19 @@
 @import "../../common/variables";
 
+$card-list-border-width: 1px !default;
+
 // N.B. min-height is calculated as height of a button + vertical padding. We need to add an extra pixel to account for
 // the bottom border.
-$card-list-item-default-min-height: ($pt-grid-size * 5) + 1px;
-$card-list-item-default-padding: $pt-grid-size (2 * $pt-grid-size);
+$card-list-item-default-min-height: ($pt-grid-size * 5) + $card-list-border-width !default;
+$card-list-item-default-padding: $pt-grid-size (2 * $pt-grid-size) !default;
 
-$card-list-item-small-min-height: ($pt-grid-size * 4) + 1px;
-$card-list-item-small-padding: 7px 15px;
+$card-list-item-small-min-height: ($pt-grid-size * 4) + $card-list-border-width !default;
+$card-list-item-small-padding: 7px 15px !default;
 
 .#{$ns}-card-list {
   overflow: auto;
   padding: 0;
   width: 100%;
-
-  &.#{$ns}-contained {
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  // The card border is inset in dark theme, so we need to add margin / padding to prevent items from going over it
-  .#{$ns}-dark & {
-    padding: 1px;
-
-    &.#{$ns}-contained {
-      margin: 1px;
-    }
-  }
 
   > .#{$ns}-card {
     align-items: center;
@@ -57,5 +45,19 @@ $card-list-item-small-padding: 7px 15px;
   &.#{$ns}-compact > .#{$ns}-card {
     min-height: $card-list-item-small-min-height;
     padding: $card-list-item-small-padding;
+  }
+
+  .#{$ns}-dark & {
+    // card border is inset in dark theme, so we need to add padding to prevent items from going over it
+    padding: 1px;
+  }
+}
+
+.#{$ns}-section .#{$ns}-card-list {
+  border-radius: 0;
+  box-shadow: none;
+
+  .#{$ns}-dark & {
+    margin: 1px;
   }
 }

@@ -64,6 +64,17 @@
   .#{$ns}-card {
     justify-content: space-between;
   }
+
+  .docs-section-card-limited-height {
+    max-height: 152px;
+    overflow-y: auto;
+  }
+
+  .#{$ns}-section.#{$ns}-compact {
+    .docs-section-card-limited-height {
+      max-height: 122px;
+    }
+  }
 }
 
 #{example("EditableText")} {
