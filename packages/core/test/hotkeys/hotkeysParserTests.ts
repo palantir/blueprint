@@ -25,7 +25,7 @@ import {
     parseKeyCombo,
 } from "../../src/components/hotkeys/hotkeyParser";
 
-describe.only("HotkeysParser", () => {
+describe("HotkeysParser", () => {
     // N.B. we test these two functions together to match how they are used in useHotkeys()
     describe("getKeyCombo + parseKeyCombo", () => {
         interface ComboTest {

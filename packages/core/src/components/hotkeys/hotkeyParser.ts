@@ -61,7 +61,13 @@ export const CONFIG_ALIASES: KeyMap = {
     space: " ",
 };
 
-/** Key mapping used in getKeyCombo() implementation for physical keys which are not alphabet characters or digits. */
+/**
+ * Key mapping used in getKeyCombo() implementation for physical keys which are not alphabet characters or digits.
+ *
+ * N.B. at some point, we should stop using this mapping, since we can implement the desired functionality in a more
+ * straightforward way by using the `event.code` property, which will always tell us the identifiers represented by the
+ * _values_ in this object (the default physical keys, unaltered by modifier keys or keyboard layout).
+ */
 export const SHIFT_KEYS: KeyMap = {
     "~": "`",
     _: "-",
@@ -121,7 +127,7 @@ export const parseKeyCombo = (combo: string): KeyCombo => {
 };
 
 /**
- * Interprets a keyboard event as a valid KeyCoboTag `combo` prop string value.
+ * Interprets a keyboard event as a valid KeyComboTag `combo` prop string value.
  *
  * Note that this function is only used in the docs example and tests; it is not used by `useHotkeys()` or any
  * Blueprint consumers that we are currently aware of.
