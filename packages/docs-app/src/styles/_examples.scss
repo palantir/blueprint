@@ -200,7 +200,7 @@
   }
 }
 
-#{example("HotkeyTesterExample")} {
+#{example("HotkeyTester")} {
   .docs-hotkey-tester {
     @include pt-flex-container(column, $pt-grid-size);
     align-items: center;

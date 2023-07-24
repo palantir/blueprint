@@ -75,13 +75,19 @@ event handlers with the `handleKeyDown` and `handleKeyUp` functions in the child
 you will likely have to set a non-negative `tabIndex` on the DOM node to which these local event handlers are
 bound for them to work correctly.
 
-__HotkeysTarget2__ takes an optional `options: UseHotkeysOptions` prop which can customize some of the hook's
-default behavior.
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+
+See the [useHotkeys hook documentation](#core/hooks/use-hotkeys.key-combos) to understand the semantics of "key combos":
+how they are configured and how they will appear in the global dialog.
+
+</div>
 
 @## Props interface
 
 @interface HotkeysTarget2Props
 
-@interface HotkeyConfig
-
 @interface UseHotkeysOptions
+
+@## Hotkey configuration
+
+@interface HotkeyConfig
