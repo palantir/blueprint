@@ -58,7 +58,6 @@ export const CONFIG_ALIASES: KeyMap = {
     left: "ArrowLeft",
     down: "ArrowDown",
     right: "ArrowRight",
-    space: " ",
 };
 
 /**
@@ -179,8 +178,10 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
         // Code looks like "KeyA", etc.
         return e.code.substring(KEY_CODE_PREFIX.length).toLowerCase();
     } else if (e.code.startsWith(DIGIT_CODE_PREFIX)) {
-        // Similar to previous case: code looks like "Digit1", etc.
+        // Code looks like "Digit1", etc.
         return e.code.substring(DIGIT_CODE_PREFIX.length).toLowerCase();
+    } else if (e.code === "Space") {
+        return "space";
     }
 
     return undefined;
