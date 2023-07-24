@@ -27,6 +27,9 @@ export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement>
     /** Whether the menu items in this menu should use a large appearance. */
     large?: boolean;
 
+    /** Whether the menu items in this menu should use a small appearance. */
+    small?: boolean;
+
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
     ulRef?: React.Ref<HTMLUListElement>;
 }
@@ -40,8 +43,11 @@ export class Menu extends AbstractPureComponent<MenuProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
 
     public render() {
-        const { className, children, large, ulRef, ...htmlProps } = this.props;
-        const classes = classNames(Classes.MENU, { [Classes.LARGE]: large }, className);
+        const { className, children, large, small, ulRef, ...htmlProps } = this.props;
+        const classes = classNames(className, Classes.MENU, {
+            [Classes.LARGE]: large,
+            [Classes.SMALL]: small,
+        });
         return (
             <ul role="menu" {...htmlProps} className={classes} ref={ulRef}>
                 {children}

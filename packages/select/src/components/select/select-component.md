@@ -1,12 +1,14 @@
 @# Select
 
-The Select component renders a UI to choose one item from a list. Its children are wrapped in a
-[Popover](#core/components/popover) that contains the list and an optional
-[InputGroup](#core/components/text-inputs.input-group) to filter it.
-You may provide a predicate to customize the filtering algorithm. The value of a Select
+The __Select__ component renders a UI to choose one item from a list. Its children are wrapped in a
+[__Popover__](#core/components/popover) that contains the list and an optional
+[__InputGroup__](#core/components/text-inputs.input-group) to filter it.
+You may provide a predicate to customize the filtering algorithm. The value of a __Select__
 (the currently chosen item) is uncontrolled: listen to changes with the `onItemSelect` callback prop.
 
 @reactExample SelectExample
+
+@## Usage
 
 ```tsx
 import { Button, MenuItem } from "@blueprintjs/core";
@@ -73,25 +75,38 @@ const FilmSelect: React.FC = () => {
 ReactDOM.render(<FilmSelect />, document.querySelector("#root"));
 ```
 
-In TypeScript, `Select<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type so you can easily define handlers without transformation steps, but most props are required as a result.
+In TypeScript, `Select<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of
+one item in `items`. The props on this local type will now operate on your data type so you can easily define handlers
+without transformation steps, but most props are required as a result.
+
+@## Props interface
+
+@interface SelectProps
 
 @## Querying
 
-Supply a predicate to automatically query items based on the `InputGroup` value. Use `itemPredicate` to filter each item individually; this is great for lightweight searches. Use `itemListPredicate` to query the entire array in one go, and even reorder it, such as with [fuzz-aldrin-plus](https://github.com/jeancroy/fuzz-aldrin-plus). The array of filtered items is cached internally by `QueryList` state and only recomputed when `query` or `items`-related props change.
+Supply a predicate to automatically query items based on the __InputGroup__ value. Use `itemPredicate` to filter each item
+individually; this is great for lightweight searches. Use `itemListPredicate` to query the entire array in one go, and
+even reorder it, such as with [fuzz-aldrin-plus](https://github.com/jeancroy/fuzz-aldrin-plus). The array of filtered
+items is cached internally by `QueryList` state and only recomputed when `query` or `items`-related props change.
 
-Omitting both `itemPredicate` and `itemListPredicate` props will cause the component to always render all `items`. It will not hide the `InputGroup`; use the `filterable` prop for that. In this case, you can implement your own filtering and simply change the `items` prop.
+Omitting both `itemPredicate` and `itemListPredicate` props will cause the component to always render all `items`. It
+will not hide the __InputGroup__; use the `filterable` prop for that. In this case, you can implement your own filtering
+and change the `items` prop.
 
-The **@blueprintjs/select** package exports `ItemPredicate<T>` and `ItemListPredicate<T>` type aliases to simplify the process of implementing these functions.
-See the code sample in [Item Renderer API](#select/select-component.item-renderer) below for usage.
+The **@blueprintjs/select** package exports `ItemPredicate<T>` and `ItemListPredicate<T>` type aliases to simplify the
+process of implementing these functions. See the code sample in
+[Item Renderer API](#select/select-component.item-renderer) below for more info.
 
 @### Non-ideal states
 
-If the query returns no results or `items` is empty, then `noResults` will be rendered in place of the usual list. You also have the option to provide `initialContent`, which will render in place of the item list if the query is empty.
+If the query returns no results or `items` is empty, then `noResults` will be rendered in place of the usual list.
+You also have the option to provide `initialContent`, which will render in place of the item list if the query is empty.
 
 @## Disabling
 
-Since Select accepts arbitrary children, disabling a Select componet requires setting `disabled={true}`
-_and also_ disabling its children. For example:
+Since __Select__ accepts arbitrary children, disabling a Select componet requires setting `disabled={true}` _and also_
+disabling its children. For example:
 
 ```tsx
 const FilmSelect: React.FC = () => (
@@ -104,15 +119,21 @@ const FilmSelect: React.FC = () => (
 
 @## Custom menu
 
-By default, `Select` renders the displayed items in a [`Menu`](#core/components/menu). This behavior can be overridden by providing the `itemListRenderer` prop, giving you full control over the layout of the items. For example, you can group items under a common heading, or render large data sets using [react-virtualized](https://github.com/bvaughn/react-virtualized).
+By default, __Select__ renders the displayed items in a [__Menu__](#core/components/menu). This behavior can be
+overridden by providing the `itemListRenderer` prop, giving you full control over the layout of the items. For example,
+you can group items under a common heading, or render large data sets using
+[react-virtualized](https://github.com/bvaughn/react-virtualized).
 
-Note that the non-ideal states of `noResults` and `initialContent` are specific to the default renderer. If you provide the `itemListRenderer` prop, these props will be ignored.
+Note that the non-ideal states of `noResults` and `initialContent` are specific to the default renderer. If you provide
+the `itemListRenderer` prop, these props will be ignored.
 
-See the code sample in [Item List Renderer API](#select/select-component.item-list-renderer) below for usage.
+See the code sample in [Item List Renderer API](#select/select-component.item-list-renderer) below for more info.
 
 @## Controlled usage
 
-The input value can be controlled with the `query` and `onQueryChange` props. _Do not use `inputProps` for this;_ the component ignores `inputProps.value` and `inputProps.onChange` in favor of `query` and `onQueryChange` (as noted in the prop documentation).
+The input value can be controlled with the `query` and `onQueryChange` props. _Do not use `inputProps` for this;_
+the component ignores `inputProps.value` and `inputProps.onChange` in favor of `query` and `onQueryChange`
+(as noted in the prop documentation).
 
 The focused item (for keyboard interactions) can be controlled with the `activeItem` and `onActiveItemChange` props.
 
@@ -132,34 +153,34 @@ const FilmSelect: React.FC = () => (
 );
 ```
 
-This controlled usage allows you to implement all sorts of advanced behavior on
-top of the basic `Select` interactions, such as windowed filtering for large
-data sets.
+This controlled usage allows you to implement all sorts of advanced behavior on top of the basic __Select__
+interactions, such as windowed filtering for large data sets.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
-To control the active item when a "Create Item" option is present, See [Controlling the active item](#select/select-component.controlling-the-active-item) in the "Creating new items" section below.
+To control the active item when a "Create Item" option is present, See
+[Controlling the active item](#select/select-component.controlling-the-active-item) in the "Creating new items"
+section below.
+
 </div>
 
 @## Creating new items
 
-If you wish, you can allow users to select a brand new item that doesn't appear
-in the list, based on the current query string. Use `createNewItemFromQuery` and
-`createNewItemRenderer` to enable this:
-- `createNewItemFromQuery`: Specifies how to convert a user-entered query string
-    into an item of type `<T>` that `Select` understands.
-- `createNewItemRenderer`: Renders a custom "Create Item" element that will be
-    shown at the bottom of the list. When selected via click or `Enter`, this element
-    will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
+If you wish, you can allow users to select a brand new item that doesn't appear in the list, based on the current query
+string. Use `createNewItemFromQuery` and `createNewItemRenderer` to enable this:
+
+-   `createNewItemFromQuery`: Specifies how to convert a user-entered query string into an item of type `<T>` that
+    __Select__ understands.
+-   `createNewItemRenderer`: Renders a custom "Create Item" element that will be shown at the bottom of the list. When
+    selected via click or `Enter`, this element will invoke `onItemSelect` with the item returned from
+    `createNewItemFromQuery`.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
     <h5 class="@ns-heading">Avoiding type conflicts</h5>
 
-The "Create Item" option is represented by the reserved type `CreateNewItem`
-exported from this package. It is exceedingly unlikely but technically possible
-for your custom type `<T>` to conflict with this type. If your type conflicts,
-you may see unexpected behavior; to resolve, consider changing the schema for
-your items.
+The "Create Item" option is represented by the reserved type `CreateNewItem` exported from this package. It is
+exceedingly unlikely but technically possible for your custom type `<T>` to conflict with this type. If your type
+conflicts, you may see unexpected behavior; to resolve, consider changing the schema for your items.
 
 </div>
 
@@ -204,21 +225,18 @@ const FilmSelect: React.FC = () => (
 
 @### Controlling the active item
 
-Controlling the active item is slightly more involved when the "Create Item"
-option is present. At a high level, the process works the same way as before:
-control the `activeItem` value and listen for updates via `onActiveItemChange`.
+Controlling the active item is slightly more involved when the "Create Item" option is present. At a high level, the
+process works the same way as before: control the `activeItem` value and listen for updates via `onActiveItemChange`.
 However, some special handling is required.
 
-When the "Create Item" option is present, the callback will emit
-`activeItem=null` and `isCreateNewItem=true`:
+When the "Create Item" option is present, the callback will emit `activeItem=null` and `isCreateNewItem=true`:
 
 ```tsx
 onActiveItemChange(null, true);
 ```
 
-You can then make the "Create Item" option active by passing the result of
-`getCreateNewItem()` to the `activeItem` prop (the `getCreateNewItem` function
-is exported from this package):
+You can then make the "Create Item" option active by passing the result of `getCreateNewItem()` to the `activeItem`
+prop (the `getCreateNewItem` function is exported from this package):
 
 ```tsx
 activeItem={isCreateNewItemActive ? getCreateNewItem() : activeItem}
@@ -253,14 +271,10 @@ const FilmSelect: React.FC = () => (
 );
 ```
 
-@## Props interface
-
-@interface SelectProps
-
 @### Item renderer
 
-`Select`'s `itemRenderer` will be called for each item and receives the item and a props object containing data specific
-to rendering this item in this frame.
+A __Select__ component's `itemRenderer` will be called for each item and receives the item and a props object containing
+data specific to rendering this item in this frame.
 
 A few things to keep in mind:
 

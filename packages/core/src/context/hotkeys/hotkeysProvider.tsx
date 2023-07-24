@@ -109,7 +109,8 @@ export interface HotkeysProviderProps {
  */
 export const HotkeysProvider = ({ children, dialogProps, renderDialog, value }: HotkeysProviderProps) => {
     const hasExistingContext = value != null;
-    const [state, dispatch] = value ?? React.useReducer(hotkeysReducer, { ...initialHotkeysState, hasProvider: true });
+    const fallbackReducer = React.useReducer(hotkeysReducer, { ...initialHotkeysState, hasProvider: true });
+    const [state, dispatch] = value ?? fallbackReducer;
     const handleDialogClose = React.useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), []);
 
     const dialog = renderDialog?.(state, { handleDialogClose }) ?? (

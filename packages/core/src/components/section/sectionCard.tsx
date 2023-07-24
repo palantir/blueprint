@@ -20,7 +20,7 @@ import * as React from "react";
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-export interface SectionPanelProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
+export interface SectionCardProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
      * Whether to apply visual padding inside the content container element.
      *
@@ -30,20 +30,20 @@ export interface SectionPanelProps extends Props, HTMLDivProps, React.RefAttribu
 }
 
 /**
- * Section panel component.
+ * Section card component.
  *
- * @see https://blueprintjs.com/docs/#core/components/section.section-panel
+ * @see https://blueprintjs.com/docs/#core/components/section.section-card
  */
-export const SectionPanel: React.FC<SectionPanelProps> = React.forwardRef((props, ref) => {
+export const SectionCard: React.FC<SectionCardProps> = React.forwardRef((props, ref) => {
     const { className, children, padded, ...htmlProps } = props;
-    const classes = classNames(Classes.SECTION_PANEL, { [Classes.PADDED]: padded }, className);
+    const classes = classNames(Classes.SECTION_CARD, { [Classes.PADDED]: padded }, className);
     return (
         <div className={classes} ref={ref} {...htmlProps}>
             {children}
         </div>
     );
 });
-SectionPanel.defaultProps = {
+SectionCard.defaultProps = {
     padded: true,
 };
-SectionPanel.displayName = `${DISPLAYNAME_PREFIX}.SectionPanel`;
+SectionCard.displayName = `${DISPLAYNAME_PREFIX}.SectionCard`;

@@ -58,7 +58,7 @@ export { Blockquote, Code, H1, H2, H3, H4, H5, H6, Label, OL, Pre, UL } from "./
 export { HTMLSelect, HTMLSelectIconName, HTMLSelectProps } from "./html-select/htmlSelect";
 export { HTMLTable, HTMLTableProps } from "./html-table/htmlTable";
 export * from "./hotkeys";
-export { Icon, IconName, IconProps, IconSize } from "./icon/icon";
+export { DefaultIconProps, Icon, IconComponent, IconName, IconProps, IconSize } from "./icon/icon";
 export { Menu, MenuProps } from "./menu/menu";
 export { MenuDivider, MenuDividerProps } from "./menu/menuDivider";
 export { MenuItem, MenuItemProps } from "./menu/menuItem";
@@ -98,8 +98,8 @@ export { ResizeEntry, ResizeSensor, ResizeSensorProps } from "./resize-sensor/re
 export { HandleHtmlProps, HandleInteractionKind, HandleProps, HandleType } from "./slider/handleProps";
 export { MultiSlider, MultiSliderProps, SliderBaseProps } from "./slider/multiSlider";
 export { NumberRange, RangeSlider, RangeSliderProps } from "./slider/rangeSlider";
-export { Section, SectionProps } from "./section/section";
-export { SectionPanel, SectionPanelProps } from "./section/sectionPanel";
+export { Section, SectionElevation, SectionProps } from "./section/section";
+export { SectionCard, SectionCardProps } from "./section/sectionCard";
 export { Slider, SliderProps } from "./slider/slider";
 export { Spinner, SpinnerProps, SpinnerSize } from "./spinner/spinner";
 export { Tab, TabId, TabProps } from "./tabs/tab";

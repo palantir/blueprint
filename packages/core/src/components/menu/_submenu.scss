@@ -27,10 +27,10 @@
         &,
         &:hover,
         &:active {
-          @include menu-item-selected-active(false);
+          @include menu-item-active(false);
 
           .#{$ns}-dark & {
-            @include menu-item-selected-active(true);
+            @include menu-item-active(true);
           }
         }
       }

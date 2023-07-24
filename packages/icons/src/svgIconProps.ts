@@ -15,17 +15,46 @@
 
 import * as React from "react";
 
+type OmittedDOMAttributes = "children" | "dangerouslySetInnerHTML";
+
 /**
- * Interface used for generated icon components which already have their name and path defined
- * (through the rendered Handlebars template).
+ * Default set of DOM attributes which are assignable as props to the root element rendered by an
+ * SVG icon component. This limited set of attributes is assignable to any `<Icon>` component regardless
+ * of its `tagName` prop (it works for both HTML and SVG elements).
  */
-export interface SVGIconProps
-    extends React.RefAttributes<any>,
-        Omit<React.DOMAttributes<HTMLElement | SVGSVGElement>, "children" | "dangerouslySetInnerHTML"> {
+export type DefaultSVGIconAttributes = React.AriaAttributes &
+    Omit<React.DOMAttributes<Element>, OmittedDOMAttributes> &
+    Pick<React.HTMLAttributes<Element>, "id" | "style" | "tabIndex" | "role">;
+
+/**
+ * DOM attributes which are assignable as props to the root element rendered by an SVG icon component.
+ * Specify a type parameter to narrow this type and allow more attributes to be passed to the root element.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/icon.dom-attributes
+ *
+ * When `tagName` is specified, either:
+ *  - as a custom HTML element tag name,
+ *  - as `null` to signfiy that there should be no wrapper around the `<svg>` element,
+ *  - or its default value of "span" is used,
+ * then it may be useful to narrow this type to pass along additional attributes which not supported by
+ * the more general `DefaultSVGIconAttributes` interface. You can do this by specifying a generic type param
+ * on `<Icon>` components, for example:
+ *
+ * ```
+ * <Icon<HTMLSpanElement> icon="drag-handle-horizontal" draggable="false" />
+ * ```
+ */
+export type SVGIconAttributes<T extends Element = Element> = T extends SVGElement
+    ? Omit<React.SVGAttributes<T>, OmittedDOMAttributes>
+    : T extends HTMLElement
+    ? Omit<React.HTMLAttributes<T>, OmittedDOMAttributes>
+    : DefaultSVGIconAttributes;
+
+export interface SVGIconOwnProps {
     /** A space-delimited list of class names to pass along to the SVG element. */
     className?: string;
 
-    /** This component does not support custom children. */
+    /** This component does not support child nodes. */
     children?: never;
 
     /**
@@ -76,4 +105,22 @@ export interface SVGIconProps
 
     /** Props to apply to the `SVG` element */
     svgProps?: React.HTMLAttributes<SVGElement>;
+}
+
+// N.B. the following inteface is defined as a type alias instead of an interface due to a TypeScript limitation
+// where interfaces cannot extend conditionally-defined union types.
+/**
+ * Interface for generated icon components which have their name and icon paths statically defined
+ * inside their JS implementation.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/icon.static-components
+ */
+export type SVGIconProps<T extends Element = Element> = React.RefAttributes<T> & SVGIconAttributes<T> & SVGIconOwnProps;
+
+/**
+ * The default SVG icon props interface, equivalent to `SVGIconProps` with its default type parameter.
+ * This is primarly exported for documentation purposes; users should reference `SVGIconProps<T>` instead.
+ */
+export interface DefaultSVGIconProps extends React.RefAttributes<Element>, SVGIconAttributes<Element>, SVGIconOwnProps {
+    // empty interface for documentation purposes (documentalist handles this better than the SVGIconProps<T> type alias)
 }

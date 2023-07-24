@@ -31,6 +31,16 @@ export const CssExample: React.FC<ITag> = ({ value }) => {
     const { getDocsData } = React.useContext(DocumentationContext);
     const [activeModifiers, setActiveModifiers] = React.useState<Set<string>>(new Set());
 
+    const getModifiers = React.useCallback(
+        (prefix: "." | ":") => {
+            return Array.from(activeModifiers.keys())
+                .filter(mod => mod.charAt(0) === prefix)
+                .map(mod => mod.slice(1))
+                .join(" ");
+        },
+        [activeModifiers],
+    );
+
     const getModifierToggleHandler = (modifier: string) => {
         return () => {
             const newModifiers = new Set(activeModifiers);
@@ -60,15 +70,6 @@ export const CssExample: React.FC<ITag> = ({ value }) => {
         </Checkbox>
     ));
 
-    const getModifiers = React.useCallback(
-        (prefix: "." | ":") => {
-            return Array.from(activeModifiers.keys())
-                .filter(mod => mod.charAt(0) === prefix)
-                .map(mod => mod.slice(1))
-                .join(" ");
-        },
-        [activeModifiers],
-    );
     const classModifiers = getModifiers(".");
     const attrModifiers = getModifiers(":");
     const exampleHtml = markup

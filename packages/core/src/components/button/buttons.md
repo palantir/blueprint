@@ -1,10 +1,11 @@
 @# Buttons
 
-Buttons trigger actions when clicked. You may render a button as either a `<button>` or `<a>` HTML element.
+Buttons trigger actions when clicked. You may render a button as either a `<button>` or `<a>` HTML element
+using the `<Button>` and `<AnchorButton>` components, respectively.
 
 @reactExample ButtonsExample
 
-### AnchorButton vs. Button
+@## AnchorButton vs Button
 
 The two button components generate different HTML tags. They each look the same, but they have different semantic
 behaviors according to the HTML spec.
@@ -30,35 +31,50 @@ behaviors according to the HTML spec.
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
     <h5 class="@ns-heading">
 
-Disabled `Button` prevents all interaction
+Disabled __Button__ elements prevent all interaction
 </h5>
 
-Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
+<div class="@ns-callout-body">
 
-`Button` uses the native `disabled` attribute on the `<button>` tag so the browser disables all interactions.
-`AnchorButton` uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled`
-attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
-when disabled but permit other events.
+Use __AnchorButton__ if you need mouse interaction events (such as hovering) on a disabled button.
 
+__Button__ uses the native `disabled` attribute on the `<button>` tag so the browser disables all interactions.
+__AnchorButton__ uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled` attribute. As a result,
+the __AnchorButton__ component will prevent *only* the `onClick` handler when disabled but permit other events.
+
+</div>
 </div>
 
 @## Adding icons
 
-`Button` and `AnchorButton` support `icon` and `rightIcon` props to place an
-icon on either end of their children. Icons can also be supplied as children
-using the `Icon` component.
+__Button__ and __AnchorButton__ support `icon` and `rightIcon` props to place an icon on either end of their children.
+Icons can also be supplied as child elements using the [__Icon__](#core/components/icon) component.
 
 @reactExample ButtonsIconsExample
 
-@## Props
+@## Props interface
 
-The two button components each support arbitrary HTML props for their underlying
-DOM element (`<button>` and `<a>` respectively). Specifying an HTML prop will
-override the component's default for it, such as `role` on `<AnchorButton>`.
+The two button components each support arbitrary HTML attributes for their underlying DOM element
+(`<button>` and `<a>` respectively). These attributes may override the components' default values, such as
+`role` on `<AnchorButton>`.
 
-@interface ButtonProps
+@interface ButtonSharedProps
 
-@## CSS
+@## CSS API
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h5 class="@ns-heading">
+
+Deprecated API: use `<Button>` or `<AnchorButton>`
+
+</h5>
+<div class="@ns-callout-body">
+
+CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
+often fall out of sync as the design system is updated. You should use the React component APIs instead.
+
+</div>
+</div>
 
 Use the `@ns-button` class to access button styles. You should implement buttons using the
 `<button>` or `<a>` tags rather than `<div>` for accessibility.

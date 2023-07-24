@@ -1,8 +1,8 @@
 @# Timezone select
 
-__TimezoneSelect__ allows the user to select from a list of timezones. The list is coded into the
-library itself, so it does not depend on any external packages for the list of timezones.
-It uses [date-fns-tz](https://github.com/marnusw/date-fns-tz) for display formatting.
+__TimezoneSelect__ allows the user to select from a list of timezones. The list is built into the library itself, so it
+does not depend on any external packages for the list of timezones. It uses
+[date-fns-tz](https://github.com/marnusw/date-fns-tz) for display formatting.
 
 @reactExample TimezoneSelectExample
 
@@ -25,9 +25,8 @@ function TimezoneExample() {
 }
 ```
 
-The optional `date` prop is used to determine the timezone offsets.
-This is useful to disambiguate timezones which have more than one offset from UTC due to
-[Daylight saving time](https://en.wikipedia.org/wiki/Daylight_saving_time).
+The optional `date` prop is used to determine the timezone offsets. This is useful to disambiguate timezones which have
+more than one offset from UTC due to [Daylight saving time](https://en.wikipedia.org/wiki/Daylight_saving_time).
 
 By default, the component will show a clickable button target which displays the selected timezone formatted according
 to the `valueDisplayFormat` prop. The button can be customized via `disabled`, `placeholder`, and more generally via
@@ -44,10 +43,13 @@ in this case, all button-specific props will be ignored:
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h5 class="@ns-heading">Local timezone detection</h5>
+<div class="@ns-callout-body">
 
-We detect the local timezone using the
+__TimezoneSelect__ detects the local timezone using the
 [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions)
 when the `showLocalTimezone` prop is enabled and cannot guarantee correctness in all browsers.
+
+</div>
 </div>
 
 @## Props interface

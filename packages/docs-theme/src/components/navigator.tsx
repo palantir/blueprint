@@ -118,7 +118,6 @@ export class Navigator extends React.PureComponent<NavigatorProps> {
                 multiline={true}
                 onClick={props.handleClick}
                 onFocus={props.handleFocus}
-                roleStructure="listoption"
                 text={text}
             />
         );

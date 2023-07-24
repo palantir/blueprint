@@ -1,17 +1,14 @@
 @# Breadcrumbs
 
-Breadcrumbs identify the path to the current resource in an application.
+__Breadcrumbs__ identify the path to the current resource in an application.
 
 @reactExample BreadcrumbsExample
 
-@## Props
+@## Usage
 
-@### Breadcrumbs
-
-The Breadcrumbs component requires an `items` array of
-[breadcrumb props](#core/components/breadcrumbs.breadcrumb) and renders them in
-an [OverflowList](#core/components/overflow-list) to automatically collapse
-breadcrumbs that do not fit in the available space.
+The __Breadcrumbs__ component requires an `items` array of [breadcrumb props](#core/components/breadcrumbs.breadcrumb)
+and renders them in an [__OverflowList__](#core/components/overflow-list) to automatically collapse breadcrumbs that
+do not fit in the available space.
 
 ```tsx
 import { Breadcrumbs, BreadcrumbProps, Icon } from "@blueprintjs/core";
@@ -40,13 +37,14 @@ export class BreadcrumbsExample extends React.PureComponent {
 }
 ```
 
+@## Props interface
+
 @interface BreadcrumbsProps
 
 @### Breadcrumb
 
-The Breadcrumb component renders an `a.@ns-breadcrumb` if given an `href` or
-`onClick` and a `span.@ns-breadcrumb` otherwise. Typically you will supply an
-array of `BreadcrumbProps` to the `<Breadcrumbs items>` prop and only need to
+The __Breadcrumb__ component renders an `a.@ns-breadcrumb` if given an `href` or `onClick` and a `span.@ns-breadcrumb`
+otherwise. Typically you will supply an array of `BreadcrumbProps` to the `<Breadcrumbs items>` prop and only need to
 render this component directly when defining a custom `breadcrumbRenderer`.
 
 @interface BreadcrumbProps

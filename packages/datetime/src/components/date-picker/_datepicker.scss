@@ -168,8 +168,9 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   justify-content: space-between;
   margin: 0 ($pt-button-height - $datepicker-padding) $datepicker-padding;
 
-  // HTMLSelect overrides for a narrower appearance
-  select {
+  // override HTMLSelect styles for a narrower appearance
+  // N.B. these styles are important to achieve accurate measurements to position the dropdown arrows in <DatePickerCaption>
+  .#{$ns}-html-select select {
     font-weight: 600;
     padding-left: $datepicker-padding;
     padding-right: $pt-icon-size-standard;

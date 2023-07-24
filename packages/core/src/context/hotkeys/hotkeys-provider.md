@@ -6,12 +6,14 @@
 Migrating from [HotkeysTarget](#core/legacy/hotkeys-legacy)?
 
 </h5>
+<div class="@ns-callout-body">
 
-HotkeysProvider and `useHotkeys`, used together, are a replacement for HotkeysTarget.
+__HotkeysProvider__ and `useHotkeys`, used together, are a replacement for __HotkeysTarget__.
 You are encouraged to use this new API, as it will become the standard APIs in a future major version of Blueprint.
 See the full [migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration)
 on the wiki.
 
+</div>
 </div>
 
 HotkeysProvider generates a React context necessary for the [`useHotkeys` hook](#core/hooks/use-hotkeys)
