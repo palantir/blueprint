@@ -30,7 +30,7 @@ export interface CardListProps extends Props, HTMLDivProps, React.RefAttributes<
     contained?: boolean;
 
     /**
-     * Whether this section should use compact styles.
+     * Whether this component should use compact styles.
      *
      * @default false
      */
@@ -40,12 +40,10 @@ export interface CardListProps extends Props, HTMLDivProps, React.RefAttributes<
 export const CardList: React.FC<CardListProps> = React.forwardRef((props, ref) => {
     const { className, contained, children, compact, ...htmlProps } = props;
 
-    const classes = classNames(
-        Classes.CARD_LIST,
-        { [Classes.CONTAINED]: contained },
-        { [Classes.COMPACT]: compact },
-        className,
-    );
+    const classes = classNames(Classes.CARD_LIST, className, {
+        [Classes.COMPACT]: compact,
+        [Classes.CONTAINED]: contained,
+    });
 
     return (
         <Card role="list" elevation={Elevation.ZERO} className={classes} {...htmlProps} ref={ref}>
@@ -53,7 +51,6 @@ export const CardList: React.FC<CardListProps> = React.forwardRef((props, ref) =
         </Card>
     );
 });
-
 CardList.defaultProps = {
     compact: false,
     contained: false,

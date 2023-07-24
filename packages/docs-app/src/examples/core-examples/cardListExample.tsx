@@ -16,43 +16,48 @@
 
 import * as React from "react";
 
-import { Button, Card, CardList, Classes, H5, Icon, Intent, Section, SectionCard, Switch } from "@blueprintjs/core";
+import { Button, Card, CardList, Classes, Code, H5, Section, SectionCard, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { IconNames } from "@blueprintjs/icons";
+import { ChevronRight } from "@blueprintjs/icons";
 
 export interface CardListExampleState {
-    isContained: boolean;
-    hasInteractiveCards: boolean;
     isCompact: boolean;
+    useInteractiveCards: boolean;
+    useSectionContainer: boolean;
 }
 
-export class CardListExample extends React.PureComponent<ExampleProps> {
+export class CardListExample extends React.PureComponent<ExampleProps, CardListExampleState> {
     public state: CardListExampleState = {
-        hasInteractiveCards: true,
         isCompact: false,
-        isContained: false,
+        useInteractiveCards: true,
+        useSectionContainer: false,
     };
 
     public render() {
-        const { isContained, hasInteractiveCards, isCompact } = this.state;
+        const { isCompact, useInteractiveCards, useSectionContainer } = this.state;
 
         const options = (
             <>
-                <H5>Props</H5>
-                <Switch checked={isContained} label="Contained" onChange={this.handleContainedChange} />
-                <Switch checked={isCompact} label="Compact" onChange={this.handleSmallChange} />
-                <H5>Example</H5>
+                <H5>Layout</H5>
                 <Switch
-                    checked={hasInteractiveCards}
-                    label="Interactive cards"
-                    onChange={this.handleInteractiveCardsChange}
+                    checked={useSectionContainer}
+                    labelElement={
+                        <span>
+                            Use <Code>Section</Code> container
+                        </span>
+                    }
+                    onChange={this.toggleUseSectionContainer}
                 />
+                <H5>CardList Props</H5>
+                <Switch checked={isCompact} label="Compact" onChange={this.toggleIsCompact} />
+                <H5>Card Props</H5>
+                <Switch checked={useInteractiveCards} label="Interactive" onChange={this.toggleUseInteractiveCards} />
             </>
         );
 
         return (
             <Example options={options} {...this.props}>
-                {isContained ? (
+                {useSectionContainer ? (
                     <Section title="Ingredients" compact={isCompact}>
                         <SectionCard padded={false}>{this.renderList()}</SectionCard>
                     </Section>
@@ -64,24 +69,18 @@ export class CardListExample extends React.PureComponent<ExampleProps> {
     }
 
     private renderList() {
-        const { hasInteractiveCards, isContained, isCompact } = this.state;
+        const { isCompact, useInteractiveCards, useSectionContainer } = this.state;
         const ingredients: string[] = ["Olive oil", "Ground black pepper", "Carrots", "Onions"];
 
         return (
-            <CardList contained={isContained} compact={isCompact}>
+            <CardList contained={useSectionContainer} compact={isCompact}>
                 {ingredients.map(ingredient => (
-                    <Card
-                        style={{ justifyContent: "space-between" }}
-                        interactive={hasInteractiveCards}
-                        key={ingredient}
-                    >
+                    <Card interactive={useInteractiveCards} key={ingredient}>
                         <span>{ingredient}</span>
-                        {hasInteractiveCards ? (
-                            <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
+                        {useInteractiveCards ? (
+                            <ChevronRight className={Classes.TEXT_MUTED} />
                         ) : (
-                            <Button minimal={true} intent={Intent.PRIMARY} small={isCompact}>
-                                Add
-                            </Button>
+                            <Button minimal={true} intent="primary" small={isCompact} text="Add" />
                         )}
                     </Card>
                 ))}
@@ -89,10 +88,9 @@ export class CardListExample extends React.PureComponent<ExampleProps> {
         );
     }
 
-    private handleSmallChange = () => this.setState({ isCompact: !this.state.isCompact });
+    private toggleIsCompact = () => this.setState({ isCompact: !this.state.isCompact });
 
-    private handleContainedChange = () => this.setState({ isContained: !this.state.isContained });
+    private toggleUseInteractiveCards = () => this.setState({ useInteractiveCards: !this.state.useInteractiveCards });
 
-    private handleInteractiveCardsChange = () =>
-        this.setState({ hasInteractiveCards: !this.state.hasInteractiveCards });
+    private toggleUseSectionContainer = () => this.setState({ useSectionContainer: !this.state.useSectionContainer });
 }

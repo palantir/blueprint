@@ -1,9 +1,11 @@
 @import "../../common/variables";
 
-$card-list-item-default-min-height: 50px;
-$card-list-item-default-padding: 10px 20px;
+// N.B. min-height is calculated as height of a button + vertical padding. We need to add an extra pixel to account for
+// the bottom border.
+$card-list-item-default-min-height: ($pt-grid-size * 5) + 1px;
+$card-list-item-default-padding: $pt-grid-size (2 * $pt-grid-size);
 
-$card-list-item-small-min-height: 40px;
+$card-list-item-small-min-height: ($pt-grid-size * 4) + 1px;
 $card-list-item-small-padding: 7px 15px;
 
 .#{$ns}-card-list {

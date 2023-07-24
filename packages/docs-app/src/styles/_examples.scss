@@ -60,6 +60,12 @@
   }
 }
 
+#{example("CardList")} {
+  .#{$ns}-card {
+    justify-content: space-between;
+  }
+}
+
 #{example("EditableText")} {
   .docs-example {
     display: block;
