@@ -1,3 +1,7 @@
+---
+tag: new
+---
+
 @# Card List
 
 Simple wrapper around Cards. Can be used to reduce visual weight and have inner scrolling.
