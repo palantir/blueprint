@@ -23,7 +23,7 @@ export interface HotkeyConfig {
     allowInInput?: boolean;
 
     /**
-     * Hotkey combination string, such as "space" or "cmd+n".
+     * Hotkey combination string (AKA "key combo"), such as "space" or "cmd+n".
      */
     combo: string;
 

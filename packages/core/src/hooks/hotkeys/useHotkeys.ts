@@ -81,43 +81,41 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
         if (!state.hasProvider) {
             console.warn(HOTKEYS_PROVIDER_NOT_FOUND);
         }
-    }, []);
+    }, [state.hasProvider]);
 
     // we can still bind the hotkeys if there is no HotkeysProvider, they just won't show up in the dialog
     React.useEffect(() => {
         const payload = [...globalKeys.map(k => k.config), ...localKeys.map(k => k.config)];
         dispatch({ type: "ADD_HOTKEYS", payload });
         return () => dispatch({ type: "REMOVE_HOTKEYS", payload });
-    }, [keys]);
+    }, [dispatch, globalKeys, localKeys]);
 
-    const invokeNamedCallbackIfComboRecognized = (
-        global: boolean,
-        combo: KeyCombo,
-        callbackName: "onKeyDown" | "onKeyUp",
-        e: KeyboardEvent,
-    ) => {
-        const isTextInput = elementIsTextInput(e.target as HTMLElement);
-        for (const key of global ? globalKeys : localKeys) {
-            const {
-                allowInInput = false,
-                disabled = false,
-                preventDefault = false,
-                stopPropagation = false,
-            } = key.config;
-            const shouldIgnore = (isTextInput && !allowInInput) || disabled;
-            if (!shouldIgnore && comboMatches(key.combo, combo)) {
-                if (preventDefault) {
-                    e.preventDefault();
+    const invokeNamedCallbackIfComboRecognized = React.useCallback(
+        (global: boolean, combo: KeyCombo, callbackName: "onKeyDown" | "onKeyUp", e: KeyboardEvent) => {
+            const isTextInput = elementIsTextInput(e.target as HTMLElement);
+            for (const key of global ? globalKeys : localKeys) {
+                const {
+                    allowInInput = false,
+                    disabled = false,
+                    preventDefault = false,
+                    stopPropagation = false,
+                } = key.config;
+                const shouldIgnore = (isTextInput && !allowInInput) || disabled;
+                if (!shouldIgnore && comboMatches(key.combo, combo)) {
+                    if (preventDefault) {
+                        e.preventDefault();
+                    }
+                    if (stopPropagation) {
+                        // set a flag just for unit testing. not meant to be referenced in feature work.
+                        (e as any).isPropagationStopped = true;
+                        e.stopPropagation();
+                    }
+                    key.config[callbackName]?.(e);
                 }
-                if (stopPropagation) {
-                    // set a flag just for unit testing. not meant to be referenced in feature work.
-                    (e as any).isPropagationStopped = true;
-                    e.stopPropagation();
-                }
-                key.config[callbackName]?.(e);
             }
-        }
-    };
+        },
+        [globalKeys, localKeys],
+    );
 
     const handleGlobalKeyDown = React.useCallback(
         (e: KeyboardEvent) => {
@@ -130,22 +128,22 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
                 invokeNamedCallbackIfComboRecognized(true, getKeyCombo(e), "onKeyDown", e);
             }
         },
-        [globalKeys],
+        [dispatch, invokeNamedCallbackIfComboRecognized, showDialogKeyCombo],
     );
     const handleGlobalKeyUp = React.useCallback(
         (e: KeyboardEvent) => invokeNamedCallbackIfComboRecognized(true, getKeyCombo(e), "onKeyUp", e),
-        [globalKeys],
+        [invokeNamedCallbackIfComboRecognized],
     );
 
     const handleLocalKeyDown = React.useCallback(
         (e: React.KeyboardEvent<HTMLElement>) =>
             invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyDown", e.nativeEvent),
-        [localKeys],
+        [invokeNamedCallbackIfComboRecognized],
     );
     const handleLocalKeyUp = React.useCallback(
         (e: React.KeyboardEvent<HTMLElement>) =>
             invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyUp", e.nativeEvent),
-        [localKeys],
+        [invokeNamedCallbackIfComboRecognized],
     );
 
     React.useEffect(() => {

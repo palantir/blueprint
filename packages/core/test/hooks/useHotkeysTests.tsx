@@ -68,7 +68,7 @@ const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputRea
             );
         }
         return keys;
-    }, [bindExtraKeys]);
+    }, [bindExtraKeys, onKeyA, onKeyB]);
 
     const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys);
 
