@@ -27,7 +27,7 @@ export type {
 export { ButtonGroup, ButtonGroupProps } from "./button/buttonGroup";
 export { Callout, CalloutProps } from "./callout/callout";
 export { Card, CardProps } from "./card/card";
-export { CardList, CardListProps } from "./card-list/card-list";
+export { CardList, CardListProps } from "./card-list/cardList";
 export { Collapse, CollapseProps } from "./collapse/collapse";
 export {
     ContextMenu,
