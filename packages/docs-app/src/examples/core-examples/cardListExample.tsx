@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Card, CardList, Classes, H5, Icon, Intent, Section, SectionPanel, Switch } from "@blueprintjs/core";
+import { Button, Card, CardList, Classes, H5, Icon, Intent, Section, SectionCard, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
@@ -54,7 +54,7 @@ export class CardListExample extends React.PureComponent<ExampleProps> {
             <Example options={options} {...this.props}>
                 {isContained ? (
                     <Section title="Ingredients" compact={isCompact}>
-                        <SectionPanel padded={false}>{this.renderList()}</SectionPanel>
+                        <SectionCard padded={false}>{this.renderList()}</SectionCard>
                     </Section>
                 ) : (
                     this.renderList()
