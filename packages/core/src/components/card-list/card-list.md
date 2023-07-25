@@ -27,15 +27,18 @@ import { Card, CardList } from "@blueprintjs/core";
 
 @## Combining with Section
 
-__CardList__ may be used as content for the [__Section__](#core/components/section) component. This allows support for
-features like a title & description.
+__CardList__ may be used as content for the [__Section__](#core/components/section) component (inside a nested
+__SectionCard__). This allows support for features like a title & description above the list.
+
+Set the same value for `<SectionCard padded>` and `<CardList bordered>` (either `true` or `false` for both) to get two
+different kinds of appearances.
 
 ```tsx
 import { Card, CardList, Section, SectionCard } from "@blueprintjs/core";
 
 <Section title="Traditional pesto">
     <SectionCard padded={false}>
-        <CardList>
+        <CardList bordered={false}>
             <Card>Basil</Card>
             <Card>Olive oil</Card>
             {/* ... */}

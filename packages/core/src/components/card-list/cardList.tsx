@@ -22,7 +22,19 @@ import { Card } from "../card/card";
 
 export interface CardListProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
-     * Whether this component should use compact styles.
+     * Whether this container element should have a visual border.
+     *
+     * Set this to `false` to remove elevation and border radius styles, which allows this element to be a child of
+     * another bordered container element without padding (like SectionCard). Note that this also sets a 1px margin
+     * _in dark theme_ to account for inset box shadows in that theme used across the design system. Be sure to test
+     * your UI in both light and dark theme if you modify this prop value.
+     *
+     * @default true
+     */
+    bordered?: boolean;
+
+    /**
+     * Whether this component should use compact styles with reduced visual padding.
      *
      * @default false
      */
@@ -30,9 +42,10 @@ export interface CardListProps extends Props, HTMLDivProps, React.RefAttributes<
 }
 
 export const CardList: React.FC<CardListProps> = React.forwardRef((props, ref) => {
-    const { className, children, compact, ...htmlProps } = props;
+    const { bordered, className, children, compact, ...htmlProps } = props;
 
-    const classes = classNames(Classes.CARD_LIST, className, {
+    const classes = classNames(className, Classes.CARD_LIST, {
+        [Classes.CARD_LIST_BORDERED]: bordered,
         [Classes.COMPACT]: compact,
     });
 

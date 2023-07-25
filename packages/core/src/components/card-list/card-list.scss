@@ -51,13 +51,14 @@ $card-list-item-small-padding: 7px 15px !default;
     // card border is inset in dark theme, so we need to add padding to prevent items from going over it
     padding: 1px;
   }
-}
 
-.#{$ns}-section .#{$ns}-card-list {
-  border-radius: 0;
-  box-shadow: none;
+  &:not(.#{$ns}-card-list-bordered) {
+    border-radius: 0;
+    box-shadow: none;
 
-  .#{$ns}-dark & {
-    margin: 1px;
+    .#{$ns}-dark & {
+      margin: 1px;
+      width: calc(100% - 2px);
+    }
   }
 }
