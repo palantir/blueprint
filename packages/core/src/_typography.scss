@@ -13,13 +13,15 @@ Headings
 
 Markup:
 <div>
-  <h1 class="@ns-heading">H1 heading</h1>
-  <h2 class="@ns-heading">H2 heading</h2>
-  <h3 class="@ns-heading">H3 heading</h3>
-  <h4 class="@ns-heading">H4 heading</h4>
-  <h5 class="@ns-heading">H5 heading</h5>
-  <h6 class="@ns-heading">H6 heading</h6>
+  <h1 class="@ns-heading {{.modifier}}">H1 heading</h1>
+  <h2 class="@ns-heading {{.modifier}}">H2 heading</h2>
+  <h3 class="@ns-heading {{.modifier}}">H3 heading</h3>
+  <h4 class="@ns-heading {{.modifier}}">H4 heading</h4>
+  <h5 class="@ns-heading {{.modifier}}">H5 heading</h5>
+  <h6 class="@ns-heading {{.modifier}}">H6 heading</h6>
 </div>
+
+.#{$ns}-text-muted - Change text color to a gentler gray.
 
 Styleguide headings
 */
