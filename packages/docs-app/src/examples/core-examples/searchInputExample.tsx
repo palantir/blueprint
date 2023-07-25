@@ -53,6 +53,7 @@ export class SearchInputExample extends React.PureComponent<ExampleProps, Search
                     placeholder="Search..."
                     readOnly={readOnly}
                     small={small}
+                    type="search"
                 />
             </Example>
         );
