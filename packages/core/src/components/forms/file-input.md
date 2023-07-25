@@ -1,28 +1,29 @@
 @# File input
 
+__FileInput__ is a lightweight wrapper around a `<label>` container element which contains an `<input type="file">`.
+
 @reactExample FileInputExample
 
 @## Usage
-
-__FileInput__ is a lightweight wrapper around a `<label>` container element which contains an `<input type="file">`.
-It supports the full range of HTML `<label>` DOM attributes.
-
-Use `inputProps` to forward props to the `<input>` element.
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h5 class="@ns-heading">Static file name</h5>
-<div class="@ns-callout-body">
-
-File name does not update on file selection. To get this behavior, you must implement it separately in JS.
-
-</div>
-</div>
 
 ```tsx
 <FileInput disabled={true} text="Choose file..." onInputChange={...} />
 ```
 
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h5 class="@ns-heading">Static file name</h5>
+<div class="@ns-callout-body">
+
+File name does not automatically update after a user selects a file.
+To get this behavior, you must update the `text` prop.
+
+</div>
+</div>
+
 @## Props interface
+
+__FileInput__ supports the full range of HTML `<label>` DOM attributes.
+Use `inputProps` to forward props to the `<input>` element.
 
 @interface FileInputProps
 
