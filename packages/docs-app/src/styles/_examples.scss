@@ -60,6 +60,32 @@
   }
 }
 
+#{example("CardList")} {
+  .docs-example > div {
+    flex-grow: 1;
+  }
+
+  .#{$ns}-card {
+    justify-content: space-between;
+  }
+
+  .docs-section-card-limited-height {
+    max-height: 152px;
+    overflow-y: auto;
+
+    .#{$ns}-dark & {
+      // need a bit of margin to account for inset box shadow
+      margin-bottom: 1px;
+    }
+  }
+
+  .#{$ns}-section.#{$ns}-compact {
+    .docs-section-card-limited-height {
+      max-height: 122px;
+    }
+  }
+}
+
 #{example("EditableText")} {
   .docs-example {
     display: block;

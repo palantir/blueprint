@@ -24,6 +24,7 @@ export * from "./calloutExample";
 export * from "./checkboxExample";
 export * from "./collapseExample";
 export * from "./cardExample";
+export * from "./cardListExample";
 export { ContextMenuExample } from "./contextMenuExample";
 export { ContextMenuPopoverExample } from "./contextMenuPopoverExample";
 export * from "./controlGroupExample";

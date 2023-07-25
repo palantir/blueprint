@@ -27,6 +27,7 @@ import "./breadcrumbs/breadcrumbTests";
 import "./buttons/buttonTests";
 import "./callout/calloutTests";
 import "./card/cardTests";
+import "./card-list/cardListTests";
 import "./collapse/collapseTests";
 import "./context-menu/contextMenuTests";
 import "./context-menu/contextMenuSingletonTests";
