@@ -43,9 +43,10 @@
 
 @## Form inputs
 
+@page input-group
+@page text-area
 @page file-input
 @page numeric-input
-@page text-inputs
 @page tag-input
 
 @## Overlays

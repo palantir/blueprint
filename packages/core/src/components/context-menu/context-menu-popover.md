@@ -1,17 +1,15 @@
 @# ContextMenuPopover
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Consider [ContextMenu](#core/components/context-menu) first
 
 </h5>
-<div class="@ns-callout-body">
 
 The APIs described on this page are lower-level and have some limitations compared to
 [ContextMenu](#core/components/context-menu), so you should try that API _first_ to see if it addresses your use case.
 
-</div>
 </div>
 
 __ContextMenuPopover__ is a lower-level API for [ContextMenu](#core/components/context-menu) which does not hook up any

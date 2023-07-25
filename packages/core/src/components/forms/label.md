@@ -5,15 +5,13 @@ __Labels__ enhance the usability of your forms.
 Wrapping a `<label>` element around a form input effectively increases the area where the user can click to activate
 the control. Notice how in the examples below, clicking a label focuses its `<input>`.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Prefer form groups over labels</h5>
-<div class="@ns-callout-body">
 
 The [__FormGroup__ component](#core/components/form-group) provides additional functionality such as helper text and
 modifier props as well as full label support. __FormGroup__ supports both simple and complex use cases, therefore we
 recommend using it exclusively when constructing forms.
 
-</div>
 </div>
 
 @## Usage
@@ -36,18 +34,16 @@ This component supports the full range of `<label>` DOM attributes.
 
 @## CSS API
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Deprecated API: use [`<Label>`](#core/components/forms/label)
 
 </h5>
-<div class="@ns-callout-body">
 
 CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
 often fall out of sync as the design system is updated. You should use the React component APIs instead.
 
-</div>
 </div>
 
 Simple labels are useful for basic forms for a single `<input>`.

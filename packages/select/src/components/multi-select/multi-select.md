@@ -9,14 +9,12 @@ You may react to user interactions with the `onItemSelect` and `onRemove` callba
 
 @reactExample MultiSelectExample
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Generic components and custom filtering</h5>
-<div class="@ns-callout-body">
 
 For more information on controlled usage, generic components, creating new items, and custom filtering,
 please visit the documentation for [__Select__](#select/select).
 
-</div>
 </div>
 
 @## Props interface

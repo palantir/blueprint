@@ -28,13 +28,11 @@ behaviors according to the HTML spec.
 <button class="@ns-button" type="button"><svg class="@ns-icon">...</svg></button>
 ```
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Disabled __Button__ elements prevent all interaction
 </h5>
-
-<div class="@ns-callout-body">
 
 Use __AnchorButton__ if you need mouse interaction events (such as hovering) on a disabled button.
 
@@ -42,7 +40,6 @@ __Button__ uses the native `disabled` attribute on the `<button>` tag so the bro
 __AnchorButton__ uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled` attribute. As a result,
 the __AnchorButton__ component will prevent *only* the `onClick` handler when disabled but permit other events.
 
-</div>
 </div>
 
 @## Adding icons
@@ -62,18 +59,16 @@ The two button components each support arbitrary HTML attributes for their under
 
 @## CSS API
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Deprecated API: use `<Button>` or `<AnchorButton>`
 
 </h5>
-<div class="@ns-callout-body">
 
 CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
 often fall out of sync as the design system is updated. You should use the React component APIs instead.
 
-</div>
 </div>
 
 Use the `@ns-button` class to access button styles. You should implement buttons using the

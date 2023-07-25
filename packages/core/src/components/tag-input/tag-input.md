@@ -6,14 +6,12 @@ Clicking anywhere on the container will focus the text input.
 
 @reactExample TagInputExample
 
-<div class="@ns-callout @ns-intent-success @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-success @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Looking for a dropdown menu?</h5>
-<div class="@ns-callout-body">
 
 [The __MultiSelect__ component in the **@blueprintjs/select** package](#select/multi-select)
 composes this component with a dropdown menu.
 
-</div>
 </div>
 
 @## Usage
@@ -39,26 +37,22 @@ updated `values` array, with new items appended to the end and removed items fil
 The `<input>` element can be controlled directly via the `inputValue` and `onInputChange` props. Additional properties
 (such as custom event handlers) can be forwarded to the input via `inputProps`.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Handling long words</h5>
-<div class="@ns-callout-body">
 
 Set an explicit `width` on the container element to cause long tags to wrap onto multiple lines.
 Either supply a specific pixel value, or use `<TagInput className={Classes.FILL}>`
 to fill its container's width (try this in the example above).
 
 </div>
-</div>
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Disabling a tag input</h5>
-<div class="@ns-callout-body">
 
 Disabling this component requires setting the `disabled` prop to `true`
 and separately disabling the component's `rightElement` as appropriate
 (because `TagInput` accepts any `JSX.Element` as its `rightElement`).
 
-</div>
 </div>
 
 @## Props interface

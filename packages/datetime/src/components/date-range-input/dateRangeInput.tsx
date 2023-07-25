@@ -95,7 +95,7 @@ export interface DateRangeInputProps extends DatePickerBaseProps, DateFormatProp
     fill?: boolean;
 
     /**
-     * Props to pass to the end-date [input group](#core/components/text-inputs.input-group).
+     * Props to pass to the end-date [input group](#core/components/input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
@@ -151,7 +151,7 @@ export interface DateRangeInputProps extends DatePickerBaseProps, DateFormatProp
     singleMonthOnly?: boolean;
 
     /**
-     * Props to pass to the start-date [input group](#core/components/text-inputs.input-group).
+     * Props to pass to the start-date [input group](#core/components/input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */

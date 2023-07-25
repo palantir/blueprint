@@ -5,16 +5,14 @@ It is a thin wrapper around [`ResizeObserver`][resizeobserver] to provide React 
 
 [resizeobserver]: https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">DOM ref required</h5>
-<div class="@ns-callout-body">
 
 ResizeSensor's implementation relies on a React ref being attached to a DOM element,
 so the child of this component _must be a native DOM element_ or utilize
 [`React.forwardRef()`](https://reactjs.org/docs/forwarding-refs.html) to forward any
 injected ref to the underlying DOM element.
 
-</div>
 </div>
 
 @## Usage
@@ -42,16 +40,14 @@ const myRef = React.createRef();
 </ResizeSensor>
 ```
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Asynchronous behavior</h5>
-<div class="@ns-callout-body">
 
 The `onResize` callback is invoked asynchronously after a resize is detected
 and typically happens at the end of a frame (after layout, before paint).
 Therefore, testing behavior that relies on this component involves setting a
 timeout for the next frame.
 
-</div>
 </div>
 
 @## Props interface

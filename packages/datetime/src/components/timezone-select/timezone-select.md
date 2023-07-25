@@ -41,15 +41,13 @@ in this case, all button-specific props will be ignored:
 </TimezonePicker>
 ```
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Local timezone detection</h5>
-<div class="@ns-callout-body">
 
 __TimezoneSelect__ detects the local timezone using the
 [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions)
 when the `showLocalTimezone` prop is enabled and cannot guarantee correctness in all browsers.
 
-</div>
 </div>
 
 @## Props interface

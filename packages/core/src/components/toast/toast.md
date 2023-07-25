@@ -56,26 +56,22 @@ There are three ways to use __OverlayToaster__:
     myToaster.current?.show({ ...toastOptions });
     ```
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Working with multiple toasters</h5>
-<div class="@ns-callout-body">
 
 You can have multiple toasters in a single application, but you must ensure that each has a unique `position` to
 prevent overlap.
 
 </div>
-</div>
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Toaster focus</h5>
-<div class="@ns-callout-body">
 
 __OverlayToaster__ always disables Overlay's `enforceFocus` behavior (meaning that you're not blocked
 from accessing other parts of the application while a toast is active), and by default also
 disables `autoFocus` (meaning that focus will not switch to a toast when it appears). You can
 enable `autoFocus` for an individual `OverlayToaster` via a prop, if desired.
 
-</div>
 </div>
 
 

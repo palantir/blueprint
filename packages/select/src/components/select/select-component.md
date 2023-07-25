@@ -2,7 +2,7 @@
 
 The __Select__ component renders a UI to choose one item from a list. Its children are wrapped in a
 [__Popover__](#core/components/popover) that contains the list and an optional
-[__InputGroup__](#core/components/text-inputs.input-group) to filter it.
+[__InputGroup__](#core/components/input-group) to filter it.
 You may provide a predicate to customize the filtering algorithm. The value of a __Select__
 (the currently chosen item) is uncontrolled: listen to changes with the `onItemSelect` callback prop.
 

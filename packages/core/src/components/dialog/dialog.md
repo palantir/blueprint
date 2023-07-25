@@ -2,17 +2,14 @@
 
 __Dialog__ presents content overlaid over other parts of the UI.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Terminology note</h5>
-
-<div class="@ns-callout-body">
 
 The term "modal" is sometimes used to mean "dialog," but this is a misnomer.
 _Modal_ is an adjective that describes parts of a UI. An element is considered to be "modal" if it
 [blocks interaction with the rest of the application](https://en.wikipedia.org/wiki/Modal_window).
 We use the term "dialog" in Blueprint to avoid confusion with the adjective.
 
-</div>
 </div>
 
 Blueprint provides two types of dialogs:
@@ -62,18 +59,16 @@ towards the right side of the footer container element.
 
 @### CSS API
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Deprecated API: use `<Dialog>`
 
 </h5>
-<div class="@ns-callout-body">
 
 CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
 often fall out of sync as the design system is updated. You should use the React component APIs instead.
 
-</div>
 </div>
 
 @css dialog

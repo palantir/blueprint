@@ -1,19 +1,17 @@
 @# Hotkeys (legacy)
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Deprecated: use [useHotkeys](#core/hooks/use-hotkeys)
 
 </h5>
-<div class="@ns-callout-body">
 
 This API is **deprecated since @blueprintjs/core v3.39.0** in favor of the new
 [`useHotkeys` hook](#core/hooks/use-hotkeys) and
 [__HotkeysTarget2__ component](#core/components/hotkeys-target2). You should migrate to one of
 these new APIs, as they will become the standard in future major version of Blueprint.
 
-</div>
 </div>
 
 Hotkeys enable you to create interactions based on user keyboard events.
