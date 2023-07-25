@@ -170,9 +170,9 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
     }
 
     private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.currentTarget.value;
+        const value = event.target.value;
         this.props.onChange?.(event);
-        this.props.onValueChange?.(value, event.currentTarget);
+        this.props.onValueChange?.(value, event.target);
     };
 
     private maybeRenderLeftElement() {
