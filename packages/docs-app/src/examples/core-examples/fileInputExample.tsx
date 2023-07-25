@@ -48,10 +48,10 @@ export class FileInputExample extends React.PureComponent<ExampleProps, FileInpu
             <>
                 <H5>Props</H5>
                 <FormGroup label="Text">
-                    <InputGroup placeholder="Choose file..." onChange={this.handleTextChange} value={text} />
+                    <InputGroup placeholder="Choose file..." onValueChange={this.handleTextChange} value={text} />
                 </FormGroup>
                 <FormGroup label="Button text">
-                    <InputGroup placeholder="Browse" onChange={this.handleButtonTextChange} value={buttonText} />
+                    <InputGroup placeholder="Browse" onValueChange={this.handleButtonTextChange} value={buttonText} />
                 </FormGroup>
                 <Switch label="Large" onChange={this.handleLargeChange} checked={large} />
                 <Switch label="Small" onChange={this.handleSmallChange} checked={small} />
@@ -59,13 +59,9 @@ export class FileInputExample extends React.PureComponent<ExampleProps, FileInpu
         );
     };
 
-    private handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ text: e.target.value });
-    };
+    private handleTextChange = (text: string) => this.setState({ text });
 
-    private handleButtonTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ buttonText: e.target.value });
-    };
+    private handleButtonTextChange = (buttonText: string) => this.setState({ buttonText });
 
     private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
 

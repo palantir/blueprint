@@ -58,8 +58,8 @@ export class Icons extends React.PureComponent<IconsProps, IconsState> {
                     className={Classes.FILL}
                     large={true}
                     leftIcon="search"
+                    onValueChange={this.handleFilterChange}
                     placeholder="Search for icons..."
-                    onChange={this.handleFilterChange}
                     type="search"
                     value={this.state.filter}
                 />
@@ -100,10 +100,7 @@ export class Icons extends React.PureComponent<IconsProps, IconsState> {
         return icons.filter(icon => iconFilter(this.state.filter, icon));
     }
 
-    private handleFilterChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        const filter = (e.target as HTMLInputElement).value;
-        this.setState({ filter });
-    };
+    private handleFilterChange = (filter: string) => this.setState({ filter });
 }
 
 function isIconFiltered(query: string, icon: Icon) {
