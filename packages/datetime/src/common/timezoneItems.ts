@@ -163,7 +163,7 @@ const timezonesWithoutOffset: TimezoneWithoutOffset[] = [
     { label: "Jerusalem", ianaCode: "Asia/Jerusalem" },
     { label: "Johannesburg", ianaCode: "Africa/Johannesburg" },
     { label: "Khartoum", ianaCode: "Africa/Khartoum" },
-    { label: "Kyiv", ianaCode: "Europe/Kyiv" },
+    { label: "Kyiv", ianaCode: "Europe/Kiev" },
     { label: "Maputo", ianaCode: "Africa/Maputo" },
     { label: "Kaliningrad", ianaCode: "Europe/Kaliningrad" },
     { label: "Nicosia", ianaCode: "Asia/Nicosia" },
