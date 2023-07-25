@@ -67,7 +67,7 @@ export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
     filterable?: boolean;
 
     /**
-     * Props to pass to the query [InputGroup component](#core/components/text-inputs.input-group).
+     * Props to pass to the query [InputGroup component](#core/components/input-group).
      *
      * Some properties are unavailable:
      * - `inputProps.value`: use `query` instead

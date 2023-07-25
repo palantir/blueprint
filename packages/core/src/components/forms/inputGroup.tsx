@@ -69,7 +69,7 @@ export interface InputGroupState {
 /**
  * Input group component.
  *
- * @see https://blueprintjs.com/docs/#core/components/text-inputs.input-group
+ * @see https://blueprintjs.com/docs/#core/components/input-group
  */
 export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;

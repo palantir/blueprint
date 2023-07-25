@@ -11,7 +11,7 @@ Both components group multiple elements into a single unit, but their usage patt
 
 Think of __ControlGroup__ as a parent with multiple children, with each one a separate control.
 
-Conversely, an [__InputGroup__](#core/components/text-inputs.input-group) is a single control, and should behave like
+Conversely, an [__InputGroup__](#core/components/input-group) is a single control, and should behave like
 so. A button inside of an input group should only affect that input; if its reach is further, then it should be
 promoted to live in a control group.
 

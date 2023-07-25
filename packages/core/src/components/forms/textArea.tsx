@@ -56,7 +56,7 @@ export interface TextAreaState {
 /**
  * Text area component.
  *
- * @see https://blueprintjs.com/docs/#core/components/text-inputs.text-area
+ * @see https://blueprintjs.com/docs/#core/components/text-area
  */
 export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;

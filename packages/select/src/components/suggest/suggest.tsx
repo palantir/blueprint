@@ -52,7 +52,7 @@ export interface SuggestProps<T> extends ListItemsProps<T>, Omit<SelectPopoverPr
     fill?: boolean;
 
     /**
-     * Props to pass to the query [InputGroup component](#core/components/text-inputs.input-group).
+     * Props to pass to the query [InputGroup component](#core/components/input-group).
      *
      * Some properties are unavailable:
      * - `inputProps.value`: use `query` instead

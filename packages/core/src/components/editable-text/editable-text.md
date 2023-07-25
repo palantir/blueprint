@@ -9,7 +9,7 @@ editing text.
 You might use this component for inline renaming, or for an
 [editable multiline description](#core/components/editable-text.multiline-mode).
 You should not use __EditableText__ when a more static, always-editable
-[__InputGroup__](#core/components/text-inputs.input-group) or [__TextArea__](#core/components/text-inputs.text-area)
+[__InputGroup__](#core/components/input-group) or [__TextArea__](#core/components/text-area)
 component would suffice.
 
 @reactExample EditableTextExample

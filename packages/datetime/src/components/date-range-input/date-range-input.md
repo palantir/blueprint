@@ -1,7 +1,7 @@
 @# Date range input
 
 The __DateRangeInput__ component is [__ControlGroup__](#core/components/control-group) composed
-of two [__InputGroups__](#core/components/text-inputs.input-group). It shows a
+of two [__InputGroups__](#core/components/input-group). It shows a
 [__DateRangePicker__](#datetime/daterangepicker) in a [__Popover__](#core/components/popover)
 on focus.
 
