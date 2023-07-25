@@ -17,16 +17,14 @@ The **content** will be shown inside the tooltip itself. When opened, the toolti
 positioned on the page next to the target; the `placement` prop determines its relative placement (on
 which side of the target).
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Button targets</h5>
-<div class="@ns-callout-body">
 
 Buttons make great tooltip targets, but the `disabled` attribute will prevent all
 events so the enclosing __Tooltip__ will not know when to respond.
 Use [__AnchorButton__](#core/components/button.anchor-button) instead;
 see the [callout here](#core/components/button.props) for more details.
 
-</div>
 </div>
 
 @## Props interface

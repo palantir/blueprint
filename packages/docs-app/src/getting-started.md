@@ -49,14 +49,12 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
     </head>
     ```
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">CDN-only usage</h5>
-<div class="@ns-callout-body">
 
 Blueprint can be added to a page using the Unpkg CDN.
 [See below for instructions](#blueprint/getting-started.cdn-consumption).
 
-</div>
 </div>
 
 @## JS environment

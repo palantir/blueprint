@@ -1,3 +1,7 @@
+---
+tag: new
+---
+
 @# Section
 
 The __Section__ component can be used to contain, structure, and create hierarchy for information in your UI. It makes use of some concepts from other more atomic Blueprint components:

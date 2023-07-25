@@ -73,6 +73,7 @@ export * from "./textExample";
 export * from "./spinnerExample";
 export * from "./tabsExample";
 export * from "./inputGroupExample";
+export { SearchInputExample } from "./searchInputExample";
 export * from "./tagExample";
 export * from "./toastExample";
 export * from "./tooltipExample";

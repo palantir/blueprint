@@ -9,20 +9,18 @@ editing text.
 You might use this component for inline renaming, or for an
 [editable multiline description](#core/components/editable-text.multiline-mode).
 You should not use __EditableText__ when a more static, always-editable
-[__InputGroup__](#core/components/text-inputs.input-group) or [__TextArea__](#core/components/text-inputs.text-area)
+[__InputGroup__](#core/components/input-group) or [__TextArea__](#core/components/text-area)
 component would suffice.
 
 @reactExample EditableTextExample
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
     <h5 class="@ns-heading">Centering EditableText</h5>
-<div class="@ns-callout-body">
 
 **Do not center this component** using `text-align: center`, as it will cause an infinite loop
 in the browser ([more details](https://github.com/JedWatson/react-select/issues/540)). Instead,
 you should center the component via flexbox or with `position` and `transform: translateX(-50%)`.
 
-</div>
 </div>
 
 

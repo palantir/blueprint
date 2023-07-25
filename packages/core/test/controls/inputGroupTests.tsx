@@ -99,4 +99,18 @@ describe("<InputGroup>", () => {
         // value should not change because our change handler prevents it from being longer than characters
         assert.strictEqual(input.prop("value"), "abc");
     });
+
+    it("supports the onValueChange callback", () => {
+        const initialValue = "value";
+        const newValue = "new-value";
+        const handleValueChange = spy();
+        const inputGroup = mount(<InputGroup value={initialValue} onValueChange={handleValueChange} />);
+        assert.strictEqual(inputGroup.find("input").prop("value"), initialValue);
+
+        inputGroup
+            .find("input")
+            .simulate("change", { currentTarget: { value: newValue }, target: { value: newValue } });
+        assert.isTrue(handleValueChange.calledOnce, "onValueChange not called");
+        assert.isTrue(handleValueChange.calledWithMatch(newValue), `onValueChange not called with '${newValue}'`);
+    });
 });

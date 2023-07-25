@@ -29,17 +29,15 @@ Note that the `Classes.ELEVATION_*` classes can be used on any element (not just
 
 @## CSS API
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Deprecated API: use [`<Card>`](#core/components/card)
 </h5>
-<div class="@ns-callout-body">
 
 CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
 often fall out of sync as the design system is updated. You should use the React component APIs instead.
 
-</div>
 </div>
 
 Start with `.@ns-card` and add an elevation class `.@ns-elevation-*` to apply a drop shadow that simulates height in

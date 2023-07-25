@@ -1,19 +1,17 @@
 @# HotkeysTarget2
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Migrating from [HotkeysTarget](#core/legacy/hotkeys-legacy)?
 
 </h5>
-<div class="@ns-callout-body">
 
 __HotkeysTarget2__ is a replacement for HotkeysTarget. You are encouraged to use this new API, or
 the `useHotkeys` hook directly in your function components, as they will become the standard
 APIs in a future major version of Blueprint. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration) on the wiki.
 
-</div>
 </div>
 
 
@@ -75,13 +73,19 @@ event handlers with the `handleKeyDown` and `handleKeyUp` functions in the child
 you will likely have to set a non-negative `tabIndex` on the DOM node to which these local event handlers are
 bound for them to work correctly.
 
-__HotkeysTarget2__ takes an optional `options: UseHotkeysOptions` prop which can customize some of the hook's
-default behavior.
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+
+See the [useHotkeys hook documentation](#core/hooks/use-hotkeys.key-combos) to understand the semantics of "key combos":
+how they are configured and how they will appear in the global dialog.
+
+</div>
 
 @## Props interface
 
 @interface HotkeysTarget2Props
 
-@interface HotkeyConfig
-
 @interface UseHotkeysOptions
+
+@## Hotkey configuration
+
+@interface HotkeyConfig
