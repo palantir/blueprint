@@ -34,7 +34,7 @@ $card-list-item-small-padding: 7px 15px !default;
     }
 
     &:not(:last-child) {
-      border-bottom: 1px solid $pt-divider-black-muted;
+      border-bottom: $card-list-border-width solid $pt-divider-black-muted;
 
       .#{$ns}-dark & {
         border-color: $pt-dark-divider-white-muted;
