@@ -40,8 +40,15 @@ export interface InputGroupProps
     /** Whether this input should use large styles. */
     large?: boolean;
 
-    /** The callback invoked when the value changes. */
-    onValueChange?(valueAsString: string/*, inputElement: HTMLInputElement | null*/): void;
+    /**
+     * Callback invoked when the input value changes, typically via keyboard interactions.
+     *
+     * Using this prop instead of `onChange` can help avoid common bugs in React 16 related to Event Pooling
+     * where developers forget to save the text value from a change event or call `event.persist()`.
+     *
+     * @see https://legacy.reactjs.org/docs/legacy-event-pooling.html
+     */
+    onValueChange?(value: string, targetElement: HTMLInputElement | null): void;
 
     /** Whether this input should use small styles. */
     small?: boolean;
@@ -69,9 +76,7 @@ export interface InputGroupState {
     rightElementWidth?: number;
 }
 
-const NON_HTML_PROPS: Array<keyof InputGroupProps> = [
-    "onValueChange",
-];
+const NON_HTML_PROPS: Array<keyof InputGroupProps> = ["onValueChange"];
 
 /**
  * Input group component.
@@ -167,7 +172,7 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
     private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.currentTarget.value;
         this.props.onChange?.(event);
-        this.props.onValueChange?.(value/*, this.inputElement*/);
+        this.props.onValueChange?.(value, event.currentTarget);
     };
 
     private maybeRenderLeftElement() {
