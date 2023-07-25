@@ -1,18 +1,16 @@
 @# Panel stack (v2)
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Migrating from [PanelStack](#core/components/panel-stack)?
 
 </h5>
-<div class="@ns-callout-body">
 
 __PanelStack2__ is a replacement for __PanelStack__. It will become the standard API in a future major version of
 Blueprint. You are encouraged to use this new API now for forwards-compatibility. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/PanelStack2-migration) on the wiki.
 
-</div>
 </div>
 
 __PanelStack2__ manages a stack of panels and displays only the topmost panel.

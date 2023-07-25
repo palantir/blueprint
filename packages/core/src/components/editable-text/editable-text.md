@@ -14,15 +14,13 @@ component would suffice.
 
 @reactExample EditableTextExample
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
     <h5 class="@ns-heading">Centering EditableText</h5>
-<div class="@ns-callout-body">
 
 **Do not center this component** using `text-align: center`, as it will cause an infinite loop
 in the browser ([more details](https://github.com/JedWatson/react-select/issues/540)). Instead,
 you should center the component via flexbox or with `position` and `transform: translateX(-50%)`.
 
-</div>
 </div>
 
 

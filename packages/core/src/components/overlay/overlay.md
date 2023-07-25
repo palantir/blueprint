@@ -23,14 +23,12 @@ will be inserted before the children if `hasBackdrop={true}`.
 The `onClose` callback prop is invoked when user interaction causes the overlay to close, but your application is
 responsible for updating the state that actually closes the overlay.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">A note about overlay content positioning</h5>
-<div class="@ns-callout-body">
 
 When rendered inline, content will automatically be set to `position: absolute` to respect
 document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
 
-</div>
 </div>
 
 ```tsx

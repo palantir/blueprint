@@ -14,18 +14,16 @@ progress meter that fills the entire bar.
 
 @## CSS API
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Deprecated API: use [`<ProgressBar>`](#core/components/progress-bar)
 
 </h5>
-<div class="@ns-callout-body">
 
 CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
 often fall out of sync as the design system is updated. You should use the React component APIs instead.
 
-</div>
 </div>
 
 Set the current progress of the bar via a `width` style rule on the inner `.@ns-progress-meter` element. This is a very

@@ -55,16 +55,14 @@ The **content** will be shown inside the popover itself. When opened, the popove
 positioned on the page next to the target; the `placement` prop determines its relative placement (on
 which side of the target).
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Button targets</h5>
-<div class="@ns-callout-body">
 
 Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
 events, which interferes with the popover functioning. If you need to disable a button which
 triggers a popover, you should use [`AnchorButton`](#core/components/button.anchor-button) instead.
 See the [callout here](#core/components/button.props) for more details.
 
-</div>
 </div>
 
 ```tsx
@@ -151,14 +149,12 @@ You may override the default modifiers with the `modifiers` prop, which is an ob
 the modifier name and its options object, respectively. See the
 [Popper.js modifiers docs page](https://popper.js.org/docs/v2/modifiers/) for more info.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Auto placement requires flip modifier</h5>
-<div class="@ns-callout-body">
 
 Be careful when disabling the "flip" modifier, since the default "auto" placement relies on it. If you _do_ decide
 to disable this modifier, be sure to also specify a placement which is not "auto".
 
-</div>
 </div>
 
 You may also add custom modifiers using the `modifiersCustom` prop. See the
@@ -179,14 +175,12 @@ It is important to pay attention to the value of the `nextOpenState` parameter a
 in your application logic whether you should care about a particular invocation (for instance,
 if the `nextOpenState` is not the same as the __Popover__'s current state).
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Disabling controlled popovers</h5>
-<div class="@ns-callout-body">
 
 If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
 The popover will re-open when `disabled` is set to `false`.
 
-</div>
 </div>
 
 #### Example controlled usage
@@ -246,14 +240,12 @@ The following example demonstrates the various interaction kinds (note: these Po
 
 @reactExample PopoverInteractionKindExample
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Conditionally styling popover targets</h5>
-<div class="@ns-callout-body">
 
 When a popover is open, `Classes.POPOVER_OPEN` is applied to the target.
 You can use this to style the target differently when the popover is open.
 
-</div>
 </div>
 
 @### Closing on click
@@ -320,15 +312,13 @@ a translucent background color, like the backdrop for the [`Dialog`](#core/compo
 
 The backdrop element has the same opacity-fade transition as the `Dialog` backdrop.
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
     <h5 class="@ns-heading">Dangerous edge case</h5>
-<div class="@ns-callout-body">
 
 Rendering a `<Popover isOpen={true} hasBackdrop={true}>` outside the viewport bounds can easily break your application
 by covering the UI with an invisible non-interactive backdrop. This edge case must be handled by your application code
 or (if possible) avoided entirely.
 
-</div>
 </div>
 
 @### Portal rendering

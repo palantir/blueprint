@@ -1,19 +1,17 @@
 @# useHotkeys
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Migrating from [__HotkeysTarget__](#core/legacy/hotkeys-legacy)?
 
 </h5>
-<div class="@ns-callout-body">
 
 `useHotkeys` is a replacement for __HotkeysTarget__. You are encouraged to use this new API in your function
 components, or the [__HotkeysTarget2__ component](#core/components/hotkeys-target2) in your component classes,
 as they will become the standard APIs in a future major version of Blueprint. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration) on the wiki.
 
-</div>
 </div>
 
 The `useHotkeys` hook adds hotkey / keyboard shortcut interactions to your application using a custom React hook.

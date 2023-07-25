@@ -38,13 +38,12 @@ Note that some browsers also implement a handler for the `esc` key to clear the 
 
 @## CSS API
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Deprecated API: use [`<InputGroup>`](#core/components/input-group)
 
 </h5>
-<div class="@ns-callout-body">
 
 CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
 often fall out of sync as the design system is updated. You should use the React component APIs instead.
@@ -52,7 +51,6 @@ often fall out of sync as the design system is updated. You should use the React
 Note that you cannot use buttons with text in the CSS API for input groups. The padding for text inputs
 in CSS cannot accommodate buttons whose width varies due to text content.
 
-</div>
 </div>
 
 #### `.@ns-input-group`

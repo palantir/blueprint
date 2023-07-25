@@ -34,14 +34,12 @@ so-called "sticky" behavior: the navbar stays at the top of the screen as the us
 
 This modifier is not illustrated here because it breaks the document flow.
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
     <h5 class="@ns-heading">Body padding required</h5>
-<div class="@ns-callout-body">
 
 The fixed navbar will lie on top of your other content unless you add padding to the top of the `<body>` element equal
 to the height of the navbar. Use the `$pt-navbar-height` Sass variable.
 
-</div>
 </div>
 
 @### Fixed width
@@ -64,18 +62,16 @@ center it.
 
 @## CSS API
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Deprecated API: use `<Navbar>`
 
 </h5>
-<div class="@ns-callout-body">
 
 CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
 often fall out of sync as the design system is updated. You should use the React component APIs instead.
 
-</div>
 </div>
 
 Use the following classes to construct a navbar:

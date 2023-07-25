@@ -10,14 +10,12 @@ __FileInput__ is a lightweight wrapper around a `<label>` container element whic
 <FileInput disabled={true} text="Choose file..." onInputChange={...} />
 ```
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Static file name</h5>
-<div class="@ns-callout-body">
 
 File name does not automatically update after a user selects a file.
 To get this behavior, you must update the `text` prop.
 
-</div>
 </div>
 
 @## Props interface
@@ -29,18 +27,16 @@ Use `inputProps` to forward props to the `<input>` element.
 
 @## CSS API
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Deprecated API: use [`<FileInput>`](#core/components/forms/file-input)
 
 </h5>
-<div class="@ns-callout-body">
 
 CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
 often fall out of sync as the design system is updated. You should use the React component APIs instead.
 
-</div>
 </div>
 
 Use the standard `input type="file"` along with a `span` with class `@ns-file-upload-input`.

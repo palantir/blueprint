@@ -36,13 +36,12 @@ to the SVG paths.
 
 @## CSS API
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Deprecated API: use [`<NonIdealState>`](#core/components/non-ideal-state)
 
 </h5>
-<div class="@ns-callout-body">
 
 CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
 often fall out of sync as the design system is updated. You should use the React component APIs instead.
@@ -53,7 +52,6 @@ Also, since the CSS API uses the icon font, Blueprint styles cannot adjust the i
 appearance like it does with the React component API. This means __NonIdealState__ elements rendered with this API will
 stand out visually (in a bad way) within the design system.
 
-</div>
 </div>
 
 Apply the `.@ns-non-ideal-state` class to the root container element and wrap the icon element with a
