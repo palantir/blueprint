@@ -80,13 +80,13 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
 
     private maybeSyncHeightToScrollHeight = () => {
         if (this.props.growVertically && this.textareaElement != null) {
-            if (this.props.fitToContent){
+            if (this.props.fitToContent) {
                 // set height to 0 to force scrollHeight to be the minimum height to fit
                 // the content of the textarea
-                this.textareaElement.style.height = "0px"
+                this.textareaElement.style.height = "0px";
             }
             const { scrollHeight } = this.textareaElement;
-            this.textareaElement.style.height = scrollHeight.toString() + "px"
+            this.textareaElement.style.height = scrollHeight.toString() + "px";
             this.setState({ height: scrollHeight });
         }
     };
@@ -108,7 +108,8 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
     }
 
     public render() {
-        const { className, fill, inputRef, intent, large, small, growVertically, fitToContent, ...htmlProps } = this.props;
+        const { className, fill, inputRef, intent, large, small, growVertically, fitToContent, ...htmlProps } =
+            this.props;
 
         const rootClasses = classNames(
             Classes.INPUT,
