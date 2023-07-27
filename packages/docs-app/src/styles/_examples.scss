@@ -158,18 +158,27 @@
   }
 }
 
+$docs-hotkey-piano-height: 510px;
+
 .docs-hotkey-piano-example {
-  opacity: 0.4;
+  min-height: $docs-hotkey-piano-height;
+  opacity: 0.5;
   transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
 
   &:hover {
     cursor: pointer;
-    opacity: 0.6;
+    opacity: 0.75;
   }
 
   &:focus {
     cursor: default;
     opacity: 1;
+  }
+
+  .#{$ns}-non-ideal-state {
+    margin: 0;
+    min-height: $docs-hotkey-piano-height - ($pt-grid-size * 2);
+    padding: $pt-grid-size * 2;
   }
 
   > :first-child {

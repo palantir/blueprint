@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { useHotkeys } from "@blueprintjs/core";
+import { NonIdealState, useHotkeys } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { PianoKey } from "./audio";
@@ -30,7 +30,7 @@ export const UseHotkeysExample: React.FC<ExampleProps> = props => {
         if (typeof window.AudioContext !== "undefined" && audioContext === undefined) {
             setAudioContext(new AudioContext());
         }
-    }, [pianoRef]);
+    }, [audioContext, pianoRef]);
 
     const [keyPressed, setKeyPressed] = React.useState<readonly boolean[]>(new Array(25).fill(false));
 
@@ -217,20 +217,13 @@ export const UseHotkeysExample: React.FC<ExampleProps> = props => {
                 onKeyUp: () => setKeyState(23, false),
             },
         ],
-        [],
+        [focusPiano, setKeyState],
     );
     const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys);
 
-    return (
-        <Example className="docs-use-hotkeys-example" options={false} {...props}>
-            <div
-                tabIndex={0}
-                className="docs-hotkey-piano-example"
-                ref={pianoRef}
-                onClick={focusPiano}
-                onKeyDown={handleKeyDown}
-                onKeyUp={handleKeyUp}
-            >
+    const pianoWithAudioContext = React.useMemo(
+        () => (
+            <>
                 <div>
                     <PianoKey note="C5" hotkey="Q" pressed={keyPressed[0]} context={audioContext} />
                     <PianoKey note="C#5" hotkey="2" pressed={keyPressed[1]} context={audioContext} />
@@ -259,6 +252,26 @@ export const UseHotkeysExample: React.FC<ExampleProps> = props => {
                     <PianoKey note="A#4" hotkey="J" pressed={keyPressed[22]} context={audioContext} />
                     <PianoKey note="B4" hotkey="M" pressed={keyPressed[23]} context={audioContext} />
                 </div>
+            </>
+        ),
+        [audioContext, keyPressed],
+    );
+
+    return (
+        <Example className="docs-use-hotkeys-example" options={false} {...props}>
+            <div
+                tabIndex={0}
+                className="docs-hotkey-piano-example"
+                ref={pianoRef}
+                onClick={focusPiano}
+                onKeyDown={handleKeyDown}
+                onKeyUp={handleKeyUp}
+            >
+                {audioContext == null ? (
+                    <NonIdealState icon="select" title="Click here to start this WebAudio-based interactive example" />
+                ) : (
+                    pianoWithAudioContext
+                )}
             </div>
         </Example>
     );
