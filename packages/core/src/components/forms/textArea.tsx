@@ -37,6 +37,12 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
     small?: boolean;
 
     /**
+     * Whether the text area should automatically fit vertically to it's content. Only works if
+     * growVertically is enabled.
+     */
+    fitToContent?: boolean;
+
+    /**
      * Whether the text area should automatically grow vertically to accomodate content.
      */
     growVertically?: boolean;
@@ -74,10 +80,14 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
 
     private maybeSyncHeightToScrollHeight = () => {
         if (this.props.growVertically && this.textareaElement != null) {
-            const { scrollHeight } = this.textareaElement;
-            if (scrollHeight > 0) {
-                this.setState({ height: scrollHeight });
+            if (this.props.fitToContent){
+                // set height to 0 to force scrollHeight to be the minimum height to fit
+                // the content of the textarea
+                this.textareaElement.style.height = "0px"
             }
+            const { scrollHeight } = this.textareaElement;
+            this.textareaElement.style.height = scrollHeight.toString() + "px"
+            this.setState({ height: scrollHeight });
         }
     };
 
@@ -98,7 +108,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
     }
 
     public render() {
-        const { className, fill, inputRef, intent, large, small, growVertically, ...htmlProps } = this.props;
+        const { className, fill, inputRef, intent, large, small, growVertically, fitToContent, ...htmlProps } = this.props;
 
         const rootClasses = classNames(
             Classes.INPUT,
@@ -113,7 +123,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
 
         // add explicit height style while preserving user-supplied styles if they exist
         let { style = {} } = htmlProps;
-        if (growVertically && this.state.height != null) {
+        if (growVertically && fitToContent && this.state.height != null) {
             // this style object becomes non-extensible when mounted (at least in the enzyme renderer),
             // so we make a new one to add a property
             style = {

@@ -26,6 +26,7 @@ const CONTROLLED_TEXT_TO_APPEND =
 interface TextAreaExampleState {
     controlled: boolean;
     disabled: boolean;
+    fitToContent: boolean;
     growVertically: boolean;
     large: boolean;
     readOnly: boolean;
@@ -37,6 +38,7 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
     public state: TextAreaExampleState = {
         controlled: false,
         disabled: false,
+        fitToContent: false,
         growVertically: true,
         large: false,
         readOnly: false,
@@ -47,6 +49,8 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
     private handleControlledChange = handleBooleanChange(controlled => this.setState({ controlled }));
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
+    private handleFitToContentChange = handleBooleanChange(fitToContent => this.setState({ fitToContent }));
 
     private handleGrowVerticallyChange = handleBooleanChange(growVertically => this.setState({ growVertically }));
 
@@ -77,7 +81,7 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
     }
 
     private renderOptions() {
-        const { controlled, disabled, growVertically, large, readOnly, small } = this.state;
+        const { controlled, disabled, growVertically, large, readOnly, small, fitToContent } = this.state;
         return (
             <>
                 <H5>Appearance props</H5>
@@ -86,6 +90,7 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
                 <H5>Behavior props</H5>
                 <Switch label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />
                 <Switch label="Read-only" onChange={this.handleReadOnlyChange} checked={readOnly} />
+                <Switch label="Fit content" onChange={this.handleFitToContentChange} checked={fitToContent} />
                 <Switch label="Grow vertically" onChange={this.handleGrowVerticallyChange} checked={growVertically} />
                 <Switch label="Controlled usage" onChange={this.handleControlledChange} checked={controlled} />
                 <ControlGroup>
