@@ -22,27 +22,19 @@ import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 
 export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     /**
-     * Whether the text area should take up the full width of its container.
-     */
-    fill?: boolean;
-
-    /**
-     * Whether the text area should appear with large styling.
-     */
-    large?: boolean;
-
-    /**
-     * Whether the text area should appear with small styling.
-     */
-    small?: boolean;
-
-    /**
-     * Whether the component should automatically resize as a user types in the text input.
-     * Please note that this will disable manual resizing.
+     * Whether the component should automatically resize vertically as a user types in the text input.
+     * This will disable manual resizing in the vertical dimension.
      *
      * @default false
      */
     autoResize?: boolean;
+
+    /**
+     * Whether the text area should take up the full width of its container.
+     *
+     * @default false
+     */
+    fill?: boolean;
 
     /**
      * Whether the text area should automatically grow vertically to accomodate content.
@@ -55,6 +47,20 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
      * Ref handler that receives HTML `<textarea>` element backing this component.
      */
     inputRef?: React.Ref<HTMLTextAreaElement>;
+
+    /**
+     * Whether the text area should appear with large styling.
+     *
+     * @default false
+     */
+    large?: boolean;
+
+    /**
+     * Whether the text area should appear with small styling.
+     *
+     * @default false
+     */
+    small?: boolean;
 }
 
 export interface TextAreaState {
@@ -69,6 +75,13 @@ export interface TextAreaState {
  * @see https://blueprintjs.com/docs/#core/components/text-area
  */
 export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState> {
+    public static defaultProps: TextAreaProps = {
+        autoResize: false,
+        fill: false,
+        large: false,
+        small: false,
+    };
+
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
     public state: TextAreaState = {};
@@ -83,6 +96,24 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
     );
 
     private maybeSyncHeightToScrollHeight = () => {
+        // eslint-disable-next-line deprecation/deprecation
+        const { autoResize, growVertically } = this.props;
+
+        if (this.textareaElement != null) {
+            const { scrollHeight } = this.textareaElement;
+
+            if (autoResize) {
+                // set height to 0 to force scrollHeight to be the minimum height to fit
+                // the content of the textarea
+                this.textareaElement.style.height = "0px";
+                this.textareaElement.style.height = scrollHeight.toString() + "px";
+                this.setState({ height: scrollHeight });
+            } else if (growVertically && scrollHeight > 0) {
+                // N.B. this code path will be deleted in Blueprint v6.0 when `growVertically` is removed
+                this.setState({ height: scrollHeight });
+            }
+        }
+
         if (this.props.autoResize && this.textareaElement != null) {
             // set height to 0 to force scrollHeight to be the minimum height to fit
             // the content of the textarea
@@ -111,28 +142,31 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
     }
 
     public render() {
-        const { className, fill, inputRef, intent, large, small, autoResize, ...htmlProps } = this.props;
+        // eslint-disable-next-line deprecation/deprecation
+        const { autoResize, className, fill, growVertically, inputRef, intent, large, small, ...htmlProps } =
+            this.props;
 
         const rootClasses = classNames(
             Classes.INPUT,
+            Classes.TEXT_AREA,
             Classes.intentClass(intent),
             {
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
                 [Classes.SMALL]: small,
+                [Classes.TEXT_AREA_AUTO_RESIZE]: autoResize,
             },
             className,
         );
 
         // add explicit height style while preserving user-supplied styles if they exist
         let { style = {} } = htmlProps;
-        if (autoResize && this.state.height != null) {
+        if ((autoResize || growVertically) && this.state.height != null) {
             // this style object becomes non-extensible when mounted (at least in the enzyme renderer),
             // so we make a new one to add a property
             style = {
                 ...style,
                 height: `${this.state.height}px`,
-                resize: "none",
             };
         }
 

@@ -110,3 +110,10 @@ textarea.#{$ns}-input {
     padding: $input-small-padding;
   }
 }
+
+.#{$ns}-text-area {
+  &.#{$ns}-text-area-auto-resize {
+    // we are controlling vertical resizing automatically, so restrict user resizing to horizontal dimension only
+    resize: horizontal;
+  }
+}
