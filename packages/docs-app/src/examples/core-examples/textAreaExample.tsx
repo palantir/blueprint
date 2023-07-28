@@ -24,10 +24,9 @@ const CONTROLLED_TEXT_TO_APPEND =
     "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide. It's a small thermal exhaust port, right below the main port. The shaft leads directly to the reactor system.";
 
 interface TextAreaExampleState {
+    autoResize: boolean;
     controlled: boolean;
     disabled: boolean;
-    fitToContent: boolean;
-    growVertically: boolean;
     large: boolean;
     readOnly: boolean;
     small: boolean;
@@ -36,10 +35,9 @@ interface TextAreaExampleState {
 
 export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaExampleState> {
     public state: TextAreaExampleState = {
+        autoResize: false,
         controlled: false,
         disabled: false,
-        fitToContent: false,
-        growVertically: true,
         large: false,
         readOnly: false,
         small: false,
@@ -50,9 +48,7 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
 
-    private handleFitToContentChange = handleBooleanChange(fitToContent => this.setState({ fitToContent }));
-
-    private handleGrowVerticallyChange = handleBooleanChange(growVertically => this.setState({ growVertically }));
+    private handleAutoResizeChange = handleBooleanChange(autoResize => this.setState({ autoResize }));
 
     private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
 
@@ -81,7 +77,7 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
     }
 
     private renderOptions() {
-        const { controlled, disabled, growVertically, large, readOnly, small, fitToContent } = this.state;
+        const { controlled, disabled, large, readOnly, small, autoResize } = this.state;
         return (
             <>
                 <H5>Appearance props</H5>
@@ -90,8 +86,7 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
                 <H5>Behavior props</H5>
                 <Switch label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />
                 <Switch label="Read-only" onChange={this.handleReadOnlyChange} checked={readOnly} />
-                <Switch label="Fit content" onChange={this.handleFitToContentChange} checked={fitToContent} />
-                <Switch label="Grow vertically" onChange={this.handleGrowVerticallyChange} checked={growVertically} />
+                <Switch label="Auto resize" onChange={this.handleAutoResizeChange} checked={autoResize} />
                 <Switch label="Controlled usage" onChange={this.handleControlledChange} checked={controlled} />
                 <ControlGroup>
                     <AnchorButton

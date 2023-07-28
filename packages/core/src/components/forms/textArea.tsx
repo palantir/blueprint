@@ -37,13 +37,17 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
     small?: boolean;
 
     /**
-     * Whether the text area should automatically fit vertically to it's content. Only works if
-     * growVertically is enabled.
+     * Whether the component should automatically resize as a user types in the text input.
+     * Please note that this will disable manual resizing.
+     *
+     * @default false
      */
-    fitToContent?: boolean;
+    autoResize?: boolean;
 
     /**
      * Whether the text area should automatically grow vertically to accomodate content.
+     *
+     * @deprecated use the `autoResize` prop instead.
      */
     growVertically?: boolean;
 
@@ -79,12 +83,11 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
     );
 
     private maybeSyncHeightToScrollHeight = () => {
-        if (this.props.growVertically && this.textareaElement != null) {
-            if (this.props.fitToContent) {
-                // set height to 0 to force scrollHeight to be the minimum height to fit
-                // the content of the textarea
-                this.textareaElement.style.height = "0px";
-            }
+        if (this.props.autoResize && this.textareaElement != null) {
+            // set height to 0 to force scrollHeight to be the minimum height to fit
+            // the content of the textarea
+            this.textareaElement.style.height = "0px";
+
             const { scrollHeight } = this.textareaElement;
             this.textareaElement.style.height = scrollHeight.toString() + "px";
             this.setState({ height: scrollHeight });
@@ -108,8 +111,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
     }
 
     public render() {
-        const { className, fill, inputRef, intent, large, small, growVertically, fitToContent, ...htmlProps } =
-            this.props;
+        const { className, fill, inputRef, intent, large, small, autoResize, ...htmlProps } = this.props;
 
         const rootClasses = classNames(
             Classes.INPUT,
@@ -124,12 +126,13 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
 
         // add explicit height style while preserving user-supplied styles if they exist
         let { style = {} } = htmlProps;
-        if (growVertically && fitToContent && this.state.height != null) {
+        if (autoResize && this.state.height != null) {
             // this style object becomes non-extensible when mounted (at least in the enzyme renderer),
             // so we make a new one to add a property
             style = {
                 ...style,
                 height: `${this.state.height}px`,
+                resize: "none",
             };
         }
 
