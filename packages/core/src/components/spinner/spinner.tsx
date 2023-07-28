@@ -107,6 +107,7 @@ export class Spinner extends AbstractPureComponent<SpinnerProps> {
         return React.createElement(
             tagName,
             {
+                "aria-label": "loading",
                 "aria-valuemax": 100,
                 "aria-valuemin": 0,
                 "aria-valuenow": value === undefined ? undefined : value * 100,
