@@ -81,8 +81,8 @@ describe("<TextArea>", () => {
         assert.notEqual(scrollHeightInPixelsBefore, scrollHeightInPixelsAfter);
     });
 
-    // coleary: growVertically deprecated as of 28/07/2023
     // HACKHACK: skipped test, see https://github.com/palantir/blueprint/issues/5976
+    // Note that growVertically is deprecated as of 28/07/2023
     it.skip("can resize automatically", () => {
         const wrapper = mount(<TextArea growVertically={true} />, { attachTo: containerElement });
         const textarea = wrapper.find("textarea");
@@ -116,8 +116,8 @@ describe("<TextArea>", () => {
         assert.equal(textarea.getDOMNode<HTMLElement>().style.marginTop, "10px");
     });
 
-    // coleary: growVertically deprecated as of 28/07/2023
     // HACKHACK: skipped test, see https://github.com/palantir/blueprint/issues/5976
+    // Note that growVertically is deprecated as of 28/07/2023
     it.skip("can fit large initial content", () => {
         const initialValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Aenean finibus eget enim non accumsan.
@@ -173,8 +173,8 @@ describe("<TextArea>", () => {
         assert.instanceOf(textAreaNewRef.current, HTMLTextAreaElement);
     });
 
-    // coleary: growVertically deprecated as of 28/07/2023
     // HACKHACK: skipped test, see https://github.com/palantir/blueprint/issues/5976
+    // Note that growVertically is deprecated as of 28/07/2023
     it.skip("resizes when props change if growVertically is true", () => {
         const initialText = "A";
         const longText = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
