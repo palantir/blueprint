@@ -153,14 +153,14 @@ export class AsyncControllableInput<T extends InputType = "input"> extends Abstr
         const { inputRef, tagName = "input", ...restProps } = this.props;
         return React.createElement(tagName, {
             ...restProps,
+            onChange: this.handleChange,
+            onCompositionEnd: this.handleCompositionEnd,
+            onCompositionStart: this.handleCompositionStart,
             ref: inputRef,
             // render the pending value even if it is not confirmed by a parent's async controlled update
             // so that the cursor does not jump to the end of input as reported in
             // https://github.com/palantir/blueprint/issues/4298
             value: isComposing || hasPendingUpdate ? nextValue : value,
-            onCompositionStart: this.handleCompositionStart,
-            onCompositionEnd: this.handleCompositionEnd,
-            onChange: this.handleChange,
         });
     }
 
