@@ -169,4 +169,137 @@ describe("<AsyncControllableInput>", () => {
             return;
         });
     });
+
+    describe("textarea", () => {
+        it("renders a textarea", () => {
+            const wrapper = mount(<AsyncControllableInput tagName="textarea" value="hi" />);
+            assert.strictEqual(wrapper.childAt(0).type(), "textarea");
+        });
+
+        it("accepts controlled update 'hi' -> 'bye'", () => {
+            const wrapper = mount(<AsyncControllableInput tagName="textarea" value="hi" />);
+            assert.strictEqual(wrapper.find("textarea").prop("value"), "hi");
+            wrapper.setProps({ value: "bye" });
+            assert.strictEqual(wrapper.find("textarea").prop("value"), "bye");
+        });
+
+        it("triggers onChange events during composition", () => {
+            const handleChangeSpy = spy();
+            const wrapper = mount(<AsyncControllableInput tagName="textarea" value="hi" onChange={handleChangeSpy} />);
+            const input = wrapper.find("textarea");
+
+            input.simulate("compositionstart", { data: "" });
+            input.simulate("compositionupdate", { data: " " });
+            // some browsers trigger this change event during composition, so we test to ensure that our wrapper component does too
+            input.simulate("change", { target: { value: "hi " } });
+            input.simulate("compositionupdate", { data: " ." });
+            input.simulate("change", { target: { value: "hi ." } });
+            input.simulate("compositionend", { data: " ." });
+
+            assert.strictEqual(handleChangeSpy.callCount, 2);
+        });
+
+        it("external updates DO NOT override in-progress composition", async () => {
+            const wrapper = mount(<AsyncControllableInput tagName="textarea" value="hi" />);
+            const textarea = wrapper.find("textarea");
+
+            textarea.simulate("compositionstart", { data: "" });
+            textarea.simulate("compositionupdate", { data: " " });
+            textarea.simulate("change", { target: { value: "hi " } });
+
+            await Promise.resolve();
+            wrapper.setProps({ value: "bye" }).update();
+
+            assert.strictEqual(wrapper.find("textarea").prop("value"), "hi ");
+        });
+
+        it("external updates DO NOT flush with immediately ongoing compositions", async () => {
+            const wrapper = mount(<AsyncControllableInput tagName="textarea" value="hi" />);
+            const textarea = wrapper.find("textarea");
+
+            textarea.simulate("compositionstart", { data: "" });
+            textarea.simulate("compositionupdate", { data: " " });
+            textarea.simulate("change", { target: { value: "hi " } });
+
+            wrapper.setProps({ value: "bye" }).update();
+
+            textarea.simulate("compositionend", { data: " " });
+            textarea.simulate("compositionstart", { data: "" });
+
+            // Wait for the composition ending delay to pass
+            await new Promise(resolve =>
+                setTimeout(() => resolve(null), AsyncControllableInput.COMPOSITION_END_DELAY + 5),
+            );
+
+            assert.strictEqual(wrapper.find("textarea").prop("value"), "hi ");
+        });
+
+        it("external updates flush after composition ends", async () => {
+            const wrapper = mount(<AsyncControllableInput tagName="textarea" value="hi" />);
+            const textarea = wrapper.find("textarea");
+
+            textarea.simulate("compositionstart", { data: "" });
+            textarea.simulate("compositionupdate", { data: " " });
+            textarea.simulate("change", { target: { value: "hi " } });
+            textarea.simulate("compositionend", { data: " " });
+
+            // Wait for the composition ending delay to pass
+            await new Promise(resolve =>
+                setTimeout(() => resolve(null), AsyncControllableInput.COMPOSITION_END_DELAY + 5),
+            );
+
+            // we are "rejecting" the composition here by supplying a different controlled value
+            wrapper.setProps({ value: "bye" }).update();
+
+            assert.strictEqual(wrapper.find("textarea").prop("value"), "bye");
+        });
+
+        it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
+            class TestComponent extends React.PureComponent<{ initialValue: string }, { value: string }> {
+                public state = { value: this.props.initialValue };
+
+                public render() {
+                    return (
+                        <AsyncControllableInput
+                            tagName="textarea"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                        />
+                    );
+                }
+
+                private handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                    const newValue = e.target.value;
+                    window.setTimeout(() => this.setState({ value: newValue }), 10);
+                };
+            }
+
+            const wrapper = mount(<TestComponent initialValue="hi" />);
+            assert.strictEqual(wrapper.find("textarea").prop("value"), "hi");
+
+            wrapper.find("textarea").simulate("change", { target: { value: "hi " } });
+            wrapper.update();
+
+            assert.strictEqual(
+                wrapper.find(AsyncControllableInput).prop("value"),
+                "hi",
+                "local state should still have initial value",
+            );
+            // but rendered input should optimistically show new value
+            assert.strictEqual(
+                wrapper.find("textarea").prop("value"),
+                "hi ",
+                "rendered <textarea> should optimistically show new value",
+            );
+
+            // after async delay, confirm the update
+            await sleep(20);
+            assert.strictEqual(
+                wrapper.find("textarea").prop("value"),
+                "hi ",
+                "rendered <textarea> should still show new value",
+            );
+            return;
+        });
+    });
 });

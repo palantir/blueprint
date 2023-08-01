@@ -152,9 +152,19 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
     }
 
     public render() {
-        // eslint-disable-next-line deprecation/deprecation
-        const { asyncControl, autoResize, className, fill, growVertically, inputRef, intent, large, small, ...htmlProps } =
-            this.props;
+        const {
+            asyncControl,
+            autoResize,
+            className,
+            fill,
+            // eslint-disable-next-line deprecation/deprecation
+            growVertically,
+            inputRef,
+            intent,
+            large,
+            small,
+            ...htmlProps
+        } = this.props;
 
         const rootClasses = classNames(
             Classes.INPUT,
@@ -180,15 +190,24 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             };
         }
 
-        const [element, restProps] = asyncControl ? [AsyncControllableInput, { inputRef: this.handleRef }] : ["textarea", { ref: this.handleRef }]
-
-        return React.createElement(element, {
-            ...htmlProps,
-            className: rootClasses,
-            onChange: this.handleChange,
-            style,
-            ...restProps
-        })
+        return asyncControl ? (
+            <AsyncControllableInput
+                {...htmlProps}
+                tagName="textarea"
+                className={rootClasses}
+                onChange={this.handleChange}
+                style={style}
+                inputRef={this.handleRef}
+            />
+        ) : (
+            <textarea
+                {...htmlProps}
+                className={rootClasses}
+                onChange={this.handleChange}
+                style={style}
+                ref={this.handleRef}
+            />
+        );
     }
 
     private handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

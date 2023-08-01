@@ -18,22 +18,41 @@ import * as React from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
 
-type AsyncControllableElement = HTMLInputElement | HTMLTextAreaElement;
+type InputType = "input" | "textarea";
 
-export type AsyncControllableInputProps = React.InputHTMLAttributes<AsyncControllableElement> & {
-    inputRef?: React.Ref<AsyncControllableElement>;
+type AsyncControllableElement<T extends InputType> = T extends "input"
+    ? HTMLInputElement
+    : T extends "textarea"
+    ? HTMLTextAreaElement
+    : never;
 
+type AsyncControllableElementAttributes<T extends InputType> = T extends "input"
+    ? React.InputHTMLAttributes<HTMLInputElement>
+    : T extends "textarea"
+    ? React.TextareaHTMLAttributes<HTMLTextAreaElement>
+    : never;
+
+type InputValue<T extends InputType> = AsyncControllableElementAttributes<T>["value"];
+
+type AsyncControllableInputProps<T extends InputType = "input"> = Omit<
+    AsyncControllableElementAttributes<T>,
+    "onChange" | "onCompositionStart" | "onCompositionEnd"
+> & {
     /**
      * HTML tag name to use for rendered input element.
      *
      * @default "input"
      */
-    tagName?: "input" | "textarea";
+    tagName?: T;
+    inputRef?: React.Ref<AsyncControllableElement<T>>;
+
+    // NOTE: these are copied from the React.HTMLAttributes interface definition.
+    onChange?: React.ChangeEventHandler<AsyncControllableElement<T>> | undefined;
+    onCompositionStart?: React.CompositionEventHandler<AsyncControllableElement<T>> | undefined;
+    onCompositionEnd?: React.CompositionEventHandler<AsyncControllableElement<T>> | undefined;
 };
 
-type InputValue = AsyncControllableInputProps["value"];
-
-export interface AsyncControllableInputState {
+export interface AsyncControllableInputState<T extends InputType = "input"> {
     /**
      * Whether we are in the middle of a composition event.
      *
@@ -47,12 +66,12 @@ export interface AsyncControllableInputState {
      *
      * @default ""
      */
-    value: InputValue;
+    value: InputValue<T>;
 
     /**
      * The latest input value, which updates during IME composition. Defaults to props.value.
      */
-    nextValue: InputValue;
+    nextValue: InputValue<T>;
 
     /**
      * Whether there is a pending update we are expecting from a parent component.
@@ -71,9 +90,9 @@ export interface AsyncControllableInputState {
  *
  * Note: this component does not apply any Blueprint-specific styling.
  */
-export class AsyncControllableInput extends AbstractPureComponent<
-    AsyncControllableInputProps,
-    AsyncControllableInputState
+export class AsyncControllableInput<T extends InputType = "input"> extends AbstractPureComponent<
+    AsyncControllableInputProps<T>,
+    AsyncControllableInputState<T>
 > {
     public static displayName = `${DISPLAYNAME_PREFIX}.AsyncControllableInput`;
 
@@ -83,7 +102,7 @@ export class AsyncControllableInput extends AbstractPureComponent<
      */
     public static COMPOSITION_END_DELAY = 10;
 
-    public state: AsyncControllableInputState = {
+    public state: AsyncControllableInputState<T> = {
         hasPendingUpdate: false,
         isComposing: false,
         nextValue: this.props.value,
@@ -139,19 +158,19 @@ export class AsyncControllableInput extends AbstractPureComponent<
             // so that the cursor does not jump to the end of input as reported in
             // https://github.com/palantir/blueprint/issues/4298
             value: isComposing || hasPendingUpdate ? nextValue : value,
-            onCompositionStart: this.handleCompositionStart, 
-            onCompositionEnd: this.handleCompositionEnd, 
-            onChange: this.handleChange
+            onCompositionStart: this.handleCompositionStart,
+            onCompositionEnd: this.handleCompositionEnd,
+            onChange: this.handleChange,
         });
     }
 
-    private handleCompositionStart = (e: React.CompositionEvent<AsyncControllableElement>) => {
+    private handleCompositionStart = (e: React.CompositionEvent<AsyncControllableElement<T>>) => {
         this.cancelPendingCompositionEnd?.();
         this.setState({ isComposing: true });
         this.props.onCompositionStart?.(e);
     };
 
-    private handleCompositionEnd = (e: React.CompositionEvent<AsyncControllableElement>) => {
+    private handleCompositionEnd = (e: React.CompositionEvent<AsyncControllableElement<T>>) => {
         // In some non-latin languages, a keystroke can end a composition event and immediately afterwards start another.
         // This can lead to unexpected characters showing up in the text input. In order to circumvent this problem, we
         // use a timeout which creates a delay which merges the two composition events, creating a more natural and predictable UX.
@@ -164,7 +183,7 @@ export class AsyncControllableInput extends AbstractPureComponent<
         this.props.onCompositionEnd?.(e);
     };
 
-    private handleChange = (e: React.ChangeEvent<AsyncControllableElement>) => {
+    private handleChange = (e: React.ChangeEvent<AsyncControllableElement<T>>) => {
         const { value } = e.target;
 
         this.setState({ nextValue: value });
