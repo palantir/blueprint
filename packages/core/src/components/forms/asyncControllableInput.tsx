@@ -18,8 +18,17 @@ import * as React from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
 
-export type AsyncControllableInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-    inputRef?: React.Ref<HTMLInputElement>;
+type AsyncControllableElement = HTMLInputElement | HTMLTextAreaElement;
+
+export type AsyncControllableInputProps = React.InputHTMLAttributes<AsyncControllableElement> & {
+    inputRef?: React.Ref<AsyncControllableElement>;
+
+    /**
+     * HTML tag name to use for rendered input element.
+     *
+     * @default "input"
+     */
+    tagName?: "input" | "textarea";
 };
 
 type InputValue = AsyncControllableInputProps["value"];
@@ -54,7 +63,7 @@ export interface AsyncControllableInputState {
 }
 
 /**
- * A stateful wrapper around the low-level <input> component which works around a
+ * A stateful wrapper around the low-level <input> or <textarea> components which works around a
  * [React bug](https://github.com/facebook/react/issues/3926). This bug is reproduced when an input
  * receives CompositionEvents (for example, through IME composition) and has its value prop updated
  * asychronously. This might happen if a component chooses to do async validation of a value
@@ -122,29 +131,27 @@ export class AsyncControllableInput extends AbstractPureComponent<
 
     public render() {
         const { isComposing, hasPendingUpdate, value, nextValue } = this.state;
-        const { inputRef, ...restProps } = this.props;
-        return (
-            <input
-                {...restProps}
-                ref={inputRef}
-                // render the pending value even if it is not confirmed by a parent's async controlled update
-                // so that the cursor does not jump to the end of input as reported in
-                // https://github.com/palantir/blueprint/issues/4298
-                value={isComposing || hasPendingUpdate ? nextValue : value}
-                onCompositionStart={this.handleCompositionStart}
-                onCompositionEnd={this.handleCompositionEnd}
-                onChange={this.handleChange}
-            />
-        );
+        const { inputRef, tagName = "input", ...restProps } = this.props;
+        return React.createElement(tagName, {
+            ...restProps,
+            ref: inputRef,
+            // render the pending value even if it is not confirmed by a parent's async controlled update
+            // so that the cursor does not jump to the end of input as reported in
+            // https://github.com/palantir/blueprint/issues/4298
+            value: isComposing || hasPendingUpdate ? nextValue : value,
+            onCompositionStart: this.handleCompositionStart, 
+            onCompositionEnd: this.handleCompositionEnd, 
+            onChange: this.handleChange
+        });
     }
 
-    private handleCompositionStart = (e: React.CompositionEvent<HTMLInputElement>) => {
+    private handleCompositionStart = (e: React.CompositionEvent<AsyncControllableElement>) => {
         this.cancelPendingCompositionEnd?.();
         this.setState({ isComposing: true });
         this.props.onCompositionStart?.(e);
     };
 
-    private handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
+    private handleCompositionEnd = (e: React.CompositionEvent<AsyncControllableElement>) => {
         // In some non-latin languages, a keystroke can end a composition event and immediately afterwards start another.
         // This can lead to unexpected characters showing up in the text input. In order to circumvent this problem, we
         // use a timeout which creates a delay which merges the two composition events, creating a more natural and predictable UX.
@@ -157,7 +164,7 @@ export class AsyncControllableInput extends AbstractPureComponent<
         this.props.onCompositionEnd?.(e);
     };
 
-    private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    private handleChange = (e: React.ChangeEvent<AsyncControllableElement>) => {
         const { value } = e.target;
 
         this.setState({ nextValue: value });
