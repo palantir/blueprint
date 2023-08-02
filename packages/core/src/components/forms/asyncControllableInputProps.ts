@@ -25,6 +25,7 @@ export type AsyncControllableInputProps<T extends InputTagName = "input"> = Omit
     /**
      * HTML tag name to use for rendered input element.
      *
+     * @type {"input" | "textarea"}
      * @default "input"
      */
     tagName?: T;
