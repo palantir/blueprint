@@ -17,42 +17,14 @@
 import * as React from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
+import {
+    AsyncControllableElement,
+    AsyncControllableInputProps,
+    AsyncControllableInputValue,
+    InputTagName,
+} from "./asyncControllableInputProps";
 
-type InputType = "input" | "textarea";
-
-type AsyncControllableElement<T extends InputType> = T extends "input"
-    ? HTMLInputElement
-    : T extends "textarea"
-    ? HTMLTextAreaElement
-    : never;
-
-type AsyncControllableElementAttributes<T extends InputType> = T extends "input"
-    ? React.InputHTMLAttributes<HTMLInputElement>
-    : T extends "textarea"
-    ? React.TextareaHTMLAttributes<HTMLTextAreaElement>
-    : never;
-
-type InputValue<T extends InputType> = AsyncControllableElementAttributes<T>["value"];
-
-type AsyncControllableInputProps<T extends InputType = "input"> = Omit<
-    AsyncControllableElementAttributes<T>,
-    "onChange" | "onCompositionStart" | "onCompositionEnd"
-> & {
-    /**
-     * HTML tag name to use for rendered input element.
-     *
-     * @default "input"
-     */
-    tagName?: T;
-    inputRef?: React.Ref<AsyncControllableElement<T>>;
-
-    // NOTE: these are copied from the React.HTMLAttributes interface definition.
-    onChange?: React.ChangeEventHandler<AsyncControllableElement<T>> | undefined;
-    onCompositionStart?: React.CompositionEventHandler<AsyncControllableElement<T>> | undefined;
-    onCompositionEnd?: React.CompositionEventHandler<AsyncControllableElement<T>> | undefined;
-};
-
-export interface AsyncControllableInputState<T extends InputType = "input"> {
+export interface AsyncControllableInputState<T extends InputTagName = "input"> {
     /**
      * Whether we are in the middle of a composition event.
      *
@@ -66,12 +38,12 @@ export interface AsyncControllableInputState<T extends InputType = "input"> {
      *
      * @default ""
      */
-    value: InputValue<T>;
+    value: AsyncControllableInputValue<T>;
 
     /**
      * The latest input value, which updates during IME composition. Defaults to props.value.
      */
-    nextValue: InputValue<T>;
+    nextValue: AsyncControllableInputValue<T>;
 
     /**
      * Whether there is a pending update we are expecting from a parent component.
@@ -90,7 +62,7 @@ export interface AsyncControllableInputState<T extends InputType = "input"> {
  *
  * Note: this component does not apply any Blueprint-specific styling.
  */
-export class AsyncControllableInput<T extends InputType = "input"> extends AbstractPureComponent<
+export class AsyncControllableInput<T extends InputTagName = "input"> extends AbstractPureComponent<
     AsyncControllableInputProps<T>,
     AsyncControllableInputState<T>
 > {
