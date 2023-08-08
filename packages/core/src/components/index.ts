@@ -114,4 +114,4 @@ export { Toaster, ToastOptions } from "./toast/toaster";
 export { TooltipProps, Tooltip } from "./tooltip/tooltip";
 export { Tree, TreeProps } from "./tree/tree";
 export { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";
-export { TreeNode } from "./tree/treeNode";
+export { TreeNode, TreeNodeProps } from "./tree/treeNode";
