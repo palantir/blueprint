@@ -109,7 +109,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         title,
         ...htmlProps
     } = props;
-    const [isCollapsed, setIsCollapsed] = React.useState<boolean>(collapseProps?.defaultIsOpen ?? false);
+    const [isCollapsed, setIsCollapsed] = React.useState<boolean>(!collapseProps?.defaultIsOpen ?? false);
     const toggleIsCollapsed = React.useCallback(() => setIsCollapsed(!isCollapsed), [isCollapsed]);
 
     const isHeaderLeftContainerVisible = title != null || icon != null || subtitle != null;
