@@ -114,8 +114,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
     } = props;
     const [isCollapsed, setIsCollapsed] = React.useState<boolean>(!collapseProps?.defaultIsOpen ?? false);
     const toggleIsCollapsed = React.useCallback(() => setIsCollapsed(!isCollapsed), [isCollapsed]);
-    // eslint-disable-next-line no-console
-    console.log(collapseProps, isCollapsed);
+
     const isHeaderLeftContainerVisible = title != null || icon != null || subtitle != null;
     const isHeaderRightContainerVisible = rightElement != null || collapsible;
 
