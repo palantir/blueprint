@@ -1,0 +1,122 @@
+/* !
+ * (c) Copyright 2023 Palantir Technologies Inc. All rights reserved.
+ */
+
+import * as React from "react";
+
+interface IUseAsyncControllableValueProps<E extends HTMLInputElement | HTMLTextAreaElement> {
+    value?: React.InputHTMLAttributes<E>["value"];
+    onChange?: React.ChangeEventHandler<E>;
+    onCompositionStart?: React.CompositionEventHandler<E>;
+    onCompositionEnd?: React.CompositionEventHandler<E>;
+}
+
+/**
+ * The amount of time (in milliseconds) which the input will wait after a compositionEnd event before
+ * unlocking its state value for external updates via props. See `handleCompositionEnd` for more details.
+ */
+export const ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY = 10;
+
+export function useAsyncControllableValue<E extends HTMLInputElement | HTMLTextAreaElement>(
+    props: IUseAsyncControllableValueProps<E>,
+) {
+    const { onCompositionStart, onCompositionEnd, value: propValue, onChange } = props;
+    const [value, setValue] = React.useState(propValue);
+    const [nextValue, setNextValue] = React.useState(value);
+    const [isComposing, setIsComposing] = React.useState(false);
+    const [hasPendingUpdate, setHasPendingUpdate] = React.useState(false);
+
+    const cancelPendingCompositionEnd = React.useRef<(() => void) | null>(null);
+
+    const handleCompositionStart: React.CompositionEventHandler<E> = React.useCallback(
+        event => {
+            cancelPendingCompositionEnd.current?.();
+            setIsComposing(true);
+            onCompositionStart?.(event);
+        },
+        [onCompositionStart],
+    );
+
+    const createOnCancelPendingCompositionEnd = React.useCallback(() => {
+        const timeoutId = window.setTimeout(
+            () => setIsComposing(false),
+            ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY,
+        );
+        return () => window.clearTimeout(timeoutId);
+    }, []);
+
+    const handleCompositionEnd: React.CompositionEventHandler<E> = React.useCallback(
+        event => {
+            // In some non-latin languages, a keystroke can end a composition event and immediately afterwards start another.
+            // This can lead to unexpected characters showing up in the text input. In order to circumvent this problem, we
+            // use a timeout which creates a delay which merges the two composition events, creating a more natural and predictable UX.
+            // `this.state.nextValue` will become "locked" (it cannot be overwritten by the `value` prop) until a delay (10ms) has
+            // passed without a new composition event starting.
+            cancelPendingCompositionEnd.current = createOnCancelPendingCompositionEnd();
+            onCompositionEnd?.(event);
+        },
+        [createOnCancelPendingCompositionEnd, onCompositionEnd],
+    );
+
+    const handleChange: React.ChangeEventHandler<E> = React.useCallback(
+        event => {
+            const { value: targetValue } = event.target;
+            setNextValue(targetValue);
+            onChange?.(event);
+        },
+        [onChange],
+    );
+
+    if (isComposing || propValue === undefined) {
+        // don't derive anything from props if:
+        // - in uncontrolled mode, OR
+        // - currently composing, since we'll do that after composition ends
+    } else {
+        const userTriggeredUpdate = nextValue !== value;
+
+        if (userTriggeredUpdate) {
+            if (propValue === nextValue) {
+                // parent has processed and accepted our update
+                if (hasPendingUpdate) {
+                    setValue(propValue);
+                    setHasPendingUpdate(false);
+                } else if (value !== nextValue) {
+                    setValue(nextValue);
+                }
+            } else {
+                if (propValue === value) {
+                    // we have sent the update to our parent, but it has not been processed yet. just wait.
+                    // DO NOT set nextValue here, since that will temporarily render a potentially stale controlled value,
+                    // causing the cursor to jump once the new value is accepted
+                    if (!hasPendingUpdate) {
+                        setHasPendingUpdate(true);
+                    }
+                } else {
+                    // accept controlled update overriding user action
+                    if (value !== propValue || nextValue !== propValue || hasPendingUpdate) {
+                        setValue(propValue);
+                        setNextValue(propValue);
+                        setHasPendingUpdate(false);
+                    }
+                }
+            }
+        } else {
+            // accept controlled update, could be confirming or denying user action
+            if (value !== propValue || nextValue !== propValue || hasPendingUpdate) {
+                setValue(propValue);
+                setNextValue(propValue);
+                setHasPendingUpdate(false);
+            }
+        }
+    }
+
+    return {
+        onChange: handleChange,
+        onCompositionEnd: handleCompositionEnd,
+        onCompositionStart: handleCompositionStart,
+        // render the pending value even if it is not confirmed by a parent's async controlled update
+        // so that the cursor does not jump to the end of input as reported in
+        // https://github.com/palantir/blueprint/issues/4298
+        value: isComposing || hasPendingUpdate ? nextValue : value,
+    };
+}

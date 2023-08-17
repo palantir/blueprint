@@ -1,0 +1,42 @@
+/* !
+ * (c) Copyright 2023 Palantir Technologies Inc. All rights reserved.
+ */
+
+import * as React from "react";
+
+import { useAsyncControllableValue } from "./useAsyncControllableValue";
+
+export type IAsyncControllableTextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    inputRef?: React.Ref<HTMLTextAreaElement>;
+};
+
+export const AsyncControllableTextArea = React.memo<IAsyncControllableTextAreaProps>(
+    function _AsyncControllableTextArea(props) {
+        const {
+            value: parentValue,
+            onChange: parentOnChange,
+            onCompositionStart: parentOnCompositionStart,
+            onCompositionEnd: parentOnCompositionEnd,
+            inputRef,
+            ...restProps
+        } = props;
+
+        const { value, onChange, onCompositionStart, onCompositionEnd } = useAsyncControllableValue({
+            onChange: parentOnChange,
+            onCompositionEnd: parentOnCompositionEnd,
+            onCompositionStart: parentOnCompositionStart,
+            value: parentValue,
+        });
+
+        return (
+            <textarea
+                {...restProps}
+                value={value}
+                onChange={onChange}
+                onCompositionStart={onCompositionStart}
+                onCompositionEnd={onCompositionEnd}
+                ref={inputRef}
+            />
+        );
+    },
+);

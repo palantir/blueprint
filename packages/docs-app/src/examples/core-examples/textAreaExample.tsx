@@ -26,6 +26,7 @@ const CONTROLLED_TEXT_TO_APPEND =
     "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide. It's a small thermal exhaust port, right below the main port. The shaft leads directly to the reactor system.";
 
 interface TextAreaExampleState {
+    asyncControlled: boolean;
     autoResize: boolean;
     controlled: boolean;
     disabled: boolean;
@@ -38,6 +39,7 @@ interface TextAreaExampleState {
 
 export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaExampleState> {
     public state: TextAreaExampleState = {
+        asyncControlled: false,
         autoResize: false,
         controlled: false,
         disabled: false,
@@ -62,18 +64,26 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
 
     private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
 
+    private handleAsyncControlledChange = handleBooleanChange(asyncControlled => this.setState({ asyncControlled }));
+
     private appendControlledText = () =>
         this.setState(({ value }) => ({ value: value + " " + CONTROLLED_TEXT_TO_APPEND }));
 
     private resetControlledText = () => this.setState({ value: INTITIAL_CONTROLLED_TEXT });
 
     public render() {
-        const { controlled, value, ...textAreaProps } = this.state;
+        const { controlled, asyncControlled, value, ...textAreaProps } = this.state;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <TextArea style={{ display: controlled ? undefined : "none" }} value={value} {...textAreaProps} />
                 <TextArea
+                    style={{ display: controlled ? undefined : "none" }}
+                    asyncControl={asyncControlled}
+                    value={value}
+                    {...textAreaProps}
+                />
+                <TextArea
+                    asyncControl={asyncControlled}
                     style={{ display: controlled ? "none" : undefined }}
                     placeholder="Type something..."
                     {...textAreaProps}
@@ -83,13 +93,19 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
     }
 
     private renderOptions() {
-        const { controlled, disabled, growVertically, large, readOnly, small, autoResize } = this.state;
+        const { controlled, disabled, growVertically, large, readOnly, small, autoResize, asyncControlled } =
+            this.state;
         return (
             <>
                 <H5>Appearance props</H5>
                 <Switch label="Large" disabled={small} onChange={this.handleLargeChange} checked={large} />
                 <Switch label="Small" disabled={large} onChange={this.handleSmallChange} checked={small} />
                 <H5>Behavior props</H5>
+                <Switch
+                    label="Async-Controlled"
+                    onChange={this.handleAsyncControlledChange}
+                    checked={asyncControlled}
+                />
                 <Switch label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />
                 <Switch label="Read-only" onChange={this.handleReadOnlyChange} checked={readOnly} />
                 <PropCodeTooltip snippet={`autoResize={${autoResize}}`}>

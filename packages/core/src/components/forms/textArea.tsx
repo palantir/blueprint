@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { AbstractPureComponent, Classes, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
-import { AsyncControllableInput } from "./asyncControllableInput";
+import { AsyncControllableTextArea } from "./asyncControllableTextArea";
 
 export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     /**
@@ -191,9 +191,8 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
         }
 
         return asyncControl ? (
-            <AsyncControllableInput
+            <AsyncControllableTextArea
                 {...htmlProps}
-                tagName="textarea"
                 className={rootClasses}
                 onChange={this.handleChange}
                 style={style}

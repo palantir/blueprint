@@ -23,194 +23,298 @@ import { spy } from "sinon";
 
 // this component is not part of the public API, but we want to test its implementation in isolation
 import { AsyncControllableInput } from "../../src/components/forms/asyncControllableInput";
+import { AsyncControllableTextArea } from "../../src/components/forms/asyncControllableTextArea";
+import { ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY } from "../../src/components/forms/useAsyncControllableValue";
 import { sleep } from "../utils";
 
-const runAsyncControllableInputTests = ({
-    tagName,
-    inputType,
-}: {
-    tagName: "input" | "textarea";
-    inputType?: React.HTMLInputTypeAttribute;
-}) => {
-    const maybeInputProps = tagName === "input" ? { type: inputType } : {};
-
-    describe(`tagname="${tagName}"`, () => {
-        describe("uncontrolled mode", () => {
-            it(`renders ${tagName}`, () => {
-                const handleChangeSpy = spy();
-                const wrapper = mount(
-                    <AsyncControllableInput
-                        tagName={tagName}
-                        {...maybeInputProps}
-                        defaultValue="hi"
-                        onChange={handleChangeSpy}
-                    />,
-                );
-                assert.strictEqual(wrapper.childAt(0).type(), tagName);
-            });
-
-            it("triggers onChange", () => {
-                const handleChangeSpy = spy();
-                const wrapper = mount(
-                    <AsyncControllableInput
-                        tagName={tagName}
-                        {...maybeInputProps}
-                        defaultValue="hi"
-                        onChange={handleChangeSpy}
-                    />,
-                );
-                const input = wrapper.find(tagName);
-                input.simulate("change", { target: { value: "bye" } });
-                const simulatedEvent: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> =
-                    handleChangeSpy.getCall(0).lastArg;
-                assert.strictEqual(simulatedEvent.target.value, "bye");
-            });
+describe("<AsyncControllableInput>", () => {
+    describe("uncontrolled mode", () => {
+        it("renders an input", () => {
+            const handleChangeSpy = spy();
+            const wrapper = mount(<AsyncControllableInput type="text" defaultValue="hi" onChange={handleChangeSpy} />);
+            assert.strictEqual(wrapper.childAt(0).type(), "input");
         });
 
-        describe("controlled mode", () => {
-            it(`renders ${tagName}`, () => {
-                const wrapper = mount(<AsyncControllableInput {...maybeInputProps} tagName={tagName} value="hi" />);
-                assert.strictEqual(wrapper.childAt(0).type(), tagName);
-            });
-
-            it("accepts controlled update 'hi' -> 'bye'", () => {
-                const wrapper = mount(<AsyncControllableInput {...maybeInputProps} tagName={tagName} value="hi" />);
-                assert.strictEqual(wrapper.find(tagName).prop("value"), "hi");
-                wrapper.setProps({ value: "bye" });
-                assert.strictEqual(wrapper.find(tagName).prop("value"), "bye");
-            });
-
-            it("triggers onChange events during composition", () => {
-                const handleChangeSpy = spy();
-                const wrapper = mount(
-                    <AsyncControllableInput
-                        {...maybeInputProps}
-                        tagName={tagName}
-                        value="hi"
-                        onChange={handleChangeSpy}
-                    />,
-                );
-                const input = wrapper.find(tagName);
-
-                input.simulate("compositionstart", { data: "" });
-                input.simulate("compositionupdate", { data: " " });
-                // some browsers trigger this change event during composition, so we test to ensure that our wrapper component does too
-                input.simulate("change", { target: { value: "hi " } });
-                input.simulate("compositionupdate", { data: " ." });
-                input.simulate("change", { target: { value: "hi ." } });
-                input.simulate("compositionend", { data: " ." });
-
-                assert.strictEqual(handleChangeSpy.callCount, 2);
-            });
-
-            it("external updates DO NOT override in-progress composition", async () => {
-                const wrapper = mount(<AsyncControllableInput {...maybeInputProps} tagName={tagName} value="hi" />);
-                const input = wrapper.find(tagName);
-
-                input.simulate("compositionstart", { data: "" });
-                input.simulate("compositionupdate", { data: " " });
-                input.simulate("change", { target: { value: "hi " } });
-
-                await Promise.resolve();
-                wrapper.setProps({ value: "bye" }).update();
-
-                assert.strictEqual(wrapper.find(tagName).prop("value"), "hi ");
-            });
-
-            it("external updates DO NOT flush with immediately ongoing compositions", async () => {
-                const wrapper = mount(<AsyncControllableInput {...maybeInputProps} tagName={tagName} value="hi" />);
-                const input = wrapper.find(tagName);
-
-                input.simulate("compositionstart", { data: "" });
-                input.simulate("compositionupdate", { data: " " });
-                input.simulate("change", { target: { value: "hi " } });
-
-                wrapper.setProps({ value: "bye" }).update();
-
-                input.simulate("compositionend", { data: " " });
-                input.simulate("compositionstart", { data: "" });
-
-                // Wait for the composition ending delay to pass
-                await new Promise(resolve =>
-                    setTimeout(() => resolve(null), AsyncControllableInput.COMPOSITION_END_DELAY + 5),
-                );
-
-                assert.strictEqual(wrapper.find(tagName).prop("value"), "hi ");
-            });
-
-            it("external updates flush after composition ends", async () => {
-                const wrapper = mount(<AsyncControllableInput {...maybeInputProps} tagName={tagName} value="hi" />);
-                const input = wrapper.find(tagName);
-
-                input.simulate("compositionstart", { data: "" });
-                input.simulate("compositionupdate", { data: " " });
-                input.simulate("change", { target: { value: "hi " } });
-                input.simulate("compositionend", { data: " " });
-
-                // Wait for the composition ending delay to pass
-                await new Promise(resolve =>
-                    setTimeout(() => resolve(null), AsyncControllableInput.COMPOSITION_END_DELAY + 5),
-                );
-
-                // we are "rejecting" the composition here by supplying a different controlled value
-                wrapper.setProps({ value: "bye" }).update();
-
-                assert.strictEqual(wrapper.find(tagName).prop("value"), "bye");
-            });
-
-            it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
-                class TestComponent extends React.PureComponent<{ initialValue: string }, { value: string }> {
-                    public state = { value: this.props.initialValue };
-
-                    public render() {
-                        return (
-                            <AsyncControllableInput
-                                {...maybeInputProps}
-                                tagName={tagName}
-                                value={this.state.value}
-                                onChange={this.handleChange}
-                            />
-                        );
-                    }
-
-                    private handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-                        const newValue = e.target.value;
-                        window.setTimeout(() => this.setState({ value: newValue }), 10);
-                    };
-                }
-
-                const wrapper = mount(<TestComponent initialValue="hi" />);
-                assert.strictEqual(wrapper.find(tagName).prop("value"), "hi");
-
-                wrapper.find(tagName).simulate("change", { target: { value: "hi " } });
-                wrapper.update();
-
-                assert.strictEqual(
-                    wrapper.find(AsyncControllableInput).prop("value"),
-                    "hi",
-                    "local state should still have initial value",
-                );
-                // but rendered input/textarea should optimistically show new value
-                assert.strictEqual(
-                    wrapper.find(tagName).prop("value"),
-                    "hi ",
-                    `rendered <${tagName}> should optimistically show new value`,
-                );
-
-                // after async delay, confirm the update
-                await sleep(20);
-                assert.strictEqual(
-                    wrapper.find(tagName).prop("value"),
-                    "hi ",
-                    `rendered <${tagName}> should still show new value`,
-                );
-                return;
-            });
+        it("triggers onChange", () => {
+            const handleChangeSpy = spy();
+            const wrapper = mount(<AsyncControllableInput type="text" defaultValue="hi" onChange={handleChangeSpy} />);
+            const input = wrapper.find("input");
+            input.simulate("change", { target: { value: "bye" } });
+            const simulatedEvent: React.ChangeEvent<HTMLInputElement> = handleChangeSpy.getCall(0).lastArg;
+            assert.strictEqual(simulatedEvent.target.value, "bye");
         });
     });
-};
 
-describe("<AsyncControllableInput>", () => {
-    runAsyncControllableInputTests({ tagName: "input", inputType: "text" });
-    runAsyncControllableInputTests({ tagName: "textarea" });
+    describe("controlled mode", () => {
+        it("renders an input", () => {
+            const wrapper = mount(<AsyncControllableInput type="text" value="hi" />);
+            assert.strictEqual(wrapper.childAt(0).type(), "input");
+        });
+
+        it("accepts controlled update 'hi' -> 'bye'", () => {
+            const wrapper = mount(<AsyncControllableInput type="text" value="hi" />);
+            assert.strictEqual(wrapper.find("input").prop("value"), "hi");
+            wrapper.setProps({ value: "bye" });
+            assert.strictEqual(wrapper.find("input").prop("value"), "bye");
+        });
+
+        it("triggers onChange events during composition", () => {
+            const handleChangeSpy = spy();
+            const wrapper = mount(<AsyncControllableInput type="text" value="hi" onChange={handleChangeSpy} />);
+            const input = wrapper.find("input");
+
+            input.simulate("compositionstart", { data: "" });
+            input.simulate("compositionupdate", { data: " " });
+            // some browsers trigger this change event during composition, so we test to ensure that our wrapper component does too
+            input.simulate("change", { target: { value: "hi " } });
+            input.simulate("compositionupdate", { data: " ." });
+            input.simulate("change", { target: { value: "hi ." } });
+            input.simulate("compositionend", { data: " ." });
+
+            assert.strictEqual(handleChangeSpy.callCount, 2);
+        });
+
+        it("external updates DO NOT override in-progress composition", async () => {
+            const wrapper = mount(<AsyncControllableInput type="text" value="hi" />);
+            const input = wrapper.find("input");
+
+            input.simulate("compositionstart", { data: "" });
+            input.simulate("compositionupdate", { data: " " });
+            input.simulate("change", { target: { value: "hi " } });
+
+            await Promise.resolve();
+            wrapper.setProps({ value: "bye" }).update();
+
+            assert.strictEqual(wrapper.find("input").prop("value"), "hi ");
+        });
+
+        it("external updates DO NOT flush with immediately ongoing compositions", async () => {
+            const wrapper = mount(<AsyncControllableInput type="text" value="hi" />);
+            const input = wrapper.find("input");
+
+            input.simulate("compositionstart", { data: "" });
+            input.simulate("compositionupdate", { data: " " });
+            input.simulate("change", { target: { value: "hi " } });
+
+            wrapper.setProps({ value: "bye" }).update();
+
+            input.simulate("compositionend", { data: " " });
+            input.simulate("compositionstart", { data: "" });
+
+            // Wait for the composition ending delay to pass
+            await new Promise(resolve =>
+                setTimeout(() => resolve(null), AsyncControllableInput.COMPOSITION_END_DELAY + 5),
+            );
+
+            assert.strictEqual(wrapper.find("input").prop("value"), "hi ");
+        });
+
+        it("external updates flush after composition ends", async () => {
+            const wrapper = mount(<AsyncControllableInput type="text" value="hi" />);
+            const input = wrapper.find("input");
+
+            input.simulate("compositionstart", { data: "" });
+            input.simulate("compositionupdate", { data: " " });
+            input.simulate("change", { target: { value: "hi " } });
+            input.simulate("compositionend", { data: " " });
+
+            // Wait for the composition ending delay to pass
+            await new Promise(resolve =>
+                setTimeout(() => resolve(null), AsyncControllableInput.COMPOSITION_END_DELAY + 5),
+            );
+
+            // we are "rejecting" the composition here by supplying a different controlled value
+            wrapper.setProps({ value: "bye" }).update();
+
+            assert.strictEqual(wrapper.find("input").prop("value"), "bye");
+        });
+
+        it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
+            class TestComponent extends React.PureComponent<{ initialValue: string }, { value: string }> {
+                public state = { value: this.props.initialValue };
+
+                public render() {
+                    return <AsyncControllableInput type="text" value={this.state.value} onChange={this.handleChange} />;
+                }
+
+                private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                    const newValue = e.target.value;
+                    window.setTimeout(() => this.setState({ value: newValue }), 10);
+                };
+            }
+
+            const wrapper = mount(<TestComponent initialValue="hi" />);
+            assert.strictEqual(wrapper.find("input").prop("value"), "hi");
+
+            wrapper.find("input").simulate("change", { target: { value: "hi " } });
+            wrapper.update();
+
+            assert.strictEqual(
+                wrapper.find(AsyncControllableInput).prop("value"),
+                "hi",
+                "local state should still have initial value",
+            );
+            // but rendered input should optimistically show new value
+            assert.strictEqual(
+                wrapper.find("input").prop("value"),
+                "hi ",
+                "rendered <input> should optimistically show new value",
+            );
+
+            // after async delay, confirm the update
+            await sleep(20);
+            assert.strictEqual(
+                wrapper.find("input").prop("value"),
+                "hi ",
+                "rendered <input> should still show new value",
+            );
+            return;
+        });
+    });
+});
+
+describe("<AsyncControllableTextArea>", () => {
+    describe("uncontrolled mode", () => {
+        it("renders a textarea", () => {
+            const handleChangeSpy = spy();
+            const wrapper = mount(<AsyncControllableTextArea defaultValue="hi" onChange={handleChangeSpy} />);
+            assert.strictEqual(wrapper.childAt(0).type(), "textarea");
+        });
+
+        it("triggers onChange", () => {
+            const handleChangeSpy = spy();
+            const wrapper = mount(<AsyncControllableTextArea defaultValue="hi" onChange={handleChangeSpy} />);
+            const input = wrapper.find("textarea");
+            input.simulate("change", { target: { value: "bye" } });
+            const simulatedEvent: React.ChangeEvent<HTMLTextAreaElement> = handleChangeSpy.getCall(0).lastArg;
+            assert.strictEqual(simulatedEvent.target.value, "bye");
+        });
+    });
+
+    describe("controlled mode", () => {
+        it("renders a textarea", () => {
+            const wrapper = mount(<AsyncControllableTextArea value="hi" />);
+            assert.strictEqual(wrapper.childAt(0).type(), "textarea");
+        });
+
+        it("accepts controlled update 'hi' -> 'bye'", () => {
+            const wrapper = mount(<AsyncControllableTextArea value="hi" />);
+            assert.strictEqual(wrapper.find("textarea").prop("value"), "hi");
+            wrapper.setProps({ value: "bye" });
+            assert.strictEqual(wrapper.find("textarea").prop("value"), "bye");
+        });
+
+        it("triggers onChange events during composition", () => {
+            const handleChangeSpy = spy();
+            const wrapper = mount(<AsyncControllableTextArea value="hi" onChange={handleChangeSpy} />);
+            const input = wrapper.find("textarea");
+
+            input.simulate("compositionstart", { data: "" });
+            input.simulate("compositionupdate", { data: " " });
+            // some browsers trigger this change event during composition, so we test to ensure that our wrapper component does too
+            input.simulate("change", { target: { value: "hi " } });
+            input.simulate("compositionupdate", { data: " ." });
+            input.simulate("change", { target: { value: "hi ." } });
+            input.simulate("compositionend", { data: " ." });
+
+            assert.strictEqual(handleChangeSpy.callCount, 2);
+        });
+
+        it("external updates DO NOT override in-progress composition", async () => {
+            const wrapper = mount(<AsyncControllableTextArea value="hi" />);
+            const input = wrapper.find("textarea");
+
+            input.simulate("compositionstart", { data: "" });
+            input.simulate("compositionupdate", { data: " " });
+            input.simulate("change", { target: { value: "hi " } });
+
+            await Promise.resolve();
+            wrapper.setProps({ value: "bye" }).update();
+
+            assert.strictEqual(wrapper.find("textarea").prop("value"), "hi ");
+        });
+
+        it("external updates DO NOT flush with immediately ongoing compositions", async () => {
+            const wrapper = mount(<AsyncControllableTextArea value="hi" />);
+            const input = wrapper.find("textarea");
+
+            input.simulate("compositionstart", { data: "" });
+            input.simulate("compositionupdate", { data: " " });
+            input.simulate("change", { target: { value: "hi " } });
+
+            wrapper.setProps({ value: "bye" }).update();
+
+            input.simulate("compositionend", { data: " " });
+            input.simulate("compositionstart", { data: "" });
+
+            // Wait for the composition ending delay to pass
+            await new Promise(resolve =>
+                setTimeout(() => resolve(null), ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY + 5),
+            );
+
+            assert.strictEqual(wrapper.find("textarea").prop("value"), "hi ");
+        });
+
+        it("external updates flush after composition ends", async () => {
+            const wrapper = mount(<AsyncControllableTextArea value="hi" />);
+            const input = wrapper.find("textarea");
+
+            input.simulate("compositionstart", { data: "" });
+            input.simulate("compositionupdate", { data: " " });
+            input.simulate("change", { target: { value: "hi " } });
+            input.simulate("compositionend", { data: " " });
+
+            // Wait for the composition ending delay to pass
+            await new Promise(resolve =>
+                setTimeout(() => resolve(null), ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY + 5),
+            );
+
+            // we are "rejecting" the composition here by supplying a different controlled value
+            wrapper.setProps({ value: "bye" }).update();
+
+            assert.strictEqual(wrapper.find("textarea").prop("value"), "bye");
+        });
+
+        it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
+            class TestComponent extends React.PureComponent<{ initialValue: string }, { value: string }> {
+                public state = { value: this.props.initialValue };
+
+                public render() {
+                    return <AsyncControllableTextArea value={this.state.value} onChange={this.handleChange} />;
+                }
+
+                private handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                    const newValue = e.target.value;
+                    window.setTimeout(() => this.setState({ value: newValue }), 10);
+                };
+            }
+
+            const wrapper = mount(<TestComponent initialValue="hi" />);
+            assert.strictEqual(wrapper.find("textarea").prop("value"), "hi");
+
+            wrapper.find("textarea").simulate("change", { target: { value: "hi " } });
+            wrapper.update();
+
+            assert.strictEqual(
+                wrapper.find(AsyncControllableTextArea).prop("value"),
+                "hi",
+                "local state should still have initial value",
+            );
+            // but rendered input should optimistically show new value
+            assert.strictEqual(
+                wrapper.find("textarea").prop("value"),
+                "hi ",
+                "rendered <input> should optimistically show new value",
+            );
+
+            // after async delay, confirm the update
+            await sleep(20);
+            assert.strictEqual(
+                wrapper.find("textarea").prop("value"),
+                "hi ",
+                "rendered <textarea> should still show new value",
+            );
+            return;
+        });
+    });
 });
