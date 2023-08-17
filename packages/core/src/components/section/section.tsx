@@ -126,45 +126,49 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
             ref={ref}
             {...htmlProps}
         >
-            {title && <div
-                role={collapsible ? "button" : undefined}
-                aria-pressed={collapsible ? isCollapsed : undefined}
-                className={classNames(Classes.SECTION_HEADER, {
-                    [Classes.INTERACTIVE]: collapsible,
-                })}
-                onClick={collapsible != null ? toggleIsCollapsed : undefined}
-            >
-                {isHeaderLeftContainerVisible && (
-                    <>
-                        <div className={Classes.SECTION_HEADER_LEFT}>
-                            {icon && (
-                                <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />
-                            )}
-
-                            <div>
-                                <H6 className={Classes.SECTION_HEADER_TITLE}>{title}</H6>
-                                {subtitle && (
-                                    <div className={classNames(Classes.TEXT_MUTED, Classes.SECTION_HEADER_SUB_TITLE)}>
-                                        {subtitle}
-                                    </div>
+            {title && (
+                <div
+                    role={collapsible ? "button" : undefined}
+                    aria-pressed={collapsible ? isCollapsed : undefined}
+                    className={classNames(Classes.SECTION_HEADER, {
+                        [Classes.INTERACTIVE]: collapsible,
+                    })}
+                    onClick={collapsible != null ? toggleIsCollapsed : undefined}
+                >
+                    {isHeaderLeftContainerVisible && (
+                        <>
+                            <div className={Classes.SECTION_HEADER_LEFT}>
+                                {icon && (
+                                    <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />
                                 )}
-                            </div>
-                        </div>
-                    </>
-                )}
 
-                {isHeaderRightContainerVisible && (
-                    <div className={Classes.SECTION_HEADER_RIGHT}>
-                        {rightElement}
-                        {collapsible &&
-                            (isCollapsed ? (
-                                <ChevronDown className={Classes.TEXT_MUTED} />
-                            ) : (
-                                <ChevronUp className={Classes.TEXT_MUTED} />
-                            ))}
-                    </div>
-                )}
-            </div>}
+                                <div>
+                                    <H6 className={Classes.SECTION_HEADER_TITLE}>{title}</H6>
+                                    {subtitle && (
+                                        <div
+                                            className={classNames(Classes.TEXT_MUTED, Classes.SECTION_HEADER_SUB_TITLE)}
+                                        >
+                                            {subtitle}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+                    {isHeaderRightContainerVisible && (
+                        <div className={Classes.SECTION_HEADER_RIGHT}>
+                            {rightElement}
+                            {collapsible &&
+                                (isCollapsed ? (
+                                    <ChevronDown className={Classes.TEXT_MUTED} />
+                                ) : (
+                                    <ChevronUp className={Classes.TEXT_MUTED} />
+                                ))}
+                        </div>
+                    )}
+                </div>
+            )}
 
             {collapsible ? (
                 <Collapse {...collapseProps} isOpen={!isCollapsed}>
