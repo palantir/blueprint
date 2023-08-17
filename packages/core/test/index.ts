@@ -22,12 +22,15 @@ import "./common/utilsTests";
 
 // components
 import "./alert/alertTests";
+import "./breadcrumbs/breadcrumbTests";
 import "./breadcrumbs/breadcrumbsTests";
 import "./buttons/buttonTests";
 import "./callout/calloutTests";
 import "./card-list/cardListTests";
+import "./card/cardTests";
 import "./collapse/collapseTests";
 import "./context-menu/contextMenuSingletonTests";
+import "./context-menu/contextMenuTests";
 import "./controls/controlsTests";
 import "./controls/inputGroupTests";
 import "./controls/numericInputTests";
@@ -43,6 +46,7 @@ import "./hotkeys/hotkeyTests";
 import "./hotkeys/hotkeysParserTests";
 import "./hotkeys/keyComboTagTests";
 import "./html-select/htmlSelectTests";
+import "./html/htmlTests";
 import "./icon/iconTests";
 import "./menu/menuItemTests";
 import "./menu/menuTests";
