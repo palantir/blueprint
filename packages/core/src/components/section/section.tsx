@@ -137,13 +137,13 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                 {isHeaderLeftContainerVisible && (
                     <>
                         <div className={Classes.SECTION_HEADER_LEFT}>
-                            {title && icon && (
+                            {icon && (
                                 <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />
                             )}
 
                             <div>
-                                {title && <H6 className={Classes.SECTION_HEADER_TITLE}>{title}</H6>}
-                                {title && subtitle && (
+                                <H6 className={Classes.SECTION_HEADER_TITLE}>{title}</H6>
+                                {subtitle && (
                                     <div className={classNames(Classes.TEXT_MUTED, Classes.SECTION_HEADER_SUB_TITLE)}>
                                         {subtitle}
                                     </div>
