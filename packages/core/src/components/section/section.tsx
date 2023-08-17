@@ -74,6 +74,7 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
 
     /**
      * Element to render on the right side of the section header.
+     * Note that the header will only be rendered if `title` is provided.
      */
     rightElement?: JSX.Element;
 
@@ -125,7 +126,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
             ref={ref}
             {...htmlProps}
         >
-            <div
+            {title && <div
                 role={collapsible ? "button" : undefined}
                 aria-pressed={collapsible ? isCollapsed : undefined}
                 className={classNames(Classes.SECTION_HEADER, {
@@ -163,7 +164,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                             ))}
                     </div>
                 )}
-            </div>
+            </div>}
 
             {collapsible ? (
                 <Collapse {...collapseProps} isOpen={!isCollapsed}>
