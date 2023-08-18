@@ -18,19 +18,28 @@ interface IUseAsyncControllableValueProps<E extends HTMLInputElement | HTMLTextA
 export const ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY = 10;
 
 /*
- * A workaround for the following React bug:
- * [React bug](https://github.com/facebook/react/issues/3926). This bug is reproduced when an input
- * receives CompositionEvents (for example, through IME composition) and has its value prop updated
- * asychronously. This might happen if a component chooses to do async validation of a value
+ * A hook to workaround the following [React bug](https://github.com/facebook/react/issues/3926).
+ * This bug is reproduced when an input receives CompositionEvents
+ * (for example, through IME composition) and has its value prop updated asychronously.
+ * This might happen if a component chooses to do async validation of a value
  * returned by the input's `onChange` callback.
  */
 export function useAsyncControllableValue<E extends HTMLInputElement | HTMLTextAreaElement>(
     props: IUseAsyncControllableValueProps<E>,
 ) {
     const { onCompositionStart, onCompositionEnd, value: propValue, onChange } = props;
+
+    // The source of truth for the input value. This is not updated during IME composition.
+    // It may be updated by a parent component.
     const [value, setValue] = React.useState(propValue);
+
+    // The latest input value, which updates during IME composition.
     const [nextValue, setNextValue] = React.useState(propValue);
+
+    // Whether we are in the middle of a composition event.
     const [isComposing, setIsComposing] = React.useState(false);
+
+    // Whether there is a pending update we are expecting from a parent component.
     const [hasPendingUpdate, setHasPendingUpdate] = React.useState(false);
 
     const cancelPendingCompositionEnd = React.useRef<(() => void) | null>(null);

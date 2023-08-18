@@ -10,6 +10,10 @@ export type IAsyncControllableTextAreaProps = React.TextareaHTMLAttributes<HTMLT
     inputRef?: React.Ref<HTMLTextAreaElement>;
 };
 
+/**
+ * A wrapper around the low-level <textarea> component which works around a React bug
+ * the same way <AsyncControllableInput> does.
+ */
 export const AsyncControllableTextArea = React.memo<IAsyncControllableTextAreaProps>(
     function _AsyncControllableTextArea(props) {
         const {
