@@ -64,7 +64,7 @@ describe("<Section>", () => {
 
     it("collapsible is open when defaultIsOpen={undefined}", () => {
         const wrapper = mount(
-            <Section collapsible={true} collapseProps={{ defaultIsOpen: undefined }}>
+            <Section collapsible={true} collapseProps={{ defaultIsOpen: undefined }} title="Test">
                 <SectionCard>is open</SectionCard>
             </Section>,
             {
@@ -76,7 +76,7 @@ describe("<Section>", () => {
 
     it("collapsible is open when defaultIsOpen={true}", () => {
         const wrapper = mount(
-            <Section collapsible={true} collapseProps={{ defaultIsOpen: true }}>
+            <Section collapsible={true} collapseProps={{ defaultIsOpen: true }} title="Test">
                 <SectionCard>is open</SectionCard>
             </Section>,
             {
@@ -88,7 +88,7 @@ describe("<Section>", () => {
 
     it("collapsible is closed when defaultIsOpen={false}", () => {
         const wrapper = mount(
-            <Section collapsible={true} collapseProps={{ defaultIsOpen: false }}>
+            <Section collapsible={true} collapseProps={{ defaultIsOpen: false }} title="Test">
                 <SectionCard>is closed</SectionCard>
             </Section>,
             {
