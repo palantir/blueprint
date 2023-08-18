@@ -62,6 +62,18 @@ describe("<Section>", () => {
         assert.isTrue(wrapper.find(`.${Classes.SECTION_HEADER_SUB_TITLE}`).hostNodes().exists());
     });
 
+    it("collapsible is open when defaultIsOpen={undefined}", () => {
+        const wrapper = mount(
+            <Section collapsible={true} collapseProps={{ defaultIsOpen: undefined }}>
+                <SectionCard>is open</SectionCard>
+            </Section>,
+            {
+                attachTo: containerElement,
+            },
+        );
+        assert.isTrue(wrapper.find(`[data-icon="${IconNames.CHEVRON_UP}"]`).exists());
+    });
+
     it("collapsible is open when defaultIsOpen={true}", () => {
         const wrapper = mount(
             <Section collapsible={true} collapseProps={{ defaultIsOpen: true }}>
