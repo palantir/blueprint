@@ -17,12 +17,19 @@ interface IUseAsyncControllableValueProps<E extends HTMLInputElement | HTMLTextA
  */
 export const ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY = 10;
 
+/*
+ * A workaround for the following React bug:
+ * [React bug](https://github.com/facebook/react/issues/3926). This bug is reproduced when an input
+ * receives CompositionEvents (for example, through IME composition) and has its value prop updated
+ * asychronously. This might happen if a component chooses to do async validation of a value
+ * returned by the input's `onChange` callback.
+ */
 export function useAsyncControllableValue<E extends HTMLInputElement | HTMLTextAreaElement>(
     props: IUseAsyncControllableValueProps<E>,
 ) {
     const { onCompositionStart, onCompositionEnd, value: propValue, onChange } = props;
     const [value, setValue] = React.useState(propValue);
-    const [nextValue, setNextValue] = React.useState(value);
+    const [nextValue, setNextValue] = React.useState(propValue);
     const [isComposing, setIsComposing] = React.useState(false);
     const [hasPendingUpdate, setHasPendingUpdate] = React.useState(false);
 
@@ -37,6 +44,8 @@ export function useAsyncControllableValue<E extends HTMLInputElement | HTMLTextA
         [onCompositionStart],
     );
 
+    // creates a timeout which will set `isComposing` to false after a delay
+    // returns a function which will cancel the timeout if called before it fires
     const createOnCancelPendingCompositionEnd = React.useCallback(() => {
         const timeoutId = window.setTimeout(
             () => setIsComposing(false),
@@ -93,16 +102,14 @@ export function useAsyncControllableValue<E extends HTMLInputElement | HTMLTextA
                     }
                 } else {
                     // accept controlled update overriding user action
-                    if (value !== propValue || nextValue !== propValue || hasPendingUpdate) {
-                        setValue(propValue);
-                        setNextValue(propValue);
-                        setHasPendingUpdate(false);
-                    }
+                    setValue(propValue);
+                    setNextValue(propValue);
+                    setHasPendingUpdate(false);
                 }
             }
         } else {
             // accept controlled update, could be confirming or denying user action
-            if (value !== propValue || nextValue !== propValue || hasPendingUpdate) {
+            if (value !== propValue || hasPendingUpdate) {
                 setValue(propValue);
                 setNextValue(propValue);
                 setHasPendingUpdate(false);
