@@ -49,6 +49,9 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
      * This prop has no effect if `collapsible={false}`.
      */
     collapseProps?: Pick<CollapseProps, "className" | "keepChildrenMounted" | "transitionDuration"> & {
+        /**
+         * @default true
+         */
         defaultIsOpen?: boolean;
     };
 
@@ -110,7 +113,8 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         title,
         ...htmlProps
     } = props;
-    const [isCollapsed, setIsCollapsed] = React.useState<boolean>(collapseProps?.defaultIsOpen ?? false);
+    // The initial useState value is negated in order to conform to the `isCollapsed` expectation.
+    const [isCollapsed, setIsCollapsed] = React.useState<boolean>(!(collapseProps?.defaultIsOpen ?? true));
     const toggleIsCollapsed = React.useCallback(() => setIsCollapsed(!isCollapsed), [isCollapsed]);
 
     const isHeaderLeftContainerVisible = title != null || icon != null || subtitle != null;
