@@ -34,6 +34,31 @@ import { Icon } from "../icon/icon";
  */
 export type SectionElevation = typeof Elevation.ZERO | typeof Elevation.ONE;
 
+export interface SectionCollapseProps
+    extends Pick<CollapseProps, "className" | "isOpen" | "keepChildrenMounted" | "transitionDuration"> {
+    /**
+     * Whether the component is initially open or closed.
+     *
+     * This prop has no effect if `collapsible={false}` or the component is in controlled mode,
+     * i.e. when `isOpen` is **not** `undefined`.
+     *
+     * @default true
+     */
+    defaultIsOpen?: boolean;
+
+    /**
+     * Whether the component is open or closed.
+     *
+     * Passing a boolean value to `isOpen` will enabled controlled mode for the component.
+     */
+    isOpen?: boolean;
+
+    /**
+     * Callback invoked in controlled mode when the collapse element is clicked.
+     */
+    onToggleCollapse?: () => void;
+}
+
 export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.RefAttributes<HTMLDivElement> {
     /**
      * Whether this section's contents should be collapsible.
@@ -44,16 +69,9 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
 
     /**
      * Subset of props to forward to the underlying {@link Collapse} component, with the addition of a
-     * `defaultIsOpen` option which sets the default open state of the component.
-     *
-     * This prop has no effect if `collapsible={false}`.
+     * `defaultIsOpen` option which sets the default open state of the component when in uncontrolled mode.
      */
-    collapseProps?: Pick<CollapseProps, "className" | "keepChildrenMounted" | "transitionDuration"> & {
-        /**
-         * @default true
-         */
-        defaultIsOpen?: boolean;
-    };
+    collapseProps?: SectionCollapseProps;
 
     /**
      * Whether this section should use compact styles.
@@ -113,9 +131,21 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         title,
         ...htmlProps
     } = props;
+    // Determine whether to use controlled or uncontrolled state.
+    const isControlled = collapseProps?.isOpen != null;
+
     // The initial useState value is negated in order to conform to the `isCollapsed` expectation.
-    const [isCollapsed, setIsCollapsed] = React.useState<boolean>(!(collapseProps?.defaultIsOpen ?? true));
-    const toggleIsCollapsed = React.useCallback(() => setIsCollapsed(!isCollapsed), [isCollapsed]);
+    const [isCollapsedUncontrolled, setIsCollapsed] = React.useState<boolean>(!(collapseProps?.defaultIsOpen ?? true));
+
+    const isCollapsed = isControlled ? !collapseProps?.isOpen : isCollapsedUncontrolled;
+
+    const toggleIsCollapsed = React.useCallback(() => {
+        if (isControlled) {
+            collapseProps?.onToggleCollapse?.();
+        } else {
+            setIsCollapsed(!isCollapsed);
+        }
+    }, [collapseProps, isCollapsed, isControlled]);
 
     const isHeaderLeftContainerVisible = title != null || icon != null || subtitle != null;
     const isHeaderRightContainerVisible = rightElement != null || collapsible;

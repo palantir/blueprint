@@ -43,6 +43,8 @@ export interface SectionExampleState {
     hasMultipleCards: boolean;
     hasRightElement: boolean;
     isCompact: boolean;
+    isControlled: boolean;
+    isOpen?: boolean;
     isPanelPadded: boolean;
 }
 
@@ -63,6 +65,8 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         hasMultipleCards: false,
         hasRightElement: true,
         isCompact: false,
+        isControlled: false,
+        isOpen: true,
         isPanelPadded: true,
     };
 
@@ -91,8 +95,26 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                 <Switch checked={collapsible} label="Collapsible" onChange={this.toggleCollapsible} />
                 {collapsible && (
                     <>
-                        <H6>Collapse Props</H6>
-                        <Switch checked={defaultIsOpen} label="Default is open" onChange={this.toggleDefaultIsOpen} />
+                        <H5>Collapse Props</H5>
+                        <Switch
+                            checked={defaultIsOpen}
+                            disabled={this.state.isControlled}
+                            label="Default is open"
+                            onChange={this.toggleDefaultIsOpen}
+                        />
+
+                        <H6>Control</H6>
+                        <Switch
+                            checked={this.state.isControlled}
+                            label="Is controlled"
+                            onChange={this.toggleIsControlled}
+                        />
+                        <Switch
+                            checked={this.state.isOpen}
+                            disabled={!this.state.isControlled}
+                            label="Open"
+                            onChange={this.toggleIsOpen}
+                        />
                     </>
                 )}
                 <Label>
@@ -141,6 +163,10 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
             </div>
         );
 
+        const collapseProps = this.state.isControlled
+            ? { isOpen: this.state.isOpen, onToggleCollapse: this.toggleIsOpen }
+            : { defaultIsOpen };
+
         return (
             <Example options={options} {...this.props}>
                 <Section
@@ -151,7 +177,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                     key={String(defaultIsOpen)}
                     collapsible={collapsible}
                     compact={isCompact}
-                    collapseProps={{ defaultIsOpen }}
+                    collapseProps={collapseProps}
                     elevation={elevation}
                     icon={hasIcon ? IconNames.BOOK : undefined}
                     rightElement={
@@ -189,6 +215,10 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
     private toggleDefaultIsOpen = () => this.setState({ defaultIsOpen: !this.state.defaultIsOpen });
 
     private togglePanelIsPadded = () => this.setState({ isPanelPadded: !this.state.isPanelPadded });
+
+    private toggleIsControlled = () => this.setState({ isControlled: !this.state.isControlled });
+
+    private toggleIsOpen = () => this.setState({ isOpen: !this.state.isOpen });
 
     private handleElevationChange = (elevation: SectionElevation) => this.setState({ elevation });
 
