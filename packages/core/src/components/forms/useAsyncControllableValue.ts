@@ -85,40 +85,35 @@ export function useAsyncControllableValue<E extends HTMLInputElement | HTMLTextA
         [onChange],
     );
 
-    if (isComposing || propValue === undefined) {
-        // don't derive anything from props if:
-        // - in uncontrolled mode, OR
-        // - currently composing, since we'll do that after composition ends
-    } else {
+    // don't derive anything from props if:
+    // - in uncontrolled mode, OR
+    // - currently composing, since we'll do that after composition ends
+    const shouldDeriveFromProps = !(isComposing || propValue === undefined);
+
+    if (shouldDeriveFromProps) {
         const userTriggeredUpdate = nextValue !== value;
 
-        if (userTriggeredUpdate) {
-            if (propValue === nextValue) {
-                // parent has processed and accepted our update
-                if (hasPendingUpdate) {
-                    setValue(propValue);
-                    setHasPendingUpdate(false);
-                } else if (value !== nextValue) {
-                    setValue(nextValue);
-                }
-            } else {
-                if (propValue === value) {
-                    // we have sent the update to our parent, but it has not been processed yet. just wait.
-                    // DO NOT set nextValue here, since that will temporarily render a potentially stale controlled value,
-                    // causing the cursor to jump once the new value is accepted
-                    if (!hasPendingUpdate) {
-                        setHasPendingUpdate(true);
-                    }
-                } else {
-                    // accept controlled update overriding user action
-                    setValue(propValue);
-                    setNextValue(propValue);
-                    setHasPendingUpdate(false);
-                }
+        if (userTriggeredUpdate && propValue === nextValue) {
+            // parent has processed and accepted our update
+            setValue(propValue);
+            setHasPendingUpdate(false);
+        } else if (userTriggeredUpdate && propValue === value) {
+            // we have sent the update to our parent, but it has not been processed yet. just wait.
+            // DO NOT set nextValue here, since that will temporarily render a potentially stale controlled value,
+            // causing the cursor to jump once the new value is accepted
+            if (!hasPendingUpdate) {
+                // make sure to setState only when necessary to avoid infinite loops
+                setHasPendingUpdate(true);
             }
-        } else {
+        } else if (userTriggeredUpdate && propValue !== value) {
+            // accept controlled update overriding user action
+            setValue(propValue);
+            setNextValue(propValue);
+            setHasPendingUpdate(false);
+        } else if (!userTriggeredUpdate) {
             // accept controlled update, could be confirming or denying user action
             if (value !== propValue || hasPendingUpdate) {
+                // make sure to setState only when necessary to avoid infinite loops
                 setValue(propValue);
                 setNextValue(propValue);
                 setHasPendingUpdate(false);
