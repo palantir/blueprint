@@ -44,7 +44,7 @@ export interface SectionExampleState {
     hasRightElement: boolean;
     isCompact: boolean;
     isControlled: boolean;
-    isOpen?: boolean;
+    isOpen: boolean;
     isPanelPadded: boolean;
 }
 

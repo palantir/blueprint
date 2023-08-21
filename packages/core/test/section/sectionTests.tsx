@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
 import { IconNames } from "@blueprintjs/icons";
@@ -24,6 +24,17 @@ import { Classes, H6, Section, SectionCard } from "../../src";
 
 describe("<Section>", () => {
     let containerElement: HTMLElement | undefined;
+
+    const isOpenSelector = `[data-icon="${IconNames.CHEVRON_UP}"]`;
+    const isClosedSelector = `[data-icon="${IconNames.CHEVRON_DOWN}"]`;
+
+    const assertIsOpen = (wrapper: ReactWrapper) => {
+        assert.isTrue(wrapper.find(isOpenSelector).exists());
+    };
+
+    const assertIsClosed = (wrapper: ReactWrapper) => {
+        assert.isTrue(wrapper.find(isClosedSelector).exists());
+    };
 
     beforeEach(() => {
         containerElement = document.createElement("div");
@@ -62,40 +73,57 @@ describe("<Section>", () => {
         assert.isTrue(wrapper.find(`.${Classes.SECTION_HEADER_SUB_TITLE}`).hostNodes().exists());
     });
 
-    it("collapsible is open when defaultIsOpen={undefined}", () => {
-        const wrapper = mount(
-            <Section collapsible={true} collapseProps={{ defaultIsOpen: undefined }} title="Test">
-                <SectionCard>is open</SectionCard>
-            </Section>,
-            {
-                attachTo: containerElement,
-            },
-        );
-        assert.isTrue(wrapper.find(`[data-icon="${IconNames.CHEVRON_UP}"]`).exists());
+    describe("uncontrolled collapse mode", () => {
+        it("collapsible is open when defaultIsOpen={undefined}", () => {
+            const wrapper = mount(
+                <Section collapsible={true} collapseProps={{ defaultIsOpen: undefined }} title="Test">
+                    <SectionCard>is open</SectionCard>
+                </Section>,
+                { attachTo: containerElement },
+            );
+            assertIsOpen(wrapper);
+        });
+
+        it("collapsible is open when defaultIsOpen={true}", () => {
+            const wrapper = mount(
+                <Section collapsible={true} collapseProps={{ defaultIsOpen: true }} title="Test">
+                    <SectionCard>is open</SectionCard>
+                </Section>,
+                { attachTo: containerElement },
+            );
+            assertIsOpen(wrapper);
+        });
+
+        it("collapsible is closed when defaultIsOpen={false}", () => {
+            const wrapper = mount(
+                <Section collapsible={true} collapseProps={{ defaultIsOpen: false }} title="Test">
+                    <SectionCard>is closed</SectionCard>
+                </Section>,
+                { attachTo: containerElement },
+            );
+            assertIsClosed(wrapper);
+        });
     });
 
-    it("collapsible is open when defaultIsOpen={true}", () => {
-        const wrapper = mount(
-            <Section collapsible={true} collapseProps={{ defaultIsOpen: true }} title="Test">
-                <SectionCard>is open</SectionCard>
-            </Section>,
-            {
-                attachTo: containerElement,
-            },
-        );
-        assert.isTrue(wrapper.find(`[data-icon="${IconNames.CHEVRON_UP}"]`).exists());
-    });
+    describe("controlled collapse mode", () => {
+        it("collapsible is open when isOpen={true}", () => {
+            const wrapper = mount(
+                <Section collapsible={true} collapseProps={{ isOpen: true }} title="Test">
+                    <SectionCard>is open</SectionCard>
+                </Section>,
+                { attachTo: containerElement },
+            );
+            assertIsOpen(wrapper);
+        });
 
-    it("collapsible is closed when defaultIsOpen={false}", () => {
-        const wrapper = mount(
-            <Section collapsible={true} collapseProps={{ defaultIsOpen: false }} title="Test">
-                <SectionCard>is closed</SectionCard>
-            </Section>,
-            {
-                attachTo: containerElement,
-            },
-        );
-
-        assert.isTrue(wrapper.find(`[data-icon="${IconNames.CHEVRON_DOWN}"]`).exists());
+        it("collapsible is closed when isOpen={false}", () => {
+            const wrapper = mount(
+                <Section collapsible={true} collapseProps={{ isOpen: false }} title="Test">
+                    <SectionCard>is closed</SectionCard>
+                </Section>,
+                { attachTo: containerElement },
+            );
+            assertIsClosed(wrapper);
+        });
     });
 });
