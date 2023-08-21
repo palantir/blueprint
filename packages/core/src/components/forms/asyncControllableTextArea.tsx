@@ -6,22 +6,19 @@ import * as React from "react";
 
 import { useAsyncControllableValue } from "./useAsyncControllableValue";
 
-export type IAsyncControllableTextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
-    inputRef?: React.Ref<HTMLTextAreaElement>;
-};
+export type IAsyncControllableTextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 /**
  * A wrapper around the low-level <textarea> component which works around a React bug
  * the same way <AsyncControllableInput> does.
  */
-export const AsyncControllableTextArea = React.memo<IAsyncControllableTextAreaProps>(
-    function _AsyncControllableTextArea(props) {
+export const AsyncControllableTextArea = React.forwardRef<HTMLTextAreaElement, IAsyncControllableTextAreaProps>(
+    function _AsyncControllableTextArea(props, ref) {
         const {
             value: parentValue,
             onChange: parentOnChange,
             onCompositionStart: parentOnCompositionStart,
             onCompositionEnd: parentOnCompositionEnd,
-            inputRef,
             ...restProps
         } = props;
 
@@ -39,7 +36,7 @@ export const AsyncControllableTextArea = React.memo<IAsyncControllableTextAreaPr
                 onChange={onChange}
                 onCompositionStart={onCompositionStart}
                 onCompositionEnd={onCompositionEnd}
-                ref={inputRef}
+                ref={ref}
             />
         );
     },

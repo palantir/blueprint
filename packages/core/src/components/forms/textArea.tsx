@@ -190,16 +190,10 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             };
         }
 
-        return asyncControl ? (
-            <AsyncControllableTextArea
-                {...htmlProps}
-                className={rootClasses}
-                onChange={this.handleChange}
-                style={style}
-                inputRef={this.handleRef}
-            />
-        ) : (
-            <textarea
+        const TextAreaComponent = asyncControl ? AsyncControllableTextArea : "textarea";
+
+        return (
+            <TextAreaComponent
                 {...htmlProps}
                 className={rootClasses}
                 onChange={this.handleChange}
