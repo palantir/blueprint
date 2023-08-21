@@ -42,7 +42,7 @@ export function useAsyncControllableValue<E extends HTMLInputElement | HTMLTextA
     // Whether there is a pending update we are expecting from a parent component.
     const [hasPendingUpdate, setHasPendingUpdate] = React.useState(false);
 
-    const cancelPendingCompositionEnd = React.useRef<(() => void) | null>(null);
+    const cancelPendingCompositionEnd = React.useRef<() => void>();
 
     const handleCompositionStart: React.CompositionEventHandler<E> = React.useCallback(
         event => {
