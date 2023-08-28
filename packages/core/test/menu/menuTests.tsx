@@ -36,8 +36,6 @@ describe("<MenuDivider>", () => {
     });
 });
 
-/* eslint-disable deprecation/deprecation */
-
 describe("<Menu>", () => {
     it("React renders Menu with children", () => {
         const menu = shallow(

@@ -16,11 +16,10 @@
 
 import * as React from "react";
 
-import { AbstractPureComponent2, Intent } from "../../common";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX, Intent } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { HandleHtmlProps } from "./handleProps";
-import { ISliderBaseProps, MultiSlider } from "./multiSlider";
+import { MultiSlider, SliderBaseProps } from "./multiSlider";
 
 export type NumberRange = [number, number];
 
@@ -29,10 +28,7 @@ enum RangeIndex {
     END = 1,
 }
 
-// eslint-disable-next-line deprecation/deprecation
-export type RangeSliderProps = IRangeSliderProps;
-/** @deprecated use RangeSliderProps */
-export interface IRangeSliderProps extends ISliderBaseProps {
+export interface RangeSliderProps extends SliderBaseProps {
     /**
      * Range value of slider. Handles will be rendered at each position in the range.
      *
@@ -55,7 +51,7 @@ export interface IRangeSliderProps extends ISliderBaseProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/sliders.range-slider
  */
-export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
+export class RangeSlider extends AbstractPureComponent<RangeSliderProps> {
     public static defaultProps: RangeSliderProps = {
         ...MultiSlider.defaultSliderProps,
         intent: Intent.PRIMARY,

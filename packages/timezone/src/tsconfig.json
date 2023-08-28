@@ -1,7 +1,0 @@
-{
-    "extends": "../../../config/tsconfig.base",
-    "compilerOptions": {
-        "outDir": "../lib/esm",
-        "strictNullChecks": false
-    }
-}

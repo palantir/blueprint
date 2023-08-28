@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to HeaderCell2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import classNames from "classnames";
 import * as React from "react";
 
-import { ContextMenuTarget, Classes as CoreClasses, Utils as CoreUtils, Props } from "@blueprintjs/core";
+import { ContextMenu, Classes as CoreClasses, Utils as CoreUtils, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { ResizeHandle } from "../interactions/resizeHandle";
+import type { ResizeHandle } from "../interactions/resizeHandle";
 
-export interface IHeaderCellProps extends Props {
+export interface HeaderCellProps extends Props {
     children?: React.ReactNode;
 
     /**
@@ -79,9 +72,14 @@ export interface IHeaderCellProps extends Props {
      * CSS styles for the top level element.
      */
     style?: React.CSSProperties;
+
+    /**
+     * Required for Draggable to attach a DOM ref.
+     */
+    targetRef?: React.RefObject<HTMLElement>;
 }
 
-export interface IInternalHeaderCellProps extends IHeaderCellProps {
+export interface InternalHeaderCellProps extends HeaderCellProps {
     /**
      * Specifies if the cell is reorderable.
      *
@@ -91,37 +89,26 @@ export interface IInternalHeaderCellProps extends IHeaderCellProps {
 
     /**
      * Specifies if the cell is selected.
+     *
+     * @internal
      */
     isSelected?: boolean;
 }
 
-export interface IHeaderCellState {
+export interface HeaderCellState {
     isActive: boolean;
 }
 
-/** @deprecated use HeaderCell2 */
-@ContextMenuTarget
-export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeaderCellState> {
-    public state: IHeaderCellState = {
+export class HeaderCell extends React.Component<InternalHeaderCellProps, HeaderCellState> {
+    public state: HeaderCellState = {
         isActive: false,
     };
 
-    public shouldComponentUpdate(nextProps: IHeaderCellProps) {
+    public shouldComponentUpdate(nextProps: InternalHeaderCellProps) {
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
             !CoreUtils.deepCompareKeys(this.props, nextProps, ["style"])
         );
-    }
-
-    public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
-        const { menuRenderer } = this.props;
-
-        if (CoreUtils.isFunction(menuRenderer)) {
-            // the preferred way (a consistent function instance that won't cause as many re-renders)
-            return menuRenderer(this.props.index);
-        } else {
-            return undefined;
-        }
     }
 
     public render() {
@@ -134,11 +121,18 @@ export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeade
             },
             this.props.className,
         );
+        const hasMenu = this.props.menuRenderer !== undefined;
 
         return (
-            <div className={classes} style={this.props.style}>
+            <ContextMenu
+                className={classes}
+                content={this.props.menuRenderer?.(this.props.index)}
+                disabled={!hasMenu}
+                style={this.props.style}
+                ref={this.props.targetRef}
+            >
                 {this.props.children}
-            </div>
+            </ContextMenu>
         );
     }
 }

@@ -1,37 +1,28 @@
----
-tag: new
----
-
 @# Panel stack (v2)
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Migrating from [PanelStack](#core/components/panel-stack)?
 
 </h5>
 
-PanelStack2 is a replacement for PanelStack. It will become the standard
-API in a future major version of Blueprint. You are encouraged to use this
-new API now for forwards-compatibility. See the full
+__PanelStack2__ is a replacement for __PanelStack__. It will become the standard API in a future major version of
+Blueprint. You are encouraged to use this new API now for forwards-compatibility. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/PanelStack2-migration) on the wiki.
 
 </div>
 
+__PanelStack2__ manages a stack of panels and displays only the topmost panel.
 
-`PanelStack2` manages a stack of panels and displays only the topmost panel.
+Each panel appears with a header containing a "back" button to return to the previous panel. The bottom-most
+`initialPanel` cannot be closed or removed from the stack. Panels use
+[__CSSTransition__](http://reactcommunity.org/react-transition-group/css-transition) for seamless transitions.
 
-Each panel appears with a header containing a "back" button to return to the
-previous panel. The bottom-most `initialPanel` cannot be closed or removed from
-the stack. Panels use
-[`CSSTransition`](http://reactcommunity.org/react-transition-group/css-transition)
-for seamless transitions.
-
-By default, only the currently active panel is rendered to the DOM. This means
-that other panels are unmounted and can lose their component state as a user
-transitions between the panels. You can notice this in the example below as
-the numeric counter is reset. To render all panels to the DOM and keep their
-React trees mounted, change the `renderActivePanelOnly` prop.
+By default, only the currently active panel is rendered to the DOM. This means that other panels are unmounted and can
+lose their component state as a user transitions between the panels. You can notice this in the example below as the
+numeric counter is reset. To render all panels to the DOM and keep their React trees mounted, change the
+`renderActivePanelOnly` prop.
 
 @reactExample PanelStack2Example
 
@@ -95,9 +86,9 @@ const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
 
 @interface PanelActions
 
-@## Props
+@## Props interface
 
-PanelStack2 can be operated as a controlled or uncontrolled component.
+__PanelStack2__ can be operated as a controlled or uncontrolled component.
 
 If controlled, panels should be added to and removed from the _end_ of the `stack` array.
 

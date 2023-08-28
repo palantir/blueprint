@@ -18,5 +18,5 @@ export * from "./dateInputExample";
 export * from "./datePickerExample";
 export * from "./dateRangeInputExample";
 export * from "./dateRangePickerExample";
-export * from "./dateTimePickerExample";
 export * from "./timePickerExample";
+export * from "./timezoneSelectExample";

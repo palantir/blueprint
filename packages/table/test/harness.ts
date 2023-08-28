@@ -19,13 +19,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-// tslint:disable-next-line:no-submodule-imports
-import { Browser } from "@blueprintjs/core/lib/esm/compatibility";
-
 export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave";
 export type KeyboardEventType = "keypress" | "keydown" | "keyup";
 
-export interface IHarnessMouseOptions {
+export interface HarnessMouseOptions {
     /** @default 0 */
     offsetX?: number;
 
@@ -56,6 +53,7 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
     let metaKey = false;
 
     if (modKey) {
+        // eslint-disable-next-line deprecation/deprecation
         if (typeof navigator !== "undefined" && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) {
             metaKey = true;
         } else {
@@ -63,16 +61,11 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
         }
     }
 
-    (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, ctrlKey, false, false, metaKey);
-
-    // Hack around these readonly properties in WebKit and Chrome
-    if (Browser.isWebkit()) {
-        (event as any).key = key;
-        (event as any).which = keyCode;
-    } else {
-        Object.defineProperty(event, "key", { get: () => key });
-        Object.defineProperty(event, "which", { get: () => keyCode });
-    }
+    // HACKHACK: need to move away from custom test harness infrastructure in @blueprintjs/table package
+    // eslint-disable-next-line deprecation/deprecation
+    event.initKeyboardEvent(eventType, true, true, window, key, 0, ctrlKey, false, false, metaKey);
+    Object.defineProperty(event, "key", { get: () => key });
+    Object.defineProperty(event, "which", { get: () => keyCode });
 
     target.dispatchEvent(event);
 }
@@ -127,7 +120,7 @@ export class ElementHarness {
 
     public mouse(
         eventType: MouseEventType = "click",
-        offsetXOrOptions: number | IHarnessMouseOptions = 0, // TODO: Change all tests to the object API
+        offsetXOrOptions: number | HarnessMouseOptions = 0, // TODO: Change all tests to the object API
         offsetY = 0,
         isMetaKeyDown = false,
         isShiftKeyDown = false,
@@ -188,6 +181,8 @@ export class ElementHarness {
 
             // Apparently onChange listeners are listening for "input" events.
             const event = document.createEvent("HTMLEvents");
+            // HACKHACK: need to move away from custom test harness infrastructure in @blueprintjs/table package
+            // eslint-disable-next-line deprecation/deprecation
             event.initEvent("input", true, true);
             this.element!.dispatchEvent(event);
         }

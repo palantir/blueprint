@@ -16,7 +16,7 @@
 /**
  * @fileoverview Generates SVG paths used in <Icon> React components
  *
- * Important: we expect ../src/generated-icons/ to contain SVG definitions of all the icons already before this script runs.
+ * Important: we expect ../src/generated/ to contain SVG definitions of all the icons already before this script runs.
  */
 
 // @ts-check
@@ -27,12 +27,8 @@ import { join } from "node:path";
 
 import { svgOptimizer } from "@blueprintjs/node-build-scripts";
 
-import { iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
-
+import { ICON_SIZES, iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
 const ICON_NAMES = iconsMetadata.map(icon => icon.iconName);
-
-/** @type {[16, 20]} */
-const ICON_SIZES = [16, 20];
 
 for (const iconSize of ICON_SIZES) {
     const iconPaths = await getIconPaths(iconSize);

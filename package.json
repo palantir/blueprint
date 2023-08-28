@@ -1,6 +1,6 @@
 {
     "name": "blueprintjs-monorepo",
-    "version": "4.0.0",
+    "version": "5.0.0-alpha.0",
     "private": true,
     "description": "A React UI toolkit for the web.",
     "workspaces": [
@@ -18,12 +18,10 @@
         "dev:core": "lerna run dev --scope \"@blueprintjs/{core,icons,docs-app}\"",
         "dev:docs": "lerna run dev --scope \"@blueprintjs/{core,docs-app,docs-theme}\"",
         "dev:datetime": "lerna run dev --scope \"@blueprintjs/{datetime,timezone,docs-app}\"",
-        "dev:datetime2": "lerna run dev --scope \"@blueprintjs/{datetime2,docs-app}\"",
-        "dev:popover2": "lerna run dev --scope \"@blueprintjs/{popover2,docs-app}\"",
         "dev:select": "lerna run dev --scope \"@blueprintjs/{select,docs-app}\"",
         "dev:table": "lerna run dev --scope \"@blueprintjs/{table,table-dev-app}\"",
         "dist": "run-s dist:libs dist:apps",
-        "dist:libs": "lerna run dist --scope \"@blueprintjs/{colors,core,datetime,datetime2, docs-theme,icons,popover2,select,table,timezone}\"",
+        "dist:libs": "lerna run dist --scope \"@blueprintjs/{colors,core,datetime,datetime2,docs-theme,icons,popover2,select,table}\"",
         "dist:apps": "lerna run dist --scope \"@blueprintjs/{docs-app,landing-app,table-dev-app,demo-app}\"",
         "docs-data": "lerna run compile --scope \"@blueprintjs/docs-data\"",
         "format": "prettier --write \"./**/*.{ts,tsx,json}\"",
@@ -37,10 +35,11 @@
         "verify": "npm-run-all -s compile dist:libs dist:apps -p test lint format-check"
     },
     "dependencies": {
-        "@types/chai": "~4.3.4",
+        "@types/chai": "~4.3.5",
         "@types/enzyme": "~3.10.12",
         "@types/enzyme-adapter-react-16": "~1.0.6",
         "@types/mocha": "~10.0.1",
+        "@types/node": "~18.16.16",
         "@types/react": "~16.14.32",
         "@types/react-dom": "~16.9.10",
         "@types/react-transition-group": "~4.4.5",
@@ -56,12 +55,12 @@
         "http-server": "^14.1.1",
         "lerna": "^6.5.1",
         "npm-run-all": "^4.1.5",
-        "octokit": "^2.0.14",
-        "prettier": "~2.8.4",
-        "sinon": "^15.0.2",
+        "octokit": "^2.0.19",
+        "prettier": "~2.8.7",
+        "sinon": "^15.0.3",
         "stylelint-config-palantir": "^6.0.1",
-        "stylelint-scss": "^4.5.0",
-        "typescript": "~4.8.4",
+        "stylelint-scss": "^4.6.0",
+        "typescript": "~4.9.5",
         "yargs": "^17.6.0",
         "yarn-deduplicate": "^6.0.1"
     },
@@ -69,7 +68,7 @@
         "@types/react": "16.14.32"
     },
     "engines": {
-        "node": ">=19.3"
+        "node": ">=18.13"
     },
     "repository": {
         "type": "git",

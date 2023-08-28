@@ -16,25 +16,22 @@
 
 import * as React from "react";
 
-import { ExampleProps, IExampleMap } from "@blueprintjs/docs-theme";
+import { ExampleMap, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { getTheme } from "../components/blueprintDocs";
 import * as CoreExamples from "../examples/core-examples";
-import * as DateExamples from "../examples/datetime-examples";
-import * as DateTime2Examples from "../examples/datetime2-examples";
-import * as Popover2Examples from "../examples/popover2-examples";
+import * as DatetimeExamples from "../examples/datetime-examples";
 import * as SelectExamples from "../examples/select-examples";
 import * as TableExamples from "../examples/table-examples";
-import * as TimezoneExamples from "../examples/timezone-examples";
-import { IBlueprintExampleData } from "./types";
+import { BlueprintExampleData } from "./types";
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
 
 function getPackageExamples(
     packageName: string,
-    packageExamples: { [name: string]: React.ComponentClass<ExampleProps<IBlueprintExampleData>> },
+    packageExamples: { [name: string]: React.ComponentClass<ExampleProps<BlueprintExampleData>> },
 ) {
-    const ret: IExampleMap = {};
+    const ret: ExampleMap = {};
     for (const exampleName of Object.keys(packageExamples)) {
         const example = packageExamples[exampleName];
         const fileName = exampleName.charAt(0).toLowerCase() + exampleName.slice(1) + ".tsx";
@@ -46,14 +43,11 @@ function getPackageExamples(
     return ret;
 }
 
-export const reactExamples: IExampleMap = (() => {
+export const reactExamples: ExampleMap = (() => {
     return {
         ...getPackageExamples("core", CoreExamples as any),
-        ...getPackageExamples("datetime", DateExamples as any),
+        ...getPackageExamples("datetime", DatetimeExamples as any),
         ...getPackageExamples("select", SelectExamples as any),
         ...getPackageExamples("table", TableExamples as any),
-        ...getPackageExamples("timezone", TimezoneExamples as any),
-        ...getPackageExamples("popover2", Popover2Examples as any),
-        ...getPackageExamples("datetime2", DateTime2Examples as any),
     };
 })();

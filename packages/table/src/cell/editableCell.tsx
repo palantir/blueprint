@@ -13,11 +13,6 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to EditableCell2 instead.
- */
-
 import classNames from "classnames";
 import * as React from "react";
 
@@ -33,10 +28,9 @@ import {
 
 import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
-import { Cell, ICellProps } from "./cell";
+import { Cell, CellProps } from "./cell";
 
-export type EditableCellProps = IEditableCellProps;
-export interface IEditableCellProps extends ICellProps {
+export interface EditableCellProps extends CellProps {
     /**
      * Whether the given cell is the current active/focused cell.
      */
@@ -76,19 +70,19 @@ export interface IEditableCellProps extends ICellProps {
     /**
      * Props that should be passed to the EditableText when it is used to edit
      */
-    editableTextProps?: EditableTextProps;
+    editableTextProps?: Omit<EditableTextProps, "elementRef">;
 }
 
-export interface IEditableCellState {
+export interface EditableCellState {
     isEditing?: boolean;
     savedValue?: string;
     dirtyValue?: string;
 }
 
-/** @deprecated use { EditableCell2, Table2 } from "@blueprintjs/table" */
+// HACKHACK(adahiya): fix for Blueprint 6.0
 // eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
-export class EditableCell extends React.Component<IEditableCellProps, IEditableCellState> {
+export class EditableCell extends React.Component<EditableCellProps, EditableCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell`;
 
     public static defaultProps = {
@@ -96,15 +90,11 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         wrapText: false,
     };
 
-    private cellRef: HTMLElement | null | undefined;
+    private cellRef = React.createRef<HTMLDivElement>();
 
-    private refHandlers = {
-        cell: (ref: HTMLElement | null) => {
-            this.cellRef = ref;
-        },
-    };
+    private contentsRef = React.createRef<HTMLDivElement>();
 
-    public constructor(props: IEditableCellProps) {
+    public constructor(props: EditableCellProps) {
         super(props);
         this.state = {
             isEditing: false,
@@ -116,7 +106,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         this.checkShouldFocus();
     }
 
-    public componentDidUpdate(prevProps: IEditableCellProps) {
+    public componentDidUpdate(prevProps: EditableCellProps) {
         const didPropsChange =
             !CoreUtils.shallowCompareKeys(this.props, prevProps, { exclude: ["style"] }) ||
             !CoreUtils.deepCompareKeys(this.props, prevProps, ["style"]);
@@ -129,7 +119,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         this.checkShouldFocus();
     }
 
-    public shouldComponentUpdate(nextProps: IEditableCellProps, nextState: IEditableCellState) {
+    public shouldComponentUpdate(nextProps: EditableCellProps, nextState: EditableCellState) {
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
             !CoreUtils.shallowCompareKeys(this.state, nextState) ||
@@ -152,6 +142,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                     {...editableTextProps}
                     isEditing={true}
                     className={classNames(Classes.TABLE_EDITABLE_TEXT, Classes.TABLE_EDITABLE_NAME, className)}
+                    elementRef={this.contentsRef}
                     intent={spreadableProps.intent}
                     minWidth={0}
                     onCancel={this.handleCancel}
@@ -169,7 +160,11 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                 [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
             });
 
-            cellContents = <div className={textClasses}>{savedValue}</div>;
+            cellContents = (
+                <div className={textClasses} ref={this.contentsRef}>
+                    {savedValue}
+                </div>
+            );
         }
 
         return (
@@ -178,7 +173,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                 wrapText={wrapText}
                 truncated={false}
                 interactive={interactive}
-                cellRef={this.refHandlers.cell}
+                cellRef={this.cellRef}
                 onKeyPress={this.handleKeyPress}
             >
                 <Draggable
@@ -186,6 +181,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                     onDoubleClick={this.handleCellDoubleClick}
                     preventDefault={false}
                     stopPropagation={interactive}
+                    targetRef={this.contentsRef}
                 >
                     {cellContents}
                 </Draggable>
@@ -212,7 +208,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     private checkShouldFocus() {
         if (this.props.isFocused && !this.state.isEditing) {
             // don't focus if we're editing -- we'll lose the fact that we're editing
-            this.cellRef?.focus();
+            this.cellRef.current?.focus();
         }
     }
 

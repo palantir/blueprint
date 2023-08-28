@@ -15,7 +15,7 @@
  */
 
 import { expect } from "chai";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { RegionCardinality, Regions, SelectionModes } from "../src";
 import * as Classes from "../src/common/classes";

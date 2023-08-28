@@ -24,7 +24,7 @@
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { Cell } from "../src/cell/cell";
 import { Batcher } from "../src/common/batcher";
@@ -33,8 +33,8 @@ import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { MenuContext } from "../src/interactions/menus/menuContext";
-import { IRegion, Regions } from "../src/regions";
-import { ITableBodyProps, TableBody } from "../src/tableBody";
+import { Region, Regions } from "../src/regions";
+import { TableBody, TableBodyProps } from "../src/tableBody";
 import { cellClassNames } from "../src/tableBodyCells";
 
 describe("TableBody", () => {
@@ -195,7 +195,7 @@ describe("TableBody", () => {
 
         function mountTableBodyForContextMenuTests(
             targetCellCoords: { row: number; col: number },
-            selectedRegions: IRegion[],
+            selectedRegions: Region[],
         ) {
             return mountTableBody({
                 bodyContextMenuRenderer,
@@ -208,13 +208,13 @@ describe("TableBody", () => {
             });
         }
 
-        function checkOnSelectionCallback(expectedSelectedRegions: IRegion[]) {
+        function checkOnSelectionCallback(expectedSelectedRegions: Region[]) {
             expect(onSelection.calledOnce).to.be.true;
             expect(onSelection.firstCall.args[0]).to.deep.equal(expectedSelectedRegions);
         }
     });
 
-    function mountTableBody(props: Partial<ITableBodyProps> = {}) {
+    function mountTableBody(props: Partial<TableBodyProps> = {}) {
         const { rowIndexEnd, columnIndexEnd, renderMode, ...spreadableProps } = props;
 
         const numRows = rowIndexEnd != null ? rowIndexEnd : LARGE_NUM_ROWS;
@@ -234,15 +234,15 @@ describe("TableBody", () => {
                 locator={null as any}
                 renderMode={renderMode as RenderMode.BATCH | RenderMode.NONE}
                 viewportRect={viewportRect}
-                // ISelectableProps
+                // SelectableProps
                 enableMultipleSelection={true}
                 onFocusedCell={noop}
                 onSelection={noop}
                 selectedRegions={[]}
-                // IRowIndices
+                // RowIndices
                 rowIndexStart={0}
                 rowIndexEnd={numRows}
-                // IColumnIndices
+                // ColumnIndices
                 columnIndexStart={0}
                 columnIndexEnd={numCols}
                 {...spreadableProps}

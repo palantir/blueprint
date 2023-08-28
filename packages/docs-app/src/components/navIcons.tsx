@@ -95,11 +95,4 @@ const ICON_CONTENTS: Record<string, JSX.Element> = {
             <path d="M8 6h8a2 2 0 0 1 2 2v1H6V8a2 2 0 0 1 2-2z" />
         </g>
     ),
-
-    timezone: (
-        <g transform="translate(6 5)" fillRule="evenodd">
-            <ellipse opacity={OPACITY / 1.5} cx="6" cy="10.5" rx="6" ry="2.5" />
-            <path d="M2 4c0-2 1.5-4 4-4s4 2 4 4c0 1.333-1.333 3.667-4 7-2.667-3.333-4-5.667-4-7zm4 2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
-        </g>
-    ),
 };

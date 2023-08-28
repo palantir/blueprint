@@ -19,8 +19,8 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
-import { IDocsCompleteData } from "@blueprintjs/docs-data";
-import { Documentation, IDocumentationProps, NavMenuItem, NavMenuItemProps } from "@blueprintjs/docs-theme";
+import { DocsCompleteData } from "@blueprintjs/docs-data";
+import { Banner, Documentation, DocumentationProps, NavMenuItem, NavMenuItemProps } from "@blueprintjs/docs-theme";
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 import { NavHeader } from "./navHeader";
@@ -38,8 +38,12 @@ const NPM_URL = "https://www.npmjs.com/package";
 const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
 const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
 const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
+const LEGACY_PATTERN = /\/legacy(\.[\w-]+)?$/;
 const isNavSection = ({ route }: IHeadingNode) =>
-    COMPONENTS_PATTERN.test(route) || CONTEXT_PATTERN.test(route) || HOOKS_PATTERN.test(route);
+    COMPONENTS_PATTERN.test(route) ||
+    CONTEXT_PATTERN.test(route) ||
+    HOOKS_PATTERN.test(route) ||
+    LEGACY_PATTERN.test(route);
 
 /** Return the current theme className. */
 export function getTheme(): string {
@@ -51,18 +55,23 @@ export function setTheme(themeName: string) {
     localStorage.setItem(THEME_LOCAL_STORAGE_KEY, themeName);
 }
 
-export interface IBlueprintDocsProps {
-    docs: IDocsCompleteData;
-    defaultPageId: IDocumentationProps["defaultPageId"];
-    tagRenderers: IDocumentationProps["tagRenderers"];
+export interface BlueprintDocsProps {
+    docs: DocsCompleteData;
+    defaultPageId: DocumentationProps["defaultPageId"];
+    tagRenderers: DocumentationProps["tagRenderers"];
     /** Whether to use `next` versions for packages (as opposed to `latest`). */
     useNextVersion: boolean;
 }
 
-export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeName: string }> {
+export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeName: string }> {
     public state = { themeName: getTheme() };
 
     public render() {
+        const banner = (
+            <Banner href="https://blueprintjs.com/docs/versions/4">
+                Blueprint v5.0 is now in stable release. Still using v4.x? Click here to view the legacy docs &rarr;
+            </Banner>
+        );
         const footer = (
             <small className={classNames("docs-copyright", Classes.TEXT_MUTED)}>
                 &copy; {new Date().getFullYear()}
@@ -87,6 +96,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 <Documentation
                     {...this.props}
                     className={this.state.themeName}
+                    banner={banner}
                     footer={footer}
                     header={header}
                     navigatorExclude={isNavSection}

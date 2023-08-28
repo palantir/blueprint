@@ -19,6 +19,8 @@ import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import { SinonStub, spy, stub } from "sinon";
 
+import { WarningSign } from "@blueprintjs/icons";
+
 import { Alert, AlertProps, Button, ButtonProps, Classes, Icon, Intent } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { findInPortal } from "../utils";
@@ -60,7 +62,7 @@ describe("<Alert>", () => {
 
     it("renders the icon correctly", () => {
         const wrapper = shallow(
-            <Alert icon="warning-sign" isOpen={true} confirmButtonText="Delete">
+            <Alert icon={<WarningSign />} isOpen={true} confirmButtonText="Delete">
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,
@@ -92,7 +94,7 @@ describe("<Alert>", () => {
             onClose.resetHistory();
             wrapper = shallow(
                 <Alert
-                    icon="warning-sign"
+                    icon={<WarningSign />}
                     intent={Intent.PRIMARY}
                     isOpen={true}
                     confirmButtonText="Delete"
@@ -134,7 +136,7 @@ describe("<Alert>", () => {
             onClose.resetHistory();
             wrapper = shallow(
                 <Alert
-                    icon="warning-sign"
+                    icon={<WarningSign />}
                     intent={Intent.PRIMARY}
                     isOpen={true}
                     cancelButtonText="Cancel"
@@ -213,7 +215,7 @@ describe("<Alert>", () => {
         beforeEach(() => {
             wrapper = shallow(
                 <Alert
-                    icon="warning-sign"
+                    icon={<WarningSign />}
                     intent={Intent.PRIMARY}
                     isOpen={true}
                     loading={true}

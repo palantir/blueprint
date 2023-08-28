@@ -22,7 +22,7 @@ label above and helper text below.
 </FormGroup>
 ```
 
-@interface IFormGroupProps
+@interface FormGroupProps
 
 @## CSS
 

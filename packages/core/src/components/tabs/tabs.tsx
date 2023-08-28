@@ -17,22 +17,23 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, Keys } from "../../common";
-import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
-import * as Utils from "../../common/utils";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Props, Utils } from "../../common";
 import { Tab, TabId, TabProps } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
-export const Expander: React.FC = () => <div className={Classes.FLEX_EXPANDER} />;
+/**
+ * Component that may be inserted between any two children of `<Tabs>` to right-align all subsequent children.
+ */
+export const TabsExpander: React.FC = () => <div className={Classes.FLEX_EXPANDER} />;
+
+/** @deprecated use `TabsExpander` instead */
+export const Expander = TabsExpander;
 
 type TabElement = React.ReactElement<TabProps & { children: React.ReactNode }>;
 
 const TAB_SELECTOR = `.${Classes.TAB}`;
 
-// eslint-disable-next-line deprecation/deprecation
-export type TabsProps = ITabsProps;
-/** @deprecated use TabsProps */
-export interface ITabsProps extends Props {
+export interface TabsProps extends Props {
     /**
      * Whether the selected tab indicator should animate its movement.
      *
@@ -53,7 +54,7 @@ export interface ITabsProps extends Props {
 
     /**
      * Unique identifier for this `Tabs` container. This will be combined with the `id` of each
-     * `Tab` child to generate ARIA accessibility attributes. IDs are required and should be
+     * `Tab` child to generate ARIA accessibility attributes. Dsare required and should be
      * unique on the page to support server-side rendering.
      */
     id: TabId;
@@ -107,7 +108,7 @@ export interface ITabsProps extends Props {
     onChange?(newTabId: TabId, prevTabId: TabId | undefined, event: React.MouseEvent<HTMLElement>): void;
 }
 
-export interface ITabsState {
+export interface TabsState {
     indicatorWrapperStyle?: React.CSSProperties;
     selectedTabId?: TabId;
 }
@@ -117,9 +118,9 @@ export interface ITabsState {
  *
  * @see https://blueprintjs.com/docs/#core/components/tabs
  */
-export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
+export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
-    public static Expander = Expander;
+    public static Expander = TabsExpander;
 
     public static Tab = Tab;
 
@@ -197,7 +198,7 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
         this.moveSelectionIndicator(false);
     }
 
-    public componentDidUpdate(prevProps: TabsProps, prevState: ITabsState) {
+    public componentDidUpdate(prevProps: TabsProps, prevState: TabsState) {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
         } else if (prevState.selectedTabId != null) {
@@ -229,9 +230,9 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
     }
 
     private getKeyCodeDirection(e: React.KeyboardEvent<HTMLElement>) {
-        if (isEventKeyCode(e, Keys.ARROW_LEFT, Keys.ARROW_UP)) {
+        if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
             return -1;
-        } else if (isEventKeyCode(e, Keys.ARROW_RIGHT, Keys.ARROW_DOWN)) {
+        } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
             return 1;
         }
         return undefined;
@@ -276,10 +277,8 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
     };
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const targetTabElement = (e.target as HTMLElement).closest(TAB_SELECTOR) as HTMLElement;
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        // eslint-disable-next-line deprecation/deprecation
-        if (targetTabElement != null && Keys.isKeyboardClick(e.which)) {
+        const targetTabElement = (e.target as HTMLElement).closest<HTMLElement>(TAB_SELECTOR);
+        if (targetTabElement != null && Utils.isKeyboardClick(e)) {
             e.preventDefault();
             targetTabElement.click();
         }
@@ -302,7 +301,7 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
         }
 
         const tabIdSelector = `${TAB_SELECTOR}[data-tab-id="${this.state.selectedTabId}"]`;
-        const selectedTabElement = this.tablistElement.querySelector(tabIdSelector) as HTMLElement;
+        const selectedTabElement = this.tablistElement.querySelector<HTMLElement>(tabIdSelector);
 
         let indicatorWrapperStyle: React.CSSProperties = { display: "none" };
         if (selectedTabElement != null) {
@@ -353,12 +352,6 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
         }
         return child;
     };
-}
-
-function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
-    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-    // eslint-disable-next-line deprecation/deprecation
-    return codes.indexOf(e.which) >= 0;
 }
 
 function isTabElement(child: any): child is TabElement {

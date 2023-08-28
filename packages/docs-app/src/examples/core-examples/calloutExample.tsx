@@ -16,47 +16,75 @@
 
 import * as React from "react";
 
-import { Callout, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IDocsExampleProps } from "@blueprintjs/docs-theme";
+import { Button, Callout, Code, H5, HTMLSelect, Intent, Label, Switch } from "@blueprintjs/core";
+import { DocsExampleProps, Example, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
 import { IconName } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
 
 interface CalloutExampleState {
+    contentIndex?: number;
     icon?: IconName;
     intent?: Intent;
-    showHeader: boolean;
+    showTitle: boolean;
 }
 
-export class CalloutExample extends React.PureComponent<IDocsExampleProps, CalloutExampleState> {
-    public state: CalloutExampleState = { showHeader: true };
+export class CalloutExample extends React.PureComponent<DocsExampleProps, CalloutExampleState> {
+    public state: CalloutExampleState = {
+        contentIndex: 0,
+        showTitle: true,
+    };
 
-    private handleHeaderChange = handleBooleanChange((showHeader: boolean) => this.setState({ showHeader }));
+    private handleContentIndexChange = handleNumberChange(contentIndex => this.setState({ contentIndex }));
 
     private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 
     private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
+    private handleShowTitleChange = handleBooleanChange((showTitle: boolean) => this.setState({ showTitle }));
+
     public render() {
-        const { showHeader, ...calloutProps } = this.state;
+        const { contentIndex, showTitle, ...calloutProps } = this.state;
         const options = (
             <>
                 <H5>Props</H5>
-                <IntentSelect intent={calloutProps.intent} onChange={this.handleIntentChange} />
+                <Switch checked={showTitle} label="Title" onChange={this.handleShowTitleChange} />
+                <IntentSelect intent={calloutProps.intent} onChange={this.handleIntentChange} showClearButton={true} />
                 <IconSelect iconName={calloutProps.icon} onChange={this.handleIconNameChange} />
-                <H5>Example</H5>
-                <Switch checked={showHeader} label="Show header" onChange={this.handleHeaderChange} />
+                <H5>Children</H5>
+                <Label>
+                    Example content
+                    <HTMLSelect value={contentIndex} onChange={this.handleContentIndexChange}>
+                        <option value="0">Text with formatting</option>
+                        <option value="1">Simple text string</option>
+                        <option value="2">Button</option>
+                        <option value="3">Empty</option>
+                    </HTMLSelect>
+                </Label>
             </>
         );
+
         return (
             <Example options={options} {...this.props}>
-                <Callout {...calloutProps} title={showHeader ? "Visually important content" : undefined}>
-                    Long-form information about the important content. This text is styled as{" "}
-                    <a href="#core/typography.running-text">"Running text"</a>, so it may contain things like headers,
-                    links, lists, <Code>code</Code> etc.
+                <Callout {...calloutProps} title={showTitle ? "Visually important content" : undefined}>
+                    {this.renderChildren(contentIndex)}
                 </Callout>
             </Example>
         );
+    }
+
+    /* eslint-disable react/jsx-key */
+    private renderChildren(contentIndex: number) {
+        return [
+            <React.Fragment>
+                Long-form information about the important content. This text is styled as{" "}
+                <a href="#core/typography.running-text">"Running text"</a>, so it may contain things like headers,
+                links, lists, <Code>code</Code> etc.
+            </React.Fragment>,
+            "Long-form information about the important content",
+            <Button text="Example button" intent="primary" />,
+            undefined,
+        ][contentIndex];
     }
 }

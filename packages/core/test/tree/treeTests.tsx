@@ -20,7 +20,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
 
-import { Classes, ITreeNode, ITreeProps, Tree } from "../../src";
+import { Classes, Tree, TreeNodeInfo, TreeProps } from "../../src";
 
 describe("<Tree>", () => {
     let testsContainerElement: Element;
@@ -303,12 +303,12 @@ describe("<Tree>", () => {
         return assertNodeHasClass(tree, nodeClass, hasCaret ? Classes.TREE_NODE_CARET : Classes.TREE_NODE_CARET_NONE);
     }
 
-    function renderTree(props?: Partial<ITreeProps>) {
+    function renderTree(props?: Partial<TreeProps>) {
         return mount(<Tree contents={createDefaultContents()} {...props} />);
     }
 
     // tslint:disable object-literal-sort-keys
-    function createDefaultContents(): ITreeNode[] {
+    function createDefaultContents(): TreeNodeInfo[] {
         return [
             { id: 0, className: "c0", label: "Item 0" },
             {

@@ -17,15 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, Keys } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import { clamp } from "../../common/utils";
-import { Browser } from "../../compatibility";
 
-// eslint-disable-next-line deprecation/deprecation
-export type EditableTextProps = IEditableTextProps;
-/** @deprecated use EditableTextProps */
-export interface IEditableTextProps extends IntentProps, Props {
+export interface EditableTextProps extends IntentProps, Props {
     /**
      * EXPERIMENTAL FEATURE.
      *
@@ -58,6 +54,14 @@ export interface IEditableTextProps extends IntentProps, Props {
      * @default false
      */
     disabled?: boolean;
+
+    /**
+     * Ref to attach to the root element rendered by this component.
+     *
+     * N.B. this may be renamed to simply `ref` in a future major version of Blueprint, when this class component is
+     * refactored into a function.
+     */
+    elementRef?: React.Ref<HTMLDivElement>;
 
     /** Whether the component is currently being edited. */
     isEditing?: boolean;
@@ -128,7 +132,7 @@ export interface IEditableTextProps extends IntentProps, Props {
     onEdit?(value: string | undefined): void;
 }
 
-export interface IEditableTextState {
+export interface EditableTextState {
     /** Pixel height of the input, measured from span size */
     inputHeight?: number;
     /** Pixel width of the input, measured from span size */
@@ -142,14 +146,13 @@ export interface IEditableTextState {
 }
 
 const BUFFER_WIDTH_DEFAULT = 5;
-const BUFFER_WIDTH_IE = 30;
 
 /**
  * EditableText component.
  *
  * @see https://blueprintjs.com/docs/#core/components/editable-text
  */
-export class EditableText extends AbstractPureComponent2<EditableTextProps, IEditableTextState> {
+export class EditableText extends AbstractPureComponent<EditableTextProps, EditableTextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableText`;
 
     public static defaultProps: EditableTextProps = {
@@ -196,8 +199,8 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
         },
     };
 
-    public constructor(props: EditableTextProps, context?: any) {
-        super(props, context);
+    public constructor(props: EditableTextProps) {
+        super(props);
 
         const value = props.value == null ? props.defaultValue : props.value;
         this.state = {
@@ -210,7 +213,7 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
     }
 
     public render() {
-        const { alwaysRenderInput, disabled, multiline, contentId } = this.props;
+        const { alwaysRenderInput, disabled, elementRef, multiline, contentId } = this.props;
         const value = this.props.value ?? this.state.value;
         const hasValue = value != null && value !== "";
 
@@ -252,7 +255,7 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
         const spanProps: React.HTMLProps<HTMLSpanElement> = contentId != null ? { id: contentId } : {};
 
         return (
-            <div className={classes} onFocus={this.handleFocus} tabIndex={tabIndex}>
+            <div className={classes} onFocus={this.handleFocus} tabIndex={tabIndex} ref={elementRef}>
                 {alwaysRenderInput || this.state.isEditing ? this.renderInput(value) : undefined}
                 {shouldHideContents ? undefined : (
                     <span
@@ -272,8 +275,8 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
         this.updateInputDimensions();
     }
 
-    public componentDidUpdate(prevProps: EditableTextProps, prevState: IEditableTextState) {
-        const newState: IEditableTextState = {};
+    public componentDidUpdate(prevProps: EditableTextProps, prevState: EditableTextState) {
+        const newState: EditableTextState = {};
         // allow setting the value to undefined/null in controlled mode
         if (this.props.value !== prevProps.value && (prevProps.value != null || this.props.value != null)) {
             newState.value = this.props.value;
@@ -346,17 +349,15 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
     };
 
     private handleKeyEvent = (event: React.KeyboardEvent<HTMLElement>) => {
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable-next-line deprecation/deprecation */
-        const { altKey, ctrlKey, metaKey, shiftKey, which } = event;
-        if (which === Keys.ESCAPE) {
+        const { altKey, ctrlKey, metaKey, shiftKey } = event;
+        if (event.key === "Escape") {
             this.cancelEditing();
             return;
         }
 
         const hasModifierKey = altKey || ctrlKey || metaKey || shiftKey;
-        if (which === Keys.ENTER) {
-            // prevent IE11 from full screening with alt + enter
+        if (event.key === "Enter") {
+            // prevent browsers (Edge?) from full screening with alt + enter
             // shift + enter adds a newline by default
             if (altKey || shiftKey) {
                 event.preventDefault();
@@ -423,8 +424,7 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
             // The computed scrollHeight must also account for a larger inherited line-height from the parent.
             scrollHeight = Math.max(scrollHeight, getFontSize(this.valueElement) + 1, getLineHeight(parentElement!));
             // Need to add a small buffer so text does not shift prior to resizing, causing an infinite loop.
-            // IE needs a larger buffer than other browsers.
-            scrollWidth += Browser.isInternetExplorer() ? BUFFER_WIDTH_IE : BUFFER_WIDTH_DEFAULT;
+            scrollWidth += BUFFER_WIDTH_DEFAULT;
 
             this.setState({
                 inputHeight: scrollHeight,

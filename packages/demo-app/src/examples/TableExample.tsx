@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Cell, Column, ColumnHeaderCell2, Table2 } from "@blueprintjs/table";
+import { Cell, Column, ColumnHeaderCell, Table2 } from "@blueprintjs/table";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -27,7 +27,7 @@ export const TableExample = React.memo(() => {
         [],
     );
     const columnHeaderCellRenderer = React.useCallback(
-        (index: number) => <ColumnHeaderCell2 name={`Column ${index}`} />,
+        (index: number) => <ColumnHeaderCell name={`Column ${index}`} />,
         [],
     );
     return (

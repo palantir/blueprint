@@ -40,7 +40,7 @@
             "outputs": ["{projectRoot}/lib/css"]
         },
         "dev": {
-            "dependsOn": ["^dev"]
+            "dependsOn": ["^compile"]
         },
         "compile:cjs": {
             "dependsOn": ["^compile:cjs"],
@@ -54,11 +54,14 @@
             "dependsOn": ["^dist:bundle"],
             "outputs": ["{projectRoot}/dist"]
         },
+        "test": {
+            "dependsOn": ["^compile"]
+        },
         "test:karma": {
-            "dependsOn": ["^test:karma"]
+            "dependsOn": []
         },
         "test:karma:debug": {
-            "dependsOn": ["^test:karma:debug"]
+            "dependsOn": []
         },
         "bundle": {
             "dependsOn": ["^bundle"],
@@ -80,7 +83,7 @@
             "outputs": ["{projectRoot}/lib/css"]
         },
         "generate-icon-src": {
-            "outputs": ["{projectRoot}/src/generated-icons"]
+            "outputs": ["{projectRoot}/src/generated"]
         }
     }
 }

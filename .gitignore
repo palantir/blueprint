@@ -22,7 +22,6 @@ build/
 dist/
 lib/
 generated/
-generated-icons/
 coverage/
 /docs
 docs-static/**/*.d.ts

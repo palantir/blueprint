@@ -14,21 +14,15 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to TruncatedFormat2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import classNames from "classnames";
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, Icon, Popover, Position, Props } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, Popover, Props } from "@blueprintjs/core";
+import { More } from "@blueprintjs/icons";
 
 import * as Classes from "../../common/classes";
 import { Utils } from "../../common/utils";
-import { Locator } from "../../locator";
+import { LocatorImpl } from "../../locator";
 
 // amount in pixels that the content div width changes when truncated vs when
 // not truncated. Note: could be modified by styles
@@ -43,7 +37,7 @@ export enum TruncatedPopoverMode {
     WHEN_TRUNCATED_APPROX = "when-truncated-approx",
 }
 
-export interface ITrucatedFormateMeasureByApproximateOptions {
+export interface TrucatedFormateMeasureByApproximateOptions {
     /**
      * Approximate character width (in pixels), used to determine whether to display the popover in approx truncation mode.
      * The default value should work for normal table styles,
@@ -82,9 +76,7 @@ export interface ITrucatedFormateMeasureByApproximateOptions {
     numBufferLines: number;
 }
 
-export type TruncatedFormatProps = ITruncatedFormatProps;
-/** @deprecated use TruncatedFormatProps */
-export interface ITruncatedFormatProps extends Props {
+export interface TruncatedFormatProps extends Props {
     children?: string;
 
     /**
@@ -102,7 +94,7 @@ export interface ITruncatedFormatProps extends Props {
      * enough for default table styles, but may need to be overridden for more accuracy if the default styles or font size, etc
      * are changed.
      */
-    measureByApproxOptions?: ITrucatedFormateMeasureByApproximateOptions;
+    measureByApproxOptions?: TrucatedFormateMeasureByApproximateOptions;
 
     /**
      * Height of the parent cell. Used by shouldComponentUpdate only
@@ -153,13 +145,17 @@ export interface ITruncatedFormatProps extends Props {
     truncationSuffix?: string;
 }
 
-export interface ITruncatedFormatState {
+export interface TruncatedFormatState {
     isTruncated?: boolean;
     isPopoverOpen?: boolean;
 }
 
-/** @deprecated use TruncatedFormat2 */
-export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, ITruncatedFormatState> {
+/**
+ * Truncated cell format component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.truncatedformat
+ */
+export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, TruncatedFormatState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TruncatedFormat`;
 
     public static defaultProps: TruncatedFormatProps = {
@@ -167,7 +163,7 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, I
         measureByApproxOptions: {
             approximateCharWidth: 8,
             approximateLineHeight: 18,
-            cellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
+            cellHorizontalPadding: 2 * LocatorImpl.CELL_HORIZONTAL_PADDING,
             numBufferLines: 0,
         },
         preformatted: false,
@@ -176,7 +172,7 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, I
         truncationSuffix: "...",
     };
 
-    public state: ITruncatedFormatState = {
+    public state: TruncatedFormatState = {
         isPopoverOpen: false,
         isTruncated: false,
     };
@@ -238,20 +234,20 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, I
             return (
                 <Popover
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
-                    modifiers={{ preventOverflow: { boundariesElement: "window" } }}
                     content={popoverContent}
-                    position={Position.BOTTOM}
                     isOpen={true}
                     onClose={this.handlePopoverClose}
+                    placement="bottom"
+                    rootBoundary="document"
                 >
-                    <Icon icon="more" />
+                    <More />
                 </Popover>
             );
         } else {
             // NOTE: This structure matches what `<Popover>` does internally. If `<Popover>` changes, this must be updated.
             return (
                 <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
-                    <Icon icon="more" />
+                    <More />
                 </span>
             );
         }

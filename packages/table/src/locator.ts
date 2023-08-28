@@ -19,12 +19,17 @@ import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 
-export interface ILocator {
+export interface Locator {
     /**
      * Returns the width that a column must be to contain all the content of
      * its cells without truncating or wrapping.
      */
     getWidestVisibleCellInColumn: (columnIndex: number) => number;
+
+    /**
+     * Gets the viewport rect.
+     */
+    getViewportRect(): Rect;
 
     /**
      * Returns the height of the tallest cell in a given column -- specifically,
@@ -53,9 +58,28 @@ export interface ILocator {
      * coordinates.
      */
     convertPointToCell: (clientX: number, clientY: number) => { col: number; row: number };
+
+    /**
+     * Updates the grid.
+     */
+    setGrid(grid: Grid): this;
+
+    setNumFrozenRows(numFrozenRows: number): this;
+
+    setNumFrozenColumns(numFrozenColumns: number): this;
+
+    /**
+     * @returns whether the rendered rows overflow the visible viewport vertically, helpful for scrolling calculations
+     */
+    hasVerticalOverflowOrExactFit(columnHeaderHeight: number, viewportRect: Rect): boolean;
+
+    /**
+     * @returns whether the rendered columns overflow the visible viewport horizontally, helpful for scrolling calculations
+     */
+    hasHorizontalOverflowOrExactFit(rowHeaderWidth: number, viewportRect: Rect): boolean;
 }
 
-export class Locator implements ILocator {
+export class LocatorImpl implements Locator {
     public static CELL_HORIZONTAL_PADDING = 10;
 
     private grid: Grid | undefined;
@@ -117,7 +141,7 @@ export class Locator implements ILocator {
         let maxWidth = 0;
         for (let i = 0; i < columnHeaderAndBodyCells.length; i++) {
             const contentWidth = Utils.measureElementTextContent(columnHeaderAndBodyCells.item(i)).width;
-            const cellWidth = Math.ceil(contentWidth) + Locator.CELL_HORIZONTAL_PADDING * 2;
+            const cellWidth = Math.ceil(contentWidth) + LocatorImpl.CELL_HORIZONTAL_PADDING * 2;
             if (cellWidth > maxWidth) {
                 maxWidth = cellWidth;
             }

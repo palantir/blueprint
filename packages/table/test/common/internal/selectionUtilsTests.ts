@@ -16,7 +16,7 @@
 
 import { expect } from "chai";
 
-import type { IFocusedCellCoordinates } from "../../../src/common/cellTypes";
+import type { FocusedCellCoordinates } from "../../../src/common/cellTypes";
 import { Direction } from "../../../src/common/direction";
 import * as SelectionUtils from "../../../src/common/internal/selectionUtils";
 import { Regions } from "../../../src/regions";
@@ -252,6 +252,6 @@ describe("SelectionUtils", () => {
     });
 });
 
-function getFocusedCell(row: number, col: number): IFocusedCellCoordinates {
+function getFocusedCell(row: number, col: number): FocusedCellCoordinates {
     return { row, col, focusSelectionIndex: 0 };
 }

@@ -24,22 +24,12 @@ export const ALERT_WARN_CANCEL_ESCAPE_KEY =
 export const ALERT_WARN_CANCEL_OUTSIDE_CLICK =
     ns + ` <Alert> canOutsideClickCancel enabled without onCancel or onClose handler.`;
 
-export const COLLAPSIBLE_LIST_INVALID_CHILD = ns + ` <CollapsibleList> children must be <MenuItem>s`;
-
-export const CONTEXTMENU_WARN_DECORATOR_NO_METHOD =
-    ns + ` @ContextMenuTarget-decorated class should implement renderContextMenu.`;
-export const CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT =
-    ns + ` "@ContextMenuTarget-decorated components must return a single JSX.Element or an empty render.`;
-
 export const HOTKEYS_HOTKEY_CHILDREN = ns + ` <Hotkeys> only accepts <Hotkey> children.`;
-export const HOTKEYS_WARN_DECORATOR_NO_METHOD = ns + ` @HotkeysTarget-decorated class should implement renderHotkeys.`;
-export const HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT =
-    ns + ` "@HotkeysTarget-decorated components must return a single JSX.Element or an empty render.`;
 
 export const HOTKEYS_PROVIDER_NOT_FOUND =
     ns +
     ` useHotkeys() was used outside of a <HotkeysProvider> context. These hotkeys will not be shown in the hotkeys help dialog.`;
-export const HOTKEYS_TARGET2_CHILDREN_LOCAL_HOTKEYS =
+export const HOTKEYS_TARGET_CHILDREN_LOCAL_HOTKEYS =
     ns +
     ` <HotkeysTarget2> was configured with local hotkeys, but you did not use the generated event handlers to bind their event handlers. Try using a render function as the child of this component.`;
 
@@ -67,22 +57,18 @@ export const PANEL_STACK_REQUIRES_PANEL = ns + ` <PanelStack> requires at least 
 export const OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED =
     ns + ` <OverflowList> does not support changing observeParents after mounting.`;
 
-export const POPOVER_REQUIRES_TARGET = ns + ` <Popover> requires target prop or at least one child element.`;
-export const POPOVER_HAS_BACKDROP_INTERACTION =
-    ns + ` <Popover hasBackdrop={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;
-export const POPOVER_WARN_TOO_MANY_CHILDREN =
-    ns +
-    ` <Popover> supports one or two children; additional children are ignored.` +
-    ` First child is the target, second child is the content. You may instead supply these two as props.`;
-export const POPOVER_WARN_DOUBLE_CONTENT =
-    ns + ` <Popover> with two children ignores content prop; use either prop or children.`;
+export const POPOVER_REQUIRES_TARGET = `${ns} <Popover> requires renderTarget prop or a child element.`;
+export const POPOVER_HAS_BACKDROP_INTERACTION = `${ns} <Popover hasBackdrop={true}> requires interactionKind="click".`;
+export const POPOVER_WARN_TOO_MANY_CHILDREN = `${ns} <Popover> supports only one child which is rendered as its target; additional children are ignored.`;
 export const POPOVER_WARN_DOUBLE_TARGET =
-    ns + ` <Popover> with children ignores target prop; use either prop or children.`;
+    ns + ` <Popover> with children ignores renderTarget prop; use either prop or children.`;
 export const POPOVER_WARN_EMPTY_CONTENT = ns + ` Disabling <Popover> with empty/whitespace content...`;
 export const POPOVER_WARN_HAS_BACKDROP_INLINE = ns + ` <Popover usePortal={false}> ignores hasBackdrop`;
 export const POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX =
     ns + ` <Popover> supports either placement or position prop, not both.`;
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onInteraction is ignored when uncontrolled.`;
+export const POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET =
+    ns + ` <Popover> targetProps value is ignored when renderTarget API is used.`;
 
 export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
 export const PORTAL_LEGACY_CONTEXT_API =
@@ -105,9 +91,12 @@ export const SPINNER_WARN_CLASSES_SIZE = ns + ` <Spinner> Classes.SMALL/LARGE ar
 
 export const TOASTER_CREATE_NULL =
     ns +
-    ` Toaster.create() is not supported inside React lifecycle methods in React 16.` +
+    ` OverlayToaster.create() is not supported inside React lifecycle methods in React 16.` +
     ` See usage example on the docs site.`;
-export const TOASTER_WARN_INLINE = ns + ` Toaster.create() ignores inline prop as it always creates a new element.`;
+export const TOASTER_MAX_TOASTS_INVALID =
+    ns + ` <OverlayToaster> maxToasts is set to an invalid number, must be greater than 0`;
+export const TOASTER_WARN_INLINE =
+    ns + ` OverlayToaster.create() ignores inline prop as it always creates a new element.`;
 
 export const DIALOG_WARN_NO_HEADER_ICON = ns + ` <Dialog> iconName is ignored if title is omitted.`;
 export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
@@ -115,6 +104,3 @@ export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
 
 export const DRAWER_ANGLE_POSITIONS_ARE_CASTED =
     ns + ` <Drawer> all angle positions are casted into pure position (TOP, BOTTOM, LEFT or RIGHT)`;
-
-export const TOASTER_MAX_TOASTS_INVALID =
-    ns + ` <Toaster> maxToasts is set to an invalid number, must be greater than 0`;

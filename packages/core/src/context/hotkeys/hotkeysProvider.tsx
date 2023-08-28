@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { shallowCompareKeys } from "../../common/utils";
-import { HotkeysDialog2, HotkeysDialog2Props } from "../../components/hotkeys/hotkeysDialog2";
+import { HotkeysDialog2, HotkeysDialogProps } from "../../components/hotkeys/hotkeysDialog2";
 import { HotkeyConfig } from "../../hooks";
 
 interface HotkeysContextState {
@@ -93,7 +93,7 @@ export interface HotkeysProviderProps {
     children: React.ReactChild;
 
     /** Optional props to customize the rendered hotkeys dialog. */
-    dialogProps?: Partial<Omit<HotkeysDialog2Props, "hotkeys">>;
+    dialogProps?: Partial<Omit<HotkeysDialogProps, "hotkeys">>;
 
     /** If provided, this dialog render function will be used in place of the default implementation. */
     renderDialog?: (state: HotkeysContextState, contextActions: { handleDialogClose: () => void }) => JSX.Element;
@@ -109,8 +109,9 @@ export interface HotkeysProviderProps {
  */
 export const HotkeysProvider = ({ children, dialogProps, renderDialog, value }: HotkeysProviderProps) => {
     const hasExistingContext = value != null;
-    const [state, dispatch] = value ?? React.useReducer(hotkeysReducer, { ...initialHotkeysState, hasProvider: true });
-    const handleDialogClose = React.useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), []);
+    const fallbackReducer = React.useReducer(hotkeysReducer, { ...initialHotkeysState, hasProvider: true });
+    const [state, dispatch] = value ?? fallbackReducer;
+    const handleDialogClose = React.useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), [dispatch]);
 
     const dialog = renderDialog?.(state, { handleDialogClose }) ?? (
         <HotkeysDialog2

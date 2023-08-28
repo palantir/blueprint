@@ -20,7 +20,7 @@ import { Rect } from "../src/common/rect";
 
 describe("Rect", () => {
     it("wraps AnyRects", () => {
-        const anyRect: ClientRect = {
+        const anyRect: DOMRect = {
             height: 40,
             left: 20,
             top: 10,

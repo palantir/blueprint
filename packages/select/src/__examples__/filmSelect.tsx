@@ -16,11 +16,10 @@
 
 import * as React from "react";
 
-import { Button } from "@blueprintjs/core";
-import { MenuItem2 } from "@blueprintjs/popover2";
+import { Button, MenuItem } from "@blueprintjs/core";
 
 import type { ItemRenderer } from "../common";
-import { Select2, Select2Props } from "../components/select/select2";
+import { Select, SelectProps } from "../components/select/select";
 import {
     areFilmsEqual,
     createFilm,
@@ -34,7 +33,7 @@ import {
 } from "./films";
 
 type FilmSelectProps = Omit<
-    Select2Props<Film>,
+    SelectProps<Film>,
     | "createNewItemFromQuery"
     | "createNewItemRenderer"
     | "itemPredicate"
@@ -66,13 +65,19 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
             if (!props.modifiers.matchesPredicate) {
                 return null;
             }
-            return <MenuItem2 {...getFilmItemProps(film, props)} selected={film === selectedFilm} />;
+            return (
+                <MenuItem
+                    {...getFilmItemProps(film, props)}
+                    roleStructure="listoption"
+                    selected={film === selectedFilm}
+                />
+            );
         },
         [selectedFilm],
     );
 
     return (
-        <Select2<Film>
+        <Select<Film>
             createNewItemFromQuery={allowCreate ? createFilm : undefined}
             createNewItemRenderer={allowCreate ? renderCreateFilmMenuItem : undefined}
             fill={fill}
@@ -81,7 +86,7 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
             items={items}
             itemsEqual={areFilmsEqual}
             menuProps={{ "aria-label": "films" }}
-            noResults={<MenuItem2 disabled={true} text="No results." roleStructure="listoption" />}
+            noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
             onItemSelect={handleItemSelect}
             {...restProps}
         >
@@ -92,6 +97,6 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
                 rightIcon="caret-down"
                 text={selectedFilm ? `${selectedFilm.title} (${selectedFilm.year})` : "(No selection)"}
             />
-        </Select2>
+        </Select>
     );
 }

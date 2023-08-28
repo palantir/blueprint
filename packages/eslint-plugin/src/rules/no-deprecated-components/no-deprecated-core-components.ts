@@ -5,15 +5,8 @@
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
 export const coreComponentsMigrationMapping = {
-    AbstractComponent: "AbstractComponent2",
-    AbstractPureComponent: "AbstractPureComponent2",
-    Breadcrumbs: "Breadcrumbs2",
-    CollapsibleList: "OverflowList",
-    "MenuItem.popoverProps": "MenuItem2",
     // TODO(@adidahiya): Blueprint v6
     // PanelStack: "PanelStack2",
-    Popover: "Popover2",
-    Tooltip: "Tooltip2",
 };
 
 /**

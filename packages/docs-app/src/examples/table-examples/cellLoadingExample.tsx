@@ -17,14 +17,14 @@ import * as React from "react";
 
 import { RadioGroup } from "@blueprintjs/core";
 import { Example, ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
-import { Cell, Column, ColumnHeaderCell2, RowHeaderCell2, Table2 } from "@blueprintjs/table";
+import { Cell, Column, ColumnHeaderCell, RowHeaderCell, Table2 } from "@blueprintjs/table";
 
-interface IBigSpaceRock {
+interface BigSpaceRock {
     [key: string]: number | string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const bigSpaceRocks: IBigSpaceRock[] = require("./potentiallyHazardousAsteroids.json");
+const bigSpaceRocks: BigSpaceRock[] = require("./potentiallyHazardousAsteroids.json");
 
 export type CellsLoadingConfiguration = "all" | "first-column" | "first-row" | "none" | "random";
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -44,13 +44,13 @@ const CONFIGURATIONS = [
     { label: "None", value: CellsLoadingConfiguration.NONE },
 ];
 
-export interface ICellLoadingExampleState {
+export interface CellLoadingExampleState {
     configuration?: CellsLoadingConfiguration;
     randomNumbers?: number[];
 }
 
-export class CellLoadingExample extends React.PureComponent<ExampleProps, ICellLoadingExampleState> {
-    public state: ICellLoadingExampleState = {
+export class CellLoadingExample extends React.PureComponent<ExampleProps, CellLoadingExampleState> {
+    public state: CellLoadingExampleState = {
         configuration: CellsLoadingConfiguration.ALL,
     };
 
@@ -122,11 +122,11 @@ export class CellLoadingExample extends React.PureComponent<ExampleProps, ICellL
         const formattedColumnName = columnName
             .replace(/([A-Z])/g, " $1")
             .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
-        return <ColumnHeaderCell2 loading={this.isLoading(0, columnIndex + 1)} name={formattedColumnName} />;
+        return <ColumnHeaderCell loading={this.isLoading(0, columnIndex + 1)} name={formattedColumnName} />;
     };
 
     private renderRowHeaderCell = (rowIndex: number) => {
-        return <RowHeaderCell2 loading={this.isLoading(rowIndex + 1, 0)} name={`${rowIndex + 1}`} />;
+        return <RowHeaderCell loading={this.isLoading(rowIndex + 1, 0)} name={`${rowIndex + 1}`} />;
     };
 
     private isLoading = (rowIndex: number, columnIndex: number) => {

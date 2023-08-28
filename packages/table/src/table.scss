@@ -146,11 +146,3 @@ $menu-z-index: $row-z-index + 1 !default;
   display: inline-block;
   position: absolute;
 }
-
-.#{$ns}-table-scrollbar-measure {
-  height: $pt-grid-size * 10;
-  overflow: scroll;
-  position: absolute;
-  top: -9999px;
-  width: $pt-grid-size * 10;
-}

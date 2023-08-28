@@ -23,8 +23,5 @@ export const MULTISELECT_POPOVER = `${MULTISELECT}-popover`;
 export const MULTISELECT_TAG_INPUT_INPUT = `${MULTISELECT}-tag-input-input`;
 export const OMNIBAR = `${NS}-omnibar`;
 export const OMNIBAR_OVERLAY = `${OMNIBAR}-overlay`;
-/** @deprecated this class name is not rendered by any component in this package */
-export const SELECT = `${NS}-select`;
 export const SELECT_POPOVER = `${NS}-select-popover`;
-export const SELECT_MATCH_TARGET_WIDTH = `${NS}-select-match-target-width`;
 export const SUGGEST_POPOVER = `${NS}-suggest-popover`;

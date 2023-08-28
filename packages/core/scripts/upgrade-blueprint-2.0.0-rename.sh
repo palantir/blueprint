@@ -210,7 +210,7 @@ renameString "pt-file-upload(?!-)" pt-file-input # only rename full classname, n
 renameString FILE_UPLOAD FILE_INPUT
 renameString pt-condensed pt-small
 renameString TABLE_CONDENSED SMALL
-renameString Popover2 Popover
+renameString Popover Popover
 renameString Tooltip2 Tooltip
 renameString Tabs2 Tabs
 renameString Omnibox Omnibar

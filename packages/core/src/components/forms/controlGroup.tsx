@@ -17,14 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, IElementRefProps, Props } from "../../common/props";
+import { Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type ControlGroupProps = IControlGroupProps;
-/** @deprecated use ControlGroupProps */
-// eslint-disable-next-line deprecation/deprecation
-export interface IControlGroupProps extends Props, HTMLDivProps, IElementRefProps<HTMLDivElement> {
+export interface ControlGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /** Group contents. */
     children?: React.ReactNode;
 
@@ -50,11 +46,9 @@ export interface IControlGroupProps extends Props, HTMLDivProps, IElementRefProp
  *
  * @see https://blueprintjs.com/docs/#core/components/control-group
  */
-export class ControlGroup extends AbstractPureComponent2<ControlGroupProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.ControlGroup`;
-
-    public render() {
-        const { children, className, elementRef, fill, vertical, ...htmlProps } = this.props;
+export const ControlGroup: React.FC<ControlGroupProps> = React.forwardRef<HTMLDivElement, ControlGroupProps>(
+    (props, ref) => {
+        const { children, className, fill, vertical, ...htmlProps } = props;
 
         const rootClasses = classNames(
             Classes.CONTROL_GROUP,
@@ -66,9 +60,10 @@ export class ControlGroup extends AbstractPureComponent2<ControlGroupProps> {
         );
 
         return (
-            <div {...htmlProps} className={rootClasses} ref={elementRef}>
+            <div {...htmlProps} ref={ref} className={rootClasses}>
                 {children}
             </div>
         );
-    }
-}
+    },
+);
+ControlGroup.displayName = `${DISPLAYNAME_PREFIX}.ControlGroup`;

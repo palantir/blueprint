@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { Props } from "../../common/props";
 
 export interface DialogFooterProps extends Props {
@@ -52,7 +52,7 @@ export interface DialogFooterProps extends Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog.dialog-footer-props
  */
-export class DialogFooter extends AbstractPureComponent2<DialogFooterProps> {
+export class DialogFooter extends AbstractPureComponent<DialogFooterProps> {
     public static defaultProps: DialogFooterProps = {
         minimal: false,
     };

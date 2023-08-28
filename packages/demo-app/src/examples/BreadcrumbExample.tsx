@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { BreadcrumbProps, Breadcrumbs2 } from "@blueprintjs/popover2";
+import { BreadcrumbProps, Breadcrumbs } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -33,7 +33,7 @@ export class BreadcrumbExample extends React.PureComponent {
     public render() {
         return (
             <ExampleCard label="Breadcrumbs">
-                <Breadcrumbs2 items={ITEMS} />
+                <Breadcrumbs items={ITEMS} />
             </ExampleCard>
         );
     }

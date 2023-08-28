@@ -17,13 +17,13 @@
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { AnchorButton, Button, ButtonProps } from "../../src";
+import { Alignment, AnchorButton, Button } from "../../src";
 
 describe("ButtonProps", () => {
-    describe("(without elementRef) should be assignable to", () => {
-        const buttonProps: Omit<ButtonProps, "elementRef"> = {
+    describe("(omitting 'ref' prop) should be assignable to", () => {
+        const buttonProps = {
             active: true,
-            alignText: "left",
+            alignText: Alignment.LEFT,
             fill: true,
             onClick: (_event: React.MouseEvent<HTMLElement>) => {
                 /* no-op */

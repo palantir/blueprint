@@ -17,12 +17,12 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2 } from "../../common";
-import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
+import { IconName, IconSize } from "@blueprintjs/icons";
+
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common";
 import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
-import { Icon, IconName, IconSize } from "../icon/icon";
+import { Icon } from "../icon/icon";
 
 export enum NonIdealStateIconSize {
     STANDARD = IconSize.STANDARD * 3,
@@ -30,10 +30,7 @@ export enum NonIdealStateIconSize {
     EXTRA_SMALL = IconSize.LARGE,
 }
 
-// eslint-disable-next-line deprecation/deprecation
-export type NonIdealStateProps = INonIdealStateProps;
-/** @deprecated use NonIdealStateProps */
-export interface INonIdealStateProps extends Props {
+export interface NonIdealStateProps extends Props {
     /** An action to resolve the non-ideal state which appears after `description`. */
     action?: JSX.Element;
 
@@ -75,7 +72,7 @@ export interface INonIdealStateProps extends Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/non-ideal-state
  */
-export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
+export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
 
     public static defaultProps: Partial<NonIdealStateProps> = {

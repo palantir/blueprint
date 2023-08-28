@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
-export { IconSvgPaths16, IconSvgPaths20, iconNameToPathsRecordKey } from "./iconSvgPaths";
+// N.B. these named imports will trigger bundlers to statically loads all icon path modules
+export { IconSvgPaths16, IconSvgPaths20, getIconPaths } from "./allPaths";
+
+export { Icons, IconLoaderOptions, IconPathsLoader } from "./iconLoader";
+export { DefaultSVGIconAttributes, DefaultSVGIconProps, SVGIconAttributes, SVGIconProps } from "./svgIconProps";
+export { SVGIconContainer, SVGIconContainerComponent, SVGIconContainerProps } from "./svgIconContainer";
 export { getIconContentString, IconCodepoints } from "./iconCodepoints";
 export { IconName, IconNames } from "./iconNames";
+export { IconSize, IconPaths } from "./iconTypes";

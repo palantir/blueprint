@@ -17,8 +17,7 @@
 import cloneDeep from "lodash/cloneDeep";
 import * as React from "react";
 
-import { Classes, Icon, Intent, Tree, TreeNodeInfo } from "@blueprintjs/core";
-import { ContextMenu2, Classes as Popover2Classes, Tooltip2 } from "@blueprintjs/popover2";
+import { Classes, ContextMenu, Icon, Intent, Tooltip, Tree, TreeNodeInfo } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -107,7 +106,7 @@ export const TreeExample: React.FC = _props => {
     );
 };
 
-const contentSizing = { popoverProps: { popoverClassName: Popover2Classes.POPOVER2_CONTENT_SIZING } };
+const contentSizing = { popoverProps: { popoverClassName: Classes.POPOVER_CONTENT_SIZING } };
 
 /* tslint:disable:object-literal-sort-keys so childNodes can come last */
 const INITIAL_STATE: TreeNodeInfo[] = [
@@ -116,9 +115,9 @@ const INITIAL_STATE: TreeNodeInfo[] = [
         hasCaret: true,
         icon: "folder-close",
         label: (
-            <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
+            <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
                 Folder 0
-            </ContextMenu2>
+            </ContextMenu>
         ),
     },
     {
@@ -126,11 +125,11 @@ const INITIAL_STATE: TreeNodeInfo[] = [
         icon: "folder-close",
         isExpanded: true,
         label: (
-            <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
-                <Tooltip2 content="I'm a folder <3" placement="right">
+            <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
+                <Tooltip content="I'm a folder <3" placement="right">
                     Folder 1
-                </Tooltip2>
-            </ContextMenu2>
+                </Tooltip>
+            </ContextMenu>
         ),
         childNodes: [
             {
@@ -138,9 +137,9 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                 icon: "document",
                 label: "Item 0",
                 secondaryLabel: (
-                    <Tooltip2 content="An eye!">
+                    <Tooltip content="An eye!">
                         <Icon icon="eye-open" />
-                    </Tooltip2>
+                    </Tooltip>
                 ),
             },
             {
@@ -168,11 +167,11 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                 hasCaret: true,
                 icon: "folder-close",
                 label: (
-                    <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
-                        <Tooltip2 content="foo" placement="right">
+                    <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
+                        <Tooltip content="foo" placement="right">
                             Folder 2
-                        </Tooltip2>
-                    </ContextMenu2>
+                        </Tooltip>
+                    </ContextMenu>
                 ),
                 childNodes: [
                     { id: 8, label: "No-Icon Item" },
@@ -182,9 +181,9 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                         hasCaret: true,
                         icon: "folder-close",
                         label: (
-                            <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
+                            <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
                                 Folder 3
-                            </ContextMenu2>
+                            </ContextMenu>
                         ),
                         childNodes: [
                             { id: 11, icon: "document", label: "Item 0" },

@@ -114,35 +114,6 @@ describe("Utils", () => {
         });
     });
 
-    describe("arrayOfLength", () => {
-        /* eslint-disable deprecation/deprecation */
-        it("truncates if too long", () => {
-            const original = Utils.times(5, () => "A");
-            const result = Utils.arrayOfLength(original, 2, "B");
-
-            expect(result).to.have.lengthOf(2);
-            expect(result).to.deep.equal(["A", "A"]);
-        });
-
-        it("expands if too short", () => {
-            const original = Utils.times(2, () => "A");
-            const result = Utils.arrayOfLength(original, 5, "B");
-
-            expect(result).to.have.lengthOf(5);
-            expect(result).to.deep.equal(["A", "A", "B", "B", "B"]);
-        });
-
-        it("just copies if length is correct", () => {
-            const original = Utils.times(5, () => "A");
-            const result = Utils.arrayOfLength(original, 5, "B");
-
-            expect(result).to.not.equal(original);
-            expect(result).to.have.lengthOf(5);
-            expect(result).to.deep.equal(["A", "A", "A", "A", "A"]);
-        });
-        /* eslint-enable deprecation/deprecation */
-    });
-
     describe("assignSparseValues", () => {
         it("compares array lengths", () => {
             const defaults = Utils.times(3, () => "A");

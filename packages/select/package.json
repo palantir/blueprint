@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/select",
-    "version": "4.9.11",
+    "version": "5.0.9",
     "description": "Components related to selecting items from a list",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -8,6 +8,11 @@
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/blueprint-select.css",
     "unpkg": "dist/select.bundle.js",
+    "files": [
+        "dist",
+        "lib",
+        "src"
+    ],
     "sideEffects": [
         "**/*.css"
     ],
@@ -35,8 +40,8 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^4.17.7",
-        "@blueprintjs/popover2": "^1.13.11",
+        "@blueprintjs/core": "^5.2.1",
+        "@blueprintjs/icons": "^5.1.5",
         "classnames": "^2.3.1",
         "tslib": "~2.5.0"
     },
@@ -51,8 +56,8 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/karma-build-scripts": "^4.0.17",
-        "@blueprintjs/node-build-scripts": "^7.0.4",
+        "@blueprintjs/karma-build-scripts": "^5.0.1",
+        "@blueprintjs/node-build-scripts": "^8.0.1",
         "enzyme": "^3.11.0",
         "karma": "^6.4.1",
         "mocha": "^10.2.0",
@@ -60,7 +65,7 @@
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
-        "typescript": "~4.8.4",
+        "typescript": "~4.9.5",
         "webpack-cli": "^5.0.1"
     },
     "repository": {

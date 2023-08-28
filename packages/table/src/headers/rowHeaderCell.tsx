@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to RowHeaderCell2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import * as React from "react";
 
-import { AbstractPureComponent2, Props } from "@blueprintjs/core";
+import { AbstractPureComponent, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { HeaderCell, IHeaderCellProps } from "./headerCell";
+import { HeaderCell, HeaderCellProps } from "./headerCell";
 
-export type RowHeaderCellProps = IRowHeaderCellProps;
-export interface IRowHeaderCellProps extends IHeaderCellProps, Props {
+export interface RowHeaderCellProps extends HeaderCellProps, Props {
     /**
      * Specifies if the row is reorderable.
      */
@@ -54,17 +46,16 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, Props {
     nameRenderer?: (name: string, index?: number) => React.ReactElement<Props>;
 }
 
-/** @deprecated use RowHeaderCell2 */
-export class RowHeaderCell extends AbstractPureComponent2<IRowHeaderCellProps> {
+export class RowHeaderCell extends AbstractPureComponent<RowHeaderCellProps> {
     public render() {
         const {
-            // from IRowHeaderCellProps
+            // from RowHeaderCellProps
             enableRowReordering,
             isRowSelected,
             name,
             nameRenderer,
 
-            // from IHeaderProps
+            // from HeaderProps
             ...spreadableProps
         } = this.props;
         const defaultName = <div className={Classes.TABLE_ROW_NAME_TEXT}>{name}</div>;

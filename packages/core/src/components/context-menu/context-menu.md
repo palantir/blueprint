@@ -1,147 +1,89 @@
-@# Context menu
+@# ContextMenu
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h5 class="@ns-heading">
-
-Deprecated: use [ContextMenu2](#popover2-package/context-menu2)
-
-</h5>
-
-This API is **deprecated since @blueprintjs/core v3.39.0** in favor of the new
-ContextMenu2 component available in the `@blueprintjs/popover2` package. You should migrate
-to the new API which will become the standard in Blueprint v6.
-
-</div>
-
-Context menus present the user with a list of actions upon a right-click.
-
-You can create context menus in either of the following ways:
-
-1. Adding the `@ContextMenuTarget` [decorator](#core/components/context-menu.decorator-usage)
-   to a React component that implements `renderContextMenu(): JSX.Element`.
-1. Use the [imperative](#core/components/context-menu.imperative-usage) `ContextMenu.show`
-   and `ContextMenu.hide` API methods, ideal for non-React-based applications.
+Context menus present the user with a list of actions when right-clicking on a target element.
+They essentially generate an opinionated Popover instance configured with the appropriate
+interaction handlers.
 
 @reactExample ContextMenuExample
 
-@## Decorator usage
+@## Usage
 
-The `@ContextMenuTarget` [class decorator][ts-decorator] can be applied to any `React.Component`
-class that meets the following requirements:
-
--   It defines an instance method called `renderContextMenu()` that returns a single `JSX.Element`
-    (most likely a [`Menu`](#core/components/menu)) or `undefined`.
--   Its root element supports the `"contextmenu"` event and the `onContextMenu` prop.
-
-    This is always true if the decorated class uses an intrinsic element, such
-    as `<div>`, as its root. If it uses a custom element as its root, you must
-    ensure that the prop is implemented correctly for that element.
-
-When the user triggers the `"contextmenu"` event on the decorated class, `renderContextMenu()` is
-called. If `renderContextMenu()` returns an element, the browser's native [context menu][wiki-cm] is
-blocked and the returned element is displayed instead in a `Popover` at the cursor's location.
-
-If the instance has a `onContextMenuClose` method, the decorator will call this function when
-the context menu is closed.
+Create a context menu using the simple function component:
 
 ```tsx
-import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
+import { ContextMenu, Menu, MenuItem } from "@blueprintjs/core";
 
-@ContextMenuTarget
-class RightClickMe extends React.Component {
-    public render() {
-        // root element must support `onContextMenu`
-        return <div>{...}</div>;
-    }
-
-    public renderContextMenu() {
-        // return a single element, or nothing to use default browser behavior
-        return (
-            <Menu>
-                <MenuItem onClick={this.handleSave} text="Save" />
-                <MenuItem onClick={this.handleDelete} text="Delete" />
-            </Menu>
-        );
-    }
-
-    public onContextMenuClose() {
-        // Optional method called once the context menu is closed.
-    }
+export default function ContextMenuExample() {
+    return (
+        <ContextMenu
+            content={
+                <Menu>
+                    <MenuItem text="Save" />
+                    <MenuItem text="Save as..." />
+                    <MenuItem text="Delete..." intent="danger" />
+                </Menu>
+            }
+        >
+            <div className="my-context-menu-target">
+                Right click me!
+            </div>
+        </ContextMenu>
+    );
 }
 ```
 
-If you're using Blueprint in Javascript, and don't have access to the Babel config (ie: using `create-react-app`), you won't be able to just use the decorator. You can, instead, use it as a [Higher-Order Component][react-hoc], and get to keep all the benefits of `ContextMenuTarget`:
+`<ContextMenu>` will render a `<div>` wrapper element around its children. You can treat this
+component as a `<div>`, since extra props will be forwarded down to the DOM element. For example,
+you can add an `onClick` handler. You may also customize the tag name of the generated wrapper
+element using the `tagName` prop. Note that the generated popover will be rendered as a _sibling_
+of this wrapper element.
+
+### Advanced usage
+
+By default, `<ContextMenu>` will render a wrapper element around its children to attach an event handler
+and get a DOM ref for theme detection. If this wrapper element breaks your HTML and/or CSS layout in
+some way and you wish to omit it, you may do so by utilizing ContextMenu's advanced rendering API
+which uses a `children` render function. If you use this approach, you must take care to properly use
+all the render props supplied to the `children()` function:
 
 ```tsx
-import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
+import classNames from "classnames";
+import { ContextMenu, ContextMenuChildrenProps, Menu, MenuItem } from "@blueprintjs/core";
 
-const RightClickMe = ContextMenuTarget(class RightClickMeWithContext extends React.Component {
-    render() {
-        // root element must support `onContextMenu`
-        return <div>{...}</div>;
-    }
-
-    renderContextMenu() {
-        // return a single element, or nothing to use default browser behavior
-        return (
-            <Menu>
-                <MenuItem onClick={this.handleSave} text="Save" />
-                <MenuItem onClick={this.handleDelete} text="Delete" />
-            </Menu>
-        );
-    }
-
-    onContextMenuClose() {
-        // Optional method called once the context menu is closed.
-    }
-});
+export default function AdvancedContextMenuExample() {
+    return (
+        <ContextMenu
+            content={
+                <Menu>
+                    <MenuItem text="Save" />
+                    <MenuItem text="Save as..." />
+                    <MenuItem text="Delete..." intent="danger" />
+                </Menu>
+            }
+        >
+            {(ctxMenuProps: ContextMenuChildrenProps) => (
+                <div
+                    className={classNames("my-context-menu-target", ctxMenuProps.className)}
+                    onContextMenu={ctxMenuProps.onContextMenu}
+                    ref={ctxMenuProps.ref}
+                >
+                    {ctxMenuProps.popover}
+                    Right click me!
+                </div>
+            )}
+        </ContextMenu>
+    )
+}
 ```
 
-[ts-decorator]: https://github.com/Microsoft/TypeScript-Handbook/blob/master/pages/Decorators.md
-[wiki-cm]: https://en.wikipedia.org/wiki/Context_menu
-[react-hoc]: https://reactjs.org/docs/higher-order-components.html
+Both `content` and `children` props support the [render prop](https://reactjs.org/docs/render-props.html)
+pattern, so you may use information about the context menu's state (such as `isOpen: boolean`) in your
+render code.
 
-@## Imperative usage
+@## Props interface
 
-The imperative API provides a single static `ContextMenu` object, enforcing the
-principle that only one context menu can be open at a time. This API is ideal
-for programmatically triggered menus or for non-React apps.
+To enable/disable the context menu popover, use the `disabled` prop. Note that it is inadvisable to change
+the value of this prop inside the `onContextMenu` callback for this component; doing so can lead to unpredictable
+behavior.
 
--   `ContextMenu.show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme?: boolean): void`
-
-    Show the given element at the given offset from the top-left corner of the
-    viewport. Showing a menu closes the previously shown one automatically. The
-    menu appears below-right of this point, but will flip to below-left instead if
-    there is not enough room on-screen. The optional callback is invoked when this
-    menu closes.
-
--   `ContextMenu.hide(): void`
-
-    Hide the context menu, if it is open.
-
--   `ContextMenu.isOpen(): boolean`
-
-    Whether a context menu is currently visible.
-
-```ts
-import { ContextMenu, Menu, MenuItem } from "@blueprintjs/core";
-
-const rightClickMe = document.querySelector("#right-click-me") as HTMLElement;
-rightClickMe.oncontextmenu = (e: MouseEvent) => {
-    // prevent the browser's native context menu
-    e.preventDefault();
-
-    // render a Menu without JSX...
-    const menu = React.createElement(
-        Menu,
-        {}, // empty props
-        React.createElement(MenuItem, { onClick: handleSave, text: "Save" }),
-        React.createElement(MenuItem, { onClick: handleDelete, text: "Delete" }),
-    );
-
-    // mouse position is available on event
-    ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, () => {
-        // menu was closed; callback optional
-    });
-};
-```
+@interface ContextMenuProps
