@@ -3,11 +3,6 @@
 
 version: 2
 
-groups:
-  typescript-eslint:
-    patterns:
-      - "@typescript-eslint/*"
-
 updates:
   - package-ecosystem: "npm"
     directory: "/"
@@ -16,6 +11,10 @@ updates:
     reviewers:
       - "adidahiya"
     versioning-strategy: increase
+    groups:
+      typescript-eslint:
+        patterns:
+          - "@typescript-eslint/*"
     ignore:
       # don't try to update internal packages
       - dependency-name: "@blueprintjs/*"
