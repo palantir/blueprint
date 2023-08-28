@@ -10,11 +10,38 @@ updates:
       interval: "weekly"
     reviewers:
       - "adidahiya"
-    versioning-strategy: increase
     groups:
-      typescript-eslint:
+      eslint:
         patterns:
+          - "eslint"
+          - "eslint-*"
           - "@typescript-eslint/*"
+      postcss:
+        patterns:
+          - "postcss"
+          - "postcss-*"
+      stylelint:
+        patterns:
+          - "styelint"
+          - "stylelint-*"
+      test-infra:
+        patterns:
+          - "jest"
+          - "@jest/*"
+          - "ts-jest"
+          - "karma",
+          - "karma-*"
+          - "mocha"
+      webpack:
+        patterns:
+          - "webpack"
+          - "webpack-*"
+          - "*-webpack-*"
+          - "*-loader"
+      runtime-dependencies:
+        dependency-type: "production"
+      dev-dependencies:
+        dependency-type: "development"
     ignore:
       # don't try to update internal packages
       - dependency-name: "@blueprintjs/*"
@@ -28,20 +55,7 @@ updates:
       # see https://github.com/palantir/blueprint/blob/727b91ffe76f49cded1acb8240c44502f34fce48/packages/icons/scripts/generate-icon-paths.mjs#L27-L30
       - dependency-name: "svgo"
       - dependency-name: "@types/svgo"
-      # some deps should use a "widen" versioning strategy, since overly strict constraints can lead to duplicates and large bundle sizes
-      - dependency-name: "date-fns"
-      - dependency-name: "moment"
+      # lodash hasn't released for >2 years
       - dependency-name: "lodash"
       # see https://github.com/tancredi/fantasticon/issues/470
       - dependency-name: "fantasticon"
-
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    reviewers:
-      - "adidahiya"
-    versioning-strategy: widen
-    allow:
-      - dependency-name: "date-fns"
-      - dependency-name: "lodash"
