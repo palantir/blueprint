@@ -4,7 +4,7 @@
 
 import * as React from "react";
 
-interface IUseAsyncControllableValueProps<E extends HTMLInputElement | HTMLTextAreaElement> {
+interface UseAsyncControllableValueProps<E extends HTMLInputElement | HTMLTextAreaElement> {
     value?: React.InputHTMLAttributes<E>["value"];
     onChange?: React.ChangeEventHandler<E>;
     onCompositionStart?: React.CompositionEventHandler<E>;
@@ -25,7 +25,7 @@ export const ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY = 10;
  * returned by the input's `onChange` callback.
  */
 export function useAsyncControllableValue<E extends HTMLInputElement | HTMLTextAreaElement>(
-    props: IUseAsyncControllableValueProps<E>,
+    props: UseAsyncControllableValueProps<E>,
 ) {
     const { onCompositionStart, onCompositionEnd, value: propValue, onChange } = props;
 

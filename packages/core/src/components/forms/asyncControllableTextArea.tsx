@@ -4,15 +4,16 @@
 
 import * as React from "react";
 
-import { useAsyncControllableValue } from "./useAsyncControllableValue";
+import { DISPLAYNAME_PREFIX } from "../../common";
+import { useAsyncControllableValue } from "../../hooks/useAsyncControllableValue";
 
-export type IAsyncControllableTextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+export type AsyncControllableTextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 /**
  * A wrapper around the low-level <textarea> component which works around a React bug
  * the same way <AsyncControllableInput> does.
  */
-export const AsyncControllableTextArea = React.forwardRef<HTMLTextAreaElement, IAsyncControllableTextAreaProps>(
+export const AsyncControllableTextArea = React.forwardRef<HTMLTextAreaElement, AsyncControllableTextAreaProps>(
     function _AsyncControllableTextArea(props, ref) {
         const {
             value: parentValue,
@@ -41,3 +42,4 @@ export const AsyncControllableTextArea = React.forwardRef<HTMLTextAreaElement, I
         );
     },
 );
+AsyncControllableTextArea.displayName = `${DISPLAYNAME_PREFIX}.AsyncControllableTextArea`;
