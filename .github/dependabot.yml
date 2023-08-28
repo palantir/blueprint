@@ -29,7 +29,7 @@ updates:
           - "jest"
           - "@jest/*"
           - "ts-jest"
-          - "karma",
+          - "karma"
           - "karma-*"
           - "mocha"
       webpack:
