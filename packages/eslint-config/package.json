@@ -5,13 +5,13 @@
     "dependencies": {
         "@blueprintjs/eslint-plugin": "^3.0.1",
         "@blueprintjs/tslint-config": "^4.0.0",
-        "@typescript-eslint/eslint-plugin": "^5.59.8",
-        "@typescript-eslint/eslint-plugin-tslint": "^5.59.8",
-        "@typescript-eslint/parser": "^5.59.8",
+        "@typescript-eslint/eslint-plugin": "^6.5.0",
+        "@typescript-eslint/eslint-plugin-tslint": "^6.5.0",
+        "@typescript-eslint/parser": "^6.5.0",
         "eslint": "^8.41.0",
         "eslint-plugin-deprecation": "^1.4.1",
         "eslint-plugin-header": "^3.1.1",
-        "eslint-plugin-import": "~2.26.0",
+        "eslint-plugin-import": "~2.28.1",
         "eslint-plugin-jsdoc": "^46.2.4",
         "eslint-plugin-react": "^7.32.2",
         "eslint-plugin-react-hooks": "^4.6.0"
