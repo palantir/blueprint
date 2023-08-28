@@ -29,12 +29,14 @@ import {
     Menu,
     MenuDivider,
     MenuItem,
+    NumberRange,
     Placement,
     Popover,
     PopoverInteractionKind,
     PopperModifierOverrides,
     PopperPlacements,
     RadioGroup,
+    RangeSlider,
     Slider,
     StrictModifierNames,
     Switch,
@@ -71,6 +73,7 @@ export interface PopoverExampleState {
     minimal?: boolean;
     modifiers?: PopperModifierOverrides;
     placement?: Placement;
+    rangeSliderValue?: NumberRange;
     sliderValue?: number;
     usePortal?: boolean;
 }
@@ -96,6 +99,7 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
             preventOverflow: { enabled: true },
         },
         placement: "auto",
+        rangeSliderValue: [0, 10],
         sliderValue: 5,
         usePortal: true,
     };
@@ -104,7 +108,9 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
 
     private bodyElement: HTMLElement | null = null;
 
-    private handleSliderChange = (value: number) => this.setState({ sliderValue: value });
+    private handleRangeSliderChange = (rangeSliderValue: NumberRange) => this.setState({ rangeSliderValue });
+
+    private handleSliderChange = (sliderValue: number) => this.setState({ sliderValue });
 
     private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
 
@@ -214,7 +220,7 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                     <HTMLSelect value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
                         <option value="0">Text</option>
                         <option value="1">Input</option>
-                        <option value="2">Slider</option>
+                        <option value="2">Sliders</option>
                         <option value="3">Menu</option>
                         <option value="4">Select</option>
                         <option value="5">Empty</option>
@@ -310,7 +316,15 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                     <input autoFocus={true} className={Classes.INPUT} type="text" />
                 </label>
             </div>,
-            <Slider key="slider" min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />,
+            <div key="sliders">
+                <Slider min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />
+                <RangeSlider
+                    min={0}
+                    max={10}
+                    onChange={this.handleRangeSliderChange}
+                    value={this.state.rangeSliderValue}
+                />
+            </div>,
             <Menu key="menu">
                 <MenuDivider title="Edit" />
                 <MenuItem icon="cut" text="Cut" label="⌘X" />
