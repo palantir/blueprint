@@ -23,6 +23,7 @@ import {
     EditableText,
     Elevation,
     H5,
+    H6,
     Label,
     Section,
     SectionCard,
@@ -35,6 +36,7 @@ import { IconNames } from "@blueprintjs/icons";
 
 export interface SectionExampleState {
     collapsible: boolean;
+    defaultIsOpen: boolean;
     elevation: SectionElevation;
     hasDescription: boolean;
     hasIcon: boolean;
@@ -54,6 +56,7 @@ const BASIL_DESCRIPTION_TEXT = dedent`
 export class SectionExample extends React.PureComponent<ExampleProps, SectionExampleState> {
     public state: SectionExampleState = {
         collapsible: false,
+        defaultIsOpen: true,
         elevation: Elevation.ZERO,
         hasDescription: false,
         hasIcon: false,
@@ -68,6 +71,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
     public render() {
         const {
             collapsible,
+            defaultIsOpen,
             elevation,
             hasDescription,
             hasIcon,
@@ -82,9 +86,15 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                 <H5>Section Props</H5>
                 <Switch checked={isCompact} label="Compact" onChange={this.toggleIsCompact} />
                 <Switch checked={hasIcon} label="Icon" onChange={this.toggleHasIcon} />
-                <Switch checked={hasDescription} label="Description" onChange={this.toggleHasDescription} />
+                <Switch checked={hasDescription} label="Sub-title" onChange={this.toggleHasDescription} />
                 <Switch checked={hasRightElement} label="Right element" onChange={this.toggleHasRightElement} />
                 <Switch checked={collapsible} label="Collapsible" onChange={this.toggleCollapsible} />
+                {collapsible && (
+                    <>
+                        <H6>Collapse Props</H6>
+                        <Switch checked={defaultIsOpen} label="Default is open" onChange={this.toggleDefaultIsOpen} />
+                    </>
+                )}
                 <Label>
                     Elevation
                     <Slider
@@ -134,8 +144,14 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         return (
             <Example options={options} {...this.props}>
                 <Section
+                    // A `key` is provided here to force the component to
+                    // re-mount when `defaultIsOpen` is changed, otherwise
+                    // the local state in the `Collapse` component is not
+                    // updated.
+                    key={String(defaultIsOpen)}
                     collapsible={collapsible}
                     compact={isCompact}
+                    collapseProps={{ defaultIsOpen }}
                     elevation={elevation}
                     icon={hasIcon ? IconNames.BOOK : undefined}
                     rightElement={
@@ -169,6 +185,8 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
     private toggleMultiplePanels = () => this.setState({ hasMultipleCards: !this.state.hasMultipleCards });
 
     private toggleCollapsible = () => this.setState({ collapsible: !this.state.collapsible });
+
+    private toggleDefaultIsOpen = () => this.setState({ defaultIsOpen: !this.state.defaultIsOpen });
 
     private togglePanelIsPadded = () => this.setState({ isPanelPadded: !this.state.isPanelPadded });
 

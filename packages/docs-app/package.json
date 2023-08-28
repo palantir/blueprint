@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-app",
-    "version": "5.2.0",
+    "version": "5.2.1",
     "description": "Blueprint Documentation Site",
     "private": true,
     "scripts": {
@@ -17,15 +17,15 @@
         "verify": "run-p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^5.2.0",
-        "@blueprintjs/datetime": "^5.0.8",
-        "@blueprintjs/datetime2": "^1.0.8",
-        "@blueprintjs/docs-data": "^5.2.0",
-        "@blueprintjs/docs-theme": "^5.0.8",
+        "@blueprintjs/core": "^5.2.1",
+        "@blueprintjs/datetime": "^5.0.9",
+        "@blueprintjs/datetime2": "^1.0.9",
+        "@blueprintjs/docs-data": "^5.2.1",
+        "@blueprintjs/docs-theme": "^5.0.9",
         "@blueprintjs/icons": "^5.1.5",
         "@blueprintjs/monaco-editor-theme": "^1.0.1",
-        "@blueprintjs/select": "^5.0.8",
-        "@blueprintjs/table": "^5.0.8",
+        "@blueprintjs/select": "^5.0.9",
+        "@blueprintjs/table": "^5.0.9",
         "@blueprintjs/test-commons": "^2.0.1",
         "@documentalist/client": "^4.0.0",
         "chroma-js": "^2.4.2",

@@ -49,6 +49,9 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
      * This prop has no effect if `collapsible={false}`.
      */
     collapseProps?: Pick<CollapseProps, "className" | "keepChildrenMounted" | "transitionDuration"> & {
+        /**
+         * @default true
+         */
         defaultIsOpen?: boolean;
     };
 
@@ -74,6 +77,7 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
 
     /**
      * Element to render on the right side of the section header.
+     * Note that the header will only be rendered if `title` is provided.
      */
     rightElement?: JSX.Element;
 
@@ -109,7 +113,8 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         title,
         ...htmlProps
     } = props;
-    const [isCollapsed, setIsCollapsed] = React.useState<boolean>(collapseProps?.defaultIsOpen ?? false);
+    // The initial useState value is negated in order to conform to the `isCollapsed` expectation.
+    const [isCollapsed, setIsCollapsed] = React.useState<boolean>(!(collapseProps?.defaultIsOpen ?? true));
     const toggleIsCollapsed = React.useCallback(() => setIsCollapsed(!isCollapsed), [isCollapsed]);
 
     const isHeaderLeftContainerVisible = title != null || icon != null || subtitle != null;
@@ -125,45 +130,49 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
             ref={ref}
             {...htmlProps}
         >
-            <div
-                role={collapsible ? "button" : undefined}
-                aria-pressed={collapsible ? isCollapsed : undefined}
-                className={classNames(Classes.SECTION_HEADER, {
-                    [Classes.INTERACTIVE]: collapsible,
-                })}
-                onClick={collapsible != null ? toggleIsCollapsed : undefined}
-            >
-                {isHeaderLeftContainerVisible && (
-                    <>
-                        <div className={Classes.SECTION_HEADER_LEFT}>
-                            {title && icon && (
-                                <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />
-                            )}
-
-                            <div>
-                                {title && <H6 className={Classes.SECTION_HEADER_TITLE}>{title}</H6>}
-                                {title && subtitle && (
-                                    <div className={classNames(Classes.TEXT_MUTED, Classes.SECTION_HEADER_SUB_TITLE)}>
-                                        {subtitle}
-                                    </div>
+            {title && (
+                <div
+                    role={collapsible ? "button" : undefined}
+                    aria-pressed={collapsible ? isCollapsed : undefined}
+                    className={classNames(Classes.SECTION_HEADER, {
+                        [Classes.INTERACTIVE]: collapsible,
+                    })}
+                    onClick={collapsible != null ? toggleIsCollapsed : undefined}
+                >
+                    {isHeaderLeftContainerVisible && (
+                        <>
+                            <div className={Classes.SECTION_HEADER_LEFT}>
+                                {icon && (
+                                    <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />
                                 )}
-                            </div>
-                        </div>
-                    </>
-                )}
 
-                {isHeaderRightContainerVisible && (
-                    <div className={Classes.SECTION_HEADER_RIGHT}>
-                        {rightElement}
-                        {collapsible &&
-                            (isCollapsed ? (
-                                <ChevronDown className={Classes.TEXT_MUTED} />
-                            ) : (
-                                <ChevronUp className={Classes.TEXT_MUTED} />
-                            ))}
-                    </div>
-                )}
-            </div>
+                                <div>
+                                    <H6 className={Classes.SECTION_HEADER_TITLE}>{title}</H6>
+                                    {subtitle && (
+                                        <div
+                                            className={classNames(Classes.TEXT_MUTED, Classes.SECTION_HEADER_SUB_TITLE)}
+                                        >
+                                            {subtitle}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+                    {isHeaderRightContainerVisible && (
+                        <div className={Classes.SECTION_HEADER_RIGHT}>
+                            {rightElement}
+                            {collapsible &&
+                                (isCollapsed ? (
+                                    <ChevronDown className={Classes.TEXT_MUTED} />
+                                ) : (
+                                    <ChevronUp className={Classes.TEXT_MUTED} />
+                                ))}
+                        </div>
+                    )}
+                </div>
+            )}
 
             {collapsible ? (
                 <Collapse {...collapseProps} isOpen={!isCollapsed}>
