@@ -23,7 +23,6 @@ import {
     EditableText,
     Elevation,
     H5,
-    H6,
     Label,
     Section,
     SectionCard,
@@ -43,6 +42,8 @@ export interface SectionExampleState {
     hasMultipleCards: boolean;
     hasRightElement: boolean;
     isCompact: boolean;
+    isControlled: boolean;
+    isOpen: boolean;
     isPanelPadded: boolean;
 }
 
@@ -63,6 +64,8 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         hasMultipleCards: false,
         hasRightElement: true,
         isCompact: false,
+        isControlled: false,
+        isOpen: true,
         isPanelPadded: true,
     };
 
@@ -89,12 +92,6 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                 <Switch checked={hasDescription} label="Sub-title" onChange={this.toggleHasDescription} />
                 <Switch checked={hasRightElement} label="Right element" onChange={this.toggleHasRightElement} />
                 <Switch checked={collapsible} label="Collapsible" onChange={this.toggleCollapsible} />
-                {collapsible && (
-                    <>
-                        <H6>Collapse Props</H6>
-                        <Switch checked={defaultIsOpen} label="Default is open" onChange={this.toggleDefaultIsOpen} />
-                    </>
-                )}
                 <Label>
                     Elevation
                     <Slider
@@ -105,6 +102,26 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                         handleHtmlProps={{ "aria-label": "Section elevation" }}
                     />
                 </Label>
+
+                <H5>Collapse Props</H5>
+                <Switch
+                    checked={defaultIsOpen}
+                    disabled={this.state.isControlled || !collapsible}
+                    label="Default is open"
+                    onChange={this.toggleDefaultIsOpen}
+                />
+                <Switch
+                    disabled={!collapsible}
+                    checked={this.state.isControlled}
+                    label="Is controlled"
+                    onChange={this.toggleIsControlled}
+                />
+                <Switch
+                    checked={this.state.isOpen}
+                    disabled={!this.state.isControlled || !collapsible}
+                    label="Open"
+                    onChange={this.toggleIsOpen}
+                />
 
                 <H5>Children</H5>
                 <Switch
@@ -141,6 +158,10 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
             </div>
         );
 
+        const collapseProps = this.state.isControlled
+            ? { isOpen: this.state.isOpen, onToggle: this.toggleIsOpen }
+            : { defaultIsOpen };
+
         return (
             <Example options={options} {...this.props}>
                 <Section
@@ -151,7 +172,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                     key={String(defaultIsOpen)}
                     collapsible={collapsible}
                     compact={isCompact}
-                    collapseProps={{ defaultIsOpen }}
+                    collapseProps={collapseProps}
                     elevation={elevation}
                     icon={hasIcon ? IconNames.BOOK : undefined}
                     rightElement={
@@ -189,6 +210,10 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
     private toggleDefaultIsOpen = () => this.setState({ defaultIsOpen: !this.state.defaultIsOpen });
 
     private togglePanelIsPadded = () => this.setState({ isPanelPadded: !this.state.isPanelPadded });
+
+    private toggleIsControlled = () => this.setState({ isControlled: !this.state.isControlled });
+
+    private toggleIsOpen = () => this.setState({ isOpen: !this.state.isOpen });
 
     private handleElevationChange = (elevation: SectionElevation) => this.setState({ elevation });
 
