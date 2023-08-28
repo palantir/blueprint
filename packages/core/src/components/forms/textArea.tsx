@@ -19,8 +19,18 @@ import * as React from "react";
 
 import { AbstractPureComponent, Classes, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
+import { AsyncControllableTextArea } from "./asyncControllableTextArea";
 
 export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+    /**
+     * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
+     * These may occur if you do not immediately call setState in a parent component with the value from
+     * the `onChange` handler, or if working with certain libraries like __redux-form__.
+     *
+     * @default false
+     */
+    asyncControl?: boolean;
+
     /**
      * Whether the component should automatically resize vertically as a user types in the text input.
      * This will disable manual resizing in the vertical dimension.
@@ -142,9 +152,19 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
     }
 
     public render() {
-        // eslint-disable-next-line deprecation/deprecation
-        const { autoResize, className, fill, growVertically, inputRef, intent, large, small, ...htmlProps } =
-            this.props;
+        const {
+            asyncControl,
+            autoResize,
+            className,
+            fill,
+            // eslint-disable-next-line deprecation/deprecation
+            growVertically,
+            inputRef,
+            intent,
+            large,
+            small,
+            ...htmlProps
+        } = this.props;
 
         const rootClasses = classNames(
             Classes.INPUT,
@@ -170,13 +190,15 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             };
         }
 
+        const TextAreaComponent = asyncControl ? AsyncControllableTextArea : "textarea";
+
         return (
-            <textarea
+            <TextAreaComponent
                 {...htmlProps}
                 className={rootClasses}
                 onChange={this.handleChange}
-                ref={this.handleRef}
                 style={style}
+                ref={this.handleRef}
             />
         );
     }
