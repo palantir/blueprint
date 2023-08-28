@@ -54,9 +54,9 @@ export interface SectionCollapseProps
     isOpen?: boolean;
 
     /**
-     * Callback invoked in controlled mode when the collapse element is clicked.
+     * Callback invoked in controlled mode when the collapse toggle element is clicked.
      */
-    onToggleCollapse?: () => void;
+    onToggle?: () => void;
 }
 
 export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.RefAttributes<HTMLDivElement> {
@@ -141,7 +141,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
 
     const toggleIsCollapsed = React.useCallback(() => {
         if (isControlled) {
-            collapseProps?.onToggleCollapse?.();
+            collapseProps?.onToggle?.();
         } else {
             setIsCollapsed(!isCollapsed);
         }
