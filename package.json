@@ -39,24 +39,24 @@
         "@types/enzyme": "~3.10.12",
         "@types/enzyme-adapter-react-16": "~1.0.6",
         "@types/mocha": "~10.0.1",
-        "@types/node": "~18.16.16",
-        "@types/react": "~16.14.32",
-        "@types/react-dom": "~16.9.10",
+        "@types/node": "~20.5.7",
+        "@types/react": "~18.2.21",
+        "@types/react-dom": "~18.2.7",
         "@types/react-transition-group": "~4.4.5",
         "@types/sinon": "~10.0.13",
         "@types/yargs": "~17.0.22",
         "chai": "^4.3.7",
         "cross-env": "^7.0.3",
-        "dedent": "^0.7.0",
+        "dedent": "^1.5.1",
         "eslint": "^8.48.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-prettier": "^5.0.0",
-        "gh-pages": "^5.0.0",
+        "gh-pages": "^6.0.0",
         "http-server": "^14.1.1",
-        "lerna": "^6.5.1",
+        "lerna": "^7.2.0",
         "npm-run-all": "^4.1.5",
-        "octokit": "^2.0.19",
-        "prettier": "~2.8.7",
+        "octokit": "^3.1.0",
+        "prettier": "~3.0.3",
         "sinon": "^15.0.3",
         "stylelint-config-palantir": "^6.0.1",
         "stylelint-scss": "^5.1.0",
@@ -65,7 +65,7 @@
         "yarn-deduplicate": "^6.0.1"
     },
     "resolutions": {
-        "@types/react": "16.14.32"
+        "@types/react": "18.2.21"
     },
     "engines": {
         "node": ">=18.13"

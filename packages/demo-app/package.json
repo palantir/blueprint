@@ -25,10 +25,10 @@
         "classnames": "^2.3.1",
         "lodash": "^4.17.21",
         "normalize.css": "^8.0.1",
-        "react": "^16.14.0",
-        "react-dom": "^16.14.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^8.0.1",
