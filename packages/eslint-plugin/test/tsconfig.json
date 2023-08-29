@@ -15,5 +15,5 @@
         "skipLibCheck": true,
         "strict": true,
         "target": "es2021"
-    },
+    }
 }
