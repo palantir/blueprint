@@ -26,7 +26,7 @@
         "verify": "npm-run-all compile -p dist lint"
     },
     "dependencies": {
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^8.0.1",

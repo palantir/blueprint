@@ -31,17 +31,17 @@
         "chroma-js": "^2.4.2",
         "classnames": "^2.3.1",
         "date-fns": "^2.28.0",
-        "dedent": "^0.7.0",
+        "dedent": "^1.5.1",
         "downloadjs": "^1.4.7",
         "lodash": "^4.17.21",
         "moment": "^2.29.1",
-        "monaco-editor": "^0.37.1",
+        "monaco-editor": "^0.41.0",
         "normalize.css": "^8.0.1",
         "popper.js": "^1.16.1",
-        "react": "^16.14.0",
-        "react-dom": "^16.14.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^8.0.1",

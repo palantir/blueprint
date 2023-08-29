@@ -39,7 +39,7 @@
         "@blueprintjs/core": "^5.2.1",
         "@blueprintjs/datetime": "^5.0.9",
         "date-fns": "^2.28.0",
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "peerDependencies": {
         "@types/react": "^16.14.32 || 17",
@@ -61,8 +61,8 @@
         "karma": "^6.4.1",
         "mocha": "^10.2.0",
         "npm-run-all": "^4.1.5",
-        "react": "^16.14.0",
-        "react-dom": "^16.14.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
         "typescript": "~4.9.5",
         "webpack-cli": "^5.0.1"
     },
