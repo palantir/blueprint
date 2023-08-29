@@ -14,8 +14,9 @@ export const selectComponentsMigrationMapping = {
  * of deprecated components from @blueprintjs/select. This is useful for incremental migration to
  * newer Blueprint APIs.
  */
-export const noDeprecatedSelectComponentsRule: TSESLint.RuleModule<string, unknown[]> = createNoDeprecatedComponentsRule(
-    "no-deprecated-select-components",
-    ["@blueprintjs/select"],
-    selectComponentsMigrationMapping,
-);
+export const noDeprecatedSelectComponentsRule: TSESLint.RuleModule<string, unknown[]> =
+    createNoDeprecatedComponentsRule(
+        "no-deprecated-select-components",
+        ["@blueprintjs/select"],
+        selectComponentsMigrationMapping,
+    );

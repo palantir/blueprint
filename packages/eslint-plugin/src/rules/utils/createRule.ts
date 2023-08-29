@@ -17,7 +17,9 @@
 import { ESLintUtils, TSESLint } from "@typescript-eslint/utils";
 import { RuleWithMetaAndName } from "@typescript-eslint/utils/eslint-utils";
 
-export type RuleCreator = <TOptions extends readonly unknown[], TMessageIds extends string>(metadata: Readonly<RuleWithMetaAndName<TOptions, TMessageIds>>) => TSESLint.RuleModule<TMessageIds, TOptions>;
+export type RuleCreator = <TOptions extends readonly unknown[], TMessageIds extends string>(
+    metadata: Readonly<RuleWithMetaAndName<TOptions, TMessageIds>>,
+) => TSESLint.RuleModule<TMessageIds, TOptions>;
 
 /** Create a rule and automatically fill its url based on the rule name. */
 export const createRule: RuleCreator = ESLintUtils.RuleCreator(
