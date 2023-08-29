@@ -16,6 +16,9 @@ updates:
           - "eslint"
           - "eslint-*"
           - "@typescript-eslint/*"
+        exclude-patterns:
+          # Breaking regression in v2.27.0 forces us to pin to v2.26.x, see https://github.com/import-js/eslint-plugin-import/issues/2685
+          - "eslint-plugin-import"
       postcss:
         patterns:
           - "postcss"
