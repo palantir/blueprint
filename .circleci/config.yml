@@ -5,10 +5,10 @@ orbs:
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:18.15
+    - image: cimg/node:18.17
 
   - &docker-node-browsers-image
-    - image: cimg/node:18.15-browsers
+    - image: cimg/node:18.17-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -43,6 +43,7 @@ jobs:
       - checkout
       - restore_cache: *restore-yarn-cache
       - restore_cache: *restore-node-modules-cache
+      - run: sudo corepack enable
       - run: yarn install --non-interactive --cache-folder ~/.cache/yarn
       - run:
           name: Check if yarn.lock changed during install
@@ -67,6 +68,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: yarn compile
       - persist_to_workspace:
           root: "."
@@ -83,6 +85,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: yarn format-check
 
   lint:
@@ -95,6 +98,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: mkdir -p ./reports/eslint ./reports/stylelint
       # types and lint rules should already be compiled since this job depends on the 'compile' job
       - run: yarn lint
@@ -110,6 +114,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: yarn dist
       - persist_to_workspace:
           root: "."
@@ -124,6 +129,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: mkdir -p ./reports
       - run:
           command: |
@@ -144,6 +150,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       # HACKHACK: pin Chrome version to work around bug in v115
       # see https://github.com/CircleCI-Public/browser-tools-orb/issues/75
       - run: sudo apt-get update
@@ -182,6 +189,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: mkdir ./reports
       - run: yarn lerna run test:iso
       - store_test_results: { path: ./reports }
