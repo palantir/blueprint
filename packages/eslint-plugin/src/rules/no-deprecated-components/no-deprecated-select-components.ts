@@ -2,6 +2,7 @@
  * (c) Copyright 2022 Palantir Technologies Inc. All rights reserved.
  */
 
+import { TSESLint } from "@typescript-eslint/utils";
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
 export const selectComponentsMigrationMapping = {
@@ -13,7 +14,7 @@ export const selectComponentsMigrationMapping = {
  * of deprecated components from @blueprintjs/select. This is useful for incremental migration to
  * newer Blueprint APIs.
  */
-export const noDeprecatedSelectComponentsRule = createNoDeprecatedComponentsRule(
+export const noDeprecatedSelectComponentsRule: TSESLint.RuleModule<string, unknown[]> = createNoDeprecatedComponentsRule(
     "no-deprecated-select-components",
     ["@blueprintjs/select"],
     selectComponentsMigrationMapping,

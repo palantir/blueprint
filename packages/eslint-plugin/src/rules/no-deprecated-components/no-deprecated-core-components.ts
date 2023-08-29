@@ -2,6 +2,7 @@
  * (c) Copyright 2022 Palantir Technologies Inc. All rights reserved.
  */
 
+import { TSESLint } from "@typescript-eslint/utils";
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
 export const coreComponentsMigrationMapping = {
@@ -14,7 +15,7 @@ export const coreComponentsMigrationMapping = {
  * of deprecated components from @blueprintjs/core. This is useful for incremental migration to
  * newer Blueprint APIs.
  */
-export const noDeprecatedCoreComponentsRule = createNoDeprecatedComponentsRule(
+export const noDeprecatedCoreComponentsRule: TSESLint.RuleModule<string, unknown[]> = createNoDeprecatedComponentsRule(
     "no-deprecated-core-components",
     ["@blueprintjs/core"],
     coreComponentsMigrationMapping,
