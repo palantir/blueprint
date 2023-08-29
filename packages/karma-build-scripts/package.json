@@ -12,7 +12,7 @@
         "istanbul-instrumenter-loader": "^3.0.1",
         "karma": "^6.4.2",
         "karma-chrome-launcher": "^3.2.0",
-        "karma-coverage": "^2.2.0",
+        "karma-coverage": "^2.2.1",
         "karma-firefox-launcher": "^2.1.2",
         "karma-helpful-reporter": "^0.3.4",
         "karma-junit-reporter": "^2.0.1",
