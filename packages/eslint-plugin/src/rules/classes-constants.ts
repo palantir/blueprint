@@ -33,7 +33,7 @@ export const classesConstantsRule = createRule<[], MessageIds>({
     meta: {
         docs: {
             description: "Enforce usage of Classes constants over namespaced string literals.",
-            recommended: "error",
+            recommended: "recommended",
             requiresTypeChecking: false,
         },
         fixable: "code",

@@ -4,7 +4,7 @@
 
 // tslint:disable object-literal-sort-keys
 
-import { TSESTree } from "@typescript-eslint/utils";
+import { TSESLint, TSESTree } from "@typescript-eslint/utils";
 
 import { createRule } from "./utils/createRule";
 import { FixList } from "./utils/fixList";
@@ -193,7 +193,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
             description:
                 "Reports on usage of deprecated Blueprint types and recommends migrating to their corresponding replacements.",
             requiresTypeChecking: false,
-            recommended: "error",
+            recommended: "recommended",
         },
         fixable: "code",
         messages: {
@@ -201,12 +201,13 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
         },
         schema: [
             {
+                type: "string",
                 enum: ["migration"],
             },
         ],
     },
     defaultOptions: [],
-    create: context => {
+    create: (context: TSESLint.RuleContext<MessageIds, []>) => {
         const [deprecatedToNewType, newTypeToPackageName] = getTypeMappings();
         const deprecatedImports: Array<
             { namespace: string; type: "namespace" } | { type: "symbol"; symbolName: string; localSymbolName: string }
