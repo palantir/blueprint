@@ -3,6 +3,7 @@
  */
 
 import { TSESLint } from "@typescript-eslint/utils";
+
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
 export const selectComponentsMigrationMapping = {

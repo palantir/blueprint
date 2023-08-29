@@ -3,6 +3,7 @@
  */
 
 import { TSESLint } from "@typescript-eslint/utils";
+
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 import { coreComponentsMigrationMapping } from "./no-deprecated-core-components";
 import { datetimeComponentsMigrationMapping } from "./no-deprecated-datetime-components";
