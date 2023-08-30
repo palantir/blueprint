@@ -15,9 +15,9 @@
  */
 
 import { assert } from "chai";
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import * as React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { Card, Classes, H4 } from "../../src";
 
@@ -51,5 +51,11 @@ describe("<Card>", () => {
         const card = shallow(<Card onChange={onChange} title="foo" tabIndex={4000} />).find("div");
         assert.strictEqual(card.prop("onChange"), onChange);
         assert.strictEqual(card.prop("title"), "foo");
+    });
+
+    it("supports ref prop", () => {
+        const elementRef = React.createRef<HTMLDivElement>();
+        mount(<Card ref={elementRef} />);
+        assert.isDefined(elementRef.current);
     });
 });

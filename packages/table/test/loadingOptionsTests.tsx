@@ -16,25 +16,17 @@
 
 import * as React from "react";
 
-import {
-    Cell,
-    Column,
-    ColumnHeaderCell2,
-    ColumnLoadingOption,
-    RowHeaderCell2,
-    Table2,
-    TableLoadingOption,
-} from "../src";
+import { Cell, Column, ColumnHeaderCell, ColumnLoadingOption, RowHeaderCell, Table2, TableLoadingOption } from "../src";
 import * as Classes from "../src/common/classes";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
-interface ITableLoadingOptionsTesterProps {
+interface TableLoadingOptionsTesterProps {
     columnLoadingOptions: ColumnLoadingOption[];
     tableLoadingOptions: TableLoadingOption[];
 }
 
-class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTesterProps> {
+class TableLoadingOptionsTester extends React.Component<TableLoadingOptionsTesterProps> {
     public static isCellLoading = (index: number) => {
         if (index === 0) {
             return true;
@@ -50,13 +42,11 @@ class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTest
     };
 
     private static columnHeaderCellRenderer = (columnIndex: number) => {
-        return (
-            <ColumnHeaderCell2 loading={TableLoadingOptionsTester.isCellLoading(columnIndex)} name="column header" />
-        );
+        return <ColumnHeaderCell loading={TableLoadingOptionsTester.isCellLoading(columnIndex)} name="column header" />;
     };
 
     private static rowHeaderCellRenderer = (rowIndex: number) => {
-        return <RowHeaderCell2 loading={TableLoadingOptionsTester.isCellLoading(rowIndex)} name="row header" />;
+        return <RowHeaderCell loading={TableLoadingOptionsTester.isCellLoading(rowIndex)} name="row header" />;
     };
 
     public render() {

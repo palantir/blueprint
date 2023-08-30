@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export interface IMovementDelta {
+export interface MovementDelta {
     /** The number of rows by which to move. */
     rows: number;
 

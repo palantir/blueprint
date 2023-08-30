@@ -73,20 +73,6 @@ function isReactElement<T = any>(child: React.ReactNode): child is React.ReactEl
 }
 
 /**
- * Represents anything that has a `name` property such as Functions.
- */
-interface INamed {
-    name?: string;
-}
-
-/**
- * @deprecated will be removed in v5.0
- */
-export function getDisplayName(ComponentClass: React.ComponentType | INamed) {
-    return (ComponentClass as React.ComponentType).displayName || (ComponentClass as INamed).name || "Unknown";
-}
-
-/**
  * Returns true if the given JSX element matches the given component type.
  *
  * NOTE: This function only checks equality of `displayName` for performance and

@@ -17,25 +17,24 @@
 import classNames from "classnames";
 import type { Locale } from "date-fns";
 import * as React from "react";
-import { CaptionLabelProps, DayModifiers, DayPicker, NavigationContextValue } from "react-day-picker";
+import { /* CaptionLabelProps, */ DayModifiers, DayPicker /*, NavigationContextValue */ } from "react-day-picker";
 
 import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, Props } from "@blueprintjs/core";
 import {
     Classes,
     DatePickerProps,
     DatePickerUtils,
+    DateRange,
     DateRangeShortcut,
-    DateUtils as DateUtilsV1,
+    DateUtils,
     TimePicker,
 } from "@blueprintjs/datetime";
 // tslint:disable no-submodule-imports
 import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
-import { DatePickerCaption } from "@blueprintjs/datetime/lib/esm/datePickerCaption";
-import { DatePickerNavbar } from "@blueprintjs/datetime/lib/esm/datePickerNavbar";
-import { Shortcuts } from "@blueprintjs/datetime/lib/esm/shortcuts";
+import { DatePickerCaption } from "@blueprintjs/datetime/lib/esm/components/date-picker/datePickerCaption";
+import { DatePickerNavbar } from "@blueprintjs/datetime/lib/esm/components/date-picker/datePickerNavbar";
+import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/shortcuts";
 // tslint:enable no-submodule-imports
-
-import { DateRange, DateUtils } from "../../common";
 
 /** Props shared between DatePicker v1 and v2 */
 type DatePickerSharedProps = Omit<DatePickerProps, "defaultValue" | "value" | "onChange">;
@@ -184,11 +183,11 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
             console.error(Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
         }
 
-        if (initialMonth != null && !DateUtilsV1.isMonthInRange(initialMonth, [minDate!, maxDate!])) {
+        if (initialMonth != null && !DateUtils.isMonthInRange(initialMonth, [minDate!, maxDate!])) {
             console.error(Errors.DATEPICKER_INITIAL_MONTH_INVALID);
         }
 
-        if (maxDate != null && minDate != null && maxDate < minDate && !DateUtils.areSameDay(maxDate, minDate)) {
+        if (maxDate != null && minDate != null && maxDate < minDate && !DateUtils.isSameDay(maxDate, minDate)) {
             console.error(Errors.DATEPICKER_MAX_DATE_INVALID);
         }
 
@@ -210,7 +209,7 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
     private shouldHighlightCurrentDay = (date: Date) => {
         const { highlightCurrentDay } = this.props;
 
-        return highlightCurrentDay === true && DateUtilsV1.isToday(date);
+        return highlightCurrentDay === true && DateUtils.isToday(date);
     };
 
     private getDatePickerModifiers = () => {
@@ -281,8 +280,8 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
         if (timePrecision == null && timePickerProps === undefined) {
             return null;
         }
-        const applyMin = DateUtils.areSameDay(this.state.value, minDate!);
-        const applyMax = DateUtils.areSameDay(this.state.value, maxDate!);
+        const applyMin = this.state.value != null && DateUtils.isSameDay(this.state.value, minDate!);
+        const applyMax = this.state.value != null && DateUtils.isSameDay(this.state.value, maxDate!);
         return (
             <div className={Classes.DATEPICKER_TIMEPICKER_WRAPPER}>
                 <TimePicker
@@ -342,7 +341,7 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
 
         // allow toggling selected date by clicking it again (if prop enabled)
         const newValue =
-            this.props.canClearSelection && modifiers.selected ? null : DateUtilsV1.getDateTime(day, this.state.value);
+            this.props.canClearSelection && modifiers.selected ? null : DateUtils.getDateTime(day, this.state.value);
         this.updateValue(newValue, true);
     };
 
@@ -351,7 +350,7 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
         const { dateRange, includeTime } = shortcut;
 
         const newDate = dateRange[0];
-        const newValue = includeTime ? newDate : DateUtilsV1.getDateTime(newDate, this.state.value);
+        const newValue = includeTime ? newDate : DateUtils.getDateTime(newDate, this.state.value);
 
         if (newDate == null) {
             return;
@@ -390,7 +389,7 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
         const displayDate = selectedDay == null ? 1 : Math.min(selectedDay, maxDaysInMonth);
 
         // 12:00 matches the underlying react-day-picker timestamp behavior
-        const value = DateUtilsV1.getDateTime(new Date(displayYear, displayMonth, displayDate, 12), this.state.value);
+        const value = DateUtils.getDateTime(new Date(displayYear, displayMonth, displayDate, 12), this.state.value);
         // clamp between min and max dates
         if (value < minDate!) {
             return minDate!;
@@ -427,7 +426,7 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
     private handleTimeChange = (time: Date) => {
         this.props.timePickerProps?.onChange?.(time);
         const { value } = this.state;
-        const newValue = DateUtilsV1.getDateTime(value != null ? value : new Date(), time);
+        const newValue = DateUtils.getDateTime(value != null ? value : new Date(), time);
         this.updateValue(newValue, true);
     };
 
@@ -466,7 +465,7 @@ function getInitialMonth(props: DatePicker2Props, value: Date | null): Date {
     } else if (DateUtils.isDayInRange(today, rangeFromProps)) {
         return today;
     } else {
-        return DateUtilsV1.getDateBetween(rangeFromProps);
+        return DateUtils.getDateBetween(rangeFromProps);
     }
 }
 

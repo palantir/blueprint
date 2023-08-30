@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-import { DateRange } from "./dateRange";
+import { isSameDay } from "date-fns";
+
+import { DateRange, isNonNullRange } from "./dateRange";
 import { Months } from "./months";
+
+export { isSameDay };
+
+export function clone(d: Date) {
+    return new Date(d.getTime());
+}
 
 export function isDateValid(date: Date | false | null): date is Date {
     return date instanceof Date && !isNaN(date.valueOf());
 }
 
-export function areEqual(date1: Date, date2: Date) {
+export function isEqual(date1: Date, date2: Date) {
     if (date1 == null && date2 == null) {
         return true;
     } else if (date1 == null || date2 == null) {
@@ -39,17 +47,13 @@ export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange) {
     } else {
         const [start1, end1] = dateRange1;
         const [start2, end2] = dateRange2;
-        const areStartsEqual = (start1 == null && start2 == null) || areSameDay(start1, start2);
-        const areEndsEqual = (end1 == null && end2 == null) || areSameDay(end1, end2);
+        const areStartsEqual = (start1 == null && start2 == null) || isSameDay(start1, start2);
+        const areEndsEqual = (end1 == null && end2 == null) || isSameDay(end1, end2);
         return areStartsEqual && areEndsEqual;
     }
 }
 
-export function areSameDay(date1: Date, date2: Date) {
-    return areSameMonth(date1, date2) && date1.getDate() === date2.getDate();
-}
-
-export function areSameMonth(date1: Date, date2: Date) {
+export function isSameMonth(date1: Date, date2: Date) {
     return (
         date1 != null &&
         date2 != null &&
@@ -58,23 +62,20 @@ export function areSameMonth(date1: Date, date2: Date) {
     );
 }
 
-export function areSameTime(date1: Date, date2: Date) {
+export function isSameTime(d1: Date | null, d2: Date | null) {
+    // N.B. do not use date-fns helper fns here, since we don't want to return false when the month/day/year is different
     return (
-        date1 != null &&
-        date2 != null &&
-        date1.getHours() === date2.getHours() &&
-        date1.getMinutes() === date2.getMinutes() &&
-        date1.getSeconds() === date2.getSeconds() &&
-        date1.getMilliseconds() === date2.getMilliseconds()
+        d1 != null &&
+        d2 != null &&
+        d1.getHours() === d2.getHours() &&
+        d1.getMinutes() === d2.getMinutes() &&
+        d1.getSeconds() === d2.getSeconds() &&
+        d1.getMilliseconds() === d2.getMilliseconds()
     );
 }
 
-export function clone(d: Date) {
-    return new Date(d.getTime());
-}
-
-export function isDayInRange(date: Date, dateRange: DateRange, exclusive = false) {
-    if (date == null) {
+export function isDayInRange(date: Date | null, dateRange: DateRange, exclusive = false) {
+    if (date == null || !isNonNullRange(dateRange)) {
         return false;
     }
 
@@ -86,7 +87,7 @@ export function isDayInRange(date: Date, dateRange: DateRange, exclusive = false
     start.setHours(0, 0, 0, 0);
     end.setHours(0, 0, 0, 0);
 
-    return start <= day && day <= end && (!exclusive || (!areSameDay(start, day) && !areSameDay(day, end)));
+    return start <= day && day <= end && (!exclusive || (!isSameDay(start, day) && !isSameDay(day, end)));
 }
 
 export function isDayRangeInRange(innerRange: DateRange, outerRange: DateRange) {
@@ -134,7 +135,7 @@ export function isTimeInRange(date: Date, minDate: Date, maxDate: Date): boolean
 }
 
 export function getTimeInRange(time: Date, minTime: Date, maxTime: Date) {
-    if (areSameTime(minTime, maxTime)) {
+    if (isSameTime(minTime, maxTime)) {
         return maxTime;
     } else if (isTimeInRange(time, minTime, maxTime)) {
         return time;
@@ -236,5 +237,5 @@ export function get24HourFrom12Hour(hour: number, isPm: boolean): number {
 }
 
 export function isToday(date: Date): boolean {
-    return areSameDay(date, new Date());
+    return isSameDay(date, new Date());
 }

@@ -34,7 +34,7 @@ import { IconExample } from "./IconExample";
 import { InputExample } from "./InputExample";
 import { MenuExample } from "./MenuExample";
 import { NonIdealStateExample } from "./NonIdealStateExample";
-import { PopoverExample } from "./Popover2Example";
+import { PopoverExample } from "./PopoverExample";
 import { SliderExample } from "./SliderExample";
 import { SwitchExample } from "./SwitchExample";
 import { TableExample } from "./TableExample";

@@ -82,7 +82,7 @@ describe("<Tag>", () => {
 
     it("supports ref objects", done => {
         const elementRef = React.createRef<HTMLSpanElement>();
-        const wrapper = mount(<Tag elementRef={elementRef}>Hello</Tag>);
+        const wrapper = mount(<Tag ref={elementRef}>Hello</Tag>);
 
         // wait for the whole lifecycle to run
         setTimeout(() => {

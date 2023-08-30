@@ -17,19 +17,13 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 import { NavbarDivider } from "./navbarDivider";
 import { NavbarGroup } from "./navbarGroup";
 import { NavbarHeading } from "./navbarHeading";
 
-// eslint-disable-next-line deprecation/deprecation
-export { INavbarDividerProps, NavbarDividerProps } from "./navbarDivider";
-
-// eslint-disable-next-line deprecation/deprecation
-export type NavbarProps = INavbarProps;
-/** @deprecated use NavbarProps */
-export interface INavbarProps extends Props, HTMLDivProps {
+export interface NavbarProps extends Props, HTMLDivProps {
     children?: React.ReactNode;
 
     /**
@@ -45,7 +39,7 @@ export interface INavbarProps extends Props, HTMLDivProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/navbar
  */
-export class Navbar extends AbstractPureComponent2<NavbarProps> {
+export class Navbar extends AbstractPureComponent<NavbarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Navbar`;
 
     public static Divider = NavbarDivider;

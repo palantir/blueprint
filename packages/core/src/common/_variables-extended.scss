@@ -3,10 +3,11 @@
 
 @import "variables";
 
-// This file contains additional common variables which we do not want to export
-// in public API via variables.scss, or they contain syntax which does not play
-// well with our generate-css-variables script and thus cannot be easily
+// ----------------------------------------------------------------------------
+// This file contains additional common variables which we do not want to export in public API via variables.scss,
+// or they contain syntax which does not parse easily with our generate-css-variables script and thus cannot be easily
 // exported.
+// ----------------------------------------------------------------------------
 
 $half-grid-size: $pt-grid-size * 0.5 !default;
 

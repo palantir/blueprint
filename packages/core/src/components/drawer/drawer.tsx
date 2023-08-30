@@ -17,14 +17,16 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { IconName, IconSize, SmallCross } from "@blueprintjs/icons";
+
+import { AbstractPureComponent, Classes, Props } from "../../common";
 import * as Errors from "../../common/errors";
 import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
-import { DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
-import { Icon, IconName, IconSize } from "../icon/icon";
-import { IBackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
+import { Icon } from "../icon/icon";
+import { BackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
 
 export enum DrawerSize {
     SMALL = "360px",
@@ -32,10 +34,7 @@ export enum DrawerSize {
     LARGE = "90%",
 }
 
-// eslint-disable-next-line deprecation/deprecation
-export type DrawerProps = IDrawerProps;
-/** @deprecated use DrawerProps */
-export interface IDrawerProps extends OverlayableProps, IBackdropProps, Props {
+export interface DrawerProps extends OverlayableProps, BackdropProps, Props {
     /** Drawer contents. */
     children?: React.ReactNode;
 
@@ -62,9 +61,9 @@ export interface IDrawerProps extends OverlayableProps, IBackdropProps, Props {
 
     /**
      * Position of a drawer. All angled positions will be casted into pure positions
-     * (TOP, BOTTOM, LEFT or RIGHT).
+     * (top, bottom, left, or right).
      *
-     * @default Position.RIGHT
+     * @default "right"
      */
     position?: Position;
 
@@ -101,12 +100,7 @@ export interface IDrawerProps extends OverlayableProps, IBackdropProps, Props {
     transitionName?: string;
 }
 
-/**
- * Drawer component.
- *
- * @see https://blueprintjs.com/docs/#core/components/drawer
- */
-export class Drawer extends AbstractPureComponent2<DrawerProps> {
+export class Drawer extends AbstractPureComponent<DrawerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
 
     public static defaultProps: DrawerProps = {
@@ -169,7 +163,7 @@ export class Drawer extends AbstractPureComponent2<DrawerProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<Icon icon="small-cross" size={IconSize.LARGE} />}
+                    icon={<SmallCross size={IconSize.LARGE} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />

@@ -29,6 +29,14 @@ $dark-tab-color-selected: $pt-dark-link-color !default;
 
 $tab-indicator-width: 3px !default;
 
+.#{$ns}-tabs:not(.#{$ns}-vertical).#{$ns}-fill {
+  height: 100%;
+
+  .#{$ns}-tab-list {
+    height: 100%;
+  }
+}
+
 .#{$ns}-tabs.#{$ns}-vertical {
   display: flex;
 
@@ -40,7 +48,9 @@ $tab-indicator-width: 3px !default;
     flex-direction: column;
 
     .#{$ns}-tab {
+      align-items: center;
       border-radius: $pt-border-radius;
+      display: flex;
       padding: 0 $pt-grid-size;
       width: 100%;
 
@@ -94,8 +104,11 @@ $tab-indicator-width: 3px !default;
 
 .#{$ns}-tab {
   @include overflow-ellipsis();
+  align-items: center;
+  align-self: stretch;
   color: $pt-text-color;
   cursor: pointer;
+  display: flex;
   flex: 0 0 auto;
   font-size: $pt-font-size;
   line-height: $pt-button-height;
@@ -162,6 +175,14 @@ $tab-indicator-width: 3px !default;
   }
 }
 
+.#{$ns}-tab-icon {
+  margin-right: 7px;
+}
+
+.#{$ns}-tab-tag {
+  margin-left: 7px;
+}
+
 .#{$ns}-tab-indicator-wrapper {
   left: 0;
   pointer-events: none;
@@ -188,6 +209,10 @@ $tab-indicator-width: 3px !default;
 
   &.#{$ns}-no-animation {
     transition: none;
+  }
+
+  .#{$ns}-tabs:not(.#{$ns}-vertical) & {
+    height: 100%;
   }
 }
 

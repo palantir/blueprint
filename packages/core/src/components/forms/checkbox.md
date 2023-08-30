@@ -24,7 +24,7 @@ issues. Enable the `indeterminate` prop for a third in-between state.
 This component supports the full range of HTML `<input>` props. The most common
 options are detailed below.
 
-@interface ICheckboxProps
+@interface CheckboxProps
 
 @## CSS
 

@@ -140,8 +140,8 @@ export const TOP_100_FILMS: Film[] = [
  */
 export function getFilmItemProps(
     film: Film,
-    { handleClick, handleFocus, modifiers, query }: ItemRendererProps,
-): MenuItemProps & React.Attributes & React.HTMLAttributes<HTMLAnchorElement> {
+    { handleClick, handleFocus, modifiers, query, ref }: ItemRendererProps,
+): MenuItemProps & React.Attributes {
     return {
         active: modifiers.active,
         disabled: modifiers.disabled,
@@ -149,13 +149,13 @@ export function getFilmItemProps(
         label: film.year.toString(),
         onClick: handleClick,
         onFocus: handleFocus,
-        roleStructure: "listoption",
+        ref,
         text: highlightText(`${film.rank}. ${film.title}`, query),
     };
 }
 
 /**
- * Simple film item renderer _without_ support for "selected" appearance.
+ * Simple film item renderer for "menu" containers. Does not support "selected" appearance.
  */
 export const renderFilm: ItemRenderer<Film> = (film, props) => {
     if (!props.modifiers.matchesPredicate) {

@@ -25,7 +25,7 @@ import { PrecisionSelect } from "./common/precisionSelect";
 
 const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
 
-export interface IDatePickerExampleState {
+export interface DatePickerExampleState {
     date: Date | null;
     highlightCurrentDay: boolean;
     reverseMonthAndYearMenus: boolean;
@@ -37,8 +37,8 @@ export interface IDatePickerExampleState {
     showFooterElement: boolean;
 }
 
-export class DatePickerExample extends React.PureComponent<ExampleProps, IDatePickerExampleState> {
-    public state: IDatePickerExampleState = {
+export class DatePickerExample extends React.PureComponent<ExampleProps, DatePickerExampleState> {
+    public state: DatePickerExampleState = {
         date: null,
         highlightCurrentDay: false,
         reverseMonthAndYearMenus: false,

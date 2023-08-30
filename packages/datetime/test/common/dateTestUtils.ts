@@ -17,7 +17,7 @@
 import { assert } from "chai";
 import { ReactWrapper } from "enzyme";
 
-import * as Classes from "../../src/common/classes";
+import { Classes } from "../../src/common";
 
 /**
  * Converts a `Date` to a "D/M/YYYY" string.

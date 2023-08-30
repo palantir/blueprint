@@ -14,62 +14,68 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import * as React from "react";
 
-import { Classes, Icon, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Classes, H5, Icon, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-export class MenuExample extends React.PureComponent<ExampleProps> {
-    public render() {
-        return (
-            <Example className="docs-menu-example" options={false} {...this.props}>
-                <Menu className={Classes.ELEVATION_1}>
-                    <MenuItem icon={<PalantirLogo />} text="Custom SVG icon" />
-                    <MenuDivider />
-                    <MenuItem icon="new-text-box" text="New text box" />
-                    <MenuItem icon="new-object" text="New object" />
-                    <MenuItem icon="new-link" text="New link" />
-                    <MenuDivider />
-                    <MenuItem icon="cog" labelElement={<Icon icon="share" />} text="Settings..." intent="primary" />
-                </Menu>
-                <Menu className={Classes.ELEVATION_1}>
-                    <MenuDivider title="Edit" />
-                    <MenuItem icon="cut" text="Cut" label="⌘X" />
-                    <MenuItem icon="duplicate" text="Copy" label="⌘C" />
-                    <MenuItem icon="clipboard" text="Paste" label="⌘V" disabled={true} />
-                    <MenuDivider title="Text" />
-                    <MenuItem disabled={true} icon="align-left" text="Alignment">
-                        <MenuItem icon="align-left" text="Left" />
-                        <MenuItem icon="align-center" text="Center" />
-                        <MenuItem icon="align-right" text="Right" />
-                        <MenuItem icon="align-justify" text="Justify" />
-                    </MenuItem>
-                    <MenuItem icon="style" text="Style">
-                        <MenuItem icon="bold" text="Bold" />
-                        <MenuItem icon="italic" text="Italic" />
-                        <MenuItem icon="underline" text="Underline" />
-                    </MenuItem>
-                    <MenuItem icon="asterisk" text="Miscellaneous">
-                        <MenuItem icon="badge" text="Badge" />
-                        <MenuItem icon="book" text="Long items will truncate when they reach max-width" />
-                        <MenuItem icon="more" text="Look in here for even more items">
-                            <MenuItem icon="briefcase" text="Briefcase" />
-                            <MenuItem icon="calculator" text="Calculator" />
-                            <MenuItem icon="dollar" text="Dollar" />
-                            <MenuItem icon="dot" text="Shapes">
-                                <MenuItem icon="full-circle" text="Full circle" />
-                                <MenuItem icon="heart" text="Heart" />
-                                <MenuItem icon="ring" text="Ring" />
-                                <MenuItem icon="square" text="Square" />
-                            </MenuItem>
+import { getSizeProp, Size, SizeSelect } from "./common/sizeSelect";
+
+export function MenuExample(props: ExampleProps) {
+    const [size, setSize] = React.useState<Size>("regular");
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <SizeSelect size={size} onChange={setSize} />
+        </>
+    );
+    return (
+        <Example className="docs-menu-example" options={options} {...props}>
+            <Menu className={Classes.ELEVATION_1} {...getSizeProp(size)}>
+                <MenuItem icon={<PalantirLogo />} text="Custom SVG icon" />
+                <MenuDivider />
+                <MenuItem icon="new-text-box" text="New text box" />
+                <MenuItem icon="new-object" text="New object" />
+                <MenuItem icon="new-link" text="New link" />
+                <MenuDivider />
+                <MenuItem icon="cog" labelElement={<Icon icon="share" />} text="Settings..." intent="primary" />
+            </Menu>
+            <Menu className={Classes.ELEVATION_1} {...getSizeProp(size)}>
+                <MenuDivider title="Edit" />
+                <MenuItem icon="cut" text="Cut" label="⌘X" />
+                <MenuItem icon="duplicate" text="Copy" label="⌘C" />
+                <MenuItem icon="clipboard" text="Paste" label="⌘V" disabled={true} />
+                <MenuDivider title="Text" />
+                <MenuItem disabled={true} icon="align-left" text="Alignment">
+                    <MenuItem icon="align-left" text="Left" />
+                    <MenuItem icon="align-center" text="Center" />
+                    <MenuItem icon="align-right" text="Right" />
+                    <MenuItem icon="align-justify" text="Justify" />
+                </MenuItem>
+                <MenuItem icon="style" text="Style">
+                    <MenuItem icon="bold" text="Bold" />
+                    <MenuItem icon="italic" text="Italic" />
+                    <MenuItem icon="underline" text="Underline" />
+                </MenuItem>
+                <MenuItem icon="asterisk" text="Miscellaneous">
+                    <MenuItem icon="badge" text="Badge" />
+                    <MenuItem icon="book" text="Long items will truncate when they reach max-width" />
+                    <MenuItem icon="more" text="Look in here for even more items">
+                        <MenuItem icon="briefcase" text="Briefcase" />
+                        <MenuItem icon="calculator" text="Calculator" />
+                        <MenuItem icon="dollar" text="Dollar" />
+                        <MenuItem icon="dot" text="Shapes">
+                            <MenuItem icon="full-circle" text="Full circle" />
+                            <MenuItem icon="heart" text="Heart" />
+                            <MenuItem icon="ring" text="Ring" />
+                            <MenuItem icon="square" text="Square" />
                         </MenuItem>
                     </MenuItem>
-                </Menu>
-            </Example>
-        );
-    }
+                </MenuItem>
+            </Menu>
+        </Example>
+    );
 }
 
 const PalantirLogo: React.FC = () => (

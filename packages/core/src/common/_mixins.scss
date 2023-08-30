@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:math";
-@import "~@blueprintjs/colors/lib/scss/colors";
+@import "@blueprintjs/colors/lib/scss/colors";
 @import "flex";
 
 $pt-intent-colors: (
@@ -64,6 +64,14 @@ $pt-dark-intent-text-colors: (
 
   .#{$ns}-dark & {
     color: $pt-dark-heading-color;
+  }
+
+  &.#{$ns}-text-muted {
+    color: $pt-text-color-muted;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-muted;
+    }
   }
 }
 

@@ -26,7 +26,7 @@ describe("Select isomorphic rendering", () => {
             props: { items: [], query: "", selectedItems: [], tagRenderer: () => null },
         },
         MultiSelect2: {
-            props: { items: [], query: "", selectedItems: [], tagRenderer: () => null },
+            skip: true,
         },
         QueryList: {
             // needs at least one handler or it returns undefined
@@ -37,13 +37,13 @@ describe("Select isomorphic rendering", () => {
             props: { items: [] },
         },
         Select2: {
-            props: { items: [] },
+            skip: true,
         },
         Suggest: {
             props: { items: [] },
         },
         Suggest2: {
-            props: { items: [] },
+            skip: true,
         },
         Omnibar: {
             props: { items: [], isOpen: true, overlayProps: { usePortal: false } },

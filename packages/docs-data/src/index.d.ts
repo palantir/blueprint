@@ -10,6 +10,6 @@ import {
     ITypescriptPluginData,
 } from "@documentalist/client";
 
-export type IDocsCompleteData = IMarkdownPluginData & INpmPluginData & IKssPluginData & ITypescriptPluginData;
+export type DocsCompleteData = IMarkdownPluginData & INpmPluginData & IKssPluginData & ITypescriptPluginData;
 
-export const docsData: IDocsCompleteData;
+export const docsData: DocsCompleteData;

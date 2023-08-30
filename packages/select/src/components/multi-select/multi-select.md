@@ -1,28 +1,22 @@
 @# MultiSelect
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h5 class="@ns-heading">
+__MultiSelect__ renders a UI to choose multiple items from a list. It renders a
+[__TagInput__](#core/components/tag-input) wrapped in a [__Popover__](#core/components/popover).
+Just like with [__Select__](#select/select), you can pass in a predicate to customize the filtering algorithm.
 
-Deprecated: use [MultiSelect2](#select/multi-select2)
+The selection state of a __MultiSelect__ is controlled with the `selectedItems` prop.
+You may react to user interactions with the `onItemSelect` and `onRemove` callback props.
 
-</h5>
+@reactExample MultiSelectExample
 
-This component is **deprecated since @blueprintjs/select v4.3.0** in favor of the new
-MultiSelect2 component, which uses Popover2 instead of Popover under the hood.
-You should migrate to the new API which will become the standard in Blueprint v5.
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Generic components and custom filtering</h5>
+
+For more information on controlled usage, generic components, creating new items, and custom filtering,
+please visit the documentation for [__Select__](#select/select).
 
 </div>
 
-MultiSelect renders a UI to choose multiple items from a list. It renders a
-[TagInput](#core/components/tag-input) wrapped in a [Popover](#core/components/popover).
-
-The selection state of a MultiSelect is controlled with the `selectedItems` prop.
-You may react to user interactions with the `onItemSelect` and `onRemove` callback props.
-
-The API for this component is nearly identical to that of MultiSelect2, except for a slight change in
-`popoverProps` and the wrapper element(s) rendered around its children. Please refer to the
-[MultiSelect2](#select/multi-select2) documentation for full API details.
-
 @## Props interface
 
-@interface IMultiSelectProps
+@interface MultiSelectProps

@@ -18,7 +18,7 @@ import { assert } from "chai";
 import type { ReactWrapper } from "enzyme";
 import * as sinon from "sinon";
 
-import { Classes as Popover2Classes } from "@blueprintjs/popover2";
+import { Classes } from "@blueprintjs/core";
 
 import { ListItemsProps, SelectPopoverProps } from "../src";
 import { areFilmsEqual, Film, filterFilm, renderFilm, TOP_100_FILMS } from "../src/__examples__";
@@ -26,14 +26,14 @@ import { areFilmsEqual, Film, filterFilm, renderFilm, TOP_100_FILMS } from "../s
 type EnzymeLocator<P, S> = (wrapper: ReactWrapper<P, S>) => ReactWrapper;
 
 /**
- * Common tests for popover functionality in `@blueprintjs/select` components which use Popover2.
+ * Common tests for popover functionality in select components.
  *
  * @param render should ensure the component is attached to a DOM node so that we can get accurate DOM measurements.
  */
 export function selectPopoverTestSuite<P extends ListItemsProps<Film>, S>(
     render: (props: ListItemsProps<Film> & SelectPopoverProps) => ReactWrapper<P, S>,
-    findPopover: EnzymeLocator<P, S> = wrapper => wrapper.find(`.${Popover2Classes.POPOVER2}`),
-    findTarget: EnzymeLocator<P, S> = wrapper => wrapper.find(`.${Popover2Classes.POPOVER2_TARGET}`),
+    findPopover: EnzymeLocator<P, S> = wrapper => wrapper.find(`.${Classes.POPOVER}`),
+    findTarget: EnzymeLocator<P, S> = wrapper => wrapper.find(`.${Classes.POPOVER_TARGET}`),
 ) {
     const defaultProps = {
         itemPredicate: filterFilm,
@@ -70,7 +70,7 @@ export function selectPopoverTestSuite<P extends ListItemsProps<Film>, S>(
                 ...defaultProps,
                 popoverProps: { ...defaultPopoverProps, targetTagName },
             });
-            const anchorElement = wrapper.find(`${targetTagName}.${Popover2Classes.POPOVER2_TARGET}`);
+            const anchorElement = wrapper.find(`${targetTagName}.${Classes.POPOVER_TARGET}`);
             assert.isTrue(
                 anchorElement.exists(),
                 `Expected to find popover target element with tag name '${targetTagName}'`,

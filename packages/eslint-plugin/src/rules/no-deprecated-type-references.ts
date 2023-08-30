@@ -4,7 +4,7 @@
 
 // tslint:disable object-literal-sort-keys
 
-import { TSESTree } from "@typescript-eslint/utils";
+import { TSESLint, TSESTree } from "@typescript-eslint/utils";
 
 import { createRule } from "./utils/createRule";
 import { FixList } from "./utils/fixList";
@@ -28,7 +28,8 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "IIntentProps",
         "IActionProps",
         "ILinkProps",
-        "IControlledProps",
+        ["IControlledProps", "ControlledProps2"],
+        "IControlledProps2",
         "IOptionProps",
         "IKeyAllowlist",
         "IKeyDenylist",
@@ -53,7 +54,8 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "ICheckboxProps",
         "IFileInputProps",
         "IFormGroupProps",
-        "IInputGroupProps",
+        ["IInputGroupProps", "InputGroupProps2"],
+        "IInputGroupProps2",
         "INumericInputProps",
         "IRadioGroupProps",
         "ITextAreaProps",
@@ -80,6 +82,7 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "IHandleProps",
         "IMultiSliderProps",
         "IRangeSliderProps",
+        "ISliderBaseProps",
         "ISliderProps",
         "ITabProps",
         "ITabsProps",
@@ -91,6 +94,8 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "ITreeProps",
         ["IPortalContext", "PortalLegacyContext"],
         ["IToaster", "ToasterInstance"],
+        ["IToasterProps", "OverlayToasterProps"],
+        "IToastOptions",
         ["ITreeNode", "TreeNodeInfo"],
     ],
 
@@ -99,12 +104,13 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "IDateInputProps",
         "IDatePickerProps",
         "IDatePickerModifiers",
+        "IDatePickerShortcut",
         "IDateRangeInputProps",
         "IDateRangeShortcut",
         "ITimePickerProps",
     ],
 
-    "@blueprintjs/docs-theme": ["IExampleProps", "INavMenuItemProps", "ITagRendererMap"],
+    "@blueprintjs/docs-theme": ["IDocsExampleProps", "IExampleProps", "INavMenuItemProps", "ITagRendererMap"],
 
     "@blueprintjs/popover2": [
         "IPopover2Props",
@@ -129,22 +135,27 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
     ],
 
     "@blueprintjs/table": [
-        "IStyledRegionGroup",
-        "ICellInterval",
         "ICellCoordinate",
+        "ICellInterval",
+        "ICellProps",
+        "ICellRenderer",
+        "IColumnHeaderCellProps",
+        "IColumnHeaderCellRenderer",
+        "IColumnHeaderRenderer",
+        "IColumnProps",
+        "IContextMenuRenderer",
+        "ICoordinateData",
+        "IFocusedCellCoordinates",
+        "IJSONFormatProps",
+        "IMenuContext",
         "IRegion",
+        "IRowHeaderCellProps",
+        "IRowHeaderRenderer",
+        "IStyledRegionGroup",
         "ITableBodyProps",
         "ITableProps",
-        "ICellRenderer",
-        "IJSONFormatProps",
         "ITruncatedFormatProps",
-        "IColumnHeaderCellRenderer",
-        "IColumnHeaderCellProps",
-        "IRowHeaderRenderer",
-        "IRowHeaderCellProps",
     ],
-
-    "@blueprintjs/timezone": ["ITimezoneItem", "ITimezonePickerProps"],
 };
 
 /**
@@ -182,7 +193,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
             description:
                 "Reports on usage of deprecated Blueprint types and recommends migrating to their corresponding replacements.",
             requiresTypeChecking: false,
-            recommended: "error",
+            recommended: "recommended",
         },
         fixable: "code",
         messages: {
@@ -190,12 +201,13 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
         },
         schema: [
             {
+                type: "string",
                 enum: ["migration"],
             },
         ],
     },
     defaultOptions: [],
-    create: context => {
+    create: (context: TSESLint.RuleContext<MessageIds, []>) => {
         const [deprecatedToNewType, newTypeToPackageName] = getTypeMappings();
         const deprecatedImports: Array<
             { namespace: string; type: "namespace" } | { type: "symbol"; symbolName: string; localSymbolName: string }

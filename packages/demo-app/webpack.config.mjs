@@ -25,13 +25,7 @@ export default {
     ...baseConfig,
 
     entry: {
-        "demo-app": [
-            // environment polyfills
-            "dom4",
-            "./polyfill.js",
-            // bundle entry points
-            "./src/index.tsx",
-        ],
+        "demo-app": "./src/index.tsx",
     },
 
     output: {

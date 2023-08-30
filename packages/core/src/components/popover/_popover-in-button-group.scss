@@ -1,0 +1,42 @@
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "./common";
+@import "@blueprintjs/core/src/components/button/common";
+
+.#{$ns}-button-group {
+  // support wrapping buttons in a tooltip, which adds a wrapper element
+  &:not(.#{$ns}-minimal) {
+    > .#{$ns}-popover-target:not(:first-child) .#{$ns}-button {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+    }
+
+    > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+      margin-right: -$button-border-width;
+    }
+  }
+
+  .#{$ns}-popover-target {
+    display: flex;
+    flex: 1 1 auto;
+  }
+
+  &.#{$ns}-vertical {
+    &:not(.#{$ns}-minimal) {
+      > .#{$ns}-popover-target:first-child .#{$ns}-button {
+        border-radius: $pt-border-radius $pt-border-radius 0 0;
+      }
+
+      > .#{$ns}-popover-target:last-child .#{$ns}-button {
+        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+      }
+
+      > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button {
+        margin-bottom: -$button-border-width;
+      }
+    }
+  }
+}

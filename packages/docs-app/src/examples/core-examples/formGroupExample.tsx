@@ -21,7 +21,7 @@ import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-th
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface IFormGroupExampleState {
+export interface FormGroupExampleState {
     disabled: boolean;
     helperText: boolean;
     inline: boolean;
@@ -31,8 +31,8 @@ export interface IFormGroupExampleState {
     requiredLabel: boolean;
 }
 
-export class FormGroupExample extends React.PureComponent<ExampleProps, IFormGroupExampleState> {
-    public state: IFormGroupExampleState = {
+export class FormGroupExample extends React.PureComponent<ExampleProps, FormGroupExampleState> {
+    public state: FormGroupExampleState = {
         disabled: false,
         helperText: false,
         inline: false,

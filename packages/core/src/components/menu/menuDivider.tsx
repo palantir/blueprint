@@ -17,19 +17,18 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
+import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { H6 } from "../html/html";
 
-// eslint-disable-next-line deprecation/deprecation
-export type MenuDividerProps = IMenuDividerProps;
-/** @deprecated use MenuDividerProps */
-export interface IMenuDividerProps extends Props {
+export interface MenuDividerProps extends Props {
     /** This component does not support children. */
     children?: never;
 
     /** Optional header title. */
     title?: React.ReactNode;
+
+    /** Optional `id` prop for the header title. */
+    titleId?: string;
 }
 
 /**
@@ -41,15 +40,15 @@ export class MenuDivider extends React.Component<MenuDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MenuDivider`;
 
     public render() {
-        const { className, title } = this.props;
+        const { className, title, titleId } = this.props;
         if (title == null) {
             // simple divider
-            return <li className={classNames(Classes.MENU_DIVIDER, className)} role="none" />;
+            return <li className={classNames(Classes.MENU_DIVIDER, className)} role="separator" />;
         } else {
             // section header with title
             return (
-                <li className={classNames(Classes.MENU_HEADER, className)} role="none">
-                    <H6>{title}</H6>
+                <li className={classNames(Classes.MENU_HEADER, className)} role="separator" tabIndex={-1}>
+                    <H6 id={titleId}>{title}</H6>
                 </li>
             );
         }

@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-import { ResizeObserver, ResizeObserverEntry } from "@juggle/resize-observer";
 import * as React from "react";
-import { findDOMNode } from "react-dom";
 
-import { AbstractPureComponent2 } from "../../common";
-import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
 
-// eslint-disable-next-line deprecation/deprecation
-export type ResizeSensorProps = IResizeSensorProps;
-/** @deprecated use ResizeSensorProps */
-export interface IResizeSensorProps {
-    /** Contents to observe for size changes. */
-    children: React.ReactNode;
+// backwards-compatible with @blueprintjs/core v4.x
+export type ResizeEntry = ResizeObserverEntry;
+
+/** `ResizeSensor` requires a single DOM element child and will error otherwise. */
+export interface ResizeSensorProps {
+    /**
+     * Single child, must be an element and not a string or fragment.
+     */
+    children: JSX.Element;
 
     /**
      * Callback invoked when the wrapped element resizes.
@@ -52,6 +52,12 @@ export interface IResizeSensorProps {
      * @default false
      */
     observeParents?: boolean;
+
+    /**
+     * If you attach a `ref` to the child yourself when rendering it, you must pass the
+     * same value here (otherwise, ResizeSensor won't be able to attach its own).
+     */
+    targetRef?: React.RefObject<HTMLElement>;
 }
 
 /**
@@ -61,16 +67,25 @@ export interface IResizeSensorProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/resize-sensor
  **/
-export class ResizeSensor extends AbstractPureComponent2<ResizeSensorProps> {
+export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
-    private element: Element | null = null;
+    private targetRef = this.props.targetRef ?? React.createRef<HTMLElement>();
 
-    private observer = new ResizeObserver(entries => this.props.onResize?.(entries));
+    private prevElement: HTMLElement | undefined = undefined;
+
+    private observer =
+        globalThis.ResizeObserver != null ? new ResizeObserver(entries => this.props.onResize?.(entries)) : undefined;
 
     public render(): React.ReactNode {
-        // pass-through render of single child
-        return React.Children.only(this.props.children);
+        const onlyChild = React.Children.only(this.props.children);
+
+        // if we're provided a ref to the child already, we don't need to attach one ourselves
+        if (this.props.targetRef !== undefined) {
+            return onlyChild;
+        }
+
+        return React.cloneElement(onlyChild, { ref: this.targetRef });
     }
 
     public componentDidMount() {
@@ -82,8 +97,8 @@ export class ResizeSensor extends AbstractPureComponent2<ResizeSensorProps> {
     }
 
     public componentWillUnmount() {
-        this.observer.disconnect();
-        this.element = null;
+        this.observer?.disconnect();
+        this.prevElement = undefined;
     }
 
     /**
@@ -92,46 +107,35 @@ export class ResizeSensor extends AbstractPureComponent2<ResizeSensorProps> {
      * re-observe.
      */
     private observeElement(force = false) {
-        const element = this.getElement();
-        if (!(element instanceof Element)) {
+        if (this.observer == null) {
+            return;
+        }
+
+        if (!(this.targetRef.current instanceof Element)) {
             // stop everything if not defined
             this.observer.disconnect();
             return;
         }
 
-        if (element === this.element && !force) {
+        if (this.targetRef.current === this.prevElement && !force) {
             // quit if given same element -- nothing to update (unless forced)
             return;
         } else {
             // clear observer list if new element
             this.observer.disconnect();
             // remember element reference for next time
-            this.element = element;
+            this.prevElement = this.targetRef.current;
         }
 
         // observer callback is invoked immediately when observing new elements
-        this.observer.observe(element);
+        this.observer.observe(this.targetRef.current);
 
         if (this.props.observeParents) {
-            let parent = element.parentElement;
+            let parent = this.targetRef.current.parentElement;
             while (parent != null) {
                 this.observer.observe(parent);
                 parent = parent.parentElement;
             }
-        }
-    }
-
-    private getElement() {
-        try {
-            // using findDOMNode for two reasons:
-            // 1. cloning to insert a ref is unwieldy and not performant.
-            // 2. ensure that we resolve to an actual DOM node (instead of any JSX ref instance).
-            // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
-            /* eslint-disable-next-line react/no-find-dom-node */
-            return findDOMNode(this);
-        } catch {
-            // swallow error if findDOMNode is run on unmounted component.
-            return null;
         }
     }
 }

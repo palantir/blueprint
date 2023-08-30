@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
-@import "~@blueprintjs/icons/lib/scss/variables";
+@import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/mixins";
 
 @import "./common";
@@ -28,7 +28,8 @@ Markup:
   </li>
 </ul>
 
-.#{$ns}-large - Large size (only supported on <code>.#{$ns}-menu</code>)
+.#{$ns}-large - Large size
+.#{$ns}-small - Small size
 
 Styleguide menu
 */
@@ -68,6 +69,10 @@ Styleguide menu
       @include pt-icon($pt-icon-size-large);
       margin-right: $menu-item-padding-large;
     }
+  }
+
+  .#{$ns}-small & {
+    @include menu-item-small();
   }
 }
 

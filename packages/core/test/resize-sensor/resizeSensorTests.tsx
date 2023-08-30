@@ -38,11 +38,19 @@ describe("<ResizeSensor>", () => {
         const onResize = spy();
         mountResizeSensor(onResize);
         await resize({ width: 200 });
-        await resize({ width: 200 }); // this one is ignored
         await resize({ height: 100 });
         await resize({ width: 55 });
         assert.equal(onResize.callCount, 3);
         assertResizeArgs(onResize, ["200x0", "200x100", "55x100"]);
+    });
+
+    it("onResize is NOT called redundantly when size is unchanged", async () => {
+        const onResize = spy();
+        mountResizeSensor(onResize);
+        await resize({ width: 200 });
+        await resize({ width: 200 }); // this one should be ignored
+        assert.equal(onResize.callCount, 1);
+        assertResizeArgs(onResize, ["200x0"]);
     });
 
     it("onResize is called when element changes", async () => {
@@ -64,13 +72,13 @@ describe("<ResizeSensor>", () => {
         await resize({ height: 100, id: 2 });
         await resize({ width: 55, id: 3 });
 
-        assert.equal(onResize1.callCount, 1);
-        assert.equal(onResize2.callCount, 2);
+        assert.equal(onResize1.callCount, 1, "first callback should have been called exactly once");
+        assert.equal(onResize2.callCount, 2, "second callback should have been called exactly twice");
     });
 
     function mountResizeSensor(onResize: ResizeSensorProps["onResize"]) {
         return (wrapper = mount<ResizeTesterProps>(
-            <ResizeTester onResize={onResize} />,
+            <ResizeTester id={0} onResize={onResize} />,
             // must be in the DOM for measurement
             { attachTo: testsContainerElement },
         ));
@@ -99,8 +107,8 @@ interface SizeProps {
 }
 
 type ResizeTesterProps = Omit<ResizeSensorProps, "children"> & SizeProps;
-const ResizeTester: React.FC<ResizeTesterProps> = ({ id, width, height, ...resizeProps }) => (
-    <ResizeSensor {...resizeProps}>
+const ResizeTester: React.FC<ResizeTesterProps> = ({ id, width, height, ...sensorProps }) => (
+    <ResizeSensor {...sensorProps}>
         <div key={id} style={{ width, height }} />
     </ResizeSensor>
 );

@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
-@import "~@blueprintjs/icons/lib/scss/variables";
+@import "@blueprintjs/icons/lib/scss/variables";
 @import "./common";
 
 .#{$ns}-submenu {
@@ -27,10 +27,10 @@
         &,
         &:hover,
         &:active {
-          @include menu-item-selected-active(false);
+          @include menu-item-active(false);
 
           .#{$ns}-dark & {
-            @include menu-item-selected-active(true);
+            @include menu-item-active(true);
           }
         }
       }

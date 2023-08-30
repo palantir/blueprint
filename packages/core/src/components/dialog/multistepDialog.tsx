@@ -17,8 +17,9 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes, Position, Utils } from "../../common";
+import { AbstractPureComponent, Classes, Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { clickElementOnKeyPress } from "../../common/utils";
 import { Dialog, DialogProps } from "./dialog";
 import { DialogFooter } from "./dialogFooter";
 import { DialogStep, DialogStepId, DialogStepProps } from "./dialogStep";
@@ -28,10 +29,7 @@ type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.
 
 export type MultistepDialogNavPosition = typeof Position.TOP | typeof Position.LEFT | typeof Position.RIGHT;
 
-// eslint-disable-next-line deprecation/deprecation
-export type MultistepDialogProps = IMultistepDialogProps;
-/** @deprecated use MultistepDialogProps */
-export interface IMultistepDialogProps extends DialogProps {
+export interface MultistepDialogProps extends DialogProps {
     /**
      * Props for the back button.
      */
@@ -95,7 +93,7 @@ export interface IMultistepDialogProps extends DialogProps {
     initialStepIndex?: number;
 }
 
-interface IMultistepDialogState {
+interface MultistepDialogState {
     lastViewedIndex: number;
     selectedIndex: number;
 }
@@ -109,7 +107,7 @@ const MIN_WIDTH = 800;
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog.multistep-dialog
  */
-export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps, IMultistepDialogState> {
+export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps, MultistepDialogState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultistepDialog`;
 
     public static defaultProps: Partial<MultistepDialogProps> = {
@@ -120,7 +118,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         showCloseButtonInFooter: false,
     };
 
-    public state: IMultistepDialogState = this.getInitialIndexFromProps(this.props);
+    public state: MultistepDialogState = this.getInitialIndexFromProps(this.props);
 
     public render() {
         const { className, navigationPosition, showCloseButtonInFooter, isCloseButtonShown, ...otherProps } =
@@ -163,7 +161,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
     private renderLeftPanel() {
         return (
-            <div className={Classes.MULTISTEP_DIALOG_LEFT_PANEL}>
+            <div className={Classes.MULTISTEP_DIALOG_LEFT_PANEL} role="tablist" aria-label="steps">
                 {this.getDialogStepChildren().filter(isDialogStepElement).map(this.renderDialogStep)}
             </div>
         );
@@ -173,6 +171,8 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         const stepNumber = index + 1;
         const hasBeenViewed = this.state.lastViewedIndex >= index;
         const currentlySelected = this.state.selectedIndex === index;
+        const handleClickDialogStep =
+            index > this.state.lastViewedIndex ? undefined : this.getDialogStepChangeHandler(index);
         return (
             <div
                 className={classNames(Classes.DIALOG_STEP_CONTAINER, {
@@ -180,20 +180,21 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
                     [Classes.DIALOG_STEP_VIEWED]: hasBeenViewed,
                 })}
                 key={index}
+                aria-selected={currentlySelected}
+                role="tab"
             >
-                <div className={Classes.DIALOG_STEP} onClick={this.handleClickDialogStep(index)}>
+                <div
+                    className={Classes.DIALOG_STEP}
+                    onClick={handleClickDialogStep}
+                    tabIndex={handleClickDialogStep ? 0 : -1}
+                    // enable enter key to take effect on the div as if it were a button
+                    onKeyDown={clickElementOnKeyPress(["Enter", " "])}
+                >
                     <div className={Classes.DIALOG_STEP_ICON}>{stepNumber}</div>
                     <div className={Classes.DIALOG_STEP_TITLE}>{step.props.title}</div>
                 </div>
             </div>
         );
-    };
-
-    private handleClickDialogStep = (index: number) => {
-        if (index > this.state.lastViewedIndex) {
-            return;
-        }
-        return this.getDialogStepChangeHandler(index);
     };
 
     private maybeRenderRightPanel() {
@@ -216,12 +217,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
         const maybeCloseButton = !showCloseButtonInFooter ? undefined : (
             <DialogStepButton text="Close" onClick={onClose} {...closeButtonProps} />
         );
-        return (
-            // eslint-disable-next-line deprecation/deprecation -- need to keep adding this class for backcompat, can be removed in next major version
-            <DialogFooter className={Classes.MULTISTEP_DIALOG_FOOTER} actions={this.renderButtons()}>
-                {maybeCloseButton}
-            </DialogFooter>
-        );
+        return <DialogFooter actions={this.renderButtons()}>{maybeCloseButton}</DialogFooter>;
     }
 
     private renderButtons() {

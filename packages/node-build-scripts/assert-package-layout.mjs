@@ -1,21 +1,22 @@
 #!/usr/bin/env node
+/*
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ */
+
 /**
- * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Asserts that all library packages adhere to the layout spec.
  */
 
 // @ts-check
 
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { cwd, exit } from "node:process";
-import { pathToFileURL } from "node:url";
 
 // asserts that all main fields in package.json reference existing files
 const PACKAGE_MAIN_FIELDS = ["main", "module", "style", "types", "typings", "unpkg"];
 
-// TODO(adahiya): replace this with `await import("./package.json", { assert: { type: "json" } })` in Node 17.5+
-const manifest = JSON.parse(readFileSync(pathToFileURL(join(cwd(), "package.json")), { encoding: "utf8" }));
+const { default: manifest } = await import(join(cwd(), "package.json"), { assert: { type: "json" }});
 
 for (const field of PACKAGE_MAIN_FIELDS.filter(f => manifest[f] !== undefined)) {
     if (!existsSync(resolve(cwd(), manifest[field]))) {

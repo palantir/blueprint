@@ -39,7 +39,7 @@ import { Classes } from "@blueprintjs/core";
 ```scss
 // interpolate the $ns variable to generate forward-compatible class names.
 // this approach is *not encouraged* as it increases maintenance cost.
-@import "~@blueprintjs/core/lib/scss/variables";
+@import "@blueprintjs/core/lib/scss/variables";
 .#{$ns}-menu-item {
 }
 ```
@@ -76,18 +76,95 @@ can be used together on a single page.
 
 ### Custom namespace
 
-The namespace can be changed _at build time_ to produce a custom Blueprint build
-(though this usage is not recommended and we cannot offer support for it). This
-requires several things:
+The CSS namespace can be changed _at build time_ to produce a custom Blueprint build.
+With this approach, you will import Blueprint's Sass sources from `/lib/scss/` instead of the CSS files from the
+`/lib/css/` folders.
 
-1. You must use Sass and import Blueprint Sass source into your app, rather than using the CSS file distributed in the NPM package.
-    - Compiling Blueprint Sass source requires two additional tools:
-      [node-sass-package-importer](https://www.npmjs.com/package/node-sass-package-importer)
-      for resolving node_modules imports and
-      [sass-inline-svg](https://github.com/haithembelhaj/sass-inline-svg) for
-      inlining SVG images.
-1. Define the `$ns` Sass variable in your app styles before importing `blueprint.scss` to update the generated CSS.
-1. When bundling your code, set the `BLUEPRINT_NAMESPACE` environment variable to the same value to update the generated `Classes` constants. The easiest way to do this is on the command line: `BLUEPRINT_NAMESPACE="custom" webpack ...args`
+You must use [Dart Sass](https://sass-lang.com/dart-sass) and set up a few important bits of build configuration:
+
+1. Sass `loadPaths` must include the `node_modules` folder where `@blueprintjs` packages are installed
+1. A custom function implementation for `svg-icon()` must be defined
+1. You must copy the [resources/icons folder](https://github.com/palantir/blueprint/tree/develop/resources/icons) from
+    the Blueprint repo into your project (in the future, this may not be required once Blueprint starts publishing
+    these SVG files in a public NPM package).
+
+The __@blueprintjs/node-build-scripts__ package provides some utility functions to help with this. Here's a code example
+for a custom Sass compiler that can import Blueprint `.scss` sources:
+
+```js
+import { sassNodeModulesLoadPaths, sassSvgInlinerFactory } from "@blueprintjs/node-build-scripts";
+import * as sass from "sass";
+
+const result = await sass.compileAsync("path/to/input.scss", {
+    loadPaths: sassNodeModulesLoadPaths,
+    functions: {
+        /**
+         * Sass function to inline a UI icon svg and change its path color.
+         *
+         * Usage:
+         * svg-icon("16px/icon-name.svg", (path: (fill: $color)) )
+         */
+        "svg-icon($path, $selectors: null)": sassSvgInlinerFactory("path/to/resources/icons", {
+            optimize: true,
+            encodingFormat: "uri",
+        }),
+    },
+});
+```
+
+In addition to the JS API, you can specify this configuration with Webpack's sass-loader:
+
+```js
+// webpack.config.mjs
+
+import { sassNodeModulesLoadPaths, sassSvgInlinerFactory } from "@blueprintjs/node-build-scripts";
+import * as sass from "sass";
+
+const functions = {
+    /**
+     * Sass function to inline a UI icon svg and change its path color.
+     *
+     * Usage:
+     * svg-icon("16px/icon-name.svg", (path: (fill: $color)) )
+     */
+    "svg-icon($path, $selectors: null)": sassSvgInlinerFactory("path/to/resources/icons", {
+        optimize: true,
+        encodingFormat: "uri",
+    }),
+};
+
+export default {
+    module: {
+        rules: [
+            {
+                test: /\.scss$/,
+                use: {
+                    loader: require.resolve("sass-loader"),
+                    options: {
+                        sassOptions: {
+                            loadPaths: sassNodeModulesLoadPaths,
+                            functions,
+                        },
+                    },
+                },
+            },
+        ],
+    },
+};
+```
+
+Once you have this build configuration set up, you can proceed to customize Sass and JS variables:
+
+1. Define the `$ns` Sass variable in your app styles _before_ importing `blueprint.scss`.
+1. When bundling your JS JS code, define the `BLUEPRINT_NAMESPACE` variable to the same value; this will update the generated `Classes` constants. The easiest way to do is with webpack's [DefinePlugin](https://webpack.js.org/plugins/define-plugin/).
+
+```js
+plugins: [
+    new webpack.DefinePlugin({
+        BLUEPRINT_NAMESPACE: "my-custom-namespace",
+    }),
+];
+```
 
 @## Linting
 

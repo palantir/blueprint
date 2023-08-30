@@ -2,6 +2,7 @@
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
 version: 2
+
 updates:
   - package-ecosystem: "npm"
     directory: "/"
@@ -9,35 +10,86 @@ updates:
       interval: "weekly"
     reviewers:
       - "adidahiya"
-    versioning-strategy: increase
+    groups:
+      eslint:
+        patterns:
+          - "eslint"
+          - "eslint-*"
+          - "@typescript-eslint/*"
+        exclude-patterns:
+          # Breaking regression in v2.27.0 forces us to pin to v2.26.x, see https://github.com/import-js/eslint-plugin-import/issues/2685
+          - "eslint-plugin-import"
+      postcss:
+        patterns:
+          - "autoprefixer"
+          - "postcss"
+          - "postcss-*"
+      stylelint:
+        patterns:
+          - "styelint"
+          - "stylelint-*"
+      test-infra:
+        patterns:
+          - "chai"
+          - "@types/chai"
+          - "enzyme"
+          - "enzyme-*"
+          - "@types/enzyme"
+          - "@types/enzyme-*"
+          - "jest"
+          - "@jest/*"
+          - "ts-jest"
+          - "karma"
+          - "karma-*"
+          - "mocha"
+          - "@types/mocha"
+          - "sinon"
+          - "@sinonjs/*"
+          - "@types/sinon"
+      sass:
+        patterns:
+          - "sass"
+      webpack:
+        patterns:
+          - "webpack"
+          - "webpack-*"
+          - "*-webpack-*"
+          - "*-loader"
+      date-fns:
+        patterns:
+          - "date-fns"
+          - "date-fns-tz"
     ignore:
       # don't try to update internal packages
       - dependency-name: "@blueprintjs/*"
-      # @typescript-eslint/* deps should all be upgraded together
-      - dependency-name: "@typescript-eslint/*"
       # typescript and typedoc are usually upgraded together, and are often require code changes
       - dependency-name: "typescript"
       - dependency-name: "typedoc"
-      # deprecated dependencies
+      # we are stuck on react v16 for now
+      - dependency-name: "react"
+      - dependency-name: "react-dom"
+      - dependency-name: "react-test-renderer"
+      - dependency-name: "react-testing-library"
+      - dependency-name: "react-transition-group"
+      - dependency-name: "@types/react"
+      - dependency-name: "@types/react-dom"
+      - dependency-name: "@types/react-transition-group"
+      # moment is deprecated, we only use it in limited places in the docs
       - dependency-name: "moment"
       - dependency-name: "moment-*"
       # we are stuck on svgo v1 for now
       # see https://github.com/palantir/blueprint/blob/727b91ffe76f49cded1acb8240c44502f34fce48/packages/icons/scripts/generate-icon-paths.mjs#L27-L30
       - dependency-name: "svgo"
       - dependency-name: "@types/svgo"
-      # some deps should use a "widen" versioning strategy, since overly strict constraints can lead to duplicates and large bundle sizes
-      - dependency-name: "date-fns"
-      - dependency-name: "moment"
+      # lodash hasn't released for >2 years
       - dependency-name: "lodash"
-
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    reviewers:
-      - "adidahiya"
-    versioning-strategy: widen
-    allow:
-      - dependency-name: "date-fns"
-      - dependency-name: "moment"
-      - dependency-name: "lodash"
+      # we are stuck on fantasticon v1 for now
+      # see https://github.com/tancredi/fantasticon/issues/470
+      - dependency-name: "fantasticon"
+        update-types:
+        - "version-update:semver-major"
+      # we rarely bump Node.js versions, and it requires additional code changes to do so
+      - dependency-name: "@types/node"
+        update-types:
+        - "version-update:semver-major"
+        - "version-update:semver-minor"

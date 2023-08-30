@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { AbstractComponent2, Utils as CoreUtils, Props, setRef } from "@blueprintjs/core";
+import { AbstractComponent, Utils as CoreUtils, Props, setRef } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";
@@ -38,7 +38,7 @@ type QuadrantRefHandler = React.Ref<HTMLDivElement>;
 type QuadrantRefs = QuadrantRefMap<HTMLDivElement | null>;
 type QuadrantRefHandlers = QuadrantRefMap<QuadrantRefHandler>;
 
-export interface ITableQuadrantStackProps extends Props {
+export interface TableQuadrantStackProps extends Props {
     /**
      * A callback that receives a `ref` to the main quadrant's table-body element.
      */
@@ -190,6 +190,8 @@ export interface ITableQuadrantStackProps extends Props {
         showFrozenRowsOnly?: boolean,
     ) => JSX.Element | undefined;
 
+    renderScrollIndicatorOverlay?: (scrollBarWidth: number, columnHeaderHeight: number) => JSX.Element | undefined;
+
     /**
      * A callback that receives a `ref` to the main quadrant's row-header container.
      */
@@ -227,7 +229,7 @@ export interface ITableQuadrantStackProps extends Props {
      *
      * This value defaults to `undefined` so that, by default, it won't override
      * the `enableColumnInteractionBar` values that you might have provided directly to
-     * each `<ColumnHeaderCell2>`.
+     * each `<ColumnHeaderCell>`.
      *
      * REQUIRES QUADRANT RESYNC
      *
@@ -265,7 +267,7 @@ const QUADRANT_MIN_SIZE = 1;
 
 // a list of props that trigger layout changes. when these props change,
 // quadrant views need to be explicitly resynchronized.
-const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
+const SYNC_TRIGGER_PROP_KEYS: Array<keyof TableQuadrantStackProps> = [
     "enableRowHeader",
     "loadingOptions",
     "numFrozenColumns",
@@ -277,10 +279,10 @@ const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
     "enableColumnHeader",
 ];
 
-export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackProps> {
+export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
-    public static defaultProps: Partial<ITableQuadrantStackProps> = {
+    public static defaultProps: Partial<TableQuadrantStackProps> = {
         enableColumnHeader: true,
         enableColumnInteractionBar: undefined,
         enableRowHeader: true,
@@ -325,8 +327,8 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     // Public
     // ======
 
-    public constructor(props: ITableQuadrantStackProps, context?: any) {
-        super(props, context);
+    public constructor(props: TableQuadrantStackProps) {
+        super(props);
 
         // callbacks trigger too frequently unless we throttle scroll and wheel
         // events. declare these functions on the component instance since
@@ -374,7 +376,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         this.syncQuadrantViews();
     }
 
-    public componentDidUpdate(prevProps: ITableQuadrantStackProps) {
+    public componentDidUpdate(prevProps: TableQuadrantStackProps) {
         if (
             // sync'ing quadrant views triggers expensive reflows, so we only call
             // it when layout-affecting props change.
@@ -435,6 +437,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
 
         return (
             <div className={Classes.TABLE_QUADRANT_STACK}>
+                {this.renderTableOverlay()}
                 <TableQuadrant
                     {...baseProps}
                     bodyRef={this.props.bodyRef}
@@ -478,6 +481,16 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         ];
         return refHandlers.reduce(reducer, {});
     }
+
+    // Scrolling overlay renderer
+    // ===========================
+
+    private renderTableOverlay = () => {
+        const columnHeaderHeight = this.cache.getColumnHeaderHeight();
+        const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
+        const scrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer!, "vertical");
+        return this.props.renderScrollIndicatorOverlay?.(scrollBarWidth, columnHeaderHeight);
+    };
 
     // Quadrant-specific renderers
     // ===========================
@@ -968,7 +981,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     // =======
 
     /** Returns true the cumulative width of all frozen columns in the grid changed. */
-    private didFrozenColumnWidthsChange(prevProps: ITableQuadrantStackProps) {
+    private didFrozenColumnWidthsChange(prevProps: TableQuadrantStackProps) {
         return (
             this.props.numFrozenColumns > 0 &&
             this.props.grid !== prevProps.grid &&
@@ -978,7 +991,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     }
 
     /** Returns true the cumulative height of all frozen rows in the grid changed. */
-    private didFrozenRowHeightsChange(prevProps: ITableQuadrantStackProps) {
+    private didFrozenRowHeightsChange(prevProps: TableQuadrantStackProps) {
         return (
             this.props.numFrozenRows > 0 &&
             this.props.grid !== prevProps.grid &&
@@ -1031,7 +1044,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         return mainColumnHeader == null ? 0 : Utils.clamp(mainColumnHeader.clientHeight, Grid.MIN_COLUMN_HEADER_HEIGHT);
     }
 
-    private shouldRenderLeftQuadrants(props: ITableQuadrantStackProps = this.props) {
+    private shouldRenderLeftQuadrants(props: TableQuadrantStackProps = this.props) {
         const { enableRowHeader, numFrozenColumns } = props;
         return enableRowHeader || (numFrozenColumns != null && numFrozenColumns > 0);
     }

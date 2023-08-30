@@ -17,35 +17,29 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent2, Utils as CoreUtils } from "@blueprintjs/core";
-import { ContextMenu2, ContextMenu2ContentProps } from "@blueprintjs/popover2";
+import { AbstractComponent, ContextMenu, ContextMenuContentProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import type { CellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { RenderMode } from "./common/renderMode";
 import type { CoordinateData } from "./interactions/dragTypes";
-import { MenuContext } from "./interactions/menus";
+import { MenuContextImpl } from "./interactions/menus";
 import { DragSelectable } from "./interactions/selectable";
 import { Region, Regions } from "./regions";
 import type { TableBodyProps } from "./tableBody";
-import { cellClassNames, TableBodyCells } from "./tableBodyCells";
+import { TableBodyCells } from "./tableBodyCells";
 
 const DEEP_COMPARE_KEYS: Array<keyof TableBodyProps> = ["selectedRegions"];
 
-export class TableBody2 extends AbstractComponent2<TableBodyProps> {
+export class TableBody2 extends AbstractComponent<TableBodyProps> {
     public static defaultProps = {
         loading: false,
         renderMode: RenderMode.BATCH,
     };
 
-    /**
-     * @deprecated, will be removed from public API in the next major version
-     */
-    public static cellClassNames(rowIndex: number, columnIndex: number) {
-        return cellClassNames(rowIndex, columnIndex);
-    }
-
     private activationCell: CellCoordinates | null = null;
+
+    private containerRef = React.createRef<HTMLDivElement>();
 
     public shouldComponentUpdate(nextProps: TableBodyProps) {
         return (
@@ -74,12 +68,14 @@ export class TableBody2 extends AbstractComponent2<TableBodyProps> {
                 onSelectionEnd={this.handleSelectionEnd}
                 selectedRegions={this.props.selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
+                targetRef={this.containerRef}
             >
-                <ContextMenu2
+                <ContextMenu
                     className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
                     content={this.renderContextMenu}
                     disabled={this.props.bodyContextMenuRenderer === undefined}
                     onContextMenu={this.handleContextMenu}
+                    ref={this.containerRef}
                     style={style}
                 >
                     <TableBodyCells
@@ -95,12 +91,12 @@ export class TableBody2 extends AbstractComponent2<TableBodyProps> {
                         rowIndexEnd={this.props.rowIndexEnd}
                         viewportRect={this.props.viewportRect}
                     />
-                </ContextMenu2>
+                </ContextMenu>
             </DragSelectable>
         );
     }
 
-    public renderContextMenu = ({ mouseEvent }: ContextMenu2ContentProps) => {
+    public renderContextMenu = ({ mouseEvent }: ContextMenuContentProps) => {
         const { grid, bodyContextMenuRenderer, selectedRegions = [] } = this.props;
         const { numRows, numCols } = grid;
 
@@ -118,7 +114,7 @@ export class TableBody2 extends AbstractComponent2<TableBodyProps> {
             nextSelectedRegions = [targetRegion];
         }
 
-        const menuContext = new MenuContext(targetRegion, nextSelectedRegions, numRows, numCols);
+        const menuContext = new MenuContextImpl(targetRegion, nextSelectedRegions, numRows, numCols);
         const contextMenu = bodyContextMenuRenderer(menuContext);
 
         return contextMenu == null ? undefined : contextMenu;

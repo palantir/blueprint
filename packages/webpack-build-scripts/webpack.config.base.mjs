@@ -25,8 +25,11 @@ import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { cwd, env } from "node:process";
 import ReactRefreshTypeScript from "react-refresh-typescript";
+import TerserPlugin from "terser-webpack-plugin";
 import webpack from "webpack";
 import WebpackNotifierPlugin from "webpack-notifier";
+
+import { sassNodeModulesLoadPaths } from "@blueprintjs/node-build-scripts";
 
 import { getPackageName } from "./utils.mjs";
 
@@ -61,7 +64,7 @@ const plugins = [
     // CSS extraction is only enabled in production (see scssLoaders below).
     new MiniCssExtractPlugin({ filename: "[name].css" }),
 
-    // pipe env variables to FE build, setting defaults where appropriate (null means optional)
+    // pipe env variables to FE build, with these default values (null means optional)
     new webpack.EnvironmentPlugin({
         NODE_ENV: "development",
         BLUEPRINT_NAMESPACE: null,
@@ -107,7 +110,17 @@ const cssLoaders = [
 ];
 
 // Module loaders for Sass/SCSS files, used in reverse order: compile Sass, then apply CSS loaders
-const scssLoaders = [...cssLoaders, require.resolve("sass-loader")];
+const scssLoaders = [
+    ...cssLoaders,
+    {
+        loader: require.resolve("sass-loader"),
+        options: {
+            sassOptions: {
+                includePaths: sassNodeModulesLoadPaths,
+            },
+        },
+    },
+];
 
 export default {
     // to automatically find tsconfig.json
@@ -173,6 +186,20 @@ export default {
                     filename: "assets/[name][ext][query][hash]",
                 },
             },
+        ],
+    },
+
+    optimization: {
+        minimize: IS_PRODUCTION,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+                terserOptions: {
+                    format: {
+                        comments: false,
+                    },
+                },
+            }),
         ],
     },
 

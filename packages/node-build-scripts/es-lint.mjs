@@ -1,18 +1,21 @@
 #!/usr/bin/env node
+/*
+ * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
+ */
+
 /**
- * @license Copyright 2019 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Runs ESLint, with support for generating JUnit report
  */
 
 // @ts-check
 
 import { spawn } from "cross-spawn";
-import glob from "glob";
+import { globSync } from "glob";
 import { createWriteStream } from "node:fs";
 import { basename, resolve } from "node:path";
 import { argv, cwd, env, exit, stderr, stdout } from "node:process";
 
-import { junitReportPath } from "./utils.mjs";
+import { junitReportPath } from "./src/utils.mjs";
 
 let format = "codeframe";
 let outputPath;
@@ -36,7 +39,7 @@ const commandLineOptions = ["--color", "-f", format, ...additionalArgs];
 // ESLint will fail if provided with no files, so we expand the glob before running it
 const fileGlob = "{src,test}/**/*.{ts,tsx}";
 const absoluteFileGlob = resolve(cwd(), fileGlob);
-const anyFilesToLint = glob.sync(absoluteFileGlob);
+const anyFilesToLint = globSync(absoluteFileGlob);
 if (anyFilesToLint.length === 0) {
     console.log(`[node-build-scripts] Not running ESLint because no files match the glob "${fileGlob}"`);
     exit();

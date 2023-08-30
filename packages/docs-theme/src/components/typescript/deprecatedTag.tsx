@@ -18,6 +18,8 @@ import * as React from "react";
 
 import { Intent, Tag } from "@blueprintjs/core";
 
+import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
+
 export const DeprecatedTag: React.FC<{ isDeprecated: boolean | string | undefined }> = ({ isDeprecated }) => {
     if (isDeprecated === true || typeof isDeprecated === "string") {
         return (
@@ -32,7 +34,7 @@ export const DeprecatedTag: React.FC<{ isDeprecated: boolean | string | undefine
     }
     return null;
 };
-DeprecatedTag.displayName = "Docs2.DeprecatedTag";
+DeprecatedTag.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.DeprecatedTag`;
 
 /**
  * Minimal markdown renderer that supports only backtick `code` elements and triple-backtick `pre` elements.

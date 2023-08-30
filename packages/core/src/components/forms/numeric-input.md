@@ -1,7 +1,6 @@
 @# Numeric input
 
-The `NumericInput` component provides controls for easily inputting,
-incrementing, and decrementing numeric values.
+__NumericInput__ provides controls for easily inputting, incrementing, and decrementing numeric values.
 
 @## Interactions
 
@@ -21,61 +20,51 @@ Values in numeric inputs can be incremented or decremented using both keyboard a
 
 @## Basic example
 
-This example shows how `NumericInput` works out of the box. It supports the
-basic keyboard and mouse interactions listed above, as well as basic keyboard
-entry:
+This example shows how __NumericInput__ works out of the box. It supports the basic keyboard and mouse interactions listed
+above, as well as basic keyboard entry:
 
 @reactExample NumericInputBasicExample
 
 @## Extended example
 
-This example shows how `NumericInput` can be extended beyond its core
-functionality. It supports the basic interactions above as well as each of the
-following types of input:
+This example shows how __NumericInput__ can be extended beyond its core functionality. It supports the basic interactions
+above as well as each of the following types of input:
 
 -   **Number abbreviations** (e.g. `2.1k`, `-0.3m`)
 -   **Scientific notation** (e.g. `2.1e3`, `-0.3e6`)
 -   **Addition and subtraction expressions** (e.g. `3+2`, `0.1m - 5k + 1`)
 
-These special-case inputs are evaluated when `Enter` is pressed (via a
-custom `onKeyDown` callback) and when the field loses focus (via a custom
-`onBlur` callback). If the input is invalid when either of these callbacks is
-trigged, the field will be cleared.
+These special-case inputs are evaluated when `Enter` is pressed (via a custom `onKeyDown` callback) and when the field
+loses focus (via a custom `onBlur` callback). If the input is invalid when either of these callbacks is trigged, the
+field will be cleared.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
-This example contains non-core functionality that is meant to demonstrate
-the extensibility of the `NumericInput` component. The correctness of the
-custom evaluation code has not been tested robustly.
+This example contains non-core functionality that is meant to demonstrate the extensibility of the __NumericInput__
+component. The correctness of the custom evaluation code has not been tested robustly.
 
 </div>
 
 @reactExample NumericInputExtendedExample
 
-@## JavaScript API
+@## Props interface
 
-The `NumericInput` component is available in the **@blueprintjs/core** package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
-
-@interface INumericInputProps
+@interface NumericInputProps
 
 @### Responsive numeric inputs
 
-`NumericInput` can be styled with the same set of CSS classes that modify
-regular [control groups](#core/components/control-group). The most appropriate
-such modifier for `NumericInput` is `@ns-fill`, which when passed as a
-`className` will make the component expand to fill all available width.
+__NumericInput__ can be styled with the same set of visual modifier props & CSS classes as
+[__ControlGroup__](#core/components/control-group). The most appropriate such modifier for __NumericInput__ is `fill`,
+which will make the component expand to fill all available width.
 
 @### Uncontrolled mode
 
-By default, this component will function in uncontrolled mode, managing all of
-its own state. In uncontrolled mode, simply provide an `onValueChange` callback
-in the props to access the value as the user manipulates it. The value will be
+By default, this component will function in uncontrolled mode, managing all of its own state. In uncontrolled mode,
+you mus provide an `onValueChange` callback prop to access the value as the user manipulates it. The value will be
 provided to the callback both as a number and as a string.
 
-In general, uncontrolled mode is the recommended API for this component, as it allows
-users to type non-numeric digits like `.` and `-` (for decimals and negative numbers, respectively)
-more easily.
+In general, uncontrolled mode is the recommended API for this component, as it allows users to type non-numeric digits
+like `.` and `-` (for decimals and negative numbers, respectively) more easily.
 
 ```tsx
 import { NumericInput } from "@blueprintjs/core";
@@ -94,14 +83,13 @@ export class NumericInputExample extends React.Component {
 
 @### Controlled mode
 
-If you need to have more control over your numeric input's behavior, you can
-specify the `value` property to use the component in **controlled mode**.
+If you need to have more control over your numeric input's behavior, you can specify the `value` property to use the
+component in **controlled mode**.
 
-Note that NumericInput supports arbitrary text entry (not just numeric digits)
-so the `value` __should always be provided as a string, not a number__. Accordingly,
-change event handlers should use the same data type, namely the _second_ parameter of
-the `onValueChange` callback. This allows users to type non-numeric characters like decimal
-points (".") without the component eagerly coercing those strings to their parsed numeric
+Note that NumericInput supports arbitrary text entry (not only numeric digits) so the `value`
+__should always be provided as a string, not a number__. Accordingly, change event handlers should use the same data
+type, namely the _second_ parameter of the `onValueChange` callback. This behavior allows users to type non-numeric
+characters like decimal points (".") without the component eagerly coercing those strings to their parsed numeric
 equivalents (`0.` becomes `0`, fractional data entry impossible).
 
 Exceptions to this rule may occur if your input only supports _positive integers_, which will not
@@ -110,17 +98,15 @@ to learn how to enforce this kind of constraint.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
 
-When handling changes in controlled mode, always use the _second_ parameter of the
-`onValueChange` callback, which provides the value as a string. This allows users to type
-non-numeric characters like decimal points (".") without the component eagerly coercing
-those strings to their parsed numeric equivalents (`0.` becomes `0`, fractional data entry
+When handling changes in controlled mode, always use the _second_ parameter of the `onValueChange` callback, which
+provides the value as a string. This allows users to type non-numeric characters like decimal points (".") without the
+component eagerly coercing those strings to their parsed numeric equivalents (`0.` becomes `0`, fractional data entry
 impossible).
 
 </div>
 
-The combined support of arbitrary text entry, controlled mode, and custom
-callbacks makes it possible to extend the numeric input's basic functionality in
-powerful ways. As shown in the example above, one could extend the numeric input
+The combined support of arbitrary text entry, controlled mode, and custom callbacks makes it possible to extend the
+numeric input's basic functionality in powerful ways. As shown in the example above, one could extend the numeric input
 component with support for mathematical expressions as follows:
 
 ```tsx
@@ -153,10 +139,10 @@ class NumericInputExample extends React.Component<{}, NumericInputExampleState> 
 
 @### Numeric precision
 
-`NumericInput` determines its maximum precision by looking at both the `minorStepSize` and `stepSize` props.
+__NumericInput__ determines its maximum precision by looking at both the `minorStepSize` and `stepSize` props.
 If `minorStepSize` is non-null, the number of decimal places in that value will be the maximum precision.
 Otherwise, the component will count the decimal places in `stepSize`.
 
 Configuring these props allows you to expand or constrain the precision of the input. For example, to limit
-the input to only integers, you can simply set `minorStepSize={null}` and allow the default `stepSize` of `1`
-to take precedence.
+the input to only integers, you can set `minorStepSize={null}` and allow the default `stepSize` of `1` to take
+precedence.

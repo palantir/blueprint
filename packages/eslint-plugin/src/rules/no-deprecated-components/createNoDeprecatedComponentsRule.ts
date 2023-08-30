@@ -38,7 +38,7 @@ export function createNoDeprecatedComponentsRule(
             docs: {
                 description: `Reports on usage of deprecated Blueprint components${descriptionFromClause} and recommends migrating to their corresponding non-deprecated API alternatives.`,
                 requiresTypeChecking: false,
-                recommended: "error",
+                recommended: "recommended",
             },
             messages: {
                 migration:
@@ -48,6 +48,7 @@ export function createNoDeprecatedComponentsRule(
             },
             schema: [
                 {
+                    type: "string",
                     enum: ["migration", "migrationWithPropUsage"],
                 },
             ],

@@ -36,11 +36,6 @@ export function setRef<T>(refTarget: React.Ref<T> | undefined, ref: T | null): v
     }
 }
 
-/** @deprecated use mergeRefs() instead */
-export function combineRefs<T>(ref1: React.RefCallback<T>, ref2: React.RefCallback<T>) {
-    return mergeRefs(ref1, ref2);
-}
-
 /**
  * Utility for merging refs into one singular callback ref.
  * If using in a functional component, would recomend using `useMemo` to preserve function identity.
@@ -77,17 +72,3 @@ export function refHandler<T extends HTMLElement, K extends string>(
         setRef(refProp, ref);
     };
 }
-
-/* eslint-disable deprecation/deprecation */
-
-/** @deprecated use React.Ref */
-export type IRef<T = HTMLElement> = IRefObject<T> | IRefCallback<T>;
-
-// compatible with React.Ref type in @types/react@^16
-/** @deprecated use React.RefObject */
-export interface IRefObject<T = HTMLElement> {
-    current: T | null;
-}
-
-/** @deprecated use React.RefCallback */
-export type IRefCallback<T = HTMLElement> = (ref: T | null) => any;

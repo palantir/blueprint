@@ -16,9 +16,6 @@
 
 /* eslint-disable no-underscore-dangle */
 
-/** @deprecated use CreateNewItem */
-export type ICreateNewItem = CreateNewItem;
-
 /**
  * The reserved type of the "Create Item" option in item lists. This is intended
  * not to conflict with any custom item type `T` that might be used in  item

@@ -15,7 +15,7 @@
  */
 
 // The two icon sets are identical aside from SVG paths, so we only need to import info for the 16px set
-import { BLUEPRINT_ICONS_16_CODEPOINTS } from "./generated-icons/16px/blueprint-icons-16";
+import { BLUEPRINT_ICONS_16_CODEPOINTS } from "./generated/16px/blueprint-icons-16";
 import type { IconName } from "./iconNames";
 
 /**

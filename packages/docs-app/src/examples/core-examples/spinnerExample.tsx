@@ -21,15 +21,15 @@ import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-th
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface ISpinnerExampleState {
+export interface SpinnerExampleState {
     hasValue: boolean;
     intent?: Intent;
     size: number;
     value: number;
 }
 
-export class SpinnerExample extends React.PureComponent<ExampleProps, ISpinnerExampleState> {
-    public state: ISpinnerExampleState = {
+export class SpinnerExample extends React.PureComponent<ExampleProps, SpinnerExampleState> {
+    public state: SpinnerExampleState = {
         hasValue: false,
         size: SpinnerSize.STANDARD,
         value: 0.7,

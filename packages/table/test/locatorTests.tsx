@@ -20,7 +20,7 @@ import * as ReactDOM from "react-dom";
 
 import { Utils } from "../src";
 import { Grid } from "../src/common/grid";
-import { Locator } from "../src/locator";
+import { Locator, LocatorImpl } from "../src/locator";
 
 const N_ROWS = 10;
 const N_COLS = 10;
@@ -66,10 +66,10 @@ describe("Locator", () => {
             containerElement,
         );
 
-        locator = new Locator(
-            containerElement.querySelector(".table-wrapper") as HTMLElement,
-            containerElement.querySelector(".body") as HTMLElement,
-            containerElement.querySelector(".body-client") as HTMLElement,
+        locator = new LocatorImpl(
+            containerElement.querySelector<HTMLElement>(".table-wrapper")!,
+            containerElement.querySelector<HTMLElement>(".body")!,
+            containerElement.querySelector<HTMLElement>(".body-client")!,
         );
         locator.setGrid(grid);
     });
@@ -126,7 +126,7 @@ describe("Locator", () => {
             const NUM_ROWS_SCROLLED_OUT_OF_VIEW = 1;
 
             beforeEach(() => {
-                bodyElement = containerElement.querySelector(".body") as HTMLElement;
+                bodyElement = containerElement.querySelector<HTMLElement>(".body")!;
 
                 originalOverflow = bodyElement.style.overflow;
                 originalHeight = bodyElement.style.height;

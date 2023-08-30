@@ -17,13 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type FileInputProps = IFileInputProps;
-/** @deprecated use FileInputProps */
-export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, Props {
+export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, Props {
     /**
      * Whether the file input is non-interactive.
      * Setting this to `true` will automatically disable the child input too.
@@ -59,28 +56,34 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
     /**
      * Callback invoked on `<input>` `change` events.
      *
-     * This callback is offered as a convenience; it is equivalent to passing
-     * `onChange` to `inputProps`.
+     * This callback is offered as a convenience; it is equivalent to `inputProps.onChange`.
      *
-     * __Note:__ The top-level `onChange` prop is passed to the wrapping
-     * `<label>` rather than the `<input>`, which may not be what you expect.
+     * __Note:__ The top-level `onChange` prop is passed to the `<label>` element rather than the `<input>`,
+     * which may not be what you expect.
      */
     onInputChange?: React.FormEventHandler<HTMLInputElement>;
 
     /**
-     * The text to display.
+     * Whether the file input should appear with small styling.
+     */
+    small?: boolean;
+
+    /**
+     * The text to display inside the input.
      *
      * @default "Choose file..."
      */
     text?: React.ReactNode;
 
     /**
-     * The button text.
+     * The button text to display on the right side of the input.
      *
      * @default "Browse"
      */
     buttonText?: string;
 }
+
+const NS = Classes.getClassNamespace();
 
 // this is a simple component, unit tests would be mostly tautological
 /* istanbul ignore next */
@@ -89,7 +92,7 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
  *
  * @see https://blueprintjs.com/docs/#core/components/file-input
  */
-export class FileInput extends AbstractPureComponent2<FileInputProps> {
+export class FileInput extends AbstractPureComponent<FileInputProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 
     public static defaultProps: FileInputProps = {
@@ -108,22 +111,18 @@ export class FileInput extends AbstractPureComponent2<FileInputProps> {
             inputProps,
             large,
             onInputChange,
+            small,
             text,
             ...htmlProps
         } = this.props;
 
-        const rootClasses = classNames(
-            Classes.FILE_INPUT,
-            {
-                [Classes.FILE_INPUT_HAS_SELECTION]: hasSelection,
-                [Classes.DISABLED]: disabled,
-                [Classes.FILL]: fill,
-                [Classes.LARGE]: large,
-            },
-            className,
-        );
-
-        const NS = Classes.getClassNamespace();
+        const rootClasses = classNames(className, Classes.FILE_INPUT, {
+            [Classes.FILE_INPUT_HAS_SELECTION]: hasSelection,
+            [Classes.DISABLED]: disabled,
+            [Classes.FILL]: fill,
+            [Classes.LARGE]: large,
+            [Classes.SMALL]: small,
+        });
 
         const uploadProps = {
             [`${NS}-button-text`]: buttonText,

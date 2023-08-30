@@ -22,8 +22,8 @@ import { FixList } from "./utils/fixList";
 import { getProgram } from "./utils/getProgram";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
-// currently support "pt-", "bp3-", "bp4-" prefixes.
-const BLUEPRINT_CLASSNAME_PATTERN = /(?<![\w])((?:pt|bp3|bp4)-(?!icon)[\w-]+)/g;
+// currently supports "pt-", "bp3-", "bp4-", "bp5-" prefixes.
+const BLUEPRINT_CLASSNAME_PATTERN = /(?<![\w])((?:pt|bp3|bp4|bp5)-(?!icon)[\w-]+)/g;
 
 type MessageIds = "useBlueprintClasses";
 
@@ -33,7 +33,7 @@ export const classesConstantsRule = createRule<[], MessageIds>({
     meta: {
         docs: {
             description: "Enforce usage of Classes constants over namespaced string literals.",
-            recommended: "error",
+            recommended: "recommended",
             requiresTypeChecking: false,
         },
         fixable: "code",
@@ -163,7 +163,7 @@ function wrapForParent(statement: string, node: TSESTree.Node) {
 /** Converts a `pt-class-name` literal to `Classes.CLASS_NAME` constant. */
 function convertPtClassName(text: string) {
     const className = text
-        .replace(/(pt|bp3|bp4)-/, "")
+        .replace(/(pt|bp3|bp4|bp5)-/, "")
         .replace(/-/g, "_")
         .toUpperCase();
     return `Classes.${className}`;

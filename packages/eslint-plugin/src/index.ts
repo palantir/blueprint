@@ -16,7 +16,7 @@
 import rules from "./rules";
 
 /**
- * Enable all Blueprint-specific lint rules defined in this package.
+ * Enables all Blueprint-specific lint rules defined in this package.
  */
 module.exports = {
     configs: {

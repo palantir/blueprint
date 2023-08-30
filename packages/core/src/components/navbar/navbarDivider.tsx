@@ -17,19 +17,17 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type NavbarDividerProps = INavbarDividerProps;
-/** @deprecated use NavbarDividerProps */
-export interface INavbarDividerProps extends Props, HTMLDivProps {
-    // allow the empty interface so we can label it clearly in the docs
+// allow the empty interface so we can label it clearly in the docs
+export interface NavbarDividerProps extends Props, HTMLDivProps {
+    // Empty
 }
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class NavbarDivider extends AbstractPureComponent2<NavbarDividerProps> {
+export class NavbarDivider extends AbstractPureComponent<NavbarDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NavbarDivider`;
 
     public render() {

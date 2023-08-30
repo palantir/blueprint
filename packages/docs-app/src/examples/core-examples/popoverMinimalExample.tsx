@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,34 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to Popover2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import * as React from "react";
 
-import { Button, Intent, IPopoverProps, Popover, Position } from "@blueprintjs/core";
+import { Button, Intent, Popover, PopoverProps } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-import { FileMenu } from "./common/fileMenu";
+import { FileMenu } from "../core-examples/common/fileMenu";
 
 export class PopoverMinimalExample extends React.PureComponent<ExampleProps> {
+    public static displayName = "PopoverMinimalExample";
+
     public render() {
-        const baseProps: IPopoverProps = { content: <FileMenu />, position: Position.BOTTOM_LEFT };
+        const baseProps: Partial<PopoverProps> = { content: <FileMenu />, placement: "bottom-end" };
 
         return (
             <Example options={false} {...this.props}>
-                <Popover {...baseProps} minimal={true}>
-                    <Button intent={Intent.PRIMARY}>Minimal</Button>
-                </Popover>
-                <Popover {...baseProps}>
-                    <Button>Default</Button>
-                </Popover>
+                <Popover
+                    {...baseProps}
+                    minimal={true}
+                    // tslint:disable-next-line jsx-no-lambda
+                    renderTarget={({ isOpen, ...p }) => (
+                        <Button {...p} active={isOpen} intent={Intent.PRIMARY} text="Minimal" />
+                    )}
+                />
+                <Popover
+                    {...baseProps}
+                    // tslint:disable-next-line jsx-no-lambda
+                    renderTarget={({ isOpen, ...p }) => <Button {...p} active={isOpen} text="Default" />}
+                />
             </Example>
         );
     }

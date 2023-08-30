@@ -5,10 +5,10 @@ orbs:
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:16.19
+    - image: cimg/node:18.17
 
   - &docker-node-browsers-image
-    - image: cimg/node:16.19-browsers
+    - image: cimg/node:18.17-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -43,6 +43,7 @@ jobs:
       - checkout
       - restore_cache: *restore-yarn-cache
       - restore_cache: *restore-node-modules-cache
+      - run: sudo corepack enable
       - run: yarn install --non-interactive --cache-folder ~/.cache/yarn
       - run:
           name: Check if yarn.lock changed during install
@@ -67,13 +68,13 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: yarn compile
       - persist_to_workspace:
           root: "."
           paths:
             - packages/*/lib
             - packages/*/src/generated
-            - packages/icons/src/generated-icons
 
   format-check:
     docker: *docker-node-image
@@ -84,6 +85,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: yarn format-check
 
   lint:
@@ -96,6 +98,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: mkdir -p ./reports/eslint ./reports/stylelint
       # types and lint rules should already be compiled since this job depends on the 'compile' job
       - run: yarn lint
@@ -111,6 +114,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: yarn dist
       - persist_to_workspace:
           root: "."
@@ -125,6 +129,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: mkdir -p ./reports
       - run:
           command: |
@@ -140,12 +145,17 @@ jobs:
     docker: *docker-node-browsers-image
     environment:
       JUNIT_REPORT_PATH: reports
-      NODE_ENV: test
-    parallelism: 8
+    parallelism: 6
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
+      # HACKHACK: pin Chrome version to work around bug in v115
+      # see https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+      - run: sudo apt-get update
+      - browser-tools/install-chrome:
+          chrome-version: "114.0.5735.90"
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - run:
@@ -164,10 +174,8 @@ jobs:
             1) yarn lerna run --scope "@blueprintjs/core" test:karma ;; \
             2) yarn lerna run --scope "@blueprintjs/datetime" test:karma ;; \
             3) yarn lerna run --scope "@blueprintjs/datetime2" test:karma ;; \
-            4) yarn lerna run --scope "@blueprintjs/popover2" test:karma ;; \
-            5) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
-            6) yarn lerna run --scope "@blueprintjs/table" test:karma ;; \
-            7) yarn lerna run --scope "@blueprintjs/timezone" test:karma ;; \
+            4) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
+            5) yarn lerna run --scope "@blueprintjs/table" test:karma
             esac
           when: always
       - store_test_results: { path: ./reports }
@@ -181,6 +189,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: mkdir ./reports
       - run: yarn lerna run test:iso
       - store_test_results: { path: ./reports }

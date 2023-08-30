@@ -16,7 +16,6 @@
 // @ts-check
 
 require("@blueprintjs/test-commons/bootstrap");
-
 const React = require("react");
 
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
@@ -33,6 +32,9 @@ describe("Core isomorphic rendering", () => {
         },
         Breadcrumbs: {
             props: { items: [] },
+        },
+        ContextMenu: {
+            props: { children: React.createElement("div"), content: React.createElement("div") },
         },
         Dialog: {
             props: { isOpen: true, usePortal: false },
@@ -58,7 +60,7 @@ describe("Core isomorphic rendering", () => {
                 panel: React.createElement("div"),
             }),
         },
-        KeyCombo: {
+        KeyComboTag: {
             props: { combo: "?" },
         },
         OverflowList: {
@@ -68,7 +70,8 @@ describe("Core isomorphic rendering", () => {
             props: { lazy: false, usePortal: false },
         },
         OverlayToaster: {
-            skip: true,
+            props: { usePortal: false },
+            children: React.createElement(Core.Toast, { message: "Toast" }),
         },
         PanelStack: {
             props: {
@@ -95,10 +98,6 @@ describe("Core isomorphic rendering", () => {
         Tooltip: {
             props: { content: React.createElement("h1", {}, "content") },
             children: requiredChild,
-        },
-        Toaster: {
-            props: { usePortal: false },
-            children: React.createElement(Core.Toast, { message: "Toast" }),
         },
     });
 });

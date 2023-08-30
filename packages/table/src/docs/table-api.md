@@ -4,136 +4,106 @@ reference: api
 
 @# JavaScript API
 
-The `Table`, `Column`, `Cell`, `ColumnHeaderCell2`, `EditableName`, and `EditableCell2`
+The __Table__, __Column__, __Cell__, __ColumnHeaderCell__, __EditableName__, and __EditableCell2__
 components are available in the __@blueprintjs/table__ package.
 
 @## Table
 
-The top-level component of the table is `Table2`. You must at least define the
-number of rows (`numRows` prop) as well as a set of `Column` children.
+The top-level component of the table is __Table2__. You must at least define the number of rows (`numRows` prop)
+as well as a set of __Column__ children.
 
 @interface Table2Props
 
 @### Instance methods
-
 
 @method Table.resizeRowsByTallestCell
 
 @method Table.resizeRowsByApproximateHeight
 
 
-`ICellMapper` is just a function that takes a cell-coordinate and returns a generic type:
-
-
+`CellMapper` is a function that takes a cell-coordinate and returns a generic type:
 
 ```ts
-type ICellMapper<T> = (rowIndex: number, columnIndex: number) => T;
+type CellMapper<T> = (rowIndex: number, columnIndex: number) => T;
 ```
-
 
 @method Table.scrollToRegion
 
+@method Table2.scrollByOffset
+
 @## Column
 
-`Column` contains props for defining how the header and cells of that column
-are rendered.
+__Column__ contains props for defining how the header and cells of that column are rendered.
 
-The table is designed to best support columnar data, meaning data where each column
-has only one type of value (for example, strings, dates, currency amounts).
-Because of this, the table's children are a list of `Column` components.
+The table is designed to best support columnar data, meaning data where each column has only one type of value
+(for example, strings, dates, currency amounts). Because of this, the table's children are a list of __Column__
+components.
 
-Use the `rowHeaderCellRenderer` prop of `Table` to define row headers.
+Use the `rowHeaderCellRenderer` prop of __Table__ to define row headers.
 
-@interface IColumnProps
+@interface ColumnProps
 
 @## Cell
 
-The `Cell` component renders content in the table body. `Cell`s should be
-returned from the `cellRenderer` method of each `Column`.
+The __Cell__ component renders content in the table body. `<Cell>` elements should be returned from the
+`cellRenderer` method of each __Column__.
 
-@interface ICellProps
+@interface CellProps
 
-@## ColumnHeaderCell2
+@## ColumnHeaderCell
 
 Optionally customize how each column header is displayed.
 
-The `columnHeaderCellRenderer` method on each `Column` should return a
-`ColumnHeaderCell2`. Children of a `ColumnHeaderCell2` are rendered below
-the name of the column. If you want to override the render behavior of the
-name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell2`.
+The `columnHeaderCellRenderer` method on each __Column__ should return a `<ColumnHeaderCell>`. Children of a
+__ColumnHeaderCell__ are rendered below the name of the column. If you want to override the render behavior of the
+name, you can supply a `nameRenderer` prop to the __ColumnHeaderCell__.
 
-<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
-
-<h5 class="@ns-heading">Additional CSS required</h5>
-
-__ColumnHeaderCell2__ depends on @blueprintjs/popover2 styles, so you must remember to import
-that package's stylesheet in your application in addition to `table.css`:
-
-```scss
-@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
-```
-</div>
-
-@interface IColumnHeaderCellProps
+@interface ColumnHeaderCellProps
 
 @## EditableName
 
-Return a `EditableName` component from the `nameRenderer` prop on a
-`ColumnHeaderCell2` to enable click-to-edit functionality in the column
-header.
+Return a `<EditableName>` from the `nameRenderer` prop on a __ColumnHeaderCell__ to enable click-to-edit functionality
+in the column header.
 
-@interface IEditableNameProps
+@interface EditableNameProps
 
 @## EditableCell2
 
-Return an `EditableCell2` component from the `cellRenderer` prop on a
-`Column` to enable double-click-to-edit functionality in the table body.
+Return an `<EditableCell2>` component from the `cellRenderer` prop on a __Column__ to enable double-click-to-edit
+functionality in the table body.
 
 @interface EditableCell2Props
 
-@## RowHeaderCell2
+@## RowHeaderCell
 
 Optionally customize how each row header is displayed.
 
-In order to use this API, supply a custom renderer function which returns a `RowHeaderCell2` to the
-`rowHeaderCellRenderer` prop on the overall `Table2`.
+In order to use this API, supply a custom renderer function which returns a `<RowHeaderCell>` from the
+`rowHeaderCellRenderer` prop on the overall __Table2__.
 
-<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
-
-<h5 class="@ns-heading">Additional CSS required</h5>
-
-__RowHeaderCell2__ depends on @blueprintjs/popover2 styles, so you must remember to import
-that package's stylesheet in your application in addition to `table.css`:
-
-```scss
-@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
-```
-</div>
-
-@interface IRowHeaderCellProps
+@interface RowHeaderCellProps
 
 @## Region
 
 A region is a rectangular group of cells in the table.
 
-Regions are typically used to describe boundaries for selections (via the
-`selectedRegions` prop) and custom overlays (via the `styledRegionGroups` prop).
-You may also wish to scroll directly to a region in the table via the
+Regions are typically used to describe boundaries for selections (via the `selectedRegions` prop) and custom overlays
+(via the `styledRegionGroups` prop). You may also wish to scroll directly to a region in the table via the
 [`Table.scrollToRegion`](#table/api.instance-methods) instance method.
 
 There are four different types of regions:
-- __Cell region:__ contains a finite, rectangular group of table cells
-- __Row region:__ represents all cells within one or more consecutive rows
-- __Column region:__ represents all cells within one or more consecutive columns
-- __Table region:__ represents all cells in the table
 
-Regions are defined in code according to the `IRegion` interface:
+-   __Cell region:__ contains a finite, rectangular group of table cells
+-   __Row region:__ represents all cells within one or more consecutive rows
+-   __Column region:__ represents all cells within one or more consecutive columns
+-   __Table region:__ represents all cells in the table
 
-@interface IRegion
+Regions are defined in code according to the `Region` interface:
 
-You can construct region objects manually according to this interface, but we
-recommend using our exported __factory methods__ to help you construct the
-appropriate schema for your desired region type:
+@interface Region
+
+You can construct region objects manually according to this interface, but we recommend using our exported
+__factory methods__ to help you construct the appropriate schema for your desired region type:
 
 ```ts
 import { Regions } from "@blueprintjs/table";
@@ -149,15 +119,15 @@ const multiRowRegion    = Regions.row(0, 2);        // { rows: [0, 2], cols: nul
 const tableRegion = Regions.table(); // { rows: null, cols: null }
 ```
 
-The __@blueprintjs/table__ package also exports a `RegionCardinality`
-enumeration to describe the various region types in code:
-- `RegionCardinality.CELLS`: describes a cell region
-- `RegionCardinality.FULL_ROWS`: describes a row region
-- `RegionCardinality.FULL_COLUMNS`: describes a column region
-- `RegionCardinality.FULL_TABLE`: describes a table region
+The table package also exports a `RegionCardinality` enumeration to describe the various region types in code:
 
-This enumeration is primarily used with the `selectionModes` prop to inform the
-`Table` which kinds of regions are selectable:
+-   `RegionCardinality.CELLS`: describes a cell region
+-   `RegionCardinality.FULL_ROWS`: describes a row region
+-   `RegionCardinality.FULL_COLUMNS`: describes a column region
+-   `RegionCardinality.FULL_TABLE`: describes a table region
+
+This enumeration is primarily used with the `selectionModes` prop to inform the __Table__ about which kinds of regions
+are selectable:
 
 ```tsx
 import { RegionCardinality } from "@blueprintjs/table";
@@ -175,8 +145,7 @@ import { RegionCardinality } from "@blueprintjs/table";
 <Table selectionModes={[RegionCardinality.FULL_TABLE]} />
 ```
 
-You may also use the exported `SelectionModes` enumeration to express common
-selection-mode combinations more concisely:
+You may also use the exported `SelectionModes` enumeration to express common selection-mode combinations more concisely:
 
 ```tsx
 import { SelectionModes } from "@blueprintjs/table";
@@ -189,9 +158,8 @@ import { SelectionModes } from "@blueprintjs/table";
 <Table selectionModes={SelectionModes.ROWS_ONLY} />
 ```
 
-Every region object has a well-defined cardinality. If necessary, you can
-determine the cardinality of any region using the exported
-`Regions.getRegionCardinality` function:
+Every region object has a well-defined cardinality. If necessary, you can determine the cardinality of any region using
+the exported `Regions.getRegionCardinality()` function:
 
 ```tsx
 import { Regions } from "@blueprintjs/table";
@@ -206,24 +174,24 @@ const cardinalities = [
 
 @method Regions.getRegionCardinality
 
-@## TruncatedFormat2
+@## TruncatedFormat
 
-Wrap your cell contents with a `TruncatedFormat2` component like so:
+Wrap your cell contents with a __TruncatedFormat__ component like so:
 
 ```tsx
 const content = "A very long string...";
-return <Cell><TruncatedFormat2>{content}</TruncatedFormat2></Cell>
+return <Cell><TruncatedFormat>{content}</TruncatedFormat></Cell>
 ```
 
-@interface ITruncatedFormatProps
+@interface TruncatedFormatProps
 
-@## JSONFormat2
+@## JSONFormat
 
-Wrap your JavaScript object cell contents with a `JSONFormat2` component like so:
+Wrap your JavaScript object cell contents with a __JSONFormat__ component like so:
 
 ```tsx
 const content = { any: "javascript variable", even: [null, "is", "okay", "too"] };
-return <Cell><JSONFormat2>{content}</JSONFormat2></Cell>
+return <Cell><JSONFormat>{content}</JSONFormat></Cell>
 ```
 
-@interface IJSONFormatProps
+@interface JSONFormatProps

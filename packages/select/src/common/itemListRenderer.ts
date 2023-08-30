@@ -16,9 +16,6 @@
 
 import type { CreateNewItem } from "./listItemsUtils";
 
-/** @deprecated use ItemListRendererProps */
-export type IItemListRendererProps<T> = ItemListRendererProps<T>;
-
 /**
  * An object describing how to render the list of items.
  * An `itemListRenderer` receives this object as its sole argument.

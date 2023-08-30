@@ -22,11 +22,12 @@ Markup:
   </label>
   <label class="#{$ns}-label {{.modifier}}">
     Label C
-    <div class="#{$ns}-select {{.modifier}}">
+    <div class="#{$ns}-html-select {{.modifier}}">
       <select {{:modifier}}>
         <option selected>Choose an item...</option>
         <option value="1">One</option>
       </select>
+      <span class="#{$ns}-icon #{$ns}-icon-double-caret-vertical"></span>
     </div>
   </label>
 </div>

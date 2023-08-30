@@ -16,6 +16,7 @@
 
 export * from "./compareUtils";
 export {
+    clickElementOnKeyPress,
     elementIsOrContains,
     elementIsTextInput,
     getActiveElement,
@@ -23,9 +24,11 @@ export {
     throttleEvent,
     throttleReactEventCallback,
 } from "./domUtils";
-export * from "./functionUtils";
+export { isFunction } from "./functionUtils";
 export * from "./jsUtils";
 export * from "./reactUtils";
+export { isArrowKey, isKeyboardClick } from "./keyboardUtils";
+export { Extends } from "./typeUtils";
 export { isDarkTheme } from "./isDarkTheme";
 
 // ref utils used to live in this folder, but got refactored and moved elsewhere.

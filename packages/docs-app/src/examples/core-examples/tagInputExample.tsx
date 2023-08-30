@@ -34,9 +34,10 @@ const VALUES = [
     undefined,
 ];
 
-export interface ITagInputExampleState {
+export interface TagInputExampleState {
     addOnBlur: boolean;
     addOnPaste: boolean;
+    autoResize: boolean;
     disabled: boolean;
     fill: boolean;
     intent: Intent;
@@ -47,10 +48,11 @@ export interface ITagInputExampleState {
     values: React.ReactNode[];
 }
 
-export class TagInputExample extends React.PureComponent<ExampleProps, ITagInputExampleState> {
-    public state: ITagInputExampleState = {
+export class TagInputExample extends React.PureComponent<ExampleProps, TagInputExampleState> {
+    public state: TagInputExampleState = {
         addOnBlur: false,
         addOnPaste: true,
+        autoResize: false,
         disabled: false,
         fill: false,
         intent: "none",
@@ -64,6 +66,8 @@ export class TagInputExample extends React.PureComponent<ExampleProps, ITagInput
     private handleAddOnBlurChange = handleBooleanChange(addOnBlur => this.setState({ addOnBlur }));
 
     private handleAddOnPasteChange = handleBooleanChange(addOnPaste => this.setState({ addOnPaste }));
+
+    private handleAutoResizeChange = handleBooleanChange(autoResize => this.setState({ autoResize }));
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
 
@@ -118,14 +122,16 @@ export class TagInputExample extends React.PureComponent<ExampleProps, ITagInput
     private renderOptions() {
         return (
             <>
-                <H5>Props</H5>
+                <H5>Appearance props</H5>
                 <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
                 <Switch label="Left icon" checked={this.state.leftIcon} onChange={this.handleLeftIconChange} />
-                <Switch label="Add on blur" checked={this.state.addOnBlur} onChange={this.handleAddOnBlurChange} />
-                <Switch label="Add on paste" checked={this.state.addOnPaste} onChange={this.handleAddOnPasteChange} />
                 <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
+                <H5>Behavior props</H5>
+                <Switch label="Add on blur" checked={this.state.addOnBlur} onChange={this.handleAddOnBlurChange} />
+                <Switch label="Add on paste" checked={this.state.addOnPaste} onChange={this.handleAddOnPasteChange} />
+                <Switch label="Auto resize" checked={this.state.autoResize} onChange={this.handleAutoResizeChange} />
                 <H5>Tag props</H5>
                 <Switch
                     label="Use minimal tags"

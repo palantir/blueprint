@@ -8,7 +8,7 @@ INPUT="${INPUT:-src}"
 OUTPUT="${OUTPUT:-lib/scss}"
 
 mkdir -p "$OUTPUT"
-cp "$INPUT/generated-icons/16px/_icon-variables.scss" "$OUTPUT/blueprint-icons-16.scss"
-cp "$INPUT/generated-icons/20px/_icon-variables.scss" "$OUTPUT/blueprint-icons-20.scss"
+cp "$INPUT/generated/16px/_icon-variables.scss" "$OUTPUT/blueprint-icons-16.scss"
+cp "$INPUT/generated/20px/_icon-variables.scss" "$OUTPUT/blueprint-icons-20.scss"
 
 cp "$INPUT/templates/_lib_variables.scss" "$OUTPUT/variables.scss"
