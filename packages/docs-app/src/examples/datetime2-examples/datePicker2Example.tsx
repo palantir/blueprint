@@ -1,0 +1,143 @@
+/*
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { format } from "date-fns";
+import * as React from "react";
+
+import { Callout, Classes, H5, Switch, Tag } from "@blueprintjs/core";
+import { DatePicker2, TimePrecision } from "@blueprintjs/datetime2";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+
+import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
+
+const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
+
+export interface DatePicker2ExampleState {
+    date: Date | null;
+    highlightCurrentDay: boolean;
+    reverseMonthAndYearMenus: boolean;
+    shortcuts: boolean;
+    showActionsBar: boolean;
+    timePrecision: TimePrecision | undefined;
+    showTimeArrowButtons: boolean;
+    useAmPm?: boolean;
+    showFooterElement: boolean;
+}
+
+export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePicker2ExampleState> {
+    public state: DatePicker2ExampleState = {
+        date: null,
+        highlightCurrentDay: false,
+        reverseMonthAndYearMenus: false,
+        shortcuts: false,
+        showActionsBar: false,
+        showFooterElement: false,
+        showTimeArrowButtons: false,
+        timePrecision: undefined,
+        useAmPm: false,
+    };
+
+    private toggleHighlight = handleBooleanChange(highlightCurrentDay => this.setState({ highlightCurrentDay }));
+
+    private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
+
+    private toggleShowFooterElement = handleBooleanChange(showFooterElement => this.setState({ showFooterElement }));
+
+    private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
+
+    private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
+
+    private handlePrecisionChange = handleValueChange((p: TimePrecision | "none") =>
+        this.setState({ timePrecision: p === "none" ? undefined : p }),
+    );
+
+    private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
+        this.setState({ showTimeArrowButtons }),
+    );
+
+    private toggleUseAmPm = handleBooleanChange(useAmPm => this.setState({ useAmPm }));
+
+    public render() {
+        const { date, showTimeArrowButtons, useAmPm, ...props } = this.state;
+        const showTimePicker = this.state.timePrecision !== undefined;
+
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch checked={props.showActionsBar} label="Show actions bar" onChange={this.toggleActionsBar} />
+                <Switch checked={props.shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
+                <Switch
+                    checked={props.highlightCurrentDay}
+                    label="Highlight current day"
+                    onChange={this.toggleHighlight}
+                />
+                <Switch
+                    checked={props.reverseMonthAndYearMenus}
+                    label="Reverse month and year menus"
+                    onChange={this.toggleReverseMenus}
+                />
+                <Switch
+                    checked={this.state.showFooterElement}
+                    label="Show custom footer element"
+                    onChange={this.toggleShowFooterElement}
+                />
+                <PrecisionSelect
+                    allowNone={true}
+                    label="Time precision"
+                    value={props.timePrecision}
+                    onChange={this.handlePrecisionChange}
+                />
+                <Switch
+                    disabled={!showTimePicker}
+                    checked={showTimeArrowButtons}
+                    label="Show timepicker arrow buttons"
+                    onChange={this.toggleTimepickerArrowButtons}
+                />
+                <Switch
+                    disabled={!showTimePicker}
+                    checked={this.state.useAmPm}
+                    label="Use AM/PM"
+                    onChange={this.toggleUseAmPm}
+                />
+            </>
+        );
+
+        const timePickerProps = showTimePicker
+            ? {
+                  showArrowButtons: showTimeArrowButtons,
+                  useAmPm,
+              }
+            : undefined;
+
+        return (
+            <Example options={options} {...this.props}>
+                <DatePicker2
+                    className={Classes.ELEVATION_1}
+                    onChange={this.handleDateChange}
+                    timePickerProps={timePickerProps}
+                    footerElement={this.state.showFooterElement ? exampleFooterElement : undefined}
+                    // dayPickerProps={{ showWeekNumbers: true }}
+                    {...props}
+                />
+                <Tag>
+                    {date == null ? "No date" : format(date, "PPPppp")}
+                </Tag>
+            </Example>
+        );
+    }
+
+    private handleDateChange = (date: Date) => this.setState({ date });
+}

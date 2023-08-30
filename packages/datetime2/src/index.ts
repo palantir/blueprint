@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+export { DatePicker2, DatePicker2Props } from "./components/date-picker2/datePicker2";
+export * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";
+
 /* eslint-disable deprecation/deprecation */
 
 export {
@@ -34,11 +37,11 @@ export {
     /** @deprecated import from `@blueprintjs/datetime` instead */
     getTimezoneMetadata,
     /** @deprecated import from `@blueprintjs/datetime` instead */
+    TimePrecision,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     TimezoneSelect,
     /** @deprecated import from `@blueprintjs/datetime` instead */
     TimezoneSelectProps,
     /** @deprecated import from `@blueprintjs/datetime` instead */
     TimezoneDisplayFormat,
 } from "@blueprintjs/datetime";
-
-export * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";

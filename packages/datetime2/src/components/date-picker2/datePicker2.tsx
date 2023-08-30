@@ -17,9 +17,9 @@
 import classNames from "classnames";
 import type { Locale } from "date-fns";
 import * as React from "react";
-import { /* CaptionLabelProps, */ DayModifiers, DayPicker /*, NavigationContextValue */ } from "react-day-picker";
+import { /* CaptionLabelProps, */ ActiveModifiers, DayPicker /*, NavigationContextValue */ } from "react-day-picker";
 
-import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, Props } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, Props } from "@blueprintjs/core";
 import {
     Classes,
     DatePickerProps,
@@ -37,7 +37,7 @@ import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/sh
 // tslint:enable no-submodule-imports
 
 /** Props shared between DatePicker v1 and v2 */
-type DatePickerSharedProps = Omit<DatePickerProps, "defaultValue" | "value" | "onChange">;
+type DatePickerSharedProps = Omit<DatePickerProps, "defaultValue" | "value" | "onChange" | "modifiers">;
 
 export interface DatePicker2Props extends DatePickerSharedProps, Props {
     /**
@@ -75,7 +75,7 @@ interface DatePicker2State {
  *
  * @see https://blueprintjs.com/docs/#datetime2/date-picker2
  */
-export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePicker2State> {
+export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePicker2State> {
     public static defaultProps: DatePicker2Props = {
         canClearSelection: true,
         clearButtonText: "Clear",
@@ -121,19 +121,17 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
                         // @ts-ignore -- HACKHACK: TS thinks this type includes | string, which it does not!
                         locale={locale}
                         localeUtils={localeUtils}
-                        // TODO(@adidahiya)
-                        // @ts-ignore -- HACKHACK: ??
-                        modifiers={this.getDatePickerModifiers()}
                         {...dayPickerProps}
                         canChangeMonth={true}
                         captionElement={this.renderCaption}
                         navbarElement={this.renderNavbar}
                         disabledDays={this.getDisabledDaysModifier()}
                         fromMonth={minDate}
+                        mode="single"
                         month={new Date(displayYear, displayMonth)}
-                        onDayClick={this.handleDayClick}
                         onMonthChange={this.handleMonthChange}
-                        selectedDays={this.state.value}
+                        onSelect={this.handleDaySelect}
+                        selected={this.state.value ?? undefined}
                         toMonth={maxDate}
                         renderDay={dayPickerProps?.renderDay ?? this.renderDay}
                     />
@@ -202,24 +200,9 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
         } else if (this.state.locale?.code === localeCode) {
             return;
         }
-        const locale = await import(`date-fns/locale/${localeCode}`);
+        const locale = await import(`date-fns/locale/${localeCode}/index.js`);
         this.setState({ locale });
     }
-
-    private shouldHighlightCurrentDay = (date: Date) => {
-        const { highlightCurrentDay } = this.props;
-
-        return highlightCurrentDay === true && DateUtils.isToday(date);
-    };
-
-    private getDatePickerModifiers = () => {
-        const { modifiers } = this.props;
-
-        return {
-            isToday: this.shouldHighlightCurrentDay,
-            ...modifiers,
-        } as DayModifiers;
-    };
 
     private renderDay = (day: Date) => {
         const date = day.getDate();
@@ -330,10 +313,13 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
         ];
     }
 
-    private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent) => {
+    private handleDaySelect = (day: Date | undefined, _selectedDay: Date | undefined, activeModifiers: ActiveModifiers, e: React.MouseEvent) => {
         // @ts-ignore -- HACKHACK(@adidahiya): multiple versions of rdp types in this monorepo create a type conflict here
         this.props.dayPickerProps?.onDayClick?.(day, modifiers, e);
-        if (modifiers.disabled) {
+        if (activeModifiers.disabled) {
+            return;
+        } else if (day === undefined) {
+            this.handleClearClick();
             return;
         }
 
@@ -341,7 +327,7 @@ export class DatePicker extends AbstractPureComponent2<DatePicker2Props, DatePic
 
         // allow toggling selected date by clicking it again (if prop enabled)
         const newValue =
-            this.props.canClearSelection && modifiers.selected ? null : DateUtils.getDateTime(day, this.state.value);
+            this.props.canClearSelection && activeModifiers.selected ? null : DateUtils.getDateTime(day, this.state.value);
         this.updateValue(newValue, true);
     };
 

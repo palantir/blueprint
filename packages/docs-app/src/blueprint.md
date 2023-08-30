@@ -28,6 +28,7 @@ yarn add @blueprintjs/core react react-dom
 Additional UI components and APIs are available in:
 - [**@blueprintjs/icons**](https://www.npmjs.com/package/@blueprintjs/icons)
 - [**@blueprintjs/datetime**](https://www.npmjs.com/package/@blueprintjs/datetime)
+- [**@blueprintjs/datetime2**](https://www.npmjs.com/package/@blueprintjs/datetime2)
 - [**@blueprintjs/select**](https://www.npmjs.com/package/@blueprintjs/select)
 - [**@blueprintjs/table**](https://www.npmjs.com/package/@blueprintjs/table)
 

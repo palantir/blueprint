@@ -1,0 +1,271 @@
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "@blueprintjs/core/src/components/popover/common";
+@import "@blueprintjs/datetime/src/common";
+
+$cell-size: $pt-grid-size * 3 !default;
+$header-height: $pt-grid-size * 4 !default;
+$header-margin: ($header-height - $pt-input-height) * 0.5 !default;
+
+@mixin calendar-day() {
+  display: table-cell;
+  height: $datepicker-day-size;
+  line-height: 1;
+  text-align: center;
+  vertical-align: middle;
+  width: $datepicker-day-size;
+}
+
+.#{$ns}-datepicker {
+  .rdp {
+    display: inline-block;
+    min-width: $datepicker-min-width;
+    position: relative;
+    vertical-align: top;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .#{$ns}-datepicker-day-wrapper {
+    border-radius: $pt-border-radius;
+    padding: 7px;
+  }
+
+  .rdp-month {
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: inline-table;
+    margin: 0 $datepicker-padding;
+    user-select: none;
+
+    // create space between months (selector matches all but first month)
+    & + & {
+      margin-left: $pt-grid-size;
+    }
+  }
+
+  .rdp-caption {
+    display: table-caption;
+  }
+
+  .rdp-weekdays {
+    display: table-header-group;
+  }
+
+  .rdp-head_cell {
+    // @include calendar-day();
+    font-size: inherit;
+    font-weight: 600;
+    padding-top: $datepicker-padding;
+    text-decoration: none;
+  }
+
+  .rdp-tbody {
+    display: table-row-group;
+  }
+
+  .rdp-row {
+    display: table-row;
+  }
+
+  // TODO(@adahiya): verify that this is the correct selector
+  .rdp-week-number {
+    @include calendar-day();
+    color: $pt-text-color-disabled;
+    font-size: $pt-font-size;
+  }
+
+  .rdp-day {
+    // @include calendar-day();
+    border-radius: $pt-border-radius;
+    cursor: pointer;
+
+    // spelling out full name so these are equal specificity to pseudo-classes (.DayPicker-Day:hover)
+    &.rdp-day_outside {
+      color: $pt-text-color-disabled;
+    }
+
+    &.rdp-day_today {
+      .#{$ns}-datepicker-day-wrapper {
+        border: 1px solid $pt-divider-black;
+      }
+    }
+
+    // need some extra specificity here to override rdp default styles
+    &:not([disabled]):not(.rdp-day_selected) {
+      &:hover,
+      &:focus {
+        background: $datepicker-day-background-color-hover;
+        color: $pt-text-color;
+      }
+
+      &:active {
+        background: $datepicker-day-background-color-active;
+      }
+    }
+
+    // TODO(@adahiya): verify that this is the correct selector
+    &.rdp-day_selected {
+      background-color: $blue3;
+      border-radius: $pt-border-radius;
+      color: $white;
+
+      &:hover {
+        background-color: $blue2;
+      }
+
+      &:active {
+        background-color: $blue1;
+      }
+    }
+
+    // putting it last so it overrides equally specific selectors above.
+    &.rdp-day_disabled {
+      background: none;
+      color: $pt-text-color-disabled;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.#{$ns}-datepicker-navbar {
+  align-items: center;
+  display: flex;
+  height: $pt-button-height;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  > .rdp-nav_button_previous {
+    margin-right: auto;
+  }
+
+  > .rdp-nav_button_next {
+    margin-left: auto;
+  }
+}
+
+.#{$ns}-datepicker-caption {
+  @include pt-flex-container(row, $fill: ":first-child");
+  justify-content: space-between;
+  margin: 0 ($pt-button-height - $datepicker-padding) $datepicker-padding;
+
+  // override HTMLSelect styles for a narrower appearance
+  // N.B. these styles are important to achieve accurate measurements to position the dropdown arrows in <DatePickerCaption>
+  .#{$ns}-html-select select {
+    font-weight: 600;
+    padding-left: $datepicker-padding;
+    padding-right: $pt-icon-size-standard;
+
+    + .#{$ns}-icon {
+      right: 2px;
+    }
+  }
+
+  + .#{$ns}-divider {
+    margin: 0;
+  }
+}
+
+.#{$ns}-datepicker-month-select {
+  flex-shrink: 1;
+}
+
+.#{$ns}-datepicker-year-select {
+  flex-shrink: 1;
+  min-width: 60px;
+}
+
+.#{$ns}-datepicker-caption-measure {
+  font-weight: 600;
+  padding-left: $datepicker-padding;
+}
+
+.#{$ns}-datepicker-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  > .#{$ns}-divider {
+    margin: 0; // margin is already applied via flex gap
+    width: calc(100% - #{$datepicker-padding * 2});
+  }
+}
+
+.#{$ns}-datepicker-footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.#{$ns}-dark .#{$ns}-datepicker {
+  background: $dark-datepicker-background-color;
+
+  // TODO(@adahiya): verify that this is the correct selector
+  .rdp-week-number {
+    color: $pt-dark-text-color-disabled;
+  }
+
+  .rdp-day {
+    &.rdp-day_outside {
+      color: $pt-dark-text-color-disabled;
+    }
+
+    &.rdp-day_today {
+      .#{$ns}-datepicker-day-wrapper {
+        border: 1px solid $pt-dark-divider-white;
+      }
+    }
+
+    // need some extra specificity here to override rdp default styles
+    &:not([disabled]):not(.rdp-day_selected) {
+      &:hover,
+      &:focus {
+        background: $dark-datepicker-day-background-color-hover;
+        color: $white;
+      }
+
+      &:active {
+        background: $dark-datepicker-day-background-color-active;
+      }
+    }
+
+    &.rdp-day_selected {
+      background-color: $blue3;
+
+      &:hover {
+        background-color: $blue2;
+      }
+
+      &:active {
+        background-color: $blue1;
+      }
+    }
+
+    &.rdp-day_disabled {
+      background: none;
+      color: $pt-dark-text-color-disabled;
+    }
+  }
+
+  .#{$ns}-datepicker-footer {
+    border-top-color: $pt-dark-divider-black;
+  }
+}
+
+.#{$ns}-datepicker-timepicker-wrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  .#{$ns}-timepicker-arrow-row:empty + .#{$ns}-timepicker-input-row {
+    // when timepicker arrows are not displayed in the datepicker, we need a bit of extra margin
+    margin: $datepicker-padding 0;
+  }
+}
