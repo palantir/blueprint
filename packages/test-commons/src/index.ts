@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+export * from "./datetimeUtils";
 export * from "./generateIsomorphicTests";
 export * from "./testErrorBoundary";
 export * from "./utils";

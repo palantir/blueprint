@@ -27,9 +27,11 @@ import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/sh
 
 import { Classes } from "../../classes";
 import { DatePicker2Caption } from "./datePicker2Caption";
+import { DatePicker2Provider } from "./datePicker2Context";
 import { DatePicker2Props } from "./datePicker2Props";
 import { DatePicker2State } from "./datePicker2State";
-import { DatePicker2Provider } from "./datePicker2Context";
+
+export { DatePicker2Props };
 
 /**
  * Date picker (v2) component.
@@ -85,6 +87,8 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
                         <DayPicker
                             locale={locale}
                             showOutsideDays={true}
+                            modifiers={this.props.modifiers}
+                            required={!this.props.canClearSelection}
                             {...dayPickerProps}
                             components={{
                                 Caption: DatePicker2Caption,

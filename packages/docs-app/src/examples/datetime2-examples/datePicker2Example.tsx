@@ -31,11 +31,12 @@ export interface DatePicker2ExampleState {
     reverseMonthAndYearMenus: boolean;
     shortcuts: boolean;
     showActionsBar: boolean;
-    timePrecision: TimePrecision | undefined;
-    showTimeArrowButtons: boolean;
-    useAmPm?: boolean;
     showFooterElement: boolean;
+    showOutsideDays: boolean;
+    showTimeArrowButtons: boolean;
     showWeekNumber: boolean;
+    timePrecision: TimePrecision | undefined;
+    useAmPm?: boolean;
 }
 
 export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePicker2ExampleState> {
@@ -46,6 +47,7 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
         shortcuts: false,
         showActionsBar: true,
         showFooterElement: false,
+        showOutsideDays: true,
         showWeekNumber: false,
         showTimeArrowButtons: false,
         timePrecision: undefined,
@@ -57,6 +59,8 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
 
     private toggleShowFooterElement = handleBooleanChange(showFooterElement => this.setState({ showFooterElement }));
+
+    private toggleShowOutsideDays = handleBooleanChange(showOutsideDays => this.setState({ showOutsideDays }));
 
     private toggleShowWeekNumber = handleBooleanChange(showWeekNumber => this.setState({ showWeekNumber }));
 
@@ -75,7 +79,7 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
     private toggleUseAmPm = handleBooleanChange(useAmPm => this.setState({ useAmPm }));
 
     public render() {
-        const { date, showTimeArrowButtons, showWeekNumber, useAmPm, ...props } = this.state;
+        const { date, showTimeArrowButtons, showOutsideDays, showWeekNumber, useAmPm, ...props } = this.state;
         const showTimePicker = this.state.timePrecision !== undefined;
 
         const options = (
@@ -103,6 +107,11 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
                     checked={this.state.showWeekNumber}
                     label="Show week numbers"
                     onChange={this.toggleShowWeekNumber}
+                />
+                <Switch
+                    checked={this.state.showOutsideDays}
+                    label="Show outside days"
+                    onChange={this.toggleShowOutsideDays}
                 />
 
                 <H5>Time picker props</H5>
@@ -141,7 +150,7 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
                     onChange={this.handleDateChange}
                     timePickerProps={timePickerProps}
                     footerElement={this.state.showFooterElement ? exampleFooterElement : undefined}
-                    dayPickerProps={{ showWeekNumber }}
+                    dayPickerProps={{ showOutsideDays, showWeekNumber }}
                     {...props}
                 />
                 <Tag>{date == null ? "No date" : format(date, "PPPppp")}</Tag>

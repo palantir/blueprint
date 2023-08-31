@@ -20,13 +20,13 @@ import * as React from "react";
 import { CaptionProps, useDayPicker, useNavigation } from "react-day-picker";
 
 import { Button, DISPLAYNAME_PREFIX, Divider, HTMLSelect, OptionProps } from "@blueprintjs/core";
-import { Classes, DateUtils } from "@blueprintjs/datetime";
-import { ChevronLeft, ChevronRight, IconSize } from "@blueprintjs/icons";
-
+import { DateUtils } from "@blueprintjs/datetime";
 // tslint:disable-next-line no-submodule-imports
 import { measureTextWidth } from "@blueprintjs/datetime/lib/esm/common/utils";
+import { ChevronLeft, ChevronRight, IconSize } from "@blueprintjs/icons";
 
 import { DatePicker2Context } from "./datePicker2Context";
+import { Classes } from "../../classes";
 
 export function DatePicker2Caption(captionProps: CaptionProps) {
     const { classNames: rdpClassNames, fromDate, toDate, labels } = useDayPicker();
@@ -52,7 +52,7 @@ export function DatePicker2Caption(captionProps: CaptionProps) {
     const prevButton = (
         <Button
             aria-label={labels.labelPrevious(previousMonth, { locale })}
-            // className={classNames(rdpClassNames.nav_button, rdpClassNames.nav_button_previous)}
+            className={classNames(Classes.DATEPICKER_NAV_BUTTON, Classes.DATEPICKER_NAV_BUTTON_PREVIOUS)}
             disabled={!previousMonth}
             icon={<ChevronLeft />}
             minimal={true}
@@ -62,7 +62,7 @@ export function DatePicker2Caption(captionProps: CaptionProps) {
     const nextButton = (
         <Button
             aria-label={labels.labelNext(nextMonth, { locale })}
-            // className={classNames(rdpClassNames.nav_button, rdpClassNames.nav_button_next)}
+            className={classNames(Classes.DATEPICKER_NAV_BUTTON, Classes.DATEPICKER_NAV_BUTTON_NEXT)}
             disabled={!nextMonth}
             icon={<ChevronRight />}
             minimal={true}
@@ -88,7 +88,7 @@ export function DatePicker2Caption(captionProps: CaptionProps) {
         const newDate = DateUtils.clone(currentMonth);
         newDate.setMonth(newMonth);
         goToMonth(newDate);
-    }, []);
+    }, [currentMonth, goToMonth]);
 
     const startMonth = displayYear === minYear ? fromDate!.getMonth() : 0;
     const endMonth = displayYear === maxYear ? toDate!.getMonth() + 1 : 12;
@@ -100,7 +100,7 @@ export function DatePicker2Caption(captionProps: CaptionProps) {
             months.push(format(new Date(displayYear, i), "MMMM", { locale }));
         }
         return months;
-    }, [displayYear, minYear, maxYear, fromDate, toDate, locale]);
+    }, [displayYear, endMonth, startMonth, locale]);
 
     const monthOptionElements = monthsToDisplay
         .map<OptionProps>((month, i) => ({ label: month, value: i }))
@@ -129,7 +129,7 @@ export function DatePicker2Caption(captionProps: CaptionProps) {
         const newDate = DateUtils.clone(currentMonth);
         newDate.setFullYear(newYear);
         goToMonth(newDate);
-    }, []);
+    }, [currentMonth, goToMonth]);
 
     const yearSelect = (
         <HTMLSelect
@@ -156,8 +156,8 @@ export function DatePicker2Caption(captionProps: CaptionProps) {
             Classes.DATEPICKER_CAPTION_MEASURE,
             containerElement.current,
         );
-        const monthSelect = containerElement.current.querySelector(`.${Classes.DATEPICKER_MONTH_SELECT}`);
-        const monthSelectWidth = monthSelect == null ? 0 : monthSelect.clientWidth;
+        const monthSelectEl = containerElement.current.querySelector(`.${Classes.DATEPICKER_MONTH_SELECT}`);
+        const monthSelectWidth = monthSelectEl == null ? 0 : monthSelectEl.clientWidth;
         const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - IconSize.STANDARD - 2);
         setMonthRightOffset(rightOffset);
     }, [containerElement, displayedMonthText]);

@@ -39,6 +39,7 @@
         "@blueprintjs/core": "^5.3.0",
         "@blueprintjs/datetime": "^5.0.10",
         "@blueprintjs/icons": "^5.1.6",
+        "classnames": "^2.3.1",
         "date-fns": "^2.28.0",
         "react-day-picker": "7.4.9 || ^8.5.1",
         "tslib": "~2.5.0"

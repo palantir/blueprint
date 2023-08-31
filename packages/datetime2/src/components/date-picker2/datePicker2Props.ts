@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { DayPickerSingleProps } from "react-day-picker";
+import type { DayModifiers, DayPickerSingleProps } from "react-day-picker";
 
-import { Props } from "@blueprintjs/core";
-import { DatePickerProps } from "@blueprintjs/datetime";
+import type { Props } from "@blueprintjs/core";
+import type { DatePickerProps } from "@blueprintjs/datetime";
 
 /** Props shared between DatePicker v1 and v2 */
 type DatePickerSharedProps = Omit<
@@ -46,6 +46,11 @@ export interface DatePicker2Props extends DatePickerSharedProps, Props {
      * @see https://react-day-picker.js.org/basics/localization
      */
     localeCode?: string;
+
+    /**
+     * Custom modifiers passed to `<DayPicker>`.
+     */
+    modifiers?: DayModifiers;
 
     /**
      * Called when the user selects a day.
