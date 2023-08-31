@@ -9,14 +9,9 @@ $cell-size: $pt-grid-size * 3 !default;
 $header-height: $pt-grid-size * 4 !default;
 $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
 
-@mixin calendar-day() {
-  display: table-cell;
-  height: $datepicker-day-size;
-  line-height: 1;
-  text-align: center;
-  vertical-align: middle;
-  width: $datepicker-day-size;
-}
+// react-day-picker does not conform to our naming scheme
+
+/* stylelint-disable selector-class-pattern */
 
 .#{$ns}-datepicker {
   .rdp {
@@ -48,7 +43,6 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   }
 
   .rdp-head_cell {
-    // @include calendar-day();
     font-size: inherit;
     font-weight: 600;
     padding-top: $datepicker-padding;
@@ -68,7 +62,6 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   }
 
   .rdp-day {
-    // @include calendar-day();
     border-radius: $pt-border-radius;
     cursor: pointer;
 
