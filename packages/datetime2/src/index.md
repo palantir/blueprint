@@ -20,6 +20,7 @@ in the Blueprint ecosystem.
 
 Compared to their "V1" counterparts, these components:
 - uses [react-day-picker](https://react-day-picker.js.org/) v8 instead of v7
+- are easier to localize since date-fns is now a dependency
 
 ### Installation
 

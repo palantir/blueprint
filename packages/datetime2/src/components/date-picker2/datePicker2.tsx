@@ -95,14 +95,12 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
                                 ...dayPickerProps?.components,
                             }}
                             fromDate={minDate}
-                            fromMonth={minDate}
                             mode="single"
                             month={new Date(displayYear, displayMonth)}
                             onMonthChange={this.handleMonthChange}
                             onSelect={this.handleDaySelect}
                             selected={this.state.value ?? undefined}
                             toDate={maxDate}
-                            toMonth={maxDate}
                         />
                         {this.maybeRenderTimePicker()}
                         {showActionsBar && this.renderOptionsBar()}
@@ -252,8 +250,6 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
     }
 
     private handleDaySelect = (day: Date | undefined, _selectedDay: Date | undefined, activeModifiers: ActiveModifiers, e: React.MouseEvent) => {
-        // @ts-ignore -- HACKHACK(@adidahiya): multiple versions of rdp types in this monorepo create a type conflict here
-        this.props.dayPickerProps?.onDayClick?.(day, modifiers, e);
         if (activeModifiers.disabled) {
             return;
         } else if (day === undefined) {
@@ -261,6 +257,7 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
             return;
         }
 
+        this.props.dayPickerProps?.onDayClick?.(day, activeModifiers, e);
         this.updateDay(day);
 
         // allow toggling selected date by clicking it again (if prop enabled)

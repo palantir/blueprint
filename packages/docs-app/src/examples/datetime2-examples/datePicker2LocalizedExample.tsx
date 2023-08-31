@@ -14,5 +14,17 @@
  * limitations under the License.
  */
 
-export * from "./datePicker2Example";
-export * from "./datePicker2LocalizedExample";
+import * as React from "react";
+
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { DatePicker2 } from "@blueprintjs/datetime2";
+
+export class DatePicker2LocalizedExample extends React.PureComponent<ExampleProps> {
+    public render() {
+        return (
+            <Example options={false} {...this.props}>
+                <DatePicker2 localeCode="fr" />
+            </Example>
+        );
+    }
+}
