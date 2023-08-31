@@ -25,8 +25,8 @@ import { DateUtils } from "@blueprintjs/datetime";
 import { measureTextWidth } from "@blueprintjs/datetime/lib/esm/common/utils";
 import { ChevronLeft, ChevronRight, IconSize } from "@blueprintjs/icons";
 
-import { DatePicker2Context } from "./datePicker2Context";
 import { Classes } from "../../classes";
+import { DatePicker2Context } from "./datePicker2Context";
 
 export function DatePicker2Caption(captionProps: CaptionProps) {
     const { classNames: rdpClassNames, fromDate, toDate, labels } = useDayPicker();
@@ -79,16 +79,19 @@ export function DatePicker2Caption(captionProps: CaptionProps) {
         years.push({ value: displayYear, disabled: true });
     }
 
-    const handleMonthSelectChange = React.useCallback((e: React.FormEvent<HTMLSelectElement>) => {
-        const newMonth = parseInt((e.target as HTMLSelectElement).value, 10);
-        // ignore change events with invalid values to prevent crash on iOS Safari (#4178)
-        if (isNaN(newMonth)) {
-            return;
-        }
-        const newDate = DateUtils.clone(currentMonth);
-        newDate.setMonth(newMonth);
-        goToMonth(newDate);
-    }, [currentMonth, goToMonth]);
+    const handleMonthSelectChange = React.useCallback(
+        (e: React.FormEvent<HTMLSelectElement>) => {
+            const newMonth = parseInt((e.target as HTMLSelectElement).value, 10);
+            // ignore change events with invalid values to prevent crash on iOS Safari (#4178)
+            if (isNaN(newMonth)) {
+                return;
+            }
+            const newDate = DateUtils.clone(currentMonth);
+            newDate.setMonth(newMonth);
+            goToMonth(newDate);
+        },
+        [currentMonth, goToMonth],
+    );
 
     const startMonth = displayYear === minYear ? fromDate!.getMonth() : 0;
     const endMonth = displayYear === maxYear ? toDate!.getMonth() + 1 : 12;
@@ -120,16 +123,19 @@ export function DatePicker2Caption(captionProps: CaptionProps) {
         />
     );
 
-    const handleYearSelectChange = React.useCallback((e: React.FormEvent<HTMLSelectElement>) => {
-        const newYear = parseInt((e.target as HTMLSelectElement).value, 10);
-        // ignore change events with invalid values to prevent crash on iOS Safari (#4178)
-        if (isNaN(newYear)) {
-            return;
-        }
-        const newDate = DateUtils.clone(currentMonth);
-        newDate.setFullYear(newYear);
-        goToMonth(newDate);
-    }, [currentMonth, goToMonth]);
+    const handleYearSelectChange = React.useCallback(
+        (e: React.FormEvent<HTMLSelectElement>) => {
+            const newYear = parseInt((e.target as HTMLSelectElement).value, 10);
+            // ignore change events with invalid values to prevent crash on iOS Safari (#4178)
+            if (isNaN(newYear)) {
+                return;
+            }
+            const newDate = DateUtils.clone(currentMonth);
+            newDate.setFullYear(newYear);
+            goToMonth(newDate);
+        },
+        [currentMonth, goToMonth],
+    );
 
     const yearSelect = (
         <HTMLSelect

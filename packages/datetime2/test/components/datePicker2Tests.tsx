@@ -31,7 +31,7 @@ import { assertDatesEqual } from "@blueprintjs/test-commons";
 import { Classes } from "../../src/classes";
 import { DatePicker2, DatePicker2Props } from "../../src/components/date-picker2/datePicker2";
 import { DatePicker2State } from "../../src/components/date-picker2/datePicker2State";
-import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils"
+import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils";
 
 describe("<DatePicker2>", () => {
     let testsContainerElement: HTMLElement;
@@ -171,7 +171,9 @@ describe("<DatePicker2>", () => {
     it("user-provided modifiers are applied", () => {
         const ODD_CLASS = "test-odd";
         const oddifier = (d: Date) => d.getDate() % 2 === 1;
-        const { getDay } = wrap(<DatePicker2 dayPickerProps={{ modifiers: { odd: oddifier }, modifiersClassNames: { odd: ODD_CLASS } }} />);
+        const { getDay } = wrap(
+            <DatePicker2 dayPickerProps={{ modifiers: { odd: oddifier }, modifiersClassNames: { odd: ODD_CLASS } }} />,
+        );
 
         assert.isFalse(getDay(4).hasClass(ODD_CLASS));
         assert.isTrue(getDay(5).hasClass(ODD_CLASS));
@@ -322,7 +324,11 @@ describe("<DatePicker2>", () => {
 
             it("valid min/max today has enabled button", () => {
                 const { getTodayButton } = wrap(
-                    <DatePicker2 minDate={MIN_DATE_BEFORE_TODAY} maxDate={MAX_DATE_AFTER_TODAY} showActionsBar={true} />,
+                    <DatePicker2
+                        minDate={MIN_DATE_BEFORE_TODAY}
+                        maxDate={MAX_DATE_AFTER_TODAY}
+                        showActionsBar={true}
+                    />,
                 );
 
                 assert.isFalse(getTodayButton().props().disabled);
@@ -545,7 +551,9 @@ describe("<DatePicker2>", () => {
 
         it("selected day is changed if necessary when selections are changed", () => {
             const initialMonth = new Date(2015, Months.JULY, 1);
-            const { assertSelectedDays, getDay, clickPreviousMonth } = wrap(<DatePicker2 initialMonth={initialMonth} />);
+            const { assertSelectedDays, getDay, clickPreviousMonth } = wrap(
+                <DatePicker2 initialMonth={initialMonth} />,
+            );
             getDay(31).simulate("click");
             clickPreviousMonth();
             assertSelectedDays(30);
@@ -739,7 +747,10 @@ describe("<DatePicker2>", () => {
             /** Asserts that the given days are selected. No arguments asserts that selection is empty. */
             assertSelectedDays: (...days: number[]) =>
                 assert.sameMembers(
-                    wrapper.find(`.${Classes.DATEPICKER_DAY_SELECTED}`).hostNodes().map(d => +d.text()),
+                    wrapper
+                        .find(`.${Classes.DATEPICKER_DAY_SELECTED}`)
+                        .hostNodes()
+                        .map(d => +d.text()),
                     days,
                 ),
             clickNextMonth: () => wrapper.find(Button).last().simulate("click"),

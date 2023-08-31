@@ -21,12 +21,12 @@ const DATEPICKER_NAV_BUTTON = `${DatetimeClasses.DATEPICKER}-nav-button`;
 
 export const Classes = {
     ...DatetimeClasses,
-    DATEPICKER_HIGHLIGHT_CURRENT_DAY: `${DatetimeClasses.DATEPICKER}-highlight-current-day`,
     DATEPICKER_DAY: RDP_DAY,
     DATEPICKER_DAY_DISABLED: `${RDP_DAY}_disabled`,
+    DATEPICKER_DAY_IS_TODAY: `${RDP_DAY}_today`,
     DATEPICKER_DAY_OUTSIDE: `${RDP_DAY}_outside`,
     DATEPICKER_DAY_SELECTED: `${RDP_DAY}_selected`,
-    DATEPICKER_DAY_IS_TODAY: `${RDP_DAY}_today`,
+    DATEPICKER_HIGHLIGHT_CURRENT_DAY: `${DatetimeClasses.DATEPICKER}-highlight-current-day`,
     DATEPICKER_NAV_BUTTON,
     DATEPICKER_NAV_BUTTON_NEXT: `${DATEPICKER_NAV_BUTTON}-next`,
     DATEPICKER_NAV_BUTTON_PREVIOUS: `${DATEPICKER_NAV_BUTTON}-previous`,

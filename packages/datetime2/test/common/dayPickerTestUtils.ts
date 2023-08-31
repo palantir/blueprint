@@ -21,8 +21,7 @@ import { ReactWrapper } from "enzyme";
 
 import { Classes } from "../../src/classes";
 
-const isDayHidden = (day: ReactWrapper<any, any>): boolean =>
-    !day.find(`.${Classes.DATEPICKER_DAY}`).exists();
+const isDayHidden = (day: ReactWrapper<any, any>): boolean => !day.find(`.${Classes.DATEPICKER_DAY}`).exists();
 
 export function assertDayDisabled(day: ReactWrapper<any, any>, expectDisabled: boolean = true) {
     assert.equal(day.hasClass(Classes.DATEPICKER_DAY_DISABLED), expectDisabled);
