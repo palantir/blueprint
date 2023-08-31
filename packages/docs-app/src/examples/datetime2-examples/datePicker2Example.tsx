@@ -35,6 +35,7 @@ export interface DatePicker2ExampleState {
     showTimeArrowButtons: boolean;
     useAmPm?: boolean;
     showFooterElement: boolean;
+    showWeekNumber: boolean;
 }
 
 export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePicker2ExampleState> {
@@ -43,8 +44,9 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
         highlightCurrentDay: false,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
-        showActionsBar: false,
+        showActionsBar: true,
         showFooterElement: false,
+        showWeekNumber: false,
         showTimeArrowButtons: false,
         timePrecision: undefined,
         useAmPm: false,
@@ -55,6 +57,8 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
 
     private toggleShowFooterElement = handleBooleanChange(showFooterElement => this.setState({ showFooterElement }));
+
+    private toggleShowWeekNumber = handleBooleanChange(showWeekNumber => this.setState({ showWeekNumber }));
 
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
 
@@ -71,7 +75,7 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
     private toggleUseAmPm = handleBooleanChange(useAmPm => this.setState({ useAmPm }));
 
     public render() {
-        const { date, showTimeArrowButtons, useAmPm, ...props } = this.state;
+        const { date, showTimeArrowButtons, showWeekNumber, useAmPm, ...props } = this.state;
         const showTimePicker = this.state.timePrecision !== undefined;
 
         const options = (
@@ -94,9 +98,17 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
                     label="Show custom footer element"
                     onChange={this.toggleShowFooterElement}
                 />
+                <H5>react-day-picker props</H5>
+                <Switch
+                    checked={this.state.showWeekNumber}
+                    label="Show week numbers"
+                    onChange={this.toggleShowWeekNumber}
+                />
+
+                <H5>Time picker props</H5>
                 <PrecisionSelect
                     allowNone={true}
-                    label="Time precision"
+                    label="Precision"
                     value={props.timePrecision}
                     onChange={this.handlePrecisionChange}
                 />
@@ -129,7 +141,7 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
                     onChange={this.handleDateChange}
                     timePickerProps={timePickerProps}
                     footerElement={this.state.showFooterElement ? exampleFooterElement : undefined}
-                    // dayPickerProps={{ showWeekNumbers: true }}
+                    dayPickerProps={{ showWeekNumber }}
                     {...props}
                 />
                 <Tag>

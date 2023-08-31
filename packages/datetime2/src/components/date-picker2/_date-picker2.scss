@@ -30,11 +30,6 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
     }
   }
 
-  .#{$ns}-datepicker-day-wrapper {
-    border-radius: $pt-border-radius;
-    padding: 7px;
-  }
-
   .rdp-month {
     border-collapse: collapse;
     border-spacing: 0;
@@ -46,10 +41,6 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
     & + & {
       margin-left: $pt-grid-size;
     }
-  }
-
-  .rdp-caption {
-    display: table-caption;
   }
 
   .rdp-weekdays {
@@ -72,11 +63,8 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
     display: table-row;
   }
 
-  // TODO(@adahiya): verify that this is the correct selector
-  .rdp-week-number {
-    @include calendar-day();
+  .rdp-weeknumber {
     color: $pt-text-color-disabled;
-    font-size: $pt-font-size;
   }
 
   .rdp-day {
@@ -90,9 +78,8 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
     }
 
     &.rdp-day_today {
-      .#{$ns}-datepicker-day-wrapper {
-        border: 1px solid $pt-divider-black;
-      }
+      // override rdp's default of making today's date bold
+      font-weight: 400;
     }
 
     // need some extra specificity here to override rdp default styles
@@ -108,7 +95,6 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
       }
     }
 
-    // TODO(@adahiya): verify that this is the correct selector
     &.rdp-day_selected {
       background-color: $blue3;
       border-radius: $pt-border-radius;
@@ -130,30 +116,17 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
       cursor: not-allowed;
     }
   }
-}
 
-.#{$ns}-datepicker-navbar {
-  align-items: center;
-  display: flex;
-  height: $pt-button-height;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-
-  > .rdp-nav_button_previous {
-    margin-right: auto;
-  }
-
-  > .rdp-nav_button_next {
-    margin-left: auto;
+  &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
+    border: 1px solid $pt-divider-black;
   }
 }
 
-.#{$ns}-datepicker-caption {
-  @include pt-flex-container(row, $fill: ":first-child");
+// use extra specificity to override DatePicker v1 styles
+.#{$ns}-datepicker-caption.rdp-caption {
+  @include pt-flex-container(row);
   justify-content: space-between;
-  margin: 0 ($pt-button-height - $datepicker-padding) $datepicker-padding;
+  margin: 0 0 $datepicker-padding;
 
   // override HTMLSelect styles for a narrower appearance
   // N.B. these styles are important to achieve accurate measurements to position the dropdown arrows in <DatePickerCaption>
@@ -207,7 +180,6 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
 .#{$ns}-dark .#{$ns}-datepicker {
   background: $dark-datepicker-background-color;
 
-  // TODO(@adahiya): verify that this is the correct selector
   .rdp-week-number {
     color: $pt-dark-text-color-disabled;
   }
@@ -215,12 +187,6 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
   .rdp-day {
     &.rdp-day_outside {
       color: $pt-dark-text-color-disabled;
-    }
-
-    &.rdp-day_today {
-      .#{$ns}-datepicker-day-wrapper {
-        border: 1px solid $pt-dark-divider-white;
-      }
     }
 
     // need some extra specificity here to override rdp default styles
@@ -252,6 +218,10 @@ $header-margin: ($header-height - $pt-input-height) * 0.5 !default;
       background: none;
       color: $pt-dark-text-color-disabled;
     }
+  }
+
+  &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
+    border: 1px solid $pt-dark-divider-white;
   }
 
   .#{$ns}-datepicker-footer {

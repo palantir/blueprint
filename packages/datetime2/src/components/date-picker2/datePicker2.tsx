@@ -15,14 +15,11 @@
  */
 
 import classNames from "classnames";
-import type { Locale } from "date-fns";
 import * as React from "react";
-import { /* CaptionLabelProps, */ ActiveModifiers, DayPicker /*, NavigationContextValue */ } from "react-day-picker";
+import { ActiveModifiers, DayPicker } from "react-day-picker";
 
-import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, Props } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 import {
-    Classes,
-    DatePickerProps,
     DatePickerUtils,
     DateRange,
     DateRangeShortcut,
@@ -31,44 +28,14 @@ import {
 } from "@blueprintjs/datetime";
 // tslint:disable no-submodule-imports
 import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
-import { DatePickerCaption } from "@blueprintjs/datetime/lib/esm/components/date-picker/datePickerCaption";
-import { DatePickerNavbar } from "@blueprintjs/datetime/lib/esm/components/date-picker/datePickerNavbar";
 import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/shortcuts";
 // tslint:enable no-submodule-imports
 
-/** Props shared between DatePicker v1 and v2 */
-type DatePickerSharedProps = Omit<DatePickerProps, "defaultValue" | "value" | "onChange" | "modifiers">;
-
-export interface DatePicker2Props extends DatePickerSharedProps, Props {
-    /**
-     * Initial day the calendar will display as selected.
-     * This should not be set if `value` is set.
-     */
-    defaultValue?: Date;
-
-    /**
-     * Called when the user selects a day.
-     * If being used in an uncontrolled manner, `selectedDate` will be `null` if the user clicks the currently selected
-     * day. If being used in a controlled manner, `selectedDate` will contain the day clicked no matter what.
-     * `isUserChange` is true if the user selected a day, and false if the date was automatically changed
-     * by the user navigating to a new month or year rather than explicitly clicking on a date in the calendar.
-     */
-    onChange?: (selectedDate: Date | null, isUserChange: boolean) => void;
-
-    /**
-     * The currently selected day. If this prop is provided, the component acts in a controlled manner.
-     */
-    value?: Date | null;
-}
-
-interface DatePicker2State {
-    displayMonth: number;
-    displayYear: number;
-    locale: Locale | undefined;
-    selectedDay: number | null;
-    value: Date | null;
-    selectedShortcutIndex?: number;
-}
+import { Classes } from "../../classes";
+import { DatePicker2Caption } from "./datePicker2Caption";
+import { DatePicker2Props } from "./datePicker2Props";
+import { DatePicker2State } from "./datePicker2State";
+import { DatePicker2Provider } from "./datePicker2Context";
 
 /**
  * Date picker (v2) component.
@@ -89,7 +56,7 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
         todayButtonText: "Today",
     };
 
-    public static displayName = `${DISPLAYNAME_PREFIX}.DatePicker`;
+    public static displayName = `${DISPLAYNAME_PREFIX}.DatePicker2`;
 
     private ignoreNextMonthChange = false;
 
@@ -109,42 +76,45 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
     }
 
     public render() {
-        const { className, dayPickerProps, footerElement, localeUtils, maxDate, minDate, showActionsBar } = this.props;
+        const { className, dayPickerProps, footerElement, maxDate, minDate, showActionsBar } = this.props;
         const { displayMonth, displayYear, locale } = this.state;
 
         return (
-            <div className={classNames(Classes.DATEPICKER, className)}>
+            <div className={classNames(Classes.DATEPICKER, className, {
+                [Classes.DATEPICKER_HIGHLIGHT_CURRENT_DAY]: this.props.highlightCurrentDay,
+            })}>
                 {this.maybeRenderShortcuts()}
                 <div className={Classes.DATEPICKER_CONTENT}>
-                    <DayPicker
-                        showOutsideDays={true}
-                        // @ts-ignore -- HACKHACK: TS thinks this type includes | string, which it does not!
-                        locale={locale}
-                        localeUtils={localeUtils}
-                        {...dayPickerProps}
-                        canChangeMonth={true}
-                        captionElement={this.renderCaption}
-                        navbarElement={this.renderNavbar}
-                        disabledDays={this.getDisabledDaysModifier()}
-                        fromMonth={minDate}
-                        mode="single"
-                        month={new Date(displayYear, displayMonth)}
-                        onMonthChange={this.handleMonthChange}
-                        onSelect={this.handleDaySelect}
-                        selected={this.state.value ?? undefined}
-                        toMonth={maxDate}
-                        renderDay={dayPickerProps?.renderDay ?? this.renderDay}
-                    />
-                    {this.maybeRenderTimePicker()}
-                    {showActionsBar && this.renderOptionsBar()}
-                    {footerElement}
+                    <DatePicker2Provider {...this.props} {...this.state}>
+                        <DayPicker
+                            locale={locale}
+                            showOutsideDays={true}
+                            {...dayPickerProps}
+                            components={{
+                                Caption: DatePicker2Caption,
+                                ...dayPickerProps?.components,
+                            }}
+                            fromDate={minDate}
+                            fromMonth={minDate}
+                            mode="single"
+                            month={new Date(displayYear, displayMonth)}
+                            onMonthChange={this.handleMonthChange}
+                            onSelect={this.handleDaySelect}
+                            selected={this.state.value ?? undefined}
+                            toDate={maxDate}
+                            toMonth={maxDate}
+                        />
+                        {this.maybeRenderTimePicker()}
+                        {showActionsBar && this.renderOptionsBar()}
+                        {footerElement}
+                    </DatePicker2Provider>
                 </div>
             </div>
         );
     }
 
     public async componentDidMount() {
-        await this.loadLocale(this.props.locale);
+        await this.loadLocale(this.props.localeCode);
     }
 
     public async componentDidUpdate(prevProps: DatePicker2Props, prevState: DatePicker2State) {
@@ -170,12 +140,12 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
             this.setState({ selectedShortcutIndex: this.props.selectedShortcutIndex });
         }
 
-        if (this.props.locale !== prevProps.locale) {
-            await this.loadLocale(this.props.locale);
+        if (this.props.localeCode !== prevProps.localeCode) {
+            await this.loadLocale(this.props.localeCode);
         }
     }
 
-    protected validateProps(props: DatePickerProps) {
+    protected validateProps(props: DatePicker2Props) {
         const { defaultValue, initialMonth, maxDate, minDate, value } = props;
         if (defaultValue != null && !DateUtils.isDayInRange(defaultValue, [minDate!, maxDate!])) {
             console.error(Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
@@ -203,38 +173,6 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
         const locale = await import(`date-fns/locale/${localeCode}/index.js`);
         this.setState({ locale });
     }
-
-    private renderDay = (day: Date) => {
-        const date = day.getDate();
-
-        return <div className={Classes.DATEPICKER_DAY_WRAPPER}>{date}</div>;
-    };
-
-    private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate!, this.props.maxDate!]);
-
-    private getDisabledDaysModifier = () => {
-        const { dayPickerProps } = this.props;
-
-        return Array.isArray(dayPickerProps?.disabledDays)
-            ? [this.disabledDays, ...dayPickerProps!.disabledDays]
-            : [this.disabledDays, dayPickerProps?.disabledDays];
-    };
-
-    // TODO(@adidahiya)
-    private renderCaption = (props: any /* CaptionElementProps */) => (
-        <DatePickerCaption
-            {...props}
-            maxDate={this.props.maxDate}
-            minDate={this.props.minDate}
-            onDateChange={this.handleMonthChange}
-            reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
-        />
-    );
-
-    // TODO(@adidahiya)
-    private renderNavbar = (props: any /* NavbarElementProps */) => (
-        <DatePickerNavbar {...props} maxDate={this.props.maxDate} minDate={this.props.minDate} />
-    );
 
     private renderOptionsBar() {
         const { clearButtonText, todayButtonText, minDate, maxDate, canClearSelection } = this.props;
