@@ -43,7 +43,10 @@ export function DatePicker2Caption(captionProps: CaptionProps) {
     const [monthRightOffset, setMonthRightOffset] = React.useState<number>(0);
     const { currentMonth, goToMonth, nextMonth, previousMonth } = useNavigation();
 
-    const handlePreviousClick = React.useCallback(() => previousMonth && goToMonth(previousMonth), [previousMonth, goToMonth]);
+    const handlePreviousClick = React.useCallback(
+        () => previousMonth && goToMonth(previousMonth),
+        [previousMonth, goToMonth],
+    );
     const handleNextClick = React.useCallback(() => nextMonth && goToMonth(nextMonth), [nextMonth, goToMonth]);
 
     const prevButton = (
@@ -140,9 +143,7 @@ export function DatePicker2Caption(captionProps: CaptionProps) {
         />
     );
 
-    const orderedSelects = reverseMonthAndYearMenus
-        ? [yearSelect, monthSelect]
-        : [monthSelect, yearSelect];
+    const orderedSelects = reverseMonthAndYearMenus ? [yearSelect, monthSelect] : [monthSelect, yearSelect];
 
     React.useLayoutEffect(() => {
         if (containerElement.current == null) {
@@ -158,7 +159,7 @@ export function DatePicker2Caption(captionProps: CaptionProps) {
         const monthSelect = containerElement.current.querySelector(`.${Classes.DATEPICKER_MONTH_SELECT}`);
         const monthSelectWidth = monthSelect == null ? 0 : monthSelect.clientWidth;
         const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - IconSize.STANDARD - 2);
-        setMonthRightOffset(rightOffset)
+        setMonthRightOffset(rightOffset);
     }, [containerElement, displayedMonthText]);
 
     return (

@@ -19,13 +19,7 @@ import * as React from "react";
 import { ActiveModifiers, DayPicker } from "react-day-picker";
 
 import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
-import {
-    DatePickerUtils,
-    DateRange,
-    DateRangeShortcut,
-    DateUtils,
-    TimePicker,
-} from "@blueprintjs/datetime";
+import { DatePickerUtils, DateRange, DateRangeShortcut, DateUtils, TimePicker } from "@blueprintjs/datetime";
 // tslint:disable no-submodule-imports
 import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
 import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/shortcuts";
@@ -80,9 +74,11 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
         const { displayMonth, displayYear, locale } = this.state;
 
         return (
-            <div className={classNames(Classes.DATEPICKER, className, {
-                [Classes.DATEPICKER_HIGHLIGHT_CURRENT_DAY]: this.props.highlightCurrentDay,
-            })}>
+            <div
+                className={classNames(Classes.DATEPICKER, className, {
+                    [Classes.DATEPICKER_HIGHLIGHT_CURRENT_DAY]: this.props.highlightCurrentDay,
+                })}
+            >
                 {this.maybeRenderShortcuts()}
                 <div className={Classes.DATEPICKER_CONTENT}>
                     <DatePicker2Provider {...this.props} {...this.state}>
@@ -249,7 +245,12 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
         ];
     }
 
-    private handleDaySelect = (day: Date | undefined, _selectedDay: Date | undefined, activeModifiers: ActiveModifiers, e: React.MouseEvent) => {
+    private handleDaySelect = (
+        day: Date | undefined,
+        _selectedDay: Date | undefined,
+        activeModifiers: ActiveModifiers,
+        e: React.MouseEvent,
+    ) => {
         if (activeModifiers.disabled) {
             return;
         } else if (day === undefined) {
@@ -262,7 +263,9 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
 
         // allow toggling selected date by clicking it again (if prop enabled)
         const newValue =
-            this.props.canClearSelection && activeModifiers.selected ? null : DateUtils.getDateTime(day, this.state.value);
+            this.props.canClearSelection && activeModifiers.selected
+                ? null
+                : DateUtils.getDateTime(day, this.state.value);
         this.updateValue(newValue, true);
     };
 

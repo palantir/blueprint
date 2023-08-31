@@ -30,5 +30,5 @@ export const DatePicker2Context = React.createContext<DatePicker2ContextState>({
 });
 
 export const DatePicker2Provider = (props: React.PropsWithChildren<DatePicker2ContextState>) => {
-    return <DatePicker2Context.Provider value={props}>{props.children}</DatePicker2Context.Provider>
-}
+    return <DatePicker2Context.Provider value={props}>{props.children}</DatePicker2Context.Provider>;
+};

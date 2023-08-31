@@ -17,12 +17,13 @@
 import { DayPickerSingleProps } from "react-day-picker";
 
 import { Props } from "@blueprintjs/core";
-import {
-    DatePickerProps,
-} from "@blueprintjs/datetime";
+import { DatePickerProps } from "@blueprintjs/datetime";
 
 /** Props shared between DatePicker v1 and v2 */
-type DatePickerSharedProps = Omit<DatePickerProps, "dayPickerProps" | "defaultValue" | "locale" | "localeUtils" | "modifiers" | "onChange" | "value">;
+type DatePickerSharedProps = Omit<
+    DatePickerProps,
+    "dayPickerProps" | "defaultValue" | "locale" | "localeUtils" | "modifiers" | "onChange" | "value"
+>;
 
 export interface DatePicker2Props extends DatePickerSharedProps, Props {
     /**

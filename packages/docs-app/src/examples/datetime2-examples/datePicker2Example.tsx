@@ -144,9 +144,7 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
                     dayPickerProps={{ showWeekNumber }}
                     {...props}
                 />
-                <Tag>
-                    {date == null ? "No date" : format(date, "PPPppp")}
-                </Tag>
+                <Tag>{date == null ? "No date" : format(date, "PPPppp")}</Tag>
             </Example>
         );
     }
