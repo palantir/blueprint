@@ -18,7 +18,7 @@
         "postcss-value-parser": "^4.2.0"
     },
     "peerDependencies": {
-        "stylelint": "^14.12.1"
+        "stylelint": "^14.12.1 || ^15.10.3"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^8.0.2",
