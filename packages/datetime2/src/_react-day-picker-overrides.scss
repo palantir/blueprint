@@ -1,7 +1,7 @@
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/core/lib/scss/variables";
+@import "@blueprintjs/core/src/common/variables";
 
 // omit file extension, otherwise this will emit a `@import url()` rule
 @import "react-day-picker/dist/style";
