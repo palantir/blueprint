@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,10 @@ import { ReactWrapper } from "enzyme";
 
 import { Classes } from "../../src/classes";
 
-const isDayHidden = (day: ReactWrapper<any, any>): boolean => !day.find(`.${Classes.DATEPICKER_DAY}`).exists();
+const isDayHidden = (day: ReactWrapper<any, any>): boolean => !day.find(`.${Classes.DATEPICKER2_DAY}`).exists();
 
 export function assertDayDisabled(day: ReactWrapper<any, any>, expectDisabled: boolean = true) {
-    assert.equal(day.hasClass(Classes.DATEPICKER_DAY_DISABLED), expectDisabled);
+    assert.equal(day.hasClass(Classes.DATEPICKER2_DAY_DISABLED), expectDisabled);
 }
 
 export function assertDayHidden(day: ReactWrapper<any, any>, expectHidden: boolean = true) {

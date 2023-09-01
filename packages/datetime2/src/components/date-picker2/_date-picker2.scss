@@ -5,10 +5,6 @@
 @import "@blueprintjs/core/src/components/popover/common";
 @import "@blueprintjs/datetime/src/common";
 
-$cell-size: $pt-grid-size * 3 !default;
-$header-height: $pt-grid-size * 4 !default;
-$header-margin: ($header-height - $pt-input-height) * 0.5 !default;
-
 // react-day-picker does not conform to our naming scheme
 
 /* stylelint-disable selector-class-pattern */

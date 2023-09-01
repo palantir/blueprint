@@ -339,8 +339,8 @@ describe("<DatePicker2>", () => {
             const minDate = new Date(2000, Months.JANUARY, 10);
             const { getDay } = wrap(<DatePicker2 initialMonth={minDate} minDate={minDate} />);
             // 8 is before min date, 12 is after
-            assert.isTrue(getDay(8).hasClass(Classes.DATEPICKER_DAY_DISABLED));
-            assert.isFalse(getDay(12).hasClass(Classes.DATEPICKER_DAY_DISABLED));
+            assert.isTrue(getDay(8).hasClass(Classes.DATEPICKER2_DAY_DISABLED));
+            assert.isFalse(getDay(12).hasClass(Classes.DATEPICKER2_DAY_DISABLED));
         });
 
         it("onChange not fired when a day outside of bounds is clicked", () => {
@@ -748,7 +748,7 @@ describe("<DatePicker2>", () => {
             assertSelectedDays: (...days: number[]) =>
                 assert.sameMembers(
                     wrapper
-                        .find(`.${Classes.DATEPICKER_DAY_SELECTED}`)
+                        .find(`.${Classes.DATEPICKER2_DAY_SELECTED}`)
                         .hostNodes()
                         .map(d => +d.text()),
                     days,
@@ -761,8 +761,8 @@ describe("<DatePicker2>", () => {
             getClearButton: () => wrapper.find(`.${Classes.DATEPICKER_FOOTER}`).find(Button).last(),
             getDay: (dayNumber = 1) =>
                 wrapper
-                    .find(`.${Classes.DATEPICKER_DAY}`)
-                    .filterWhere(day => day.text() === "" + dayNumber && !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE))
+                    .find(`.${Classes.DATEPICKER2_DAY}`)
+                    .filterWhere(day => day.text() === "" + dayNumber && !day.hasClass(Classes.DATEPICKER2_DAY_OUTSIDE))
                     .hostNodes(),
             getTodayButton: () => wrapper.find(`.${Classes.DATEPICKER_FOOTER}`).find(Button).first(),
             months: wrapper.find(HTMLSelect).filter(`.${Classes.DATEPICKER_MONTH_SELECT}`).find("select"),
