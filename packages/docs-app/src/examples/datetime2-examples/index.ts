@@ -16,3 +16,4 @@
 
 export * from "./datePicker2Example";
 export * from "./datePicker2LocalizedExample";
+export * from "./datePicker2ModifierExample";

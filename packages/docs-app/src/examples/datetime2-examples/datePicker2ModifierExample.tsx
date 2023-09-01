@@ -19,12 +19,22 @@ import * as React from "react";
 import { DatePicker2 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-export class DatePicker2LocalizedExample extends React.PureComponent<ExampleProps> {
-    public render() {
-        return (
-            <Example options={false} {...this.props}>
-                <DatePicker2 localeCode="fr" />
-            </Example>
-        );
-    }
+export function DatePicker2ModifierExample(props: ExampleProps) {
+    const isDayNumberOdd = React.useCallback((d: Date) => d.getDate() % 2 === 1, []);
+
+    return (
+        <Example options={false} {...props}>
+            <DatePicker2
+                dayPickerProps={{
+                    modifiers: {
+                        odd: isDayNumberOdd,
+                    },
+                    modifiersClassNames: {
+                        // styles defined in docs-app/src/styles/_examples.scss
+                        odd: "docs-date-picker2-day-odd",
+                    },
+                }}
+            />
+        </Example>
+    );
 }

@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { ActiveModifiers, DayPicker } from "react-day-picker";
 
-import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, Utils } from "@blueprintjs/core";
 import { DatePickerUtils, DateRange, DateRangeShortcut, DateUtils, TimePicker } from "@blueprintjs/datetime";
 // tslint:disable no-submodule-imports
 import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
@@ -44,6 +44,7 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
         clearButtonText: "Clear",
         dayPickerProps: {},
         highlightCurrentDay: false,
+        localeCode: "en-US",
         maxDate: DatePickerUtils.getDefaultMaxDate(),
         minDate: DatePickerUtils.getDefaultMinDate(),
         reverseMonthAndYearMenus: false,
@@ -87,8 +88,6 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
                         <DayPicker
                             locale={locale}
                             showOutsideDays={true}
-                            modifiers={this.props.modifiers}
-                            required={!this.props.canClearSelection}
                             {...dayPickerProps}
                             components={{
                                 Caption: DatePicker2Caption,
@@ -99,6 +98,7 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
                             month={new Date(displayYear, displayMonth)}
                             onMonthChange={this.handleMonthChange}
                             onSelect={this.handleDaySelect}
+                            required={!this.props.canClearSelection}
                             selected={this.state.value ?? undefined}
                             toDate={maxDate}
                         />
@@ -168,8 +168,17 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
         } else if (this.state.locale?.code === localeCode) {
             return;
         }
-        const locale = await import(`date-fns/locale/${localeCode}/index.js`);
-        this.setState({ locale });
+
+        try {
+            const { default: locale } = await import(`date-fns/esm/locale/${localeCode}/index.js`);
+            this.setState({ locale });
+        } catch {
+            if (!Utils.isNodeEnv("production")) {
+                console.error(
+                    `[Blueprint] Could not load "${localeCode}" date-fns locale, please check that this locale code is supported: https://github.com/date-fns/date-fns/tree/main/src/locale`,
+                );
+            }
+        }
     }
 
     private renderOptionsBar() {
@@ -251,7 +260,7 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
 
     private handleDaySelect = (
         day: Date | undefined,
-        _selectedDay: Date | undefined,
+        selectedDay: Date,
         activeModifiers: ActiveModifiers,
         e: React.MouseEvent,
     ) => {
@@ -262,8 +271,8 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
             return;
         }
 
-        this.props.dayPickerProps?.onDayClick?.(day, activeModifiers, e);
         this.updateDay(day);
+        this.props.dayPickerProps?.onSelect?.(day, selectedDay, activeModifiers, e);
 
         // allow toggling selected date by clicking it again (if prop enabled)
         const newValue =

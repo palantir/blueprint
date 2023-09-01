@@ -622,6 +622,20 @@ $docs-hotkey-piano-height: 510px;
   }
 }
 
+//
+// DATETIME2
+//
+
+#{example("DatePicker2Modifier")} {
+  .docs-date-picker2-day-odd {
+    color: $red2;
+
+    .#{$ns}-dark & {
+      color: $red4;
+    }
+  }
+}
+
 
 //
 // TABLE

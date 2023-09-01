@@ -66,8 +66,14 @@ The **preset shortcuts** can be seen in the example above. They are as follows:
 __DatePicker2__ utilizes react-day-picker's built-in [modifiers](https://react-day-picker.js.org/basics/modifiers) for
 various functionality (highlighting the current day, showing selected days, etc.).
 
-You may use the `modifiers` prop to conditionally apply custom styles to calendar days using matchers.
-[See "Custom modifiers" documentation here](https://react-day-picker.js.org/basics/modifiers#custom-modifiers).
+You may extend and customize the default modifiers by specifying various properties in the `dayPickerProps` prop object.
+In the example below, we add a custom class name to every odd-numbered day in the calendar using a simple
+[Matcher](https://react-day-picker.js.org/api/types/matcher).
+
+@reactExample DatePicker2ModifierExample
+
+See [react-day-picker's "Custom modifiers" documentation](https://react-day-picker.js.org/basics/modifiers#custom-modifiers)
+for more info.
 
 @## Localization
 

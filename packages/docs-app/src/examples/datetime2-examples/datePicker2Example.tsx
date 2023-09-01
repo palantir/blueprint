@@ -48,8 +48,8 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
         showActionsBar: true,
         showFooterElement: false,
         showOutsideDays: true,
-        showWeekNumber: false,
         showTimeArrowButtons: false,
+        showWeekNumber: false,
         timePrecision: undefined,
         useAmPm: false,
     };
@@ -153,7 +153,9 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
                     dayPickerProps={{ showOutsideDays, showWeekNumber }}
                     {...props}
                 />
-                <Tag>{date == null ? "No date" : format(date, "PPPppp")}</Tag>
+                <Tag intent={date == null ? "none" : "primary"}>
+                    {date == null ? "No date" : format(date, "PPPppp")}
+                </Tag>
             </Example>
         );
     }
