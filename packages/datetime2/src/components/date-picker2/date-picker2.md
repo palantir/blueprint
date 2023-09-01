@@ -79,6 +79,7 @@ for more info.
 
 __DatePicker2__ supports calendar localization using date-fns [Locale](https://date-fns.org/docs/Locale).
 Use the `localeCode` prop to specify a locale code (ISO 639-1 + optional country code) and the component will
-load the corresponding date-fns locale. For example, `localeCode="fr"` is used below.
+load the corresponding date-fns locale. For example, `localeCode="fr"` is used below by default (try changing it
+using the interactive dropdown).
 
 @reactExample DatePicker2LocalizedExample

@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { ActiveModifiers, DayPicker } from "react-day-picker";
+import { ActiveModifiers, DateFormatter, DayPicker } from "react-day-picker";
 
 import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, Utils } from "@blueprintjs/core";
 import { DatePickerUtils, DateRange, DateRangeShortcut, DateUtils, TimePicker } from "@blueprintjs/datetime";
@@ -30,6 +30,7 @@ import { DatePicker2Caption } from "./datePicker2Caption";
 import { DatePicker2Provider } from "./datePicker2Context";
 import { DatePicker2Props } from "./datePicker2Props";
 import { DatePicker2State } from "./datePicker2State";
+import { format } from "date-fns";
 
 export { DatePicker2Props };
 
@@ -93,6 +94,10 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
                                 Caption: DatePicker2Caption,
                                 ...dayPickerProps?.components,
                             }}
+                            formatters={{
+                                formatWeekdayName: this.renderWeekdayName,
+                                ...dayPickerProps?.formatters,
+                            }}
                             fromDate={minDate}
                             mode="single"
                             month={new Date(displayYear, displayMonth)}
@@ -115,23 +120,19 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
         await this.loadLocale(this.props.localeCode);
     }
 
-    public async componentDidUpdate(prevProps: DatePicker2Props, prevState: DatePicker2State) {
-        super.componentDidUpdate(prevProps, prevState);
-
-        const { value } = this.props;
-        if (value === prevProps.value) {
-            // no action needed
-            return;
-        } else if (value == null) {
-            // clear the value
-            this.setState({ value: null });
-        } else {
-            this.setState({
-                displayMonth: value.getMonth(),
-                displayYear: value.getFullYear(),
-                selectedDay: value.getDate(),
-                value,
-            });
+    public async componentDidUpdate(prevProps: DatePicker2Props) {
+        if (this.props.value !== prevProps.value) {
+            if (this.props.value == null) {
+                // clear the value
+                this.setState({ value: null });
+            } else {
+                this.setState({
+                    displayMonth: this.props.value.getMonth(),
+                    displayYear: this.props.value.getFullYear(),
+                    selectedDay: this.props.value.getDate(),
+                    value: this.props.value,
+                });
+            }
         }
 
         if (this.props.selectedShortcutIndex !== prevProps.selectedShortcutIndex) {
@@ -179,6 +180,14 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
                 );
             }
         }
+    }
+
+    /**
+     * Custom formatter to render weekday names in the calendar header. The default formatter generally works fine,
+     * but it was returning CAPITALIZED strings for some reason, while we prefer Title Case.
+     */
+    private renderWeekdayName: DateFormatter = (date) => {
+        return format(date, "EEEEEE", { locale: this.state.locale });
     }
 
     private renderOptionsBar() {

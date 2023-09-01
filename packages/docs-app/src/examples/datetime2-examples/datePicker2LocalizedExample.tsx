@@ -18,13 +18,22 @@ import * as React from "react";
 
 import { DatePicker2 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { H5 } from "@blueprintjs/core";
+import { CommonLocale, LocaleSelect } from "../../common/localeSelect";
 
-export class DatePicker2LocalizedExample extends React.PureComponent<ExampleProps> {
-    public render() {
-        return (
-            <Example options={false} {...this.props}>
-                <DatePicker2 localeCode="fr" />
-            </Example>
-        );
-    }
+export const DatePicker2LocalizedExample: React.FC<ExampleProps> = (props) => {
+    const [localeCode, setlocaleCode] = React.useState<CommonLocale>("fr");
+
+    const options = (
+        <>
+            <H5>Locale code</H5>
+            <LocaleSelect value={localeCode} onChange={setlocaleCode} />
+        </>
+    )
+
+    return (
+        <Example options={options} {...props}>
+            <DatePicker2 localeCode={localeCode} />
+        </Example>
+    );
 }
