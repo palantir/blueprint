@@ -21,11 +21,13 @@ const DATEPICKER_NAV_BUTTON = `${DatetimeClasses.DATEPICKER}-nav-button`;
 
 export const Classes = {
     ...DatetimeClasses,
+    // these classes need the "2" suffix because they overlap with DatePicker v1 / react-day-picker v7 classes
     DATEPICKER2_DAY: RDP_DAY,
     DATEPICKER2_DAY_DISABLED: `${RDP_DAY}_disabled`,
     DATEPICKER2_DAY_IS_TODAY: `${RDP_DAY}_today`,
     DATEPICKER2_DAY_OUTSIDE: `${RDP_DAY}_outside`,
     DATEPICKER2_DAY_SELECTED: `${RDP_DAY}_selected`,
+    // these classes intentionally left without "2" suffix because they do not overlap with DatePicker v1, and this way we don't need to migrate them later
     DATEPICKER_HIGHLIGHT_CURRENT_DAY: `${DatetimeClasses.DATEPICKER}-highlight-current-day`,
     DATEPICKER_NAV_BUTTON,
     DATEPICKER_NAV_BUTTON_NEXT: `${DATEPICKER_NAV_BUTTON}-next`,
