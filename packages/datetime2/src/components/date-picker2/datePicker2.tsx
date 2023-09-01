@@ -15,6 +15,7 @@
  */
 
 import classNames from "classnames";
+import { format } from "date-fns";
 import * as React from "react";
 import { ActiveModifiers, DateFormatter, DayPicker } from "react-day-picker";
 
@@ -30,7 +31,6 @@ import { DatePicker2Caption } from "./datePicker2Caption";
 import { DatePicker2Provider } from "./datePicker2Context";
 import { DatePicker2Props } from "./datePicker2Props";
 import { DatePicker2State } from "./datePicker2State";
-import { format } from "date-fns";
 
 export { DatePicker2Props };
 
@@ -186,9 +186,9 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
      * Custom formatter to render weekday names in the calendar header. The default formatter generally works fine,
      * but it was returning CAPITALIZED strings for some reason, while we prefer Title Case.
      */
-    private renderWeekdayName: DateFormatter = (date) => {
+    private renderWeekdayName: DateFormatter = date => {
         return format(date, "EEEEEE", { locale: this.state.locale });
-    }
+    };
 
     private renderOptionsBar() {
         const { clearButtonText, todayButtonText, minDate, maxDate, canClearSelection } = this.props;

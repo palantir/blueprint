@@ -16,9 +16,9 @@
 
 import * as React from "react";
 
-import { ItemRenderer, Select } from "@blueprintjs/select";
-import { CaretDown } from "@blueprintjs/icons";
 import { Button, MenuItem } from "@blueprintjs/core";
+import { CaretDown } from "@blueprintjs/icons";
+import { ItemRenderer, Select } from "@blueprintjs/select";
 
 export type CommonLocale = "de" | "en-US" | "es" | "fr" | "hi" | "it" | "zh-CN";
 export const COMMON_LOCALES: CommonLocale[] = ["de", "en-US", "es", "fr", "hi", "it", "zh-CN"];
@@ -37,26 +37,29 @@ export interface LocaleSelectProps {
     onChange: (newValue: CommonLocale) => void;
 }
 
-export const LocaleSelect: React.FC<LocaleSelectProps> = (props) => {
-    const renderLocaleItem: ItemRenderer<CommonLocale> = React.useCallback((locale, { handleClick, handleFocus, modifiers, ref }) => {
-        const { matchesPredicate, ...menuItemModifiers } = modifiers;
-        if (!matchesPredicate) {
-            return null;
-        }
-        return (
-            <MenuItem
-                {...menuItemModifiers}
-                key={locale}
-                onClick={handleClick}
-                onFocus={handleFocus}
-                ref={ref}
-                roleStructure="listoption"
-                selected={locale === props.value}
-                text={locale}
-                label={LOCALE_CODE_TO_NAME[locale]}
-            />
-        );
-    }, [props.value]);
+export const LocaleSelect: React.FC<LocaleSelectProps> = props => {
+    const renderLocaleItem: ItemRenderer<CommonLocale> = React.useCallback(
+        (locale, { handleClick, handleFocus, modifiers, ref }) => {
+            const { matchesPredicate, ...menuItemModifiers } = modifiers;
+            if (!matchesPredicate) {
+                return null;
+            }
+            return (
+                <MenuItem
+                    {...menuItemModifiers}
+                    key={locale}
+                    onClick={handleClick}
+                    onFocus={handleFocus}
+                    ref={ref}
+                    roleStructure="listoption"
+                    selected={locale === props.value}
+                    text={locale}
+                    label={LOCALE_CODE_TO_NAME[locale]}
+                />
+            );
+        },
+        [props.value],
+    );
 
     return (
         <Select<CommonLocale>
@@ -68,4 +71,4 @@ export const LocaleSelect: React.FC<LocaleSelectProps> = (props) => {
             <Button alignText="left" fill={true} rightIcon={<CaretDown />} text={props.value} />
         </Select>
     );
-}
+};

@@ -16,12 +16,13 @@
 
 import * as React from "react";
 
+import { H5 } from "@blueprintjs/core";
 import { DatePicker2 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { H5 } from "@blueprintjs/core";
+
 import { CommonLocale, LocaleSelect } from "../../common/localeSelect";
 
-export const DatePicker2LocalizedExample: React.FC<ExampleProps> = (props) => {
+export const DatePicker2LocalizedExample: React.FC<ExampleProps> = props => {
     const [localeCode, setlocaleCode] = React.useState<CommonLocale>("fr");
 
     const options = (
@@ -29,11 +30,11 @@ export const DatePicker2LocalizedExample: React.FC<ExampleProps> = (props) => {
             <H5>Locale code</H5>
             <LocaleSelect value={localeCode} onChange={setlocaleCode} />
         </>
-    )
+    );
 
     return (
         <Example options={options} {...props}>
             <DatePicker2 localeCode={localeCode} />
         </Example>
     );
-}
+};
