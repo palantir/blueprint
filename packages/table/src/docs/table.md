@@ -6,7 +6,8 @@ to build a highly interactive table or spreadsheet UI.
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
 
 If you are looking for the simpler Blueprint-styled HTML `<table>` instead, see
-[the `HTMLTable` component in **@blueprintjs/core**](#core/components/html-table).
+[__HTMLTable__](#core/components/html-table).
+
 </div>
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
@@ -36,7 +37,8 @@ Do not forget to include `table.css` on your page:
 <div class="@ns-callout @ns-large @ns-intent-success @ns-icon-star">
 
 There is an updated version of the table component with some new features and compatibility with the
-[new hotkeys API](#core/components/hotkeys-target2): see [Table2](#table/table2).
+[new hotkeys API](#core/components/hotkeys-target2): see [__Table2__](#table/table2).
+
 </div>
 
 To create a table, you must define the rows and columns. Add children to the `Table` to create columns,

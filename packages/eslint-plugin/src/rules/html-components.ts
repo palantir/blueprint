@@ -31,7 +31,7 @@ export const htmlComponentsRule = createRule<[], MessageIds>({
     meta: {
         docs: {
             description: "Enforce usage of Blueprint components over JSX intrinsic elements.",
-            recommended: "error",
+            recommended: "recommended",
             requiresTypeChecking: false,
         },
         fixable: "code",

@@ -1,67 +1,64 @@
 @import "../../common/variables";
 
-$card-default-min-height: 50px;
-$card-default-padding: 10px 20px;
+$card-list-border-width: 1px !default;
 
-$card-small-min-height: 40px;
-$card-small-padding: 7px 15px;
+// N.B. min-height is calculated as height of a button + vertical padding. We need to add an extra pixel to account for
+// the bottom border.
+$card-list-item-default-min-height: ($pt-grid-size * 5) + $card-list-border-width !default;
+$card-list-item-default-padding: $pt-grid-size (2 * $pt-grid-size) !default;
+
+$card-list-item-small-min-height: ($pt-grid-size * 4) + $card-list-border-width !default;
+$card-list-item-small-padding: 7px 15px !default;
 
 .#{$ns}-card-list {
-  width: 100%;
   overflow: auto;
   padding: 0;
+  width: 100%;
 
-  &.#{$ns}-contained {
-    box-shadow: none;
+  > .#{$ns}-card {
+    align-items: center;
     border-radius: 0;
-  }
+    box-shadow: none;
+    display: flex;
+    min-height: $card-list-item-default-min-height;
+    padding: $card-list-item-default-padding;
 
-  // HACK: The card dark mode border is inset, adding margin / padding to prevent items from going over it
-  .#{$ns}-dark & {
-    padding: 1px;
-
-    &.#{$ns}-contained {
-      margin: 1px;
-    }
-  }
-
-  &-item {
-    > .#{$ns}-card {
-      border-radius: 0;
+    &.#{$ns}-interactive:hover,
+    &.#{$ns}-interactive:active {
+      background-color: $light-gray5;
       box-shadow: none;
-      min-height: $card-default-min-height;
-      padding: $card-default-padding;
-      display: flex;
-      align-items: center;
 
-      &.#{$ns}-interactive:hover,
-      &.#{$ns}-interactive:active {
-        background-color: $light-gray5;
-        box-shadow: none;
-
-        .#{$ns}-dark & {
-          background-color: $dark-gray4;
-        }
+      .#{$ns}-dark & {
+        background-color: $dark-gray4;
       }
     }
 
-    &:not(:last-child) > .#{$ns}-card {
-      border-bottom: 1px solid $pt-divider-black-muted;
+    &:not(:last-child) {
+      border-bottom: $card-list-border-width solid $pt-divider-black-muted;
 
       .#{$ns}-dark & {
         border-color: $pt-dark-divider-white-muted;
       }
     }
-
-    > .#{$ns}-card-switch {
-      // Make the label take up the full size so that we can use the control's onChange instead of a "click" handler
-      // on any container element. This is partially to work around https://github.com/palantir/blueprint/issues/6251
-      padding: 0;
-    }
   }
 
-  &.#{$ns}-small .#{$ns}-card-list-item > .#{$ns}-card {
-    min-height: $card-small-min-height;
-    padding: $card-small-padding;
+  &.#{$ns}-compact > .#{$ns}-card {
+    min-height: $card-list-item-small-min-height;
+    padding: $card-list-item-small-padding;
+  }
+
+  .#{$ns}-dark & {
+    // card border is inset in dark theme, so we need to add padding to prevent items from going over it
+    padding: 1px;
+  }
+
+  &:not(.#{$ns}-card-list-bordered) {
+    border-radius: 0;
+    box-shadow: none;
+
+    .#{$ns}-dark & {
+      margin: 1px;
+      width: calc(100% - 2px);
+    }
   }
 }

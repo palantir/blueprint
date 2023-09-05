@@ -14,13 +14,11 @@ to, so you should supply a placeholder while awaiting real content.
 Apply the class `.@ns-skeleton` to elements that you would like to cover up with
 a loading animation.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Manually disable focusable elements</h5>
 
-When using the `.@ns-skeleton` class on focusable elements such as inputs
-and buttons, be sure to disable the element, via either the `disabled` or
-`tabindex="-1"` attributes. Failing to do so will allow these skeleton
-elements to be focused when they shouldn't be.
+When using the `.@ns-skeleton` class on focusable elements such as inputs and buttons, be sure to disable the element,
+via either the `disabled` or `tabindex="-1"` attributes. Failing to do so will allow these skeleton elements to be
+focused when they shouldn't be.
 
 </div>
-

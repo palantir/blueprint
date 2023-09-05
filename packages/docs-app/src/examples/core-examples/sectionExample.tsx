@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,99 +14,212 @@
  * limitations under the License.
  */
 
+import dedent from "dedent";
 import * as React from "react";
 
-import { Button, Classes, H5, Intent, Section, SectionContent, Switch, Text } from "@blueprintjs/core";
+import {
+    Button,
+    Classes,
+    EditableText,
+    Elevation,
+    H5,
+    Label,
+    Section,
+    SectionCard,
+    SectionElevation,
+    Slider,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 export interface SectionExampleState {
-    hasIcon: boolean;
+    collapsible: boolean;
+    defaultIsOpen: boolean;
+    elevation: SectionElevation;
     hasDescription: boolean;
-    hasRightItem: boolean;
-    hasMultipleSectionContent: boolean;
-    isSmall: boolean;
+    hasIcon: boolean;
+    hasMultipleCards: boolean;
+    hasRightElement: boolean;
+    isCompact: boolean;
+    isControlled: boolean;
+    isOpen: boolean;
+    isPanelPadded: boolean;
 }
+
+const BASIL_DESCRIPTION_TEXT = dedent`
+    Ocimum basilicum, also called great basil, is a culinary herb of the family Lamiaceae (mints). It \
+    is a tender plant, and is used in cuisines worldwide. In Western cuisine, the generic term "basil" \
+    refers to the variety also known as sweet basil or Genovese basil. Basil is native to tropical regions \
+    from Central Africa to Southeast Asia.
+`;
 
 export class SectionExample extends React.PureComponent<ExampleProps, SectionExampleState> {
     public state: SectionExampleState = {
+        collapsible: false,
+        defaultIsOpen: true,
+        elevation: Elevation.ZERO,
         hasDescription: false,
         hasIcon: false,
-        hasMultipleSectionContent: false,
-        hasRightItem: true,
-        isSmall: true,
+        hasMultipleCards: false,
+        hasRightElement: true,
+        isCompact: false,
+        isControlled: false,
+        isOpen: true,
+        isPanelPadded: true,
     };
 
+    private editableTextRef = React.createRef<HTMLDivElement>();
+
     public render() {
-        const { hasDescription, hasIcon, hasRightItem, hasMultipleSectionContent, isSmall } = this.state;
+        const {
+            collapsible,
+            defaultIsOpen,
+            elevation,
+            hasDescription,
+            hasIcon,
+            hasRightElement,
+            hasMultipleCards,
+            isCompact,
+            isPanelPadded,
+        } = this.state;
 
         const options = (
             <>
-                <H5>Props</H5>
-                <Switch checked={isSmall} label="Small" onChange={this.handleSmallChange} />
-                <Switch checked={hasIcon} label="Icon" onChange={this.handleIconChange} />
-                <Switch checked={hasDescription} label="Description" onChange={this.handleDescriptionChange} />
-                <Switch checked={hasRightItem} label="Right item" onChange={this.handleRightItemChange} />
+                <H5>Section Props</H5>
+                <Switch checked={isCompact} label="Compact" onChange={this.toggleIsCompact} />
+                <Switch checked={hasIcon} label="Icon" onChange={this.toggleHasIcon} />
+                <Switch checked={hasDescription} label="Sub-title" onChange={this.toggleHasDescription} />
+                <Switch checked={hasRightElement} label="Right element" onChange={this.toggleHasRightElement} />
+                <Switch checked={collapsible} label="Collapsible" onChange={this.toggleCollapsible} />
+                <Label>
+                    Elevation
+                    <Slider
+                        max={1}
+                        showTrackFill={false}
+                        value={elevation}
+                        onChange={this.handleElevationChange}
+                        handleHtmlProps={{ "aria-label": "Section elevation" }}
+                    />
+                </Label>
+
+                <H5>Collapse Props</H5>
                 <Switch
-                    checked={hasMultipleSectionContent}
-                    label="Multiple section content"
-                    onChange={this.handleMultpleSectionContentChange}
+                    checked={defaultIsOpen}
+                    disabled={this.state.isControlled || !collapsible}
+                    label="Default is open"
+                    onChange={this.toggleDefaultIsOpen}
                 />
+                <Switch
+                    disabled={!collapsible}
+                    checked={this.state.isControlled}
+                    label="Is controlled"
+                    onChange={this.toggleIsControlled}
+                />
+                <Switch
+                    checked={this.state.isOpen}
+                    disabled={!this.state.isControlled || !collapsible}
+                    label="Open"
+                    onChange={this.toggleIsOpen}
+                />
+
+                <H5>Children</H5>
+                <Switch
+                    checked={hasMultipleCards}
+                    label="Multiple section cards"
+                    onChange={this.toggleMultiplePanels}
+                />
+
+                <H5>SectionCard Props</H5>
+                <Switch checked={isPanelPadded} label="Padded" onChange={this.togglePanelIsPadded} />
             </>
         );
+
+        const descriptionContent = (
+            <EditableText
+                defaultValue={BASIL_DESCRIPTION_TEXT}
+                disabled={!hasRightElement}
+                elementRef={this.editableTextRef}
+                multiline={true}
+            />
+        );
+
+        const metadataContent = (
+            <div className="metadata-panel">
+                <div>
+                    <span className={Classes.TEXT_MUTED}>Kingdom</span>Plantae
+                </div>
+                <div>
+                    <span className={Classes.TEXT_MUTED}>Clade</span>Tracheophytes
+                </div>
+                <div>
+                    <span className={Classes.TEXT_MUTED}>Family</span>Lamiaceae
+                </div>
+            </div>
+        );
+
+        const collapseProps = this.state.isControlled
+            ? { isOpen: this.state.isOpen, onToggle: this.toggleIsOpen }
+            : { defaultIsOpen };
 
         return (
             <Example options={options} {...this.props}>
                 <Section
-                    small={isSmall}
-                    sectionTitle="Basil"
-                    subtitle={hasDescription ? "Ocimum basilicum" : undefined}
+                    // A `key` is provided here to force the component to
+                    // re-mount when `defaultIsOpen` is changed, otherwise
+                    // the local state in the `Collapse` component is not
+                    // updated.
+                    key={String(defaultIsOpen)}
+                    collapsible={collapsible}
+                    compact={isCompact}
+                    collapseProps={collapseProps}
+                    elevation={elevation}
                     icon={hasIcon ? IconNames.BOOK : undefined}
-                    rightItem={
-                        hasRightItem ? (
-                            <Button minimal={true} intent={Intent.PRIMARY}>
-                                Edit
-                            </Button>
+                    rightElement={
+                        hasRightElement ? (
+                            <Button
+                                minimal={true}
+                                intent="primary"
+                                onClick={this.handleEditContent}
+                                text="Edit description"
+                            />
                         ) : undefined
                     }
+                    subtitle={hasDescription ? "Ocimum basilicum" : undefined}
+                    title="Basil"
                 >
-                    <SectionContent>
-                        <Text>
-                            Basil; Ocimum basilicum, also called great basil, is a culinary herb of the family Lamiaceae
-                            (mints). It is a tender plant, and is used in cuisines worldwide. In Western cuisine, the
-                            generic term "basil" refers to the variety also known as sweet basil or Genovese basil.
-                            Basil is native to tropical regions from Central Africa to Southeast Asia.
-                        </Text>
-                    </SectionContent>
-
-                    {hasMultipleSectionContent && (
-                        <SectionContent>
-                            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                    <span className={Classes.TEXT_MUTED}>Kingdom</span>Plantae
-                                </div>
-                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                    <span className={Classes.TEXT_MUTED}>Clade</span>Tracheophytes
-                                </div>
-                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                    <span className={Classes.TEXT_MUTED}>Family</span>Lamiaceae
-                                </div>
-                            </div>
-                        </SectionContent>
-                    )}
+                    <SectionCard padded={isPanelPadded}>{descriptionContent}</SectionCard>
+                    {hasMultipleCards && <SectionCard padded={isPanelPadded}>{metadataContent}</SectionCard>}
                 </Section>
             </Example>
         );
     }
 
-    private handleSmallChange = () => this.setState({ isSmall: !this.state.isSmall });
+    private toggleIsCompact = () => this.setState({ isCompact: !this.state.isCompact });
 
-    private handleIconChange = () => this.setState({ hasIcon: !this.state.hasIcon });
+    private toggleHasIcon = () => this.setState({ hasIcon: !this.state.hasIcon });
 
-    private handleDescriptionChange = () => this.setState({ hasDescription: !this.state.hasDescription });
+    private toggleHasDescription = () => this.setState({ hasDescription: !this.state.hasDescription });
 
-    private handleRightItemChange = () => this.setState({ hasRightItem: !this.state.hasRightItem });
+    private toggleHasRightElement = () => this.setState({ hasRightElement: !this.state.hasRightElement });
 
-    private handleMultpleSectionContentChange = () =>
-        this.setState({ hasMultipleSectionContent: !this.state.hasMultipleSectionContent });
+    private toggleMultiplePanels = () => this.setState({ hasMultipleCards: !this.state.hasMultipleCards });
+
+    private toggleCollapsible = () => this.setState({ collapsible: !this.state.collapsible });
+
+    private toggleDefaultIsOpen = () => this.setState({ defaultIsOpen: !this.state.defaultIsOpen });
+
+    private togglePanelIsPadded = () => this.setState({ isPanelPadded: !this.state.isPanelPadded });
+
+    private toggleIsControlled = () => this.setState({ isControlled: !this.state.isControlled });
+
+    private toggleIsOpen = () => this.setState({ isOpen: !this.state.isOpen });
+
+    private handleElevationChange = (elevation: SectionElevation) => this.setState({ elevation });
+
+    private handleEditContent = (event: React.MouseEvent) => {
+        // prevent this event from toggling the collapse state
+        event.stopPropagation();
+        this.editableTextRef?.current?.focus();
+    };
 }

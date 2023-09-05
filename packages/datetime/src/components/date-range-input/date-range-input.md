@@ -1,12 +1,12 @@
 @# Date range input
 
-The __DateRangeInput__ component is [ControlGroup](#core/components/control-group) composed
-of two [InputGroups](#core/components/text-inputs.input-group). It shows a
-[DateRangePicker](#datetime/daterangepicker) in a [Popover](#core/components/popover)
+The __DateRangeInput__ component is [__ControlGroup__](#core/components/control-group) composed
+of two [__InputGroups__](#core/components/input-group). It shows a
+[__DateRangePicker__](#datetime/daterangepicker) in a [__Popover__](#core/components/popover)
 on focus.
 
-Unlike [DateInput](#datetime/date-input), this component does _not_ yet have support for
-a built-in [TimezoneSelect](#datetime/timezone-select).
+Unlike [__DateInput__](#datetime/date-input), this component does _not_ yet have support for
+a built-in [__TimezoneSelect__](#datetime/timezone-select).
 
 <!-- It optionally shows a [TimezoneSelect](#datetime/timezone-select) as the third
 element in the ControlGroup, allowing the user to change the timezone of the selected date range. -->

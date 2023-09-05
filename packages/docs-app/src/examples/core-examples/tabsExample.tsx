@@ -145,7 +145,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
                     <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
                     <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
                     <Tabs.Expander />
-                    <InputGroup className={Classes.FILL} type="text" placeholder="Search..." />
+                    <InputGroup fill={true} type="text" placeholder="Search..." />
                 </Tabs>
             </Example>
         );

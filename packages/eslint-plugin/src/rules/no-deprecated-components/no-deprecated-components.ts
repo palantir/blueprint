@@ -2,6 +2,8 @@
  * (c) Copyright 2022 Palantir Technologies Inc. All rights reserved.
  */
 
+import { TSESLint } from "@typescript-eslint/utils";
+
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 import { coreComponentsMigrationMapping } from "./no-deprecated-core-components";
 import { datetimeComponentsMigrationMapping } from "./no-deprecated-datetime-components";
@@ -14,7 +16,7 @@ import { tableComponentsMigrationMapping } from "./no-deprecated-table-component
  * Note that this does not rely on the \@deprecated JSDoc annotation, and is thus distinct/very different from the
  * deprecated/deprecated ESLint rule
  */
-export const noDeprecatedComponentsRule = createNoDeprecatedComponentsRule(
+export const noDeprecatedComponentsRule: TSESLint.RuleModule<string, unknown[]> = createNoDeprecatedComponentsRule(
     "no-deprecated-components",
     ["@blueprintjs/core", "@blueprintjs/datetime", "@blueprintjs/select", "@blueprintjs/table"],
     {

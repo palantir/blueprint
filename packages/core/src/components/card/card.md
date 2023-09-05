@@ -1,20 +1,10 @@
 @# Card
 
-A card is a bounded unit of UI content with a solid background color.
+A __Card__ is a bounded unit of UI content with a solid background color.
 
 @reactExample CardExample
 
-@## Elevation
-
-Apply an `elevation` value to a card to apply a drop shadow that simulates
-height in the UI. Five elevations are supported, from 0 to 4.
-
-The `Classes.ELEVATION_*` constants can be used on any element (not just a
-`Card`) to apply the drop shadow.
-
-@## Props interface
-
-This component is a simple stateless container for its children.
+@## Usage
 
 ```tsx
 import { Button, Card, Elevation } from "@blueprintjs/core";
@@ -26,16 +16,36 @@ import { Button, Card, Elevation } from "@blueprintjs/core";
 </Card>
 ```
 
+@## Elevation
+
+Apply an `elevation` value to a card to apply a drop shadow that simulates height in the UI.
+Five elevations are supported, from 0 to 4.
+
+Note that the `Classes.ELEVATION_*` classes can be used on any element (not just a `Card`) to apply the drop shadow.
+
+@## Props interface
+
 @interface CardProps
 
 @## CSS API
 
-Start with `.@ns-card` and add an elevation class `.@ns-elevation-*` to apply a
-drop shadow that simulates height in the UI.
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
 
-Add the `.@ns-interactive` modifier class to make a `.@ns-card` respond to user
-interactions. When you hover over cards with this class applied, the mouse
-changes to a pointer and increases the elevation shadow on the card.
+Deprecated API: use [`<Card>`](#core/components/card)
+</h5>
+
+CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
+often fall out of sync as the design system is updated. You should use the React component APIs instead.
+
+</div>
+
+
+Start with `.@ns-card` and add an elevation class `.@ns-elevation-*` to apply a drop shadow that simulates height in
+the UI.
+
+Add the `.@ns-interactive` modifier class to make a `.@ns-card` respond to user interactions. When you hover over cards
+with this class applied, the mouse changes to a pointer and increases the elevation shadow on the card.
 
 @css card
 

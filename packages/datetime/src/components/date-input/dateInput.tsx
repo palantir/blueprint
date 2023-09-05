@@ -101,7 +101,7 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Da
     fill?: boolean;
 
     /**
-     * Props to pass to the [InputGroup component](#core/components/text-inputs.input-group).
+     * Props to pass to the [InputGroup component](#core/components/input-group).
      *
      * Some properties are unavailable:
      * - `inputProps.value`: use `value` instead

@@ -56,11 +56,10 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
     /**
      * Callback invoked on `<input>` `change` events.
      *
-     * This callback is offered as a convenience; it is equivalent to passing
-     * `onChange` to `inputProps`.
+     * This callback is offered as a convenience; it is equivalent to `inputProps.onChange`.
      *
-     * __Note:__ The top-level `onChange` prop is passed to the wrapping
-     * `<label>` rather than the `<input>`, which may not be what you expect.
+     * __Note:__ The top-level `onChange` prop is passed to the `<label>` element rather than the `<input>`,
+     * which may not be what you expect.
      */
     onInputChange?: React.FormEventHandler<HTMLInputElement>;
 
@@ -70,19 +69,21 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
     small?: boolean;
 
     /**
-     * The text to display.
+     * The text to display inside the input.
      *
      * @default "Choose file..."
      */
     text?: React.ReactNode;
 
     /**
-     * The button text.
+     * The button text to display on the right side of the input.
      *
      * @default "Browse"
      */
     buttonText?: string;
 }
+
+const NS = Classes.getClassNamespace();
 
 // this is a simple component, unit tests would be mostly tautological
 /* istanbul ignore next */
@@ -115,19 +116,13 @@ export class FileInput extends AbstractPureComponent<FileInputProps> {
             ...htmlProps
         } = this.props;
 
-        const rootClasses = classNames(
-            Classes.FILE_INPUT,
-            {
-                [Classes.FILE_INPUT_HAS_SELECTION]: hasSelection,
-                [Classes.DISABLED]: disabled,
-                [Classes.FILL]: fill,
-                [Classes.LARGE]: large,
-                [Classes.SMALL]: small,
-            },
-            className,
-        );
-
-        const NS = Classes.getClassNamespace();
+        const rootClasses = classNames(className, Classes.FILE_INPUT, {
+            [Classes.FILE_INPUT_HAS_SELECTION]: hasSelection,
+            [Classes.DISABLED]: disabled,
+            [Classes.FILL]: fill,
+            [Classes.LARGE]: large,
+            [Classes.SMALL]: small,
+        });
 
         const uploadProps = {
             [`${NS}-button-text`]: buttonText,

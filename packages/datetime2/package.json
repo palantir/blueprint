@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/datetime2",
-    "version": "1.0.0",
+    "version": "1.0.10",
     "description": "Re-exports of @blueprintjs/datetime APIs",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -36,8 +36,8 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^5.0.0",
-        "@blueprintjs/datetime": "^5.0.0",
+        "@blueprintjs/core": "^5.3.0",
+        "@blueprintjs/datetime": "^5.0.10",
         "date-fns": "^2.28.0",
         "tslib": "~2.5.0"
     },
@@ -52,10 +52,10 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/colors": "^5.0.0",
-        "@blueprintjs/karma-build-scripts": "^5.0.0",
-        "@blueprintjs/node-build-scripts": "^8.0.0",
-        "@blueprintjs/test-commons": "^2.0.0",
+        "@blueprintjs/colors": "^5.0.2",
+        "@blueprintjs/karma-build-scripts": "^5.0.2",
+        "@blueprintjs/node-build-scripts": "^8.0.2",
+        "@blueprintjs/test-commons": "^2.0.2",
         "@types/lodash": "~4.14.191",
         "enzyme": "^3.11.0",
         "karma": "^6.4.1",

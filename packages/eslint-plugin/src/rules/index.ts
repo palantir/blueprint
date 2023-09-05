@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// HACKHACK: workaround to satisfy TS compiler, we need a direct type reference to be able to infer TSESLint.RuleModule
+// @ts-expect-error
+import type { TSESLint } from "@typescript-eslint/utils";
+
 import { classesConstantsRule } from "./classes-constants";
 import { htmlComponentsRule } from "./html-components";
 import { iconComponentsRule } from "./icon-components";

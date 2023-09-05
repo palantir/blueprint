@@ -27,7 +27,7 @@ export type {
 export { ButtonGroup, ButtonGroupProps } from "./button/buttonGroup";
 export { Callout, CalloutProps } from "./callout/callout";
 export { Card, CardProps } from "./card/card";
-export { CardList, CardListProps } from "./card-list/card-list";
+export { CardList, CardListProps } from "./card-list/cardList";
 export { Collapse, CollapseProps } from "./collapse/collapse";
 export {
     ContextMenu,
@@ -58,7 +58,7 @@ export { Blockquote, Code, H1, H2, H3, H4, H5, H6, Label, OL, Pre, UL } from "./
 export { HTMLSelect, HTMLSelectIconName, HTMLSelectProps } from "./html-select/htmlSelect";
 export { HTMLTable, HTMLTableProps } from "./html-table/htmlTable";
 export * from "./hotkeys";
-export { Icon, IconName, IconProps, IconSize } from "./icon/icon";
+export { DefaultIconProps, Icon, IconComponent, IconName, IconProps, IconSize } from "./icon/icon";
 export { Menu, MenuProps } from "./menu/menu";
 export { MenuDivider, MenuDividerProps } from "./menu/menuDivider";
 export { MenuItem, MenuItemProps } from "./menu/menuItem";
@@ -98,8 +98,8 @@ export { ResizeEntry, ResizeSensor, ResizeSensorProps } from "./resize-sensor/re
 export { HandleHtmlProps, HandleInteractionKind, HandleProps, HandleType } from "./slider/handleProps";
 export { MultiSlider, MultiSliderProps, SliderBaseProps } from "./slider/multiSlider";
 export { NumberRange, RangeSlider, RangeSliderProps } from "./slider/rangeSlider";
-export { Section, SectionProps } from "./section/section";
-export { SectionContent, SectionContentProps } from "./section/section-content";
+export { Section, SectionElevation, SectionProps } from "./section/section";
+export { SectionCard, SectionCardProps } from "./section/sectionCard";
 export { Slider, SliderProps } from "./slider/slider";
 export { Spinner, SpinnerProps, SpinnerSize } from "./spinner/spinner";
 export { SwitchCard, SwitchCardProps } from "./card/switch-card";
@@ -115,4 +115,4 @@ export { Toaster, ToastOptions } from "./toast/toaster";
 export { TooltipProps, Tooltip } from "./tooltip/tooltip";
 export { Tree, TreeProps } from "./tree/tree";
 export { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";
-export { TreeNode } from "./tree/treeNode";
+export { TreeNode, TreeNodeProps } from "./tree/treeNode";

@@ -60,6 +60,32 @@
   }
 }
 
+#{example("CardList")} {
+  .docs-example > div {
+    flex-grow: 1;
+  }
+
+  .#{$ns}-card {
+    justify-content: space-between;
+  }
+
+  .docs-section-card-limited-height {
+    max-height: 152px;
+    overflow-y: auto;
+
+    .#{$ns}-dark & {
+      // need a bit of margin to account for inset box shadow
+      margin-bottom: 1px;
+    }
+  }
+
+  .#{$ns}-section.#{$ns}-compact {
+    .docs-section-card-limited-height {
+      max-height: 122px;
+    }
+  }
+}
+
 #{example("EditableText")} {
   .docs-example {
     display: block;
@@ -132,18 +158,27 @@
   }
 }
 
+$docs-hotkey-piano-height: 510px;
+
 .docs-hotkey-piano-example {
-  opacity: 0.4;
+  min-height: $docs-hotkey-piano-height;
+  opacity: 0.5;
   transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
 
   &:hover {
     cursor: pointer;
-    opacity: 0.6;
+    opacity: 0.75;
   }
 
   &:focus {
     cursor: default;
     opacity: 1;
+  }
+
+  .#{$ns}-non-ideal-state {
+    margin: 0;
+    min-height: $docs-hotkey-piano-height - ($pt-grid-size * 2);
+    padding: $pt-grid-size * 2;
   }
 
   > :first-child {
@@ -200,7 +235,7 @@
   }
 }
 
-#{example("HotkeyTesterExample")} {
+#{example("HotkeyTester")} {
   .docs-hotkey-tester {
     @include pt-flex-container(column, $pt-grid-size);
     align-items: center;
@@ -530,6 +565,23 @@
 #{example("Tabs")} {
   .docs-example .#{$ns}-heading {
     margin-bottom: 0;
+  }
+}
+
+#{example("Section")} {
+  .docs-example {
+    align-items: start;
+  }
+
+  .metadata-panel {
+    display: flex;
+    flex-direction: column;
+    gap: $pt-grid-size;
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
 

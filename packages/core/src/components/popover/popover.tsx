@@ -477,6 +477,7 @@ export class Popover<
                 usePortal={this.props.usePortal}
                 portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
+                portalStopPropagationEvents={this.props.portalStopPropagationEvents}
                 // if hover interaction, it doesn't make sense to take over focus control
                 shouldReturnFocusOnClose={this.isHoverInteractionKind() ? false : shouldReturnFocusOnClose}
             >

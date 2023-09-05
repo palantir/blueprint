@@ -1,27 +1,31 @@
 @use "sass:math";
 @import "../../common/variables";
 
-$section-default-min-height: 50px;
-$section-default-padding: $pt-grid-size * 2;
+$section-min-height: $pt-grid-size * 5 !default;
+$section-padding-vertical: $pt-grid-size !default;
+$section-padding-horizontal: $pt-grid-size * 2 !default;
+$section-card-padding: $pt-grid-size * 2 !default;
 
-$section-small-min-height: 40px;
-$section-small-padding: 15px;
+$section-min-height-compact: $pt-grid-size * 4 !default;
+$section-padding-compact-vertical: 7px !default;
+$section-padding-compact-horizontal: 15px !default;
+$section-card-padding-compact: $pt-grid-size * 1.5 !default;
 
 .#{$ns}-section {
+  overflow: hidden;
   padding: 0;
   width: 100%;
 
   &-header {
-    align-items: stretch;
+    align-items: center;
+    border-bottom: 1px solid $pt-divider-black;
     display: flex;
+    gap: $pt-grid-size * 2;
     justify-content: space-between;
+    min-height: $section-min-height;
+    padding: 0 $section-padding-horizontal;
     position: relative;
     width: 100%;
-    gap: $pt-grid-size;
-    min-height: $section-default-min-height;
-    padding: $pt-grid-size $pt-grid-size $pt-grid-size $section-default-padding;
-
-    border-bottom: 1px solid $pt-divider-black;
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
@@ -32,6 +36,7 @@ $section-small-padding: 15px;
       align-items: center;
       display: flex;
       gap: $pt-grid-size;
+      padding: $section-padding-vertical 0;
     }
 
     &-title {
@@ -45,12 +50,33 @@ $section-small-padding: 15px;
     &-right {
       align-items: center;
       display: flex;
+      gap: $pt-grid-size;
+      margin-left: auto;
+    }
+
+    &-divider {
+      align-self: stretch;
+      margin: $pt-grid-size * 1.5 0;
+    }
+
+    &.#{$ns}-interactive {
+      cursor: pointer;
+
+      &:hover,
+      &:active {
+        background: $light-gray5;
+
+        &.#{$ns}-dark,
+        .#{$ns}-dark & {
+          background: $dark-gray4;
+        }
+      }
     }
   }
 
-  &-content {
+  &-card {
     &.#{$ns}-padded {
-      padding: $section-default-padding;
+      padding: $section-card-padding;
     }
 
     &:not(:last-child) {
@@ -63,14 +89,24 @@ $section-small-padding: 15px;
     }
   }
 
-  &.#{$ns}-small {
+  &.#{$ns}-section-collapsed {
     .#{$ns}-section-header {
-      min-height: $section-small-min-height;
-      padding: 7px 7px 7px $section-small-padding;
+      border: none;
+    }
+  }
+
+  &.#{$ns}-compact {
+    .#{$ns}-section-header {
+      min-height: $section-min-height-compact;
+      padding: 0 $section-padding-compact-horizontal;
+
+      &-left {
+        padding: $section-padding-compact-vertical 0;
+      }
     }
 
-    .#{$ns}-section-content.#{$ns}-padded {
-      padding: $section-small-padding;
+    .#{$ns}-section-card.#{$ns}-padded {
+      padding: $section-card-padding-compact;
     }
   }
 }

@@ -19,7 +19,7 @@ import * as React from "react";
 import { CardList, SwitchCard } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface SwitchCardExampleState {
+interface SwitchCardExampleState {
     switchChecked: boolean[];
 }
 
@@ -34,6 +34,7 @@ export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchC
         return (
             <Example {...this.props}>
                 <div
+                    // TODO(@adidahiya): migrate styles to Sass code in _examples.scss
                     style={{
                         display: "grid",
                         gap: "20px",

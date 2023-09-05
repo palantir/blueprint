@@ -2,16 +2,15 @@
 
 @## Installing Blueprint
 
-Blueprint is available as a collection of NPM packages under the `@blueprintjs`
-scope. Each package appears at the top level of the sidebar to the left, along
-with its current version.
+Blueprint is available as a collection of NPM packages under the `@blueprintjs` scope. Each package is listed at the
+top level of the navigation sidebar to the left of this page, along with its current version.
 
 Each package contains a CSS file and a collection of ES modules exposing React components (CommonJS modules are
 also available, for backwards-compatibility). The `main` module exports all symbols that are considered public API.
 The JavaScript components are stable and their APIs adhere to [semantic versioning](http://semver.org/).
 
-1.  Install the core package and its peer dependencies with an NPM client like
-    `npm` or `yarn`, pulling in all relevant dependencies:
+1.  Install the core package and its peer dependencies with an NPM client like `npm` or `yarn`,
+    pulling in all relevant dependencies:
 
     ```sh
     yarn add @blueprintjs/core react react-dom
@@ -29,8 +28,8 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
     const myButton = React.createElement(Button, { intent: "success" }, "button text");
     ```
 
-1.  **Don't forget to include the main CSS file from each Blueprint package!** Additionally, the
-    `resources/` directory contains supporting media such as fonts and images.
+1.  **Don't forget to include the main CSS file from each Blueprint package!** Additionally, the `resources/` directory
+    contains supporting media such as fonts and images.
 
     ```scss
     // using node-style package resolution in a CSS file:
@@ -50,10 +49,10 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
     </head>
     ```
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">CDN-only usage</h5>
 
-Blueprint can instead be quickly added to a page using the Unpkg CDN.
+Blueprint can be added to a page using the Unpkg CDN.
 [See below for instructions](#blueprint/getting-started.cdn-consumption).
 
 </div>
@@ -89,9 +88,10 @@ install typings for Blueprint's dependencies before you can consume it:
 npm install --save @types/react @types/react-dom
 ```
 
-Blueprint's declaration files require **TypeScript 4.0 or newer** for certain language features (like type-only imports/exports).
-We strive to be compatible with most TypeScript versions, but sometimes there are `lib.d.ts` changes which can create
-compiler incompatibilities if you are using a `tsc` version different from the one used to build Blueprint (currently v4.1).
+Blueprint's declaration files require **TypeScript 4.0 or newer** for certain language features (like type-only
+imports/exports). We strive to be compatible with most TypeScript versions, but sometimes there are `lib.d.ts` changes
+which can create compiler incompatibilities if you are using a `tsc` version different from the one used to build
+Blueprint (see the current version in [`package.json`](https://github.com/palantir/blueprint/blob/develop/package.json)).
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
@@ -101,7 +101,7 @@ For more information, see [Understanding TypeScript](#blueprint/reading-the-docs
 
 @## Vanilla JS APIs
 
-JS components are built using React, but that does not limit their usage to just React applications.
+JS components are built using React, but that does not limit their usage to only React applications.
 You can render any component in any JavaScript application with `ReactDOM.render`. Think of it like
 using a jQuery plugin.
 

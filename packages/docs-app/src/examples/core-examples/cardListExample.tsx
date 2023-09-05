@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,74 +14,123 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
-import { Button, Card, CardList, Classes, H5, Icon, Intent, Section, SectionContent, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { IconNames } from "@blueprintjs/icons";
+import { Button, Card, CardList, Classes, Code, H5, Section, SectionCard, Switch } from "@blueprintjs/core";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { ChevronRight } from "@blueprintjs/icons";
+
+import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 export interface CardListExampleState {
-    isContained: boolean;
-    hasInteractiveCards: boolean;
-    isSmall: boolean;
+    isBordered: boolean;
+    isCompact: boolean;
+    useInteractiveCards: boolean;
+    useScrollableContainer: boolean;
+    useSectionCardPadding: boolean;
+    useSectionContainer: boolean;
 }
 
-export class CardListExample extends React.PureComponent<ExampleProps> {
+export class CardListExample extends React.PureComponent<ExampleProps, CardListExampleState> {
     public state: CardListExampleState = {
-        hasInteractiveCards: true,
-        isContained: false,
-        isSmall: false,
+        isBordered: true,
+        isCompact: false,
+        useInteractiveCards: true,
+        useScrollableContainer: false,
+        useSectionCardPadding: false,
+        useSectionContainer: false,
     };
 
+    private get isBordered() {
+        return this.state.useSectionContainer ? this.state.useSectionCardPadding : this.state.isBordered;
+    }
+
     public render() {
-        const { isContained, hasInteractiveCards, isSmall } = this.state;
+        const { isCompact, useInteractiveCards, useScrollableContainer, useSectionCardPadding, useSectionContainer } =
+            this.state;
 
         const options = (
             <>
-                <H5>Props</H5>
-                <Switch checked={isContained} label="Contained" onChange={this.handleContainedChange} />
-                <Switch checked={isSmall} label="Small" onChange={this.handleSmallChange} />
-                <H5>Example</H5>
+                <H5>CardList Props</H5>
+                <PropCodeTooltip
+                    disabled={!useSectionContainer}
+                    content={
+                        <span>
+                            This example overrides <Code>isBordered</Code> when using a <Code>Section</Code> container
+                        </span>
+                    }
+                >
+                    <Switch
+                        checked={this.isBordered}
+                        disabled={useSectionContainer}
+                        label="Bordered"
+                        onChange={this.toggleIsBordered}
+                    />
+                </PropCodeTooltip>
+                <Switch checked={isCompact} label="Compact" onChange={this.toggleIsCompact} />
+                <H5>Card Props</H5>
+                <Switch checked={useInteractiveCards} label="Interactive" onChange={this.toggleUseInteractiveCards} />
+                <H5>Layout</H5>
                 <Switch
-                    checked={hasInteractiveCards}
-                    label="Interactive cards"
-                    onChange={this.handleInteractiveCardsChange}
+                    checked={useSectionContainer}
+                    labelElement={
+                        <span>
+                            Use <Code>Section</Code> container
+                        </span>
+                    }
+                    onChange={this.toggleUseSectionContainer}
+                />
+                <H5 className={classNames({ [Classes.TEXT_MUTED]: !useSectionContainer })}>SectionCard</H5>
+                <Switch
+                    disabled={!useSectionContainer}
+                    checked={useSectionCardPadding}
+                    label="Use padding"
+                    onChange={this.toggleUseSectionCardPadding}
+                />
+                <Switch
+                    disabled={!useSectionContainer}
+                    checked={useScrollableContainer}
+                    label="Use scrollable container"
+                    onChange={this.toggleUseScrollableContainer}
                 />
             </>
         );
 
+        const sectionCardClasses = classNames("docs-section-card", {
+            "docs-section-card-limited-height": useScrollableContainer,
+        });
+
         return (
             <Example options={options} {...this.props}>
-                {isContained ? (
-                    <Section sectionTitle="Ingredients" small={isSmall}>
-                        <SectionContent padded={false}>{this.renderList()}</SectionContent>
-                    </Section>
-                ) : (
-                    this.renderList()
-                )}
+                <div>
+                    {useSectionContainer ? (
+                        <Section title="Traditional pesto" subtitle="Ingredients" compact={isCompact}>
+                            <SectionCard className={sectionCardClasses} padded={useSectionCardPadding}>
+                                {this.renderList()}
+                            </SectionCard>
+                        </Section>
+                    ) : (
+                        this.renderList()
+                    )}
+                </div>
             </Example>
         );
     }
 
     private renderList() {
-        const { hasInteractiveCards, isContained, isSmall } = this.state;
-        const ingredients: string[] = ["Olive oil", "Ground black pepper", "Carrots", "Onions"];
+        const { isCompact, useInteractiveCards } = this.state;
+        const ingredients = ["Basil", "Olive oil", "Kosher salt", "Garlic", "Pine nuts", "Parmigiano Reggiano"];
 
         return (
-            <CardList contained={isContained} small={isSmall}>
+            <CardList bordered={this.isBordered} compact={isCompact}>
                 {ingredients.map(ingredient => (
-                    <Card
-                        style={{ justifyContent: "space-between" }}
-                        interactive={hasInteractiveCards}
-                        key={ingredient}
-                    >
+                    <Card interactive={useInteractiveCards} key={ingredient}>
                         <span>{ingredient}</span>
-                        {hasInteractiveCards ? (
-                            <Icon icon={IconNames.CHEVRON_RIGHT} className={Classes.TEXT_MUTED} />
+                        {useInteractiveCards ? (
+                            <ChevronRight className={Classes.TEXT_MUTED} />
                         ) : (
-                            <Button minimal={true} intent={Intent.PRIMARY} small={isSmall}>
-                                Add
-                            </Button>
+                            <Button minimal={true} intent="primary" small={isCompact} text="Add" />
                         )}
                     </Card>
                 ))}
@@ -89,10 +138,23 @@ export class CardListExample extends React.PureComponent<ExampleProps> {
         );
     }
 
-    private handleSmallChange = () => this.setState({ isSmall: !this.state.isSmall });
+    private toggleIsBordered = handleBooleanChange(isBordered => this.setState({ isBordered }));
 
-    private handleContainedChange = () => this.setState({ isContained: !this.state.isContained });
+    private toggleIsCompact = handleBooleanChange(isCompact => this.setState({ isCompact }));
 
-    private handleInteractiveCardsChange = () =>
-        this.setState({ hasInteractiveCards: !this.state.hasInteractiveCards });
+    private toggleUseInteractiveCards = handleBooleanChange(useInteractiveCards =>
+        this.setState({ useInteractiveCards }),
+    );
+
+    private toggleUseScrollableContainer = handleBooleanChange(useScrollableContainer =>
+        this.setState({ useScrollableContainer }),
+    );
+
+    private toggleUseSectionCardPadding = handleBooleanChange(useSectionCardPadding =>
+        this.setState({ useSectionCardPadding }),
+    );
+
+    private toggleUseSectionContainer = handleBooleanChange(useSectionContainer =>
+        this.setState({ useSectionContainer }),
+    );
 }

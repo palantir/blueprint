@@ -65,6 +65,14 @@ $pt-dark-intent-text-colors: (
   .#{$ns}-dark & {
     color: $pt-dark-heading-color;
   }
+
+  &.#{$ns}-text-muted {
+    color: $pt-text-color-muted;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-muted;
+    }
+  }
 }
 
 @mixin monospace-typography() {

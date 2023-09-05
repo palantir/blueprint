@@ -8,7 +8,7 @@ import { watch } from "chokidar";
 import fsExtra from "fs-extra";
 import { basename, extname, join, resolve } from "node:path";
 import { argv } from "node:process";
-import sass from "sass";
+import * as sass from "sass";
 import yargs from "yargs";
 
 import { sassCompileFile } from "./src/sass/sassCompileFile.mjs";

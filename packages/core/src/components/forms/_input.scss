@@ -76,22 +76,6 @@ Styleguide input
 
 
 /*
-Search inputs
-
-Markup:
-<div class="#{$ns}-input-group {{.modifier}}">
-  <span class="#{$ns}-icon #{$ns}-icon-search"></span>
-  <input class="#{$ns}-input" {{:modifier}} type="search" placeholder="Search input" dir="auto" />
-</div>
-
-:disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-input-group</code> for icon coloring (not shown below).
-.#{$ns}-large - Large
-.#{$ns}-small - Small
-
-Styleguide input-search
-*/
-
-/*
 Textareas
 
 Markup:
@@ -124,5 +108,12 @@ textarea.#{$ns}-input {
 
   &.#{$ns}-small {
     padding: $input-small-padding;
+  }
+}
+
+.#{$ns}-text-area {
+  &.#{$ns}-text-area-auto-resize {
+    // we are controlling vertical resizing automatically, so restrict user resizing to horizontal dimension only
+    resize: horizontal;
   }
 }

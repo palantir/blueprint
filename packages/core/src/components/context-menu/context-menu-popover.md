@@ -1,6 +1,6 @@
 @# ContextMenuPopover
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
 Consider [ContextMenu](#core/components/context-menu) first
@@ -8,22 +8,20 @@ Consider [ContextMenu](#core/components/context-menu) first
 </h5>
 
 The APIs described on this page are lower-level and have some limitations compared to
-[ContextMenu](#core/components/context-menu), so you should try that API _first_ to see if it addresses
-your use case.
+[ContextMenu](#core/components/context-menu), so you should try that API _first_ to see if it addresses your use case.
 
 </div>
 
-__ContextMenuPopover__ is a lower-level API for [ContextMenu](#core/components/context-menu) which
-does not hook up any interaction handlers for you and simply renders an opinionated
-[Popover](#core/components/popover) at a particular target offset on the page through a
-[Portal](#core/components/portal).
+__ContextMenuPopover__ is a lower-level API for [ContextMenu](#core/components/context-menu) which does not hook up any
+interaction handlers for you and simply renders an opinionated [Popover](#core/components/popover) at a particular
+target offset on the page through a [Portal](#core/components/portal).
 
 @reactExample ContextMenuPopoverExample
 
 @## Declarative API
 
-Use the `<ContextMenuPopover>` component just like any other React component in your tree. Note that this is
-a controlled component that requires `isOpen` and `targetOffset` information.
+Use the `<ContextMenuPopover>` component like any other React component in your tree. Note that this is a controlled
+component which requires its `isOpen` and `targetOffset` props to be defined.
 
 @interface ContextMenuPopoverProps
 

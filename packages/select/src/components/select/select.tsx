@@ -32,6 +32,7 @@ import {
     setRef,
     Utils,
 } from "@blueprintjs/core";
+import { Cross, Search } from "@blueprintjs/icons";
 
 import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
 import { QueryList, QueryListRendererProps } from "../query-list/queryList";
@@ -67,7 +68,7 @@ export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
     filterable?: boolean;
 
     /**
-     * Props to pass to the query [InputGroup component](#core/components/text-inputs.input-group).
+     * Props to pass to the query [InputGroup component](#core/components/input-group).
      *
      * Some properties are unavailable:
      * - `inputProps.value`: use `query` instead
@@ -166,7 +167,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         const input = (
             <InputGroup
                 aria-autocomplete="list"
-                leftIcon="search"
+                leftIcon={<Search />}
                 placeholder="Filter..."
                 rightElement={this.maybeRenderClearButton(listProps.query)}
                 {...inputProps}
@@ -249,7 +250,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         return query.length > 0 ? (
             <Button
                 aria-label="Clear filter query"
-                icon="cross"
+                icon={<Cross />}
                 minimal={true}
                 onClick={this.resetQuery}
                 title="Clear filter query"

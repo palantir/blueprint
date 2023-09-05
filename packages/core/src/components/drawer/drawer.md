@@ -1,17 +1,18 @@
 @# Drawer
 
-Drawers overlay content over existing parts of the UI and are anchored to the edge of the screen.
+__Drawers__ overlay content over existing parts of the UI and are anchored to the edge of the screen.
 
 @reactExample DrawerExample
 
-@## Props
+@## Props interface
 
-`Drawer` is a stateless React component controlled by the `isOpen` prop.
+__Drawer__ is a stateless React component controlled by the `isOpen` prop.
 
-Use the `size` prop to set the size of the `Drawer`. This prop sets CSS `width` if `vertical={false}` (default) and `height` otherwise. Constants are available for common sizes:
+Use the `size` prop to set the size of the __Drawer__. This prop sets CSS `width` if `vertical={false}` (default)
+and `height` otherwise. Constants are available for common sizes:
 
-- `DrawerSize.SMALL = 360px`
-- `DrawerSize.STANDARD = 50%` (default)
-- `DrawerSize.LARGE = 90%`
+-   `DrawerSize.SMALL = 360px`
+-   `DrawerSize.STANDARD = 50%` (default)
+-   `DrawerSize.LARGE = 90%`
 
 @interface DrawerProps

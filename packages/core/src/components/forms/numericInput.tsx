@@ -456,12 +456,12 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
                 leftIcon={this.props.leftIcon}
                 onFocus={this.handleInputFocus}
                 onBlur={this.handleInputBlur}
-                onChange={this.handleInputChange}
                 onCompositionEnd={this.handleCompositionEnd}
                 onCompositionUpdate={this.handleCompositionUpdate}
                 onKeyDown={this.handleInputKeyDown}
                 onKeyPress={this.handleInputKeyPress}
                 onPaste={this.handleInputPaste}
+                onValueChange={this.handleInputChange}
                 rightElement={this.props.rightElement}
                 small={this.props.small}
                 value={this.state.value}
@@ -616,8 +616,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
         this.props.onPaste?.(e);
     };
 
-    private handleInputChange = (e: React.FormEvent) => {
-        const { value } = e.target as HTMLInputElement;
+    private handleInputChange = (value: string) => {
         let nextValue = value;
         if (this.props.allowNumericCharactersOnly && this.didPasteEventJustOccur) {
             this.didPasteEventJustOccur = false;

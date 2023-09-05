@@ -142,8 +142,5 @@ export class BreadcrumbsExample extends React.PureComponent<ExampleProps, Breadc
 
 const BreadcrumbInput: React.FC<BreadcrumbProps & { defaultValue: string | undefined }> = props => {
     const [text, setText] = React.useState(props.defaultValue ?? "");
-    const handleChange = React.useCallback((event: React.FormEvent<HTMLInputElement>) => {
-        setText((event.target as HTMLInputElement).value);
-    }, []);
-    return <InputGroup placeholder="rename me" value={text} onChange={handleChange} />;
+    return <InputGroup placeholder="rename me" value={text} onValueChange={setText} />;
 };
