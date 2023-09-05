@@ -40,7 +40,6 @@ often fall out of sync as the design system is updated. You should use the React
 
 </div>
 
-
 Start with `.@ns-card` and add an elevation class `.@ns-elevation-*` to apply a drop shadow that simulates height in
 the UI.
 

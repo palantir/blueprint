@@ -73,8 +73,6 @@ export const INTENT_DANGER = intentClass(Intent.DANGER)!;
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
 export const FOCUS_STYLE_MANAGER_IGNORE = `${NS}-focus-style-manager-ignore`;
 
-export const CONTAINED = `${NS}-contained`;
-
 // text utilities
 export const UI_TEXT = `${NS}-ui-text`;
 export const RUNNING_TEXT = `${NS}-running-text`;
@@ -120,7 +118,6 @@ export const CARD_SWITCH = `${NS}-card-switch`;
 
 export const CARD_LIST = `${NS}-card-list`;
 export const CARD_LIST_BORDERED = `${CARD_LIST}-bordered`;
-export const CARD_LIST_ITEM = `${CARD_LIST}-item`;
 
 export const COLLAPSE = `${NS}-collapse`;
 export const COLLAPSE_BODY = `${COLLAPSE}-body`;
@@ -229,16 +226,15 @@ export const MULTISTEP_DIALOG_NAV_TOP = `${MULTISTEP_DIALOG}-nav-top`;
 export const MULTISTEP_DIALOG_NAV_RIGHT = `${MULTISTEP_DIALOG}-nav-right`;
 
 export const SECTION = `${NS}-section`;
-export const SECTION_CARD = `${SECTION}-card`;
 export const SECTION_COLLAPSED = `${SECTION}-collapsed`;
-export const SECTION_CONTENT = `${SECTION}-content`;
 export const SECTION_HEADER = `${SECTION}-header`;
-export const SECTION_HEADER_DIVIDER = `${SECTION_HEADER}-divider`;
 export const SECTION_HEADER_LEFT = `${SECTION_HEADER}-left`;
-export const SECTION_HEADER_RIGHT = `${SECTION_HEADER}-right`;
-export const SECTION_HEADER_SUB_TITLE = `${SECTION_HEADER}-sub-title`;
-export const SECTION_HEADER_TABS = `${SECTION_HEADER}-tabs`;
 export const SECTION_HEADER_TITLE = `${SECTION_HEADER}-title`;
+export const SECTION_HEADER_SUB_TITLE = `${SECTION_HEADER}-sub-title`;
+export const SECTION_HEADER_DIVIDER = `${SECTION_HEADER}-divider`;
+export const SECTION_HEADER_TABS = `${SECTION_HEADER}-tabs`;
+export const SECTION_HEADER_RIGHT = `${SECTION_HEADER}-right`;
+export const SECTION_CARD = `${SECTION}-card`;
 
 export const NAVBAR = `${NS}-navbar`;
 export const NAVBAR_GROUP = `${NAVBAR}-group`;
