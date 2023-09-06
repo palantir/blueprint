@@ -28,7 +28,7 @@ export function getFormattedDateString(
     } else if (!DateUtils.isDateValid(date)) {
         return props.invalidDateMessage;
     } else if (ignoreRange || DateUtils.isDayInRange(date, [props.minDate ?? null, props.maxDate ?? null])) {
-        return props.formatDate(date, props.localeCode);
+        return props.formatDate(date, props.locale);
     } else {
         return props.outOfRangeMessage;
     }

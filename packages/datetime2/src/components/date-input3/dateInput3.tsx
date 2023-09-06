@@ -112,7 +112,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         // HACKHACK: ESLint false positive
         // eslint-disable-next-line @typescript-eslint/unbound-method
         props.formatDate,
-        props.localeCode,
+        props.locale,
         props.invalidDateMessage,
         props.outOfRangeMessage,
     ]);
@@ -307,12 +307,12 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             if (dateString === props.outOfRangeMessage || dateString === props.invalidDateMessage) {
                 return null;
             }
-            const newDate = props.parseDate(dateString, props.localeCode);
+            const newDate = props.parseDate(dateString, props.locale);
             return newDate === false ? INVALID_DATE : newDate;
         },
         // HACKHACK: ESLint false positive
         // eslint-disable-next-line @typescript-eslint/unbound-method
-        [props.outOfRangeMessage, props.invalidDateMessage, props.parseDate, props.localeCode],
+        [props.outOfRangeMessage, props.invalidDateMessage, props.parseDate, props.locale],
     );
 
     const handleInputFocus = React.useCallback(

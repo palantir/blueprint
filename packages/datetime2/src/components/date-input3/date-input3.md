@@ -43,9 +43,9 @@ and the `onChange` callback.
 __DateInput3__ requires two props for parsing and formatting dates. These are essentially the plumbing
 between the text input and __DatePicker3__.
 
-- `formatDate(date, locale?)` receives the current `Date` and returns a string representation of it.
+-   `formatDate(date: Date, localeCode?: string)` receives the current `Date` and returns a string representation of it.
     The result of this function becomes the input value when it is not being edited.
-- `parseDate(str, locale?)` receives text inputted by the user and converts it to a `Date` object.
+-   `parseDate(str: string, localeCode?: string)` receives text inputted by the user and converts it to a `Date` object.
     The returned `Date` becomes the next value of the component.
 
 The optional `locale` argument to these functions is the value of the `locale` prop set on the component.
@@ -110,4 +110,3 @@ function Example() {
 @## Localization
 
 See the [__DatePicker3__ localization docs](#datetime2/date-picker3.localization).
-
