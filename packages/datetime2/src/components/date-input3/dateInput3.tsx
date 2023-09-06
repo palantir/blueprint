@@ -119,7 +119,8 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     const [inputValue, setInputValue] = React.useState(formattedDateString ?? undefined);
 
     const isErrorState =
-        valueAsDate != null && (!DateUtils.isDateValid(valueAsDate) || !DateUtils.isDayInRange(valueAsDate, [minDate, maxDate]));
+        valueAsDate != null &&
+        (!DateUtils.isDateValid(valueAsDate) || !DateUtils.isDayInRange(valueAsDate, [minDate, maxDate]));
 
     // Effects
     // ------------------------------------------------------------------------
@@ -191,7 +192,11 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 setInputValue(newFormattedDateString);
             }
 
-            const newIsoDateString = TimezoneUtils.getIsoEquivalentWithUpdatedTimezone(newDate, timezoneValue, timePrecision);
+            const newIsoDateString = TimezoneUtils.getIsoEquivalentWithUpdatedTimezone(
+                newDate,
+                timezoneValue,
+                timePrecision,
+            );
             props.onChange?.(newIsoDateString, isUserChange);
         },
         [props.onChange, timezoneValue, timePrecision, valueAsDate],
@@ -273,7 +278,11 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         (newTimezone: string) => {
             setTimezoneValue(newTimezone);
             if (valueAsDate != null) {
-                const newDateString = TimezoneUtils.getIsoEquivalentWithUpdatedTimezone(valueAsDate, newTimezone, timePrecision);
+                const newDateString = TimezoneUtils.getIsoEquivalentWithUpdatedTimezone(
+                    valueAsDate,
+                    newTimezone,
+                    timePrecision,
+                );
                 props.onChange?.(newDateString, true);
             }
         },
@@ -380,7 +389,10 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             const valueString = (e.target as HTMLInputElement).value;
             const inputValueAsDate = parseDate(valueString);
 
-            if (DateUtils.isDateValid(inputValueAsDate) && DateUtils.isDayInRange(inputValueAsDate, [minDate, maxDate])) {
+            if (
+                DateUtils.isDateValid(inputValueAsDate) &&
+                DateUtils.isDayInRange(inputValueAsDate, [minDate, maxDate])
+            ) {
                 if (isControlled) {
                     setInputValue(valueString);
                 } else {

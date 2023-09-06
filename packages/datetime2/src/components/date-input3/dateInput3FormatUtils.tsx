@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 
-import { DateUtils } from "@blueprintjs/datetime"
+import { DateUtils } from "@blueprintjs/datetime";
 
 import type { DateInput3Props } from "./dateInput3Props";
 
-export function getFormattedDateString(
-    date: Date,
-    props: DateInput3Props,
-    ignoreRange = false,
-) {
+export function getFormattedDateString(date: Date, props: DateInput3Props, ignoreRange = false) {
     if (date == null) {
         return "";
     } else if (!DateUtils.isDateValid(date)) {

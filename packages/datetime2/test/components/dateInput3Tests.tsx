@@ -569,9 +569,12 @@ describe.only("<DateInput3>", () => {
         });
 
         it("clicking a date invokes onChange callback with that date", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />, {
-                attachTo: containerElement,
-            });
+            const wrapper = mount(
+                <DateInput3 {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />,
+                {
+                    attachTo: containerElement,
+                },
+            );
             focusInput(wrapper);
             clickCalendarDay(wrapper, 27);
 
@@ -581,9 +584,12 @@ describe.only("<DateInput3>", () => {
         });
 
         it("clearing the date in the DatePicker invokes onChange with null but doesn't change UI", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />, {
-                attachTo: containerElement,
-            });
+            const wrapper = mount(
+                <DateInput3 {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />,
+                {
+                    attachTo: containerElement,
+                },
+            );
             focusInput(wrapper);
             clickCalendarDay(wrapper, 4);
             assert.equal(wrapper.find(InputGroup).prop("value"), "4/4/2016");
