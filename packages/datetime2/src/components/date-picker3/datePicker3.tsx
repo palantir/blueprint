@@ -45,7 +45,7 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
         clearButtonText: "Clear",
         dayPickerProps: {},
         highlightCurrentDay: false,
-        localeCode: "en-US",
+        locale: "en-US",
         maxDate: DatePickerUtils.getDefaultMaxDate(),
         minDate: DatePickerUtils.getDefaultMinDate(),
         reverseMonthAndYearMenus: false,
@@ -117,7 +117,7 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
     }
 
     public async componentDidMount() {
-        await this.loadLocale(this.props.localeCode);
+        await this.loadLocale(this.props.locale);
     }
 
     public async componentDidUpdate(prevProps: DatePicker3Props) {
@@ -139,8 +139,8 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
             this.setState({ selectedShortcutIndex: this.props.selectedShortcutIndex });
         }
 
-        if (this.props.localeCode !== prevProps.localeCode) {
-            await this.loadLocale(this.props.localeCode);
+        if (this.props.locale !== prevProps.locale) {
+            await this.loadLocale(this.props.locale);
         }
     }
 

@@ -46,12 +46,15 @@ export interface DatePicker3Props extends DatePickerSharedProps, Props {
     defaultValue?: Date;
 
     /**
-     * date-fns locale code used to localize the date picker.
+     * date-fns locale code ((ISO 639-1 + optional country code) used to localize the date picker.
+     *
+     * If you are unable to load a specific locale, make sure it is included in the list of date-fns'
+     * [supported locales](https://github.com/date-fns/date-fns/tree/main/src/locale).
      *
      * @default "en-US"
-     * @see https://react-day-picker.js.org/basics/localization
+     * @see https://date-fns.org/docs/Locale
      */
-    localeCode?: string;
+    locale?: string;
 
     /**
      * Called when the user selects a day.

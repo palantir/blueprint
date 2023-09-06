@@ -34,7 +34,7 @@ export const DatePicker3LocalizedExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <DatePicker3 localeCode={localeCode} />
+            <DatePicker3 locale={localeCode} />
         </Example>
     );
 };

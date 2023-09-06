@@ -19,7 +19,7 @@ import * as React from "react";
 import type { DatePicker3Props } from "./datePicker3Props";
 import type { DatePicker3State } from "./datePicker3State";
 
-export type DatePicker3ContextState = DatePicker3Props & Pick<DatePicker3State, "locale">;
+export type DatePicker3ContextState = Omit<DatePicker3Props, "locale"> & Pick<DatePicker3State, "locale">;
 
 /**
  * Context used to pass DatePicker3 props and state down to custom react-day-picker components like
