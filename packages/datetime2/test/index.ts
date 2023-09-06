@@ -3,4 +3,5 @@
  */
 
 import "@blueprintjs/test-commons/bootstrap";
+import "./components/datePicker3Tests";
 import "./dateInput2MigrationUtilsTests";

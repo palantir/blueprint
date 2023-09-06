@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
  */
 
 import { assert } from "chai";
-import { ReactWrapper } from "enzyme";
-
-import { Classes } from "../../src/common";
 
 /**
  * Converts a `Date` to a "D/M/YYYY" string.
@@ -47,9 +44,6 @@ export function createTimeObject(hour: number, minute: number = 0, second: numbe
     return new Date(IGNORED_YEAR, IGNORED_MONTH, IGNORED_DAY, hour, minute, second, millisecond);
 }
 
-const isDayHidden = (day: ReactWrapper<any, any>): boolean =>
-    day.prop("empty") && !day.prop("ariaSelected") && day.prop("ariaDisabled");
-
 export function assertTimeIs(time: Date, hours: number, minutes: number, seconds?: number, milliseconds?: number) {
     assert.strictEqual(time.getHours(), hours);
     assert.strictEqual(time.getMinutes(), minutes);
@@ -63,12 +57,4 @@ export function assertTimeIs(time: Date, hours: number, minutes: number, seconds
 
 export function assertDatesEqual(a: Date, b: Date) {
     assert.isTrue(a.getDay() === b.getDay() && a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear());
-}
-
-export function assertDayDisabled(day: ReactWrapper<any, any>, expectDisabled: boolean = true) {
-    assert.equal(day.hasClass(Classes.DATEPICKER_DAY_DISABLED), expectDisabled);
-}
-
-export function assertDayHidden(day: ReactWrapper<any, any>, expectHidden: boolean = true) {
-    assert.equal(isDayHidden(day), expectHidden);
 }

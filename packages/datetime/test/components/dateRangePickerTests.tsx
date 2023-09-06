@@ -37,7 +37,7 @@ import { Months } from "../../src/common/months";
 import { DatePickerNavbar } from "../../src/components/date-picker/datePickerNavbar";
 import { DateRangePickerState } from "../../src/components/date-range-picker/dateRangePicker";
 import { DateRangeShortcut, Shortcuts } from "../../src/components/shortcuts/shortcuts";
-import { assertDayDisabled } from "../common/dateTestUtils";
+import { assertDayDisabled } from "../common/dayPickerTestUtils";
 
 describe("<DateRangePicker>", () => {
     let onChangeSpy: sinon.SinonSpy;
