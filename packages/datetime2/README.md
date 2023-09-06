@@ -14,8 +14,8 @@ imports to reference @blueprintjs/datetime instead:
 
 This package also contains next-generation "V3" components which support react-day-picker v8. This means that
 installing @blueprintjs/datetime2 will install multiple versions of react-day-picker (v7.x via @blueprintjs/datetime
-and v8.x as a direct dependency). Note that these two copies of react-day-picker can happily exist together in a JS
-bundle, and with the help of tree-shaking, you can avoid bundling both if you _only_ use the deprecated "V2" APIs
-or _only_ use the new "V3" APIs.
+and v8.x as a direct dependency). Note that these two copies of react-day-picker can happily exist together in a single
+JS bundle, and with the help of tree-shaking, you can avoid bundling both if you _only_ use the deprecated "V1" / "V2"
+datetime components or _only_ use the new "V3" APIs.
 
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)
