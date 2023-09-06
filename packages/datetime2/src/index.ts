@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-export { DatePicker3 } from "./components/date-picker3/datePicker3";
-export { DatePicker3Props } from "./components/date-picker3/datePicker3Props";
+export { DatePicker3, DatePicker3Props } from "./components/date-picker3/datePicker3";
+export { DateInput3, DateInput3Props } from "./components/date-input3/dateInput3";
 export * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";
+
+export { Classes as Datetime2Classes } from "./classes";
 
 /* eslint-disable deprecation/deprecation */
 
 export {
-    /** @deprecated import from `@blueprintjs/datetime` instead */
+    /** @deprecated import from `@blueprintjs/datetime` or use `Datetime2Classes` instead */
     Classes,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     DateFormatProps,
     /** @deprecated import from `@blueprintjs/datetime` instead */
     DateInput as DateInput2,
     /** @deprecated import from `@blueprintjs/datetime` instead */
     DateInputProps as DateInput2Props,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     DateRange,
     /** @deprecated import from `@blueprintjs/datetime` instead */
     DateRangeInput as DateRangeInput2,
@@ -37,7 +37,6 @@ export {
     DateRangeInputProps as DateRangeInput2Props,
     /** @deprecated import from `@blueprintjs/datetime` instead */
     getTimezoneMetadata,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     TimePrecision,
     /** @deprecated import from `@blueprintjs/datetime` instead */
     TimezoneSelect,

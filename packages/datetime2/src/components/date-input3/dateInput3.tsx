@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,159 +16,32 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import type { DayPickerProps } from "react-day-picker";
 
 import {
     ButtonProps,
     DISPLAYNAME_PREFIX,
     InputGroup,
-    InputGroupProps,
     mergeRefs,
     Popover,
     PopoverClickTargetHandlers,
     PopoverTargetProps,
-    Props,
     Tag,
     Utils,
 } from "@blueprintjs/core";
 
-import { Classes, DateFormatProps, DatePickerBaseProps } from "../../common";
-import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
-import { hasMonthChanged, hasTimeChanged, isDateValid, isDayInRange } from "../../common/dateUtils";
-import * as Errors from "../../common/errors";
-import { getCurrentTimezone } from "../../common/getTimezone";
-import { UTC_TIME } from "../../common/timezoneItems";
-import { getTimezoneShortName, isValidTimezone } from "../../common/timezoneNameUtils";
-import {
-    convertLocalDateToTimezoneTime,
-    getDateObjectFromIsoString,
-    getIsoEquivalentWithUpdatedTimezone,
-} from "../../common/timezoneUtils";
-import { DatePicker } from "../date-picker/datePicker";
-import { DatePickerUtils } from "../date-picker/datePickerUtils";
-import { DatePickerShortcut } from "../shortcuts/shortcuts";
-import { TimezoneSelect } from "../timezone-select/timezoneSelect";
+import { DatePickerShortcut, DatePickerUtils, DateUtils, TimezoneUtils, TimezoneSelect } from "@blueprintjs/datetime";
+// tslint:disable no-submodule-imports
+import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
+import { UTC_TIME } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
+import { getTimezoneShortName, isValidTimezone } from "@blueprintjs/datetime/lib/esm/common/timezoneNameUtils";
+// tslint:enable no-submodule-imports
+import { Classes } from "../../classes";
 
-export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {
-    /**
-     * Allows the user to clear the selection by clicking the currently selected day.
-     * Passed to `DatePicker` component.
-     *
-     * @default true
-     */
-    canClearSelection?: boolean;
+import { DatePicker3, DatePicker3Props } from "../date-picker3/datePicker3";
+import { DateInput3Props } from "./dateInput3Props";
+import { getFormattedDateString } from "./dateInput3FormatUtils";
 
-    /**
-     * Text for the reset button in the date picker action bar.
-     * Passed to `DatePicker` component.
-     *
-     * @default "Clear"
-     */
-    clearButtonText?: string;
-
-    /**
-     * Whether the calendar popover should close when a date is selected.
-     *
-     * @default true
-     */
-    closeOnSelection?: boolean;
-
-    /** The default timezone selected. Defaults to the user local timezone */
-    defaultTimezone?: string;
-
-    /**
-     * Whether to disable the timezone select.
-     *
-     * @default false
-     */
-    disableTimezoneSelect?: boolean;
-
-    /**
-     * The default date to be used in the component when uncontrolled, represented as an ISO string.
-     */
-    defaultValue?: string;
-
-    /**
-     * Whether the date input is non-interactive.
-     *
-     * @default false
-     */
-    disabled?: boolean;
-
-    /**
-     * Whether the component should take up the full width of its container.
-     */
-    fill?: boolean;
-
-    /**
-     * Props to pass to the [InputGroup component](#core/components/input-group).
-     *
-     * Some properties are unavailable:
-     * - `inputProps.value`: use `value` instead
-     * - `inputProps.disabled`: use `disabled` instead
-     * - `inputProps.type`: cannot be customized, always set to "text"
-     *
-     * Note that `inputProps.tagName` will override `popoverProps.targetTagName`.
-     */
-    inputProps?: Partial<Omit<InputGroupProps, "disabled" | "type" | "value">>;
-
-    /**
-     * Callback invoked whenever the date or timezone has changed.
-     *
-     * @param newDate ISO string or `null` (if the date is invalid or text input has been cleared)
-     * @param isUserChange `true` if the user clicked on a date in the calendar, changed the input value,
-     *     or cleared the selection; `false` if the date was changed by changing the month or year.
-     */
-    onChange?: (newDate: string | null, isUserChange: boolean) => void;
-
-    /**
-     * Called when the user finishes typing in a new date and the date causes an error state.
-     * If the date is invalid, `new Date(undefined)` will be returned. If the date is out of range,
-     * the out of range date will be returned (`onChange` is not called in this case).
-     */
-    onError?: (errorDate: Date) => void;
-
-    /**
-     * Element to render on right side of input.
-     */
-    rightElement?: JSX.Element;
-
-    /**
-     * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown below the calendar.
-     *
-     * @default false
-     */
-    showActionsBar?: boolean;
-
-    /**
-     * Whether to show the timezone select dropdown on the right side of the input.
-     * If `timePrecision` is undefined, this will always be false.
-     *
-     * @default false
-     */
-    showTimezoneSelect?: boolean;
-
-    /**
-     * Whether shortcuts to quickly select a date are displayed or not.
-     * If `true`, preset shortcuts will be displayed.
-     * If `false`, no shortcuts will be displayed.
-     * If an array is provided, the custom shortcuts will be displayed.
-     *
-     * @default false
-     */
-    shortcuts?: boolean | DatePickerShortcut[];
-
-    /**
-     * Text for the today button in the date picker action bar.
-     * Passed to `DatePicker` component.
-     *
-     * @default "Today"
-     */
-    todayButtonText?: string;
-
-    /** An ISO string representing the selected time. */
-    value?: string | null;
-}
+export { DateInput3Props };
 
 const timezoneSelectButtonProps: Partial<ButtonProps> = {
     fill: false,
@@ -181,11 +54,11 @@ const DEFAULT_MAX_DATE = DatePickerUtils.getDefaultMaxDate();
 const DEFAULT_MIN_DATE = DatePickerUtils.getDefaultMinDate();
 
 /**
- * Date input component.
+ * Date input (v3) component.
  *
- * @see https://blueprintjs.com/docs/#datetime/date-input
+ * @see https://blueprintjs.com/docs/#datetime2/date-input3
  */
-export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInput(props) {
+export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateInput(props) {
     const {
         defaultTimezone,
         defaultValue,
@@ -216,12 +89,12 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
     const [isOpen, setIsOpen] = React.useState(false);
     const [timezoneValue, setTimezoneValue] = React.useState(getInitialTimezoneValue(props));
     const valueFromProps = React.useMemo(
-        () => getDateObjectFromIsoString(value, timezoneValue),
+        () => TimezoneUtils.getDateObjectFromIsoString(value, timezoneValue),
         [timezoneValue, value],
     );
     const isControlled = valueFromProps !== undefined;
     const defaultValueFromProps = React.useMemo(
-        () => getDateObjectFromIsoString(defaultValue, timezoneValue),
+        () => TimezoneUtils.getDateObjectFromIsoString(defaultValue, timezoneValue),
         [defaultValue, defaultTimezone],
     );
     const [valueAsDate, setValue] = React.useState<Date | null>(isControlled ? valueFromProps : defaultValueFromProps!);
@@ -231,7 +104,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
 
     // rendered as the text input's value
     const formattedDateString = React.useMemo(() => {
-        return valueAsDate === null ? undefined : DatePickerUtils.getFormattedDateString(valueAsDate, props);
+        return valueAsDate === null ? undefined : getFormattedDateString(valueAsDate, props);
     }, [
         valueAsDate,
         minDate,
@@ -239,14 +112,14 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
         // HACKHACK: ESLint false positive
         // eslint-disable-next-line @typescript-eslint/unbound-method
         props.formatDate,
-        props.locale,
+        props.localeCode,
         props.invalidDateMessage,
         props.outOfRangeMessage,
     ]);
     const [inputValue, setInputValue] = React.useState(formattedDateString ?? undefined);
 
     const isErrorState =
-        valueAsDate != null && (!isDateValid(valueAsDate) || !isDayInRange(valueAsDate, [minDate, maxDate]));
+        valueAsDate != null && (!DateUtils.isDateValid(valueAsDate) || !DateUtils.isDayInRange(valueAsDate, [minDate, maxDate]));
 
     // Effects
     // ------------------------------------------------------------------------
@@ -297,8 +170,8 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
                 !isUserChange ||
                 !props.closeOnSelection ||
                 (prevDate != null &&
-                    (hasMonthChanged(prevDate, newDate) ||
-                        (timePrecision !== undefined && hasTimeChanged(prevDate, newDate))));
+                    (DateUtils.hasMonthChanged(prevDate, newDate) ||
+                        (timePrecision !== undefined && DateUtils.hasTimeChanged(prevDate, newDate))));
 
             // if selecting a date via click or Tab, the input will already be
             // blurred by now, so sync isInputFocused to false. if selecting via
@@ -311,20 +184,20 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
                 setIsInputFocused(newIsInputFocused);
                 setIsOpen(newIsOpen);
             } else {
-                const newFormattedDateString = DatePickerUtils.getFormattedDateString(newDate, props);
+                const newFormattedDateString = getFormattedDateString(newDate, props);
                 setIsInputFocused(newIsInputFocused);
                 setIsOpen(newIsOpen);
                 setValue(newDate);
                 setInputValue(newFormattedDateString);
             }
 
-            const newIsoDateString = getIsoEquivalentWithUpdatedTimezone(newDate, timezoneValue, timePrecision);
+            const newIsoDateString = TimezoneUtils.getIsoEquivalentWithUpdatedTimezone(newDate, timezoneValue, timePrecision);
             props.onChange?.(newIsoDateString, isUserChange);
         },
         [props.onChange, timezoneValue, timePrecision, valueAsDate],
     );
 
-    const dayPickerProps: DayPickerProps = {
+    const dayPickerProps: DatePicker3Props["dayPickerProps"] = {
         ...props.dayPickerProps,
         onDayKeyDown: (day, modifiers, e) => {
             props.dayPickerProps?.onDayKeyDown?.(day, modifiers, e);
@@ -363,7 +236,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
     const popoverContent = (
         <div ref={popoverContentRef}>
             <div onFocus={handleStartFocusBoundaryFocusIn} tabIndex={0} />
-            <DatePicker
+            <DatePicker3
                 {...datePickerProps}
                 dayPickerProps={dayPickerProps}
                 maxDate={maxDate}
@@ -387,9 +260,9 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
     // we use today's date and shift it to the desired/current timezone
     const tzSelectDate = React.useMemo(
         () =>
-            valueAsDate != null && isDateValid(valueAsDate)
+            valueAsDate != null && DateUtils.isDateValid(valueAsDate)
                 ? valueAsDate
-                : convertLocalDateToTimezoneTime(new Date(), timezoneValue),
+                : TimezoneUtils.convertLocalDateToTimezoneTime(new Date(), timezoneValue),
         [timezoneValue, valueAsDate],
     );
 
@@ -400,7 +273,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
         (newTimezone: string) => {
             setTimezoneValue(newTimezone);
             if (valueAsDate != null) {
-                const newDateString = getIsoEquivalentWithUpdatedTimezone(valueAsDate, newTimezone, timePrecision);
+                const newDateString = TimezoneUtils.getIsoEquivalentWithUpdatedTimezone(valueAsDate, newTimezone, timePrecision);
                 props.onChange?.(newDateString, true);
             }
         },
@@ -434,12 +307,12 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
             if (dateString === props.outOfRangeMessage || dateString === props.invalidDateMessage) {
                 return null;
             }
-            const newDate = props.parseDate(dateString, props.locale);
+            const newDate = props.parseDate(dateString, props.localeCode);
             return newDate === false ? INVALID_DATE : newDate;
         },
         // HACKHACK: ESLint false positive
         // eslint-disable-next-line @typescript-eslint/unbound-method
-        [props.outOfRangeMessage, props.invalidDateMessage, props.parseDate, props.locale],
+        [props.outOfRangeMessage, props.invalidDateMessage, props.parseDate, props.localeCode],
     );
 
     const handleInputFocus = React.useCallback(
@@ -463,7 +336,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
             if (
                 inputValue.length > 0 &&
                 inputValue !== formattedDateString &&
-                (!isDateValid(date) || !isDayInRange(date, [minDate, maxDate]))
+                (!DateUtils.isDateValid(date) || !DateUtils.isDayInRange(date, [minDate, maxDate]))
             ) {
                 if (isControlled) {
                     setIsInputFocused(false);
@@ -507,14 +380,14 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
             const valueString = (e.target as HTMLInputElement).value;
             const inputValueAsDate = parseDate(valueString);
 
-            if (isDateValid(inputValueAsDate) && isDayInRange(inputValueAsDate, [minDate, maxDate])) {
+            if (DateUtils.isDateValid(inputValueAsDate) && DateUtils.isDayInRange(inputValueAsDate, [minDate, maxDate])) {
                 if (isControlled) {
                     setInputValue(valueString);
                 } else {
                     setValue(inputValueAsDate);
                     setInputValue(valueString);
                 }
-                const newIsoDateString = getIsoEquivalentWithUpdatedTimezone(
+                const newIsoDateString = TimezoneUtils.getIsoEquivalentWithUpdatedTimezone(
                     inputValueAsDate,
                     timezoneValue,
                     timePrecision,
@@ -556,7 +429,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
                 inputRef.current?.blur();
             } else if (e.key === "Enter" && inputValue != null) {
                 const nextDate = parseDate(inputValue);
-                if (isDateValid(nextDate)) {
+                if (DateUtils.isDateValid(nextDate)) {
                     handleDateChange(nextDate, true, true);
                 }
             }
@@ -636,8 +509,8 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
         />
     );
 });
-DateInput.displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
-DateInput.defaultProps = {
+DateInput3.displayName = `${DISPLAYNAME_PREFIX}.DateInput3`;
+DateInput3.defaultProps = {
     closeOnSelection: true,
     disabled: false,
     invalidDateMessage: "Invalid date",
@@ -647,9 +520,9 @@ DateInput.defaultProps = {
     reverseMonthAndYearMenus: false,
 };
 
-function getInitialTimezoneValue({ defaultTimezone }: DateInputProps) {
+function getInitialTimezoneValue({ defaultTimezone }: DateInput3Props) {
     if (defaultTimezone === undefined) {
-        return getCurrentTimezone();
+        return TimezoneUtils.getCurrentTimezone();
     } else {
         if (isValidTimezone(defaultTimezone)) {
             return defaultTimezone;
