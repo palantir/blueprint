@@ -8,7 +8,9 @@ The [__@blueprintjs/datetime2__ package](https://www.npmjs.com/package/@blueprin
 provides next-generation components for interacting with dates & times:
 
 - [DatePicker3](#datetime2/date-picker3)
+- [DateInput3](#datetime2/date-input3)
 - DateRangePicker3 (_coming soon_)
+- DateRangeInput3 (_coming soon_)
 
 ### Motivation
 
@@ -53,3 +55,4 @@ packages' CSS files as well (if you are not doing this already):
 </div>
 
 @page date-picker3
+@page date-input3

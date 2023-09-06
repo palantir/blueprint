@@ -607,7 +607,8 @@ $docs-hotkey-piano-height: 510px;
   align-items: center;
 }
 
-#{example("DateInput")} {
+#{example("DateInput")},
+#{example("DateInput3")} {
   .#{$ns}-date-input {
     // should not grow in vertical direction when fill={true}
     flex-grow: 0;
@@ -616,7 +617,9 @@ $docs-hotkey-piano-height: 510px;
 }
 
 // these component examples have a "fill" prop option, which doesn't work nicely with the default margin
-#{example("DateInput")}, #{example("DateRangeInput")} {
+#{example("DateInput")},
+#{example("DateInput3")},
+#{example("DateRangeInput")} {
   .docs-example > * {
     margin: 0;
   }
