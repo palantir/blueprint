@@ -11,7 +11,7 @@ Migrating from [DatePicker](#datetime/datepicker)?
 
 </h5>
 
-__DatePicker3___ is a replacement for DatePicker and will replace it in Blueprint v6.
+__DatePicker3__ is a replacement for DatePicker and will replace it in Blueprint v6.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
 See the [react-day-picker v8 migration guide](https://github.com/palantir/blueprint/wiki/react-day-picker-8-migration)
 on the wiki.
@@ -32,9 +32,9 @@ prop to listen for changes to the selected day.
 
 @## Props interface
 
-Some props are managed by __DatePicker3__, while others are passed to the __react-day-picker__ library.
-The full list of props you can forward to `<DayPicker mode="single">` is
-[documented here](https://react-day-picker.js.org/api/interfaces/DayPickerSingleProps).These
+In addition to top-level __DatePicker3__ props, you may forward some props to `<DayPicker mode="single">` to customize
+react-day-picker's behavior via `dayPipckerProps` (the full list is
+[documented here](https://react-day-picker.js.org/api/interfaces/DayPickerSingleProps)).
 
 @interface DatePicker3Props
 
