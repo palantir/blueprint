@@ -28,18 +28,17 @@ import {
     Tag,
     Utils,
 } from "@blueprintjs/core";
-
-import { DatePickerShortcut, DatePickerUtils, DateUtils, TimezoneUtils, TimezoneSelect } from "@blueprintjs/datetime";
+import { DatePickerShortcut, DatePickerUtils, DateUtils, TimezoneSelect, TimezoneUtils } from "@blueprintjs/datetime";
 // tslint:disable no-submodule-imports
 import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
 import { UTC_TIME } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
 import { getTimezoneShortName, isValidTimezone } from "@blueprintjs/datetime/lib/esm/common/timezoneNameUtils";
+
 // tslint:enable no-submodule-imports
 import { Classes } from "../../classes";
-
 import { DatePicker3, DatePicker3Props } from "../date-picker3/datePicker3";
-import { DateInput3Props } from "./dateInput3Props";
 import { getFormattedDateString } from "./dateInput3FormatUtils";
+import { DateInput3Props } from "./dateInput3Props";
 
 export { DateInput3Props };
 

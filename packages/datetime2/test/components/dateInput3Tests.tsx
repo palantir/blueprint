@@ -23,10 +23,10 @@ import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
 import { Months, TimePrecision, TimeUnit, TimezoneSelect, TimezoneUtils } from "@blueprintjs/datetime";
-// tslint-disable no-submodule-imports
+// tslint:disable no-submodule-imports
 import { TIMEZONE_ITEMS, UTC_TIME } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
 import { getTimezoneShortName } from "@blueprintjs/datetime/lib/esm/common/timezoneNameUtils";
-// tslint-enable no-submodule-imports
+// tslint:enable no-submodule-imports
 
 import { Datetime2Classes as Classes, DateInput3, DateInput3Props, DatePicker3 } from "../../src";
 
@@ -63,7 +63,7 @@ const DEFAULT_PROPS = {
     timePrecision: TimePrecision.SECOND,
 };
 
-describe.only("<DateInput3>", () => {
+describe("<DateInput3>", () => {
     const onChange = sinon.spy();
     let containerElement: HTMLElement | undefined;
 
@@ -204,7 +204,7 @@ describe.only("<DateInput3>", () => {
         });
     });
 
-    describe.only("uncontrolled usage", () => {
+    describe("uncontrolled usage", () => {
         const DEFAULT_PROPS_UNCONTROLLED = {
             ...DEFAULT_PROPS,
             defaultValue: VALUE,
@@ -215,7 +215,7 @@ describe.only("<DateInput3>", () => {
             const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
             focusInput(wrapper);
             wrapper
-                .find(`.${Classes.DATEPICKER2_DAY}:not(.${Classes.DATEPICKER2_DAY_OUTSIDE})`)
+                .find(`.${Classes.DATEPICKER3_DAY}:not(.${Classes.DATEPICKER3_DAY_OUTSIDE})`)
                 .first()
                 .simulate("click")
                 .update();
@@ -345,7 +345,7 @@ describe.only("<DateInput3>", () => {
                 .find("input")
                 .simulate("change", { target: { value: "" } });
 
-            assert.lengthOf(wrapper.find(`.${Classes.DATEPICKER2_DAY_SELECTED}`), 0);
+            assert.lengthOf(wrapper.find(`.${Classes.DATEPICKER3_DAY_SELECTED}`), 0);
             assert.isTrue(onChange.calledWith(null));
         });
 
@@ -354,7 +354,7 @@ describe.only("<DateInput3>", () => {
                 attachTo: containerElement,
             });
             focusInput(wrapper);
-            wrapper.find(`.${Classes.DATEPICKER2_DAY}`).first().simulate("click").update();
+            wrapper.find(`.${Classes.DATEPICKER3_DAY}`).first().simulate("click").update();
             assertPopoverIsOpen(wrapper);
         });
 
@@ -386,7 +386,7 @@ describe.only("<DateInput3>", () => {
             assert.equal(wrapper.find(InputGroup).prop("value"), "4/3/2016");
 
             wrapper
-                .find(`.${Classes.DATEPICKER2_DAY}`)
+                .find(`.${Classes.DATEPICKER3_DAY}`)
                 .filterWhere(day => day.text() === "27")
                 .first()
                 .simulate("click");
@@ -680,7 +680,7 @@ describe.only("<DateInput3>", () => {
         });
 
         it("formats locale-specific format strings properly", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} localeCode="de" value={DATE2_VALUE} />);
+            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} locale="de" value={DATE2_VALUE} />);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_UI_STR_DE);
         });
 
@@ -732,7 +732,7 @@ describe.only("<DateInput3>", () => {
         const formatDate = sinon.stub().returns("custom date");
         const parseDate = sinon.stub().returns(today);
         const localeCode = "LOCALE";
-        const FORMATTING_PROPS: DateInput3Props = { formatDate, localeCode, parseDate };
+        const FORMATTING_PROPS: DateInput3Props = { formatDate, locale: localeCode, parseDate };
 
         beforeEach(() => {
             formatDate.resetHistory();
@@ -803,8 +803,8 @@ describe.only("<DateInput3>", () => {
 
     function clickCalendarDay(wrapper: ReactWrapper<DateInput3Props>, dayNumber: number) {
         wrapper
-            .find(`.${Classes.DATEPICKER2_DAY}`)
-            .filterWhere(day => day.text() === `${dayNumber}` && !day.hasClass(Classes.DATEPICKER2_DAY_OUTSIDE))
+            .find(`.${Classes.DATEPICKER3_DAY}`)
+            .filterWhere(day => day.text() === `${dayNumber}` && !day.hasClass(Classes.DATEPICKER3_DAY_OUTSIDE))
             .hostNodes()
             .simulate("click");
     }
