@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-export { DatePicker2 } from "./components/date-picker2/datePicker2";
-export { DatePicker2Props } from "./components/date-picker2/datePicker2Props";
+export { DatePicker3 } from "./components/date-picker3/datePicker3";
+export { DatePicker3Props } from "./components/date-picker3/datePicker3Props";
 export * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";
 
 /* eslint-disable deprecation/deprecation */

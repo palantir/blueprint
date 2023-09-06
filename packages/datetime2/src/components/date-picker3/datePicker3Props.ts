@@ -19,13 +19,13 @@ import type { DayPickerSingleProps } from "react-day-picker";
 import type { Props } from "@blueprintjs/core";
 import type { DatePickerProps } from "@blueprintjs/datetime";
 
-/** Props shared between DatePicker v1 and v2 */
+/** Props shared between DatePicker v1 and v3 */
 type DatePickerSharedProps = Omit<
     DatePickerProps,
     "dayPickerProps" | "defaultValue" | "locale" | "localeUtils" | "modifiers" | "onChange" | "value"
 >;
 
-export interface DatePicker2Props extends DatePickerSharedProps, Props {
+export interface DatePicker3Props extends DatePickerSharedProps, Props {
     /**
      * Props to pass to react-day-picker's single day picker. See API documentation
      * [here](https://react-day-picker.js.org/api/interfaces/DayPickerSingleProps).

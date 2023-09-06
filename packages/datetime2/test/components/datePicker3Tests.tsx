@@ -29,13 +29,13 @@ import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/sh
 import { assertDatesEqual } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src/classes";
-import { DatePicker2, DatePicker2Props } from "../../src/components/date-picker2/datePicker2";
-import { DatePicker2State } from "../../src/components/date-picker2/datePicker2State";
+import { DatePicker3, DatePicker3Props } from "../../src/components/date-picker3/datePicker3";
+import { DatePicker3State } from "../../src/components/date-picker3/datePicker3State";
 import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils";
 
-describe("<DatePicker2>", () => {
+describe("<DatePicker3>", () => {
     let testsContainerElement: HTMLElement;
-    let datePicker2Wrapper: ReactWrapper<DatePicker2Props, DatePicker2State>;
+    let datePicker3Wrapper: ReactWrapper<DatePicker3Props, DatePicker3State>;
 
     beforeEach(() => {
         testsContainerElement = document.createElement("div");
@@ -43,28 +43,28 @@ describe("<DatePicker2>", () => {
     });
 
     afterEach(() => {
-        datePicker2Wrapper?.unmount();
-        datePicker2Wrapper?.detach();
+        datePicker3Wrapper?.unmount();
+        datePicker3Wrapper?.detach();
         testsContainerElement.remove();
     });
 
     it(`renders .${Classes.DATEPICKER}`, () => {
-        assert.lengthOf(wrap(<DatePicker2 />).root.find(`.${Classes.DATEPICKER}`), 1);
+        assert.lengthOf(wrap(<DatePicker3 />).root.find(`.${Classes.DATEPICKER}`), 1);
     });
 
     it("no day is selected by default", () => {
-        const { assertSelectedDays, root } = wrap(<DatePicker2 />);
+        const { assertSelectedDays, root } = wrap(<DatePicker3 />);
         assertSelectedDays();
         assert.isNull(root.state("selectedDay"));
     });
 
     it("current day is not highlighted by default", () => {
-        const { root } = wrap(<DatePicker2 />);
+        const { root } = wrap(<DatePicker3 />);
         assert.lengthOf(root.find(`.${Classes.DATEPICKER_HIGHLIGHT_CURRENT_DAY}`), 0);
     });
 
     it("current day should be highlighted when highlightCurrentDay={true}", () => {
-        const { root } = wrap(<DatePicker2 highlightCurrentDay={true} />);
+        const { root } = wrap(<DatePicker3 highlightCurrentDay={true} />);
         assert.lengthOf(root.find(`.${Classes.DATEPICKER_HIGHLIGHT_CURRENT_DAY}`), 1);
     });
 
@@ -72,7 +72,7 @@ describe("<DatePicker2>", () => {
         it("shows outside days by default", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const firstDayInView = new Date(2017, Months.AUGUST, 27, 12, 0);
-            const { root } = wrap(<DatePicker2 defaultValue={defaultValue} />);
+            const { root } = wrap(<DatePicker3 defaultValue={defaultValue} />);
             // TODO: refactor this to avoid knowing about react-day-picker's internal component names
             const firstDay = root.find(Day).first();
             assertDatesEqual(new Date(firstDay.prop("date")), firstDayInView);
@@ -81,7 +81,7 @@ describe("<DatePicker2>", () => {
         it("doesn't show outside days if enableOutsideDays=false", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1, 12);
             const { root } = wrap(
-                <DatePicker2 defaultValue={defaultValue} dayPickerProps={{ showOutsideDays: false }} />,
+                <DatePicker3 defaultValue={defaultValue} dayPickerProps={{ showOutsideDays: false }} />,
             );
             const days = root.find(Day);
 
@@ -97,7 +97,7 @@ describe("<DatePicker2>", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const disableFridays = { dayOfWeek: [5] };
             const { getDay } = wrap(
-                <DatePicker2
+                <DatePicker3
                     defaultValue={defaultValue}
                     maxDate={new Date(2017, Months.SEPTEMBER, 20)}
                     dayPickerProps={{ disabled: disableFridays }}
@@ -111,7 +111,7 @@ describe("<DatePicker2>", () => {
         it("disables out-of-range max dates", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const { getDay } = wrap(
-                <DatePicker2 defaultValue={defaultValue} maxDate={new Date(2017, Months.SEPTEMBER, 20)} />,
+                <DatePicker3 defaultValue={defaultValue} maxDate={new Date(2017, Months.SEPTEMBER, 20)} />,
             );
             assertDayDisabled(getDay(21));
             assertDayDisabled(getDay(10), false);
@@ -120,7 +120,7 @@ describe("<DatePicker2>", () => {
         it("disables out-of-range min dates", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const { getDay, clickPreviousMonth } = wrap(
-                <DatePicker2 defaultValue={defaultValue} minDate={new Date(2017, Months.AUGUST, 20)} />,
+                <DatePicker3 defaultValue={defaultValue} minDate={new Date(2017, Months.AUGUST, 20)} />,
             );
             clickPreviousMonth();
             assertDayDisabled(getDay(10));
@@ -133,35 +133,35 @@ describe("<DatePicker2>", () => {
 
             it("calls onMonthChange on button next click", () => {
                 const onMonthChange = sinon.spy();
-                const { root } = wrap(<DatePicker2 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
+                const { root } = wrap(<DatePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
                 root.find(`.${Classes.DATEPICKER_NAV_BUTTON_NEXT}`).first().simulate("click");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on button prev click", () => {
                 const onMonthChange = sinon.spy();
-                const { root } = wrap(<DatePicker2 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
+                const { root } = wrap(<DatePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
                 root.find(`.${Classes.DATEPICKER_NAV_BUTTON_PREVIOUS}`).first().simulate("click");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on month select change", () => {
                 const onMonthChange = sinon.spy();
-                const { root } = wrap(<DatePicker2 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
+                const { root } = wrap(<DatePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
                 root.find(`.${Classes.DATEPICKER_MONTH_SELECT}`).first().find("select").simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on year select change", () => {
                 const onMonthChange = sinon.spy();
-                const { root } = wrap(<DatePicker2 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
+                const { root } = wrap(<DatePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
                 root.find(`.${Classes.DATEPICKER_YEAR_SELECT}`).first().find("select").simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onDayClick", () => {
                 const onDayClick = sinon.spy();
-                const { getDay } = wrap(<DatePicker2 defaultValue={defaultValue} dayPickerProps={{ onDayClick }} />);
+                const { getDay } = wrap(<DatePicker3 defaultValue={defaultValue} dayPickerProps={{ onDayClick }} />);
                 getDay().simulate("click");
                 assert.isTrue(onDayClick.called);
             });
@@ -172,7 +172,7 @@ describe("<DatePicker2>", () => {
         const ODD_CLASS = "test-odd";
         const oddifier = (d: Date) => d.getDate() % 2 === 1;
         const { getDay } = wrap(
-            <DatePicker2 dayPickerProps={{ modifiers: { odd: oddifier }, modifiersClassNames: { odd: ODD_CLASS } }} />,
+            <DatePicker3 dayPickerProps={{ modifiers: { odd: oddifier }, modifiersClassNames: { odd: ODD_CLASS } }} />,
         );
 
         assert.isFalse(getDay(4).hasClass(ODD_CLASS));
@@ -180,14 +180,14 @@ describe("<DatePicker2>", () => {
     });
 
     it("renders the actions bar when showActionsBar=true", () => {
-        const { root } = wrap(<DatePicker2 showActionsBar={true} />);
+        const { root } = wrap(<DatePicker3 showActionsBar={true} />);
         assert.lengthOf(root.find({ className: Classes.DATEPICKER_FOOTER }), 1);
     });
 
     describe("initially displayed month", () => {
         it("is defaultValue", () => {
             const defaultValue = new Date(2007, Months.APRIL, 4);
-            const { root } = wrap(<DatePicker2 defaultValue={defaultValue} />);
+            const { root } = wrap(<DatePicker3 defaultValue={defaultValue} />);
             assert.equal(root.state("displayYear"), 2007);
             assert.equal(root.state("displayMonth"), Months.APRIL);
         });
@@ -195,21 +195,21 @@ describe("<DatePicker2>", () => {
         it("is initialMonth if set (overrides defaultValue)", () => {
             const defaultValue = new Date(2007, Months.APRIL, 4);
             const initialMonth = new Date(2002, Months.MARCH, 1);
-            const { root } = wrap(<DatePicker2 defaultValue={defaultValue} initialMonth={initialMonth} />);
+            const { root } = wrap(<DatePicker3 defaultValue={defaultValue} initialMonth={initialMonth} />);
             assert.equal(root.state("displayYear"), 2002);
             assert.equal(root.state("displayMonth"), Months.MARCH);
         });
 
         it("is value if set and initialMonth not set", () => {
             const value = new Date(2007, Months.APRIL, 4);
-            const { root } = wrap(<DatePicker2 value={value} />);
+            const { root } = wrap(<DatePicker3 value={value} />);
             assert.equal(root.state("displayYear"), 2007);
             assert.equal(root.state("displayMonth"), Months.APRIL);
         });
 
         it("is today if today is within date range", () => {
             const today = new Date();
-            const { root } = wrap(<DatePicker2 />);
+            const { root } = wrap(<DatePicker3 />);
             assert.equal(root.state("displayYear"), today.getFullYear());
             assert.equal(root.state("displayMonth"), today.getMonth());
         });
@@ -217,7 +217,7 @@ describe("<DatePicker2>", () => {
         it("is a day between minDate and maxDate if today is not in range", () => {
             const maxDate = new Date(2005, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
-            const { root } = wrap(<DatePicker2 maxDate={maxDate} minDate={minDate} />);
+            const { root } = wrap(<DatePicker3 maxDate={maxDate} minDate={minDate} />);
             assert.isTrue(
                 DateUtils.isDayInRange(new Date(root.state("displayYear"), root.state("displayMonth")), [
                     minDate,
@@ -228,13 +228,13 @@ describe("<DatePicker2>", () => {
 
         it("selectedDay is set to the day of the value", () => {
             const value = new Date(2007, Months.APRIL, 4);
-            const { root } = wrap(<DatePicker2 value={value} />);
+            const { root } = wrap(<DatePicker3 value={value} />);
             assert.strictEqual(root.state("selectedDay"), value.getDate());
         });
 
         it("selectedDay is set to the day of the defaultValue", () => {
             const defaultValue = new Date(2007, Months.APRIL, 4);
-            const { root } = wrap(<DatePicker2 defaultValue={defaultValue} />);
+            const { root } = wrap(<DatePicker3 defaultValue={defaultValue} />);
             assert.strictEqual(root.state("selectedDay"), defaultValue.getDate());
         });
     });
@@ -251,13 +251,13 @@ describe("<DatePicker2>", () => {
             after(() => consoleError.restore());
 
             it("maxDate must be later than minDate", () => {
-                wrap(<DatePicker2 maxDate={MIN_DATE} minDate={MAX_DATE} />);
+                wrap(<DatePicker3 maxDate={MIN_DATE} minDate={MAX_DATE} />);
                 assert.isTrue(consoleError.calledWith(Errors.DATEPICKER_MAX_DATE_INVALID));
             });
 
             it("an error is logged if defaultValue is outside bounds", () => {
                 wrap(
-                    <DatePicker2
+                    <DatePicker3
                         defaultValue={new Date(2015, Months.JANUARY, 5)}
                         maxDate={MAX_DATE}
                         minDate={MIN_DATE}
@@ -267,13 +267,13 @@ describe("<DatePicker2>", () => {
             });
 
             it("an error is logged if value is outside bounds", () => {
-                wrap(<DatePicker2 value={new Date(2015, Months.JANUARY, 20)} maxDate={MAX_DATE} minDate={MIN_DATE} />);
+                wrap(<DatePicker3 value={new Date(2015, Months.JANUARY, 20)} maxDate={MAX_DATE} minDate={MIN_DATE} />);
                 assert.isTrue(consoleError.calledWith(Errors.DATEPICKER_VALUE_INVALID));
             });
 
             it("an error is logged if initialMonth is outside month bounds", () => {
                 wrap(
-                    <DatePicker2
+                    <DatePicker3
                         initialMonth={new Date(2015, Months.FEBRUARY, 12)}
                         maxDate={MAX_DATE}
                         minDate={MIN_DATE}
@@ -284,7 +284,7 @@ describe("<DatePicker2>", () => {
 
             it("an error is not logged if initialMonth is outside day bounds but inside month bounds", () => {
                 wrap(
-                    <DatePicker2
+                    <DatePicker3
                         initialMonth={new Date(2015, Months.JANUARY, 12)}
                         minDate={MIN_DATE}
                         maxDate={MAX_DATE}
@@ -304,7 +304,7 @@ describe("<DatePicker2>", () => {
 
             it("min/max before today has disabled button", () => {
                 const { getTodayButton } = wrap(
-                    <DatePicker2
+                    <DatePicker3
                         minDate={MIN_DATE_BEFORE_TODAY}
                         maxDate={MAX_DATE_BEFORE_TODAY}
                         showActionsBar={true}
@@ -316,7 +316,7 @@ describe("<DatePicker2>", () => {
 
             it("min/max after today has disabled button", () => {
                 const { getTodayButton } = wrap(
-                    <DatePicker2 minDate={MIN_DATE_AFTER_TODAY} maxDate={MAX_DATE_AFTER_TODAY} showActionsBar={true} />,
+                    <DatePicker3 minDate={MIN_DATE_AFTER_TODAY} maxDate={MAX_DATE_AFTER_TODAY} showActionsBar={true} />,
                 );
 
                 assert.isTrue(getTodayButton().props().disabled);
@@ -324,7 +324,7 @@ describe("<DatePicker2>", () => {
 
             it("valid min/max today has enabled button", () => {
                 const { getTodayButton } = wrap(
-                    <DatePicker2
+                    <DatePicker3
                         minDate={MIN_DATE_BEFORE_TODAY}
                         maxDate={MAX_DATE_AFTER_TODAY}
                         showActionsBar={true}
@@ -337,7 +337,7 @@ describe("<DatePicker2>", () => {
 
         it("only days outside bounds have disabled class", () => {
             const minDate = new Date(2000, Months.JANUARY, 10);
-            const { getDay } = wrap(<DatePicker2 initialMonth={minDate} minDate={minDate} />);
+            const { getDay } = wrap(<DatePicker3 initialMonth={minDate} minDate={minDate} />);
             // 8 is before min date, 12 is after
             assert.isTrue(getDay(8).hasClass(Classes.DATEPICKER2_DAY_DISABLED));
             assert.isFalse(getDay(12).hasClass(Classes.DATEPICKER2_DAY_DISABLED));
@@ -345,7 +345,7 @@ describe("<DatePicker2>", () => {
 
         it("onChange not fired when a day outside of bounds is clicked", () => {
             const onChange = sinon.spy();
-            const { getDay } = wrap(<DatePicker2 maxDate={MAX_DATE} minDate={MIN_DATE} onChange={onChange} />);
+            const { getDay } = wrap(<DatePicker3 maxDate={MAX_DATE} minDate={MIN_DATE} onChange={onChange} />);
             assert.isTrue(onChange.notCalled);
             getDay(4).simulate("click");
             getDay(16).simulate("click");
@@ -356,7 +356,7 @@ describe("<DatePicker2>", () => {
 
         it("constrains time picker when minDate is selected", () => {
             const { root } = wrap(
-                <DatePicker2
+                <DatePicker3
                     maxDate={MAX_DATE}
                     minDate={MIN_DATE}
                     timePrecision={TimePrecision.MINUTE}
@@ -369,7 +369,7 @@ describe("<DatePicker2>", () => {
 
         it("constrains time picker when max date is selected", () => {
             const { root } = wrap(
-                <DatePicker2
+                <DatePicker3
                     maxDate={MAX_DATE}
                     minDate={MIN_DATE}
                     timePrecision={TimePrecision.MINUTE}
@@ -385,13 +385,13 @@ describe("<DatePicker2>", () => {
         it("value initially selects a day", () => {
             const value = new Date(2010, Months.JANUARY, 1);
             const { assertSelectedDays } = wrap(
-                <DatePicker2 defaultValue={new Date(2010, Months.FEBRUARY, 2)} value={value} />,
+                <DatePicker3 defaultValue={new Date(2010, Months.FEBRUARY, 2)} value={value} />,
             );
             assertSelectedDays(value.getDate());
         });
 
         it("selection does not update automatically", () => {
-            const { getDay, assertSelectedDays } = wrap(<DatePicker2 value={null} />);
+            const { getDay, assertSelectedDays } = wrap(<DatePicker3 value={null} />);
             assertSelectedDays();
             getDay().simulate("click");
             assertSelectedDays();
@@ -399,7 +399,7 @@ describe("<DatePicker2>", () => {
 
         it("selected day doesn't update on current month view change", () => {
             const value = new Date(2010, Months.JANUARY, 2);
-            const { assertSelectedDays, clickPreviousMonth, months, years } = wrap(<DatePicker2 value={value} />);
+            const { assertSelectedDays, clickPreviousMonth, months, years } = wrap(<DatePicker3 value={value} />);
             clickPreviousMonth();
 
             assertSelectedDays(2);
@@ -413,7 +413,7 @@ describe("<DatePicker2>", () => {
 
         it("onChange fired when a day is clicked", () => {
             const onChange = sinon.spy();
-            const { getDay } = wrap(<DatePicker2 onChange={onChange} value={null} />);
+            const { getDay } = wrap(<DatePicker3 onChange={onChange} value={null} />);
             getDay().simulate("click");
             assert.isTrue(onChange.calledOnce);
             assert.isTrue(onChange.args[0][1]);
@@ -422,7 +422,7 @@ describe("<DatePicker2>", () => {
         it("onChange fired when month is changed", () => {
             const value = new Date(2010, Months.JANUARY, 2);
             const onChange = sinon.spy();
-            const { months, clickPreviousMonth } = wrap(<DatePicker2 onChange={onChange} value={value} />);
+            const { months, clickPreviousMonth } = wrap(<DatePicker3 onChange={onChange} value={value} />);
 
             clickPreviousMonth();
             assert.isTrue(onChange.calledOnce, "expected onChange called");
@@ -435,7 +435,7 @@ describe("<DatePicker2>", () => {
 
         it("can change displayed date with the dropdowns in the caption", () => {
             const { months, root, years } = wrap(
-                <DatePicker2 initialMonth={new Date(2015, Months.MARCH, 2)} value={null} />,
+                <DatePicker3 initialMonth={new Date(2015, Months.MARCH, 2)} value={null} />,
             );
             assert.equal(root.state("displayMonth"), Months.MARCH);
             assert.equal(root.state("displayYear"), 2015);
@@ -451,7 +451,7 @@ describe("<DatePicker2>", () => {
             const aWeekAgo = DateUtils.clone(today);
             aWeekAgo.setDate(today.getDate() - 6);
             const onChange = sinon.spy();
-            const { clickShortcut } = wrap(<DatePicker2 onChange={onChange} value={today} shortcuts={true} />);
+            const { clickShortcut } = wrap(<DatePicker3 onChange={onChange} value={today} shortcuts={true} />);
             clickShortcut(2);
 
             assert.isTrue(onChange.calledOnce, "called");
@@ -460,14 +460,14 @@ describe("<DatePicker2>", () => {
         });
 
         it("all shortcuts are displayed as inactive when none are selected", () => {
-            const { root } = wrap(<DatePicker2 shortcuts={true} />);
+            const { root } = wrap(<DatePicker3 shortcuts={true} />);
 
             assert.isFalse(root.find(Shortcuts).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists());
         });
 
         it("corresponding shortcut is displayed as active when selected", () => {
             const selectedShortcut = 0;
-            const { root } = wrap(<DatePicker2 shortcuts={true} selectedShortcutIndex={selectedShortcut} />);
+            const { root } = wrap(<DatePicker3 shortcuts={true} selectedShortcutIndex={selectedShortcut} />);
 
             assert.isTrue(root.find(Shortcuts).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists());
 
@@ -481,7 +481,7 @@ describe("<DatePicker2>", () => {
             const onShortcutChangeSpy = sinon.spy();
             const onChangeSpy = sinon.spy();
             const { clickShortcut } = wrap(
-                <DatePicker2 onChange={onChangeSpy} shortcuts={true} onShortcutChange={onShortcutChangeSpy} />,
+                <DatePicker3 onChange={onChangeSpy} shortcuts={true} onShortcutChange={onShortcutChangeSpy} />,
             );
 
             clickShortcut(selectedShortcut);
@@ -496,7 +496,7 @@ describe("<DatePicker2>", () => {
             const date = new Date(2015, Months.JANUARY, 1);
             const onChangeSpy = sinon.spy();
             const { clickShortcut, assertSelectedDays } = wrap(
-                <DatePicker2 onChange={onChangeSpy} shortcuts={[{ label: "custom shortcut", date }]} />,
+                <DatePicker3 onChange={onChangeSpy} shortcuts={[{ label: "custom shortcut", date }]} />,
             );
             clickShortcut();
             assert.isTrue(onChangeSpy.calledOnce);
@@ -509,13 +509,13 @@ describe("<DatePicker2>", () => {
     describe("when uncontrolled", () => {
         it("defaultValue initially selects a day", () => {
             const today = new Date();
-            const { assertSelectedDays } = wrap(<DatePicker2 defaultValue={today} />);
+            const { assertSelectedDays } = wrap(<DatePicker3 defaultValue={today} />);
             assertSelectedDays(today.getDate());
         });
 
         it("onChange fired when a day is clicked", () => {
             const onChange = sinon.spy();
-            const { getDay } = wrap(<DatePicker2 onChange={onChange} />);
+            const { getDay } = wrap(<DatePicker3 onChange={onChange} />);
             assert.isTrue(onChange.notCalled);
             getDay().simulate("click");
             assert.isTrue(onChange.calledOnce);
@@ -525,7 +525,7 @@ describe("<DatePicker2>", () => {
             const onChange = sinon.spy();
             // must use an initial month otherwise clicking next month in december will fail
             const { getDay, clickNextMonth } = wrap(
-                <DatePicker2 initialMonth={new Date(2015, Months.JANUARY, 12)} onChange={onChange} />,
+                <DatePicker3 initialMonth={new Date(2015, Months.JANUARY, 12)} onChange={onChange} />,
             );
             assert.isTrue(onChange.notCalled);
             getDay().simulate("click");
@@ -535,7 +535,7 @@ describe("<DatePicker2>", () => {
         });
 
         it("selected day updates are automatic", () => {
-            const { assertSelectedDays, getDay } = wrap(<DatePicker2 />);
+            const { assertSelectedDays, getDay } = wrap(<DatePicker3 />);
             assertSelectedDays();
             getDay(3).simulate("click");
             assertSelectedDays(3);
@@ -543,7 +543,7 @@ describe("<DatePicker2>", () => {
 
         it("selected day is preserved when selections are changed", () => {
             const initialMonth = new Date(2015, Months.JULY, 1);
-            const { assertSelectedDays, getDay, months } = wrap(<DatePicker2 initialMonth={initialMonth} />);
+            const { assertSelectedDays, getDay, months } = wrap(<DatePicker3 initialMonth={initialMonth} />);
             getDay(31).simulate("click");
             months.simulate("change", { target: { value: Months.AUGUST } });
             assertSelectedDays(31);
@@ -552,7 +552,7 @@ describe("<DatePicker2>", () => {
         it("selected day is changed if necessary when selections are changed", () => {
             const initialMonth = new Date(2015, Months.JULY, 1);
             const { assertSelectedDays, getDay, clickPreviousMonth } = wrap(
-                <DatePicker2 initialMonth={initialMonth} />,
+                <DatePicker3 initialMonth={initialMonth} />,
             );
             getDay(31).simulate("click");
             clickPreviousMonth();
@@ -567,7 +567,7 @@ describe("<DatePicker2>", () => {
             const minDate = new Date(2015, Months.MARCH, 13);
             const maxDate = new Date(2015, Months.NOVEMBER, 21);
             const { assertSelectedDays, getDay, months } = wrap(
-                <DatePicker2 initialMonth={initialMonth} minDate={minDate} maxDate={maxDate} />,
+                <DatePicker3 initialMonth={initialMonth} minDate={minDate} maxDate={maxDate} />,
             );
 
             getDay(1).simulate("click");
@@ -580,7 +580,7 @@ describe("<DatePicker2>", () => {
         });
 
         it("can change displayed date with the dropdowns in the caption", () => {
-            const { months, root, years } = wrap(<DatePicker2 initialMonth={new Date(2015, Months.MARCH, 2)} />);
+            const { months, root, years } = wrap(<DatePicker3 initialMonth={new Date(2015, Months.MARCH, 2)} />);
             assert.equal(root.state("displayMonth"), Months.MARCH);
             assert.equal(root.state("displayYear"), 2015);
 
@@ -591,7 +591,7 @@ describe("<DatePicker2>", () => {
         });
 
         it("shortcuts select values", () => {
-            const { root, clickShortcut } = wrap(<DatePicker2 shortcuts={true} />);
+            const { root, clickShortcut } = wrap(<DatePicker3 shortcuts={true} />);
             clickShortcut(2);
 
             const today = new Date();
@@ -605,7 +605,7 @@ describe("<DatePicker2>", () => {
         it("custom shortcuts select the correct values", () => {
             const date = new Date(2010, Months.JANUARY, 10);
             const { clickShortcut, assertSelectedDays } = wrap(
-                <DatePicker2 shortcuts={[{ label: "custom shortcut", date }]} />,
+                <DatePicker3 shortcuts={[{ label: "custom shortcut", date }]} />,
             );
             clickShortcut();
             assertSelectedDays(date.getDate());
@@ -616,21 +616,21 @@ describe("<DatePicker2>", () => {
         const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
 
         it("setting timePrecision shows a TimePicker", () => {
-            const { root } = wrap(<DatePicker2 />);
+            const { root } = wrap(<DatePicker3 />);
             assert.isFalse(root.find(TimePicker).exists());
             root.setProps({ timePrecision: "minute" });
             assert.isTrue(root.find(TimePicker).exists());
         });
 
         it("setting timePickerProps shows a TimePicker", () => {
-            const { root } = wrap(<DatePicker2 timePickerProps={{}} />);
+            const { root } = wrap(<DatePicker3 timePickerProps={{}} />);
             assert.isTrue(root.find(TimePicker).exists());
         });
 
         it("onChange fired when the time is changed", () => {
             const onChangeSpy = sinon.spy();
             const { root } = wrap(
-                <DatePicker2
+                <DatePicker3
                     defaultValue={defaultValue}
                     onChange={onChangeSpy}
                     timePickerProps={{ showArrowButtons: true }}
@@ -645,7 +645,7 @@ describe("<DatePicker2>", () => {
 
         it("changing date does not change time", () => {
             const onChangeSpy = sinon.spy();
-            wrap(<DatePicker2 defaultValue={defaultValue} onChange={onChangeSpy} timePrecision="minute" />)
+            wrap(<DatePicker3 defaultValue={defaultValue} onChange={onChangeSpy} timePrecision="minute" />)
                 .getDay(16)
                 .simulate("click");
             assert.isTrue(DateUtils.isSameTime(onChangeSpy.firstCall.args[0] as Date, defaultValue));
@@ -654,7 +654,7 @@ describe("<DatePicker2>", () => {
         it("changing time does not change date", () => {
             const onChangeSpy = sinon.spy();
             const { setTimeInput } = wrap(
-                <DatePicker2 defaultValue={defaultValue} onChange={onChangeSpy} timePrecision="minute" />,
+                <DatePicker3 defaultValue={defaultValue} onChange={onChangeSpy} timePrecision="minute" />,
             );
             setTimeInput("minute", 45);
             assert.isTrue(DateUtils.isSameDay(onChangeSpy.firstCall.args[0] as Date, defaultValue));
@@ -663,7 +663,7 @@ describe("<DatePicker2>", () => {
         it("changing time without date uses today", () => {
             const onChangeSpy = sinon.spy();
             // no date set via props
-            const { setTimeInput } = wrap(<DatePicker2 onChange={onChangeSpy} timePrecision="minute" />);
+            const { setTimeInput } = wrap(<DatePicker3 onChange={onChangeSpy} timePrecision="minute" />);
             setTimeInput("minute", 45);
             assert.isTrue(DateUtils.isSameDay(onChangeSpy.firstCall.args[0] as Date, new Date()));
         });
@@ -681,7 +681,7 @@ describe("<DatePicker2>", () => {
                 },
             ];
             const { clickShortcut } = wrap(
-                <DatePicker2
+                <DatePicker3
                     defaultValue={defaultValue}
                     onChange={onChangeSpy}
                     timePrecision="minute"
@@ -695,7 +695,7 @@ describe("<DatePicker2>", () => {
 
     it("onChange correctly passes a Date and never null when canClearSelection is false", () => {
         const onChange = sinon.spy();
-        const { getDay } = wrap(<DatePicker2 canClearSelection={false} onChange={onChange} />);
+        const { getDay } = wrap(<DatePicker3 canClearSelection={false} onChange={onChange} />);
         getDay().simulate("click");
         assert.isNotNull(onChange.firstCall.args[0]);
         getDay().simulate("click");
@@ -704,7 +704,7 @@ describe("<DatePicker2>", () => {
 
     it("onChange correctly passes a Date or null when canClearSelection is true", () => {
         const onChange = sinon.spy();
-        const { getDay } = wrap(<DatePicker2 canClearSelection={true} onChange={onChange} />);
+        const { getDay } = wrap(<DatePicker3 canClearSelection={true} onChange={onChange} />);
         getDay().simulate("click");
         assert.isNotNull(onChange.firstCall.args[0]);
         getDay().simulate("click");
@@ -712,17 +712,17 @@ describe("<DatePicker2>", () => {
     });
 
     it("Clear button disabled when canClearSelection is false", () => {
-        const { getClearButton } = wrap(<DatePicker2 canClearSelection={false} showActionsBar={true} />);
+        const { getClearButton } = wrap(<DatePicker3 canClearSelection={false} showActionsBar={true} />);
         assert.isTrue(getClearButton().props().disabled);
     });
 
     it("Clear button enabled when canClearSelection is true", () => {
-        const { getClearButton } = wrap(<DatePicker2 canClearSelection={true} showActionsBar={true} />);
+        const { getClearButton } = wrap(<DatePicker3 canClearSelection={true} showActionsBar={true} />);
         assert.isFalse(getClearButton().props().disabled);
     });
 
     it("selects the current day when Today is clicked", () => {
-        const { root } = wrap(<DatePicker2 showActionsBar={true} />);
+        const { root } = wrap(<DatePicker3 showActionsBar={true} />);
         root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).first().simulate("click");
 
         const today = new Date();
@@ -734,15 +734,15 @@ describe("<DatePicker2>", () => {
     });
 
     it("clears the value when Clear is clicked", () => {
-        const { getDay, root } = wrap(<DatePicker2 showActionsBar={true} />);
+        const { getDay, root } = wrap(<DatePicker3 showActionsBar={true} />);
         getDay().simulate("click");
         root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).last().simulate("click");
         assert.isNull(root.state("value"));
     });
 
     function wrap(datepicker: JSX.Element) {
-        const wrapper = mount<DatePicker2Props, DatePicker2State>(datepicker, { attachTo: testsContainerElement });
-        datePicker2Wrapper = wrapper;
+        const wrapper = mount<DatePicker3Props, DatePicker3State>(datepicker, { attachTo: testsContainerElement });
+        datePicker3Wrapper = wrapper;
         return {
             /** Asserts that the given days are selected. No arguments asserts that selection is empty. */
             assertSelectedDays: (...days: number[]) =>

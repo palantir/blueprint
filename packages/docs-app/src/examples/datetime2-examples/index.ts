@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-export * from "./datePicker2Example";
-export * from "./datePicker2LocalizedExample";
-export * from "./datePicker2ModifierExample";
+export * from "./datePicker3Example";
+export * from "./datePicker3LocalizedExample";
+export * from "./datePicker3ModifierExample";

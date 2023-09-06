@@ -16,19 +16,19 @@
 
 import * as React from "react";
 
-import type { DatePicker2Props } from "./datePicker2Props";
-import type { DatePicker2State } from "./datePicker2State";
+import type { DatePicker3Props } from "./datePicker3Props";
+import type { DatePicker3State } from "./datePicker3State";
 
-export type DatePicker2ContextState = DatePicker2Props & Pick<DatePicker2State, "locale">;
+export type DatePicker3ContextState = DatePicker3Props & Pick<DatePicker3State, "locale">;
 
 /**
- * Context used to pass DatePicker2 props and state down to custom react-day-picker components like
- * DatePicker2Caption.
+ * Context used to pass DatePicker3 props and state down to custom react-day-picker components like
+ * DatePicker3Caption.
  */
-export const DatePicker2Context = React.createContext<DatePicker2ContextState>({
+export const DatePicker3Context = React.createContext<DatePicker3ContextState>({
     locale: undefined,
 });
 
-export const DatePicker2Provider = (props: React.PropsWithChildren<DatePicker2ContextState>) => {
-    return <DatePicker2Context.Provider value={props}>{props.children}</DatePicker2Context.Provider>;
+export const DatePicker3Provider = (props: React.PropsWithChildren<DatePicker3ContextState>) => {
+    return <DatePicker3Context.Provider value={props}>{props.children}</DatePicker3Context.Provider>;
 };

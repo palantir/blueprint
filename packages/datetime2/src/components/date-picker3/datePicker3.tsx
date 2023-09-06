@@ -27,20 +27,20 @@ import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/sh
 // tslint:enable no-submodule-imports
 
 import { Classes } from "../../classes";
-import { DatePicker2Caption } from "./datePicker2Caption";
-import { DatePicker2Provider } from "./datePicker2Context";
-import { DatePicker2Props } from "./datePicker2Props";
-import { DatePicker2State } from "./datePicker2State";
+import { DatePicker3Caption } from "./datePicker3Caption";
+import { DatePicker3Provider } from "./datePicker3Context";
+import { DatePicker3Props } from "./datePicker3Props";
+import { DatePicker3State } from "./datePicker3State";
 
-export { DatePicker2Props };
+export { DatePicker3Props };
 
 /**
- * Date picker (v2) component.
+ * Date picker (v3) component.
  *
- * @see https://blueprintjs.com/docs/#datetime2/date-picker2
+ * @see https://blueprintjs.com/docs/#datetime2/date-picker3
  */
-export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePicker2State> {
-    public static defaultProps: DatePicker2Props = {
+export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePicker3State> {
+    public static defaultProps: DatePicker3Props = {
         canClearSelection: true,
         clearButtonText: "Clear",
         dayPickerProps: {},
@@ -54,11 +54,11 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
         todayButtonText: "Today",
     };
 
-    public static displayName = `${DISPLAYNAME_PREFIX}.DatePicker2`;
+    public static displayName = `${DISPLAYNAME_PREFIX}.DatePicker3`;
 
     private ignoreNextMonthChange = false;
 
-    public constructor(props: DatePicker2Props) {
+    public constructor(props: DatePicker3Props) {
         super(props);
         const value = getInitialValue(props);
         const initialMonth = getInitialMonth(props, value);
@@ -85,13 +85,13 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
             >
                 {this.maybeRenderShortcuts()}
                 <div className={Classes.DATEPICKER_CONTENT}>
-                    <DatePicker2Provider {...this.props} {...this.state}>
+                    <DatePicker3Provider {...this.props} {...this.state}>
                         <DayPicker
                             locale={locale}
                             showOutsideDays={true}
                             {...dayPickerProps}
                             components={{
-                                Caption: DatePicker2Caption,
+                                Caption: DatePicker3Caption,
                                 ...dayPickerProps?.components,
                             }}
                             formatters={{
@@ -110,7 +110,7 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
                         {this.maybeRenderTimePicker()}
                         {showActionsBar && this.renderOptionsBar()}
                         {footerElement}
-                    </DatePicker2Provider>
+                    </DatePicker3Provider>
                 </div>
             </div>
         );
@@ -120,7 +120,7 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
         await this.loadLocale(this.props.localeCode);
     }
 
-    public async componentDidUpdate(prevProps: DatePicker2Props) {
+    public async componentDidUpdate(prevProps: DatePicker3Props) {
         if (this.props.value !== prevProps.value) {
             if (this.props.value == null) {
                 // clear the value
@@ -144,7 +144,7 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
         }
     }
 
-    protected validateProps(props: DatePicker2Props) {
+    protected validateProps(props: DatePicker3Props) {
         const { defaultValue, initialMonth, maxDate, minDate, value } = props;
         if (defaultValue != null && !DateUtils.isDayInRange(defaultValue, [minDate!, maxDate!])) {
             console.error(Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
@@ -389,7 +389,7 @@ export class DatePicker2 extends AbstractPureComponent<DatePicker2Props, DatePic
     }
 }
 
-function getInitialValue(props: DatePicker2Props): Date | null {
+function getInitialValue(props: DatePicker3Props): Date | null {
     // !== because `null` is a valid value (no date)
     if (props.value !== undefined) {
         return props.value;
@@ -400,7 +400,7 @@ function getInitialValue(props: DatePicker2Props): Date | null {
     return null;
 }
 
-function getInitialMonth(props: DatePicker2Props, value: Date | null): Date {
+function getInitialMonth(props: DatePicker3Props, value: Date | null): Date {
     const rangeFromProps: DateRange = [props.minDate ?? null, props.maxDate ?? null];
     const today = new Date();
     // != because we must have a real `Date` to begin the calendar on.

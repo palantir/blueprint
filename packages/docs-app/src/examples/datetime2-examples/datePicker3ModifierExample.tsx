@@ -16,25 +16,25 @@
 
 import * as React from "react";
 
-import { H5 } from "@blueprintjs/core";
-import { DatePicker2 } from "@blueprintjs/datetime2";
+import { DatePicker3 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-import { CommonLocale, LocaleSelect } from "../../common/localeSelect";
-
-export const DatePicker2LocalizedExample: React.FC<ExampleProps> = props => {
-    const [localeCode, setlocaleCode] = React.useState<CommonLocale>("fr");
-
-    const options = (
-        <>
-            <H5>Locale code</H5>
-            <LocaleSelect value={localeCode} onChange={setlocaleCode} />
-        </>
-    );
+export function DatePicker3ModifierExample(props: ExampleProps) {
+    const isDayNumberOdd = React.useCallback((d: Date) => d.getDate() % 2 === 1, []);
 
     return (
-        <Example options={options} {...props}>
-            <DatePicker2 localeCode={localeCode} />
+        <Example options={false} {...props}>
+            <DatePicker3
+                dayPickerProps={{
+                    modifiers: {
+                        odd: isDayNumberOdd,
+                    },
+                    modifiersClassNames: {
+                        // styles defined in docs-app/src/styles/_examples.scss
+                        odd: "docs-date-picker3-day-odd",
+                    },
+                }}
+            />
         </Example>
     );
-};
+}

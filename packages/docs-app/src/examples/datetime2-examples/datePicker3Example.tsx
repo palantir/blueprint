@@ -18,14 +18,14 @@ import { format } from "date-fns";
 import * as React from "react";
 
 import { Callout, Classes, H5, Switch, Tag } from "@blueprintjs/core";
-import { DatePicker2, TimePrecision } from "@blueprintjs/datetime2";
+import { DatePicker3, TimePrecision } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 
 const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
 
-export interface DatePicker2ExampleState {
+export interface DatePicker3ExampleState {
     date: Date | null;
     highlightCurrentDay: boolean;
     reverseMonthAndYearMenus: boolean;
@@ -39,8 +39,8 @@ export interface DatePicker2ExampleState {
     useAmPm?: boolean;
 }
 
-export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePicker2ExampleState> {
-    public state: DatePicker2ExampleState = {
+export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePicker3ExampleState> {
+    public state: DatePicker3ExampleState = {
         date: null,
         highlightCurrentDay: false,
         reverseMonthAndYearMenus: false,
@@ -145,7 +145,7 @@ export class DatePicker2Example extends React.PureComponent<ExampleProps, DatePi
 
         return (
             <Example options={options} {...this.props}>
-                <DatePicker2
+                <DatePicker3
                     className={Classes.ELEVATION_1}
                     onChange={this.handleDateChange}
                     timePickerProps={timePickerProps}

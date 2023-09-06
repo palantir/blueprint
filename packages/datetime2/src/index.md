@@ -7,20 +7,24 @@ reference: datetime2
 The [__@blueprintjs/datetime2__ package](https://www.npmjs.com/package/@blueprintjs/datetime2)
 provides next-generation components for interacting with dates & times:
 
-- [DatePicker2](#datetime2/date-picker2)
-- DateRangePicker2 (_coming soon_)
+- [DatePicker3](#datetime2/date-picker3)
+- DateRangePicker3 (_coming soon_)
 
 ### Motivation
 
-These are next-generation "V2" variants of components available in the
+These are next-generation variants of components available in the
 [__@blueprintjs/datetime__](#datetime) package.
 They will become the standard date & time components in a future major version of Blueprint.
 You are encouraged to try out the new APIs, provide feedback, and set yourself up for forward compatibility
 in the Blueprint ecosystem.
 
-Compared to their "V1" counterparts, these components:
+Compared to their "V1" and "V2" counterparts, these components:
 - uses [react-day-picker](https://react-day-picker.js.org/) v8 instead of v7
 - are easier to localize since date-fns is now a dependency
+
+We use "V3" names to avoid confusion with the "V2" components currently in this package which are legacy
+APIs backwards-compatible with @blueprintjs/datetime2 v0.x
+(see [this PR](https://github.com/palantir/blueprint/pull/5935) for more info).
 
 ### Installation
 
@@ -48,4 +52,4 @@ packages' CSS files as well (if you are not doing this already):
 ```
 </div>
 
-@page date-picker2
+@page date-picker3
