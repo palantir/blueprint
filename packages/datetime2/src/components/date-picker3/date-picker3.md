@@ -20,7 +20,8 @@ on the wiki.
 
 __DatePicker3__ has the same functionality as [DatePicker](#datetime/datepicker) but uses
 [react-day-picker v8](https://react-day-picker.js.org/) instead of [v7](https://react-day-picker-v7.netlify.app/)
-to render its calendar.
+to render its calendar. It renders a UI to choose a single date and (optionally) a time of day. Time selection
+is enabled by the [TimePicker](#datetime/timepicker) component.
 
 @reactExample DatePicker3Example
 
@@ -33,7 +34,7 @@ prop to listen for changes to the selected day.
 @## Props interface
 
 In addition to top-level __DatePicker3__ props, you may forward some props to `<DayPicker mode="single">` to customize
-react-day-picker's behavior via `dayPipckerProps` (the full list is
+react-day-picker's behavior via `dayPickerProps` (the full list is
 [documented here](https://react-day-picker.js.org/api/interfaces/DayPickerSingleProps)).
 
 @interface DatePicker3Props
