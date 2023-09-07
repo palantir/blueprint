@@ -18,6 +18,7 @@ import type { DayPickerSingleProps } from "react-day-picker";
 
 import type { Props } from "@blueprintjs/core";
 import type { DatePickerProps } from "@blueprintjs/datetime";
+import { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 
 /** Props shared between DatePicker v1 and v3 */
 type DatePickerSharedProps = Omit<
@@ -25,7 +26,7 @@ type DatePickerSharedProps = Omit<
     "dayPickerProps" | "defaultValue" | "locale" | "localeUtils" | "modifiers" | "onChange" | "value"
 >;
 
-export interface DatePicker3Props extends DatePickerSharedProps, Props {
+export interface DatePicker3Props extends DatePickerSharedProps, DateFnsLocaleProps, Props {
     /**
      * Props to pass to react-day-picker's single day picker. See API documentation
      * [here](https://react-day-picker.js.org/api/interfaces/DayPickerSingleProps).
@@ -44,17 +45,6 @@ export interface DatePicker3Props extends DatePickerSharedProps, Props {
      * This should not be set if `value` is set.
      */
     defaultValue?: Date;
-
-    /**
-     * date-fns locale code ((ISO 639-1 + optional country code) used to localize the date picker.
-     *
-     * If you are unable to load a specific locale, make sure it is included in the list of date-fns'
-     * [supported locales](https://github.com/date-fns/date-fns/tree/main/src/locale).
-     *
-     * @default "en-US"
-     * @see https://date-fns.org/docs/Locale
-     */
-    locale?: string;
 
     /**
      * Called when the user selects a day.
