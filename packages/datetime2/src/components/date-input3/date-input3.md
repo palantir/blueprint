@@ -38,9 +38,20 @@ the `onError` prop to react to invalid dates entered in the text input.
 This component uses ISO strings to represent timestamp values in the `value` & `defaultValue` props
 and the `onChange` callback.
 
+@## Props interface
+
+In addition to top-level __DateInput3__ props, you may forward some props to `<DayPicker mode="single">` to customize
+react-day-picker's behavior via `dayPickerProps` (the full list is
+[documented here](https://react-day-picker.js.org/api/interfaces/DayPickerSingleProps)).
+
+Shortcuts and modifiers are also configurable via the same API as [__DatePicker3__](#datetime2/date-picker3); see those
+docs for more info.
+
+@interface DateInput3Props
+
 @## Date formatting
 
-__DateInput3__ requires two props for parsing and formatting dates. These are essentially the plumbing
+__DateInput3__ requires two important props for parsing and formatting dates. These are essentially the plumbing
 between the text input and __DatePicker3__.
 
 -   `formatDate(date: Date, localeCode?: string)` receives the current `Date` and returns a string representation of it.
@@ -84,12 +95,14 @@ import { DateInput3 } from "@blueprintjs/datetime2";
 import { format, parse } from "date-fns";
 import { useCallback, useState } from "react";
 
+const today = new Date();
+const dateFnsFormat = "yyyy-MM-dd HH:mm:ss";
+
 function Example() {
     const [dateValue, setDateValue] = useState<string>(null);
     const handleChange = useCallback(setDateValue, []);
-    const dateFnsFormat = "yyyy-MM-dd HH:mm:ss";
     const formatDate = useCallback((date: Date) => format(date, dateFnsFormat), []);
-    const parseDate = useCallback((str: string) => parse(date, dateFnsFormat), []);
+    const parseDate = useCallback((str: string) => parse(str, dateFnsFormat, today), []);
 
     return (
         <DateInput3
@@ -102,10 +115,6 @@ function Example() {
     );
 }
 ```
-
-@## Props interface
-
-@interface DateInput3Props
 
 @## Localization
 

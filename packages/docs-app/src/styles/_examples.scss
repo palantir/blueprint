@@ -590,15 +590,12 @@ $docs-hotkey-piano-height: 510px;
 //
 
 // all datetime examples show component followed by date tags, so arrange them in a nice column
-#{page("datetime", "^=")} {
+#{page("datetime", "^=")},
+#{page("datetime2", "^=")} {
   .docs-example {
     flex-direction: column;
     gap: $pt-grid-size;
     justify-content: center;
-  }
-
-  #{example("TimezoneSelect")} .docs-example {
-    flex-direction: row;
   }
 }
 
@@ -623,6 +620,10 @@ $docs-hotkey-piano-height: 510px;
   .docs-example > * {
     margin: 0;
   }
+}
+
+#{example("TimezoneSelect")} .docs-example {
+  flex-direction: row;
 }
 
 //
