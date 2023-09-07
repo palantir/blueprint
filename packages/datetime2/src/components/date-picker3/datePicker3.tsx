@@ -19,7 +19,7 @@ import { format } from "date-fns";
 import * as React from "react";
 import { ActiveModifiers, DateFormatter, DayPicker } from "react-day-picker";
 
-import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 import { DatePickerUtils, DateRange, DateRangeShortcut, DateUtils, TimePicker } from "@blueprintjs/datetime";
 // tslint:disable no-submodule-imports
 import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";

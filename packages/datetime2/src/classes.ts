@@ -27,6 +27,9 @@ export const Classes = {
     DATEPICKER3_DAY_IS_TODAY: `${RDP_DAY}_today`,
     DATEPICKER3_DAY_OUTSIDE: `${RDP_DAY}_outside`,
     DATEPICKER3_DAY_SELECTED: `${RDP_DAY}_selected`,
+    DATERANGEPICKER3_DAY_HOVERED_RANGE: `${RDP_DAY}_hovered`,
+    DATERANGEPICKER3_DAY_HOVERED_RANGE_START: `${RDP_DAY}_hovered_start`,
+    DATERANGEPICKER3_DAY_HOVERED_RANGE_END: `${RDP_DAY}_hovered_end`,
     // these classes intentionally left without "3" suffix because they do not overlap with DatePicker v1, and this way we don't need to migrate them later, which reduces code churn
     DATEPICKER_HIGHLIGHT_CURRENT_DAY: `${DatetimeClasses.DATEPICKER}-highlight-current-day`,
     DATEPICKER_NAV_BUTTON,

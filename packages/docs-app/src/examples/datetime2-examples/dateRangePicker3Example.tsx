@@ -18,7 +18,8 @@ import moment from "moment";
 import * as React from "react";
 
 import { Classes, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
-import { DateRange, DateRangePicker, TimePrecision } from "@blueprintjs/datetime";
+import { DateRange, TimePrecision } from "@blueprintjs/datetime";
+import { DateRangePicker3 } from "@blueprintjs/datetime2";
 import {
     Example,
     ExampleProps,
@@ -110,7 +111,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
         const maxDate = MAX_DATE_OPTIONS[maxDateIndex].value;
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
-                <DateRangePicker
+                <DateRangePicker3
                     {...props}
                     className={Classes.ELEVATION_1}
                     maxDate={maxDate}

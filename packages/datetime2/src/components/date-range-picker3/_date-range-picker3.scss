@@ -9,40 +9,37 @@
 /* stylelint-disable selector-class-pattern */
 
 .#{$ns}-daterangepicker {
-  .DayPicker-NavButton--interactionDisabled {
-    display: none;
-  }
-
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
-  &.#{$ns}-daterangepicker-contiguous .DayPicker {
+  &.#{$ns}-daterangepicker-contiguous .rdp {
     min-width: $datepicker-min-width + $pt-grid-size;
   }
 
-  &.#{$ns}-daterangepicker-single-month .DayPicker {
+  &.#{$ns}-daterangepicker-single-month .rdp {
     min-width: $datepicker-min-width;
   }
 
-  .DayPicker-Day {
+  // need some extra specificity to override DatePicker styles
+  &.#{$ns}-datepicker .rdp-day {
     // we only want outside days to be shown when displaying one month at a time
     // https://github.com/palantir/blueprint/pull/586/files#r98813760
-    &--outside {
+    &_outside {
       visibility: hidden;
     }
 
-    &--hovered-range {
+    &_hovered {
       border-radius: 0;
       color: $blue2;
 
       // need to disable hover styles for all variants of selected dates
 
       /* stylelint-disable max-line-length */
-      &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+      &:not(.rdp-day_selected):not(.rdp-day_range_start):not(.rdp-day_range_middle):not(.rdp-day_range_end) {
         background-color: $daterangepicker-range-background-color;
       }
       /* stylelint-enable max-line-length */
     }
 
-    &--selected-range {
+    &_range_middle {
       background-color: $daterangepicker-range-background-color-selected;
       border-radius: 0;
       color: $blue2;
@@ -53,26 +50,22 @@
       }
     }
 
-    // need to set rounded corners
-
-    /* stylelint-disable max-line-length */
-    &--selected-range-start:not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end) {
+    &_range_start:not(.rdp-day_range_end):not(.rdp-day_hovered_end) {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
     }
 
-    &--selected-range-end:not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start) {
+    &_range_end:not(.rdp-day_range_start):not(.rdp_day_hovered_start) {
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
     }
-    /* stylelint-enable max-line-length */
 
-    &--hovered-range-start:not(.DayPicker-Day--hovered-range-end) {
+    &_hovered_start:not(.rdp-day_hovered_end) {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
     }
 
-    &--hovered-range-end:not(.DayPicker-Day--hovered-range-start) {
+    &_hovered_end:not(.rdp-day_hovered_start) {
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
     }
@@ -84,18 +77,18 @@
 }
 
 .#{$ns}-dark .#{$ns}-daterangepicker {
-  .DayPicker-Day {
-    &--hovered-range {
+  &.#{$ns}-datepicker .rdp-day {
+    &_hovered {
       color: $light-gray5;
 
       /* stylelint-disable max-line-length */
-      &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+      &:not(.rdp-day_selected):not(.rdp-day_range_start):not(.rdp-day_range_middle):not(.rdp-day_range_end) {
         background-color: $dark-daterangepicker-range-background-color;
       }
       /* stylelint-enable max-line-length */
     }
 
-    &--selected-range {
+    &_range_middle {
       background-color: $dark-daterangepicker-range-background-color-selected;
       color: $light-gray5;
 
