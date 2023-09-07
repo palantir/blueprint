@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-export { DateInput3Example } from "./dateInput3Example";
-export * from "./datePicker3Example";
-export * from "./datePicker3LocalizedExample";
-export * from "./datePicker3ModifierExample";
+import { DateInputProps } from "@blueprintjs/datetime";
+
+import { DatePicker3Props } from "../date-picker3/datePicker3Props";
+
+/** Props shared between DateInput v1 and v3 */
+type DateInputSharedProps = Omit<DateInputProps, "dayPickerProps" | "locale" | "localeUtils" | "modifiers">;
+
+export type DateInput3Props = DateInputSharedProps & Pick<DatePicker3Props, "dayPickerProps" | "locale">;
