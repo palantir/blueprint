@@ -3,6 +3,9 @@
 
 @import "../../common";
 
-.#{$ns}-dateinput-popover {
-  padding: 0;
+.#{$ns}-date-input {
+  .#{$ns}-input-action {
+    display: flex;
+    flex-direction: row;
+  }
 }

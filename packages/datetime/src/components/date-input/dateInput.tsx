@@ -583,8 +583,8 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
                     placeholder={placeholder}
                     rightElement={
                         <>
-                            {maybeTimezonePicker}
                             {props.rightElement}
+                            {maybeTimezonePicker}
                         </>
                     }
                     tagName={popoverProps.targetTagName}
