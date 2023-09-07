@@ -31,6 +31,7 @@ import { DatePicker3Caption } from "./datePicker3Caption";
 import { DatePicker3Provider } from "./datePicker3Context";
 import { DatePicker3Props } from "./datePicker3Props";
 import { DatePicker3State } from "./datePicker3State";
+import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 
 export { DatePicker3Props };
 
@@ -170,16 +171,8 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
             return;
         }
 
-        try {
-            const { default: locale } = await import(`date-fns/esm/locale/${localeCode}/index.js`);
-            this.setState({ locale });
-        } catch {
-            if (!Utils.isNodeEnv("production")) {
-                console.error(
-                    `[Blueprint] Could not load "${localeCode}" date-fns locale, please check that this locale code is supported: https://github.com/date-fns/date-fns/tree/main/src/locale`,
-                );
-            }
-        }
+        const locale = await loadDateFnsLocale(localeCode);
+        this.setState({ locale });
     }
 
     /**

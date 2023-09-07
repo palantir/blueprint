@@ -15,6 +15,7 @@
  */
 
 import classNames from "classnames";
+import type { Locale } from "date-fns";
 import * as React from "react";
 import {
     DateRange as RDPRange,
@@ -37,11 +38,13 @@ import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/sh
 import { Classes } from "../../classes";
 import { combineModifiers, HOVERED_RANGE_MODIFIER, SELECTED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { DateRangePicker3Props } from "./dateRangePicker3Props";
+import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 
 // leftView and rightView controls the DayPicker displayed month
 interface DateRangePicker3State {
     hoverValue?: DateRange;
     leftView: MonthAndYear;
+    locale: Locale | undefined;
     rightView: MonthAndYear;
     value: DateRange;
     time: DateRange;
@@ -58,6 +61,7 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dayPickerProps: {},
+        locale: "en-US",
         maxDate: DatePickerUtils.getDefaultMaxDate(),
         minDate: DatePickerUtils.getDefaultMinDate(),
         reverseMonthAndYearMenus: false,
@@ -136,6 +140,7 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
         this.state = {
             hoverValue: [null, null],
             leftView,
+            locale: undefined,
             rightView,
             selectedShortcutIndex:
                 this.props.selectedShortcutIndex !== undefined ? this.props.selectedShortcutIndex : -1,
@@ -167,8 +172,11 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
         );
     }
 
-    public componentDidUpdate(prevProps: DateRangePicker3Props, prevState: DateRangePicker3State) {
-        super.componentDidUpdate(prevProps, prevState);
+    public async componentDidMount() {
+        await this.loadLocale(this.props.locale);
+    }
+
+    public async componentDidUpdate(prevProps: DateRangePicker3Props) {
         const isControlled = prevProps.value !== undefined && this.props.value !== undefined;
 
         if (
@@ -187,6 +195,29 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
 
         if (this.props.selectedShortcutIndex !== prevProps.selectedShortcutIndex) {
             this.setState({ selectedShortcutIndex: this.props.selectedShortcutIndex });
+        }
+
+        if (this.props.locale !== prevProps.locale) {
+            await this.loadLocale(this.props.locale);
+        }
+    }
+
+    // HACKHACK: type fix for setState which does not accept partial state objects in our outdated version of
+    // @types/react (v16.14.32)
+    public setState<K extends keyof DateRangePicker3State>(
+        nextStateOrAction:
+            | Partial<DateRangePicker3State>
+            | null
+            | ((
+                  prevState: DateRangePicker3State,
+                  prevProps: DateRangePicker3Props,
+              ) => Pick<DateRangePicker3State, K> | null),
+        callback?: () => void,
+    ) {
+        if (typeof nextStateOrAction === "function") {
+            super.setState(nextStateOrAction, callback);
+        } else {
+            super.setState(nextStateOrAction as DateRangePicker3State);
         }
     }
 
@@ -215,23 +246,15 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
         }
     }
 
-    // HACKHACK: type fix for setState which does not accept partial state objects in our outdated version of
-    // @types/react (v16.14.32)
-    private setState<K extends keyof DateRangePicker3State>(
-        nextStateOrAction:
-            | Partial<DateRangePicker3State>
-            | null
-            | ((
-                  prevState: DateRangePicker3State,
-                  prevProps: DateRangePicker3Props,
-              ) => Pick<DateRangePicker3State, K> | null),
-        callback?: () => void,
-    ) {
-        if (typeof nextStateOrAction === "function") {
-            super.setState(nextStateOrAction, callback);
-        } else {
-            super.setState(nextStateOrAction as DateRangePicker3State);
+    private async loadLocale(localeCode: string | undefined) {
+        if (localeCode === undefined) {
+            return;
+        } else if (this.state.locale?.code === localeCode) {
+            return;
         }
+
+        const locale = await loadDateFnsLocale(localeCode);
+        this.setState({ locale });
     }
 
     private renderDay = (day: Date) => {
@@ -325,7 +348,9 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     };
 
     private renderCalendars(isShowingOneMonth: boolean) {
-        const { dayPickerProps, locale, maxDate, minDate, modifiers } = this.props;
+        const { dayPickerProps, maxDate, minDate, modifiers } = this.props;
+        const { locale } = this.state;
+
         const dayPickerBaseProps: DayPickerMultipleProps = {
             // TODO(@adidahiya): load date-fns locale
             locale,
