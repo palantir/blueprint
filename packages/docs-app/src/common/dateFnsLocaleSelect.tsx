@@ -20,9 +20,9 @@ import { Button, MenuItem } from "@blueprintjs/core";
 import { CaretDown } from "@blueprintjs/icons";
 import { ItemRenderer, Select } from "@blueprintjs/select";
 
-export type CommonLocale = "de" | "en-US" | "es" | "fr" | "hi" | "it" | "zh-CN";
-export const COMMON_LOCALES: CommonLocale[] = ["de", "en-US", "es", "fr", "hi", "it", "zh-CN"];
-const LOCALE_CODE_TO_NAME: Record<CommonLocale, string> = {
+export type CommonDateFnsLocale = "de" | "en-US" | "es" | "fr" | "hi" | "it" | "zh-CN";
+export const COMMON_DATE_FNS_LOCALES: CommonDateFnsLocale[] = ["de", "en-US", "es", "fr", "hi", "it", "zh-CN"];
+const LOCALE_CODE_TO_NAME: Record<CommonDateFnsLocale, string> = {
     de: "German",
     "en-US": "English (US)",
     es: "Spanish",
@@ -32,13 +32,13 @@ const LOCALE_CODE_TO_NAME: Record<CommonLocale, string> = {
     "zh-CN": "Chinese (China)",
 };
 
-export interface LocaleSelectProps {
-    value: CommonLocale;
-    onChange: (newValue: CommonLocale) => void;
+export interface DateFnsLocaleSelectProps {
+    value: CommonDateFnsLocale;
+    onChange: (newValue: CommonDateFnsLocale) => void;
 }
 
-export const LocaleSelect: React.FC<LocaleSelectProps> = props => {
-    const renderLocaleItem: ItemRenderer<CommonLocale> = React.useCallback(
+export const DateFnsLocaleSelect: React.FC<DateFnsLocaleSelectProps> = props => {
+    const renderLocaleItem: ItemRenderer<CommonDateFnsLocale> = React.useCallback(
         (locale, { handleClick, handleFocus, modifiers, ref }) => {
             const { matchesPredicate, ...menuItemModifiers } = modifiers;
             if (!matchesPredicate) {
@@ -62,8 +62,8 @@ export const LocaleSelect: React.FC<LocaleSelectProps> = props => {
     );
 
     return (
-        <Select<CommonLocale>
-            items={COMMON_LOCALES}
+        <Select<CommonDateFnsLocale>
+            items={COMMON_DATE_FNS_LOCALES}
             itemRenderer={renderLocaleItem}
             onItemSelect={props.onChange}
             popoverProps={{ minimal: true, placement: "bottom-end" }}
