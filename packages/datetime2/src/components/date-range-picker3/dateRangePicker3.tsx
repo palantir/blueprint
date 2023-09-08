@@ -15,16 +15,17 @@
  */
 
 import classNames from "classnames";
-import type { Locale } from "date-fns";
+import { format, Locale } from "date-fns";
 import * as React from "react";
 import {
     DateRange as RDPRange,
     DayPicker,
     DayModifiers,
     ActiveModifiers,
-    // DayPickerMultipleProps,
     SelectRangeEventHandler,
     ModifiersClassNames,
+    DateFormatter,
+    CustomComponents,
 } from "react-day-picker";
 
 import { AbstractPureComponent, Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
@@ -41,6 +42,11 @@ import { Classes } from "../../classes";
 import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { DateRangePicker3Props } from "./dateRangePicker3Props";
 import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
+import { DatePicker3Caption } from "../react-day-picker/datePicker3Caption";
+import { DatePicker3Provider } from "../date-picker3/datePicker3Context";
+import { DateRangePicker3CaptionLabel } from "./dateRangePicker3CaptionLabel";
+import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
+import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 
 export { DateRangePicker3Props };
 
@@ -259,12 +265,6 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
         this.setState({ locale });
     }
 
-    // private renderDay = (day: Date) => {
-    //     const date = day.getDate();
-
-    //     return <div className={Classes.DATEPICKER_DAY_WRAPPER}>{date}</div>;
-    // };
-
     private maybeRenderShortcuts() {
         const { shortcuts } = this.props;
         if (shortcuts == null || shortcuts === false) {
@@ -350,27 +350,50 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     };
 
     private renderDayRangePicker(singleMonthOnly: boolean) {
-        const { dayPickerProps, maxDate, minDate } = this.props;
+        const { contiguousCalendarMonths, dayPickerProps, maxDate, minDate } = this.props;
+        const customComponents: CustomComponents = contiguousCalendarMonths
+            ? { Dropdown: DatePicker3Dropdown, IconLeft, IconRight }
+            : { Caption: DatePicker3Caption };
 
         return (
-            <DayPicker
-                modifiers={combineModifiers(this.modifiers, this.props.dayPickerProps?.modifiers)}
-                modifiersClassNames={{ ...this.props.dayPickerProps?.modifiersClassNames, ...this.modifiersClassNames }}
-                showOutsideDays={true}
-                {...dayPickerProps}
-                fromDate={minDate}
-                locale={this.state.locale}
-                mode="range"
-                month={this.state.leftView.getFullDate()}
-                numberOfMonths={singleMonthOnly ? 1 : 2}
-                onDayMouseEnter={this.handleDayMouseEnter}
-                onDayMouseLeave={this.handleDayMouseLeave}
-                onSelect={this.handleRangeSelect}
-                selected={dateRangeToDayPickerRange(this.state.value)}
-                toDate={maxDate}
-            />
+            <DatePicker3Provider {...this.props} {...this.state}>
+                <DayPicker
+                    modifiers={combineModifiers(this.modifiers, this.props.dayPickerProps?.modifiers)}
+                    modifiersClassNames={{ ...dayPickerProps?.modifiersClassNames, ...this.modifiersClassNames }}
+                    showOutsideDays={true}
+                    {...dayPickerProps}
+                    captionLayout="dropdown-buttons"
+                    components={{
+                        ...customComponents,
+                        ...dayPickerProps?.components,
+                    }}
+                    formatters={{
+                        formatWeekdayName: this.renderWeekdayName,
+                        ...dayPickerProps?.formatters,
+                    }}
+                    fromDate={minDate}
+                    locale={this.state.locale}
+                    mode="range"
+                    month={contiguousCalendarMonths ? undefined : this.state.leftView.getFullDate()}
+                    numberOfMonths={singleMonthOnly ? 1 : 2}
+                    onDayMouseEnter={this.handleDayMouseEnter}
+                    onDayMouseLeave={this.handleDayMouseLeave}
+                    // onMonthChange={this.handleMonthChange}
+                    onSelect={this.handleRangeSelect}
+                    selected={dateRangeToDayPickerRange(this.state.value)}
+                    toDate={maxDate}
+                />
+            </DatePicker3Provider>
         );
     }
+
+    /**
+     * Custom formatter to render weekday names in the calendar header. The default formatter generally works fine,
+     * but it was returning CAPITALIZED strings for some reason, while we prefer Title Case.
+     */
+    private renderWeekdayName: DateFormatter = date => {
+        return format(date, "EEEEEE", { locale: this.state.locale });
+    };
 
     private handleRangeSelect: SelectRangeEventHandler = (range, selectedDay, modifiers, e) => {
         this.props.dayPickerProps?.onSelect?.(range, selectedDay, modifiers, e);
@@ -394,6 +417,19 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
 
         this.handleNextState(nextValue);
     };
+
+    // private handleMonthChange = (newDate: Date) => {
+    //     const date = this.computeValidDateInSpecifiedMonthYear(newDate.getFullYear(), newDate.getMonth());
+    //     this.setState({ displayMonth: date.getMonth(), displayYear: date.getFullYear() });
+    //     if (this.state.value !== null) {
+    //         // if handleDayClick just got run (so this flag is set), then the
+    //         // user selected a date in a new month, so don't invoke onChange a
+    //         // second time
+    //         this.updateValue(date, false, this.ignoreNextMonthChange);
+    //         this.ignoreNextMonthChange = false;
+    //     }
+    //     this.props.dayPickerProps?.onMonthChange?.(date);
+    // };
 
     // private renderCalendars(isShowingOneMonth: boolean) {
     //     const { dayPickerProps, maxDate, minDate, modifiers } = this.props;
@@ -600,17 +636,17 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
         this.props.onChange?.(nextValue);
     };
 
-    // private handleLeftMonthChange = (newDate: Date) => {
-    //     const leftView = MonthAndYear.fromDate(newDate);
-    //     this.props.dayPickerProps?.onMonthChange?.(leftView.getFullDate());
-    //     this.updateLeftView(leftView);
-    // };
+    private handleLeftMonthChange = (newDate: Date) => {
+        const leftView = MonthAndYear.fromDate(newDate);
+        this.props.dayPickerProps?.onMonthChange?.(leftView.getFullDate());
+        this.updateLeftView(leftView);
+    };
 
-    // private handleRightMonthChange = (newDate: Date) => {
-    //     const rightView = MonthAndYear.fromDate(newDate);
-    //     this.props.dayPickerProps?.onMonthChange?.(rightView.getFullDate());
-    //     this.updateRightView(rightView);
-    // };
+    private handleRightMonthChange = (newDate: Date) => {
+        const rightView = MonthAndYear.fromDate(newDate);
+        this.props.dayPickerProps?.onMonthChange?.(rightView.getFullDate());
+        this.updateRightView(rightView);
+    };
 
     // private handleLeftMonthSelectChange = (leftMonth: number) => {
     //     const leftView = new MonthAndYear(leftMonth, this.state.leftView.getYear());
@@ -624,21 +660,21 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     //     this.updateRightView(rightView);
     // };
 
-    // private updateLeftView(leftView: MonthAndYear) {
-    //     let rightView = this.state.rightView.clone();
-    //     if (!leftView.isBefore(rightView) || this.props.contiguousCalendarMonths) {
-    //         rightView = leftView.getNextMonth();
-    //     }
-    //     this.setViews(leftView, rightView);
-    // }
+    private updateLeftView(leftView: MonthAndYear) {
+        let rightView = this.state.rightView.clone();
+        if (!leftView.isBefore(rightView) || this.props.contiguousCalendarMonths) {
+            rightView = leftView.getNextMonth();
+        }
+        this.setViews(leftView, rightView);
+    }
 
-    // private updateRightView(rightView: MonthAndYear) {
-    //     let leftView = this.state.leftView.clone();
-    //     if (!rightView.isAfter(leftView) || this.props.contiguousCalendarMonths) {
-    //         leftView = rightView.getPreviousMonth();
-    //     }
-    //     this.setViews(leftView, rightView);
-    // }
+    private updateRightView(rightView: MonthAndYear) {
+        let leftView = this.state.leftView.clone();
+        if (!rightView.isAfter(leftView) || this.props.contiguousCalendarMonths) {
+            leftView = rightView.getPreviousMonth();
+        }
+        this.setViews(leftView, rightView);
+    }
 
     // /*
     //  * The min / max months are offset by one because we are showing two months.

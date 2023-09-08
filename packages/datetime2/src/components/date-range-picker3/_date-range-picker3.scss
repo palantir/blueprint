@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "@blueprintjs/colors/lib/scss/colors";
-@import "@blueprintjs/core/src/components/popover/common";
+@import "@blueprintjs/core/src/components/button/common";
 @import "@blueprintjs/datetime/src/common";
 
 // react-day-picker does not conform to our naming scheme
@@ -16,6 +16,27 @@
 
   &.#{$ns}-daterangepicker-single-month .rdp {
     min-width: $datepicker-min-width;
+  }
+
+  .rdp-multiple_months {
+    .rdp-caption_dropdowns select {
+      font-weight: 600;
+    }
+
+    .rdp-caption_start .rdp-caption_dropdowns {
+      padding-left: $pt-button-height;
+    }
+
+    .rdp-caption_end .rdp-caption_dropdowns {
+      padding-right: $pt-button-height;
+    }
+  }
+
+  // need some extra specificity to override react-day-picker styles
+  .rdp-button.rdp-nav_button {
+    @include pt-button-minimal();
+    border: none;
+    border-radius: $pt-border-radius;
   }
 
   // need some extra specificity to override DatePicker styles

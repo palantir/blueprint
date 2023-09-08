@@ -26,13 +26,15 @@ import { measureTextWidth } from "@blueprintjs/datetime/lib/esm/common/utils";
 import { ChevronLeft, ChevronRight, IconSize } from "@blueprintjs/icons";
 
 import { Classes } from "../../classes";
-import { DatePicker3Context } from "./datePicker3Context";
+import { DatePicker3Context } from "../date-picker3/datePicker3Context";
 
 /**
  * Custom react-day-picker caption component which implements Blueprint's datepicker design
  * with month and year dropdowns and previous/next buttons to navigate calendar months.
+ *
+ * @see https://react-day-picker.js.org/guides/custom-components
  */
-export function DatePicker3Caption(captionProps: CaptionProps) {
+export function DatePicker3Caption(props: CaptionProps) {
     const { classNames: rdpClassNames, fromDate, toDate, labels } = useDayPicker();
     const { locale, reverseMonthAndYearMenus } = React.useContext(DatePicker3Context);
 
@@ -40,8 +42,8 @@ export function DatePicker3Caption(captionProps: CaptionProps) {
     const minYear = fromDate!.getFullYear();
     const maxYear = toDate!.getFullYear();
 
-    const displayMonth = captionProps.displayMonth.getMonth();
-    const displayYear = captionProps.displayMonth.getFullYear();
+    const displayMonth = props.displayMonth.getMonth();
+    const displayYear = props.displayMonth.getFullYear();
 
     const containerElement = React.useRef<HTMLDivElement>(null);
     const [monthRightOffset, setMonthRightOffset] = React.useState<number>(0);
