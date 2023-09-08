@@ -20,7 +20,7 @@ import type { DateRangePickerProps } from "@blueprintjs/datetime";
 import { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 
 /** Props shared between DateRangePicker v1 and v3 */
-type DateRangePickerSharedProps = Omit<DateRangePickerProps, "dayPickerProps" | "locale" | "localeUtils">;
+type DateRangePickerSharedProps = Omit<DateRangePickerProps, "dayPickerProps" | "locale" | "localeUtils" | "modifiers">;
 
 export interface DateRangePicker3Props extends DateRangePickerSharedProps, DateFnsLocaleProps {
     /**

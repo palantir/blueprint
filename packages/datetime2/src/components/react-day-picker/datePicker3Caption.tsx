@@ -27,13 +27,12 @@ import { Classes } from "../../classes";
 import { DatePicker3Context } from "../date-picker3/datePicker3Context";
 import { useMonthSelectRightOffset } from "../../common/useMonthSelectRightOffset";
 
-/**
- * Custom react-day-picker caption component which implements Blueprint's datepicker design
- * with month and year dropdowns and previous/next buttons to navigate calendar months.
- *
- * @see https://react-day-picker.js.org/guides/custom-components
- */
-export function DatePicker3Caption(props: CaptionProps) {
+interface DatePicker3CaptionProps extends CaptionProps {
+    hideNextButton?: boolean;
+    hidePrevButton?: boolean;
+}
+
+const DatePicker3Caption: React.FC<DatePicker3CaptionProps> = props => {
     const { classNames: rdpClassNames, fromDate, toDate, labels } = useDayPicker();
     const { locale, reverseMonthAndYearMenus } = React.useContext(DatePicker3Context);
 
@@ -168,5 +167,36 @@ export function DatePicker3Caption(props: CaptionProps) {
             <Divider />
         </>
     );
-}
+};
+DatePicker3Caption.defaultProps = {
+    hideNextButton: false,
+    hidePrevButton: false,
+};
 DatePicker3Caption.displayName = `${DISPLAYNAME_PREFIX}.DatePicker3Caption`;
+
+/**
+ * Custom react-day-picker caption component for a single-month datepicker.
+ *
+ * @see https://react-day-picker.js.org/guides/custom-components
+ */
+export function SingleDatePickerCaption(props: CaptionProps) {
+    return <DatePicker3Caption {...props} />;
+}
+
+/**
+ * Custom react-day-picker caption component for the left calendar in a non-contiguous two-month datepicker.
+ *
+ * @see https://react-day-picker.js.org/guides/custom-components
+ */
+export function LeftDatePickerCaption(props: CaptionProps) {
+    return <DatePicker3Caption {...props} hideNextButton={true} />;
+}
+
+/**
+ * Custom react-day-picker caption component for the right calendar in a non-contiguous two-month datepicker.
+ *
+ * @see https://react-day-picker.js.org/guides/custom-components
+ */
+export function RightDatePickerCaption(props: CaptionProps) {
+    return <DatePicker3Caption {...props} hidePrevButton={true} />;
+}

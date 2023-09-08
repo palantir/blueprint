@@ -52,6 +52,10 @@ interface DateOption {
 const MIN_DATE_OPTIONS: DateOption[] = [
     { label: "None", value: undefined },
     {
+        label: "1 week ago",
+        value: moment().add(-1, "weeks").toDate(),
+    },
+    {
         label: "4 months ago",
         value: moment().add(-4, "months").toDate(),
     },
@@ -63,6 +67,14 @@ const MIN_DATE_OPTIONS: DateOption[] = [
 
 const MAX_DATE_OPTIONS: DateOption[] = [
     { label: "None", value: undefined },
+    {
+        label: "Today",
+        value: moment().toDate(),
+    },
+    {
+        label: "1 week from now",
+        value: moment().add(1, "weeks").toDate(),
+    },
     {
         label: "4 months from now",
         value: moment().add(4, "months").toDate(),
@@ -149,6 +161,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                     />
                     <Switch
                         checked={this.state.contiguousCalendarMonths}
+                        disabled={this.state.singleMonthOnly}
                         label="Constrain to contiguous months"
                         onChange={this.toggleContiguousCalendarMonths}
                     />

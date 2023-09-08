@@ -111,43 +111,6 @@
   }
 }
 
-// use extra specificity to override DatePicker v1 styles
-.#{$ns}-datepicker-caption.rdp-caption {
-  @include pt-flex-container(row);
-  justify-content: space-between;
-  margin: 0 0 $datepicker-padding;
-
-  // override HTMLSelect styles for a narrower appearance
-  // N.B. these styles are important to achieve accurate measurements to position the dropdown arrows in <DatePickerCaption>
-  .#{$ns}-html-select select {
-    font-weight: 600;
-    padding-left: $datepicker-padding;
-    padding-right: $pt-icon-size-standard;
-
-    + .#{$ns}-icon {
-      right: 2px;
-    }
-  }
-
-  + .#{$ns}-divider {
-    margin: 0;
-  }
-}
-
-.#{$ns}-datepicker-month-select {
-  flex-shrink: 1;
-}
-
-.#{$ns}-datepicker-year-select {
-  flex-shrink: 1;
-  min-width: 60px;
-}
-
-.#{$ns}-datepicker-caption-measure {
-  font-weight: 600;
-  padding-left: $datepicker-padding;
-}
-
 .#{$ns}-datepicker-content {
   align-items: center;
   display: flex;

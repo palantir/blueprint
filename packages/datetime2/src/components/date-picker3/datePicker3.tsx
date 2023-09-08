@@ -27,7 +27,7 @@ import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/sh
 // tslint:enable no-submodule-imports
 
 import { Classes } from "../../classes";
-import { DatePicker3Caption } from "../react-day-picker/datePicker3Caption";
+import { SingleDatePickerCaption } from "../react-day-picker/datePicker3Caption";
 import { DatePicker3Provider } from "./datePicker3Context";
 import { DatePicker3Props } from "./datePicker3Props";
 import { DatePicker3State } from "./datePicker3State";
@@ -92,7 +92,7 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
                             showOutsideDays={true}
                             {...dayPickerProps}
                             components={{
-                                Caption: DatePicker3Caption,
+                                Caption: SingleDatePickerCaption,
                                 ...dayPickerProps?.components,
                             }}
                             formatters={{
