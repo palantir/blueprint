@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { measureTextWidth } from "../../common/utils";
 import { getFormattedDateString } from "../../common/dateFormatProps";
 import { getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
 
@@ -25,4 +26,5 @@ export const DatePickerUtils = {
     getDefaultMaxDate,
     getDefaultMinDate,
     getFormattedDateString,
+    measureTextWidth,
 };

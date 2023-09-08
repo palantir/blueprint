@@ -21,12 +21,11 @@ import { CaptionProps, useDayPicker, useNavigation } from "react-day-picker";
 
 import { Button, DISPLAYNAME_PREFIX, Divider, HTMLSelect, OptionProps } from "@blueprintjs/core";
 import { DateUtils } from "@blueprintjs/datetime";
-// tslint:disable-next-line no-submodule-imports
-import { measureTextWidth } from "@blueprintjs/datetime/lib/esm/common/utils";
-import { ChevronLeft, ChevronRight, IconSize } from "@blueprintjs/icons";
+import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 
 import { Classes } from "../../classes";
 import { DatePicker3Context } from "../date-picker3/datePicker3Context";
+import { useMonthSelectRightOffset } from "../../common/useMonthSelectRightOffset";
 
 /**
  * Custom react-day-picker caption component which implements Blueprint's datepicker design
@@ -46,7 +45,7 @@ export function DatePicker3Caption(props: CaptionProps) {
     const displayYear = props.displayMonth.getFullYear();
 
     const containerElement = React.useRef<HTMLDivElement>(null);
-    const [monthRightOffset, setMonthRightOffset] = React.useState<number>(0);
+    const monthSelectElement = React.useRef<HTMLSelectElement>(null);
     const { currentMonth, goToMonth, nextMonth, previousMonth } = useNavigation();
 
     const handlePreviousClick = React.useCallback(
@@ -116,14 +115,16 @@ export function DatePicker3Caption(props: CaptionProps) {
         .slice(startMonth, endMonth);
     const displayedMonthText = monthsToDisplay[displayMonth];
 
+    const monthSelectRightOffset = useMonthSelectRightOffset(monthSelectElement, containerElement, displayedMonthText);
     const monthSelect = (
         <HTMLSelect
             aria-label={labels.labelMonthDropdown()}
-            iconProps={{ style: { right: monthRightOffset } }}
+            iconProps={{ style: { right: monthSelectRightOffset } }}
             className={classNames(Classes.DATEPICKER_MONTH_SELECT, rdpClassNames.dropdown_month)}
             key="month"
             minimal={true}
             onChange={handleMonthSelectChange}
+            ref={monthSelectElement}
             value={displayMonth}
             options={monthOptionElements}
         />
@@ -156,23 +157,6 @@ export function DatePicker3Caption(props: CaptionProps) {
     );
 
     const orderedSelects = reverseMonthAndYearMenus ? [yearSelect, monthSelect] : [monthSelect, yearSelect];
-
-    React.useLayoutEffect(() => {
-        if (containerElement.current == null) {
-            return;
-        }
-
-        // measure width of text as rendered inside our container element.
-        const monthTextWidth = measureTextWidth(
-            displayedMonthText,
-            Classes.DATEPICKER_CAPTION_MEASURE,
-            containerElement.current,
-        );
-        const monthSelectEl = containerElement.current.querySelector(`.${Classes.DATEPICKER_MONTH_SELECT}`);
-        const monthSelectWidth = monthSelectEl == null ? 0 : monthSelectEl.clientWidth;
-        const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - IconSize.STANDARD - 2);
-        setMonthRightOffset(rightOffset);
-    }, [containerElement, displayedMonthText]);
 
     return (
         <>
