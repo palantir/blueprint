@@ -29,7 +29,6 @@ import {
 import { AbstractPureComponent, Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 import { DatePickerUtils, DateRange, DateRangeShortcut, DateUtils, TimePicker } from "@blueprintjs/datetime";
 // tslint:disable no-submodule-imports
-// import { MonthAndYear } from "@blueprintjs/datetime/lib/esm/common/monthAndYear";
 import { DateRangeSelectionStrategy } from "@blueprintjs/datetime/lib/esm/common/dateRangeSelectionStrategy";
 import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
 import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/shortcuts";
@@ -47,6 +46,8 @@ import { DateRangePicker3State } from "./dateRangePicker3State";
 import { NonContiguousDateRangePicker } from "./nonContiguousDateRangePicker";
 
 export { DateRangePicker3Props };
+
+const NULL_RANGE: DateRange = [null, null];
 
 /**
  * Date range picker (v3) component.
@@ -114,7 +115,7 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
         const time: DateRange = value;
         this.initialMonth = getInitialMonth(props, value);
         this.state = {
-            hoverValue: [null, null],
+            hoverValue: NULL_RANGE,
             locale: undefined,
             selectedShortcutIndex:
                 this.props.selectedShortcutIndex !== undefined ? this.props.selectedShortcutIndex : -1,
@@ -162,13 +163,7 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
             (!DateUtils.areRangesEqual(prevProps.value!, this.props.value!) ||
                 prevProps.contiguousCalendarMonths !== this.props.contiguousCalendarMonths)
         ) {
-            const nextState = getStateChange(
-                prevProps.value,
-                this.props.value,
-                this.state,
-                prevProps.contiguousCalendarMonths!,
-            );
-            this.setState(nextState);
+            this.setState({ value: this.props.value ?? NULL_RANGE });
         }
 
         if (this.props.selectedShortcutIndex !== prevProps.selectedShortcutIndex) {
@@ -392,7 +387,6 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
      */
     private renderNonContiguousDayRangePicker() {
         const { value, ...props } = this.props;
-        // TODO(@adidahiya): pass along month to update calendars when clicking shortcuts... or just respond to value changes?
         return (
             <NonContiguousDateRangePicker
                 {...props}
@@ -408,61 +402,6 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
             />
         );
     }
-
-    // private renderSingleNavbar = (navbarProps: NavbarElementProps) => (
-    //     <DatePickerNavbar {...navbarProps} maxDate={this.props.maxDate} minDate={this.props.minDate} />
-    // );
-
-    // private renderLeftNavbar = (navbarProps: NavbarElementProps) => (
-    //     <DatePickerNavbar
-    //         {...navbarProps}
-    //         hideRightNavButton={this.props.contiguousCalendarMonths}
-    //         maxDate={this.props.maxDate}
-    //         minDate={this.props.minDate}
-    //     />
-    // );
-
-    // private renderRightNavbar = (navbarProps: NavbarElementProps) => (
-    //     <DatePickerNavbar
-    //         {...navbarProps}
-    //         hideLeftNavButton={this.props.contiguousCalendarMonths}
-    //         maxDate={this.props.maxDate}
-    //         minDate={this.props.minDate}
-    //     />
-    // );
-
-    // private renderSingleCaption = (captionProps: CaptionElementProps) => (
-    //     <DatePickerCaption
-    //         {...captionProps}
-    //         maxDate={this.props.maxDate}
-    //         minDate={this.props.minDate}
-    //         onMonthChange={this.handleLeftMonthSelectChange}
-    //         onYearChange={this.handleLeftYearSelectChange}
-    //         reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
-    //     />
-    // );
-
-    // private renderLeftCaption = (captionProps: CaptionElementProps) => (
-    //     <DatePickerCaption
-    //         {...captionProps}
-    //         maxDate={DateUtils.getDatePreviousMonth(this.props.maxDate)}
-    //         minDate={this.props.minDate}
-    //         onMonthChange={this.handleLeftMonthSelectChange}
-    //         onYearChange={this.handleLeftYearSelectChange}
-    //         reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
-    //     />
-    // );
-
-    // private renderRightCaption = (captionProps: CaptionElementProps) => (
-    //     <DatePickerCaption
-    //         {...captionProps}
-    //         maxDate={this.props.maxDate}
-    //         minDate={DateUtils.getDateNextMonth(this.props.minDate)}
-    //         onMonthChange={this.handleRightMonthSelectChange}
-    //         onYearChange={this.handleRightYearSelectChange}
-    //         reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
-    //     />
-    // );
 
     private handleDayMouseEnter: DayMouseEventHandler = (day, activeModifiers, e) => {
         this.props.dayPickerProps?.onDayMouseEnter?.(day, activeModifiers, e);
@@ -490,13 +429,11 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     };
 
     private handleShortcutClick = (shortcut: DateRangeShortcut, selectedShortcutIndex: number) => {
-        const { contiguousCalendarMonths, onShortcutChange } = this.props;
         const { dateRange, includeTime } = shortcut;
         if (includeTime) {
             const newDateRange: DateRange = [dateRange[0], dateRange[1]];
             const newTimeRange: DateRange = [dateRange[0], dateRange[1]];
-            const nextState = getStateChange(this.state.value, dateRange, this.state, contiguousCalendarMonths!);
-            this.setState({ ...nextState, time: newTimeRange });
+            this.setState({ time: newTimeRange, value: dateRange });
             this.props.onChange?.(newDateRange);
         } else {
             this.handleNextState(dateRange);
@@ -506,18 +443,16 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
             this.setState({ selectedShortcutIndex });
         }
 
-        onShortcutChange?.(shortcut, selectedShortcutIndex);
+        this.props.onShortcutChange?.(shortcut, selectedShortcutIndex);
     };
 
     private handleNextState = (nextValue: DateRange) => {
-        const { value } = this.state;
         nextValue[0] = DateUtils.getDateTime(nextValue[0], this.state.time[0]);
         nextValue[1] = DateUtils.getDateTime(nextValue[1], this.state.time[1]);
 
-        const nextState = getStateChange(value, nextValue, this.state, this.props.contiguousCalendarMonths!);
-
         if (this.props.value == null) {
-            this.setState(nextState);
+            // uncontrolled mode
+            this.setState({ value: nextValue });
         }
         this.props.onChange?.(nextValue);
     };
@@ -592,84 +527,6 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     // }
 }
 
-function getStateChange(
-    value: DateRange | undefined,
-    nextValue: DateRange | undefined,
-    _state: DateRangePicker3State,
-    contiguousCalendarMonths: boolean,
-): Partial<DateRangePicker3State> {
-    if (value != null && nextValue == null) {
-        return { value: [null, null] };
-    } else if (nextValue != null) {
-        // let leftView = state.leftView.clone();
-        // let rightView = state.rightView.clone();
-
-        // const nextValueStartView = MonthAndYear.fromDate(nextValue[0]);
-        // const nextValueEndView = MonthAndYear.fromDate(nextValue[1]);
-
-        // // Only end date selected.
-        // // If the newly selected end date isn't in either of the displayed months, then
-        // //   - set the right DayPicker to the month of the selected end date
-        // //   - ensure the left DayPicker is before the right, changing if needed
-        // if (nextValueStartView == null && nextValueEndView != null) {
-        //     if (!nextValueEndView.isSame(leftView) && !nextValueEndView.isSame(rightView)) {
-        //         rightView = nextValueEndView;
-        //         if (!leftView.isBefore(rightView)) {
-        //             leftView = rightView.getPreviousMonth();
-        //         }
-        //     }
-        // } else if (nextValueStartView != null && nextValueEndView == null) {
-        //     // Only start date selected.
-        //     // If the newly selected start date isn't in either of the displayed months, then
-        //     //   - set the left DayPicker to the month of the selected start date
-        //     //   - ensure the right DayPicker is before the left, changing if needed
-        //     if (!nextValueStartView.isSame(leftView) && !nextValueStartView.isSame(rightView)) {
-        //         leftView = nextValueStartView;
-        //         if (!rightView.isAfter(leftView)) {
-        //             rightView = leftView.getNextMonth();
-        //         }
-        //     }
-        // } else if (nextValueStartView != null && nextValueEndView != null) {
-        //     // Both start and end date months are identical
-        //     // If the selected month isn't in either of the displayed months, then
-        //     //   - set the left DayPicker to be the selected month
-        //     //   - set the right DayPicker to +1
-        //     if (nextValueStartView.isSame(nextValueEndView)) {
-        //         if (leftView.isSame(nextValueStartView) || rightView.isSame(nextValueStartView)) {
-        //             // do nothing
-        //         } else {
-        //             leftView = nextValueStartView;
-        //             rightView = nextValueStartView.getNextMonth();
-        //         }
-        //     } else {
-        //         // Different start and end date months, adjust display months.
-        //         if (!leftView.isSame(nextValueStartView)) {
-        //             leftView = nextValueStartView;
-        //             rightView = nextValueStartView.getNextMonth();
-        //         }
-        //         if (contiguousCalendarMonths === false && !rightView.isSame(nextValueEndView)) {
-        //             rightView = nextValueEndView;
-        //         }
-        //     }
-        // }
-
-        return {
-            // leftView,
-            // rightView,
-            value: nextValue,
-        };
-    } else if (contiguousCalendarMonths === true) {
-        // contiguousCalendarMonths is toggled on.
-        // If the previous leftView and rightView are not contiguous, then set the right DayPicker to left + 1
-        // if (!state.leftView.getNextMonth().isSameMonth(state.rightView)) {
-        //     const nextRightView = state.leftView.getNextMonth();
-        //     return { rightView: nextRightView };
-        // }
-    }
-
-    return {};
-}
-
 function getInitialValue(props: DateRangePicker3Props): DateRange {
     if (props.value != null) {
         return props.value;
@@ -677,7 +534,7 @@ function getInitialValue(props: DateRangePicker3Props): DateRange {
     if (props.defaultValue != null) {
         return props.defaultValue;
     }
-    return [null, null];
+    return NULL_RANGE;
 }
 
 function getInitialMonth(props: DateRangePicker3Props, value: DateRange): Date {
