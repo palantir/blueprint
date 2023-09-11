@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { format } from "date-fns";
 import * as React from "react";
 
-import { Callout, Classes, H5, Switch, Tag } from "@blueprintjs/core";
+import { Callout, Classes, H5, Switch } from "@blueprintjs/core";
 import { DatePicker3, TimePrecision } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
+import { DateTag } from "../../common/dateTag";
 
 const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
 
@@ -153,9 +153,7 @@ export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePi
                     dayPickerProps={{ showOutsideDays, showWeekNumber }}
                     {...props}
                 />
-                <Tag intent={date == null ? "none" : "primary"}>
-                    {date == null ? "No date" : format(date, "PPPppp")}
-                </Tag>
+                <DateTag date={date} />
             </Example>
         );
     }

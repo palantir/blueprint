@@ -30,6 +30,7 @@ import {
 
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 import { CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
+import { DateRangeTag } from "../../common/dateRangeTag";
 
 interface DateRangePicker3ExampleState {
     allowSingleDayRange?: boolean;
@@ -127,7 +128,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
     });
 
     public render() {
-        const { localeCode, minDateIndex, maxDateIndex, ...props } = this.state;
+        const { dateRange, localeCode, minDateIndex, maxDateIndex, ...props } = this.state;
         const minDate = MIN_DATE_OPTIONS[minDateIndex].value;
         const maxDate = MAX_DATE_OPTIONS[maxDateIndex].value;
         return (
@@ -140,8 +141,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                     minDate={minDate}
                     onChange={this.handleDateRangeChange}
                 />
-                {/* TODO(@adidahiya): render date range with date-fns */}
-                {/* <MomentDateRange withTime={props.timePrecision !== undefined} range={this.state.dateRange} /> */}
+                <DateRangeTag range={dateRange} showTime={props.timePrecision !== undefined} />
             </Example>
         );
     }
