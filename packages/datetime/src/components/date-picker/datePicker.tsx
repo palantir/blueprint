@@ -22,7 +22,7 @@ import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, Props } fro
 
 import { Classes, DatePickerBaseProps, DateUtils } from "../../common";
 import * as Errors from "../../common/errors";
-import { DatePickerShortcut, DateRangeShortcut, Shortcuts } from "../shortcuts/shortcuts";
+import { DatePickerShortcut, DateRangeShortcut, DatePickerShortcutMenu } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 import { DatePickerCaption } from "./datePickerCaption";
 import { getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
@@ -325,7 +325,7 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
                       dateRange: [shortcut.date, undefined],
                   }));
         return [
-            <Shortcuts
+            <DatePickerShortcutMenu
                 key="shortcuts"
                 {...{
                     allowSingleDayRange: true,

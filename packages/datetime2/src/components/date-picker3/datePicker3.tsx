@@ -20,11 +20,15 @@ import * as React from "react";
 import { ActiveModifiers, DateFormatter, DayPicker } from "react-day-picker";
 
 import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
-import { DatePickerUtils, DateRange, DateRangeShortcut, DateUtils, TimePicker } from "@blueprintjs/datetime";
-// tslint:disable no-submodule-imports
-import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
-import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/shortcuts";
-// tslint:enable no-submodule-imports
+import {
+    DatePickerShortcutMenu,
+    DatePickerUtils,
+    DateRange,
+    DateRangeShortcut,
+    DateUtils,
+    Errors,
+    TimePicker,
+} from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
 import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
@@ -243,7 +247,7 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
                       dateRange: [shortcut.date, null],
                   }));
         return [
-            <Shortcuts
+            <DatePickerShortcutMenu
                 key="shortcuts"
                 {...{
                     allowSingleDayRange: true,

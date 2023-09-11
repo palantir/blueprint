@@ -21,7 +21,7 @@ import { getCurrentTimezone } from "./getTimezone";
 import { TimePrecision } from "./timePickerProps";
 import { UTC_TIME } from "./timezoneItems";
 
-export { getCurrentTimezone };
+export { getCurrentTimezone, UTC_TIME };
 
 const NO_TIME_PRECISION = "date";
 

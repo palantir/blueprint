@@ -28,13 +28,16 @@ import {
     Tag,
     Utils,
 } from "@blueprintjs/core";
-import { DatePickerShortcut, DatePickerUtils, DateUtils, TimezoneSelect, TimezoneUtils } from "@blueprintjs/datetime";
-// tslint:disable no-submodule-imports
-import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
-import { UTC_TIME } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
-import { getTimezoneShortName, isValidTimezone } from "@blueprintjs/datetime/lib/esm/common/timezoneNameUtils";
+import {
+    DatePickerShortcut,
+    DatePickerUtils,
+    DateUtils,
+    Errors,
+    TimezoneSelect,
+    TimezoneNameUtils,
+    TimezoneUtils,
+} from "@blueprintjs/datetime";
 
-// tslint:enable no-submodule-imports
 import { Classes } from "../../classes";
 import { DatePicker3, DatePicker3Props } from "../date-picker3/datePicker3";
 import { getFormattedDateString } from "./dateInput3FormatUtils";
@@ -135,7 +138,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     }, [isControlled, valueFromProps]);
 
     React.useEffect(() => {
-        if (defaultTimezone !== undefined && isValidTimezone(defaultTimezone)) {
+        if (defaultTimezone !== undefined && TimezoneNameUtils.isValidTimezone(defaultTimezone)) {
             setTimezoneValue(defaultTimezone);
         }
     }, [defaultTimezone]);
@@ -312,7 +315,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 interactive={!isTimezoneSelectDisabled}
                 minimal={true}
             >
-                {getTimezoneShortName(timezoneValue, tzSelectDate)}
+                {TimezoneNameUtils.getTimezoneShortName(timezoneValue, tzSelectDate)}
             </Tag>
         </TimezoneSelect>
     );
@@ -543,11 +546,11 @@ function getInitialTimezoneValue({ defaultTimezone }: DateInput3Props) {
     if (defaultTimezone === undefined) {
         return TimezoneUtils.getCurrentTimezone();
     } else {
-        if (isValidTimezone(defaultTimezone)) {
+        if (TimezoneNameUtils.isValidTimezone(defaultTimezone)) {
             return defaultTimezone;
         } else {
             console.error(Errors.DATEINPUT_INVALID_DEFAULT_TIMEZONE);
-            return UTC_TIME.ianaCode;
+            return TimezoneUtils.UTC_TIME.ianaCode;
         }
     }
 }

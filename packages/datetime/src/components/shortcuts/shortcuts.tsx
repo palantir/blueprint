@@ -52,7 +52,7 @@ export interface DatePickerShortcut extends DateShortcutBase {
     date: Date;
 }
 
-export interface ShortcutsProps {
+export interface DatePickerShortcutMenuProps {
     allowSingleDayRange: boolean;
     minDate: Date;
     maxDate: Date;
@@ -69,8 +69,8 @@ export interface ShortcutsProps {
     useSingleDateShortcuts?: boolean;
 }
 
-export class Shortcuts extends React.PureComponent<ShortcutsProps> {
-    public static defaultProps: Partial<ShortcutsProps> = {
+export class DatePickerShortcutMenu extends React.PureComponent<DatePickerShortcutMenuProps> {
+    public static defaultProps: Partial<DatePickerShortcutMenuProps> = {
         selectedShortcutIndex: -1,
     };
 

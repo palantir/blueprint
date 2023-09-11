@@ -18,11 +18,7 @@ import * as React from "react";
 import { DayPicker, DayPickerRangeProps, MonthChangeEventHandler, SelectRangeEventHandler } from "react-day-picker";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
-import { DateRange, DateUtils } from "@blueprintjs/datetime";
-// tslint:disable no-submodule-imports
-import { DateRangeSelectionStrategy } from "@blueprintjs/datetime/lib/esm/common/dateRangeSelectionStrategy";
-import { MonthAndYear } from "@blueprintjs/datetime/lib/esm/common/monthAndYear";
-// tslint:enable no-submodule-imports
+import { DateRange, DateRangeSelectionStrategy, DateUtils, MonthAndYear } from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
 import { combineModifiers } from "../../common/dayPickerModifiers";

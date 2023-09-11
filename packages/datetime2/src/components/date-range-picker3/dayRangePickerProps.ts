@@ -16,10 +16,7 @@
 
 import type { DayModifiers, DayPickerRangeProps, ModifiersClassNames } from "react-day-picker";
 
-import type { DateRange } from "@blueprintjs/datetime";
-// tslint:disable no-submodule-imports
-import type { MonthAndYear } from "@blueprintjs/datetime/lib/esm/common/monthAndYear";
-// tslint:enable no-submodule-imports
+import type { DateRange, MonthAndYear } from "@blueprintjs/datetime";
 
 import type { DateRangePicker3Props } from "./dateRangePicker3Props";
 import type { DateRangePicker3State } from "./dateRangePicker3State";

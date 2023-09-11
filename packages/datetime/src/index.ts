@@ -23,6 +23,8 @@ type DatePickerLocaleUtils = typeof LocaleUtils;
 export { DatePickerLocaleUtils, DatePickerDayModifiers };
 
 export { DateFormatProps } from "./common/dateFormatProps";
+export { DateRangeSelectionStrategy, DateRangeSelectionState } from "./common/dateRangeSelectionStrategy";
+export { MonthAndYear } from "./common/monthAndYear";
 export { TimePickerProps, TimePrecision } from "./common/timePickerProps";
 
 export { DateInput, DateInputProps } from "./components/date-input/dateInput";
@@ -32,5 +34,10 @@ export { DatePickerBaseProps, DatePickerModifiers } from "./common/datePickerBas
 export { DateRangeInput, DateRangeInputProps } from "./components/date-range-input/dateRangeInput";
 export { DateRangePicker, DateRangePickerProps } from "./components/date-range-picker/dateRangePicker";
 export { TimePicker } from "./components/time-picker/timePicker";
-export { DatePickerShortcut, DateRangeShortcut } from "./components/shortcuts/shortcuts";
+export {
+    DatePickerShortcut,
+    DatePickerShortcutMenu,
+    DatePickerShortcutMenuProps,
+    DateRangeShortcut,
+} from "./components/shortcuts/shortcuts";
 export { TimezoneSelect, TimezoneSelectProps } from "./components/timezone-select/timezoneSelect";

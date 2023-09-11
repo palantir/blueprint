@@ -22,11 +22,16 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
-import { Months, TimePrecision, TimeUnit, TimezoneSelect, TimezoneUtils } from "@blueprintjs/datetime";
-// tslint:disable no-submodule-imports
-import { TIMEZONE_ITEMS, UTC_TIME } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
-import { getTimezoneShortName } from "@blueprintjs/datetime/lib/esm/common/timezoneNameUtils";
-// tslint:enable no-submodule-imports
+import {
+    Months,
+    TimePrecision,
+    TimeUnit,
+    TimezoneNameUtils,
+    TimezoneSelect,
+    TimezoneUtils,
+} from "@blueprintjs/datetime";
+// tslint:disable-next-line no-submodule-imports
+import { TIMEZONE_ITEMS } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
 
 import { Datetime2Classes as Classes, DateInput3, DateInput3Props, DatePicker3 } from "../../src";
 
@@ -37,7 +42,7 @@ const TOKYO_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Tokyo")!;
 const VALUE = "2021-11-29T10:30:00z";
 
 const DEFAULT_PROPS = {
-    defaultTimezone: UTC_TIME.ianaCode,
+    defaultTimezone: TimezoneUtils.UTC_TIME.ianaCode,
     formatDate: (date: Date | null | undefined, locale?: string) => {
         if (date == null) {
             return "";
@@ -494,11 +499,14 @@ describe("<DateInput3>", () => {
 
         describe("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
-            assert.strictEqual(wrapper.find(TimezoneSelect).text(), getTimezoneShortName(UTC_TIME.ianaCode, undefined));
+            assert.strictEqual(
+                wrapper.find(TimezoneSelect).text(),
+                TimezoneNameUtils.getTimezoneShortName(TimezoneUtils.UTC_TIME.ianaCode, undefined),
+            );
             wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode });
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),
-                getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
+                TimezoneNameUtils.getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
             );
         });
     });
@@ -557,7 +565,7 @@ describe("<DateInput3>", () => {
             assert.isTrue(onChange.calledTwice, "onChange called twice");
             assert.strictEqual(
                 onChange.args[1][0],
-                formatInTimeZone(parseISO(DATE2_VALUE), UTC_TIME.ianaCode, "yyyy-MM-dd'T'HH:mm:ssxxx"),
+                formatInTimeZone(parseISO(DATE2_VALUE), TimezoneUtils.UTC_TIME.ianaCode, "yyyy-MM-dd'T'HH:mm:ssxxx"),
             );
             assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
             assert.strictEqual(
@@ -717,11 +725,14 @@ describe("<DateInput3>", () => {
 
         describe("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
-            assert.strictEqual(wrapper.find(TimezoneSelect).text(), getTimezoneShortName(UTC_TIME.ianaCode, undefined));
+            assert.strictEqual(
+                wrapper.find(TimezoneSelect).text(),
+                TimezoneNameUtils.getTimezoneShortName(TimezoneUtils.UTC_TIME.ianaCode, undefined),
+            );
             wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode });
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),
-                getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
+                TimezoneNameUtils.getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
             );
         });
     });

@@ -33,7 +33,7 @@ import {
     SELECTED_RANGE_MODIFIER,
 } from "../date-picker/datePickerCore";
 import { DatePickerNavbar } from "../date-picker/datePickerNavbar";
-import { DateRangeShortcut, Shortcuts } from "../shortcuts/shortcuts";
+import { DateRangeShortcut, DatePickerShortcutMenu } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 
 export interface DateRangePickerProps extends DatePickerBaseProps, Props {
@@ -334,7 +334,7 @@ export class DateRangePicker extends AbstractPureComponent<DateRangePickerProps,
         const { selectedShortcutIndex } = this.state;
         const { allowSingleDayRange, maxDate, minDate, timePrecision } = this.props;
         return [
-            <Shortcuts
+            <DatePickerShortcutMenu
                 key="shortcuts"
                 {...{
                     allowSingleDayRange,
