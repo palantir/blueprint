@@ -19,22 +19,30 @@ import { Classes as DatetimeClasses } from "@blueprintjs/datetime";
 const RDP_DAY = "rdp-day";
 const DATEPICKER_NAV_BUTTON = `${DatetimeClasses.DATEPICKER}-nav-button`;
 
-export const Classes = {
-    ...DatetimeClasses,
+const DatePicker3Classes = {
     // these classes need the "3" suffix because they overlap with DatePicker v1 / react-day-picker v7 classes
     DATEPICKER3_DAY: RDP_DAY,
     DATEPICKER3_DAY_DISABLED: `${RDP_DAY}_disabled`,
     DATEPICKER3_DAY_IS_TODAY: `${RDP_DAY}_today`,
     DATEPICKER3_DAY_OUTSIDE: `${RDP_DAY}_outside`,
     DATEPICKER3_DAY_SELECTED: `${RDP_DAY}_selected`,
-    DATERANGEPICKER3_DAY_HOVERED_RANGE: `${RDP_DAY}_hovered`,
-    DATERANGEPICKER3_DAY_HOVERED_RANGE_START: `${RDP_DAY}_hovered_start`,
-    DATERANGEPICKER3_DAY_HOVERED_RANGE_END: `${RDP_DAY}_hovered_end`,
     // these classes intentionally left without "3" suffix because they do not overlap with DatePicker v1, and this way we don't need to migrate them later, which reduces code churn
     DATEPICKER_DROPDOWN_CONTAINER: `${DatetimeClasses.DATEPICKER}-dropdown-container`,
     DATEPICKER_HIGHLIGHT_CURRENT_DAY: `${DatetimeClasses.DATEPICKER}-highlight-current-day`,
     DATEPICKER_NAV_BUTTON,
+    DATEPICKER_NAV_BUTTON_HIDDEN: `${DATEPICKER_NAV_BUTTON}-hidden`,
     DATEPICKER_NAV_BUTTON_NEXT: `${DATEPICKER_NAV_BUTTON}-next`,
     DATEPICKER_NAV_BUTTON_PREVIOUS: `${DATEPICKER_NAV_BUTTON}-previous`,
-    DATEPICKER_NAV_BUTTON_HIDDEN: `${DATEPICKER_NAV_BUTTON}-hidden`,
+};
+
+const DateRangePicker3Classes = {
+    DATERANGEPICKER3_DAY_HOVERED_RANGE: `${RDP_DAY}_hovered`,
+    DATERANGEPICKER3_DAY_HOVERED_RANGE_END: `${RDP_DAY}_hovered_end`,
+    DATERANGEPICKER3_DAY_HOVERED_RANGE_START: `${RDP_DAY}_hovered_start`,
+};
+
+export const Classes = {
+    ...DatetimeClasses,
+    ...DatePicker3Classes,
+    ...DateRangePicker3Classes,
 };

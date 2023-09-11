@@ -24,8 +24,8 @@ import { DateUtils } from "@blueprintjs/datetime";
 import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 
 import { Classes } from "../../classes";
-import { DatePicker3Context } from "../date-picker3/datePicker3Context";
 import { useMonthSelectRightOffset } from "../../common/useMonthSelectRightOffset";
+import { DatePicker3Context } from "../date-picker3/datePicker3Context";
 
 interface DatePicker3CaptionProps extends CaptionProps {
     hideNextButton?: boolean;

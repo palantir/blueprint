@@ -20,8 +20,8 @@ import { Callout, Classes, H5, Switch } from "@blueprintjs/core";
 import { DatePicker3, TimePrecision } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
-import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 import { DateTag } from "../../common/dateTag";
+import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 
 const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
 

@@ -28,9 +28,9 @@ import {
     handleValueChange,
 } from "@blueprintjs/docs-theme";
 
-import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 import { CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { DateRangeTag } from "../../common/dateRangeTag";
+import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 
 interface DateRangePicker3ExampleState {
     allowSingleDayRange?: boolean;

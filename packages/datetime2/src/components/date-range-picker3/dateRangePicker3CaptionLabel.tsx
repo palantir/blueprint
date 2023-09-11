@@ -17,8 +17,10 @@
 import { format } from "date-fns";
 import * as React from "react";
 import { CaptionLabelProps } from "react-day-picker";
-import { DatePicker3Context } from "../date-picker3/datePicker3Context";
+
 import { DoubleCaretVertical } from "@blueprintjs/icons";
+
+import { DatePicker3Context } from "../date-picker3/datePicker3Context";
 
 /**
  * Custom react-day-picker caption label component which implements Blueprint's datepicker design.

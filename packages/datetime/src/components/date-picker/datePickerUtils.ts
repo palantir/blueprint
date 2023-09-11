@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { measureTextWidth } from "../../common/utils";
 import { getFormattedDateString } from "../../common/dateFormatProps";
+import { measureTextWidth } from "../../common/utils";
 import { getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
 
 /**

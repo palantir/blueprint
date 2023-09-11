@@ -17,6 +17,7 @@
 import type { DayPickerRangeProps } from "react-day-picker";
 
 import type { DateRangePickerProps } from "@blueprintjs/datetime";
+
 import { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 
 /** Props shared between DateRangePicker v1 and v3 */

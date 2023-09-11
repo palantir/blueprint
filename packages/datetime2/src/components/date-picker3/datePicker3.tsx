@@ -27,11 +27,11 @@ import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/sh
 // tslint:enable no-submodule-imports
 
 import { Classes } from "../../classes";
+import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import { SingleDatePickerCaption } from "../react-day-picker/datePicker3Caption";
 import { DatePicker3Provider } from "./datePicker3Context";
 import { DatePicker3Props } from "./datePicker3Props";
 import { DatePicker3State } from "./datePicker3State";
-import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 
 export { DatePicker3Props };
 

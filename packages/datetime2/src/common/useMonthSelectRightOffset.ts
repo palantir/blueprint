@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import * as React from "react";
+
 import { Classes, DatePickerUtils } from "@blueprintjs/datetime";
 import { IconSize } from "@blueprintjs/icons";
-import * as React from "react";
 
 export function useMonthSelectRightOffset(
     monthSelectElement: React.RefObject<HTMLSelectElement>,
@@ -39,7 +40,7 @@ export function useMonthSelectRightOffset(
         const monthSelectWidth = monthSelectElement.current?.clientWidth ?? 0;
         const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - IconSize.STANDARD - 2);
         setMonthRightOffset(rightOffset);
-    }, [containerElement, displayedMonthText]);
+    }, [containerElement, displayedMonthText, monthSelectElement]);
 
     return monthRightOffset;
 }

@@ -18,17 +18,16 @@ import classNames from "classnames";
 import { format } from "date-fns";
 import * as React from "react";
 import {
-    DayPicker,
-    DayModifiers,
-    SelectRangeEventHandler,
-    ModifiersClassNames,
     DateFormatter,
+    DayModifiers,
     DayMouseEventHandler,
+    DayPicker,
+    ModifiersClassNames,
+    SelectRangeEventHandler,
 } from "react-day-picker";
 
 import { AbstractPureComponent, Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
-import { DateRange, DateUtils, DatePickerUtils, DateRangeShortcut, TimePicker } from "@blueprintjs/datetime";
-
+import { DatePickerUtils, DateRange, DateRangeShortcut, DateUtils, TimePicker } from "@blueprintjs/datetime";
 // tslint:disable no-submodule-imports
 // import { MonthAndYear } from "@blueprintjs/datetime/lib/esm/common/monthAndYear";
 import { DateRangeSelectionStrategy } from "@blueprintjs/datetime/lib/esm/common/dateRangeSelectionStrategy";
@@ -37,15 +36,15 @@ import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/sh
 // tslint:enable no-submodule-imports
 
 import { Classes } from "../../classes";
-import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
-import { DateRangePicker3Props } from "./dateRangePicker3Props";
-import { DateRangePicker3State } from "./dateRangePicker3State";
 import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
+import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
+import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { DatePicker3Provider } from "../date-picker3/datePicker3Context";
 import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
+import { DateRangePicker3Props } from "./dateRangePicker3Props";
+import { DateRangePicker3State } from "./dateRangePicker3State";
 import { NonContiguousDateRangePicker } from "./nonContiguousDateRangePicker";
-import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 
 export { DateRangePicker3Props };
 

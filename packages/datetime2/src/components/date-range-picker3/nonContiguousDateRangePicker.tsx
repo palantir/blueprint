@@ -25,16 +25,16 @@ import {
 
 import { DateRange, DateUtils } from "@blueprintjs/datetime";
 // tslint:disable no-submodule-imports
-import { MonthAndYear } from "@blueprintjs/datetime/lib/esm/common/monthAndYear";
 import { DateRangeSelectionStrategy } from "@blueprintjs/datetime/lib/esm/common/dateRangeSelectionStrategy";
+import { MonthAndYear } from "@blueprintjs/datetime/lib/esm/common/monthAndYear";
 // tslint:enable no-submodule-imports
 
 import { Classes } from "../../classes";
 import { combineModifiers } from "../../common/dayPickerModifiers";
-import { DateRangePicker3Props } from "./dateRangePicker3Props";
-import { DateRangePicker3State } from "./dateRangePicker3State";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { LeftDatePickerCaption, RightDatePickerCaption } from "../react-day-picker/datePicker3Caption";
+import { DateRangePicker3Props } from "./dateRangePicker3Props";
+import { DateRangePicker3State } from "./dateRangePicker3State";
 
 export interface NonContiguousDateRangePickerProps
     extends Omit<DateRangePicker3Props, "locale" | "value">,
@@ -126,31 +126,31 @@ export const NonContiguousDateRangePicker: React.FC<NonContiguousDateRangePicker
             // state, at leasts until the mouse moves again
             props.dayPickerEventHandlers.onDayMouseEnter(selectedDay, activeModifiers, e);
         },
-        [props.dayPickerProps?.onSelect, props.allowSingleDayRange, props.boundaryToModify],
+        [value, props.dayPickerProps?.onSelect, props.allowSingleDayRange, props.boundaryToModify],
     );
 
     const handleLeftMonthChange = React.useCallback<MonthChangeEventHandler>(
         newDate => {
-            const leftView = MonthAndYear.fromDate(newDate);
-            props.dayPickerProps?.onMonthChange?.(leftView.getFullDate());
-            updateLeftView(leftView);
+            const newLeftView = MonthAndYear.fromDate(newDate);
+            props.dayPickerProps?.onMonthChange?.(newLeftView.getFullDate());
+            updateLeftView(newLeftView);
         },
         [props.dayPickerProps?.onMonthChange, updateLeftView],
     );
 
     const handleRightMonthChange = React.useCallback<MonthChangeEventHandler>(
         newDate => {
-            const rightView = MonthAndYear.fromDate(newDate);
-            props.dayPickerProps?.onMonthChange?.(rightView.getFullDate());
-            updateRightView(rightView);
+            const newRightView = MonthAndYear.fromDate(newDate);
+            props.dayPickerProps?.onMonthChange?.(newRightView.getFullDate());
+            updateRightView(newRightView);
         },
         [props.dayPickerProps?.onMonthChange, updateRightView],
     );
 
     // props applied to both the left and right calendars
     const commonDayPickerProps: DayPickerRangeProps = {
-        mode: "range",
         locale,
+        mode: "range",
         modifiers: combineModifiers(modifiers, props.dayPickerProps?.modifiers),
         showOutsideDays: true,
         ...props.dayPickerProps,

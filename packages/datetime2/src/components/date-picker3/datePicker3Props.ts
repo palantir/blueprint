@@ -18,6 +18,7 @@ import type { DayPickerSingleProps } from "react-day-picker";
 
 import type { Props } from "@blueprintjs/core";
 import type { DatePickerProps } from "@blueprintjs/datetime";
+
 import { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 
 /** Props shared between DatePicker v1 and v3 */

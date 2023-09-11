@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import type { DateRange } from "@blueprintjs/datetime";
 import type { Locale } from "date-fns";
+
+import type { DateRange } from "@blueprintjs/datetime";
 
 /**
  * leftView and rightView controls the DayPicker displayed month
