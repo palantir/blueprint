@@ -16,16 +16,10 @@
 
 import { format } from "date-fns";
 import * as React from "react";
-import {
-    DateFormatter,
-    DayModifiers,
-    DayPicker,
-    DayPickerRangeProps,
-    ModifiersClassNames,
-    MonthChangeEventHandler,
-} from "react-day-picker";
+import { DateFormatter, DayPicker, MonthChangeEventHandler, SelectRangeEventHandler } from "react-day-picker";
 
 // tslint:disable no-submodule-imports
+import { DateRangeSelectionStrategy } from "@blueprintjs/datetime/lib/esm/common/dateRangeSelectionStrategy";
 import { MonthAndYear } from "@blueprintjs/datetime/lib/esm/common/monthAndYear";
 // tslint:enable no-submodule-imports
 
@@ -33,44 +27,27 @@ import { combineModifiers } from "../../common/dayPickerModifiers";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
-import { DateRangePicker3Props } from "./dateRangePicker3Props";
-import { DateRangePicker3State } from "./dateRangePicker3State";
-
-interface ContiguousDateRangePickerProps
-    extends Omit<DateRangePicker3Props, "initialMonth" | "locale" | "value">,
-        Pick<DateRangePicker3State, "locale" | "value"> {
-    /** Initial month computed in DateRangePicker3 constructor. */
-    initialMonth: MonthAndYear;
-
-    /** Override DateRangePicker3Props value. */
-    contiguousCalendarMonths: true;
-
-    /** DateRangePicker3's custom modifiers */
-    modifiers: DayModifiers;
-
-    /** DateRangePicker3's custom modifier class names */
-    modifiersClassNames: ModifiersClassNames;
-
-    /** react-day-picker event handlers */
-    dayPickerEventHandlers: Required<Pick<DayPickerRangeProps, "onDayMouseEnter" | "onDayMouseLeave" | "onSelect">>;
-}
+import { DayRangePickerProps } from "./dayRangePickerProps";
 
 /**
  * Render a standard day range picker where props.contiguousCalendarMonths is expected to be `true`.
  */
-export const ContiguousDateRangePicker: React.FC<ContiguousDateRangePickerProps> = ({
+export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
+    allowSingleDayRange,
+    boundaryToModify,
     dayPickerProps,
     dayPickerEventHandlers,
-    initialMonth,
+    initialMonthAndYear,
     locale,
     maxDate,
     minDate,
     modifiers,
     modifiersClassNames,
     singleMonthOnly,
+    updateSelectedRange,
     value,
 }) => {
-    const [displayMonth, setDisplayMonth] = React.useState(initialMonth);
+    const [displayMonth, setDisplayMonth] = React.useState(initialMonthAndYear);
 
     // use an effect to react to external value updates (such as shortcut item selections)
     React.useEffect(() => {
@@ -126,7 +103,34 @@ export const ContiguousDateRangePicker: React.FC<ContiguousDateRangePickerProps>
             setDisplayMonth(MonthAndYear.fromDate(month));
             dayPickerProps?.onMonthChange?.(month);
         },
-        [setDisplayMonth],
+        [dayPickerProps?.onMonthChange, setDisplayMonth],
+    );
+
+    const handleRangeSelect = React.useCallback<SelectRangeEventHandler>(
+        (range, selectedDay, activeModifiers, e) => {
+            dayPickerProps?.onSelect?.(range, selectedDay, activeModifiers, e);
+
+            if (modifiers.disabled) {
+                // TODO(@adidahiya): see if this forceUpdate is still necessary?
+                // rerender base component to get around bug where you can navigate past bounds by clicking days
+                // this.forceUpdate();
+                return;
+            }
+
+            const nextValue = DateRangeSelectionStrategy.getNextState(
+                value,
+                selectedDay,
+                allowSingleDayRange!,
+                boundaryToModify,
+            ).dateRange;
+
+            // update the hovered date range after click to show the newly selected
+            // state, at leasts until the mouse moves again
+            dayPickerEventHandlers.onDayMouseEnter?.(selectedDay, activeModifiers, e);
+
+            updateSelectedRange(nextValue);
+        },
+        [allowSingleDayRange, boundaryToModify, dayPickerEventHandlers.onDayMouseEnter, updateSelectedRange, value],
     );
 
     /**
@@ -165,7 +169,7 @@ export const ContiguousDateRangePicker: React.FC<ContiguousDateRangePickerProps>
             onDayMouseEnter={dayPickerEventHandlers.onDayMouseEnter}
             onDayMouseLeave={dayPickerEventHandlers.onDayMouseLeave}
             onMonthChange={handleMonthChange}
-            onSelect={dayPickerEventHandlers.onSelect}
+            onSelect={handleRangeSelect}
             selected={dateRangeToDayPickerRange(value)}
             toDate={maxDate}
         />

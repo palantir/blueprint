@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { DayModifiers, DayMouseEventHandler, ModifiersClassNames, SelectRangeEventHandler } from "react-day-picker";
+import { DayModifiers, DayMouseEventHandler, ModifiersClassNames } from "react-day-picker";
 
 import { AbstractPureComponent, Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 import { DatePickerUtils, DateRange, DateRangeShortcut, DateUtils, TimePicker } from "@blueprintjs/datetime";
@@ -33,8 +33,8 @@ import { HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { DatePicker3Provider } from "../date-picker3/datePicker3Context";
 import { DateRangePicker3Props } from "./dateRangePicker3Props";
 import { DateRangePicker3State } from "./dateRangePicker3State";
-import { NonContiguousDateRangePicker } from "./nonContiguousDateRangePicker";
-import { ContiguousDateRangePicker } from "./contiguousDateRangePicker";
+import { NonContiguousDayRangePicker } from "./nonContiguousDayRangePicker";
+import { ContiguousDayRangePicker } from "./contiguousDayRangePicker";
 
 export { DateRangePicker3Props };
 
@@ -98,13 +98,13 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
         [`${HOVERED_RANGE_MODIFIER}-end`]: Classes.DATERANGEPICKER3_DAY_HOVERED_RANGE_END,
     };
 
-    private initialMonth: Date = new Date();
+    private initialMonthAndYear: MonthAndYear = MonthAndYear.fromDate(new Date());
 
     public constructor(props: DateRangePicker3Props) {
         super(props);
         const value = getInitialValue(props);
         const time: DateRange = value;
-        this.initialMonth = getInitialMonth(props, value);
+        this.initialMonthAndYear = MonthAndYear.fromDate(getInitialMonth(props, value));
         this.state = {
             hoverValue: NULL_RANGE,
             locale: undefined,
@@ -131,9 +131,9 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
                 {this.maybeRenderShortcuts()}
                 <div className={Classes.DATEPICKER_CONTENT}>
                     <DatePicker3Provider {...this.props} {...this.state}>
-                        {!contiguousCalendarMonths && !isShowingOneMonth
-                            ? this.renderNonContiguousDayRangePicker()
-                            : this.renderDayRangePicker(isShowingOneMonth)}
+                        {contiguousCalendarMonths || isShowingOneMonth
+                            ? this.renderContiguousDayRangePicker(isShowingOneMonth)
+                            : this.renderNonContiguousDayRangePicker()}
                         {this.maybeRenderTimePickers(isShowingOneMonth)}
                         {footerElement}
                     </DatePicker3Provider>
@@ -308,53 +308,29 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     /**
      * Render a standard day range picker where props.contiguousCalendarMonths is expected to be `true`.
      */
-    private renderDayRangePicker(singleMonthOnly: boolean) {
+    private renderContiguousDayRangePicker(singleMonthOnly: boolean) {
         const { value, ...props } = this.props;
         return (
-            <ContiguousDateRangePicker
+            <ContiguousDayRangePicker
                 {...props}
                 contiguousCalendarMonths={true}
                 dayPickerEventHandlers={{
                     onDayMouseEnter: this.handleDayMouseEnter,
                     onDayMouseLeave: this.handleDayMouseLeave,
-                    onSelect: this.handleRangeSelect,
                 }}
                 dayPickerProps={{
                     ...props.dayPickerProps,
                     numberOfMonths: singleMonthOnly ? 1 : 2,
                 }}
-                initialMonth={MonthAndYear.fromDate(this.initialMonth)}
+                initialMonthAndYear={this.initialMonthAndYear}
                 locale={this.state.locale}
                 modifiers={this.modifiers}
                 modifiersClassNames={this.modifiersClassNames}
+                updateSelectedRange={this.updateSelectedRange}
                 value={this.state.value}
             />
         );
     }
-
-    // TODO(@adidahiya): consider moving this to contiguousDateRangePicker.tsx
-    private handleRangeSelect: SelectRangeEventHandler = (range, selectedDay, modifiers, e) => {
-        this.props.dayPickerProps?.onSelect?.(range, selectedDay, modifiers, e);
-
-        if (modifiers.disabled) {
-            // rerender base component to get around bug where you can navigate past bounds by clicking days
-            this.forceUpdate();
-            return;
-        }
-
-        const nextValue = DateRangeSelectionStrategy.getNextState(
-            this.state.value,
-            selectedDay,
-            this.props.allowSingleDayRange!,
-            this.props.boundaryToModify,
-        ).dateRange;
-
-        // update the hovered date range after click to show the newly selected
-        // state, at leasts until the mouse moves again
-        this.handleDayMouseEnter(selectedDay, modifiers, e);
-
-        this.handleNextState(nextValue);
-    };
 
     /**
      * react-day-picker doesn't have built-in support for non-contiguous calendar months in its range picker,
@@ -363,16 +339,17 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     private renderNonContiguousDayRangePicker() {
         const { value, ...props } = this.props;
         return (
-            <NonContiguousDateRangePicker
+            <NonContiguousDayRangePicker
                 {...props}
                 dayPickerEventHandlers={{
                     onDayMouseEnter: this.handleDayMouseEnter,
                     onDayMouseLeave: this.handleDayMouseLeave,
                 }}
-                initialMonth={MonthAndYear.fromDate(this.initialMonth)}
+                initialMonthAndYear={this.initialMonthAndYear}
                 locale={this.state.locale}
                 modifiers={this.modifiers}
-                onSelect={this.handleNextState}
+                modifiersClassNames={this.modifiersClassNames}
+                updateSelectedRange={this.updateSelectedRange}
                 value={this.state.value}
             />
         );
@@ -405,31 +382,30 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
 
     private handleShortcutClick = (shortcut: DateRangeShortcut, selectedShortcutIndex: number) => {
         const { dateRange, includeTime } = shortcut;
+
         if (includeTime) {
-            const newDateRange: DateRange = [dateRange[0], dateRange[1]];
-            const newTimeRange: DateRange = [dateRange[0], dateRange[1]];
-            this.setState({ time: newTimeRange, value: dateRange });
-            this.props.onChange?.(newDateRange);
+            this.updateSelectedRange(dateRange, [dateRange[0], dateRange[1]]);
         } else {
-            this.handleNextState(dateRange);
+            this.updateSelectedRange(dateRange);
         }
 
         if (this.props.selectedShortcutIndex === undefined) {
+            // uncontrolled shorcut selection
             this.setState({ selectedShortcutIndex });
         }
 
         this.props.onShortcutChange?.(shortcut, selectedShortcutIndex);
     };
 
-    private handleNextState = (nextValue: DateRange) => {
-        nextValue[0] = DateUtils.getDateTime(nextValue[0], this.state.time[0]);
-        nextValue[1] = DateUtils.getDateTime(nextValue[1], this.state.time[1]);
+    private updateSelectedRange = (selectedRange: DateRange, selectedTimeRange: DateRange = this.state.time) => {
+        selectedRange[0] = DateUtils.getDateTime(selectedRange[0], selectedTimeRange[0]);
+        selectedRange[1] = DateUtils.getDateTime(selectedRange[1], selectedTimeRange[1]);
 
         if (this.props.value == null) {
-            // uncontrolled mode
-            this.setState({ value: nextValue });
+            // uncontrolled range selection
+            this.setState({ time: selectedTimeRange, value: selectedRange });
         }
-        this.props.onChange?.(nextValue);
+        this.props.onChange?.(selectedRange);
     };
 }
 
