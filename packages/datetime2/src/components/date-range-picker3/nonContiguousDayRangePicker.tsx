@@ -17,6 +17,7 @@
 import * as React from "react";
 import { DayPicker, DayPickerRangeProps, MonthChangeEventHandler, SelectRangeEventHandler } from "react-day-picker";
 
+import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 import { DateRange, DateUtils } from "@blueprintjs/datetime";
 // tslint:disable no-submodule-imports
 import { DateRangeSelectionStrategy } from "@blueprintjs/datetime/lib/esm/common/dateRangeSelectionStrategy";
@@ -61,9 +62,6 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
             dayPickerProps?.onSelect?.(range, selectedDay, activeModifiers, e);
 
             if (activeModifiers.disabled) {
-                // TODO(@adidahiya): see if this forceUpdate is still necessary?
-                // rerender base component to get around bug where you can navigate past bounds by clicking days
-                // this.forceUpdate();
                 return;
             }
 
@@ -131,6 +129,7 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
         </div>
     );
 };
+NonContiguousDayRangePicker.displayName = `${DISPLAYNAME_PREFIX}.NonContiguousDayRangePicker`;
 
 interface NonContiguousCalendarViews {
     leftView: MonthAndYear;

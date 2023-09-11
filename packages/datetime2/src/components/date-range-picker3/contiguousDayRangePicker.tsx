@@ -18,6 +18,7 @@ import { format } from "date-fns";
 import * as React from "react";
 import { DateFormatter, DayPicker, MonthChangeEventHandler, SelectRangeEventHandler } from "react-day-picker";
 
+import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 // tslint:disable no-submodule-imports
 import { DateRangeSelectionStrategy } from "@blueprintjs/datetime/lib/esm/common/dateRangeSelectionStrategy";
 import { MonthAndYear } from "@blueprintjs/datetime/lib/esm/common/monthAndYear";
@@ -28,6 +29,7 @@ import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 import { DayRangePickerProps } from "./dayRangePickerProps";
+import { DateRange } from "@blueprintjs/datetime";
 
 /**
  * Render a standard day range picker where props.contiguousCalendarMonths is expected to be `true`.
@@ -43,65 +45,15 @@ export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
     minDate,
     modifiers,
     modifiersClassNames,
-    singleMonthOnly,
+    singleMonthOnly = false,
     updateSelectedRange,
     value,
 }) => {
-    const [displayMonth, setDisplayMonth] = React.useState(initialMonthAndYear);
-
-    // use an effect to react to external value updates (such as shortcut item selections)
-    React.useEffect(() => {
-        if (value == null) {
-            return;
-        }
-
-        let newDisplayMonth = displayMonth.clone();
-
-        const nextValueStart = MonthAndYear.fromDate(value[0]);
-        const nextValueEnd = MonthAndYear.fromDate(value[1]);
-
-        if (nextValueStart == null && nextValueEnd != null) {
-            // Only end date selected.
-            // If the newly selected end date isn't in either of the displayed months, then
-            //   - set the right DayPicker to the month of the selected end date
-            //   - ensure the left DayPicker is before the right, changing if needed
-            if (!nextValueEnd.isSame(newDisplayMonth.getNextMonth())) {
-                newDisplayMonth = nextValueEnd.getPreviousMonth();
-            }
-        } else if (nextValueStart != null && nextValueEnd == null) {
-            // Only start date selected.
-            // If the newly selected start date isn't in either of the displayed months, then
-            //   - set the left DayPicker to the month of the selected start date
-            //   - ensure the right DayPicker is before the left, changing if needed
-            if (!nextValueStart.isSame(newDisplayMonth)) {
-                newDisplayMonth = nextValueStart;
-            }
-        } else if (nextValueStart != null && nextValueEnd != null) {
-            if (nextValueStart.isSame(nextValueEnd)) {
-                // Both start and end date months are identical
-                if (
-                    newDisplayMonth.isSame(nextValueStart) ||
-                    (!singleMonthOnly && newDisplayMonth.getNextMonth().isSame(nextValueEnd))
-                ) {
-                    // do nothing
-                } else {
-                    newDisplayMonth = nextValueStart;
-                }
-            } else {
-                // Different start and end date months, adjust display months.
-                newDisplayMonth = nextValueStart;
-            }
-        }
-
-        setDisplayMonth(newDisplayMonth);
-    }, [setDisplayMonth, value]);
-
-    const handleMonthChange = React.useCallback<MonthChangeEventHandler>(
-        month => {
-            setDisplayMonth(MonthAndYear.fromDate(month));
-            dayPickerProps?.onMonthChange?.(month);
-        },
-        [dayPickerProps?.onMonthChange, setDisplayMonth],
+    const { displayMonth, handleMonthChange } = useContiguousCalendarViews(
+        initialMonthAndYear,
+        singleMonthOnly,
+        value,
+        dayPickerProps?.onMonthChange,
     );
 
     const handleRangeSelect = React.useCallback<SelectRangeEventHandler>(
@@ -109,9 +61,6 @@ export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
             dayPickerProps?.onSelect?.(range, selectedDay, activeModifiers, e);
 
             if (modifiers.disabled) {
-                // TODO(@adidahiya): see if this forceUpdate is still necessary?
-                // rerender base component to get around bug where you can navigate past bounds by clicking days
-                // this.forceUpdate();
                 return;
             }
 
@@ -173,3 +122,78 @@ export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
         />
     );
 };
+ContiguousDayRangePicker.displayName = `${DISPLAYNAME_PREFIX}.ContiguousDayRangePicker`;
+
+interface ContiguousCalendarViews {
+    displayMonth: MonthAndYear;
+    handleMonthChange: MonthChangeEventHandler;
+}
+
+function useContiguousCalendarViews(
+    initialMonthAndYear: MonthAndYear,
+    singleMonthOnly: boolean,
+    selectedRange: DateRange,
+    userOnMonthChange: MonthChangeEventHandler | undefined,
+): ContiguousCalendarViews {
+    const [displayMonth, setDisplayMonth] = React.useState(initialMonthAndYear);
+
+    // use an effect to react to external value updates (such as shortcut item selections)
+    React.useEffect(() => {
+        if (selectedRange == null) {
+            return;
+        }
+
+        let newDisplayMonth = displayMonth.clone();
+
+        const nextValueStart = MonthAndYear.fromDate(selectedRange[0]);
+        const nextValueEnd = MonthAndYear.fromDate(selectedRange[1]);
+
+        if (nextValueStart == null && nextValueEnd != null) {
+            // Only end date selected.
+            // If the newly selected end date isn't in either of the displayed months, then
+            //   - set the right DayPicker to the month of the selected end date
+            //   - ensure the left DayPicker is before the right, changing if needed
+            if (!nextValueEnd.isSame(newDisplayMonth.getNextMonth())) {
+                newDisplayMonth = nextValueEnd.getPreviousMonth();
+            }
+        } else if (nextValueStart != null && nextValueEnd == null) {
+            // Only start date selected.
+            // If the newly selected start date isn't in either of the displayed months, then
+            //   - set the left DayPicker to the month of the selected start date
+            //   - ensure the right DayPicker is before the left, changing if needed
+            if (!nextValueStart.isSame(newDisplayMonth)) {
+                newDisplayMonth = nextValueStart;
+            }
+        } else if (nextValueStart != null && nextValueEnd != null) {
+            if (nextValueStart.isSame(nextValueEnd)) {
+                // Both start and end date months are identical
+                if (
+                    newDisplayMonth.isSame(nextValueStart) ||
+                    (!singleMonthOnly && newDisplayMonth.getNextMonth().isSame(nextValueEnd))
+                ) {
+                    // do nothing
+                } else {
+                    newDisplayMonth = nextValueStart;
+                }
+            } else {
+                // Different start and end date months, adjust display months.
+                newDisplayMonth = nextValueStart;
+            }
+        }
+
+        setDisplayMonth(newDisplayMonth);
+    }, [setDisplayMonth, selectedRange]);
+
+    const handleMonthChange = React.useCallback<MonthChangeEventHandler>(
+        month => {
+            setDisplayMonth(MonthAndYear.fromDate(month));
+            userOnMonthChange?.(month);
+        },
+        [userOnMonthChange, setDisplayMonth],
+    );
+
+    return {
+        displayMonth,
+        handleMonthChange,
+    };
+}
