@@ -24,7 +24,7 @@
   }
 
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
-  &.#{$ns}-daterangepicker-contiguous .rdp {
+  & .rdp {
     min-width: $datepicker-min-width + $pt-grid-size;
   }
 
@@ -137,6 +137,11 @@
 
   &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
     border: 1px solid $pt-divider-black;
+  }
+
+  &.#{$ns}-daterangepicker-reverse-month-and-year.#{$ns}-daterangepicker-contiguous .rdp-caption_dropdowns {
+    // only apply this for contiguous pickers where we delegate to rdp to render the dropdowns
+    flex-direction: row-reverse;
   }
 }
 

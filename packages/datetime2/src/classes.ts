@@ -36,6 +36,7 @@ const DatePicker3Classes = {
 };
 
 const DateRangePicker3Classes = {
+    DATERANGEPICKER_REVERSE_MONTH_AND_YEAR: `${DatetimeClasses.DATERANGEPICKER}-reverse-month-and-year`,
     DATERANGEPICKER3_DAY_HOVERED_RANGE: `${RDP_DAY}_hovered`,
     DATERANGEPICKER3_DAY_HOVERED_RANGE_END: `${RDP_DAY}_hovered_end`,
     DATERANGEPICKER3_DAY_HOVERED_RANGE_START: `${RDP_DAY}_hovered_start`,

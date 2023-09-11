@@ -123,6 +123,7 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
             [Classes.DATEPICKER_HIGHLIGHT_CURRENT_DAY]: this.props.highlightCurrentDay,
             [Classes.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,
             [Classes.DATERANGEPICKER_SINGLE_MONTH]: isShowingOneMonth,
+            [Classes.DATERANGEPICKER_REVERSE_MONTH_AND_YEAR]: this.props.reverseMonthAndYearMenus,
         });
 
         // use the left DayPicker when we only need one
