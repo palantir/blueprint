@@ -15,35 +15,26 @@
  */
 
 import classNames from "classnames";
-import { format } from "date-fns";
 import * as React from "react";
-import {
-    DateFormatter,
-    DayModifiers,
-    DayMouseEventHandler,
-    DayPicker,
-    ModifiersClassNames,
-    SelectRangeEventHandler,
-} from "react-day-picker";
+import { DayModifiers, DayMouseEventHandler, ModifiersClassNames, SelectRangeEventHandler } from "react-day-picker";
 
 import { AbstractPureComponent, Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 import { DatePickerUtils, DateRange, DateRangeShortcut, DateUtils, TimePicker } from "@blueprintjs/datetime";
 // tslint:disable no-submodule-imports
 import { DateRangeSelectionStrategy } from "@blueprintjs/datetime/lib/esm/common/dateRangeSelectionStrategy";
 import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
+import { MonthAndYear } from "@blueprintjs/datetime/lib/esm/common/monthAndYear";
 import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/shortcuts";
 // tslint:enable no-submodule-imports
 
 import { Classes } from "../../classes";
 import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
-import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
-import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
+import { HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { DatePicker3Provider } from "../date-picker3/datePicker3Context";
-import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
-import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 import { DateRangePicker3Props } from "./dateRangePicker3Props";
 import { DateRangePicker3State } from "./dateRangePicker3State";
 import { NonContiguousDateRangePicker } from "./nonContiguousDateRangePicker";
+import { ContiguousDateRangePicker } from "./contiguousDateRangePicker";
 
 export { DateRangePicker3Props };
 
@@ -318,46 +309,30 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
      * Render a standard day range picker where props.contiguousCalendarMonths is expected to be `true`.
      */
     private renderDayRangePicker(singleMonthOnly: boolean) {
-        const { dayPickerProps, maxDate, minDate } = this.props;
-
+        const { value, ...props } = this.props;
         return (
-            <DayPicker
-                modifiers={combineModifiers(this.modifiers, dayPickerProps?.modifiers)}
-                modifiersClassNames={{ ...dayPickerProps?.modifiersClassNames, ...this.modifiersClassNames }}
-                showOutsideDays={true}
-                {...dayPickerProps}
-                captionLayout="dropdown-buttons"
-                components={{
-                    Dropdown: DatePicker3Dropdown,
-                    IconLeft,
-                    IconRight,
-                    ...dayPickerProps?.components,
+            <ContiguousDateRangePicker
+                {...props}
+                contiguousCalendarMonths={true}
+                dayPickerEventHandlers={{
+                    onDayMouseEnter: this.handleDayMouseEnter,
+                    onDayMouseLeave: this.handleDayMouseLeave,
+                    onSelect: this.handleRangeSelect,
                 }}
-                formatters={{
-                    formatWeekdayName: this.renderWeekdayName,
-                    ...dayPickerProps?.formatters,
+                dayPickerProps={{
+                    ...props.dayPickerProps,
+                    numberOfMonths: singleMonthOnly ? 1 : 2,
                 }}
-                fromDate={minDate}
+                initialMonth={MonthAndYear.fromDate(this.initialMonth)}
                 locale={this.state.locale}
-                mode="range"
-                numberOfMonths={singleMonthOnly ? 1 : 2}
-                onDayMouseEnter={this.handleDayMouseEnter}
-                onDayMouseLeave={this.handleDayMouseLeave}
-                onSelect={this.handleRangeSelect}
-                selected={dateRangeToDayPickerRange(this.state.value)}
-                toDate={maxDate}
+                modifiers={this.modifiers}
+                modifiersClassNames={this.modifiersClassNames}
+                value={this.state.value}
             />
         );
     }
 
-    /**
-     * Custom formatter to render weekday names in the calendar header. The default formatter generally works fine,
-     * but it was returning CAPITALIZED strings for some reason, while we prefer Title Case.
-     */
-    private renderWeekdayName: DateFormatter = date => {
-        return format(date, "EEEEEE", { locale: this.state.locale });
-    };
-
+    // TODO(@adidahiya): consider moving this to contiguousDateRangePicker.tsx
     private handleRangeSelect: SelectRangeEventHandler = (range, selectedDay, modifiers, e) => {
         this.props.dayPickerProps?.onSelect?.(range, selectedDay, modifiers, e);
 
@@ -394,7 +369,7 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
                     onDayMouseEnter: this.handleDayMouseEnter,
                     onDayMouseLeave: this.handleDayMouseLeave,
                 }}
-                initialMonth={this.initialMonth}
+                initialMonth={MonthAndYear.fromDate(this.initialMonth)}
                 locale={this.state.locale}
                 modifiers={this.modifiers}
                 onSelect={this.handleNextState}

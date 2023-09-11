@@ -37,10 +37,10 @@ import { DateRangePicker3Props } from "./dateRangePicker3Props";
 import { DateRangePicker3State } from "./dateRangePicker3State";
 
 export interface NonContiguousDateRangePickerProps
-    extends Omit<DateRangePicker3Props, "locale" | "value">,
+    extends Omit<DateRangePicker3Props, "initialMonth" | "locale" | "value">,
         Pick<DateRangePicker3State, "locale" | "value"> {
     /** Initial month computed in DateRangePicker3 constructor. */
-    initialMonth: Date;
+    initialMonth: MonthAndYear;
 
     /** DateRangePicker3's custom modifiers */
     modifiers: DayModifiers;
@@ -161,14 +161,14 @@ interface NonContiguousCalendarViews {
 }
 
 function useNonContiguousCalendarViews(
-    initialMonth: Date,
+    initialMonth: MonthAndYear,
     value: DateRange,
     userOnMonthChange: MonthChangeEventHandler | undefined,
 ): NonContiguousCalendarViews {
     // show the selected end date's encompassing month in the right view if
     // the calendars don't have to be contiguous.
     // if left view and right view months are the same, show next month in the right view.
-    const [leftView, setLeftView] = React.useState<MonthAndYear>(MonthAndYear.fromDate(initialMonth));
+    const [leftView, setLeftView] = React.useState<MonthAndYear>(initialMonth);
     const [rightView, setRightView] = React.useState<MonthAndYear>(getInitialRightView(value[1], leftView));
 
     React.useEffect(() => {
@@ -182,11 +182,11 @@ function useNonContiguousCalendarViews(
         const nextValueStartView = MonthAndYear.fromDate(value[0]);
         const nextValueEndView = MonthAndYear.fromDate(value[1]);
 
-        // Only end date selected.
-        // If the newly selected end date isn't in either of the displayed months, then
-        //   - set the right DayPicker to the month of the selected end date
-        //   - ensure the left DayPicker is before the right, changing if needed
         if (nextValueStartView == null && nextValueEndView != null) {
+            // Only end date selected.
+            // If the newly selected end date isn't in either of the displayed months, then
+            //   - set the right DayPicker to the month of the selected end date
+            //   - ensure the left DayPicker is before the right, changing if needed
             if (!nextValueEndView.isSame(newLeftView) && !nextValueEndView.isSame(newRightView)) {
                 newRightView = nextValueEndView;
                 if (!newLeftView.isBefore(newRightView)) {
