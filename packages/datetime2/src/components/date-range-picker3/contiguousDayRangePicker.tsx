@@ -79,19 +79,17 @@ export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
         } else if (nextValueStart != null && nextValueEnd != null) {
             if (nextValueStart.isSame(nextValueEnd)) {
                 // Both start and end date months are identical
-                // If the selected month isn't in either of the displayed months, then
-                //   - set the left DayPicker to be the selected month
-                //   - set the right DayPicker to +1
-                if (newDisplayMonth.isSame(nextValueStart) || newDisplayMonth.getNextMonth().isSame(nextValueStart)) {
+                if (
+                    newDisplayMonth.isSame(nextValueStart) ||
+                    (!singleMonthOnly && newDisplayMonth.getNextMonth().isSame(nextValueEnd))
+                ) {
                     // do nothing
                 } else {
                     newDisplayMonth = nextValueStart;
                 }
             } else {
                 // Different start and end date months, adjust display months.
-                if (!newDisplayMonth.isSame(nextValueStart)) {
-                    // do nothing
-                }
+                newDisplayMonth = nextValueStart;
             }
         }
 
