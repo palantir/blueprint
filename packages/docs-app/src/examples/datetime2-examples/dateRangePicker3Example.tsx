@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import moment from "moment";
+import { add } from "date-fns";
 import * as React from "react";
 
 import { Classes, FormGroup, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
@@ -49,19 +49,21 @@ interface DateOption {
     value?: Date;
 }
 
+const today = new Date();
+
 const MIN_DATE_OPTIONS: DateOption[] = [
     { label: "None", value: undefined },
     {
         label: "1 week ago",
-        value: moment().add(-1, "weeks").toDate(),
+        value: add(today, { weeks: -1 }),
     },
     {
         label: "4 months ago",
-        value: moment().add(-4, "months").toDate(),
+        value: add(today, { months: -4 }),
     },
     {
         label: "1 year ago",
-        value: moment().add(-1, "years").toDate(),
+        value: add(today, { years: -1 }),
     },
 ];
 
@@ -69,19 +71,19 @@ const MAX_DATE_OPTIONS: DateOption[] = [
     { label: "None", value: undefined },
     {
         label: "Today",
-        value: moment().toDate(),
+        value: today,
     },
     {
         label: "1 week from now",
-        value: moment().add(1, "weeks").toDate(),
+        value: add(today, { weeks: 1 }),
     },
     {
         label: "4 months from now",
-        value: moment().add(4, "months").toDate(),
+        value: add(today, { months: 4 }),
     },
     {
         label: "1 year from now",
-        value: moment().add(1, "years").toDate(),
+        value: add(today, { years: 1 }),
     },
 ];
 
