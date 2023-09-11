@@ -59,18 +59,28 @@ function getInitialRightView(selectedRangeEnd: Date | null, leftView: MonthAndYe
 /**
  * Date range picker with two calendars which can move independently of each other.
  */
-export const NonContiguousDateRangePicker: React.FC<NonContiguousDateRangePickerProps> = props => {
-    const { locale, maxDate, minDate, modifiers, initialMonth, value } = props;
-
+export const NonContiguousDateRangePicker: React.FC<NonContiguousDateRangePickerProps> = ({
+    allowSingleDayRange,
+    boundaryToModify,
+    dayPickerProps,
+    locale,
+    maxDate,
+    minDate,
+    modifiers,
+    initialMonth,
+    value,
+    onSelect,
+    dayPickerEventHandlers,
+}) => {
     const { leftView, rightView, handleLeftMonthChange, handleRightMonthChange } = useNonContiguousCalendarViews(
         initialMonth,
         value,
-        props.dayPickerProps?.onMonthChange,
+        dayPickerProps?.onMonthChange,
     );
 
     const handleDaySelect = React.useCallback<SelectRangeEventHandler>(
         (range, selectedDay, activeModifiers, e) => {
-            props.dayPickerProps?.onSelect?.(range, selectedDay, activeModifiers, e);
+            dayPickerProps?.onSelect?.(range, selectedDay, activeModifiers, e);
 
             if (activeModifiers.disabled) {
                 // TODO(@adidahiya): see if this forceUpdate is still necessary?
@@ -82,26 +92,33 @@ export const NonContiguousDateRangePicker: React.FC<NonContiguousDateRangePicker
             const nextValue = DateRangeSelectionStrategy.getNextState(
                 value,
                 selectedDay,
-                props.allowSingleDayRange!,
-                props.boundaryToModify,
+                allowSingleDayRange!,
+                boundaryToModify,
             ).dateRange;
-            props.onSelect(nextValue);
+            onSelect(nextValue);
 
             // update the hovered date range after click to show the newly selected
             // state, at leasts until the mouse moves again
-            props.dayPickerEventHandlers.onDayMouseEnter(selectedDay, activeModifiers, e);
+            dayPickerEventHandlers.onDayMouseEnter(selectedDay, activeModifiers, e);
         },
-        [value, props.dayPickerProps?.onSelect, props.allowSingleDayRange, props.boundaryToModify],
+        [
+            allowSingleDayRange,
+            boundaryToModify,
+            dayPickerEventHandlers.onDayMouseEnter,
+            dayPickerProps?.onSelect,
+            onSelect,
+            value,
+        ],
     );
 
     // props applied to both the left and right calendars
     const commonDayPickerProps: DayPickerRangeProps = {
         locale,
         mode: "range",
-        modifiers: combineModifiers(modifiers, props.dayPickerProps?.modifiers),
+        modifiers: combineModifiers(modifiers, dayPickerProps?.modifiers),
         showOutsideDays: true,
-        ...props.dayPickerProps,
-        ...props.dayPickerEventHandlers,
+        ...dayPickerProps,
+        ...dayPickerEventHandlers,
         onSelect: handleDaySelect,
         selected: dateRangeToDayPickerRange(value),
     };
