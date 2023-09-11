@@ -63,7 +63,7 @@ jobs:
 
   compile:
     docker: *docker-node-image
-    resource_class: large
+    resource_class: xlarge
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
@@ -107,7 +107,7 @@ jobs:
 
   dist:
     docker: *docker-node-image
-    resource_class: large
+    resource_class: xlarge
     environment:
       NODE_ENV: test
     steps:
@@ -143,6 +143,7 @@ jobs:
 
   test-react-16: &test-react
     docker: *docker-node-browsers-image
+    resource_class: xlarge
     environment:
       JUNIT_REPORT_PATH: reports
     parallelism: 6
