@@ -18,9 +18,6 @@ import type { Locale } from "date-fns";
 
 import type { DateRange } from "@blueprintjs/datetime";
 
-/**
- * leftView and rightView controls the DayPicker displayed month
- */
 export interface DateRangePicker3State {
     hoverValue?: DateRange;
     locale: Locale | undefined;
