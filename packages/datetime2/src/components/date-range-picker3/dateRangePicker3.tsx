@@ -357,12 +357,16 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     }
 
     private get resolvedDayPickerProps(): DateRangePicker3Props["dayPickerProps"] {
+        const { dayPickerProps = {} } = this.props;
+        const { min = 0 } = dayPickerProps;
         return {
-            ...this.props.dayPickerProps,
+            ...dayPickerProps,
             formatters: {
                 formatWeekdayName: this.formatWeekdayName,
                 ...this.props.dayPickerProps?.formatters,
             },
+            // if a single day range is not allowed, make sure the minimum # of selected days is at least 2
+            min: Math.max(this.props.allowSingleDayRange ? 0 : 2, min),
             modifiers: combineModifiers(this.modifiers, this.props.dayPickerProps?.modifiers),
             modifiersClassNames: {
                 ...this.modifiersClassNames,

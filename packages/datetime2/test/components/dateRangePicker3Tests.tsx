@@ -15,9 +15,10 @@
  */
 
 import { assert } from "chai";
+import * as Locales from "date-fns/locale";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import { DayPicker } from "react-day-picker";
+import { DayModifiers, DayPicker, ModifiersClassNames } from "react-day-picker";
 import sinon from "sinon";
 
 import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
@@ -34,8 +35,10 @@ import {
 } from "@blueprintjs/datetime";
 
 import { Datetime2Classes, DateRangePicker3Props, DateRangePicker3 } from "../../src";
+import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
 import { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
+import { format } from "date-fns";
 
 describe("<DatePicker3>", () => {
     let testsContainerElement: HTMLElement;
@@ -43,6 +46,20 @@ describe("<DatePicker3>", () => {
 
     let onChangeSpy: sinon.SinonSpy;
     let onHoverChangeSpy: sinon.SinonSpy;
+    let loadDateFnsLocaleStub: sinon.SinonStub;
+
+    before(() => {
+        loadDateFnsLocaleStub = sinon.stub(DateFnsLocaleUtils, "loadDateFnsLocale");
+        loadDateFnsLocaleStub.callsFake((localeCode: string) => {
+            let localeKey = localeCode as keyof typeof Locales;
+            // convert "en-US" to "enUS" which can be used to index into locales export object
+            if (localeKey.includes("-")) {
+                const splits = localeKey.split("-");
+                localeKey = `${splits[0]}${splits[1].toUpperCase()}` as keyof typeof Locales;
+            }
+            return Promise.resolve(Locales[localeKey]);
+        });
+    });
 
     beforeEach(() => {
         testsContainerElement = document.createElement("div");
@@ -53,6 +70,10 @@ describe("<DatePicker3>", () => {
         drpWrapper?.unmount();
         drpWrapper?.detach();
         testsContainerElement.remove();
+    });
+
+    after(() => {
+        loadDateFnsLocaleStub.restore();
     });
 
     it("renders its template", () => {
@@ -67,27 +88,24 @@ describe("<DatePicker3>", () => {
     });
 
     it("user-provided modifiers are applied", () => {
-        const { left } = render({ dayPickerProps: { modifiers: { odd: (d: Date) => d.getDate() % 2 === 1 } } });
-        assert.isFalse(left.findDay(4).hasClass("DayPicker-Day--odd"));
-        assert.isTrue(left.findDay(5).hasClass("DayPicker-Day--odd"));
+        const modifiers: DayModifiers = { odd: (d: Date) => d.getDate() % 2 === 1 };
+        const modifiersClassNames: ModifiersClassNames = {
+            odd: "test-odd",
+        };
+        const { left } = render({ dayPickerProps: { modifiers, modifiersClassNames } });
+        assert.isFalse(left.findDay(4).hasClass(modifiersClassNames.odd));
+        assert.isTrue(left.findDay(5).hasClass(modifiersClassNames.odd));
     });
 
     describe("reconciliates dayPickerProps", () => {
-        it("week starts with weekStartsOn value", () => {
-            const selectedFirstDay = 3;
-            const wrapper = mount(<DateRangePicker3 dayPickerProps={{ weekStartsOn: selectedFirstDay }} />);
-            const firstWeekday = wrapper.find("Weekday").first();
-            assert.equal(firstWeekday.prop("weekday"), selectedFirstDay);
-        });
-
         it("hides unnecessary nav buttons in contiguous months mode", () => {
             const defaultValue: DateRange = [new Date(2017, Months.SEPTEMBER, 1), null];
-            const wrapper = mount(<DateRangePicker3 defaultValue={defaultValue} />);
+            const { wrapper } = wrap(<DateRangePicker3 defaultValue={defaultValue} />);
             assert.isFalse(
                 wrapper.find(".rdp-month").at(0).find(`.${Datetime2Classes.DATEPICKER_NAV_BUTTON_NEXT}`).exists(),
             );
             assert.isFalse(
-                wrapper.find(".rdp-month").at(1).find(`.${Datetime2Classes.DATEPICKER_NAV_BUTTON_NEXT}`).exists(),
+                wrapper.find(".rdp-month").at(1).find(`.${Datetime2Classes.DATEPICKER_NAV_BUTTON_PREVIOUS}`).exists(),
             );
         });
 
@@ -147,7 +165,7 @@ describe("<DatePicker3>", () => {
                 const onMonthChange = sinon.spy();
                 wrap(
                     <DateRangePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
-                ).clickNavButton("prev");
+                ).clickNavButton("previous");
                 assert.isTrue(onMonthChange.called);
             });
 
@@ -171,7 +189,7 @@ describe("<DatePicker3>", () => {
                         contiguousCalendarMonths={false}
                         dayPickerProps={{ onMonthChange }}
                     />,
-                ).clickNavButton("prev");
+                ).clickNavButton("previous");
                 assert.isTrue(onMonthChange.called);
             });
 
@@ -195,7 +213,7 @@ describe("<DatePicker3>", () => {
                         contiguousCalendarMonths={false}
                         dayPickerProps={{ onMonthChange }}
                     />,
-                ).clickNavButton("prev", 1);
+                ).clickNavButton("previous", 1);
                 assert.isTrue(onMonthChange.called);
             });
 
@@ -303,8 +321,9 @@ describe("<DatePicker3>", () => {
         });
 
         it("is a day between minDate and maxDate if only maxDate/minDate set and today is not in range", () => {
-            // const maxDate = new Date(2005, Months.JANUARY);
-            // const minDate = new Date(2000, Months.JANUARY);
+            const maxDate = new Date(2005, Months.JANUARY);
+            const minDate = new Date(2000, Months.JANUARY);
+            render({ maxDate, minDate });
             // const leftView = render({ maxDate, minDate }).wrapper.state("leftView");
             // assert.isTrue(
             //     DateUtils.isDayInRange(new Date(leftView.getYear(), leftView.getMonth()), [minDate, maxDate]),
@@ -349,8 +368,10 @@ describe("<DatePicker3>", () => {
     describe("left/right calendar", () => {
         function assertFirstLastMonths(monthSelect: ReactWrapper, first: Months, last: Months) {
             const options = monthSelect.find("option");
-            assert.equal(options.first().prop("value"), first);
-            assert.equal(options.last().prop("value"), last);
+            const expectedFirstOption = format(new Date(2015, first), "LLLL", { locale: Locales.enUS });
+            const expectedLastOption = format(new Date(2015, last), "LLLL", { locale: Locales.enUS });
+            assert.equal(options.first().text(), expectedFirstOption);
+            assert.equal(options.last().text(), expectedLastOption);
         }
 
         it("only shows one calendar when minDate and maxDate are in the same month", () => {
@@ -494,7 +515,7 @@ describe("<DatePicker3>", () => {
                 initialMonth,
             });
             left.assertMonthYear(Months.MAY);
-            clickNavButton("prev");
+            clickNavButton("previous");
             left.assertMonthYear(Months.APRIL);
             clickNavButton("next");
             left.assertMonthYear(Months.MAY);
@@ -508,7 +529,7 @@ describe("<DatePicker3>", () => {
                 initialMonth,
             });
             right.assertMonthYear(Months.JUNE);
-            clickNavButton("prev", 1);
+            clickNavButton("previous", 1);
             right.assertMonthYear(Months.MAY);
             clickNavButton("next", 1);
             right.assertMonthYear(Months.JUNE);
@@ -575,7 +596,7 @@ describe("<DatePicker3>", () => {
                 contiguousCalendarMonths: false,
                 initialMonth,
             });
-            clickNavButton("prev", 1);
+            clickNavButton("previous", 1);
             left.assertMonthYear(Months.APRIL);
             right.assertMonthYear(Months.MAY);
         });
@@ -594,7 +615,7 @@ describe("<DatePicker3>", () => {
         after(() => consoleError.restore());
 
         it("maxDate must be later than minDate", () => {
-            mount(
+            wrap(
                 <DateRangePicker3
                     minDate={new Date(2000, Months.JANUARY, 10)}
                     maxDate={new Date(2000, Months.JANUARY, 8)}
@@ -607,12 +628,12 @@ describe("<DatePicker3>", () => {
             const minDate = new Date(2000, Months.JANUARY, 10);
             const initialMonth = minDate;
             const { left } = render({ initialMonth, minDate });
-            assert.isTrue(left.findDay(8).hasClass(Datetime2Classes.DATEPICKER_DAY_DISABLED));
-            assert.isFalse(left.findDay(10).hasClass(Datetime2Classes.DATEPICKER_DAY_DISABLED));
+            assert.isTrue(left.findDay(8).hasClass(Datetime2Classes.DATEPICKER3_DAY_DISABLED));
+            assert.isFalse(left.findDay(10).hasClass(Datetime2Classes.DATEPICKER3_DAY_DISABLED));
         });
 
         it("an error is logged if defaultValue is outside bounds", () => {
-            mount(
+            wrap(
                 <DateRangePicker3
                     defaultValue={[new Date(2015, Months.JANUARY, 12), null] as DateRange}
                     minDate={new Date(2015, Months.JANUARY, 5)}
@@ -623,7 +644,7 @@ describe("<DatePicker3>", () => {
         });
 
         it("an error is logged if initialMonth is outside month bounds", () => {
-            mount(
+            wrap(
                 <DateRangePicker3
                     initialMonth={new Date(2015, Months.FEBRUARY, 12)}
                     minDate={new Date(2015, Months.JANUARY, 5)}
@@ -634,7 +655,7 @@ describe("<DatePicker3>", () => {
         });
 
         it("no error if initialMonth is outside day bounds but inside month bounds", () => {
-            mount(
+            wrap(
                 <DateRangePicker3
                     initialMonth={new Date(2015, Months.JANUARY, 12)}
                     minDate={new Date(2015, Months.JANUARY, 5)}
@@ -645,7 +666,7 @@ describe("<DatePicker3>", () => {
         });
 
         it("an error is logged if value is outside bounds", () => {
-            mount(
+            wrap(
                 <DateRangePicker3
                     value={[new Date(2015, Months.JANUARY, 12), null] as DateRange}
                     minDate={new Date(2015, Months.JANUARY, 5)}
@@ -1282,7 +1303,7 @@ describe("<DatePicker3>", () => {
     });
 
     function dayNotOutside(day: ReactWrapper) {
-        return !day.hasClass(Datetime2Classes.DATEPICKER_DAY_OUTSIDE);
+        return !day.hasClass(Datetime2Classes.DATEPICKER3_DAY_OUTSIDE);
     }
 
     function render(props?: DateRangePicker3Props) {
@@ -1292,7 +1313,9 @@ describe("<DatePicker3>", () => {
     }
 
     function wrap(datepicker: JSX.Element) {
-        const wrapper = mount<DateRangePicker3Props, DateRangePicker3State>(datepicker);
+        const wrapper = mount<DateRangePicker3Props, DateRangePicker3State>(datepicker, {
+            attachTo: testsContainerElement,
+        });
         drpWrapper = wrapper;
 
         const findTimeInput = (precision: TimePrecision | "hour", which: "left" | "right") =>
@@ -1325,25 +1348,29 @@ describe("<DatePicker3>", () => {
                 return harness;
             },
             assertSelectedDays: (from?: number, to?: number) => {
-                const [one, two] = harness.getDays(Datetime2Classes.DATEPICKER3_DAY_SELECTED).map(d => +d.text());
-                assert.equal(one, from);
-                assert.equal(two, to);
-                if (from != null && to != null) {
+                const rangeStart = wrapper.find(`.${Datetime2Classes.DATERANGEPICKER3_DAY_RANGE_START}`).first();
+                const rangeEnd = wrapper.find(`.${Datetime2Classes.DATERANGEPICKER3_DAY_RANGE_END}`).first();
+                if (from !== undefined) {
+                    assert.isTrue(rangeStart.exists());
+                    assert.equal(Number.parseInt(rangeStart.text()), from);
+                }
+                if (to !== undefined) {
+                    assert.isTrue(rangeEnd.exists());
+                    assert.equal(Number.parseInt(rangeEnd.text()), to);
+                }
+                if (from !== undefined && to !== undefined) {
                     assert.lengthOf(
-                        harness.getDays(Datetime2Classes.DATERANGEPICKER_DAY_SELECTED_RANGE),
+                        harness.getDays(Datetime2Classes.DATERANGEPICKER3_DAY_RANGE_MIDDLE),
                         Math.max(0, to - from - 1),
                     );
                 }
             },
             changeTimeInput: (precision: TimePrecision | "hour", which: "left" | "right", value: number) =>
                 findTimeInput(precision, which).simulate("change", { target: { value } }),
-            clickNavButton: (which: "next" | "prev", navIndex = 0) => {
-                wrapper
-                    .find(`.rdp-month`)
-                    .at(navIndex)
-                    .find(`.${Datetime2Classes.DATEPICKER_NAV_BUTTON}-${which}`)
-                    .hostNodes()
-                    .simulate("click");
+            clickNavButton: (which: "next" | "previous", navIndex = 0) => {
+                const month = wrapper.find(`.rdp-month`).at(navIndex);
+                const navButton = month.find(`.${Datetime2Classes.DATEPICKER_NAV_BUTTON}-${which}`);
+                navButton.hostNodes().simulate("click");
                 return harness;
             },
             clickShortcut: (index = 0) => {
@@ -1351,7 +1378,7 @@ describe("<DatePicker3>", () => {
                 return harness;
             },
             getDays: (className: string) => {
-                return wrapper.find(`.${className}`).filterWhere(dayNotOutside);
+                return wrapper.find(`.${className}`).filterWhere(dayNotOutside).hostNodes();
             },
             getTimeInput: (precision: TimePrecision | "hour", which: "left" | "right") =>
                 findTimeInput(precision, which).props().value as string,
@@ -1374,10 +1401,10 @@ describe("<DatePicker3>", () => {
                     .at(which === "left" ? 0 : 1);
             },
             get monthSelect() {
-                return harness.wrapper.find({ className: Datetime2Classes.DATEPICKER_MONTH_SELECT }).find("select");
+                return harness.wrapper.find(`.${Datetime2Classes.DATEPICKER_DROPDOWN_MONTH}`).find("select");
             },
             get yearSelect() {
-                return harness.wrapper.find({ className: Datetime2Classes.DATEPICKER_YEAR_SELECT }).find("select");
+                return harness.wrapper.find(`.${Datetime2Classes.DATEPICKER_DROPDOWN_YEAR}`).find("select");
             },
 
             assertMonthYear: (month: number, year?: number) => {

@@ -16,8 +16,14 @@
 
 import { Classes as DatetimeClasses } from "@blueprintjs/datetime";
 
-const RDP_DAY = "rdp-day";
+const RDP = "rdp";
+const RDP_DAY = `${RDP}-day`;
 const DATEPICKER_NAV_BUTTON = `${DatetimeClasses.DATEPICKER}-nav-button`;
+
+const ReactDayPickerClasses = {
+    RDP,
+    RDP_DAY,
+};
 
 const DatePicker3Classes = {
     // these classes need the "3" suffix because they overlap with DatePicker v1 / react-day-picker v7 classes
@@ -28,6 +34,8 @@ const DatePicker3Classes = {
     DATEPICKER3_DAY_SELECTED: `${RDP_DAY}_selected`,
     // these classes intentionally left without "3" suffix because they do not overlap with DatePicker v1, and this way we don't need to migrate them later, which reduces code churn
     DATEPICKER_DROPDOWN_CONTAINER: `${DatetimeClasses.DATEPICKER}-dropdown-container`,
+    DATEPICKER_DROPDOWN_MONTH: `${RDP}-dropdown_month`,
+    DATEPICKER_DROPDOWN_YEAR: `${RDP}-dropdown_year`,
     DATEPICKER_HIGHLIGHT_CURRENT_DAY: `${DatetimeClasses.DATEPICKER}-highlight-current-day`,
     DATEPICKER_NAV_BUTTON,
     DATEPICKER_NAV_BUTTON_HIDDEN: `${DATEPICKER_NAV_BUTTON}-hidden`,
@@ -39,6 +47,9 @@ const DateRangePicker3Classes = {
     DATERANGEPICKER3_DAY_HOVERED_RANGE: `${RDP_DAY}_hovered`,
     DATERANGEPICKER3_DAY_HOVERED_RANGE_END: `${RDP_DAY}_hovered_end`,
     DATERANGEPICKER3_DAY_HOVERED_RANGE_START: `${RDP_DAY}_hovered_start`,
+    DATERANGEPICKER3_DAY_RANGE_START: `${RDP_DAY}_range_start`,
+    DATERANGEPICKER3_DAY_RANGE_MIDDLE: `${RDP_DAY}_range_middle`,
+    DATERANGEPICKER3_DAY_RANGE_END: `${RDP_DAY}_range_end`,
     DATERANGEPICKER_REVERSE_MONTH_AND_YEAR: `${DatetimeClasses.DATERANGEPICKER}-reverse-month-and-year`,
 };
 
@@ -46,4 +57,5 @@ export const Classes = {
     ...DatetimeClasses,
     ...DatePicker3Classes,
     ...DateRangePicker3Classes,
+    ...ReactDayPickerClasses,
 };

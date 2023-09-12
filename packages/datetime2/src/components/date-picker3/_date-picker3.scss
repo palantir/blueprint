@@ -84,6 +84,14 @@
       }
     }
 
+    &.rdp-day_disabled {
+      background: none;
+      color: $pt-text-color-disabled;
+      cursor: not-allowed;
+    }
+
+    // selected styles should override disabled styles (this can happen when single day ranges are not allowed,
+    // rdp applies "disabled" to the first selection in the range)
     &.rdp-day_selected {
       background-color: $blue3;
       border-radius: $pt-border-radius;
@@ -91,18 +99,12 @@
 
       &:hover {
         background-color: $blue2;
+        color: $white;
       }
 
       &:active {
         background-color: $blue1;
       }
-    }
-
-    // putting it last so it overrides equally specific selectors above.
-    &.rdp-day_disabled {
-      background: none;
-      color: $pt-text-color-disabled;
-      cursor: not-allowed;
     }
   }
 
