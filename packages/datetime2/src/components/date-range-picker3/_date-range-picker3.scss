@@ -24,7 +24,7 @@
   }
 
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
-  & .rdp {
+  &.#{$ns}-daterangepicker-contiguous .rdp {
     min-width: $datepicker-min-width + $pt-grid-size;
   }
 
@@ -72,7 +72,6 @@
       top: initial;
       transform: none;
     }
-
   }
 
   // need some extra specificity to override react-day-picker styles
@@ -139,10 +138,12 @@
     border: 1px solid $pt-divider-black;
   }
 
+  /* stylelint-disable max-line-length */
   &.#{$ns}-daterangepicker-reverse-month-and-year.#{$ns}-daterangepicker-contiguous .rdp-caption_dropdowns {
     // only apply this for contiguous pickers where we delegate to rdp to render the dropdowns
     flex-direction: row-reverse;
   }
+  /* stylelint-enable max-line-length */
 }
 
 .#{$ns}-dark .#{$ns}-daterangepicker {
