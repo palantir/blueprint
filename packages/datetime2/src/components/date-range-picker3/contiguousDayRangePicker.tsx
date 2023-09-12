@@ -18,13 +18,12 @@ import * as React from "react";
 import { DayPicker, MonthChangeEventHandler, SelectRangeEventHandler } from "react-day-picker";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
-import { DateRangeSelectionStrategy, MonthAndYear } from "@blueprintjs/datetime";
+import { DateRange, DateRangeSelectionStrategy, MonthAndYear } from "@blueprintjs/datetime";
 
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 import { DayRangePickerProps } from "./dayRangePickerProps";
-import { DateRange } from "@blueprintjs/datetime";
 
 /**
  * Render a standard day range picker where props.contiguousCalendarMonths is expected to be `true`.
@@ -65,7 +64,7 @@ export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
             );
             onRangeSelect(nextValue, selectedDay, boundary);
         },
-        [allowSingleDayRange, boundaryToModify, onRangeSelect, value],
+        [allowSingleDayRange, boundaryToModify, dayPickerProps, onRangeSelect, value],
     );
 
     return (
@@ -160,7 +159,7 @@ function useContiguousCalendarViews(
         }
 
         setDisplayMonth(newDisplayMonth);
-    }, [setDisplayMonth, selectedRange]);
+    }, [displayMonth, setDisplayMonth, selectedRange, singleMonthOnly]);
 
     const handleMonthChange = React.useCallback<MonthChangeEventHandler>(
         month => {

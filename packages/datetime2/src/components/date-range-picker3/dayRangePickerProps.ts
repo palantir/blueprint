@@ -16,11 +16,11 @@
 
 import type { DayPickerRangeProps } from "react-day-picker";
 
+import { Boundary } from "@blueprintjs/core";
 import type { DateRange, MonthAndYear } from "@blueprintjs/datetime";
 
 import type { DateRangePicker3Props } from "./dateRangePicker3Props";
 import type { DateRangePicker3State } from "./dateRangePicker3State";
-import { Boundary } from "@blueprintjs/core";
 
 /**
  * Props used to render an interactive single- or double-calendar day range picker.

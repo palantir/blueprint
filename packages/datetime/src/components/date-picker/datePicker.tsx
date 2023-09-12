@@ -22,7 +22,7 @@ import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, Props } fro
 
 import { Classes, DatePickerBaseProps, DateUtils } from "../../common";
 import * as Errors from "../../common/errors";
-import { DatePickerShortcut, DateRangeShortcut, DatePickerShortcutMenu } from "../shortcuts/shortcuts";
+import { DatePickerShortcut, DatePickerShortcutMenu, DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 import { DatePickerCaption } from "./datePickerCaption";
 import { getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";

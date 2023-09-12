@@ -15,6 +15,7 @@
  */
 
 import classNames from "classnames";
+import { format } from "date-fns";
 import * as React from "react";
 import { DateFormatter, DayModifiers, DayMouseEventHandler, ModifiersClassNames } from "react-day-picker";
 
@@ -33,13 +34,12 @@ import {
 
 import { Classes } from "../../classes";
 import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
-import { HOVERED_RANGE_MODIFIER, combineModifiers } from "../../common/dayPickerModifiers";
+import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { DatePicker3Provider } from "../date-picker3/datePicker3Context";
+import { ContiguousDayRangePicker } from "./contiguousDayRangePicker";
 import { DateRangePicker3Props } from "./dateRangePicker3Props";
 import { DateRangePicker3State } from "./dateRangePicker3State";
 import { NonContiguousDayRangePicker } from "./nonContiguousDayRangePicker";
-import { ContiguousDayRangePicker } from "./contiguousDayRangePicker";
-import { format } from "date-fns";
 
 export { DateRangePicker3Props };
 

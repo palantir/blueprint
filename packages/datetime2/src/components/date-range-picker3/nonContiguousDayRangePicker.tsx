@@ -62,7 +62,7 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
             );
             onRangeSelect(nextValue, selectedDay, boundary);
         },
-        [allowSingleDayRange, boundaryToModify, dayPickerProps?.onSelect, onRangeSelect, value],
+        [allowSingleDayRange, boundaryToModify, dayPickerProps, onRangeSelect, value],
     );
 
     // props applied to both the left and right calendars
@@ -106,10 +106,10 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
 NonContiguousDayRangePicker.displayName = `${DISPLAYNAME_PREFIX}.NonContiguousDayRangePicker`;
 
 interface NonContiguousCalendarViews {
-    leftView: MonthAndYear;
-    rightView: MonthAndYear;
     handleLeftMonthChange: MonthChangeEventHandler;
     handleRightMonthChange: MonthChangeEventHandler;
+    leftView: MonthAndYear;
+    rightView: MonthAndYear;
 }
 
 /**
@@ -189,7 +189,7 @@ function useNonContiguousCalendarViews(
 
         setLeftView(newLeftView);
         setRightView(newRightView);
-    }, [selectedRange]);
+    }, [leftView, rightView, selectedRange]);
 
     const updateLeftView = React.useCallback(
         (newLeftView: MonthAndYear) => {
@@ -234,10 +234,10 @@ function useNonContiguousCalendarViews(
     );
 
     return {
-        leftView,
-        rightView,
         handleLeftMonthChange,
         handleRightMonthChange,
+        leftView,
+        rightView,
     };
 }
 

@@ -33,8 +33,8 @@ import {
     DatePickerUtils,
     DateUtils,
     Errors,
-    TimezoneSelect,
     TimezoneNameUtils,
+    TimezoneSelect,
     TimezoneUtils,
 } from "@blueprintjs/datetime";
 

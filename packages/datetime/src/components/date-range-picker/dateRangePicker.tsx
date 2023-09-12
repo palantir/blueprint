@@ -33,7 +33,7 @@ import {
     SELECTED_RANGE_MODIFIER,
 } from "../date-picker/datePickerCore";
 import { DatePickerNavbar } from "../date-picker/datePickerNavbar";
-import { DateRangeShortcut, DatePickerShortcutMenu } from "../shortcuts/shortcuts";
+import { DatePickerShortcutMenu, DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 
 export interface DateRangePickerProps extends DatePickerBaseProps, Props {
