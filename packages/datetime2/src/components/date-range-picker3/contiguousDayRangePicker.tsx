@@ -64,7 +64,7 @@ export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
             );
             onRangeSelect(nextValue, selectedDay, boundary);
         },
-        [allowSingleDayRange, boundaryToModify, dayPickerProps, onRangeSelect, value],
+        [allowSingleDayRange, boundaryToModify, dayPickerProps?.onSelect, onRangeSelect, value],
     );
 
     return (
@@ -120,51 +120,53 @@ function useContiguousCalendarViews(
             return;
         }
 
-        let newDisplayMonth = displayMonth.clone();
+        setDisplayMonth(prevDisplayMonth => {
+            let newDisplayMonth = prevDisplayMonth.clone();
 
-        const nextValueStart = MonthAndYear.fromDate(selectedRange[0]);
-        const nextValueEnd = MonthAndYear.fromDate(selectedRange[1]);
+            const nextValueStart = MonthAndYear.fromDate(selectedRange[0]);
+            const nextValueEnd = MonthAndYear.fromDate(selectedRange[1]);
 
-        if (nextValueStart == null && nextValueEnd != null) {
-            // Only end date selected.
-            // If the newly selected end date isn't in either of the displayed months, then
-            //   - set the right DayPicker to the month of the selected end date
-            //   - ensure the left DayPicker is before the right, changing if needed
-            if (!nextValueEnd.isSame(newDisplayMonth.getNextMonth())) {
-                newDisplayMonth = nextValueEnd.getPreviousMonth();
-            }
-        } else if (nextValueStart != null && nextValueEnd == null) {
-            // Only start date selected.
-            // If the newly selected start date isn't in either of the displayed months, then
-            //   - set the left DayPicker to the month of the selected start date
-            //   - ensure the right DayPicker is before the left, changing if needed
-            if (!nextValueStart.isSame(newDisplayMonth)) {
-                newDisplayMonth = nextValueStart;
-            }
-        } else if (nextValueStart != null && nextValueEnd != null) {
-            if (nextValueStart.isSame(nextValueEnd)) {
-                // Both start and end date months are identical
-                if (
-                    newDisplayMonth.isSame(nextValueStart) ||
-                    (!singleMonthOnly && newDisplayMonth.getNextMonth().isSame(nextValueEnd))
-                ) {
-                    // do nothing
-                } else {
+            if (nextValueStart == null && nextValueEnd != null) {
+                // Only end date selected.
+                // If the newly selected end date isn't in either of the displayed months, then
+                //   - set the right DayPicker to the month of the selected end date
+                //   - ensure the left DayPicker is before the right, changing if needed
+                if (!nextValueEnd.isSame(newDisplayMonth.getNextMonth())) {
+                    newDisplayMonth = nextValueEnd.getPreviousMonth();
+                }
+            } else if (nextValueStart != null && nextValueEnd == null) {
+                // Only start date selected.
+                // If the newly selected start date isn't in either of the displayed months, then
+                //   - set the left DayPicker to the month of the selected start date
+                //   - ensure the right DayPicker is before the left, changing if needed
+                if (!nextValueStart.isSame(newDisplayMonth)) {
                     newDisplayMonth = nextValueStart;
                 }
-            } else {
-                // Different start and end date months, adjust display months.
-                newDisplayMonth = nextValueStart;
+            } else if (nextValueStart != null && nextValueEnd != null) {
+                if (nextValueStart.isSame(nextValueEnd)) {
+                    // Both start and end date months are identical
+                    if (
+                        newDisplayMonth.isSame(nextValueStart) ||
+                        (!singleMonthOnly && newDisplayMonth.getNextMonth().isSame(nextValueEnd))
+                    ) {
+                        // do nothing
+                    } else {
+                        newDisplayMonth = nextValueStart;
+                    }
+                } else {
+                    // Different start and end date months, adjust display months.
+                    newDisplayMonth = nextValueStart;
+                }
             }
-        }
 
-        setDisplayMonth(newDisplayMonth);
-    }, [displayMonth, setDisplayMonth, selectedRange, singleMonthOnly]);
+            return newDisplayMonth;
+        });
+    }, [setDisplayMonth, selectedRange, singleMonthOnly]);
 
     const handleMonthChange = React.useCallback<MonthChangeEventHandler>(
-        month => {
-            setDisplayMonth(MonthAndYear.fromDate(month));
-            userOnMonthChange?.(month);
+        newMonth => {
+            setDisplayMonth(MonthAndYear.fromDate(newMonth));
+            userOnMonthChange?.(newMonth);
         },
         [userOnMonthChange, setDisplayMonth],
     );

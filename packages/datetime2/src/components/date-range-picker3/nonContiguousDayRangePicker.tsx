@@ -40,7 +40,7 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
     onRangeSelect,
     value,
 }) => {
-    const { leftView, rightView, handleLeftMonthChange, handleRightMonthChange } = useNonContiguousCalendarViews(
+    const { displayMonths, handleLeftMonthChange, handleRightMonthChange } = useNonContiguousCalendarViews(
         initialMonthAndYear,
         value,
         dayPickerProps?.onMonthChange,
@@ -86,7 +86,7 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
                 key="left"
                 {...commonDayPickerProps}
                 fromDate={minDate}
-                month={leftView.getFullDate()}
+                month={displayMonths.left.getFullDate()}
                 numberOfMonths={1}
                 onMonthChange={handleLeftMonthChange}
                 toMonth={DateUtils.getDatePreviousMonth(maxDate!)}
@@ -95,7 +95,7 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
                 key="right"
                 {...commonDayPickerProps}
                 fromMonth={DateUtils.getDateNextMonth(minDate!)}
-                month={rightView.getFullDate()}
+                month={displayMonths.left.getFullDate()}
                 numberOfMonths={1}
                 onMonthChange={handleRightMonthChange}
                 toDate={maxDate}
@@ -105,11 +105,15 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
 };
 NonContiguousDayRangePicker.displayName = `${DISPLAYNAME_PREFIX}.NonContiguousDayRangePicker`;
 
+interface LeftAndRightDisplayMonths {
+    left: MonthAndYear;
+    right: MonthAndYear;
+}
+
 interface NonContiguousCalendarViews {
     handleLeftMonthChange: MonthChangeEventHandler;
     handleRightMonthChange: MonthChangeEventHandler;
-    leftView: MonthAndYear;
-    rightView: MonthAndYear;
+    displayMonths: LeftAndRightDisplayMonths;
 }
 
 /**
@@ -127,99 +131,104 @@ function useNonContiguousCalendarViews(
     // show the selected end date's encompassing month in the right view if
     // the calendars don't have to be contiguous.
     // if left view and right view months are the same, show next month in the right view.
-    const [leftView, setLeftView] = React.useState<MonthAndYear>(initialMonthAndYear);
-    const [rightView, setRightView] = React.useState<MonthAndYear>(getInitialRightView(selectedRange[1], leftView));
+    const [views, setViews] = React.useState<LeftAndRightDisplayMonths>({
+        left: initialMonthAndYear,
+        right: getInitialRightView(selectedRange[1], initialMonthAndYear),
+    });
 
     React.useEffect(() => {
         if (selectedRange == null) {
             return;
         }
 
-        let newLeftView = leftView.clone();
-        let newRightView = rightView.clone();
+        setViews(({ left, right }) => {
+            let newLeftView = left.clone();
+            let newRightView = right.clone();
 
-        const nextValueStartView = MonthAndYear.fromDate(selectedRange[0]);
-        const nextValueEndView = MonthAndYear.fromDate(selectedRange[1]);
+            const nextValueStartView = MonthAndYear.fromDate(selectedRange[0]);
+            const nextValueEndView = MonthAndYear.fromDate(selectedRange[1]);
 
-        if (nextValueStartView == null && nextValueEndView != null) {
-            // Only end date selected.
-            // If the newly selected end date isn't in either of the displayed months, then
-            //   - set the right DayPicker to the month of the selected end date
-            //   - ensure the left DayPicker is before the right, changing if needed
-            if (!nextValueEndView.isSame(newLeftView) && !nextValueEndView.isSame(newRightView)) {
-                newRightView = nextValueEndView;
-                if (!newLeftView.isBefore(newRightView)) {
-                    newLeftView = newRightView.getPreviousMonth();
-                }
-            }
-        } else if (nextValueStartView != null && nextValueEndView == null) {
-            // Only start date selected.
-            // If the newly selected start date isn't in either of the displayed months, then
-            //   - set the left DayPicker to the month of the selected start date
-            //   - ensure the right DayPicker is before the left, changing if needed
-            if (!nextValueStartView.isSame(newLeftView) && !nextValueStartView.isSame(newRightView)) {
-                newLeftView = nextValueStartView;
-                if (!newRightView.isAfter(newLeftView)) {
-                    newRightView = newLeftView.getNextMonth();
-                }
-            }
-        } else if (nextValueStartView != null && nextValueEndView != null) {
-            // Both start and end date months are identical
-            // If the selected month isn't in either of the displayed months, then
-            //   - set the left DayPicker to be the selected month
-            //   - set the right DayPicker to +1
-            if (nextValueStartView.isSame(nextValueEndView)) {
-                if (newLeftView.isSame(nextValueStartView) || newRightView.isSame(nextValueStartView)) {
-                    // do nothing
-                } else {
-                    newLeftView = nextValueStartView;
-                    newRightView = nextValueStartView.getNextMonth();
-                }
-            } else {
-                // Different start and end date months, adjust display months.
-                if (!newLeftView.isSame(nextValueStartView)) {
-                    newLeftView = nextValueStartView;
-                    newRightView = nextValueStartView.getNextMonth();
-                }
-                if (!newRightView.isSame(nextValueEndView)) {
+            if (nextValueStartView == null && nextValueEndView != null) {
+                // Only end date selected.
+                // If the newly selected end date isn't in either of the displayed months, then
+                //   - set the right DayPicker to the month of the selected end date
+                //   - ensure the left DayPicker is before the right, changing if needed
+                if (!nextValueEndView.isSame(newLeftView) && !nextValueEndView.isSame(newRightView)) {
                     newRightView = nextValueEndView;
+                    if (!newLeftView.isBefore(newRightView)) {
+                        newLeftView = newRightView.getPreviousMonth();
+                    }
+                }
+            } else if (nextValueStartView != null && nextValueEndView == null) {
+                // Only start date selected.
+                // If the newly selected start date isn't in either of the displayed months, then
+                //   - set the left DayPicker to the month of the selected start date
+                //   - ensure the right DayPicker is before the left, changing if needed
+                if (!nextValueStartView.isSame(newLeftView) && !nextValueStartView.isSame(newRightView)) {
+                    newLeftView = nextValueStartView;
+                    if (!newRightView.isAfter(newLeftView)) {
+                        newRightView = newLeftView.getNextMonth();
+                    }
+                }
+            } else if (nextValueStartView != null && nextValueEndView != null) {
+                // Both start and end date months are identical
+                // If the selected month isn't in either of the displayed months, then
+                //   - set the left DayPicker to be the selected month
+                //   - set the right DayPicker to +1
+                if (nextValueStartView.isSame(nextValueEndView)) {
+                    if (newLeftView.isSame(nextValueStartView) || newRightView.isSame(nextValueStartView)) {
+                        // do nothing
+                    } else {
+                        newLeftView = nextValueStartView;
+                        newRightView = nextValueStartView.getNextMonth();
+                    }
+                } else {
+                    // Different start and end date months, adjust display months.
+                    if (!newLeftView.isSame(nextValueStartView)) {
+                        newLeftView = nextValueStartView;
+                        newRightView = nextValueStartView.getNextMonth();
+                    }
+                    if (!newRightView.isSame(nextValueEndView)) {
+                        newRightView = nextValueEndView;
+                    }
                 }
             }
-        }
 
-        setLeftView(newLeftView);
-        setRightView(newRightView);
-    }, [leftView, rightView, selectedRange]);
+            return { left: newLeftView, right: newRightView };
+        });
+    }, [setViews, selectedRange]);
 
     const updateLeftView = React.useCallback(
         (newLeftView: MonthAndYear) => {
-            let newRightView = rightView.clone();
-            if (!newLeftView.isBefore(newRightView)) {
-                newRightView = newLeftView.getNextMonth();
-            }
-            setLeftView(newLeftView);
-            setRightView(newRightView);
+            setViews(({ right }) => {
+                let newRightView = right.clone();
+                if (!newLeftView.isBefore(newRightView)) {
+                    newRightView = newLeftView.getNextMonth();
+                }
+                return { left: newLeftView, right: newRightView };
+            });
         },
-        [rightView],
+        [setViews],
     );
 
     const updateRightView = React.useCallback(
         (newRightView: MonthAndYear) => {
-            let newLeftView = leftView.clone();
-            if (!newRightView.isAfter(newLeftView)) {
-                newLeftView = newRightView.getPreviousMonth();
-            }
-            setLeftView(newLeftView);
-            setRightView(newRightView);
+            setViews(({ left }) => {
+                let newLeftView = left.clone();
+                if (!newRightView.isAfter(newLeftView)) {
+                    newLeftView = newRightView.getPreviousMonth();
+                }
+                return { left: newLeftView, right: newRightView };
+            });
         },
-        [leftView],
+        [setViews],
     );
 
     const handleLeftMonthChange = React.useCallback<MonthChangeEventHandler>(
         newDate => {
             const newLeftView = MonthAndYear.fromDate(newDate);
-            userOnMonthChange?.(newLeftView.getFullDate());
             updateLeftView(newLeftView);
+            userOnMonthChange?.(newDate);
         },
         [userOnMonthChange, updateLeftView],
     );
@@ -227,8 +236,8 @@ function useNonContiguousCalendarViews(
     const handleRightMonthChange = React.useCallback<MonthChangeEventHandler>(
         newDate => {
             const newRightView = MonthAndYear.fromDate(newDate);
-            userOnMonthChange?.(newRightView.getFullDate());
             updateRightView(newRightView);
+            userOnMonthChange?.(newDate);
         },
         [userOnMonthChange, updateRightView],
     );
@@ -236,8 +245,7 @@ function useNonContiguousCalendarViews(
     return {
         handleLeftMonthChange,
         handleRightMonthChange,
-        leftView,
-        rightView,
+        displayMonths: views,
     };
 }
 
