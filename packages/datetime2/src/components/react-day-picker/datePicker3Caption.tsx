@@ -27,12 +27,15 @@ import { Classes } from "../../classes";
 import { useMonthSelectRightOffset } from "../../common/useMonthSelectRightOffset";
 import { DatePicker3Context } from "../date-picker3/datePicker3Context";
 
-interface DatePicker3CaptionProps extends CaptionProps {
-    hideNextButton?: boolean;
-    hidePrevButton?: boolean;
-}
-
-const DatePicker3Caption: React.FC<DatePicker3CaptionProps> = props => {
+/**
+ * Custom react-day-picker caption component used in non-contiguous two-month date range pickers.
+ *
+ * We need to override the whole caption instead of its lower-level components because react-day-picker
+ * does not have built-in support for non-contiguous range pickers.
+ *
+ * @see https://react-day-picker.js.org/guides/custom-components
+ */
+export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     const { classNames: rdpClassNames, fromDate, toDate, labels } = useDayPicker();
     const { locale, reverseMonthAndYearMenus } = React.useContext(DatePicker3Context);
 
@@ -168,35 +171,4 @@ const DatePicker3Caption: React.FC<DatePicker3CaptionProps> = props => {
         </>
     );
 };
-DatePicker3Caption.defaultProps = {
-    hideNextButton: false,
-    hidePrevButton: false,
-};
 DatePicker3Caption.displayName = `${DISPLAYNAME_PREFIX}.DatePicker3Caption`;
-
-/**
- * Custom react-day-picker caption component for a single-month datepicker.
- *
- * @see https://react-day-picker.js.org/guides/custom-components
- */
-export function SingleDatePickerCaption(props: CaptionProps) {
-    return <DatePicker3Caption {...props} />;
-}
-
-/**
- * Custom react-day-picker caption component for the left calendar in a non-contiguous two-month datepicker.
- *
- * @see https://react-day-picker.js.org/guides/custom-components
- */
-export function LeftDatePickerCaption(props: CaptionProps) {
-    return <DatePicker3Caption {...props} hideNextButton={true} />;
-}
-
-/**
- * Custom react-day-picker caption component for the right calendar in a non-contiguous two-month datepicker.
- *
- * @see https://react-day-picker.js.org/guides/custom-components
- */
-export function RightDatePickerCaption(props: CaptionProps) {
-    return <DatePicker3Caption {...props} hidePrevButton={true} />;
-}

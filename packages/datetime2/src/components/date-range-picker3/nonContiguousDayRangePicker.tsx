@@ -22,7 +22,7 @@ import { DateRange, DateRangeSelectionStrategy, DateUtils, MonthAndYear } from "
 
 import { Classes } from "../../classes";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
-import { LeftDatePickerCaption, RightDatePickerCaption } from "../react-day-picker/datePicker3Caption";
+import { DatePicker3Caption } from "../react-day-picker/datePicker3Caption";
 import { DayRangePickerProps } from "./dayRangePickerProps";
 
 /**
@@ -72,6 +72,10 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
         showOutsideDays: true,
         ...dayPickerProps,
         ...dayPickerEventHandlers,
+        components: {
+            Caption: DatePicker3Caption,
+            ...dayPickerProps?.components,
+        },
         onSelect: handleDaySelect,
         selected: dateRangeToDayPickerRange(value),
     };
@@ -81,10 +85,6 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
             <DayPicker
                 key="left"
                 {...commonDayPickerProps}
-                components={{
-                    Caption: LeftDatePickerCaption,
-                    ...dayPickerProps?.components,
-                }}
                 fromDate={minDate}
                 month={leftView.getFullDate()}
                 numberOfMonths={1}
@@ -94,10 +94,6 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
             <DayPicker
                 key="right"
                 {...commonDayPickerProps}
-                components={{
-                    Caption: RightDatePickerCaption,
-                    ...dayPickerProps?.components,
-                }}
                 fromDate={DateUtils.getDateNextMonth(minDate!)}
                 month={rightView.getFullDate()}
                 numberOfMonths={1}
