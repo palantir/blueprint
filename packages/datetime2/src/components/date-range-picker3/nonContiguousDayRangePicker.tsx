@@ -89,12 +89,12 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
                 month={leftView.getFullDate()}
                 numberOfMonths={1}
                 onMonthChange={handleLeftMonthChange}
-                toDate={DateUtils.getDatePreviousMonth(maxDate!)}
+                toMonth={DateUtils.getDatePreviousMonth(maxDate!)}
             />
             <DayPicker
                 key="right"
                 {...commonDayPickerProps}
-                fromDate={DateUtils.getDateNextMonth(minDate!)}
+                fromMonth={DateUtils.getDateNextMonth(minDate!)}
                 month={rightView.getFullDate()}
                 numberOfMonths={1}
                 onMonthChange={handleRightMonthChange}
