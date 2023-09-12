@@ -14,32 +14,37 @@
  * limitations under the License.
  */
 
-import type { DayModifiers, DayPickerRangeProps, ModifiersClassNames } from "react-day-picker";
+import type { DayPickerRangeProps } from "react-day-picker";
 
 import type { DateRange, MonthAndYear } from "@blueprintjs/datetime";
 
 import type { DateRangePicker3Props } from "./dateRangePicker3Props";
 import type { DateRangePicker3State } from "./dateRangePicker3State";
+import { Boundary } from "@blueprintjs/core";
 
 /**
  * Props used to render an interactive single- or double-calendar day range picker.
- * This is the core UI of DateRangePicker3.
+ * This is the core UI of DateRangePicker3 (exclusive of time pickers, shortcuts, and the actions bar).
  */
 export interface DayRangePickerProps
     extends Omit<DateRangePicker3Props, "initialMonth" | "locale" | "value">,
         Pick<DateRangePicker3State, "locale" | "value"> {
-    /** Initial month computed in DateRangePicker3 constructor. */
+    /**
+     * react-day-picker event handlers. These are used to update hover state in DateRangePicker3.
+     */
+    dayPickerEventHandlers: Required<Pick<DayPickerRangeProps, "onDayMouseEnter" | "onDayMouseLeave">>;
+
+    /**
+     * Initial month and year to display. If there are multiple calendars, this applies to the left calendar.
+     */
     initialMonthAndYear: MonthAndYear;
 
-    /** DateRangePicker3's custom modifiers */
-    modifiers: DayModifiers;
-
-    /** DateRangePicker3's custom modifier class names */
-    modifiersClassNames: ModifiersClassNames;
-
-    /** DateRangePicker3's range selection handler */
-    updateSelectedRange: (nextValue: DateRange) => void;
-
-    /** react-day-picker event handlers */
-    dayPickerEventHandlers: Required<Pick<DayPickerRangeProps, "onDayMouseEnter" | "onDayMouseLeave">>;
+    /**
+     * Date range selection handler triggered when clicking a day in one of the calendars.
+     *
+     * @param selectedRange the new selected date range
+     * @param selectedDay the date that was clicked to trigger this selection
+     * @param boundary the boundary (start or end) which has just been modified by this click
+     */
+    onRangeSelect: (selectedRange: DateRange, selectedDay: Date, boundary: Boundary) => void;
 }

@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-import { format } from "date-fns";
 import * as React from "react";
-import { DateFormatter, DayPicker, MonthChangeEventHandler, SelectRangeEventHandler } from "react-day-picker";
+import { DayPicker, MonthChangeEventHandler, SelectRangeEventHandler } from "react-day-picker";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 import { DateRangeSelectionStrategy, MonthAndYear } from "@blueprintjs/datetime";
 
-import { combineModifiers } from "../../common/dayPickerModifiers";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
@@ -34,16 +32,14 @@ import { DateRange } from "@blueprintjs/datetime";
 export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
     allowSingleDayRange,
     boundaryToModify,
-    dayPickerProps,
     dayPickerEventHandlers,
+    dayPickerProps,
     initialMonthAndYear,
     locale,
     maxDate,
     minDate,
-    modifiers,
-    modifiersClassNames,
+    onRangeSelect,
     singleMonthOnly = false,
-    updateSelectedRange,
     value,
 }) => {
     const { displayMonth, handleMonthChange } = useContiguousCalendarViews(
@@ -57,42 +53,25 @@ export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
         (range, selectedDay, activeModifiers, e) => {
             dayPickerProps?.onSelect?.(range, selectedDay, activeModifiers, e);
 
-            if (modifiers.disabled) {
+            if (activeModifiers.disabled) {
                 return;
             }
 
-            const nextValue = DateRangeSelectionStrategy.getNextState(
+            const { dateRange: nextValue, boundary } = DateRangeSelectionStrategy.getNextState(
                 value,
                 selectedDay,
                 allowSingleDayRange!,
                 boundaryToModify,
-            ).dateRange;
-
-            // update the hovered date range after click to show the newly selected
-            // state, at leasts until the mouse moves again
-            dayPickerEventHandlers.onDayMouseEnter?.(selectedDay, activeModifiers, e);
-
-            updateSelectedRange(nextValue);
+            );
+            onRangeSelect(nextValue, selectedDay, boundary);
         },
-        [allowSingleDayRange, boundaryToModify, dayPickerEventHandlers.onDayMouseEnter, updateSelectedRange, value],
-    );
-
-    /**
-     * Custom formatter to render weekday names in the calendar header. The default formatter generally works fine,
-     * but it was returning CAPITALIZED strings for some reason, while we prefer Title Case.
-     */
-    const formatWeekdayName = React.useCallback<DateFormatter>(
-        date => {
-            return format(date, "EEEEEE", { locale });
-        },
-        [locale],
+        [allowSingleDayRange, boundaryToModify, onRangeSelect, value],
     );
 
     return (
         <DayPicker
-            modifiers={combineModifiers(modifiers, dayPickerProps?.modifiers)}
-            modifiersClassNames={{ ...dayPickerProps?.modifiersClassNames, ...modifiersClassNames }}
             showOutsideDays={true}
+            {...dayPickerEventHandlers}
             {...dayPickerProps}
             captionLayout="dropdown-buttons"
             components={{
@@ -101,17 +80,11 @@ export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
                 IconRight,
                 ...dayPickerProps?.components,
             }}
-            formatters={{
-                formatWeekdayName,
-                ...dayPickerProps?.formatters,
-            }}
             fromDate={minDate}
             locale={locale}
             mode="range"
             month={displayMonth.getFullDate()}
             numberOfMonths={singleMonthOnly ? 1 : 2}
-            onDayMouseEnter={dayPickerEventHandlers.onDayMouseEnter}
-            onDayMouseLeave={dayPickerEventHandlers.onDayMouseLeave}
             onMonthChange={handleMonthChange}
             onSelect={handleRangeSelect}
             selected={dateRangeToDayPickerRange(value)}
@@ -126,6 +99,14 @@ interface ContiguousCalendarViews {
     handleMonthChange: MonthChangeEventHandler;
 }
 
+/**
+ * State management and navigation event handlers for a single calendar or two contiguous calendar views.
+ *
+ * @param initialMonthAndYear initial month and year to display in the left calendar
+ * @param singleMonthOnly whether we are only displaying a single month instead of two
+ * @param selectedRange currently selected date range
+ * @param userOnMonthChange custom `dayPickerProps.onMonthChange` handler supplied by users of `DateRangePicker3`
+ */
 function useContiguousCalendarViews(
     initialMonthAndYear: MonthAndYear,
     singleMonthOnly: boolean,

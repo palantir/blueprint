@@ -21,14 +21,9 @@ import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 import { DateRange, DateRangeSelectionStrategy, DateUtils, MonthAndYear } from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
-import { combineModifiers } from "../../common/dayPickerModifiers";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { LeftDatePickerCaption, RightDatePickerCaption } from "../react-day-picker/datePicker3Caption";
 import { DayRangePickerProps } from "./dayRangePickerProps";
-
-function getInitialRightView(selectedRangeEnd: Date | null, leftView: MonthAndYear) {
-    return MonthAndYear.fromDate(selectedRangeEnd) ?? leftView.getNextMonth();
-}
 
 /**
  * Date range picker with two calendars which can move independently of each other.
@@ -36,16 +31,14 @@ function getInitialRightView(selectedRangeEnd: Date | null, leftView: MonthAndYe
 export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
     allowSingleDayRange,
     boundaryToModify,
+    dayPickerEventHandlers,
     dayPickerProps,
+    initialMonthAndYear,
     locale,
     maxDate,
     minDate,
-    modifiers,
-    modifiersClassNames,
-    initialMonthAndYear,
+    onRangeSelect,
     value,
-    updateSelectedRange,
-    dayPickerEventHandlers,
 }) => {
     const { leftView, rightView, handleLeftMonthChange, handleRightMonthChange } = useNonContiguousCalendarViews(
         initialMonthAndYear,
@@ -61,34 +54,21 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
                 return;
             }
 
-            const nextValue = DateRangeSelectionStrategy.getNextState(
+            const { dateRange: nextValue, boundary } = DateRangeSelectionStrategy.getNextState(
                 value,
                 selectedDay,
                 allowSingleDayRange!,
                 boundaryToModify,
-            ).dateRange;
-            updateSelectedRange(nextValue);
-
-            // update the hovered date range after click to show the newly selected
-            // state, at leasts until the mouse moves again
-            dayPickerEventHandlers.onDayMouseEnter(selectedDay, activeModifiers, e);
+            );
+            onRangeSelect(nextValue, selectedDay, boundary);
         },
-        [
-            allowSingleDayRange,
-            boundaryToModify,
-            dayPickerEventHandlers.onDayMouseEnter,
-            dayPickerProps?.onSelect,
-            updateSelectedRange,
-            value,
-        ],
+        [allowSingleDayRange, boundaryToModify, dayPickerProps?.onSelect, onRangeSelect, value],
     );
 
     // props applied to both the left and right calendars
     const commonDayPickerProps: DayPickerRangeProps = {
         locale,
         mode: "range",
-        modifiers: combineModifiers(modifiers, dayPickerProps?.modifiers),
-        modifiersClassNames,
         showOutsideDays: true,
         ...dayPickerProps,
         ...dayPickerEventHandlers,
@@ -103,6 +83,7 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
                 {...commonDayPickerProps}
                 components={{
                     Caption: LeftDatePickerCaption,
+                    ...dayPickerProps?.components,
                 }}
                 fromDate={minDate}
                 month={leftView.getFullDate()}
@@ -115,6 +96,7 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
                 {...commonDayPickerProps}
                 components={{
                     Caption: RightDatePickerCaption,
+                    ...dayPickerProps?.components,
                 }}
                 fromDate={DateUtils.getDateNextMonth(minDate!)}
                 month={rightView.getFullDate()}
@@ -134,27 +116,34 @@ interface NonContiguousCalendarViews {
     handleRightMonthChange: MonthChangeEventHandler;
 }
 
+/**
+ * State management and navigation event handlers for two (left and right) non-contiguous calendar views.
+ *
+ * @param initialMonthAndYear initial month and year to display in the left calendar
+ * @param selectedRange currently selected date range
+ * @param userOnMonthChange custom `dayPickerProps.onMonthChange` handler supplied by users of `DateRangePicker3`
+ */
 function useNonContiguousCalendarViews(
     initialMonthAndYear: MonthAndYear,
-    value: DateRange,
+    selectedRange: DateRange,
     userOnMonthChange: MonthChangeEventHandler | undefined,
 ): NonContiguousCalendarViews {
     // show the selected end date's encompassing month in the right view if
     // the calendars don't have to be contiguous.
     // if left view and right view months are the same, show next month in the right view.
     const [leftView, setLeftView] = React.useState<MonthAndYear>(initialMonthAndYear);
-    const [rightView, setRightView] = React.useState<MonthAndYear>(getInitialRightView(value[1], leftView));
+    const [rightView, setRightView] = React.useState<MonthAndYear>(getInitialRightView(selectedRange[1], leftView));
 
     React.useEffect(() => {
-        if (value == null) {
+        if (selectedRange == null) {
             return;
         }
 
         let newLeftView = leftView.clone();
         let newRightView = rightView.clone();
 
-        const nextValueStartView = MonthAndYear.fromDate(value[0]);
-        const nextValueEndView = MonthAndYear.fromDate(value[1]);
+        const nextValueStartView = MonthAndYear.fromDate(selectedRange[0]);
+        const nextValueEndView = MonthAndYear.fromDate(selectedRange[1]);
 
         if (nextValueStartView == null && nextValueEndView != null) {
             // Only end date selected.
@@ -204,7 +193,7 @@ function useNonContiguousCalendarViews(
 
         setLeftView(newLeftView);
         setRightView(newRightView);
-    }, [value]);
+    }, [selectedRange]);
 
     const updateLeftView = React.useCallback(
         (newLeftView: MonthAndYear) => {
@@ -254,4 +243,8 @@ function useNonContiguousCalendarViews(
         handleLeftMonthChange,
         handleRightMonthChange,
     };
+}
+
+function getInitialRightView(selectedRangeEnd: Date | null, leftView: MonthAndYear) {
+    return MonthAndYear.fromDate(selectedRangeEnd) ?? leftView.getNextMonth();
 }
