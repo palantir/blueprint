@@ -27,7 +27,7 @@ import { Classes, DatePicker, DatePickerModifiers, DatePickerProps, TimePicker, 
 import { DateUtils, Months } from "../../src/common";
 import * as Errors from "../../src/common/errors";
 import { DatePickerState } from "../../src/components/date-picker/datePicker";
-import { DatePickerShortcut, Shortcuts } from "../../src/components/shortcuts/shortcuts";
+import { DatePickerShortcut, DatePickerShortcutMenu } from "../../src/components/shortcuts/shortcuts";
 import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils";
 
 describe("<DatePicker>", () => {
@@ -478,16 +478,23 @@ describe("<DatePicker>", () => {
         it("all shortcuts are displayed as inactive when none are selected", () => {
             const { root } = wrap(<DatePicker shortcuts={true} />);
 
-            assert.isFalse(root.find(Shortcuts).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists());
+            assert.isFalse(
+                root.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists(),
+            );
         });
 
         it("corresponding shortcut is displayed as active when selected", () => {
             const selectedShortcut = 0;
             const { root } = wrap(<DatePicker shortcuts={true} selectedShortcutIndex={selectedShortcut} />);
 
-            assert.isTrue(root.find(Shortcuts).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists());
+            assert.isTrue(
+                root.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists(),
+            );
 
-            assert.lengthOf(root.find(Shortcuts).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`), 1);
+            assert.lengthOf(
+                root.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`),
+                1,
+            );
 
             assert.isTrue(root.state("selectedShortcutIndex") === selectedShortcut);
         });
