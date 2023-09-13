@@ -113,6 +113,7 @@ function useContiguousCalendarViews(
     userOnMonthChange: MonthChangeEventHandler | undefined,
 ): ContiguousCalendarViews {
     const [displayMonth, setDisplayMonth] = React.useState(initialMonthAndYear);
+    const prevSelectedRange = React.useRef<DateRange>(selectedRange);
     const isInitialRender = React.useRef<boolean>(true);
 
     // use an effect to react to external value updates (such as shortcut item selections)
@@ -128,48 +129,64 @@ function useContiguousCalendarViews(
             return;
         }
 
+        if (selectedRange[0] == null || selectedRange[1] == null) {
+            // special case: if only one boundary of the range is selected and it is already displayed in one of the
+            // months, don't update the display month. this prevents the picker from shifting around when a user is in
+            // the middle of a selection.
+            if (
+                isDateDisplayed(selectedRange[0], displayMonth, singleMonthOnly) ||
+                isDateDisplayed(selectedRange[1], displayMonth, singleMonthOnly)
+            ) {
+                return;
+            }
+        }
+
         setDisplayMonth(prevDisplayMonth => {
             let newDisplayMonth = prevDisplayMonth.clone();
 
-            const nextValueStart = MonthAndYear.fromDate(selectedRange[0]);
-            const nextValueEnd = MonthAndYear.fromDate(selectedRange[1]);
+            const nextRangeStart = MonthAndYear.fromDate(selectedRange[0]);
+            const nextRangeEnd = MonthAndYear.fromDate(selectedRange[1]);
 
-            if (nextValueStart == null && nextValueEnd != null) {
+            if (nextRangeStart == null && nextRangeEnd != null) {
                 // Only end date selected.
                 // If the newly selected end date isn't in either of the displayed months, then
                 //   - set the right DayPicker to the month of the selected end date
                 //   - ensure the left DayPicker is before the right, changing if needed
-                if (!nextValueEnd.isSame(newDisplayMonth.getNextMonth())) {
-                    newDisplayMonth = nextValueEnd.getPreviousMonth();
+                if (!nextRangeEnd.isSame(newDisplayMonth.getNextMonth())) {
+                    newDisplayMonth = nextRangeEnd.getPreviousMonth();
                 }
-            } else if (nextValueStart != null && nextValueEnd == null) {
+            } else if (nextRangeStart != null && nextRangeEnd == null) {
                 // Only start date selected.
                 // If the newly selected start date isn't in either of the displayed months, then
                 //   - set the left DayPicker to the month of the selected start date
                 //   - ensure the right DayPicker is before the left, changing if needed
-                if (!nextValueStart.isSame(newDisplayMonth)) {
-                    newDisplayMonth = nextValueStart;
+                if (!nextRangeStart.isSame(newDisplayMonth)) {
+                    newDisplayMonth = nextRangeStart;
                 }
-            } else if (nextValueStart != null && nextValueEnd != null) {
-                if (nextValueStart.isSame(nextValueEnd)) {
+            } else if (nextRangeStart != null && nextRangeEnd != null) {
+                if (nextRangeStart.isSame(nextRangeEnd)) {
                     // Both start and end date months are identical
                     if (
-                        newDisplayMonth.isSame(nextValueStart) ||
-                        (!singleMonthOnly && newDisplayMonth.getNextMonth().isSame(nextValueEnd))
+                        newDisplayMonth.isSame(nextRangeStart) ||
+                        (!singleMonthOnly && newDisplayMonth.getNextMonth().isSame(nextRangeEnd))
                     ) {
                         // do nothing
                     } else {
-                        newDisplayMonth = nextValueStart;
+                        newDisplayMonth = nextRangeStart;
                     }
                 } else {
                     // Different start and end date months, adjust display months.
-                    newDisplayMonth = nextValueStart;
+                    newDisplayMonth = nextRangeStart;
                 }
             }
 
             return newDisplayMonth;
         });
     }, [setDisplayMonth, selectedRange, singleMonthOnly]);
+
+    React.useEffect(() => {
+        prevSelectedRange.current = selectedRange;
+    }, [selectedRange]);
 
     const handleMonthChange = React.useCallback<MonthChangeEventHandler>(
         newMonth => {
@@ -183,4 +200,19 @@ function useContiguousCalendarViews(
         displayMonth,
         handleMonthChange,
     };
+}
+
+/**
+ * Determines whether a given date is displayed in a contiguous single- or double-calendar view.
+ */
+function isDateDisplayed(date: Date | null, displayMonth: MonthAndYear, singleMonthOnly: boolean): boolean {
+    if (date == null) {
+        return false;
+    }
+
+    const month = MonthAndYear.fromDate(date);
+
+    return singleMonthOnly
+        ? displayMonth.isSameMonth(month)
+        : displayMonth.isSameMonth(month) || displayMonth.getNextMonth().isSameMonth(month);
 }

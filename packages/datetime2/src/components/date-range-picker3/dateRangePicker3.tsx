@@ -121,13 +121,13 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     }
 
     public render() {
-        const { className, contiguousCalendarMonths, singleMonthOnly, footerElement } = this.props;
-        const isShowingOneMonth = singleMonthOnly || DateUtils.isSameMonth(this.props.minDate!, this.props.maxDate!);
+        const { className, contiguousCalendarMonths, footerElement } = this.props;
+        const isSingleMonthOnly = getIsSingleMonthOnly(this.props);
 
         const classes = classNames(Classes.DATEPICKER, Classes.DATERANGEPICKER, className, {
             [Classes.DATEPICKER_HIGHLIGHT_CURRENT_DAY]: this.props.highlightCurrentDay,
             [Classes.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,
-            [Classes.DATERANGEPICKER_SINGLE_MONTH]: isShowingOneMonth,
+            [Classes.DATERANGEPICKER_SINGLE_MONTH]: isSingleMonthOnly,
             [Classes.DATERANGEPICKER_REVERSE_MONTH_AND_YEAR]: this.props.reverseMonthAndYearMenus,
         });
 
@@ -137,10 +137,10 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
                 {this.maybeRenderShortcuts()}
                 <div className={Classes.DATEPICKER_CONTENT}>
                     <DatePicker3Provider {...this.props} {...this.state}>
-                        {contiguousCalendarMonths || isShowingOneMonth
-                            ? this.renderContiguousDayRangePicker(isShowingOneMonth)
+                        {contiguousCalendarMonths || isSingleMonthOnly
+                            ? this.renderContiguousDayRangePicker(isSingleMonthOnly)
                             : this.renderNonContiguousDayRangePicker()}
-                        {this.maybeRenderTimePickers(isShowingOneMonth)}
+                        {this.maybeRenderTimePickers(isSingleMonthOnly)}
                         {footerElement}
                     </DatePicker3Provider>
                 </div>
@@ -362,7 +362,6 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
 
     private get resolvedDayPickerProps(): DateRangePicker3Props["dayPickerProps"] {
         const { dayPickerProps = {} } = this.props;
-        const { min = 0 } = dayPickerProps;
         return {
             ...dayPickerProps,
             classNames: {
@@ -373,8 +372,6 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
                 formatWeekdayName: this.formatWeekdayName,
                 ...dayPickerProps.formatters,
             },
-            // if a single day range is not allowed, make sure the minimum # of selected days is at least 2
-            min: Math.max(this.props.allowSingleDayRange ? 0 : 2, min),
             modifiers: combineModifiers(this.modifiers, dayPickerProps.modifiers),
             modifiersClassNames: {
                 ...this.modifiersClassNames,
@@ -450,6 +447,10 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     };
 }
 
+function getIsSingleMonthOnly(props: DateRangePicker3Props): boolean {
+    return props.singleMonthOnly || DateUtils.isSameMonth(props.minDate!, props.maxDate!);
+}
+
 function getInitialValue(props: DateRangePicker3Props): DateRange {
     if (props.value != null) {
         return props.value;
@@ -462,15 +463,16 @@ function getInitialValue(props: DateRangePicker3Props): DateRange {
 
 function getInitialMonth(props: DateRangePicker3Props, value: DateRange): Date {
     const today = new Date();
-    // != because we must have a real `Date` to begin the calendar on.
+    const isSingleMonthOnly = getIsSingleMonthOnly(props);
+
     if (props.initialMonth != null) {
-        if (!props.singleMonthOnly && DateUtils.isSameMonth(props.initialMonth, props.maxDate!)) {
+        if (!isSingleMonthOnly && DateUtils.isSameMonth(props.initialMonth, props.maxDate!)) {
             // special case: if initial month is same as maxDate month, display it on the right calendar
             return DateUtils.getDatePreviousMonth(props.initialMonth);
         }
         return props.initialMonth;
     } else if (value[0] != null) {
-        if (!props.singleMonthOnly && DateUtils.isSameMonth(value[0], props.maxDate!)) {
+        if (!isSingleMonthOnly && DateUtils.isSameMonth(value[0], props.maxDate!)) {
             // special case: if start of range is selected and that date is in the maxDate month, display it on the right calendar
             return DateUtils.getDatePreviousMonth(value[0]);
         }

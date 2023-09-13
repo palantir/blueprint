@@ -42,7 +42,7 @@ import { DateRangePicker3State } from "../../src/components/date-range-picker3/d
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
-describe.only("<DatePicker3>", () => {
+describe("<DatePicker3>", () => {
     let testsContainerElement: HTMLElement;
     let drpWrapper: ReactWrapper<DateRangePicker3Props, DateRangePicker3State>;
 
@@ -354,7 +354,6 @@ describe.only("<DatePicker3>", () => {
             const minDate = new Date(YEAR, Months.DECEMBER, 1);
 
             const { left } = render({ initialMonth, maxDate, minDate });
-            // TODO(@adidahiya): fix test
             left.assertDisplayMonth(Months.DECEMBER, YEAR);
         });
 
@@ -1187,17 +1186,13 @@ describe.only("<DatePicker3>", () => {
         });
 
         it("does not change display month when selecting dates from left month", () => {
-            render({ initialMonth: new Date(2015, Months.MARCH, 2) })
-                .left.clickDay(2)
-                .clickDay(15)
-                .assertDisplayMonth(Months.MARCH, 2015);
+            const { left } = render({ initialMonth: new Date(2015, Months.MARCH, 2) });
+            left.clickDay(2).clickDay(15).assertDisplayMonth(Months.MARCH, 2015);
         });
 
         it("does not change display month when selecting dates from right month", () => {
-            render({ initialMonth: new Date(2015, Months.MARCH, 2) })
-                .right.clickDay(2)
-                .clickDay(15)
-                .assertDisplayMonth(Months.APRIL, 2015);
+            const { right } = render({ initialMonth: new Date(2015, Months.MARCH, 2) });
+            right.clickDay(2).clickDay(15).assertDisplayMonth(Months.APRIL, 2015);
         });
 
         it("does not change display month when selecting dates from left and right month", () => {
@@ -1294,7 +1289,7 @@ describe.only("<DatePicker3>", () => {
                 shortcuts,
                 timePrecision: "minute",
             }).clickShortcut();
-            assert.equal(onChangeSpy.firstCall.args[0][0] as Date, startTime);
+            assert.isTrue(DateUtils.isEqual(onChangeSpy.firstCall.args[0][0] as Date, startTime));
         });
 
         it("selecting and unselecting a day doesn't change time", () => {
