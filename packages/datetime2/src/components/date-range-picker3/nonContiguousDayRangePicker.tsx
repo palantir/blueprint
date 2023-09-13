@@ -250,7 +250,7 @@ function useNonContiguousCalendarViews(
 }
 
 function getInitialRightView(selectedRangeEnd: Date | null, leftView: MonthAndYear) {
-    let rightView = MonthAndYear.fromDate(selectedRangeEnd);
+    const rightView = MonthAndYear.fromDate(selectedRangeEnd);
 
     if (rightView === undefined || rightView.isSameMonth(leftView)) {
         return leftView.getNextMonth();
