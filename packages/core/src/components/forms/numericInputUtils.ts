@@ -30,7 +30,7 @@ function getDecimalSeparator(locale: string) {
 }
 
 export function toLocaleString(num: number, locale: string = "en-US") {
-    return sanitizeNumericInput(num.toLocaleString(locale), locale);
+    return sanitizeNumericInput(num.toLocaleString(locale, { maximumSignificantDigits: 10 }), locale);
 }
 
 export function clampValue(value: number, min?: number, max?: number) {
