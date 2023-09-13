@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { format } from "date-fns";
-import * as Locales from "date-fns/locale";
+import enUSLocale from "date-fns/locale/en-US";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { DayModifiers, DayPicker, ModifiersClassNames } from "react-day-picker";
@@ -39,6 +39,7 @@ import { DateRangePicker3, DateRangePicker3Props, Datetime2Classes } from "../..
 import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
 import { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
+import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 describe("<DatePicker3>", () => {
     let testsContainerElement: HTMLElement;
@@ -49,16 +50,7 @@ describe("<DatePicker3>", () => {
     let loadDateFnsLocaleStub: sinon.SinonStub;
 
     before(() => {
-        loadDateFnsLocaleStub = sinon.stub(DateFnsLocaleUtils, "loadDateFnsLocale");
-        loadDateFnsLocaleStub.callsFake((localeCode: string) => {
-            let localeKey = localeCode as keyof typeof Locales;
-            // convert "en-US" to "enUS" which can be used to index into locales export object
-            if (localeKey.includes("-")) {
-                const splits = localeKey.split("-");
-                localeKey = `${splits[0]}${splits[1].toUpperCase()}` as keyof typeof Locales;
-            }
-            return Promise.resolve(Locales[localeKey]);
-        });
+        loadDateFnsLocaleStub = sinon.stub(DateFnsLocaleUtils, "loadDateFnsLocale").callsFake(loadDateFnsLocaleFake);
     });
 
     beforeEach(() => {
@@ -368,8 +360,8 @@ describe("<DatePicker3>", () => {
     describe("left/right calendar", () => {
         function assertFirstLastMonths(monthSelect: ReactWrapper, first: Months, last: Months) {
             const options = monthSelect.find("option");
-            const expectedFirstOption = format(new Date(2015, first), "LLLL", { locale: Locales.enUS });
-            const expectedLastOption = format(new Date(2015, last), "LLLL", { locale: Locales.enUS });
+            const expectedFirstOption = format(new Date(2015, first), "LLLL", { locale: enUSLocale });
+            const expectedLastOption = format(new Date(2015, last), "LLLL", { locale: enUSLocale });
             assert.equal(options.first().text(), expectedFirstOption);
             assert.equal(options.last().text(), expectedLastOption);
         }

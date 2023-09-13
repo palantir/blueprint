@@ -33,17 +33,28 @@ import {
 import { assertDatesEqual } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src/classes";
+import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
 import { DatePicker3, DatePicker3Props } from "../../src/components/date-picker3/datePicker3";
 import { DatePicker3State } from "../../src/components/date-picker3/datePicker3State";
 import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils";
+import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 describe("<DatePicker3>", () => {
     let testsContainerElement: HTMLElement;
     let datePicker3Wrapper: ReactWrapper<DatePicker3Props, DatePicker3State>;
+    let loadDateFnsLocaleStub: sinon.SinonStub;
+
+    before(() => {
+        loadDateFnsLocaleStub = sinon.stub(DateFnsLocaleUtils, "loadDateFnsLocale").callsFake(loadDateFnsLocaleFake);
+    });
 
     beforeEach(() => {
         testsContainerElement = document.createElement("div");
         document.body.appendChild(testsContainerElement);
+    });
+
+    after(() => {
+        loadDateFnsLocaleStub.restore();
     });
 
     afterEach(() => {
