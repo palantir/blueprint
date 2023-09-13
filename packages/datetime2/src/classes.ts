@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
+import type { StyledElement } from "react-day-picker";
+
+import { Classes as CoreClasses } from "@blueprintjs/core";
 import { Classes as DatetimeClasses } from "@blueprintjs/datetime";
 
 const RDP = "rdp";
@@ -47,9 +51,9 @@ const DateRangePicker3Classes = {
     DATERANGEPICKER3_DAY_HOVERED_RANGE: `${RDP_DAY}_hovered`,
     DATERANGEPICKER3_DAY_HOVERED_RANGE_END: `${RDP_DAY}_hovered_end`,
     DATERANGEPICKER3_DAY_HOVERED_RANGE_START: `${RDP_DAY}_hovered_start`,
-    DATERANGEPICKER3_DAY_RANGE_START: `${RDP_DAY}_range_start`,
-    DATERANGEPICKER3_DAY_RANGE_MIDDLE: `${RDP_DAY}_range_middle`,
     DATERANGEPICKER3_DAY_RANGE_END: `${RDP_DAY}_range_end`,
+    DATERANGEPICKER3_DAY_RANGE_MIDDLE: `${RDP_DAY}_range_middle`,
+    DATERANGEPICKER3_DAY_RANGE_START: `${RDP_DAY}_range_start`,
     DATERANGEPICKER_REVERSE_MONTH_AND_YEAR: `${DatetimeClasses.DATERANGEPICKER}-reverse-month-and-year`,
 };
 
@@ -58,4 +62,18 @@ export const Classes = {
     ...DatePicker3Classes,
     ...DateRangePicker3Classes,
     ...ReactDayPickerClasses,
+};
+
+/**
+ * Class name overrides for components rendered by react-day-picker. These are helpful so that @blueprintjs/datetime2
+ * can have more predictable and standard DOM selectors in custom styles & tests.
+ */
+export const dayPickerClassNameOverrides: Partial<StyledElement<string>> = {
+    /* eslint-disable camelcase */
+    button: classNames(CoreClasses.BUTTON, CoreClasses.MINIMAL),
+    button_reset: undefined,
+    nav_button: Classes.DATEPICKER_NAV_BUTTON,
+    nav_button_next: Classes.DATEPICKER_NAV_BUTTON_NEXT,
+    nav_button_previous: Classes.DATEPICKER_NAV_BUTTON_PREVIOUS,
+    /* eslint-enable camelcase */
 };

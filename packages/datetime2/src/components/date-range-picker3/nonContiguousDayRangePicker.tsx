@@ -243,9 +243,9 @@ function useNonContiguousCalendarViews(
     );
 
     return {
+        displayMonths: views,
         handleLeftMonthChange,
         handleRightMonthChange,
-        displayMonths: views,
     };
 }
 

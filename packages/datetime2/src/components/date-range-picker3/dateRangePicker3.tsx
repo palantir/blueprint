@@ -32,7 +32,7 @@ import {
     TimePicker,
 } from "@blueprintjs/datetime";
 
-import { Classes } from "../../classes";
+import { Classes, dayPickerClassNameOverrides } from "../../classes";
 import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { DatePicker3Provider } from "../date-picker3/datePicker3Context";
@@ -361,16 +361,20 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
         const { min = 0 } = dayPickerProps;
         return {
             ...dayPickerProps,
+            classNames: {
+                ...dayPickerClassNameOverrides,
+                ...dayPickerProps.classNames,
+            },
             formatters: {
                 formatWeekdayName: this.formatWeekdayName,
-                ...this.props.dayPickerProps?.formatters,
+                ...dayPickerProps.formatters,
             },
             // if a single day range is not allowed, make sure the minimum # of selected days is at least 2
             min: Math.max(this.props.allowSingleDayRange ? 0 : 2, min),
-            modifiers: combineModifiers(this.modifiers, this.props.dayPickerProps?.modifiers),
+            modifiers: combineModifiers(this.modifiers, dayPickerProps.modifiers),
             modifiersClassNames: {
                 ...this.modifiersClassNames,
-                ...this.props.dayPickerProps?.modifiersClassNames,
+                ...dayPickerProps.modifiersClassNames,
             },
         };
     }

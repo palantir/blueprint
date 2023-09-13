@@ -17,15 +17,13 @@
 import * as React from "react";
 import { DayPicker, MonthChangeEventHandler, SelectRangeEventHandler } from "react-day-picker";
 
-import { Classes as CoreClasses, DISPLAYNAME_PREFIX } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 import { DateRange, DateRangeSelectionStrategy, MonthAndYear } from "@blueprintjs/datetime";
 
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 import { DayRangePickerProps } from "./dayRangePickerProps";
-import { Classes } from "../../classes";
-import classNames from "classnames";
 
 /**
  * Render a standard day range picker where props.contiguousCalendarMonths is expected to be `true`.
@@ -75,15 +73,6 @@ export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
             {...dayPickerEventHandlers}
             {...dayPickerProps}
             captionLayout="dropdown-buttons"
-            classNames={{
-                // apply our own button classes so that we & our users can use more predictable selectors in tests
-                button: classNames(CoreClasses.BUTTON, CoreClasses.MINIMAL),
-                button_reset: undefined,
-                nav_button: Classes.DATEPICKER_NAV_BUTTON,
-                nav_button_next: Classes.DATEPICKER_NAV_BUTTON_NEXT,
-                nav_button_previous: Classes.DATEPICKER_NAV_BUTTON_PREVIOUS,
-                ...dayPickerProps?.classNames,
-            }}
             components={{
                 Dropdown: DatePicker3Dropdown,
                 IconLeft,

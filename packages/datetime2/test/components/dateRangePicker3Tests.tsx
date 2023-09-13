@@ -15,6 +15,7 @@
  */
 
 import { assert } from "chai";
+import { format } from "date-fns";
 import * as Locales from "date-fns/locale";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -23,22 +24,21 @@ import sinon from "sinon";
 
 import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
 import {
+    DatePickerShortcutMenu,
     DateRange,
+    DateRangeShortcut,
     DateUtils,
     Errors,
     Months,
-    DateRangeShortcut,
-    DatePickerShortcutMenu,
+    NonNullDateRange,
     TimePicker,
     TimePrecision,
-    NonNullDateRange,
 } from "@blueprintjs/datetime";
 
-import { Datetime2Classes, DateRangePicker3Props, DateRangePicker3 } from "../../src";
+import { DateRangePicker3, DateRangePicker3Props, Datetime2Classes } from "../../src";
 import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
 import { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
-import { format } from "date-fns";
 
 describe("<DatePicker3>", () => {
     let testsContainerElement: HTMLElement;
@@ -1352,11 +1352,11 @@ describe("<DatePicker3>", () => {
                 const rangeEnd = wrapper.find(`.${Datetime2Classes.DATERANGEPICKER3_DAY_RANGE_END}`).first();
                 if (from !== undefined) {
                     assert.isTrue(rangeStart.exists());
-                    assert.equal(Number.parseInt(rangeStart.text()), from);
+                    assert.equal(parseInt(rangeStart.text(), 10), from);
                 }
                 if (to !== undefined) {
                     assert.isTrue(rangeEnd.exists());
-                    assert.equal(Number.parseInt(rangeEnd.text()), to);
+                    assert.equal(parseInt(rangeEnd.text(), 10), to);
                 }
                 if (from !== undefined && to !== undefined) {
                     assert.lengthOf(
