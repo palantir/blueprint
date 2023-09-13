@@ -155,6 +155,10 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     public async componentDidUpdate(prevProps: DateRangePicker3Props) {
         const isControlled = prevProps.value !== undefined && this.props.value !== undefined;
 
+        if (prevProps.contiguousCalendarMonths !== this.props.contiguousCalendarMonths) {
+            this.initialMonthAndYear = MonthAndYear.fromDate(getInitialMonth(this.props, getInitialValue(this.props)));
+        }
+
         if (
             isControlled &&
             (!DateUtils.areRangesEqual(prevProps.value!, this.props.value!) ||
@@ -460,8 +464,16 @@ function getInitialMonth(props: DateRangePicker3Props, value: DateRange): Date {
     const today = new Date();
     // != because we must have a real `Date` to begin the calendar on.
     if (props.initialMonth != null) {
+        if (!props.singleMonthOnly && DateUtils.isSameMonth(props.initialMonth, props.maxDate!)) {
+            // special case: if initial month is same as maxDate month, display it on the right calendar
+            return DateUtils.getDatePreviousMonth(props.initialMonth);
+        }
         return props.initialMonth;
     } else if (value[0] != null) {
+        if (!props.singleMonthOnly && DateUtils.isSameMonth(value[0], props.maxDate!)) {
+            // special case: if start of range is selected and that date is in the maxDate month, display it on the right calendar
+            return DateUtils.getDatePreviousMonth(value[0]);
+        }
         return DateUtils.clone(value[0]);
     } else if (value[1] != null) {
         const month = DateUtils.clone(value[1]);

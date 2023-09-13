@@ -30,10 +30,22 @@ export interface DateRangePicker3Props extends DateRangePickerSharedProps, DateF
      *
      * Some properties are unavailable or have alternative names as top-level props:
      *  - "mode": fixed to "range"
-     *  - "fromDate", "toDate": use "minDate" and "maxDate" instead (legacy names from @blueprintjs/datetime v4)
+     *  - "fromDate", "fromMonth", "fromYear", "toDate", "toMonth", "toYear": use "minDate" and "maxDate" instead (legacy names from @blueprintjs/datetime v4)
      *  - "month": navigation is controlled by the component; use "defaultMonth" to set the initially displayed month
      *  - "selected": use "value" instead
      *  - "required": use "canClearSelection" instead (legacy name from @blueprintjs/datetime v4)
      */
-    dayPickerProps?: Omit<DayPickerRangeProps, "fromDate" | "mode" | "month" | "required" | "selected" | "toDate">;
+    dayPickerProps?: Omit<
+        DayPickerRangeProps,
+        | "fromDate"
+        | "fromMonth"
+        | "fromYear"
+        | "mode"
+        | "month"
+        | "required"
+        | "selected"
+        | "toDate"
+        | "toMonth"
+        | "toYear"
+    >;
 }

@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -29,6 +29,7 @@ import {
     DateRangeShortcut,
     DateUtils,
     Errors,
+    MonthAndYear,
     Months,
     NonNullDateRange,
     TimePicker,
@@ -41,7 +42,7 @@ import { DateRangePicker3State } from "../../src/components/date-range-picker3/d
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
-describe("<DatePicker3>", () => {
+describe.only("<DatePicker3>", () => {
     let testsContainerElement: HTMLElement;
     let drpWrapper: ReactWrapper<DateRangePicker3Props, DateRangePicker3State>;
 
@@ -270,57 +271,60 @@ describe("<DatePicker3>", () => {
             const initialMonth = new Date(2002, Months.MARCH, 1);
             const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
-            render({ defaultValue, initialMonth, maxDate, minDate }).left.assertMonthYear(Months.MARCH, 2002);
+            const { left } = render({ defaultValue, initialMonth, maxDate, minDate });
+            left.assertDisplayMonth(Months.MARCH, 2002);
         });
 
         it("is defaultValue if set and initialMonth not set", () => {
             const defaultValue = [new Date(2007, Months.APRIL, 4), null] as DateRange;
             const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
-            render({ defaultValue, maxDate, minDate }).left.assertMonthYear(Months.APRIL, 2007);
+            const { left } = render({ defaultValue, maxDate, minDate });
+            left.assertDisplayMonth(Months.APRIL, 2007);
         });
 
         it("is value if set and initialMonth not set", () => {
             const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             const value = [new Date(2007, Months.APRIL, 4), null] as DateRange;
-            render({ maxDate, minDate, value }).left.assertMonthYear(Months.APRIL, 2007);
+            const { left } = render({ maxDate, minDate, value });
+            left.assertDisplayMonth(Months.APRIL, 2007);
         });
 
         it("has correct initial month on singleMonthOnly and maxDate == initialMonth", () => {
             const maxDate = new Date(2019, Months.MAY, 6);
             const minDate = new Date(2019, Months.MARCH, 3);
             const initialMonth = maxDate;
-            render({ singleMonthOnly: true, maxDate, minDate, initialMonth }).left.assertMonthYear(Months.MAY, 2019);
+            const { left } = render({ singleMonthOnly: true, maxDate, minDate, initialMonth });
+            left.assertDisplayMonth(Months.MAY, 2019);
         });
 
         it("is (endDate - 1 month) if only endDate is set", () => {
             const value = [null, new Date(2007, Months.APRIL, 4)] as DateRange;
-            render({ value }).left.assertMonthYear(Months.MARCH, 2007);
+            const { left } = render({ value });
+            left.assertDisplayMonth(Months.MARCH, 2007);
         });
 
         it("is endDate if only endDate is set and endDate === minDate month", () => {
             const minDate = new Date(2007, Months.APRIL);
             const value = [null, new Date(2007, Months.APRIL, 4)] as DateRange;
-            render({ minDate, value }).left.assertMonthYear(Months.APRIL, 2007);
+            const { left } = render({ minDate, value });
+            left.assertDisplayMonth(Months.APRIL, 2007);
         });
 
         it("is today if only maxDate/minDate set and today is in date range", () => {
             const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             const today = new Date();
-            render({ maxDate, minDate }).left.assertMonthYear(today.getMonth(), today.getFullYear());
+            const { left } = render({ maxDate, minDate });
+            left.assertDisplayMonth(today.getMonth(), today.getFullYear());
         });
 
         it("is a day between minDate and maxDate if only maxDate/minDate set and today is not in range", () => {
             const maxDate = new Date(2005, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
-            render({ maxDate, minDate });
-            // const leftView = render({ maxDate, minDate }).wrapper.state("leftView");
-            // assert.isTrue(
-            //     DateUtils.isDayInRange(new Date(leftView.getYear(), leftView.getMonth()), [minDate, maxDate]),
-            // );
-            assert.fail(`TODO(@adidahiya): unimplemented`);
+            const { left } = render({ maxDate, minDate });
+            assert.isTrue(DateUtils.isDayInRange(left.displayMonthAndYear.getFullDate(), [minDate, maxDate]));
         });
 
         it("is initialMonth - 1 if initialMonth === maxDate month", () => {
@@ -330,14 +334,16 @@ describe("<DatePicker3>", () => {
             const maxDate = new Date(MAX_YEAR, Months.DECEMBER, 31);
             const minDate = new Date(2000, 0);
 
-            render({ initialMonth, maxDate, minDate }).left.assertMonthYear(Months.NOVEMBER, MAX_YEAR);
+            const { left } = render({ initialMonth, maxDate, minDate });
+            left.assertDisplayMonth(Months.NOVEMBER, MAX_YEAR);
         });
 
         it("is value - 1 if set and initialMonth not set and value month === maxDate month", () => {
             const value = [new Date(2017, Months.OCTOBER, 4), null] as DateRange;
             const maxDate = new Date(2017, Months.OCTOBER, 15);
 
-            render({ maxDate, value }).left.assertMonthYear(Months.SEPTEMBER, 2017);
+            const { left } = render({ maxDate, value });
+            left.assertDisplayMonth(Months.SEPTEMBER, 2017);
         });
 
         it("is initialMonth if initialMonth === minDate month and initialMonth === maxDate month", () => {
@@ -347,23 +353,26 @@ describe("<DatePicker3>", () => {
             const maxDate = new Date(YEAR, Months.DECEMBER, 15);
             const minDate = new Date(YEAR, Months.DECEMBER, 1);
 
-            render({ initialMonth, maxDate, minDate }).left.assertMonthYear(Months.DECEMBER, YEAR);
+            const { left } = render({ initialMonth, maxDate, minDate });
+            // TODO(@adidahiya): fix test
+            left.assertDisplayMonth(Months.DECEMBER, YEAR);
         });
 
         it("right calendar shows the month immediately after the left view by default", () => {
             const startDate = new Date(2017, Months.MAY, 5);
             const endDate = new Date(2017, Months.JULY, 5);
-            render({ value: [startDate, endDate] }).right.assertMonthYear(Months.JUNE, 2017);
+            const { right } = render({ value: [startDate, endDate] });
+            right.assertDisplayMonth(Months.JUNE, 2017);
         });
     });
 
     describe("left/right calendar", () => {
-        function assertFirstLastMonths(monthSelect: ReactWrapper, first: Months, last: Months) {
+        function assertSelectOptionBounds(monthSelect: ReactWrapper, first: Months, last: Months) {
             const options = monthSelect.find("option");
-            const expectedFirstOption = format(new Date(2015, first), "LLLL", { locale: enUSLocale });
-            const expectedLastOption = format(new Date(2015, last), "LLLL", { locale: enUSLocale });
-            assert.equal(options.first().text(), expectedFirstOption);
-            assert.equal(options.last().text(), expectedLastOption);
+            const expectedFirstOption = renderMonthName(first);
+            const expectedLastOption = renderMonthName(last);
+            assert.equal(options.first().text(), expectedFirstOption, "First option in dropdown");
+            assert.equal(options.last().text(), expectedLastOption, "Last option in dropdown");
         }
 
         it("only shows one calendar when minDate and maxDate are in the same month", () => {
@@ -392,7 +401,7 @@ describe("<DatePicker3>", () => {
                 maxDate,
                 minDate,
             }).left;
-            assertFirstLastMonths(monthSelect, Months.JANUARY, Months.NOVEMBER);
+            assertSelectOptionBounds(monthSelect, Months.JANUARY, Months.NOVEMBER);
         });
 
         it("right calendar is bound between (minDate + 1 month) and maxDate", () => {
@@ -403,25 +412,27 @@ describe("<DatePicker3>", () => {
                 maxDate,
                 minDate,
             }).right;
-            assertFirstLastMonths(monthSelect, Months.FEBRUARY, Months.DECEMBER);
+            assertSelectOptionBounds(monthSelect, Months.FEBRUARY, Months.DECEMBER);
         });
 
         it("right calendar shows the month containing the selected end date", () => {
             const startDate = new Date(2017, Months.MAY, 5);
             const endDate = new Date(2017, Months.JULY, 5);
-            render({
+            const { right } = render({
                 contiguousCalendarMonths: false,
                 value: [startDate, endDate],
-            }).right.assertMonthYear(Months.JULY);
+            });
+            right.assertDisplayMonth(Months.JULY);
         });
 
         it("right calendar shows the month immediately after the left view if startDate === endDate month", () => {
             const startDate = new Date(2017, Months.MAY, 5);
             const endDate = new Date(2017, Months.MAY, 15);
-            render({
+            const { right } = render({
                 contiguousCalendarMonths: false,
                 value: [startDate, endDate],
-            }).right.assertMonthYear(Months.JUNE);
+            });
+            right.assertDisplayMonth(Months.JUNE);
         });
     });
 
@@ -430,22 +441,22 @@ describe("<DatePicker3>", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { left, right } = render({ initialMonth });
-            left.assertMonthYear(Months.MAY);
-            right.assertMonthYear(Months.JUNE);
+            left.assertDisplayMonth(Months.MAY);
+            right.assertDisplayMonth(Months.JUNE);
             left.monthSelect.simulate("change", { target: { value: Months.AUGUST } });
-            left.assertMonthYear(Months.AUGUST);
-            right.assertMonthYear(Months.SEPTEMBER);
+            left.assertDisplayMonth(Months.AUGUST);
+            right.assertDisplayMonth(Months.SEPTEMBER);
         });
 
         it("changing right calendar with month dropdown shifts right to the selected month", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { left, right } = render({ initialMonth });
-            left.assertMonthYear(Months.MAY);
-            right.assertMonthYear(Months.JUNE);
+            left.assertDisplayMonth(Months.MAY);
+            right.assertDisplayMonth(Months.JUNE);
             right.monthSelect.simulate("change", { target: { value: Months.AUGUST } });
-            left.assertMonthYear(Months.JULY);
-            right.assertMonthYear(Months.AUGUST);
+            left.assertDisplayMonth(Months.JULY);
+            right.assertDisplayMonth(Months.AUGUST);
         });
 
         it("changing left calendar with year dropdown shifts left to the selected year", () => {
@@ -453,11 +464,11 @@ describe("<DatePicker3>", () => {
             const NEW_YEAR = 2012;
 
             const { left, right } = render({ initialMonth });
-            left.assertMonthYear(Months.MAY);
-            right.assertMonthYear(Months.JUNE);
+            left.assertDisplayMonth(Months.MAY);
+            right.assertDisplayMonth(Months.JUNE);
             left.yearSelect.simulate("change", { target: { value: NEW_YEAR } });
-            left.assertMonthYear(Months.MAY, NEW_YEAR);
-            right.assertMonthYear(Months.JUNE, NEW_YEAR);
+            left.assertDisplayMonth(Months.MAY, NEW_YEAR);
+            right.assertDisplayMonth(Months.JUNE, NEW_YEAR);
         });
 
         it("changing right calendar with year dropdown shifts right to the selected year", () => {
@@ -465,11 +476,11 @@ describe("<DatePicker3>", () => {
             const NEW_YEAR = 2012;
 
             const { left, right } = render({ initialMonth });
-            left.assertMonthYear(Months.MAY);
-            right.assertMonthYear(Months.JUNE);
+            left.assertDisplayMonth(Months.MAY);
+            right.assertDisplayMonth(Months.JUNE);
             right.yearSelect.simulate("change", { target: { value: NEW_YEAR } });
-            left.assertMonthYear(Months.MAY, NEW_YEAR);
-            right.assertMonthYear(Months.JUNE, NEW_YEAR);
+            left.assertDisplayMonth(Months.MAY, NEW_YEAR);
+            right.assertDisplayMonth(Months.JUNE, NEW_YEAR);
         });
 
         it("when calendar is between December and January, changing left calendar with year dropdown shifts left to the selected year", () => {
@@ -478,11 +489,11 @@ describe("<DatePicker3>", () => {
             const NEW_YEAR = 2012;
 
             const { left, right } = render({ initialMonth });
-            left.assertMonthYear(Months.DECEMBER, INITIAL_YEAR);
-            right.assertMonthYear(Months.JANUARY, INITIAL_YEAR + 1);
+            left.assertDisplayMonth(Months.DECEMBER, INITIAL_YEAR);
+            right.assertDisplayMonth(Months.JANUARY, INITIAL_YEAR + 1);
             left.yearSelect.simulate("change", { target: { value: NEW_YEAR } });
-            left.assertMonthYear(Months.DECEMBER, NEW_YEAR);
-            right.assertMonthYear(Months.JANUARY, NEW_YEAR + 1);
+            left.assertDisplayMonth(Months.DECEMBER, NEW_YEAR);
+            right.assertDisplayMonth(Months.JANUARY, NEW_YEAR + 1);
         });
 
         it("when calendar is between December and January, changing right calendar with year dropdown shifts right to the selected year", () => {
@@ -491,11 +502,11 @@ describe("<DatePicker3>", () => {
             const NEW_YEAR = 2012;
 
             const { left, right } = render({ initialMonth });
-            left.assertMonthYear(Months.DECEMBER, INITIAL_YEAR);
-            right.assertMonthYear(Months.JANUARY, INITIAL_YEAR + 1);
+            left.assertDisplayMonth(Months.DECEMBER, INITIAL_YEAR);
+            right.assertDisplayMonth(Months.JANUARY, INITIAL_YEAR + 1);
             right.yearSelect.simulate("change", { target: { value: NEW_YEAR } });
-            left.assertMonthYear(Months.DECEMBER, NEW_YEAR - 1);
-            right.assertMonthYear(Months.JANUARY, NEW_YEAR);
+            left.assertDisplayMonth(Months.DECEMBER, NEW_YEAR - 1);
+            right.assertDisplayMonth(Months.JANUARY, NEW_YEAR);
         });
     });
 
@@ -506,11 +517,11 @@ describe("<DatePicker3>", () => {
                 contiguousCalendarMonths: false,
                 initialMonth,
             });
-            left.assertMonthYear(Months.MAY);
+            left.assertDisplayMonth(Months.MAY);
             clickNavButton("previous");
-            left.assertMonthYear(Months.APRIL);
+            left.assertDisplayMonth(Months.APRIL);
             clickNavButton("next");
-            left.assertMonthYear(Months.MAY);
+            left.assertDisplayMonth(Months.MAY);
         });
 
         it("right calendar can be altered independently of left calendar", () => {
@@ -520,33 +531,33 @@ describe("<DatePicker3>", () => {
                 contiguousCalendarMonths: false,
                 initialMonth,
             });
-            right.assertMonthYear(Months.JUNE);
+            right.assertDisplayMonth(Months.JUNE);
             clickNavButton("previous", 1);
-            right.assertMonthYear(Months.MAY);
+            right.assertDisplayMonth(Months.MAY);
             clickNavButton("next", 1);
-            right.assertMonthYear(Months.JUNE);
+            right.assertDisplayMonth(Months.JUNE);
         });
 
         it("changing left calendar with month dropdown to be equal or after right calendar, shifts the right", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { left, right } = render({ initialMonth, contiguousCalendarMonths: false });
-            left.assertMonthYear(Months.MAY);
-            right.assertMonthYear(Months.JUNE);
+            left.assertDisplayMonth(Months.MAY);
+            right.assertDisplayMonth(Months.JUNE);
             left.monthSelect.simulate("change", { target: { value: Months.AUGUST } });
-            left.assertMonthYear(Months.AUGUST);
-            right.assertMonthYear(Months.SEPTEMBER);
+            left.assertDisplayMonth(Months.AUGUST);
+            right.assertDisplayMonth(Months.SEPTEMBER);
         });
 
         it("changing right calendar with month dropdown to be equal or before left calendar, shifts the left", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { left, right } = render({ initialMonth, contiguousCalendarMonths: false });
-            left.assertMonthYear(Months.MAY);
-            right.assertMonthYear(Months.JUNE);
+            left.assertDisplayMonth(Months.MAY);
+            right.assertDisplayMonth(Months.JUNE);
             right.monthSelect.simulate("change", { target: { value: Months.APRIL } });
-            left.assertMonthYear(Months.MARCH);
-            right.assertMonthYear(Months.APRIL);
+            left.assertDisplayMonth(Months.MARCH);
+            right.assertDisplayMonth(Months.APRIL);
         });
 
         it("changing left calendar with year dropdown to be equal or after right calendar, shifts the right", () => {
@@ -555,8 +566,8 @@ describe("<DatePicker3>", () => {
 
             const { left, right } = render({ initialMonth, contiguousCalendarMonths: false });
             left.yearSelect.simulate("change", { target: { value: NEW_YEAR } });
-            left.assertMonthYear(Months.MAY, NEW_YEAR);
-            right.assertMonthYear(Months.JUNE, NEW_YEAR);
+            left.assertDisplayMonth(Months.MAY, NEW_YEAR);
+            right.assertDisplayMonth(Months.JUNE, NEW_YEAR);
         });
 
         it("changing right calendar with year dropdown to be equal or before left calendar, shifts the left", () => {
@@ -565,8 +576,8 @@ describe("<DatePicker3>", () => {
 
             const { left, right } = render({ initialMonth, contiguousCalendarMonths: false });
             right.yearSelect.simulate("change", { target: { value: NEW_YEAR } });
-            left.assertMonthYear(Months.MAY, NEW_YEAR);
-            right.assertMonthYear(Months.JUNE, NEW_YEAR);
+            left.assertDisplayMonth(Months.MAY, NEW_YEAR);
+            right.assertDisplayMonth(Months.JUNE, NEW_YEAR);
         });
 
         it("changing left calendar with navButton to equal right calendar, shifts the right", () => {
@@ -577,8 +588,8 @@ describe("<DatePicker3>", () => {
                 initialMonth,
             });
             clickNavButton("next");
-            left.assertMonthYear(Months.JUNE);
-            right.assertMonthYear(Months.JULY);
+            left.assertDisplayMonth(Months.JUNE);
+            right.assertDisplayMonth(Months.JULY);
         });
 
         it("changing right calendar with navButton to equal left calendar, shifts the left", () => {
@@ -589,8 +600,8 @@ describe("<DatePicker3>", () => {
                 initialMonth,
             });
             clickNavButton("previous", 1);
-            left.assertMonthYear(Months.APRIL);
-            right.assertMonthYear(Months.MAY);
+            left.assertDisplayMonth(Months.APRIL);
+            right.assertDisplayMonth(Months.MAY);
         });
     });
 
@@ -823,11 +834,11 @@ describe("<DatePicker3>", () => {
             left.monthSelect.simulate("change", { target: { value: MONTH_OUT_OF_VIEW } });
             // hover on left month
             left.mouseEnterDay(14);
-            left.assertMonthYear(MONTH_OUT_OF_VIEW);
+            left.assertDisplayMonth(MONTH_OUT_OF_VIEW);
 
             // hover on right month
             right.mouseEnterDay(14);
-            left.assertMonthYear(MONTH_OUT_OF_VIEW);
+            left.assertDisplayMonth(MONTH_OUT_OF_VIEW);
         });
 
         // verifies the fix for https://github.com/palantir/blueprint/issues/1048
@@ -879,10 +890,10 @@ describe("<DatePicker3>", () => {
                 initialMonth: new Date(2015, Months.MARCH, 2),
                 value: [null, null],
             });
-            left.assertMonthYear(Months.MARCH, 2015);
+            left.assertDisplayMonth(Months.MARCH, 2015);
             left.monthSelect.simulate("change", { target: { value: Months.JANUARY } });
             left.yearSelect.simulate("change", { target: { value: 2014 } });
-            left.assertMonthYear(Months.JANUARY, 2014);
+            left.assertDisplayMonth(Months.JANUARY, 2014);
         });
 
         it("shortcuts fire onChange with correct values", () => {
@@ -980,8 +991,8 @@ describe("<DatePicker3>", () => {
                 shortcuts: [{ label: "custom shortcut", dateRange }],
             }).clickShortcut();
             assert.isTrue(onChangeSpy.calledOnce);
-            left.assertMonthYear(Months.JANUARY, 2016);
-            right.assertMonthYear(Months.FEBRUARY, 2016);
+            left.assertDisplayMonth(Months.JANUARY, 2016);
+            right.assertDisplayMonth(Months.FEBRUARY, 2016);
         });
 
         it(
@@ -998,8 +1009,8 @@ describe("<DatePicker3>", () => {
                     shortcuts: [{ label: "custom shortcut", dateRange }],
                 }).clickShortcut();
                 assert.isTrue(onChangeSpy.calledOnce);
-                left.assertMonthYear(Months.JANUARY, 2016);
-                right.assertMonthYear(Months.DECEMBER, 2016);
+                left.assertDisplayMonth(Months.JANUARY, 2016);
+                right.assertDisplayMonth(Months.DECEMBER, 2016);
             },
         );
 
@@ -1015,12 +1026,12 @@ describe("<DatePicker3>", () => {
 
             clickShortcut();
             assert.isTrue(onChangeSpy.calledOnce);
-            left.assertMonthYear(Months.JANUARY, 2016);
-            right.assertMonthYear(Months.FEBRUARY, 2016);
+            left.assertDisplayMonth(Months.JANUARY, 2016);
+            right.assertDisplayMonth(Months.FEBRUARY, 2016);
 
             clickShortcut();
-            left.assertMonthYear(Months.JANUARY, 2016);
-            right.assertMonthYear(Months.FEBRUARY, 2016);
+            left.assertDisplayMonth(Months.JANUARY, 2016);
+            right.assertDisplayMonth(Months.FEBRUARY, 2016);
         });
 
         it("custom shortcuts set the displayed dates correctly when month stays the same but not years and contiguousCalendarMonths is false", () => {
@@ -1033,12 +1044,12 @@ describe("<DatePicker3>", () => {
 
             clickShortcut();
             assert.isTrue(onChangeSpy.calledOnce);
-            left.assertMonthYear(Months.JUNE, 2014);
-            right.assertMonthYear(Months.JUNE, 2015);
+            left.assertDisplayMonth(Months.JUNE, 2014);
+            right.assertDisplayMonth(Months.JUNE, 2015);
 
             clickShortcut();
-            left.assertMonthYear(Months.JUNE, 2014);
-            right.assertMonthYear(Months.JUNE, 2015);
+            left.assertDisplayMonth(Months.JUNE, 2014);
+            right.assertDisplayMonth(Months.JUNE, 2015);
         });
     });
 
@@ -1169,37 +1180,37 @@ describe("<DatePicker3>", () => {
 
         it("can change displayed date with the dropdowns in the caption", () => {
             const { left } = render({ initialMonth: new Date(2015, Months.MARCH, 2) });
-            left.assertMonthYear(Months.MARCH, 2015);
+            left.assertDisplayMonth(Months.MARCH, 2015);
             left.monthSelect.simulate("change", { target: { value: Months.JANUARY } });
             left.yearSelect.simulate("change", { target: { value: 2014 } });
-            left.assertMonthYear(Months.JANUARY, 2014);
+            left.assertDisplayMonth(Months.JANUARY, 2014);
         });
 
         it("does not change display month when selecting dates from left month", () => {
             render({ initialMonth: new Date(2015, Months.MARCH, 2) })
                 .left.clickDay(2)
                 .clickDay(15)
-                .assertMonthYear(Months.MARCH, 2015);
+                .assertDisplayMonth(Months.MARCH, 2015);
         });
 
         it("does not change display month when selecting dates from right month", () => {
             render({ initialMonth: new Date(2015, Months.MARCH, 2) })
                 .right.clickDay(2)
                 .clickDay(15)
-                .assertMonthYear(Months.APRIL, 2015);
+                .assertDisplayMonth(Months.APRIL, 2015);
         });
 
         it("does not change display month when selecting dates from left and right month", () => {
             const { left, right } = render({ initialMonth: new Date(2015, Months.MARCH, 2) });
             right.clickDay(15);
-            left.clickDay(2).assertMonthYear(Months.MARCH, 2015);
+            left.clickDay(2).assertDisplayMonth(Months.MARCH, 2015);
         });
 
         it("does not change display month when selecting dates across December (left) and January (right)", () => {
             const { left, right } = render({ initialMonth: new Date(2015, Months.DECEMBER, 2) });
             left.clickDay(15);
             right.clickDay(2);
-            left.assertMonthYear(Months.DECEMBER, 2015);
+            left.assertDisplayMonth(Months.DECEMBER, 2015);
         });
     });
 
@@ -1382,7 +1393,7 @@ describe("<DatePicker3>", () => {
 
     function wrapDayPicker(
         parent: ReactWrapper<DateRangePicker3Props, DateRangePicker3State>,
-        which: "left" | "right",
+        whichCalendar: "left" | "right",
     ) {
         const harness = {
             get wrapper() {
@@ -1390,7 +1401,15 @@ describe("<DatePicker3>", () => {
                 return parent
                     .find(DayPicker)
                     .find("Month")
-                    .at(which === "left" ? 0 : 1);
+                    .at(whichCalendar === "left" ? 0 : 1);
+            },
+            get displayMonthAndYear(): MonthAndYear {
+                const captionLabel = harness.wrapper.find(`.${Datetime2Classes.RDP_CAPTION_LABEL}`);
+                assert.exists(captionLabel, "Expected caption label which labels the current display month to exist");
+                const [monthText, yearText] = captionLabel.text().split(" ");
+                const month = getMonthIndex(monthText);
+                const year = parseInt(yearText, 10);
+                return new MonthAndYear(month, year);
             },
             get monthSelect() {
                 return harness.wrapper.find(`.${Datetime2Classes.DATEPICKER_DROPDOWN_MONTH}`).find("select");
@@ -1399,8 +1418,12 @@ describe("<DatePicker3>", () => {
                 return harness.wrapper.find(`.${Datetime2Classes.DATEPICKER_DROPDOWN_YEAR}`).find("select");
             },
 
-            assertMonthYear: (month: number, year?: number) => {
-                assert.fail(`TODO(@adidahiya): assertMonthYear(${month}, ${year}) unimplemented`);
+            assertDisplayMonth: (expectedMonth: number, expectedYear?: number) => {
+                const displayMonthAndYear = harness.displayMonthAndYear;
+                assert.equal(displayMonthAndYear.getMonth(), expectedMonth);
+                if (expectedYear !== undefined) {
+                    assert.equal(displayMonthAndYear.getYear(), expectedYear);
+                }
             },
             clickDay: (dayNumber = 1) => {
                 harness.findDay(dayNumber).simulate("click");
@@ -1422,3 +1445,11 @@ describe("<DatePicker3>", () => {
         return harness;
     }
 });
+
+function renderMonthName(monthIndex: number) {
+    return format(new Date(2023, monthIndex), "LLLL", { locale: enUSLocale });
+}
+
+function getMonthIndex(monthName: string) {
+    return parse(monthName, "LLLL", new Date(), { locale: enUSLocale }).getMonth();
+}

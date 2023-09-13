@@ -95,7 +95,7 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
                 key="right"
                 {...commonDayPickerProps}
                 fromMonth={DateUtils.getDateNextMonth(minDate!)}
-                month={displayMonths.left.getFullDate()}
+                month={displayMonths.right.getFullDate()}
                 numberOfMonths={1}
                 onMonthChange={handleRightMonthChange}
                 toDate={maxDate}
@@ -250,5 +250,11 @@ function useNonContiguousCalendarViews(
 }
 
 function getInitialRightView(selectedRangeEnd: Date | null, leftView: MonthAndYear) {
-    return MonthAndYear.fromDate(selectedRangeEnd) ?? leftView.getNextMonth();
+    let rightView = MonthAndYear.fromDate(selectedRangeEnd);
+
+    if (rightView === undefined || rightView.isSameMonth(leftView)) {
+        return leftView.getNextMonth();
+    }
+
+    return rightView;
 }

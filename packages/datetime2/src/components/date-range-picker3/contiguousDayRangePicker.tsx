@@ -113,9 +113,17 @@ function useContiguousCalendarViews(
     userOnMonthChange: MonthChangeEventHandler | undefined,
 ): ContiguousCalendarViews {
     const [displayMonth, setDisplayMonth] = React.useState(initialMonthAndYear);
+    const isInitialRender = React.useRef<boolean>(true);
 
     // use an effect to react to external value updates (such as shortcut item selections)
     React.useEffect(() => {
+        // upon first render, we shouldn't update the display month; instead just use the initially computed value.
+        // this is important in cases where the user sets `initialMonth` and a controlled `value`.
+        if (isInitialRender.current) {
+            isInitialRender.current = false;
+            return;
+        }
+
         if (selectedRange == null) {
             return;
         }

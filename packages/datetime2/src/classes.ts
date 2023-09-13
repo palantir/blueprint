@@ -26,7 +26,9 @@ const DATEPICKER_NAV_BUTTON = `${DatetimeClasses.DATEPICKER}-nav-button`;
 
 const ReactDayPickerClasses = {
     RDP,
+    RDP_CAPTION_LABEL: `${RDP}-caption_label`,
     RDP_DAY,
+    RDP_VHIDDEN: `${RDP}-vhidden`,
 };
 
 const DatePicker3Classes = {

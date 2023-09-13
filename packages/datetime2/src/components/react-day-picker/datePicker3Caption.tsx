@@ -17,10 +17,10 @@
 import classNames from "classnames";
 import { format } from "date-fns";
 import * as React from "react";
-import { CaptionProps, useDayPicker, useNavigation } from "react-day-picker";
+import { CaptionLabel, CaptionProps, useDayPicker, useNavigation } from "react-day-picker";
 
 import { Button, DISPLAYNAME_PREFIX, Divider, HTMLSelect, OptionProps } from "@blueprintjs/core";
-import { DateUtils } from "@blueprintjs/datetime";
+import { DateUtils, Months } from "@blueprintjs/datetime";
 import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 
 import { Classes } from "../../classes";
@@ -103,19 +103,17 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     const startMonth = displayYear === minYear ? fromDate!.getMonth() : 0;
     const endMonth = displayYear === maxYear ? toDate!.getMonth() + 1 : 12;
 
-    // build the list of available months (limiting based on minDate and maxDate) and localize their full names
-    const monthsToDisplay = React.useMemo<string[]>(() => {
+    // build the list of available months and localize their full names
+    const allMonths = React.useMemo<string[]>(() => {
         const months: string[] = [];
-        for (let i = startMonth; i < endMonth; i++) {
-            months.push(format(new Date(displayYear, i), "MMMM", { locale }));
+        for (let i = Months.JANUARY; i <= Months.DECEMBER; i++) {
+            months.push(format(new Date(displayYear, i), "LLLL", { locale }));
         }
         return months;
-    }, [displayYear, endMonth, startMonth, locale]);
-
-    const monthOptionElements = monthsToDisplay
-        .map<OptionProps>((month, i) => ({ label: month, value: i }))
-        .slice(startMonth, endMonth);
-    const displayedMonthText = monthsToDisplay[displayMonth];
+    }, [displayYear, locale]);
+    const allMonthOptions = allMonths.map<OptionProps>((month, i) => ({ label: month, value: i }));
+    const availableMonthOptions = allMonthOptions.slice(startMonth, endMonth);
+    const displayedMonthText = allMonths[displayMonth];
 
     const monthSelectRightOffset = useMonthSelectRightOffset(monthSelectElement, containerElement, displayedMonthText);
     const monthSelect = (
@@ -128,7 +126,7 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
             onChange={handleMonthSelectChange}
             ref={monthSelectElement}
             value={displayMonth}
-            options={monthOptionElements}
+            options={availableMonthOptions}
         />
     );
 
@@ -160,9 +158,16 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
 
     const orderedSelects = reverseMonthAndYearMenus ? [yearSelect, monthSelect] : [monthSelect, yearSelect];
 
+    const hiddenCaptionLabel = (
+        <div className={Classes.RDP_VHIDDEN}>
+            <CaptionLabel displayMonth={props.displayMonth} id={props.id} />
+        </div>
+    );
+
     return (
         <>
             <div className={classNames(Classes.DATEPICKER_CAPTION, rdpClassNames.caption)} ref={containerElement}>
+                {hiddenCaptionLabel}
                 {prevButton}
                 {orderedSelects}
                 {nextButton}
