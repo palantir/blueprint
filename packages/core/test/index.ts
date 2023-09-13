@@ -42,6 +42,7 @@ import "./forms/asyncControllableInputTests";
 import "./forms/fileInputTests";
 import "./forms/formGroupTests";
 import "./forms/textAreaTests";
+import "./forms/numericInputTests";
 import "./hotkeys/hotkeyTests";
 import "./hotkeys/hotkeysParserTests";
 import "./hotkeys/keyComboTagTests";
