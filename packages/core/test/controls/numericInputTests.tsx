@@ -1103,6 +1103,23 @@ describe("<NumericInput>", () => {
             expect(component.find("input").prop("value")).to.equal("1.001");
         });
 
+        it("handle big decimal numbers", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(
+                <NumericInput
+                    onValueChange={onValueChangeSpy}
+                    value={0}
+                    stepSize={0.000000000000000001}
+                    minorStepSize={0.000000000000000001}
+                />,
+            );
+            const input = component.find("input");
+
+            console.log(input.simulate("keydown", { key: "ArrowUp" }));
+
+            assert.isTrue(onValueChangeSpy.calledWith(0.000000000000000001));
+        });
+
         it("changes max precision appropriately when the min/max stepSize props change", () => {
             const onValueChangeSpy = spy();
             const component = mount(
