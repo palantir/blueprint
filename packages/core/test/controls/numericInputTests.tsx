@@ -1114,9 +1114,7 @@ describe("<NumericInput>", () => {
                 />,
             );
             const input = component.find("input");
-
-            console.log(input.simulate("keydown", { key: "ArrowUp" }));
-
+            input.simulate("keydown", { key: "ArrowUp" });
             assert.isTrue(onValueChangeSpy.calledWith(0.000000000000000001));
         });
 
