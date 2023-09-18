@@ -24,10 +24,15 @@ const RDP = "rdp";
 const RDP_DAY = `${RDP}-day`;
 const DATEPICKER_NAV_BUTTON = `${DatetimeClasses.DATEPICKER}-nav-button`;
 
-const ReactDayPickerClasses = {
+export const ReactDayPickerClasses = {
     RDP,
+    RDP_CAPTION: `${RDP}-caption`,
+    RDP_CAPTION_DROPDOWNS: `${RDP}-caption_dropdowns`,
     RDP_CAPTION_LABEL: `${RDP}-caption_label`,
     RDP_DAY,
+    RDP_MONTH: `${RDP}-month`,
+    RDP_NAV: `${RDP}-nav`,
+    RDP_TABLE: `${RDP}-table`,
     RDP_VHIDDEN: `${RDP}-vhidden`,
 };
 
@@ -63,7 +68,6 @@ export const Classes = {
     ...DatetimeClasses,
     ...DatePicker3Classes,
     ...DateRangePicker3Classes,
-    ...ReactDayPickerClasses,
 };
 
 /**

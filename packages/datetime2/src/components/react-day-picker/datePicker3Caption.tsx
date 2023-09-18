@@ -23,7 +23,7 @@ import { Button, DISPLAYNAME_PREFIX, Divider, HTMLSelect, OptionProps } from "@b
 import { DateUtils, Months } from "@blueprintjs/datetime";
 import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 
-import { Classes } from "../../classes";
+import { Classes, ReactDayPickerClasses } from "../../classes";
 import { useMonthSelectRightOffset } from "../../common/useMonthSelectRightOffset";
 import { DatePicker3Context } from "../date-picker3/datePicker3Context";
 
@@ -159,7 +159,7 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     const orderedSelects = reverseMonthAndYearMenus ? [yearSelect, monthSelect] : [monthSelect, yearSelect];
 
     const hiddenCaptionLabel = (
-        <div className={Classes.RDP_VHIDDEN}>
+        <div className={ReactDayPickerClasses.RDP_VHIDDEN}>
             <CaptionLabel displayMonth={props.displayMonth} id={props.id} />
         </div>
     );

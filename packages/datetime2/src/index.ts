@@ -19,7 +19,7 @@ export { DateInput3, DateInput3Props } from "./components/date-input3/dateInput3
 export { DateRangePicker3, DateRangePicker3Props } from "./components/date-range-picker3/dateRangePicker3";
 export * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";
 
-export { Classes as Datetime2Classes } from "./classes";
+export { Classes as Datetime2Classes, ReactDayPickerClasses } from "./classes";
 
 /* eslint-disable deprecation/deprecation */
 
