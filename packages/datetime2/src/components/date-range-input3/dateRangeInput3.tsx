@@ -32,11 +32,10 @@ import {
     setRef,
     Utils,
 } from "@blueprintjs/core";
-
 import {
+    DatePickerUtils,
     DateRange,
     DateRangeShortcut,
-    DatePickerUtils,
     DateUtils,
     Errors,
     NonNullDateRange,
