@@ -61,7 +61,7 @@ export interface DateFormatProps {
 
 export function getFormattedDateString(
     date: Date | false | null | undefined,
-    props: DateFormatProps & DatePickerBaseProps,
+    props: DateFormatProps & Pick<DatePickerBaseProps, "locale" | "maxDate" | "minDate">,
     ignoreRange = false,
 ) {
     if (date == null) {

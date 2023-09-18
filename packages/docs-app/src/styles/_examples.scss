@@ -616,7 +616,8 @@ $docs-hotkey-piano-height: 510px;
 // these component examples have a "fill" prop option, which doesn't work nicely with the default margin
 #{example("DateInput")},
 #{example("DateInput3")},
-#{example("DateRangeInput")} {
+#{example("DateRangeInput")},
+#{example("DateRangeInput3")} {
   .docs-example > * {
     margin: 0;
   }
