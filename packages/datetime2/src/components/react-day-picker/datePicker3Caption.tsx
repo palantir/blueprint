@@ -59,7 +59,7 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     const prevButton = (
         <Button
             aria-label={labels.labelPrevious(previousMonth, { locale })}
-            className={classNames(Classes.DATEPICKER_NAV_BUTTON, Classes.DATEPICKER_NAV_BUTTON_PREVIOUS)}
+            className={classNames(Classes.DATEPICKER3_NAV_BUTTON, Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS)}
             disabled={!previousMonth}
             icon={<ChevronLeft />}
             minimal={true}
@@ -69,7 +69,7 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     const nextButton = (
         <Button
             aria-label={labels.labelNext(nextMonth, { locale })}
-            className={classNames(Classes.DATEPICKER_NAV_BUTTON, Classes.DATEPICKER_NAV_BUTTON_NEXT)}
+            className={classNames(Classes.DATEPICKER3_NAV_BUTTON, Classes.DATEPICKER3_NAV_BUTTON_NEXT)}
             disabled={!nextMonth}
             icon={<ChevronRight />}
             minimal={true}

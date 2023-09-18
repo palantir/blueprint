@@ -85,7 +85,7 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
         return (
             <div
                 className={classNames(Classes.DATEPICKER, className, {
-                    [Classes.DATEPICKER_HIGHLIGHT_CURRENT_DAY]: this.props.highlightCurrentDay,
+                    [Classes.DATEPICKER3_HIGHLIGHT_CURRENT_DAY]: this.props.highlightCurrentDay,
                 })}
             >
                 {this.maybeRenderShortcuts()}

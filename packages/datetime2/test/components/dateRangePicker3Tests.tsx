@@ -95,10 +95,10 @@ describe("<DatePicker3>", () => {
             const defaultValue: DateRange = [new Date(2017, Months.SEPTEMBER, 1), null];
             const { wrapper } = wrap(<DateRangePicker3 defaultValue={defaultValue} />);
             assert.isFalse(
-                wrapper.find(".rdp-month").at(0).find(`.${Datetime2Classes.DATEPICKER_NAV_BUTTON_NEXT}`).exists(),
+                wrapper.find(".rdp-month").at(0).find(`.${Datetime2Classes.DATEPICKER3_NAV_BUTTON_NEXT}`).exists(),
             );
             assert.isFalse(
-                wrapper.find(".rdp-month").at(1).find(`.${Datetime2Classes.DATEPICKER_NAV_BUTTON_PREVIOUS}`).exists(),
+                wrapper.find(".rdp-month").at(1).find(`.${Datetime2Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS}`).exists(),
             );
         });
 
@@ -1367,7 +1367,7 @@ describe("<DatePicker3>", () => {
                 findTimeInput(precision, which).simulate("change", { target: { value } }),
             clickNavButton: (which: "next" | "previous", navIndex = 0) => {
                 const month = wrapper.find(`.rdp-month`).at(navIndex);
-                const navButton = month.find(`.${Datetime2Classes.DATEPICKER_NAV_BUTTON}-${which}`);
+                const navButton = month.find(`.${Datetime2Classes.DATEPICKER3_NAV_BUTTON}-${which}`);
                 navButton.hostNodes().simulate("click");
                 return harness;
             },
