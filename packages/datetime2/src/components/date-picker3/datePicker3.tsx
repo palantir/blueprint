@@ -32,8 +32,8 @@ import {
 
 import { Classes, dayPickerClassNameOverrides } from "../../classes";
 import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
-import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
+import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 import { DatePicker3Provider } from "./datePicker3Context";
 import { DatePicker3Props } from "./datePicker3Props";
 import { DatePicker3State } from "./datePicker3State";
