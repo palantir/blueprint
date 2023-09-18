@@ -24,6 +24,10 @@
   width: 100%;
 }
 
+.docs-prop-code-tooltip {
+  margin-bottom: $pt-grid-size;
+}
+
 // Example-specific customizations
 
 //
@@ -641,6 +645,11 @@ $docs-hotkey-piano-height: 510px;
   }
 }
 
+#{example("DateRangeInput3")} {
+  .docs-example {
+    padding: ($pt-grid-size * 4) ($pt-grid-size * 2);
+  }
+}
 
 //
 // TABLE
