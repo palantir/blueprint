@@ -74,6 +74,8 @@ export const dayPickerClassNameOverrides: Partial<StyledElement<string>> = {
     /* eslint-disable camelcase */
     button: classNames(CoreClasses.BUTTON, CoreClasses.MINIMAL),
     button_reset: undefined,
+    dropdown_month: DatetimeClasses.DATEPICKER_MONTH_SELECT,
+    dropdown_year: DatetimeClasses.DATEPICKER_YEAR_SELECT,
     nav_button: Classes.DATEPICKER_NAV_BUTTON,
     nav_button_next: Classes.DATEPICKER_NAV_BUTTON_NEXT,
     nav_button_previous: Classes.DATEPICKER_NAV_BUTTON_PREVIOUS,
