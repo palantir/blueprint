@@ -35,7 +35,7 @@
         "postcss-discard-comments": "^6.0.0",
         "postcss-scss": "^4.0.6",
         "postcss-simple-vars": "^7.0.1",
-        "prettier": "~2.8.8",
+        "prettier": "~3.0.3",
         "sass": "^1.63.6",
         "source-map-js": "^1.0.2",
         "strip-css-comments": "^5.0.0",
