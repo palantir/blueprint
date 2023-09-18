@@ -6,7 +6,6 @@
 @import "@blueprintjs/datetime/src/common";
 
 // react-day-picker does not conform to our naming scheme
-
 /* stylelint-disable selector-class-pattern */
 
 .#{$ns}-datepicker {
@@ -43,6 +42,7 @@
     font-weight: 600;
     padding-top: $datepicker-padding;
     text-decoration: none;
+    text-transform: none;
   }
 
   .rdp-tbody {
@@ -84,6 +84,14 @@
       }
     }
 
+    &.rdp-day_disabled {
+      background: none;
+      color: $pt-text-color-disabled;
+      cursor: not-allowed;
+    }
+
+    // selected styles should override disabled styles (this can happen when single day ranges are not allowed,
+    // rdp applies "disabled" to the first selection in the range)
     &.rdp-day_selected {
       background-color: $blue3;
       border-radius: $pt-border-radius;
@@ -91,61 +99,18 @@
 
       &:hover {
         background-color: $blue2;
+        color: $white;
       }
 
       &:active {
         background-color: $blue1;
       }
     }
-
-    // putting it last so it overrides equally specific selectors above.
-    &.rdp-day_disabled {
-      background: none;
-      color: $pt-text-color-disabled;
-      cursor: not-allowed;
-    }
   }
 
   &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
     border: 1px solid $pt-divider-black;
   }
-}
-
-// use extra specificity to override DatePicker v1 styles
-.#{$ns}-datepicker-caption.rdp-caption {
-  @include pt-flex-container(row);
-  justify-content: space-between;
-  margin: 0 0 $datepicker-padding;
-
-  // override HTMLSelect styles for a narrower appearance
-  // N.B. these styles are important to achieve accurate measurements to position the dropdown arrows in <DatePickerCaption>
-  .#{$ns}-html-select select {
-    font-weight: 600;
-    padding-left: $datepicker-padding;
-    padding-right: $pt-icon-size-standard;
-
-    + .#{$ns}-icon {
-      right: 2px;
-    }
-  }
-
-  + .#{$ns}-divider {
-    margin: 0;
-  }
-}
-
-.#{$ns}-datepicker-month-select {
-  flex-shrink: 1;
-}
-
-.#{$ns}-datepicker-year-select {
-  flex-shrink: 1;
-  min-width: 60px;
-}
-
-.#{$ns}-datepicker-caption-measure {
-  font-weight: 600;
-  padding-left: $datepicker-padding;
 }
 
 .#{$ns}-datepicker-content {

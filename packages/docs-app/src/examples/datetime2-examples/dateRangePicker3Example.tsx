@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import moment from "moment";
+import { add } from "date-fns";
 import * as React from "react";
 
-import { Classes, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
-import { DateRange, DateRangePicker, TimePrecision } from "@blueprintjs/datetime";
+import { Classes, FormGroup, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
+import { DateRange, TimePrecision } from "@blueprintjs/datetime";
+import { DateRangePicker3 } from "@blueprintjs/datetime2";
 import {
     Example,
     ExampleProps,
@@ -27,14 +28,16 @@ import {
     handleValueChange,
 } from "@blueprintjs/docs-theme";
 
-import { MomentDateRange } from "./common/momentDate";
-import { PrecisionSelect } from "./common/precisionSelect";
+import { CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
+import { DateRangeTag } from "../../common/dateRangeTag";
+import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 
-export interface DateRangePickerExampleState {
+interface DateRangePicker3ExampleState {
     allowSingleDayRange?: boolean;
     singleMonthOnly?: boolean;
     contiguousCalendarMonths?: boolean;
     dateRange?: DateRange;
+    localeCode: CommonDateFnsLocale;
     maxDateIndex?: number;
     minDateIndex?: number;
     reverseMonthAndYearMenus?: boolean;
@@ -47,19 +50,21 @@ interface DateOption {
     value?: Date;
 }
 
+const today = new Date();
+
 const MIN_DATE_OPTIONS: DateOption[] = [
     { label: "None", value: undefined },
     {
         label: "1 week ago",
-        value: moment().add(-1, "weeks").toDate(),
+        value: add(today, { weeks: -1 }),
     },
     {
         label: "4 months ago",
-        value: moment().add(-4, "months").toDate(),
+        value: add(today, { months: -4 }),
     },
     {
         label: "1 year ago",
-        value: moment().add(-1, "years").toDate(),
+        value: add(today, { years: -1 }),
     },
 ];
 
@@ -67,33 +72,38 @@ const MAX_DATE_OPTIONS: DateOption[] = [
     { label: "None", value: undefined },
     {
         label: "Today",
-        value: moment().toDate(),
+        value: today,
     },
     {
         label: "1 week from now",
-        value: moment().add(1, "weeks").toDate(),
+        value: add(today, { weeks: 1 }),
     },
     {
         label: "4 months from now",
-        value: moment().add(4, "months").toDate(),
+        value: add(today, { months: 4 }),
     },
     {
         label: "1 year from now",
-        value: moment().add(1, "years").toDate(),
+        value: add(today, { years: 1 }),
     },
 ];
 
-export class DateRangePickerExample extends React.PureComponent<ExampleProps, DateRangePickerExampleState> {
-    public state: DateRangePickerExampleState = {
+export class DateRangePicker3Example extends React.PureComponent<ExampleProps, DateRangePicker3ExampleState> {
+    public state: DateRangePicker3ExampleState = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dateRange: [null, null],
+        localeCode: DateRangePicker3.defaultProps.locale as CommonDateFnsLocale,
         maxDateIndex: 0,
         minDateIndex: 0,
         reverseMonthAndYearMenus: false,
         shortcuts: true,
         singleMonthOnly: false,
     };
+
+    private handleDateRangeChange = (dateRange: DateRange) => this.setState({ dateRange });
+
+    private handleLocaleCodeChange = (localeCode: CommonDateFnsLocale) => this.setState({ localeCode });
 
     private handleMaxDateIndexChange = handleNumberChange(maxDateIndex => this.setState({ maxDateIndex }));
 
@@ -118,19 +128,20 @@ export class DateRangePickerExample extends React.PureComponent<ExampleProps, Da
     });
 
     public render() {
-        const { minDateIndex, maxDateIndex, ...props } = this.state;
+        const { dateRange, localeCode, minDateIndex, maxDateIndex, ...props } = this.state;
         const minDate = MIN_DATE_OPTIONS[minDateIndex].value;
         const maxDate = MAX_DATE_OPTIONS[maxDateIndex].value;
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
-                <DateRangePicker
+                <DateRangePicker3
                     {...props}
                     className={Classes.ELEVATION_1}
+                    locale={localeCode}
                     maxDate={maxDate}
                     minDate={minDate}
-                    onChange={this.handleDateChange}
+                    onChange={this.handleDateRangeChange}
                 />
-                <MomentDateRange withTime={props.timePrecision !== undefined} range={this.state.dateRange} />
+                <DateRangeTag range={dateRange} showTime={props.timePrecision !== undefined} />
             </Example>
         );
     }
@@ -152,6 +163,7 @@ export class DateRangePickerExample extends React.PureComponent<ExampleProps, Da
                     />
                     <Switch
                         checked={this.state.contiguousCalendarMonths}
+                        disabled={this.state.singleMonthOnly}
                         label="Constrain to contiguous months"
                         onChange={this.toggleContiguousCalendarMonths}
                     />
@@ -183,12 +195,13 @@ export class DateRangePickerExample extends React.PureComponent<ExampleProps, Da
                         value={this.state.timePrecision}
                         onChange={this.handlePrecisionChange}
                     />
+                    <FormGroup label="Locale">
+                        <DateFnsLocaleSelect value={this.state.localeCode} onChange={this.handleLocaleCodeChange} />
+                    </FormGroup>
                 </div>
             </>
         );
     }
-
-    private handleDateChange = (dateRange: DateRange) => this.setState({ dateRange });
 
     private renderSelectMenu(
         label: string,

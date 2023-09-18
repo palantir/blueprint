@@ -21,25 +21,40 @@ import { Day } from "react-day-picker";
 import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
-import { DatePickerShortcut, DateUtils, Months, TimePicker, TimePrecision } from "@blueprintjs/datetime";
-// tslint:disable no-submodule-imports
-import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
-import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/shortcuts";
-// tslint:enable no-submodule-imports
+import {
+    DatePickerShortcut,
+    DatePickerShortcutMenu,
+    DateUtils,
+    Errors,
+    Months,
+    TimePicker,
+    TimePrecision,
+} from "@blueprintjs/datetime";
 import { assertDatesEqual } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src/classes";
+import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
 import { DatePicker3, DatePicker3Props } from "../../src/components/date-picker3/datePicker3";
 import { DatePicker3State } from "../../src/components/date-picker3/datePicker3State";
 import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils";
+import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 describe("<DatePicker3>", () => {
     let testsContainerElement: HTMLElement;
     let datePicker3Wrapper: ReactWrapper<DatePicker3Props, DatePicker3State>;
+    let loadDateFnsLocaleStub: sinon.SinonStub;
+
+    before(() => {
+        loadDateFnsLocaleStub = sinon.stub(DateFnsLocaleUtils, "loadDateFnsLocale").callsFake(loadDateFnsLocaleFake);
+    });
 
     beforeEach(() => {
         testsContainerElement = document.createElement("div");
         document.body.appendChild(testsContainerElement);
+    });
+
+    after(() => {
+        loadDateFnsLocaleStub.restore();
     });
 
     afterEach(() => {
@@ -462,16 +477,23 @@ describe("<DatePicker3>", () => {
         it("all shortcuts are displayed as inactive when none are selected", () => {
             const { root } = wrap(<DatePicker3 shortcuts={true} />);
 
-            assert.isFalse(root.find(Shortcuts).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists());
+            assert.isFalse(
+                root.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists(),
+            );
         });
 
         it("corresponding shortcut is displayed as active when selected", () => {
             const selectedShortcut = 0;
             const { root } = wrap(<DatePicker3 shortcuts={true} selectedShortcutIndex={selectedShortcut} />);
 
-            assert.isTrue(root.find(Shortcuts).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists());
+            assert.isTrue(
+                root.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists(),
+            );
 
-            assert.lengthOf(root.find(Shortcuts).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`), 1);
+            assert.lengthOf(
+                root.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`),
+                1,
+            );
 
             assert.isTrue(root.state("selectedShortcutIndex") === selectedShortcut);
         });

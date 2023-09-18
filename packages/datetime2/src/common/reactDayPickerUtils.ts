@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-import { getFormattedDateString } from "../../common/dateFormatProps";
-import { measureTextWidth } from "../../common/utils";
-import { getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
+import type { DateRange as RDPRange } from "react-day-picker";
+
+import type { DateRange } from "@blueprintjs/datetime";
 
 /**
- * DatePicker-related utility functions which may be useful outside this package to
- * build date/time components. Initially created for use in @blueprintjs/datetime2.
+ * Converts a Blueprint `DateRange` to a react-day-picker `DateRange`.
  */
-export const DatePickerUtils = {
-    getDefaultMaxDate,
-    getDefaultMinDate,
-    getFormattedDateString,
-    measureTextWidth,
-};
+export function dateRangeToDayPickerRange(range: DateRange): RDPRange {
+    return { from: range[0] ?? undefined, to: range[1] ?? undefined };
+}

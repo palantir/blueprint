@@ -33,7 +33,7 @@ import {
     SELECTED_RANGE_MODIFIER,
 } from "../date-picker/datePickerCore";
 import { DatePickerNavbar } from "../date-picker/datePickerNavbar";
-import { DateRangeShortcut, Shortcuts } from "../shortcuts/shortcuts";
+import { DatePickerShortcutMenu, DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 
 export interface DateRangePickerProps extends DatePickerBaseProps, Props {
@@ -81,7 +81,11 @@ export interface DateRangePickerProps extends DatePickerBaseProps, Props {
      * When triggered from mouseenter, it will pass the date range that would result from next click.
      * When triggered from mouseleave, it will pass `undefined`.
      */
-    onHoverChange?: (hoveredDates: DateRange, hoveredDay: Date, hoveredBoundary: Boundary) => void;
+    onHoverChange?: (
+        hoveredDates: DateRange | undefined,
+        hoveredDay: Date,
+        hoveredBoundary: Boundary | undefined,
+    ) => void;
 
     /**
      * Called when the `shortcuts` props is enabled and the user changes the shortcut.
@@ -330,7 +334,7 @@ export class DateRangePicker extends AbstractPureComponent<DateRangePickerProps,
         const { selectedShortcutIndex } = this.state;
         const { allowSingleDayRange, maxDate, minDate, timePrecision } = this.props;
         return [
-            <Shortcuts
+            <DatePickerShortcutMenu
                 key="shortcuts"
                 {...{
                     allowSingleDayRange,

@@ -28,13 +28,16 @@ import {
     Tag,
     Utils,
 } from "@blueprintjs/core";
-import { DatePickerShortcut, DatePickerUtils, DateUtils, TimezoneSelect, TimezoneUtils } from "@blueprintjs/datetime";
-// tslint:disable no-submodule-imports
-import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
-import { UTC_TIME } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
-import { getTimezoneShortName, isValidTimezone } from "@blueprintjs/datetime/lib/esm/common/timezoneNameUtils";
+import {
+    DatePickerShortcut,
+    DatePickerUtils,
+    DateUtils,
+    Errors,
+    TimezoneNameUtils,
+    TimezoneSelect,
+    TimezoneUtils,
+} from "@blueprintjs/datetime";
 
-// tslint:enable no-submodule-imports
 import { Classes } from "../../classes";
 import { DatePicker3, DatePicker3Props } from "../date-picker3/datePicker3";
 import { getFormattedDateString } from "./dateInput3FormatUtils";
@@ -63,10 +66,15 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         defaultValue,
         disableTimezoneSelect,
         fill,
+        formatDate,
         inputProps = {},
+        invalidDateMessage,
+        locale,
         // defaults duplicated here for TypeScript convenience
         maxDate = DEFAULT_MAX_DATE,
         minDate = DEFAULT_MIN_DATE,
+        outOfRangeMessage,
+        parseDate,
         placeholder,
         popoverProps = {},
         popoverRef,
@@ -94,7 +102,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     const isControlled = valueFromProps !== undefined;
     const defaultValueFromProps = React.useMemo(
         () => TimezoneUtils.getDateObjectFromIsoString(defaultValue, timezoneValue),
-        [defaultValue, defaultTimezone],
+        [defaultValue, timezoneValue],
     );
     const [valueAsDate, setValue] = React.useState<Date | null>(isControlled ? valueFromProps : defaultValueFromProps!);
 
@@ -103,18 +111,17 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
 
     // rendered as the text input's value
     const formattedDateString = React.useMemo(() => {
-        return valueAsDate === null ? undefined : getFormattedDateString(valueAsDate, props);
-    }, [
-        valueAsDate,
-        minDate,
-        maxDate,
-        // HACKHACK: ESLint false positive
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        props.formatDate,
-        props.locale,
-        props.invalidDateMessage,
-        props.outOfRangeMessage,
-    ]);
+        return valueAsDate === null
+            ? undefined
+            : getFormattedDateString(valueAsDate, {
+                  formatDate,
+                  invalidDateMessage,
+                  locale,
+                  maxDate,
+                  minDate,
+                  outOfRangeMessage,
+              });
+    }, [valueAsDate, minDate, maxDate, formatDate, locale, invalidDateMessage, outOfRangeMessage]);
     const [inputValue, setInputValue] = React.useState(formattedDateString ?? undefined);
 
     const isErrorState =
@@ -128,10 +135,10 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         if (isControlled) {
             setValue(valueFromProps);
         }
-    }, [valueFromProps]);
+    }, [isControlled, valueFromProps]);
 
     React.useEffect(() => {
-        if (defaultTimezone !== undefined && isValidTimezone(defaultTimezone)) {
+        if (defaultTimezone !== undefined && TimezoneNameUtils.isValidTimezone(defaultTimezone)) {
             setTimezoneValue(defaultTimezone);
         }
     }, [defaultTimezone]);
@@ -140,15 +147,18 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         if (isControlled && !isInputFocused) {
             setInputValue(formattedDateString);
         }
-    }, [formattedDateString]);
+    }, [isControlled, isInputFocused, formattedDateString]);
 
     // Popover contents (date picker)
     // ------------------------------------------------------------------------
 
-    const handlePopoverClose = React.useCallback((e: React.SyntheticEvent<HTMLElement>) => {
-        popoverProps.onClose?.(e);
-        setIsOpen(false);
-    }, []);
+    const handlePopoverClose = React.useCallback(
+        (e: React.SyntheticEvent<HTMLElement>) => {
+            popoverProps.onClose?.(e);
+            setIsOpen(false);
+        },
+        [popoverProps.onClose],
+    );
 
     const handleDateChange = React.useCallback(
         (newDate: Date | null, isUserChange: boolean, didSubmitWithEnter = false) => {
@@ -184,7 +194,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 setIsInputFocused(newIsInputFocused);
                 setIsOpen(newIsOpen);
             } else {
-                const newFormattedDateString = getFormattedDateString(newDate, props);
+                const newFormattedDateString = getFormattedDateString(newDate, props) ?? "";
                 setIsInputFocused(newIsInputFocused);
                 setIsOpen(newIsOpen);
                 setValue(newDate);
@@ -198,7 +208,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             );
             props.onChange?.(newIsoDateString, isUserChange);
         },
-        [props.onChange, timezoneValue, timePrecision, valueAsDate],
+        [isControlled, props, props.onChange, timezoneValue, timePrecision, valueAsDate],
     );
 
     const dayPickerProps: DatePicker3Props["dayPickerProps"] = {
@@ -225,14 +235,17 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         }
     }, []);
 
-    const handleEndFocusBoundaryFocusIn = React.useCallback((e: React.FocusEvent<HTMLDivElement>) => {
-        if (popoverContentRef.current?.contains(getRelatedTargetWithFallback(e))) {
-            inputRef.current?.focus();
-            handlePopoverClose(e);
-        } else {
-            getKeyboardFocusableElements(popoverContentRef).pop()?.focus();
-        }
-    }, []);
+    const handleEndFocusBoundaryFocusIn = React.useCallback(
+        (e: React.FocusEvent<HTMLDivElement>) => {
+            if (popoverContentRef.current?.contains(getRelatedTargetWithFallback(e))) {
+                inputRef.current?.focus();
+                handlePopoverClose(e);
+            } else {
+                getKeyboardFocusableElements(popoverContentRef).pop()?.focus();
+            }
+        },
+        [handlePopoverClose],
+    );
 
     // React's onFocus prop listens to the focusin browser event under the hood, so it's safe to
     // provide it the focusIn event handlers instead of using a ref and manually adding the
@@ -302,7 +315,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 interactive={!isTimezoneSelectDisabled}
                 minimal={true}
             >
-                {getTimezoneShortName(timezoneValue, tzSelectDate)}
+                {TimezoneNameUtils.getTimezoneShortName(timezoneValue, tzSelectDate)}
             </Tag>
         </TimezoneSelect>
     );
@@ -310,17 +323,15 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     // Text input
     // ------------------------------------------------------------------------
 
-    const parseDate = React.useCallback(
+    const parseInputValue = React.useCallback(
         (dateString: string) => {
-            if (dateString === props.outOfRangeMessage || dateString === props.invalidDateMessage) {
+            if (dateString === outOfRangeMessage || dateString === invalidDateMessage) {
                 return null;
             }
-            const newDate = props.parseDate(dateString, props.locale);
+            const newDate = parseDate(dateString, locale);
             return newDate === false ? INVALID_DATE : newDate;
         },
-        // HACKHACK: ESLint false positive
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        [props.outOfRangeMessage, props.invalidDateMessage, props.parseDate, props.locale],
+        [outOfRangeMessage, invalidDateMessage, parseDate, locale],
     );
 
     const handleInputFocus = React.useCallback(
@@ -328,9 +339,9 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             setIsInputFocused(true);
             setIsOpen(true);
             setInputValue(formattedDateString);
-            props.inputProps?.onFocus?.(e);
+            inputProps?.onFocus?.(e);
         },
-        [formattedDateString, props.inputProps?.onFocus],
+        [formattedDateString, inputProps?.onFocus],
     );
 
     const handleInputBlur = React.useCallback(
@@ -339,7 +350,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 return;
             }
 
-            const date = parseDate(inputValue);
+            const date = parseInputValue(inputValue);
 
             if (
                 inputValue.length > 0 &&
@@ -371,7 +382,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             props.inputProps?.onBlur?.(e);
         },
         [
-            parseDate,
+            parseInputValue,
             formattedDateString,
             inputValue,
             valueAsDate,
@@ -379,14 +390,14 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             maxDate,
             props.onChange,
             props.onError,
-            props.inputProps?.onBlur,
+            inputProps?.onBlur,
         ],
     );
 
     const handleInputChange = React.useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             const valueString = (e.target as HTMLInputElement).value;
-            const inputValueAsDate = parseDate(valueString);
+            const inputValueAsDate = parseInputValue(valueString);
 
             if (
                 DateUtils.isDateValid(inputValueAsDate) &&
@@ -411,9 +422,9 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 setValue(inputValueAsDate);
                 setInputValue(valueString);
             }
-            props.inputProps?.onChange?.(e);
+            inputProps?.onChange?.(e);
         },
-        [minDate, maxDate, timezoneValue, timePrecision, parseDate, props.onChange, props.inputProps?.onChange],
+        [minDate, maxDate, timezoneValue, timePrecision, parseInputValue, props.onChange, inputProps?.onChange],
     );
 
     const handleInputClick = React.useCallback(
@@ -421,9 +432,9 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             // stop propagation to the Popover's internal handleTargetClick handler;
             // otherwise, the popover will flicker closed as soon as it opens.
             e.stopPropagation();
-            props.inputProps?.onClick?.(e);
+            inputProps?.onClick?.(e);
         },
-        [props.inputProps?.onClick],
+        [inputProps?.onClick],
     );
 
     const handleInputKeyDown = React.useCallback(
@@ -439,22 +450,22 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 setIsOpen(false);
                 inputRef.current?.blur();
             } else if (e.key === "Enter" && inputValue != null) {
-                const nextDate = parseDate(inputValue);
+                const nextDate = parseInputValue(inputValue);
                 if (DateUtils.isDateValid(nextDate)) {
                     handleDateChange(nextDate, true, true);
                 }
             }
 
-            props.inputProps?.onKeyDown?.(e);
+            inputProps?.onKeyDown?.(e);
         },
-        [inputValue, parseDate, props.inputProps?.onKeyDown],
+        [inputValue, parseInputValue, inputProps?.onKeyDown],
     );
 
     // Main render
     // ------------------------------------------------------------------------
 
     const shouldShowErrorStyling =
-        !isInputFocused || inputValue === props.outOfRangeMessage || inputValue === props.invalidDateMessage;
+        !isInputFocused || inputValue === outOfRangeMessage || inputValue === invalidDateMessage;
 
     // We use the renderTarget API to flatten the rendered DOM and make it easier to implement features like the "fill" prop.
     const renderTarget = React.useCallback(
@@ -478,7 +489,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                     aria-expanded={targetIsOpen}
                     disabled={props.disabled}
                     fill={fill}
-                    inputRef={mergeRefs(ref, inputRef, props.inputProps?.inputRef ?? null)}
+                    inputRef={mergeRefs(ref, inputRef, inputProps?.inputRef ?? null)}
                     onBlur={handleInputBlur}
                     onChange={handleInputChange}
                     onClick={handleInputClick}
@@ -491,6 +502,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         [
             fill,
             formattedDateString,
+            inputProps,
             inputValue,
             isInputFocused,
             isTimezoneSelectDisabled,
@@ -499,7 +511,6 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             shouldShowErrorStyling,
             timezoneValue,
             props.disabled,
-            props.inputProps,
             props.rightElement,
         ],
     );
@@ -535,11 +546,11 @@ function getInitialTimezoneValue({ defaultTimezone }: DateInput3Props) {
     if (defaultTimezone === undefined) {
         return TimezoneUtils.getCurrentTimezone();
     } else {
-        if (isValidTimezone(defaultTimezone)) {
+        if (TimezoneNameUtils.isValidTimezone(defaultTimezone)) {
             return defaultTimezone;
         } else {
             console.error(Errors.DATEINPUT_INVALID_DEFAULT_TIMEZONE);
-            return UTC_TIME.ianaCode;
+            return TimezoneUtils.UTC_TIME.ianaCode;
         }
     }
 }

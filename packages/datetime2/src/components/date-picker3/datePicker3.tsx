@@ -19,15 +19,20 @@ import { format } from "date-fns";
 import * as React from "react";
 import { ActiveModifiers, DateFormatter, DayPicker } from "react-day-picker";
 
-import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, Utils } from "@blueprintjs/core";
-import { DatePickerUtils, DateRange, DateRangeShortcut, DateUtils, TimePicker } from "@blueprintjs/datetime";
-// tslint:disable no-submodule-imports
-import * as Errors from "@blueprintjs/datetime/lib/esm/common/errors";
-import { Shortcuts } from "@blueprintjs/datetime/lib/esm/components/shortcuts/shortcuts";
-// tslint:enable no-submodule-imports
+import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
+import {
+    DatePickerShortcutMenu,
+    DatePickerUtils,
+    DateRange,
+    DateRangeShortcut,
+    DateUtils,
+    Errors,
+    TimePicker,
+} from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
-import { DatePicker3Caption } from "./datePicker3Caption";
+import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
+import { DatePicker3Caption } from "../react-day-picker/datePicker3Caption";
 import { DatePicker3Provider } from "./datePicker3Context";
 import { DatePicker3Props } from "./datePicker3Props";
 import { DatePicker3State } from "./datePicker3State";
@@ -170,16 +175,8 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
             return;
         }
 
-        try {
-            const { default: locale } = await import(`date-fns/esm/locale/${localeCode}/index.js`);
-            this.setState({ locale });
-        } catch {
-            if (!Utils.isNodeEnv("production")) {
-                console.error(
-                    `[Blueprint] Could not load "${localeCode}" date-fns locale, please check that this locale code is supported: https://github.com/date-fns/date-fns/tree/main/src/locale`,
-                );
-            }
-        }
+        const locale = await loadDateFnsLocale(localeCode);
+        this.setState({ locale });
     }
 
     /**
@@ -250,7 +247,7 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
                       dateRange: [shortcut.date, null],
                   }));
         return [
-            <Shortcuts
+            <DatePickerShortcutMenu
                 key="shortcuts"
                 {...{
                     allowSingleDayRange: true,

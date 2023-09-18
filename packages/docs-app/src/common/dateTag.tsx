@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-export { DateInput3Example } from "./dateInput3Example";
-export * from "./datePicker3Example";
-export * from "./datePicker3LocalizedExample";
-export * from "./datePicker3ModifierExample";
-export { DateRangePicker3Example } from "./dateRangePicker3Example";
+import { format } from "date-fns";
+import * as React from "react";
+
+import { Tag } from "@blueprintjs/core";
+
+export interface DateTagProps {
+    date: Date | null;
+}
+
+export const DateTag: React.FC<DateTagProps> = ({ date }) => (
+    <Tag intent={date == null ? "none" : "primary"}>{date == null ? "No date" : format(date, "PPPppp")}</Tag>
+);

@@ -17,22 +17,25 @@
 import classNames from "classnames";
 import { format } from "date-fns";
 import * as React from "react";
-import { CaptionProps, useDayPicker, useNavigation } from "react-day-picker";
+import { CaptionLabel, CaptionProps, useDayPicker, useNavigation } from "react-day-picker";
 
 import { Button, DISPLAYNAME_PREFIX, Divider, HTMLSelect, OptionProps } from "@blueprintjs/core";
-import { DateUtils } from "@blueprintjs/datetime";
-// tslint:disable-next-line no-submodule-imports
-import { measureTextWidth } from "@blueprintjs/datetime/lib/esm/common/utils";
-import { ChevronLeft, ChevronRight, IconSize } from "@blueprintjs/icons";
+import { DateUtils, Months } from "@blueprintjs/datetime";
+import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 
 import { Classes } from "../../classes";
-import { DatePicker3Context } from "./datePicker3Context";
+import { useMonthSelectRightOffset } from "../../common/useMonthSelectRightOffset";
+import { DatePicker3Context } from "../date-picker3/datePicker3Context";
 
 /**
- * Custom react-day-picker caption component which implements Blueprint's datepicker design
- * with month and year dropdowns and previous/next buttons to navigate calendar months.
+ * Custom react-day-picker caption component used in non-contiguous two-month date range pickers.
+ *
+ * We need to override the whole caption instead of its lower-level components because react-day-picker
+ * does not have built-in support for non-contiguous range pickers.
+ *
+ * @see https://react-day-picker.js.org/guides/custom-components
  */
-export function DatePicker3Caption(captionProps: CaptionProps) {
+export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     const { classNames: rdpClassNames, fromDate, toDate, labels } = useDayPicker();
     const { locale, reverseMonthAndYearMenus } = React.useContext(DatePicker3Context);
 
@@ -40,11 +43,11 @@ export function DatePicker3Caption(captionProps: CaptionProps) {
     const minYear = fromDate!.getFullYear();
     const maxYear = toDate!.getFullYear();
 
-    const displayMonth = captionProps.displayMonth.getMonth();
-    const displayYear = captionProps.displayMonth.getFullYear();
+    const displayMonth = props.displayMonth.getMonth();
+    const displayYear = props.displayMonth.getFullYear();
 
     const containerElement = React.useRef<HTMLDivElement>(null);
-    const [monthRightOffset, setMonthRightOffset] = React.useState<number>(0);
+    const monthSelectElement = React.useRef<HTMLSelectElement>(null);
     const { currentMonth, goToMonth, nextMonth, previousMonth } = useNavigation();
 
     const handlePreviousClick = React.useCallback(
@@ -100,30 +103,30 @@ export function DatePicker3Caption(captionProps: CaptionProps) {
     const startMonth = displayYear === minYear ? fromDate!.getMonth() : 0;
     const endMonth = displayYear === maxYear ? toDate!.getMonth() + 1 : 12;
 
-    // build the list of available months (limiting based on minDate and maxDate) and localize their full names
-    const monthsToDisplay = React.useMemo<string[]>(() => {
+    // build the list of available months and localize their full names
+    const allMonths = React.useMemo<string[]>(() => {
         const months: string[] = [];
-        for (let i = startMonth; i < endMonth; i++) {
-            months.push(format(new Date(displayYear, i), "MMMM", { locale }));
+        for (let i = Months.JANUARY; i <= Months.DECEMBER; i++) {
+            months.push(format(new Date(displayYear, i), "LLLL", { locale }));
         }
         return months;
-    }, [displayYear, endMonth, startMonth, locale]);
+    }, [displayYear, locale]);
+    const allMonthOptions = allMonths.map<OptionProps>((month, i) => ({ label: month, value: i }));
+    const availableMonthOptions = allMonthOptions.slice(startMonth, endMonth);
+    const displayedMonthText = allMonths[displayMonth];
 
-    const monthOptionElements = monthsToDisplay
-        .map<OptionProps>((month, i) => ({ label: month, value: i }))
-        .slice(startMonth, endMonth);
-    const displayedMonthText = monthsToDisplay[displayMonth];
-
+    const monthSelectRightOffset = useMonthSelectRightOffset(monthSelectElement, containerElement, displayedMonthText);
     const monthSelect = (
         <HTMLSelect
             aria-label={labels.labelMonthDropdown()}
-            iconProps={{ style: { right: monthRightOffset } }}
+            iconProps={{ style: { right: monthSelectRightOffset } }}
             className={classNames(Classes.DATEPICKER_MONTH_SELECT, rdpClassNames.dropdown_month)}
             key="month"
             minimal={true}
             onChange={handleMonthSelectChange}
+            ref={monthSelectElement}
             value={displayMonth}
-            options={monthOptionElements}
+            options={availableMonthOptions}
         />
     );
 
@@ -155,26 +158,16 @@ export function DatePicker3Caption(captionProps: CaptionProps) {
 
     const orderedSelects = reverseMonthAndYearMenus ? [yearSelect, monthSelect] : [monthSelect, yearSelect];
 
-    React.useLayoutEffect(() => {
-        if (containerElement.current == null) {
-            return;
-        }
-
-        // measure width of text as rendered inside our container element.
-        const monthTextWidth = measureTextWidth(
-            displayedMonthText,
-            Classes.DATEPICKER_CAPTION_MEASURE,
-            containerElement.current,
-        );
-        const monthSelectEl = containerElement.current.querySelector(`.${Classes.DATEPICKER_MONTH_SELECT}`);
-        const monthSelectWidth = monthSelectEl == null ? 0 : monthSelectEl.clientWidth;
-        const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - IconSize.STANDARD - 2);
-        setMonthRightOffset(rightOffset);
-    }, [containerElement, displayedMonthText]);
+    const hiddenCaptionLabel = (
+        <div className={Classes.RDP_VHIDDEN}>
+            <CaptionLabel displayMonth={props.displayMonth} id={props.id} />
+        </div>
+    );
 
     return (
         <>
             <div className={classNames(Classes.DATEPICKER_CAPTION, rdpClassNames.caption)} ref={containerElement}>
+                {hiddenCaptionLabel}
                 {prevButton}
                 {orderedSelects}
                 {nextButton}
@@ -182,5 +175,5 @@ export function DatePicker3Caption(captionProps: CaptionProps) {
             <Divider />
         </>
     );
-}
+};
 DatePicker3Caption.displayName = `${DISPLAYNAME_PREFIX}.DatePicker3Caption`;

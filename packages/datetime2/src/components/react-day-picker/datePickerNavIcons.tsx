@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-export { DateInput3Example } from "./dateInput3Example";
-export * from "./datePicker3Example";
-export * from "./datePicker3LocalizedExample";
-export * from "./datePicker3ModifierExample";
-export { DateRangePicker3Example } from "./dateRangePicker3Example";
+import * as React from "react";
+import { StyledComponent } from "react-day-picker";
+
+import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
+
+export function IconLeft({ children, ...props }: StyledComponent) {
+    return <ChevronLeft {...props} />;
+}
+
+export function IconRight({ children, ...props }: StyledComponent) {
+    return <ChevronRight {...props} />;
+}

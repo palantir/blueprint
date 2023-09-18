@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-export { DateInput3Example } from "./dateInput3Example";
-export * from "./datePicker3Example";
-export * from "./datePicker3LocalizedExample";
-export * from "./datePicker3ModifierExample";
-export { DateRangePicker3Example } from "./dateRangePicker3Example";
+export interface DateFnsLocaleProps {
+    /**
+     * date-fns locale code ((ISO 639-1 + optional country code) used to localize the date picker.
+     *
+     * If you are unable to load a specific locale, make sure it is included in the list of date-fns'
+     * [supported locales](https://github.com/date-fns/date-fns/tree/main/src/locale).
+     *
+     * @default "en-US"
+     * @see https://date-fns.org/docs/Locale
+     */
+    locale?: string;
+}

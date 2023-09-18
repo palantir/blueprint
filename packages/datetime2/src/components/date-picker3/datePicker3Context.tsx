@@ -16,14 +16,16 @@
 
 import * as React from "react";
 
-import type { DatePicker3Props } from "./datePicker3Props";
+import type { DatePickerBaseProps } from "@blueprintjs/datetime";
+
 import type { DatePicker3State } from "./datePicker3State";
 
-export type DatePicker3ContextState = Omit<DatePicker3Props, "locale"> & Pick<DatePicker3State, "locale">;
+export type DatePicker3ContextState = Pick<DatePickerBaseProps, "reverseMonthAndYearMenus"> &
+    Pick<DatePicker3State, "locale">;
 
 /**
- * Context used to pass DatePicker3 props and state down to custom react-day-picker components like
- * DatePicker3Caption.
+ * Context used to pass DatePicker3 & DateRangePicker3 props and state down to custom react-day-picker components
+ * like DatePicker3Caption.
  */
 export const DatePicker3Context = React.createContext<DatePicker3ContextState>({
     locale: undefined,

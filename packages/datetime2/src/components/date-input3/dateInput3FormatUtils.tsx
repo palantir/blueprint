@@ -18,14 +18,28 @@ import { DateUtils } from "@blueprintjs/datetime";
 
 import type { DateInput3Props } from "./dateInput3Props";
 
-export function getFormattedDateString(date: Date, props: DateInput3Props, ignoreRange = false) {
+export function getFormattedDateString(
+    date: Date,
+    {
+        invalidDateMessage,
+        minDate,
+        maxDate,
+        locale,
+        outOfRangeMessage,
+        formatDate,
+    }: Pick<
+        DateInput3Props,
+        "invalidDateMessage" | "minDate" | "maxDate" | "locale" | "outOfRangeMessage" | "formatDate"
+    >,
+    ignoreRange = false,
+) {
     if (date == null) {
-        return "";
+        return undefined;
     } else if (!DateUtils.isDateValid(date)) {
-        return props.invalidDateMessage;
-    } else if (ignoreRange || DateUtils.isDayInRange(date, [props.minDate ?? null, props.maxDate ?? null])) {
-        return props.formatDate(date, props.locale);
+        return invalidDateMessage;
+    } else if (ignoreRange || DateUtils.isDayInRange(date, [minDate ?? null, maxDate ?? null])) {
+        return formatDate(date, locale);
     } else {
-        return props.outOfRangeMessage;
+        return outOfRangeMessage;
     }
 }

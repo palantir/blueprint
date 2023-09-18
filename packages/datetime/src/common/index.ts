@@ -16,10 +16,12 @@
 
 import * as Classes from "./classes";
 import * as DateUtils from "./dateUtils";
+import * as Errors from "./errors";
+import * as TimezoneNameUtils from "./timezoneNameUtils";
 import type { TimezoneWithNames } from "./timezoneTypes";
 import * as TimezoneUtils from "./timezoneUtils";
 
-export { Classes, DateUtils, TimezoneUtils, TimezoneWithNames };
+export { Classes, DateUtils, Errors, TimezoneNameUtils, TimezoneUtils, TimezoneWithNames };
 
 export { DatePickerBaseProps, DatePickerModifiers } from "./datePickerBaseProps";
 export { DateFormatProps } from "./dateFormatProps";

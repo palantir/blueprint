@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
-export { DateInput3Example } from "./dateInput3Example";
-export * from "./datePicker3Example";
-export * from "./datePicker3LocalizedExample";
-export * from "./datePicker3ModifierExample";
-export { DateRangePicker3Example } from "./dateRangePicker3Example";
+import type { Locale } from "date-fns";
+
+import type { DateRange } from "@blueprintjs/datetime";
+
+export interface DateRangePicker3State {
+    hoverValue?: DateRange;
+    locale: Locale | undefined;
+    value: DateRange;
+    time: DateRange;
+    selectedShortcutIndex?: number;
+}
