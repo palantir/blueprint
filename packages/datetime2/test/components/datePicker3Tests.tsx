@@ -775,8 +775,9 @@ describe("<DatePicker3>", () => {
                         .map(d => +d.text()),
                     days,
                 ),
-            clickNextMonth: () => wrapper.find(Button).last().simulate("click"),
-            clickPreviousMonth: () => wrapper.find(Button).first().simulate("click"),
+            clickNextMonth: () => wrapper.find(`.${Classes.DATEPICKER3_NAV_BUTTON_NEXT}`).hostNodes().simulate("click"),
+            clickPreviousMonth: () =>
+                wrapper.find(`.${Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS}`).hostNodes().simulate("click"),
             clickShortcut: (index = 0) => {
                 wrapper.find(`.${Classes.DATERANGEPICKER_SHORTCUTS}`).hostNodes().find("a").at(index).simulate("click");
             },
