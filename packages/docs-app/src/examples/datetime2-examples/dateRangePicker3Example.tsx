@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-import { add } from "date-fns";
 import * as React from "react";
 
-import { Classes, FormGroup, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
+import { Classes, FormGroup, H5, Switch } from "@blueprintjs/core";
 import { DateRange, TimePrecision } from "@blueprintjs/datetime";
 import { DateRangePicker3 } from "@blueprintjs/datetime2";
-import {
-    Example,
-    ExampleProps,
-    handleBooleanChange,
-    handleNumberChange,
-    handleValueChange,
-} from "@blueprintjs/docs-theme";
+import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { DateRangeTag } from "../../common/dateRangeTag";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
+import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
 
 interface DateRangePicker3ExampleState {
     allowSingleDayRange?: boolean;
@@ -38,55 +32,12 @@ interface DateRangePicker3ExampleState {
     contiguousCalendarMonths?: boolean;
     dateRange?: DateRange;
     localeCode: CommonDateFnsLocale;
-    maxDateIndex?: number;
-    minDateIndex?: number;
+    maxDate: Date | undefined;
+    minDate: Date | undefined;
     reverseMonthAndYearMenus?: boolean;
     shortcuts?: boolean;
     timePrecision?: TimePrecision;
 }
-
-interface DateOption {
-    label: string;
-    value?: Date;
-}
-
-const today = new Date();
-
-const MIN_DATE_OPTIONS: DateOption[] = [
-    { label: "None", value: undefined },
-    {
-        label: "1 week ago",
-        value: add(today, { weeks: -1 }),
-    },
-    {
-        label: "4 months ago",
-        value: add(today, { months: -4 }),
-    },
-    {
-        label: "1 year ago",
-        value: add(today, { years: -1 }),
-    },
-];
-
-const MAX_DATE_OPTIONS: DateOption[] = [
-    { label: "None", value: undefined },
-    {
-        label: "Today",
-        value: today,
-    },
-    {
-        label: "1 week from now",
-        value: add(today, { weeks: 1 }),
-    },
-    {
-        label: "4 months from now",
-        value: add(today, { months: 4 }),
-    },
-    {
-        label: "1 year from now",
-        value: add(today, { years: 1 }),
-    },
-];
 
 export class DateRangePicker3Example extends React.PureComponent<ExampleProps, DateRangePicker3ExampleState> {
     public state: DateRangePicker3ExampleState = {
@@ -94,8 +45,8 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
         contiguousCalendarMonths: true,
         dateRange: [null, null],
         localeCode: DateRangePicker3.defaultProps.locale as CommonDateFnsLocale,
-        maxDateIndex: 0,
-        minDateIndex: 0,
+        maxDate: undefined,
+        minDate: undefined,
         reverseMonthAndYearMenus: false,
         shortcuts: true,
         singleMonthOnly: false,
@@ -105,9 +56,9 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
 
     private handleLocaleCodeChange = (localeCode: CommonDateFnsLocale) => this.setState({ localeCode });
 
-    private handleMaxDateIndexChange = handleNumberChange(maxDateIndex => this.setState({ maxDateIndex }));
+    private handleMaxDateChange = (maxDate: Date) => this.setState({ maxDate });
 
-    private handleMinDateIndexChange = handleNumberChange(minDateIndex => this.setState({ minDateIndex }));
+    private handleMinDateChange = (minDate: Date) => this.setState({ minDate });
 
     private handlePrecisionChange = handleValueChange((timePrecision: TimePrecision | undefined) =>
         this.setState({ timePrecision }),
@@ -128,9 +79,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
     });
 
     public render() {
-        const { dateRange, localeCode, minDateIndex, maxDateIndex, ...props } = this.state;
-        const minDate = MIN_DATE_OPTIONS[minDateIndex].value;
-        const maxDate = MAX_DATE_OPTIONS[maxDateIndex].value;
+        const { dateRange, localeCode, maxDate, minDate, ...props } = this.state;
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
                 <DateRangePicker3
@@ -175,18 +124,8 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                     />
                 </div>
                 <div>
-                    {this.renderSelectMenu(
-                        "Minimum date",
-                        this.state.minDateIndex,
-                        MIN_DATE_OPTIONS,
-                        this.handleMinDateIndexChange,
-                    )}
-                    {this.renderSelectMenu(
-                        "Maximum date",
-                        this.state.maxDateIndex,
-                        MAX_DATE_OPTIONS,
-                        this.handleMaxDateIndexChange,
-                    )}
+                    <MinDateSelect onChange={this.handleMinDateChange} />
+                    <MaxDateSelect onChange={this.handleMaxDateChange} />
                 </div>
                 <div>
                     <PrecisionSelect
@@ -200,24 +139,6 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                     </FormGroup>
                 </div>
             </>
-        );
-    }
-
-    private renderSelectMenu(
-        label: string,
-        selectedValue: number | string,
-        options: DateOption[],
-        onChange: React.FormEventHandler<HTMLElement>,
-    ) {
-        return (
-            <Label>
-                {label}
-                <HTMLSelect value={selectedValue} onChange={onChange}>
-                    {options.map((opt, i) => (
-                        <option key={i} value={i} label={opt.label} />
-                    ))}
-                </HTMLSelect>
-            </Label>
         );
     }
 }

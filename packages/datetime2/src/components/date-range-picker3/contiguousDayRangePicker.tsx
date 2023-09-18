@@ -64,7 +64,7 @@ export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
             );
             onRangeSelect(nextValue, selectedDay, boundary);
         },
-        [allowSingleDayRange, boundaryToModify, dayPickerProps?.onSelect, onRangeSelect, value],
+        [allowSingleDayRange, boundaryToModify, dayPickerProps, onRangeSelect, value],
     );
 
     return (
@@ -129,20 +129,20 @@ function useContiguousCalendarViews(
             return;
         }
 
-        if (selectedRange[0] == null || selectedRange[1] == null) {
-            // special case: if only one boundary of the range is selected and it is already displayed in one of the
-            // months, don't update the display month. this prevents the picker from shifting around when a user is in
-            // the middle of a selection.
-            if (
-                isDateDisplayed(selectedRange[0], displayMonth, singleMonthOnly) ||
-                isDateDisplayed(selectedRange[1], displayMonth, singleMonthOnly)
-            ) {
-                return;
-            }
-        }
-
         setDisplayMonth(prevDisplayMonth => {
             let newDisplayMonth = prevDisplayMonth.clone();
+
+            if (selectedRange[0] == null || selectedRange[1] == null) {
+                // special case: if only one boundary of the range is selected and it is already displayed in one of the
+                // months, don't update the display month. this prevents the picker from shifting around when a user is in
+                // the middle of a selection.
+                if (
+                    isDateDisplayed(selectedRange[0], prevDisplayMonth, singleMonthOnly) ||
+                    isDateDisplayed(selectedRange[1], prevDisplayMonth, singleMonthOnly)
+                ) {
+                    return newDisplayMonth;
+                }
+            }
 
             const nextRangeStart = MonthAndYear.fromDate(selectedRange[0]);
             const nextRangeEnd = MonthAndYear.fromDate(selectedRange[1]);

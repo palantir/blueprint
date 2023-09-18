@@ -33,6 +33,10 @@
     }
   }
 
+  .rdp-table {
+    max-width: none;
+  }
+
   .rdp-weekdays {
     display: table-header-group;
   }
@@ -45,21 +49,12 @@
     text-transform: none;
   }
 
-  .rdp-tbody {
-    display: table-row-group;
-  }
-
-  .rdp-row {
-    display: table-row;
-  }
-
   .rdp-weeknumber {
-    color: $pt-text-color-disabled;
+    color: $pt-text-color-muted;
   }
 
   .rdp-day {
     border-radius: $pt-border-radius;
-    cursor: pointer;
 
     // spelling out full name so these are equal specificity to pseudo-classes (.DayPicker-Day:hover)
     &.rdp-day_outside {
@@ -125,6 +120,18 @@
   }
 }
 
+.#{$ns}-datepicker-month-select, .#{$ns}-datepicker-year-select {
+  select {
+    font-weight: 600;
+    padding-left: $datepicker-padding;
+    padding-right: $pt-icon-size-standard;
+
+    + .#{$ns}-icon {
+      right: 2px;
+    }
+  }
+}
+
 .#{$ns}-datepicker-footer {
   display: flex;
   justify-content: space-between;
@@ -135,7 +142,7 @@
   background: $dark-datepicker-background-color;
 
   .rdp-week-number {
-    color: $pt-dark-text-color-disabled;
+    color: $pt-dark-text-color-muted;
   }
 
   .rdp-day {

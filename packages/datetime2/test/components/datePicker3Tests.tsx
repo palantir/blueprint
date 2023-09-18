@@ -75,12 +75,12 @@ describe("<DatePicker3>", () => {
 
     it("current day is not highlighted by default", () => {
         const { root } = wrap(<DatePicker3 />);
-        assert.lengthOf(root.find(`.${Classes.DATEPICKER_HIGHLIGHT_CURRENT_DAY}`), 0);
+        assert.lengthOf(root.find(`.${Classes.DATEPICKER3_HIGHLIGHT_CURRENT_DAY}`), 0);
     });
 
     it("current day should be highlighted when highlightCurrentDay={true}", () => {
         const { root } = wrap(<DatePicker3 highlightCurrentDay={true} />);
-        assert.lengthOf(root.find(`.${Classes.DATEPICKER_HIGHLIGHT_CURRENT_DAY}`), 1);
+        assert.lengthOf(root.find(`.${Classes.DATEPICKER3_HIGHLIGHT_CURRENT_DAY}`), 1);
     });
 
     describe("reconciliates dayPickerProps", () => {
@@ -149,14 +149,14 @@ describe("<DatePicker3>", () => {
             it("calls onMonthChange on button next click", () => {
                 const onMonthChange = sinon.spy();
                 const { root } = wrap(<DatePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
-                root.find(`.${Classes.DATEPICKER_NAV_BUTTON_NEXT}`).first().simulate("click");
+                root.find(`.${Classes.DATEPICKER3_NAV_BUTTON_NEXT}`).first().simulate("click");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on button prev click", () => {
                 const onMonthChange = sinon.spy();
                 const { root } = wrap(<DatePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
-                root.find(`.${Classes.DATEPICKER_NAV_BUTTON_PREVIOUS}`).first().simulate("click");
+                root.find(`.${Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS}`).first().simulate("click");
                 assert.isTrue(onMonthChange.called);
             });
 
@@ -775,8 +775,9 @@ describe("<DatePicker3>", () => {
                         .map(d => +d.text()),
                     days,
                 ),
-            clickNextMonth: () => wrapper.find(Button).last().simulate("click"),
-            clickPreviousMonth: () => wrapper.find(Button).first().simulate("click"),
+            clickNextMonth: () => wrapper.find(`.${Classes.DATEPICKER3_NAV_BUTTON_NEXT}`).hostNodes().simulate("click"),
+            clickPreviousMonth: () =>
+                wrapper.find(`.${Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS}`).hostNodes().simulate("click"),
             clickShortcut: (index = 0) => {
                 wrapper.find(`.${Classes.DATERANGEPICKER_SHORTCUTS}`).hostNodes().find("a").at(index).simulate("click");
             },

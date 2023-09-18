@@ -23,7 +23,7 @@ import { Button, DISPLAYNAME_PREFIX, Divider, HTMLSelect, OptionProps } from "@b
 import { DateUtils, Months } from "@blueprintjs/datetime";
 import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 
-import { Classes } from "../../classes";
+import { Classes, ReactDayPickerClasses } from "../../classes";
 import { useMonthSelectRightOffset } from "../../common/useMonthSelectRightOffset";
 import { DatePicker3Context } from "../date-picker3/datePicker3Context";
 
@@ -59,7 +59,7 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     const prevButton = (
         <Button
             aria-label={labels.labelPrevious(previousMonth, { locale })}
-            className={classNames(Classes.DATEPICKER_NAV_BUTTON, Classes.DATEPICKER_NAV_BUTTON_PREVIOUS)}
+            className={classNames(Classes.DATEPICKER3_NAV_BUTTON, Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS)}
             disabled={!previousMonth}
             icon={<ChevronLeft />}
             minimal={true}
@@ -69,7 +69,7 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     const nextButton = (
         <Button
             aria-label={labels.labelNext(nextMonth, { locale })}
-            className={classNames(Classes.DATEPICKER_NAV_BUTTON, Classes.DATEPICKER_NAV_BUTTON_NEXT)}
+            className={classNames(Classes.DATEPICKER3_NAV_BUTTON, Classes.DATEPICKER3_NAV_BUTTON_NEXT)}
             disabled={!nextMonth}
             icon={<ChevronRight />}
             minimal={true}
@@ -159,7 +159,7 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     const orderedSelects = reverseMonthAndYearMenus ? [yearSelect, monthSelect] : [monthSelect, yearSelect];
 
     const hiddenCaptionLabel = (
-        <div className={Classes.RDP_VHIDDEN}>
+        <div className={ReactDayPickerClasses.RDP_VHIDDEN}>
             <CaptionLabel displayMonth={props.displayMonth} id={props.id} />
         </div>
     );

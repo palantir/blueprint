@@ -11,18 +11,6 @@
 /* stylelint-disable selector-class-pattern */
 
 .#{$ns}-daterangepicker {
-  .rdp {
-    .#{$ns}-html-select select {
-      font-weight: 600;
-      padding-left: $datepicker-padding;
-      padding-right: $pt-icon-size-standard;
-
-      + .#{$ns}-icon {
-        right: 2px;
-      }
-    }
-  }
-
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
   &.#{$ns}-daterangepicker-contiguous .rdp {
     min-width: $datepicker-min-width + $pt-grid-size;
@@ -72,13 +60,6 @@
       top: initial;
       transform: none;
     }
-  }
-
-  // need some extra specificity to override react-day-picker styles
-  .rdp-button.rdp-nav_button {
-    @include pt-button-minimal();
-    border: none;
-    border-radius: $pt-border-radius;
   }
 
   // need some extra specificity to override DatePicker styles

@@ -62,8 +62,10 @@ const DEFAULT_MIN_DATE = DatePickerUtils.getDefaultMinDate();
  */
 export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateInput(props) {
     const {
+        closeOnSelection,
         defaultTimezone,
         defaultValue,
+        disabled,
         disableTimezoneSelect,
         fill,
         formatDate,
@@ -73,11 +75,14 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         // defaults duplicated here for TypeScript convenience
         maxDate = DEFAULT_MAX_DATE,
         minDate = DEFAULT_MIN_DATE,
+        onChange,
+        onError,
         outOfRangeMessage,
         parseDate,
         placeholder,
         popoverProps = {},
         popoverRef,
+        rightElement,
         showTimezoneSelect,
         timePrecision,
         value,
@@ -157,7 +162,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             popoverProps.onClose?.(e);
             setIsOpen(false);
         },
-        [popoverProps.onClose],
+        [popoverProps],
     );
 
     const handleDateChange = React.useCallback(
@@ -169,7 +174,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                     // user clicked on current day in the calendar, so we should clear the input when uncontrolled
                     setInputValue("");
                 }
-                props.onChange?.(null, isUserChange);
+                onChange?.(null, isUserChange);
                 return;
             }
 
@@ -178,7 +183,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             // the user explicitly clicked a day within the current month.
             const newIsOpen =
                 !isUserChange ||
-                !props.closeOnSelection ||
+                !closeOnSelection ||
                 (prevDate != null &&
                     (DateUtils.hasMonthChanged(prevDate, newDate) ||
                         (timePrecision !== undefined && DateUtils.hasTimeChanged(prevDate, newDate))));
@@ -206,9 +211,9 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 timezoneValue,
                 timePrecision,
             );
-            props.onChange?.(newIsoDateString, isUserChange);
+            onChange?.(newIsoDateString, isUserChange);
         },
-        [isControlled, props, props.onChange, timezoneValue, timePrecision, valueAsDate],
+        [closeOnSelection, isControlled, props, onChange, timezoneValue, timePrecision, valueAsDate],
     );
 
     const dayPickerProps: DatePicker3Props["dayPickerProps"] = {
@@ -284,7 +289,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     );
 
     const isTimezoneSelectHidden = timePrecision === undefined || showTimezoneSelect === false;
-    const isTimezoneSelectDisabled = props.disabled || disableTimezoneSelect;
+    const isTimezoneSelectDisabled = disabled || disableTimezoneSelect;
 
     const handleTimezoneChange = React.useCallback(
         (newTimezone: string) => {
@@ -295,29 +300,33 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                     newTimezone,
                     timePrecision,
                 );
-                props.onChange?.(newDateString, true);
+                onChange?.(newDateString, true);
             }
         },
-        [props.onChange, valueAsDate, timePrecision],
+        [onChange, valueAsDate, timePrecision],
     );
 
-    const maybeTimezonePicker = isTimezoneSelectHidden ? undefined : (
-        <TimezoneSelect
-            value={timezoneValue}
-            onChange={handleTimezoneChange}
-            date={tzSelectDate}
-            disabled={isTimezoneSelectDisabled}
-            className={Classes.DATE_INPUT_TIMEZONE_SELECT}
-            buttonProps={timezoneSelectButtonProps}
-        >
-            <Tag
-                rightIcon={isTimezoneSelectDisabled ? undefined : "caret-down"}
-                interactive={!isTimezoneSelectDisabled}
-                minimal={true}
-            >
-                {TimezoneNameUtils.getTimezoneShortName(timezoneValue, tzSelectDate)}
-            </Tag>
-        </TimezoneSelect>
+    const maybeTimezonePicker = React.useMemo(
+        () =>
+            isTimezoneSelectHidden ? undefined : (
+                <TimezoneSelect
+                    value={timezoneValue}
+                    onChange={handleTimezoneChange}
+                    date={tzSelectDate}
+                    disabled={isTimezoneSelectDisabled}
+                    className={Classes.DATE_INPUT_TIMEZONE_SELECT}
+                    buttonProps={timezoneSelectButtonProps}
+                >
+                    <Tag
+                        rightIcon={isTimezoneSelectDisabled ? undefined : "caret-down"}
+                        interactive={!isTimezoneSelectDisabled}
+                        minimal={true}
+                    >
+                        {TimezoneNameUtils.getTimezoneShortName(timezoneValue, tzSelectDate)}
+                    </Tag>
+                </TimezoneSelect>
+            ),
+        [handleTimezoneChange, isTimezoneSelectDisabled, isTimezoneSelectHidden, timezoneValue, tzSelectDate],
     );
 
     // Text input
@@ -341,7 +350,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             setInputValue(formattedDateString);
             inputProps?.onFocus?.(e);
         },
-        [formattedDateString, inputProps?.onFocus],
+        [formattedDateString, inputProps],
     );
 
     const handleInputBlur = React.useCallback(
@@ -366,9 +375,9 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 }
 
                 if (date === null) {
-                    props.onChange?.(null, true);
+                    onChange?.(null, true);
                 } else {
-                    props.onError?.(date);
+                    onError?.(date);
                 }
             } else {
                 if (inputValue.length === 0) {
@@ -379,18 +388,19 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                     setIsInputFocused(false);
                 }
             }
-            props.inputProps?.onBlur?.(e);
+            inputProps?.onBlur?.(e);
         },
         [
-            parseInputValue,
             formattedDateString,
+            inputProps,
             inputValue,
-            valueAsDate,
-            minDate,
+            isControlled,
             maxDate,
-            props.onChange,
-            props.onError,
-            inputProps?.onBlur,
+            minDate,
+            onChange,
+            onError,
+            parseInputValue,
+            valueAsDate,
         ],
     );
 
@@ -414,17 +424,17 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                     timezoneValue,
                     timePrecision,
                 );
-                props.onChange?.(newIsoDateString, true);
+                onChange?.(newIsoDateString, true);
             } else {
                 if (valueString.length === 0) {
-                    props.onChange?.(null, true);
+                    onChange?.(null, true);
                 }
                 setValue(inputValueAsDate);
                 setInputValue(valueString);
             }
             inputProps?.onChange?.(e);
         },
-        [minDate, maxDate, timezoneValue, timePrecision, parseInputValue, props.onChange, inputProps?.onChange],
+        [isControlled, minDate, maxDate, timezoneValue, timePrecision, parseInputValue, onChange, inputProps],
     );
 
     const handleInputClick = React.useCallback(
@@ -434,7 +444,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             e.stopPropagation();
             inputProps?.onClick?.(e);
         },
-        [inputProps?.onClick],
+        [inputProps],
     );
 
     const handleInputKeyDown = React.useCallback(
@@ -458,7 +468,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
 
             inputProps?.onKeyDown?.(e);
         },
-        [inputValue, parseInputValue, inputProps?.onKeyDown],
+        [handleDateChange, handlePopoverClose, inputProps, inputValue, isOpen, parseInputValue],
     );
 
     // Main render
@@ -478,7 +488,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                     placeholder={placeholder}
                     rightElement={
                         <>
-                            {props.rightElement}
+                            {rightElement}
                             {maybeTimezonePicker}
                         </>
                     }
@@ -487,7 +497,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                     {...targetProps}
                     {...inputProps}
                     aria-expanded={targetIsOpen}
-                    disabled={props.disabled}
+                    disabled={disabled}
                     fill={fill}
                     inputRef={mergeRefs(ref, inputRef, inputProps?.inputRef ?? null)}
                     onBlur={handleInputBlur}
@@ -500,25 +510,30 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             );
         },
         [
+            disabled,
             fill,
             formattedDateString,
+            handleInputBlur,
+            handleInputChange,
+            handleInputClick,
+            handleInputFocus,
+            handleInputKeyDown,
             inputProps,
             inputValue,
+            isErrorState,
             isInputFocused,
-            isTimezoneSelectDisabled,
-            isTimezoneSelectHidden,
+            maybeTimezonePicker,
             placeholder,
+            popoverProps.targetTagName,
+            rightElement,
             shouldShowErrorStyling,
-            timezoneValue,
-            props.disabled,
-            props.rightElement,
         ],
     );
 
     // N.B. no need to set `fill` since that is unused with the `renderTarget` API
     return (
         <Popover
-            isOpen={isOpen && !props.disabled}
+            isOpen={isOpen && !disabled}
             {...popoverProps}
             autoFocus={false}
             className={classNames(Classes.DATE_INPUT, popoverProps.className, props.className)}

@@ -30,9 +30,10 @@ import {
     TimePicker,
 } from "@blueprintjs/datetime";
 
-import { Classes } from "../../classes";
+import { Classes, dayPickerClassNameOverrides } from "../../classes";
 import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
-import { DatePicker3Caption } from "../react-day-picker/datePicker3Caption";
+import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
+import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 import { DatePicker3Provider } from "./datePicker3Context";
 import { DatePicker3Props } from "./datePicker3Props";
 import { DatePicker3State } from "./datePicker3State";
@@ -85,7 +86,7 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
         return (
             <div
                 className={classNames(Classes.DATEPICKER, className, {
-                    [Classes.DATEPICKER_HIGHLIGHT_CURRENT_DAY]: this.props.highlightCurrentDay,
+                    [Classes.DATEPICKER3_HIGHLIGHT_CURRENT_DAY]: this.props.highlightCurrentDay,
                 })}
             >
                 {this.maybeRenderShortcuts()}
@@ -95,8 +96,15 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
                             locale={locale}
                             showOutsideDays={true}
                             {...dayPickerProps}
+                            captionLayout="dropdown-buttons"
+                            classNames={{
+                                ...dayPickerClassNameOverrides,
+                                ...dayPickerProps?.classNames,
+                            }}
                             components={{
-                                Caption: DatePicker3Caption,
+                                Dropdown: DatePicker3Dropdown,
+                                IconLeft,
+                                IconRight,
                                 ...dayPickerProps?.components,
                             }}
                             formatters={{

@@ -19,7 +19,6 @@ import { DropdownProps } from "react-day-picker";
 
 import { HTMLSelect } from "@blueprintjs/core";
 
-import { Classes } from "../../classes";
 import { useMonthSelectRightOffset } from "../../common/useMonthSelectRightOffset";
 
 /**
@@ -39,7 +38,7 @@ export function DatePicker3Dropdown({ caption, children, ...props }: DropdownPro
     const iconProps = props.name === "months" ? { style: { right: monthSelectRightOffset } } : {};
 
     return (
-        <div className={Classes.DATEPICKER_DROPDOWN_CONTAINER} ref={containerElement}>
+        <div ref={containerElement}>
             <HTMLSelect iconProps={iconProps} minimal={true} ref={selectElement} {...props}>
                 {children}
             </HTMLSelect>

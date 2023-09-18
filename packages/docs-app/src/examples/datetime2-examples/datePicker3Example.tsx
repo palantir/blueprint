@@ -22,12 +22,15 @@ import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@
 
 import { DateTag } from "../../common/dateTag";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
+import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
 
 const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
 
 export interface DatePicker3ExampleState {
     date: Date | null;
     highlightCurrentDay: boolean;
+    maxDate: Date | undefined;
+    minDate: Date | undefined;
     reverseMonthAndYearMenus: boolean;
     shortcuts: boolean;
     showActionsBar: boolean;
@@ -43,6 +46,8 @@ export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePi
     public state: DatePicker3ExampleState = {
         date: null,
         highlightCurrentDay: false,
+        maxDate: undefined,
+        minDate: undefined,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: true,
@@ -67,6 +72,10 @@ export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePi
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
 
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
+
+    private handleMaxDateChange = (maxDate: Date) => this.setState({ maxDate });
+
+    private handleMinDateChange = (minDate: Date) => this.setState({ minDate });
 
     private handlePrecisionChange = handleValueChange((p: TimePrecision | "none") =>
         this.setState({ timePrecision: p === "none" ? undefined : p }),
@@ -102,6 +111,8 @@ export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePi
                     label="Show custom footer element"
                     onChange={this.toggleShowFooterElement}
                 />
+                <MinDateSelect onChange={this.handleMinDateChange} />
+                <MaxDateSelect onChange={this.handleMaxDateChange} />
                 <H5>react-day-picker props</H5>
                 <Switch
                     checked={this.state.showWeekNumber}

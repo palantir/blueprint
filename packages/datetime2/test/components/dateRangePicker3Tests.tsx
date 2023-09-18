@@ -36,7 +36,7 @@ import {
     TimePrecision,
 } from "@blueprintjs/datetime";
 
-import { DateRangePicker3, DateRangePicker3Props, Datetime2Classes } from "../../src";
+import { DateRangePicker3, DateRangePicker3Props, Datetime2Classes, ReactDayPickerClasses } from "../../src";
 import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
 import { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
@@ -95,10 +95,10 @@ describe("<DatePicker3>", () => {
             const defaultValue: DateRange = [new Date(2017, Months.SEPTEMBER, 1), null];
             const { wrapper } = wrap(<DateRangePicker3 defaultValue={defaultValue} />);
             assert.isFalse(
-                wrapper.find(".rdp-month").at(0).find(`.${Datetime2Classes.DATEPICKER_NAV_BUTTON_NEXT}`).exists(),
+                wrapper.find(".rdp-month").at(0).find(`.${Datetime2Classes.DATEPICKER3_NAV_BUTTON_NEXT}`).exists(),
             );
             assert.isFalse(
-                wrapper.find(".rdp-month").at(1).find(`.${Datetime2Classes.DATEPICKER_NAV_BUTTON_PREVIOUS}`).exists(),
+                wrapper.find(".rdp-month").at(1).find(`.${Datetime2Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS}`).exists(),
             );
         });
 
@@ -1367,7 +1367,7 @@ describe("<DatePicker3>", () => {
                 findTimeInput(precision, which).simulate("change", { target: { value } }),
             clickNavButton: (which: "next" | "previous", navIndex = 0) => {
                 const month = wrapper.find(`.rdp-month`).at(navIndex);
-                const navButton = month.find(`.${Datetime2Classes.DATEPICKER_NAV_BUTTON}-${which}`);
+                const navButton = month.find(`.${Datetime2Classes.DATEPICKER3_NAV_BUTTON}-${which}`);
                 navButton.hostNodes().simulate("click");
                 return harness;
             },
@@ -1399,7 +1399,7 @@ describe("<DatePicker3>", () => {
                     .at(whichCalendar === "left" ? 0 : 1);
             },
             get displayMonthAndYear(): MonthAndYear {
-                const captionLabel = harness.wrapper.find(`.${Datetime2Classes.RDP_CAPTION_LABEL}`);
+                const captionLabel = harness.wrapper.find(`.${ReactDayPickerClasses.RDP_CAPTION_LABEL}`);
                 assert.exists(captionLabel, "Expected caption label which labels the current display month to exist");
                 const [monthText, yearText] = captionLabel.text().split(" ");
                 const month = getMonthIndex(monthText);
@@ -1407,10 +1407,10 @@ describe("<DatePicker3>", () => {
                 return new MonthAndYear(month, year);
             },
             get monthSelect() {
-                return harness.wrapper.find(`.${Datetime2Classes.DATEPICKER_DROPDOWN_MONTH}`).find("select");
+                return harness.wrapper.find(`.${Datetime2Classes.DATEPICKER_MONTH_SELECT}`).find("select");
             },
             get yearSelect() {
-                return harness.wrapper.find(`.${Datetime2Classes.DATEPICKER_DROPDOWN_YEAR}`).find("select");
+                return harness.wrapper.find(`.${Datetime2Classes.DATEPICKER_YEAR_SELECT}`).find("select");
             },
 
             assertDisplayMonth: (expectedMonth: number, expectedYear?: number) => {
