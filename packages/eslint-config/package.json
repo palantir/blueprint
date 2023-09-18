@@ -9,7 +9,7 @@
         "@typescript-eslint/eslint-plugin-tslint": "^6.5.0",
         "@typescript-eslint/parser": "^6.5.0",
         "eslint": "^8.48.0",
-        "eslint-plugin-deprecation": "^1.5.0",
+        "eslint-plugin-deprecation": "^2.0.0",
         "eslint-plugin-header": "^3.1.1",
         "eslint-plugin-import": "~2.26.0",
         "eslint-plugin-jsdoc": "^46.5.0",
