@@ -30,7 +30,7 @@ import {
     TimePicker,
 } from "@blueprintjs/datetime";
 
-import { Classes } from "../../classes";
+import { Classes, dayPickerClassNameOverrides } from "../../classes";
 import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import { DatePicker3Caption } from "../react-day-picker/datePicker3Caption";
 import { DatePicker3Provider } from "./datePicker3Context";
@@ -95,6 +95,10 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
                             locale={locale}
                             showOutsideDays={true}
                             {...dayPickerProps}
+                            classNames={{
+                                ...dayPickerClassNameOverrides,
+                                ...dayPickerProps?.classNames,
+                            }}
                             components={{
                                 Caption: DatePicker3Caption,
                                 ...dayPickerProps?.components,
