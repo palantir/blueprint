@@ -120,6 +120,18 @@
   }
 }
 
+.#{$ns}-datepicker-month-select, .#{$ns}-datepicker-year-select {
+  select {
+    font-weight: 600;
+    padding-left: $datepicker-padding;
+    padding-right: $pt-icon-size-standard;
+
+    + .#{$ns}-icon {
+      right: 2px;
+    }
+  }
+}
+
 .#{$ns}-datepicker-footer {
   display: flex;
   justify-content: space-between;

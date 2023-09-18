@@ -32,7 +32,8 @@ import {
 
 import { Classes, dayPickerClassNameOverrides } from "../../classes";
 import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
-import { DatePicker3Caption } from "../react-day-picker/datePicker3Caption";
+import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
+import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
 import { DatePicker3Provider } from "./datePicker3Context";
 import { DatePicker3Props } from "./datePicker3Props";
 import { DatePicker3State } from "./datePicker3State";
@@ -95,12 +96,15 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
                             locale={locale}
                             showOutsideDays={true}
                             {...dayPickerProps}
+                            captionLayout="dropdown-buttons"
                             classNames={{
                                 ...dayPickerClassNameOverrides,
                                 ...dayPickerProps?.classNames,
                             }}
                             components={{
-                                Caption: DatePicker3Caption,
+                                Dropdown: DatePicker3Dropdown,
+                                IconLeft,
+                                IconRight,
                                 ...dayPickerProps?.components,
                             }}
                             formatters={{
