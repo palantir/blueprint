@@ -23,6 +23,7 @@ import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@
 import { FormattedDateTag } from "../../common/formattedDateTag";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
+import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
 
@@ -94,18 +95,26 @@ export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePi
         const options = (
             <>
                 <H5>Props</H5>
-                <Switch checked={props.showActionsBar} label="Show actions bar" onChange={this.toggleActionsBar} />
-                <Switch checked={props.shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
-                <Switch
-                    checked={props.highlightCurrentDay}
-                    label="Highlight current day"
-                    onChange={this.toggleHighlight}
-                />
-                <Switch
-                    checked={props.reverseMonthAndYearMenus}
-                    label="Reverse month and year menus"
-                    onChange={this.toggleReverseMenus}
-                />
+                <PropCodeTooltip snippet={`showActionsBar={${props.showActionsBar.toString()}}`}>
+                    <Switch checked={props.showActionsBar} label="Show actions bar" onChange={this.toggleActionsBar} />
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`shortcuts={${props.shortcuts.toString()}}`}>
+                    <Switch checked={props.shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`highlightCurrentDay={${props.highlightCurrentDay.toString()}}`}>
+                    <Switch
+                        checked={props.highlightCurrentDay}
+                        label="Highlight current day"
+                        onChange={this.toggleHighlight}
+                    />
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`reverseMonthAndYearMenus={${props.reverseMonthAndYearMenus.toString()}}`}>
+                    <Switch
+                        checked={props.reverseMonthAndYearMenus}
+                        label="Reverse month and year menus"
+                        onChange={this.toggleReverseMenus}
+                    />
+                </PropCodeTooltip>
                 <Switch
                     checked={this.state.showFooterElement}
                     label="Show custom footer element"
@@ -114,16 +123,12 @@ export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePi
                 <MinDateSelect onChange={this.handleMinDateChange} />
                 <MaxDateSelect onChange={this.handleMaxDateChange} />
                 <H5>react-day-picker props</H5>
-                <Switch
-                    checked={this.state.showWeekNumber}
-                    label="Show week numbers"
-                    onChange={this.toggleShowWeekNumber}
-                />
-                <Switch
-                    checked={this.state.showOutsideDays}
-                    label="Show outside days"
-                    onChange={this.toggleShowOutsideDays}
-                />
+                <PropCodeTooltip snippet={`dayPickerProps={{ showWeekNumber: ${showWeekNumber.toString()} }}`}>
+                    <Switch checked={showWeekNumber} label="Show week numbers" onChange={this.toggleShowWeekNumber} />
+                </PropCodeTooltip>
+                <PropCodeTooltip snippet={`dayPickerProps={{ showOutsideDays: ${showOutsideDays.toString()} }}`}>
+                    <Switch checked={showOutsideDays} label="Show outside days" onChange={this.toggleShowOutsideDays} />
+                </PropCodeTooltip>
 
                 <H5>Time picker props</H5>
                 <PrecisionSelect
@@ -132,18 +137,28 @@ export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePi
                     value={props.timePrecision}
                     onChange={this.handlePrecisionChange}
                 />
-                <Switch
+                <PropCodeTooltip
+                    snippet={`timePickerProps={{ showArrowButtons: ${showTimeArrowButtons.toString()} }}`}
                     disabled={!showTimePicker}
-                    checked={showTimeArrowButtons}
-                    label="Show timepicker arrow buttons"
-                    onChange={this.toggleTimepickerArrowButtons}
-                />
-                <Switch
+                >
+                    <Switch
+                        disabled={!showTimePicker}
+                        checked={showTimeArrowButtons}
+                        label="Show timepicker arrow buttons"
+                        onChange={this.toggleTimepickerArrowButtons}
+                    />
+                </PropCodeTooltip>
+                <PropCodeTooltip
+                    snippet={`timePickerProps={{ useAmPm: ${useAmPm.toString()} }}`}
                     disabled={!showTimePicker}
-                    checked={this.state.useAmPm}
-                    label="Use AM/PM"
-                    onChange={this.toggleUseAmPm}
-                />
+                >
+                    <Switch
+                        disabled={!showTimePicker}
+                        checked={useAmPm}
+                        label="Use AM/PM"
+                        onChange={this.toggleUseAmPm}
+                    />
+                </PropCodeTooltip>
             </>
         );
 
@@ -158,13 +173,13 @@ export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePi
             <Example options={options} {...this.props}>
                 <DatePicker3
                     className={Classes.ELEVATION_1}
+                    dayPickerProps={{ showOutsideDays, showWeekNumber }}
+                    footerElement={this.state.showFooterElement ? exampleFooterElement : undefined}
                     onChange={this.handleDateChange}
                     timePickerProps={timePickerProps}
-                    footerElement={this.state.showFooterElement ? exampleFooterElement : undefined}
-                    dayPickerProps={{ showOutsideDays, showWeekNumber }}
                     {...props}
                 />
-                <FormattedDateTag date={date} />
+                <FormattedDateTag date={date} showTime={showTimePicker} />
             </Example>
         );
     }
