@@ -32,6 +32,11 @@
     }
   }
 
+  .rdp-caption {
+    border-bottom: solid 1px $pt-divider-black;
+    padding-bottom: $datepicker-padding;
+  }
+
   .rdp-table {
     // table is typically slightly narrower than the header, so this ensure that it is horizontally centered
     align-self: center;

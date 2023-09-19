@@ -20,15 +20,12 @@
     min-width: $datepicker-min-width;
   }
 
-  &.#{$ns}-daterangepicker .rdp.rdp-multiple_months {
+  .rdp.rdp-multiple_months {
     .rdp-caption {
       // the default "caption" block + "nav" absolute position styles place the nav buttons slightly off,
       // so we use flex instead
       @include pt-flex-container(row);
-      // we can't inject a <Divider /> when only overriding the dropdown & icon components, so we add a CSS divider instead
-      border-bottom: solid 1px $pt-divider-black;
       justify-content: space-between;
-      padding-bottom: $datepicker-padding;
     }
 
     .rdp-caption_start .rdp-caption {
