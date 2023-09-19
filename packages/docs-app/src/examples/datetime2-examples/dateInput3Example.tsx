@@ -17,13 +17,14 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Code, H5, Icon, Switch, Tag } from "@blueprintjs/core";
+import { Classes, Code, H5, Icon, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateInput3, TimePrecision } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "../datetime-examples/common/dateFnsFormatSelector";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
+import { FormattedDateTag } from "../../common/formattedDateTag";
 
 interface DateInput3ExampleState {
     closeOnSelection: boolean;
@@ -110,7 +111,7 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
                     }
                     value={date}
                 />
-                {date == null ? <Tag minimal={true}>no date</Tag> : <Tag intent="primary">{date}</Tag>}
+                <FormattedDateTag date={date} />
             </Example>
         );
     }

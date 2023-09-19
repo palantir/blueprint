@@ -20,7 +20,7 @@ import { Callout, Classes, H5, Switch } from "@blueprintjs/core";
 import { DatePicker3, TimePrecision } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
-import { DateTag } from "../../common/dateTag";
+import { FormattedDateTag } from "../../common/formattedDateTag";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
 
@@ -164,7 +164,7 @@ export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePi
                     dayPickerProps={{ showOutsideDays, showWeekNumber }}
                     {...props}
                 />
-                <DateTag date={date} />
+                <FormattedDateTag date={date} />
             </Example>
         );
     }

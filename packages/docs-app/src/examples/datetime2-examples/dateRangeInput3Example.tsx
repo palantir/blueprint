@@ -21,7 +21,7 @@ import { DateFormatProps, DateRange, TimePrecision } from "@blueprintjs/datetime
 import { DateRangeInput3 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
-import { DateRangeTag } from "../../common/dateRangeTag";
+import { FormattedDateRange } from "../../common/formattedDateRange";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "../datetime-examples/common/dateFnsFormatSelector";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
@@ -128,7 +128,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
                             : undefined
                     }
                 />
-                <DateRangeTag range={range} showTime={enableTimePicker} />
+                <FormattedDateRange range={range} showTime={enableTimePicker} />
             </Example>
         );
     }
