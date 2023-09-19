@@ -33,10 +33,10 @@ import {
     Popover,
     PopoverProps,
 } from "@blueprintjs/core";
-import { Classes as DatetimeClasses, DateFormatProps, DateRange, Months, TimePrecision } from "@blueprintjs/datetime";
+import { DateFormatProps, DateRange, Classes as DatetimeClasses, Months, TimePrecision } from "@blueprintjs/datetime";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Datetime2Classes, DateRangeInput3, DateRangePicker3, ReactDayPickerClasses } from "../../src";
+import { DateRangeInput3, DateRangePicker3, Datetime2Classes, ReactDayPickerClasses } from "../../src";
 import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
@@ -65,7 +65,7 @@ DateRangeInput3.defaultProps.popoverProps = { usePortal: false };
 const DATE_FORMAT = getDateFnsFormatter("M/d/yyyy");
 const DATETIME_FORMAT = getDateFnsFormatter("M/d/yyyy HH:mm:ss");
 
-describe.only("<DateRangeInput3>", () => {
+describe("<DateRangeInput3>", () => {
     let containerElement: HTMLElement | undefined;
     let loadDateFnsLocaleStub: sinon.SinonStub;
 
@@ -379,8 +379,7 @@ describe.only("<DateRangeInput3>", () => {
     describe("closeOnSelection", () => {
         it("if closeOnSelection=false, popover stays open when full date range is selected", () => {
             const { root, getDayElement } = wrap(<DateRangeInput3 {...DATE_FORMAT} closeOnSelection={false} />, true);
-            root.setState({ isOpen: true });
-            root.update();
+            root.setState({ isOpen: true }).update();
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
             expect(root.state("isOpen")).to.be.true;
@@ -389,8 +388,7 @@ describe.only("<DateRangeInput3>", () => {
 
         it("if closeOnSelection=true, popover closes when full date range is selected", () => {
             const { root, getDayElement } = wrap(<DateRangeInput3 {...DATE_FORMAT} />, true);
-            root.setState({ isOpen: true });
-            root.update();
+            root.setState({ isOpen: true }).update();
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
             expect(root.state("isOpen")).to.be.false;
@@ -402,8 +400,7 @@ describe.only("<DateRangeInput3>", () => {
                 <DateRangeInput3 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
                 true,
             );
-            root.setState({ isOpen: true });
-            root.update();
+            root.setState({ isOpen: true }).update();
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
             root.update();
@@ -414,22 +411,19 @@ describe.only("<DateRangeInput3>", () => {
 
     it("accepts contiguousCalendarMonths prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} contiguousCalendarMonths={false} />);
-        root.setState({ isOpen: true });
-        root.update();
+        root.setState({ isOpen: true }).update();
         expect(root.find(DateRangePicker3).prop("contiguousCalendarMonths")).to.be.false;
     });
 
     it("accepts singleMonthOnly prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} singleMonthOnly={false} />);
-        root.setState({ isOpen: true });
-        root.update();
+        root.setState({ isOpen: true }).update();
         expect(root.find(DateRangePicker3).prop("singleMonthOnly")).to.be.false;
     });
 
     it("accepts shortcuts prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} shortcuts={false} />);
-        root.setState({ isOpen: true });
-        root.update();
+        root.setState({ isOpen: true }).update();
         expect(root.find(DateRangePicker3).prop("shortcuts")).to.be.false;
     });
 
@@ -437,8 +431,7 @@ describe.only("<DateRangeInput3>", () => {
         const selectedShortcut = 1;
         const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} />);
 
-        root.setState({ isOpen: true });
-        root.update();
+        root.setState({ isOpen: true }).update();
         root.find(DateRangePicker3)
             .find(`.${DatetimeClasses.DATERANGEPICKER_SHORTCUTS}`)
             .find("a")
@@ -621,8 +614,7 @@ describe.only("<DateRangeInput3>", () => {
                     onChange={onChange}
                 />,
             );
-            root.setState({ isOpen: true });
-            root.update();
+            root.setState({ isOpen: true }).update();
 
             getDayElement(END_DAY).simulate("click");
             assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, END_STR]);
@@ -2313,10 +2305,8 @@ describe.only("<DateRangeInput3>", () => {
 
         it("Updating value changes the text accordingly in both fields", () => {
             const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} value={DATE_RANGE} />);
-            root.setState({ isOpen: true });
-            root.update();
-            root.setProps({ value: DATE_RANGE_2 });
-            root.update();
+            root.setState({ isOpen: true }).update();
+            root.setProps({ value: DATE_RANGE_2 }).update();
             assertInputValuesEqual(root, START_STR_2, END_STR_2);
         });
 
