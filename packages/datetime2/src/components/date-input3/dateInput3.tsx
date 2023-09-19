@@ -40,7 +40,6 @@ import {
 
 import { Classes } from "../../classes";
 import { DatePicker3, DatePicker3Props } from "../date-picker3/datePicker3";
-import { getFormattedDateString } from "./dateInput3FormatUtils";
 import { DateInput3Props } from "./dateInput3Props";
 
 export { DateInput3Props };
@@ -118,7 +117,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     const formattedDateString = React.useMemo(() => {
         return valueAsDate === null
             ? undefined
-            : getFormattedDateString(valueAsDate, {
+            : DatePickerUtils.getFormattedDateString(valueAsDate, {
                   formatDate,
                   invalidDateMessage,
                   locale,
@@ -199,7 +198,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 setIsInputFocused(newIsInputFocused);
                 setIsOpen(newIsOpen);
             } else {
-                const newFormattedDateString = getFormattedDateString(newDate, props) ?? "";
+                const newFormattedDateString = DatePickerUtils.getFormattedDateString(newDate, props) ?? "";
                 setIsInputFocused(newIsInputFocused);
                 setIsOpen(newIsOpen);
                 setValue(newDate);
