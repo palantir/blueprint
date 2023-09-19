@@ -62,6 +62,7 @@ export const DatePicker3Classes = {
     DATEPICKER3_DAY_OUTSIDE: ReactDayPickerClasses.RDP_DAY_OUTSIDE,
     DATEPICKER3_DAY_SELECTED: ReactDayPickerClasses.RDP_DAY_SELECTED,
     DATEPICKER3_HIGHLIGHT_CURRENT_DAY: `${DatetimeClasses.DATEPICKER}-highlight-current-day`,
+    DATEPICKER3_REVERSE_MONTH_AND_YEAR: `${DatetimeClasses.DATEPICKER}-reverse-month-and-year`,
 };
 
 export const DateRangePicker3Classes = {

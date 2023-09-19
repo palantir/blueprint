@@ -106,6 +106,10 @@
   &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
     border: 1px solid $pt-divider-black;
   }
+
+  &.#{$ns}-datepicker-reverse-month-and-year .rdp-caption_dropdowns {
+    flex-direction: row-reverse;
+  }
 }
 
 .#{$ns}-datepicker-content {
