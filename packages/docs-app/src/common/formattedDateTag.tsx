@@ -19,10 +19,23 @@ import * as React from "react";
 
 import { Tag } from "@blueprintjs/core";
 
-export interface DateTagProps {
-    date: Date | null;
+export interface FormattedDateTagProps {
+    /** The date or date string to display. */
+    date: Date | string | null;
+
+    /** @default false */
+    showTime?: boolean;
 }
 
-export const DateTag: React.FC<DateTagProps> = ({ date }) => (
-    <Tag intent={date == null ? "none" : "primary"}>{date == null ? "No date" : format(date, "PPPppp")}</Tag>
-);
+export const FormattedDateTag: React.FC<FormattedDateTagProps> = ({ date, showTime }) => {
+    const isEmpty = date == null;
+    const dateFnsFormat = showTime ? "PPPppp" : "PPP";
+    return (
+        <Tag intent={isEmpty ? "none" : "primary"} minimal={isEmpty}>
+            {isEmpty ? "No date" : typeof date === "string" ? date : format(date, dateFnsFormat)}
+        </Tag>
+    );
+};
+FormattedDateTag.defaultProps = {
+    showTime: false,
+};

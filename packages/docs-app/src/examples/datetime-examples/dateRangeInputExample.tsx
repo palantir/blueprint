@@ -127,6 +127,7 @@ export class DateRangeInputExample extends React.PureComponent<ExampleProps, Dat
                             : undefined
                     }
                 />
+                {/* eslint-disable-next-line deprecation/deprecation */}
                 <DateFnsDateRange range={range} />
             </Example>
         );

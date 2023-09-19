@@ -19,7 +19,7 @@ import { format } from "date-fns";
 import * as React from "react";
 import { CaptionLabel, CaptionProps, useDayPicker, useNavigation } from "react-day-picker";
 
-import { Button, DISPLAYNAME_PREFIX, Divider, HTMLSelect, OptionProps } from "@blueprintjs/core";
+import { Button, DISPLAYNAME_PREFIX, HTMLSelect, OptionProps } from "@blueprintjs/core";
 import { DateUtils, Months } from "@blueprintjs/datetime";
 import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 
@@ -168,18 +168,12 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     );
 
     return (
-        <>
-            <div
-                className={classNames(CaptionClasses.DATEPICKER3_CAPTION, rdpClassNames.caption)}
-                ref={containerElement}
-            >
-                {hiddenCaptionLabel}
-                {prevButton}
-                {orderedSelects}
-                {nextButton}
-            </div>
-            <Divider />
-        </>
+        <div className={classNames(CaptionClasses.DATEPICKER3_CAPTION, rdpClassNames.caption)} ref={containerElement}>
+            {hiddenCaptionLabel}
+            {prevButton}
+            {orderedSelects}
+            {nextButton}
+        </div>
     );
 };
 DatePicker3Caption.displayName = `${DISPLAYNAME_PREFIX}.DatePicker3Caption`;

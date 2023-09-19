@@ -22,7 +22,7 @@ import { DateRangePicker3 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
-import { DateRangeTag } from "../../common/dateRangeTag";
+import { FormattedDateRange } from "../../common/formattedDateRange";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
 
@@ -90,7 +90,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                     minDate={minDate}
                     onChange={this.handleDateRangeChange}
                 />
-                <DateRangeTag range={dateRange} showTime={props.timePrecision !== undefined} />
+                <FormattedDateRange range={dateRange} showTime={props.timePrecision !== undefined} />
             </Example>
         );
     }

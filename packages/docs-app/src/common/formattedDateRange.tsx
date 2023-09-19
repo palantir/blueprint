@@ -14,35 +14,31 @@
  * limitations under the License.
  */
 
-import { format } from "date-fns";
 import * as React from "react";
 
 import { Tag } from "@blueprintjs/core";
 import { DateRange } from "@blueprintjs/datetime";
 import { ArrowRight } from "@blueprintjs/icons";
 
-export interface DateRangeTagProps {
+import { FormattedDateTag } from "./formattedDateTag";
+
+export interface FormattedDateRangeProps {
     range: DateRange | null;
     showTime?: boolean;
 }
 
-export const DateRangeTag: React.FC<DateRangeTagProps> = ({ range, showTime = false }) => {
-    const className = "docs-date-range";
-
+export const FormattedDateRange: React.FC<FormattedDateRangeProps> = ({ range, showTime = false }) => {
     if (range == null) {
-        return <Tag className={className}>No range</Tag>;
+        return <Tag minimal={true}>No range</Tag>;
     }
 
     const [start, end] = range;
-    const dateFnsFormat = showTime ? "PPPppp" : "PPP";
-    const formattedStart = start == null ? "No date" : format(start, dateFnsFormat);
-    const formattedEnd = end == null ? "No date" : format(end, dateFnsFormat);
 
     return (
         <div className="docs-date-range">
-            <Tag intent={start == null ? "none" : "primary"}>{formattedStart}</Tag>
+            <FormattedDateTag date={start} showTime={showTime} />
             <ArrowRight />
-            <Tag intent={end == null ? "none" : "primary"}>{formattedEnd}</Tag>
+            <FormattedDateTag date={end} showTime={showTime} />
         </div>
     );
 };

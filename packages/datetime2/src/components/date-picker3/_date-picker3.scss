@@ -21,9 +21,8 @@
   }
 
   .rdp-month {
-    border-collapse: collapse;
-    border-spacing: 0;
-    display: inline-table;
+    display: flex;
+    flex-direction: column;
     margin: 0 $datepicker-padding;
     user-select: none;
 
@@ -33,12 +32,14 @@
     }
   }
 
-  .rdp-table {
-    max-width: none;
+  .rdp-caption {
+    border-bottom: solid 1px $pt-divider-black;
+    padding-bottom: $datepicker-padding;
   }
 
-  .rdp-weekdays {
-    display: table-header-group;
+  .rdp-table {
+    // table is typically slightly narrower than the header, so this ensure that it is horizontally centered
+    align-self: center;
   }
 
   .rdp-head_cell {
@@ -105,6 +106,10 @@
 
   &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
     border: 1px solid $pt-divider-black;
+  }
+
+  &.#{$ns}-datepicker-reverse-month-and-year .rdp-caption_dropdowns {
+    flex-direction: row-reverse;
   }
 }
 

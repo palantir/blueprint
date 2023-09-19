@@ -11,7 +11,7 @@
 .#{$ns}-datepicker-caption.rdp-caption {
   @include pt-flex-container(row);
   justify-content: space-between;
-  margin: 0 0 $datepicker-padding;
+  margin: 0;
 
   // override HTMLSelect styles for a narrower appearance
   // N.B. these styles are important to achieve accurate measurements to position the dropdown arrows in <DatePickerCaption>
