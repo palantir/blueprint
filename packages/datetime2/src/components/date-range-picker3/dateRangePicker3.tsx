@@ -98,9 +98,9 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     };
 
     private modifiersClassNames: ModifiersClassNames = {
-        [HOVERED_RANGE_MODIFIER]: Classes.DATERANGEPICKER3_DAY_HOVERED_RANGE,
-        [`${HOVERED_RANGE_MODIFIER}-start`]: Classes.DATERANGEPICKER3_DAY_HOVERED_RANGE_START,
-        [`${HOVERED_RANGE_MODIFIER}-end`]: Classes.DATERANGEPICKER3_DAY_HOVERED_RANGE_END,
+        [HOVERED_RANGE_MODIFIER]: Classes.DATERANGEPICKER3_HOVERED_RANGE,
+        [`${HOVERED_RANGE_MODIFIER}-start`]: Classes.DATERANGEPICKER3_HOVERED_RANGE_START,
+        [`${HOVERED_RANGE_MODIFIER}-end`]: Classes.DATERANGEPICKER3_HOVERED_RANGE_END,
     };
 
     private initialMonthAndYear: MonthAndYear = MonthAndYear.fromDate(new Date());
