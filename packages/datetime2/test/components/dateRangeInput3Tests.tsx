@@ -2586,7 +2586,9 @@ describe.only("<DateRangeInput3>", () => {
             const onChange = sinon.spy();
             const value = [START_DATE, null] as DateRange;
 
-            const { root, getDayElement } = wrap(<DateRangeInput3 {...DATE_FORMAT} value={value} onChange={onChange} />);
+            const { root, getDayElement } = wrap(
+                <DateRangeInput3 {...DATE_FORMAT} value={value} onChange={onChange} />,
+            );
 
             // popover opens on focus
             getStartInput(root).simulate("focus");
@@ -2777,9 +2779,11 @@ describe.only("<DateRangeInput3>", () => {
             getDayElement: (dayNumber = 1, fromLeftMonth = true) => {
                 const monthElement = wrapper.find(`.${ReactDayPickerClasses.RDP_MONTH}`).at(fromLeftMonth ? 0 : 1);
                 const dayElements = monthElement.find(`.${Datetime2Classes.DATEPICKER3_DAY}`);
-                return dayElements.filterWhere(d => (
-                    d.text() === dayNumber.toString() && !d.hasClass(Datetime2Classes.DATEPICKER3_DAY_OUTSIDE)
-                )).hostNodes();
+                return dayElements
+                    .filterWhere(
+                        d => d.text() === dayNumber.toString() && !d.hasClass(Datetime2Classes.DATEPICKER3_DAY_OUTSIDE),
+                    )
+                    .hostNodes();
             },
             root: wrapper,
         };
