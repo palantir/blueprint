@@ -26,7 +26,7 @@ import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
 
 const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
 
-export interface DatePicker3ExampleState {
+interface DatePicker3ExampleState {
     date: Date | null;
     highlightCurrentDay: boolean;
     maxDate: Date | undefined;

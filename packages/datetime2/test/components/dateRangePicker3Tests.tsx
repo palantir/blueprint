@@ -1346,8 +1346,8 @@ describe("<DatePicker3>", () => {
                 return harness;
             },
             assertSelectedDays: (from?: number, to?: number) => {
-                const rangeStart = wrapper.find(`.${Datetime2Classes.DATERANGEPICKER3_DAY_RANGE_START}`).first();
-                const rangeEnd = wrapper.find(`.${Datetime2Classes.DATERANGEPICKER3_DAY_RANGE_END}`).first();
+                const rangeStart = wrapper.find(`.${Datetime2Classes.DATERANGEPICKER3_SELECTED_RANGE_START}`).first();
+                const rangeEnd = wrapper.find(`.${Datetime2Classes.DATERANGEPICKER3_SELECTED_RANGE_END}`).first();
                 if (from !== undefined) {
                     assert.isTrue(rangeStart.exists());
                     assert.equal(parseInt(rangeStart.text(), 10), from);
@@ -1358,7 +1358,7 @@ describe("<DatePicker3>", () => {
                 }
                 if (from !== undefined && to !== undefined) {
                     assert.lengthOf(
-                        harness.getDays(Datetime2Classes.DATERANGEPICKER3_DAY_RANGE_MIDDLE),
+                        harness.getDays(Datetime2Classes.DATERANGEPICKER3_SELECTED_RANGE_MIDDLE),
                         Math.max(0, to - from - 1),
                     );
                 }

@@ -10,7 +10,7 @@ provides next-generation components for interacting with dates & times:
 -   [DatePicker3](#datetime2/date-picker3)
 -   [DateInput3](#datetime2/date-input3)
 -   [DateRangePicker3](#datetime2/date-range-picker3)
--   DateRangeInput3 (_coming soon_)
+-   [DateRangeInput3](#datetime2/date-range-input3)
 
 There are also legacy APIs which are re-exported aliases for components from [**@blueprintjs/datetime**](#datetime).
 These "V2" names are backwards-compatible with the previous major version of @blueprintjs/datetime2:
@@ -70,3 +70,4 @@ packages' CSS files as well (if you are not doing this already):
 @page date-picker3
 @page date-input3
 @page date-range-picker3
+@page date-range-input3

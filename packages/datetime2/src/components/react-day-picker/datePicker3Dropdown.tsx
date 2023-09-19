@@ -35,7 +35,10 @@ export function DatePicker3Dropdown({ caption, children, ...props }: DropdownPro
     // the month name. N.B. we expect props.caption to be a simple string representing the month name.
     const displayedMonthText = typeof caption === "string" ? caption : "";
     const monthSelectRightOffset = useMonthSelectRightOffset(selectElement, containerElement, displayedMonthText);
-    const iconProps = props.name === "months" ? { style: { right: monthSelectRightOffset } } : {};
+    const iconProps = React.useMemo(
+        () => (props.name === "months" ? { style: { right: monthSelectRightOffset } } : {}),
+        [props.name, monthSelectRightOffset],
+    );
 
     return (
         <div ref={containerElement}>
