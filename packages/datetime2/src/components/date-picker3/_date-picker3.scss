@@ -21,9 +21,8 @@
   }
 
   .rdp-month {
-    border-collapse: collapse;
-    border-spacing: 0;
-    display: inline-table;
+    display: flex;
+    flex-direction: column;
     margin: 0 $datepicker-padding;
     user-select: none;
 
@@ -34,11 +33,8 @@
   }
 
   .rdp-table {
-    max-width: none;
-  }
-
-  .rdp-weekdays {
-    display: table-header-group;
+    // table is typically slightly narrower than the header, so this ensure that it is horizontally centered
+    align-self: center;
   }
 
   .rdp-head_cell {
