@@ -19,14 +19,15 @@ import * as React from "react";
 import { Tag } from "@blueprintjs/core";
 import { DateRange } from "@blueprintjs/datetime";
 import { ArrowRight } from "@blueprintjs/icons";
+
 import { FormattedDateTag } from "./formattedDateTag";
 
-export interface FormattedDateRange {
+export interface FormattedDateRangeProps {
     range: DateRange | null;
     showTime?: boolean;
 }
 
-export const FormattedDateRange: React.FC<FormattedDateRange> = ({ range, showTime = false }) => {
+export const FormattedDateRange: React.FC<FormattedDateRangeProps> = ({ range, showTime = false }) => {
     if (range == null) {
         return <Tag minimal={true}>No range</Tag>;
     }

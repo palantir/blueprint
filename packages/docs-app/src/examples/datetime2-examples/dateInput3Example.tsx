@@ -21,10 +21,10 @@ import { Classes, Code, H5, Icon, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateInput3, TimePrecision } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
+import { FormattedDateTag } from "../../common/formattedDateTag";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "../datetime-examples/common/dateFnsFormatSelector";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
-import { FormattedDateTag } from "../../common/formattedDateTag";
 
 interface DateInput3ExampleState {
     closeOnSelection: boolean;
