@@ -480,7 +480,7 @@ describe("<DateInput>", () => {
             assert.isTrue(isEqual(parseISO(onChange.firstCall.args[0]), DATE));
         });
 
-        describe("allows changing timezone", () => {
+        describe("allows changing timezone via user interaction (uncontrolled timezone value)", () => {
             it("before selecting a date", () => {
                 const wrapper = mount(<DateInput {...DEFAULT_PROPS} />, { attachTo: containerElement });
                 focusInput(wrapper);
@@ -499,10 +499,30 @@ describe("<DateInput>", () => {
             });
         });
 
-        describe("allows changing defaultTimezone", () => {
+        describe("allows changing timezone programmatically (controlled timezone value)", () => {
+            it("before selecting a date", () => {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} timezone={UTC_TIME.ianaCode} />, {
+                    attachTo: containerElement,
+                });
+                wrapper.setProps({ timezone: TOKYO_TIMEZONE.ianaCode }).update();
+                assertTimezoneIsSelected(wrapper, "GMT+9");
+            });
+
+            it("after selecting a date", () => {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} timezone={UTC_TIME.ianaCode} />, {
+                    attachTo: containerElement,
+                });
+                focusInput(wrapper);
+                clickCalendarDay(wrapper, 1);
+                wrapper.setProps({ timezone: TOKYO_TIMEZONE.ianaCode }).update();
+                assertTimezoneIsSelected(wrapper, "GMT+9");
+            });
+        });
+
+        it("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
             assert.strictEqual(wrapper.find(TimezoneSelect).text(), getTimezoneShortName(UTC_TIME.ianaCode, undefined));
-            wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode });
+            wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode }).update();
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),
                 getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),

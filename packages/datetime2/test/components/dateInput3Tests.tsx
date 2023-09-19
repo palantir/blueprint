@@ -492,7 +492,7 @@ describe("<DateInput3>", () => {
             assert.isTrue(isEqual(parseISO(onChange.firstCall.args[0]), DATE));
         });
 
-        describe("allows changing timezone", () => {
+        describe("allows changing timezone via user interaction (uncontrolled timezone value)", () => {
             it("before selecting a date", () => {
                 const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} />, { attachTo: testsContainerElement });
                 focusInput(wrapper);
@@ -511,13 +511,33 @@ describe("<DateInput3>", () => {
             });
         });
 
-        describe("allows changing defaultTimezone", () => {
+        describe("allows changing timezone programmatically (controlled timezone value)", () => {
+            it("before selecting a date", () => {
+                const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} timezone={TimezoneUtils.UTC_TIME.ianaCode} />, {
+                    attachTo: testsContainerElement,
+                });
+                wrapper.setProps({ timezone: TOKYO_TIMEZONE.ianaCode }).update();
+                assertTimezoneIsSelected(wrapper, "GMT+9");
+            });
+
+            it("after selecting a date", () => {
+                const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} timezone={TimezoneUtils.UTC_TIME.ianaCode} />, {
+                    attachTo: testsContainerElement,
+                });
+                focusInput(wrapper);
+                clickCalendarDay(wrapper, 1);
+                wrapper.setProps({ timezone: TOKYO_TIMEZONE.ianaCode }).update();
+                assertTimezoneIsSelected(wrapper, "GMT+9");
+            });
+        });
+
+        it("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),
                 TimezoneNameUtils.getTimezoneShortName(TimezoneUtils.UTC_TIME.ianaCode, undefined),
             );
-            wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode });
+            wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode }).update();
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),
                 TimezoneNameUtils.getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),

@@ -73,7 +73,13 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Da
      */
     closeOnSelection?: boolean;
 
-    /** The default timezone selected. Defaults to the user local timezone */
+    /**
+     * The default timezone selected. Defaults to the user's local timezone.
+     *
+     * Mutually exclusive with `timezone` prop.
+     *
+     * @see https://www.iana.org/time-zones
+     */
     defaultTimezone?: string;
 
     /**
@@ -129,6 +135,13 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Da
     onError?: (errorDate: Date) => void;
 
     /**
+     * Callback invoked when the user selects a timezone.
+     *
+     * @param timezone the new timezone's IANA code
+     */
+    onTimezoneChange?: (timezone: string) => void;
+
+    /**
      * Element to render on right side of input.
      */
     rightElement?: JSX.Element;
@@ -157,6 +170,18 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Da
      * @default false
      */
     shortcuts?: boolean | DatePickerShortcut[];
+
+    /**
+     * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
+     *
+     * If you set this prop, the TimezoneSelect will behave in a controlled manner and you are responsible
+     * for updating this value using the `onTimezoneChange` callback.
+     *
+     * Mutually exclusive with `defaultTimezone` prop.
+     *
+     * @see https://www.iana.org/time-zones
+     */
+    timezone?: string;
 
     /**
      * Text for the today button in the date picker action bar.
@@ -200,6 +225,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
         popoverRef,
         showTimezoneSelect,
         timePrecision,
+        timezone,
         value,
         ...datePickerProps
     } = props;
@@ -258,10 +284,18 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
     }, [valueFromProps]);
 
     React.useEffect(() => {
+        // uncontrolled mode, updating initial timezone value
         if (defaultTimezone !== undefined && isValidTimezone(defaultTimezone)) {
             setTimezoneValue(defaultTimezone);
         }
     }, [defaultTimezone]);
+
+    React.useEffect(() => {
+        // controlled mode, updating timezone value
+        if (timezone !== undefined && isValidTimezone(timezone)) {
+            setTimezoneValue(timezone);
+        }
+    }, [timezone]);
 
     React.useEffect(() => {
         if (isControlled && !isInputFocused) {
@@ -398,7 +432,12 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
 
     const handleTimezoneChange = React.useCallback(
         (newTimezone: string) => {
-            setTimezoneValue(newTimezone);
+            if (timezone === undefined) {
+                // uncontrolled timezone
+                setTimezoneValue(newTimezone);
+            }
+            props.onTimezoneChange?.(newTimezone);
+
             if (valueAsDate != null) {
                 const newDateString = getIsoEquivalentWithUpdatedTimezone(valueAsDate, newTimezone, timePrecision);
                 props.onChange?.(newDateString, true);
@@ -409,17 +448,17 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
 
     const maybeTimezonePicker = isTimezoneSelectHidden ? undefined : (
         <TimezoneSelect
-            value={timezoneValue}
-            onChange={handleTimezoneChange}
+            buttonProps={timezoneSelectButtonProps}
+            className={Classes.DATE_INPUT_TIMEZONE_SELECT}
             date={tzSelectDate}
             disabled={isTimezoneSelectDisabled}
-            className={Classes.DATE_INPUT_TIMEZONE_SELECT}
-            buttonProps={timezoneSelectButtonProps}
+            onChange={handleTimezoneChange}
+            value={timezoneValue}
         >
             <Tag
-                rightIcon={isTimezoneSelectDisabled ? undefined : "caret-down"}
                 interactive={!isTimezoneSelectDisabled}
                 minimal={true}
+                rightIcon={isTimezoneSelectDisabled ? undefined : "caret-down"}
             >
                 {getTimezoneShortName(timezoneValue, tzSelectDate)}
             </Tag>
@@ -647,16 +686,26 @@ DateInput.defaultProps = {
     reverseMonthAndYearMenus: false,
 };
 
-function getInitialTimezoneValue({ defaultTimezone }: DateInputProps) {
-    if (defaultTimezone === undefined) {
-        return getCurrentTimezone();
-    } else {
+function getInitialTimezoneValue({ defaultTimezone, timezone }: DateInputProps) {
+    if (timezone !== undefined) {
+        // controlled mode
+        if (isValidTimezone(timezone)) {
+            return timezone;
+        } else {
+            console.error(Errors.DATEINPUT_INVALID_TIMEZONE);
+            return UTC_TIME.ianaCode;
+        }
+    } else if (defaultTimezone !== undefined) {
+        // uncontrolled mode with initial value
         if (isValidTimezone(defaultTimezone)) {
             return defaultTimezone;
         } else {
             console.error(Errors.DATEINPUT_INVALID_DEFAULT_TIMEZONE);
             return UTC_TIME.ianaCode;
         }
+    } else {
+        // uncontrolled mode
+        return getCurrentTimezone();
     }
 }
 
