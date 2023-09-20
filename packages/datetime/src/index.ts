@@ -25,7 +25,8 @@ export { DatePickerLocaleUtils, DatePickerDayModifiers };
 export { DateFormatProps } from "./common/dateFormatProps";
 export { DateRangeSelectionStrategy, DateRangeSelectionState } from "./common/dateRangeSelectionStrategy";
 export { MonthAndYear } from "./common/monthAndYear";
-export { TimePickerProps, TimePrecision } from "./common/timePickerProps";
+export { TimePickerProps } from "./common/timePickerProps";
+export { TimePrecision } from "./common/timePrecision";
 
 export { DateInput, DateInputProps } from "./components/date-input/dateInput";
 export { DatePicker, DatePickerProps } from "./components/date-picker/datePicker";
