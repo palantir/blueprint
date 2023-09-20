@@ -29,9 +29,19 @@ type DateInputSharedProps = Omit<
     "dayPickerProps" | "formatDate" | "locale" | "localeUtils" | "modifiers" | "parseDate"
 >;
 
-export type DateInput3Props = DateInputSharedProps &
-    Pick<DatePicker3Props, "dayPickerProps" | "locale"> &
-    Partial<DateFormatProps>;
+export interface DateInput3Props
+    extends DateInputSharedProps,
+        Pick<DatePicker3Props, "dayPickerProps" | "locale">,
+        Partial<DateFormatProps> {
+    /**
+     * [date-fns] format string used to format & parse date strings.
+     *
+     * Mutually exclusive with the `formatDate` and `parseDate` props.
+     *
+     * @see https://date-fns.org/docs/format
+     */
+    dateFnsFormat?: string;
+}
 
 export type DateInput3DefaultProps = Required<
     Pick<
@@ -47,7 +57,3 @@ export type DateInput3DefaultProps = Required<
 >;
 
 export type DateInput3PropsWithDefaults = Omit<DateInput3Props, keyof DateInput3DefaultProps> & DateInput3DefaultProps;
-
-export function hasFormatterAndParser(props: DateInput3Props): boolean {
-    return props.formatDate !== undefined && props.parseDate !== undefined;
-}

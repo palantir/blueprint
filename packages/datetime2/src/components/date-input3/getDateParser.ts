@@ -22,8 +22,14 @@ import { getDefaultDateFnsFormat, getDateFnsParser } from "../../common/dateFnsF
 
 const INVALID_DATE = new Date(undefined!);
 
-export function getDateStringParser(props: DateInput3Props, locale: Locale | undefined) {
-    const { invalidDateMessage, outOfRangeMessage, parseDate, timePickerProps, timePrecision } =
+/**
+ * Create a date string parser function based on a given locale.
+ *
+ * Prefer using user-provided `props.parseDate` and `props.dateFnsFormat` if available, otherwise fall back to
+ * default formats inferred from time picker props.
+ */
+export function getDateParser(props: DateInput3Props, locale: Locale | undefined) {
+    const { dateFnsFormat, invalidDateMessage, outOfRangeMessage, parseDate, timePickerProps, timePrecision } =
         props as DateInput3PropsWithDefaults;
 
     return React.useCallback(
@@ -37,13 +43,13 @@ export function getDateStringParser(props: DateInput3Props, locale: Locale | und
                 // user-provided date parser
                 newDate = parseDate(dateString, locale?.code ?? props.locale);
             } else {
-                // use one of the default parsers
-                const format = getDefaultDateFnsFormat(props);
+                // use user-provided date-fns format or one of the default formats inferred from time picker props
+                const format = props.dateFnsFormat ?? getDefaultDateFnsFormat(props);
                 newDate = getDateFnsParser(format, locale)(dateString);
             }
 
             return newDate === false ? INVALID_DATE : newDate;
         },
-        [outOfRangeMessage, invalidDateMessage, parseDate, locale, timePickerProps, timePrecision],
+        [dateFnsFormat, outOfRangeMessage, invalidDateMessage, parseDate, locale, timePickerProps, timePrecision],
     );
 }

@@ -72,7 +72,7 @@ const DEFAULT_PROPS = {
     timePrecision: TimePrecision.SECOND,
 };
 
-describe.only("<DateInput3>", () => {
+describe("<DateInput3>", () => {
     const onChange = sinon.spy();
     let testsContainerElement: HTMLElement | undefined;
     let loadDateFnsLocaleStub: sinon.SinonStub;
@@ -825,26 +825,39 @@ describe.only("<DateInput3>", () => {
         });
 
         describe("with formatDate & parseDate undefined", () => {
-            it(`uses default date-only format "${DefaultDateFnsFormats.DATE_ONLY}" when timepicker disabled`, () => {
-                const wrapper = mount(<DateInput3 value={todayIsoString} />, { attachTo: testsContainerElement });
-                const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_ONLY, enUSLocale);
-                assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
+            describe("with dateFnsFormat defined", () => {
+                it("uses the specified format", () => {
+                    const format = "Pp";
+                    const wrapper = mount(<DateInput3 dateFnsFormat={format} value={todayIsoString} />, {
+                        attachTo: testsContainerElement,
+                    });
+                    const formatter = getDateFnsFormatter(format, enUSLocale);
+                    assert.strictEqual(wrapper.find("input").prop("value"), formatter(today));
+                });
             });
 
-            it(`uses default date + time minute format "${DefaultDateFnsFormats.DATE_TIME_MINUTES}" when timepicker enabled`, () => {
-                const wrapper = mount(<DateInput3 value={todayIsoString} timePrecision="minute" />, {
-                    attachTo: testsContainerElement,
+            describe("with dateFnsFormat undefined", () => {
+                it(`uses default date-only format "${DefaultDateFnsFormats.DATE_ONLY}" when timepicker disabled`, () => {
+                    const wrapper = mount(<DateInput3 value={todayIsoString} />, { attachTo: testsContainerElement });
+                    const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_ONLY, enUSLocale);
+                    assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
                 });
-                const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_MINUTES, enUSLocale);
-                assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
-            });
 
-            it(`uses default date + time seconds format "${DefaultDateFnsFormats.DATE_TIME_SECONDS}" when timePrecision="second"`, () => {
-                const wrapper = mount(<DateInput3 value={todayIsoString} timePrecision="second" />, {
-                    attachTo: testsContainerElement,
+                it(`uses default date + time minute format "${DefaultDateFnsFormats.DATE_TIME_MINUTES}" when timepicker enabled`, () => {
+                    const wrapper = mount(<DateInput3 value={todayIsoString} timePrecision="minute" />, {
+                        attachTo: testsContainerElement,
+                    });
+                    const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_MINUTES, enUSLocale);
+                    assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
                 });
-                const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_SECONDS, enUSLocale);
-                assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
+
+                it(`uses default date + time seconds format "${DefaultDateFnsFormats.DATE_TIME_SECONDS}" when timePrecision="second"`, () => {
+                    const wrapper = mount(<DateInput3 value={todayIsoString} timePrecision="second" />, {
+                        attachTo: testsContainerElement,
+                    });
+                    const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_SECONDS, enUSLocale);
+                    assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
+                });
             });
         });
     });
