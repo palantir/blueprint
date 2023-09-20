@@ -16,6 +16,7 @@
 
 import { assert } from "chai";
 import { intlFormat, isEqual, parseISO } from "date-fns";
+import enUSLocale from "date-fns/locale/en-US";
 import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -36,6 +37,7 @@ import { TIMEZONE_ITEMS } from "@blueprintjs/datetime/lib/esm/common/timezoneIte
 import { Datetime2Classes as Classes, DateInput3, DateInput3Props, DatePicker3 } from "../../src";
 import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
+import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
 const PARIS_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Paris")!;
@@ -45,10 +47,10 @@ const VALUE = "2021-11-29T10:30:00z";
 
 const DEFAULT_PROPS = {
     defaultTimezone: TimezoneUtils.UTC_TIME.ianaCode,
-    formatDate: (date: Date | null | undefined, locale?: string) => {
+    formatDate: (date: Date | null | undefined, localeCode?: string) => {
         if (date == null) {
             return "";
-        } else if (locale === "de") {
+        } else if (localeCode === "de") {
             return intlFormat(
                 date,
                 {
@@ -70,7 +72,7 @@ const DEFAULT_PROPS = {
     timePrecision: TimePrecision.SECOND,
 };
 
-describe("<DateInput3>", () => {
+describe.only("<DateInput3>", () => {
     const onChange = sinon.spy();
     let testsContainerElement: HTMLElement | undefined;
     let loadDateFnsLocaleStub: sinon.SinonStub;
@@ -780,43 +782,70 @@ describe("<DateInput3>", () => {
     describe("date formatting", () => {
         const today = new Date();
         const todayIsoString = dateToIsoString(today);
-        const formatDate = sinon.stub().returns("custom date");
-        const parseDate = sinon.stub().returns(today);
-        const localeCode = "LOCALE";
-        const FORMATTING_PROPS: DateInput3Props = { formatDate, locale: localeCode, parseDate };
 
-        beforeEach(() => {
-            formatDate.resetHistory();
-            parseDate.resetHistory();
-        });
+        describe("with formatDate & parseDate defined", () => {
+            const formatDate = sinon.stub().returns("custom date");
+            const parseDate = sinon.stub().returns(today);
+            const localeCode = "en-US";
+            const FORMATTING_PROPS: DateInput3Props = { formatDate, locale: localeCode, parseDate };
 
-        it("formatDate called on render with locale prop", () => {
-            mount(<DateInput3 {...FORMATTING_PROPS} value={todayIsoString} />, { attachTo: testsContainerElement });
-            assert.isTrue(formatDate.calledWith(today, localeCode));
-        });
-
-        it("formatDate result becomes input value", () => {
-            const wrapper = mount(<DateInput3 {...FORMATTING_PROPS} value={todayIsoString} />, {
-                attachTo: testsContainerElement,
+            beforeEach(() => {
+                formatDate.resetHistory();
+                parseDate.resetHistory();
             });
-            assert.strictEqual(wrapper.find("input").prop("value"), "custom date");
-        });
 
-        it("parseDate called on change with locale prop", () => {
-            const value = "new date";
-            const wrapper = mount(<DateInput3 {...FORMATTING_PROPS} />, { attachTo: testsContainerElement });
-            changeInput(wrapper, value);
-            assert.isTrue(parseDate.calledWith(value, localeCode));
-        });
-
-        it("parseDate returns false renders invalid date", () => {
-            const invalidParse = sinon.stub().returns(false);
-            const wrapper = mount(<DateInput3 {...FORMATTING_PROPS} parseDate={invalidParse} />, {
-                attachTo: testsContainerElement,
+            it("formatDate called on render with locale prop", () => {
+                mount(<DateInput3 {...FORMATTING_PROPS} value={todayIsoString} />, { attachTo: testsContainerElement });
+                assert.isTrue(formatDate.calledWith(today, localeCode));
             });
-            changeInput(wrapper, "invalid");
-            blurInput(wrapper);
-            assert.strictEqual(wrapper.find("input").prop("value"), DateInput3.defaultProps?.invalidDateMessage);
+
+            it("formatDate result becomes input value", () => {
+                const wrapper = mount(<DateInput3 {...FORMATTING_PROPS} value={todayIsoString} />, {
+                    attachTo: testsContainerElement,
+                });
+                assert.strictEqual(wrapper.find("input").prop("value"), "custom date");
+            });
+
+            it("parseDate called on change with locale prop", () => {
+                const value = "new date";
+                const wrapper = mount(<DateInput3 {...FORMATTING_PROPS} />, { attachTo: testsContainerElement });
+                changeInput(wrapper, value);
+                assert.isTrue(parseDate.calledWith(value, localeCode));
+            });
+
+            it("parseDate returns false renders invalid date", () => {
+                const invalidParse = sinon.stub().returns(false);
+                const wrapper = mount(<DateInput3 {...FORMATTING_PROPS} parseDate={invalidParse} />, {
+                    attachTo: testsContainerElement,
+                });
+                changeInput(wrapper, "invalid");
+                blurInput(wrapper);
+                assert.strictEqual(wrapper.find("input").prop("value"), DateInput3.defaultProps?.invalidDateMessage);
+            });
+        });
+
+        describe("with formatDate & parseDate undefined", () => {
+            it(`uses default date-only format "${DefaultDateFnsFormats.DATE_ONLY}" when timepicker disabled`, () => {
+                const wrapper = mount(<DateInput3 value={todayIsoString} />, { attachTo: testsContainerElement });
+                const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_ONLY, enUSLocale);
+                assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
+            });
+
+            it(`uses default date + time minute format "${DefaultDateFnsFormats.DATE_TIME_MINUTES}" when timepicker enabled`, () => {
+                const wrapper = mount(<DateInput3 value={todayIsoString} timePrecision="minute" />, {
+                    attachTo: testsContainerElement,
+                });
+                const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_MINUTES, enUSLocale);
+                assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
+            });
+
+            it(`uses default date + time seconds format "${DefaultDateFnsFormats.DATE_TIME_SECONDS}" when timePrecision="second"`, () => {
+                const wrapper = mount(<DateInput3 value={todayIsoString} timePrecision="second" />, {
+                    attachTo: testsContainerElement,
+                });
+                const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_SECONDS, enUSLocale);
+                assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
+            });
         });
     });
 

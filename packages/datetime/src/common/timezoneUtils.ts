@@ -18,7 +18,7 @@ import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 import isEmpty from "lodash/isEmpty";
 
 import { getCurrentTimezone } from "./getTimezone";
-import { TimePrecision } from "./timePickerProps";
+import { TimePrecision } from "./timePrecision";
 import { UTC_TIME } from "./timezoneItems";
 
 export { getCurrentTimezone, UTC_TIME };

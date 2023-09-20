@@ -40,7 +40,16 @@ import {
 
 import { Classes } from "../../classes";
 import { DatePicker3, DatePicker3Props } from "../date-picker3/datePicker3";
-import { DateInput3Props } from "./dateInput3Props";
+import {
+    DateInput3DefaultProps,
+    DateInput3Props,
+    DateInput3PropsWithDefaults,
+    hasFormatterAndParser,
+} from "./dateInput3Props";
+import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
+import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
+import { getFormattedDateString } from "./getFormattedDateString";
+import { getDateStringParser } from "./getDateStringParser";
 
 export { DateInput3Props };
 
@@ -50,9 +59,15 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
     outlined: true,
 };
 
-const INVALID_DATE = new Date(undefined!);
-const DEFAULT_MAX_DATE = DatePickerUtils.getDefaultMaxDate();
-const DEFAULT_MIN_DATE = DatePickerUtils.getDefaultMinDate();
+const defaultProps: DateInput3DefaultProps = {
+    closeOnSelection: true,
+    disabled: false,
+    invalidDateMessage: "Invalid date",
+    maxDate: DatePickerUtils.getDefaultMaxDate(),
+    minDate: DatePickerUtils.getDefaultMinDate(),
+    outOfRangeMessage: "Out of range",
+    reverseMonthAndYearMenus: false,
+};
 
 /**
  * Date input (v3) component.
@@ -70,15 +85,12 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         formatDate,
         inputProps = {},
         invalidDateMessage,
-        locale,
-        // defaults duplicated here for TypeScript convenience
-        maxDate = DEFAULT_MAX_DATE,
-        minDate = DEFAULT_MIN_DATE,
+        locale: localeCode,
+        maxDate,
+        minDate,
         onChange,
         onError,
         outOfRangeMessage,
-        parseDate,
-        placeholder,
         popoverProps = {},
         popoverRef,
         rightElement,
@@ -87,7 +99,21 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         timezone,
         value,
         ...datePickerProps
-    } = props;
+    } = props as DateInput3PropsWithDefaults;
+
+    const locale = useDateFnsLocale(localeCode);
+    const placeholder = getPlaceholder(props);
+    const formattingProps = React.useMemo(
+        () => ({
+            formatDate,
+            invalidDateMessage,
+            locale: localeCode,
+            maxDate,
+            minDate,
+            outOfRangeMessage,
+        }),
+        [formatDate, invalidDateMessage, localeCode, maxDate, minDate, outOfRangeMessage],
+    );
 
     // Refs
     // ------------------------------------------------------------------------
@@ -109,24 +135,18 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         () => TimezoneUtils.getDateObjectFromIsoString(defaultValue, timezoneValue),
         [defaultValue, timezoneValue],
     );
-    const [valueAsDate, setValue] = React.useState<Date | null>(isControlled ? valueFromProps : defaultValueFromProps!);
+    const [valueAsDate, setValue] = React.useState<Date | null | undefined>(
+        isControlled ? valueFromProps : defaultValueFromProps,
+    );
 
     const [selectedShortcutIndex, setSelectedShortcutIndex] = React.useState<number | undefined>(undefined);
     const [isInputFocused, setIsInputFocused] = React.useState(false);
 
     // rendered as the text input's value
-    const formattedDateString = React.useMemo(() => {
-        return valueAsDate === null
-            ? undefined
-            : DatePickerUtils.getFormattedDateString(valueAsDate, {
-                  formatDate,
-                  invalidDateMessage,
-                  locale,
-                  maxDate,
-                  minDate,
-                  outOfRangeMessage,
-              });
-    }, [valueAsDate, minDate, maxDate, formatDate, locale, invalidDateMessage, outOfRangeMessage]);
+    const formattedDateString = React.useMemo(
+        () => (valueAsDate === null ? undefined : getFormattedDateString(valueAsDate, formattingProps, locale)),
+        [valueAsDate, formattingProps, locale],
+    );
     const [inputValue, setInputValue] = React.useState(formattedDateString ?? undefined);
 
     const isErrorState =
@@ -207,7 +227,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 setIsInputFocused(newIsInputFocused);
                 setIsOpen(newIsOpen);
             } else {
-                const newFormattedDateString = DatePickerUtils.getFormattedDateString(newDate, props) ?? "";
+                const newFormattedDateString = getFormattedDateString(newDate, formattingProps, locale) ?? "";
                 setIsInputFocused(newIsInputFocused);
                 setIsOpen(newIsOpen);
                 setValue(newDate);
@@ -221,7 +241,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             );
             onChange?.(newIsoDateString, isUserChange);
         },
-        [closeOnSelection, isControlled, props, onChange, timezoneValue, timePrecision, valueAsDate],
+        [closeOnSelection, isControlled, formattingProps, onChange, timezoneValue, timePrecision, valueAsDate],
     );
 
     const dayPickerProps: DatePicker3Props["dayPickerProps"] = {
@@ -345,16 +365,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     // Text input
     // ------------------------------------------------------------------------
 
-    const parseInputValue = React.useCallback(
-        (dateString: string) => {
-            if (dateString === outOfRangeMessage || dateString === invalidDateMessage) {
-                return null;
-            }
-            const newDate = parseDate(dateString, locale);
-            return newDate === false ? INVALID_DATE : newDate;
-        },
-        [outOfRangeMessage, invalidDateMessage, parseDate, locale],
-    );
+    const parseInputValue = getDateStringParser(props, locale);
 
     const handleInputFocus = React.useCallback(
         (e: React.FocusEvent<HTMLInputElement>) => {
@@ -419,7 +430,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
 
     const handleInputChange = React.useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
-            const valueString = (e.target as HTMLInputElement).value;
+            const valueString = e.target.value;
             const inputValueAsDate = parseInputValue(valueString);
 
             if (
@@ -560,15 +571,16 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     );
 });
 DateInput3.displayName = `${DISPLAYNAME_PREFIX}.DateInput3`;
-DateInput3.defaultProps = {
-    closeOnSelection: true,
-    disabled: false,
-    invalidDateMessage: "Invalid date",
-    maxDate: DEFAULT_MAX_DATE,
-    minDate: DEFAULT_MIN_DATE,
-    outOfRangeMessage: "Out of range",
-    reverseMonthAndYearMenus: false,
-};
+DateInput3.defaultProps = defaultProps;
+
+/** Gets the input `placeholder` value from props, using default values if undefined */
+function getPlaceholder(props: DateInput3Props): string | undefined {
+    if (props.placeholder !== undefined || hasFormatterAndParser(props)) {
+        return props.placeholder;
+    } else {
+        return getDefaultDateFnsFormat(props);
+    }
+}
 
 function getInitialTimezoneValue({ defaultTimezone, timezone }: DateInput3Props) {
     if (timezone !== undefined) {

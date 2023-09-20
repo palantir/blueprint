@@ -28,6 +28,7 @@ export { DateFormatProps } from "./dateFormatProps";
 export { DateRange, NonNullDateRange } from "./dateRange";
 export { Months } from "./months";
 export { TimeUnit } from "./timeUnit";
-export { TimePickerProps, TimePrecision } from "./timePickerProps";
+export { TimePickerProps } from "./timePickerProps";
+export { TimePrecision } from "./timePrecision";
 export { TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 export { getTimezoneMetadata } from "./timezoneMetadata";
