@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { type IconName, IconNames } from "./iconNames";
+import { type IconName, IconNames, IconNamesSet } from "./iconNames";
 import { type IconPaths, IconSize } from "./iconTypes";
 import { wrapWithTimer } from "./loaderUtils";
 
@@ -138,8 +138,7 @@ export class Icons {
      * @returns true if the given string is a valid {@link IconName}
      */
     public static isValidIconName(iconName: string): iconName is IconName {
-        const allIcons: IconName[] = Object.values(IconNames);
-        return allIcons.indexOf(iconName as IconName) >= 0;
+        return IconNamesSet.has(iconName as IconName);
     }
 }
 
