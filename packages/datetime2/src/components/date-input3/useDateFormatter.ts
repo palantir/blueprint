@@ -19,8 +19,8 @@ import * as React from "react";
 
 import { DateUtils } from "@blueprintjs/datetime";
 
+import { getDateFnsFormatter, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
-import { getDefaultDateFnsFormat, getDateFnsFormatter } from "../../common/dateFnsFormatUtils";
 
 /**
  * Create a date string parser function based on a given locale.
@@ -28,7 +28,7 @@ import { getDefaultDateFnsFormat, getDateFnsFormatter } from "../../common/dateF
  * Prefer using user-provided `props.formatDate` and `props.dateFnsFormat` if available, otherwise fall back to
  * default formats inferred from time picker props.
  */
-export function getDateFormatter(props: DateInput3Props, locale: Locale | undefined) {
+export function useDateFormatter(props: DateInput3Props, locale: Locale | undefined) {
     const {
         dateFnsFormat,
         formatDate,
@@ -64,9 +64,11 @@ export function getDateFormatter(props: DateInput3Props, locale: Locale | undefi
             dateFnsFormat,
             formatDate,
             invalidDateMessage,
+            locale,
             maxDate,
             minDate,
             outOfRangeMessage,
+            props.locale,
             timePickerProps,
             timePrecision,
         ],

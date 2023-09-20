@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
+import { format, Locale, parse } from "date-fns";
+
 import { DatePickerBaseProps, TimePrecision } from "@blueprintjs/datetime";
-import { Locale, format, parse } from "date-fns";
 
 export const DefaultDateFnsFormats = {
     DATE_ONLY: "yyyy-MM-dd",
+    DATE_TIME_MILLISECONDS: "yyyy-MM-dd HH:mm:ss.SSS",
     DATE_TIME_MINUTES: "yyyy-MM-dd HH:mm",
     DATE_TIME_SECONDS: "yyyy-MM-dd HH:mm:ss",
-    DATE_TIME_MILLISECONDS: "yyyy-MM-dd HH:mm:ss.SSS",
 };
 
 export function getDefaultDateFnsFormat(props: Pick<DatePickerBaseProps, "timePickerProps" | "timePrecision">): string {

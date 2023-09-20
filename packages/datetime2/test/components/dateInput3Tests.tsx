@@ -16,8 +16,8 @@
 
 import { assert } from "chai";
 import { intlFormat, isEqual, parseISO } from "date-fns";
-import enUSLocale from "date-fns/locale/en-US";
 import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
+import enUSLocale from "date-fns/locale/en-US";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
@@ -35,9 +35,9 @@ import {
 import { TIMEZONE_ITEMS } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
 
 import { Datetime2Classes as Classes, DateInput3, DateInput3Props, DatePicker3 } from "../../src";
+import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
 import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
-import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
 const PARIS_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Paris")!;

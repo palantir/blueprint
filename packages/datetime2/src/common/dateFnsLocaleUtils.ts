@@ -42,6 +42,6 @@ export function useDateFnsLocale(localeCode: string | undefined) {
             return;
         }
         loadDateFnsLocale(localeCode).then(setLocale);
-    }, [localeCode]);
+    }, [locale?.code, localeCode]);
     return locale;
 }

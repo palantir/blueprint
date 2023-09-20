@@ -39,12 +39,12 @@ import {
 } from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
+import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
+import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import { DatePicker3, DatePicker3Props } from "../date-picker3/datePicker3";
 import { DateInput3DefaultProps, DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
-import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
-import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
-import { getDateFormatter } from "./getDateFormatter";
-import { getDateParser } from "./getDateParser";
+import { useDateFormatter } from "./useDateFormatter";
+import { useDateParser } from "./useDateParser";
 
 export { DateInput3Props };
 
@@ -85,21 +85,22 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         minDate,
         onChange,
         onError,
+        onTimezoneChange,
         outOfRangeMessage,
         popoverProps = {},
         popoverRef,
         rightElement,
         showTimezoneSelect,
         timePrecision,
-        timezone,
+        timezone: controlledTimezone,
         value,
         ...datePickerProps
     } = props as DateInput3PropsWithDefaults;
 
     const locale = useDateFnsLocale(localeCode);
     const placeholder = getPlaceholder(props);
-    const formatDateString = getDateFormatter(props, locale);
-    const parseDateString = getDateParser(props, locale);
+    const formatDateString = useDateFormatter(props, locale);
+    const parseDateString = useDateParser(props, locale);
 
     // Refs
     // ------------------------------------------------------------------------
@@ -157,10 +158,10 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
 
     React.useEffect(() => {
         // controlled mode, updating timezone value
-        if (timezone !== undefined && TimezoneNameUtils.isValidTimezone(timezone)) {
-            setTimezoneValue(timezone);
+        if (controlledTimezone !== undefined && TimezoneNameUtils.isValidTimezone(controlledTimezone)) {
+            setTimezoneValue(controlledTimezone);
         }
-    }, [timezone]);
+    }, [controlledTimezone]);
 
     React.useEffect(() => {
         if (isControlled && !isInputFocused) {
@@ -307,11 +308,11 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
 
     const handleTimezoneChange = React.useCallback(
         (newTimezone: string) => {
-            if (timezone === undefined) {
+            if (controlledTimezone === undefined) {
                 // uncontrolled timezone
                 setTimezoneValue(newTimezone);
             }
-            props.onTimezoneChange?.(newTimezone);
+            onTimezoneChange?.(newTimezone);
 
             if (valueAsDate != null) {
                 const newDateString = TimezoneUtils.getIsoEquivalentWithUpdatedTimezone(
@@ -322,7 +323,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 onChange?.(newDateString, true);
             }
         },
-        [onChange, valueAsDate, timePrecision],
+        [onChange, onTimezoneChange, valueAsDate, timePrecision, controlledTimezone],
     );
 
     const maybeTimezonePicker = React.useMemo(
