@@ -30,6 +30,7 @@ function getDecimalSeparator(locale: string) {
 }
 
 export function toLocaleString(num: number, locale: string = "en-US") {
+    // HACKHACK: roundingPriority is not supported yet in TypeScript https://github.com/microsoft/TypeScript/issues/43336
     return sanitizeNumericInput(num.toLocaleString(locale, { roundingPriority: "morePrecision" } as any), locale);
 }
 
