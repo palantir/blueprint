@@ -15,6 +15,7 @@
  */
 
 import type { Locale } from "date-fns";
+import * as React from "react";
 
 import { Utils } from "@blueprintjs/core";
 
@@ -30,4 +31,17 @@ export async function loadDateFnsLocale(localeCode: string): Promise<Locale | un
         }
         return undefined;
     }
+}
+
+export function useDateFnsLocale(localeCode: string | undefined) {
+    const [locale, setLocale] = React.useState<Locale | undefined>(undefined);
+    React.useEffect(() => {
+        if (localeCode === undefined) {
+            return;
+        } else if (locale?.code === localeCode) {
+            return;
+        }
+        loadDateFnsLocale(localeCode).then(setLocale);
+    }, [locale?.code, localeCode]);
+    return locale;
 }

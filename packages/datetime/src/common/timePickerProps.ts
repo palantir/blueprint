@@ -16,15 +16,8 @@
 
 import { Props } from "@blueprintjs/core";
 
+import { TimePrecision } from "./timePrecision";
 import { TimeUnit } from "./timeUnit";
-
-export const TimePrecision = {
-    MILLISECOND: "millisecond" as "millisecond",
-    MINUTE: "minute" as "minute",
-    SECOND: "second" as "second",
-};
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export type TimePrecision = (typeof TimePrecision)[keyof typeof TimePrecision];
 
 export interface TimePickerProps extends Props {
     /**

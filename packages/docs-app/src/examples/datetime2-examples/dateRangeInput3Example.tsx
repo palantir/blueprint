@@ -23,7 +23,10 @@ import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@
 
 import { FormattedDateRange } from "../../common/formattedDateRange";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
-import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "../datetime-examples/common/dateFnsFormatSelector";
+import {
+    DATE_FNS_FORMATS,
+    DateFnsDateFormatPropsSelect,
+} from "../datetime-examples/common/dateFnsDateFormatPropsSelect";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 
 const exampleFooterElement = (
@@ -206,7 +209,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
                     <PropCodeTooltip snippet={`fill={${fill.toString()}}`}>
                         <Switch label="Fill container width" checked={fill} onChange={this.toggleFill} />
                     </PropCodeTooltip>
-                    <DateFnsFormatSelector format={this.state.format} onChange={this.handleFormatChange} />
+                    <DateFnsDateFormatPropsSelect format={this.state.format} onChange={this.handleFormatChange} />
                     <br />
 
                     <H5>Time picker props</H5>

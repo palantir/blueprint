@@ -24,19 +24,19 @@ import { DateFormatSelector, DateFormatSelectorProps } from "../../../common/dat
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const locales: { [localeCode: string]: Locale } = require("date-fns/locale");
 
-export const DateFnsFormatSelector: React.FC<Omit<DateFormatSelectorProps, "formatOptions">> = props => {
-    return (
-        <DateFormatSelector
-            formatOptions={DATE_FNS_FORMATS}
-            label={
-                <span>
-                    <a href="https://date-fns.org/">date-fns</a> format
-                </span>
-            }
-            {...props}
-        />
-    );
-};
+export type DateFnsFormatSelectorProps = Omit<DateFormatSelectorProps, "formatOptions">;
+
+export const DateFnsDateFormatPropsSelect: React.FC<DateFnsFormatSelectorProps> = props => (
+    <DateFormatSelector
+        formatOptions={DATE_FNS_FORMATS}
+        label={
+            <span>
+                <a href="https://date-fns.org/">date-fns</a> format
+            </span>
+        }
+        {...props}
+    />
+);
 
 export const DATE_FNS_FORMATS: DateFormatProps[] = [
     getDateFnsFormatter("MM/dd/yyyy"),
