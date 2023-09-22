@@ -7,6 +7,7 @@ import { TSESLint } from "@typescript-eslint/utils";
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 import { coreComponentsMigrationMapping } from "./no-deprecated-core-components";
 import { datetimeComponentsMigrationMapping } from "./no-deprecated-datetime-components";
+import { datetime2ComponentsMigrationMapping } from "./no-deprecated-datetime2-components";
 import { selectComponentsMigrationMapping } from "./no-deprecated-select-components";
 import { tableComponentsMigrationMapping } from "./no-deprecated-table-components";
 
@@ -18,10 +19,17 @@ import { tableComponentsMigrationMapping } from "./no-deprecated-table-component
  */
 export const noDeprecatedComponentsRule: TSESLint.RuleModule<string, unknown[]> = createNoDeprecatedComponentsRule(
     "no-deprecated-components",
-    ["@blueprintjs/core", "@blueprintjs/datetime", "@blueprintjs/select", "@blueprintjs/table"],
+    [
+        "@blueprintjs/core",
+        "@blueprintjs/datetime",
+        "@blueprintjs/datetime2",
+        "@blueprintjs/select",
+        "@blueprintjs/table",
+    ],
     {
         ...coreComponentsMigrationMapping,
         ...datetimeComponentsMigrationMapping,
+        ...datetime2ComponentsMigrationMapping,
         ...selectComponentsMigrationMapping,
         ...tableComponentsMigrationMapping,
     },
