@@ -17,14 +17,14 @@
 import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
-import { DateRangePicker } from "@blueprintjs/datetime";
+import { DateRangePicker3 } from "@blueprintjs/datetime2";
 
 import { ExampleCard } from "./ExampleCard";
 
 export const DateRangePickerExample = React.memo(() => {
     return (
         <ExampleCard width={700} horizontal={true} label="Date range picker">
-            <DateRangePicker className={Classes.ELEVATION_1} />
+            <DateRangePicker3 className={Classes.ELEVATION_1} />
         </ExampleCard>
     );
 });

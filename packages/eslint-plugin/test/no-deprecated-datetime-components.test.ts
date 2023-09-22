@@ -20,7 +20,7 @@
 import { TSESLint } from "@typescript-eslint/utils";
 import dedent from "dedent";
 
-import { noDeprecatedSelectComponentsRule } from "../src/rules/no-deprecated-components";
+import { noDeprecatedDatetimeComponentsRule } from "../src/rules/no-deprecated-components";
 
 const ruleTester = new TSESLint.RuleTester({
     parser: require.resolve("@typescript-eslint/parser"),
@@ -32,16 +32,31 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-ruleTester.run("no-deprecated-select-components", noDeprecatedSelectComponentsRule, {
-    // N.B. most other deprecated components are tested by no-deprecated-components.test.ts, this suite just tests
-    // for more specific violations which involve certain syntax
-    invalid: [],
+ruleTester.run("no-deprecated-datetime-components", noDeprecatedDatetimeComponentsRule, {
+    invalid: [
+        {
+            code: dedent`
+                import { DatePicker } from "@blueprintjs/datetime";
+
+                return <DatePicker />;
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: {
+                        deprecatedComponentName: "DatePicker",
+                        newComponentName: "DatePicker3",
+                    },
+                },
+            ],
+        },
+    ],
     valid: [
         {
             code: dedent`
-                import { MultiSelect } from "@blueprintjs/select";
+                import { DatePicker3 } from "@blueprintjs/datetime2";
 
-                const MyMultiSelect = MultiSelect.ofType<any>();
+                return <DatePicker3 />;
             `,
         },
     ],
