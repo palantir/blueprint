@@ -22,7 +22,7 @@ import { Utils } from "@blueprintjs/core";
 /**
  * Lazy-loads a date-fns locale for use in a datetime class component.
  */
-export async function loadDateFnsLocale(localeOrCode: string | Locale | undefined): Promise<Locale | undefined> {
+export async function loadDateFnsLocale(localeOrCode: Locale | string | undefined): Promise<Locale | undefined> {
     if (localeOrCode === undefined) {
         return;
     } else if (typeof localeOrCode === "string") {
@@ -45,7 +45,7 @@ export async function loadDateFnsLocale(localeOrCode: string | Locale | undefine
 /**
  * Lazy-loads a date-fns locale for use in a datetime function component.
  */
-export function useDateFnsLocale(localeOrCode: string | Locale | undefined) {
+export function useDateFnsLocale(localeOrCode: Locale | string | undefined) {
     const [locale, setLocale] = React.useState<Locale | undefined>(undefined);
     React.useEffect(() => {
         if (localeOrCode === undefined) {

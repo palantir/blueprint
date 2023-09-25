@@ -15,6 +15,7 @@
  */
 
 import { assert } from "chai";
+import enUSLocale from "date-fns/locale/en-US";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { Day } from "react-day-picker";
@@ -51,6 +52,7 @@ describe("<DatePicker3>", () => {
     beforeEach(() => {
         testsContainerElement = document.createElement("div");
         document.body.appendChild(testsContainerElement);
+        loadDateFnsLocaleStub.resetHistory();
     });
 
     after(() => {
@@ -715,51 +717,60 @@ describe("<DatePicker3>", () => {
         });
     });
 
-    it("onChange correctly passes a Date and never null when canClearSelection is false", () => {
-        const onChange = sinon.spy();
-        const { getDay } = wrap(<DatePicker3 canClearSelection={false} onChange={onChange} />);
-        getDay().simulate("click");
-        assert.isNotNull(onChange.firstCall.args[0]);
-        getDay().simulate("click");
-        assert.isNotNull(onChange.secondCall.args[0]);
+    describe("clearing a selection", () => {
+        it("onChange correctly passes a Date and never null when canClearSelection is false", () => {
+            const onChange = sinon.spy();
+            const { getDay } = wrap(<DatePicker3 canClearSelection={false} onChange={onChange} />);
+            getDay().simulate("click");
+            assert.isNotNull(onChange.firstCall.args[0]);
+            getDay().simulate("click");
+            assert.isNotNull(onChange.secondCall.args[0]);
+        });
+
+        it("onChange correctly passes a Date or null when canClearSelection is true", () => {
+            const onChange = sinon.spy();
+            const { getDay } = wrap(<DatePicker3 canClearSelection={true} onChange={onChange} />);
+            getDay().simulate("click");
+            assert.isNotNull(onChange.firstCall.args[0]);
+            getDay().simulate("click");
+            assert.isNull(onChange.secondCall.args[0]);
+        });
+
+        it("Clear button disabled when canClearSelection is false", () => {
+            const { getClearButton } = wrap(<DatePicker3 canClearSelection={false} showActionsBar={true} />);
+            assert.isTrue(getClearButton().props().disabled);
+        });
+
+        it("Clear button enabled when canClearSelection is true", () => {
+            const { getClearButton } = wrap(<DatePicker3 canClearSelection={true} showActionsBar={true} />);
+            assert.isFalse(getClearButton().props().disabled);
+        });
+
+        it("selects the current day when Today is clicked", () => {
+            const { root } = wrap(<DatePicker3 showActionsBar={true} />);
+            root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).first().simulate("click");
+
+            const today = new Date();
+            const value = root.state("value");
+            assert.isNotNull(value);
+            assert.equal(value!.getDate(), today.getDate());
+            assert.equal(value!.getMonth(), today.getMonth());
+            assert.equal(value!.getFullYear(), today.getFullYear());
+        });
+
+        it("clears the value when Clear is clicked", () => {
+            const { getDay, root } = wrap(<DatePicker3 showActionsBar={true} />);
+            getDay().simulate("click");
+            root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).last().simulate("click");
+            assert.isNull(root.state("value"));
+        });
     });
 
-    it("onChange correctly passes a Date or null when canClearSelection is true", () => {
-        const onChange = sinon.spy();
-        const { getDay } = wrap(<DatePicker3 canClearSelection={true} onChange={onChange} />);
-        getDay().simulate("click");
-        assert.isNotNull(onChange.firstCall.args[0]);
-        getDay().simulate("click");
-        assert.isNull(onChange.secondCall.args[0]);
-    });
-
-    it("Clear button disabled when canClearSelection is false", () => {
-        const { getClearButton } = wrap(<DatePicker3 canClearSelection={false} showActionsBar={true} />);
-        assert.isTrue(getClearButton().props().disabled);
-    });
-
-    it("Clear button enabled when canClearSelection is true", () => {
-        const { getClearButton } = wrap(<DatePicker3 canClearSelection={true} showActionsBar={true} />);
-        assert.isFalse(getClearButton().props().disabled);
-    });
-
-    it("selects the current day when Today is clicked", () => {
-        const { root } = wrap(<DatePicker3 showActionsBar={true} />);
-        root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).first().simulate("click");
-
-        const today = new Date();
-        const value = root.state("value");
-        assert.isNotNull(value);
-        assert.equal(value!.getDate(), today.getDate());
-        assert.equal(value!.getMonth(), today.getMonth());
-        assert.equal(value!.getFullYear(), today.getFullYear());
-    });
-
-    it("clears the value when Clear is clicked", () => {
-        const { getDay, root } = wrap(<DatePicker3 showActionsBar={true} />);
-        getDay().simulate("click");
-        root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).last().simulate("click");
-        assert.isNull(root.state("value"));
+    describe("localization", () => {
+        it("accept a statically-loaded date-fns locale and doesn't try to load it again", () => {
+            wrap(<DatePicker3 locale={enUSLocale} />);
+            assert.isTrue(loadDateFnsLocaleStub.calledOnceWithExactly(enUSLocale));
+        });
     });
 
     function wrap(datepicker: JSX.Element) {
