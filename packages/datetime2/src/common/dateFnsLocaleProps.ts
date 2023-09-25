@@ -30,6 +30,6 @@ export interface DateFnsLocaleProps {
     locale?: Locale | string;
 }
 
-export function getLocaleCodeFromProps(props: DateFnsLocaleProps): string | undefined {
-    return typeof props.locale === "string" ? props.locale : props.locale?.code;
+export function getLocaleCodeFromProps(localeOrCode: DateFnsLocaleProps["locale"]): string | undefined {
+    return typeof localeOrCode === "string" ? localeOrCode : localeOrCode?.code;
 }

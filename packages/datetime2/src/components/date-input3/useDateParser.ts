@@ -30,8 +30,15 @@ const INVALID_DATE = new Date(undefined!);
  * default formats inferred from time picker props.
  */
 export function useDateParser(props: DateInput3Props, locale: Locale | undefined) {
-    const { dateFnsFormat, invalidDateMessage, outOfRangeMessage, parseDate, timePickerProps, timePrecision } =
-        props as DateInput3PropsWithDefaults;
+    const {
+        dateFnsFormat,
+        invalidDateMessage,
+        locale: localeFromProps,
+        outOfRangeMessage,
+        parseDate,
+        timePickerProps,
+        timePrecision,
+    } = props as DateInput3PropsWithDefaults;
 
     return React.useCallback(
         (dateString: string): Date | null => {
@@ -42,7 +49,7 @@ export function useDateParser(props: DateInput3Props, locale: Locale | undefined
 
             if (parseDate !== undefined) {
                 // user-provided date parser
-                newDate = parseDate(dateString, locale?.code ?? getLocaleCodeFromProps(props));
+                newDate = parseDate(dateString, locale?.code ?? getLocaleCodeFromProps(localeFromProps));
             } else {
                 // use user-provided date-fns format or one of the default formats inferred from time picker props
                 const format = dateFnsFormat ?? getDefaultDateFnsFormat({ timePickerProps, timePrecision });
@@ -55,9 +62,9 @@ export function useDateParser(props: DateInput3Props, locale: Locale | undefined
             dateFnsFormat,
             invalidDateMessage,
             locale,
+            localeFromProps,
             outOfRangeMessage,
             parseDate,
-            props.locale,
             timePickerProps,
             timePrecision,
         ],

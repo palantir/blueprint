@@ -46,17 +46,21 @@ export async function loadDateFnsLocale(localeOrCode: Locale | string | undefine
  * Lazy-loads a date-fns locale for use in a datetime function component.
  */
 export function useDateFnsLocale(localeOrCode: Locale | string | undefined) {
-    const [locale, setLocale] = React.useState<Locale | undefined>(undefined);
+    // make sure to set the locale correctly on first render if it is available
+    const [locale, setLocale] = React.useState<Locale | undefined>(
+        typeof localeOrCode === "object" ? localeOrCode : undefined,
+    );
+
     React.useEffect(() => {
-        if (localeOrCode === undefined) {
-            return;
-        } else if (typeof localeOrCode === "string") {
-            if (localeOrCode !== locale?.code) {
+        setLocale(prevLocale => {
+            if (typeof localeOrCode === "string") {
                 loadDateFnsLocale(localeOrCode).then(setLocale);
+                // keep the current locale for now, it will be updated async
+                return prevLocale;
+            } else {
+                return localeOrCode;
             }
-        } else {
-            setLocale(localeOrCode);
-        }
-    }, [locale?.code, localeOrCode]);
+        });
+    }, [localeOrCode]);
     return locale;
 }
