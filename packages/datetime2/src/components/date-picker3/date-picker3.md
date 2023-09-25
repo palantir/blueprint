@@ -78,10 +78,8 @@ for more info.
 @## Localization
 
 **DatePicker3**, **DateInput3**, **DateRangePicker3**, and **DateRangeInput3** support calendar
-localization using date-fns [Locale](https://date-fns.org/docs/Locale).
-
-The `locale` prop on each of these components accepts two types of values, either a `Locale` object or
-a locale code `string`.
+localization using date-fns's [Locale](https://date-fns.org/docs/Locale) features. The `locale` prop on each
+of these components accepts two types of values, either a `Locale` object or a locale code `string`.
 
 ### Using a `Locale` object
 
@@ -99,7 +97,7 @@ function Example() {
 ### Using a locale code
 
 Use the `locale: string` type to interpret the prop as a locale code (ISO 639-1 + optional country code).
-The component will attempt to dynamically intepret the corresponding date-fns locale module.
+The component will attempt to dynamically import the corresponding date-fns locale module.
 
 ```ts
 import { DatePicker3 } from "@blueprintjs/datetime2";
