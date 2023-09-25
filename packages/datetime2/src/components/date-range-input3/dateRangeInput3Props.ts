@@ -22,3 +22,28 @@ import { DateRangePicker3Props } from "../date-range-picker3/dateRangePicker3Pro
 type DateRangeInputSharedProps = Omit<DateRangeInputProps, "dayPickerProps" | "locale" | "localeUtils" | "modifiers">;
 
 export type DateRangeInput3Props = DateRangeInputSharedProps & Pick<DateRangePicker3Props, "dayPickerProps" | "locale">;
+
+export type DateRangeInput3DefaultProps = Required<
+    Pick<
+        DateRangeInput3Props,
+        | "allowSingleDayRange"
+        | "closeOnSelection"
+        | "contiguousCalendarMonths"
+        | "dayPickerProps"
+        | "disabled"
+        | "endInputProps"
+        | "invalidDateMessage"
+        | "maxDate"
+        | "minDate"
+        | "outOfRangeMessage"
+        | "overlappingDatesMessage"
+        | "popoverProps"
+        | "selectAllOnFocus"
+        | "shortcuts"
+        | "singleMonthOnly"
+        | "startInputProps"
+    >
+>;
+
+export type DateRangeInput3PropsWithDefaults = Omit<DateRangeInput3Props, keyof DateRangeInput3DefaultProps> &
+    DateRangeInput3DefaultProps;

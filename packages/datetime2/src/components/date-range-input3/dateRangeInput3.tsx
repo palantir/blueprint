@@ -42,8 +42,13 @@ import {
 } from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
+import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
 import { DateRangePicker3 } from "../date-range-picker3/dateRangePicker3";
-import { DateRangeInput3Props } from "./dateRangeInput3Props";
+import {
+    DateRangeInput3DefaultProps,
+    DateRangeInput3Props,
+    DateRangeInput3PropsWithDefaults,
+} from "./dateRangeInput3Props";
 
 export { DateRangeInput3Props };
 
@@ -103,7 +108,7 @@ interface StateKeysAndValuesObject {
  * @see https://blueprintjs.com/docs/#datetime2/date-range-input3
  */
 export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props, DateRangeInput3State> {
-    public static defaultProps: Partial<DateRangeInput3Props> = {
+    public static defaultProps: DateRangeInput3DefaultProps = {
         allowSingleDayRange: false,
         closeOnSelection: true,
         contiguousCalendarMonths: true,
@@ -144,8 +149,8 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
         super(props);
         const [selectedStart, selectedEnd] = this.getInitialRange();
         this.state = {
-            formattedMaxDateString: this.getFormattedMinMaxDateString(props, "maxDate"),
-            formattedMinDateString: this.getFormattedMinMaxDateString(props, "minDate"),
+            formattedMaxDateString: this.formatMinMaxDateString(props, "maxDate"),
+            formattedMinDateString: this.formatMinMaxDateString(props, "minDate"),
             isEndInputFocused: false,
             isOpen: false,
             isStartInputFocused: false,
@@ -198,11 +203,11 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
 
         // cache the formatted date strings to avoid computing on each render.
         if (this.props.minDate !== prevProps.minDate) {
-            const formattedMinDateString = this.getFormattedMinMaxDateString(this.props, "minDate");
+            const formattedMinDateString = this.formatMinMaxDateString(this.props, "minDate");
             nextState = { ...nextState, formattedMinDateString };
         }
         if (this.props.maxDate !== prevProps.maxDate) {
-            const formattedMaxDateString = this.getFormattedMinMaxDateString(this.props, "maxDate");
+            const formattedMaxDateString = this.formatMinMaxDateString(this.props, "maxDate");
             nextState = { ...nextState, formattedMaxDateString };
         }
 
@@ -585,7 +590,7 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
         // We may be reacting to a programmatic focus triggered by componentDidUpdate() at a point when
         // values.selectedValue may not have been updated yet in controlled mode, so we must use values.controlledValue
         // in that case.
-        const inputString = DatePickerUtils.getFormattedDateString(
+        const inputString = formatDateString(
             isValueControlled ? values.controlledValue : values.selectedValue,
             this.props,
             true,
@@ -621,7 +626,7 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
             if (isValueControlled) {
                 nextState = {
                     ...nextState,
-                    [keys.inputString]: DatePickerUtils.getFormattedDateString(values.controlledValue, this.props),
+                    [keys.inputString]: formatDateString(values.controlledValue, this.props),
                 };
             } else {
                 nextState = {
@@ -775,7 +780,7 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
         } else if (this.doesEndBoundaryOverlapStartBoundary(selectedValue, boundary)) {
             return this.props.overlappingDatesMessage;
         } else {
-            return DatePickerUtils.getFormattedDateString(selectedValue, this.props);
+            return formatDateString(selectedValue, this.props);
         }
     };
 
@@ -911,12 +916,12 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
 
     // this is a slightly kludgy function, but it saves us a good amount of repeated code between
     // the constructor and componentDidUpdate.
-    private getFormattedMinMaxDateString(props: DateRangeInput3Props, propName: "minDate" | "maxDate") {
+    private formatMinMaxDateString(props: DateRangeInput3Props, propName: "minDate" | "maxDate") {
         const date = props[propName];
         const defaultDate = DateRangeInput3.defaultProps[propName];
         // default values are applied only if a prop is strictly `undefined`
         // See: https://facebook.github.io/react/docs/react-component.html#defaultprops
-        return DatePickerUtils.getFormattedDateString(date === undefined ? defaultDate : date, this.props);
+        return formatDateString(date ?? defaultDate, this.props);
     }
 
     private parseDate(dateString: string | undefined): Date | null {
@@ -927,8 +932,7 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
         ) {
             return null;
         }
-        const { locale, parseDate } = this.props;
-        const newDate = parseDate(dateString, locale);
+        const newDate = this.props.parseDate(dateString, getLocaleCodeFromProps(this.props));
         return newDate === false ? new Date() : newDate;
     }
 
@@ -936,7 +940,21 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
         if (!this.isDateValidAndInRange(date)) {
             return "";
         }
-        const { locale, formatDate } = this.props;
-        return formatDate(date, locale);
+        return this.props.formatDate(date, getLocaleCodeFromProps(this.props));
+    }
+}
+
+function formatDateString(date: Date | false | null | undefined, props: DateRangeInput3Props, ignoreRange = false) {
+    const { formatDate, invalidDateMessage, maxDate, minDate, outOfRangeMessage } =
+        props as DateRangeInput3PropsWithDefaults;
+
+    if (date == null) {
+        return "";
+    } else if (!DateUtils.isDateValid(date)) {
+        return invalidDateMessage;
+    } else if (ignoreRange || DateUtils.isDayInRange(date, [minDate, maxDate])) {
+        return formatDate(date, getLocaleCodeFromProps(props));
+    } else {
+        return outOfRangeMessage;
     }
 }

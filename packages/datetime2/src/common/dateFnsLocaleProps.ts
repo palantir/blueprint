@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
+import type { Locale } from "date-fns";
+
 export interface DateFnsLocaleProps {
     /**
-     * date-fns locale code ((ISO 639-1 + optional country code) used to localize the date picker.
+     * date-fns `Locale` object or locale code string ((ISO 639-1 + optional country code) which will be used
+     * to localize the date picker.
      *
-     * If you are unable to load a specific locale, make sure it is included in the list of date-fns'
-     * [supported locales](https://github.com/date-fns/date-fns/tree/main/src/locale).
+     * If you provide a locale code string and receive a loading error, please make sure it is included in the list of
+     * date-fns' [supported locales](https://github.com/date-fns/date-fns/tree/main/src/locale).
      *
      * @default "en-US"
      * @see https://date-fns.org/docs/Locale
      */
-    locale?: string;
+    locale?: Locale | string;
+}
+
+export function getLocaleCodeFromProps(props: DateFnsLocaleProps): string | undefined {
+    return typeof props.locale === "string" ? props.locale : props.locale?.code;
 }

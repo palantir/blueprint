@@ -80,7 +80,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         fill,
         inputProps = {},
         invalidDateMessage,
-        locale: localeCode,
+        locale: localeOrCode,
         maxDate,
         minDate,
         onChange,
@@ -97,7 +97,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         ...datePickerProps
     } = props as DateInput3PropsWithDefaults;
 
-    const locale = useDateFnsLocale(localeCode);
+    const locale = useDateFnsLocale(localeOrCode);
     const placeholder = getPlaceholder(props);
     const formatDateString = useDateFormatter(props, locale);
     const parseDateString = useDateParser(props, locale);

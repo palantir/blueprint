@@ -19,29 +19,44 @@ import * as React from "react";
 
 import { Utils } from "@blueprintjs/core";
 
-export async function loadDateFnsLocale(localeCode: string): Promise<Locale | undefined> {
-    try {
-        const { default: locale } = await import(`date-fns/esm/locale/${localeCode}/index.js`);
-        return locale;
-    } catch {
-        if (!Utils.isNodeEnv("production")) {
-            console.error(
-                `[Blueprint] Could not load "${localeCode}" date-fns locale, please check that this locale code is supported: https://github.com/date-fns/date-fns/tree/main/src/locale`,
-            );
+/**
+ * Lazy-loads a date-fns locale for use in a datetime class component.
+ */
+export async function loadDateFnsLocale(localeOrCode: string | Locale | undefined): Promise<Locale | undefined> {
+    if (localeOrCode === undefined) {
+        return;
+    } else if (typeof localeOrCode === "string") {
+        try {
+            const localeModule = await import(`date-fns/locale/${localeOrCode}`);
+            return localeModule.default;
+        } catch {
+            if (!Utils.isNodeEnv("production")) {
+                console.error(
+                    `[Blueprint] Could not load "${localeOrCode}" date-fns locale, please check that this locale code is supported: https://github.com/date-fns/date-fns/tree/main/src/locale`,
+                );
+            }
+            return undefined;
         }
-        return undefined;
     }
+
+    return localeOrCode;
 }
 
-export function useDateFnsLocale(localeCode: string | undefined) {
+/**
+ * Lazy-loads a date-fns locale for use in a datetime function component.
+ */
+export function useDateFnsLocale(localeOrCode: string | Locale | undefined) {
     const [locale, setLocale] = React.useState<Locale | undefined>(undefined);
     React.useEffect(() => {
-        if (localeCode === undefined) {
+        if (localeOrCode === undefined) {
             return;
-        } else if (locale?.code === localeCode) {
-            return;
+        } else if (typeof localeOrCode === "string") {
+            if (localeOrCode !== locale?.code) {
+                loadDateFnsLocale(localeOrCode).then(setLocale);
+            }
+        } else {
+            setLocale(localeOrCode);
         }
-        loadDateFnsLocale(localeCode).then(setLocale);
-    }, [locale?.code, localeCode]);
+    }, [locale?.code, localeOrCode]);
     return locale;
 }

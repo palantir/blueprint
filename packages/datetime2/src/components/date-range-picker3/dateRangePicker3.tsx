@@ -220,14 +220,14 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
         }
     }
 
-    private async loadLocale(localeCode: string | undefined) {
-        if (localeCode === undefined) {
+    private async loadLocale(localeOrCode: string | Locale | undefined) {
+        if (localeOrCode === undefined) {
             return;
-        } else if (this.state.locale?.code === localeCode) {
+        } else if (this.state.locale?.code === localeOrCode) {
             return;
         }
 
-        const locale = await loadDateFnsLocale(localeCode);
+        const locale = await loadDateFnsLocale(localeOrCode);
         this.setState({ locale });
     }
 
