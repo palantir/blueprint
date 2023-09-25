@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateInput3 in the datetime2
+ * package instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 import type { DayPickerProps } from "react-day-picker";
@@ -209,6 +217,7 @@ const DEFAULT_MIN_DATE = DatePickerUtils.getDefaultMinDate();
  * Date input component.
  *
  * @see https://blueprintjs.com/docs/#datetime/date-input
+ * @deprecated use `{ DateInput3 } from "@blueprintjs/datetime2"` instead
  */
 export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInput(props) {
     const {

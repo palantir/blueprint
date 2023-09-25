@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangeInput3 in the datetime2
+ * package instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import { isSameDay, isValid } from "date-fns";
 import * as React from "react";
@@ -214,6 +222,7 @@ interface StateKeysAndValuesObject {
  * Date range input component.
  *
  * @see https://blueprintjs.com/docs/#datetime/date-range-input
+ * @deprecated use `{ DateRangeInput3 } from "@blueprintjs/datetime2"` instead
  */
 export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, DateRangeInputState> {
     public static defaultProps: Partial<DateRangeInputProps> = {

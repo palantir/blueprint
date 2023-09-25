@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 import { TSESLint } from "@typescript-eslint/utils";
 import dedent from "dedent";
 
-import { noDeprecatedSelectComponentsRule } from "../src/rules/no-deprecated-components";
+import { noDeprecatedDatetime2ComponentsRule } from "../src/rules/no-deprecated-components";
 
 const ruleTester = new TSESLint.RuleTester({
     parser: require.resolve("@typescript-eslint/parser"),
@@ -32,16 +32,31 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-ruleTester.run("no-deprecated-select-components", noDeprecatedSelectComponentsRule, {
-    // N.B. most other deprecated components are tested by no-deprecated-components.test.ts, this suite just tests
-    // for more specific violations which involve certain syntax
-    invalid: [],
+ruleTester.run("no-deprecated-datetime2-components", noDeprecatedDatetime2ComponentsRule, {
+    invalid: [
+        {
+            code: dedent`
+                import { DateInput2 } from "@blueprintjs/datetime2";
+
+                return <DateInput2 />;
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: {
+                        deprecatedComponentName: "DateInput2",
+                        newComponentName: "DateInput3",
+                    },
+                },
+            ],
+        },
+    ],
     valid: [
         {
             code: dedent`
-                import { MultiSelect } from "@blueprintjs/select";
+                import { DateInput3 } from "@blueprintjs/datetime2";
 
-                const MyMultiSelect = MultiSelect.ofType<any>();
+                return <DateInput3 />;
             `,
         },
     ],
