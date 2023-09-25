@@ -41,6 +41,7 @@ import {
 } from "@blueprintjs/core";
 
 import { Classes, DateFormatProps, DatePickerBaseProps } from "../../common";
+import { getFormattedDateString } from "../../common/dateFormatProps";
 import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import { hasMonthChanged, hasTimeChanged, isDateValid, isDayInRange } from "../../common/dateUtils";
 import * as Errors from "../../common/errors";
@@ -266,7 +267,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
 
     // rendered as the text input's value
     const formattedDateString = React.useMemo(() => {
-        return valueAsDate === null ? undefined : DatePickerUtils.getFormattedDateString(valueAsDate, props);
+        return valueAsDate === null ? undefined : getFormattedDateString(valueAsDate, props);
     }, [
         valueAsDate,
         minDate,
@@ -354,7 +355,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
                 setIsInputFocused(newIsInputFocused);
                 setIsOpen(newIsOpen);
             } else {
-                const newFormattedDateString = DatePickerUtils.getFormattedDateString(newDate, props);
+                const newFormattedDateString = getFormattedDateString(newDate, props);
                 setIsInputFocused(newIsInputFocused);
                 setIsOpen(newIsOpen);
                 setValue(newDate);

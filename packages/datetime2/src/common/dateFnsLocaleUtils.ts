@@ -19,29 +19,48 @@ import * as React from "react";
 
 import { Utils } from "@blueprintjs/core";
 
-export async function loadDateFnsLocale(localeCode: string): Promise<Locale | undefined> {
-    try {
-        const { default: locale } = await import(`date-fns/esm/locale/${localeCode}/index.js`);
-        return locale;
-    } catch {
-        if (!Utils.isNodeEnv("production")) {
-            console.error(
-                `[Blueprint] Could not load "${localeCode}" date-fns locale, please check that this locale code is supported: https://github.com/date-fns/date-fns/tree/main/src/locale`,
-            );
+/**
+ * Lazy-loads a date-fns locale for use in a datetime class component.
+ */
+export async function loadDateFnsLocale(localeOrCode: Locale | string | undefined): Promise<Locale | undefined> {
+    if (localeOrCode === undefined) {
+        return;
+    } else if (typeof localeOrCode === "string") {
+        try {
+            const localeModule = await import(`date-fns/locale/${localeOrCode}/index.js`);
+            return localeModule.default;
+        } catch {
+            if (!Utils.isNodeEnv("production")) {
+                console.error(
+                    `[Blueprint] Could not load "${localeOrCode}" date-fns locale, please check that this locale code is supported: https://github.com/date-fns/date-fns/tree/main/src/locale`,
+                );
+            }
+            return undefined;
         }
-        return undefined;
     }
+
+    return localeOrCode;
 }
 
-export function useDateFnsLocale(localeCode: string | undefined) {
-    const [locale, setLocale] = React.useState<Locale | undefined>(undefined);
+/**
+ * Lazy-loads a date-fns locale for use in a datetime function component.
+ */
+export function useDateFnsLocale(localeOrCode: Locale | string | undefined) {
+    // make sure to set the locale correctly on first render if it is available
+    const [locale, setLocale] = React.useState<Locale | undefined>(
+        typeof localeOrCode === "object" ? localeOrCode : undefined,
+    );
+
     React.useEffect(() => {
-        if (localeCode === undefined) {
-            return;
-        } else if (locale?.code === localeCode) {
-            return;
-        }
-        loadDateFnsLocale(localeCode).then(setLocale);
-    }, [locale?.code, localeCode]);
+        setLocale(prevLocale => {
+            if (typeof localeOrCode === "string") {
+                loadDateFnsLocale(localeOrCode).then(setLocale);
+                // keep the current locale for now, it will be updated async
+                return prevLocale;
+            } else {
+                return localeOrCode;
+            }
+        });
+    }, [localeOrCode]);
     return locale;
 }

@@ -14,38 +14,12 @@
  * limitations under the License.
  */
 
-import type { DayPickerRangeProps } from "react-day-picker";
-
 import type { DateRangePickerProps } from "@blueprintjs/datetime";
 
-import { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
+import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
+import type { ReactDayPickerRangeProps } from "../../common/reactDayPickerProps";
 
 /** Props shared between DateRangePicker v1 and v3 */
 type DateRangePickerSharedProps = Omit<DateRangePickerProps, "dayPickerProps" | "locale" | "localeUtils" | "modifiers">;
 
-export interface DateRangePicker3Props extends DateRangePickerSharedProps, DateFnsLocaleProps {
-    /**
-     * Props to pass to react-day-picker's day range picker. See API documentation
-     * [here](https://react-day-picker.js.org/api/interfaces/DayPickerRangeProps).
-     *
-     * Some properties are unavailable or have alternative names as top-level props:
-     *  - "mode": fixed to "range"
-     *  - "fromDate", "fromMonth", "fromYear", "toDate", "toMonth", "toYear": use "minDate" and "maxDate" instead (legacy names from @blueprintjs/datetime v4)
-     *  - "month": navigation is controlled by the component; use "defaultMonth" to set the initially displayed month
-     *  - "selected": use "value" instead
-     *  - "required": use "canClearSelection" instead (legacy name from @blueprintjs/datetime v4)
-     */
-    dayPickerProps?: Omit<
-        DayPickerRangeProps,
-        | "fromDate"
-        | "fromMonth"
-        | "fromYear"
-        | "mode"
-        | "month"
-        | "required"
-        | "selected"
-        | "toDate"
-        | "toMonth"
-        | "toYear"
-    >;
-}
+export type DateRangePicker3Props = DateRangePickerSharedProps & DateFnsLocaleProps & ReactDayPickerRangeProps;

@@ -32,7 +32,7 @@ type DateInputSharedProps = Omit<
 export interface DateInput3Props
     extends DateInputSharedProps,
         Pick<DatePicker3Props, "dayPickerProps" | "locale">,
-        Partial<DateFormatProps> {
+        Partial<Omit<DateFormatProps, "locale">> {
     /**
      * [date-fns] format string used to format & parse date strings.
      *

@@ -20,6 +20,7 @@ import * as React from "react";
 import { DateUtils } from "@blueprintjs/datetime";
 
 import { getDateFnsFormatter, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
+import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
 import { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
 
 /**
@@ -31,6 +32,7 @@ import { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props"
 export function useDateFormatter(props: DateInput3Props, locale: Locale | undefined) {
     const {
         dateFnsFormat,
+        locale: localeFromProps,
         formatDate,
         invalidDateMessage,
         maxDate,
@@ -50,7 +52,7 @@ export function useDateFormatter(props: DateInput3Props, locale: Locale | undefi
             } else if (DateUtils.isDayInRange(date, [minDate, maxDate])) {
                 if (formatDate !== undefined) {
                     // user-provided date formatter
-                    return formatDate(date, locale?.code ?? props.locale);
+                    return formatDate(date, locale?.code ?? getLocaleCodeFromProps(localeFromProps));
                 } else {
                     // use user-provided date-fns format or one of the default formats inferred from time picker props
                     const format = dateFnsFormat ?? getDefaultDateFnsFormat({ timePickerProps, timePrecision });
@@ -65,10 +67,10 @@ export function useDateFormatter(props: DateInput3Props, locale: Locale | undefi
             formatDate,
             invalidDateMessage,
             locale,
+            localeFromProps,
             maxDate,
             minDate,
             outOfRangeMessage,
-            props.locale,
             timePickerProps,
             timePrecision,
         ],

@@ -177,14 +177,14 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
         }
     }
 
-    private async loadLocale(localeCode: string | undefined) {
-        if (localeCode === undefined) {
+    private async loadLocale(localeOrCode: string | Locale | undefined) {
+        if (localeOrCode === undefined) {
             return;
-        } else if (this.state.locale?.code === localeCode) {
+        } else if (this.state.locale?.code === localeOrCode) {
             return;
         }
 
-        const locale = await loadDateFnsLocale(localeCode);
+        const locale = await loadDateFnsLocale(localeOrCode);
         this.setState({ locale });
     }
 

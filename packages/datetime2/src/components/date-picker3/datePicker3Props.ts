@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-import type { DayPickerSingleProps } from "react-day-picker";
-
-import type { Props } from "@blueprintjs/core";
 import type { DatePickerProps } from "@blueprintjs/datetime";
 
 import { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
+import { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 
 /** Props shared between DatePicker v1 and v3 */
 type DatePickerSharedProps = Omit<
@@ -27,20 +25,7 @@ type DatePickerSharedProps = Omit<
     "dayPickerProps" | "defaultValue" | "locale" | "localeUtils" | "modifiers" | "onChange" | "value"
 >;
 
-export interface DatePicker3Props extends DatePickerSharedProps, DateFnsLocaleProps, Props {
-    /**
-     * Props to pass to react-day-picker's single day picker. See API documentation
-     * [here](https://react-day-picker.js.org/api/interfaces/DayPickerSingleProps).
-     *
-     * Some properties are unavailable or have alternative names as top-level props:
-     *  - "mode": fixed to "single"
-     *  - "fromDate", "toDate": use "minDate" and "maxDate" instead (legacy names from @blueprintjs/datetime v4)
-     *  - "month": navigation is controlled by the component; use "defaultMonth" to set the initially displayed month
-     *  - "selected": use "value" instead
-     *  - "required": use "canClearSelection" instead (legacy name from @blueprintjs/datetime v4)
-     */
-    dayPickerProps?: Omit<DayPickerSingleProps, "fromDate" | "mode" | "month" | "required" | "selected" | "toDate">;
-
+export interface DatePicker3Props extends DatePickerSharedProps, DateFnsLocaleProps, ReactDayPickerSingleProps {
     /**
      * Initial day the calendar will display as selected.
      * This should not be set if `value` is set.
