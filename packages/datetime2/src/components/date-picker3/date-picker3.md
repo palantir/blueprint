@@ -81,19 +81,6 @@ for more info.
 localization using date-fns's [Locale](https://date-fns.org/docs/Locale) features. The `locale` prop on each
 of these components accepts two types of values, either a `Locale` object or a locale code `string`.
 
-### Using a `Locale` object
-
-Use the `locale: Locale` type if you wish to statically load date-fns locale modules:
-
-```ts
-import { DatePicker3 } from "@blueprintjs/datetime2";
-import enUS from "date-fns/locale/en-US";
-
-function Example() {
-    return <DatePicker3 locale={enUS} />;
-}
-```
-
 ### Using a locale code
 
 Use the `locale: string` type to interpret the prop as a locale code (ISO 639-1 + optional country code).
@@ -104,6 +91,25 @@ import { DatePicker3 } from "@blueprintjs/datetime2";
 
 function Example() {
     return <DatePicker3 locale="en-US" />;
+}
+```
+
+At runtime, this will trigger a dynamic import like the following statement:
+
+```ts
+await import("date-fns/locale/en-US");
+```
+
+### Using a `Locale` object
+
+Use the `locale: Locale` type if you wish to statically load date-fns locale modules:
+
+```ts
+import { DatePicker3 } from "@blueprintjs/datetime2";
+import enUS from "date-fns/locale/en-US";
+
+function Example() {
+    return <DatePicker3 locale={enUS} />;
 }
 ```
 

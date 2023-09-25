@@ -932,7 +932,7 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
         ) {
             return null;
         }
-        const newDate = this.props.parseDate(dateString, getLocaleCodeFromProps(this.props));
+        const newDate = this.props.parseDate(dateString, getLocaleCodeFromProps(this.props.locale));
         return newDate === false ? new Date() : newDate;
     }
 
@@ -940,7 +940,7 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
         if (!this.isDateValidAndInRange(date)) {
             return "";
         }
-        return this.props.formatDate(date, getLocaleCodeFromProps(this.props));
+        return this.props.formatDate(date, getLocaleCodeFromProps(this.props.locale));
     }
 }
 
@@ -953,7 +953,7 @@ function formatDateString(date: Date | false | null | undefined, props: DateRang
     } else if (!DateUtils.isDateValid(date)) {
         return invalidDateMessage;
     } else if (ignoreRange || DateUtils.isDayInRange(date, [minDate, maxDate])) {
-        return formatDate(date, getLocaleCodeFromProps(props));
+        return formatDate(date, getLocaleCodeFromProps(props.locale));
     } else {
         return outOfRangeMessage;
     }
