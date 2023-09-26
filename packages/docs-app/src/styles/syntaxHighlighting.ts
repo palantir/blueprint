@@ -23,7 +23,7 @@ import { MonacoThemeDark, MonacoThemeLight } from "@blueprintjs/monaco-editor-th
 let monacoEditor: typeof editor | undefined;
 
 async function initializeMonaco() {
-    monacoEditor = (await import("monaco-editor")).editor;
+    monacoEditor = (await import(/* webpackChunkName: "monaco-editor" */ "monaco-editor")).editor;
     monacoEditor.defineTheme("blueprint-dark", MonacoThemeDark);
     monacoEditor.defineTheme("blueprint-light", MonacoThemeLight);
 }

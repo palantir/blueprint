@@ -97,7 +97,7 @@ function Example() {
 At runtime, this will trigger a dynamic import like the following statement:
 
 ```ts
-await import("date-fns/locale/en-US");
+await import(/* webpackChunkName: "date-fns-en-US" */ "date-fns/locale/en-US");
 ```
 
 ### Using a `Locale` object

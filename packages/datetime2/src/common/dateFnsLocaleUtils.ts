@@ -27,7 +27,10 @@ export async function loadDateFnsLocale(localeOrCode: Locale | string | undefine
         return;
     } else if (typeof localeOrCode === "string") {
         try {
-            const localeModule = await import(`date-fns/locale/${localeOrCode}/index.js`);
+            const localeModule = await import(
+                /* webpackChunkName: "date-fns-locale-[request]" */
+                `date-fns/locale/${localeOrCode}/index.js`
+            );
             return localeModule.default;
         } catch {
             if (!Utils.isNodeEnv("production")) {
