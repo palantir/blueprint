@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_blueprintjs_docs_app=self.webpackChunk_blueprintjs_docs_app||[]).push([[2370],{93458:function(e,t){Object.defineProperty(t,"__esModule",{value:!0}),t.default=void 0;var p={lastWeek:"先週のeeeeのp",yesterday:"昨日のp",today:"今日のp",tomorrow:"明日のp",nextWeek:"翌週のeeeeのp",other:"P"},u=function(e,t,u,o){return p[e]};t.default=u,e.exports=t.default}}]);
