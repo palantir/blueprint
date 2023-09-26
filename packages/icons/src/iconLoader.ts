@@ -37,9 +37,19 @@ async function getLoaderFn(options: IconLoaderOptions): Promise<IconPathsLoader>
     if (typeof loader === "function") {
         return loader;
     } else if (loader === "all") {
-        return (await import("./paths-loaders/allPathsLoader")).allPathsLoader;
+        return (
+            await import(
+                /* webpackChunkName: "blueprint-icons-all-paths-loader" */
+                "./paths-loaders/allPathsLoader"
+            )
+        ).allPathsLoader;
     } else {
-        return (await import("./paths-loaders/splitPathsBySizeLoader")).splitPathsBySizeLoader;
+        return (
+            await import(
+                /* webpackChunkName: "blueprint-icons-split-paths-by-size-loader" */
+                "./paths-loaders/splitPathsBySizeLoader"
+            )
+        ).splitPathsBySizeLoader;
     }
 }
 
