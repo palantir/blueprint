@@ -62,6 +62,14 @@ span.#{$ns}-icon:empty {
   &::before {
     @include pt-icon-font-smoothing();
   }
+
+  &.#{$ns}-icon-standard {
+    font-size: $pt-icon-size-standard;
+  }
+
+  &.#{$ns}-icon-large {
+    font-size: $pt-icon-size-large;
+  }
 }
 
 @each $name, $codepoint in $blueprint-icon-codepoints {
