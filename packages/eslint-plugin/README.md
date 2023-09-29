@@ -181,17 +181,27 @@ to pass as lint warnings.
 ### `@blueprintjs/no-deprecated-datetime-components`
 
 Similar to `@blueprintjs/no-deprecated-components`, but only flags usage of deprecated components from the
-`@blueprintjs/core` package instead of all `@blueprintjs/` packages.
+`@blueprintjs/datetime` package instead of all `@blueprintjs/` packages.
 
 __Rationale__: In migrations of large code bases, it may be useful to apply more granular rule configuration of
 "no-deprecated-components" to make incremental progress towards the newer APIs. This allows you, for example, to flag
 deprecated `@blueprintjs/datetime` component usage as errors while allowing deprecated components from other packages
 to pass as lint warnings.
 
+### `@blueprintjs/no-deprecated-datetime2-components`
+
+Similar to `@blueprintjs/no-deprecated-components`, but only flags usage of deprecated components from the
+`@blueprintjs/datetime2` package instead of all `@blueprintjs/` packages.
+
+__Rationale__: In migrations of large code bases, it may be useful to apply more granular rule configuration of
+"no-deprecated-components" to make incremental progress towards the newer APIs. This allows you, for example, to flag
+deprecated `@blueprintjs/datetime2` component usage as errors while allowing deprecated components from other packages
+to pass as lint warnings.
+
 ### `@blueprintjs/no-deprecated-select-components`
 
 Similar to `@blueprintjs/no-deprecated-components`, but only flags usage of deprecated components from the
-`@blueprintjs/core` package instead of all `@blueprintjs/` packages.
+`@blueprintjs/select` package instead of all `@blueprintjs/` packages.
 
 __Rationale__: In migrations of large code bases, it may be useful to apply more granular rule configuration of
 "no-deprecated-components" to make incremental progress towards the newer APIs. This allows you, for example, to flag
