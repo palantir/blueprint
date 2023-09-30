@@ -40,7 +40,7 @@ export * from "./formGroupExample";
 export { HotkeyPiano } from "./hotkeyPiano";
 export { HotkeyTesterExample } from "./hotkeyTesterExample";
 export { HotkeysTarget2Example } from "./hotkeysTarget2Example";
-export { HTMLSelectExample } from "./htmlSelectExample";
+export { HTMLSelectExample } from "./hTMLSelectExample";
 export { IconExample } from "./iconExample";
 export { IconGeneratedComponentExample } from "./iconGeneratedComponentExample";
 export * from "./menuExample";
