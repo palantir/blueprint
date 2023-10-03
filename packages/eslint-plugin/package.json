@@ -9,16 +9,17 @@
         "lint": "run-p lint:es",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix",
-        "test": "SWC_NODE_PROJECT=./tsconfig.test.json mocha --require @swc-node/register --watch-extensions ts,tsx 'test/**/*.{ts,tsx}'"
+        "test": "SWC_NODE_PROJECT=./tsconfig.test.json mocha --require @swc-node/register,test/setup.ts --watch-extensions ts,tsx 'test/**/*.{ts,tsx}'"
     },
     "dependencies": {
-        "@typescript-eslint/utils": "^6.5.0",
+        "@typescript-eslint/utils": "^6.7.4",
         "eslint": "^8.48.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^8.0.2",
         "@swc-node/register": "^1.6.7",
         "@swc/core": "^1.3.80",
+        "@typescript-eslint/rule-tester": "^6.7.4",
         "@types/dedent": "~0.7.0",
         "dedent": "^0.7.0",
         "mocha": "^10.2.0",
