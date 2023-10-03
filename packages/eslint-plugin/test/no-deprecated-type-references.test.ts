@@ -17,12 +17,12 @@
 // tslint:disable object-literal-sort-keys
 /* eslint-disable no-template-curly-in-string */
 
-import { TSESLint } from "@typescript-eslint/utils";
+import { RuleTester } from "@typescript-eslint/rule-tester";
 import dedent from "dedent";
 
 import { noDeprecatedTypeReferencesRule } from "../src/rules/no-deprecated-type-references";
 
-const ruleTester = new TSESLint.RuleTester({
+const ruleTester = new RuleTester({
     parser: require.resolve("@typescript-eslint/parser"),
     parserOptions: {
         ecmaFeatures: {
