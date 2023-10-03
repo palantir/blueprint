@@ -24,8 +24,8 @@ import { iconComponentsRule } from "./icon-components";
 import {
     noDeprecatedComponentsRule,
     noDeprecatedCoreComponentsRule,
-    noDeprecatedDatetimeComponentsRule,
     noDeprecatedDatetime2ComponentsRule,
+    noDeprecatedDatetimeComponentsRule,
     noDeprecatedSelectComponentsRule,
     noDeprecatedTableComponentsRule,
 } from "./no-deprecated-components";
