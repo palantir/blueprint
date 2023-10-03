@@ -16,10 +16,7 @@
 
 import { ESLintUtils } from "@typescript-eslint/utils";
 
-// N.B. We need an explicit type annotation because of the following error:
-// The inferred type of 'createRule' cannot be named without a reference to '../../../../../node_modules/@typescript-eslint/utils/dist/ts-eslint/Rule'. This is likely not portable. A type annotation is necessary.ts(2742)
-
 /** Create a rule and automatically fill its url based on the rule name. */
-export const createRule: ReturnType<typeof ESLintUtils.RuleCreator> = ESLintUtils.RuleCreator(
+export const createRule = ESLintUtils.RuleCreator(
     name => `https://github.com/palantir/blueprint/tree/develop/packages/eslint-plugin/src/rules/${name}.ts`,
 );
