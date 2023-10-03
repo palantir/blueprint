@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/eslint-plugin",
-    "version": "5.0.0",
+    "version": "5.1.0",
     "description": "ESLint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
@@ -19,8 +19,8 @@
         "@blueprintjs/node-build-scripts": "^8.0.2",
         "@swc-node/register": "^1.6.7",
         "@swc/core": "^1.3.80",
-        "@typescript-eslint/rule-tester": "^6.7.4",
         "@types/dedent": "~0.7.0",
+        "@typescript-eslint/rule-tester": "^6.7.4",
         "dedent": "^0.7.0",
         "mocha": "^10.2.0",
         "typescript": "~4.9.5"
