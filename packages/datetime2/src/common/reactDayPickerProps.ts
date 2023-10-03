@@ -17,12 +17,15 @@
 import type { DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
 
 type ReactDayPickerOmittedProps =
+    | "captionLayout"
+    | "disableNavigation"
     | "fromDate"
     | "fromMonth"
     | "fromYear"
     | "locale"
     | "mode"
     | "month"
+    | "numberOfMonths"
     | "required"
     | "selected"
     | "toDate"
@@ -34,11 +37,16 @@ export interface ReactDayPickerRangeProps {
      * Props to pass to react-day-picker's day range picker. See API documentation
      * [here](https://react-day-picker.js.org/api/interfaces/DayPickerRangeProps).
      *
-     * Some properties are unavailable or have alternative names as top-level props:
+     * Some properties are unavailable since they are set by the component design and cannot be changed:
+     *  - "captionLayout"
+     *  - "disableNavigation"
+     *  - "mode"
+     *
+     * Other properties have alternative names as top-level props:
      *  - "fromDate", "fromMonth", "fromYear", "toDate", "toMonth", "toYear": use "minDate" and "maxDate" instead (legacy names from @blueprintjs/datetime v4)
      *  - "locale"
-     *  - "mode": fixed to "range"
      *  - "month": navigation is controlled by the component; use "defaultMonth" to set the initially displayed month
+     *  - "numberOfMonths": use "singleMonthOnly" prop instead
      *  - "required": use "canClearSelection" instead (legacy name from @blueprintjs/datetime v4)
      *  - "selected": use "value" instead
      */
@@ -50,10 +58,15 @@ export interface ReactDayPickerSingleProps {
      * Props to pass to react-day-picker's single day picker. See API documentation
      * [here](https://react-day-picker.js.org/api/interfaces/DayPickerSingleProps).
      *
-     * Some properties are unavailable or have alternative names as top-level props:
+     * Some properties are unavailable since they are set by the component design and cannot be changed:
+     *  - "captionLayout"
+     *  - "disableNavigation"
+     *  - "mode"
+     *  - "numberOfMonths": fixed to 1 month
+     *
+     * Other properties have alternative names as top-level props:
      *  - "fromDate", "fromMonth", "fromYear", "toDate", "toMonth", "toYear": use "minDate" and "maxDate" instead (legacy names from @blueprintjs/datetime v4)
      *  - "locale"
-     *  - "mode": fixed to "single"
      *  - "month": navigation is controlled by the component; use "defaultMonth" to set the initially displayed month
      *  - "required": use "canClearSelection" instead (legacy name from @blueprintjs/datetime v4)
      *  - "selected": use "value" instead
