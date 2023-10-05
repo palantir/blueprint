@@ -56,6 +56,7 @@ export const CardList: React.FC<CardListProps> = React.forwardRef((props, ref) =
     );
 });
 CardList.defaultProps = {
+    bordered: true,
     compact: false,
 };
 CardList.displayName = `${DISPLAYNAME_PREFIX}.CardList`;

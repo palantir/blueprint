@@ -33,6 +33,7 @@ import "./context-menu/contextMenuSingletonTests";
 import "./context-menu/contextMenuTests";
 import "./controls/controlsTests";
 import "./controls/inputGroupTests";
+import "./control-card/controlCardTests";
 import "./controls/numericInputTests";
 import "./controls/radioGroupTests";
 import "./dialog/dialogTests";

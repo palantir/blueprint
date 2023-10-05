@@ -90,6 +90,21 @@
   }
 }
 
+#{example("SwitchCard")} {
+  .docs-control-card-grid {
+    display: grid;
+    gap: $pt-grid-size * 2;
+    grid-template-columns: repeat(auto-fit, minmax($pt-grid-size * 10, 1fr));
+    width: 100%;
+  }
+}
+
+#{example("ControlCardList")} {
+  .#{$ns}-control-card-label .#{$ns}-icon {
+    margin-right: $pt-grid-size;
+  }
+}
+
 #{example("EditableText")} {
   .docs-example {
     display: block;
