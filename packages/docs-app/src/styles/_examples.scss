@@ -94,7 +94,7 @@
   .docs-control-card-grid {
     display: grid;
     gap: $pt-grid-size * 2;
-    grid-template-columns: repeat(auto-fit, minMax($pt-grid-size * 10, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax($pt-grid-size * 10, 1fr));
     width: 100%;
   }
 }
