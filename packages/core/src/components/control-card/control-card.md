@@ -26,3 +26,9 @@ Most of the properties in [**CardProps**](#core/components/card.props-interface)
 [**SwitchProps**](#core/components/switch.props-interface) are available on the root component.
 
 @interface SwitchCardProps
+
+@## Composing with CardList
+
+Control cards work just like regular cards inside a [**CardList**](#core/components/card-list).
+
+@reactExample ControlCardListExample

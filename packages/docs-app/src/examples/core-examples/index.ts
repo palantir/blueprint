@@ -27,6 +27,7 @@ export * from "./cardExample";
 export * from "./cardListExample";
 export { ContextMenuExample } from "./contextMenuExample";
 export { ContextMenuPopoverExample } from "./contextMenuPopoverExample";
+export { ControlCardListExample } from "./controlCardListExample";
 export * from "./controlGroupExample";
 export * from "./dialogExample";
 export * from "./multistepDialogExample";

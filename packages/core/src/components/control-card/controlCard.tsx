@@ -53,7 +53,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
 export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, ref) => {
     const {
         checked,
-        children: controlLabel,
+        children: labelContent,
         className,
         controlKind,
         defaultChecked,
@@ -68,12 +68,14 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
         [Classes.SWITCH_CONTROL_CARD]: controlKind === "switch",
     });
 
+    // use a container element to achieve a good flex layout
+    const labelElement = <div className={Classes.CONTROL_CARD_LABEL}>{labelContent}</div>;
     const controlProps: ControlProps = {
         checked,
         defaultChecked,
         disabled,
         inputRef,
-        labelElement: controlLabel,
+        labelElement,
         onChange,
         ...inputProps,
     };
@@ -83,7 +85,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
             {controlKind === "switch" ? (
                 <Switch inline={true} alignIndicator="right" {...controlProps} />
             ) : (
-                controlLabel
+                labelElement
             )}
         </Card>
     );

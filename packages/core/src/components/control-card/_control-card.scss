@@ -7,21 +7,32 @@
 .#{$ns}-card.#{$ns}-control-card {
   &,
   .#{$ns}-card-list > & {
-    // Make the label take up the full size so that we can use the control's onChange instead of a "click" handler
-    // on any container element. This is partially to work around https://github.com/palantir/blueprint/issues/6251
+    // min-height & padding will be set on the label element so that it can take up the full size of the card and
+    // its entire visual element will be interactive  This is partially to work around https://github.com/palantir/blueprint/issues/6251
     padding: 0;
+    min-height: auto;
   }
 }
 
 .#{$ns}-switch-control-card {
-  // N.B. Switch always has inline={true} inside SwitchCard
-  > .#{$ns}-switch.#{$ns}-control.#{$ns}-inline {
+  // need a lot of specificity here to override control styles
+  > .#{$ns}-switch.#{$ns}-control.#{$ns}-align-right {
+    align-items: center;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
     margin: 0;
     padding: $card-padding;
     width: calc(100%);
 
+    .#{$ns}-card-list & {
+      min-height: $card-list-control-item-min-height;
+      padding: $card-list-item-padding;
+    }
+
     .#{$ns}-card-list.#{$ns}-compact & {
-      padding: $card-padding-compact;
+      min-height: $card-list-control-item-min-height-compact;
+      padding: $card-list-item-padding-compact;
     }
 
     .#{$ns}-control-indicator {
