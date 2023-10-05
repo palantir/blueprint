@@ -45,23 +45,23 @@ export interface DateFormatProps {
 
     /**
      * Function to render a JavaScript `Date` to a string.
-     * Optional `locale` argument comes directly from the prop on this component:
+     * Optional `localeCode` argument comes directly from the prop on this component:
      * if the prop is defined, then the argument will be too.
      */
-    formatDate(date: Date, locale?: string): string;
+    formatDate(date: Date, localeCode?: string): string;
 
     /**
      * Function to deserialize user input text to a JavaScript `Date` object.
      * Return `false` if the string is an invalid date.
      * Return `null` to represent the absence of a date.
-     * Optional `locale` argument comes directly from the prop on this component.
+     * Optional `localeCode` argument comes directly from the prop on this component.
      */
-    parseDate(str: string, locale?: string): Date | false | null;
+    parseDate(str: string, localeCode?: string): Date | false | null;
 }
 
 export function getFormattedDateString(
     date: Date | false | null | undefined,
-    props: DateFormatProps & DatePickerBaseProps,
+    props: Omit<DateFormatProps, "parseDate"> & Pick<DatePickerBaseProps, "maxDate" | "minDate">,
     ignoreRange = false,
 ) {
     if (date == null) {

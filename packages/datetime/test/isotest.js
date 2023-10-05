@@ -15,6 +15,7 @@
 
 require("@blueprintjs/test-commons/bootstrap");
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
+const { add } = require("date-fns");
 
 const DateTime = require("../lib/cjs");
 
@@ -25,8 +26,25 @@ describe("DateTime isomorphic rendering", () => {
         placeholder: "enter date",
     };
 
+    const today = new Date();
+    const maxDate = add(today, { days: 1 });
+    const minDate = add(today, { years: -4 });
+
     generateIsomorphicTests(DateTime, {
         DateInput: { props: formatProps },
         DateRangeInput: { props: formatProps },
+        DatePickerShortcutMenu: {
+            className: false,
+            props: {
+                allowSingleDayRange: true,
+                maxDate,
+                minDate,
+                onShortcutClick: () => {
+                    /* no-op */
+                },
+                shortcuts: true,
+                timePrecision: "second",
+            },
+        },
     });
 });

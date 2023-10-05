@@ -23,14 +23,25 @@ type DatePickerLocaleUtils = typeof LocaleUtils;
 export { DatePickerLocaleUtils, DatePickerDayModifiers };
 
 export { DateFormatProps } from "./common/dateFormatProps";
-export { TimePickerProps, TimePrecision } from "./common/timePickerProps";
+export { DateRangeSelectionStrategy, DateRangeSelectionState } from "./common/dateRangeSelectionStrategy";
+export { MonthAndYear } from "./common/monthAndYear";
+export { TimePickerProps } from "./common/timePickerProps";
+export { TimePrecision } from "./common/timePrecision";
+
+export { DatePickerUtils } from "./components/date-picker/datePickerUtils";
+export { DatePickerBaseProps, DatePickerModifiers } from "./common/datePickerBaseProps";
+export { TimePicker } from "./components/time-picker/timePicker";
+export {
+    DatePickerShortcut,
+    DatePickerShortcutMenu,
+    DatePickerShortcutMenuProps,
+    DateRangeShortcut,
+} from "./components/shortcuts/shortcuts";
+export { TimezoneSelect, TimezoneSelectProps } from "./components/timezone-select/timezoneSelect";
+
+/* eslint-disable deprecation/deprecation */
 
 export { DateInput, DateInputProps } from "./components/date-input/dateInput";
 export { DatePicker, DatePickerProps } from "./components/date-picker/datePicker";
-export { DatePickerUtils } from "./components/date-picker/datePickerUtils";
-export { DatePickerBaseProps, DatePickerModifiers } from "./common/datePickerBaseProps";
 export { DateRangeInput, DateRangeInputProps } from "./components/date-range-input/dateRangeInput";
 export { DateRangePicker, DateRangePickerProps } from "./components/date-range-picker/dateRangePicker";
-export { TimePicker } from "./components/time-picker/timePicker";
-export { DatePickerShortcut, DateRangeShortcut } from "./components/shortcuts/shortcuts";
-export { TimezoneSelect, TimezoneSelectProps } from "./components/timezone-select/timezoneSelect";

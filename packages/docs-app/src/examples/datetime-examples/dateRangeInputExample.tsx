@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangeInput3 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
 import { Callout, Code, H5, Switch } from "@blueprintjs/core";
@@ -22,7 +29,7 @@ import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { DateFnsDateRange } from "./common/dateFnsDate";
-import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "./common/dateFnsFormatSelector";
+import { DATE_FNS_FORMATS, DateFnsDateFormatPropsSelect } from "./common/dateFnsDateFormatPropsSelect";
 import { PrecisionSelect } from "./common/precisionSelect";
 
 const exampleFooterElement = (
@@ -127,6 +134,7 @@ export class DateRangeInputExample extends React.PureComponent<ExampleProps, Dat
                             : undefined
                     }
                 />
+                {/* eslint-disable-next-line deprecation/deprecation */}
                 <DateFnsDateRange range={range} />
             </Example>
         );
@@ -201,7 +209,7 @@ export class DateRangeInputExample extends React.PureComponent<ExampleProps, Dat
                 <PropCodeTooltip snippet={`fill={${fill.toString()}}`}>
                     <Switch label="Fill container width" checked={fill} onChange={this.toggleFill} />
                 </PropCodeTooltip>
-                <DateFnsFormatSelector format={this.state.format} onChange={this.handleFormatChange} />
+                <DateFnsDateFormatPropsSelect format={this.state.format} onChange={this.handleFormatChange} />
 
                 <H5>Time picker props</H5>
                 <Switch checked={enableTimePicker} label="Enable time picker" onChange={this.toggleTimePicker} />

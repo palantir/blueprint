@@ -239,3 +239,17 @@ export function get24HourFrom12Hour(hour: number, isPm: boolean): number {
 export function isToday(date: Date): boolean {
     return isSameDay(date, new Date());
 }
+
+export function hasMonthChanged(prevDate: Date | null, nextDate: Date | null) {
+    return (prevDate == null) !== (nextDate == null) || nextDate?.getMonth() !== prevDate?.getMonth();
+}
+
+export function hasTimeChanged(prevDate: Date | null, nextDate: Date | null) {
+    return (
+        (prevDate == null) !== (nextDate == null) ||
+        nextDate?.getHours() !== prevDate?.getHours() ||
+        nextDate?.getMinutes() !== prevDate?.getMinutes() ||
+        nextDate?.getSeconds() !== prevDate?.getSeconds() ||
+        nextDate?.getMilliseconds() !== prevDate?.getMilliseconds()
+    );
+}

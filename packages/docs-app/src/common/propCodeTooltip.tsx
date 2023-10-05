@@ -34,5 +34,14 @@ export interface PropCodeTooltipProps
  * inside a `<Code>` element as the tooltip content.
  */
 export const PropCodeTooltip: React.FC<PropCodeTooltipProps> = ({ snippet, ...props }) => {
-    return <Tooltip content={<Code>{snippet}</Code>} {...props} placement="left" interactionKind="hover" />;
+    return (
+        <Tooltip
+            content={<Code>{snippet}</Code>}
+            {...props}
+            className="docs-prop-code-tooltip"
+            interactionKind="hover"
+            placement="left"
+            targetTagName="div"
+        />
+    );
 };

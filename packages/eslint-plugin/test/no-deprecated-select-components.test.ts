@@ -17,12 +17,12 @@
 // tslint:disable object-literal-sort-keys
 /* eslint-disable no-template-curly-in-string */
 
-import { TSESLint } from "@typescript-eslint/utils";
+import { RuleTester } from "@typescript-eslint/rule-tester";
 import dedent from "dedent";
 
 import { noDeprecatedSelectComponentsRule } from "../src/rules/no-deprecated-components";
 
-const ruleTester = new TSESLint.RuleTester({
+const ruleTester = new RuleTester({
     parser: require.resolve("@typescript-eslint/parser"),
     parserOptions: {
         ecmaFeatures: {
@@ -32,7 +32,7 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-ruleTester.run("no-deprecated-core-components", noDeprecatedSelectComponentsRule, {
+ruleTester.run("no-deprecated-select-components", noDeprecatedSelectComponentsRule, {
     // N.B. most other deprecated components are tested by no-deprecated-components.test.ts, this suite just tests
     // for more specific violations which involve certain syntax
     invalid: [],

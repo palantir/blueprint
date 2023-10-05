@@ -7,6 +7,10 @@ module.exports = async function (config) {
     config.set(
         createKarmaConfig({
             dirname: __dirname,
+            coverageExcludes: [
+                // we stub this out in tests because it relies on dynamic imports
+                "src/common/dateFnsLocaleUtils.ts",
+            ],
             coverageOverrides: {
                 "src/*": {
                     lines: 75,

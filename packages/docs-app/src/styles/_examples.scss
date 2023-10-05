@@ -24,6 +24,10 @@
   width: 100%;
 }
 
+.docs-prop-code-tooltip {
+  margin-bottom: $pt-grid-size;
+}
+
 // Example-specific customizations
 
 //
@@ -590,15 +594,12 @@ $docs-hotkey-piano-height: 510px;
 //
 
 // all datetime examples show component followed by date tags, so arrange them in a nice column
-#{page("datetime", "^=")} {
+#{page("datetime", "^=")},
+#{page("datetime2", "^=")} {
   .docs-example {
     flex-direction: column;
     gap: $pt-grid-size;
     justify-content: center;
-  }
-
-  #{example("TimezoneSelect")} .docs-example {
-    flex-direction: row;
   }
 }
 
@@ -607,7 +608,8 @@ $docs-hotkey-piano-height: 510px;
   align-items: center;
 }
 
-#{example("DateInput")} {
+#{example("DateInput")},
+#{example("DateInput3")} {
   .#{$ns}-date-input {
     // should not grow in vertical direction when fill={true}
     flex-grow: 0;
@@ -616,12 +618,38 @@ $docs-hotkey-piano-height: 510px;
 }
 
 // these component examples have a "fill" prop option, which doesn't work nicely with the default margin
-#{example("DateInput")}, #{example("DateRangeInput")} {
+#{example("DateInput")},
+#{example("DateInput3")},
+#{example("DateRangeInput")},
+#{example("DateRangeInput3")} {
   .docs-example > * {
     margin: 0;
   }
 }
 
+#{example("TimezoneSelect")} .docs-example {
+  flex-direction: row;
+}
+
+//
+// DATETIME2
+//
+
+#{example("DatePicker3Modifier")} {
+  .docs-date-picker3-day-odd {
+    color: $red2;
+
+    .#{$ns}-dark & {
+      color: $red4;
+    }
+  }
+}
+
+#{example("DateRangeInput3")} {
+  .docs-example {
+    padding: ($pt-grid-size * 4) ($pt-grid-size * 2);
+  }
+}
 
 //
 // TABLE

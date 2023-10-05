@@ -16,10 +16,11 @@
 
 import { expect } from "chai";
 
+import { assertTimeIs, createTimeObject } from "@blueprintjs/test-commons";
+
 import { DateRange } from "../../src/";
 import * as DateUtils from "../../src/common/dateUtils";
 import { Months } from "../../src/common/months";
-import { assertTimeIs, createTimeObject } from "./dateTestUtils";
 
 describe("DateUtils", () => {
     it("isSameTime", () => {

@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
-import { DatePicker } from "@blueprintjs/datetime";
+import { DatePicker3 } from "@blueprintjs/datetime2";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -25,7 +25,7 @@ const WIDTH = 300;
 export const DatePickerExample = React.memo(() => {
     return (
         <ExampleCard width={WIDTH} horizontal={true} label="Date picker">
-            <DatePicker className={Classes.ELEVATION_1} />
+            <DatePicker3 className={Classes.ELEVATION_1} />
         </ExampleCard>
     );
 });

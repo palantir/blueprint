@@ -145,13 +145,13 @@ importing icon modules for you**.  Let's take a look at this required configurat
     await Icons.load(["download", "caret-down", "endorsed", "help", "lock"]);
     ```
 
-5. Use a custom loaders with other bundlers, for example Vite ([see demo Stackblitz here](https://stackblitz.com/edit/blueprint-v5-vite-react-16)).
+5. Use a custom loaders with other bundlers, for example Vite ([see demo Code Sandbox here](https://codesandbox.io/p/sandbox/blueprint-v5-x-sandbox-react-16-wy0ojy)).
 
     ```ts
     import { Icons, IconPaths } from "@blueprintjs/icons";
 
     // see https://vitejs.dev/guide/features.html#glob-import
-    const iconModules: Record<string, { default: IconPaths[] }> = import.meta.glob(
+    const iconModules: Record<string, { default: IconPaths }> = import.meta.glob(
         [
             "../node_modules/@blueprintjs/icons/lib/esm/generated/16px/paths/*.js",
             "../node_modules/@blueprintjs/icons/lib/esm/generated/20px/paths/*.js",

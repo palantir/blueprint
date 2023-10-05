@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { type IconName, IconNames } from "./iconNames";
+import { type IconName, IconNames, IconNamesSet } from "./iconNames";
 import { type IconPaths, IconSize } from "./iconTypes";
 import { wrapWithTimer } from "./loaderUtils";
 
@@ -37,9 +37,19 @@ async function getLoaderFn(options: IconLoaderOptions): Promise<IconPathsLoader>
     if (typeof loader === "function") {
         return loader;
     } else if (loader === "all") {
-        return (await import("./paths-loaders/allPathsLoader")).allPathsLoader;
+        return (
+            await import(
+                /* webpackChunkName: "blueprint-icons-all-paths-loader" */
+                "./paths-loaders/allPathsLoader"
+            )
+        ).allPathsLoader;
     } else {
-        return (await import("./paths-loaders/splitPathsBySizeLoader")).splitPathsBySizeLoader;
+        return (
+            await import(
+                /* webpackChunkName: "blueprint-icons-split-paths-by-size-loader" */
+                "./paths-loaders/splitPathsBySizeLoader"
+            )
+        ).splitPathsBySizeLoader;
     }
 }
 
@@ -138,8 +148,7 @@ export class Icons {
      * @returns true if the given string is a valid {@link IconName}
      */
     public static isValidIconName(iconName: string): iconName is IconName {
-        const allIcons: IconName[] = Object.values(IconNames);
-        return allIcons.indexOf(iconName as IconName) >= 0;
+        return IconNamesSet.has(iconName as IconName);
     }
 }
 

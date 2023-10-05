@@ -1,24 +1,38 @@
 @# Date range picker
 
-__DateRangePicker__ shows two sequential month calendars and allows the user to select a _range_ of days.
+<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
+
+Deprecated: use [**DateRangePicker3**](#datetime2/date-range-picker3)
+
+</h5>
+
+This component is **deprecated since @blueprintjs/datetime v5.2.0** in favor of the new
+**DateRangePicker3** component available in the `@blueprintjs/datetime2` package which uses
+react-day-picker v8.x instead of v7.x. You should migrate to the new API which will become the
+standard in Blueprint v6.
+
+</div>
+
+**DateRangePicker** shows two sequential month calendars and allows the user to select a _range_ of days.
 
 @reactExample DateRangePickerExample
 
 @## Usage
 
-__DateRangePicker__ supports both controlled and uncontrolled usage. You can control the selected date range by setting
+**DateRangePicker** supports both controlled and uncontrolled usage. You can control the selected date range by setting
 the `value` prop, or use the component in uncontrolled mode and specify an initial date range by setting `defaultValue`.
 Use the `onChange` prop to listen for changes to the selected range.
 
 @## Date ranges
 
-__DateRangePicker__ uses the `DateRange` type across its API. This is an alias for the tuple type `[Date, Date]`.
+**DateRangePicker** uses the `DateRange` type across its API. This is an alias for the tuple type `[Date, Date]`.
 
 Semantically:
 
-*   `[null, null]` represents an empty selection.
-*   `[someDate, null]` represents a date range where a single endpoint is known.
-*   `[someDate, someOtherDate]` represents a full date range where both endpoints are known.
+-   `[null, null]` represents an empty selection.
+-   `[someDate, null]` represents a date range where a single endpoint is known.
+-   `[someDate, someOtherDate]` represents a full date range where both endpoints are known.
 
 @## Shortcuts
 

@@ -2,9 +2,8 @@
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  */
 
-// tslint:disable no-submodule-imports
+// tslint:disable-next-line no-submodule-imports
 import "@blueprintjs/core/lib/css/blueprint.css";
-// tslint:enable no-submodule-imports
 import "../lib/css/blueprint-datetime.css";
 import "./test-debugging-styles.scss";
 

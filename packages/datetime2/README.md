@@ -4,15 +4,18 @@
 
 Blueprint is a React UI toolkit for the web.
 
-This package contains re-exports of components from @blueprintjs/datetime2. These "V2" components were
-previously available in @blueprintjs/datetime2 v4.x, but they were promoted to the standard "V1" components in
-@blueprintjs/datetime v5.x.
-
-Once you upgrade to Blueprint v5.0, you should migrate your imports to the @blueprintjs/datetime package.
+This package contains re-exports of some components from @blueprintjs/datetime v5.x. These "V2" APIs are backwards-compatible with @blueprintjs/datetime2 v0.x. Once you upgrade to Blueprint v5.0, you should migrate your
+imports to reference @blueprintjs/datetime instead:
 
 ```diff
 - import { DateInput2 } from "@blueprintjs/datetime2";
 + import { DateInput } from "@blueprintjs/datetime";
 ```
+
+This package also contains next-generation "V3" components which support react-day-picker v8. This means that
+installing @blueprintjs/datetime2 will install multiple versions of react-day-picker (v7.x via @blueprintjs/datetime
+and v8.x as a direct dependency). Note that these two copies of react-day-picker can happily exist together in a single
+JS bundle, and with the help of tree-shaking, you can avoid bundling both if you _only_ use the deprecated "V1" / "V2"
+datetime components or _only_ use the new "V3" APIs.
 
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

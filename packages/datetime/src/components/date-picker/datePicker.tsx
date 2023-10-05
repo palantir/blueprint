@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DatePicker3 in the datetime2
+ * package instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, NavbarElementProps } from "react-day-picker";
@@ -22,7 +30,7 @@ import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, Props } fro
 
 import { Classes, DatePickerBaseProps, DateUtils } from "../../common";
 import * as Errors from "../../common/errors";
-import { DatePickerShortcut, DateRangeShortcut, Shortcuts } from "../shortcuts/shortcuts";
+import { DatePickerShortcut, DatePickerShortcutMenu, DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 import { DatePickerCaption } from "./datePickerCaption";
 import { getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
@@ -110,6 +118,7 @@ export interface DatePickerState {
  * Date picker component.
  *
  * @see https://blueprintjs.com/docs/#datetime/datepicker
+ * @deprecated use `{ DatePicker3 } from "@blueprintjs/datetime2"` instead
  */
 export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePickerState> {
     public static defaultProps: DatePickerProps = {
@@ -325,7 +334,7 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
                       dateRange: [shortcut.date, undefined],
                   }));
         return [
-            <Shortcuts
+            <DatePickerShortcutMenu
                 key="shortcuts"
                 {...{
                     allowSingleDayRange: true,

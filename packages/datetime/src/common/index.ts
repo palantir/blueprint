@@ -16,16 +16,19 @@
 
 import * as Classes from "./classes";
 import * as DateUtils from "./dateUtils";
+import * as Errors from "./errors";
+import * as TimezoneNameUtils from "./timezoneNameUtils";
 import type { TimezoneWithNames } from "./timezoneTypes";
 import * as TimezoneUtils from "./timezoneUtils";
 
-export { Classes, DateUtils, TimezoneUtils, TimezoneWithNames };
+export { Classes, DateUtils, Errors, TimezoneNameUtils, TimezoneUtils, TimezoneWithNames };
 
 export { DatePickerBaseProps, DatePickerModifiers } from "./datePickerBaseProps";
 export { DateFormatProps } from "./dateFormatProps";
 export { DateRange, NonNullDateRange } from "./dateRange";
 export { Months } from "./months";
 export { TimeUnit } from "./timeUnit";
-export { TimePickerProps, TimePrecision } from "./timePickerProps";
+export { TimePickerProps } from "./timePickerProps";
+export { TimePrecision } from "./timePrecision";
 export { TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 export { getTimezoneMetadata } from "./timezoneMetadata";
