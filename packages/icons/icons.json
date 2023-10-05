@@ -4055,14 +4055,14 @@
     {
         "displayName": "Geotime",
         "iconName": "geotime",
-        "tags": "geo, time",
+        "tags": "geo, time, date, location, spatial",
         "group": "interface",
         "codepoint": 62276
       },
       {
         "displayName": "Unlink",
         "iconName": "unlink",
-        "tags": "unlink, link",
+        "tags": "unlink, link, property, connection",
         "group": "action",
         "codepoint": 62277
       }
