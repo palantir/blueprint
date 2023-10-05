@@ -9,8 +9,8 @@
   .#{$ns}-card-list > & {
     // min-height & padding will be set on the label element so that it can take up the full size of the card and
     // its entire visual element will be interactive  This is partially to work around https://github.com/palantir/blueprint/issues/6251
-    padding: 0;
     min-height: auto;
+    padding: 0;
   }
 }
 

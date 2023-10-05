@@ -11,6 +11,8 @@ $dark-card-background-color: $dark-gray3 !default;
 
 $card-list-border-width: 1px !default;
 
+// stylelint-disable max-line-length
+
 // CardList Card item min-height is calculated as height of a button + vertical padding.
 // We need to add an extra pixel to account for the bottom border.
 $card-list-item-padding-vertical: $pt-grid-size !default;
