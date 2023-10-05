@@ -17,7 +17,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import { spy, SinonSpy } from "sinon";
+import { SinonSpy, spy } from "sinon";
 
 import { SwitchCard } from "../../src";
 
