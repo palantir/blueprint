@@ -92,47 +92,50 @@ interface ControlInternalProps extends ControlProps {
 
 /**
  * Renders common control elements, with additional props to customize appearance.
- * This function is not exported and is only used within this module for `Checkbox`, `Radio`, and `Switch` below.
+ * This component is not exported and is only used within this module for `Checkbox`, `Radio`, and `Switch` below.
  */
-function renderControl(props: ControlInternalProps, ref: React.Ref<HTMLLabelElement>) {
-    const {
-        alignIndicator,
-        children,
-        className,
-        indicatorChildren,
-        inline,
-        inputRef,
-        label,
-        labelElement,
-        large,
-        style,
-        type,
-        typeClassName,
-        tagName = "label",
-        ...htmlProps
-    } = props;
-    const classes = classNames(
-        Classes.CONTROL,
-        typeClassName,
-        {
-            [Classes.DISABLED]: htmlProps.disabled,
-            [Classes.INLINE]: inline,
-            [Classes.LARGE]: large,
-        },
-        Classes.alignmentClass(alignIndicator),
-        className,
-    );
+const ControlInternal: React.FC<ControlInternalProps> = React.forwardRef<HTMLLabelElement, ControlInternalProps>(
+    (props, ref) => {
+        const {
+            alignIndicator,
+            children,
+            className,
+            indicatorChildren,
+            inline,
+            inputRef,
+            label,
+            labelElement,
+            large,
+            style,
+            type,
+            typeClassName,
+            tagName = "label",
+            ...htmlProps
+        } = props;
+        const classes = classNames(
+            Classes.CONTROL,
+            typeClassName,
+            {
+                [Classes.DISABLED]: htmlProps.disabled,
+                [Classes.INLINE]: inline,
+                [Classes.LARGE]: large,
+            },
+            Classes.alignmentClass(alignIndicator),
+            className,
+        );
 
-    return React.createElement(
-        tagName,
-        { className: classes, style, ref },
-        <input {...htmlProps} ref={inputRef} type={type} />,
-        <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>,
-        label,
-        labelElement,
-        children,
-    );
-}
+        return React.createElement(
+            tagName,
+            { className: classes, style, ref },
+            <input {...htmlProps} ref={inputRef} type={type} />,
+            <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>,
+            label,
+            labelElement,
+            children,
+        );
+    },
+);
+ControlInternal.displayName = `${DISPLAYNAME_PREFIX}.Control`;
 
 //
 // Switch
@@ -174,14 +177,14 @@ export const Switch: React.FC<SwitchProps> = React.forwardRef(
                       </div>,
                   ]
                 : null;
-        return renderControl(
-            {
-                ...controlProps,
-                indicatorChildren: switchLabels,
-                type: "checkbox",
-                typeClassName: Classes.SWITCH,
-            },
-            ref,
+        return (
+            <ControlInternal
+                {...controlProps}
+                indicatorChildren={switchLabels}
+                ref={ref}
+                type="checkbox"
+                typeClassName={Classes.SWITCH}
+            />
         );
     },
 );
@@ -198,16 +201,9 @@ export type RadioProps = ControlProps;
  *
  * @see https://blueprintjs.com/docs/#core/components/radio
  */
-export const Radio: React.FC<RadioProps> = React.forwardRef((props, ref) =>
-    renderControl(
-        {
-            ...props,
-            type: "radio",
-            typeClassName: Classes.RADIO,
-        },
-        ref,
-    ),
-);
+export const Radio: React.FC<RadioProps> = React.forwardRef((props, ref) => (
+    <ControlInternal {...props} ref={ref} type="radio" typeClassName={Classes.RADIO} />
+));
 Radio.displayName = `${DISPLAYNAME_PREFIX}.Radio`;
 
 //
@@ -267,15 +263,15 @@ export const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props, ref) =
         }
     }, [localInputRef, isIndeterminate]);
 
-    return renderControl(
-        {
-            ...controlProps,
-            inputRef,
-            onChange: handleChange,
-            type: "checkbox",
-            typeClassName: Classes.CHECKBOX,
-        },
-        ref,
+    return (
+        <ControlInternal
+            {...controlProps}
+            inputRef={inputRef}
+            onChange={handleChange}
+            ref={ref}
+            type="checkbox"
+            typeClassName={Classes.CHECKBOX}
+        />
     );
 });
 Checkbox.displayName = `${DISPLAYNAME_PREFIX}.Checkbox`;

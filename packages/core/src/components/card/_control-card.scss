@@ -1,0 +1,27 @@
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+// use an extra selector to increase specificity
+.#{$ns}-card.#{$ns}-control-card {
+  &,
+  .#{$ns}-card-list > & {
+    // Make the label take up the full size so that we can use the control's onChange instead of a "click" handler
+    // on any container element. This is partially to work around https://github.com/palantir/blueprint/issues/6251
+    padding: 0;
+  }
+}
+
+.#{$ns}-switch-control-card {
+  // N.B. Switch always has inline={true} inside SwitchCard
+  > .#{$ns}-switch.#{$ns}-control.#{$ns}-inline {
+    margin: 0;
+    padding: $card-padding;
+    width: calc(100%);
+
+    .#{$ns}-control-indicator {
+      margin: 0;
+    }
+  }
+}

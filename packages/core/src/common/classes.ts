@@ -113,8 +113,8 @@ export const CALLOUT_HAS_BODY_CONTENT = `${CALLOUT}-has-body-content`;
 export const CALLOUT_ICON = `${CALLOUT}-icon`;
 
 export const CARD = `${NS}-card`;
-
-export const CARD_SWITCH = `${NS}-card-switch`;
+export const CONTROL_CARD = `${NS}-control-card`;
+export const SWITCH_CONTROL_CARD = `${NS}-switch-control-card`;
 
 export const CARD_LIST = `${NS}-card-list`;
 export const CARD_LIST_BORDERED = `${CARD_LIST}-bordered`;

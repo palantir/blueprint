@@ -99,20 +99,3 @@ $dark-elevation-shadows: (
     }
   }
 }
-
-.#{$ns}-card-switch {
-  // Make the label take up the full size so that we can use the control's onChange instead of a "click" handler
-  // on any container element. This is partially to work around https://github.com/palantir/blueprint/issues/6251
-  padding: 0;
-
-  // N.B. Switch always has inline={true} inside SwitchCard
-  > .#{$ns}-switch.#{$ns}-control.#{$ns}-inline {
-    margin: 0;
-    padding: $card-padding;
-    width: calc(100%);
-
-    .#{$ns}-control-indicator {
-      margin: 0;
-    }
-  }
-}
