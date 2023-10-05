@@ -42,9 +42,13 @@ $card-list-item-small-padding: 7px 15px !default;
     }
   }
 
-  &.#{$ns}-compact > .#{$ns}-card {
-    min-height: $card-list-item-small-min-height;
-    padding: $card-list-item-small-padding;
+  &.#{$ns}-compact {
+    padding: 0;
+
+    > .#{$ns}-card {
+      min-height: $card-list-item-small-min-height;
+      padding: $card-list-item-small-padding;
+    }
   }
 
   .#{$ns}-dark & {

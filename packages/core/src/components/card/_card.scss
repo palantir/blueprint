@@ -22,6 +22,7 @@ Styleguide card
 */
 
 $card-padding: $pt-grid-size * 2 !default;
+$card-padding-compact: $pt-grid-size * 1.5 !default;
 
 $card-background-color: $white !default;
 $dark-card-background-color: $dark-gray3 !default;
@@ -75,6 +76,10 @@ $dark-elevation-shadows: (
       border: 1px solid $pt-high-contrast-mode-border-color;
     }
   }
+}
+
+.#{$ns}-card.#{$ns}-compact {
+  padding: $card-padding-compact;
 }
 
 .#{$ns}-card.#{$ns}-interactive {
