@@ -275,6 +275,12 @@ $docs-hotkey-piano-height: 510px;
   }
 }
 
+#{example("NumericInputExtended")} {
+  .#{$ns}-input-group {
+    min-width: 250px;
+  }
+}
+
 #{example("OverflowList")} {
   .#{$ns}-card {
     margin: 0;
