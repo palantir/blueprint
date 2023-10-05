@@ -20,7 +20,7 @@ import * as React from "react";
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps } from "../../common/props";
 import { ControlProps, Switch } from "../forms/controls";
-import { Card, CardProps } from "./card";
+import { Card, CardProps } from "../card/card";
 
 /**
  * Subset of {@link Card} which can be used to adjust its behavior.
@@ -77,7 +77,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef(props =>
     };
 
     return (
-        <Card interactive={true} className={classes} {...cardProps}>
+        <Card interactive={!disabled} className={classes} {...cardProps}>
             {controlKind === "switch" ? (
                 <Switch inline={true} alignIndicator="right" {...controlProps} />
             ) : (

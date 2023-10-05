@@ -16,57 +16,74 @@
 
 import * as React from "react";
 
-import { CardList, SwitchCard } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { CardList, H5, Switch, SwitchCard } from "@blueprintjs/core";
+import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 interface SwitchCardExampleState {
+    // TODO: add compact option
+    // compact: boolean;
+    cardListCompact: boolean;
+    disabled: boolean;
     switchChecked: boolean[];
 }
 
 export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchCardExampleState> {
     public state: SwitchCardExampleState = {
+        // TODO: add compact option
+        // compact: false,
+        cardListCompact: false,
+        disabled: false,
         switchChecked: [false, true, false, true, true, false],
     };
 
     public render() {
-        const { switchChecked } = this.state;
+        const { cardListCompact, disabled, switchChecked } = this.state;
+        const sharedProps = { disabled };
 
         return (
-            <Example {...this.props}>
-                <div
-                    // TODO(@adidahiya): migrate styles to Sass code in _examples.scss
-                    style={{
-                        display: "grid",
-                        gap: "20px",
-                        gridTemplateColumns: "repeat(auto-fit, minMax(200px, 1fr))",
-                        width: "100%",
-                    }}
-                >
-                    <SwitchCard onChange={this.getSwitchChangeHandler(0)} checked={switchChecked[0]}>
+            <Example options={this.renderOptions()} {...this.props}>
+                <div className="docs-control-card-grid">
+                    <SwitchCard {...sharedProps} onChange={this.getSwitchChangeHandler(0)} checked={switchChecked[0]}>
                         Wifi
                     </SwitchCard>
-                    <SwitchCard onChange={this.getSwitchChangeHandler(1)} checked={switchChecked[1]}>
+                    <SwitchCard {...sharedProps} onChange={this.getSwitchChangeHandler(1)} checked={switchChecked[1]}>
                         Bluetooth
                     </SwitchCard>
-                    <SwitchCard onChange={this.getSwitchChangeHandler(2)} checked={switchChecked[2]}>
+                    <SwitchCard {...sharedProps} onChange={this.getSwitchChangeHandler(2)} checked={switchChecked[2]}>
                         NFC
                     </SwitchCard>
                 </div>
 
-                <CardList>
-                    <SwitchCard onChange={this.getSwitchChangeHandler(3)} checked={switchChecked[3]}>
+                <CardList compact={cardListCompact}>
+                    <SwitchCard {...sharedProps} onChange={this.getSwitchChangeHandler(3)} checked={switchChecked[3]}>
                         Wifi
                     </SwitchCard>
-                    <SwitchCard onChange={this.getSwitchChangeHandler(4)} checked={switchChecked[4]}>
+                    <SwitchCard {...sharedProps} onChange={this.getSwitchChangeHandler(4)} checked={switchChecked[4]}>
                         Bluetooth
                     </SwitchCard>
-                    <SwitchCard onChange={this.getSwitchChangeHandler(5)} checked={switchChecked[5]}>
+                    <SwitchCard {...sharedProps} onChange={this.getSwitchChangeHandler(5)} checked={switchChecked[5]}>
                         NFC
                     </SwitchCard>
                 </CardList>
             </Example>
         );
     }
+
+    private renderOptions() {
+        const { cardListCompact, disabled } = this.state;
+        return (
+            <>
+                <H5>Props</H5>
+                <Switch checked={disabled} label="Disabled" onChange={this.toggleDisabled} />
+                <H5>CardList Props</H5>
+                <Switch checked={cardListCompact} label="Compact" onChange={this.toggleCardListCompact} />
+            </>
+        );
+    }
+
+    private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
+
+    private toggleCardListCompact = handleBooleanChange(cardListCompact => this.setState({ cardListCompact }));
 
     private getSwitchChangeHandler = (index: number) => () => {
         const switchChecked = [...this.state.switchChecked];
