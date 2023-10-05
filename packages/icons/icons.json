@@ -4051,5 +4051,19 @@
         "tags": "microphone, mic, speaker",
         "group": "media",
         "codepoint": 62275
-    }
+    },
+    {
+        "displayName": "Geotime",
+        "iconName": "geotime",
+        "tags": "geo, time",
+        "group": "interface",
+        "codepoint": 62276
+      },
+      {
+        "displayName": "Unlink",
+        "iconName": "unlink",
+        "tags": "unlink, link",
+        "group": "action",
+        "codepoint": 62277
+      }
 ]
