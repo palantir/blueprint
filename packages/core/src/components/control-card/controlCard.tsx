@@ -50,7 +50,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
  *
  * @internal
  */
-export const ControlCard: React.FC<ControlCardProps> = React.forwardRef(props => {
+export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, ref) => {
     const {
         checked,
         children: controlLabel,
@@ -60,6 +60,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef(props =>
         disabled,
         inputProps,
         inputRef,
+        onChange,
         ...cardProps
     } = props;
 
@@ -73,11 +74,12 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef(props =>
         disabled,
         inputRef,
         labelElement: controlLabel,
+        onChange,
         ...inputProps,
     };
 
     return (
-        <Card interactive={!disabled} className={classes} {...cardProps}>
+        <Card interactive={!disabled} className={classes} ref={ref} {...cardProps}>
             {controlKind === "switch" ? (
                 <Switch inline={true} alignIndicator="right" {...controlProps} />
             ) : (

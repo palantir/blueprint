@@ -16,11 +16,13 @@ inside the card to toggle the control state.
 
 @## SwitchCard
 
-Card with an embedded [**Switch**](#core/components/switch) control. Most of the **Card** and **Switch** props are
-available on the root component.
+Card with an embedded [**Switch**](#core/components/switch) control.
 
 @reactExample SwitchCardExample
 
 @### Props interface
+
+Most of the properties in [**CardProps**](#core/components/card.props-interface) and
+[**SwitchProps**](#core/components/switch.props-interface) are available on the root component.
 
 @interface SwitchCardProps
