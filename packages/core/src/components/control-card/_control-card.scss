@@ -1,0 +1,46 @@
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../card/card-variables";
+
+// use an extra selector to increase specificity
+.#{$ns}-card.#{$ns}-control-card {
+  &,
+  .#{$ns}-card-list > & {
+    // min-height & padding will be set on the label element so that it can take up the full size of the card and
+    // its entire visual element will be interactive  This is partially to work around https://github.com/palantir/blueprint/issues/6251
+    min-height: auto;
+    padding: 0;
+  }
+}
+
+.#{$ns}-switch-control-card {
+  // need a lot of specificity here to override control styles
+  .#{$ns}-switch.#{$ns}-control.#{$ns}-align-right {
+    align-items: center;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin: 0;
+    padding: $card-padding;
+    width: calc(100%);
+
+    .#{$ns}-card-list & {
+      min-height: $card-list-control-item-min-height;
+      padding: $card-list-item-padding;
+    }
+
+    .#{$ns}-card-list.#{$ns}-compact & {
+      min-height: $card-list-control-item-min-height-compact;
+      padding: $card-list-item-padding-compact;
+    }
+
+    .#{$ns}-control-indicator {
+      margin: 0;
+    }
+  }
+
+  &.#{$ns}-compact .#{$ns}-switch.#{$ns}-control.#{$ns}-align-right {
+    padding: $card-padding-compact;
+  }
+}

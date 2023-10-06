@@ -8,6 +8,7 @@
 @page callout
 @page card
 @page card-list
+@page control-card
 @page collapse
 @page divider
 @page editable-text

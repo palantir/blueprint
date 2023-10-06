@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
+import type { DayPickerBase, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
 
 type ReactDayPickerOmittedProps =
     | "captionLayout"
@@ -31,6 +31,12 @@ type ReactDayPickerOmittedProps =
     | "toDate"
     | "toMonth"
     | "toYear";
+
+/**
+ * react-day-picker v8.x options which may be customized / overriden on
+ * `DatePicker3`, `DateInput3`, `DateRangePicker3`, and `DateRangeInput3` via the `dayPickerProps` prop.
+ */
+export type DayPickerProps = Omit<DayPickerBase, ReactDayPickerOmittedProps>;
 
 export interface ReactDayPickerRangeProps {
     /**

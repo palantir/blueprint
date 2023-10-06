@@ -1,10 +1,10 @@
 @# Numeric input
 
-__NumericInput__ provides controls for easily inputting, incrementing, and decrementing numeric values.
+**NumericInput** provides controls for inputting, incrementing, and decrementing numeric values.
 
 @## Interactions
 
-Values in numeric inputs can be incremented or decremented using both keyboard and mouse interactions.
+The value in a numeric input can be incremented or decremented using both keyboard and mouse interactions.
 
 ##### Keyboard interactions
 
@@ -20,15 +20,15 @@ Values in numeric inputs can be incremented or decremented using both keyboard a
 
 @## Basic example
 
-This example shows how __NumericInput__ works out of the box. It supports the basic keyboard and mouse interactions listed
-above, as well as basic keyboard entry:
+This example shows how **NumericInput** works out of the box. It supports the basic keyboard and mouse interactions
+listed above, as well as basic keyboard entry.
 
 @reactExample NumericInputBasicExample
 
 @## Extended example
 
-This example shows how __NumericInput__ can be extended beyond its core functionality. It supports the basic interactions
-above as well as each of the following types of input:
+This example shows how **NumericInput** can be extended beyond its core functionality. It supports the basic
+interactions above as well as each of the following types of input:
 
 -   **Number abbreviations** (e.g. `2.1k`, `-0.3m`)
 -   **Scientific notation** (e.g. `2.1e3`, `-0.3e6`)
@@ -40,22 +40,14 @@ field will be cleared.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
-This example contains non-core functionality that is meant to demonstrate the extensibility of the __NumericInput__
+This example contains non-core functionality that is meant to demonstrate the extensibility of the **NumericInput**
 component. The correctness of the custom evaluation code has not been tested robustly.
 
 </div>
 
 @reactExample NumericInputExtendedExample
 
-@## Props interface
-
-@interface NumericInputProps
-
-@### Responsive numeric inputs
-
-__NumericInput__ can be styled with the same set of visual modifier props & CSS classes as
-[__ControlGroup__](#core/components/control-group). The most appropriate such modifier for __NumericInput__ is `fill`,
-which will make the component expand to fill all available width.
+@## Usage
 
 @### Uncontrolled mode
 
@@ -87,7 +79,7 @@ If you need to have more control over your numeric input's behavior, you can spe
 component in **controlled mode**.
 
 Note that NumericInput supports arbitrary text entry (not only numeric digits) so the `value`
-__should always be provided as a string, not a number__. Accordingly, change event handlers should use the same data
+**should always be provided as a string, not a number**. Accordingly, change event handlers should use the same data
 type, namely the _second_ parameter of the `onValueChange` callback. This behavior allows users to type non-numeric
 characters like decimal points (".") without the component eagerly coercing those strings to their parsed numeric
 equivalents (`0.` becomes `0`, fractional data entry impossible).
@@ -139,10 +131,20 @@ class NumericInputExample extends React.Component<{}, NumericInputExampleState> 
 
 @### Numeric precision
 
-__NumericInput__ determines its maximum precision by looking at both the `minorStepSize` and `stepSize` props.
+**NumericInput** determines its maximum precision by looking at both the `minorStepSize` and `stepSize` props.
 If `minorStepSize` is non-null, the number of decimal places in that value will be the maximum precision.
 Otherwise, the component will count the decimal places in `stepSize`.
 
 Configuring these props allows you to expand or constrain the precision of the input. For example, to limit
 the input to only integers, you can set `minorStepSize={null}` and allow the default `stepSize` of `1` to take
 precedence.
+
+@## Styling
+
+**NumericInput** can be styled with the same set of visual modifier props & CSS classes as
+[**ControlGroup**](#core/components/control-group). The most appropriate such modifier for **NumericInput** is `fill`,
+which will make the component expand to fill all available width.
+
+@## Props interface
+
+@interface NumericInputProps
