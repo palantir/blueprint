@@ -36,6 +36,9 @@ export interface CardListProps extends Props, HTMLDivProps, React.RefAttributes<
     /**
      * Whether this component should use compact styles with reduced visual padding.
      *
+     * Note that this prop affects styling for all Cards within this CardList and you do not need to set the
+     * `compact` prop individually on those child Cards.
+     *
      * @default false
      */
     compact?: boolean;

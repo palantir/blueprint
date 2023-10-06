@@ -35,9 +35,13 @@
     }
   }
 
-  &.#{$ns}-compact > .#{$ns}-card {
-    min-height: $card-list-item-min-height-compact;
-    padding: $card-list-item-padding-compact;
+  &.#{$ns}-compact {
+    padding: 0;
+
+    > .#{$ns}-card {
+      min-height: $card-list-item-min-height-compact;
+      padding: $card-list-item-padding-compact;
+    }
   }
 
   .#{$ns}-dark & {

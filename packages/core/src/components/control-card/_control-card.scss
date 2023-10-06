@@ -16,7 +16,7 @@
 
 .#{$ns}-switch-control-card {
   // need a lot of specificity here to override control styles
-  > .#{$ns}-switch.#{$ns}-control.#{$ns}-align-right {
+  .#{$ns}-switch.#{$ns}-control.#{$ns}-align-right {
     align-items: center;
     display: flex;
     flex-direction: row-reverse;
@@ -38,5 +38,9 @@
     .#{$ns}-control-indicator {
       margin: 0;
     }
+  }
+
+  &.#{$ns}-compact .#{$ns}-switch.#{$ns}-control.#{$ns}-align-right {
+    padding: $card-padding-compact;
   }
 }

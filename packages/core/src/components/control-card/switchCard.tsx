@@ -29,5 +29,4 @@ export type SwitchCardProps = Omit<ControlCardProps, "controlKind">;
 export const SwitchCard: React.FC<SwitchCardProps> = React.forwardRef((props, ref) => {
     return <ControlCard controlKind="switch" ref={ref} {...props} />;
 });
-SwitchCard.defaultProps = {};
 SwitchCard.displayName = `${DISPLAYNAME_PREFIX}.SwitchCard`;

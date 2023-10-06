@@ -57,6 +57,10 @@ Styleguide card
   }
 }
 
+.#{$ns}-card.#{$ns}-compact {
+  padding: $card-padding-compact;
+}
+
 .#{$ns}-card.#{$ns}-interactive {
   &:hover {
     box-shadow: $pt-elevation-shadow-3;
