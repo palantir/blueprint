@@ -43,6 +43,11 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
      * HTML input attributes to forward to the control `<input>` element.
      */
     inputProps?: HTMLInputProps;
+
+    /**
+     * Whether the selected styles should apply when checked
+     */
+    showAsSelectedWhenChecked?: boolean
 }
 
 /**
@@ -62,6 +67,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
         inputProps,
         inputRef,
         onChange: onChangeProp,
+        showAsSelectedWhenChecked,
         ...cardProps
     } = props;
     const [checked, setChecked] = React.useState(() => defaultChecked ?? false);
@@ -90,7 +96,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
     };
     const classes = classNames(Classes.CONTROL_CARD, className, {
         [Classes.SWITCH_CONTROL_CARD]: controlKind === "switch",
-        [Classes.SELECTED]: checked,
+        [Classes.SELECTED]: showAsSelectedWhenChecked && checked,
     });
     return (
         <Card interactive={!disabled} className={classes} ref={ref} {...cardProps}>
