@@ -16,46 +16,41 @@
 
 import * as React from "react";
 
-import { H5, Switch, SwitchCard } from "@blueprintjs/core";
+import { H5, Switch, SwitchCard, SwitchCardProps } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-interface SwitchCardExampleState {
-    // TODO: add compact option
-    // compact: boolean;
-    disabled: boolean;
-}
+type SwitchCardExampleState = Pick<SwitchCardProps, "compact" | "disabled">;
 
 export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchCardExampleState> {
     public state: SwitchCardExampleState = {
-        // TODO: add compact option
-        // compact: false,
+        compact: false,
         disabled: false,
     };
 
     public render() {
-        const { disabled } = this.state;
-        const sharedProps = { disabled };
-
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-control-card-grid">
-                    <SwitchCard {...sharedProps}>Wifi</SwitchCard>
-                    <SwitchCard {...sharedProps}>Bluetooth</SwitchCard>
-                    <SwitchCard {...sharedProps}>NFC</SwitchCard>
+                    <SwitchCard {...this.state}>Wifi</SwitchCard>
+                    <SwitchCard {...this.state}>Bluetooth</SwitchCard>
+                    <SwitchCard {...this.state}>NFC</SwitchCard>
                 </div>
             </Example>
         );
     }
 
     private renderOptions() {
-        const { disabled } = this.state;
+        const { compact, disabled } = this.state;
         return (
             <>
                 <H5>Props</H5>
+                <Switch checked={compact} label="Compact" onChange={this.toggleCompact} />
                 <Switch checked={disabled} label="Disabled" onChange={this.toggleDisabled} />
             </>
         );
     }
+
+    private toggleCompact = handleBooleanChange(compact => this.setState({ compact }));
 
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
 }
