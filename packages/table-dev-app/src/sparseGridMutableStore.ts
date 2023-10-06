@@ -21,7 +21,11 @@ class GridEntry<T> {
         return `${i}_${j}`;
     }
 
-    public constructor(public i: number, public j: number, public value: T) {}
+    public constructor(
+        public i: number,
+        public j: number,
+        public value: T,
+    ) {}
 
     // there are two things here called `key` but they're certainly not overloaded (one being static)
     // TSLint bug report: https://github.com/palantir/tslint/issues/2139

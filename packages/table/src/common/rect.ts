@@ -81,7 +81,12 @@ export class Rect {
         }
     }
 
-    public constructor(public left: number, public top: number, public width: number, public height: number) {}
+    public constructor(
+        public left: number,
+        public top: number,
+        public width: number,
+        public height: number,
+    ) {}
 
     public subtractOrigin(anyRect: AnyRect) {
         return Rect.subtractOrigin(this, anyRect);

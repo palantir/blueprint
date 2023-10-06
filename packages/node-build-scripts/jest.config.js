@@ -2,29 +2,18 @@
  * Copyright 2023 Palantir Technologies Inc. All rights reserved.
  */
 
-const esmTransform = [
-    "ts-jest",
-    {
-        tsconfig: {
-            allowJs: true,
-            module: "es2020",
-        },
-    },
-];
-
+/**
+ * Jest configuration to load ESM modules and transpile TypeScript via SWC.
+ *
+ * @see https://github.com/swc-project/jest
+ */
 module.exports = {
-    preset: "ts-jest/presets/js-with-ts",
+    extensionsToTreatAsEsm: [".ts", ".tsx"],
     testEnvironment: "node",
+    rootDir: process.cwd(),
+    moduleFileExtensions: ["js", "mjs", "ts", "tsx"],
     transform: {
-        "^.+\\.mjs$": esmTransform,
-        "^.+\\.tsx?$": [
-            "ts-jest",
-            {
-                tsconfig: {
-                    allowJs: true,
-                },
-            },
-        ],
+        ".*\\.(tsx?|mjs)$": "@swc/jest",
     },
     transformIgnorePatterns: ["node_modules/(?!(strip-css-comments|is-regexp)/)"],
 };

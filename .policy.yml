@@ -1,14 +1,14 @@
 policy:
   approval:
     - or:
-      - approved by Blueprint team member
-      - approved by Blueprint team lead
-      - authored by Blueprint team lead
-      - excavator only touched config files
-      - bots updated package.json and lock files
+        - approved by Blueprint team member
+        - approved by Blueprint team lead
+        - authored by Blueprint team lead
+        - excavator only touched config files
+        - bots updated package.json and lock files
   disapproval:
     requires:
-      organizations: [ "palantir" ]
+      organizations: ["palantir"]
 
 approval_rules:
   - name: approved by Blueprint team member
@@ -16,21 +16,21 @@ approval_rules:
       allow_contributor: false
     requires:
       count: 1
-      teams: [ "palantir/blueprint" ]
+      teams: ["palantir/blueprint"]
 
   - name: approved by Blueprint team lead
     options:
       allow_contributor: true
     requires:
       count: 1
-      users: [ "adidahiya" ]
+      users: ["adidahiya"]
 
   - name: authored by Blueprint team lead
     requires:
       count: 0
     if:
       has_author_in:
-        users: [ "adidahiya" ]
+        users: ["adidahiya"]
       has_valid_signatures_by_keys:
         key_ids: ["807851B18384352E"]
 
@@ -39,7 +39,7 @@ approval_rules:
       count: 0
     if:
       has_author_in:
-        users: [ "svc-excavator-bot" ]
+        users: ["svc-excavator-bot"]
       only_changed_files:
         paths:
           - "^\\..*.yml$"
@@ -53,8 +53,8 @@ approval_rules:
     if:
       has_author_in:
         users:
-        - "svc-excavator-bot"
-        - "dependabot[bot]"
+          - "svc-excavator-bot"
+          - "dependabot[bot]"
       only_changed_files:
         paths:
           - "^.*yarn.lock$"
