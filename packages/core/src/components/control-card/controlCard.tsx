@@ -50,9 +50,10 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
  *
  * @internal
  */
+
 export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, ref) => {
     const {
-        checked,
+        checked: checkedProp,
         children: labelContent,
         className,
         controlKind,
@@ -60,14 +61,22 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
         disabled,
         inputProps,
         inputRef,
-        onChange,
+        onChange: onChangeProp,
         ...cardProps
     } = props;
-
-    const classes = classNames(Classes.CONTROL_CARD, className, {
-        [Classes.SWITCH_CONTROL_CARD]: controlKind === "switch",
-    });
-
+    const [checked, setChecked] = React.useState(() => defaultChecked ?? false);
+    React.useEffect(() => {
+        if (checkedProp !== undefined) {
+            setChecked(checkedProp);
+        }
+    }, [checkedProp]);
+    const onChange = React.useCallback<React.FormEventHandler<HTMLInputElement>>(
+        e => {
+            setChecked(c => !c);
+            onChangeProp?.(e);
+        },
+        [onChangeProp],
+    );
     // use a container element to achieve a good flex layout
     const labelElement = <div className={Classes.CONTROL_CARD_LABEL}>{labelContent}</div>;
     const controlProps: ControlProps = {
@@ -79,7 +88,10 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
         onChange,
         ...inputProps,
     };
-
+    const classes = classNames(Classes.CONTROL_CARD, className, {
+        [Classes.SWITCH_CONTROL_CARD]: controlKind === "switch",
+        [Classes.SELECTED]: checked,
+    });
     return (
         <Card interactive={!disabled} className={classes} ref={ref} {...cardProps}>
             {controlKind === "switch" ? (
