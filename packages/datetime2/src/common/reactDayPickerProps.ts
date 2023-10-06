@@ -26,7 +26,6 @@ type ReactDayPickerOmittedProps =
     | "mode"
     | "month"
     | "numberOfMonths"
-    | "onSelect"
     | "required"
     | "selected"
     | "toDate"
@@ -54,7 +53,6 @@ export interface ReactDayPickerRangeProps {
      *  - "locale"
      *  - "month": navigation is controlled by the component; use "defaultMonth" to set the initially displayed month
      *  - "numberOfMonths": use "singleMonthOnly" prop instead
-     *  - "onSelect": use "onChange" instead
      *  - "required": use "canClearSelection" instead (legacy name from @blueprintjs/datetime v4)
      *  - "selected": use "value" instead
      */
@@ -76,7 +74,6 @@ export interface ReactDayPickerSingleProps {
      *  - "fromDate", "fromMonth", "fromYear", "toDate", "toMonth", "toYear": use "minDate" and "maxDate" instead (legacy names from @blueprintjs/datetime v4)
      *  - "locale"
      *  - "month": navigation is controlled by the component; use "defaultMonth" to set the initially displayed month
-     *  - "onSelect": use "onChange" instead
      *  - "required": use "canClearSelection" instead (legacy name from @blueprintjs/datetime v4)
      *  - "selected": use "value" instead
      */
