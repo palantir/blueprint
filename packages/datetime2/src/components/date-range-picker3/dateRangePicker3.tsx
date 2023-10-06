@@ -30,6 +30,7 @@ import {
     Errors,
     MonthAndYear,
     TimePicker,
+    TimePrecision,
 } from "@blueprintjs/datetime";
 
 import { Classes, dayPickerClassNameOverrides } from "../../classes";
@@ -262,33 +263,31 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
             return null;
         }
 
-        if (isShowingOneMonth) {
-            return (
+        const isLongTimePicker =
+            timePickerProps?.useAmPm ||
+            timePrecision === TimePrecision.SECOND ||
+            timePrecision === TimePrecision.MILLISECOND;
+
+        return (
+            <div
+                className={classNames(Classes.DATERANGEPICKER_TIMEPICKERS, {
+                    [Classes.DATERANGEPICKER3_TIMEPICKERS_STACKED]: isShowingOneMonth && isLongTimePicker,
+                })}
+            >
                 <TimePicker
                     precision={timePrecision}
                     {...timePickerProps}
                     onChange={this.handleTimeChangeLeftCalendar}
                     value={this.state.time[0]}
                 />
-            );
-        } else {
-            return (
-                <div className={Classes.DATERANGEPICKER_TIMEPICKERS}>
-                    <TimePicker
-                        precision={timePrecision}
-                        {...timePickerProps}
-                        onChange={this.handleTimeChangeLeftCalendar}
-                        value={this.state.time[0]}
-                    />
-                    <TimePicker
-                        precision={timePrecision}
-                        {...timePickerProps}
-                        onChange={this.handleTimeChangeRightCalendar}
-                        value={this.state.time[1]}
-                    />
-                </div>
-            );
-        }
+                <TimePicker
+                    precision={timePrecision}
+                    {...timePickerProps}
+                    onChange={this.handleTimeChangeRightCalendar}
+                    value={this.state.time[1]}
+                />
+            </div>
+        );
     }
 
     private handleTimeChange = (newTime: Date, dateIndex: number) => {

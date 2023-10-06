@@ -73,6 +73,7 @@ export const DateRangePicker3Classes = {
     DATERANGEPICKER3_SELECTED_RANGE_END: ReactDayPickerClasses.RDP_DAY_RANGE_END,
     DATERANGEPICKER3_SELECTED_RANGE_MIDDLE: ReactDayPickerClasses.RDP_DAY_RANGE_MIDDLE,
     DATERANGEPICKER3_SELECTED_RANGE_START: ReactDayPickerClasses.RDP_DAY_RANGE_START,
+    DATERANGEPICKER3_TIMEPICKERS_STACKED: `${DatetimeClasses.DATERANGEPICKER_TIMEPICKERS}-stacked`,
 };
 
 /** Class names for next-gen @blueprintjs/datetime2 "V3" components */
