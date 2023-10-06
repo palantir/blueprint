@@ -34,7 +34,7 @@ export interface DateInput3Props
         Pick<DatePicker3Props, "dayPickerProps" | "locale">,
         Partial<Omit<DateFormatProps, "locale">> {
     /**
-     * [date-fns] format string used to format & parse date strings.
+     * [date-fns format](https://date-fns.org/docs/format) string used to format & parse date strings.
      *
      * Mutually exclusive with the `formatDate` and `parseDate` props.
      *
