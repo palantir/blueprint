@@ -72,15 +72,22 @@ Styleguide card
     }
   }
 
-  &.#{$ns}-selected,
+  &.#{$ns}-selected {
+    box-shadow: 0 0 0 3px rgba($blue4, 0.2), 0 0 0 1px $blue4;
+
+    &.#{$ns}-dark,
+    .#{$ns}-dark & {
+      box-shadow: 0 0 0 3px rgba($blue5, 0.4), 0 0 0 1px $blue5;
+    }
+  }
+
   &:active {
-    box-shadow: $pt-elevation-shadow-1;
-    opacity: 0.9;
+    box-shadow: 0 0 0 2px rgba($blue4, 0.8);
     transition-duration: 0;
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
-      box-shadow: $pt-dark-elevation-shadow-1;
+      box-shadow: 0 0 0 2px rgba($blue5, 0.8);
     }
   }
 }

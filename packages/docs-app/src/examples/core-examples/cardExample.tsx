@@ -53,8 +53,10 @@ export class CardExample extends React.PureComponent<ExampleProps, CardExampleSt
         <>
             <H5>Props</H5>
             <Switch checked={this.state.interactive} label="Interactive" onChange={this.handleInteractiveChange} />
+            {this.state.interactive && (
+                <Switch checked={this.state.selected} label="Selected" onChange={this.handleSelectedChange} />
+            )}
             <Switch checked={this.state.compact} label="Compact" onChange={this.handleCompactChange} />
-            <Switch checked={this.state.selected} label="Selected" onChange={this.handleSelectedChange} />
             <Label>
                 Elevation
                 <Slider
