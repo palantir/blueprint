@@ -20,16 +20,16 @@ import { Button, Card, Classes, Elevation, H5, Label, Slider, Switch } from "@bl
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface CardExampleState {
+    compact: boolean;
     elevation: Elevation;
     interactive: boolean;
-    compact: boolean;
 }
 
 export class CardExample extends React.PureComponent<ExampleProps, CardExampleState> {
     public state: CardExampleState = {
+        compact: false,
         elevation: 0,
         interactive: false,
-        compact: false,
     };
 
     public render() {
