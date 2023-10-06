@@ -4061,7 +4061,7 @@
     },
     {
         "displayName": "Unlink",
-        "iconName": "link-off",
+        "iconName": "unlink",
         "tags": "unlink, link, property, connection",
         "group": "action",
         "codepoint": 62277
