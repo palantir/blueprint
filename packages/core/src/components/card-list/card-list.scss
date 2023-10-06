@@ -1,14 +1,7 @@
-@import "../../common/variables";
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
 
-$card-list-border-width: 1px !default;
-
-// N.B. min-height is calculated as height of a button + vertical padding. We need to add an extra pixel to account for
-// the bottom border.
-$card-list-item-default-min-height: ($pt-grid-size * 5) + $card-list-border-width !default;
-$card-list-item-default-padding: $pt-grid-size (2 * $pt-grid-size) !default;
-
-$card-list-item-small-min-height: ($pt-grid-size * 4) + $card-list-border-width !default;
-$card-list-item-small-padding: 7px 15px !default;
+@import "../card/card-variables";
 
 .#{$ns}-card-list {
   overflow: auto;
@@ -20,8 +13,8 @@ $card-list-item-small-padding: 7px 15px !default;
     border-radius: 0;
     box-shadow: none;
     display: flex;
-    min-height: $card-list-item-default-min-height;
-    padding: $card-list-item-default-padding;
+    min-height: $card-list-item-min-height;
+    padding: $card-list-item-padding;
 
     &.#{$ns}-interactive:hover,
     &.#{$ns}-interactive:active {
@@ -46,8 +39,8 @@ $card-list-item-small-padding: 7px 15px !default;
     padding: 0;
 
     > .#{$ns}-card {
-      min-height: $card-list-item-small-min-height;
-      padding: $card-list-item-small-padding;
+      min-height: $card-list-item-min-height-compact;
+      padding: $card-list-item-padding-compact;
     }
   }
 
