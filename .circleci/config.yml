@@ -202,10 +202,27 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
-      - store_artifacts: { path: packages/docs-app/dist }
-      - store_artifacts: { path: packages/landing-app/dist }
-      - store_artifacts: { path: packages/table-dev-app/dist }
-      - store_artifacts: { path: packages/demo-app/dist }
+      # We have lots of files, so we need to use compression to speed up the upload
+      # see https://support.circleci.com/hc/en-us/articles/360024275534-Uploading-artifacts-is-slow
+      - run:
+          name: Compress artifacts
+          command: |
+            tar -cvzf demo-app.tar packages/demo-app/dist
+            tar -cvzf docs-app.tar packages/docs-app/dist
+            tar -cvzf landing-app.tar packages/landing-app/dist
+            tar -cvzf table-dev-app.tar packages/table-dev-app/dist
+      - store_artifacts:
+          path: demo-app.tar
+          destination: packages/demo-app/dist
+      - store_artifacts:
+          path: docs-app.tar
+          destination: packages/docs-app/dist
+      - store_artifacts:
+          path: landing-app.tar
+          destination: packages/landing-app/dist
+      - store_artifacts:
+          path: table-dev-app.tar
+          destination: packages/table-dev-app/dist
       - run: ./scripts/submit-preview-comment.sh
 
   deploy-npm:

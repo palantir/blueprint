@@ -14,10 +14,12 @@ import { execSync } from "node:child_process";
 import { basename } from "node:path";
 import { Octokit } from "octokit";
 
+const artifactsManifest = await import("./artifacts.json", { assert: { type: "json" }});
+
 /**
- * @type {Array<{path: string; url: string;}>}
+ * @type {{ items: Array<{path: string; url: string;}> }}
  */
-const { default: artifacts } = await import("./artifacts.json", { assert: { type: "json" }});
+const artifacts = artifactsManifest.default;
 
 if (artifacts.items === undefined) {
     throw new Error(
