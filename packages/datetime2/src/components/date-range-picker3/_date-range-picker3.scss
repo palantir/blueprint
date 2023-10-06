@@ -67,17 +67,14 @@
       visibility: hidden;
     }
 
-    &_hovered {
+    &_hovered:not(.rdp-day_selected) {
       border-radius: 0;
       color: $blue2;
 
       // need to disable hover styles for all variants of selected dates
-
-      /* stylelint-disable max-line-length */
-      &:not(.rdp-day_selected):not(.rdp-day_range_start):not(.rdp-day_range_middle):not(.rdp-day_range_end) {
+      &:not(.rdp-day_range_start):not(.rdp-day_range_middle):not(.rdp-day_range_end) {
         background-color: $daterangepicker-range-background-color;
       }
-      /* stylelint-enable max-line-length */
     }
 
     &_range_middle {
