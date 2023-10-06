@@ -33,26 +33,8 @@ export class CardExample extends React.PureComponent<ExampleProps, CardExampleSt
     };
 
     public render() {
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Switch checked={this.state.interactive} label="Interactive" onChange={this.handleInteractiveChange} />
-                <Switch checked={this.state.interactive} label="Compact" onChange={this.handleCompactChange} />
-                <Label>
-                    Elevation
-                    <Slider
-                        max={4}
-                        showTrackFill={false}
-                        value={this.state.elevation}
-                        onChange={this.handleElevationChange}
-                        handleHtmlProps={{ "aria-label": "card elevation" }}
-                    />
-                </Label>
-            </>
-        );
-
         return (
-            <Example options={options} {...this.props}>
+            <Example options={this.renderOptions()} {...this.props}>
                 <Card {...this.state}>
                     <H5>Analytical applications</H5>
                     <p>
@@ -64,6 +46,24 @@ export class CardExample extends React.PureComponent<ExampleProps, CardExampleSt
             </Example>
         );
     }
+
+    private renderOptions = () => (
+        <>
+            <H5>Props</H5>
+            <Switch checked={this.state.interactive} label="Interactive" onChange={this.handleInteractiveChange} />
+            <Switch checked={this.state.compact} label="Compact" onChange={this.handleCompactChange} />
+            <Label>
+                Elevation
+                <Slider
+                    max={4}
+                    showTrackFill={false}
+                    value={this.state.elevation}
+                    onChange={this.handleElevationChange}
+                    handleHtmlProps={{ "aria-label": "card elevation" }}
+                />
+            </Label>
+        </>
+    );
 
     private handleElevationChange = (elevation: Elevation) => this.setState({ elevation });
 
