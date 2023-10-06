@@ -4,10 +4,12 @@
 
 import { describe, expect, test } from "@jest/globals";
 import { readFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { generateLessVariables, generateScssVariables, getParsedVars } from "../cssVariables.mjs";
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const FIXTURES_DIR = join(__dirname, "__fixtures__");
 const INPUT_DIR = resolve(FIXTURES_DIR, "input");
 const EXPECTED_DIR = resolve(FIXTURES_DIR, "expected");
