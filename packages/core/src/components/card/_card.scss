@@ -88,6 +88,7 @@ $dark-elevation-shadows: (
     }
   }
 
+  &.#{$ns}-selected,
   &:active {
     box-shadow: $pt-elevation-shadow-1;
     opacity: 0.9;

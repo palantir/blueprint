@@ -22,12 +22,14 @@ import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 export interface CardExampleState {
     elevation: Elevation;
     interactive: boolean;
+    selected: boolean;
 }
 
 export class CardExample extends React.PureComponent<ExampleProps, CardExampleState> {
     public state: CardExampleState = {
         elevation: 0,
         interactive: false,
+        selected: false,
     };
 
     public render() {
@@ -35,6 +37,9 @@ export class CardExample extends React.PureComponent<ExampleProps, CardExampleSt
             <>
                 <H5>Props</H5>
                 <Switch checked={this.state.interactive} label="Interactive" onChange={this.handleInteractiveChange} />
+                {this.state.interactive &&
+                    <Switch checked={this.state.selected} label="Selected" onChange={this.handleSelectedChange} />
+                }
                 <Label>
                     Elevation
                     <Slider
@@ -65,4 +70,6 @@ export class CardExample extends React.PureComponent<ExampleProps, CardExampleSt
     private handleElevationChange = (elevation: Elevation) => this.setState({ elevation });
 
     private handleInteractiveChange = () => this.setState({ interactive: !this.state.interactive });
+
+    private handleSelectedChange = () => this.setState({ selected: !this.state.selected });
 }
