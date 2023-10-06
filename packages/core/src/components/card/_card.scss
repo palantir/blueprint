@@ -82,12 +82,12 @@ Styleguide card
   }
 
   &:active {
-    box-shadow: 0 0 0 2px rgba($blue4, 0.8);
+    box-shadow: $pt-elevation-shadow-1;
     transition-duration: 0;
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
-      box-shadow: 0 0 0 2px rgba($blue5, 0.8);
+      box-shadow: $pt-dark-elevation-shadow-1;
     }
   }
 }
