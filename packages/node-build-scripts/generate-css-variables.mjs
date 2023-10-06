@@ -35,12 +35,12 @@ async function main() {
     const outputFilename = args["outputFileName"];
     const parsedInput = await getParsedVars(SRC_DIR, args["_"]);
 
-    const scssVariables = generateScssVariables(parsedInput, args["retainDefault"]);
+    const scssVariables = await generateScssVariables(parsedInput, args["retainDefault"]);
     const outputScssDir = join(LIB_DIR, "scss");
     ensureDirSync(outputScssDir);
     writeFileSync(`${outputScssDir}/${outputFilename}.scss`, scssVariables);
 
-    const lessVariables = generateLessVariables(parsedInput);
+    const lessVariables = await generateLessVariables(parsedInput);
     const outputLessDir = join(LIB_DIR, "less");
     ensureDirSync(outputLessDir);
     writeFileSync(`${outputLessDir}/${outputFilename}.less`, lessVariables);

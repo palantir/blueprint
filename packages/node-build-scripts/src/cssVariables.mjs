@@ -8,7 +8,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import prettier from "prettier";
 
-import { COPYRIGHT_HEADER, DEFAULT_FLAG, USE_MATH_RULE } from "./constants.mjs";
+import { COPYRIGHT_HEADER, USE_MATH_RULE } from "./constants.mjs";
 import sassVariableParser from "./sass/sassVariableParser.mjs";
 
 /**
@@ -102,7 +102,7 @@ function printVariable(value, allVariables, outputType) {
  *
  * @param {ParsedVarsResult} parsedInput
  * @param {boolean} retainDefault whether to retain `!default` flags on variables
- * @returns {string} output Sass contents
+ * @returns {Promise<string>} output Sass contents
  */
 export function generateScssVariables(parsedInput, retainDefault) {
     const { parsedVars, varsInBlocks } = parsedInput;
@@ -133,7 +133,7 @@ export function generateScssVariables(parsedInput, retainDefault) {
  * Takes in variable values from compiled sass vars, converts them to Less and writes to an output file.
  *
  * @param {ParsedVarsResult} parsedInput
- * @returns {string} output Less contents
+ * @returns {Promise<string>} output Less contents
  */
 export function generateLessVariables(parsedInput) {
     const { parsedVars, varsInBlocks } = parsedInput;

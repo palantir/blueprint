@@ -15,7 +15,7 @@ const EXPECTED_DIR = resolve(FIXTURES_DIR, "expected");
 describe("generateScssVariables", () => {
     test("produces expected output", async () => {
         const parsedInput = await getParsedVars(INPUT_DIR, ["_variables.scss"]);
-        const actualVariables = generateScssVariables(parsedInput, true);
+        const actualVariables = await generateScssVariables(parsedInput, true);
         const expectedVariables = readFileSync(join(EXPECTED_DIR, "variables.scss"), { encoding: "utf8" });
         expect(actualVariables).toStrictEqual(expectedVariables);
     });
@@ -24,7 +24,7 @@ describe("generateScssVariables", () => {
 describe("generateLessVariables", () => {
     test("produces expected output", async () => {
         const parsedInput = await getParsedVars(INPUT_DIR, ["_variables.scss"]);
-        const actualVariables = generateLessVariables(parsedInput);
+        const actualVariables = await generateLessVariables(parsedInput);
         const expectedVariables = readFileSync(join(EXPECTED_DIR, "variables.less"), { encoding: "utf8" });
         expect(actualVariables).toStrictEqual(expectedVariables);
     });
