@@ -1976,9 +1976,9 @@
     "@types/node" "*"
 
 "@types/sinon@~10.0.13":
-  version "10.0.18"
-  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-10.0.18.tgz#659d2059c2206162e111dfaa2d8e9e9837c68212"
-  integrity sha512-OpQC9ug8BcnNxue2WF5aTruMaDRFn6NyfaE4DmAKOlQMn54b7CnCvDFV3wj5fk/HbSSTYmOYs2bTb5ShANjyQg==
+  version "10.0.19"
+  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-10.0.19.tgz#752b752bc40bb5af0bb1aec29bde49b139b91d35"
+  integrity sha512-MWZNGPSchIdDfb5FL+VFi4zHsHbNOTQEgjqFQk7HazXSXwUU9PAX3z9XBqb3AJGYr9YwrtCtaSMsT3brYsN/jQ==
   dependencies:
     "@types/sinonjs__fake-timers" "*"
 
