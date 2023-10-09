@@ -2,6 +2,7 @@
     "extends": "../src/tsconfig",
     "compilerOptions": {
         "declaration": false,
+        "importsNotUsedAsValues": "error",
         "module": "commonjs",
         "noEmit": true
     }
