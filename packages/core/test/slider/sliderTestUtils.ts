@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ReactWrapper } from "enzyme";
+import type { ReactWrapper } from "enzyme";
 
 import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons";
 

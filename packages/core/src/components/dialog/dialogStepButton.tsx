@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { ButtonSharedPropsAndAttributes } from "../button/buttonProps";
+import type { ButtonSharedPropsAndAttributes } from "../button/buttonProps";
 import { AnchorButton } from "../button/buttons";
 import { Tooltip, TooltipProps } from "../tooltip/tooltip";
 

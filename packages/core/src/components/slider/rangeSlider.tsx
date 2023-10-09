@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX, Intent } from "../../common";
 import * as Errors from "../../common/errors";
-import { HandleHtmlProps } from "./handleProps";
+import type { HandleHtmlProps } from "./handleProps";
 import { MultiSlider, SliderBaseProps } from "./multiSlider";
 
 export type NumberRange = [number, number];

@@ -15,11 +15,11 @@
  */
 
 import { Boundary, Modifier, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
-import * as React from "react";
-import { StrictModifier } from "react-popper";
+import type * as React from "react";
+import type { StrictModifier } from "react-popper";
 
 import { Position, Props } from "../../common";
-import { OverlayableProps } from "../overlay/overlay";
+import type { OverlayableProps } from "../overlay/overlay";
 
 export const PopoverPosition = {
     ...Position,

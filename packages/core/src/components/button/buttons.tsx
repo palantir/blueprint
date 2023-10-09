@@ -22,7 +22,7 @@ import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { mergeRefs } from "../../common/refs";
 import { Icon } from "../icon/icon";
 import { Spinner, SpinnerSize } from "../spinner/spinner";
-import { AnchorButtonProps, ButtonProps } from "./buttonProps";
+import type { AnchorButtonProps, ButtonProps } from "./buttonProps";
 
 /**
  * Button component.

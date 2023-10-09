@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Placement } from "@popperjs/core";
+import type { Placement } from "@popperjs/core";
 
 import { PopoverPosition } from "./popoverSharedProps";
 
