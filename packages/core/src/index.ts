@@ -34,4 +34,4 @@ export {
     hideHotkeysDialog,
     hideHotkeysDialogAfterDelay,
 } from "./legacy/hotkeysDialogLegacy";
-export { ContextMenuTargetLegacy, ContextMenuTargetLegacyComponent } from "./legacy/contextMenuTargetLegacy";
+export { ContextMenuTargetLegacy, type ContextMenuTargetLegacyComponent } from "./legacy/contextMenuTargetLegacy";

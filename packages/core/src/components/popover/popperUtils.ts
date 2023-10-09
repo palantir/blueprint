@@ -16,6 +16,8 @@
 
 import type { BasePlacement, Placement } from "@popperjs/core";
 
+export { placements as PopperPlacements } from "@popperjs/core";
+
 // Popper placement utils
 // ======================
 
