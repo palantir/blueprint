@@ -19,12 +19,15 @@ import * as React from "react";
 import { H5, Switch, SwitchCard, SwitchCardProps } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-type SwitchCardExampleState = Pick<SwitchCardProps, "compact" | "disabled">;
+import { PropCodeTooltip } from "../../common/propCodeTooltip";
+
+type SwitchCardExampleState = Pick<SwitchCardProps, "compact" | "disabled" | "showAsSelectedWhenChecked">;
 
 export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchCardExampleState> {
     public state: SwitchCardExampleState = {
         compact: false,
         disabled: false,
+        showAsSelectedWhenChecked: true,
     };
 
     public render() {
@@ -40,12 +43,24 @@ export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchC
     }
 
     private renderOptions() {
-        const { compact, disabled } = this.state;
+        const { compact, disabled, showAsSelectedWhenChecked } = this.state;
         return (
             <>
                 <H5>Props</H5>
                 <Switch checked={compact} label="Compact" onChange={this.toggleCompact} />
                 <Switch checked={disabled} label="Disabled" onChange={this.toggleDisabled} />
+                <PropCodeTooltip snippet={`showAsSelectedWhenChecked={${showAsSelectedWhenChecked}}`}>
+                    <Switch
+                        checked={showAsSelectedWhenChecked}
+                        labelElement={
+                            <span>
+                                Show as selected <br />
+                                when checked
+                            </span>
+                        }
+                        onChange={this.toggleShowAsSelected}
+                    />
+                </PropCodeTooltip>
             </>
         );
     }
@@ -53,4 +68,8 @@ export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchC
     private toggleCompact = handleBooleanChange(compact => this.setState({ compact }));
 
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
+
+    private toggleShowAsSelected = handleBooleanChange(showAsSelectedWhenChecked =>
+        this.setState({ showAsSelectedWhenChecked }),
+    );
 }

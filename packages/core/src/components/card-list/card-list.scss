@@ -26,6 +26,16 @@
       }
     }
 
+    &.#{$ns}-selected {
+      background-color: $light-gray4;
+      box-shadow: none;
+
+      .#{$ns}-dark & {
+        background-color: $dark-gray5;
+        box-shadow: none;
+      }
+    }
+
     &:not(:last-child) {
       border-bottom: $card-list-border-width solid $pt-divider-black-muted;
 
