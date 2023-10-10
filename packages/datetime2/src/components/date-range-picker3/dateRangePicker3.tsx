@@ -227,8 +227,13 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
             return;
         }
 
-        const locale = await loadDateFnsLocale(localeOrCode);
-        this.setState({ locale });
+        if (typeof localeOrCode === "string") {
+            const loader = this.props.dateFnsLocaleLoader ?? loadDateFnsLocale;
+            const locale = await loader(localeOrCode);
+            this.setState({ locale });
+        } else {
+            this.setState({ locale: localeOrCode });
+        }
     }
 
     private maybeRenderShortcuts() {

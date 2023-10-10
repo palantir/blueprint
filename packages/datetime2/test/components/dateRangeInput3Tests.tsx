@@ -36,8 +36,13 @@ import {
 import { DateFormatProps, DateRange, Classes as DatetimeClasses, Months, TimePrecision } from "@blueprintjs/datetime";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { DateRangeInput3, DateRangePicker3, Datetime2Classes, ReactDayPickerClasses } from "../../src";
-import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
+import {
+    DateRangeInput3,
+    DateRangeInput3Props,
+    DateRangePicker3,
+    Datetime2Classes,
+    ReactDayPickerClasses,
+} from "../../src";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 type NullableRange<T> = [T | null, T | null];
@@ -61,17 +66,13 @@ type InvalidDateTestFunction = (
 
 // Change the default for testability
 DateRangeInput3.defaultProps.popoverProps = { usePortal: false };
+(DateRangeInput3.defaultProps as DateRangeInput3Props).dateFnsLocaleLoader = loadDateFnsLocaleFake;
 
 const DATE_FORMAT = getDateFnsFormatter("M/d/yyyy");
 const DATETIME_FORMAT = getDateFnsFormatter("M/d/yyyy HH:mm:ss");
 
 describe("<DateRangeInput3>", () => {
     let containerElement: HTMLElement | undefined;
-    let loadDateFnsLocaleStub: sinon.SinonStub;
-
-    before(() => {
-        loadDateFnsLocaleStub = sinon.stub(DateFnsLocaleUtils, "loadDateFnsLocale").callsFake(loadDateFnsLocaleFake);
-    });
 
     beforeEach(() => {
         containerElement = document.createElement("div");
@@ -83,10 +84,6 @@ describe("<DateRangeInput3>", () => {
             ReactDOM.unmountComponentAtNode(containerElement);
             containerElement.remove();
         }
-    });
-
-    after(() => {
-        loadDateFnsLocaleStub.restore();
     });
 
     const START_DAY = 22;
