@@ -20,7 +20,9 @@ import * as React from "react";
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps } from "../../common/props";
 import { Card, CardProps } from "../card/card";
-import { ControlProps, Switch } from "../forms/controls";
+import type { CheckedControlProps, ControlProps } from "../forms/controlProps";
+import { Switch } from "../forms/controls";
+import { useCheckedControl } from "./useCheckedControl";
 
 /**
  * Subset of {@link Card} which can be used to adjust its behavior.
@@ -30,7 +32,7 @@ type SupportedCardProps = Omit<CardProps, "interactive" | "onChange">;
 /**
  * Subset of {@link ControlProps} which can be used to adjust its behavior.
  */
-type SupportedControlProps = Pick<ControlProps, "checked" | "defaultChecked" | "disabled" | "inputRef" | "onChange">;
+type SupportedControlProps = Pick<ControlProps, keyof CheckedControlProps | "disabled" | "inputRef">;
 
 export interface ControlCardProps extends SupportedCardProps, SupportedControlProps {
     /**
@@ -45,7 +47,9 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
     inputProps?: HTMLInputProps;
 
     /**
-     * Whether the selected styles should apply when checked
+     * Whether the component should use "selected" Card styling when checked.
+     *
+     * @default true
      */
     showAsSelectedWhenChecked?: boolean;
 }
@@ -58,36 +62,25 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
 
 export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, ref) => {
     const {
-        checked: checkedProp,
+        checked: _checked,
         children: labelContent,
         className,
         controlKind,
-        defaultChecked,
+        defaultChecked: _defaultChecked,
         disabled,
         inputProps,
         inputRef,
-        onChange: onChangeProp,
+        onChange: _onChange,
         showAsSelectedWhenChecked,
         ...cardProps
     } = props;
-    const [checked, setChecked] = React.useState(() => defaultChecked ?? false);
-    React.useEffect(() => {
-        if (checkedProp !== undefined) {
-            setChecked(checkedProp);
-        }
-    }, [checkedProp]);
-    const onChange = React.useCallback<React.FormEventHandler<HTMLInputElement>>(
-        e => {
-            setChecked(c => !c);
-            onChangeProp?.(e);
-        },
-        [onChangeProp],
-    );
+
+    const { checked, onChange } = useCheckedControl(props);
+
     // use a container element to achieve a good flex layout
     const labelElement = <div className={Classes.CONTROL_CARD_LABEL}>{labelContent}</div>;
     const controlProps: ControlProps = {
         checked,
-        defaultChecked,
         disabled,
         inputRef,
         labelElement,
@@ -98,6 +91,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
         [Classes.SWITCH_CONTROL_CARD]: controlKind === "switch",
         [Classes.SELECTED]: showAsSelectedWhenChecked && checked,
     });
+
     return (
         <Card interactive={!disabled} className={classes} ref={ref} {...cardProps}>
             {controlKind === "switch" ? (
@@ -108,5 +102,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
         </Card>
     );
 });
-ControlCard.defaultProps = {};
+ControlCard.defaultProps = {
+    showAsSelectedWhenChecked: true,
+};
 ControlCard.displayName = `${DISPLAYNAME_PREFIX}.ControlCard`;

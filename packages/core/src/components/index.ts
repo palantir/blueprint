@@ -47,15 +47,8 @@ export { Divider, type DividerProps } from "./divider/divider";
 export { Drawer, type DrawerProps, DrawerSize } from "./drawer/drawer";
 export { EditableText, type EditableTextProps } from "./editable-text/editableText";
 export { ControlGroup, type ControlGroupProps } from "./forms/controlGroup";
-export {
-    Checkbox,
-    type CheckboxProps,
-    type ControlProps,
-    Radio,
-    type RadioProps,
-    Switch,
-    type SwitchProps,
-} from "./forms/controls";
+export { Checkbox, type CheckboxProps, Radio, type RadioProps, Switch, type SwitchProps } from "./forms/controls";
+export type { ControlProps } from "./forms/controlProps";
 export { FileInput, type FileInputProps } from "./forms/fileInput";
 export { FormGroup, type FormGroupProps } from "./forms/formGroup";
 export { InputGroup, type InputGroupProps } from "./forms/inputGroup";
