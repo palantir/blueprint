@@ -36,7 +36,7 @@ import { assertDatesEqual } from "@blueprintjs/test-commons";
 import { Classes } from "../../src/classes";
 import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
 import { DatePicker3, DatePicker3Props } from "../../src/components/date-picker3/datePicker3";
-import { DatePicker3State } from "../../src/components/date-picker3/datePicker3State";
+import type { DatePicker3State } from "../../src/components/date-picker3/datePicker3State";
 import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 

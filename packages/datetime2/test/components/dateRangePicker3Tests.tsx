@@ -38,7 +38,7 @@ import {
 
 import { DateRangePicker3, DateRangePicker3Props, Datetime2Classes, ReactDayPickerClasses } from "../../src";
 import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
-import { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
+import type { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
