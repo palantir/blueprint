@@ -69,12 +69,11 @@ export interface CardProps extends Props, HTMLDivProps, React.RefAttributes<HTML
  */
 export const Card: React.FC<CardProps> = React.forwardRef((props, ref) => {
     const { className, elevation, interactive, selected, compact, ...htmlProps } = props;
-    const classes = classNames(
-        Classes.CARD,
-        { [Classes.INTERACTIVE]: interactive, [Classes.COMPACT]: compact, [Classes.SELECTED]: selected },
-        Classes.elevationClass(elevation!),
-        className,
-    );
+    const classes = classNames(className, Classes.CARD, Classes.elevationClass(elevation!), {
+        [Classes.INTERACTIVE]: interactive,
+        [Classes.COMPACT]: compact,
+        [Classes.SELECTED]: selected,
+    });
     return <div className={classes} ref={ref} {...htmlProps} />;
 });
 Card.defaultProps = {

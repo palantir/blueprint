@@ -14,6 +14,9 @@ There are a few supported form controls:
 The children of a control card will be used as the `labelElement` of the form control. Users may click anywhere
 inside the card to toggle the control state.
 
+By default, a "checked" control card will be displayed with the same appearance as a "selected" card. This behavior
+may be toggled with the `showAsSelectedWhenChecked` prop.
+
 @## SwitchCard
 
 Card with an embedded [**Switch**](#core/components/switch) control.

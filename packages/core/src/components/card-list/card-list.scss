@@ -32,6 +32,7 @@
 
       .#{$ns}-dark & {
         background-color: $dark-gray5;
+        box-shadow: none;
       }
     }
 
