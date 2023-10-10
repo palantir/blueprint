@@ -39,7 +39,7 @@ import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { Region, Regions } from "../src/regions";
-import { TableState } from "../src/tableState";
+import type { TableState } from "../src/tableState";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createStringOfLength, createTableOfSize } from "./mocks/table";

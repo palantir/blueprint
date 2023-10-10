@@ -17,7 +17,7 @@
 /** @fileoverview test utils for react-day-picker v7 */
 
 import { assert } from "chai";
-import { ReactWrapper } from "enzyme";
+import type { ReactWrapper } from "enzyme";
 
 import { Classes } from "../../src/common";
 

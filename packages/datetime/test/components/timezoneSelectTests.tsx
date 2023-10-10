@@ -26,7 +26,7 @@ import { TimezoneSelect, TimezoneSelectProps } from "../../src";
 import { getCurrentTimezone } from "../../src/common/getTimezone";
 import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../src/common/timezoneNameUtils";
-import { TimezoneWithNames } from "../../src/common/timezoneTypes";
+import type { TimezoneWithNames } from "../../src/common/timezoneTypes";
 
 const LOS_ANGELES_TZ = "America/Los_Angeles";
 let CURRENT_TZ = getCurrentTimezone();
