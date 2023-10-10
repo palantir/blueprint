@@ -54,9 +54,11 @@ export default {
                             legacyDecorator: true,
                             react: {
                                 refresh: false,
-                                useBuiltins: true,
                             },
                         },
+                    },
+                    module: {
+                        type: "commonjs",
                     },
                 },
             },
