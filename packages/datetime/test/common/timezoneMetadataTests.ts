@@ -19,7 +19,7 @@ import { expect } from "chai";
 import { UTC_TIME } from "../../src/common/timezoneItems";
 import { getTimezoneMetadata } from "../../src/common/timezoneMetadata";
 import { lookupTimezoneOffset } from "../../src/common/timezoneOffsetUtils";
-import { TimezoneWithoutOffset } from "../../src/common/timezoneTypes";
+import type { TimezoneWithoutOffset } from "../../src/common/timezoneTypes";
 
 const LONDON_TZ_IANA = "Europe/London";
 const NEW_YORK_TZ_IANA = "America/New_York";

@@ -26,17 +26,17 @@ export { Intent } from "./intent";
 export { KeyCodes as Keys } from "./keyCodes";
 export { Position } from "./position";
 export {
-    ActionProps,
-    ControlledProps,
-    IntentProps,
-    LinkProps,
-    OptionProps,
-    Props,
+    type ActionProps,
+    type ControlledProps,
+    type IntentProps,
+    type LinkProps,
+    type OptionProps,
+    type Props,
     removeNonHTMLProps,
     DISPLAYNAME_PREFIX,
-    HTMLDivProps,
-    HTMLInputProps,
-    MaybeElement,
+    type HTMLDivProps,
+    type HTMLInputProps,
+    type MaybeElement,
 } from "./props";
 export { getRef, isRefCallback, isRefObject, mergeRefs, refHandler, setRef } from "./refs";
 

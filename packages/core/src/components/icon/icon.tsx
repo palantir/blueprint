@@ -30,7 +30,7 @@ import {
 import { Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props, removeNonHTMLProps } from "../../common";
 
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
-export { IconName, IconSize };
+export { type IconName, IconSize };
 
 export interface IconOwnProps {
     /**

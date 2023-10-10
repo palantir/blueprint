@@ -32,7 +32,7 @@ import * as Classes from "../src/common/classes";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
-import { MenuContext } from "../src/interactions/menus/menuContext";
+import type { MenuContext } from "../src/interactions/menus/menuContext";
 import { Region, Regions } from "../src/regions";
 import { TableBody, TableBodyProps } from "../src/tableBody";
 import { cellClassNames } from "../src/tableBodyCells";

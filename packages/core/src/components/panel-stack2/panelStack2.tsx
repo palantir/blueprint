@@ -19,7 +19,7 @@ import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
-import { Panel } from "./panelTypes";
+import type { Panel } from "./panelTypes";
 import { PanelView2 } from "./panelView2";
 
 /**

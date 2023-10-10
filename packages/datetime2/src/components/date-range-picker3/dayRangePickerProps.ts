@@ -16,7 +16,7 @@
 
 import type { DayPickerRangeProps } from "react-day-picker";
 
-import { Boundary } from "@blueprintjs/core";
+import type { Boundary } from "@blueprintjs/core";
 import type { DateRange, MonthAndYear } from "@blueprintjs/datetime";
 
 import type { DateRangePicker3Props } from "./dateRangePicker3Props";

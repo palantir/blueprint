@@ -35,8 +35,8 @@ import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 import { DatePicker3Provider } from "./datePicker3Context";
-import { DatePicker3Props } from "./datePicker3Props";
-import { DatePicker3State } from "./datePicker3State";
+import type { DatePicker3Props } from "./datePicker3Props";
+import type { DatePicker3State } from "./datePicker3State";
 
 export { DatePicker3Props };
 
@@ -184,8 +184,13 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
             return;
         }
 
-        const locale = await loadDateFnsLocale(localeOrCode);
-        this.setState({ locale });
+        if (typeof localeOrCode === "string") {
+            const loader = this.props.dateFnsLocaleLoader ?? loadDateFnsLocale;
+            const locale = await loader(localeOrCode);
+            this.setState({ locale });
+        } else {
+            this.setState({ locale: localeOrCode });
+        }
     }
 
     /**

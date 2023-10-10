@@ -1,4 +1,4 @@
-import { DelimiterCase } from "./delimiter-case";
+import type { DelimiterCase } from "./delimiter-case";
 
 /**
 Convert a string literal to snake-case.

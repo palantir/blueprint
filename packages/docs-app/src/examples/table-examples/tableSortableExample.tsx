@@ -42,7 +42,10 @@ export interface SortableColumn {
 }
 
 abstract class AbstractSortableColumn implements SortableColumn {
-    constructor(protected name: string, protected index: number) {}
+    constructor(
+        protected name: string,
+        protected index: number,
+    ) {}
 
     public getColumn(getCellData: CellLookup, sortColumn: SortCallback) {
         const cellRenderer = (rowIndex: number, columnIndex: number) => (

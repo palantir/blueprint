@@ -20,8 +20,8 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { Props } from "../../common/props";
-import { IPanel } from "./panelProps";
+import type { Props } from "../../common/props";
+import type { IPanel } from "./panelProps";
 import { PanelView } from "./panelView";
 
 /* eslint-disable deprecation/deprecation */

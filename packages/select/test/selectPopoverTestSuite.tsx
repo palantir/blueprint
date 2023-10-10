@@ -20,7 +20,7 @@ import * as sinon from "sinon";
 
 import { Classes } from "@blueprintjs/core";
 
-import { ListItemsProps, SelectPopoverProps } from "../src";
+import type { ListItemsProps, SelectPopoverProps } from "../src";
 import { areFilmsEqual, Film, filterFilm, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 
 type EnzymeLocator<P, S> = (wrapper: ReactWrapper<P, S>) => ReactWrapper;

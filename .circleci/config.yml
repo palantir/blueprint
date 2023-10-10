@@ -5,10 +5,10 @@ orbs:
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:18.17
+    - image: cimg/node:18.18
 
   - &docker-node-browsers-image
-    - image: cimg/node:18.17-browsers
+    - image: cimg/node:18.18-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -240,14 +240,7 @@ workflows:
       - deploy-preview:
           requires: [dist]
       - deploy-npm:
-          requires:
-            [
-              dist,
-              lint,
-              test-node-libs,
-              test-react-16,
-              test-iso-react-16,
-            ]
+          requires: [dist, lint, test-node-libs, test-react-16, test-iso-react-16]
           filters:
             branches:
               only:

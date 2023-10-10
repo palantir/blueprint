@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Placement } from "@popperjs/core";
+import type { Placement } from "@popperjs/core";
 
 import { Position } from "../../common/position";
-import { PopoverPosition } from "./popoverSharedProps";
+import type { PopoverPosition } from "./popoverSharedProps";
 
 /**
  * Convert a position to a placement.

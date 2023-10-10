@@ -21,7 +21,7 @@ import { AbstractComponent, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
-import { Grid } from "../common/grid";
+import type { Grid } from "../common/grid";
 
 export enum QuadrantType {
     /**

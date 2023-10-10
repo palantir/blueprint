@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import type * as React from "react";
 
 export type AnyRect = Rect | DOMRect;
 
@@ -81,7 +81,12 @@ export class Rect {
         }
     }
 
-    public constructor(public left: number, public top: number, public width: number, public height: number) {}
+    public constructor(
+        public left: number,
+        public top: number,
+        public width: number,
+        public height: number,
+    ) {}
 
     public subtractOrigin(anyRect: AnyRect) {
         return Rect.subtractOrigin(this, anyRect);

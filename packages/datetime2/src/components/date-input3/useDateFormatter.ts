@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { Locale } from "date-fns";
+import type { Locale } from "date-fns";
 import * as React from "react";
 
 import { DateUtils } from "@blueprintjs/datetime";
 
 import { getDateFnsFormatter, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
-import { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
+import type { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
 
 /**
  * Create a date string parser function based on a given locale.

@@ -24,6 +24,7 @@ import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
 import {
+    type DateFormatProps,
     Months,
     TimePrecision,
     TimeUnit,
@@ -36,7 +37,6 @@ import { TIMEZONE_ITEMS } from "@blueprintjs/datetime/lib/esm/common/timezoneIte
 
 import { Datetime2Classes as Classes, DateInput3, DateInput3Props, DatePicker3 } from "../../src";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
-import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
@@ -45,7 +45,8 @@ const TOKYO_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Tokyo")!;
 
 const VALUE = "2021-11-29T10:30:00z";
 
-const DEFAULT_PROPS = {
+const DEFAULT_PROPS: DateInput3Props & DateFormatProps = {
+    dateFnsLocaleLoader: loadDateFnsLocaleFake,
     defaultTimezone: TimezoneUtils.UTC_TIME.ianaCode,
     formatDate: (date: Date | null | undefined, localeCode?: string) => {
         if (date == null) {
@@ -75,11 +76,6 @@ const DEFAULT_PROPS = {
 describe("<DateInput3>", () => {
     const onChange = sinon.spy();
     let testsContainerElement: HTMLElement | undefined;
-    let loadDateFnsLocaleStub: sinon.SinonStub;
-
-    before(() => {
-        loadDateFnsLocaleStub = sinon.stub(DateFnsLocaleUtils, "loadDateFnsLocale").callsFake(loadDateFnsLocaleFake);
-    });
 
     beforeEach(() => {
         testsContainerElement = document.createElement("div");
@@ -89,10 +85,6 @@ describe("<DateInput3>", () => {
     afterEach(() => {
         testsContainerElement?.remove();
         onChange.resetHistory();
-    });
-
-    after(() => {
-        loadDateFnsLocaleStub.restore();
     });
 
     describe("basic rendering", () => {
@@ -451,7 +443,10 @@ describe("<DateInput3>", () => {
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), rangeMessage);
 
             assert.isTrue(onError.calledOnce);
-            assert.strictEqual(DEFAULT_PROPS.formatDate(onError.args[0][0]), DEFAULT_PROPS.formatDate(new Date(value)));
+            assert.strictEqual(
+                DEFAULT_PROPS.formatDate!(onError.args[0][0]),
+                DEFAULT_PROPS.formatDate!(new Date(value)),
+            );
         });
 
         it("typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {

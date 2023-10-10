@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-import { DateRangeInputProps } from "@blueprintjs/datetime";
+import type { DateRangeInputProps } from "@blueprintjs/datetime";
 
-import { DateRangePicker3Props } from "../date-range-picker3/dateRangePicker3Props";
+import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
+import type { ReactDayPickerRangeProps } from "../../common/reactDayPickerProps";
 
 /** Props shared between DateRangeInput v1 and v3 */
 type DateRangeInputSharedProps = Omit<DateRangeInputProps, "dayPickerProps" | "locale" | "localeUtils" | "modifiers">;
 
-export type DateRangeInput3Props = DateRangeInputSharedProps & Pick<DateRangePicker3Props, "dayPickerProps" | "locale">;
+export type DateRangeInput3Props = DateRangeInputSharedProps & ReactDayPickerRangeProps & DateFnsLocaleProps;
 
 export type DateRangeInput3DefaultProps = Required<
     Pick<

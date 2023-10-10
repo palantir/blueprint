@@ -40,7 +40,7 @@ import {
     handleValueChange,
 } from "@blueprintjs/docs-theme";
 
-import { BlueprintExampleData } from "../../tags/types";
+import type { BlueprintExampleData } from "../../tags/types";
 
 export interface MultistepDialogExampleState {
     autoFocus: boolean;

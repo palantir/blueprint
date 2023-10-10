@@ -55,7 +55,7 @@ import {
 } from "../../common/timezoneUtils";
 import { DatePicker } from "../date-picker/datePicker";
 import { DatePickerUtils } from "../date-picker/datePickerUtils";
-import { DatePickerShortcut } from "../shortcuts/shortcuts";
+import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
 export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {

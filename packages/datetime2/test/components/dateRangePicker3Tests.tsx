@@ -37,22 +37,19 @@ import {
 } from "@blueprintjs/datetime";
 
 import { DateRangePicker3, DateRangePicker3Props, Datetime2Classes, ReactDayPickerClasses } from "../../src";
-import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
-import { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
+import type { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
-describe("<DatePicker3>", () => {
+// Change the default for testability
+(DateRangePicker3.defaultProps as DateRangePicker3Props).dateFnsLocaleLoader = loadDateFnsLocaleFake;
+
+describe("<DateRangePicker3>", () => {
     let testsContainerElement: HTMLElement;
     let drpWrapper: ReactWrapper<DateRangePicker3Props, DateRangePicker3State>;
 
     let onChangeSpy: sinon.SinonSpy;
     let onHoverChangeSpy: sinon.SinonSpy;
-    let loadDateFnsLocaleStub: sinon.SinonStub;
-
-    before(() => {
-        loadDateFnsLocaleStub = sinon.stub(DateFnsLocaleUtils, "loadDateFnsLocale").callsFake(loadDateFnsLocaleFake);
-    });
 
     beforeEach(() => {
         testsContainerElement = document.createElement("div");
@@ -63,10 +60,6 @@ describe("<DatePicker3>", () => {
         drpWrapper?.unmount();
         drpWrapper?.detach();
         testsContainerElement.remove();
-    });
-
-    after(() => {
-        loadDateFnsLocaleStub.restore();
     });
 
     it("renders its template", () => {

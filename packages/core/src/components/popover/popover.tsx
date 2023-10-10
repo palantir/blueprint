@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { State as PopperState, PositioningStrategy } from "@popperjs/core";
+import type { State as PopperState, PositioningStrategy } from "@popperjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
@@ -28,14 +28,14 @@ import { Tooltip } from "../tooltip/tooltip";
 import { matchReferenceWidthModifier } from "./customModifiers";
 import { POPOVER_ARROW_SVG_SIZE, PopoverArrow } from "./popoverArrow";
 import { positionToPlacement } from "./popoverPlacementUtils";
-import {
+import type {
     DefaultPopoverTargetHTMLProps,
     PopoverClickTargetHandlers,
     PopoverHoverTargetHandlers,
     PopoverSharedProps,
 } from "./popoverSharedProps";
 import { getBasePlacement, getTransformOrigin } from "./popperUtils";
-import { PopupKind } from "./popupKind";
+import type { PopupKind } from "./popupKind";
 
 export const PopoverInteractionKind = {
     CLICK: "click" as "click",
