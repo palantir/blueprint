@@ -49,7 +49,7 @@ ruleTester.run("no-deprecated-type-references", noDeprecatedTypeReferencesRule, 
                 },
             ],
             output: dedent`
-                import type { Props } from "@blueprintjs/core";
+                import { Props } from "@blueprintjs/core";
 
                 export interface MyInterface extends Props {
                     foo: string;
