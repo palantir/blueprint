@@ -50,6 +50,8 @@ export default {
                             syntax: "typescript",
                             tsx: true,
                         },
+                        // this is important for istanbul comment flags to work correctly
+                        preserveAllComments: true,
                         transform: {
                             legacyDecorator: true,
                             react: {
