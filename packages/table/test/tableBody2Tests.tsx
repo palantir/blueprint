@@ -25,9 +25,9 @@ import * as Classes from "../src/common/classes";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
-import { MenuContext } from "../src/interactions/menus/menuContext";
+import type { MenuContext } from "../src/interactions/menus/menuContext";
 import { Region, Regions } from "../src/regions";
-import { TableBodyProps } from "../src/tableBody";
+import type { TableBodyProps } from "../src/tableBody";
 import { TableBody2 } from "../src/tableBody2";
 import { cellClassNames } from "../src/tableBodyCells";
 

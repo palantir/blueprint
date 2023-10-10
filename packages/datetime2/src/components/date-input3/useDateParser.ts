@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Locale } from "date-fns";
+import type { Locale } from "date-fns";
 import * as React from "react";
 
 import { getDateFnsParser, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
-import { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
+import type { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
 
 const INVALID_DATE = new Date(undefined!);
 

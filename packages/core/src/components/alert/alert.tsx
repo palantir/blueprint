@@ -26,7 +26,7 @@ import {
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
 import { Icon, IconName } from "../icon/icon";
-import { OverlayLifecycleProps } from "../overlay/overlay";
+import type { OverlayLifecycleProps } from "../overlay/overlay";
 
 export interface AlertProps extends OverlayLifecycleProps, Props {
     /**

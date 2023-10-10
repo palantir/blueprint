@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Tag } from "@blueprintjs/core";
-import { DateRange } from "@blueprintjs/datetime";
+import type { DateRange } from "@blueprintjs/datetime";
 import { ArrowRight } from "@blueprintjs/icons";
 
 import { FormattedDateTag } from "./formattedDateTag";

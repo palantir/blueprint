@@ -113,6 +113,7 @@ export function throttleReactEventCallback<E extends React.SyntheticEvent = Reac
  * Throttle a method by wrapping it in a `requestAnimationFrame` call. Returns
  * the throttled function.
  */
+/* istanbul ignore next */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function throttle<T extends Function>(method: T): T {
     return throttleImpl(method);

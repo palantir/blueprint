@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { BasePlacement, Placement } from "@popperjs/core";
+import type { BasePlacement, Placement } from "@popperjs/core";
+
+export { placements as PopperPlacements } from "@popperjs/core";
 
 // Popper placement utils
 // ======================

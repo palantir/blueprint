@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-export { Alert, AlertProps } from "./alert/alert";
-export { Breadcrumb, BreadcrumbProps } from "./breadcrumbs/breadcrumb";
-export { Breadcrumbs, BreadcrumbsProps } from "./breadcrumbs/breadcrumbs";
+export { Alert, type AlertProps } from "./alert/alert";
+export { Breadcrumb, type BreadcrumbProps } from "./breadcrumbs/breadcrumb";
+export { Breadcrumbs, type BreadcrumbsProps } from "./breadcrumbs/breadcrumbs";
 export { AnchorButton, Button } from "./button/buttons";
 export type {
     AnchorButtonProps,
@@ -24,60 +24,68 @@ export type {
     ButtonSharedProps,
     ButtonSharedPropsAndAttributes,
 } from "./button/buttonProps";
-export { ButtonGroup, ButtonGroupProps } from "./button/buttonGroup";
-export { Callout, CalloutProps } from "./callout/callout";
-export { Card, CardProps } from "./card/card";
-export { CardList, CardListProps } from "./card-list/cardList";
-export { Collapse, CollapseProps } from "./collapse/collapse";
+export { ButtonGroup, type ButtonGroupProps } from "./button/buttonGroup";
+export { Callout, type CalloutProps } from "./callout/callout";
+export { Card, type CardProps } from "./card/card";
+export { CardList, type CardListProps } from "./card-list/cardList";
+export { Collapse, type CollapseProps } from "./collapse/collapse";
 export {
     ContextMenu,
-    ContextMenuProps,
-    ContextMenuChildrenProps,
-    ContextMenuContentProps,
+    type ContextMenuProps,
+    type ContextMenuChildrenProps,
+    type ContextMenuContentProps,
 } from "./context-menu/contextMenu";
-export { ContextMenuPopover, ContextMenuPopoverProps } from "./context-menu/contextMenuPopover";
+export { ContextMenuPopover, type ContextMenuPopoverProps } from "./context-menu/contextMenuPopover";
 export { showContextMenu, hideContextMenu } from "./context-menu/contextMenuSingleton";
-export { Dialog, DialogProps } from "./dialog/dialog";
-export { DialogBody, DialogBodyProps } from "./dialog/dialogBody";
-export { DialogFooter, DialogFooterProps } from "./dialog/dialogFooter";
+export { Dialog, type DialogProps } from "./dialog/dialog";
+export { DialogBody, type DialogBodyProps } from "./dialog/dialogBody";
+export { DialogFooter, type DialogFooterProps } from "./dialog/dialogFooter";
 export type { DialogStepButtonProps } from "./dialog/dialogStepButton";
-export { DialogStep, DialogStepId, DialogStepProps } from "./dialog/dialogStep";
-export { MultistepDialog, MultistepDialogNavPosition, MultistepDialogProps } from "./dialog/multistepDialog";
-export { Divider, DividerProps } from "./divider/divider";
-export { Drawer, DrawerProps, DrawerSize } from "./drawer/drawer";
-export { EditableText, EditableTextProps } from "./editable-text/editableText";
-export { ControlGroup, ControlGroupProps } from "./forms/controlGroup";
-export { Checkbox, CheckboxProps, ControlProps, Radio, RadioProps, Switch, SwitchProps } from "./forms/controls";
-export { FileInput, FileInputProps } from "./forms/fileInput";
-export { FormGroup, FormGroupProps } from "./forms/formGroup";
-export { InputGroup, InputGroupProps } from "./forms/inputGroup";
-export { NumericInput, NumericInputProps } from "./forms/numericInput";
-export { RadioGroup, RadioGroupProps } from "./forms/radioGroup";
-export { TextArea, TextAreaProps } from "./forms/textArea";
-export { Blockquote, Code, H1, H2, H3, H4, H5, H6, Label, OL, Pre, UL } from "./html/html";
-export { HTMLSelect, HTMLSelectIconName, HTMLSelectProps } from "./html-select/htmlSelect";
-export { HTMLTable, HTMLTableProps } from "./html-table/htmlTable";
-export * from "./hotkeys";
-export { DefaultIconProps, Icon, IconComponent, IconName, IconProps, IconSize } from "./icon/icon";
-export { Menu, MenuProps } from "./menu/menu";
-export { MenuDivider, MenuDividerProps } from "./menu/menuDivider";
-export { MenuItem, MenuItemProps } from "./menu/menuItem";
-export { Navbar, NavbarProps } from "./navbar/navbar";
-export { NavbarDivider, NavbarDividerProps } from "./navbar/navbarDivider";
-export { NavbarGroup, NavbarGroupProps } from "./navbar/navbarGroup";
-export { NavbarHeading, NavbarHeadingProps } from "./navbar/navbarHeading";
-export { NonIdealState, NonIdealStateProps, NonIdealStateIconSize } from "./non-ideal-state/nonIdealState";
-export { OverflowList, OverflowListProps } from "./overflow-list/overflowList";
-export { Overlay, OverlayLifecycleProps, OverlayProps, OverlayableProps } from "./overlay/overlay";
-export { Text, TextProps } from "./text/text";
-// eslint-disable-next-line deprecation/deprecation
-export { PanelStack, PanelStackProps } from "./panel-stack/panelStack";
-// eslint-disable-next-line deprecation/deprecation
-export { IPanel, IPanelProps } from "./panel-stack/panelProps";
-export { PanelStack2, PanelStack2Props } from "./panel-stack2/panelStack2";
-export { Panel, PanelProps } from "./panel-stack2/panelTypes";
-export { PopoverProps, Popover, PopoverInteractionKind } from "./popover/popover";
+export { DialogStep, type DialogStepId, type DialogStepProps } from "./dialog/dialogStep";
+export { MultistepDialog, type MultistepDialogNavPosition, type MultistepDialogProps } from "./dialog/multistepDialog";
+export { Divider, type DividerProps } from "./divider/divider";
+export { Drawer, type DrawerProps, DrawerSize } from "./drawer/drawer";
+export { EditableText, type EditableTextProps } from "./editable-text/editableText";
+export { ControlGroup, type ControlGroupProps } from "./forms/controlGroup";
 export {
+    Checkbox,
+    type CheckboxProps,
+    type ControlProps,
+    Radio,
+    type RadioProps,
+    Switch,
+    type SwitchProps,
+} from "./forms/controls";
+export { FileInput, type FileInputProps } from "./forms/fileInput";
+export { FormGroup, type FormGroupProps } from "./forms/formGroup";
+export { InputGroup, type InputGroupProps } from "./forms/inputGroup";
+export { NumericInput, type NumericInputProps } from "./forms/numericInput";
+export { RadioGroup, type RadioGroupProps } from "./forms/radioGroup";
+export { TextArea, type TextAreaProps } from "./forms/textArea";
+export { Blockquote, Code, H1, H2, H3, H4, H5, H6, Label, OL, Pre, UL } from "./html/html";
+export { HTMLSelect, type HTMLSelectIconName, type HTMLSelectProps } from "./html-select/htmlSelect";
+export { HTMLTable, type HTMLTableProps } from "./html-table/htmlTable";
+export * from "./hotkeys";
+export { type DefaultIconProps, Icon, type IconComponent, type IconName, type IconProps, IconSize } from "./icon/icon";
+export { Menu, type MenuProps } from "./menu/menu";
+export { MenuDivider, type MenuDividerProps } from "./menu/menuDivider";
+export { MenuItem, type MenuItemProps } from "./menu/menuItem";
+export { Navbar, type NavbarProps } from "./navbar/navbar";
+export { NavbarDivider, type NavbarDividerProps } from "./navbar/navbarDivider";
+export { NavbarGroup, type NavbarGroupProps } from "./navbar/navbarGroup";
+export { NavbarHeading, type NavbarHeadingProps } from "./navbar/navbarHeading";
+export { NonIdealState, type NonIdealStateProps, NonIdealStateIconSize } from "./non-ideal-state/nonIdealState";
+export { OverflowList, type OverflowListProps } from "./overflow-list/overflowList";
+export { Overlay, type OverlayLifecycleProps, type OverlayProps, type OverlayableProps } from "./overlay/overlay";
+export { Text, type TextProps } from "./text/text";
+// eslint-disable-next-line deprecation/deprecation
+export { PanelStack, type PanelStackProps } from "./panel-stack/panelStack";
+// eslint-disable-next-line deprecation/deprecation
+export type { IPanel, IPanelProps } from "./panel-stack/panelProps";
+export { PanelStack2, type PanelStack2Props } from "./panel-stack2/panelStack2";
+export type { Panel, PanelProps } from "./panel-stack2/panelTypes";
+export { type PopoverProps, Popover, PopoverInteractionKind } from "./popover/popover";
+export type {
     DefaultPopoverTargetHTMLProps,
     PopoverPosition,
     PopoverSharedProps,
@@ -88,31 +96,31 @@ export {
     PopperCustomModifier,
     PopperModifierOverrides,
     Placement,
-    PopperPlacements,
     StrictModifierNames,
 } from "./popover/popoverSharedProps";
+export { PopperPlacements } from "./popover/popperUtils";
 export { PopupKind } from "./popover/popupKind";
-export { Portal, PortalProps, PortalLegacyContext } from "./portal/portal";
-export { ProgressBar, ProgressBarProps } from "./progress-bar/progressBar";
-export { ResizeEntry, ResizeSensor, ResizeSensorProps } from "./resize-sensor/resizeSensor";
-export { HandleHtmlProps, HandleInteractionKind, HandleProps, HandleType } from "./slider/handleProps";
-export { MultiSlider, MultiSliderProps, SliderBaseProps } from "./slider/multiSlider";
-export { NumberRange, RangeSlider, RangeSliderProps } from "./slider/rangeSlider";
-export { Section, SectionElevation, SectionProps } from "./section/section";
-export { SectionCard, SectionCardProps } from "./section/sectionCard";
-export { Slider, SliderProps } from "./slider/slider";
-export { Spinner, SpinnerProps, SpinnerSize } from "./spinner/spinner";
-export { SwitchCard, SwitchCardProps } from "./control-card/switchCard";
-export { Tab, TabId, TabProps } from "./tabs/tab";
+export { Portal, type PortalProps, type PortalLegacyContext } from "./portal/portal";
+export { ProgressBar, type ProgressBarProps } from "./progress-bar/progressBar";
+export { type ResizeEntry, ResizeSensor, type ResizeSensorProps } from "./resize-sensor/resizeSensor";
+export { type HandleHtmlProps, HandleInteractionKind, type HandleProps, HandleType } from "./slider/handleProps";
+export { MultiSlider, type MultiSliderProps, type SliderBaseProps } from "./slider/multiSlider";
+export { type NumberRange, RangeSlider, type RangeSliderProps } from "./slider/rangeSlider";
+export { Section, type SectionElevation, type SectionProps } from "./section/section";
+export { SectionCard, type SectionCardProps } from "./section/sectionCard";
+export { Slider, type SliderProps } from "./slider/slider";
+export { Spinner, type SpinnerProps, SpinnerSize } from "./spinner/spinner";
+export { SwitchCard, type SwitchCardProps } from "./control-card/switchCard";
+export { Tab, type TabId, type TabProps } from "./tabs/tab";
 // eslint-disable-next-line deprecation/deprecation
-export { Tabs, TabsProps, TabsExpander, Expander } from "./tabs/tabs";
-export { Tag, TagProps } from "./tag/tag";
-export { TagInput, TagInputProps, TagInputAddMethod } from "./tag-input/tagInput";
+export { Tabs, type TabsProps, TabsExpander, Expander } from "./tabs/tabs";
+export { Tag, type TagProps } from "./tag/tag";
+export { TagInput, type TagInputProps, type TagInputAddMethod } from "./tag-input/tagInput";
 export { OverlayToaster } from "./toast/overlayToaster";
 export type { OverlayToasterProps, ToasterPosition } from "./toast/overlayToasterProps";
-export { Toast, ToastProps } from "./toast/toast";
-export { Toaster, ToastOptions } from "./toast/toaster";
-export { TooltipProps, Tooltip } from "./tooltip/tooltip";
-export { Tree, TreeProps } from "./tree/tree";
-export { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";
-export { TreeNode, TreeNodeProps } from "./tree/treeNode";
+export { Toast, type ToastProps } from "./toast/toast";
+export { Toaster, type ToastOptions } from "./toast/toaster";
+export { type TooltipProps, Tooltip } from "./tooltip/tooltip";
+export { Tree, type TreeProps } from "./tree/tree";
+export type { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";
+export { TreeNode, type TreeNodeProps } from "./tree/treeNode";

@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Classes, FormGroup, H5, Switch } from "@blueprintjs/core";
-import { DateRange, TimePrecision } from "@blueprintjs/datetime";
+import type { DateRange, TimePrecision } from "@blueprintjs/datetime";
 import { DateRangePicker3 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 

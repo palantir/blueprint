@@ -6,6 +6,7 @@
         "esModuleInterop": true,
         "experimentalDecorators": true,
         "importHelpers": true,
+        "importsNotUsedAsValues": "error",
         "jsx": "react",
         "lib": ["dom", "dom.iterable", "es5", "es2015.collection", "es2015.iterable"],
         "module": "es2020",

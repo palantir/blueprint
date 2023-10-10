@@ -20,7 +20,7 @@ import sinon from "sinon";
 
 import type { FocusedCellCoordinates } from "../src/common/cellTypes";
 import * as FocusedCellUtils from "../src/common/internal/focusedCellUtils";
-import { DragSelectable, DragSelectableProps } from "../src/interactions/selectable";
+import { DragSelectable, type DragSelectableProps } from "../src/interactions/selectable";
 import { Region, Regions } from "../src/regions";
 import { ElementHarness, ReactHarness } from "./harness";
 
@@ -37,6 +37,13 @@ describe("DragSelectable", () => {
     const onFocusedCell = sinon.spy();
     const locateClick = sinon.stub();
     const locateDrag = sinon.stub();
+
+    const expandFocusedRegion = sinon.spy(FocusedCellUtils.expandFocusedRegion);
+    const expandRegion = sinon.spy(Regions, "expandRegion");
+
+    DragSelectable.defaultProps.focusedCellUtils = {
+        expandFocusedRegion,
+    };
 
     const children = (
         <div className="single-child">
@@ -57,6 +64,9 @@ describe("DragSelectable", () => {
 
         locateClick.resetHistory();
         locateDrag.resetHistory();
+
+        expandFocusedRegion.resetHistory();
+        expandRegion.resetHistory();
     });
 
     after(() => {
@@ -195,8 +205,6 @@ describe("DragSelectable", () => {
                 expectSingleCellRegion(REGION);
                 expectSingleCellRegion(REGION_2);
 
-                const expandFocusedSpy = sinon.spy(FocusedCellUtils, "expandFocusedRegion");
-                const expandSpy = sinon.spy(Regions, "expandRegion");
                 const component = mountDragSelectable({
                     focusedCell: toFocusedCell(REGION),
                     selectedRegions: [REGION],
@@ -204,34 +212,24 @@ describe("DragSelectable", () => {
 
                 getItem(component).mouse("mousedown", { shiftKey: true });
 
-                expect(expandFocusedSpy.calledOnce).to.be.true;
-                expect(expandSpy.called).to.be.false;
-                expectOnSelectionCalledWith([expandFocusedSpy.firstCall.returnValue]);
-
-                // unwrap the sinon spies
-                (FocusedCellUtils.expandFocusedRegion as any).restore();
-                (Regions.expandRegion as any).restore();
+                expect(expandFocusedRegion.calledOnce).to.be.true;
+                expect(expandRegion.called).to.be.false;
+                expectOnSelectionCalledWith([expandFocusedRegion.firstCall.returnValue]);
             });
 
             it("otherwise, expands the most recent one to the clicked region", () => {
-                const expandFocusedSpy = sinon.spy(FocusedCellUtils, "expandFocusedRegion");
-                const expandSpy = sinon.spy(Regions, "expandRegion");
                 const component = mountDragSelectable({
                     selectedRegions: [REGION],
                 });
 
                 getItem(component).mouse("mousedown", { shiftKey: true });
 
-                expect(expandFocusedSpy.calledOnce).to.be.false;
-                expect(expandSpy.called).to.be.true;
-                expectOnSelectionCalledWith([expandSpy.firstCall.returnValue]);
-
-                (FocusedCellUtils.expandFocusedRegion as any).restore();
-                (Regions.expandRegion as any).restore();
+                expect(expandFocusedRegion.calledOnce).to.be.false;
+                expect(expandRegion.called).to.be.true;
+                expectOnSelectionCalledWith([expandRegion.firstCall.returnValue]);
             });
 
             it("expands selection even if CMD key was pressed", () => {
-                const expandFocusedSpy = sinon.spy(FocusedCellUtils, "expandFocusedRegion");
                 const component = mountDragSelectable({
                     focusedCell: toFocusedCell(REGION),
                     selectedRegions: [REGION],
@@ -239,14 +237,11 @@ describe("DragSelectable", () => {
 
                 getItem(component).mouse("mousedown", { shiftKey: true, metaKey: true });
 
-                expect(expandFocusedSpy.calledOnce).to.be.true;
-                expectOnSelectionCalledWith([expandFocusedSpy.firstCall.returnValue]);
-
-                (FocusedCellUtils.expandFocusedRegion as any).restore();
+                expect(expandFocusedRegion.calledOnce).to.be.true;
+                expectOnSelectionCalledWith([expandFocusedRegion.firstCall.returnValue]);
             });
 
             it("works with a selectedRegionTransform too", () => {
-                const expandFocusedSpy = sinon.spy(FocusedCellUtils, "expandFocusedRegion");
                 const focusedCell = toFocusedCell(REGION);
                 const component = mountDragSelectable({
                     focusedCell,
@@ -256,10 +251,8 @@ describe("DragSelectable", () => {
 
                 getItem(component).mouse("mousedown", { shiftKey: true, metaKey: true });
 
-                expect(expandFocusedSpy.calledOnce).to.be.true;
-                expect(expandFocusedSpy.firstCall.calledWith(focusedCell, TRANSFORMED_REGION_2)).to.be.true;
-
-                (FocusedCellUtils.expandFocusedRegion as any).restore();
+                expect(expandFocusedRegion.calledOnce).to.be.true;
+                expect(expandFocusedRegion.firstCall.calledWith(focusedCell, TRANSFORMED_REGION_2)).to.be.true;
             });
         });
 
@@ -361,18 +354,8 @@ describe("DragSelectable", () => {
         });
 
         describe("if SHIFT depressed", () => {
-            let expandFocusedSpy: sinon.SinonSpy;
-            let expandSpy: sinon.SinonSpy;
-
             beforeEach(() => {
-                expandFocusedSpy = sinon.spy(FocusedCellUtils, "expandFocusedRegion");
-                expandSpy = sinon.spy(Regions, "expandRegion");
                 locateDrag.returns(REGION_3);
-            });
-
-            afterEach(() => {
-                (FocusedCellUtils.expandFocusedRegion as sinon.SinonSpy).restore();
-                (Regions.expandRegion as sinon.SinonSpy).restore();
             });
 
             it("expands selection from focused cell (if provided)", () => {
@@ -384,18 +367,18 @@ describe("DragSelectable", () => {
 
                 item.mouse("mousedown", { shiftKey: true });
 
-                expect(expandFocusedSpy.calledOnce, "calls FCU.expandFocusedRegion on mousedown").to.be.true;
+                expect(expandFocusedRegion.calledOnce, "calls FCU.expandFocusedRegion on mousedown").to.be.true;
                 expect(onSelection.calledOnce, "calls onSelection on mousedown").to.be.true;
 
                 item.mouse("mousemove", { shiftKey: true });
-                expect(expandFocusedSpy.calledTwice, "calls FCU.expandFocusedRegion on mousemove").to.be.true;
+                expect(expandFocusedRegion.calledTwice, "calls FCU.expandFocusedRegion on mousemove").to.be.true;
                 expect(onSelection.calledTwice, "calls onSelection on mousemove").to.be.true;
                 expect(
-                    onSelection.secondCall.calledWith([expandFocusedSpy.secondCall.returnValue]),
+                    onSelection.secondCall.calledWith([expandFocusedRegion.secondCall.returnValue]),
                     "calls onSelection on mousemove with proper args",
                 ).to.be.true;
 
-                expect(expandSpy.called, "doesn't call Regions.expandRegion").to.be.false;
+                expect(expandRegion.called, "doesn't call Regions.expandRegion").to.be.false;
                 expect(onFocusedCell.called, "doesn't call onFocusedCell").to.be.false;
             });
 
@@ -404,17 +387,17 @@ describe("DragSelectable", () => {
                 const item = getItem(component);
 
                 item.mouse("mousedown", { shiftKey: true });
-                expect(expandSpy.calledOnce, "calls Regions.expandRegion on mousedown").to.be.true;
+                expect(expandRegion.calledOnce, "calls Regions.expandRegion on mousedown").to.be.true;
 
                 item.mouse("mousemove", { shiftKey: true });
-                expect(expandSpy.calledTwice, "calls Regions.expandRegion on mousemove").to.be.true;
+                expect(expandRegion.calledTwice, "calls Regions.expandRegion on mousemove").to.be.true;
                 expect(onSelection.calledTwice, "calls onSelection on mousemove").to.be.true;
                 expect(
-                    onSelection.secondCall.calledWith([expandSpy.secondCall.returnValue]),
+                    onSelection.secondCall.calledWith([expandRegion.secondCall.returnValue]),
                     "calls onSelection on mousemove with proper args",
                 ).to.be.true;
 
-                expect(expandFocusedSpy.called, "calls FocusedCellUtils.expandFocusedRegion").to.be.false;
+                expect(expandFocusedRegion.called, "calls FocusedCellUtils.expandFocusedRegion").to.be.false;
                 expect(onFocusedCell.called, "doesn't call onFocusedCell").to.be.false;
             });
         });

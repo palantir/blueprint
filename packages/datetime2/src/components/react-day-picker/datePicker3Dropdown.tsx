@@ -15,7 +15,7 @@
  */
 
 import * as React from "react";
-import { DropdownProps } from "react-day-picker";
+import type { DropdownProps } from "react-day-picker";
 
 import { HTMLSelect } from "@blueprintjs/core";
 

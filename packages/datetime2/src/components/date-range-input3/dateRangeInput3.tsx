@@ -44,7 +44,7 @@ import {
 import { Classes } from "../../classes";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
 import { DateRangePicker3 } from "../date-range-picker3/dateRangePicker3";
-import {
+import type {
     DateRangeInput3DefaultProps,
     DateRangeInput3Props,
     DateRangeInput3PropsWithDefaults,

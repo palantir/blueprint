@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { CSSProperties } from "react";
+import type { CSSProperties } from "react";
 
 import { Region, RegionCardinality, Regions } from "../regions";
 import * as Classes from "./classes";

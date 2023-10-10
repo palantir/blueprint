@@ -43,7 +43,7 @@ import * as DateUtils from "../../src/common/dateUtils";
 import * as Errors from "../../src/common/errors";
 import { Months } from "../../src/common/months";
 import { DatePickerNavbar } from "../../src/components/date-picker/datePickerNavbar";
-import { DateRangePickerState } from "../../src/components/date-range-picker/dateRangePicker";
+import type { DateRangePickerState } from "../../src/components/date-range-picker/dateRangePicker";
 import { DatePickerShortcutMenu, DateRangeShortcut } from "../../src/components/shortcuts/shortcuts";
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
 

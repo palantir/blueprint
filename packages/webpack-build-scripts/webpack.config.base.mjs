@@ -24,7 +24,6 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { cwd, env } from "node:process";
-import ReactRefreshTypeScript from "react-refresh-typescript";
 import TerserPlugin from "terser-webpack-plugin";
 import webpack from "webpack";
 import WebpackNotifierPlugin from "webpack-notifier";
@@ -32,6 +31,10 @@ import WebpackNotifierPlugin from "webpack-notifier";
 import { sassNodeModulesLoadPaths } from "@blueprintjs/node-build-scripts";
 
 import { getPackageName } from "./utils.mjs";
+
+// import.meta.resolve is still experimental under a CLI flag, so we create a require fn instead
+// see https://nodejs.org/docs/latest-v18.x/api/esm.html#importmetaresolvespecifier-parent
+const require = createRequire(import.meta.url);
 
 // globals
 const IS_PRODUCTION = env.NODE_ENV === "production";
@@ -79,10 +82,6 @@ if (!IS_PRODUCTION) {
         new WebpackNotifierPlugin({ title: `${PACKAGE_NAME}: webpack` }),
     );
 }
-
-// import.meta.resolve is still experimental under a CLI flag, so we create a require fn instead
-// see https://nodejs.org/docs/latest-v16.x/api/esm.html#importmetaresolvespecifier-parent
-const require = createRequire(import.meta.url);
 
 // Module loaders for CSS files, used in reverse order: apply PostCSS, then interpret CSS as ES modules
 const cssLoaders = [
@@ -148,7 +147,8 @@ export default {
         open: false,
         port: DEV_PORT,
         static: {
-            directory: resolve(cwd(), "src"),
+            // N.B. it is important to exclude TS sources from this directory allow hot module replacement to work
+            directory: resolve(cwd(), "src", "assets"),
         },
     },
 
@@ -162,13 +162,25 @@ export default {
             },
             {
                 test: /\.tsx?$/,
-                loader: require.resolve("ts-loader"),
+                loader: require.resolve("swc-loader"),
+                exclude: /(node_modules)/,
                 options: {
-                    configFile: "src/tsconfig.json",
-                    getCustomTransformers: () => ({
-                        before: IS_PRODUCTION ? [] : [ReactRefreshTypeScript()],
-                    }),
-                    transpileOnly: !IS_PRODUCTION,
+                    jsc: {
+                        parser: {
+                            decorators: true,
+                            dynamicImport: true,
+                            syntax: "typescript",
+                            tsx: true,
+                        },
+                        transform: {
+                            legacyDecorator: true,
+                            react: {
+                                refresh: !IS_PRODUCTION,
+                                runtime: "classic",
+                                useBuiltins: true,
+                            },
+                        },
+                    },
                 },
             },
             {
