@@ -45,7 +45,7 @@ export { CopyCellsMenuItem, type ContextMenuRenderer, type MenuContext } from ".
 
 export { type LockableLayout, type ResizeHandleProps, Orientation, ResizeHandle } from "./interactions/resizeHandle";
 
-export { type SelectableProps, type DragSelectableProps, type DragSelectable } from "./interactions/selectable";
+export { type SelectableProps, type DragSelectableProps, DragSelectable } from "./interactions/selectable";
 
 export type { ColumnHeaderRenderer } from "./headers/columnHeader";
 
