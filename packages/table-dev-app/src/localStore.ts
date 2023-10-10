@@ -24,10 +24,7 @@ import defaults from "lodash/defaults";
 export class LocalStore<T extends {}> {
     private storage: Storage;
 
-    constructor(
-        private key: string,
-        session = false,
-    ) {
+    constructor(private key: string, session = false) {
         this.storage = session ? sessionStorage : localStorage;
     }
 

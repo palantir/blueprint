@@ -1,0 +1,15 @@
+@use "sass:math";
+@import "../../common/variables";
+
+.#{$ns}-segmented-control {
+  padding: $pt-grid-size * 0.5;
+  background-color: $light-gray5;
+
+  > .#{$ns}-button-group {
+    gap: $pt-grid-size * 0.5;
+  }
+
+  .#{$ns}-dark & {
+    background-color: $dark-gray4;
+  }
+}

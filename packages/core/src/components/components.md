@@ -25,6 +25,7 @@
 @page progress-bar
 @page resize-sensor
 @page section
+@page segmented-control
 @page skeleton
 @page spinner
 @page tabs

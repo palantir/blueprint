@@ -69,7 +69,7 @@ export interface DocumentationContextApi {
 }
 
 export const DocumentationContext = React.createContext<DocumentationContextApi>({
-    getDocsData: () => ({}) as DocsData,
+    getDocsData: () => ({} as DocsData),
     renderBlock: (_block: IBlock) => undefined,
     renderType: (type: string) => type,
     renderViewSourceLinkText: (entry: ITsDocBase) => entry.sourceUrl,

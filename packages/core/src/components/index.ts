@@ -100,6 +100,7 @@ export { MultiSlider, MultiSliderProps, SliderBaseProps } from "./slider/multiSl
 export { NumberRange, RangeSlider, RangeSliderProps } from "./slider/rangeSlider";
 export { Section, SectionElevation, SectionProps } from "./section/section";
 export { SectionCard, SectionCardProps } from "./section/sectionCard";
+export { SegmentedControl } from "./segmented-control/segmentedControl";
 export { Slider, SliderProps } from "./slider/slider";
 export { Spinner, SpinnerProps, SpinnerSize } from "./spinner/spinner";
 export { SwitchCard, SwitchCardProps } from "./control-card/switchCard";

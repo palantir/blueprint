@@ -313,6 +313,8 @@ export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
 
+export const SEGMENTED_CONTROL = `${NS}-segmented-control`;
+
 export const TAB = `${NS}-tab`;
 export const TAB_ICON = `${TAB}-icon`;
 export const TAB_TAG = `${TAB}-tag`;

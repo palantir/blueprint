@@ -17,10 +17,7 @@
 export class Oscillator {
     public oscillator: OscillatorNode;
 
-    public constructor(
-        private context: AudioContext,
-        freq: number,
-    ) {
+    public constructor(private context: AudioContext, freq: number) {
         this.oscillator = this.context.createOscillator();
         this.oscillator.type = "sine";
         this.oscillator.frequency.value = freq;
