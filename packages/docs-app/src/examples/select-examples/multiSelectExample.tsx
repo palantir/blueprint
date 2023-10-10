@@ -232,6 +232,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
         return (
             <MenuItem
                 {...getFilmItemProps(film, props)}
+                roleStructure="listoption"
                 selected={this.isFilmSelected(film)}
                 shouldDismissPopover={false}
                 text={`${film.rank}. ${film.title}`}

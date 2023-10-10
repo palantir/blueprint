@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangePicker3 in the datetime2
+ * package instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -35,9 +43,9 @@ import * as DateUtils from "../../src/common/dateUtils";
 import * as Errors from "../../src/common/errors";
 import { Months } from "../../src/common/months";
 import { DatePickerNavbar } from "../../src/components/date-picker/datePickerNavbar";
-import { DateRangePickerState } from "../../src/components/date-range-picker/dateRangePicker";
-import { DateRangeShortcut, Shortcuts } from "../../src/components/shortcuts/shortcuts";
-import { assertDayDisabled } from "../common/dateTestUtils";
+import type { DateRangePickerState } from "../../src/components/date-range-picker/dateRangePicker";
+import { DatePickerShortcutMenu, DateRangeShortcut } from "../../src/components/shortcuts/shortcuts";
+import { assertDayDisabled } from "../common/dayPickerTestUtils";
 
 describe("<DateRangePicker>", () => {
     let onChangeSpy: sinon.SinonSpy;
@@ -930,16 +938,23 @@ describe("<DateRangePicker>", () => {
         it("all shortcuts are displayed as inactive when none are selected", () => {
             const { wrapper } = render();
 
-            assert.isFalse(wrapper.find(Shortcuts).find(Menu).find(MenuItem).find(`.${Classes.ACTIVE}`).exists());
+            assert.isFalse(
+                wrapper.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${Classes.ACTIVE}`).exists(),
+            );
         });
 
         it("corresponding shortcut is displayed as active when selected", () => {
             const selectedShortcut = 0;
             const { wrapper } = render({ selectedShortcutIndex: selectedShortcut });
 
-            assert.isTrue(wrapper.find(Shortcuts).find(Menu).find(MenuItem).find(`.${Classes.ACTIVE}`).exists());
+            assert.isTrue(
+                wrapper.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${Classes.ACTIVE}`).exists(),
+            );
 
-            assert.lengthOf(wrapper.find(Shortcuts).find(Menu).find(MenuItem).find(`.${Classes.ACTIVE}`), 1);
+            assert.lengthOf(
+                wrapper.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${Classes.ACTIVE}`),
+                1,
+            );
 
             assert.isTrue(wrapper.state("selectedShortcutIndex") === selectedShortcut);
         });

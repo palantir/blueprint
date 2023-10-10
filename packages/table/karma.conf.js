@@ -2,13 +2,16 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const REACT = process.env.REACT || "16";
-
 module.exports = async function (config) {
     const { createKarmaConfig } = await import("@blueprintjs/karma-build-scripts");
     config.set(
         createKarmaConfig({
             dirname: __dirname,
+            coverageExcludes: [
+                // don't check barrel files or deprecated APIs
+                "src/**/index.ts",
+                "src/deprecatedAliases.ts",
+            ],
             coverageOverrides: {
                 "src/cell/cell*": {
                     lines: 70,
@@ -26,8 +29,6 @@ module.exports = async function (config) {
                     statements: 70,
                 },
             },
-            coverageExcludes:
-                REACT === "15" ? ["src/table2.tsx", "src/table2Utils.ts", "src/cell/editableCell2.tsx"] : [],
         }),
     );
 };

@@ -16,7 +16,7 @@
 
 import { Replacement } from "tslint";
 import { isImportDeclaration, isNamedImports } from "tsutils/typeguard/2.8";
-import * as ts from "typescript";
+import type * as ts from "typescript";
 
 export function addImportToFile(file: ts.SourceFile, imports: string[], packageName: string) {
     const packageToModify = file.statements.find(

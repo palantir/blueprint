@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { INpmPackage } from "@documentalist/client";
+import type { INpmPackage } from "@documentalist/client";
 import * as React from "react";
 
 import { Classes, HotkeysTarget2, Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";

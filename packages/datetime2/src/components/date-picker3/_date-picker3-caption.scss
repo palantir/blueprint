@@ -1,0 +1,49 @@
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "@blueprintjs/datetime/src/common";
+
+// react-day-picker does not conform to our naming scheme
+/* stylelint-disable selector-class-pattern */
+
+// use extra specificity to override DatePicker v1 styles
+.#{$ns}-datepicker-caption.rdp-caption {
+  @include pt-flex-container(row);
+  justify-content: space-between;
+  margin: 0;
+
+  // override HTMLSelect styles for a narrower appearance
+  // N.B. these styles are important to achieve accurate measurements to position the dropdown arrows in <DatePickerCaption>
+  .#{$ns}-html-select select {
+    font-weight: 600;
+    padding-left: $datepicker-padding;
+    padding-right: $pt-icon-size-standard;
+
+    + .#{$ns}-icon {
+      right: 2px;
+    }
+  }
+
+  + .#{$ns}-divider {
+    margin: 0;
+  }
+
+  .#{$ns}-datepicker-nav-button-hidden {
+    visibility: hidden;
+  }
+}
+
+.#{$ns}-datepicker-month-select {
+  flex-shrink: 1;
+}
+
+.#{$ns}-datepicker-year-select {
+  flex-shrink: 1;
+  min-width: 60px;
+}
+
+.#{$ns}-datepicker-caption-measure {
+  font-weight: 600;
+  padding-left: $datepicker-padding;
+}

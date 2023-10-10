@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangePicker3 in the datetime2
+ * package instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
@@ -33,7 +41,7 @@ import {
     SELECTED_RANGE_MODIFIER,
 } from "../date-picker/datePickerCore";
 import { DatePickerNavbar } from "../date-picker/datePickerNavbar";
-import { DateRangeShortcut, Shortcuts } from "../shortcuts/shortcuts";
+import { DatePickerShortcutMenu, DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 
 export interface DateRangePickerProps extends DatePickerBaseProps, Props {
@@ -81,7 +89,11 @@ export interface DateRangePickerProps extends DatePickerBaseProps, Props {
      * When triggered from mouseenter, it will pass the date range that would result from next click.
      * When triggered from mouseleave, it will pass `undefined`.
      */
-    onHoverChange?: (hoveredDates: DateRange, hoveredDay: Date, hoveredBoundary: Boundary) => void;
+    onHoverChange?: (
+        hoveredDates: DateRange | undefined,
+        hoveredDay: Date,
+        hoveredBoundary: Boundary | undefined,
+    ) => void;
 
     /**
      * Called when the `shortcuts` props is enabled and the user changes the shortcut.
@@ -132,6 +144,7 @@ export interface DateRangePickerState {
  * Date range picker component.
  *
  * @see https://blueprintjs.com/docs/#datetime/daterangepicker
+ * @deprecated use `{ DateRangePicker3 } from "@blueprintjs/datetime2"` instead
  */
 export class DateRangePicker extends AbstractPureComponent<DateRangePickerProps, DateRangePickerState> {
     public static defaultProps: DateRangePickerProps = {
@@ -330,7 +343,7 @@ export class DateRangePicker extends AbstractPureComponent<DateRangePickerProps,
         const { selectedShortcutIndex } = this.state;
         const { allowSingleDayRange, maxDate, minDate, timePrecision } = this.props;
         return [
-            <Shortcuts
+            <DatePickerShortcutMenu
                 key="shortcuts"
                 {...{
                     allowSingleDayRange,

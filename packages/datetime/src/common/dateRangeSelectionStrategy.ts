@@ -16,14 +16,14 @@
 
 import { Boundary } from "@blueprintjs/core";
 
-import { DateRange } from "./dateRange";
+import type { DateRange } from "./dateRange";
 import { isSameDay } from "./dateUtils";
 
 export interface DateRangeSelectionState {
     /**
      * The boundary that would be modified by clicking the provided `day`.
      */
-    boundary?: Boundary;
+    boundary: Boundary;
 
     /**
      * The date range that would be selected after clicking the provided `day`.
@@ -124,11 +124,13 @@ export class DateRangeSelectionStrategy {
         const [start, end] = selectedRange;
 
         let nextDateRange: DateRange;
+        let nextBoundary: Boundary = Boundary.START;
 
         if (start == null && end == null) {
             nextDateRange = [day, null];
         } else if (start != null && end == null) {
             nextDateRange = this.createRange(day, start, allowSingleDayRange);
+            nextBoundary = Boundary.END;
         } else if (start == null && end != null) {
             nextDateRange = this.createRange(day, end, allowSingleDayRange);
         } else {
@@ -140,12 +142,13 @@ export class DateRangeSelectionStrategy {
                 nextDateRange = [null, end];
             } else if (isEnd) {
                 nextDateRange = [start, null];
+                nextBoundary = Boundary.END;
             } else {
                 nextDateRange = [day, null];
             }
         }
 
-        return { dateRange: nextDateRange };
+        return { dateRange: nextDateRange, boundary: nextBoundary };
     }
 
     private static getOtherBoundary(boundary: Boundary) {

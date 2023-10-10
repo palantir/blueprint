@@ -5,7 +5,7 @@ It is a thin wrapper around [`ResizeObserver`][resizeobserver] to provide React 
 
 [resizeobserver]: https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">DOM ref required</h5>
 
 ResizeSensor's implementation relies on a React ref being attached to a DOM element,
@@ -40,7 +40,7 @@ const myRef = React.createRef();
 </ResizeSensor>
 ```
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Asynchronous behavior</h5>
 
 The `onResize` callback is invoked asynchronously after a resize is detected

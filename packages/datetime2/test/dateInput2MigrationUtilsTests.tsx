@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -96,13 +98,15 @@ describe("DateInput2MigrationUtils", () => {
 
     it("Adapters work in common usage pattern with React.useCallback + React.useMemo", () => {
         function TestComponent() {
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             const handleChange = React.useCallback(
                 DateInput2MigrationUtils.onChangeAdapter(controlledDateInputProps.onChange),
-                [controlledDateInputProps.onChange],
+                [],
             );
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             const value = React.useMemo(
                 () => DateInput2MigrationUtils.valueAdapter(controlledDateInputProps.value),
-                [controlledDateInputProps.value],
+                [],
             );
 
             return <DateInput2 {...dateFormattingProps} onChange={handleChange} value={value} />;

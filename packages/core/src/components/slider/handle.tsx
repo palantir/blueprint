@@ -20,7 +20,7 @@ import * as React from "react";
 import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp } from "../../common/utils";
-import { HandleProps } from "./handleProps";
+import type { HandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
 
 /**
@@ -240,8 +240,13 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
 
         const { vertical } = this.props;
 
-        // getBoundingClientRect().height includes border size; clientHeight does not.
-        const handleRect = handleElement.getBoundingClientRect();
+        // N.B. element.clientHeight does not include border size.
+        // Also, element.getBoundingClientRect() is useful to get the top & left position on the page, but
+        // it fails to accurately measure element width & height inside absolutely-positioned and CSS-transformed
+        // containers like Popovers, so we use element.offsetWidth & offsetHeight instead (see https://github.com/palantir/blueprint/issues/4417).
+        const handleRect: DOMRect = handleElement.getBoundingClientRect();
+        handleRect.width = handleElement.offsetWidth;
+        handleRect.height = handleElement.offsetHeight;
 
         const sizeKey = vertical
             ? useOppositeDimension

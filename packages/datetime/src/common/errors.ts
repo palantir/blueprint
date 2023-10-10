@@ -42,3 +42,4 @@ export const DATERANGEINPUT_NULL_VALUE =
     " uncontrolled mode, or pass [null, null] to clear the value and continue operating in controlled mode.";
 
 export const DATEINPUT_INVALID_DEFAULT_TIMEZONE = `${ns} <DateInput> was provided an invalid defaultTimezone, defaulting to Etc/UTC instead`;
+export const DATEINPUT_INVALID_TIMEZONE = `${ns} <DateInput> was provided an invalid timezone, defaulting to Etc/UTC instead`;

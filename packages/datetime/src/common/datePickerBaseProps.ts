@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { DayPickerProps, LocaleUtils } from "react-day-picker";
+import type { DayPickerProps, LocaleUtils } from "react-day-picker";
 
-import type { TimePickerProps, TimePrecision } from "./timePickerProps";
+import type { TimePickerProps } from "./timePickerProps";
+import type { TimePrecision } from "./timePrecision";
 
 // DatePicker supports a simpler set of modifiers (for now).
 // also we need an interface for the dictionary without `today` and `outside` injected by r-d-p.

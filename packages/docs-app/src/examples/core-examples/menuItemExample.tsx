@@ -24,7 +24,6 @@ import { BooleanOrUndefinedSelect } from "./common/booleanOrUndefinedSelect";
 import { IntentSelect } from "./common/intentSelect";
 
 export function MenuItemExample(props: ExampleProps) {
-    const [large, setLarge] = React.useState(false);
     const [active, setActive] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [selected, setSelected] = React.useState<boolean | undefined>(undefined);
@@ -33,27 +32,26 @@ export function MenuItemExample(props: ExampleProps) {
     const [submenuEnabled, setSubmenuEnabled] = React.useState(true);
     const [roleStructure, setRoleStructure] = React.useState<MenuItemProps["roleStructure"]>("menuitem");
 
-    const isSelectedOptionAvailable = roleStructure === "listoption" && !iconEnabled;
+    const isSelectable = roleStructure === "listoption";
 
     const options = (
         <>
-            <H5>Menu props</H5>
-            <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
-            <H5>MenuItem props</H5>
+            <H5>Props</H5>
             <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
             <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
             <PropCodeTooltip
                 content={
-                    isSelectedOptionAvailable ? undefined : (
+                    isSelectable ? undefined : (
                         <>
                             <Code>selected</Code> prop has no effect when <br />
-                            <Code>roleStructure="menuitem"</Code> or when an icon is set
+                            <Code>roleStructure="menuitem"</Code>
                         </>
                     )
                 }
+                disabled={isSelectable}
             >
                 <BooleanOrUndefinedSelect
-                    disabled={!isSelectedOptionAvailable}
+                    disabled={!isSelectable}
                     label="Selected"
                     value={selected}
                     onChange={setSelected}
@@ -75,16 +73,16 @@ export function MenuItemExample(props: ExampleProps) {
 
     return (
         <Example className="docs-menu-example" options={options} {...props}>
-            <Menu className={Classes.ELEVATION_1} large={large}>
+            <Menu className={Classes.ELEVATION_1}>
                 <MenuItem
                     active={active}
                     disabled={disabled}
-                    icon={iconEnabled ? "cog" : undefined}
+                    icon={iconEnabled ? "applications" : undefined}
                     intent={intent}
                     labelElement={submenuEnabled ? undefined : "⌘,"}
                     roleStructure={roleStructure}
                     selected={selected}
-                    text="Settings"
+                    text="Applications"
                     children={
                         submenuEnabled ? (
                             <>

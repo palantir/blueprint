@@ -36,3 +36,5 @@ export const IconNames = {
     ...IconNamesNew,
     ...IconNamesLegacy,
 };
+
+export const IconNamesSet = new Set(Object.values(IconNames));

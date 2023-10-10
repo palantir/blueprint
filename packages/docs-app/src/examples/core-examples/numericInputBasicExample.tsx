@@ -92,7 +92,9 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
         this.setState({ buttonPosition }),
     );
 
-    private handleLocaleChange = handleStringChange(locale => this.setState({ locale }));
+    private handleLocaleChange = handleStringChange(locale =>
+        this.setState({ locale: locale === "default" ? undefined : locale }),
+    );
 
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
 
@@ -185,7 +187,7 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
                 {this.renderSelectMenu(
                     "Locale",
                     locale,
-                    [{ label: "Default", value: undefined }, ...LOCALES],
+                    [{ label: "Default", value: "default" }, ...LOCALES],
                     this.handleLocaleChange,
                 )}
             </>

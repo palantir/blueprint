@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangePicker3 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import moment from "moment";
 import * as React from "react";
 
@@ -50,6 +57,10 @@ interface DateOption {
 const MIN_DATE_OPTIONS: DateOption[] = [
     { label: "None", value: undefined },
     {
+        label: "1 week ago",
+        value: moment().add(-1, "weeks").toDate(),
+    },
+    {
         label: "4 months ago",
         value: moment().add(-4, "months").toDate(),
     },
@@ -61,6 +72,14 @@ const MIN_DATE_OPTIONS: DateOption[] = [
 
 const MAX_DATE_OPTIONS: DateOption[] = [
     { label: "None", value: undefined },
+    {
+        label: "Today",
+        value: moment().toDate(),
+    },
+    {
+        label: "1 week from now",
+        value: moment().add(1, "weeks").toDate(),
+    },
     {
         label: "4 months from now",
         value: moment().add(4, "months").toDate(),

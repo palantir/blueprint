@@ -159,7 +159,12 @@ export class Quaternion {
 
     private static POOL = new Quaternion();
 
-    public constructor(public x = 0, public y = 0, public z = 0, public w = 0) {}
+    public constructor(
+        public x = 0,
+        public y = 0,
+        public z = 0,
+        public w = 0,
+    ) {}
 
     public copy() {
         return new Quaternion(this.x, this.y, this.z, this.w);
@@ -205,7 +210,11 @@ export class Quaternion {
 export class Point extends Transformable<Point> {
     private static POOL = new Point();
 
-    public constructor(public x = 0, public y = 0, public z = 0) {
+    public constructor(
+        public x = 0,
+        public y = 0,
+        public z = 0,
+    ) {
         super();
     }
 
@@ -449,7 +458,10 @@ export class Corner extends Transformable<Corner> {
 
     public projectedCenter: Point;
 
-    public constructor(public segments: Segment[], public center: Point) {
+    public constructor(
+        public segments: Segment[],
+        public center: Point,
+    ) {
         super();
     }
 
@@ -582,7 +594,10 @@ export class Accumulator implements Tickable {
 
     public value: number;
 
-    public constructor(public target: number, public callback?: AnimatedCallback) {
+    public constructor(
+        public target: number,
+        public callback?: AnimatedCallback,
+    ) {
         this.value = this.target;
     }
 
@@ -868,7 +883,10 @@ class BackgroundRenderer extends CanvasRenderer {
 }
 
 export class SceneRenderer extends CanvasRenderer {
-    public constructor(ctx: CanvasRenderingContext2D, private scene: SceneModel) {
+    public constructor(
+        ctx: CanvasRenderingContext2D,
+        private scene: SceneModel,
+    ) {
         super(ctx);
     }
 

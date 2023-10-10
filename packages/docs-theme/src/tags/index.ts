@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ITag } from "@documentalist/client";
+import type { ITag } from "@documentalist/client";
 
 export interface TagRendererMap {
     [tagName: string]: React.ComponentType<ITag> | undefined;

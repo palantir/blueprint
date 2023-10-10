@@ -24,6 +24,10 @@
   width: 100%;
 }
 
+.docs-prop-code-tooltip {
+  margin-bottom: $pt-grid-size;
+}
+
 // Example-specific customizations
 
 //
@@ -57,6 +61,47 @@
 
   .docs-wiggle {
     animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
+  }
+}
+
+#{example("CardList")} {
+  .docs-example > div {
+    flex-grow: 1;
+  }
+
+  .#{$ns}-card {
+    justify-content: space-between;
+  }
+
+  .docs-section-card-limited-height {
+    max-height: 152px;
+    overflow-y: auto;
+
+    .#{$ns}-dark & {
+      // need a bit of margin to account for inset box shadow
+      margin-bottom: 1px;
+    }
+  }
+
+  .#{$ns}-section.#{$ns}-compact {
+    .docs-section-card-limited-height {
+      max-height: 122px;
+    }
+  }
+}
+
+#{example("SwitchCard")} {
+  .docs-control-card-grid {
+    display: grid;
+    gap: $pt-grid-size * 2;
+    grid-template-columns: repeat(auto-fit, minmax($pt-grid-size * 10, 1fr));
+    width: 100%;
+  }
+}
+
+#{example("ControlCardList")} {
+  .#{$ns}-control-card-label .#{$ns}-icon {
+    margin-right: $pt-grid-size;
   }
 }
 
@@ -132,18 +177,27 @@
   }
 }
 
+$docs-hotkey-piano-height: 510px;
+
 .docs-hotkey-piano-example {
-  opacity: 0.4;
+  min-height: $docs-hotkey-piano-height;
+  opacity: 0.5;
   transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
 
   &:hover {
     cursor: pointer;
-    opacity: 0.6;
+    opacity: 0.75;
   }
 
   &:focus {
     cursor: default;
     opacity: 1;
+  }
+
+  .#{$ns}-non-ideal-state {
+    margin: 0;
+    min-height: $docs-hotkey-piano-height - ($pt-grid-size * 2);
+    padding: $pt-grid-size * 2;
   }
 
   > :first-child {
@@ -200,7 +254,7 @@
   }
 }
 
-#{example("HotkeyTesterExample")} {
+#{example("HotkeyTester")} {
   .docs-hotkey-tester {
     @include pt-flex-container(column, $pt-grid-size);
     align-items: center;
@@ -233,6 +287,12 @@
         color: map-get($pt-dark-intent-text-colors, "primary");
       }
     }
+  }
+}
+
+#{example("NumericInputExtended")} {
+  .#{$ns}-input-group {
+    min-width: 250px;
   }
 }
 
@@ -555,15 +615,12 @@
 //
 
 // all datetime examples show component followed by date tags, so arrange them in a nice column
-#{page("datetime", "^=")} {
+#{page("datetime", "^=")},
+#{page("datetime2", "^=")} {
   .docs-example {
     flex-direction: column;
     gap: $pt-grid-size;
     justify-content: center;
-  }
-
-  #{example("TimezoneSelect")} .docs-example {
-    flex-direction: row;
   }
 }
 
@@ -572,7 +629,8 @@
   align-items: center;
 }
 
-#{example("DateInput")} {
+#{example("DateInput")},
+#{example("DateInput3")} {
   .#{$ns}-date-input {
     // should not grow in vertical direction when fill={true}
     flex-grow: 0;
@@ -581,12 +639,38 @@
 }
 
 // these component examples have a "fill" prop option, which doesn't work nicely with the default margin
-#{example("DateInput")}, #{example("DateRangeInput")} {
+#{example("DateInput")},
+#{example("DateInput3")},
+#{example("DateRangeInput")},
+#{example("DateRangeInput3")} {
   .docs-example > * {
     margin: 0;
   }
 }
 
+#{example("TimezoneSelect")} .docs-example {
+  flex-direction: row;
+}
+
+//
+// DATETIME2
+//
+
+#{example("DatePicker3Modifier")} {
+  .docs-date-picker3-day-odd {
+    color: $red2;
+
+    .#{$ns}-dark & {
+      color: $red4;
+    }
+  }
+}
+
+#{example("DateRangeInput3")} {
+  .docs-example {
+    padding: ($pt-grid-size * 4) ($pt-grid-size * 2);
+  }
+}
 
 //
 // TABLE

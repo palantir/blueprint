@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { ITag } from "@documentalist/client";
-import * as React from "react";
+import type { ITag } from "@documentalist/client";
+import type * as React from "react";
 
 import { CssExample } from "./css";
 import { Heading } from "./heading";

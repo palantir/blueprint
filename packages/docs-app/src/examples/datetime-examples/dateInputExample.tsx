@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateInput3 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -22,7 +29,7 @@ import { DateFormatProps, DateInput, TimePrecision } from "@blueprintjs/datetime
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
-import { DATE_FNS_FORMATS, DateFnsFormatSelector } from "./common/dateFnsFormatSelector";
+import { DATE_FNS_FORMATS, DateFnsDateFormatPropsSelect } from "./common/dateFnsDateFormatPropsSelect";
 import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface DateInputExampleState {
@@ -101,9 +108,7 @@ export class DateInputExample extends React.PureComponent<ExampleProps, DateInpu
                     onChange={this.handleDateChange}
                     popoverProps={{ placement: "bottom" }}
                     rightElement={
-                        showRightElement && (
-                            <Icon icon="globe" intent="primary" style={{ padding: 7, marginLeft: -5 }} />
-                        )
+                        showRightElement && <Icon icon="globe" intent="primary" style={{ padding: "7px 5px" }} />
                     }
                     timePickerProps={
                         this.state.timePrecision === undefined
@@ -180,7 +185,7 @@ export class DateInputExample extends React.PureComponent<ExampleProps, DateInpu
                 >
                     <Switch label="Show right element" checked={showRightElement} onChange={this.toggleRightElement} />
                 </PropCodeTooltip>
-                <DateFnsFormatSelector format={format} onChange={this.handleFormatChange} />
+                <DateFnsDateFormatPropsSelect format={format} onChange={this.handleFormatChange} />
 
                 <H5>Time picker props</H5>
                 <PrecisionSelect

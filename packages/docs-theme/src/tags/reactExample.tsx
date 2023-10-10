@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { ITag } from "@documentalist/client";
+import type { ITag } from "@documentalist/client";
 import * as React from "react";
 
 import { AnchorButton, Intent } from "@blueprintjs/core";
 import { Code } from "@blueprintjs/icons";
 
-import { ExampleProps } from "../components/example";
+import type { ExampleProps } from "../components/example";
 
 export interface ExampleRenderInfo {
     sourceUrl: string;

@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-import { Props } from "@blueprintjs/core";
+import type { Props } from "@blueprintjs/core";
 
-import { TimeUnit } from "./timeUnit";
-
-export const TimePrecision = {
-    MILLISECOND: "millisecond" as "millisecond",
-    MINUTE: "minute" as "minute",
-    SECOND: "second" as "second",
-};
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export type TimePrecision = (typeof TimePrecision)[keyof typeof TimePrecision];
+import type { TimePrecision } from "./timePrecision";
+import type { TimeUnit } from "./timeUnit";
 
 export interface TimePickerProps extends Props {
     /**

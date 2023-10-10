@@ -1,9 +1,8 @@
 @# Suggest
 
-`Suggest` behaves similarly to [`Select`](#select/select-component), except it
-renders a text input as the `Popover` target instead of arbitrary children. This
-text [`InputGroup`](#core/components/text-inputs.input-group) can be customized
-using `inputProps`.
+__Suggest__ behaves similarly to [__Select__](#select/select-component), except it renders a text input group as the
+__Popover__ target instead of arbitrary children. This [__InputGroup__](#core/components/input-group) can
+be customized using `inputProps`.
 
 @reactExample SuggestExample
 

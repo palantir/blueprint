@@ -19,12 +19,12 @@ import { format, isValid } from "date-fns";
 import * as React from "react";
 
 import { Icon, Intent, Props, Tag } from "@blueprintjs/core";
-import { DateRange } from "@blueprintjs/datetime";
+import type { DateRange } from "@blueprintjs/datetime";
 
 const FORMAT = "EEEE, MMMM d, yyyy";
 const FORMAT_WITH_TIME = "MMMM d, yyyy 'at' K:mm a";
 
-export const DateFnsDate: React.FC<{ date: Date; formatStr?: string; withTime?: boolean }> = ({
+const DateFnsDate: React.FC<{ date: Date; formatStr?: string; withTime?: boolean }> = ({
     date,
     withTime = false,
     formatStr = withTime ? FORMAT_WITH_TIME : FORMAT,
@@ -36,6 +36,7 @@ export const DateFnsDate: React.FC<{ date: Date; formatStr?: string; withTime?: 
     }
 };
 
+/** @deprecated use `FormattedDateRange` */
 export const DateFnsDateRange: React.FC<{ range: DateRange; formatStr?: string; withTime?: boolean } & Props> = ({
     className,
     range: [start, end],

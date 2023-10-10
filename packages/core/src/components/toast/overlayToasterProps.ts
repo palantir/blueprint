@@ -45,6 +45,9 @@ export interface OverlayToasterProps extends Props {
      */
     canEscapeKeyClear?: boolean;
 
+    /** Toasts to display inside the Overlay. */
+    children?: React.ReactNode;
+
     /**
      * Whether the toaster should be rendered into a new element attached to `document.body`.
      * If `false`, then positioning will be relative to the parent element.

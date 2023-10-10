@@ -17,7 +17,7 @@
 import moment from "moment";
 import * as React from "react";
 
-import { DateFormatProps } from "@blueprintjs/datetime";
+import type { DateFormatProps } from "@blueprintjs/datetime";
 
 import { DateFormatSelector, DateFormatSelectorProps } from "../../../common/dateFormatSelector";
 

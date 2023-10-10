@@ -1,0 +1,11 @@
+{
+    "test": ".*.ts$",
+    "jsc": {
+      "parser": {
+        "syntax": "typescript"
+      }
+    },
+    "module": {
+      "type": "nodenext"
+    }
+  }

@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { NavbarElementProps } from "react-day-picker";
+import type { NavbarElementProps } from "react-day-picker";
 
 import { Button } from "@blueprintjs/core";
 import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";

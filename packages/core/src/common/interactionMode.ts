@@ -24,7 +24,10 @@
 export class InteractionModeEngine {
     private isRunning = false;
 
-    constructor(private container: HTMLElement, private className: string) {}
+    constructor(
+        private container: HTMLElement,
+        private className: string,
+    ) {}
 
     /** Returns whether the engine is currently running. */
     public isActive() {

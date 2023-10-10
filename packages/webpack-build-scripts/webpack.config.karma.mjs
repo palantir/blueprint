@@ -12,7 +12,7 @@ import webpack from "webpack";
 import { sassNodeModulesLoadPaths } from "@blueprintjs/node-build-scripts";
 
 // import.meta.resolve is still experimental under a CLI flag, so we create a require fn instead
-// see https://nodejs.org/docs/latest-v16.x/api/esm.html#importmetaresolvespecifier-parent
+// see https://nodejs.org/docs/latest-v18.x/api/esm.html#importmetaresolvespecifier-parent
 const require = createRequire(import.meta.url);
 
 /**
@@ -41,10 +41,27 @@ export default {
             },
             {
                 test: /\.tsx?$/,
-                loader: require.resolve("ts-loader"),
+                loader: require.resolve("swc-loader"),
                 options: {
-                    configFile: "test/tsconfig.json",
-                    transpileOnly: true,
+                    jsc: {
+                        parser: {
+                            decorators: true,
+                            dynamicImport: true,
+                            syntax: "typescript",
+                            tsx: true,
+                        },
+                        // this is important for istanbul comment flags to work correctly
+                        preserveAllComments: true,
+                        transform: {
+                            legacyDecorator: true,
+                            react: {
+                                refresh: false,
+                            },
+                        },
+                    },
+                    module: {
+                        type: "commonjs",
+                    },
                 },
             },
             {

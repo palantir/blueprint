@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { IPageData } from "@documentalist/client";
+import type { IPageData } from "@documentalist/client";
 import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
 
-import { TagRendererMap } from "../tags";
+import type { TagRendererMap } from "../tags";
 import { renderBlock } from "./block";
 
 export interface PageProps {

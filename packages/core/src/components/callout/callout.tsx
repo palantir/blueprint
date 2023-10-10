@@ -28,11 +28,12 @@ import {
     IntentProps,
     MaybeElement,
     Props,
+    Utils,
 } from "../../common";
 import { H5 } from "../html/html";
 import { Icon } from "../icon/icon";
 
-/** This component also supports the full range of HTML `<div>` props. */
+/** This component also supports the full range of HTML `<div>` attributes. */
 export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
     /** Callout contents. */
     children?: React.ReactNode;
@@ -74,12 +75,10 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
     public render() {
         const { className, children, icon, intent, title, ...htmlProps } = this.props;
         const iconElement = this.renderIcon(icon, intent);
-        const classes = classNames(
-            Classes.CALLOUT,
-            Classes.intentClass(intent),
-            { [Classes.CALLOUT_ICON]: iconElement != null },
-            className,
-        );
+        const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className, {
+            [Classes.CALLOUT_HAS_BODY_CONTENT]: !Utils.isReactNodeEmpty(children),
+            [Classes.CALLOUT_ICON]: iconElement != null,
+        });
 
         return (
             <div className={classes} {...htmlProps}>

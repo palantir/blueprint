@@ -1,7 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@import "./card-variables";
 
 /*
 Cards
@@ -20,26 +20,6 @@ Markup:
 
 Styleguide card
 */
-
-$card-padding: $pt-grid-size * 2 !default;
-
-$card-background-color: $white !default;
-$dark-card-background-color: $dark-gray3 !default;
-
-$elevation-shadows: (
-  $pt-elevation-shadow-0
-  $pt-elevation-shadow-1
-  $pt-elevation-shadow-2
-  $pt-elevation-shadow-3
-  $pt-elevation-shadow-4
-);
-$dark-elevation-shadows: (
-  $pt-dark-elevation-shadow-0
-  $pt-dark-elevation-shadow-1
-  $pt-dark-elevation-shadow-2
-  $pt-dark-elevation-shadow-3
-  $pt-dark-elevation-shadow-4
-);
 
 .#{$ns}-card {
   background-color: $card-background-color;
@@ -75,6 +55,10 @@ $dark-elevation-shadows: (
       border: 1px solid $pt-high-contrast-mode-border-color;
     }
   }
+}
+
+.#{$ns}-card.#{$ns}-compact {
+  padding: $card-padding-compact;
 }
 
 .#{$ns}-card.#{$ns}-interactive {

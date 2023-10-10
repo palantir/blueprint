@@ -3,16 +3,14 @@
 Popovers display floating content next to a target element.
 
 The __Popover__ component is built on top of the [**Popper.js**](https://popper.js.org) library.
-Popper.js is a small library that offers a powerful, customizable
-positioning engine and operates at blazing speed (`~60fps`).
+Popper.js is a small library that offers a powerful, customizable, and performant positioning engine.
 
 @reactExample PopoverExample
 
 @## Usage
 
-__Popover__ supports controlled and uncontrolled usage through `isOpen` and
-`defaultIsOpen`, respectively. Use `onInteraction` in controlled mode to respond
-to changes in the `isOpen` state.
+__Popover__ supports controlled and uncontrolled usage through `isOpen` and `defaultIsOpen`, respectively.
+Use `onInteraction` in controlled mode to respond to changes in the `isOpen` state.
 
 Supported user interactions are dictated by the `interactionKind` prop.
 
@@ -57,7 +55,7 @@ The **content** will be shown inside the popover itself. When opened, the popove
 positioned on the page next to the target; the `placement` prop determines its relative placement (on
 which side of the target).
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Button targets</h5>
 
 Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
@@ -144,14 +142,14 @@ automatically by enabling the modifiers `flip` and `preventOverflow`.
 
 @### Modifiers
 
-Modifiers allow us to customize Popper.js's positioning behavior. __Popover__ configures several of Popper.js's built-in modifiers
-to handle things such as flipping, preventing overflow from a boundary element, and positioning the arrow.
+Modifiers allow us to customize Popper.js's positioning behavior. __Popover__ configures several of Popper.js's built-in
+modifiers to handle things such as flipping, preventing overflow from a boundary element, and positioning the arrow.
 
-You may override the default modifiers with the `modifiers` prop, which is an object with key-value pairs representing the
-modifier name and its options object, respectively. See the [Popper.js modifiers docs page](https://popper.js.org/docs/v2/modifiers/)
-for more info.
+You may override the default modifiers with the `modifiers` prop, which is an object with key-value pairs representing
+the modifier name and its options object, respectively. See the
+[Popper.js modifiers docs page](https://popper.js.org/docs/v2/modifiers/) for more info.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Auto placement requires flip modifier</h5>
 
 Be careful when disabling the "flip" modifier, since the default "auto" placement relies on it. If you _do_ decide
@@ -177,7 +175,7 @@ It is important to pay attention to the value of the `nextOpenState` parameter a
 in your application logic whether you should care about a particular invocation (for instance,
 if the `nextOpenState` is not the same as the __Popover__'s current state).
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Disabling controlled popovers</h5>
 
 If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
@@ -242,7 +240,7 @@ The following example demonstrates the various interaction kinds (note: these Po
 
 @reactExample PopoverInteractionKindExample
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Conditionally styling popover targets</h5>
 
 When a popover is open, `Classes.POPOVER_OPEN` is applied to the target.
@@ -252,28 +250,22 @@ You can use this to style the target differently when the popover is open.
 
 @### Closing on click
 
-Sometimes it is desirable for an element inside a Popover's content to close the popover
-on click. Popover supports a pair of CSS classes, `Classes.POPOVER_DISMISS`
-and `Classes.POPOVER_DISMISS_OVERRIDE`, which can be added to elements to
+Sometimes it is desirable for an element inside a Popover's content to close the popover on click. Popover supports a
+pair of CSS classes, `Classes.POPOVER_DISMISS` and `Classes.POPOVER_DISMISS_OVERRIDE`, which can be added to elements to
 describe whether click events should dismiss the enclosing popover.
 
-To mark an element (and its children) as "dismiss elements", simply add the
-class `Classes.POPOVER_DISMISS`. For example, the **Cancel** and **Delete** buttons in the
-top-level [Popover example](#core/components/popover) have this class, and all
-MenuItems receive this class by default (see `shouldDismissPopover` prop). To
-enable this behavior on the entire popover body, pass
-`popoverClassName={Classes.POPOVER_DISMISS}`.
+To mark an element (and its children) as "dismiss elements", you may add the class `Classes.POPOVER_DISMISS`.
+For example, the **Cancel** and **Delete** buttons in the top-level [Popover example](#core/components/popover) have
+this class, and all MenuItems receive this class by default (see `shouldDismissPopover` prop). To enable this behavior
+on the entire popover body, pass `popoverClassName={Classes.POPOVER_DISMISS}`.
 
-Cancel the dismiss behavior on subtrees by nesting
-`Classes.POPOVER_DISMISS_OVERRIDE` inside `Classes.POPOVER_DISMISS`. Clicks
-originating inside disabled elements (either via the `disabled` attribute or
-`Classes.DISABLED`) will never dismiss a popover.
+Cancel the dismiss behavior on subtrees by nesting `Classes.POPOVER_DISMISS_OVERRIDE` inside `Classes.POPOVER_DISMISS`.
+Clicks originating inside disabled elements (either via the `disabled` attribute or `Classes.DISABLED`) will never
+dismiss a popover.
 
-Additionally, the prop `captureDismiss` (disabled by default) will prevent click
-events from dismissing _grandparent_ popovers (not the Popover immediately
-containing the dismiss element). MenuItem disables this feature such that
-clicking any submenu item will close all submenus, which is desirable behavior
-for a menu tree.
+Additionally, the prop `captureDismiss` (disabled by default) will prevent click events from dismissing _ancestor_
+popovers (not the Popover immediately containing the dismiss element). MenuItem disables this feature such that clicking
+any submenu item will close all submenus, which is desirable behavior for a menu tree.
 
 ```tsx
 <div className={Classes.POPOVER_DISMISS}>
@@ -289,10 +281,8 @@ for a menu tree.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
-Dismiss elements won't have any effect in a popover with
-`interactionKind="hover-target"`, because there is no way to
-interact with the popover content itself: the popover is dismissed the
-moment the user mouses away from the target.
+Dismiss elements won't have any effect in a popover with `interactionKind="hover-target"` because there is no way to
+interact with the popover content itself: the popover is dismissed the moment the user mouses away from the target.
 
 </div>
 
@@ -322,25 +312,25 @@ a translucent background color, like the backdrop for the [`Dialog`](#core/compo
 
 The backdrop element has the same opacity-fade transition as the `Dialog` backdrop.
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
     <h5 class="@ns-heading">Dangerous edge case</h5>
 
-Rendering a `<Popover isOpen={true} hasBackdrop={true}>` outside the viewport bounds can easily break
-your application by covering the UI with an invisible non-interactive backdrop. This edge case
-must be handled by your application code or simply avoided if possible.
+Rendering a `<Popover isOpen={true} hasBackdrop={true}>` outside the viewport bounds can easily break your application
+by covering the UI with an invisible non-interactive backdrop. This edge case must be handled by your application code
+or (if possible) avoided entirely.
 
 </div>
 
 @### Portal rendering
 
-By default, popover contents are rendered in a [`Portal`](#core/components/portal) appended to `document.body`. This
+By default, popover contents are rendered in a [__Portal__](#core/components/portal) appended to `document.body`. This
 allows the popover contents to "escape" the application DOM tree to avoid incompatible styles on ancestor elements.
 (Incompatible styles typically include hidden `overflow` or complex `position` logic.) It also ensures that the popover
 will appear above all other content, as its container element appears after the application container in the DOM.
 
 Disable the `usePortal` prop to render popover contents in the normal document flow as a sibling of the target.
 This behavior can be desirable to inherit CSS styles from surrounding elements, and can result in smoother performance
-when scrolling. Not using a `Portal` works well for most layouts, because popovers style themselves to appear above
+when scrolling. Not using a __Portal__ works well for most layouts, because popovers style themselves to appear above
 everything else on the page without needing to manually adjust z-indices, and Popper.js will keep them nicely positioned.
 
 @reactExample PopoverPortalExample
@@ -353,17 +343,16 @@ __Popover__ automatically detects whether its trigger is nested inside a `.@ns-d
 same class to itself. You can also explicitly apply the dark theme to the React component by providing the prop
 `popoverClassName="@ns-dark"`.
 
-As a result, any component that you place inside a __Popover__ (such as a `Menu`) automatically
-inherits the dark theme styles. Note that [`Tooltip`](#core/components/tooltip) uses __Popover__ internally,
-so it also benefits from this behavior.
+As a result, any component that you place inside a __Popover__ (such as a `Menu`) automatically inherits the dark theme
+styles. Note that [`Tooltip`](#core/components/tooltip) uses __Popover__ internally, so it also benefits from this
+behavior.
 
-This behavior can be disabled (if the __Popover__ uses a `Portal`) via the `inheritDarkTheme` prop.
+This behavior can be disabled (if the __Popover__ uses a __Portal__) via the `inheritDarkTheme` prop.
 
 @### Sizing
 
-Popovers by default have a `max-width` but no `max-height`. To constrain the height of a popover
-and make its content scrollable, add a custom class to your popover content element and attach
-styles to that class:
+Popovers by default have a `max-width` but no `max-height`. To constrain the height of a popover and make its content
+scrollable, add a custom class to your popover content element and attach styles to that class:
 
 ```tsx
 <Popover content={<div className="custom-class">...</div>}>...</Popover>
@@ -404,10 +393,9 @@ Your best resource for strategies in popover testing is
 
 #### Animation delays
 
-__Popover__ can be difficult to test because it uses `Portal` to inject its contents elsewhere in the
-DOM (outside the usual flow); this can be simplified by setting `usePortal={false}` in tests.
-Hover interactions can also be tricky due to delays and transitions; this can be resolved by
-zeroing the default hover delays.
+__Popover__ can be difficult to test because it uses __Portal__ to inject its contents elsewhere in the DOM (outside the
+usual flow); this can be simplified by setting `usePortal={false}` in tests.  Hover interactions can also be tricky due
+to delays and transitions; this can be resolved by zeroing the default hover delays.
 
 ```tsx
 <Popover {...yourProps} usePortal={false} hoverCloseDelay={0} hoverOpenDelay={0}>
@@ -417,10 +405,11 @@ zeroing the default hover delays.
 
 #### Rendering delays
 
-__Popover__ delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to the target,
-which may require special handling depending on the current [`interactionKind`](#core/components/popover.interactions).
-Popper.js also throttles rendering updates to improve performance. If your components are not updating in a synchronous fashion
-as expected, you may need to introduce a `setTimeout` to wait for asynchronous Popover rendering to catch up:
+__Popover__ delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to
+the target, which may require special handling depending on the current
+[`interactionKind`](#core/components/popover.interactions). Popper.js also throttles rendering updates to improve
+performance. If your components are not updating in a synchronous fashion as expected, you may need to introduce a
+`setTimeout` to wait for asynchronous Popover rendering to catch up:
 
 ```tsx
 import { Classes, Overlay, Popover } from "@blueprintjs/core";
@@ -449,11 +438,10 @@ setTimeout(() => {
 
 #### Element refs
 
-If `usePortal={false}` rendering is not an option, __Popover__ instances expose `popoverElement` and
-`targetElement` refs of the actual DOM elements. Importantly, `popoverElement` points to the
-`.@ns-popover` element inside the `Portal` so you can use it to easily query popover contents without
-knowing precisely where they are in the DOM. These properties exist primarily to simplify testing;
-do not rely on them for feature work.
+If `usePortal={false}` rendering is not an option, __Popover__ instances expose `popoverElement` and `targetElement`
+refs of the actual DOM elements. Importantly, `popoverElement` points to the `.@ns-popover` element inside the
+__Portal__ so you can use it to easily query popover contents without knowing precisely where they are in the DOM.
+These properties exist primarily to simplify testing; do not rely on them for feature work.
 
 ```tsx
 // using mount() from enzyme

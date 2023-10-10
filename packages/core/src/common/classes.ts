@@ -109,9 +109,16 @@ export const BUTTON_SPINNER = `${BUTTON}-spinner`;
 export const BUTTON_TEXT = `${BUTTON}-text`;
 
 export const CALLOUT = `${NS}-callout`;
+export const CALLOUT_HAS_BODY_CONTENT = `${CALLOUT}-has-body-content`;
 export const CALLOUT_ICON = `${CALLOUT}-icon`;
 
 export const CARD = `${NS}-card`;
+export const CONTROL_CARD = `${NS}-control-card`;
+export const CONTROL_CARD_LABEL = `${CONTROL_CARD}-label`;
+export const SWITCH_CONTROL_CARD = `${NS}-switch-control-card`;
+
+export const CARD_LIST = `${NS}-card-list`;
+export const CARD_LIST_BORDERED = `${CARD_LIST}-bordered`;
 
 export const COLLAPSE = `${NS}-collapse`;
 export const COLLAPSE_BODY = `${COLLAPSE}-body`;
@@ -171,6 +178,9 @@ export const INPUT_ACTION = `${INPUT}-action`;
 
 export const RESIZABLE_INPUT_SPAN = `${NS}-resizable-input-span`;
 
+export const TEXT_AREA = `${NS}-text-area`;
+export const TEXT_AREA_AUTO_RESIZE = `${TEXT_AREA}-auto-resize`;
+
 export const CONTROL = `${NS}-control`;
 export const CONTROL_INDICATOR = `${CONTROL}-indicator`;
 export const CONTROL_INDICATOR_CHILD = `${CONTROL_INDICATOR}-child`;
@@ -200,6 +210,8 @@ export const FORM_GROUP_SUB_LABEL = `${NS}-form-group-sub-label`;
 
 export const MENU = `${NS}-menu`;
 export const MENU_ITEM = `${MENU}-item`;
+export const MENU_ITEM_IS_SELECTABLE = `${MENU_ITEM}-is-selectable`;
+export const MENU_ITEM_SELECTED_ICON = `${MENU_ITEM}-selected-icon`;
 export const MENU_ITEM_ICON = `${MENU_ITEM}-icon`;
 export const MENU_ITEM_LABEL = `${MENU_ITEM}-label`;
 export const MENU_SUBMENU = `${NS}-submenu`;
@@ -223,7 +235,7 @@ export const SECTION_HEADER_SUB_TITLE = `${SECTION_HEADER}-sub-title`;
 export const SECTION_HEADER_DIVIDER = `${SECTION_HEADER}-divider`;
 export const SECTION_HEADER_TABS = `${SECTION_HEADER}-tabs`;
 export const SECTION_HEADER_RIGHT = `${SECTION_HEADER}-right`;
-export const SECTION_PANEL = `${SECTION}-panel`;
+export const SECTION_CARD = `${SECTION}-card`;
 
 export const NAVBAR = `${NS}-navbar`;
 export const NAVBAR_GROUP = `${NAVBAR}-group`;

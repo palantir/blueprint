@@ -1,17 +1,17 @@
 @# Toast
 
-A toast is a lightweight, ephemeral notice from an application in direct response to a user's action.
+A __Toast__ is a lightweight, ephemeral notice from an application in direct response to a user's action.
 
-Toasts can be configured to appear at either the top or the bottom of an application window, and it is possible to
+__Toasts__ can be configured to appear at either the top or the bottom of an application window, and it is possible to
 have more than one toast onscreen at a time.
 
 @reactExample ToastExample
 
-@## Props
+@## Usage
 
 @### Toast
 
-`Toast`s have a built-in timeout of five seconds. Users can also dismiss them manually by clicking the &times; button.
+__Toasts__ have a built-in timeout of five seconds. Users can also dismiss them manually by clicking the &times; button.
 Hovering the cursor over a toast prevents it from disappearing. When the cursor leaves the toast, the toast's timeout restarts.
 Similarly, focusing the toast (for example, by hitting the `tab` key) halts the timeout, and blurring restarts the timeout.
 
@@ -56,15 +56,15 @@ There are three ways to use __OverlayToaster__:
     myToaster.current?.show({ ...toastOptions });
     ```
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Working with multiple toasters</h5>
 
-You can have multiple toasters in a single application, but you must ensure that each has a unique
-`position` to prevent overlap.
+You can have multiple toasters in a single application, but you must ensure that each has a unique `position` to
+prevent overlap.
 
 </div>
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Toaster focus</h5>
 
 __OverlayToaster__ always disables Overlay's `enforceFocus` behavior (meaning that you're not blocked

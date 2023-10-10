@@ -7,6 +7,8 @@
 @page button-group
 @page callout
 @page card
+@page card-list
+@page control-card
 @page collapse
 @page divider
 @page editable-text
@@ -43,9 +45,10 @@
 
 @## Form inputs
 
+@page input-group
+@page text-area
 @page file-input
 @page numeric-input
-@page text-inputs
 @page tag-input
 
 @## Overlays

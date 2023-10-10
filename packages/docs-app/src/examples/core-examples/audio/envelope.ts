@@ -47,9 +47,9 @@ export class Envelope {
         const now = this.context.currentTime;
         // The below code helps remove waveform popping artifacts, but there is
         // a bug in Firefox that breaks the whole example if we use it.
-        // this.amplitude.cancelScheduledValues(now);
-        // this.amplitude.setValueAtTime(this.amplitude.value, now);
-        this.amplitude.exponentialRampToValueAtTime(0.01, now + this.releaseTime);
+        this.amplitude.cancelScheduledValues(now);
+        this.amplitude.setValueAtTime(this.sustainLevel, now);
+        this.amplitude.exponentialRampToValueAtTime(0.1, now + this.releaseTime);
         this.amplitude.linearRampToValueAtTime(0, now + this.releaseTime + 0.01);
     }
 }

@@ -70,7 +70,17 @@ export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
         const { isOpen, inputProps, overlayProps, ...restProps } = this.props;
         const initialContent = "initialContent" in this.props ? this.props.initialContent : null;
 
-        return <QueryList<T> {...restProps} initialContent={initialContent} renderer={this.renderQueryList} />;
+        return (
+            <QueryList<T>
+                {...restProps}
+                // Omnibar typically does not keep track of and/or show its selection state like other
+                // select components, so it's more of a menu than a listbox. This means that users should return
+                // MenuItems with roleStructure="menuitem" (the default value) in `props.itemRenderer`.
+                menuProps={{ role: "menu" }}
+                initialContent={initialContent}
+                renderer={this.renderQueryList}
+            />
+        );
     }
 
     private renderQueryList = (listProps: QueryListRendererProps<T>) => {

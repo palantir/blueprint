@@ -23,7 +23,7 @@ type DateInputLegacyDefaultValue = Date | undefined;
 type DateInputLegacyChangeHandler = (selectedDate: Date | null, isUserChange: boolean) => void;
 
 /**
- * `onChange` prop adapter for automated DateInput -> DateInput2 migrations.
+ * `onChange` prop adapter for automated DateInput -> DateInput2 migration in @blueprintjs/datetime2 v0.x.
  *
  * Note that we exclude `undefined` from the input & output types since we expect the callback to be defined
  * if this adapter is used.
@@ -41,7 +41,7 @@ export function onChangeAdapter(handler: DateInputLegacyChangeHandler): NonNulla
 }
 
 /**
- * `value` prop adapter for automated DateInput -> DateInput2 migrations.
+ * `value` prop adapter for automated DateInput -> DateInput2 migration in @blueprintjs/datetime2 v0.x.
  *
  * @param value DateInput value
  * @param timePrecision (optional) DateInput timePrecision
@@ -55,7 +55,7 @@ export function valueAdapter(value: DateInputLegacyValue, timePrecision?: TimePr
 }
 
 /**
- * Adapter for automated DateInput -> DateInput2 migrations.
+ * Adapter for automated DateInput -> DateInput2 migration in @blueprintjs/datetime2 v0.x.
  *
  * @param defaultValue DateInput value
  * @param timePrecision (optional) DateInput timePrecision

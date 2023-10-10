@@ -30,7 +30,7 @@ export const iconComponentsRule = createRule<Options, MessageIds>({
     meta: {
         docs: {
             description: "Enforce usage of JSX Icon components over IconName string literals (or vice-versa)",
-            recommended: "error",
+            recommended: "recommended",
             requiresTypeChecking: false,
         },
         fixable: "code",
@@ -40,6 +40,7 @@ export const iconComponentsRule = createRule<Options, MessageIds>({
         },
         schema: [
             {
+                type: "string",
                 enum: [OPTION_COMPONENT, OPTION_LITERAL],
             },
         ],

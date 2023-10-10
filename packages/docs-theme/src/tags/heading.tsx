@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IHeadingTag } from "@documentalist/client";
+import type { IHeadingTag } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 

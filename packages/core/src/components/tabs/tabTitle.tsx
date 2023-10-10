@@ -21,7 +21,7 @@ import { AbstractPureComponent, Classes, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { Tag } from "../tag/tag";
-import { TabId, TabProps } from "./tab";
+import type { TabId, TabProps } from "./tab";
 
 export interface TabTitleProps extends TabProps {
     /** Optional contents. */

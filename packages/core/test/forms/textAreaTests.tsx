@@ -35,7 +35,54 @@ describe("<TextArea>", () => {
         containerElement!.remove();
     });
 
+    it("No manual resizes when autoResize enabled", () => {
+        const wrapper = mount(<TextArea autoResize={true} />, { attachTo: containerElement });
+        const textarea = wrapper.find("textarea");
+
+        textarea.simulate("change", { target: { scrollHeight: 500 } });
+
+        assert.notEqual(textarea.getDOMNode<HTMLElement>().style.height, "500px");
+    });
+
+    it("resizes with large initial input when autoResize enabled", () => {
+        const initialValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Aenean finibus eget enim non accumsan.
+        Nunc lobortis luctus magna eleifend consectetur.
+        Suspendisse ut semper sem, quis efficitur felis.
+        Praesent suscipit nunc non semper tempor.
+        Sed eros sapien, semper sed imperdiet sed,
+        dictum eget purus. Donec porta accumsan pretium.
+        Fusce at felis mattis, tincidunt erat non, varius erat.`;
+        const wrapper = mount(<TextArea value={initialValue} autoResize={true} />, { attachTo: containerElement });
+        const textarea = wrapper.find("textarea");
+
+        const scrollHeightInPixels = `${textarea.getDOMNode<HTMLElement>().scrollHeight}px`;
+
+        assert.equal(textarea.getDOMNode<HTMLElement>().style.height, scrollHeightInPixels);
+    });
+
+    it("resizes with long text input when autoResize enabled", () => {
+        const initialValue = "A";
+        const nextValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Aenean finibus eget enim non accumsan.
+        Nunc lobortis luctus magna eleifend consectetur.
+        Suspendisse ut semper sem, quis efficitur felis.
+        Praesent suscipit nunc non semper tempor.
+        Sed eros sapien, semper sed imperdiet sed,
+        dictum eget purus. Donec porta accumsan pretium.
+        Fusce at felis mattis, tincidunt erat non, varius erat.`;
+        const wrapper = mount(<TextArea value={initialValue} autoResize={true} />, { attachTo: containerElement });
+        const textarea = wrapper.find("textarea");
+
+        const scrollHeightInPixelsBefore = `${textarea.getDOMNode<HTMLElement>().scrollHeight}px`;
+        wrapper.setProps({ value: nextValue }).update();
+        const scrollHeightInPixelsAfter = `${textarea.getDOMNode<HTMLElement>().scrollHeight}px`;
+
+        assert.notEqual(scrollHeightInPixelsBefore, scrollHeightInPixelsAfter);
+    });
+
     // HACKHACK: skipped test, see https://github.com/palantir/blueprint/issues/5976
+    // Note that growVertically is deprecated as of 28/07/2023
     it.skip("can resize automatically", () => {
         const wrapper = mount(<TextArea growVertically={true} />, { attachTo: containerElement });
         const textarea = wrapper.find("textarea");
@@ -59,7 +106,7 @@ describe("<TextArea>", () => {
     });
 
     it("doesn't clobber user-supplied styles", () => {
-        const wrapper = mount(<TextArea growVertically={true} style={{ marginTop: 10 }} />, {
+        const wrapper = mount(<TextArea autoResize={true} style={{ marginTop: 10 }} />, {
             attachTo: containerElement,
         });
         const textarea = wrapper.find("textarea");
@@ -70,6 +117,7 @@ describe("<TextArea>", () => {
     });
 
     // HACKHACK: skipped test, see https://github.com/palantir/blueprint/issues/5976
+    // Note that growVertically is deprecated as of 28/07/2023
     it.skip("can fit large initial content", () => {
         const initialValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Aenean finibus eget enim non accumsan.
@@ -126,6 +174,7 @@ describe("<TextArea>", () => {
     });
 
     // HACKHACK: skipped test, see https://github.com/palantir/blueprint/issues/5976
+    // Note that growVertically is deprecated as of 28/07/2023
     it.skip("resizes when props change if growVertically is true", () => {
         const initialText = "A";
         const longText = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";

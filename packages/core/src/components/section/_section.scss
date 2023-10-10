@@ -2,19 +2,24 @@
 @import "../../common/variables";
 
 $section-min-height: $pt-grid-size * 5 !default;
-$section-vertical-padding: $pt-grid-size !default;
-$section-horizontal-padding: $pt-grid-size * 2 !default;
-$section-panel-padding: $pt-grid-size * 2 !default;
+$section-padding-vertical: $pt-grid-size !default;
+$section-padding-horizontal: $pt-grid-size * 2 !default;
+$section-card-padding: $pt-grid-size * 2 !default;
 
-$section-compact-min-height: $pt-grid-size * 4 !default;
-$section-compact-vertical-padding: 7px !default;
-$section-compact-horizontal-padding: 15px !default;
-$section-compact-panel-padding: $pt-grid-size * 1.5 !default;
+$section-min-height-compact: $pt-grid-size * 4 !default;
+$section-padding-compact-vertical: 7px !default;
+$section-padding-compact-horizontal: 15px !default;
+$section-card-padding-compact: $pt-grid-size * 1.5 !default;
 
 .#{$ns}-section {
   overflow: hidden;
-  padding: 0;
   width: 100%;
+
+  &,
+  &.#{$ns}-compact {
+    // override Card compact styles here
+    padding: 0;
+  }
 
   &-header {
     align-items: center;
@@ -23,7 +28,7 @@ $section-compact-panel-padding: $pt-grid-size * 1.5 !default;
     gap: $pt-grid-size * 2;
     justify-content: space-between;
     min-height: $section-min-height;
-    padding: 0 $section-horizontal-padding;
+    padding: 0 $section-padding-horizontal;
     position: relative;
     width: 100%;
 
@@ -36,7 +41,7 @@ $section-compact-panel-padding: $pt-grid-size * 1.5 !default;
       align-items: center;
       display: flex;
       gap: $pt-grid-size;
-      padding: $section-vertical-padding 0;
+      padding: $section-padding-vertical 0;
     }
 
     &-title {
@@ -74,9 +79,9 @@ $section-compact-panel-padding: $pt-grid-size * 1.5 !default;
     }
   }
 
-  &-panel {
+  &-card {
     &.#{$ns}-padded {
-      padding: $section-panel-padding;
+      padding: $section-card-padding;
     }
 
     &:not(:last-child) {
@@ -97,16 +102,16 @@ $section-compact-panel-padding: $pt-grid-size * 1.5 !default;
 
   &.#{$ns}-compact {
     .#{$ns}-section-header {
-      min-height: $section-compact-min-height;
-      padding: 0 $section-compact-horizontal-padding;
+      min-height: $section-min-height-compact;
+      padding: 0 $section-padding-compact-horizontal;
 
       &-left {
-        padding: $section-compact-vertical-padding 0;
+        padding: $section-padding-compact-vertical 0;
       }
     }
 
-    .#{$ns}-section-panel.#{$ns}-padded {
-      padding: $section-compact-panel-padding;
+    .#{$ns}-section-card.#{$ns}-padded {
+      padding: $section-card-padding-compact;
     }
   }
 }

@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
-import { HotkeyConfig } from "../../hooks";
+import type { HotkeyConfig } from "../../hooks";
 import { KeyComboTag } from "./keyComboTag";
 
 export type HotkeyProps = Props & HotkeyConfig;

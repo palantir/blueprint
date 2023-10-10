@@ -41,15 +41,10 @@ Styleguide select
     &:disabled {
       @extend %pt-select-disabled;
     }
-
-    &::-ms-expand {
-      // IE11 styling to hide the arrow
-      display: none;
-    }
   }
 
   .#{$ns}-icon {
-    @extend %pt-select-arrow;
+    @extend %pt-select-icon;
     @include pt-icon-colors();
   }
 
@@ -98,14 +93,14 @@ Styleguide select
 
 .#{$ns}-html-select {
   .#{$ns}-icon {
-    @extend %pt-select-arrow;
+    @extend %pt-select-icon;
   }
 }
 
 // N.B. this icon implementation is deprecated and will be removed in Blueprint 6.0
 .#{$ns}-select {
   &::after {
-    @extend %pt-select-arrow;
+    @extend %pt-select-icon;
     @include pt-icon();
     content: map-get($blueprint-icon-codepoints, "double-caret-vertical");
   }

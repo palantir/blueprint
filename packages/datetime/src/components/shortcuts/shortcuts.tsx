@@ -52,7 +52,7 @@ export interface DatePickerShortcut extends DateShortcutBase {
     date: Date;
 }
 
-export interface ShortcutsProps {
+export interface DatePickerShortcutMenuProps {
     allowSingleDayRange: boolean;
     minDate: Date;
     maxDate: Date;
@@ -69,8 +69,14 @@ export interface ShortcutsProps {
     useSingleDateShortcuts?: boolean;
 }
 
-export class Shortcuts extends React.PureComponent<ShortcutsProps> {
-    public static defaultProps: Partial<ShortcutsProps> = {
+/**
+ * Menu of {@link DateRangeShortcut} items, typically displayed in the UI to the left of a day picker calendar.
+ *
+ * This component may be used for single date pickers as well as range pickers by toggling the
+ * `useSingleDateShortcuts` option.
+ */
+export class DatePickerShortcutMenu extends React.PureComponent<DatePickerShortcutMenuProps> {
+    public static defaultProps: Partial<DatePickerShortcutMenuProps> = {
         selectedShortcutIndex: -1,
     };
 

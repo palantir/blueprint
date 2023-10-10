@@ -19,7 +19,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
-import { DocsCompleteData } from "@blueprintjs/docs-data";
+import type { DocsCompleteData } from "@blueprintjs/docs-data";
 import { Banner, Documentation, DocumentationProps, NavMenuItem, NavMenuItemProps } from "@blueprintjs/docs-theme";
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";

@@ -20,13 +20,13 @@ import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils";
  * Return the top level node that is the greatest parent of the current node, if it is a Program.
  * Non-program top level parents return undefined.
  */
-export function getProgram(node: TSESTree.BaseNode & { type: AST_NODE_TYPES }): TSESTree.Program | undefined {
-    let curr = node;
+export function getProgram(node: TSESTree.BaseNode & TSESTree.NodeOrTokenData): TSESTree.Program | undefined {
+    let curr: TSESTree.BaseNode | TSESTree.Program = node;
     while (curr.parent != null) {
         curr = curr.parent;
     }
     if (curr.type === AST_NODE_TYPES.Program) {
-        return curr as TSESTree.Program;
+        return curr as unknown as TSESTree.Program;
     }
     return undefined;
 }

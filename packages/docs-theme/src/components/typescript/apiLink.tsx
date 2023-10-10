@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Props } from "@blueprintjs/core";
+import type { Props } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContext } from "../../common/context";

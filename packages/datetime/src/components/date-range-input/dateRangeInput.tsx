@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DateRangeInput3 in the datetime2
+ * package instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import { isSameDay, isValid } from "date-fns";
 import * as React from "react";
@@ -36,12 +44,13 @@ import {
 } from "@blueprintjs/core";
 
 import { Classes, DateFormatProps, DatePickerBaseProps, DateRange, NonNullDateRange } from "../../common";
-import { DatetimePopoverProps } from "../../common/datetimePopoverProps";
+import { getFormattedDateString } from "../../common/dateFormatProps";
+import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import { isDayInRange, isSameTime } from "../../common/dateUtils";
 import * as Errors from "../../common/errors";
 import { DatePickerUtils } from "../date-picker/datePickerUtils";
 import { DateRangePicker } from "../date-range-picker/dateRangePicker";
-import { DateRangeShortcut } from "../shortcuts/shortcuts";
+import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 
 // We handle events in a kind of generic way in this component, so here
 // we enumerate all the different kinds of events for which we have handlers.
@@ -95,7 +104,7 @@ export interface DateRangeInputProps extends DatePickerBaseProps, DateFormatProp
     fill?: boolean;
 
     /**
-     * Props to pass to the end-date [input group](#core/components/text-inputs.input-group).
+     * Props to pass to the end-date [input group](#core/components/input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
@@ -151,7 +160,7 @@ export interface DateRangeInputProps extends DatePickerBaseProps, DateFormatProp
     singleMonthOnly?: boolean;
 
     /**
-     * Props to pass to the start-date [input group](#core/components/text-inputs.input-group).
+     * Props to pass to the start-date [input group](#core/components/input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
@@ -214,6 +223,7 @@ interface StateKeysAndValuesObject {
  * Date range input component.
  *
  * @see https://blueprintjs.com/docs/#datetime/date-range-input
+ * @deprecated use `{ DateRangeInput3 } from "@blueprintjs/datetime2"` instead
  */
 export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, DateRangeInputState> {
     public static defaultProps: Partial<DateRangeInputProps> = {
@@ -686,7 +696,7 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
         // We may be reacting to a programmatic focus triggered by componentDidUpdate() at a point when
         // values.selectedValue may not have been updated yet in controlled mode, so we must use values.controlledValue
         // in that case.
-        const inputString = DatePickerUtils.getFormattedDateString(
+        const inputString = getFormattedDateString(
             isValueControlled ? values.controlledValue : values.selectedValue,
             this.props,
             true,
@@ -723,7 +733,7 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
             if (isValueControlled) {
                 nextState = {
                     ...nextState,
-                    [keys.inputString]: DatePickerUtils.getFormattedDateString(values.controlledValue, this.props),
+                    [keys.inputString]: getFormattedDateString(values.controlledValue, this.props),
                 };
             } else {
                 nextState = {
@@ -876,7 +886,7 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
         } else if (this.doesEndBoundaryOverlapStartBoundary(selectedValue, boundary)) {
             return this.props.overlappingDatesMessage;
         } else {
-            return DatePickerUtils.getFormattedDateString(selectedValue, this.props);
+            return getFormattedDateString(selectedValue, this.props);
         }
     };
 
@@ -1017,7 +1027,7 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
         const defaultDate = DateRangeInput.defaultProps[propName];
         // default values are applied only if a prop is strictly `undefined`
         // See: https://facebook.github.io/react/docs/react-component.html#defaultprops
-        return DatePickerUtils.getFormattedDateString(date === undefined ? defaultDate : date, this.props);
+        return getFormattedDateString(date === undefined ? defaultDate : date, this.props);
     }
 
     private parseDate(dateString: string | undefined): Date | null {

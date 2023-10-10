@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IHeadingNode, IPageNode } from "@documentalist/client";
+import type { IHeadingNode, IPageNode } from "@documentalist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as React from "react";
 
@@ -118,7 +118,6 @@ export class Navigator extends React.PureComponent<NavigatorProps> {
                 multiline={true}
                 onClick={props.handleClick}
                 onFocus={props.handleFocus}
-                roleStructure="listoption"
                 text={text}
             />
         );

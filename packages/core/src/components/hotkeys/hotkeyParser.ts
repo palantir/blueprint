@@ -58,21 +58,17 @@ export const CONFIG_ALIASES: KeyMap = {
     left: "ArrowLeft",
     down: "ArrowDown",
     right: "ArrowRight",
-    space: " ",
 };
 
+/**
+ * Key mapping used in getKeyCombo() implementation for physical keys which are not alphabet characters or digits.
+ *
+ * N.B. at some point, we should stop using this mapping, since we can implement the desired functionality in a more
+ * straightforward way by using the `event.code` property, which will always tell us the identifiers represented by the
+ * _values_ in this object (the default physical keys, unaltered by modifier keys or keyboard layout).
+ */
 export const SHIFT_KEYS: KeyMap = {
     "~": "`",
-    "!": "1",
-    "@": "2",
-    "#": "3",
-    $: "4",
-    "%": "5",
-    "^": "6",
-    "&": "7",
-    "*": "8",
-    "(": "9",
-    ")": "0",
     _: "-",
     "+": "=",
     "{": "[",
@@ -130,7 +126,10 @@ export const parseKeyCombo = (combo: string): KeyCombo => {
 };
 
 /**
- * Converts a keyboard event into a valid combo prop string
+ * Interprets a keyboard event as a valid KeyComboTag `combo` prop string value.
+ *
+ * Note that this function is only used in the docs example and tests; it is not used by `useHotkeys()` or any
+ * Blueprint consumers that we are currently aware of.
  */
 export const getKeyComboString = (e: KeyboardEvent): string => {
     const comboParts = [] as string[];
@@ -149,13 +148,17 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
         comboParts.push("meta");
     }
 
-    if (e.key !== undefined) {
-        if (e.key === " ") {
-            // special case for "space" key, which would otherwise be printed as illegible whitespace
+    const key = maybeGetKeyFromEventCode(e);
+    if (key !== undefined) {
+        comboParts.push(key);
+    } else {
+        if (e.code === "Space") {
             comboParts.push("space");
         } else if (MODIFIER_KEYS.has(e.key)) {
             // do nothing
-        } else {
+        } else if (e.shiftKey && SHIFT_KEYS[e.key] !== undefined) {
+            comboParts.push(SHIFT_KEYS[e.key]);
+        } else if (e.key !== undefined) {
             comboParts.push(e.key.toLowerCase());
         }
     }
@@ -163,18 +166,41 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
     return comboParts.join(" + ");
 };
 
+const KEY_CODE_PREFIX = "Key";
+const DIGIT_CODE_PREFIX = "Digit";
+
+function maybeGetKeyFromEventCode(e: KeyboardEvent) {
+    if (e.code == null) {
+        return undefined;
+    }
+
+    if (e.code.startsWith(KEY_CODE_PREFIX)) {
+        // Code looks like "KeyA", etc.
+        return e.code.substring(KEY_CODE_PREFIX.length).toLowerCase();
+    } else if (e.code.startsWith(DIGIT_CODE_PREFIX)) {
+        // Code looks like "Digit1", etc.
+        return e.code.substring(DIGIT_CODE_PREFIX.length).toLowerCase();
+    } else if (e.code === "Space") {
+        return "space";
+    }
+
+    return undefined;
+}
+
 /**
- * Determines the key combo object from the given keyboard event. Again, a key
- * combo includes zero or more modifiers (represented by a bitmask) and one
- * action key, which we determine from the `e.key` property of the keyboard
- * event.
+ * Determines the key combo object from the given keyboard event. A key combo includes zero or more modifiers
+ * (represented by a bitmask) and one physical key. For most keys, we prefer dealing with the `code` property of the
+ * event, since this is not altered by keyboard layout or the state of modifier keys. Fall back to using the `key`
+ * property.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
  */
 export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     let key: string | undefined;
     if (MODIFIER_KEYS.has(e.key)) {
-        // keep key undefined
+        // Leave local variable `key` undefined
     } else {
-        key = e.key?.toLowerCase();
+        key = maybeGetKeyFromEventCode(e) ?? e.key?.toLowerCase();
     }
 
     let modifiers = 0;

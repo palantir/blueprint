@@ -20,36 +20,21 @@ import { Button, Card, Classes, Elevation, H5, Label, Slider, Switch } from "@bl
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface CardExampleState {
+    compact: boolean;
     elevation: Elevation;
     interactive: boolean;
 }
 
 export class CardExample extends React.PureComponent<ExampleProps, CardExampleState> {
     public state: CardExampleState = {
+        compact: false,
         elevation: 0,
         interactive: false,
     };
 
     public render() {
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Switch checked={this.state.interactive} label="Interactive" onChange={this.handleInteractiveChange} />
-                <Label>
-                    Elevation
-                    <Slider
-                        max={4}
-                        showTrackFill={false}
-                        value={this.state.elevation}
-                        onChange={this.handleElevationChange}
-                        handleHtmlProps={{ "aria-label": "card elevation" }}
-                    />
-                </Label>
-            </>
-        );
-
         return (
-            <Example options={options} {...this.props}>
+            <Example options={this.renderOptions()} {...this.props}>
                 <Card {...this.state}>
                     <H5>Analytical applications</H5>
                     <p>
@@ -62,7 +47,27 @@ export class CardExample extends React.PureComponent<ExampleProps, CardExampleSt
         );
     }
 
+    private renderOptions = () => (
+        <>
+            <H5>Props</H5>
+            <Switch checked={this.state.interactive} label="Interactive" onChange={this.handleInteractiveChange} />
+            <Switch checked={this.state.compact} label="Compact" onChange={this.handleCompactChange} />
+            <Label>
+                Elevation
+                <Slider
+                    max={4}
+                    showTrackFill={false}
+                    value={this.state.elevation}
+                    onChange={this.handleElevationChange}
+                    handleHtmlProps={{ "aria-label": "card elevation" }}
+                />
+            </Label>
+        </>
+    );
+
     private handleElevationChange = (elevation: Elevation) => this.setState({ elevation });
 
     private handleInteractiveChange = () => this.setState({ interactive: !this.state.interactive });
+
+    private handleCompactChange = () => this.setState({ compact: !this.state.compact });
 }

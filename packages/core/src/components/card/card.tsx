@@ -42,6 +42,13 @@ export interface CardProps extends Props, HTMLDivProps, React.RefAttributes<HTML
     interactive?: boolean;
 
     /**
+     * Whether this component should use compact styles with reduced visual padding.
+     *
+     * @default false
+     */
+    compact?: boolean;
+
+    /**
      * Callback invoked when the card is clicked.
      * Recommended when `interactive` is `true`.
      */
@@ -54,10 +61,10 @@ export interface CardProps extends Props, HTMLDivProps, React.RefAttributes<HTML
  * @see https://blueprintjs.com/docs/#core/components/card
  */
 export const Card: React.FC<CardProps> = React.forwardRef((props, ref) => {
-    const { className, elevation, interactive, ...htmlProps } = props;
+    const { className, elevation, interactive, compact, ...htmlProps } = props;
     const classes = classNames(
         Classes.CARD,
-        { [Classes.INTERACTIVE]: interactive },
+        { [Classes.INTERACTIVE]: interactive, [Classes.COMPACT]: compact },
         Classes.elevationClass(elevation!),
         className,
     );

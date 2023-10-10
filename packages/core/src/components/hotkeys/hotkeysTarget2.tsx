@@ -54,7 +54,7 @@ export const HotkeysTarget2 = ({ children, hotkeys, options }: HotkeysTarget2Pro
                 console.error(Errors.HOTKEYS_TARGET_CHILDREN_LOCAL_HOTKEYS);
             }
         }
-    }, [hotkeys]);
+    }, [hotkeys, children]);
 
     if (typeof children === "function") {
         return children({ handleKeyDown, handleKeyUp });

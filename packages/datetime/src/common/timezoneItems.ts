@@ -15,7 +15,7 @@
  */
 
 import { lookupTimezoneOffset } from "./timezoneOffsetUtils";
-import { Timezone, TimezoneWithoutOffset } from "./timezoneTypes";
+import type { Timezone, TimezoneWithoutOffset } from "./timezoneTypes";
 
 const utcWithoutOffset: TimezoneWithoutOffset = { label: "UTC", ianaCode: "Etc/UTC" };
 
@@ -163,7 +163,7 @@ const timezonesWithoutOffset: TimezoneWithoutOffset[] = [
     { label: "Jerusalem", ianaCode: "Asia/Jerusalem" },
     { label: "Johannesburg", ianaCode: "Africa/Johannesburg" },
     { label: "Khartoum", ianaCode: "Africa/Khartoum" },
-    { label: "Kiev", ianaCode: "Europe/Kiev" },
+    { label: "Kyiv", ianaCode: "Europe/Kiev" },
     { label: "Maputo", ianaCode: "Africa/Maputo" },
     { label: "Kaliningrad", ianaCode: "Europe/Kaliningrad" },
     { label: "Nicosia", ianaCode: "Asia/Nicosia" },

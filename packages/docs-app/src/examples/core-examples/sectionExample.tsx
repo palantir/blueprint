@@ -17,17 +17,33 @@
 import dedent from "dedent";
 import * as React from "react";
 
-import { Button, Classes, EditableText, H5, Section, SectionPanel, Switch } from "@blueprintjs/core";
+import {
+    Button,
+    Classes,
+    EditableText,
+    Elevation,
+    H5,
+    Label,
+    Section,
+    SectionCard,
+    SectionElevation,
+    Slider,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 export interface SectionExampleState {
     collapsible: boolean;
+    defaultIsOpen: boolean;
+    elevation: SectionElevation;
     hasDescription: boolean;
     hasIcon: boolean;
-    hasMultiplePanels: boolean;
+    hasMultipleCards: boolean;
     hasRightElement: boolean;
     isCompact: boolean;
+    isControlled: boolean;
+    isOpen: boolean;
     isPanelPadded: boolean;
 }
 
@@ -41,37 +57,80 @@ const BASIL_DESCRIPTION_TEXT = dedent`
 export class SectionExample extends React.PureComponent<ExampleProps, SectionExampleState> {
     public state: SectionExampleState = {
         collapsible: false,
+        defaultIsOpen: true,
+        elevation: Elevation.ZERO,
         hasDescription: false,
         hasIcon: false,
-        hasMultiplePanels: false,
+        hasMultipleCards: false,
         hasRightElement: true,
         isCompact: false,
+        isControlled: false,
+        isOpen: true,
         isPanelPadded: true,
     };
 
     private editableTextRef = React.createRef<HTMLDivElement>();
 
     public render() {
-        const { collapsible, hasDescription, hasIcon, hasRightElement, hasMultiplePanels, isCompact, isPanelPadded } =
-            this.state;
+        const {
+            collapsible,
+            defaultIsOpen,
+            elevation,
+            hasDescription,
+            hasIcon,
+            hasRightElement,
+            hasMultipleCards,
+            isCompact,
+            isPanelPadded,
+        } = this.state;
 
         const options = (
             <>
                 <H5>Section Props</H5>
                 <Switch checked={isCompact} label="Compact" onChange={this.toggleIsCompact} />
                 <Switch checked={hasIcon} label="Icon" onChange={this.toggleHasIcon} />
-                <Switch checked={hasDescription} label="Description" onChange={this.toggleHasDescription} />
+                <Switch checked={hasDescription} label="Sub-title" onChange={this.toggleHasDescription} />
                 <Switch checked={hasRightElement} label="Right element" onChange={this.toggleHasRightElement} />
                 <Switch checked={collapsible} label="Collapsible" onChange={this.toggleCollapsible} />
+                <Label>
+                    Elevation
+                    <Slider
+                        max={1}
+                        showTrackFill={false}
+                        value={elevation}
+                        onChange={this.handleElevationChange}
+                        handleHtmlProps={{ "aria-label": "Section elevation" }}
+                    />
+                </Label>
+
+                <H5>Collapse Props</H5>
+                <Switch
+                    checked={defaultIsOpen}
+                    disabled={this.state.isControlled || !collapsible}
+                    label="Default is open"
+                    onChange={this.toggleDefaultIsOpen}
+                />
+                <Switch
+                    disabled={!collapsible}
+                    checked={this.state.isControlled}
+                    label="Is controlled"
+                    onChange={this.toggleIsControlled}
+                />
+                <Switch
+                    checked={this.state.isOpen}
+                    disabled={!this.state.isControlled || !collapsible}
+                    label="Open"
+                    onChange={this.toggleIsOpen}
+                />
 
                 <H5>Children</H5>
                 <Switch
-                    checked={hasMultiplePanels}
-                    label="Multiple section panels"
+                    checked={hasMultipleCards}
+                    label="Multiple section cards"
                     onChange={this.toggleMultiplePanels}
                 />
 
-                <H5>SectionPanel Props</H5>
+                <H5>SectionCard Props</H5>
                 <Switch checked={isPanelPadded} label="Padded" onChange={this.togglePanelIsPadded} />
             </>
         );
@@ -99,12 +158,22 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
             </div>
         );
 
+        const collapseProps = this.state.isControlled
+            ? { isOpen: this.state.isOpen, onToggle: this.toggleIsOpen }
+            : { defaultIsOpen };
+
         return (
             <Example options={options} {...this.props}>
                 <Section
+                    // A `key` is provided here to force the component to
+                    // re-mount when `defaultIsOpen` is changed, otherwise
+                    // the local state in the `Collapse` component is not
+                    // updated.
+                    key={String(defaultIsOpen)}
+                    collapsible={collapsible}
                     compact={isCompact}
-                    title="Basil"
-                    subtitle={hasDescription ? "Ocimum basilicum" : undefined}
+                    collapseProps={collapseProps}
+                    elevation={elevation}
                     icon={hasIcon ? IconNames.BOOK : undefined}
                     rightElement={
                         hasRightElement ? (
@@ -116,10 +185,11 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                             />
                         ) : undefined
                     }
-                    collapsible={collapsible}
+                    subtitle={hasDescription ? "Ocimum basilicum" : undefined}
+                    title="Basil"
                 >
-                    <SectionPanel padded={isPanelPadded}>{descriptionContent}</SectionPanel>
-                    {hasMultiplePanels && <SectionPanel padded={isPanelPadded}>{metadataContent}</SectionPanel>}
+                    <SectionCard padded={isPanelPadded}>{descriptionContent}</SectionCard>
+                    {hasMultipleCards && <SectionCard padded={isPanelPadded}>{metadataContent}</SectionCard>}
                 </Section>
             </Example>
         );
@@ -133,11 +203,19 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
 
     private toggleHasRightElement = () => this.setState({ hasRightElement: !this.state.hasRightElement });
 
-    private toggleMultiplePanels = () => this.setState({ hasMultiplePanels: !this.state.hasMultiplePanels });
+    private toggleMultiplePanels = () => this.setState({ hasMultipleCards: !this.state.hasMultipleCards });
 
     private toggleCollapsible = () => this.setState({ collapsible: !this.state.collapsible });
 
+    private toggleDefaultIsOpen = () => this.setState({ defaultIsOpen: !this.state.defaultIsOpen });
+
     private togglePanelIsPadded = () => this.setState({ isPanelPadded: !this.state.isPanelPadded });
+
+    private toggleIsControlled = () => this.setState({ isControlled: !this.state.isControlled });
+
+    private toggleIsOpen = () => this.setState({ isOpen: !this.state.isOpen });
+
+    private handleElevationChange = (elevation: SectionElevation) => this.setState({ elevation });
 
     private handleEditContent = (event: React.MouseEvent) => {
         // prevent this event from toggling the collapse state
