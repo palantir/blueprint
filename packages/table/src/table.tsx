@@ -34,7 +34,7 @@ import {
     HotkeysTarget,
 } from "@blueprintjs/core";
 
-import { CellRenderer } from "./cell/cell";
+import type { CellRenderer } from "./cell/cell";
 import { Column, ColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";

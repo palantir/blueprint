@@ -1,5 +1,5 @@
-import { WordSeparators } from "./sourceUtilities";
-import { Split } from "./utilities";
+import type { WordSeparators } from "./sourceUtilities";
+import type { Split } from "./utilities";
 
 /**
 Step by step takes the first item in an array literal, formats it and adds it to a string literal, and then recursively appends the remainder.

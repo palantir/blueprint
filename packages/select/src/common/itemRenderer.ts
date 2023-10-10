@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import type * as React from "react";
 
 export interface ItemModifiers {
     /** Whether this is the "active" (focused) item, meaning keyboard interactions will act upon it. */

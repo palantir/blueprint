@@ -25,7 +25,7 @@ import { Utils } from "../common/utils";
 import { Region, Regions } from "../regions";
 import { DragEvents } from "./dragEvents";
 import { Draggable } from "./draggable";
-import { CoordinateData, DraggableChildrenProps, DragHandler } from "./dragTypes";
+import type { CoordinateData, DraggableChildrenProps, DragHandler } from "./dragTypes";
 
 export type SelectedRegionTransform = (
     region: Region,

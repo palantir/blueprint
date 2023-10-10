@@ -23,10 +23,10 @@ import type { CellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { RenderMode } from "./common/renderMode";
-import { CoordinateData } from "./interactions/dragTypes";
+import type { CoordinateData } from "./interactions/dragTypes";
 import { ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
 import { DragSelectable, SelectableProps } from "./interactions/selectable";
-import { Locator } from "./locator";
+import type { Locator } from "./locator";
 import { Region, Regions } from "./regions";
 import { TableBodyCells, TableBodyCellsProps } from "./tableBodyCells";
 

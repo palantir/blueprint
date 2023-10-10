@@ -18,10 +18,10 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
-import { ColumnIndices } from "../common/grid";
+import type { ColumnIndices } from "../common/grid";
 import { Utils } from "../common/index";
-import { ClientCoordinates } from "../interactions/dragTypes";
-import { IndexedResizeCallback } from "../interactions/resizable";
+import type { ClientCoordinates } from "../interactions/dragTypes";
+import type { IndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
 import { ColumnHeaderCell, ColumnHeaderCellProps } from "./columnHeaderCell";

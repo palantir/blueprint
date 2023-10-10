@@ -16,7 +16,7 @@
 import type { ColumnProps } from "./column";
 import type { Rect } from "./common";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
-import { ScrollDirection } from "./common/scrollDirection";
+import type { ScrollDirection } from "./common/scrollDirection";
 import type { Region } from "./regions";
 
 export interface TableState {

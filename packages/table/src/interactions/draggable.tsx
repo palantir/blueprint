@@ -19,7 +19,7 @@ import * as React from "react";
 import { Utils as CoreUtils, Props } from "@blueprintjs/core";
 
 import { DragEvents } from "./dragEvents";
-import { DraggableChildrenProps, DragHandler } from "./dragTypes";
+import type { DraggableChildrenProps, DragHandler } from "./dragTypes";
 
 export type DraggableProps = Props & DragHandler & DraggableChildrenProps;
 

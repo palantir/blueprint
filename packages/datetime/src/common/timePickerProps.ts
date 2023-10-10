@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Props } from "@blueprintjs/core";
+import type { Props } from "@blueprintjs/core";
 
 import { TimePrecision } from "./timePrecision";
 import { TimeUnit } from "./timeUnit";

@@ -19,7 +19,7 @@ import type { FocusedCellCoordinates } from "./common/cellTypes";
 import { Clipboard } from "./common/clipboard";
 import { Direction } from "./common/direction";
 import { TABLE_COPY_FAILED } from "./common/errors";
-import { Grid } from "./common/grid";
+import type { Grid } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
 import { NonNullRegion, Region, RegionCardinality, Regions } from "./regions";

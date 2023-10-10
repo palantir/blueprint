@@ -66,14 +66,7 @@ export { Blockquote, Code, H1, H2, H3, H4, H5, H6, Label, OL, Pre, UL } from "./
 export { HTMLSelect, type HTMLSelectIconName, type HTMLSelectProps } from "./html-select/htmlSelect";
 export { HTMLTable, type HTMLTableProps } from "./html-table/htmlTable";
 export * from "./hotkeys";
-export {
-    type DefaultIconProps,
-    Icon,
-    type IconComponent,
-    type IconName,
-    type IconProps,
-    type IconSize,
-} from "./icon/icon";
+export { type DefaultIconProps, Icon, type IconComponent, type IconName, type IconProps, IconSize } from "./icon/icon";
 export { Menu, type MenuProps } from "./menu/menu";
 export { MenuDivider, type MenuDividerProps } from "./menu/menuDivider";
 export { MenuItem, type MenuItemProps } from "./menu/menuItem";
@@ -106,7 +99,7 @@ export type {
     StrictModifierNames,
 } from "./popover/popoverSharedProps";
 export { PopperPlacements } from "./popover/popperUtils";
-export type { PopupKind } from "./popover/popupKind";
+export { PopupKind } from "./popover/popupKind";
 export { Portal, type PortalProps, type PortalLegacyContext } from "./portal/portal";
 export { ProgressBar, type ProgressBarProps } from "./progress-bar/progressBar";
 export { type ResizeEntry, ResizeSensor, type ResizeSensorProps } from "./resize-sensor/resizeSensor";

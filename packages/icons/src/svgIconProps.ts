@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import type * as React from "react";
 
 type OmittedDOMAttributes = "children" | "dangerouslySetInnerHTML";
 
