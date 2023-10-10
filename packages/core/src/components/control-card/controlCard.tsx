@@ -47,7 +47,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
     /**
      * Whether the selected styles should apply when checked
      */
-    showAsSelectedWhenChecked?: boolean
+    showAsSelectedWhenChecked?: boolean;
 }
 
 /**
