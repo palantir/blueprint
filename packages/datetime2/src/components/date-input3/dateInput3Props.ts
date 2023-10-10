@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { DateFormatProps, DateInputProps } from "@blueprintjs/datetime";
+import type { DateFormatProps, DateInputProps } from "@blueprintjs/datetime";
 
-import { DatePicker3Props } from "../date-picker3/datePicker3Props";
+import type { DatePicker3Props } from "../date-picker3/datePicker3Props";
 
 /**
  * Props shared between DateInput v1 and v3.

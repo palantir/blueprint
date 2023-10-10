@@ -15,7 +15,7 @@
  */
 
 import * as React from "react";
-import { StyledComponent } from "react-day-picker";
+import type { StyledComponent } from "react-day-picker";
 
 import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 

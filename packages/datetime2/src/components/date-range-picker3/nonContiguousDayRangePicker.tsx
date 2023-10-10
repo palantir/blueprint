@@ -23,7 +23,7 @@ import { DateRange, DateRangeSelectionStrategy, DateUtils, MonthAndYear } from "
 import { Classes } from "../../classes";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { DatePicker3Caption } from "../react-day-picker/datePicker3Caption";
-import { DayRangePickerProps } from "./dayRangePickerProps";
+import type { DayRangePickerProps } from "./dayRangePickerProps";
 
 /**
  * Date range picker with two calendars which can move independently of each other.

@@ -18,7 +18,7 @@ import { formatInTimeZone } from "date-fns-tz";
 
 import { getCurrentTimezone } from "./getTimezone";
 import { MINIMAL_TIMEZONE_ITEMS, TIMEZONE_ITEMS } from "./timezoneItems";
-import { Timezone, TimezoneWithNames } from "./timezoneTypes";
+import type { Timezone, TimezoneWithNames } from "./timezoneTypes";
 
 const CURRENT_DATE = Date.now();
 const LONG_NAME_FORMAT_STR = "zzzz";

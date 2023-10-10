@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { DayPickerProps, LocaleUtils } from "react-day-picker";
+import type { DayPickerProps, LocaleUtils } from "react-day-picker";
 
 import type { TimePickerProps } from "./timePickerProps";
 import type { TimePrecision } from "./timePrecision";

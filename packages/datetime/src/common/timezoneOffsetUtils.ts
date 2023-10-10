@@ -16,7 +16,7 @@
 
 import { getTimezoneOffset } from "date-fns-tz";
 
-import { Timezone, TimezoneWithoutOffset } from "./timezoneTypes";
+import type { Timezone, TimezoneWithoutOffset } from "./timezoneTypes";
 
 /**
  * Augment hard-coded timezone information stored in this package with its current offset relative to UTC,

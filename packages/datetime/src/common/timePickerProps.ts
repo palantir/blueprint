@@ -16,8 +16,8 @@
 
 import type { Props } from "@blueprintjs/core";
 
-import { TimePrecision } from "./timePrecision";
-import { TimeUnit } from "./timeUnit";
+import type { TimePrecision } from "./timePrecision";
+import type { TimeUnit } from "./timeUnit";
 
 export interface TimePickerProps extends Props {
     /**
