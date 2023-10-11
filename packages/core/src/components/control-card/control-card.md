@@ -19,7 +19,7 @@ may be toggled with the `showAsSelectedWhenChecked` prop.
 
 @## Switch card
 
-Card with an embedded [**Switch**](#core/components/switch) control.
+Card with an embedded [**Switch**](#core/components/switch) control (right-aligned by default).
 
 Most of the properties in [**CardProps**](#core/components/card.props-interface) and
 [**SwitchProps**](#core/components/switch.props-interface) are available on the root component.
@@ -30,7 +30,7 @@ Most of the properties in [**CardProps**](#core/components/card.props-interface)
 
 @## Checkbox card
 
-Card with an embedded [**Checkbox**](#core/components/checkbox) control.
+Card with an embedded [**Checkbox**](#core/components/checkbox) control (left-aligned by default).
 
 Most of the properties in [**CardProps**](#core/components/card.props-interface) and
 [**CheckboxProps**](#core/components/checkbox.props-interface) are available on the root component.
