@@ -21,8 +21,10 @@ import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps } from "../../common/props";
 import { Card, CardProps } from "../card/card";
 import type { CheckedControlProps, ControlProps } from "../forms/controlProps";
-import { Switch } from "../forms/controls";
+import { Checkbox, Switch } from "../forms/controls";
 import { useCheckedControl } from "./useCheckedControl";
+
+export type ControlKind = "switch" | "checkbox";
 
 /**
  * Subset of {@link Card} which can be used to adjust its behavior.
@@ -38,7 +40,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
     /**
      * Which kind of form control to render inside the card.
      */
-    controlKind: "switch";
+    controlKind: ControlKind;
 
     // N.B. this is split out of the root properties in the inerface because it would conflict with CardProps' HTMLDivProps
     /**
@@ -80,24 +82,27 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
     // use a container element to achieve a good flex layout
     const labelElement = <div className={Classes.CONTROL_CARD_LABEL}>{labelContent}</div>;
     const controlProps: ControlProps = {
+        alignIndicator: "right",
         checked,
         disabled,
+        inline: true,
         inputRef,
         labelElement,
         onChange,
         ...inputProps,
     };
     const classes = classNames(Classes.CONTROL_CARD, className, {
-        [Classes.SWITCH_CONTROL_CARD]: controlKind === "switch",
         [Classes.SELECTED]: showAsSelectedWhenChecked && checked,
     });
 
     return (
         <Card interactive={!disabled} className={classes} ref={ref} {...cardProps}>
             {controlKind === "switch" ? (
-                <Switch inline={true} alignIndicator="right" {...controlProps} />
+                <Switch {...controlProps} />
+            ) : controlKind === "checkbox" ? (
+                <Checkbox {...controlProps} />
             ) : (
-                labelElement
+                props.children
             )}
         </Card>
     );

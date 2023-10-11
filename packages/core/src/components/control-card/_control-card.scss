@@ -14,9 +14,9 @@
   }
 }
 
-.#{$ns}-switch-control-card {
+.#{$ns}-control-card {
   // need a lot of specificity here to override control styles
-  .#{$ns}-switch.#{$ns}-control.#{$ns}-align-right {
+  .#{$ns}-control.#{$ns}-control.#{$ns}-align-right {
     align-items: center;
     display: flex;
     flex-direction: row-reverse;
@@ -40,7 +40,7 @@
     }
   }
 
-  &.#{$ns}-compact .#{$ns}-switch.#{$ns}-control.#{$ns}-align-right {
+  &.#{$ns}-compact .#{$ns}-control.#{$ns}-control.#{$ns}-align-right {
     padding: $card-padding-compact;
   }
 }

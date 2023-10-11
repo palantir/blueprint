@@ -8,7 +8,7 @@ A control card is an interactive [**Card**](#core/components/card) with an embed
 There are a few supported form controls:
 
 -   [**SwitchCard**](#core/components/control-card.switch-card)
--   CheckboxCard (_coming soon_)
+-   [**CheckboxCard**](#core/components/control-card.checkbox-card)
 -   RadioCard (_coming soon_)
 
 The children of a control card will be used as the `labelElement` of the form control. Users may click anywhere
@@ -17,20 +17,29 @@ inside the card to toggle the control state.
 By default, a "checked" control card will be displayed with the same appearance as a "selected" card. This behavior
 may be toggled with the `showAsSelectedWhenChecked` prop.
 
-@## SwitchCard
+@## Switch card
 
 Card with an embedded [**Switch**](#core/components/switch) control.
-
-@reactExample SwitchCardExample
-
-@### Props interface
 
 Most of the properties in [**CardProps**](#core/components/card.props-interface) and
 [**SwitchProps**](#core/components/switch.props-interface) are available on the root component.
 
+@reactExample SwitchCardExample
+
 @interface SwitchCardProps
 
-@## Composing with CardList
+@## Checkbox card
+
+Card with an embedded [**Checkbox**](#core/components/checkbox) control.
+
+Most of the properties in [**CardProps**](#core/components/card.props-interface) and
+[**CheckboxProps**](#core/components/checkbox.props-interface) are available on the root component.
+
+@reactExample CheckboxCardExample
+
+@interface CheckboxCardProps
+
+@## Combining with CardList
 
 Control cards work just like regular cards inside a [**CardList**](#core/components/card-list).
 

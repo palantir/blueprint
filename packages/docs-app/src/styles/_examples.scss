@@ -90,8 +90,11 @@
   }
 }
 
-#{example("SwitchCard")} {
-  .docs-control-card-grid {
+// SwitchCard, CheckboxCard, RadioCard
+.docs-control-card-group {
+  width: 100%;
+
+  .#{$ns}-form-content {
     display: grid;
     gap: $pt-grid-size * 2;
     grid-template-columns: repeat(auto-fit, minmax($pt-grid-size * 10, 1fr));
