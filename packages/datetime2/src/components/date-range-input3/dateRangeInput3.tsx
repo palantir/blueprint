@@ -19,7 +19,6 @@ import { isSameDay, isValid } from "date-fns";
 import * as React from "react";
 
 import {
-    AbstractPureComponent,
     Boundary,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
@@ -44,8 +43,8 @@ import {
 import { Classes } from "../../classes";
 import { getDateFnsFormatter, getDateFnsParser, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
-import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import { DateRangePicker3 } from "../date-range-picker3/dateRangePicker3";
+import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import type {
     DateRangeInput3DefaultProps,
     DateRangeInput3Props,
@@ -84,7 +83,7 @@ interface StateKeysAndValuesObject {
  *
  * @see https://blueprintjs.com/docs/#datetime2/date-range-input3
  */
-export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props, DateRangeInput3State> {
+export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Props, DateRangeInput3State> {
     public static defaultProps: DateRangeInput3DefaultProps = {
         allowSingleDayRange: false,
         closeOnSelection: true,
@@ -140,11 +139,12 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
     }
 
     public async componentDidMount() {
-        await this.loadLocale(this.props.locale);
+        await super.componentDidMount();
     }
 
-    public async componentDidUpdate(prevProps: DateRangeInput3Props, prevState: DateRangeInput3State) {
-        super.componentDidUpdate(prevProps, prevState);
+    public async componentDidUpdate(prevProps: DateRangeInput3Props) {
+        super.componentDidUpdate(prevProps);
+
         const { isStartInputFocused, isEndInputFocused, shouldSelectAfterUpdate } = this.state;
 
         if (prevProps.startInputProps?.inputRef !== this.props.startInputProps?.inputRef) {
@@ -194,11 +194,7 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
             nextState = { ...nextState, formattedMaxDateString };
         }
 
-        if (this.props.locale !== prevProps.locale) {
-            await this.loadLocale(this.props.locale);
-        }
-
-        this.setState(nextState as DateRangeInput3State);
+        this.setState(nextState);
     }
 
     public render() {
@@ -237,47 +233,11 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
         );
     }
 
-    // HACKHACK: type fix for setState which does not accept partial state objects in our outdated version of
-    // @types/react (v16.14.32)
-    public setState<K extends keyof DateRangeInput3State>(
-        nextStateOrAction:
-            | Partial<DateRangeInput3State>
-            | null
-            | ((
-                  prevState: DateRangeInput3State,
-                  prevProps: DateRangeInput3Props,
-              ) => Pick<DateRangeInput3State, K> | null),
-        callback?: () => void,
-    ) {
-        if (typeof nextStateOrAction === "function") {
-            super.setState(nextStateOrAction, callback);
-        } else {
-            super.setState(nextStateOrAction as DateRangeInput3State);
-        }
-    }
-
     protected validateProps(props: DateRangeInput3Props) {
         if (props.value === null) {
             // throw a blocking error here because we don't handle a null value gracefully across this component
             // (it's not allowed by TS under strict null checks anyway)
             throw new Error(Errors.DATERANGEINPUT_NULL_VALUE);
-        }
-    }
-
-    private async loadLocale(localeOrCode: string | Locale | undefined) {
-        if (localeOrCode === undefined) {
-            return;
-        } else if (this.state.locale?.code === localeOrCode) {
-            return;
-        }
-
-        if (typeof localeOrCode === "string") {
-            const loader = this.props.dateFnsLocaleLoader ?? loadDateFnsLocale;
-            const locale = await loader(localeOrCode);
-            this.setState({ locale });
-            this.forceUpdate();
-        } else {
-            this.setState({ locale: localeOrCode });
         }
     }
 
