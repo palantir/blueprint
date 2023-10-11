@@ -19,7 +19,7 @@ import { format } from "date-fns";
 import * as React from "react";
 import type { DateFormatter, DayModifiers, DayMouseEventHandler, ModifiersClassNames } from "react-day-picker";
 
-import { AbstractPureComponent, Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
+import { Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 import {
     DatePickerShortcutMenu,
     DatePickerUtils,
@@ -33,11 +33,11 @@ import {
 } from "@blueprintjs/datetime";
 
 import { Classes, dayPickerClassNameOverrides } from "../../classes";
-import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { DatePicker3Provider } from "../date-picker3/datePicker3Context";
+import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import { ContiguousDayRangePicker } from "./contiguousDayRangePicker";
-import type { DateRangePicker3Props } from "./dateRangePicker3Props";
+import type { DateRangePicker3DefaultProps, DateRangePicker3Props } from "./dateRangePicker3Props";
 import type { DateRangePicker3State } from "./dateRangePicker3State";
 import { NonContiguousDayRangePicker } from "./nonContiguousDayRangePicker";
 
@@ -50,8 +50,8 @@ const NULL_RANGE: DateRange = [null, null];
  *
  * @see https://blueprintjs.com/docs/#datetime2/date-range-picker3
  */
-export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Props, DateRangePicker3State> {
-    public static defaultProps: DateRangePicker3Props = {
+export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3Props, DateRangePicker3State> {
+    public static defaultProps: DateRangePicker3DefaultProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dayPickerProps: {},
@@ -149,10 +149,12 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
     }
 
     public async componentDidMount() {
-        await this.loadLocale(this.props.locale);
+        await super.componentDidMount();
     }
 
     public async componentDidUpdate(prevProps: DateRangePicker3Props) {
+        super.componentDidUpdate(prevProps);
+
         const isControlled = prevProps.value !== undefined && this.props.value !== undefined;
 
         if (prevProps.contiguousCalendarMonths !== this.props.contiguousCalendarMonths) {
@@ -169,29 +171,6 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
 
         if (this.props.selectedShortcutIndex !== prevProps.selectedShortcutIndex) {
             this.setState({ selectedShortcutIndex: this.props.selectedShortcutIndex });
-        }
-
-        if (this.props.locale !== prevProps.locale) {
-            await this.loadLocale(this.props.locale);
-        }
-    }
-
-    // HACKHACK: type fix for setState which does not accept partial state objects in our outdated version of
-    // @types/react (v16.14.32)
-    public setState<K extends keyof DateRangePicker3State>(
-        nextStateOrAction:
-            | Partial<DateRangePicker3State>
-            | null
-            | ((
-                  prevState: DateRangePicker3State,
-                  prevProps: DateRangePicker3Props,
-              ) => Pick<DateRangePicker3State, K> | null),
-        callback?: () => void,
-    ) {
-        if (typeof nextStateOrAction === "function") {
-            super.setState(nextStateOrAction, callback);
-        } else {
-            super.setState(nextStateOrAction as DateRangePicker3State);
         }
     }
 
@@ -217,22 +196,6 @@ export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Prop
 
         if (boundaryToModify != null && boundaryToModify !== Boundary.START && boundaryToModify !== Boundary.END) {
             console.error(Errors.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID);
-        }
-    }
-
-    private async loadLocale(localeOrCode: string | Locale | undefined) {
-        if (localeOrCode === undefined) {
-            return;
-        } else if (this.state.locale?.code === localeOrCode) {
-            return;
-        }
-
-        if (typeof localeOrCode === "string") {
-            const loader = this.props.dateFnsLocaleLoader ?? loadDateFnsLocale;
-            const locale = await loader(localeOrCode);
-            this.setState({ locale });
-        } else {
-            this.setState({ locale: localeOrCode });
         }
     }
 

@@ -17,6 +17,7 @@
 import { expect } from "chai";
 import { format, parse } from "date-fns";
 import * as Locales from "date-fns/locale";
+import esLocale from "date-fns/locale/es";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -96,10 +97,10 @@ describe("<DateRangeInput3>", () => {
 
     const START_DATE_2 = new Date(2022, Months.JANUARY, 1);
     const START_STR_2 = DATE_FORMAT.formatDate(START_DATE_2);
-    const START_DE_STR_2 = "01.01.2022";
+    const START_STR_2_ES_LOCALE = "1 de enero de 2022";
     const END_DATE_2 = new Date(2022, Months.JANUARY, 31);
     const END_STR_2 = DATE_FORMAT.formatDate(END_DATE_2);
-    const END_DE_STR_2 = "31.01.2022";
+    const END_STR_2_ES_LOCALE = "31 de enero de 2022";
     const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
 
     const INVALID_STR = "<this is an invalid date string>";
@@ -2683,9 +2684,29 @@ describe("<DateRangeInput3>", () => {
             assertInputValuesEqual(root, DEC_2_STR, DEC_8_STR);
         });
 
-        it.skip("Formats locale-specific format strings properly", () => {
-            const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} locale="de" value={DATE_RANGE_2} />);
-            assertInputValuesEqual(root, START_DE_STR_2, END_DE_STR_2);
+        describe("localization", () => {
+            describe("with formatDate & parseDate undefined", () => {
+                it("formats date strings with provided Locale object", () => {
+                    const { root } = wrap(
+                        <DateRangeInput3 dateFnsFormat="PPP" locale={esLocale} value={DATE_RANGE_2} />,
+                        true,
+                    );
+                    assertInputValuesEqual(root, START_STR_2_ES_LOCALE, END_STR_2_ES_LOCALE);
+                });
+
+                it("formats date strings with async-loaded locale corresponding to provided locale code", done => {
+                    const { root } = wrap(
+                        <DateRangeInput3 dateFnsFormat="PPP" locale="es" value={DATE_RANGE_2} />,
+                        true,
+                    );
+                    // give the component one animation frame to load the locale upon mount
+                    setTimeout(() => {
+                        root.update();
+                        assertInputValuesEqual(root, START_STR_2_ES_LOCALE, END_STR_2_ES_LOCALE);
+                        done();
+                    });
+                });
+            });
         });
     });
 

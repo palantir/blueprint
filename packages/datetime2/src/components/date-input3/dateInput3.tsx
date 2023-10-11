@@ -59,6 +59,7 @@ const defaultProps: DateInput3DefaultProps = {
     closeOnSelection: true,
     disabled: false,
     invalidDateMessage: "Invalid date",
+    locale: "en-US",
     maxDate: DatePickerUtils.getDefaultMaxDate(),
     minDate: DatePickerUtils.getDefaultMinDate(),
     outOfRangeMessage: "Out of range",
@@ -278,6 +279,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             <DatePicker3
                 {...datePickerProps}
                 dayPickerProps={dayPickerProps}
+                locale={locale}
                 maxDate={maxDate}
                 minDate={minDate}
                 onChange={handleDateChange}
