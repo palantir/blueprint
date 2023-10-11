@@ -670,6 +670,10 @@ $docs-hotkey-piano-height: 510px;
   .docs-example {
     padding: ($pt-grid-size * 4) ($pt-grid-size * 2);
   }
+
+  .#{$ns}-input-group {
+    min-width: 200px;
+  }
 }
 
 //

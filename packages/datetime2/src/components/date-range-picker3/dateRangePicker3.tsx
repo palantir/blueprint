@@ -37,7 +37,7 @@ import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { DatePicker3Provider } from "../date-picker3/datePicker3Context";
 import { ContiguousDayRangePicker } from "./contiguousDayRangePicker";
-import type { DateRangePicker3Props } from "./dateRangePicker3Props";
+import type { DateRangePicker3DefaultProps, DateRangePicker3Props } from "./dateRangePicker3Props";
 import type { DateRangePicker3State } from "./dateRangePicker3State";
 import { NonContiguousDayRangePicker } from "./nonContiguousDayRangePicker";
 
@@ -51,7 +51,7 @@ const NULL_RANGE: DateRange = [null, null];
  * @see https://blueprintjs.com/docs/#datetime2/date-range-picker3
  */
 export class DateRangePicker3 extends AbstractPureComponent<DateRangePicker3Props, DateRangePicker3State> {
-    public static defaultProps: DateRangePicker3Props = {
+    public static defaultProps: DateRangePicker3DefaultProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dayPickerProps: {},

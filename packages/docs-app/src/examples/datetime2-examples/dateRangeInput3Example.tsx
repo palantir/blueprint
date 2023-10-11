@@ -16,11 +16,12 @@
 
 import * as React from "react";
 
-import { Callout, Code, H5, Switch } from "@blueprintjs/core";
+import { Callout, Code, FormGroup, H5, Switch } from "@blueprintjs/core";
 import { DateFormatProps, DateRange, TimePrecision } from "@blueprintjs/datetime";
 import { DateRangeInput3 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
+import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateRange } from "../../common/formattedDateRange";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import {
@@ -44,6 +45,7 @@ interface DateRangeInput3ExampleState {
     enableTimePicker: boolean;
     fill: boolean;
     format: DateFormatProps;
+    localeCode: CommonDateFnsLocale;
     range: DateRange;
     reverseMonthAndYearMenus: boolean;
     selectAllOnFocus: boolean;
@@ -63,6 +65,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
         enableTimePicker: false,
         fill: false,
         format: DATE_FNS_FORMATS[0],
+        localeCode: DateRangeInput3.defaultProps.locale as CommonDateFnsLocale,
         range: [null, null],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
@@ -103,6 +106,8 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
         this.setState({ showTimeArrowButtons }),
     );
 
+    private handleLocaleCodeChange = (localeCode: CommonDateFnsLocale) => this.setState({ localeCode });
+
     private handleTimePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
@@ -111,6 +116,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
         const {
             enableTimePicker,
             format,
+            localeCode,
             range,
             showFooterElement,
             showTimeArrowButtons,
@@ -122,6 +128,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
                 <DateRangeInput3
                     {...spreadProps}
                     {...format}
+                    locale={localeCode}
                     value={range}
                     onChange={this.handleRangeChange}
                     footerElement={showFooterElement ? exampleFooterElement : undefined}
@@ -199,6 +206,13 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
                         label="Show custom footer element"
                         onChange={this.toggleShowFooterElement}
                     />
+                    <FormGroup inline={true} label="Locale">
+                        <DateFnsLocaleSelect
+                            value={this.state.localeCode}
+                            onChange={this.handleLocaleCodeChange}
+                            popoverProps={{ placement: "bottom-start" }}
+                        />
+                    </FormGroup>
                 </div>
 
                 <div>

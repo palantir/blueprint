@@ -23,3 +23,22 @@ import type { ReactDayPickerRangeProps } from "../../common/reactDayPickerProps"
 type DateRangePickerSharedProps = Omit<DateRangePickerProps, "dayPickerProps" | "locale" | "localeUtils" | "modifiers">;
 
 export type DateRangePicker3Props = DateRangePickerSharedProps & DateFnsLocaleProps & ReactDayPickerRangeProps;
+
+export type DateRangePicker3DefaultProps = Required<
+    Pick<
+        DateRangePicker3Props,
+        | "allowSingleDayRange"
+        | "contiguousCalendarMonths"
+        | "dayPickerProps"
+        | "locale"
+        | "maxDate"
+        | "minDate"
+        | "reverseMonthAndYearMenus"
+        | "shortcuts"
+        | "singleMonthOnly"
+        | "timePickerProps"
+    >
+>;
+
+export type DateRangePicker3PropsWithDefaults = Omit<DateRangePicker3Props, keyof DateRangePicker3DefaultProps> &
+    DateRangePicker3DefaultProps;
