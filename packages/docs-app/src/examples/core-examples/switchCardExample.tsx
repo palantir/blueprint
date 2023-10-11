@@ -16,15 +16,20 @@
 
 import * as React from "react";
 
-import { FormGroup, H5, Switch, SwitchCard, SwitchCardProps } from "@blueprintjs/core";
+import { Alignment, FormGroup, H5, Switch, SwitchCard, SwitchCardProps } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+import { AlignmentSelect } from "./common/alignmentSelect";
 
-type SwitchCardExampleState = Pick<SwitchCardProps, "compact" | "disabled" | "showAsSelectedWhenChecked">;
+type SwitchCardExampleState = Pick<
+    SwitchCardProps,
+    "alignIndicator" | "compact" | "disabled" | "showAsSelectedWhenChecked"
+>;
 
 export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchCardExampleState> {
     public state: SwitchCardExampleState = {
+        alignIndicator: "right",
         compact: false,
         disabled: false,
         showAsSelectedWhenChecked: true,
@@ -43,7 +48,7 @@ export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchC
     }
 
     private renderOptions() {
-        const { compact, disabled, showAsSelectedWhenChecked } = this.state;
+        const { alignIndicator, compact, disabled, showAsSelectedWhenChecked } = this.state;
         return (
             <>
                 <H5>Props</H5>
@@ -61,9 +66,19 @@ export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchC
                         onChange={this.toggleShowAsSelected}
                     />
                 </PropCodeTooltip>
+                <PropCodeTooltip snippet={`alignIndicator={${alignIndicator}}`}>
+                    <AlignmentSelect
+                        align={alignIndicator}
+                        allowCenter={false}
+                        label="Align control indicator"
+                        onChange={this.handleAlignChange}
+                    />
+                </PropCodeTooltip>
             </>
         );
     }
+
+    private handleAlignChange = (alignIndicator: Alignment) => this.setState({ alignIndicator });
 
     private toggleCompact = handleBooleanChange(compact => this.setState({ compact }));
 

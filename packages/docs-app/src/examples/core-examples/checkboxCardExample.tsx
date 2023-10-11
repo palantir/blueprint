@@ -16,15 +16,20 @@
 
 import * as React from "react";
 
-import { CheckboxCard, CheckboxCardProps, FormGroup, H5, Switch } from "@blueprintjs/core";
+import { Alignment, CheckboxCard, CheckboxCardProps, FormGroup, H5, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+import { AlignmentSelect } from "./common/alignmentSelect";
 
-type CheckboxCardExampleState = Pick<CheckboxCardProps, "compact" | "disabled" | "showAsSelectedWhenChecked">;
+type CheckboxCardExampleState = Pick<
+    CheckboxCardProps,
+    "alignIndicator" | "compact" | "disabled" | "showAsSelectedWhenChecked"
+>;
 
 export class CheckboxCardExample extends React.PureComponent<ExampleProps, CheckboxCardExampleState> {
     public state: CheckboxCardExampleState = {
+        alignIndicator: "left",
         compact: false,
         disabled: false,
         showAsSelectedWhenChecked: true,
@@ -43,7 +48,7 @@ export class CheckboxCardExample extends React.PureComponent<ExampleProps, Check
     }
 
     private renderOptions() {
-        const { compact, disabled, showAsSelectedWhenChecked } = this.state;
+        const { alignIndicator, compact, disabled, showAsSelectedWhenChecked } = this.state;
         return (
             <>
                 <H5>Props</H5>
@@ -61,9 +66,19 @@ export class CheckboxCardExample extends React.PureComponent<ExampleProps, Check
                         onChange={this.toggleShowAsSelected}
                     />
                 </PropCodeTooltip>
+                <PropCodeTooltip snippet={`alignIndicator={${alignIndicator}}`}>
+                    <AlignmentSelect
+                        align={alignIndicator}
+                        allowCenter={false}
+                        label="Align control indicator"
+                        onChange={this.handleAlignChange}
+                    />
+                </PropCodeTooltip>
             </>
         );
     }
+
+    private handleAlignChange = (alignIndicator: Alignment) => this.setState({ alignIndicator });
 
     private toggleCompact = handleBooleanChange(compact => this.setState({ compact }));
 

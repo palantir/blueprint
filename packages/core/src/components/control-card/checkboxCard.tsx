@@ -32,4 +32,7 @@ export const CheckboxCard: React.FC<CheckboxCardProps> = React.forwardRef((props
     const className = classNames(props.className, Classes.CHECKBOX_CONTROL_CARD);
     return <ControlCard {...props} className={className} controlKind="checkbox" ref={ref} />;
 });
+CheckboxCard.defaultProps = {
+    alignIndicator: "left",
+};
 CheckboxCard.displayName = `${DISPLAYNAME_PREFIX}.CheckboxCard`;
