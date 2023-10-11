@@ -14,16 +14,26 @@
   }
 }
 
-.#{$ns}-switch-control-card {
-  // need a lot of specificity here to override control styles
-  .#{$ns}-switch.#{$ns}-control.#{$ns}-align-right {
+.#{$ns}-control-card {
+  // need a lot of specificity here to override control styles for (switch, checkbox, etc.) and (align-left, align-right)
+  // N.B. this is more space-efficient (in terms of generated CSS) than listing multiple compound selectors
+  .#{$ns}-control.#{$ns}-control.#{$ns}-control {
     align-items: center;
     display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
+    gap: $pt-grid-size;
     margin: 0;
     padding: $card-padding;
     width: calc(100%);
+
+    &.#{$ns}-align-left {
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+
+    &.#{$ns}-align-right {
+      flex-direction: row-reverse;
+      justify-content: space-between;
+    }
 
     .#{$ns}-card-list & {
       min-height: $card-list-control-item-min-height;
@@ -40,7 +50,7 @@
     }
   }
 
-  &.#{$ns}-compact .#{$ns}-switch.#{$ns}-control.#{$ns}-align-right {
+  &.#{$ns}-compact .#{$ns}-control.#{$ns}-control.#{$ns}-control {
     padding: $card-padding-compact;
   }
 }

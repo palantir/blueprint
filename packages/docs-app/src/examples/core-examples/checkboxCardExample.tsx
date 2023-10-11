@@ -16,20 +16,20 @@
 
 import * as React from "react";
 
-import { Alignment, FormGroup, H5, Switch, SwitchCard, SwitchCardProps } from "@blueprintjs/core";
+import { Alignment, CheckboxCard, CheckboxCardProps, FormGroup, H5, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
-type SwitchCardExampleState = Pick<
-    SwitchCardProps,
+type CheckboxCardExampleState = Pick<
+    CheckboxCardProps,
     "alignIndicator" | "compact" | "disabled" | "showAsSelectedWhenChecked"
 >;
 
-export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchCardExampleState> {
-    public state: SwitchCardExampleState = {
-        alignIndicator: "right",
+export class CheckboxCardExample extends React.PureComponent<ExampleProps, CheckboxCardExampleState> {
+    public state: CheckboxCardExampleState = {
+        alignIndicator: "left",
         compact: false,
         disabled: false,
         showAsSelectedWhenChecked: true,
@@ -38,10 +38,10 @@ export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchC
     public render() {
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <FormGroup className="docs-control-card-group" label={<H5>Communication Settings</H5>}>
-                    <SwitchCard {...this.state}>Wifi</SwitchCard>
-                    <SwitchCard {...this.state}>Bluetooth</SwitchCard>
-                    <SwitchCard {...this.state}>VPN</SwitchCard>
+                <FormGroup className="docs-control-card-group" label={<H5>Lunch Special</H5>}>
+                    <CheckboxCard {...this.state}>Soup</CheckboxCard>
+                    <CheckboxCard {...this.state}>Salad</CheckboxCard>
+                    <CheckboxCard {...this.state}>Sandwich</CheckboxCard>
                 </FormGroup>
             </Example>
         );

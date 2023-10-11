@@ -21,15 +21,18 @@ import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ControlCard, ControlCardProps } from "./controlCard";
 
-export type SwitchCardProps = Omit<ControlCardProps, "controlKind">;
+export type CheckboxCardProps = Omit<ControlCardProps, "controlKind">;
 
 /**
- * Switch Card component.
+ * Checkbox Card component.
  *
- * @see https://blueprintjs.com/docs/#core/components/control-card.switch-card
+ * @see https://blueprintjs.com/docs/#core/components/control-card.checkbox-card
  */
-export const SwitchCard: React.FC<SwitchCardProps> = React.forwardRef((props, ref) => {
-    const className = classNames(props.className, Classes.SWITCH_CONTROL_CARD);
-    return <ControlCard {...props} className={className} controlKind="switch" ref={ref} />;
+export const CheckboxCard: React.FC<CheckboxCardProps> = React.forwardRef((props, ref) => {
+    const className = classNames(props.className, Classes.CHECKBOX_CONTROL_CARD);
+    return <ControlCard {...props} className={className} controlKind="checkbox" ref={ref} />;
 });
-SwitchCard.displayName = `${DISPLAYNAME_PREFIX}.SwitchCard`;
+CheckboxCard.defaultProps = {
+    alignIndicator: "left",
+};
+CheckboxCard.displayName = `${DISPLAYNAME_PREFIX}.CheckboxCard`;

@@ -21,8 +21,10 @@ import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps } from "../../common/props";
 import { Card, CardProps } from "../card/card";
 import type { CheckedControlProps, ControlProps } from "../forms/controlProps";
-import { Switch } from "../forms/controls";
+import { Checkbox, Switch } from "../forms/controls";
 import { useCheckedControl } from "./useCheckedControl";
+
+export type ControlKind = "switch" | "checkbox";
 
 /**
  * Subset of {@link Card} which can be used to adjust its behavior.
@@ -32,13 +34,13 @@ type SupportedCardProps = Omit<CardProps, "interactive" | "onChange">;
 /**
  * Subset of {@link ControlProps} which can be used to adjust its behavior.
  */
-type SupportedControlProps = Pick<ControlProps, keyof CheckedControlProps | "disabled" | "inputRef">;
+type SupportedControlProps = Pick<ControlProps, keyof CheckedControlProps | "alignIndicator" | "disabled" | "inputRef">;
 
 export interface ControlCardProps extends SupportedCardProps, SupportedControlProps {
     /**
      * Which kind of form control to render inside the card.
      */
-    controlKind: "switch";
+    controlKind: ControlKind;
 
     // N.B. this is split out of the root properties in the inerface because it would conflict with CardProps' HTMLDivProps
     /**
@@ -62,6 +64,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
 
 export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, ref) => {
     const {
+        alignIndicator,
         checked: _checked,
         children: labelContent,
         className,
@@ -80,29 +83,33 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
     // use a container element to achieve a good flex layout
     const labelElement = <div className={Classes.CONTROL_CARD_LABEL}>{labelContent}</div>;
     const controlProps: ControlProps = {
+        alignIndicator,
         checked,
         disabled,
+        inline: true,
         inputRef,
         labelElement,
         onChange,
         ...inputProps,
     };
     const classes = classNames(Classes.CONTROL_CARD, className, {
-        [Classes.SWITCH_CONTROL_CARD]: controlKind === "switch",
         [Classes.SELECTED]: showAsSelectedWhenChecked && checked,
     });
 
     return (
         <Card interactive={!disabled} className={classes} ref={ref} {...cardProps}>
             {controlKind === "switch" ? (
-                <Switch inline={true} alignIndicator="right" {...controlProps} />
+                <Switch {...controlProps} />
+            ) : controlKind === "checkbox" ? (
+                <Checkbox {...controlProps} />
             ) : (
-                labelElement
+                props.children
             )}
         </Card>
     );
 });
 ControlCard.defaultProps = {
+    alignIndicator: "right",
     showAsSelectedWhenChecked: true,
 };
 ControlCard.displayName = `${DISPLAYNAME_PREFIX}.ControlCard`;

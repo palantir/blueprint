@@ -21,6 +21,7 @@ export * from "./buttonsIconsExample";
 export * from "./buttonGroupExample";
 export * from "./buttonGroupPopoverExample";
 export * from "./calloutExample";
+export { CheckboxCardExample } from "./checkboxCardExample";
 export * from "./checkboxExample";
 export * from "./collapseExample";
 export * from "./cardExample";
