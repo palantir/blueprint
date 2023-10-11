@@ -51,6 +51,7 @@ export type DateInput3DefaultProps = Required<
         | "closeOnSelection"
         | "disabled"
         | "invalidDateMessage"
+        | "locale"
         | "maxDate"
         | "minDate"
         | "outOfRangeMessage"

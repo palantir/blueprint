@@ -202,17 +202,18 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
     }
 
     public render() {
-        const { selectedShortcutIndex } = this.state;
+        const { locale, selectedShortcutIndex } = this.state;
         const { popoverProps = {}, popoverRef } = this.props;
 
         const popoverContent = (
             <DateRangePicker3
                 {...this.props}
-                selectedShortcutIndex={selectedShortcutIndex}
                 boundaryToModify={this.state.boundaryToModify}
+                locale={locale}
                 onChange={this.handleDateRangePickerChange}
-                onShortcutChange={this.handleShortcutChange}
                 onHoverChange={this.handleDateRangePickerHoverChange}
+                onShortcutChange={this.handleShortcutChange}
+                selectedShortcutIndex={selectedShortcutIndex}
                 value={this.getSelectedRange()}
             />
         );

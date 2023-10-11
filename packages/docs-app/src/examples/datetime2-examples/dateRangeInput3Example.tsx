@@ -17,18 +17,15 @@
 import * as React from "react";
 
 import { Callout, Code, FormGroup, H5, Switch } from "@blueprintjs/core";
-import { DateFormatProps, DateRange, TimePrecision } from "@blueprintjs/datetime";
+import { DateRange, TimePrecision } from "@blueprintjs/datetime";
 import { DateRangeInput3 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateRange } from "../../common/formattedDateRange";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
-import {
-    DATE_FNS_FORMATS,
-    DateFnsDateFormatPropsSelect,
-} from "../datetime-examples/common/dateFnsDateFormatPropsSelect";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
+import { DATE_FNS_FORMAT_OPTIONS, DateFnsFormatSelect } from "./common/dateFnsFormatSelect";
 
 const exampleFooterElement = (
     <Callout style={{ maxWidth: 460 }}>
@@ -41,10 +38,10 @@ interface DateRangeInput3ExampleState {
     allowSingleDayRange: boolean;
     closeOnSelection: boolean;
     contiguousCalendarMonths: boolean;
+    dateFnsFormat: string;
     disabled: boolean;
     enableTimePicker: boolean;
     fill: boolean;
-    format: DateFormatProps;
     localeCode: CommonDateFnsLocale;
     range: DateRange;
     reverseMonthAndYearMenus: boolean;
@@ -61,10 +58,10 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
         allowSingleDayRange: false,
         closeOnSelection: false,
         contiguousCalendarMonths: true,
+        dateFnsFormat: DATE_FNS_FORMAT_OPTIONS[0],
         disabled: false,
         enableTimePicker: false,
         fill: false,
-        format: DATE_FNS_FORMATS[0],
         localeCode: DateRangeInput3.defaultProps.locale as CommonDateFnsLocale,
         range: [null, null],
         reverseMonthAndYearMenus: false,
@@ -106,7 +103,11 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
         this.setState({ showTimeArrowButtons }),
     );
 
+    private handleFormatChange = (dateFnsFormat: string) => this.setState({ dateFnsFormat });
+
     private handleLocaleCodeChange = (localeCode: CommonDateFnsLocale) => this.setState({ localeCode });
+
+    private handleRangeChange = (range: DateRange) => this.setState({ range });
 
     private handleTimePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
@@ -115,7 +116,6 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
     public render() {
         const {
             enableTimePicker,
-            format,
             localeCode,
             range,
             showFooterElement,
@@ -127,7 +127,6 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
                 <DateRangeInput3
                     {...spreadProps}
-                    {...format}
                     locale={localeCode}
                     value={range}
                     onChange={this.handleRangeChange}
@@ -223,7 +222,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
                     <PropCodeTooltip snippet={`fill={${fill.toString()}}`}>
                         <Switch label="Fill container width" checked={fill} onChange={this.toggleFill} />
                     </PropCodeTooltip>
-                    <DateFnsDateFormatPropsSelect format={this.state.format} onChange={this.handleFormatChange} />
+                    <DateFnsFormatSelect value={this.state.dateFnsFormat} onChange={this.handleFormatChange} />
                     <br />
 
                     <H5>Time picker props</H5>
@@ -250,8 +249,4 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
             </>
         );
     }
-
-    private handleFormatChange = (format: DateFormatProps) => this.setState({ format });
-
-    private handleRangeChange = (range: DateRange) => this.setState({ range });
 }
