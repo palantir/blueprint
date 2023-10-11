@@ -205,7 +205,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             <DateRangePicker3
                 {...this.props}
                 boundaryToModify={this.state.boundaryToModify}
-                locale={locale}
+                locale={locale ?? this.props.locale}
                 onChange={this.handleDateRangePickerChange}
                 onHoverChange={this.handleDateRangePickerHoverChange}
                 onShortcutChange={this.handleShortcutChange}
