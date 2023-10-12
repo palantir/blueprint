@@ -645,18 +645,7 @@ export class Popover<
 
         // an OVERRIDE inside a DISMISS does not dismiss, and a DISMISS inside an OVERRIDE will dismiss.
         const dismissElement = eventTarget.closest(`.${Classes.POPOVER_DISMISS}, .${Classes.POPOVER_DISMISS_OVERRIDE}`);
-        // dismiss selectors from the "V1" version of Popover in the core package
-        // we expect these to be rendered by MenuItem, which at this point has no knowledge of Popover
-        // this can be removed once Popover is merged into core in v5.0
-        const dismissElementV1 = eventTarget.closest(
-            `.${Classes.POPOVER_DISMISS}, .${Classes.POPOVER_DISMISS_OVERRIDE}`,
-        );
-
-        const shouldDismiss =
-            dismissElement?.classList.contains(Classes.POPOVER_DISMISS) ??
-            dismissElementV1?.classList.contains(Classes.POPOVER_DISMISS) ??
-            false;
-
+        const shouldDismiss = dismissElement?.classList.contains(Classes.POPOVER_DISMISS) ?? false;
         const isDisabled = eventTarget.closest(`:disabled, .${Classes.DISABLED}`) != null;
 
         if (shouldDismiss && !isDisabled && (!isEventPopoverCapturing || isEventFromSelf)) {
