@@ -19,7 +19,15 @@ import classNames from "classnames";
 import * as React from "react";
 import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, HTMLDivProps, refHandler, Utils } from "../../common";
+import {
+    AbstractPureComponent,
+    Classes,
+    DISPLAYNAME_PREFIX,
+    HTMLDivProps,
+    mergeRefs,
+    refHandler,
+    Utils,
+} from "../../common";
 import * as Errors from "../../common/errors";
 import { Overlay } from "../overlay/overlay";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
@@ -172,10 +180,13 @@ export class Popover<
     public popoverElement: HTMLElement | null = null;
 
     /** Popover ref handler */
-    private popoverRef: React.Ref<HTMLDivElement> = refHandler(this, "popoverElement", this.props.popoverRef);
+    private popoverRef: React.RefCallback<HTMLDivElement> = refHandler(this, "popoverElement", this.props.popoverRef);
 
     /**
      * Target DOM element ref.
+     *
+     * N.B. this must be a ref object since we pass it to `<ResizeSensor>`, which needs to know about the target
+     * DOM element in order to observe its dimensions.
      *
      * @public for testing
      */
@@ -236,9 +247,11 @@ export class Popover<
             return this.renderTarget({ ref: noop });
         }
 
+        // Important: do not use <Reference innerRef> since it has a bug when used in React 18 strict mode
+        // see https://github.com/floating-ui/react-popper/pull/459
         return (
             <Manager>
-                <Reference innerRef={this.targetRef}>{this.renderTarget}</Reference>
+                <Reference>{this.renderTarget}</Reference>
                 <Popper
                     innerRef={this.popoverRef}
                     placement={placement ?? positionToPlacement(position)}
@@ -314,7 +327,7 @@ export class Popover<
      */
     public reposition = () => this.popperScheduleUpdate?.();
 
-    private renderTarget = ({ ref }: ReferenceChildrenProps) => {
+    private renderTarget = ({ ref: popperChildRef }: ReferenceChildrenProps) => {
         const { children, className, fill, openOnTargetFocus, renderTarget } = this.props;
         const { isOpen } = this.state;
         const isControlled = this.isControlled();
@@ -324,6 +337,10 @@ export class Popover<
         if (fill) {
             targetTagName = "div";
         }
+
+        // react-popper has a wide type for this ref, but we can narrow it based on the source
+        // see https://github.com/floating-ui/react-popper/blob/beac280d61082852c4efc302be902911ce2d424c/src/Reference.js#L17
+        const ref = mergeRefs(popperChildRef as React.RefCallback<HTMLElement>, this.targetRef);
 
         const targetEventHandlers: PopoverHoverTargetHandlers<T> | PopoverClickTargetHandlers<T> =
             isHoverInteractionKind
@@ -404,8 +421,8 @@ export class Popover<
             target = wrappedTarget;
         }
 
-        // N.B. we must attach the ref ('wrapped' with react-popper functionality) to the DOM element here and
-        // let ResizeSensor know about it
+        // No need to use the merged `ref` here, that only needs to be forwarded to the child node so that React can
+        // notify both popper.js and our components about the mounted DOM element.
         return (
             <ResizeSensor targetRef={this.targetRef} onResize={this.reposition}>
                 {target}
@@ -729,8 +746,7 @@ export class Popover<
 
     private updateDarkParent() {
         if (this.props.usePortal && this.state.isOpen) {
-            const hasDarkParent =
-                this.targetRef.current != null && this.targetRef.current.closest(`.${Classes.DARK}`) != null;
+            const hasDarkParent = this.targetRef.current?.closest(`.${Classes.DARK}`) != null;
             this.setState({ hasDarkParent });
         }
     }
