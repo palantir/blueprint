@@ -38,8 +38,8 @@ interface DateRangePicker3ExampleState {
     reverseMonthAndYearMenus?: boolean;
     shortcuts?: boolean;
     showTimeArrowButtons: boolean;
-    timePrecision?: TimePrecision;
-    useAmPm?: boolean;
+    timePrecision: TimePrecision | undefined;
+    useAmPm: boolean;
 }
 
 export class DateRangePicker3Example extends React.PureComponent<ExampleProps, DateRangePicker3ExampleState> {
@@ -54,6 +54,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
         shortcuts: true,
         showTimeArrowButtons: false,
         singleMonthOnly: false,
+        timePrecision: undefined,
         useAmPm: false,
     };
 
@@ -65,8 +66,8 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
 
     private handleMinDateChange = (minDate: Date) => this.setState({ minDate });
 
-    private handlePrecisionChange = handleValueChange((timePrecision: TimePrecision | undefined) =>
-        this.setState({ timePrecision }),
+    private handlePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
+        this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
 
     private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
@@ -105,11 +106,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                     onChange={this.handleDateRangeChange}
                     timePickerProps={
                         showTimePicker
-                            ? {
-                                  precision: timePrecision,
-                                  showArrowButtons: showTimeArrowButtons,
-                                  useAmPm,
-                              }
+                            ? { precision: timePrecision, showArrowButtons: showTimeArrowButtons, useAmPm }
                             : undefined
                     }
                 />

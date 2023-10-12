@@ -51,6 +51,7 @@ interface DateRangeInput3ExampleState {
     showTimeArrowButtons: boolean;
     singleMonthOnly: boolean;
     timePrecision: TimePrecision | undefined;
+    useAmPm: boolean;
 }
 
 export class DateRangeInput3Example extends React.PureComponent<ExampleProps, DateRangeInput3ExampleState> {
@@ -71,6 +72,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
         showTimeArrowButtons: false,
         singleMonthOnly: false,
         timePrecision: TimePrecision.MINUTE,
+        useAmPm: false,
     };
 
     private toggleContiguous = handleBooleanChange(contiguous => {
@@ -103,6 +105,8 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
         this.setState({ showTimeArrowButtons }),
     );
 
+    private toggleUseAmPm = handleBooleanChange(useAmPm => this.setState({ useAmPm }));
+
     private handleFormatChange = (dateFnsFormat: string) => this.setState({ dateFnsFormat });
 
     private handleLocaleCodeChange = (localeCode: CommonDateFnsLocale) => this.setState({ localeCode });
@@ -121,6 +125,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
             showFooterElement,
             showTimeArrowButtons,
             timePrecision,
+            useAmPm,
             ...spreadProps
         } = this.state;
         return (
@@ -133,7 +138,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
                     footerElement={showFooterElement ? exampleFooterElement : undefined}
                     timePickerProps={
                         enableTimePicker
-                            ? { precision: timePrecision, showArrowButtons: showTimeArrowButtons }
+                            ? { precision: timePrecision, showArrowButtons: showTimeArrowButtons, useAmPm }
                             : undefined
                     }
                 />
@@ -157,7 +162,9 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
             showTimeArrowButtons,
             singleMonthOnly,
             timePrecision,
+            useAmPm,
         } = this.state;
+
         return (
             <>
                 <div>
@@ -243,6 +250,17 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
                             checked={showTimeArrowButtons}
                             label="Show timepicker arrow buttons"
                             onChange={this.toggleTimepickerArrowButtons}
+                        />
+                    </PropCodeTooltip>
+                    <PropCodeTooltip
+                        snippet={`timePickerProps={{ useAmPm: ${useAmPm.toString()} }}`}
+                        disabled={!enableTimePicker}
+                    >
+                        <Switch
+                            disabled={!enableTimePicker}
+                            checked={useAmPm}
+                            label="Use AM/PM"
+                            onChange={this.toggleUseAmPm}
                         />
                     </PropCodeTooltip>
                 </div>
