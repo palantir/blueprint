@@ -18,7 +18,7 @@ import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "@documentalist/
 import classNames from "classnames";
 import * as React from "react";
 
-import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
+import { AnchorButton, Classes, HotkeysProvider, Intent, Tag } from "@blueprintjs/core";
 import type { DocsCompleteData } from "@blueprintjs/docs-data";
 import { Banner, Documentation, DocumentationProps, NavMenuItem, NavMenuItemProps } from "@blueprintjs/docs-theme";
 
@@ -148,11 +148,25 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
 
     private maybeRenderPageTag(reference: string) {
         const tag = this.props.docs.pages[reference].metadata.tag;
+
         if (tag == null) {
             return null;
         }
+
+        let intent: Intent = "none";
+        switch (tag) {
+            case "new":
+                intent = "success";
+                break;
+            case "deprecated":
+                intent = "danger";
+                break;
+            default:
+                break;
+        }
+
         return (
-            <Tag className="docs-nav-tag" minimal={true} intent={tag === "new" ? "success" : "none"}>
+            <Tag className="docs-nav-tag" minimal={true} intent={intent}>
                 {tag}
             </Tag>
         );
