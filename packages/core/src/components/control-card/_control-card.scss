@@ -18,7 +18,8 @@
   // need a lot of specificity here to override control styles for (switch, checkbox, etc.) and (align-left, align-right)
   // N.B. this is more space-efficient (in terms of generated CSS) than listing multiple compound selectors
   .#{$ns}-control.#{$ns}-control.#{$ns}-control {
-    align-items: center;
+    // control indicators should be top-aligned
+    align-items: flex-start;
     display: flex;
     gap: $pt-grid-size;
     margin: 0;
@@ -36,13 +37,11 @@
     }
 
     .#{$ns}-card-list & {
-      min-height: $card-list-control-item-min-height;
-      padding: $card-list-item-padding;
+      padding: $card-padding;
     }
 
     .#{$ns}-card-list.#{$ns}-compact & {
-      min-height: $card-list-control-item-min-height-compact;
-      padding: $card-list-item-padding-compact;
+      padding: $card-padding-compact;
     }
 
     .#{$ns}-control-indicator {

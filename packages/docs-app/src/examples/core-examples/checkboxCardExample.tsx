@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
-import { Alignment, CheckboxCard, CheckboxCardProps, FormGroup, H5, Switch } from "@blueprintjs/core";
+import { Alignment, CheckboxCard, CheckboxCardProps, Classes, FormGroup, H5, Switch } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
-type CheckboxCardExampleState = Pick<
-    CheckboxCardProps,
-    "alignIndicator" | "compact" | "disabled" | "showAsSelectedWhenChecked"
->;
+interface CheckboxCardExampleState
+    extends Pick<CheckboxCardProps, "alignIndicator" | "compact" | "disabled" | "showAsSelectedWhenChecked"> {
+    showSubtext: boolean;
+}
 
 export class CheckboxCardExample extends React.PureComponent<ExampleProps, CheckboxCardExampleState> {
     public state: CheckboxCardExampleState = {
@@ -33,22 +34,33 @@ export class CheckboxCardExample extends React.PureComponent<ExampleProps, Check
         compact: false,
         disabled: false,
         showAsSelectedWhenChecked: true,
+        showSubtext: true,
     };
 
     public render() {
+        const { showSubtext, ...checkboxCardProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <FormGroup className="docs-control-card-group" label={<H5>Lunch Special</H5>}>
-                    <CheckboxCard {...this.state}>Soup</CheckboxCard>
-                    <CheckboxCard {...this.state}>Salad</CheckboxCard>
-                    <CheckboxCard {...this.state}>Sandwich</CheckboxCard>
+                    <CheckboxCard {...checkboxCardProps}>
+                        Soup
+                        {showSubtext && <Subtext>Tomato Basil or Broccoli Cheddar</Subtext>}
+                    </CheckboxCard>
+                    <CheckboxCard {...checkboxCardProps}>
+                        Salad
+                        {showSubtext && <Subtext>Caesar, Caprese, or Fresh fruit</Subtext>}
+                    </CheckboxCard>
+                    <CheckboxCard {...checkboxCardProps}>
+                        Sandwich
+                        {showSubtext && <Subtext>Chicken, Turkey, or Vegetable</Subtext>}
+                    </CheckboxCard>
                 </FormGroup>
             </Example>
         );
     }
 
     private renderOptions() {
-        const { alignIndicator, compact, disabled, showAsSelectedWhenChecked } = this.state;
+        const { alignIndicator, compact, disabled, showAsSelectedWhenChecked, showSubtext } = this.state;
         return (
             <>
                 <H5>Props</H5>
@@ -74,6 +86,8 @@ export class CheckboxCardExample extends React.PureComponent<ExampleProps, Check
                         onChange={this.handleAlignChange}
                     />
                 </PropCodeTooltip>
+                <H5>Content</H5>
+                <Switch checked={showSubtext} label="Show sub text" onChange={this.toggleShowSubtext} />
             </>
         );
     }
@@ -86,5 +100,16 @@ export class CheckboxCardExample extends React.PureComponent<ExampleProps, Check
 
     private toggleShowAsSelected = handleBooleanChange(showAsSelectedWhenChecked =>
         this.setState({ showAsSelectedWhenChecked }),
+    );
+
+    private toggleShowSubtext = handleBooleanChange(showSubtext => this.setState({ showSubtext }));
+}
+
+function Subtext(props: { children: React.ReactNode }) {
+    return (
+        <>
+            <br />
+            <span className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>{props.children}</span>
+        </>
     );
 }
