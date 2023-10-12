@@ -74,8 +74,7 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
 
     private prevElement: HTMLElement | undefined = undefined;
 
-    private observer =
-        globalThis.ResizeObserver != null ? new ResizeObserver(entries => this.props.onResize?.(entries)) : undefined;
+    private observer: ResizeObserver | undefined;
 
     public render(): React.ReactNode {
         const onlyChild = React.Children.only(this.props.children);
@@ -91,6 +90,7 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     }
 
     public componentDidMount() {
+        this.observer = new ResizeObserver(entries => this.props.onResize?.(entries));
         this.observeElement();
     }
 
@@ -109,7 +109,7 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
      * re-observe.
      */
     private observeElement(force = false) {
-        if (this.observer == null) {
+        if (this.observer === undefined) {
             return;
         }
 

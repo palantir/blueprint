@@ -83,7 +83,7 @@ describe("<ResizeSensor>", () => {
         const RESIZE_WIDTH = 200;
         mountResizeSensor({ onResize, targetRef });
         await resize({ width: RESIZE_WIDTH });
-        assert.equal(onResize.callCount, 1);
+        assert.equal(onResize.callCount, 1, "onResize should be called");
         assertResizeArgs(onResize, [`${RESIZE_WIDTH}x0`]);
         assert.isNotNull(targetRef.current, "user-provided targetRef should be set");
         assert.strictEqual(targetRef.current?.clientWidth, RESIZE_WIDTH, "user-provided targetRef.current.clientWidth");
@@ -123,6 +123,6 @@ interface SizeProps {
 type ResizeTesterProps = Omit<ResizeSensorProps, "children"> & SizeProps;
 const ResizeTester: React.FC<ResizeTesterProps> = ({ id, width, height, ...sensorProps }) => (
     <ResizeSensor {...sensorProps}>
-        <div key={id} style={{ width, height }} />
+        <div key={id} style={{ width, height }} ref={sensorProps.targetRef as React.RefObject<HTMLDivElement>} />
     </ResizeSensor>
 );
