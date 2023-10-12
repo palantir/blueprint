@@ -247,6 +247,8 @@ export class Popover<
             return this.renderTarget({ ref: noop });
         }
 
+        // Important: do not use <Reference innerRef> since it has a bug when used in React 18 strict mode
+        // see https://github.com/floating-ui/react-popper/pull/459
         return (
             <Manager>
                 <Reference>{this.renderTarget}</Reference>
@@ -419,8 +421,8 @@ export class Popover<
             target = wrappedTarget;
         }
 
-        // N.B. we must attach the ref ('wrapped' with react-popper functionality) to the DOM element here and
-        // let ResizeSensor know about it
+        // No need to use the merged `ref` here, that only needs to be forwarded to the child node so that React can
+        // notify both popper.js and our components about the mounted DOM element.
         return (
             <ResizeSensor targetRef={this.targetRef} onResize={this.reposition}>
                 {target}
