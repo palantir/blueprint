@@ -121,6 +121,13 @@
   /* stylelint-enable max-line-length */
 }
 
+.#{$ns}-daterangepicker-timepickers {
+  &.#{$ns}-daterangepicker-timepickers-stacked {
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
 .#{$ns}-dark .#{$ns}-daterangepicker {
   &.#{$ns}-datepicker .rdp-day {
     &_hovered {
