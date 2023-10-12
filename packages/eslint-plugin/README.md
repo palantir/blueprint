@@ -22,9 +22,7 @@ Add the `"@blueprintjs"` plugin to your ESLint config:
 
 ```json
 {
-    "plugins": [
-        "@blueprintjs"
-    ]
+    "plugins": ["@blueprintjs"]
 }
 ```
 
@@ -34,9 +32,7 @@ To enable _all_ rules provided by the plugin the Blueprint-specific rules, exten
 
 ```json
 {
-    "extends": [
-        "plugin:@blueprintjs/recommended"
-    ]
+    "extends": ["plugin:@blueprintjs/recommended"]
 }
 ```
 
@@ -61,18 +57,18 @@ Enforce usage of class names exported as public API via the `Classes` object ins
 
 Each `@blueprintjs` package exports a `Classes` object which contains constants for every CSS class defined by the package.
 
-__Rationale__: This is useful to avoid typos in styling or creating Blueprint components, and also helps future-proof your code for major
+**Rationale**: This is useful to avoid typos in styling or creating Blueprint components, and also helps future-proof your code for major
 version bumps of Blueprint where the class namespace (e.g. `bp5-`) changes.
 
 ```json
 {
     "rules": {
-        "@blueprintjs/classes-constants":"error"
+        "@blueprintjs/classes-constants": "error"
     }
 }
 ```
 
-__Has auto-fixer__: ✅
+**Has auto-fixer**: ✅
 
 ```diff
 - const element = <div className="pt-navbar" />;
@@ -89,9 +85,9 @@ Enforce usage of Blueprint components over regular HTML JSX tags:
 -   blockquote -> Blockquote
 -   table -> HTMLTable
 
-__Rationale__: This is uesful to ensure consistent styling of common typographic elements and other basic markup.
+**Rationale**: This is uesful to ensure consistent styling of common typographic elements and other basic markup.
 
-__Has auto-fixer__: ✅
+**Has auto-fixer**: ✅
 
 ```json
 {
@@ -103,7 +99,7 @@ __Has auto-fixer__: ✅
 
 ### `@blueprintjs/icon-components`
 
-:warning: DEPRECATED: this rule is no longer recommended. Icons modularity / tree shaking will be a first-class feature of Blueprint v5.0.
+:warning: DEPRECATED: this rule is no longer recommended. Icons modularity / tree shaking is a first-class feature of Blueprint v5.x.
 
 Enforce usage of JSX `Icon` components instead of `IconName` string literals (or vice-versa) in `icon` JSX props.
 Note that this rule only supports hardcoded values in the `icon` prop; it does not handle expressions or conditionals.
@@ -143,23 +139,23 @@ This rule is disabled in the `blueprint-rules` config as it is most useful to en
 
 Ban usage of deprecated Blueprint components, including:
 
-- AbstractComponent
-- AbstractPureComponent
-- Breadcrumbs
-- CollapsibleList
-- DateInput
-- DateRangeInput
-- DateTimePicker
-- MenuItem
-- MultiSelect
-- PanelStack
-- Popover
-- Select
-- Suggest
-- TimezonePicker
-- Tooltip
+-   AbstractComponent
+-   AbstractPureComponent
+-   Breadcrumbs
+-   CollapsibleList
+-   DateInput
+-   DateRangeInput
+-   DateTimePicker
+-   MenuItem
+-   MultiSelect
+-   PanelStack
+-   Popover
+-   Select
+-   Suggest
+-   TimezonePicker
+-   Tooltip
 
-__Rationale__: Many Blueprint components have "V2" variants as a part of their natural API evolution.
+**Rationale**: Many Blueprint components have "V2" variants as a part of their natural API evolution.
 Blueprint consumers are recommended to migrate from the deprecated V1 components to their newer V2 counterparts
 in order to future-proof their code for the next major version of Blueprint, where the V2 components will become the
 only available API and the V1 variants will be removed. Flagging usage of deprecated APIs can be done with other
@@ -173,7 +169,7 @@ to prevent any backwards progress in your Blueprint migration as you move from V
 Similar to `@blueprintjs/no-deprecated-components`, but only flags usage of deprecated components from the
 `@blueprintjs/core` package instead of all `@blueprintjs/` packages.
 
-__Rationale__: In migrations of large code bases, it may be useful to apply more granular rule configuration of
+**Rationale**: In migrations of large code bases, it may be useful to apply more granular rule configuration of
 "no-deprecated-components" to make incremental progress towards the newer APIs. This allows you, for example, to flag
 deprecated `@blueprintjs/core` component usage as errors while allowing deprecated components from other packages
 to pass as lint warnings.
@@ -183,7 +179,7 @@ to pass as lint warnings.
 Similar to `@blueprintjs/no-deprecated-components`, but only flags usage of deprecated components from the
 `@blueprintjs/datetime` package instead of all `@blueprintjs/` packages.
 
-__Rationale__: In migrations of large code bases, it may be useful to apply more granular rule configuration of
+**Rationale**: In migrations of large code bases, it may be useful to apply more granular rule configuration of
 "no-deprecated-components" to make incremental progress towards the newer APIs. This allows you, for example, to flag
 deprecated `@blueprintjs/datetime` component usage as errors while allowing deprecated components from other packages
 to pass as lint warnings.
@@ -193,7 +189,7 @@ to pass as lint warnings.
 Similar to `@blueprintjs/no-deprecated-components`, but only flags usage of deprecated components from the
 `@blueprintjs/datetime2` package instead of all `@blueprintjs/` packages.
 
-__Rationale__: In migrations of large code bases, it may be useful to apply more granular rule configuration of
+**Rationale**: In migrations of large code bases, it may be useful to apply more granular rule configuration of
 "no-deprecated-components" to make incremental progress towards the newer APIs. This allows you, for example, to flag
 deprecated `@blueprintjs/datetime2` component usage as errors while allowing deprecated components from other packages
 to pass as lint warnings.
@@ -203,7 +199,7 @@ to pass as lint warnings.
 Similar to `@blueprintjs/no-deprecated-components`, but only flags usage of deprecated components from the
 `@blueprintjs/select` package instead of all `@blueprintjs/` packages.
 
-__Rationale__: In migrations of large code bases, it may be useful to apply more granular rule configuration of
+**Rationale**: In migrations of large code bases, it may be useful to apply more granular rule configuration of
 "no-deprecated-components" to make incremental progress towards the newer APIs. This allows you, for example, to flag
 deprecated `@blueprintjs/select` component usage as errors while allowing deprecated components from other packages
 to pass as lint warnings.
@@ -213,7 +209,7 @@ to pass as lint warnings.
 Similar to `@blueprintjs/no-deprecated-components`, but only flags usage of deprecated components from the
 `@blueprintjs/table` package instead of all `@blueprintjs/` packages.
 
-__Rationale__: In migrations of large code bases, it may be useful to apply more granular rule configuration of
+**Rationale**: In migrations of large code bases, it may be useful to apply more granular rule configuration of
 "no-deprecated-components" to make incremental progress towards the newer APIs. This allows you, for example, to flag
 deprecated `@blueprintjs/table` component usage as errors while allowing deprecated components from other packages
 to pass as lint warnings.
@@ -224,10 +220,9 @@ Ban usage of deprecated types & interfaces. In most cases, these symbols are dep
 TypeScript interface naming convention where we've _dropped_ the "I" prefix from interface names. For example,
 `IProps` is now `Props`.
 
-__Auto-fixable__.
+**Auto-fixable**.
 
-__Rationale__: Ensure forwards-comaptibility with the next major version of Blueprint and use the auto-fixer as
+**Rationale**: Ensure forwards-comaptibility with the next major version of Blueprint and use the auto-fixer as
 a codemod.
-
 
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)
