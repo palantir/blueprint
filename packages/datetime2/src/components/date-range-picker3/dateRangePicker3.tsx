@@ -30,6 +30,7 @@ import {
     Errors,
     MonthAndYear,
     TimePicker,
+    TimePrecision,
 } from "@blueprintjs/datetime";
 
 import { Classes, dayPickerClassNameOverrides } from "../../classes";
@@ -225,38 +226,37 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
     }
 
     private maybeRenderTimePickers(isShowingOneMonth: boolean) {
-        const { timePrecision, timePickerProps } = this.props;
+        // timePrecision may be set as a root prop or as a property inside timePickerProps, so we need to check both
+        const { timePickerProps, timePrecision = timePickerProps?.precision } = this.props;
         if (timePrecision == null && timePickerProps === DateRangePicker3.defaultProps.timePickerProps) {
             return null;
         }
 
-        if (isShowingOneMonth) {
-            return (
+        const isLongTimePicker =
+            timePickerProps?.useAmPm ||
+            timePrecision === TimePrecision.SECOND ||
+            timePrecision === TimePrecision.MILLISECOND;
+
+        return (
+            <div
+                className={classNames(Classes.DATERANGEPICKER_TIMEPICKERS, {
+                    [Classes.DATERANGEPICKER3_TIMEPICKERS_STACKED]: isShowingOneMonth && isLongTimePicker,
+                })}
+            >
                 <TimePicker
                     precision={timePrecision}
                     {...timePickerProps}
                     onChange={this.handleTimeChangeLeftCalendar}
                     value={this.state.time[0]}
                 />
-            );
-        } else {
-            return (
-                <div className={Classes.DATERANGEPICKER_TIMEPICKERS}>
-                    <TimePicker
-                        precision={timePrecision}
-                        {...timePickerProps}
-                        onChange={this.handleTimeChangeLeftCalendar}
-                        value={this.state.time[0]}
-                    />
-                    <TimePicker
-                        precision={timePrecision}
-                        {...timePickerProps}
-                        onChange={this.handleTimeChangeRightCalendar}
-                        value={this.state.time[1]}
-                    />
-                </div>
-            );
-        }
+                <TimePicker
+                    precision={timePrecision}
+                    {...timePickerProps}
+                    onChange={this.handleTimeChangeRightCalendar}
+                    value={this.state.time[1]}
+                />
+            </div>
+        );
     }
 
     private handleTimeChange = (newTime: Date, dateIndex: number) => {

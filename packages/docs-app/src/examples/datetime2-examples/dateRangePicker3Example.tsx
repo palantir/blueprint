@@ -16,13 +16,14 @@
 
 import * as React from "react";
 
-import { Classes, FormGroup, H5, Switch } from "@blueprintjs/core";
+import { Classes, FormGroup, Switch } from "@blueprintjs/core";
 import type { DateRange, TimePrecision } from "@blueprintjs/datetime";
 import { DateRangePicker3 } from "@blueprintjs/datetime2";
 import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateRange } from "../../common/formattedDateRange";
+import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
 
@@ -36,7 +37,9 @@ interface DateRangePicker3ExampleState {
     minDate: Date | undefined;
     reverseMonthAndYearMenus?: boolean;
     shortcuts?: boolean;
-    timePrecision?: TimePrecision;
+    showTimeArrowButtons: boolean;
+    timePrecision: TimePrecision | undefined;
+    useAmPm: boolean;
 }
 
 export class DateRangePicker3Example extends React.PureComponent<ExampleProps, DateRangePicker3ExampleState> {
@@ -49,7 +52,10 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
         minDate: undefined,
         reverseMonthAndYearMenus: false,
         shortcuts: true,
+        showTimeArrowButtons: false,
         singleMonthOnly: false,
+        timePrecision: undefined,
+        useAmPm: false,
     };
 
     private handleDateRangeChange = (dateRange: DateRange) => this.setState({ dateRange });
@@ -60,9 +66,15 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
 
     private handleMinDateChange = (minDate: Date) => this.setState({ minDate });
 
-    private handlePrecisionChange = handleValueChange((timePrecision: TimePrecision | undefined) =>
-        this.setState({ timePrecision }),
+    private handlePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
+        this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
+
+    private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
+        this.setState({ showTimeArrowButtons }),
+    );
+
+    private toggleUseAmPm = handleBooleanChange(useAmPm => this.setState({ useAmPm }));
 
     private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
         this.setState({ reverseMonthAndYearMenus }),
@@ -79,7 +91,10 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
     });
 
     public render() {
-        const { dateRange, localeCode, maxDate, minDate, ...props } = this.state;
+        const { dateRange, localeCode, maxDate, minDate, showTimeArrowButtons, timePrecision, useAmPm, ...props } =
+            this.state;
+        const showTimePicker = timePrecision !== undefined;
+
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
                 <DateRangePicker3
@@ -89,17 +104,22 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                     maxDate={maxDate}
                     minDate={minDate}
                     onChange={this.handleDateRangeChange}
+                    timePickerProps={
+                        showTimePicker
+                            ? { precision: timePrecision, showArrowButtons: showTimeArrowButtons, useAmPm }
+                            : undefined
+                    }
                 />
-                <FormattedDateRange range={dateRange} showTime={props.timePrecision !== undefined} />
+                <FormattedDateRange range={dateRange} showTime={showTimePicker} />
             </Example>
         );
     }
 
     private renderOptions() {
+        const showTimePicker = this.state.timePrecision !== undefined;
         return (
             <>
                 <div>
-                    <H5>Props</H5>
                     <Switch
                         checked={this.state.allowSingleDayRange}
                         label="Allow single day range"
@@ -126,6 +146,13 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                 <div>
                     <MinDateSelect onChange={this.handleMinDateChange} />
                     <MaxDateSelect onChange={this.handleMaxDateChange} />
+                    <FormGroup label="Locale">
+                        <DateFnsLocaleSelect
+                            value={this.state.localeCode}
+                            onChange={this.handleLocaleCodeChange}
+                            popoverProps={{ matchTargetWidth: true }}
+                        />
+                    </FormGroup>
                 </div>
                 <div>
                     <PrecisionSelect
@@ -134,9 +161,28 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                         value={this.state.timePrecision}
                         onChange={this.handlePrecisionChange}
                     />
-                    <FormGroup label="Locale">
-                        <DateFnsLocaleSelect value={this.state.localeCode} onChange={this.handleLocaleCodeChange} />
-                    </FormGroup>
+                    <PropCodeTooltip
+                        snippet={`timePickerProps={{ showArrowButtons: ${this.state.showTimeArrowButtons.toString()} }}`}
+                        disabled={!showTimePicker}
+                    >
+                        <Switch
+                            disabled={!showTimePicker}
+                            checked={this.state.showTimeArrowButtons}
+                            label="Time picker arrows"
+                            onChange={this.toggleTimepickerArrowButtons}
+                        />
+                    </PropCodeTooltip>
+                    <PropCodeTooltip
+                        snippet={`timePickerProps={{ useAmPm: ${this.state.useAmPm.toString()} }}`}
+                        disabled={!showTimePicker}
+                    >
+                        <Switch
+                            disabled={!showTimePicker}
+                            checked={this.state.useAmPm}
+                            label="Use AM/PM"
+                            onChange={this.toggleUseAmPm}
+                        />
+                    </PropCodeTooltip>
                 </div>
             </>
         );
