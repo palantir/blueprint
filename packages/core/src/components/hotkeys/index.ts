@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-export { Hotkey, HotkeyProps } from "./hotkey";
-export { Hotkeys, HotkeysProps } from "./hotkeys";
-export { KeyComboTag, KeyComboTagProps } from "./keyComboTag";
-export { KeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
+export { Hotkey, type HotkeyProps } from "./hotkey";
+export { Hotkeys, type HotkeysProps } from "./hotkeys";
+export { KeyComboTag, type KeyComboTagProps } from "./keyComboTag";
+export { type KeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
 
 // N.B. "V1" variants of these APIs are exported from src/legacy/
 export { HotkeysDialog2 } from "./hotkeysDialog2";
-export { HotkeysTarget2, HotkeysTarget2Props, HotkeysTarget2RenderProps } from "./hotkeysTarget2";
+export { HotkeysTarget2, type HotkeysTarget2Props, type HotkeysTarget2RenderProps } from "./hotkeysTarget2";

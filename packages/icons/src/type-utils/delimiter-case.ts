@@ -1,4 +1,4 @@
-import { UpperCaseCharacters, WordSeparators } from "./sourceUtilities";
+import type { UpperCaseCharacters, WordSeparators } from "./sourceUtilities";
 
 /**
 Unlike a simpler split, this one includes the delimiter splitted on in the resulting array literal. This is to enable splitting on, for example, upper-case characters.

@@ -16,16 +16,16 @@
 
 import * as React from "react";
 
-import { Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils, DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
 import type { FocusedCellCoordinates } from "../common/cellTypes";
-import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
+import * as DefaultFocusedCellUtils from "../common/internal/focusedCellUtils";
 import * as PlatformUtils from "../common/internal/platformUtils";
 import { Utils } from "../common/utils";
 import { Region, Regions } from "../regions";
 import { DragEvents } from "./dragEvents";
 import { Draggable } from "./draggable";
-import { CoordinateData, DraggableChildrenProps, DragHandler } from "./dragTypes";
+import type { CoordinateData, DraggableChildrenProps, DragHandler } from "./dragTypes";
 
 export type SelectedRegionTransform = (
     region: Region,
@@ -47,6 +47,14 @@ export interface SelectableProps {
      * The currently focused cell.
      */
     focusedCell?: FocusedCellCoordinates;
+
+    /**
+     * Focused cell coordinate & region utility functions. Exposed as a prop for testing purposes.
+     * These custom properties will be merged with the default util implementations.
+     *
+     * @internal
+     */
+    focusedCellUtils?: Partial<typeof DefaultFocusedCellUtils>;
 
     /**
      * When the user focuses something, this callback is called with new
@@ -120,6 +128,15 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
         enableMultipleSelection: false,
         selectedRegions: [],
     };
+
+    public static displayName = `${DISPLAYNAME_PREFIX}.DragSelectable`;
+
+    private get focusedCellUtils() {
+        return {
+            ...DefaultFocusedCellUtils,
+            ...this.props.focusedCellUtils,
+        };
+    }
 
     private didExpandSelectionOnActivate = false;
 
@@ -339,7 +356,7 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
     private invokeOnFocusCallbackForRegion = (focusRegion: Region, focusSelectionIndex = 0) => {
         const { onFocusedCell } = this.props;
         const focusedCellCoords = Regions.getFocusCellCoordinatesFromRegion(focusRegion);
-        onFocusedCell(FocusedCellUtils.toFullCoordinates(focusedCellCoords, focusSelectionIndex));
+        onFocusedCell(this.focusedCellUtils.toFullCoordinates(focusedCellCoords, focusSelectionIndex));
     };
 
     // Other
@@ -360,7 +377,7 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
         if (regions.length === 0) {
             return [region];
         } else if (focusedCell != null) {
-            const expandedRegion = FocusedCellUtils.expandFocusedRegion(focusedCell, region);
+            const expandedRegion = this.focusedCellUtils.expandFocusedRegion(focusedCell, region);
             return Regions.update(regions, expandedRegion);
         } else {
             const expandedRegion = Regions.expandRegion(regions[regions.length - 1], region);

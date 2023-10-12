@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 
-import { ItemRenderer, ItemRendererProps } from "../src";
+import type { ItemRenderer, ItemRendererProps } from "../src";
 import { Film, TOP_100_FILMS } from "../src/__examples__";
 
 describe("ItemRenderer", () => {

@@ -90,8 +90,11 @@
   }
 }
 
-#{example("SwitchCard")} {
-  .docs-control-card-grid {
+// SwitchCard, CheckboxCard, RadioCard
+.docs-control-card-group {
+  width: 100%;
+
+  .#{$ns}-form-content {
     display: grid;
     gap: $pt-grid-size * 2;
     grid-template-columns: repeat(auto-fit, minmax($pt-grid-size * 10, 1fr));
@@ -669,6 +672,10 @@ $docs-hotkey-piano-height: 510px;
 #{example("DateRangeInput3")} {
   .docs-example {
     padding: ($pt-grid-size * 4) ($pt-grid-size * 2);
+  }
+
+  .#{$ns}-input-group {
+    min-width: 200px;
   }
 }
 

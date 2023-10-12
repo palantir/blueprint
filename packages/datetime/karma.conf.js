@@ -8,6 +8,8 @@ module.exports = async function (config) {
         createKarmaConfig({
             dirname: __dirname,
             coverageExcludes: [
+                // don't check barrel files
+                "src/**/index.ts",
                 // not worth coverage, fairly simple implementation
                 "src/common/timezoneDisplayFormat.ts",
             ],

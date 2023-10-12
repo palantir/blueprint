@@ -22,7 +22,7 @@ import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";
 import * as ScrollUtils from "../common/internal/scrollUtils";
 import { Utils } from "../common/utils";
-import { TableLoadingOption } from "../regions";
+import type { TableLoadingOption } from "../regions";
 import { QuadrantType, TableQuadrant } from "./tableQuadrant";
 import { TableQuadrantStackCache } from "./tableQuadrantStackCache";
 

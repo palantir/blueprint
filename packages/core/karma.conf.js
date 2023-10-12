@@ -8,13 +8,19 @@ module.exports = async function (config) {
         createKarmaConfig({
             dirname: __dirname,
             coverageExcludes: [
+                // don't check barrel files
+                "src/**/index.ts",
+
                 // no need to test legacy APIs
                 "src/legacy/*",
+                "src/common/keyCodes.ts",
+                "src/deprecatedTypeAliases.ts",
 
                 // not worth full coverage
                 "src/accessibility/*",
                 "src/common/abstractComponent*",
                 "src/common/abstractPureComponent*",
+                "src/components/html/html.tsx",
 
                 // HACKHACK: for karma upgrade only
                 "src/common/refs.ts",

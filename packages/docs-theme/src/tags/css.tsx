@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IKssPluginData, ITag } from "@documentalist/client";
+import type { IKssPluginData, ITag } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 

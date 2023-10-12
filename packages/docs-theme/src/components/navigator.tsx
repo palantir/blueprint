@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IHeadingNode, IPageNode } from "@documentalist/client";
+import type { IHeadingNode, IPageNode } from "@documentalist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as React from "react";
 

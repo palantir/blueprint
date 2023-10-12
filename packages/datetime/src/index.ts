@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { DayModifiers as DatePickerDayModifiers, LocaleUtils } from "react-day-picker";
+import type { DayModifiers as DatePickerDayModifiers, LocaleUtils } from "react-day-picker";
 
 export * from "./common";
 

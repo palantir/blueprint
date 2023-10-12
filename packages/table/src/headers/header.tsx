@@ -20,19 +20,19 @@ import * as React from "react";
 import { Utils as CoreUtils } from "@blueprintjs/core";
 import { DragHandleVertical } from "@blueprintjs/icons";
 
-import { Grid } from "../common";
+import type { Grid } from "../common";
 import type { FocusedCellCoordinates } from "../common/cellTypes";
 import * as Classes from "../common/classes";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";
-import { ClientCoordinates, CoordinateData } from "../interactions/dragTypes";
+import type { ClientCoordinates, CoordinateData } from "../interactions/dragTypes";
 import { DragReorderable, ReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
-import { LockableLayout, Orientation } from "../interactions/resizeHandle";
+import type { LockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, SelectableProps } from "../interactions/selectable";
-import { Locator } from "../locator";
+import type { Locator } from "../locator";
 import { Region, RegionCardinality, Regions } from "../regions";
-import { HeaderCellProps } from "./headerCell";
+import type { HeaderCellProps } from "./headerCell";
 
 export type HeaderCellRenderer = (index: number) => React.ReactElement<HeaderCellProps>;
 

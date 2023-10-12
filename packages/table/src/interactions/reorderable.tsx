@@ -22,7 +22,7 @@ import type { FocusedCellCoordinates } from "../common/cellTypes";
 import { Utils } from "../common/utils";
 import { Region, RegionCardinality, Regions } from "../regions";
 import { Draggable } from "./draggable";
-import { CoordinateData, DraggableChildrenProps, DragHandler } from "./dragTypes";
+import type { CoordinateData, DraggableChildrenProps, DragHandler } from "./dragTypes";
 
 export interface ReorderableProps {
     /**

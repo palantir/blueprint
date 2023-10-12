@@ -23,7 +23,7 @@ import { DateRange, DateRangeSelectionStrategy, MonthAndYear } from "@blueprintj
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
-import { DayRangePickerProps } from "./dayRangePickerProps";
+import type { DayRangePickerProps } from "./dayRangePickerProps";
 
 /**
  * Render a standard day range picker where props.contiguousCalendarMonths is expected to be `true`.

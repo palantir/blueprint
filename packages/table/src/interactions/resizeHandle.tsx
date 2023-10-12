@@ -17,11 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Props } from "@blueprintjs/core";
+import type { Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { Draggable } from "./draggable";
-import { CoordinateData } from "./dragTypes";
+import type { CoordinateData } from "./dragTypes";
 
 export enum Orientation {
     HORIZONTAL = 1,

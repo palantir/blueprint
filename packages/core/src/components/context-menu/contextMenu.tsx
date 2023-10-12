@@ -20,7 +20,7 @@ import * as React from "react";
 import { Classes, DISPLAYNAME_PREFIX, mergeRefs, Props, Utils } from "../../common";
 import { TooltipContext, TooltipProvider } from "../popover/tooltipContext";
 import { ContextMenuPopover } from "./contextMenuPopover";
-import { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
+import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
 
 /**
  * Render props relevant to the _content_ of a context menu (rendered as the underlying Popover's content).

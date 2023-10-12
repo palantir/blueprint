@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { DayModifiers } from "react-day-picker";
+import type { DayModifiers } from "react-day-picker";
 
 export const DISABLED_MODIFIER = "disabled";
 export const HOVERED_RANGE_MODIFIER = "hovered-range";

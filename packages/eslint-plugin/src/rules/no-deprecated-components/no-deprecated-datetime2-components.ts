@@ -2,7 +2,7 @@
  * (c) Copyright 2023 Palantir Technologies Inc. All rights reserved.
  */
 
-import { TSESLint } from "@typescript-eslint/utils";
+import type { TSESLint } from "@typescript-eslint/utils";
 
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 

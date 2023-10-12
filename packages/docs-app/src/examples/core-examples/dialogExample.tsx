@@ -30,7 +30,7 @@ import {
 } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-import { BlueprintExampleData } from "../../tags/types";
+import type { BlueprintExampleData } from "../../tags/types";
 
 export interface DialogExampleState {
     autoFocus: boolean;

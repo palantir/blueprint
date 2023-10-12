@@ -19,7 +19,6 @@ import { isSameDay, isValid } from "date-fns";
 import * as React from "react";
 
 import {
-    AbstractPureComponent,
     Boundary,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
@@ -42,13 +41,16 @@ import {
 } from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
+import { getDateFnsFormatter, getDateFnsParser, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
 import { DateRangePicker3 } from "../date-range-picker3/dateRangePicker3";
-import {
+import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
+import type {
     DateRangeInput3DefaultProps,
     DateRangeInput3Props,
     DateRangeInput3PropsWithDefaults,
 } from "./dateRangeInput3Props";
+import type { DateRangeInput3State } from "./dateRangeInput3State";
 
 export { DateRangeInput3Props };
 
@@ -59,32 +61,6 @@ type InputEvent =
     | React.KeyboardEvent<HTMLInputElement>
     | React.FocusEvent<HTMLInputElement>
     | React.ChangeEvent<HTMLInputElement>;
-
-export interface DateRangeInput3State {
-    isOpen?: boolean;
-    boundaryToModify?: Boundary;
-    lastFocusedField?: Boundary;
-
-    formattedMinDateString?: string;
-    formattedMaxDateString?: string;
-
-    isStartInputFocused: boolean;
-    isEndInputFocused: boolean;
-
-    startInputString?: string;
-    endInputString?: string;
-
-    startHoverString?: string | null;
-    endHoverString?: string | null;
-
-    selectedEnd: Date | null;
-    selectedStart: Date | null;
-
-    shouldSelectAfterUpdate?: boolean;
-    wasLastFocusChangeDueToHover?: boolean;
-
-    selectedShortcutIndex?: number;
-}
 
 interface StateKeysAndValuesObject {
     keys: {
@@ -107,7 +83,7 @@ interface StateKeysAndValuesObject {
  *
  * @see https://blueprintjs.com/docs/#datetime2/date-range-input3
  */
-export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props, DateRangeInput3State> {
+export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Props, DateRangeInput3State> {
     public static defaultProps: DateRangeInput3DefaultProps = {
         allowSingleDayRange: false,
         closeOnSelection: true,
@@ -116,6 +92,7 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
         disabled: false,
         endInputProps: {},
         invalidDateMessage: "Invalid date",
+        locale: "en-US",
         maxDate: DatePickerUtils.getDefaultMaxDate(),
         minDate: DatePickerUtils.getDefaultMinDate(),
         outOfRangeMessage: "Out of range",
@@ -154,14 +131,20 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
             isEndInputFocused: false,
             isOpen: false,
             isStartInputFocused: false,
+            locale: undefined,
             selectedEnd,
             selectedShortcutIndex: -1,
             selectedStart,
         };
     }
 
-    public componentDidUpdate(prevProps: DateRangeInput3Props, prevState: DateRangeInput3State) {
-        super.componentDidUpdate(prevProps, prevState);
+    public async componentDidMount() {
+        await super.componentDidMount();
+    }
+
+    public async componentDidUpdate(prevProps: DateRangeInput3Props) {
+        super.componentDidUpdate(prevProps);
+
         const { isStartInputFocused, isEndInputFocused, shouldSelectAfterUpdate } = this.state;
 
         if (prevProps.startInputProps?.inputRef !== this.props.startInputProps?.inputRef) {
@@ -211,21 +194,22 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
             nextState = { ...nextState, formattedMaxDateString };
         }
 
-        this.setState(nextState as DateRangeInput3State);
+        this.setState(nextState);
     }
 
     public render() {
-        const { selectedShortcutIndex } = this.state;
+        const { locale, selectedShortcutIndex } = this.state;
         const { popoverProps = {}, popoverRef } = this.props;
 
         const popoverContent = (
             <DateRangePicker3
                 {...this.props}
-                selectedShortcutIndex={selectedShortcutIndex}
                 boundaryToModify={this.state.boundaryToModify}
+                locale={locale ?? this.props.locale}
                 onChange={this.handleDateRangePickerChange}
-                onShortcutChange={this.handleShortcutChange}
                 onHoverChange={this.handleDateRangePickerHoverChange}
+                onShortcutChange={this.handleShortcutChange}
+                selectedShortcutIndex={selectedShortcutIndex}
                 value={this.getSelectedRange()}
             />
         );
@@ -247,25 +231,6 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
                 renderTarget={this.renderTarget}
             />
         );
-    }
-
-    // HACKHACK: type fix for setState which does not accept partial state objects in our outdated version of
-    // @types/react (v16.14.32)
-    public setState<K extends keyof DateRangeInput3State>(
-        nextStateOrAction:
-            | Partial<DateRangeInput3State>
-            | null
-            | ((
-                  prevState: DateRangeInput3State,
-                  prevProps: DateRangeInput3Props,
-              ) => Pick<DateRangeInput3State, K> | null),
-        callback?: () => void,
-    ) {
-        if (typeof nextStateOrAction === "function") {
-            super.setState(nextStateOrAction, callback);
-        } else {
-            super.setState(nextStateOrAction as DateRangeInput3State);
-        }
     }
 
     protected validateProps(props: DateRangeInput3Props) {
@@ -593,6 +558,7 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
         const inputString = formatDateString(
             isValueControlled ? values.controlledValue : values.selectedValue,
             this.props,
+            this.state.locale,
             true,
         );
 
@@ -626,7 +592,7 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
             if (isValueControlled) {
                 nextState = {
                     ...nextState,
-                    [keys.inputString]: formatDateString(values.controlledValue, this.props),
+                    [keys.inputString]: formatDateString(values.controlledValue, this.props, this.state.locale),
                 };
             } else {
                 nextState = {
@@ -780,7 +746,7 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
         } else if (this.doesEndBoundaryOverlapStartBoundary(selectedValue, boundary)) {
             return this.props.overlappingDatesMessage;
         } else {
-            return formatDateString(selectedValue, this.props);
+            return formatDateString(selectedValue, this.props, this.state.locale);
         }
     };
 
@@ -916,15 +882,20 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
 
     // this is a slightly kludgy function, but it saves us a good amount of repeated code between
     // the constructor and componentDidUpdate.
-    private formatMinMaxDateString(props: DateRangeInput3Props, propName: "minDate" | "maxDate") {
+    private formatMinMaxDateString = (props: DateRangeInput3Props, propName: "minDate" | "maxDate") => {
         const date = props[propName];
-        const defaultDate = DateRangeInput3.defaultProps[propName];
-        // default values are applied only if a prop is strictly `undefined`
-        // See: https://facebook.github.io/react/docs/react-component.html#defaultprops
-        return formatDateString(date ?? defaultDate, this.props);
-    }
 
-    private parseDate(dateString: string | undefined): Date | null {
+        // N.B. default values are applied only if a prop is strictly `undefined`
+        // See: https://facebook.github.io/react/docs/react-component.html#defaultprops
+        const defaultDate = DateRangeInput3.defaultProps[propName];
+
+        // N.B. this.state will be undefined in the constructor, so we need a fallback in that case
+        const maybeLocale = this.state?.locale ?? typeof props.locale === "string" ? undefined : props.locale;
+
+        return formatDateString(date ?? defaultDate, this.props, maybeLocale);
+    };
+
+    private parseDate = (dateString: string | undefined): Date | null => {
         if (
             dateString === undefined ||
             dateString === this.props.outOfRangeMessage ||
@@ -932,28 +903,72 @@ export class DateRangeInput3 extends AbstractPureComponent<DateRangeInput3Props,
         ) {
             return null;
         }
-        const newDate = this.props.parseDate(dateString, getLocaleCodeFromProps(this.props.locale));
-        return newDate === false ? new Date() : newDate;
-    }
 
-    private formatDate(date: Date | null): string {
+        // HACKHACK: this code below is largely copied from the `useDateParser()` hook, which is the preferred
+        // implementation that we can migrate to once DateRangeInput3 is a function component.
+        const { dateFnsFormat, locale: localeFromProps, parseDate, timePickerProps, timePrecision } = this.props;
+        const { locale } = this.state;
+        let newDate: false | Date | null = null;
+
+        if (parseDate !== undefined) {
+            // user-provided date parser
+            newDate = parseDate(dateString, locale?.code ?? getLocaleCodeFromProps(localeFromProps));
+        } else {
+            // use user-provided date-fns format or one of the default formats inferred from time picker props
+            const format = dateFnsFormat ?? getDefaultDateFnsFormat({ timePickerProps, timePrecision });
+            newDate = getDateFnsParser(format, locale)(dateString);
+        }
+
+        return newDate === false ? new Date() : newDate;
+    };
+
+    // called on date hover & selection
+    private formatDate = (date: Date | null): string => {
         if (!this.isDateValidAndInRange(date)) {
             return "";
         }
-        return this.props.formatDate(date, getLocaleCodeFromProps(this.props.locale));
-    }
+
+        // HACKHACK: the code below is largely copied from the `useDateFormatter()` hook, which is the preferred
+        // implementation that we can migrate to once DateRangeInput3 is a function component.
+        const { dateFnsFormat, formatDate, locale: localeFromProps, timePickerProps, timePrecision } = this.props;
+        const { locale } = this.state;
+
+        if (formatDate !== undefined) {
+            // user-provided date formatter
+            return formatDate(date, locale?.code ?? getLocaleCodeFromProps(localeFromProps));
+        } else {
+            // use user-provided date-fns format or one of the default formats inferred from time picker props
+            const format = dateFnsFormat ?? getDefaultDateFnsFormat({ timePickerProps, timePrecision });
+            return getDateFnsFormatter(format, locale)(date);
+        }
+    };
 }
 
-function formatDateString(date: Date | false | null | undefined, props: DateRangeInput3Props, ignoreRange = false) {
-    const { formatDate, invalidDateMessage, maxDate, minDate, outOfRangeMessage } =
-        props as DateRangeInput3PropsWithDefaults;
+// called on initial construction, input focus & blur, and the standard input render path
+function formatDateString(
+    date: Date | false | null | undefined,
+    props: DateRangeInput3Props,
+    locale: Locale | undefined,
+    ignoreRange = false,
+) {
+    const { invalidDateMessage, maxDate, minDate, outOfRangeMessage } = props as DateRangeInput3PropsWithDefaults;
 
     if (date == null) {
         return "";
     } else if (!DateUtils.isDateValid(date)) {
         return invalidDateMessage;
     } else if (ignoreRange || DateUtils.isDayInRange(date, [minDate, maxDate])) {
-        return formatDate(date, getLocaleCodeFromProps(props.locale));
+        // HACKHACK: the code below is largely copied from the `useDateFormatter()` hook, which is the preferred
+        // implementation that we can migrate to once DateRangeInput3 is a function component.
+        const { dateFnsFormat, formatDate, locale: localeFromProps, timePickerProps, timePrecision } = props;
+        if (formatDate !== undefined) {
+            // user-provided date formatter
+            return formatDate(date, locale?.code ?? getLocaleCodeFromProps(localeFromProps));
+        } else {
+            // use user-provided date-fns format or one of the default formats inferred from time picker props
+            const format = dateFnsFormat ?? getDefaultDateFnsFormat({ timePickerProps, timePrecision });
+            return getDateFnsFormatter(format, locale)(date);
+        }
     } else {
         return outOfRangeMessage;
     }

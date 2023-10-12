@@ -17,71 +17,9 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Alignment, Classes, mergeRefs } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLInputProps, Props } from "../../common/props";
-
-export interface ControlProps extends Props, HTMLInputProps, React.RefAttributes<HTMLLabelElement> {
-    // NOTE: HTML props are duplicated here to provide control-specific documentation
-
-    /**
-     * Alignment of the indicator within container.
-     *
-     * @default Alignment.LEFT
-     */
-    alignIndicator?: Alignment;
-
-    /** Whether the control is checked. */
-    checked?: boolean;
-
-    /** JSX label for the control. */
-    children?: React.ReactNode;
-
-    /** Whether the control is initially checked (uncontrolled mode). */
-    defaultChecked?: boolean;
-
-    /** Whether the control is non-interactive. */
-    disabled?: boolean;
-
-    /** Whether the control should appear as an inline element. */
-    inline?: boolean;
-
-    /** Ref attached to the HTML `<input>` element backing this component. */
-    inputRef?: React.Ref<HTMLInputElement>;
-
-    /**
-     * Text label for the control.
-     *
-     * Use `children` or `labelElement` to supply JSX content. This prop actually supports JSX elements,
-     * but TypeScript will throw an error because `HTMLAttributes` only allows strings.
-     */
-    label?: string;
-
-    /**
-     * JSX Element label for the control.
-     *
-     * This prop is a workaround for TypeScript consumers as the type definition for `label` only
-     * accepts strings. JavaScript consumers can provide a JSX element directly to `label`.
-     */
-    labelElement?: React.ReactNode;
-
-    /** Whether this control should use large styles. */
-    large?: boolean;
-
-    /** Event handler invoked when input value is changed. */
-    onChange?: React.FormEventHandler<HTMLInputElement>;
-
-    /**
-     * Name of the HTML tag that wraps the checkbox.
-     *
-     * By default a `<label>` is used, which effectively enlarges the click
-     * target to include all of its children. Supply a different tag name if
-     * this behavior is undesirable or you're listening to click events from a
-     * parent element (as the label can register duplicate clicks).
-     *
-     * @default "label"
-     */
-    tagName?: keyof JSX.IntrinsicElements;
-}
+import { Classes, mergeRefs } from "../../common";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
+import type { ControlProps } from "./controlProps";
 
 /** Internal props for Checkbox/Radio/Switch to render correctly. */
 interface ControlInternalProps extends ControlProps {
@@ -248,7 +186,7 @@ export const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props, ref) =
             // otherwise wait for props change. always invoke handler.
             onChange?.(evt);
         },
-        [onChange],
+        [indeterminate, onChange],
     );
 
     React.useEffect(() => {

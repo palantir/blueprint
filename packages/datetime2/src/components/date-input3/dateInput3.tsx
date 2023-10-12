@@ -41,8 +41,9 @@ import {
 import { Classes } from "../../classes";
 import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
-import { DatePicker3, DatePicker3Props } from "../date-picker3/datePicker3";
-import { DateInput3DefaultProps, DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
+import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
+import { DatePicker3 } from "../date-picker3/datePicker3";
+import type { DateInput3DefaultProps, DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
 import { useDateFormatter } from "./useDateFormatter";
 import { useDateParser } from "./useDateParser";
 
@@ -58,6 +59,7 @@ const defaultProps: DateInput3DefaultProps = {
     closeOnSelection: true,
     disabled: false,
     invalidDateMessage: "Invalid date",
+    locale: "en-US",
     maxDate: DatePickerUtils.getDefaultMaxDate(),
     minDate: DatePickerUtils.getDefaultMinDate(),
     outOfRangeMessage: "Out of range",
@@ -73,6 +75,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     const {
         closeOnSelection,
         dateFnsFormat,
+        dateFnsLocaleLoader,
         defaultTimezone,
         defaultValue,
         disabled,
@@ -97,7 +100,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         ...datePickerProps
     } = props as DateInput3PropsWithDefaults;
 
-    const locale = useDateFnsLocale(localeOrCode);
+    const locale = useDateFnsLocale(localeOrCode, dateFnsLocaleLoader);
     const placeholder = getPlaceholder(props);
     const formatDateString = useDateFormatter(props, locale);
     const parseDateString = useDateParser(props, locale);
@@ -231,7 +234,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         [closeOnSelection, isControlled, formatDateString, onChange, timezoneValue, timePrecision, valueAsDate],
     );
 
-    const dayPickerProps: DatePicker3Props["dayPickerProps"] = {
+    const dayPickerProps: ReactDayPickerSingleProps["dayPickerProps"] = {
         ...props.dayPickerProps,
         onDayKeyDown: (day, modifiers, e) => {
             props.dayPickerProps?.onDayKeyDown?.(day, modifiers, e);
@@ -276,6 +279,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             <DatePicker3
                 {...datePickerProps}
                 dayPickerProps={dayPickerProps}
+                locale={locale}
                 maxDate={maxDate}
                 minDate={minDate}
                 onChange={handleDateChange}

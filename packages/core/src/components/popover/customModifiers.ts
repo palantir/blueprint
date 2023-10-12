@@ -19,7 +19,7 @@
  * @see https://popper.js.org/docs/v2/modifiers/#custom-modifiers
  */
 
-import { Modifier } from "@popperjs/core";
+import type { Modifier } from "@popperjs/core";
 
 // tslint:disable object-literal-sort-keys
 

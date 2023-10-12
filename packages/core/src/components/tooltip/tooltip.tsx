@@ -22,7 +22,7 @@ import * as Classes from "../../common/classes";
 // eslint-disable-next-line import/no-cycle
 import { Popover, PopoverInteractionKind } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
-import { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
+import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
 import { TooltipContext, TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 
 export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>

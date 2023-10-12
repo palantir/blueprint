@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { Props } from "../../common/props";
+import type { Props } from "../../common/props";
 
 export interface DialogFooterProps extends Props {
     /** Child contents are rendered on the left side of the footer. */

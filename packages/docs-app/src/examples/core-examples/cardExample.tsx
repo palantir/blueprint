@@ -23,6 +23,7 @@ export interface CardExampleState {
     compact: boolean;
     elevation: Elevation;
     interactive: boolean;
+    selected: boolean;
 }
 
 export class CardExample extends React.PureComponent<ExampleProps, CardExampleState> {
@@ -30,6 +31,7 @@ export class CardExample extends React.PureComponent<ExampleProps, CardExampleSt
         compact: false,
         elevation: 0,
         interactive: false,
+        selected: false,
     };
 
     public render() {
@@ -51,6 +53,9 @@ export class CardExample extends React.PureComponent<ExampleProps, CardExampleSt
         <>
             <H5>Props</H5>
             <Switch checked={this.state.interactive} label="Interactive" onChange={this.handleInteractiveChange} />
+            {this.state.interactive && (
+                <Switch checked={this.state.selected} label="Selected" onChange={this.handleSelectedChange} />
+            )}
             <Switch checked={this.state.compact} label="Compact" onChange={this.handleCompactChange} />
             <Label>
                 Elevation
@@ -70,4 +75,6 @@ export class CardExample extends React.PureComponent<ExampleProps, CardExampleSt
     private handleInteractiveChange = () => this.setState({ interactive: !this.state.interactive });
 
     private handleCompactChange = () => this.setState({ compact: !this.state.compact });
+
+    private handleSelectedChange = () => this.setState({ selected: !this.state.selected });
 }

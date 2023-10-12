@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { SinonSpy, spy } from "sinon";
 
-import { SwitchCard } from "../../src";
+import { CheckboxCard, Classes, SwitchCard } from "../../src";
 
 describe("ControlCard", () => {
     let testsContainerElement: HTMLElement | undefined;
@@ -46,6 +46,16 @@ describe("ControlCard", () => {
             });
             wrapper.find("input").simulate("change");
             assert.isTrue(handleControlChangeSpy.calledOnce, "expected onChange to be called");
+        });
+    });
+
+    describe("CheckboxCard", () => {
+        it("is left-aligned by default", () => {
+            const wrapper = mount(<CheckboxCard />, { attachTo: testsContainerElement });
+            assert.isTrue(
+                wrapper.find(`.${Classes.CONTROL}.${Classes.ALIGN_LEFT}`).exists(),
+                "expected left alignment",
+            );
         });
     });
 });

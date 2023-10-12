@@ -19,9 +19,9 @@ import * as React from "react";
 import { DISPLAYNAME_PREFIX, Props } from "@blueprintjs/core";
 
 import { CellRenderer, emptyCellRenderer } from "./cell/cell";
-import { ColumnHeaderRenderer } from "./headers/columnHeader";
-import { ColumnNameProps } from "./headers/columnHeaderCell";
-import { ColumnLoadingOption } from "./regions";
+import type { ColumnHeaderRenderer } from "./headers/columnHeader";
+import type { ColumnNameProps } from "./headers/columnHeaderCell";
+import type { ColumnLoadingOption } from "./regions";
 
 export interface ColumnProps extends ColumnNameProps, Props {
     /**

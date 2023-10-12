@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes } from "../../common";
-import { HotkeyConfig } from "../../hooks";
+import type { HotkeyConfig } from "../../hooks";
 import { Dialog, DialogProps } from "../dialog/dialog";
 import { DialogBody } from "../dialog/dialogBody";
 import { Hotkey } from "./hotkey";

@@ -32,12 +32,12 @@ export {
     /** @deprecated import JSONFormat instead */
     JSONFormat as JSONFormat2,
     /** @deprecated import JSONFormatProps instead */
-    JSONFormatProps as JSONFormat2Props,
+    type JSONFormatProps as JSONFormat2Props,
 } from "./cell/formats/jsonFormat";
 
 export {
     /** @deprecated import TruncatedFormat instead */
     TruncatedFormat as TruncatedFormat2,
     /** @deprecated import TruncatedFormatProps instead */
-    TruncatedFormatProps as TruncatedFormat2Props,
+    type TruncatedFormatProps as TruncatedFormat2Props,
 } from "./cell/formats/truncatedFormat";

@@ -19,7 +19,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
-import { DocsCompleteData } from "@blueprintjs/docs-data";
+import type { DocsCompleteData } from "@blueprintjs/docs-data";
 import { Banner, Documentation, DocumentationProps, NavMenuItem, NavMenuItemProps } from "@blueprintjs/docs-theme";
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
@@ -69,7 +69,7 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
     public render() {
         const banner = (
             <Banner href="https://blueprintjs.com/docs/versions/4">
-                Blueprint v5.0 is now in stable release. Still using v4.x? Click here to view the legacy docs &rarr;
+                Blueprint v5.x is now in stable release. Still using v4.x? Click here to view the legacy docs &rarr;
             </Banner>
         );
         const footer = (

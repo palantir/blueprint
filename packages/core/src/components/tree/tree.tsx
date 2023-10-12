@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { TreeNode } from "./treeNode";
-import { TreeEventHandler, TreeNodeInfo } from "./treeTypes";
+import type { TreeEventHandler, TreeNodeInfo } from "./treeTypes";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export interface TreeProps<T = {}> extends Props {

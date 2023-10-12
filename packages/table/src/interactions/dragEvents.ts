@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ClientCoordinates, CoordinateData, DragHandler } from "./dragTypes";
+import type { ClientCoordinates, CoordinateData, DragHandler } from "./dragTypes";
 
 export class DragEvents {
     public static DOUBLE_CLICK_TIMEOUT_MSEC = 500;

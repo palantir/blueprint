@@ -27,7 +27,7 @@ import {
     Switch,
 } from "@blueprintjs/core";
 import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
-import { IconName } from "@blueprintjs/icons";
+import type { IconName } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
 import { Layout, LayoutSelect } from "./common/layoutSelect";

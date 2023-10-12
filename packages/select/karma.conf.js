@@ -7,7 +7,12 @@ module.exports = async function (config) {
     config.set(
         createKarmaConfig({
             dirname: __dirname,
-            coverageExcludes: ["src/__examples__/*"],
+            coverageExcludes: [
+                // don't check barrel files or example fixtures
+                "src/**/index.ts",
+                "src/__examples__/*",
+                "src/components/deprecatedAliases.ts",
+            ],
         }),
     );
 };

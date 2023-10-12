@@ -21,7 +21,7 @@ import { CaretDown, DoubleCaretVertical, IconName, SVGIconProps } from "@bluepri
 
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
 import { DISPLAYNAME_PREFIX, OptionProps } from "../../common/props";
-import { Extends } from "../../common/utils";
+import type { Extends } from "../../common/utils";
 
 export type HTMLSelectIconName = Extends<IconName, "double-caret-vertical" | "caret-down">;
 

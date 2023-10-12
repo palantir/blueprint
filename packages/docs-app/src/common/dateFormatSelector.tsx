@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Radio, RadioGroup } from "@blueprintjs/core";
-import { DateFormatProps } from "@blueprintjs/datetime";
+import type { DateFormatProps } from "@blueprintjs/datetime";
 import { handleNumberChange } from "@blueprintjs/docs-theme";
 
 export interface DateFormatSelectorProps {
