@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX, mergeRefs } from "../../common";
 
 // backwards-compatible with @blueprintjs/core v4.x
 export type ResizeEntry = ResizeObserverEntry;
@@ -57,7 +57,7 @@ export interface ResizeSensorProps {
      * If you attach a `ref` to the child yourself when rendering it, you must pass the
      * same value here (otherwise, ResizeSensor won't be able to attach its own).
      */
-    targetRef?: React.RefObject<HTMLElement>;
+    targetRef?: React.Ref<HTMLElement>;
 }
 
 /**
@@ -70,7 +70,13 @@ export interface ResizeSensorProps {
 export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
-    private targetRef = this.props.targetRef ?? React.createRef<HTMLElement>();
+    private ownTargetRef = React.createRef<HTMLElement>();
+
+    private get targetRef() {
+        return this.props.targetRef === undefined
+            ? this.ownTargetRef
+            : mergeRefs(this.props.targetRef, this.ownTargetRef);
+    }
 
     private prevElement: HTMLElement | undefined = undefined;
 
@@ -79,12 +85,6 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
 
     public render(): React.ReactNode {
         const onlyChild = React.Children.only(this.props.children);
-
-        // if we're provided a ref to the child already, we don't need to attach one ourselves
-        if (this.props.targetRef !== undefined) {
-            return onlyChild;
-        }
-
         return React.cloneElement(onlyChild, { ref: this.targetRef });
     }
 
@@ -111,27 +111,27 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
             return;
         }
 
-        if (!(this.targetRef.current instanceof Element)) {
+        if (!(this.ownTargetRef.current instanceof Element)) {
             // stop everything if not defined
             this.observer.disconnect();
             return;
         }
 
-        if (this.targetRef.current === this.prevElement && !force) {
+        if (this.ownTargetRef.current === this.prevElement && !force) {
             // quit if given same element -- nothing to update (unless forced)
             return;
         } else {
             // clear observer list if new element
             this.observer.disconnect();
             // remember element reference for next time
-            this.prevElement = this.targetRef.current;
+            this.prevElement = this.ownTargetRef.current;
         }
 
         // observer callback is invoked immediately when observing new elements
-        this.observer.observe(this.targetRef.current);
+        this.observer.observe(this.ownTargetRef.current);
 
         if (this.props.observeParents) {
-            let parent = this.targetRef.current.parentElement;
+            let parent = this.ownTargetRef.current.parentElement;
             while (parent != null) {
                 this.observer.observe(parent);
                 parent = parent.parentElement;
