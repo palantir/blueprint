@@ -180,18 +180,17 @@ export class Popover<
     public popoverElement: HTMLElement | null = null;
 
     /** Popover ref handler */
-    private popoverRef: React.Ref<HTMLDivElement> = refHandler(this, "popoverElement", this.props.popoverRef);
-
-    /** DOM element that contains the target. */
-    public targetElement: HTMLElement | null = null;
+    private popoverRef: React.RefCallback<HTMLDivElement> = refHandler(this, "popoverElement", this.props.popoverRef);
 
     /**
-     * Target ref handler.
+     * Target DOM element ref.
      *
-     * N.B. we use a ref callback instead of an object here due to a `react-popper` bug where `<Reference innerRef>`
-     * does not work correctly in React 18 strict mode. See https://github.com/floating-ui/react-popper/pull/459
+     * N.B. this must be a ref object since we pass it to `<ResizeSensor>`, which needs to know about the target
+     * DOM element in order to observe its dimensions.
+     *
+     * @public for testing
      */
-    private targetRef: React.Ref<HTMLElement> = el => (this.targetElement = el);
+    public targetRef = React.createRef<HTMLElement>();
 
     private cancelOpenTimeout?: () => void;
 
@@ -339,7 +338,7 @@ export class Popover<
 
         // react-popper has a wide type for this ref, but we can narrow it based on the source
         // see https://github.com/floating-ui/react-popper/blob/beac280d61082852c4efc302be902911ce2d424c/src/Reference.js#L17
-        const ref = mergeRefs(popperChildRef as React.RefCallback<HTMLElement | null>, this.targetRef);
+        const ref = mergeRefs(popperChildRef as React.RefCallback<HTMLElement>, this.targetRef);
 
         const targetEventHandlers: PopoverHoverTargetHandlers<T> | PopoverClickTargetHandlers<T> =
             isHoverInteractionKind
@@ -423,7 +422,7 @@ export class Popover<
         // N.B. we must attach the ref ('wrapped' with react-popper functionality) to the DOM element here and
         // let ResizeSensor know about it
         return (
-            <ResizeSensor targetRef={ref} onResize={this.reposition}>
+            <ResizeSensor targetRef={this.targetRef} onResize={this.reposition}>
                 {target}
             </ResizeSensor>
         );
@@ -681,14 +680,14 @@ export class Popover<
     };
 
     private handleOverlayClose = (e?: React.SyntheticEvent<HTMLElement>) => {
-        if (this.targetElement == null || e === undefined) {
+        if (this.targetRef.current == null || e === undefined) {
             return;
         }
 
         const event = (e.nativeEvent ?? e) as Event;
         const eventTarget = (event.composed ? event.composedPath()[0] : event.target) as HTMLElement;
         // if click was in target, target event listener will handle things, so don't close
-        if (!Utils.elementIsOrContains(this.targetElement, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
+        if (!Utils.elementIsOrContains(this.targetRef.current, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
             this.setOpenState(false, e);
         }
     };
@@ -745,7 +744,7 @@ export class Popover<
 
     private updateDarkParent() {
         if (this.props.usePortal && this.state.isOpen) {
-            const hasDarkParent = this.targetElement != null && this.targetElement.closest(`.${Classes.DARK}`) != null;
+            const hasDarkParent = this.targetRef.current?.closest(`.${Classes.DARK}`) != null;
             this.setState({ hasDarkParent });
         }
     }

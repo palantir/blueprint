@@ -63,6 +63,7 @@ describe("Suggest", () => {
                 inputValueRenderer={inputValueRenderer}
                 popoverProps={{ isOpen: true, usePortal: false }}
             />,
+            { attachTo: testsContainerElement },
         ),
     );
 
@@ -337,7 +338,9 @@ describe("Suggest", () => {
     });
 
     function suggest(props: Partial<SuggestProps<Film>> = {}) {
-        return mount<Suggest<Film>>(<Suggest<Film> {...defaultProps} {...handlers} {...props} />);
+        return mount<Suggest<Film>>(<Suggest<Film> {...defaultProps} {...handlers} {...props} />, {
+            attachTo: testsContainerElement,
+        });
     }
 });
 

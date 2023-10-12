@@ -30,7 +30,7 @@ export function isRefCallback<T>(value: React.Ref<T> | undefined): value is Reac
 export function setRef<T>(refTarget: React.Ref<T> | undefined, ref: T | null): void {
     if (isRefObject<T>(refTarget)) {
         // HACKHACK: .current property is readonly
-        (refTarget.current as any) = ref;
+        (refTarget.current as T | null) = ref;
     } else if (isRefCallback(refTarget)) {
         refTarget(ref);
     }
