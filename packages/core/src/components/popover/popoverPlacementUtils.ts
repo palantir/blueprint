@@ -16,7 +16,7 @@
 
 import type { Placement } from "@popperjs/core";
 
-import { PopoverPosition } from "./popoverSharedProps";
+import { PopoverPosition } from "./popoverPosition";
 
 /**
  * Convert a position to a placement.
