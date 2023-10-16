@@ -90,7 +90,12 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     }
 
     public componentDidMount() {
-        this.observer = new ResizeObserver(entries => this.props.onResize?.(entries));
+        // ResizeObserver is available in all modern browsers supported by Blueprint but not in server-side rendering
+        // and some test environments like jsdom, so we to do a feature check here.
+        this.observer =
+            globalThis.ResizeObserver != null
+                ? new ResizeObserver(entries => this.props.onResize?.(entries))
+                : undefined;
         this.observeElement();
     }
 
