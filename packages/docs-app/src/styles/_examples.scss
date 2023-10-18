@@ -123,8 +123,14 @@
     flex-direction: column;
   }
 
+  // this example has a "fill" prop option, which doesn't work nicely with the default margin
+  .docs-example > * {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .#{$ns}-form-content {
-    width: $pt-grid-size * 20;
+    min-width: $pt-grid-size * 20;
   }
 }
 
