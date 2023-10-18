@@ -69,6 +69,10 @@ Styleguide form-group
     }
   }
 
+  &.#{$ns}-fill {
+    width: 100%;
+  }
+
   &.#{$ns}-inline {
     align-items: flex-start;
     flex-direction: row;
