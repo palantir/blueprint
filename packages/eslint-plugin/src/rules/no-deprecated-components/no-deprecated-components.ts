@@ -8,14 +8,17 @@ import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponents
 import { coreComponentsMigrationMapping } from "./no-deprecated-core-components";
 import { datetimeComponentsMigrationMapping } from "./no-deprecated-datetime-components";
 import { datetime2ComponentsMigrationMapping } from "./no-deprecated-datetime2-components";
+import { popover2ComponentsMigrationMapping } from "./no-deprecated-popover2-components";
 import { selectComponentsMigrationMapping } from "./no-deprecated-select-components";
 import { tableComponentsMigrationMapping } from "./no-deprecated-table-components";
 
 /**
- * This rule checks a hardcoded list of components that Blueprint is actively migrating to a newer version (e.g. v1 -> v2)
- * If deprecated versions (v1) are detected, it will recommend using the replacement component (e.g. the v2) instead.
- * Note that this does not rely on the \@deprecated JSDoc annotation, and is thus distinct/very different from the
- * deprecated/deprecated ESLint rule
+ * This rule checks target source code against a static list of deprecated React components.
+ * If deprecated versions are detected, it will recommend using the replacement component instead
+ * (for example, "v1" API -> "v2" API).
+ *
+ * Note that this implementation does not rely on the \@deprecated JSDoc annotation, and is thus distinct
+ * from the 'deprecated/deprecated' ESLint rule.
  */
 export const noDeprecatedComponentsRule: TSESLint.RuleModule<string, unknown[]> = createNoDeprecatedComponentsRule(
     "no-deprecated-components",
@@ -23,6 +26,7 @@ export const noDeprecatedComponentsRule: TSESLint.RuleModule<string, unknown[]> 
         "@blueprintjs/core",
         "@blueprintjs/datetime",
         "@blueprintjs/datetime2",
+        "@blueprintjs/popover2",
         "@blueprintjs/select",
         "@blueprintjs/table",
     ],
@@ -30,6 +34,7 @@ export const noDeprecatedComponentsRule: TSESLint.RuleModule<string, unknown[]> 
         ...coreComponentsMigrationMapping,
         ...datetimeComponentsMigrationMapping,
         ...datetime2ComponentsMigrationMapping,
+        ...popover2ComponentsMigrationMapping,
         ...selectComponentsMigrationMapping,
         ...tableComponentsMigrationMapping,
     },
