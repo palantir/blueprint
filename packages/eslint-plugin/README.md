@@ -106,7 +106,7 @@ Note that this rule only supports hardcoded values in the `icon` prop; it does n
 
 A fixer is available for this rule that will convert between string literals and named `Icon` components. Note that the implementation is naive and may require intervention, such as to import a component or fix an invalid name.
 
-Named icon components (`TickIcon`, `GraphIcon`, etc) can be imported from the `@blueprintjs/icons` package.
+Named icon components (`Tick`, `Graph`, etc) can be imported from the `@blueprintjs/icons` package.
 
 This rule is disabled in the `blueprint-rules` config as it is most useful to ensure that the `@blueprintjs/icons` package can be tree-shaken (an opt-in process which requires using components and _never_ `IconName` literals).
 
@@ -137,32 +137,41 @@ This rule is disabled in the `blueprint-rules` config as it is most useful to en
 
 ### `@blueprintjs/no-deprecated-components`
 
-Ban usage of deprecated Blueprint components, including:
+Ban usage of deprecated components in the current major version of all Blueprint packages, including:
 
--   AbstractComponent
--   AbstractPureComponent
 -   Breadcrumbs
--   CollapsibleList
+-   ContextMenu2
 -   DateInput
+-   DateInput2
+-   DatePicker
 -   DateRangeInput
--   DateTimePicker
--   MenuItem
--   MultiSelect
--   PanelStack
--   Popover
--   Select
--   Suggest
--   TimezonePicker
--   Tooltip
+-   DateRangeInput2
+-   DateRangePicker
+-   MenuItem2
+-   Popover2
+-   ResizeSensor2
+-   Tooltip2
 
-**Rationale**: Many Blueprint components have "V2" variants as a part of their natural API evolution.
-Blueprint consumers are recommended to migrate from the deprecated V1 components to their newer V2 counterparts
-in order to future-proof their code for the next major version of Blueprint, where the V2 components will become the
-only available API and the V1 variants will be removed. Flagging usage of deprecated APIs can be done with other
-ESLint rules like `deprecation/deprecation`, but that rule is often too broad to enable as an "error" globally across
-a large code base. `@blueprintjs/no-deprecated-components` provides a simpler, more scoped rule which only flags
-usage of deprecated Blueprint components in JSX. The idea here is that you can enable this rule as an "error" in ESLint
-to prevent any backwards progress in your Blueprint migration as you move from V1 -> V2 APIs in preparation for v5.0.
+**Rationale**: There are two reasons why a particular component may be deprecated:
+
+1.  Many Blueprint components have next-generation variants as a part of their natural API evolution. Blueprint
+    consumers are recommended to migrate from the deprecated "V1" components to their newer V2 counterparts
+    in order to future-proof their code for the next major version of Blueprint, where the V2 components will become
+    the only available API and the "V1" variants will be removed. Flagging usage of deprecated APIs can be done with
+    other ESLint rules like `deprecation/deprecation`, but that rule is often too broad to enable as an "error"
+    globally across a large code base. `@blueprintjs/no-deprecated-components` provides a simpler, more scoped rule
+    which only flags usage of deprecated Blueprint components in JSX syntax. The idea here is that you can enable this
+    rule as an "error" in ESLint to prevent any backwards progress in your Blueprint migration as you migrate to newer
+    APIs in preparation for the next major version.
+
+2.  When a next-generation component API (designated as "V2" or "V3") is "promoted" to the standard "V1" API in a
+    major version of Blueprint, we keep around aliases for the "V2" names which referred to that same API in the
+    _previous_ major version. These names are immediately marked as `/** @deprecated */` and you are encouraged to
+    migrate to their corresponding "V1" symbols after a major upgrade. For example,
+    `{ Popover2 } from "@blueprintjs/popover2"` is the recommended popover API in Blueprint v4.x, but it is deprecated
+    in Blueprint v5.x. If you continue to use `Popover2` in v5.x, you will get a lint error suggesting a rename
+    migration to `{ Popover } from "@blueprintjs/core"`. Since these symbols are aliases for each other in v5.x, there
+    should be no runtime impact from this kind of migration.
 
 ### `@blueprintjs/no-deprecated-core-components`
 
@@ -192,6 +201,16 @@ Similar to `@blueprintjs/no-deprecated-components`, but only flags usage of depr
 **Rationale**: In migrations of large code bases, it may be useful to apply more granular rule configuration of
 "no-deprecated-components" to make incremental progress towards the newer APIs. This allows you, for example, to flag
 deprecated `@blueprintjs/datetime2` component usage as errors while allowing deprecated components from other packages
+to pass as lint warnings.
+
+### `@blueprintjs/no-deprecated-popover2-components`
+
+Similar to `@blueprintjs/no-deprecated-components`, but only flags usage of deprecated components from the
+`@blueprintjs/popover2` package instead of all `@blueprintjs/` packages.
+
+**Rationale**: In migrations of large code bases, it may be useful to apply more granular rule configuration of
+"no-deprecated-components" to make incremental progress towards the newer APIs. This allows you, for example, to flag
+deprecated `@blueprintjs/popover2` component usage as errors while allowing deprecated components from other packages
 to pass as lint warnings.
 
 ### `@blueprintjs/no-deprecated-select-components`
