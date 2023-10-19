@@ -148,8 +148,11 @@ Ban usage of deprecated components in the current major version of all Blueprint
 -   DateRangeInput2
 -   DateRangePicker
 -   MenuItem2
+-   MultiSelect2
 -   Popover2
 -   ResizeSensor2
+-   Select2
+-   Suggest2
 -   Tooltip2
 
 **Rationale**: There are two reasons why a particular component may be deprecated:
