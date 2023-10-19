@@ -139,7 +139,7 @@ This rule is disabled in the `blueprint-rules` config as it is most useful to en
 
 Ban usage of deprecated components in the current major version of all Blueprint packages, including:
 
--   Breadcrumbs
+-   Breadcrumbs2
 -   ContextMenu2
 -   DateInput
 -   DateInput2
