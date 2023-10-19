@@ -1,0 +1,11 @@
+{
+    "extends": "./tsconfig.base",
+    "compilerOptions": {
+        "forceConsistentCasingInFileNames": true,
+        "lib": ["ES2015"],
+        "module": "node16",
+        "moduleResolution": "node16",
+        "target": "ES2015",
+        "verbatimModuleSyntax": false
+    }
+}

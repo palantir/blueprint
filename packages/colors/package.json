@@ -14,7 +14,7 @@
         "clean": "rm -rf lib/*",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
         "compile:css-colors": "generate-css-variables --retainDefault true --outputFileName colors _colors.scss",
@@ -26,12 +26,12 @@
         "verify": "npm-run-all compile -p dist lint"
     },
     "dependencies": {
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^8.0.4",
         "mocha": "^10.2.0",
-        "typescript": "~4.9.5"
+        "typescript": "~5.2.2"
     },
     "repository": {
         "type": "git",
