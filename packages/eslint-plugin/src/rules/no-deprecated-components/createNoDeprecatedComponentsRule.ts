@@ -8,7 +8,25 @@ import { TSESLint, TSESTree } from "@typescript-eslint/utils";
 
 import { createRule } from "../utils/createRule";
 
-type MessageIds = "migration" | "migrationWithPropUsage";
+type MessageIds =
+    | "migration"
+    | "migrationToNewPackage"
+    | "migrationWithPropUsage"
+    | "migrationWithPropUsageToNewPackage";
+
+/**
+ * Key is either:
+ *  -   the name of a deprecated component, or
+ *  -   a component name + prop identifier (e.g. "ComponentV1.propName") which indicates that usage of
+ *      <ComponentV1 propName={...}> should be flagged.
+ *
+ * Value is either:
+ *  -   the name of a corresponding non-deprecated component (if it exists in the same package), or
+ *  -   a tuple containing:
+ *          1. name of non-deprecated component
+ *          2. the package where that component is found
+ */
+export type DeprecatedComponentsConfig = Record<string, string | [string, string]>;
 
 /**
  * Higher-order function to create an ESLint rule which checks for usage of deprecated React components in JSX syntax.
@@ -17,17 +35,12 @@ type MessageIds = "migration" | "migrationWithPropUsage";
  *
  * @param deprecatedComponentConfig Configuration of the deprecated components to lint for. Note that this configuration
  *  is not exposed to lint rule users, it just lives inside our rule implementations. Lint violations will include a
- *  recommendation to migrate to the newer, non-deprecated component specified in this mapping. Keys-value pairs may use
- *  one of two syntaxes:
- *      - "ComponentV1": "ComponentV2" - Usage of <ComponentV1> will be flagged with a recommendation
- *          to migrate to <ComponentV2>
- *      - "ComponentV1.propName": "ComponentV2" - Usage of <ComponentV1 propName={...}> will be flagged with a
- *          recommendation to migrate to <ComponentV2>
+ *  recommendation to migrate to the newer, non-deprecated component specified in this mapping.
  */
 export function createNoDeprecatedComponentsRule(
     ruleName: string,
     packagesToCheck: string[],
-    deprecatedComponentConfig: Record<string, string>,
+    deprecatedComponentConfig: DeprecatedComponentsConfig,
 ): TSESLint.RuleModule<MessageIds, unknown[]> {
     const descriptionFromClause = packagesToCheck.length === 1 ? ` from ${packagesToCheck[0]}` : "";
 
@@ -43,8 +56,12 @@ export function createNoDeprecatedComponentsRule(
             messages: {
                 migration:
                     "Usage of {{ deprecatedComponentName }} is deprecated, migrate to {{ newComponentName }} instead",
+                migrationToNewPackage:
+                    "Usage of {{ deprecatedComponentName }} is deprecated, migrate to {{ newComponentName }} from '{{ newPackageName }}' instead",
                 migrationWithPropUsage:
                     "Usage of {{ deprecatedComponentName }} with prop '{{ deprecatedPropName }}' is deprecated, migrate to {{ newComponentName }} instead",
+                migrationWithPropUsageToNewPackage:
+                    "Usage of {{ deprecatedComponentName }} with prop '{{ deprecatedPropName }}' is deprecated, migrate to {{ newComponentName }} from '{{ newPackageName }}' instead",
             },
             schema: [
                 {
@@ -108,20 +125,17 @@ export function createNoDeprecatedComponentsRule(
                     return;
                 }
 
-                const deprecatedComponentKey = Object.keys(deprecatedComponentConfig).find(
-                    key => key.includes(".") && key.split(".")[0] === elementName,
-                );
                 const deprecatedPropName = ((deprecatedProp as TSESTree.JSXAttribute).name as TSESTree.JSXIdentifier)
                     .name;
-                context.report({
-                    data: {
-                        deprecatedComponentName: elementName,
+
+                context.report(
+                    getReportDescriptor(
+                        jsxOpeningElementChildNode,
+                        deprecatedComponentConfig,
+                        elementName,
                         deprecatedPropName,
-                        newComponentName: deprecatedComponentConfig[deprecatedComponentKey!],
-                    },
-                    messageId: "migrationWithPropUsage",
-                    node: jsxOpeningElementChildNode,
-                });
+                    ),
+                );
             }
 
             // Get the list of all deprecated imports from packages included in the provided list
@@ -158,14 +172,7 @@ export function createNoDeprecatedComponentsRule(
                 // check <DeprecatedComponent> syntax (includes self-closing tags)
                 "JSXElement > JSXOpeningElement > JSXIdentifier": (node: TSESTree.JSXIdentifier) => {
                     if (isDeprecatedComponent(node.name)) {
-                        context.report({
-                            data: {
-                                deprecatedComponentName: node.name,
-                                newComponentName: deprecatedComponentConfig[node.name],
-                            },
-                            messageId: "migration",
-                            node,
-                        });
+                        context.report(getReportDescriptor(node, deprecatedComponentConfig, node.name));
                     } else if (isOpeningElement(node.parent)) {
                         // check <DeprecatedComponent withDeprecatedProp={...}> syntax
                         checkDeprecatedComponentAndProp(node, node.name, node.parent);
@@ -186,14 +193,9 @@ export function createNoDeprecatedComponentsRule(
                     const namespaceIdentifier = node.object;
                     if (isDeprecatedNamespacedComponent(namespaceIdentifier.name, node.property.name)) {
                         // Uses a blueprint namespace and a deprecated property
-                        context.report({
-                            data: {
-                                deprecatedComponentName: node.property.name,
-                                newComponentName: deprecatedComponentConfig[node.property.name],
-                            },
-                            messageId: "migration",
-                            node: node.property,
-                        });
+                        context.report(
+                            getReportDescriptor(node.property, deprecatedComponentConfig, node.property.name),
+                        );
                     } else if (isOpeningElement(node.parent)) {
                         // check <Blueprint.DeprecatedComponent withDeprecatedProp={...}> syntax
                         checkDeprecatedComponentAndProp(node, node.property.name, node.parent);
@@ -204,14 +206,7 @@ export function createNoDeprecatedComponentsRule(
                 "ClassDeclaration[superClass.type='Identifier']": (node: TSESTree.ClassDeclaration) => {
                     const superClass = node.superClass as TSESTree.Identifier;
                     if (isDeprecatedComponent(superClass.name)) {
-                        context.report({
-                            data: {
-                                deprecatedComponentName: superClass.name,
-                                newComponentName: deprecatedComponentConfig[superClass.name],
-                            },
-                            messageId: "migration",
-                            node,
-                        });
+                        context.report(getReportDescriptor(node, deprecatedComponentConfig, superClass.name));
                     }
                 },
 
@@ -228,14 +223,13 @@ export function createNoDeprecatedComponentsRule(
                     const namespaceIdentifier = superClass.object;
                     if (isDeprecatedNamespacedComponent(namespaceIdentifier.name, superClass.property.name)) {
                         // Uses a blueprint namespace and a deprecated property
-                        context.report({
-                            data: {
-                                deprecatedComponentName: superClass.property.name,
-                                newComponentName: deprecatedComponentConfig[superClass.property.name],
-                            },
-                            messageId: "migration",
-                            node: superClass.property,
-                        });
+                        context.report(
+                            getReportDescriptor(
+                                superClass.property,
+                                deprecatedComponentConfig,
+                                superClass.property.name,
+                            ),
+                        );
                     }
                 },
 
@@ -246,15 +240,7 @@ export function createNoDeprecatedComponentsRule(
                     }
 
                     if (isDeprecatedComponent(node.object.name)) {
-                        const deprecatedComponentName = node.object.name;
-                        context.report({
-                            data: {
-                                deprecatedComponentName,
-                                newComponentName: deprecatedComponentConfig[deprecatedComponentName],
-                            },
-                            messageId: "migration",
-                            node: node.object,
-                        });
+                        context.report(getReportDescriptor(node.object, deprecatedComponentConfig, node.object.name));
                     }
                 },
             };
@@ -264,4 +250,40 @@ export function createNoDeprecatedComponentsRule(
 
 function isOpeningElement(parent: TSESTree.Node | undefined): parent is TSESTree.JSXOpeningElement {
     return parent?.type === TSESTree.AST_NODE_TYPES.JSXOpeningElement;
+}
+
+/**
+ * Returns a lint report descriptor for a particular kind of deprecated component usage.
+ * Parses the config to determine the appropriate message ID and data to include in the report.
+ */
+function getReportDescriptor(
+    node: TSESTree.Node,
+    config: DeprecatedComponentsConfig,
+    deprecatedComponentName: string,
+    deprecatedPropName?: string,
+): TSESLint.ReportDescriptor<MessageIds> {
+    const configKey =
+        deprecatedPropName === undefined ? deprecatedComponentName : `${deprecatedComponentName}.${deprecatedPropName}`;
+    const configValue = config[configKey];
+    const [newComponentName, newPackageName] = Array.isArray(configValue) ? configValue : [configValue, undefined];
+
+    const messageId =
+        deprecatedPropName === undefined
+            ? newPackageName === undefined
+                ? "migration"
+                : "migrationToNewPackage"
+            : newPackageName === undefined
+            ? "migrationWithPropUsage"
+            : "migrationWithPropUsageToNewPackage";
+
+    return {
+        data: {
+            deprecatedComponentName,
+            deprecatedPropName,
+            newComponentName,
+            newPackageName,
+        },
+        messageId,
+        node,
+    };
 }
