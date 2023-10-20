@@ -140,6 +140,7 @@ This rule is disabled in the `blueprint-rules` config as it is most useful to en
 Ban usage of deprecated components in the current major version of all Blueprint packages, including:
 
 -   Breadcrumbs2
+-   ColumnHeaderCell2
 -   ContextMenu2
 -   DateInput
 -   DateInput2
@@ -147,13 +148,16 @@ Ban usage of deprecated components in the current major version of all Blueprint
 -   DateRangeInput
 -   DateRangeInput2
 -   DateRangePicker
+-   JSONFormat2
 -   MenuItem2
 -   MultiSelect2
 -   Popover2
 -   ResizeSensor2
+-   RowHeaderCell2
 -   Select2
 -   Suggest2
 -   Tooltip2
+-   TruncatedFormat2
 
 **Rationale**: There are two reasons why a particular component may be deprecated:
 
