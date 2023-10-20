@@ -20,7 +20,7 @@ import * as React from "react";
 import type { IconName } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, MaybeElement, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type HTMLDivProps, type MaybeElement, type Props } from "../../common/props";
 import type { TagProps } from "../tag/tag";
 
 export type TabId = string | number;

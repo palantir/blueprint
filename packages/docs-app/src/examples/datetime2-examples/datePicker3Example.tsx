@@ -17,8 +17,8 @@
 import * as React from "react";
 
 import { Callout, Classes, H5, Switch } from "@blueprintjs/core";
-import { DatePicker3, TimePrecision } from "@blueprintjs/datetime2";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { DatePicker3, type TimePrecision } from "@blueprintjs/datetime2";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { FormattedDateTag } from "../../common/formattedDateTag";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";

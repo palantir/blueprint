@@ -15,11 +15,11 @@
  */
 
 import { assert, expect } from "chai";
-import { MountRendererProps, ReactWrapper, mount as untypedMount } from "enzyme";
+import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 
-import { Button, Classes, Intent, Tag, TagInput, TagInputProps } from "../../src";
+import { Button, Classes, Intent, Tag, TagInput, type TagInputProps } from "../../src";
 
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376

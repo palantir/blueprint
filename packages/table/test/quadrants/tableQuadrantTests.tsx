@@ -15,14 +15,14 @@
  */
 
 import { expect } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 
 import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import { Grid } from "../../src/common/grid";
-import { QuadrantType, TableQuadrant, TableQuadrantProps } from "../../src/quadrants/tableQuadrant";
+import { QuadrantType, TableQuadrant, type TableQuadrantProps } from "../../src/quadrants/tableQuadrant";
 
 /**
  * <TableQuadrant> is responsible for showing a single table "instance" of both

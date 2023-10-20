@@ -20,7 +20,7 @@ import { Utils as CoreUtils } from "@blueprintjs/core";
 
 import type { FocusedCellCoordinates } from "../common/cellTypes";
 import { Utils } from "../common/utils";
-import { Region, RegionCardinality, Regions } from "../regions";
+import { type Region, RegionCardinality, Regions } from "../regions";
 import { Draggable } from "./draggable";
 import type { CoordinateData, DraggableChildrenProps, DragHandler } from "./dragTypes";
 

@@ -17,13 +17,13 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Alignment, AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { type Alignment, AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Duplicate, Refresh } from "@blueprintjs/icons";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
-import { Size, SizeSelect } from "./common/sizeSelect";
+import { type Size, SizeSelect } from "./common/sizeSelect";
 
 interface ButtonsExampleState {
     active: boolean;

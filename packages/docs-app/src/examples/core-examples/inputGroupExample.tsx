@@ -30,7 +30,7 @@ import {
     Tag,
     Tooltip,
 } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 import { IconSize } from "@blueprintjs/icons";
 
 export interface InputGroupExampleState {

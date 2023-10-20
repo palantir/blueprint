@@ -16,8 +16,20 @@
 
 import * as React from "react";
 
-import { Alignment, Classes, Divider, H4, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import {
+    Alignment,
+    Classes,
+    Divider,
+    H4,
+    H5,
+    InputGroup,
+    Navbar,
+    Switch,
+    Tab,
+    type TabId,
+    Tabs,
+} from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 

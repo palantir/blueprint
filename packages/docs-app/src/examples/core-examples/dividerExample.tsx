@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Button, ButtonGroup, Divider, H5, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface DividerExampleState {
     vertical: boolean;

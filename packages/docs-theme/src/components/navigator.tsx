@@ -20,7 +20,7 @@ import * as React from "react";
 
 import { Classes, MenuItem } from "@blueprintjs/core";
 import { CaretRight } from "@blueprintjs/icons";
-import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
+import { type ItemListPredicate, type ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import { eachLayoutNode } from "../common/documentalistUtils";
 

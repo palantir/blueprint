@@ -22,12 +22,12 @@ import {
     H5,
     Section,
     SectionCard,
-    SectionProps,
+    type SectionProps,
     Switch,
     SwitchCard,
-    SwitchCardProps,
+    type SwitchCardProps,
 } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Cog, Moon, PageLayout } from "@blueprintjs/icons";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";

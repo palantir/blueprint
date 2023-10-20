@@ -24,13 +24,13 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import DayPicker, { CaptionElementProps, DayModifiers, NavbarElementProps } from "react-day-picker";
+import DayPicker, { type CaptionElementProps, type DayModifiers, type NavbarElementProps } from "react-day-picker";
 
-import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, Props } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, type Props } from "@blueprintjs/core";
 
-import { Classes, DatePickerBaseProps, DateUtils } from "../../common";
+import { Classes, type DatePickerBaseProps, DateUtils } from "../../common";
 import * as Errors from "../../common/errors";
-import { DatePickerShortcut, DatePickerShortcutMenu, DateRangeShortcut } from "../shortcuts/shortcuts";
+import { type DatePickerShortcut, DatePickerShortcutMenu, type DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 import { DatePickerCaption } from "./datePickerCaption";
 import { getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";

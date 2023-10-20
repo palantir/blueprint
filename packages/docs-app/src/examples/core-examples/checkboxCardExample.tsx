@@ -17,8 +17,16 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Alignment, CheckboxCard, CheckboxCardProps, Classes, FormGroup, H5, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import {
+    type Alignment,
+    CheckboxCard,
+    type CheckboxCardProps,
+    Classes,
+    FormGroup,
+    H5,
+    Switch,
+} from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";

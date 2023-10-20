@@ -17,7 +17,7 @@
 import type { INpmPackage } from "@documentalist/client";
 import * as React from "react";
 
-import { Classes, HotkeysTarget2, Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
+import { Classes, HotkeysTarget2, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
 import { NavButton } from "@blueprintjs/docs-theme";
 
 import { Logo } from "./logo";

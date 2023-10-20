@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
+import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 

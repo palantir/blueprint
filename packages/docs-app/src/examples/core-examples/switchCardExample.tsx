@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { Alignment, FormGroup, H5, Switch, SwitchCard, SwitchCardProps } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { type Alignment, FormGroup, H5, Switch, SwitchCard, type SwitchCardProps } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";

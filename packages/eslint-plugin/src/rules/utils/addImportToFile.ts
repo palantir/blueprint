@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { AST_NODE_TYPES, TSESLint, TSESTree } from "@typescript-eslint/utils";
+import { AST_NODE_TYPES, type TSESLint, type TSESTree } from "@typescript-eslint/utils";
 
 /**
  * Return a function which when provided with a fixer will produce a RuleFix to add the

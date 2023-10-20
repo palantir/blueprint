@@ -32,18 +32,24 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     InputGroup,
-    InputGroupProps,
+    type InputGroupProps,
     Intent,
     Popover,
-    PopoverClickTargetHandlers,
-    PopoverTargetProps,
-    Props,
+    type PopoverClickTargetHandlers,
+    type PopoverTargetProps,
+    type Props,
     refHandler,
     setRef,
     Utils,
 } from "@blueprintjs/core";
 
-import { Classes, DateFormatProps, DatePickerBaseProps, DateRange, NonNullDateRange } from "../../common";
+import {
+    Classes,
+    type DateFormatProps,
+    type DatePickerBaseProps,
+    type DateRange,
+    type NonNullDateRange,
+} from "../../common";
 import { getFormattedDateString } from "../../common/dateFormatProps";
 import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import { isDayInRange, isSameTime } from "../../common/dateUtils";

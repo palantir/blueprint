@@ -17,7 +17,7 @@
 import type { Rect } from "./common";
 import type { CellMapper, Grid } from "./common/grid";
 import { Utils } from "./common/utils";
-import { Locator, LocatorImpl } from "./locator";
+import { type Locator, LocatorImpl } from "./locator";
 
 export interface ResizeRowsByApproximateHeightOptions {
     /**

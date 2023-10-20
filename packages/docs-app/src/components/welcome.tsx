@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Card, H4, Icon, IconName } from "@blueprintjs/core";
+import { Card, H4, Icon, type IconName } from "@blueprintjs/core";
 
 export class Welcome extends React.PureComponent {
     public render() {

@@ -25,10 +25,10 @@ import moment from "moment";
 import * as React from "react";
 
 import { Classes, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
-import { DateRange, DateRangePicker, TimePrecision } from "@blueprintjs/datetime";
+import { type DateRange, DateRangePicker, type TimePrecision } from "@blueprintjs/datetime";
 import {
     Example,
-    ExampleProps,
+    type ExampleProps,
     handleBooleanChange,
     handleNumberChange,
     handleValueChange,

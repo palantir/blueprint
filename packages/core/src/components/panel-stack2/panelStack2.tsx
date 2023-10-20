@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import type { Panel } from "./panelTypes";
 import { PanelView2 } from "./panelView2";
 

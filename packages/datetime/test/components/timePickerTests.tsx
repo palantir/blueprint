@@ -24,7 +24,7 @@ import sinon from "sinon";
 import { Classes as CoreClasses, Intent } from "@blueprintjs/core";
 import { assertTimeIs, createTimeObject } from "@blueprintjs/test-commons";
 
-import { Classes, TimePicker, TimePickerProps, TimePrecision } from "../../src";
+import { Classes, TimePicker, type TimePickerProps, TimePrecision } from "../../src";
 
 describe("<TimePicker>", () => {
     let testsContainerElement: Element;

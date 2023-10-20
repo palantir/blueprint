@@ -25,8 +25,8 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Code, H5, Icon, Switch, Tag } from "@blueprintjs/core";
-import { DateFormatProps, DateInput, TimePrecision } from "@blueprintjs/datetime";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { type DateFormatProps, DateInput, TimePrecision } from "@blueprintjs/datetime";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { DATE_FNS_FORMATS, DateFnsDateFormatPropsSelect } from "./common/dateFnsDateFormatPropsSelect";

@@ -17,8 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
-import { Icon, IconName } from "../icon/icon";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
+import { Icon, type IconName } from "../icon/icon";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
 const KEY_ICONS: Record<string, { icon: IconName; iconTitle: string }> = {

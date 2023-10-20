@@ -15,14 +15,22 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Button, ButtonProps, InputGroup, InputGroupProps, MenuItem, Popover, PopoverProps } from "@blueprintjs/core";
+import {
+    Button,
+    type ButtonProps,
+    InputGroup,
+    type InputGroupProps,
+    MenuItem,
+    Popover,
+    type PopoverProps,
+} from "@blueprintjs/core";
 import { QueryList, Select } from "@blueprintjs/select";
 
-import { TimezoneSelect, TimezoneSelectProps } from "../../src";
+import { TimezoneSelect, type TimezoneSelectProps } from "../../src";
 import { getCurrentTimezone } from "../../src/common/getTimezone";
 import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../src/common/timezoneNameUtils";

@@ -26,7 +26,7 @@ import * as ReactDOM from "react-dom";
 
 import { isDarkTheme, isFunction } from "../common/utils";
 import { show as showLegacyContextMenu } from "./contextMenuLegacy";
-import { Constructor, getDisplayName } from "./legacyCommon";
+import { type Constructor, getDisplayName } from "./legacyCommon";
 
 export const CONTEXTMENU_WARN_DECORATOR_NO_METHOD = `[Blueprint] @ContextMenuTarget-decorated class should implement renderContextMenu.`;
 export const CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT = `[Blueprint] "@ContextMenuTarget-decorated components must return a single JSX.Element or an empty render.`;

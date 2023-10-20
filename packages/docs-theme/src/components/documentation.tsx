@@ -14,16 +14,28 @@
  * limitations under the License.
  */
 
-import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } from "@documentalist/client";
+import {
+    type IHeadingNode,
+    type IPageData,
+    type IPageNode,
+    isPageNode,
+    type ITsDocBase,
+    linkify,
+} from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Drawer, FocusStyleManager, HotkeysTarget2, Props } from "@blueprintjs/core";
+import { Classes, Drawer, FocusStyleManager, HotkeysTarget2, type Props } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
-import { DocsData, DocumentationContext, DocumentationContextApi, hasTypescriptData } from "../common/context";
+import {
+    type DocsData,
+    DocumentationContext,
+    type DocumentationContextApi,
+    hasTypescriptData,
+} from "../common/context";
 import { eachLayoutNode } from "../common/documentalistUtils";
-import { TagRendererMap, TypescriptExample } from "../tags";
+import { type TagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";
 import { NavButton } from "./navButton";
 import { Navigator } from "./navigator";

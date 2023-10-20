@@ -17,9 +17,9 @@
 import classNames from "classnames";
 import { format } from "date-fns";
 import * as React from "react";
-import { CaptionLabel, CaptionProps, useDayPicker, useNavigation } from "react-day-picker";
+import { CaptionLabel, type CaptionProps, useDayPicker, useNavigation } from "react-day-picker";
 
-import { Button, DISPLAYNAME_PREFIX, HTMLSelect, OptionProps } from "@blueprintjs/core";
+import { Button, DISPLAYNAME_PREFIX, HTMLSelect, type OptionProps } from "@blueprintjs/core";
 import { DateUtils, Months } from "@blueprintjs/datetime";
 import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 

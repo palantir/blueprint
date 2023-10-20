@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { Button, Card, Classes, Elevation, H5, Label, Slider, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Button, Card, Classes, type Elevation, H5, Label, Slider, Switch } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface CardExampleState {
     compact: boolean;

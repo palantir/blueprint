@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { DatePicker3 } from "@blueprintjs/datetime2";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export function DatePicker3ModifierExample(props: ExampleProps) {
     const isDayNumberOdd = React.useCallback((d: Date) => d.getDate() % 2 === 1, []);

@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { HTMLSelect, OptionProps } from "../../src";
+import { HTMLSelect, type OptionProps } from "../../src";
 
 describe("<HtmlSelect>", () => {
     const emptyHandler = () => true;

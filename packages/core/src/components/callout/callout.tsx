@@ -17,17 +17,17 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Error, IconName, InfoSign, Tick, WarningSign } from "@blueprintjs/icons";
+import { Error, type IconName, InfoSign, Tick, WarningSign } from "@blueprintjs/icons";
 
 import {
     AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
-    HTMLDivProps,
+    type HTMLDivProps,
     Intent,
-    IntentProps,
-    MaybeElement,
-    Props,
+    type IntentProps,
+    type MaybeElement,
+    type Props,
     Utils,
 } from "../../common";
 import { H5 } from "../html/html";

@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 
-import { Classes, DateRange, TimePrecision } from "../../common";
+import { Classes, type DateRange, type TimePrecision } from "../../common";
 import { clone, isDayRangeInRange } from "../../common/dateUtils";
 
 export interface DateShortcutBase {

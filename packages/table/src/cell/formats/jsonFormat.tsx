@@ -20,7 +20,7 @@ import * as React from "react";
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
 import * as Classes from "../../common/classes";
-import { TruncatedFormat, TruncatedFormatProps, TruncatedPopoverMode } from "./truncatedFormat";
+import { TruncatedFormat, type TruncatedFormatProps, TruncatedPopoverMode } from "./truncatedFormat";
 
 export interface JSONFormatProps extends TruncatedFormatProps {
     children?: any;

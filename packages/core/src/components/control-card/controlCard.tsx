@@ -18,8 +18,8 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLInputProps } from "../../common/props";
-import { Card, CardProps } from "../card/card";
+import { DISPLAYNAME_PREFIX, type HTMLInputProps } from "../../common/props";
+import { Card, type CardProps } from "../card/card";
 import type { CheckedControlProps, ControlProps } from "../forms/controlProps";
 import { Checkbox, Switch } from "../forms/controls";
 import { useCheckedControl } from "./useCheckedControl";

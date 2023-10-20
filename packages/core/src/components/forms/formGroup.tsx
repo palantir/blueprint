@@ -17,8 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, Intent } from "../../common";
-import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
+import { AbstractPureComponent, Classes, type Intent } from "../../common";
+import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
 
 export interface FormGroupProps extends IntentProps, Props {
     /** Group contents. */

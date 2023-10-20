@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { isTsClass, isTsInterface, ITsDocBase } from "@documentalist/client";
+import { isTsClass, isTsInterface, type ITsDocBase } from "@documentalist/client";
 import * as React from "react";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";

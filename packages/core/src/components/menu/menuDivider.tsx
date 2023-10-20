@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { H6 } from "../html/html";
 
 export interface MenuDividerProps extends Props {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Region, RegionCardinality, Regions } from "../../regions";
+import { type Region, RegionCardinality, Regions } from "../../regions";
 import type { CellCoordinates, FocusedCellCoordinates } from "../cellTypes";
 import * as Errors from "../errors";
 

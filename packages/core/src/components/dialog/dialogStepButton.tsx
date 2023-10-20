@@ -18,7 +18,7 @@ import * as React from "react";
 
 import type { ButtonSharedPropsAndAttributes } from "../button/buttonProps";
 import { AnchorButton } from "../button/buttons";
-import { Tooltip, TooltipProps } from "../tooltip/tooltip";
+import { Tooltip, type TooltipProps } from "../tooltip/tooltip";
 
 export type DialogStepButtonProps = Partial<ButtonSharedPropsAndAttributes> & {
     /** If defined, the button will be wrapped with a tooltip with the specified content. */

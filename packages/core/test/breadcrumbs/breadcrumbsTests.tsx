@@ -21,10 +21,10 @@ import sinon from "sinon";
 
 import { Classes } from "../../src/common";
 import { Boundary } from "../../src/common/boundary";
-import { Breadcrumb, BreadcrumbProps } from "../../src/components/breadcrumbs/breadcrumb";
+import { Breadcrumb, type BreadcrumbProps } from "../../src/components/breadcrumbs/breadcrumb";
 import { Breadcrumbs } from "../../src/components/breadcrumbs/breadcrumbs";
 import { MenuItem } from "../../src/components/menu/menuItem";
-import { OverflowList, OverflowListProps } from "../../src/components/overflow-list/overflowList";
+import { OverflowList, type OverflowListProps } from "../../src/components/overflow-list/overflowList";
 
 const ITEMS: BreadcrumbProps[] = [{ text: "1" }, { text: "2" }, { text: "3" }];
 

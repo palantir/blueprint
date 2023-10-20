@@ -23,7 +23,7 @@
 
 import * as React from "react";
 
-import { ContextMenuTargetLegacy, Props } from "@blueprintjs/core";
+import { ContextMenuTargetLegacy, type Props } from "@blueprintjs/core";
 
 export interface ContextMenuTargetWrapperProps extends Props {
     children?: React.ReactNode;

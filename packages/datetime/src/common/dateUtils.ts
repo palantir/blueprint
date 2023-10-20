@@ -16,7 +16,7 @@
 
 import { isSameDay } from "date-fns";
 
-import { DateRange, isNonNullRange } from "./dateRange";
+import { type DateRange, isNonNullRange } from "./dateRange";
 import { Months } from "./months";
 
 export { isSameDay };

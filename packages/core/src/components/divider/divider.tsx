@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { AbstractPureComponent } from "../../common";
 import { DIVIDER } from "../../common/classes";
-import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 
 export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
     /**

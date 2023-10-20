@@ -31,11 +31,18 @@ import sinon from "sinon";
 import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
 import { assertDatesEqual } from "@blueprintjs/test-commons";
 
-import { Classes, DatePicker, DatePickerModifiers, DatePickerProps, TimePicker, TimePrecision } from "../../src";
+import {
+    Classes,
+    DatePicker,
+    type DatePickerModifiers,
+    type DatePickerProps,
+    TimePicker,
+    TimePrecision,
+} from "../../src";
 import { DateUtils, Months } from "../../src/common";
 import * as Errors from "../../src/common/errors";
 import type { DatePickerState } from "../../src/components/date-picker/datePicker";
-import { DatePickerShortcut, DatePickerShortcutMenu } from "../../src/components/shortcuts/shortcuts";
+import { type DatePickerShortcut, DatePickerShortcutMenu } from "../../src/components/shortcuts/shortcuts";
 import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils";
 
 describe("<DatePicker>", () => {
