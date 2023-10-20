@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IHeadingNode, IPageNode, isPageNode } from "@documentalist/client";
+import { type IHeadingNode, type IPageNode, isPageNode } from "@documentalist/client";
 
 /**
  * Performs an in-order traversal of the layout tree, invoking the callback for each node.

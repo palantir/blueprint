@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, Label, Slider } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { Calendar, IconSize } from "@blueprintjs/icons";
 
 interface ExampleState {

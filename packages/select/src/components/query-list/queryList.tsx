@@ -16,17 +16,17 @@
 
 import * as React from "react";
 
-import { AbstractComponent, DISPLAYNAME_PREFIX, Menu, Props, Utils } from "@blueprintjs/core";
+import { AbstractComponent, DISPLAYNAME_PREFIX, Menu, type Props, Utils } from "@blueprintjs/core";
 
 import {
-    CreateNewItem,
+    type CreateNewItem,
     executeItemsEqual,
     getActiveItem,
     getCreateNewItem,
     isCreateNewItem,
-    ItemListRendererProps,
-    ItemModifiers,
-    ListItemsProps,
+    type ItemListRendererProps,
+    type ItemModifiers,
+    type ListItemsProps,
     renderFilteredItems,
 } from "../../common";
 

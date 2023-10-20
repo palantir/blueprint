@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent, ContextMenu, ContextMenuContentProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent, ContextMenu, type ContextMenuContentProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import type { CellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
@@ -25,7 +25,7 @@ import { RenderMode } from "./common/renderMode";
 import type { CoordinateData } from "./interactions/dragTypes";
 import { MenuContextImpl } from "./interactions/menus";
 import { DragSelectable } from "./interactions/selectable";
-import { Region, Regions } from "./regions";
+import { type Region, Regions } from "./regions";
 import type { TableBodyProps } from "./tableBody";
 import { TableBodyCells } from "./tableBodyCells";
 

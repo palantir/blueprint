@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, DISPLAYNAME_PREFIX, Elevation, HTMLDivProps, Props } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, Elevation, type HTMLDivProps, type Props } from "../../common";
 import { Card } from "../card/card";
 
 export interface CardListProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {

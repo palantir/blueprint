@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { H5, HTMLSelect, HTMLSelectIconName, Label, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { H5, HTMLSelect, type HTMLSelectIconName, Label, Switch } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 export interface HTMLSelectExampleState {
     disabled: boolean;

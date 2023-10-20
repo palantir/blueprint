@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "@documentalist/client";
+import { type IHeadingNode, type IPageData, isPageNode, type ITsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
-import { AnchorButton, Classes, HotkeysProvider, Intent, Tag } from "@blueprintjs/core";
+import { AnchorButton, Classes, HotkeysProvider, type Intent, Tag } from "@blueprintjs/core";
 import type { DocsCompleteData } from "@blueprintjs/docs-data";
-import { Banner, Documentation, DocumentationProps, NavMenuItem, NavMenuItemProps } from "@blueprintjs/docs-theme";
+import {
+    Banner,
+    Documentation,
+    type DocumentationProps,
+    NavMenuItem,
+    type NavMenuItemProps,
+} from "@blueprintjs/docs-theme";
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 import { NavHeader } from "./navHeader";

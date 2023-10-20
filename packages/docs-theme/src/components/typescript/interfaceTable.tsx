@@ -17,16 +17,16 @@
 import {
     isTag,
     isTsProperty,
-    ITsClass,
-    ITsInterface,
-    ITsMethod,
-    ITsProperty,
-    ITsSignature,
+    type ITsClass,
+    type ITsInterface,
+    type ITsMethod,
+    type ITsProperty,
+    type ITsSignature,
 } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Intent, Props, Tag } from "@blueprintjs/core";
+import { Classes, Intent, type Props, Tag } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContext } from "../../common/context";

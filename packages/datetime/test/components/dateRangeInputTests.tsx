@@ -23,7 +23,7 @@
 /* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
 
 import { expect } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
@@ -32,16 +32,16 @@ import * as sinon from "sinon";
 import {
     Boundary,
     Classes as CoreClasses,
-    HTMLDivProps,
-    HTMLInputProps,
+    type HTMLDivProps,
+    type HTMLInputProps,
     InputGroup,
-    InputGroupProps,
+    type InputGroupProps,
     Popover,
-    PopoverProps,
+    type PopoverProps,
 } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, DateRange, DateRangeInput, DateRangePicker, Months, TimePrecision } from "../../src";
+import { Classes, type DateRange, DateRangeInput, DateRangePicker, Months, TimePrecision } from "../../src";
 import { DATE_FORMAT, DATETIME_FORMAT } from "../common/dateFormat";
 
 type NullableRange<T> = [T | null, T | null];

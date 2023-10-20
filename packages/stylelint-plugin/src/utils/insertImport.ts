@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import postcss, { AtRule, Comment, Root } from "postcss";
+import postcss, { type AtRule, type Comment, type Root } from "postcss";
 import type { RuleContext } from "stylelint";
 
 import { CssSyntax } from "./cssSyntax";

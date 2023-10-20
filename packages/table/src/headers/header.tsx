@@ -26,12 +26,12 @@ import * as Classes from "../common/classes";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";
 import type { ClientCoordinates, CoordinateData } from "../interactions/dragTypes";
-import { DragReorderable, ReorderableProps } from "../interactions/reorderable";
+import { DragReorderable, type ReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
 import type { LockableLayout, Orientation } from "../interactions/resizeHandle";
-import { DragSelectable, SelectableProps } from "../interactions/selectable";
+import { DragSelectable, type SelectableProps } from "../interactions/selectable";
 import type { Locator } from "../locator";
-import { Region, RegionCardinality, Regions } from "../regions";
+import { type Region, RegionCardinality, Regions } from "../regions";
 import type { HeaderCellProps } from "./headerCell";
 
 export type HeaderCellRenderer = (index: number) => React.ReactElement<HeaderCellProps>;

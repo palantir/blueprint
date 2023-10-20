@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { isTag, ITsMethod, ITsParameter, ITsSignature } from "@documentalist/client";
+import { isTag, type ITsMethod, type ITsParameter, type ITsSignature } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
-import { Code, Intent, Props, Tag } from "@blueprintjs/core";
+import { Code, Intent, type Props, Tag } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContext } from "../../common/context";

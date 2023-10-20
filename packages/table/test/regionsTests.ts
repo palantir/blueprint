@@ -16,7 +16,7 @@
 
 import { expect } from "chai";
 
-import { CellCoordinate, Region, RegionCardinality, Regions } from "../src/regions";
+import { type CellCoordinate, type Region, RegionCardinality, Regions } from "../src/regions";
 
 describe("Regions", () => {
     describe("factories", () => {

@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { ControlledProps, DISPLAYNAME_PREFIX, HTMLInputProps, removeNonHTMLProps } from "../../common/props";
+import { type ControlledProps, DISPLAYNAME_PREFIX, type HTMLInputProps, removeNonHTMLProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { AsyncControllableInput } from "./asyncControllableInput";
 import type { InputSharedProps } from "./inputSharedProps";

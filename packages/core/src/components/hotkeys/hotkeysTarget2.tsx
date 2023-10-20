@@ -18,7 +18,7 @@ import * as React from "react";
 
 import * as Errors from "../../common/errors";
 import { isNodeEnv } from "../../common/utils";
-import { HotkeyConfig, useHotkeys, UseHotkeysOptions } from "../../hooks";
+import { type HotkeyConfig, useHotkeys, type UseHotkeysOptions } from "../../hooks";
 
 /** Identical to the return type of `useHotkeys` hook. */
 export interface HotkeysTarget2RenderProps {

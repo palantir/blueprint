@@ -27,20 +27,20 @@ import * as React from "react";
 import type { DayPickerProps } from "react-day-picker";
 
 import {
-    ButtonProps,
+    type ButtonProps,
     DISPLAYNAME_PREFIX,
     InputGroup,
-    InputGroupProps,
+    type InputGroupProps,
     mergeRefs,
     Popover,
-    PopoverClickTargetHandlers,
-    PopoverTargetProps,
-    Props,
+    type PopoverClickTargetHandlers,
+    type PopoverTargetProps,
+    type Props,
     Tag,
     Utils,
 } from "@blueprintjs/core";
 
-import { Classes, DateFormatProps, DatePickerBaseProps } from "../../common";
+import { Classes, type DateFormatProps, type DatePickerBaseProps } from "../../common";
 import { getFormattedDateString } from "../../common/dateFormatProps";
 import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import { hasMonthChanged, hasTimeChanged, isDateValid, isDayInRange } from "../../common/dateUtils";

@@ -17,10 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { CaretDown, DoubleCaretVertical, IconName, SVGIconProps } from "@blueprintjs/icons";
+import { CaretDown, DoubleCaretVertical, type IconName, type SVGIconProps } from "@blueprintjs/icons";
 
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
-import { DISPLAYNAME_PREFIX, OptionProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type OptionProps } from "../../common/props";
 import type { Extends } from "../../common/utils";
 
 export type HTMLSelectIconName = Extends<IconName, "double-caret-vertical" | "caret-down">;

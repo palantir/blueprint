@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { BreadcrumbProps, Breadcrumbs } from "@blueprintjs/core";
+import { type BreadcrumbProps, Breadcrumbs } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 

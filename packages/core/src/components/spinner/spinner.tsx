@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
 import { clamp } from "../../common/utils";
 
 export enum SpinnerSize {

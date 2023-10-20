@@ -21,19 +21,19 @@ import {
     AbstractPureComponent,
     DISPLAYNAME_PREFIX,
     InputGroup,
-    InputGroupProps,
+    type InputGroupProps,
     mergeRefs,
     Popover,
-    PopoverClickTargetHandlers,
-    PopoverTargetProps,
+    type PopoverClickTargetHandlers,
+    type PopoverTargetProps,
     PopupKind,
     refHandler,
     setRef,
     Utils,
 } from "@blueprintjs/core";
 
-import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
-import { QueryList, QueryListRendererProps } from "../query-list/queryList";
+import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
+import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
 export interface SuggestProps<T> extends ListItemsProps<T>, Omit<SelectPopoverProps, "popoverTargetProps"> {
     /**

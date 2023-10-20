@@ -23,9 +23,9 @@ import { Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 import {
     DatePickerShortcutMenu,
     DatePickerUtils,
-    DateRange,
+    type DateRange,
     DateRangeSelectionStrategy,
-    DateRangeShortcut,
+    type DateRangeShortcut,
     DateUtils,
     Errors,
     MonthAndYear,
@@ -42,7 +42,7 @@ import type { DateRangePicker3DefaultProps, DateRangePicker3Props } from "./date
 import type { DateRangePicker3State } from "./dateRangePicker3State";
 import { NonContiguousDayRangePicker } from "./nonContiguousDayRangePicker";
 
-export { DateRangePicker3Props };
+export type { DateRangePicker3Props };
 
 const NULL_RANGE: DateRange = [null, null];
 

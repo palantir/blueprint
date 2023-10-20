@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";

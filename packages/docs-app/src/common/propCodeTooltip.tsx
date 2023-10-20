@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Code, Tooltip, TooltipProps } from "@blueprintjs/core";
+import { Code, Tooltip, type TooltipProps } from "@blueprintjs/core";
 
 /**
  * Opinionated subset of tooltip props.

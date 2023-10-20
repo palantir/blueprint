@@ -20,7 +20,7 @@ import { Classes, H5, HTMLSelect, Switch } from "@blueprintjs/core";
 import { TimePicker, TimePrecision } from "@blueprintjs/datetime";
 // tslint:disable-next-line:no-submodule-imports
 import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/common/timeUnit";
-import { Example, ExampleProps, handleNumberChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleNumberChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { PrecisionSelect } from "./common/precisionSelect";
 

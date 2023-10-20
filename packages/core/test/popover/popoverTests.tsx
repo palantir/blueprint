@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper, shallow } from "enzyme";
+import { mount, type ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 
@@ -24,7 +24,12 @@ import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 import { Classes } from "../../src/common";
 import * as Errors from "../../src/common/errors";
 import { Button, Overlay, Portal } from "../../src/components";
-import { Popover, PopoverInteractionKind, PopoverProps, PopoverState } from "../../src/components/popover/popover";
+import {
+    Popover,
+    PopoverInteractionKind,
+    type PopoverProps,
+    type PopoverState,
+} from "../../src/components/popover/popover";
 import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { PopupKind } from "../../src/components/popover/popupKind";
 import { Tooltip } from "../../src/components/tooltip/tooltip";

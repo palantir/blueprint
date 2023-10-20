@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import classNames from "classnames";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
@@ -24,15 +24,15 @@ import { spy } from "sinon";
 import {
     Classes,
     ContextMenu,
-    ContextMenuContentProps,
-    ContextMenuProps,
+    type ContextMenuContentProps,
+    type ContextMenuProps,
     Drawer,
     Menu,
     MenuItem,
     Popover,
     PopoverInteractionKind,
     Tooltip,
-    TooltipProps,
+    type TooltipProps,
     Utils,
 } from "../../src";
 

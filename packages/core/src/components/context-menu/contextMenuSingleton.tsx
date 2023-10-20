@@ -18,7 +18,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { Classes } from "../../common";
-import { ContextMenuPopover, ContextMenuPopoverProps } from "./contextMenuPopover";
+import { ContextMenuPopover, type ContextMenuPopoverProps } from "./contextMenuPopover";
 
 /** DOM element which contains the context menu singleton instance for the imperative ContextMenu APIs. */
 let contextMenuElement: HTMLElement | undefined;

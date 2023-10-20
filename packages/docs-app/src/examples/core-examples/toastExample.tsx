@@ -26,15 +26,15 @@ import {
     Label,
     NumericInput,
     OverlayToaster,
-    OverlayToasterProps,
+    type OverlayToasterProps,
     Position,
     ProgressBar,
     Switch,
-    Toaster,
-    ToasterPosition,
-    ToastProps,
+    type Toaster,
+    type ToasterPosition,
+    type ToastProps,
 } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import type { BlueprintExampleData } from "../../tags/types";
 

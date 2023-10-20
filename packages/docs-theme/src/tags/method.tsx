@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { isTsClass, isTsMethod, ITag, ITsClass, ITypescriptPluginData } from "@documentalist/client";
+import { isTsClass, isTsMethod, type ITag, type ITsClass, type ITypescriptPluginData } from "@documentalist/client";
 import * as React from "react";
 
 import type { Props } from "@blueprintjs/core";

@@ -17,13 +17,20 @@
 import type { State as PopperState, PositioningStrategy } from "@popperjs/core";
 import classNames from "classnames";
 import * as React from "react";
-import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
+import {
+    Manager,
+    type Modifier,
+    Popper,
+    type PopperChildrenProps,
+    Reference,
+    type ReferenceChildrenProps,
+} from "react-popper";
 
 import {
     AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
-    HTMLDivProps,
+    type HTMLDivProps,
     mergeRefs,
     refHandler,
     Utils,

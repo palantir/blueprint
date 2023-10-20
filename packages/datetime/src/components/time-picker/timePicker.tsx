@@ -26,7 +26,7 @@ import {
     Intent,
 } from "@blueprintjs/core";
 
-import { Classes, DateUtils, TimePickerProps, TimePrecision } from "../../common";
+import { Classes, DateUtils, type TimePickerProps, TimePrecision } from "../../common";
 import {
     getDefaultMaxTime,
     getDefaultMinTime,

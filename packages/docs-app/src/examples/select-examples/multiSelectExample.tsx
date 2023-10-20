@@ -16,14 +16,14 @@
 
 import * as React from "react";
 
-import { Code, H5, Intent, MenuItem, Popover, Switch, TagProps } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
+import { Code, H5, Intent, MenuItem, type Popover, Switch, type TagProps } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { type ItemRenderer, MultiSelect } from "@blueprintjs/select";
 import {
     areFilmsEqual,
     arrayContainsFilm,
     createFilms,
-    Film,
+    type Film,
     filterFilm,
     getFilmItemProps,
     maybeAddCreatedFilmToArrays,

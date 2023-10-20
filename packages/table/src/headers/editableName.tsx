@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, EditableText, IntentProps, Props } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, EditableText, type IntentProps, type Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 

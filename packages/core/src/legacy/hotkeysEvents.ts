@@ -21,11 +21,11 @@
 
 /* eslint-disable deprecation/deprecation */
 
-import { Children, ReactNode } from "react";
+import { Children, type ReactNode } from "react";
 
 import { isElementOfType } from "../common/utils";
-import { Hotkey, HotkeyProps, HotkeysProps } from "../components/hotkeys";
-import { comboMatches, getKeyCombo, KeyCombo, parseKeyCombo } from "../components/hotkeys/hotkeyParser";
+import { Hotkey, type HotkeyProps, type HotkeysProps } from "../components/hotkeys";
+import { comboMatches, getKeyCombo, type KeyCombo, parseKeyCombo } from "../components/hotkeys/hotkeyParser";
 import { hideHotkeysDialogAfterDelay, isHotkeysDialogShowing, showHotkeysDialog } from "./hotkeysDialogLegacy";
 
 const SHOW_DIALOG_KEY = "?";

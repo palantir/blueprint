@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Button, ButtonGroup, Classes, Code, H1, Popover, Switch, Tooltip } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface TooltipExampleState {
     isOpen: boolean;

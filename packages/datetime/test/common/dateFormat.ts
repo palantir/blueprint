@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { format, Locale, parse } from "date-fns";
+import { format, type Locale, parse } from "date-fns";
 
 import type { DateFormatProps } from "../../src/common";
 

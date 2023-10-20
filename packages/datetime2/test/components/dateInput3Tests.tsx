@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { intlFormat, isEqual, parseISO } from "date-fns";
 import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import enUSLocale from "date-fns/locale/en-US";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
@@ -35,7 +35,7 @@ import {
 // tslint:disable-next-line no-submodule-imports
 import { TIMEZONE_ITEMS } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
 
-import { Datetime2Classes as Classes, DateInput3, DateInput3Props, DatePicker3 } from "../../src";
+import { Datetime2Classes as Classes, DateInput3, type DateInput3Props, DatePicker3 } from "../../src";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 

@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Button, Card, CardList, Classes, Code, H5, Section, SectionCard, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { ChevronRight } from "@blueprintjs/icons";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";

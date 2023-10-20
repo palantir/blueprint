@@ -18,7 +18,7 @@ import * as React from "react";
 
 import {
     Boundary,
-    BreadcrumbProps,
+    type BreadcrumbProps,
     Breadcrumbs,
     Card,
     Checkbox,
@@ -28,7 +28,7 @@ import {
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";
-import { Example, ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
 
 export interface BreadcrumbsExampleState {
     collapseFrom: Boundary;

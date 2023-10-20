@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 
 export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, Props {
     /**

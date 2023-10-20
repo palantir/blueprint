@@ -15,11 +15,11 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, NumericInput, Panel, PanelProps, PanelStack2, PanelStack2Props } from "../../src";
+import { Classes, NumericInput, type Panel, type PanelProps, PanelStack2, type PanelStack2Props } from "../../src";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type TestPanelInfo = {};

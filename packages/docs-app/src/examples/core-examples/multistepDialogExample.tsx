@@ -18,7 +18,7 @@ import * as React from "react";
 
 import {
     Button,
-    ButtonProps,
+    type ButtonProps,
     Code,
     DialogBody,
     DialogStep,
@@ -26,7 +26,7 @@ import {
     HTMLSelect,
     Label,
     MultistepDialog,
-    MultistepDialogNavPosition,
+    type MultistepDialogNavPosition,
     NumericInput,
     Radio,
     RadioGroup,
@@ -34,7 +34,7 @@ import {
 } from "@blueprintjs/core";
 import {
     Example,
-    ExampleProps,
+    type ExampleProps,
     handleBooleanChange,
     handleStringChange,
     handleValueChange,

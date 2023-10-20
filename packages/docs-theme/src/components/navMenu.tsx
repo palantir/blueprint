@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { IHeadingNode, IPageNode, isPageNode } from "@documentalist/client";
+import { type IHeadingNode, type IPageNode, isPageNode } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Props } from "@blueprintjs/core";
+import { Classes, type Props } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
-import { NavMenuItem, NavMenuItemProps } from "./navMenuItem";
+import { NavMenuItem, type NavMenuItemProps } from "./navMenuItem";
 
 export interface NavMenuProps extends Props {
     activePageId: string;
