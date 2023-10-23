@@ -256,6 +256,45 @@ describe("<DateRangePicker3>", () => {
                 assert.isTrue(onDayClick.called);
             });
         });
+
+        describe("for i18n", () => {
+            // regression test for https://github.com/palantir/blueprint/issues/6489
+            it("DatePicker3Caption accepts custom month name formatters (contiguousCalendarMonths={false})", () => {
+                const CUSTOM_MONTH_NAMES = [
+                    "First",
+                    "Second",
+                    "Third",
+                    "Fourth",
+                    "Fifth",
+                    "Sixth",
+                    "Seventh",
+                    "Eighth",
+                    "Ninth",
+                    "Tenth",
+                    "Eleventh",
+                    "Twelfth",
+                ];
+                const formatters = {
+                    formatMonthCaption: (d: Date) => CUSTOM_MONTH_NAMES[d.getMonth()],
+                };
+                // try a month which is not January to make sure we're actually setting a value in the <select>
+                // and not just displaying the default value which is the first option
+                const initialMonthIndex = Months.AUGUST;
+                const initialMonth = new Date(2023, initialMonthIndex, 1);
+                const { left } = wrap(
+                    <DateRangePicker3
+                        initialMonth={initialMonth}
+                        contiguousCalendarMonths={false}
+                        dayPickerProps={{ formatters }}
+                    />,
+                );
+                const leftMonth = left.monthSelect.getDOMNode<HTMLSelectElement>();
+                assert.strictEqual(leftMonth.selectedIndex, initialMonthIndex);
+                for (const option of Array.from(leftMonth.options)) {
+                    assert.strictEqual(option.text, CUSTOM_MONTH_NAMES[option.index]);
+                }
+            });
+        });
     });
 
     describe("initially displayed month", () => {
