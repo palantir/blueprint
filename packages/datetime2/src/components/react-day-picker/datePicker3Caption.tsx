@@ -83,12 +83,12 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     // build the list of available years, relying on react-day-picker's default date-fns formatter or a
     // user-provided formatter to localize the year "names"
     const { formatYearCaption } = formatters;
-    const allYears = React.useMemo<Array<string | OptionProps>>(() => {
-        const years: string[] = [];
+    const allYearOptions = React.useMemo<OptionProps[]>(() => {
+        const years: OptionProps[] = [];
         for (let year = minYear; year <= maxYear; year++) {
             const yearDate = new Date(year, 0);
             const yearCaption = formatYearCaption(yearDate, { locale });
-            years.push(innerText(yearCaption));
+            years.push({ label: innerText(yearCaption), value: year });
         }
         return years;
     }, [formatYearCaption, maxYear, minYear, locale]);
@@ -98,7 +98,7 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     if (displayYear > maxYear) {
         const displayYearDate = new Date(displayYear, 0);
         const displayYearCaption = formatYearCaption(displayYearDate, { locale });
-        allYears.push({ value: innerText(displayYearCaption), disabled: true });
+        allYearOptions.push({ label: innerText(displayYearCaption), value: displayYear, disabled: true });
     }
 
     const handleMonthSelectChange = React.useCallback(
@@ -170,8 +170,8 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
             key="year"
             minimal={true}
             onChange={handleYearSelectChange}
-            value={displayYear.toString()}
-            options={allYears}
+            value={displayYear}
+            options={allYearOptions}
         />
     );
 
