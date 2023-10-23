@@ -15,9 +15,9 @@
  */
 
 import classNames from "classnames";
-import { format } from "date-fns";
 import * as React from "react";
 import { CaptionLabel, type CaptionProps, useDayPicker, useNavigation } from "react-day-picker";
+import innerText from "react-innertext";
 
 import { Button, DISPLAYNAME_PREFIX, HTMLSelect, type OptionProps } from "@blueprintjs/core";
 import { DateUtils, Months } from "@blueprintjs/datetime";
@@ -36,7 +36,7 @@ import { DatePicker3Context } from "../date-picker3/datePicker3Context";
  * @see https://react-day-picker.js.org/guides/custom-components
  */
 export const DatePicker3Caption: React.FC<CaptionProps> = props => {
-    const { classNames: rdpClassNames, fromDate, toDate, labels } = useDayPicker();
+    const { classNames: rdpClassNames, formatters, fromDate, toDate, labels } = useDayPicker();
     const { locale, reverseMonthAndYearMenus } = React.useContext(DatePicker3Context);
 
     // non-null assertion because we define these values in defaultProps
@@ -80,13 +80,25 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
         />
     );
 
-    const years: Array<number | OptionProps> = [minYear];
-    for (let year = minYear + 1; year <= maxYear; ++year) {
-        years.push(year);
-    }
-    // allow out-of-bounds years but disable the option. this handles the Dec 2016 case in #391.
+    // build the list of available years, relying on react-day-picker's default date-fns formatter or a
+    // user-provided formatter to localize the year "names"
+    const { formatYearCaption } = formatters;
+    const allYears = React.useMemo<Array<string | OptionProps>>(() => {
+        const years: string[] = [];
+        for (let year = minYear; year <= maxYear; year++) {
+            const yearDate = new Date(year, 0);
+            const yearCaption = formatYearCaption(yearDate, { locale });
+            years.push(innerText(yearCaption));
+        }
+        return years;
+    }, [formatYearCaption, maxYear, minYear, locale]);
+
+    // allow out-of-bounds years but disable the option.
+    // this handles the Dec 2016 case in https://github.com/palantir/blueprint/issues/391
     if (displayYear > maxYear) {
-        years.push({ value: displayYear, disabled: true });
+        const displayYearDate = new Date(displayYear, 0);
+        const displayYearCaption = formatYearCaption(displayYearDate, { locale });
+        allYears.push({ value: innerText(displayYearCaption), disabled: true });
     }
 
     const handleMonthSelectChange = React.useCallback(
@@ -106,14 +118,18 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     const startMonth = displayYear === minYear ? fromDate!.getMonth() : 0;
     const endMonth = displayYear === maxYear ? toDate!.getMonth() + 1 : 12;
 
-    // build the list of available months and localize their full names
+    // build the list of available months, relying on react-day-picker's default date-fns formatter or a
+    // user-provided formatter to localize the month names
+    const { formatMonthCaption } = formatters;
     const allMonths = React.useMemo<string[]>(() => {
         const months: string[] = [];
         for (let i = Months.JANUARY; i <= Months.DECEMBER; i++) {
-            months.push(format(new Date(displayYear, i), "LLLL", { locale }));
+            const monthDate = new Date(displayYear, i);
+            const formattedMonth = formatMonthCaption(monthDate, { locale });
+            months.push(innerText(formattedMonth));
         }
         return months;
-    }, [displayYear, locale]);
+    }, [displayYear, formatMonthCaption, locale]);
     const allMonthOptions = allMonths.map<OptionProps>((month, i) => ({ label: month, value: i }));
     const availableMonthOptions = allMonthOptions.slice(startMonth, endMonth);
     const displayedMonthText = allMonths[displayMonth];
@@ -154,8 +170,8 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
             key="year"
             minimal={true}
             onChange={handleYearSelectChange}
-            value={displayYear}
-            options={years}
+            value={displayYear.toString()}
+            options={allYears}
         />
     );
 
