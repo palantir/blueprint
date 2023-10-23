@@ -1711,9 +1711,9 @@
   integrity sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==
 
 "@types/dedent@~0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@types/dedent/-/dedent-0.7.0.tgz#155f339ca404e6dd90b9ce46a3f78fd69ca9b050"
-  integrity sha512-EGlKlgMhnLt/cM4DbUSafFdrkeJoC9Mvnj0PUCU7tFmTjMjNRT957kXCx0wYm3JuEq4o4ZsS5vG+NlkM2DMd2A==
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@types/dedent/-/dedent-0.7.1.tgz#05a6af9dbe7d3c927f3f6f54082fc69157a31a69"
+  integrity sha512-NKo033xLkoVCgUobq+FS1S3J6kwWeOcyqEBc2r2oi9J/dKncY11J9VgS0Giv7T4rxVt/MajUVcFppT2TPJA2Cg==
 
 "@types/downloadjs@~1.4.3":
   version "1.4.3"
