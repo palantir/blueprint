@@ -113,7 +113,7 @@ There are a few ways to run development scripts, here they are listed from simpl
     -   `yarn dev:datetime`
     -   `yarn dev:select`
     -   `yarn dev:table`
--   Lastly, if you want to control exaclty which dev scripts are run and view the console output in the cleanest way,
+-   Lastly, if you want to control exactly which dev scripts are run and view the console output in the cleanest way,
     we recommend opening separate terminal windows or splits and running local package dev tasks in each one. This is
     the recommended workflow for frequent contributors and advanced developers. For example, to test changes in the core
     and icons packages, you would run the following in separate terminals:
