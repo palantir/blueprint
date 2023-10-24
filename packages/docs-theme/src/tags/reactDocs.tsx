@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { ITag } from "@documentalist/client";
+import type { Tag } from "@documentalist/client";
 import * as React from "react";
 
 export interface DocsMap {
@@ -29,7 +29,7 @@ export class ReactDocsTagRenderer {
      * it to an actual component class in the given map, or in the default map which contains
      * valid docs components from this package. Provide a custom map to inject your own components.
      */
-    public render: React.FC<ITag> = ({ value: componentName }) => {
+    public render: React.FC<Tag> = ({ value: componentName }) => {
         if (componentName == null) {
             return null;
         }

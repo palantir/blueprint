@@ -56,9 +56,10 @@ async function generateDocumentalistData() {
         .use(
             /\.tsx?$/,
             new TypescriptPlugin({
-                excludeNames: [/I.+State$/],
-                excludePaths: ["node_modules/", "-app/", "test-commons/", "-build-scripts/"],
-                tsconfigPath: resolve(monorepoRootDir, "./config/tsconfig.node.json"),
+                excludeNames: [/.+State$/],
+                excludePaths: ["node_modules/", "-app/", "test-commons/", "-build-scripts/", "test/"],
+                // tsconfigPath: resolve(monorepoRootDir, "./config/tsconfig.node.json"),
+                verbose: true,
             }),
         )
         .use(".scss", new KssPlugin())

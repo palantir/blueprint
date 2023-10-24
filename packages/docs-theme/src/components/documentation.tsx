@@ -15,12 +15,12 @@
  */
 
 import {
-    type IHeadingNode,
-    type IPageData,
-    type IPageNode,
+    type HeadingNode,
     isPageNode,
-    type ITsDocBase,
     linkify,
+    type PageData,
+    type PageNode,
+    type TsDocBase,
 } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
@@ -81,7 +81,7 @@ export interface DocumentationProps extends Props {
      * searchable in the navigator. Returning `true` will exclude the item from
      * the navigator search results.
      */
-    navigatorExclude?: (node: IPageNode | IHeadingNode) => boolean;
+    navigatorExclude?: (node: PageNode | HeadingNode) => boolean;
 
     /**
      * Callback invoked whenever the component props or state change (specifically,
@@ -96,7 +96,7 @@ export interface DocumentationProps extends Props {
      *
      * @default "View source"
      */
-    renderViewSourceLinkText?: (entry: ITsDocBase) => React.ReactNode;
+    renderViewSourceLinkText?: (entry: TsDocBase) => React.ReactNode;
 
     /**
      * Callback invoked to render the clickable nav menu items. (Nested menu structure is handled by the library.)
@@ -108,7 +108,7 @@ export interface DocumentationProps extends Props {
      * Callback invoked to render actions for a documentation page.
      * Actions appear in an element in the upper-right corner of the page.
      */
-    renderPageActions?: (page: IPageData) => React.ReactNode;
+    renderPageActions?: (page: PageData) => React.ReactNode;
 
     /**
      * HTML element to use as the scroll parent. By default `document.documentElement` is assumed to be the scroll container.

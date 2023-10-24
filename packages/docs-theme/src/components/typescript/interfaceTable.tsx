@@ -17,11 +17,11 @@
 import {
     isTag,
     isTsProperty,
-    type ITsClass,
-    type ITsInterface,
-    type ITsMethod,
-    type ITsProperty,
-    type ITsSignature,
+    type TsClass,
+    type TsInterface,
+    type TsMethod,
+    type TsProperty,
+    type TsSignature,
 } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
@@ -37,7 +37,7 @@ import { DeprecatedTag } from "./deprecatedTag";
 export type Renderer<T> = (props: T) => React.ReactNode;
 
 export interface InterfaceTableProps extends Props {
-    data: ITsClass | ITsInterface;
+    data: TsClass | TsInterface;
     title: string;
 }
 
@@ -47,7 +47,7 @@ export interface InterfaceTableProps extends Props {
 export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data, title }) => {
     const { renderBlock, renderType } = React.useContext(DocumentationContext);
 
-    const renderPropRow = React.useCallback((entry: ITsProperty | ITsMethod) => {
+    const renderPropRow = React.useCallback((entry: TsProperty | TsMethod) => {
         const { flags, name, inheritedFrom } = entry;
         const { documentation } = isTsProperty(entry) ? entry : entry.signatures[0]!;
 
@@ -99,7 +99,7 @@ export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data,
         );
     }, []);
 
-    const renderIndexSignature = React.useCallback((entry?: ITsSignature) => {
+    const renderIndexSignature = React.useCallback((entry?: TsSignature) => {
         if (entry == null) {
             return null;
         }

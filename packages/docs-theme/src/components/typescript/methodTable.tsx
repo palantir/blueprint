@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { isTag, type ITsMethod, type ITsParameter, type ITsSignature } from "@documentalist/client";
+import { isTag, type TsMethod, type TsParameter, type TsSignature } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -29,13 +29,13 @@ import { DeprecatedTag } from "./deprecatedTag";
 export type Renderer<T> = (props: T) => React.ReactNode;
 
 export interface MethodTableProps extends Props {
-    data: ITsMethod;
+    data: TsMethod;
 }
 
 export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => {
     const { renderBlock, renderType } = React.useContext(DocumentationContext);
 
-    const renderPropRow = React.useCallback((parameter: ITsParameter) => {
+    const renderPropRow = React.useCallback((parameter: TsParameter) => {
         const { flags, name } = parameter;
         const { documentation } = parameter;
 
@@ -77,7 +77,7 @@ export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => 
         );
     }, []);
 
-    const renderReturnSignature = React.useCallback((entry?: ITsSignature) => {
+    const renderReturnSignature = React.useCallback((entry?: TsSignature) => {
         if (entry == null) {
             return null;
         }
@@ -96,7 +96,7 @@ export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => 
 
     const propRows = [...data.signatures]
         .sort((a, b) => a.name.localeCompare(b.name))
-        .map((entry: ITsSignature) => entry.parameters.map(renderPropRow));
+        .map((entry: TsSignature) => entry.parameters.map(renderPropRow));
     return (
         <div className={classNames("docs-modifiers", className)}>
             <ApiHeader {...data} />

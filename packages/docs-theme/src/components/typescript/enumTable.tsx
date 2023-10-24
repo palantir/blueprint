@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { ITsEnum, ITsEnumMember } from "@documentalist/client";
+import type { TsEnum, TsEnumMember } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -29,14 +29,14 @@ import { DeprecatedTag } from "./deprecatedTag";
 export type Renderer<T> = (props: T) => React.ReactNode;
 
 export interface EnumTableProps extends Props {
-    data: ITsEnum;
+    data: TsEnum;
 }
 
 export const EnumTable: React.FC<EnumTableProps> = props => {
     const { renderBlock } = React.useContext(DocumentationContext);
 
     const renderPropRow = React.useCallback(
-        (entry: ITsEnumMember) => {
+        (entry: TsEnumMember) => {
             const { flags, name } = entry;
 
             const classes = classNames("docs-prop-name", {
