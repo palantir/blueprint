@@ -16,6 +16,17 @@ import { Classes } from "@blueprintjs/core";
 
 import { markedRenderer } from "./markdownRenderer.mjs";
 
+/** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
+const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table"];
+
+/** This package is expected to have the markdown "navPage" */
+const DOCS_PACKAGE = "docs-app";
+
+/** Run Documentalist on Markdown files in these packages */
+const LIBRARY_AND_DOCS_PACKAGES = [...LIBRARY_PACKAGES, DOCS_PACKAGE];
+
+console.info(`[docs-data] compiling documentation for library packages: ${LIBRARY_PACKAGES.join(", ")}`);
+
 // assume we are running from packages/docs-app
 const monorepoRootDir = resolve(cwd(), "../../");
 const generatedSrcDir = resolve(cwd(), "./src/generated");
@@ -58,7 +69,6 @@ async function generateDocumentalistData() {
             new TypescriptPlugin({
                 excludeNames: [/.+State$/],
                 excludePaths: ["node_modules/", "-app/", "test-commons/", "-build-scripts/", "test/"],
-                // tsconfigPath: resolve(monorepoRootDir, "./config/tsconfig.node.json"),
                 verbose: true,
             }),
         )
@@ -66,9 +76,10 @@ async function generateDocumentalistData() {
         .use("package.json", new NpmPlugin());
 
     const docs = await documentalist.documentGlobs(
-        "../*/src/**/*.{scss,md}",
-        "../*/src/index.{ts,tsx}",
-        "../*/package.json",
+        `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.md`,
+        `../{${LIBRARY_PACKAGES.join(",")}}/src/**/*.scss`,
+        `../{${LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
+        `../{${LIBRARY_PACKAGES}}/package.json`,
     );
 
     const content = JSON.stringify(docs, transformDocumentalistData, 2);
