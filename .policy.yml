@@ -2,6 +2,7 @@ policy:
   approval:
     - or:
         - approved by Blueprint team member
+        - approved by Frontend Infrastructure team member
         - approved by Blueprint team lead
         - authored by Blueprint team lead
         - excavator only touched config files
@@ -17,6 +18,13 @@ approval_rules:
     requires:
       count: 1
       teams: ["palantir/blueprint"]
+
+  - name: approved by Frontend Infrastructure team member
+    options:
+      allow_contributor: false
+    requires:
+      count: 1
+      teams: ["palantir/fe-infra"]
 
   - name: approved by Blueprint team lead
     options:
