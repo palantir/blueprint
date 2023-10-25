@@ -40,7 +40,9 @@ approval_rules:
       has_author_in:
         users: ["adidahiya"]
       has_valid_signatures_by_keys:
-        key_ids: ["807851B18384352E"]
+        key_ids:
+          - "807851B18384352E" # local key
+          - "4AEE18F83AFDEB23" # GitHub UI
 
   - name: excavator only touched config files
     requires:
