@@ -26,8 +26,7 @@ import { TypescriptExample } from "./typescript";
 export function createDefaultRenderers(): Record<string, React.ComponentType<Tag>> {
     return {
         css: CssExample,
-        // HACKHACK https://github.com/palantir/blueprint/issues/4342
-        heading: Heading as React.ComponentType<Tag>,
+        heading: Heading,
         interface: TypescriptExample,
         method: Method,
         page: () => null,
