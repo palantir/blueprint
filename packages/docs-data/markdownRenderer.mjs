@@ -47,4 +47,13 @@ function renderMarkdown(textContent) {
     return marked(textContent, { renderer });
 }
 
-export { renderMarkdown, renderer as markedRenderer };
+const hooks = {
+    // HACKHACK: workaround for https://github.com/palantir/documentalist/issues/248
+    // We are getting inline code snippets wrapped by newlines, which breaks the markdown rendering of multiline JSDoc
+    // comments. We can work around this by removing the newlines. This should work for all practical cases since we
+    // don't expect any JSDoc comment line to simply have a `code` token as its only contents.
+    preprocess: md => md.replace(/\n(\`.*\`)\n/g, "$1"),
+    postprocess: html => html,
+};
+
+export { hooks, renderMarkdown, renderer as markedRenderer };
