@@ -288,9 +288,10 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
             getDocsData: () => docs,
             renderBlock: block => renderBlock(block, this.props.tagRenderers),
             renderType: hasTypescriptData(docs)
-                ? type =>
-                      linkify(type, docs.typescript, (name, _d, idx) => <ApiLink key={`${name}-${idx}`} name={name} />)
-                : type => type,
+                ? omitEmptyTypeParamsList(type =>
+                      linkify(type, docs.typescript, (name, _d, idx) => <ApiLink key={`${name}-${idx}`} name={name} />),
+                  )
+                : omitEmptyTypeParamsList(type => type),
             renderViewSourceLinkText: renderViewSourceLinkText ?? (() => "View source"),
             showApiDocs: this.handleApiBrowserOpen,
         };
@@ -414,4 +415,13 @@ function scrollToReference(reference: string, scrollContainer: HTMLElement = doc
             scrollContainer.scrollTop = scrollOffset;
         }
     });
+}
+
+type TypeRenderer = (type: string) => React.ReactNode;
+
+/**
+ * HACKHACK: workaround for https://github.com/palantir/documentalist/issues/246
+ */
+function omitEmptyTypeParamsList(typeRenderer: TypeRenderer): TypeRenderer {
+    return (type: string) => typeRenderer(type.replace("<>", ""));
 }
