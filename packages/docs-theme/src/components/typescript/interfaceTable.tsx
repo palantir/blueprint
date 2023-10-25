@@ -68,7 +68,7 @@ export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data,
             const typeInfo = isTsProperty(entry) ? (
                 <>
                     <strong>{renderType(entry.type)}</strong>
-                    <em className={classNames("docs-prop-default", Classes.TEXT_MUTED)}>{entry.defaultValue}</em>
+                    <TsPropertyDefaultValue entry={entry} />
                 </>
             ) : (
                 <>
@@ -139,3 +139,21 @@ export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data,
     );
 };
 InterfaceTable.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.InterfaceTable`;
+
+function TsPropertyDefaultValue({ entry }: { entry: TsProperty }) {
+    let { defaultValue } = entry;
+
+    if (defaultValue == null) {
+        return null;
+    }
+
+    // HACKHACK: workaround for https://github.com/palantir/documentalist/issues/245
+    // extract code snippet if it is wrapped in some extra markup
+    const codeSnippetMatches = defaultValue.match(/```ts\s(.*)\s```/);
+
+    if (codeSnippetMatches != null) {
+        defaultValue = codeSnippetMatches[1].trim();
+    }
+
+    return <em className={classNames("docs-prop-default", Classes.TEXT_MUTED)}>{defaultValue}</em>;
+}
