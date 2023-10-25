@@ -26,8 +26,6 @@ import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
 
-export type Renderer<T> = (props: T) => React.ReactNode;
-
 export interface EnumTableProps extends Props {
     data: TsEnum;
 }
