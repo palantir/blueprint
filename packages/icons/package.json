@@ -21,7 +21,7 @@
         "clean": "rm -rf dist/* && rm -rf lib/**/* && rm -rf src/generated/*",
         "compile": "npm-run-all -s \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
         "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
         "copy:scss": "scripts/copy-scss.sh",
@@ -44,7 +44,7 @@
     "dependencies": {
         "change-case": "^4.1.2",
         "classnames": "^2.3.1",
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "peerDependencies": {
         "@types/react": "^16.14.32 || 17 || 18",
@@ -69,7 +69,7 @@
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
         "svg-parser": "^2.0.4",
-        "typescript": "~4.9.5",
+        "typescript": "~5.2.2",
         "webpack-cli": "^5.0.1"
     },
     "repository": {

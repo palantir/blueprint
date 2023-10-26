@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { type IHeadingNode, type IPageData, isPageNode, type ITsDocBase } from "@documentalist/client";
+import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -45,7 +45,7 @@ const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
 const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
 const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
 const LEGACY_PATTERN = /\/legacy(\.[\w-]+)?$/;
-const isNavSection = ({ route }: IHeadingNode) =>
+const isNavSection = ({ route }: HeadingNode) =>
     COMPONENTS_PATTERN.test(route) ||
     CONTEXT_PATTERN.test(route) ||
     HOOKS_PATTERN.test(route) ||
@@ -94,7 +94,7 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
                 onToggleDark={this.handleToggleDark}
                 useDarkTheme={this.state.themeName === DARK_THEME}
                 useNextVersion={this.props.useNextVersion}
-                packageData={this.getNpmPackage("@blueprintjs/core")}
+                packageInfo={this.getNpmPackage("@blueprintjs/core")}
             />
         );
         return (
@@ -140,7 +140,7 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
         return <NavMenuItem {...props} />;
     };
 
-    private renderPageActions = (page: IPageData) => {
+    private renderPageActions = (page: PageData) => {
         return (
             <AnchorButton
                 href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
@@ -178,7 +178,7 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
         );
     }
 
-    private renderViewSourceLinkText = (entry: ITsDocBase) => {
+    private renderViewSourceLinkText = (entry: TsDocBase) => {
         return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
     };
 

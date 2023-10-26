@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { isTag, type ITsMethod, type ITsParameter, type ITsSignature } from "@documentalist/client";
+import { isTag, type TsMethod, type TsParameter, type TsSignature } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -26,77 +26,81 @@ import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
 
-export type Renderer<T> = (props: T) => React.ReactNode;
-
 export interface MethodTableProps extends Props {
-    data: ITsMethod;
+    data: TsMethod;
 }
 
 export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => {
     const { renderBlock, renderType } = React.useContext(DocumentationContext);
 
-    const renderPropRow = React.useCallback((parameter: ITsParameter) => {
-        const { flags, name } = parameter;
-        const { documentation } = parameter;
+    const renderPropRow = React.useCallback(
+        (parameter: TsParameter) => {
+            const { flags, name } = parameter;
+            const { documentation } = parameter;
 
-        // ignore props marked with `@internal` tag (this tag is in contents instead of in flags)
-        if (
-            documentation != null &&
-            documentation.contents != null &&
-            documentation.contents.some(val => isTag(val) && val.tag === "internal")
-        ) {
-            return null;
-        }
+            // ignore props marked with `@internal` tag (this tag is in contents instead of in flags)
+            if (
+                documentation != null &&
+                documentation.contents != null &&
+                documentation.contents.some(val => isTag(val) && val.tag === "internal")
+            ) {
+                return null;
+            }
 
-        const classes = classNames("docs-prop-name", {
-            "docs-prop-is-deprecated": flags?.isDeprecated === true || typeof flags?.isDeprecated === "string",
-            "docs-prop-is-internal": !flags?.isExternal,
-            "docs-prop-is-required": !flags?.isOptional,
-        });
+            const classes = classNames("docs-prop-name", {
+                "docs-prop-is-deprecated": flags?.isDeprecated === true || typeof flags?.isDeprecated === "string",
+                "docs-prop-is-internal": !flags?.isExternal,
+                "docs-prop-is-required": !flags?.isOptional,
+            });
 
-        const typeInfo = (
-            <>
-                <strong>{renderType(parameter.type)}</strong>
-            </>
-        );
+            const typeInfo = (
+                <>
+                    <strong>{renderType(parameter.type)}</strong>
+                </>
+            );
 
-        return (
-            <tr key={name}>
-                <td className={classes}>
-                    <Code>{name}</Code>
-                </td>
-                <td className="docs-prop-details">
-                    <Code className="docs-prop-type">{typeInfo}</Code>
-                    <div className="docs-prop-description">{renderBlock(documentation!)}</div>
-                    <div className="docs-prop-tags">
-                        {!flags?.isOptional && <Tag children="Required" intent={Intent.SUCCESS} minimal={true} />}
-                        <DeprecatedTag isDeprecated={flags?.isDeprecated} />
-                    </div>
-                </td>
-            </tr>
-        );
-    }, []);
+            return (
+                <tr key={name}>
+                    <td className={classes}>
+                        <Code>{name}</Code>
+                    </td>
+                    <td className="docs-prop-details">
+                        <Code className="docs-prop-type">{typeInfo}</Code>
+                        <div className="docs-prop-description">{renderBlock(documentation!)}</div>
+                        <div className="docs-prop-tags">
+                            {!flags?.isOptional && <Tag children="Required" intent={Intent.SUCCESS} minimal={true} />}
+                            <DeprecatedTag isDeprecated={flags?.isDeprecated} />
+                        </div>
+                    </td>
+                </tr>
+            );
+        },
+        [renderBlock, renderType],
+    );
 
-    const renderReturnSignature = React.useCallback((entry?: ITsSignature) => {
-        if (entry == null) {
-            return null;
-        }
+    const renderReturnSignature = React.useCallback(
+        (entry?: TsSignature) => {
+            if (entry == null) {
+                return null;
+            }
 
-        return (
-            <tr key={entry.name}>
-                <td className="docs-prop-name">
-                    <Code className="docs-prop-type">{renderType(entry.returnType)}</Code>
-                </td>
-                <td className="docs-prop-details">
-                    <div className="docs-prop-description">{renderBlock(entry.documentation!)}</div>
-                </td>
-            </tr>
-        );
-    }, []);
+            return (
+                <tr key={entry.name}>
+                    <td className="docs-prop-name">
+                        <Code className="docs-prop-type">{renderType(entry.returnType)}</Code>
+                    </td>
+                    <td className="docs-prop-details">
+                        <div className="docs-prop-description">{renderBlock(entry.documentation!)}</div>
+                    </td>
+                </tr>
+            );
+        },
+        [renderBlock, renderType],
+    );
 
     const propRows = [...data.signatures]
         .sort((a, b) => a.name.localeCompare(b.name))
-        .map((entry: ITsSignature) => entry.parameters.map(renderPropRow));
+        .map((entry: TsSignature) => entry.parameters.map(renderPropRow));
     return (
         <div className={classNames("docs-modifiers", className)}>
             <ApiHeader {...data} />

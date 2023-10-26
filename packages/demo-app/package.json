@@ -29,7 +29,7 @@
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^8.0.4",

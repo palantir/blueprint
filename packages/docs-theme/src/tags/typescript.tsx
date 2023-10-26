@@ -19,8 +19,8 @@ import {
     isTsEnum,
     isTsInterface,
     isTsTypeAlias,
-    type ITag,
-    type ITypescriptPluginData,
+    type Tag,
+    type TypescriptPluginData,
 } from "@documentalist/client";
 import * as React from "react";
 
@@ -32,9 +32,9 @@ import { EnumTable } from "../components/typescript/enumTable";
 import { InterfaceTable } from "../components/typescript/interfaceTable";
 import { TypeAliasTable } from "../components/typescript/typeAliasTable";
 
-export const TypescriptExample: React.FC<ITag & Props> = ({ className, value }) => {
+export const TypescriptExample: React.FC<Tag & Props> = ({ className, value }) => {
     const { getDocsData } = React.useContext(DocumentationContext);
-    const { typescript } = getDocsData() as ITypescriptPluginData;
+    const { typescript } = getDocsData() as TypescriptPluginData;
     if (typescript == null || typescript[value] == null) {
         return null;
     }
