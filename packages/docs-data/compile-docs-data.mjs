@@ -105,5 +105,5 @@ function transformDocumentalistData(key, value) {
         // reverse the list so highest version is first (easier indexing)
         return Array.from(majors.values()).reverse();
     }
-    return undefined;
+    return value;
 }
