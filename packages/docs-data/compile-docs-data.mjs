@@ -12,8 +12,6 @@ import { join, resolve } from "node:path";
 import { cwd } from "node:process";
 import semver from "semver";
 
-import { Classes } from "@blueprintjs/core";
-
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
 
 /** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
@@ -107,18 +105,5 @@ function transformDocumentalistData(key, value) {
         // reverse the list so highest version is first (easier indexing)
         return Array.from(majors.values()).reverse();
     }
-    if (value != null) {
-        return interpolateClassNamespace(value);
-    }
     return undefined;
-}
-
-/**
- * If value is a string, replaces `#{$ns}` in that string with the actual Blueprint class namespace.
- * Otherwise, simply returns the value.
- *
- * @param {any} value
- */
-function interpolateClassNamespace(value) {
-    return typeof value === "string" ? value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace()) : value;
 }

@@ -7,8 +7,9 @@
 import escapeHTML from "escape-html";
 import { marked } from "marked";
 
-import { Classes } from "@blueprintjs/core";
-import { Classes as DocsClasses } from "@blueprintjs/docs-theme";
+// HACKHACK: class names copied from @blueprintjs/core and @blueprintjs/docs-theme to avoid taking a dependency
+// on those packages, which prevents us from parallelizing compilation of this package with the other libraries.
+const NS = "bp5";
 
 /**
  * Markdown renderer with some custom logic to handle `<code>` tags.
@@ -36,8 +37,7 @@ renderer.code = (textContent, language, isEscaped) => {
             break;
     }
 
-    const classes = [Classes.CODE_BLOCK, DocsClasses.DOCS_CODE_BLOCK].join(" ");
-    return `<pre class="${classes}" data-lang="${language}">${textContent}</pre>`;
+    return `<pre class="${NS}-code-block ${NS}-docs-code-block" data-lang="${language}">${textContent}</pre>`;
 };
 
 /**
@@ -48,15 +48,27 @@ function renderMarkdown(textContent) {
 }
 
 const hooks = {
-    // HACKHACK: workaround for https://github.com/palantir/documentalist/issues/248
-    // As of Documentalist v5.0.0 & TypeDoc v0.25, we are getting inline code snippets wrapped by newlines, which
-    // breaks the markdown rendering of multiline JSDoc comments. We can work around this by removing the newlines.
-    // This should work for all practical cases since we don't expect any JSDoc comment line to simply have a `code`
-    // token as its only contents. N.B. we must take care to avoid matching triple-backtick fenced code blocks (hence
-    // the negative look-ahead).
+    /**
+     * @param md {string}
+     * @returns {string}
+     */
     preprocess: md => {
+        // interpolate class namespace in TS and Sass syntax
+        md = md.replace(/#{\$ns}|@ns/g, NS);
+
+        // HACKHACK: workaround for https://github.com/palantir/documentalist/issues/248
+        // As of Documentalist v5.0.0 & TypeDoc v0.25, we are getting inline code snippets wrapped by newlines, which
+        // breaks the markdown rendering of multiline JSDoc comments. We can work around this by removing the newlines.
+        // This should work for all practical cases since we don't expect any JSDoc comment line to simply have a `code`
+        // token as its only contents. N.B. we must take care to avoid matching triple-backtick fenced code blocks (hence
+        // the negative look-ahead).
         return md.replace(/\n(\`(?!\`).*\`)\n/g, "$1");
     },
+
+    /**
+     * @param html {string}
+     * @returns {string}
+     */
     postprocess: html => html,
 };
 
