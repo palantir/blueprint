@@ -7,9 +7,8 @@
 import escapeHTML from "escape-html";
 import { marked } from "marked";
 
-// HACKHACK: class names copied from @blueprintjs/core and @blueprintjs/docs-theme to avoid taking a dependency
-// on those packages, which prevents us from parallelizing compilation of this package with the other libraries.
-const NS = "bp5";
+import { Classes } from "@blueprintjs/core";
+import { Classes as DocsClasses } from "@blueprintjs/docs-theme";
 
 /**
  * Markdown renderer with some custom logic to handle `<code>` tags.
@@ -37,7 +36,7 @@ renderer.code = (textContent, language, isEscaped) => {
             break;
     }
 
-    return `<pre class="${NS}-code-block ${NS}-docs-code-block" data-lang="${language}">${textContent}</pre>`;
+    return `<pre class="${Classes.CODE_BLOCK} ${DocsClasses.DOCS_CODE_BLOCK}" data-lang="${language}">${textContent}</pre>`;
 };
 
 /**
@@ -46,6 +45,8 @@ renderer.code = (textContent, language, isEscaped) => {
 function renderMarkdown(textContent) {
     return marked(textContent, { renderer });
 }
+
+const NS = Classes.getClassNamespace();
 
 const hooks = {
     /**
