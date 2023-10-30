@@ -4087,4 +4087,11 @@
         "group": "communication",
         "codepoint": 62280
     }
+    {
+        "displayName": "new-shield",
+        "iconName": "new-shield",
+        "tags": "shield, new, add, marking",
+        "group": "security",
+        "codepoint": 62281
+    }
 ]
