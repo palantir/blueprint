@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/demo-app",
-    "version": "5.5.2",
+    "version": "5.6.0",
     "description": "Blueprint Demo App",
     "private": true,
     "scripts": {
@@ -17,12 +17,12 @@
         "verify": "run-p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^5.5.1",
-        "@blueprintjs/datetime": "^5.2.4",
-        "@blueprintjs/datetime2": "^2.2.2",
-        "@blueprintjs/icons": "^5.2.1",
-        "@blueprintjs/select": "^5.0.16",
-        "@blueprintjs/table": "^5.0.16",
+        "@blueprintjs/core": "^5.6.0",
+        "@blueprintjs/datetime": "^5.2.5",
+        "@blueprintjs/datetime2": "^2.2.3",
+        "@blueprintjs/icons": "^5.3.0",
+        "@blueprintjs/select": "^5.0.17",
+        "@blueprintjs/table": "^5.0.17",
         "classnames": "^2.3.1",
         "lodash": "^4.17.21",
         "normalize.css": "^8.0.1",
@@ -32,8 +32,8 @@
         "tslib": "~2.6.2"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^8.0.4",
-        "@blueprintjs/webpack-build-scripts": "^6.0.0",
+        "@blueprintjs/node-build-scripts": "^8.1.0",
+        "@blueprintjs/webpack-build-scripts": "^6.1.0",
         "@types/lodash": "~4.14.191",
         "copy-webpack-plugin": "^11.0.0",
         "npm-run-all": "^4.1.5",
