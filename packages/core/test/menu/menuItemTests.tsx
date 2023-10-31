@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
+import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
@@ -26,8 +26,8 @@ import {
     Classes,
     Icon,
     MenuItem,
-    MenuItemProps,
-    MenuProps,
+    type MenuItemProps,
+    type MenuProps,
     Popover,
     PopoverInteractionKind,
     Text,

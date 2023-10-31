@@ -15,7 +15,7 @@
  */
 
 import { expect } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 
@@ -26,7 +26,7 @@ import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import type { MenuContext } from "../src/interactions/menus/menuContext";
-import { Region, Regions } from "../src/regions";
+import { type Region, Regions } from "../src/regions";
 import type { TableBodyProps } from "../src/tableBody";
 import { TableBody2 } from "../src/tableBody2";
 import { cellClassNames } from "../src/tableBodyCells";

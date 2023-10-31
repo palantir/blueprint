@@ -27,7 +27,7 @@ import {
     NavbarHeading,
     Switch,
 } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface NavbarExampleState {
     alignRight: boolean;

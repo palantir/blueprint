@@ -15,11 +15,15 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { OverflowList, OverflowListProps, OverflowListState } from "../../src/components/overflow-list/overflowList";
+import {
+    OverflowList,
+    type OverflowListProps,
+    type OverflowListState,
+} from "../../src/components/overflow-list/overflowList";
 
 type OverflowProps = OverflowListProps<TestItemProps>;
 

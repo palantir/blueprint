@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { Button, Intent, Popover, PopoverInteractionKind } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Button, Intent, Popover, type PopoverInteractionKind } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "./common/fileMenu";
 

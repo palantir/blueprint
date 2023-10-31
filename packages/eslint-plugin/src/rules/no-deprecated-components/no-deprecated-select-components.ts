@@ -4,10 +4,13 @@
 
 import type { TSESLint } from "@typescript-eslint/utils";
 
-import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
+import { createNoDeprecatedComponentsRule, type DeprecatedComponentsConfig } from "./createNoDeprecatedComponentsRule";
 
-export const selectComponentsMigrationMapping = {
-    // nothing, for now
+export const selectComponentsMigrationMapping: DeprecatedComponentsConfig = {
+    // listed in packages/select/src/components/deprecatedAliases.ts
+    MultiSelect2: "MultiSelect",
+    Select2: "Select",
+    Suggest2: "Suggest",
 };
 
 /**

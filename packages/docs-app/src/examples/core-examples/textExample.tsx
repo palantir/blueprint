@@ -17,8 +17,8 @@
 import * as React from "react";
 
 import { Button, Menu, MenuItem, Popover, Text, TextArea } from "@blueprintjs/core";
-import { Example, ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
-import { Film, TOP_100_FILMS } from "@blueprintjs/select/examples";
+import { Example, type ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
+import { type Film, TOP_100_FILMS } from "@blueprintjs/select/examples";
 
 export interface TextExampleState {
     textContent: string;

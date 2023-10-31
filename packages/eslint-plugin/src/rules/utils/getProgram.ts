@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils";
+import { AST_NODE_TYPES, type TSESTree } from "@typescript-eslint/utils";
 
 /**
  * Return the top level node that is the greatest parent of the current node, if it is a Program.

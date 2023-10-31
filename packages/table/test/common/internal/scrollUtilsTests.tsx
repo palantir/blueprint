@@ -19,7 +19,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import * as ScrollUtils from "../../../src/common/internal/scrollUtils";
-import { Region, Regions } from "../../../src/regions";
+import { type Region, Regions } from "../../../src/regions";
 
 describe("scrollUtils", () => {
     describe("getScrollPositionForRegion", () => {

@@ -17,13 +17,19 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSize } from "@blueprintjs/icons";
+import { type IconName, IconSize } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes, refHandler, setRef, Utils } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, MaybeElement, Props } from "../../common/props";
+import {
+    DISPLAYNAME_PREFIX,
+    type HTMLInputProps,
+    type IntentProps,
+    type MaybeElement,
+    type Props,
+} from "../../common/props";
 import { getActiveElement } from "../../common/utils";
 import { Icon } from "../icon/icon";
-import { Tag, TagProps } from "../tag/tag";
+import { Tag, type TagProps } from "../tag/tag";
 import { ResizableInput } from "./resizableInput";
 
 /**

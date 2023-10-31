@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, ColumnHeaderCell, Table2 } from "@blueprintjs/table";
 
 // this will obviously get outdated, it's valid only as of August 2021

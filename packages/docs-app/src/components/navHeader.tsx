@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import type { INpmPackage } from "@documentalist/client";
+import type { NpmPackageInfo } from "@documentalist/client";
 import * as React from "react";
 
-import { Classes, HotkeysTarget2, Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
+import { Classes, HotkeysTarget2, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
 import { NavButton } from "@blueprintjs/docs-theme";
 
 import { Logo } from "./logo";
@@ -26,7 +26,7 @@ export interface NavHeaderProps {
     onToggleDark: (useDark: boolean) => void;
     useDarkTheme: boolean;
     useNextVersion: boolean;
-    packageData: INpmPackage;
+    packageInfo: NpmPackageInfo;
 }
 
 export class NavHeader extends React.PureComponent<NavHeaderProps> {
@@ -75,7 +75,7 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
 
     private renderVersionsMenu() {
         const { useNextVersion } = this.props;
-        const { version, nextVersion, versions } = this.props.packageData;
+        const { version, nextVersion, versions } = this.props.packageInfo;
         if (versions.length === 1) {
             return <div className={Classes.TEXT_MUTED}>v{versions[0]}</div>;
         }

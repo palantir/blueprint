@@ -15,13 +15,13 @@
  */
 
 import { assert } from "chai";
-import { mount, shallow, ShallowWrapper } from "enzyme";
+import { mount, shallow, type ShallowWrapper } from "enzyme";
 import * as React from "react";
-import { SinonStub, spy, stub } from "sinon";
+import { type SinonStub, spy, stub } from "sinon";
 
 import { WarningSign } from "@blueprintjs/icons";
 
-import { Alert, AlertProps, Button, ButtonProps, Classes, Icon, Intent } from "../../src";
+import { Alert, type AlertProps, Button, type ButtonProps, Classes, Icon, Intent } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { findInPortal } from "../utils";
 

@@ -29,13 +29,13 @@ import {
     Label,
     Menu,
     MenuItem,
-    OptionProps,
+    type OptionProps,
     Position,
     Switch,
 } from "@blueprintjs/core";
 import {
     Example,
-    ExampleProps,
+    type ExampleProps,
     handleBooleanChange,
     handleStringChange,
     handleValueChange,

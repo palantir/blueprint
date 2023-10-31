@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Button, MenuItem } from "@blueprintjs/core";
 import { CaretDown } from "@blueprintjs/icons";
-import { ItemRenderer, Select, SelectPopoverProps } from "@blueprintjs/select";
+import { type ItemRenderer, Select, type SelectPopoverProps } from "@blueprintjs/select";
 
 export type CommonDateFnsLocale = "de" | "en-US" | "es" | "fr" | "hi" | "it" | "zh-CN";
 export const COMMON_DATE_FNS_LOCALES: CommonDateFnsLocale[] = ["de", "en-US", "es", "fr", "hi", "it", "zh-CN"];

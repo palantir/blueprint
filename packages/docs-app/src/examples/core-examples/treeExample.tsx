@@ -17,8 +17,8 @@
 import cloneDeep from "lodash/cloneDeep";
 import * as React from "react";
 
-import { Classes, ContextMenu, Icon, Intent, Tooltip, Tree, TreeNodeInfo } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Classes, ContextMenu, Icon, Intent, Tooltip, Tree, type TreeNodeInfo } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 type NodePath = number[];
 

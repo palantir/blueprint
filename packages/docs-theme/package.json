@@ -20,7 +20,7 @@
         "clean": "rm -rf dist/* && rm -rf lib/*",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
@@ -38,10 +38,10 @@
         "@blueprintjs/colors": "^5.0.4",
         "@blueprintjs/core": "^5.5.1",
         "@blueprintjs/select": "^5.0.16",
-        "@documentalist/client": "^4.0.0",
+        "@documentalist/client": "^5.0.0",
         "classnames": "^2.3.1",
         "fuzzaldrin-plus": "^0.6.0",
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "peerDependencies": {
         "@types/react": "^16.14.32 || 17 || 18",
@@ -59,7 +59,7 @@
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
-        "typescript": "~4.9.5",
+        "typescript": "~5.2.2",
         "webpack-cli": "^5.0.1"
     },
     "repository": {

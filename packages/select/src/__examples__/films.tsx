@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { MenuItem, MenuItemProps } from "@blueprintjs/core";
+import { MenuItem, type MenuItemProps } from "@blueprintjs/core";
 
 import type { ItemPredicate, ItemRenderer, ItemRendererProps } from "../common";
 

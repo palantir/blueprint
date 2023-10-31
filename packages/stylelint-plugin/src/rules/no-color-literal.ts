@@ -15,7 +15,7 @@
 
 import type { Declaration, Root } from "postcss";
 import valueParser from "postcss-value-parser";
-import stylelint, { PostcssResult, RuleContext } from "stylelint";
+import stylelint, { type PostcssResult, type RuleContext } from "stylelint";
 
 import { Colors } from "@blueprintjs/colors";
 

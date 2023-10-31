@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { AnchorButton, Button, ButtonProps, Classes, Icon, Spinner } from "../../src";
+import { AnchorButton, Button, type ButtonProps, Classes, Icon, Spinner } from "../../src";
 
 describe("Buttons:", () => {
     buttonTestSuite(Button, "button");

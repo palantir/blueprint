@@ -18,9 +18,9 @@ import * as React from "react";
 
 import { H5 } from "@blueprintjs/core";
 import { DatePicker3 } from "@blueprintjs/datetime2";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
-import { CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
+import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 
 export const DatePicker3LocalizedExample: React.FC<ExampleProps> = props => {
     const [localeCode, setlocaleCode] = React.useState<CommonDateFnsLocale>("fr");

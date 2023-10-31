@@ -23,20 +23,20 @@ import {
     DISPLAYNAME_PREFIX,
     mergeRefs,
     Popover,
-    PopoverClickTargetHandlers,
-    PopoverTargetProps,
+    type PopoverClickTargetHandlers,
+    type PopoverTargetProps,
     PopupKind,
     refHandler,
     setRef,
     TagInput,
-    TagInputAddMethod,
-    TagInputProps,
+    type TagInputAddMethod,
+    type TagInputProps,
     Utils,
 } from "@blueprintjs/core";
 import { Cross } from "@blueprintjs/icons";
 
-import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
-import { QueryList, QueryListRendererProps } from "../query-list/queryList";
+import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
+import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
 export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
     /**

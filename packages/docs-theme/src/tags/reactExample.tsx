@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { ITag } from "@documentalist/client";
+import type { Tag } from "@documentalist/client";
 import * as React from "react";
 
 import { AnchorButton, Intent } from "@blueprintjs/core";
@@ -41,7 +41,7 @@ export class ReactExampleTagRenderer {
      * it to an actual example component exported by one of the packages. Also returns
      * the URL of the source code on GitHub.
      */
-    public render: React.FC<ITag> = ({ value: exampleName }) => {
+    public render: React.FC<Tag> = ({ value: exampleName }) => {
         if (exampleName == null) {
             return null;
         }

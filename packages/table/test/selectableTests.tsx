@@ -21,8 +21,8 @@ import sinon from "sinon";
 import type { FocusedCellCoordinates } from "../src/common/cellTypes";
 import * as FocusedCellUtils from "../src/common/internal/focusedCellUtils";
 import { DragSelectable, type DragSelectableProps } from "../src/interactions/selectable";
-import { Region, Regions } from "../src/regions";
-import { ElementHarness, ReactHarness } from "./harness";
+import { type Region, Regions } from "../src/regions";
+import { type ElementHarness, ReactHarness } from "./harness";
 
 const REGION = Regions.cell(0, 0);
 const REGION_2 = Regions.cell(1, 1);

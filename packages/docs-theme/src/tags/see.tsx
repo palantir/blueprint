@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import type { ITag } from "@documentalist/client";
+import type { Tag } from "@documentalist/client";
 import * as React from "react";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 import { DocumentationContext } from "../common/context";
 
-export const SeeTag: React.FC<ITag> = ({ value }) => {
+export const SeeTag: React.FC<Tag> = ({ value }) => {
     const { renderType } = React.useContext(DocumentationContext);
     return <p>See: {renderType(value)}</p>;
 };

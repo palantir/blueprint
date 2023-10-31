@@ -15,11 +15,11 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { ResizeSensor, ResizeSensorProps } from "../../src/components/resize-sensor/resizeSensor";
+import { ResizeSensor, type ResizeSensorProps } from "../../src/components/resize-sensor/resizeSensor";
 
 describe("<ResizeSensor>", () => {
     // this scope variable is assigned in mountResizeSensor() and used in resize()

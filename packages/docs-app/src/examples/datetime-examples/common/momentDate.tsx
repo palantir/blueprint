@@ -18,7 +18,7 @@ import classNames from "classnames";
 import moment from "moment";
 import * as React from "react";
 
-import { Icon, Intent, Props, Tag } from "@blueprintjs/core";
+import { Icon, Intent, type Props, Tag } from "@blueprintjs/core";
 import type { DateRange } from "@blueprintjs/datetime";
 
 const FORMAT = "dddd, LL";

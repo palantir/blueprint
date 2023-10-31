@@ -22,7 +22,7 @@ import type { Props } from "../../common";
 import type { OverlayableProps } from "../overlay/overlay";
 import type { PopoverPosition } from "./popoverPosition";
 
-export { Boundary as PopperBoundary, Placement };
+export type { Boundary as PopperBoundary, Placement };
 // copied from @popperjs/core, where it is not exported as public
 export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
 

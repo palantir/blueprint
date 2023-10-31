@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { Classes, Code, FormGroup, H5, Icon, Switch } from "@blueprintjs/core";
 import { DateInput3, TimePrecision } from "@blueprintjs/datetime2";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateTag } from "../../common/formattedDateTag";

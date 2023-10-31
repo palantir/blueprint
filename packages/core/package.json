@@ -28,7 +28,7 @@
         "clean": "rm -rf dist/* && rm -rf lib/*",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
@@ -56,7 +56,7 @@
         "normalize.css": "^8.0.1",
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "peerDependencies": {
         "@types/react": "^16.14.32 || 17 || 18",
@@ -80,7 +80,7 @@
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
-        "typescript": "~4.9.5",
+        "typescript": "~5.2.2",
         "webpack-cli": "^5.0.1"
     },
     "repository": {

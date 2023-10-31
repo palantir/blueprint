@@ -17,7 +17,7 @@
 import * as React from "react";
 import type { CaptionElementProps } from "react-day-picker";
 
-import { AbstractPureComponent, Divider, HTMLSelect, OptionProps } from "@blueprintjs/core";
+import { AbstractPureComponent, Divider, HTMLSelect, type OptionProps } from "@blueprintjs/core";
 import { IconSize } from "@blueprintjs/icons";
 
 import { Classes } from "../../common";

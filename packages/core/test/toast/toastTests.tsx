@@ -17,7 +17,7 @@
 import { assert } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
-import { SinonSpy, spy } from "sinon";
+import { type SinonSpy, spy } from "sinon";
 
 import { AnchorButton, Button, Toast } from "../../src";
 

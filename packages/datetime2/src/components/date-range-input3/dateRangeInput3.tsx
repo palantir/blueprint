@@ -25,19 +25,19 @@ import {
     InputGroup,
     Intent,
     Popover,
-    PopoverClickTargetHandlers,
-    PopoverTargetProps,
+    type PopoverClickTargetHandlers,
+    type PopoverTargetProps,
     refHandler,
     setRef,
     Utils,
 } from "@blueprintjs/core";
 import {
     DatePickerUtils,
-    DateRange,
-    DateRangeShortcut,
+    type DateRange,
+    type DateRangeShortcut,
     DateUtils,
     Errors,
-    NonNullDateRange,
+    type NonNullDateRange,
 } from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
@@ -52,7 +52,7 @@ import type {
 } from "./dateRangeInput3Props";
 import type { DateRangeInput3State } from "./dateRangeInput3State";
 
-export { DateRangeInput3Props };
+export type { DateRangeInput3Props };
 
 // We handle events in a kind of generic way in this component, so here
 // we enumerate all the different kinds of events for which we have handlers.

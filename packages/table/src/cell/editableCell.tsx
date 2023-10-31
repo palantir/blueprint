@@ -20,7 +20,7 @@ import {
     Utils as CoreUtils,
     DISPLAYNAME_PREFIX,
     EditableText,
-    EditableTextProps,
+    type EditableTextProps,
     Hotkey,
     Hotkeys,
     HotkeysTarget,
@@ -28,7 +28,7 @@ import {
 
 import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
-import { Cell, CellProps } from "./cell";
+import { Cell, type CellProps } from "./cell";
 
 export interface EditableCellProps extends CellProps {
     /**

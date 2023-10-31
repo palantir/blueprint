@@ -4091,7 +4091,7 @@
         "displayName": "new-shield",
         "iconName": "new-shield",
         "tags": "shield, new, add, marking",
-        "group": "security",
+        "group": "miscellaneous",
         "codepoint": 62281
     }
 ]

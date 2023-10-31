@@ -24,11 +24,11 @@ import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { RenderMode } from "./common/renderMode";
 import type { CoordinateData } from "./interactions/dragTypes";
-import { ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
-import { DragSelectable, SelectableProps } from "./interactions/selectable";
+import { type ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
+import { DragSelectable, type SelectableProps } from "./interactions/selectable";
 import type { Locator } from "./locator";
-import { Region, Regions } from "./regions";
-import { TableBodyCells, TableBodyCellsProps } from "./tableBodyCells";
+import { type Region, Regions } from "./regions";
+import { TableBodyCells, type TableBodyCellsProps } from "./tableBodyCells";
 
 export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
     /**

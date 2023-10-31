@@ -20,15 +20,15 @@ import {
     Utils as CoreUtils,
     DISPLAYNAME_PREFIX,
     EditableText,
-    EditableTextProps,
-    HotkeyConfig,
+    type EditableTextProps,
+    type HotkeyConfig,
     HotkeysTarget2,
-    UseHotkeysReturnValue,
+    type UseHotkeysReturnValue,
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
-import { Cell, CellProps } from "./cell";
+import { Cell, type CellProps } from "./cell";
 
 export interface EditableCell2Props extends Omit<CellProps, "onKeyDown" | "onKeyUp"> {
     /**

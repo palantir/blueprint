@@ -36,8 +36,7 @@ renderer.code = (textContent, language, isEscaped) => {
             break;
     }
 
-    const classes = [Classes.CODE_BLOCK, DocsClasses.DOCS_CODE_BLOCK].join(" ");
-    return `<pre class="${classes}" data-lang="${language}">${textContent}</pre>`;
+    return `<pre class="${Classes.CODE_BLOCK} ${DocsClasses.DOCS_CODE_BLOCK}" data-lang="${language}">${textContent}</pre>`;
 };
 
 /**
@@ -47,4 +46,31 @@ function renderMarkdown(textContent) {
     return marked(textContent, { renderer });
 }
 
-export { renderMarkdown, renderer as markedRenderer };
+const NS = Classes.getClassNamespace();
+
+const hooks = {
+    /**
+     * @param md {string}
+     * @returns {string}
+     */
+    preprocess: md => {
+        // interpolate class namespace in TS and Sass syntax
+        md = md.replace(/#{\$ns}|@ns/g, NS);
+
+        // HACKHACK: workaround for https://github.com/palantir/documentalist/issues/248
+        // As of Documentalist v5.0.0 & TypeDoc v0.25, we are getting inline code snippets wrapped by newlines, which
+        // breaks the markdown rendering of multiline JSDoc comments. We can work around this by removing the newlines.
+        // This should work for all practical cases since we don't expect any JSDoc comment line to simply have a `code`
+        // token as its only contents. N.B. we must take care to avoid matching triple-backtick fenced code blocks (hence
+        // the negative look-ahead).
+        return md.replace(/\n(\`(?!\`).*\`)\n/g, "$1");
+    },
+
+    /**
+     * @param html {string}
+     * @returns {string}
+     */
+    postprocess: html => html,
+};
+
+export { hooks, renderMarkdown, renderer as markedRenderer };

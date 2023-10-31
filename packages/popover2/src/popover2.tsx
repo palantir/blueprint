@@ -19,7 +19,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, DefaultPopoverTargetHTMLProps, mergeRefs, Popover, PopoverProps } from "@blueprintjs/core";
+import { Classes, type DefaultPopoverTargetHTMLProps, mergeRefs, Popover, type PopoverProps } from "@blueprintjs/core";
 
 // Legacy classes from @blueprintjs/popover2 v1.x. Note that these are distinct from the `Classes` aliases in
 // "./classes.ts" - those strings will continue to work with Popover in Blueprint v5.x, while these values are

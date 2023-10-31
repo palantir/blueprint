@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
 
 export interface ControlGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /** Group contents. */

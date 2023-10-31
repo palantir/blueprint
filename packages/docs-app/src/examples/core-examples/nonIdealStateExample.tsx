@@ -26,12 +26,12 @@ import {
     Spinner,
     Switch,
 } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import type { IconName } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
-import { Layout, LayoutSelect } from "./common/layoutSelect";
-import { Size, SizeSelect } from "./common/sizeSelect";
+import { type Layout, LayoutSelect } from "./common/layoutSelect";
+import { type Size, SizeSelect } from "./common/sizeSelect";
 
 const sizeToNonIdealStateIconSize: Record<Size, NonIdealStateIconSize> = {
     large: NonIdealStateIconSize.STANDARD,

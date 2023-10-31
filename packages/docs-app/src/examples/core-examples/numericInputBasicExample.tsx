@@ -24,15 +24,15 @@ import {
     Menu,
     MenuItem,
     NumericInput,
-    NumericInputProps,
-    OptionProps,
+    type NumericInputProps,
+    type OptionProps,
     Popover,
     Position,
     Switch,
 } from "@blueprintjs/core";
 import {
     Example,
-    ExampleProps,
+    type ExampleProps,
     handleBooleanChange,
     handleNumberChange,
     handleStringChange,

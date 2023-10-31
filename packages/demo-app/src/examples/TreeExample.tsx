@@ -17,7 +17,7 @@
 import cloneDeep from "lodash/cloneDeep";
 import * as React from "react";
 
-import { Classes, ContextMenu, Icon, Intent, Tooltip, Tree, TreeNodeInfo } from "@blueprintjs/core";
+import { Classes, ContextMenu, Icon, Intent, Tooltip, Tree, type TreeNodeInfo } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 

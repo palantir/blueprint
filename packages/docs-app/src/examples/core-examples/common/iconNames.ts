@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IconName, IconNames } from "@blueprintjs/icons";
+import { type IconName, IconNames } from "@blueprintjs/icons";
 
 export const NONE = "(none)";
 export type IconNameOrNone = IconName | typeof NONE;

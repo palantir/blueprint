@@ -16,14 +16,14 @@
 
 import { assert } from "chai";
 import enUSLocale from "date-fns/locale/en-US";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { Day } from "react-day-picker";
 import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
 import {
-    DatePickerShortcut,
+    type DatePickerShortcut,
     DatePickerShortcutMenu,
     DateUtils,
     Errors,
@@ -34,7 +34,7 @@ import {
 import { assertDatesEqual } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src/classes";
-import { DatePicker3, DatePicker3Props } from "../../src/components/date-picker3/datePicker3";
+import { DatePicker3, type DatePicker3Props } from "../../src/components/date-picker3/datePicker3";
 import type { DatePicker3State } from "../../src/components/date-picker3/datePicker3State";
 import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";

@@ -18,18 +18,18 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
-    ButtonProps,
+    type ButtonProps,
     DISPLAYNAME_PREFIX,
     InputGroup,
     mergeRefs,
     Popover,
-    PopoverClickTargetHandlers,
-    PopoverTargetProps,
+    type PopoverClickTargetHandlers,
+    type PopoverTargetProps,
     Tag,
     Utils,
 } from "@blueprintjs/core";
 import {
-    DatePickerShortcut,
+    type DatePickerShortcut,
     DatePickerUtils,
     DateUtils,
     Errors,
@@ -47,7 +47,7 @@ import type { DateInput3DefaultProps, DateInput3Props, DateInput3PropsWithDefaul
 import { useDateFormatter } from "./useDateFormatter";
 import { useDateParser } from "./useDateParser";
 
-export { DateInput3Props };
+export type { DateInput3Props };
 
 const timezoneSelectButtonProps: Partial<ButtonProps> = {
     fill: false,

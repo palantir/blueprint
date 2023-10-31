@@ -17,7 +17,14 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, MaybeElement, Props } from "../../common";
+import {
+    AbstractPureComponent,
+    Classes,
+    DISPLAYNAME_PREFIX,
+    type Intent,
+    type MaybeElement,
+    type Props,
+} from "../../common";
 import {
     ALERT_WARN_CANCEL_ESCAPE_KEY,
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
@@ -25,7 +32,7 @@ import {
 } from "../../common/errors";
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
-import { Icon, IconName } from "../icon/icon";
+import { Icon, type IconName } from "../icon/icon";
 import type { OverlayLifecycleProps } from "../overlay/overlay";
 
 export interface AlertProps extends OverlayLifecycleProps, Props {

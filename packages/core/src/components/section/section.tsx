@@ -17,12 +17,12 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { ChevronDown, ChevronUp, IconName } from "@blueprintjs/icons";
+import { ChevronDown, ChevronUp, type IconName } from "@blueprintjs/icons";
 
 import { Classes, Elevation, Utils } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, MaybeElement, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type HTMLDivProps, type MaybeElement, type Props } from "../../common/props";
 import { Card } from "../card/card";
-import { Collapse, CollapseProps } from "../collapse/collapse";
+import { Collapse, type CollapseProps } from "../collapse/collapse";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 

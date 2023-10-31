@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, Popover, Props } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, Popover, type Props } from "@blueprintjs/core";
 import { More } from "@blueprintjs/icons";
 
 import * as Classes from "../../common/classes";

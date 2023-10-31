@@ -16,7 +16,13 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, Utils as CoreUtils, DISPLAYNAME_PREFIX, IntentProps, Props } from "@blueprintjs/core";
+import {
+    Classes as CoreClasses,
+    Utils as CoreUtils,
+    DISPLAYNAME_PREFIX,
+    type IntentProps,
+    type Props,
+} from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";

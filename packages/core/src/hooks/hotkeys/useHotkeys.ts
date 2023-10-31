@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { HOTKEYS_PROVIDER_NOT_FOUND } from "../../common/errors";
 import { elementIsTextInput } from "../../common/utils/domUtils";
-import { comboMatches, getKeyCombo, KeyCombo, parseKeyCombo } from "../../components/hotkeys/hotkeyParser";
+import { comboMatches, getKeyCombo, type KeyCombo, parseKeyCombo } from "../../components/hotkeys/hotkeyParser";
 import { HotkeysContext } from "../../context";
 import type { HotkeyConfig } from "./hotkeyConfig";
 

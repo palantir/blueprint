@@ -24,8 +24,8 @@ import type { ClientCoordinates } from "../interactions/dragTypes";
 import type { IndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
-import { ColumnHeaderCell, ColumnHeaderCellProps } from "./columnHeaderCell";
-import { Header, HeaderProps } from "./header";
+import { ColumnHeaderCell, type ColumnHeaderCellProps } from "./columnHeaderCell";
+import { Header, type HeaderProps } from "./header";
 
 export type ColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<ColumnHeaderCellProps> | null;
 

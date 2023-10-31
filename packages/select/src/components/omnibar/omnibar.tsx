@@ -17,11 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, InputGroup, InputGroupProps, Overlay, OverlayProps } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, InputGroup, type InputGroupProps, Overlay, type OverlayProps } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
-import { Classes, ListItemsProps } from "../../common";
-import { QueryList, QueryListRendererProps } from "../query-list/queryList";
+import { Classes, type ListItemsProps } from "../../common";
+import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
 export interface OmnibarProps<T> extends ListItemsProps<T> {
     /**

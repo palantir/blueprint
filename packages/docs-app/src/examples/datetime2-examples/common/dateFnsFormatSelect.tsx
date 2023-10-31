@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { PropCodeTooltip } from "../../../common/propCodeTooltip";
-import { RadioSelect, RadioSelectProps } from "../../../common/RadioSelect";
+import { RadioSelect, type RadioSelectProps } from "../../../common/RadioSelect";
 
 export const DATE_FNS_FORMAT_OPTIONS: string[] = [
     "MM/dd/yyyy",

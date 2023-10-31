@@ -18,7 +18,7 @@ import { expect } from "chai";
 import { format, parse } from "date-fns";
 import * as Locales from "date-fns/locale";
 import esLocale from "date-fns/locale/es";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
@@ -27,19 +27,25 @@ import * as sinon from "sinon";
 import {
     Boundary,
     Classes as CoreClasses,
-    HTMLDivProps,
-    HTMLInputProps,
+    type HTMLDivProps,
+    type HTMLInputProps,
     InputGroup,
-    InputGroupProps,
+    type InputGroupProps,
     Popover,
-    PopoverProps,
+    type PopoverProps,
 } from "@blueprintjs/core";
-import { DateFormatProps, DateRange, Classes as DatetimeClasses, Months, TimePrecision } from "@blueprintjs/datetime";
+import {
+    type DateFormatProps,
+    type DateRange,
+    Classes as DatetimeClasses,
+    Months,
+    TimePrecision,
+} from "@blueprintjs/datetime";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import {
     DateRangeInput3,
-    DateRangeInput3Props,
+    type DateRangeInput3Props,
     DateRangePicker3,
     Datetime2Classes,
     ReactDayPickerClasses,
