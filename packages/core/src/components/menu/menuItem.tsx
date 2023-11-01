@@ -257,7 +257,9 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
             tabIndex: hasSubmenu ? -1 : 0,
             ...removeNonHTMLProps(htmlProps),
             ...(disabled ? DISABLED_PROPS : {}),
+
             className: anchorClasses,
+            disabled,
         },
         isSelected ? <SmallTick className={Classes.MENU_ITEM_SELECTED_ICON} /> : undefined,
         hasIcon ? (
@@ -323,6 +325,7 @@ const SUBMENU_POPOVER_MODIFIERS: PopoverProps["modifiers"] = {
 
 // props to ignore when disabled
 const DISABLED_PROPS: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
+    "aria-disabled": true,
     href: undefined,
     onClick: undefined,
     onMouseDown: undefined,
