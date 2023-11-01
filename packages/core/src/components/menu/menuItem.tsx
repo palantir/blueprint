@@ -257,9 +257,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
             tabIndex: hasSubmenu ? -1 : 0,
             ...removeNonHTMLProps(htmlProps),
             ...(disabled ? DISABLED_PROPS : {}),
-
             className: anchorClasses,
-            disabled,
         },
         isSelected ? <SmallTick className={Classes.MENU_ITEM_SELECTED_ICON} /> : undefined,
         hasIcon ? (
