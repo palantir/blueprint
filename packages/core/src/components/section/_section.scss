@@ -68,8 +68,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
       display: flex;
       gap: $pt-grid-size;
       margin-left: auto;
-      // revert `pointer-events: none` of parent overlay
-      pointer-events: auto;
+      pointer-events: auto; // revert `pointer-events: none` of parent overlay
     }
 
     &-divider {
