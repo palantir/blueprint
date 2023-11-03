@@ -24,7 +24,6 @@ import { DISPLAYNAME_PREFIX, type HTMLDivProps, type MaybeElement, type Props } 
 import { uniqueId } from "../../common/utils";
 import { Card } from "../card/card";
 import { Collapse, type CollapseProps } from "../collapse/collapse";
-import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 
 /**
@@ -111,6 +110,11 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
      * Note that the header will only be rendered if `title` is provided.
      */
     title?: JSX.Element | string;
+
+    /**
+     * @default h6
+     */
+    titleTagName?: keyof JSX.IntrinsicElements;
 }
 
 /**
@@ -130,6 +134,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         rightElement,
         subtitle,
         title,
+        titleTagName = "h6",
         ...htmlProps
     } = props;
     // Determine whether to use controlled or uncontrolled state.
@@ -181,9 +186,11 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                         {icon && <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />}
 
                         <div>
-                            <H6 className={Classes.SECTION_HEADER_TITLE} id={sectionTitleId}>
-                                {title}
-                            </H6>
+                            {React.createElement(titleTagName, {
+                                className: Classes.SECTION_HEADER_TITLE,
+                                id: sectionTitleId,
+                                title,
+                            })}
                             {subtitle && (
                                 <div className={classNames(Classes.TEXT_MUTED, Classes.SECTION_HEADER_SUB_TITLE)}>
                                     {subtitle}
