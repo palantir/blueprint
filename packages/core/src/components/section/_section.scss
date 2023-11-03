@@ -14,6 +14,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
 .#{$ns}-section {
   overflow: hidden;
   width: 100%;
+  position: relative;
 
   &,
   &.#{$ns}-compact {
@@ -52,11 +53,23 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
       margin-top: 2px;
     }
 
+    &-overlay {
+      // place directly above the visible section header
+      @extend .#{$ns}-section-header;
+      position: absolute;
+      top: 0;
+
+      pointer-events: none; // don't block click effects on visible section header below
+      border-color: transparent;
+    }
+
     &-right {
       align-items: center;
       display: flex;
       gap: $pt-grid-size;
       margin-left: auto;
+      // revert `pointer-events: none` of parent overlay
+      pointer-events: auto;
     }
 
     &-divider {

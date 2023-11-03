@@ -45,7 +45,7 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
             >
                 <>
                     <div className="docs-nav-title">
-                        <a className="docs-logo" href="/">
+                        <a className="docs-logo" href="/" aria-label="docs home">
                             <Logo />
                         </a>
                         <div>

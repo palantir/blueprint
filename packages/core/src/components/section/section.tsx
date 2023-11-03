@@ -148,7 +148,6 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
     }, [collapseProps, isCollapsed, isControlled]);
 
     const isHeaderLeftContainerVisible = title != null || icon != null || subtitle != null;
-    const isHeaderRightContainerVisible = rightElement != null || collapsible;
 
     return (
         <Card
@@ -190,17 +189,20 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                         </>
                     )}
 
-                    {isHeaderRightContainerVisible && (
-                        <div className={Classes.SECTION_HEADER_RIGHT}>
-                            {rightElement}
-                            {collapsible &&
-                                (isCollapsed ? (
-                                    <ChevronDown className={Classes.TEXT_MUTED} />
-                                ) : (
-                                    <ChevronUp className={Classes.TEXT_MUTED} />
-                                ))}
-                        </div>
-                    )}
+                    {collapsible &&
+                        (isCollapsed ? (
+                            <ChevronDown className={Classes.TEXT_MUTED} />
+                        ) : (
+                            <ChevronUp className={Classes.TEXT_MUTED} />
+                        ))}
+                </div>
+            )}
+
+            {rightElement && (
+                <div className={Classes.SECTION_HEADER_OVERLAY}>
+                    <div className={Classes.SECTION_HEADER_RIGHT} style={{ marginRight: collapsible ? 25 : undefined }}>
+                        {rightElement}
+                    </div>
                 </div>
             )}
 
