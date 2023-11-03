@@ -20,7 +20,7 @@ import * as React from "react";
 
 import { IconNames } from "@blueprintjs/icons";
 
-import { Classes, H6, Section, SectionCard } from "../../src";
+import { Classes, H5, H6, Section, SectionCard } from "../../src";
 
 describe("<Section>", () => {
     let containerElement: HTMLElement | undefined;
@@ -45,9 +45,7 @@ describe("<Section>", () => {
     });
 
     it("supports className", () => {
-        const wrapper = mount(<Section className="foo" />, {
-            attachTo: containerElement,
-        });
+        const wrapper = mount(<Section className="foo" />);
         assert.isTrue(wrapper.find(`.${Classes.SECTION}`).hostNodes().exists());
         assert.isTrue(wrapper.find(`.foo`).hostNodes().exists());
     });
@@ -71,6 +69,14 @@ describe("<Section>", () => {
             attachTo: containerElement,
         });
         assert.isTrue(wrapper.find(`.${Classes.SECTION_HEADER_SUB_TITLE}`).hostNodes().exists());
+    });
+
+    it("renders title element with passed titleTagName", () => {
+        // pass tag string
+        const wrapper = mount(<Section title="title" titleTagName={"h5"} />, {
+            attachTo: containerElement,
+        });
+        assert.isTrue(wrapper.find("h5").exists());
     });
 
     describe("uncontrolled collapse mode", () => {

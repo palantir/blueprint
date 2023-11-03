@@ -115,7 +115,7 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
     /**
      * @default H6
      */
-    titleTagName?: keyof JSX.IntrinsicElements;
+    titleTagName?: keyof JSX.IntrinsicElements | React.FC<React.AllHTMLAttributes<HTMLElement>>;
 }
 
 /**
