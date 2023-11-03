@@ -171,7 +171,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                     role={collapsible ? "button" : undefined}
                     aria-pressed={collapsible ? isCollapsed : undefined}
                     aria-expanded={collapsible ? isCollapsed : undefined}
-                    aria-controls={sectionId}
+                    aria-controls={collapsible ? sectionId : undefined}
                     className={classNames(Classes.SECTION_HEADER, {
                         [Classes.INTERACTIVE]: collapsible,
                     })}
