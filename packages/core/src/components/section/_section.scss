@@ -54,13 +54,13 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
     }
 
     &-overlay {
-      // place directly above the visible section header
+      // place overlay directly above the visible section header
+      /* stylelint-disable-next-line scss/at-extend-no-missing-placeholder */
       @extend .#{$ns}-section-header;
+      border-color: transparent;
+      pointer-events: none; // don't block click effects on visible section header below
       position: absolute;
       top: 0;
-
-      pointer-events: none; // don't block click effects on visible section header below
-      border-color: transparent;
     }
 
     &-right {
