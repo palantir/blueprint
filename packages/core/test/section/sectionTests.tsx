@@ -45,7 +45,9 @@ describe("<Section>", () => {
     });
 
     it("supports className", () => {
-        const wrapper = mount(<Section className="foo" />);
+        const wrapper = mount(<Section className="foo" />, {
+            attachTo: containerElement,
+        });
         assert.isTrue(wrapper.find(`.${Classes.SECTION}`).hostNodes().exists());
         assert.isTrue(wrapper.find(`.foo`).hostNodes().exists());
     });
