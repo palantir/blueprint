@@ -11,6 +11,18 @@ $section-padding-compact-vertical: 7px !default;
 $section-padding-compact-horizontal: 15px !default;
 $section-card-padding-compact: $pt-grid-size * 1.5 !default;
 
+%section-header {
+  align-items: center;
+  border-bottom: 1px solid $pt-divider-black;
+  display: flex;
+  gap: $pt-grid-size * 2;
+  justify-content: space-between;
+  min-height: $section-min-height;
+  padding: 0 $section-padding-horizontal;
+  position: relative;
+  width: 100%;
+}
+
 .#{$ns}-section {
   overflow: hidden;
   position: relative;
@@ -23,15 +35,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
   }
 
   &-header {
-    align-items: center;
-    border-bottom: 1px solid $pt-divider-black;
-    display: flex;
-    gap: $pt-grid-size * 2;
-    justify-content: space-between;
-    min-height: $section-min-height;
-    padding: 0 $section-padding-horizontal;
-    position: relative;
-    width: 100%;
+    @extend %section-header;
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
@@ -54,12 +58,10 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
     }
 
     &-overlay {
-      // place overlay directly above the visible section header
-      /* stylelint-disable-next-line scss/at-extend-no-missing-placeholder */
-      @extend .#{$ns}-section-header;
+      @extend %section-header; // make same size as section header
       border-color: transparent;
       pointer-events: none; // don't block click effects on visible section header below
-      position: absolute;
+      position: absolute; // place overlay directly above the visible section header
       top: 0;
     }
 
@@ -107,13 +109,13 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
   }
 
   &.#{$ns}-section-collapsed {
-    .#{$ns}-section-header {
+    %section-header {
       border: none;
     }
   }
 
   &.#{$ns}-compact {
-    .#{$ns}-section-header {
+    %section-header {
       min-height: $section-min-height-compact;
       padding: 0 $section-padding-compact-horizontal;
 
