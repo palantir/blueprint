@@ -57,6 +57,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
       margin-top: 2px;
     }
 
+    // used for positioning the right side element absolutely, over the header
     &-overlay {
       @extend %section-header; // make same size as section header
       border-color: transparent;
