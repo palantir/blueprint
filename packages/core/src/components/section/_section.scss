@@ -60,7 +60,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
     &-overlay {
       @extend %section-header; // make same size as section header
       border-color: transparent;
-      pointer-events: none; // don't block click effects on visible section header below
+      pointer-events: none; // don't block click on visible section header below
       position: absolute; // place overlay directly above the visible section header
       top: 0;
     }
