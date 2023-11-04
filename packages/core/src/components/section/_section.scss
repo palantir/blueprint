@@ -13,8 +13,8 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
 
 .#{$ns}-section {
   overflow: hidden;
-  width: 100%;
   position: relative;
+  width: 100%;
 
   &,
   &.#{$ns}-compact {
