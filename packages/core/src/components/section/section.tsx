@@ -199,6 +199,9 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
             )}
 
             {rightElement && (
+                // Needs to be outside of the section header because section header may be a button (when collapsable), and
+                // interactive elements (that may be rightElement) can't be inside other buttons.
+                // Use an overlay to position rightElement absolutely in the header.
                 <div className={Classes.SECTION_HEADER_OVERLAY}>
                     <div className={Classes.SECTION_HEADER_RIGHT} style={{ marginRight: collapsible ? 25 : undefined }}>
                         {rightElement}
