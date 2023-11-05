@@ -203,7 +203,13 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                 // interactive elements (that may be rightElement) can't be inside other buttons.
                 // Use an overlay to position rightElement absolutely in the header.
                 <div className={Classes.SECTION_HEADER_OVERLAY}>
-                    <div className={Classes.SECTION_HEADER_RIGHT} style={{ marginRight: collapsible ? 25 : undefined }}>
+                    <div
+                        className={Classes.SECTION_HEADER_RIGHT}
+                        style={{
+                            // 25px accounts for the collapse chevron
+                            marginRight: collapsible ? 25 : undefined,
+                        }}
+                    >
                         {rightElement}
                     </div>
                 </div>
