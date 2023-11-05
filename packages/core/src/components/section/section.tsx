@@ -185,7 +185,6 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                 >
                     <div className={Classes.SECTION_HEADER_LEFT}>
                         {icon && <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />}
-
                         <div>
                             {React.createElement(
                                 titleTagName,
