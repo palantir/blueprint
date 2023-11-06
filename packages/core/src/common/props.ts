@@ -140,6 +140,7 @@ const INVALID_PROPS = [
     "small",
     "tagName",
     "text",
+    "textClassName", // ButtonProps
 ];
 
 /**
