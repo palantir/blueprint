@@ -120,7 +120,7 @@ const MySelectDropdown: React.FC = () => (
 
 @### Placeholder styling
 
-When a **Select** has no selected value, you may wish to display placeholder text. Use the **Button** component's
+When a **Select** has no selected item, you may wish to display placeholder text. Use the **Button** component's
 `textClassName` prop to accomplish this:
 
 ```tsx
@@ -148,7 +148,7 @@ Disabling a **Select** requires setting the `disabled={true}` prop _and also_ di
 ```tsx
 const FilmSelect: React.FC = () => (
     // many props omitted here for brevity
-    <Select<Film> disabled={true}>
+    <Select disabled={true}>
         <Button disabled={true}>
     </Select>
 );

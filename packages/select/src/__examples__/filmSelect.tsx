@@ -96,14 +96,14 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
         >
             <Button
                 alignText="left"
-                className={classNames({
-                    [Classes.TEXT_MUTED]: selectedFilm === undefined,
-                })}
                 disabled={restProps.disabled}
                 fill={fill}
                 icon="film"
                 rightIcon="caret-down"
                 text={maybeRenderSelectedFilm(selectedFilm) ?? "(No selection)"}
+                textClassName={classNames({
+                    [Classes.TEXT_MUTED]: selectedFilm === undefined,
+                })}
             />
         </Select>
     );
