@@ -42,9 +42,6 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - run: sudo corepack enable
       - run: yarn install --immutable
-      - run:
-          name: Check if yarn.lock changed during install
-          command: git diff --exit-code
       - save_cache: *save-node-modules-cache
       - save_cache: *save-yarn-cache
       - persist_to_workspace:
@@ -56,7 +53,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
-      - run: ./scripts/verifyCleanLockfile.sh
+      - run: yarn dedupe --check
 
   compile:
     docker: *docker-node-image
