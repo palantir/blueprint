@@ -16,14 +16,14 @@
         "verify": "run-p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^5.6.0",
-        "@blueprintjs/icons": "^5.3.0",
+        "@blueprintjs/core": "workspace:^",
+        "@blueprintjs/icons": "workspace:^",
         "classnames": "^2.3.1",
         "react": "^16.14.0",
         "react-dom": "^16.14.0"
     },
     "devDependencies": {
-        "@blueprintjs/webpack-build-scripts": "^6.1.0",
+        "@blueprintjs/webpack-build-scripts": "workspace:^",
         "copy-webpack-plugin": "^11.0.0",
         "npm-run-all": "^4.1.5",
         "raw-loader": "^4.0.2",

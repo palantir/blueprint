@@ -433,26 +433,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@blueprintjs/colors@npm:^5.0.5, @blueprintjs/colors@workspace:packages/colors":
+"@blueprintjs/colors@workspace:^, @blueprintjs/colors@workspace:packages/colors":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/colors@workspace:packages/colors"
   dependencies:
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
+    "@blueprintjs/node-build-scripts": "workspace:^"
     mocha: "npm:^10.2.0"
     tslib: "npm:~2.6.2"
     typescript: "npm:~5.2.2"
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/core@npm:^5.6.0, @blueprintjs/core@workspace:packages/core":
+"@blueprintjs/core@workspace:^, @blueprintjs/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/core@workspace:packages/core"
   dependencies:
-    "@blueprintjs/colors": "npm:^5.0.5"
-    "@blueprintjs/icons": "npm:^5.3.0"
-    "@blueprintjs/karma-build-scripts": "npm:^5.2.0"
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
-    "@blueprintjs/test-commons": "npm:^2.1.3"
+    "@blueprintjs/colors": "workspace:^"
+    "@blueprintjs/icons": "workspace:^"
+    "@blueprintjs/karma-build-scripts": "workspace:^"
+    "@blueprintjs/node-build-scripts": "workspace:^"
+    "@blueprintjs/test-commons": "workspace:^"
     "@popperjs/core": "npm:^2.11.7"
     "@testing-library/react": "npm:^12.1.5"
     classnames: "npm:^2.3.1"
@@ -482,17 +482,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/datetime2@npm:^2.2.3, @blueprintjs/datetime2@workspace:packages/datetime2":
+"@blueprintjs/datetime2@workspace:^, @blueprintjs/datetime2@workspace:packages/datetime2":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/datetime2@workspace:packages/datetime2"
   dependencies:
-    "@blueprintjs/colors": "npm:^5.0.5"
-    "@blueprintjs/core": "npm:^5.6.0"
-    "@blueprintjs/datetime": "npm:^5.2.5"
-    "@blueprintjs/icons": "npm:^5.3.0"
-    "@blueprintjs/karma-build-scripts": "npm:^5.2.0"
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
-    "@blueprintjs/test-commons": "npm:^2.1.3"
+    "@blueprintjs/colors": "workspace:^"
+    "@blueprintjs/core": "workspace:^"
+    "@blueprintjs/datetime": "workspace:^"
+    "@blueprintjs/icons": "workspace:^"
+    "@blueprintjs/karma-build-scripts": "workspace:^"
+    "@blueprintjs/node-build-scripts": "workspace:^"
+    "@blueprintjs/test-commons": "workspace:^"
     "@types/lodash": "npm:~4.14.191"
     classnames: "npm:^2.3.1"
     date-fns: "npm:^2.28.0"
@@ -517,17 +517,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/datetime@npm:^5.2.5, @blueprintjs/datetime@workspace:packages/datetime":
+"@blueprintjs/datetime@workspace:^, @blueprintjs/datetime@workspace:packages/datetime":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/datetime@workspace:packages/datetime"
   dependencies:
-    "@blueprintjs/colors": "npm:^5.0.5"
-    "@blueprintjs/core": "npm:^5.6.0"
-    "@blueprintjs/icons": "npm:^5.3.0"
-    "@blueprintjs/karma-build-scripts": "npm:^5.2.0"
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
-    "@blueprintjs/select": "npm:^5.0.17"
-    "@blueprintjs/test-commons": "npm:^2.1.3"
+    "@blueprintjs/colors": "workspace:^"
+    "@blueprintjs/core": "workspace:^"
+    "@blueprintjs/icons": "workspace:^"
+    "@blueprintjs/karma-build-scripts": "workspace:^"
+    "@blueprintjs/node-build-scripts": "workspace:^"
+    "@blueprintjs/select": "workspace:^"
+    "@blueprintjs/test-commons": "workspace:^"
     "@types/lodash": "npm:~4.14.191"
     classnames: "npm:^2.3.1"
     date-fns: "npm:^2.28.0"
@@ -558,14 +558,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@blueprintjs/demo-app@workspace:packages/demo-app"
   dependencies:
-    "@blueprintjs/core": "npm:^5.6.0"
-    "@blueprintjs/datetime": "npm:^5.2.5"
-    "@blueprintjs/datetime2": "npm:^2.2.3"
-    "@blueprintjs/icons": "npm:^5.3.0"
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
-    "@blueprintjs/select": "npm:^5.0.17"
-    "@blueprintjs/table": "npm:^5.0.17"
-    "@blueprintjs/webpack-build-scripts": "npm:^6.1.0"
+    "@blueprintjs/core": "workspace:^"
+    "@blueprintjs/datetime": "workspace:^"
+    "@blueprintjs/datetime2": "workspace:^"
+    "@blueprintjs/icons": "workspace:^"
+    "@blueprintjs/node-build-scripts": "workspace:^"
+    "@blueprintjs/select": "workspace:^"
+    "@blueprintjs/table": "workspace:^"
+    "@blueprintjs/webpack-build-scripts": "workspace:^"
     "@types/lodash": "npm:~4.14.191"
     classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^11.0.0"
@@ -585,18 +585,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@blueprintjs/docs-app@workspace:packages/docs-app"
   dependencies:
-    "@blueprintjs/core": "npm:^5.6.0"
-    "@blueprintjs/datetime": "npm:^5.2.5"
-    "@blueprintjs/datetime2": "npm:^2.2.3"
-    "@blueprintjs/docs-data": "npm:^5.6.0"
-    "@blueprintjs/docs-theme": "npm:^5.2.0"
-    "@blueprintjs/icons": "npm:^5.3.0"
-    "@blueprintjs/monaco-editor-theme": "npm:^1.0.5"
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
-    "@blueprintjs/select": "npm:^5.0.17"
-    "@blueprintjs/table": "npm:^5.0.17"
-    "@blueprintjs/test-commons": "npm:^2.1.3"
-    "@blueprintjs/webpack-build-scripts": "npm:^6.1.0"
+    "@blueprintjs/core": "workspace:^"
+    "@blueprintjs/datetime": "workspace:^"
+    "@blueprintjs/datetime2": "workspace:^"
+    "@blueprintjs/docs-data": "workspace:^"
+    "@blueprintjs/docs-theme": "workspace:^"
+    "@blueprintjs/icons": "workspace:^"
+    "@blueprintjs/monaco-editor-theme": "workspace:^"
+    "@blueprintjs/node-build-scripts": "workspace:^"
+    "@blueprintjs/select": "workspace:^"
+    "@blueprintjs/table": "workspace:^"
+    "@blueprintjs/test-commons": "workspace:^"
+    "@blueprintjs/webpack-build-scripts": "workspace:^"
     "@documentalist/client": "npm:^5.0.0"
     "@types/chroma-js": "npm:~2.4.0"
     "@types/downloadjs": "npm:~1.4.3"
@@ -623,12 +623,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/docs-data@npm:^5.6.0, @blueprintjs/docs-data@workspace:packages/docs-data":
+"@blueprintjs/docs-data@workspace:^, @blueprintjs/docs-data@workspace:packages/docs-data":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/docs-data@workspace:packages/docs-data"
   dependencies:
-    "@blueprintjs/core": "npm:^5.6.0"
-    "@blueprintjs/docs-theme": "npm:^5.2.0"
+    "@blueprintjs/core": "workspace:^"
+    "@blueprintjs/docs-theme": "workspace:^"
     "@documentalist/compiler": "npm:^5.0.0"
     escape-html: "npm:^1.0.3"
     marked: "npm:^9.1.2"
@@ -636,14 +636,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/docs-theme@npm:^5.2.0, @blueprintjs/docs-theme@workspace:packages/docs-theme":
+"@blueprintjs/docs-theme@workspace:^, @blueprintjs/docs-theme@workspace:packages/docs-theme":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/docs-theme@workspace:packages/docs-theme"
   dependencies:
-    "@blueprintjs/colors": "npm:^5.0.5"
-    "@blueprintjs/core": "npm:^5.6.0"
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
-    "@blueprintjs/select": "npm:^5.0.17"
+    "@blueprintjs/colors": "workspace:^"
+    "@blueprintjs/core": "workspace:^"
+    "@blueprintjs/node-build-scripts": "workspace:^"
+    "@blueprintjs/select": "workspace:^"
     "@documentalist/client": "npm:^5.0.0"
     "@types/fuzzaldrin-plus": "npm:~0.6.2"
     classnames: "npm:^2.3.1"
@@ -668,8 +668,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@blueprintjs/eslint-config@workspace:packages/eslint-config"
   dependencies:
-    "@blueprintjs/eslint-plugin": "npm:^6.0.0"
-    "@blueprintjs/tslint-config": "npm:^4.1.0"
+    "@blueprintjs/eslint-plugin": "workspace:^"
+    "@blueprintjs/tslint-config": "workspace:^"
     "@typescript-eslint/eslint-plugin": "npm:^6.7.4"
     "@typescript-eslint/eslint-plugin-tslint": "npm:^6.7.4"
     "@typescript-eslint/parser": "npm:^6.7.4"
@@ -683,11 +683,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/eslint-plugin@npm:^6.0.0, @blueprintjs/eslint-plugin@workspace:packages/eslint-plugin":
+"@blueprintjs/eslint-plugin@workspace:^, @blueprintjs/eslint-plugin@workspace:packages/eslint-plugin":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
+    "@blueprintjs/node-build-scripts": "workspace:^"
     "@swc-node/register": "npm:^1.6.8"
     "@swc/core": "npm:^1.3.92"
     "@types/dedent": "npm:~0.7.0"
@@ -700,12 +700,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/icons@npm:^5.3.0, @blueprintjs/icons@workspace:packages/icons":
+"@blueprintjs/icons@workspace:^, @blueprintjs/icons@workspace:packages/icons":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/icons@workspace:packages/icons"
   dependencies:
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
-    "@blueprintjs/test-commons": "npm:^2.1.3"
+    "@blueprintjs/node-build-scripts": "workspace:^"
+    "@blueprintjs/test-commons": "workspace:^"
     "@types/handlebars": "npm:^4.1.0"
     change-case: "npm:^4.1.2"
     classnames: "npm:^2.3.1"
@@ -731,11 +731,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/karma-build-scripts@npm:^5.2.0, @blueprintjs/karma-build-scripts@workspace:packages/karma-build-scripts":
+"@blueprintjs/karma-build-scripts@workspace:^, @blueprintjs/karma-build-scripts@workspace:packages/karma-build-scripts":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/karma-build-scripts@workspace:packages/karma-build-scripts"
   dependencies:
-    "@blueprintjs/webpack-build-scripts": "npm:^6.1.0"
+    "@blueprintjs/webpack-build-scripts": "workspace:^"
     istanbul-instrumenter-loader: "npm:^3.0.1"
     karma: "npm:^6.4.2"
     karma-chrome-launcher: "npm:^3.2.0"
@@ -755,9 +755,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@blueprintjs/landing-app@workspace:packages/landing-app"
   dependencies:
-    "@blueprintjs/core": "npm:^5.6.0"
-    "@blueprintjs/icons": "npm:^5.3.0"
-    "@blueprintjs/webpack-build-scripts": "npm:^6.1.0"
+    "@blueprintjs/core": "workspace:^"
+    "@blueprintjs/icons": "workspace:^"
+    "@blueprintjs/webpack-build-scripts": "workspace:^"
     classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^11.0.0"
     npm-run-all: "npm:^4.1.5"
@@ -769,19 +769,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/monaco-editor-theme@npm:^1.0.5, @blueprintjs/monaco-editor-theme@workspace:packages/monaco-editor-theme":
+"@blueprintjs/monaco-editor-theme@workspace:^, @blueprintjs/monaco-editor-theme@workspace:packages/monaco-editor-theme":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/monaco-editor-theme@workspace:packages/monaco-editor-theme"
   dependencies:
-    "@blueprintjs/colors": "npm:^5.0.5"
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
+    "@blueprintjs/colors": "workspace:^"
+    "@blueprintjs/node-build-scripts": "workspace:^"
     monaco-editor: "npm:^0.37.1"
     npm-run-all: "npm:^4.1.5"
     typescript: "npm:~5.2.2"
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/node-build-scripts@npm:^8.1.0, @blueprintjs/node-build-scripts@workspace:packages/node-build-scripts":
+"@blueprintjs/node-build-scripts@workspace:^, @blueprintjs/node-build-scripts@workspace:packages/node-build-scripts":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/node-build-scripts@workspace:packages/node-build-scripts"
   dependencies:
@@ -833,8 +833,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@blueprintjs/popover2@workspace:packages/popover2"
   dependencies:
-    "@blueprintjs/core": "npm:^5.6.0"
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
+    "@blueprintjs/core": "workspace:^"
+    "@blueprintjs/node-build-scripts": "workspace:^"
     classnames: "npm:^2.3.1"
     npm-run-all: "npm:^4.1.5"
     react: "npm:^16.14.0"
@@ -851,14 +851,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/select@npm:^5.0.17, @blueprintjs/select@workspace:packages/select":
+"@blueprintjs/select@workspace:^, @blueprintjs/select@workspace:packages/select":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/select@workspace:packages/select"
   dependencies:
-    "@blueprintjs/core": "npm:^5.6.0"
-    "@blueprintjs/icons": "npm:^5.3.0"
-    "@blueprintjs/karma-build-scripts": "npm:^5.2.0"
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
+    "@blueprintjs/core": "workspace:^"
+    "@blueprintjs/icons": "workspace:^"
+    "@blueprintjs/karma-build-scripts": "workspace:^"
+    "@blueprintjs/node-build-scripts": "workspace:^"
     classnames: "npm:^2.3.1"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.1"
@@ -884,8 +884,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@blueprintjs/stylelint-plugin@workspace:packages/stylelint-plugin"
   dependencies:
-    "@blueprintjs/colors": "npm:^5.0.5"
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
+    "@blueprintjs/colors": "workspace:^"
+    "@blueprintjs/node-build-scripts": "workspace:^"
     mocha: "npm:^10.2.0"
     postcss: "npm:^8.4.21"
     postcss-selector-parser: "npm:^6.0.10"
@@ -900,9 +900,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@blueprintjs/table-dev-app@workspace:packages/table-dev-app"
   dependencies:
-    "@blueprintjs/core": "npm:^5.6.0"
-    "@blueprintjs/table": "npm:^5.0.17"
-    "@blueprintjs/webpack-build-scripts": "npm:^6.1.0"
+    "@blueprintjs/core": "workspace:^"
+    "@blueprintjs/table": "workspace:^"
+    "@blueprintjs/webpack-build-scripts": "workspace:^"
     "@types/lodash": "npm:~4.14.191"
     classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^11.0.0"
@@ -916,14 +916,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/table@npm:^5.0.17, @blueprintjs/table@workspace:packages/table":
+"@blueprintjs/table@workspace:^, @blueprintjs/table@workspace:packages/table":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/table@workspace:packages/table"
   dependencies:
-    "@blueprintjs/colors": "npm:^5.0.5"
-    "@blueprintjs/core": "npm:^5.6.0"
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
-    "@blueprintjs/test-commons": "npm:^2.1.3"
+    "@blueprintjs/colors": "workspace:^"
+    "@blueprintjs/core": "workspace:^"
+    "@blueprintjs/node-build-scripts": "workspace:^"
+    "@blueprintjs/test-commons": "workspace:^"
     classnames: "npm:^2.3.1"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.1"
@@ -946,11 +946,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/test-commons@npm:^2.1.3, @blueprintjs/test-commons@workspace:packages/test-commons":
+"@blueprintjs/test-commons@workspace:^, @blueprintjs/test-commons@workspace:packages/test-commons":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/test-commons@workspace:packages/test-commons"
   dependencies:
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
+    "@blueprintjs/node-build-scripts": "workspace:^"
     chai: "npm:^4.3.7"
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.7"
@@ -961,7 +961,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/tslint-config@npm:^4.1.0, @blueprintjs/tslint-config@workspace:packages/tslint-config":
+"@blueprintjs/tslint-config@workspace:^, @blueprintjs/tslint-config@workspace:packages/tslint-config":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/tslint-config@workspace:packages/tslint-config"
   dependencies:
@@ -975,11 +975,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/webpack-build-scripts@npm:^6.1.0, @blueprintjs/webpack-build-scripts@workspace:packages/webpack-build-scripts":
+"@blueprintjs/webpack-build-scripts@workspace:^, @blueprintjs/webpack-build-scripts@workspace:packages/webpack-build-scripts":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/webpack-build-scripts@workspace:packages/webpack-build-scripts"
   dependencies:
-    "@blueprintjs/node-build-scripts": "npm:^8.1.0"
+    "@blueprintjs/node-build-scripts": "workspace:^"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.11"
     "@swc/core": "npm:^1.3.92"
     assert: "npm:^2.0.0"

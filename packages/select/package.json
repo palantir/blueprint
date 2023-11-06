@@ -40,8 +40,8 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^5.6.0",
-        "@blueprintjs/icons": "^5.3.0",
+        "@blueprintjs/core": "workspace:^",
+        "@blueprintjs/icons": "workspace:^",
         "classnames": "^2.3.1",
         "tslib": "~2.6.2"
     },
@@ -56,8 +56,8 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/karma-build-scripts": "^5.2.0",
-        "@blueprintjs/node-build-scripts": "^8.1.0",
+        "@blueprintjs/karma-build-scripts": "workspace:^",
+        "@blueprintjs/node-build-scripts": "workspace:^",
         "enzyme": "^3.11.0",
         "karma": "^6.4.1",
         "mocha": "^10.2.0",
