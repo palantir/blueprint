@@ -152,14 +152,14 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
 function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(
     props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
 ) {
-    const { children, icon, loading, rightIcon, text } = props;
+    const { children, icon, loading, rightIcon, text, textClassName } = props;
     const hasTextContent = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
     return (
         <>
             {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={SpinnerSize.SMALL} />}
             <Icon key="leftIcon" icon={icon} />
             {hasTextContent && (
-                <span key="text" className={Classes.BUTTON_TEXT}>
+                <span key="text" className={classNames(Classes.BUTTON_TEXT, textClassName)}>
                     {text}
                     {children}
                 </span>

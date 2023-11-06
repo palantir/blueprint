@@ -68,6 +68,9 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /** Whether this button should use small styles. */
     small?: boolean;
 
+    /** Class name(s) to apply to the text span element. */
+    textClassName?: string;
+
     /**
      * HTML `type` attribute of button. Accepted values are `"button"`, `"submit"`, and `"reset"`.
      * Note that this prop has no effect on `AnchorButton`; it only affects `Button`.
