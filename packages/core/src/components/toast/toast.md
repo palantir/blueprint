@@ -83,7 +83,7 @@ __OverlayToaster__ provides the static `create` method that returns a new `Toast
 element attached to `<body>`. A toaster instance has a collection of methods to show and hide toasts in its given container.
 
 ```ts
-OverlayOverlayToaster.create(props?: ToasterProps, container = document.body): Toaster
+OverlayToaster.create(props?: ToasterProps, container = document.body): Toaster
 ```
 
 The toaster will be rendered into a new element appended to the given `container`.
