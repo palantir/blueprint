@@ -14,23 +14,24 @@ aliases:
 
   - &restore-node-modules-cache
     name: Restore node_modules cache
-    key: v7-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v1-node-modules-{{ checksum "yarn.lock" }}
 
   - &restore-yarn-cache
-    name: Restore yarnpkg cache
-    key: v7-yarn-cache
+    name: Restore Yarn global cache
+    key: v1-yarn-global
 
   - &save-node-modules-cache
     name: Save node_modules cache
     paths:
       - node_modules
-    key: v7-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v1-node-modules-{{ checksum "yarn.lock" }}
 
   - &save-yarn-cache
-    name: Save yarnpkg cache
+    name: Save Yarn global cache
     paths:
-      - ~/.cache/yarn
-    key: v7-yarn-cache
+      # see https://yarnpkg.com/configuration/yarnrc#globalFolder
+      - /.yarn/berry/global
+    key: v1-yarn-global
 
 jobs:
   checkout-code:
@@ -40,7 +41,7 @@ jobs:
       - restore_cache: *restore-yarn-cache
       - restore_cache: *restore-node-modules-cache
       - run: sudo corepack enable
-      - run: yarn install --immutable --cache-folder ~/.cache/yarn
+      - run: yarn install --immutable
       - run:
           name: Check if yarn.lock changed during install
           command: git diff --exit-code
