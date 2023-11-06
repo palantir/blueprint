@@ -42,9 +42,11 @@ export class Banner extends React.PureComponent<BannerProps> {
         const { children, className, href, intent = Intent.PRIMARY } = this.props;
         const classes = classNames("docs-banner", Classes.intentClass(intent), className);
         return (
-            <a className={classes} href={href} target="_blank">
-                {children}
-            </a>
+            <div className={classes} role="banner">
+                <a href={href} target="_blank">
+                    {children}
+                </a>
+            </div>
         );
     }
 }
