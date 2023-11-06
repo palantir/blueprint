@@ -44,8 +44,10 @@ the __AnchorButton__ component will prevent *only* the `onClick` handler when di
 
 @## Adding icons
 
-__Button__ and __AnchorButton__ support `icon` and `rightIcon` props to place an icon on either end of their children.
-Icons can also be supplied as child elements using the [__Icon__](#core/components/icon) component.
+__Button__ and __AnchorButton__ support `icon` and `rightIcon` props to place an icon on either end of their text/children.
+These icons can either be specified as string identifiers (e.g. `"arrow-right"`), dynamically-loaded
+[`<Icon>` components](https://blueprintjs.com/docs/#core/components/icon),
+[static icon components](#core/components/icon.static-components) (e.g. `<ArrowRight />`), or any custom JSX element.
 
 @reactExample ButtonsIconsExample
 
