@@ -316,8 +316,15 @@ export function maybeAddCreatedFilmToArrays(
 export function maybeDeleteCreatedFilmFromArrays(
     items: Film[],
     createdItems: Film[],
-    film: Film,
+    film: Film | undefined,
 ): { createdItems: Film[]; items: Film[] } {
+    if (film === undefined) {
+        return {
+            createdItems,
+            items,
+        };
+    }
+
     const wasItemCreatedByUser = arrayContainsFilm(createdItems, film);
 
     // Delete the item if the user manually created it.

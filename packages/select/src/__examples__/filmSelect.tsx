@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
-import { Button, MenuItem } from "@blueprintjs/core";
+import { Button, Classes, MenuItem } from "@blueprintjs/core";
 
 import type { ItemRenderer } from "../common";
 import { Select, type SelectProps } from "../components/select/select";
@@ -49,16 +50,19 @@ type FilmSelectProps = Omit<
 export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSelectProps) {
     const [items, setItems] = React.useState([...TOP_100_FILMS]);
     const [createdItems, setCreatedItems] = React.useState<Film[]>([]);
-    const [selectedFilm, setSelectedFilm] = React.useState(TOP_100_FILMS[0]);
-    const handleItemSelect = React.useCallback((newFilm: Film) => {
-        // Delete the old film from the list if it was newly created.
-        const step1Result = maybeDeleteCreatedFilmFromArrays(items, createdItems, selectedFilm);
-        // Add the new film to the list if it is newly created.
-        const step2Result = maybeAddCreatedFilmToArrays(step1Result.items, step1Result.createdItems, newFilm);
-        setCreatedItems(step2Result.createdItems);
-        setSelectedFilm(newFilm);
-        setItems(step2Result.items);
-    }, []);
+    const [selectedFilm, setSelectedFilm] = React.useState<Film | undefined>(undefined);
+    const handleItemSelect = React.useCallback(
+        (newFilm: Film) => {
+            // Delete the old film from the list if it was newly created.
+            const step1Result = maybeDeleteCreatedFilmFromArrays(items, createdItems, selectedFilm);
+            // Add the new film to the list if it is newly created.
+            const step2Result = maybeAddCreatedFilmToArrays(step1Result.items, step1Result.createdItems, newFilm);
+            setCreatedItems(step2Result.createdItems);
+            setSelectedFilm(newFilm);
+            setItems(step2Result.items);
+        },
+        [createdItems, items, selectedFilm],
+    );
 
     const itemRenderer = React.useCallback<ItemRenderer<Film>>(
         (film, props) => {
@@ -91,12 +95,20 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
             {...restProps}
         >
             <Button
+                alignText="left"
+                className={classNames({
+                    [Classes.TEXT_MUTED]: selectedFilm === undefined,
+                })}
                 disabled={restProps.disabled}
                 fill={fill}
                 icon="film"
                 rightIcon="caret-down"
-                text={selectedFilm ? `${selectedFilm.title} (${selectedFilm.year})` : "(No selection)"}
+                text={maybeRenderSelectedFilm(selectedFilm) ?? "(No selection)"}
             />
         </Select>
     );
+}
+
+function maybeRenderSelectedFilm(selectedFilm: Film | undefined) {
+    return selectedFilm ? `${selectedFilm.title} (${selectedFilm.year})` : undefined;
 }

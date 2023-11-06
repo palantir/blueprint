@@ -1,9 +1,9 @@
 @# Select
 
-The __Select__ component renders a UI to choose one item from a list. Its children are wrapped in a
-[__Popover__](#core/components/popover) that contains the list and an optional
-[__InputGroup__](#core/components/input-group) to filter it.
-You may provide a predicate to customize the filtering algorithm. The value of a __Select__
+The **Select** component renders a UI to choose one item from a list. Its children are wrapped in a
+[**Popover**](#core/components/popover) that contains the list and an optional
+[**InputGroup**](#core/components/input-group) to filter it.
+You may provide a predicate to customize the filtering algorithm. The value of a **Select**
 (the currently chosen item) is uncontrolled: listen to changes with the `onItemSelect` callback prop.
 
 @reactExample SelectExample
@@ -85,13 +85,13 @@ without transformation steps, but most props are required as a result.
 
 @## Querying
 
-Supply a predicate to automatically query items based on the __InputGroup__ value. Use `itemPredicate` to filter each item
+Supply a predicate to automatically query items based on the **InputGroup** value. Use `itemPredicate` to filter each item
 individually; this is great for lightweight searches. Use `itemListPredicate` to query the entire array in one go, and
 even reorder it, such as with [fuzz-aldrin-plus](https://github.com/jeancroy/fuzz-aldrin-plus). The array of filtered
 items is cached internally by `QueryList` state and only recomputed when `query` or `items`-related props change.
 
 Omitting both `itemPredicate` and `itemListPredicate` props will cause the component to always render all `items`. It
-will not hide the __InputGroup__; use the `filterable` prop for that. In this case, you can implement your own filtering
+will not hide the **InputGroup**; use the `filterable` prop for that. In this case, you can implement your own filtering
 and change the `items` prop.
 
 The **@blueprintjs/select** package exports `ItemPredicate<T>` and `ItemListPredicate<T>` type aliases to simplify the
@@ -103,10 +103,47 @@ process of implementing these functions. See the code sample in
 If the query returns no results or `items` is empty, then `noResults` will be rendered in place of the usual list.
 You also have the option to provide `initialContent`, which will render in place of the item list if the query is empty.
 
-@## Disabling
+@## Styling
 
-Since __Select__ accepts arbitrary children, disabling a Select componet requires setting `disabled={true}` _and also_
-disabling its children. For example:
+@### Button styling
+
+**Select** accepts arbitrary child elements, but in most cases this will be a single **Button** component. To make this
+button appear like a typical dropdown, apply some common button props such `alignText` and `rightIcon`:
+
+```tsx
+const MySelectDropdown: React.FC = () => (
+    <Select>
+        <Button alignText="left" fill={true} rightIcon="caret-down" text="Dropdown">
+    </Select>
+);
+```
+
+@### Placeholder styling
+
+When a **Select** has no selected value, you may wish to display placeholder text. Use the **Button** component's
+`textClassName` prop to accomplish this:
+
+```tsx
+const MySelectDropdown: React.FC = () => {
+    const [selectedValue, setSelectedValue] = React.useState<string | undefined>(undefined);
+    return (
+        <Select<string>>
+            <Button
+                onItemSelect={setSelectedValue}
+                rightIcon="caret-down"
+                textClassName={classNames({
+                    [Classes.TEXT_MUTED]: selectedValue === undefined,
+                })}
+                text={selectedValue ?? "(No selection)"}
+            />
+        </Select>
+    );
+};
+```
+
+@### Disabled styling
+
+Disabling a **Select** requires setting the `disabled={true}` prop _and also_ disabling its children. For example:
 
 ```tsx
 const FilmSelect: React.FC = () => (
@@ -119,7 +156,7 @@ const FilmSelect: React.FC = () => (
 
 @## Custom menu
 
-By default, __Select__ renders the displayed items in a [__Menu__](#core/components/menu). This behavior can be
+By default, **Select** renders the displayed items in a [**Menu**](#core/components/menu). This behavior can be
 overridden by providing the `itemListRenderer` prop, giving you full control over the layout of the items. For example,
 you can group items under a common heading, or render large data sets using
 [react-virtualized](https://github.com/bvaughn/react-virtualized).
@@ -153,7 +190,7 @@ const FilmSelect: React.FC = () => (
 );
 ```
 
-This controlled usage allows you to implement all sorts of advanced behavior on top of the basic __Select__
+This controlled usage allows you to implement all sorts of advanced behavior on top of the basic **Select**
 interactions, such as windowed filtering for large data sets.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
@@ -170,7 +207,7 @@ If you wish, you can allow users to select a brand new item that doesn't appear 
 string. Use `createNewItemFromQuery` and `createNewItemRenderer` to enable this:
 
 -   `createNewItemFromQuery`: Specifies how to convert a user-entered query string into an item of type `<T>` that
-    __Select__ understands.
+    **Select** understands.
 -   `createNewItemRenderer`: Renders a custom "Create Item" element that will be shown at the bottom of the list. When
     selected via click or `Enter`, this element will invoke `onItemSelect` with the item returned from
     `createNewItemFromQuery`.
@@ -273,7 +310,7 @@ const FilmSelect: React.FC = () => (
 
 @### Item renderer
 
-A __Select__ component's `itemRenderer` will be called for each item and receives the item and a props object containing
+A **Select** component's `itemRenderer` will be called for each item and receives the item and a props object containing
 data specific to rendering this item in this frame.
 
 A few things to keep in mind:
