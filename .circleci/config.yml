@@ -32,10 +32,6 @@ aliases:
       - ~/.cache/yarn
     key: v7-yarn-cache
 
-references:
-  reports_path: &reports_path
-    path: ./reports
-
 jobs:
   checkout-code:
     docker: *docker-node-image
@@ -44,7 +40,7 @@ jobs:
       - restore_cache: *restore-yarn-cache
       - restore_cache: *restore-node-modules-cache
       - run: sudo corepack enable
-      - run: yarn install --non-interactive --cache-folder ~/.cache/yarn
+      - run: yarn install --immutable --cache-folder ~/.cache/yarn
       - run:
           name: Check if yarn.lock changed during install
           command: git diff --exit-code
@@ -217,7 +213,6 @@ jobs:
       - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
-  version: 2
   compile_lint_test_dist_deploy:
     jobs:
       - checkout-code
