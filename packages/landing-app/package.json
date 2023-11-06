@@ -7,7 +7,7 @@
         "bundle": "webpack",
         "clean": "rm -rf dist/* || true",
         "dev": "webpack-dev-server",
-        "dist": "cross-env NODE_ENV=production yarn bundle",
+        "dist": "NODE_ENV=production yarn bundle",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",

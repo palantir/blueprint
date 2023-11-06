@@ -28,7 +28,7 @@
         "copy:fonts": "scripts/copy-fonts.sh",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "cross-env NODE_ENV=production webpack",
+        "dist:bundle": "NODE_ENV=production webpack",
         "dist:css": "css-dist lib/css/*.css",
         "dist:verify": "assert-package-layout",
         "generate-icon-src": "node scripts/generate-icon-fonts.mjs && node scripts/generate-icon-paths.mjs && node scripts/generate-icon-components.mjs",

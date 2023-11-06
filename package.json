@@ -47,7 +47,6 @@
         "@types/sinon": "~17.0.0",
         "@types/yargs": "~17.0.22",
         "chai": "^4.3.7",
-        "cross-env": "^7.0.3",
         "dedent": "^1.5.1",
         "eslint": "^8.50.0",
         "eslint-config-prettier": "^9.0.0",

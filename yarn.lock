@@ -824,7 +824,7 @@ __metadata:
     css-dist: ./css-dist.sh
     es-lint: ./es-lint.mjs
     generate-css-variables: ./generate-css-variables.mjs
-    sass-compile: ./sass-compile.sh
+    sass-compile: ./sass-compile.mjs
     sass-lint: ./sass-lint.mjs
   languageName: unknown
   linkType: soft
@@ -4737,7 +4737,6 @@ __metadata:
     "@types/sinon": "npm:~17.0.0"
     "@types/yargs": "npm:~17.0.22"
     chai: "npm:^4.3.7"
-    cross-env: "npm:^7.0.3"
     dedent: "npm:^1.5.1"
     eslint: "npm:^8.50.0"
     eslint-config-prettier: "npm:^9.0.0"
@@ -5932,18 +5931,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-env@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "cross-env@npm:7.0.3"
-  dependencies:
-    cross-spawn: "npm:^7.0.1"
-  bin:
-    cross-env: src/bin/cross-env.js
-    cross-env-shell: src/bin/cross-env-shell.js
-  checksum: f3765c25746c69fcca369655c442c6c886e54ccf3ab8c16847d5ad0e91e2f337d36eedc6599c1227904bf2a228d721e690324446876115bc8e7b32a866735ecf
-  languageName: node
-  linkType: hard
-
 "cross-spawn@npm:^6.0.5":
   version: 6.0.5
   resolution: "cross-spawn@npm:6.0.5"
@@ -5957,7 +5944,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.1, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
+"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
   dependencies:

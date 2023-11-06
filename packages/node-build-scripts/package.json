@@ -14,7 +14,7 @@
         "css-dist": "./css-dist.sh",
         "es-lint": "./es-lint.mjs",
         "generate-css-variables": "./generate-css-variables.mjs",
-        "sass-compile": "./sass-compile.sh",
+        "sass-compile": "./sass-compile.mjs",
         "sass-lint": "./sass-lint.mjs"
     },
     "dependencies": {
