@@ -112,6 +112,7 @@ button appear like a typical dropdown, apply some common button props such `alig
 
 ```tsx
 const MySelectDropdown: React.FC = () => (
+    // many props omitted here for brevity
     <Select>
         <Button alignText="left" fill={true} rightIcon="caret-down" text="Dropdown">
     </Select>
@@ -127,9 +128,9 @@ When a **Select** has no selected item, you may wish to display placeholder text
 const MySelectDropdown: React.FC = () => {
     const [selectedValue, setSelectedValue] = React.useState<string | undefined>(undefined);
     return (
-        <Select<string>>
+        // many props omitted here for brevity
+        <Select<string> onItemSelect={setSelectedValue}>
             <Button
-                onItemSelect={setSelectedValue}
                 rightIcon="caret-down"
                 textClassName={classNames({
                     [Classes.TEXT_MUTED]: selectedValue === undefined,
