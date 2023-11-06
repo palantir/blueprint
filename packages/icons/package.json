@@ -18,7 +18,7 @@
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/**/* && rm -rf src/generated/*",
+        "clean": "rm -rf dist/* || rm -rf lib/**/* || rm -rf src/generated/* || true",
         "compile": "npm-run-all -s \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",

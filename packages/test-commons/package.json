@@ -6,7 +6,7 @@
     "typings": "lib/cjs/index.d.ts",
     "scripts": {
         "compile": "tsc -p ./src",
-        "clean": "rm -rf lib/*",
+        "clean": "rm -rf lib/* || true",
         "dev": "yarn compile --watch",
         "lint": "run-p lint:es",
         "lint:es": "es-lint",

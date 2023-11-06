@@ -4,7 +4,7 @@
     "description": "ESLint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
-        "clean": "rm -rf lib/*",
+        "clean": "rm -rf lib/* || true",
         "compile": "tsc -p src/",
         "lint": "run-p lint:es",
         "lint:es": "es-lint",
