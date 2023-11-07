@@ -26,7 +26,7 @@
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
         "dist": "run-s \"dist:*\"",
         "dist:bundle": "NODE_ENV=production webpack",
-        "dist:css": "css-dist lib/css/*.css",
+        "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",

@@ -34,7 +34,7 @@
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
         "dist": "run-s \"dist:*\"",
         "dist:bundle": "NODE_ENV=production webpack",
-        "dist:css": "css-dist lib/css/*.css",
+        "dist:css": "css-dist lib/css",
         "dist:variables": "generate-css-variables --retainDefault true ../../colors/src/_colors.scss common/_color-aliases.scss common/_variables.scss",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",

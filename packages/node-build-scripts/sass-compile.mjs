@@ -41,7 +41,7 @@ const args = yargs(truncatedArgv)
     .parseSync();
 
 /** @type {string} */
-// @ts-ignore
+// @ts-ignore - we know this is a string because of the yargs constraint
 const inputFolder = args._[0];
 
 /** @type {Record<string, sass.CustomFunction<"async">>} */

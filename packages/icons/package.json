@@ -29,7 +29,7 @@
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
         "dist": "run-s \"dist:*\"",
         "dist:bundle": "NODE_ENV=production webpack",
-        "dist:css": "css-dist lib/css/*.css",
+        "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "generate-icon-src": "node scripts/generate-icon-fonts.mjs && node scripts/generate-icon-paths.mjs && node scripts/generate-icon-components.mjs",
         "lint": "run-p lint:scss lint:es",

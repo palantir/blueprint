@@ -821,7 +821,7 @@ __metadata:
     yargs: "npm:^17.7.2"
   bin:
     assert-package-layout: ./assert-package-layout.mjs
-    css-dist: ./css-dist.sh
+    css-dist: ./css-dist.mjs
     es-lint: ./es-lint.mjs
     generate-css-variables: ./generate-css-variables.mjs
     sass-compile: ./sass-compile.mjs
