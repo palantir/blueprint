@@ -84,6 +84,7 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
                 aria-valuemin={min}
                 aria-valuemax={max}
                 aria-valuenow={value}
+                aria-disabled={disabled}
                 aria-orientation={vertical ? "vertical" : "horizontal"}
             >
                 {label == null ? null : <span className={Classes.SLIDER_LABEL}>{label}</span>}
