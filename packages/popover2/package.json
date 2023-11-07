@@ -15,7 +15,7 @@
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/*",
+        "clean": "rm -rf dist/* || rm -rf lib/* || true",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
@@ -23,7 +23,7 @@
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:css": "css-dist lib/css/*.css",
+        "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
@@ -33,7 +33,7 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^5.6.0",
+        "@blueprintjs/core": "workspace:^",
         "classnames": "^2.3.1",
         "tslib": "~2.6.2"
     },
@@ -48,7 +48,7 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^8.1.0",
+        "@blueprintjs/node-build-scripts": "workspace:^",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",

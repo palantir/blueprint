@@ -11,7 +11,7 @@
         "test": "exit 0"
     },
     "dependencies": {
-        "@blueprintjs/node-build-scripts": "^8.1.0",
+        "@blueprintjs/node-build-scripts": "workspace:^",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
         "@swc/core": "^1.3.92",
         "assert": "^2.0.0",

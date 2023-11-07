@@ -17,7 +17,7 @@
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/*",
+        "clean": "rm -rf dist/* || rm -rf lib/* || true",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
@@ -25,8 +25,8 @@
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "cross-env NODE_ENV=production webpack",
-        "dist:css": "css-dist lib/css/*.css",
+        "dist:bundle": "NODE_ENV=production webpack",
+        "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
@@ -40,8 +40,8 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^5.6.0",
-        "@blueprintjs/icons": "^5.3.0",
+        "@blueprintjs/core": "workspace:^",
+        "@blueprintjs/icons": "workspace:^",
         "classnames": "^2.3.1",
         "tslib": "~2.6.2"
     },
@@ -56,8 +56,8 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/karma-build-scripts": "^5.2.0",
-        "@blueprintjs/node-build-scripts": "^8.1.0",
+        "@blueprintjs/karma-build-scripts": "workspace:^",
+        "@blueprintjs/node-build-scripts": "workspace:^",
         "enzyme": "^3.11.0",
         "karma": "^6.4.1",
         "mocha": "^10.2.0",

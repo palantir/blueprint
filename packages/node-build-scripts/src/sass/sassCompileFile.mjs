@@ -7,7 +7,7 @@
 import fsExtra from "fs-extra";
 import { dirname, join, parse as parsePath, relative } from "node:path";
 import * as sass from "sass";
-import { SourceMapGenerator } from "source-map-js";
+import { SourceMapConsumer, SourceMapGenerator } from "source-map-js";
 
 import defaultCustomFunctions from "./sassCustomFunctions.mjs";
 import { loadPaths } from "./sassNodeModulesLoadPaths.mjs";
@@ -18,8 +18,7 @@ import { loadPaths } from "./sassNodeModulesLoadPaths.mjs";
  * @param {Record<string, sass.CustomFunction<"async">> | undefined} customFunctions
  */
 export async function sassCompileFile(inputFilePath, outputDir, customFunctions) {
-    const outFile = join(outputDir, `${parsePath(inputFilePath).name}.css`);
-    const outputMapFile = `${outFile}.map`;
+    const outputFilepath = join(outputDir, `${parsePath(inputFilePath).name}.css`);
     const result = await sass.compileAsync(inputFilePath, {
         loadPaths,
         sourceMap: true,
@@ -30,14 +29,12 @@ export async function sassCompileFile(inputFilePath, outputDir, customFunctions)
         },
         charset: true,
     });
-    fsExtra.outputFileSync(outFile, result.css, { flag: "w" });
+    fsExtra.outputFileSync(outputFilepath, result.css, { flag: "w" });
     if (result.sourceMap != null) {
+        const outputSourceMapFilepath = `${outputFilepath}.map`;
         fsExtra.outputFileSync(
-            outputMapFile,
-            fixSourcePathsInSourceMap({ outputMapFile, rawSourceMap: result.sourceMap }),
-            {
-                flag: "w",
-            },
+            outputSourceMapFilepath,
+            fixSourcePathsInSourceMap({ outputMapFile: outputSourceMapFilepath, rawSourceMap: result.sourceMap }),
         );
     }
 }
@@ -53,5 +50,5 @@ function fixSourcePathsInSourceMap({ outputMapFile, rawSourceMap }) {
         const pathToSourceWithoutProtocol = source.replace("file://", "");
         return relative(outputDirectory, pathToSourceWithoutProtocol);
     });
-    return new SourceMapGenerator(rawSourceMap).toString();
+    return SourceMapGenerator.fromSourceMap(new SourceMapConsumer(rawSourceMap)).toString();
 }

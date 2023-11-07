@@ -11,7 +11,7 @@
         "src"
     ],
     "scripts": {
-        "clean": "rm -rf lib/*",
+        "clean": "rm -rf lib/* || true",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
@@ -29,7 +29,7 @@
         "tslib": "~2.6.2"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^8.1.0",
+        "@blueprintjs/node-build-scripts": "workspace:^",
         "mocha": "^10.2.0",
         "typescript": "~5.2.2"
     },
