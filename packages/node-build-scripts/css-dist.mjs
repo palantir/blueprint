@@ -63,6 +63,8 @@ async function compileFile(inputFilePath) {
             to: outputFilePath,
             map: {
                 inline: false,
+                prev: file => `${file}.map`,
+                sourcesContent: true,
             },
         });
         fsExtra.outputFileSync(outputFilePath, result.toString());
