@@ -53,6 +53,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
+      - run: sudo corepack enable
       - run: yarn dedupe --check
 
   compile:
