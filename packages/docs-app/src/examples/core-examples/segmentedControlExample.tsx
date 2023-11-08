@@ -16,66 +16,58 @@
 
 import * as React from "react";
 
-import { FormGroup, H5, Intent, SegmentedControl } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { IntentSelect } from "./common/intentSelect";
+import { FormGroup, H5, SegmentedControl, type SegmentedControlProps } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface SegmentedControlState {
-    intent: typeof Intent.NONE | typeof Intent.PRIMARY;
-}
+export const SegmentedControlExample: React.FC<ExampleProps> = props => {
+    const [intent, setIntent] = React.useState<SegmentedControlProps<string>["intent"]>("none");
+    const handleActiveOptionChange = React.useCallback(
+        activeOptionId => setIntent(activeOptionId as "none" | "primary"),
+        [],
+    );
 
-export class SegmentedControlExample extends React.PureComponent<ExampleProps, SegmentedControlState> {
-    public state: SegmentedControlState = {
-        intent: Intent.NONE,
-    };
-
-    // const handleIntentChange = React.useCallback((intent: string) => {
-
-    // });
-
-    public render() {
-        const {} = this.state;
-
-        const options = <>
+    const options = (
+        <>
             <H5>Props</H5>
             <FormGroup label="Intent">
                 <SegmentedControl
                     options={[
                         {
-                            id: "default",
-                            label: "Default",
+                            id: "none",
+                            label: "None",
                         },
                         {
                             id: "primary",
                             label: "Primary",
                         },
                     ]}
-                    defaultActiveOptionId={this.state.intent}
+                    defaultActiveOptionId={intent}
+                    onActiveOptionChange={handleActiveOptionChange}
                 />
             </FormGroup>
-        </>;
+        </>
+    );
 
-        return (
-            <Example options={options} {...this.props}>
-                <SegmentedControl
-                    options={[
-                        {
-                            id: "list",
-                            label: "List",
-                        },
-                        {
-                            id: "grid",
-                            label: "Grid",
-                        },
-                        {
-                            id: "gallery",
-                            label: "Gallery",
-                        },
-                    ]}
-                    on
-                    defaultActiveOptionId="list"
-                />
-            </Example>
-        );
-    }
-}
+    return (
+        <Example options={options} {...props}>
+            <SegmentedControl
+                options={[
+                    {
+                        id: "list",
+                        label: "List",
+                    },
+                    {
+                        id: "grid",
+                        label: "Grid",
+                    },
+                    {
+                        id: "gallery",
+                        label: "Gallery",
+                    },
+                ]}
+                defaultActiveOptionId="list"
+                intent={intent}
+            />
+        </Example>
+    );
+};
