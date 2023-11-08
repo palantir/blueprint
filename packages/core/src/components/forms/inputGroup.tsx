@@ -133,6 +133,7 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
         const inputProps = {
             type: "text",
             ...removeNonHTMLProps(this.props, NON_HTML_PROPS, true),
+            "aria-disabled": disabled,
             className: classNames(Classes.INPUT, inputClassName),
             onChange: this.handleInputChange,
             style,
