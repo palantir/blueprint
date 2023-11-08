@@ -18,20 +18,20 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes, SegmentedControl } from "../../src";
+import { Classes, type OptionProps, SegmentedControl } from "../../src";
 
-const OPTIONS: Array<{ id: string; label: string }> = [
+const OPTIONS: Array<OptionProps<string>> = [
     {
-        id: "list",
         label: "List",
+        value: "list",
     },
     {
-        id: "grid",
         label: "Grid",
+        value: "grid",
     },
     {
-        id: "gallery",
         label: "Gallery",
+        value: "gallery",
     },
 ];
 

@@ -97,7 +97,7 @@ export interface ControlledProps {
     value?: string;
 }
 
-export interface OptionProps extends Props {
+export interface OptionProps<T extends string | number = string | number> extends Props {
     /** Whether this option is non-interactive. */
     disabled?: boolean;
 
@@ -105,7 +105,7 @@ export interface OptionProps extends Props {
     label?: string;
 
     /** Value of this option. */
-    value: string | number;
+    value: T;
 }
 
 /** A collection of curated prop keys used across our Components which are not valid HTMLElement props. */

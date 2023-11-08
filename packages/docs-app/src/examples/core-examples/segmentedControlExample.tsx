@@ -16,13 +16,13 @@
 
 import * as React from "react";
 
-import { FormGroup, H5, SegmentedControl, type SegmentedControlProps } from "@blueprintjs/core";
+import { FormGroup, H5, SegmentedControl, type SegmentedControlIntent } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const SegmentedControlExample: React.FC<ExampleProps> = props => {
-    const [intent, setIntent] = React.useState<SegmentedControlProps<string>["intent"]>("none");
+    const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
     const handleActiveOptionChange = React.useCallback(
-        activeOptionId => setIntent(activeOptionId as "none" | "primary"),
+        activeOptionId => setIntent(activeOptionId as SegmentedControlIntent),
         [],
     );
 
@@ -33,16 +33,16 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                 <SegmentedControl
                     options={[
                         {
-                            id: "none",
                             label: "None",
+                            value: "none",
                         },
                         {
-                            id: "primary",
                             label: "Primary",
+                            value: "primary",
                         },
                     ]}
-                    defaultActiveOptionId={intent}
-                    onActiveOptionChange={handleActiveOptionChange}
+                    defaultValue="none"
+                    onChange={handleActiveOptionChange}
                 />
             </FormGroup>
         </>
@@ -53,19 +53,19 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
             <SegmentedControl
                 options={[
                     {
-                        id: "list",
                         label: "List",
+                        value: "list",
                     },
                     {
-                        id: "grid",
                         label: "Grid",
+                        value: "grid",
                     },
                     {
-                        id: "gallery",
                         label: "Gallery",
+                        value: "gallery",
                     },
                 ]}
-                defaultActiveOptionId="list"
+                defaultValue="list"
                 intent={intent}
             />
         </Example>
