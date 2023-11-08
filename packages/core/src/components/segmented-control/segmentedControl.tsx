@@ -21,6 +21,9 @@ import { Classes, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props, removeNonHTMLProps } from "../../common/props";
 import { Button } from "../button/buttons";
 
+/**
+ * SegmentedControl component props.
+ */
 export interface SegmentedControlProps<T extends string>
     extends Props,
         HTMLDivProps,
