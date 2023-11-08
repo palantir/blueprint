@@ -2,14 +2,33 @@
 @import "../../common/variables";
 
 .#{$ns}-segmented-control {
-  padding: $pt-grid-size * 0.5;
+  padding: 3px;
   background-color: $light-gray5;
+  border-radius: $pt-border-radius;
+  display: flex;
+  gap: 3px;
 
-  > .#{$ns}-button-group {
-    gap: $pt-grid-size * 0.5;
+  > .#{$ns}-button:not(.#{$ns}-minimal) {
+    box-shadow: 0 0 0 1px $pt-divider-black-muted;
+
+    &:not(.#{$ns}-primary) {
+      background-color: $white;
+
+      .#{$ns}-dark & {
+        background-color: $dark-gray5;
+      }
+    }
+  }
+
+  > .#{$ns}-button.#{$ns}-minimal {
+    color: $pt-text-color-muted;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-muted;
+    }
   }
 
   .#{$ns}-dark & {
-    background-color: $dark-gray4;
+    background-color: $dark-gray3;
   }
 }

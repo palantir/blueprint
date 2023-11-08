@@ -16,28 +16,64 @@
 
 import * as React from "react";
 
-import { SegmentedControl } from "@blueprintjs/core";
+import { FormGroup, H5, Intent, SegmentedControl } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { IntentSelect } from "./common/intentSelect";
 
-export interface SegmentedControlState {}
+export interface SegmentedControlState {
+    intent: typeof Intent.NONE | typeof Intent.PRIMARY;
+}
 
 export class SegmentedControlExample extends React.PureComponent<ExampleProps, SegmentedControlState> {
-    public state: SegmentedControlState = {};
+    public state: SegmentedControlState = {
+        intent: Intent.NONE,
+    };
+
+    // const handleIntentChange = React.useCallback((intent: string) => {
+
+    // });
 
     public render() {
         const {} = this.state;
 
-        const options = <></>;
+        const options = <>
+            <H5>Props</H5>
+            <FormGroup label="Intent">
+                <SegmentedControl
+                    options={[
+                        {
+                            id: "default",
+                            label: "Default",
+                        },
+                        {
+                            id: "primary",
+                            label: "Primary",
+                        },
+                    ]}
+                    defaultActiveOptionId={this.state.intent}
+                />
+            </FormGroup>
+        </>;
 
         return (
             <Example options={options} {...this.props}>
                 <SegmentedControl
                     options={[
                         {
-                            id: "test",
-                            label: "Test",
+                            id: "list",
+                            label: "List",
+                        },
+                        {
+                            id: "grid",
+                            label: "Grid",
+                        },
+                        {
+                            id: "gallery",
+                            label: "Gallery",
                         },
                     ]}
+                    on
+                    defaultActiveOptionId="list"
                 />
             </Example>
         );

@@ -16,19 +16,18 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { ButtonGroup } from "../button/buttonGroup";
 import { Button } from "../button/buttons";
 
 import { Classes, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-export interface SegmentedControlProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
+export interface SegmentedControlProps<T extends string> extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     options: {
-        id: string;
+        id: T;
         label: string;
     }[];
-    defaultActiveOptionIds?: string[];
-    onActiveOptionsChange?: (activeOptionIds: string[]) => void;
+    defaultActiveOptionId?: T;
+    onActiveOptionChange?: (activeOptionId: T | undefined) => void;
     intent?: typeof Intent.NONE | typeof Intent.PRIMARY;
 }
 
@@ -37,52 +36,45 @@ export interface SegmentedControlProps extends Props, HTMLDivProps, React.RefAtt
  *
  * @see https://blueprintjs.com/docs/#core/components/segmented-control
  */
-export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRef((props, ref) => {
-    const { className, options, defaultActiveOptionIds, intent, onActiveOptionsChange, ...htmlProps } = props;
+export const SegmentedControl: React.FC<SegmentedControlProps<string>> = React.forwardRef((props, ref) => {
+    const { className, options, defaultActiveOptionId, intent, onActiveOptionChange, ...htmlProps } = props;
     const classes = classNames(Classes.SEGMENTED_CONTROL, className);
 
-    const [activeOptionIds, setActiveOptionIds] = React.useState<string[]>(defaultActiveOptionIds ?? []);
+    const [activeOptionId, setActiveOptionId] = React.useState<string | undefined>(defaultActiveOptionId);
 
     const handleButtonClick = React.useCallback(
         (optionId: string) => () => {
-            const optionIndex = activeOptionIds.indexOf(optionId);
+            setActiveOptionId(optionId )
 
-            if (optionIndex === -1) {
-                setActiveOptionIds([...activeOptionIds, optionId]);
-            } else {
-                setActiveOptionIds(activeOptionIds.splice(optionIndex, 1));
-            }
-
-            if (onActiveOptionsChange != null) {
-                onActiveOptionsChange(activeOptionIds);
+            if (onActiveOptionChange !== undefined) {
+                onActiveOptionChange(optionId);
             }
         },
-        [activeOptionIds, onActiveOptionsChange],
+        [activeOptionId, onActiveOptionChange],
     );
 
     return (
         <div className={classes} ref={ref} {...htmlProps}>
-            <ButtonGroup>
                 {options.map(({ id, label }) => {
-                    const active = activeOptionIds?.includes(id);
+                    const active = activeOptionId === id;
 
                     return (
                         <Button
                             onClick={handleButtonClick(id)}
                             intent={active ? intent : Intent.NONE}
                             minimal={!active}
+                            small={true}
                             key={id}
                         >
                             {label}
                         </Button>
                     );
                 })}
-            </ButtonGroup>
         </div>
     );
 });
 SegmentedControl.defaultProps = {
-    defaultActiveOptionIds: undefined,
+    defaultActiveOptionId: undefined,
     intent: Intent.NONE,
 };
 SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
