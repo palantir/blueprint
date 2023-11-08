@@ -36,7 +36,11 @@ export interface TableHandlers {
 export class TableHotkeys {
     private grid?: Grid;
 
-    public constructor(private props: TableProps, private state: TableState, private tableHandlers: TableHandlers) {
+    public constructor(
+        private props: TableProps,
+        private state: TableState,
+        private tableHandlers: TableHandlers,
+    ) {
         // no-op
     }
 
