@@ -323,6 +323,7 @@ const SUBMENU_POPOVER_MODIFIERS: PopoverProps["modifiers"] = {
 
 // props to ignore when disabled
 const DISABLED_PROPS: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
+    "aria-disabled": true,
     href: undefined,
     onClick: undefined,
     onMouseDown: undefined,

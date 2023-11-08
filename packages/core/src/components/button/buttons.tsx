@@ -55,6 +55,7 @@ export const AnchorButton: React.FC<AnchorButtonProps> = React.forwardRef<HTMLAn
                 role="button"
                 {...removeNonHTMLProps(props)}
                 {...commonProps}
+                aria-disabled={commonProps.disabled}
                 href={commonProps.disabled ? undefined : href}
                 tabIndex={commonProps.disabled ? -1 : tabIndex}
             >
