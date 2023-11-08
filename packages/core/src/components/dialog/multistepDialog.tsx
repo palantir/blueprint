@@ -180,6 +180,7 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
                     [Classes.DIALOG_STEP_VIEWED]: hasBeenViewed,
                 })}
                 key={index}
+                aria-disabled={!currentlySelected && !hasBeenViewed}
                 aria-selected={currentlySelected}
                 role="tab"
             >
