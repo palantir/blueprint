@@ -46,17 +46,12 @@ function renderMarkdown(textContent) {
     return marked(textContent, { renderer });
 }
 
-const NS = Classes.getClassNamespace();
-
 const hooks = {
     /**
      * @param md {string}
      * @returns {string}
      */
     preprocess: md => {
-        // interpolate class namespace in TS and Sass syntax
-        md = md.replace(/#{\$ns}|@ns/g, NS);
-
         // HACKHACK: workaround for https://github.com/palantir/documentalist/issues/248
         // As of Documentalist v5.0.0 & TypeDoc v0.25, we are getting inline code snippets wrapped by newlines, which
         // breaks the markdown rendering of multiline JSDoc comments. We can work around this by removing the newlines.
