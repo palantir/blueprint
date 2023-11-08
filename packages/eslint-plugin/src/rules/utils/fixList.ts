@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { TSESLint } from "@typescript-eslint/utils";
+import type { TSESLint } from "@typescript-eslint/utils";
 
 type RuleFix = TSESLint.RuleFix;
 

@@ -17,8 +17,8 @@
 import { pascalCase } from "change-case";
 
 import type { IconPathsLoader } from "../iconLoader";
-import { IconName } from "../iconNames";
-import { IconPaths, IconSize } from "../iconTypes";
+import type { IconName } from "../iconNames";
+import { type IconPaths, IconSize } from "../iconTypes";
 import type { PascalCase } from "../type-utils";
 
 /**

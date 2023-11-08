@@ -22,11 +22,11 @@
 /* eslint-disable deprecation/deprecation */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, IPanel, IPanelProps, PanelStack, PanelStackProps } from "../../src";
+import { Classes, type IPanel, type IPanelProps, PanelStack, type PanelStackProps } from "../../src";
 
 export class TestPanel extends React.Component<IPanelProps> {
     public render() {

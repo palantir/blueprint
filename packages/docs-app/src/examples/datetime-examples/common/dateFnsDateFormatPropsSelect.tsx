@@ -14,18 +14,26 @@
  * limitations under the License.
  */
 
-import { format, Locale, parse } from "date-fns";
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * Newer datetime2 components support date-fns format strings directly.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
+import { format, type Locale, parse } from "date-fns";
 import * as React from "react";
 
-import { DateFormatProps } from "@blueprintjs/datetime";
+import type { DateFormatProps } from "@blueprintjs/datetime";
 
-import { DateFormatSelector, DateFormatSelectorProps } from "../../../common/dateFormatSelector";
+import { DateFormatSelector, type DateFormatSelectorProps } from "../../../common/dateFormatSelector";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const locales: { [localeCode: string]: Locale } = require("date-fns/locale");
 
 export type DateFnsFormatSelectorProps = Omit<DateFormatSelectorProps, "formatOptions">;
 
+/** @deprecated use DateFnsFormatSelect */
 export const DateFnsDateFormatPropsSelect: React.FC<DateFnsFormatSelectorProps> = props => (
     <DateFormatSelector
         formatOptions={DATE_FNS_FORMATS}
@@ -38,6 +46,7 @@ export const DateFnsDateFormatPropsSelect: React.FC<DateFnsFormatSelectorProps> 
     />
 );
 
+/** @deprecated use DATE_FNS_FORMAT_OPTIONS */
 export const DATE_FNS_FORMATS: DateFormatProps[] = [
     getDateFnsFormatter("MM/dd/yyyy"),
     getDateFnsFormatter("yyyy-MM-dd"),

@@ -23,10 +23,10 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     InputGroup,
-    InputGroupProps,
+    type InputGroupProps,
     Popover,
-    PopoverClickTargetHandlers,
-    PopoverTargetProps,
+    type PopoverClickTargetHandlers,
+    type PopoverTargetProps,
     PopupKind,
     refHandler,
     setRef,
@@ -34,8 +34,8 @@ import {
 } from "@blueprintjs/core";
 import { Cross, Search } from "@blueprintjs/icons";
 
-import { Classes, ListItemsProps, SelectPopoverProps } from "../../common";
-import { QueryList, QueryListRendererProps } from "../query-list/queryList";
+import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
+import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
 export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
     /**

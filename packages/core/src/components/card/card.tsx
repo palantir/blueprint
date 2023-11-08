@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Elevation } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
 
 export interface CardProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
@@ -42,6 +42,13 @@ export interface CardProps extends Props, HTMLDivProps, React.RefAttributes<HTML
     interactive?: boolean;
 
     /**
+     * Whether this card should appear selected.
+     *
+     * @default undefined
+     */
+    selected?: boolean;
+
+    /**
      * Whether this component should use compact styles with reduced visual padding.
      *
      * @default false
@@ -61,13 +68,12 @@ export interface CardProps extends Props, HTMLDivProps, React.RefAttributes<HTML
  * @see https://blueprintjs.com/docs/#core/components/card
  */
 export const Card: React.FC<CardProps> = React.forwardRef((props, ref) => {
-    const { className, elevation, interactive, compact, ...htmlProps } = props;
-    const classes = classNames(
-        Classes.CARD,
-        { [Classes.INTERACTIVE]: interactive, [Classes.COMPACT]: compact },
-        Classes.elevationClass(elevation!),
-        className,
-    );
+    const { className, elevation, interactive, selected, compact, ...htmlProps } = props;
+    const classes = classNames(className, Classes.CARD, Classes.elevationClass(elevation!), {
+        [Classes.INTERACTIVE]: interactive,
+        [Classes.COMPACT]: compact,
+        [Classes.SELECTED]: selected,
+    });
     return <div className={classes} ref={ref} {...htmlProps} />;
 });
 Card.defaultProps = {

@@ -4065,5 +4065,33 @@
         "tags": "unlink, link, property, connection",
         "group": "action",
         "codepoint": 62277
+    },
+    {
+        "displayName": "Paste variable",
+        "iconName": "paste-variable",
+        "tags": "paste, clipboard, variable",
+        "group": "action",
+        "codepoint": 62278
+    },
+    {
+        "displayName": "Phone call",
+        "iconName": "phone-call",
+        "tags": "phone, call, talk",
+        "group": "communication",
+        "codepoint": 62279
+    },
+    {
+        "displayName": "Phone forward",
+        "iconName": "phone-forward",
+        "tags": "phone, call, forward",
+        "group": "communication",
+        "codepoint": 62280
+    },
+    {
+        "displayName": "new-shield",
+        "iconName": "new-shield",
+        "tags": "shield, new, add, marking",
+        "group": "miscellaneous",
+        "codepoint": 62281
     }
 ]

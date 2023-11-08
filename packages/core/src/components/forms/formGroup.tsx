@@ -17,8 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
+import { AbstractPureComponent, Classes, type Intent } from "../../common";
+import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
 
 export interface FormGroupProps extends IntentProps, Props {
     /** Group contents. */
@@ -37,6 +37,11 @@ export interface FormGroupProps extends IntentProps, Props {
     disabled?: boolean;
 
     /**
+     * Whether the component should take up the full width of its container.
+     */
+    fill?: boolean;
+
+    /**
      * Optional helper text. The given content will be wrapped in
      * `Classes.FORM_HELPER_TEXT` and displayed beneath `children`.
      * Helper text color is determined by the `intent`.
@@ -45,6 +50,12 @@ export interface FormGroupProps extends IntentProps, Props {
 
     /** Whether to render the label and children on a single line. */
     inline?: boolean;
+
+    /**
+     * Visual intent to apply to helper text and sub label.
+     * Note that child form elements need to have their own intents applied independently.
+     */
+    intent?: Intent;
 
     /** Label of this form group. */
     label?: React.ReactNode;
@@ -98,12 +109,13 @@ export class FormGroup extends AbstractPureComponent<FormGroupProps> {
     }
 
     private getClassName() {
-        const { className, disabled, inline, intent } = this.props;
+        const { className, disabled, fill, inline, intent } = this.props;
         return classNames(
             Classes.FORM_GROUP,
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: disabled,
+                [Classes.FILL]: fill,
                 [Classes.INLINE]: inline,
             },
             className,

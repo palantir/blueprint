@@ -2,12 +2,15 @@
  * (c) Copyright 2022 Palantir Technologies Inc. All rights reserved.
  */
 
-import { TSESLint } from "@typescript-eslint/utils";
+import type { TSESLint } from "@typescript-eslint/utils";
 
-import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
+import { createNoDeprecatedComponentsRule, type DeprecatedComponentsConfig } from "./createNoDeprecatedComponentsRule";
 
-export const selectComponentsMigrationMapping = {
-    // nothing, for now
+export const selectComponentsMigrationMapping: DeprecatedComponentsConfig = {
+    // listed in packages/select/src/components/deprecatedAliases.ts
+    MultiSelect2: "MultiSelect",
+    Select2: "Select",
+    Suggest2: "Suggest",
 };
 
 /**

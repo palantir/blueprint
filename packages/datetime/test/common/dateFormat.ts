@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { format, Locale, parse } from "date-fns";
+import { format, type Locale, parse } from "date-fns";
 
-import { DateFormatProps } from "../../src/common";
+import type { DateFormatProps } from "../../src/common";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const locales: { [localeCode: string]: Locale } = require("date-fns/locale");

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IHeadingNode, IPageNode } from "@documentalist/client";
+import type { HeadingNode, PageNode } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -41,7 +41,7 @@ export interface NavMenuItemProps {
     onClick: () => void;
 
     /** The section for this menu item, either a page or a heading node. */
-    section: IPageNode | IHeadingNode;
+    section: PageNode | HeadingNode;
 }
 
 export const NavMenuItem: React.FunctionComponent<NavMenuItemProps> = props => {

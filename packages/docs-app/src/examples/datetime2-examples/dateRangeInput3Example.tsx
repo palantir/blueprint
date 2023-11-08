@@ -16,18 +16,16 @@
 
 import * as React from "react";
 
-import { Callout, Code, H5, Switch } from "@blueprintjs/core";
-import { DateFormatProps, DateRange, TimePrecision } from "@blueprintjs/datetime";
+import { Callout, Code, FormGroup, H5, Switch } from "@blueprintjs/core";
+import { type DateRange, TimePrecision } from "@blueprintjs/datetime";
 import { DateRangeInput3 } from "@blueprintjs/datetime2";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
+import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateRange } from "../../common/formattedDateRange";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
-import {
-    DATE_FNS_FORMATS,
-    DateFnsDateFormatPropsSelect,
-} from "../datetime-examples/common/dateFnsDateFormatPropsSelect";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
+import { DATE_FNS_FORMAT_OPTIONS, DateFnsFormatSelect } from "./common/dateFnsFormatSelect";
 
 const exampleFooterElement = (
     <Callout style={{ maxWidth: 460 }}>
@@ -40,10 +38,11 @@ interface DateRangeInput3ExampleState {
     allowSingleDayRange: boolean;
     closeOnSelection: boolean;
     contiguousCalendarMonths: boolean;
+    dateFnsFormat: string;
     disabled: boolean;
     enableTimePicker: boolean;
     fill: boolean;
-    format: DateFormatProps;
+    localeCode: CommonDateFnsLocale;
     range: DateRange;
     reverseMonthAndYearMenus: boolean;
     selectAllOnFocus: boolean;
@@ -52,6 +51,7 @@ interface DateRangeInput3ExampleState {
     showTimeArrowButtons: boolean;
     singleMonthOnly: boolean;
     timePrecision: TimePrecision | undefined;
+    useAmPm: boolean;
 }
 
 export class DateRangeInput3Example extends React.PureComponent<ExampleProps, DateRangeInput3ExampleState> {
@@ -59,10 +59,11 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
         allowSingleDayRange: false,
         closeOnSelection: false,
         contiguousCalendarMonths: true,
+        dateFnsFormat: DATE_FNS_FORMAT_OPTIONS[0],
         disabled: false,
         enableTimePicker: false,
         fill: false,
-        format: DATE_FNS_FORMATS[0],
+        localeCode: DateRangeInput3.defaultProps.locale as CommonDateFnsLocale,
         range: [null, null],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
@@ -71,6 +72,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
         showTimeArrowButtons: false,
         singleMonthOnly: false,
         timePrecision: TimePrecision.MINUTE,
+        useAmPm: false,
     };
 
     private toggleContiguous = handleBooleanChange(contiguous => {
@@ -103,6 +105,14 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
         this.setState({ showTimeArrowButtons }),
     );
 
+    private toggleUseAmPm = handleBooleanChange(useAmPm => this.setState({ useAmPm }));
+
+    private handleFormatChange = (dateFnsFormat: string) => this.setState({ dateFnsFormat });
+
+    private handleLocaleCodeChange = (localeCode: CommonDateFnsLocale) => this.setState({ localeCode });
+
+    private handleRangeChange = (range: DateRange) => this.setState({ range });
+
     private handleTimePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
@@ -110,24 +120,25 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
     public render() {
         const {
             enableTimePicker,
-            format,
+            localeCode,
             range,
             showFooterElement,
             showTimeArrowButtons,
             timePrecision,
+            useAmPm,
             ...spreadProps
         } = this.state;
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
                 <DateRangeInput3
                     {...spreadProps}
-                    {...format}
+                    locale={localeCode}
                     value={range}
                     onChange={this.handleRangeChange}
                     footerElement={showFooterElement ? exampleFooterElement : undefined}
                     timePickerProps={
                         enableTimePicker
-                            ? { precision: timePrecision, showArrowButtons: showTimeArrowButtons }
+                            ? { precision: timePrecision, showArrowButtons: showTimeArrowButtons, useAmPm }
                             : undefined
                     }
                 />
@@ -151,7 +162,9 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
             showTimeArrowButtons,
             singleMonthOnly,
             timePrecision,
+            useAmPm,
         } = this.state;
+
         return (
             <>
                 <div>
@@ -199,6 +212,13 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
                         label="Show custom footer element"
                         onChange={this.toggleShowFooterElement}
                     />
+                    <FormGroup inline={true} label="Locale">
+                        <DateFnsLocaleSelect
+                            value={this.state.localeCode}
+                            onChange={this.handleLocaleCodeChange}
+                            popoverProps={{ placement: "bottom-start" }}
+                        />
+                    </FormGroup>
                 </div>
 
                 <div>
@@ -209,7 +229,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
                     <PropCodeTooltip snippet={`fill={${fill.toString()}}`}>
                         <Switch label="Fill container width" checked={fill} onChange={this.toggleFill} />
                     </PropCodeTooltip>
-                    <DateFnsDateFormatPropsSelect format={this.state.format} onChange={this.handleFormatChange} />
+                    <DateFnsFormatSelect value={this.state.dateFnsFormat} onChange={this.handleFormatChange} />
                     <br />
 
                     <H5>Time picker props</H5>
@@ -232,12 +252,19 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
                             onChange={this.toggleTimepickerArrowButtons}
                         />
                     </PropCodeTooltip>
+                    <PropCodeTooltip
+                        snippet={`timePickerProps={{ useAmPm: ${useAmPm.toString()} }}`}
+                        disabled={!enableTimePicker}
+                    >
+                        <Switch
+                            disabled={!enableTimePicker}
+                            checked={useAmPm}
+                            label="Use AM/PM"
+                            onChange={this.toggleUseAmPm}
+                        />
+                    </PropCodeTooltip>
                 </div>
             </>
         );
     }
-
-    private handleFormatChange = (format: DateFormatProps) => this.setState({ format });
-
-    private handleRangeChange = (range: DateRange) => this.setState({ range });
 }

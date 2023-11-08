@@ -16,10 +16,10 @@
 
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, OptionProps, Props } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type OptionProps, type Props } from "../../common";
 import * as Errors from "../../common/errors";
 import { isElementOfType } from "../../common/utils";
-import { Radio, RadioProps } from "./controls";
+import { Radio, type RadioProps } from "./controls";
 
 export interface RadioGroupProps extends Props {
     /**

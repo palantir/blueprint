@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { isTsClass, isTsInterface, ITsDocBase } from "@documentalist/client";
+import { isTsClass, isTsInterface, type TsDocBase } from "@documentalist/client";
 import * as React from "react";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContext } from "../../common/context";
 
-interface ApiHeaderProps extends ITsDocBase {
+interface ApiHeaderProps extends TsDocBase {
     children?: React.ReactNode;
 }
 

@@ -16,10 +16,10 @@
 
 import * as React from "react";
 
-import { Alert, Button, H5, Intent, OverlayToaster, Switch, Toaster } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Alert, Button, H5, Intent, OverlayToaster, Switch, type Toaster } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-import { BlueprintExampleData } from "../../tags/types";
+import type { BlueprintExampleData } from "../../tags/types";
 
 export interface AlertExampleState {
     canEscapeKeyCancel: boolean;

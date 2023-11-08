@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
+import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { ControlCard, ControlCardProps } from "./controlCard";
+import { ControlCard, type ControlCardProps } from "./controlCard";
 
 export type SwitchCardProps = Omit<ControlCardProps, "controlKind">;
 
 /**
  * Switch Card component.
  *
- * @see https://blueprintjs.com/docs/#core/components/card#switch-card
+ * @see https://blueprintjs.com/docs/#core/components/control-card.switch-card
  */
 export const SwitchCard: React.FC<SwitchCardProps> = React.forwardRef((props, ref) => {
-    return <ControlCard controlKind="switch" ref={ref} {...props} />;
+    const className = classNames(props.className, Classes.SWITCH_CONTROL_CARD);
+    return <ControlCard {...props} className={className} controlKind="switch" ref={ref} />;
 });
 SwitchCard.displayName = `${DISPLAYNAME_PREFIX}.SwitchCard`;

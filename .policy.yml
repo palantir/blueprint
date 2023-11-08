@@ -2,6 +2,7 @@ policy:
   approval:
     - or:
         - approved by Blueprint team member
+        - approved by Frontend Infrastructure team member
         - approved by Blueprint team lead
         - authored by Blueprint team lead
         - excavator only touched config files
@@ -18,6 +19,13 @@ approval_rules:
       count: 1
       teams: ["palantir/blueprint"]
 
+  - name: approved by Frontend Infrastructure team member
+    options:
+      allow_contributor: false
+    requires:
+      count: 1
+      teams: ["palantir/fe-infra"]
+
   - name: approved by Blueprint team lead
     options:
       allow_contributor: true
@@ -32,7 +40,9 @@ approval_rules:
       has_author_in:
         users: ["adidahiya"]
       has_valid_signatures_by_keys:
-        key_ids: ["807851B18384352E"]
+        key_ids:
+          - "807851B18384352E" # local key
+          - "4AEE18F83AFDEB23" # GitHub UI
 
   - name: excavator only touched config files
     requires:

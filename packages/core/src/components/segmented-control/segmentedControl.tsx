@@ -16,16 +16,19 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { Button } from "../button/buttons";
 
 import { Classes, Intent } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props, removeNonHTMLProps } from "../../common/props";
+import { Button } from "../button/buttons";
 
-export interface SegmentedControlProps<T extends string> extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
-    options: {
+export interface SegmentedControlProps<T extends string>
+    extends Props,
+        HTMLDivProps,
+        React.RefAttributes<HTMLDivElement> {
+    options: Array<{
         id: T;
         label: string;
-    }[];
+    }>;
     defaultActiveOptionId?: T;
     onActiveOptionChange?: (activeOptionId: T | undefined) => void;
     intent?: typeof Intent.NONE | typeof Intent.PRIMARY;
@@ -38,38 +41,34 @@ export interface SegmentedControlProps<T extends string> extends Props, HTMLDivP
  */
 export const SegmentedControl: React.FC<SegmentedControlProps<string>> = React.forwardRef((props, ref) => {
     const { className, options, defaultActiveOptionId, intent, onActiveOptionChange, ...htmlProps } = props;
-    const classes = classNames(Classes.SEGMENTED_CONTROL, className);
 
     const [activeOptionId, setActiveOptionId] = React.useState<string | undefined>(defaultActiveOptionId);
 
     const handleButtonClick = React.useCallback(
         (optionId: string) => () => {
-            setActiveOptionId(optionId )
-
-            if (onActiveOptionChange !== undefined) {
-                onActiveOptionChange(optionId);
-            }
+            setActiveOptionId(optionId);
+            onActiveOptionChange?.(optionId);
         },
-        [activeOptionId, onActiveOptionChange],
+        [onActiveOptionChange],
     );
 
     return (
-        <div className={classes} ref={ref} {...htmlProps}>
-                {options.map(({ id, label }) => {
-                    const active = activeOptionId === id;
+        <div className={classNames(Classes.SEGMENTED_CONTROL, className)} ref={ref} {...removeNonHTMLProps(htmlProps)}>
+            {options.map(({ id, label }) => {
+                const active = activeOptionId === id;
 
-                    return (
-                        <Button
-                            onClick={handleButtonClick(id)}
-                            intent={active ? intent : Intent.NONE}
-                            minimal={!active}
-                            small={true}
-                            key={id}
-                        >
-                            {label}
-                        </Button>
-                    );
-                })}
+                return (
+                    <Button
+                        onClick={handleButtonClick(id)}
+                        intent={active ? intent : Intent.NONE}
+                        minimal={!active}
+                        small={true}
+                        key={id}
+                    >
+                        {label}
+                    </Button>
+                );
+            })}
         </div>
     );
 });

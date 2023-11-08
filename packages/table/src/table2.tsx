@@ -21,17 +21,17 @@ import {
     AbstractComponent,
     Utils as CoreUtils,
     DISPLAYNAME_PREFIX,
-    HotkeyConfig,
+    type HotkeyConfig,
     HotkeysTarget2,
-    UseHotkeysReturnValue,
+    type UseHotkeysReturnValue,
 } from "@blueprintjs/core";
 
-import { CellRenderer } from "./cell/cell";
-import { Column, ColumnProps } from "./column";
+import type { CellRenderer } from "./cell/cell";
+import { Column, type ColumnProps } from "./column";
 import type { FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import * as Errors from "./common/errors";
-import { CellMapper, Grid } from "./common/grid";
+import { type CellMapper, Grid } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
 import { Rect } from "./common/rect";
@@ -39,18 +39,25 @@ import { RenderMode } from "./common/renderMode";
 import { ScrollDirection } from "./common/scrollDirection";
 import { Utils } from "./common/utils";
 import { ColumnHeader } from "./headers/columnHeader";
-import { ColumnHeaderCell, ColumnHeaderCellProps } from "./headers/columnHeaderCell";
+import { ColumnHeaderCell, type ColumnHeaderCellProps } from "./headers/columnHeaderCell";
 import { renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { GuideLayer } from "./layers/guides";
-import { RegionLayer, RegionStyler } from "./layers/regions";
-import { Locator, LocatorImpl } from "./locator";
+import { RegionLayer, type RegionStyler } from "./layers/regions";
+import { type Locator, LocatorImpl } from "./locator";
 import { QuadrantType } from "./quadrants/tableQuadrant";
 import { TableQuadrantStack } from "./quadrants/tableQuadrantStack";
-import { ColumnLoadingOption, Region, RegionCardinality, Regions, SelectionModes, TableLoadingOption } from "./regions";
+import {
+    ColumnLoadingOption,
+    type Region,
+    RegionCardinality,
+    Regions,
+    SelectionModes,
+    TableLoadingOption,
+} from "./regions";
 import {
     resizeRowsByApproximateHeight,
-    ResizeRowsByApproximateHeightOptions,
+    type ResizeRowsByApproximateHeightOptions,
     resizeRowsByTallestCell,
 } from "./resizeRows";
 import { compareChildren, getHotkeysFromProps, isSelectionModeEnabled } from "./table2Utils";

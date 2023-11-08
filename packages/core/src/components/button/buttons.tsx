@@ -22,7 +22,7 @@ import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { mergeRefs } from "../../common/refs";
 import { Icon } from "../icon/icon";
 import { Spinner, SpinnerSize } from "../spinner/spinner";
-import { AnchorButtonProps, ButtonProps } from "./buttonProps";
+import type { AnchorButtonProps, ButtonProps } from "./buttonProps";
 
 /**
  * Button component.
@@ -55,6 +55,7 @@ export const AnchorButton: React.FC<AnchorButtonProps> = React.forwardRef<HTMLAn
                 role="button"
                 {...removeNonHTMLProps(props)}
                 {...commonProps}
+                aria-disabled={commonProps.disabled}
                 href={commonProps.disabled ? undefined : href}
                 tabIndex={commonProps.disabled ? -1 : tabIndex}
             >
@@ -152,14 +153,14 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
 function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(
     props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
 ) {
-    const { children, icon, loading, rightIcon, text } = props;
+    const { children, icon, loading, rightIcon, text, textClassName } = props;
     const hasTextContent = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
     return (
         <>
             {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={SpinnerSize.SMALL} />}
             <Icon key="leftIcon" icon={icon} />
             {hasTextContent && (
-                <span key="text" className={Classes.BUTTON_TEXT}>
+                <span key="text" className={classNames(Classes.BUTTON_TEXT, textClassName)}>
                     {text}
                     {children}
                 </span>

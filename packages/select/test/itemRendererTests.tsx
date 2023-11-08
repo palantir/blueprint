@@ -19,8 +19,8 @@ import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 
-import { ItemRenderer, ItemRendererProps } from "../src";
-import { Film, TOP_100_FILMS } from "../src/__examples__";
+import type { ItemRenderer, ItemRendererProps } from "../src";
+import { type Film, TOP_100_FILMS } from "../src/__examples__";
 
 describe("ItemRenderer", () => {
     // N.B. don't use `renderFilm` here from the src/__examples__ directory, since we are specifically trying to

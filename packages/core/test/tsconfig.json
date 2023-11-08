@@ -2,9 +2,8 @@
     "extends": "../src/tsconfig",
     "compilerOptions": {
         "declaration": false,
-        "module": "commonjs",
-        "noEmit": true,
+        "downlevelIteration": true,
         "lib": ["dom", "dom.iterable", "es5", "es2015.collection", "es2015.iterable", "es2015.promise"],
-        "downlevelIteration": true
+        "noEmit": true
     }
 }

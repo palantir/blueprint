@@ -15,10 +15,10 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { Classes, Portal, PortalProps, PortalProvider } from "../../src";
+import { Classes, Portal, type PortalProps, PortalProvider } from "../../src";
 
 describe("<Portal>", () => {
     let rootElement: HTMLElement | undefined;

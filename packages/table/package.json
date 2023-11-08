@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/table",
-    "version": "5.0.14",
+    "version": "5.0.17",
     "description": "Scalable interactive table component",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -17,16 +17,16 @@
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/*",
+        "clean": "rm -rf dist/* || rm -rf lib/* || true",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "cross-env NODE_ENV=production webpack",
-        "dist:css": "css-dist lib/css/*.css",
+        "dist:bundle": "NODE_ENV=production webpack",
+        "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
@@ -40,10 +40,10 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^5.4.0",
+        "@blueprintjs/core": "workspace:^",
         "classnames": "^2.3.1",
         "react-innertext": "^1.1.5",
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "peerDependencies": {
         "@types/react": "^16.14.32 || 17 || 18",
@@ -56,9 +56,9 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/colors": "^5.0.3",
-        "@blueprintjs/node-build-scripts": "^8.0.3",
-        "@blueprintjs/test-commons": "^2.1.1",
+        "@blueprintjs/colors": "workspace:^",
+        "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/test-commons": "workspace:^",
         "enzyme": "^3.11.0",
         "karma": "^6.4.1",
         "mocha": "^10.2.0",
@@ -66,7 +66,7 @@
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
-        "typescript": "~4.9.5",
+        "typescript": "~5.2.2",
         "webpack": "^5.76.2"
     },
     "repository": {

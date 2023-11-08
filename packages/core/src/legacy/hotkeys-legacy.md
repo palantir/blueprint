@@ -1,3 +1,7 @@
+---
+tag: deprecated
+---
+
 @# Hotkeys (legacy)
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
@@ -9,7 +13,7 @@ Deprecated: use [useHotkeys](#core/hooks/use-hotkeys)
 
 This API is **deprecated since @blueprintjs/core v3.39.0** in favor of the new
 [`useHotkeys` hook](#core/hooks/use-hotkeys) and
-[__HotkeysTarget2__ component](#core/components/hotkeys-target2). You should migrate to one of
+[**HotkeysTarget2** component](#core/components/hotkeys-target2). You should migrate to one of
 these new APIs, as they will become the standard in future major version of Blueprint.
 
 </div>

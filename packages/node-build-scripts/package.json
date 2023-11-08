@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/node-build-scripts",
-    "version": "8.0.3",
+    "version": "8.1.0",
     "description": "Node.js build scripts for @blueprintjs packages",
     "module": "./index.mjs",
     "exports": {
@@ -11,10 +11,10 @@
     },
     "bin": {
         "assert-package-layout": "./assert-package-layout.mjs",
-        "css-dist": "./css-dist.sh",
+        "css-dist": "./css-dist.mjs",
         "es-lint": "./es-lint.mjs",
         "generate-css-variables": "./generate-css-variables.mjs",
-        "sass-compile": "./sass-compile.sh",
+        "sass-compile": "./sass-compile.mjs",
         "sass-lint": "./sass-lint.mjs"
     },
     "dependencies": {
@@ -42,12 +42,12 @@
         "stylelint": "~14.16.1",
         "stylelint-junit-formatter": "^0.2.2",
         "svgo": "^1.3.2",
-        "typescript": "~4.9.5",
+        "typescript": "~5.2.2",
         "yargs": "^17.7.2"
     },
     "devDependencies": {
         "@jest/globals": "^29.7.0",
-        "@swc/core": "^1.3.80",
+        "@swc/core": "^1.3.92",
         "@swc/jest": "^0.2.29",
         "@types/fs-extra": "~11.0.2",
         "@types/pkg-up": "^3.1.0",

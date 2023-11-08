@@ -26,11 +26,11 @@ import {
     Label,
     Section,
     SectionCard,
-    SectionElevation,
+    type SectionElevation,
     Slider,
     Switch,
 } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 export interface SectionExampleState {

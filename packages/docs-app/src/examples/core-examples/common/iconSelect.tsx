@@ -18,10 +18,10 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Alignment, Button, Classes, MenuItem } from "@blueprintjs/core";
-import { IconName } from "@blueprintjs/icons";
-import { ItemRenderer, Select } from "@blueprintjs/select";
+import type { IconName } from "@blueprintjs/icons";
+import { type ItemRenderer, Select } from "@blueprintjs/select";
 
-import { getIconNames, IconNameOrNone, NONE } from "./iconNames";
+import { getIconNames, type IconNameOrNone, NONE } from "./iconNames";
 
 const ICON_NAMES = getIconNames();
 

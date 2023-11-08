@@ -20,8 +20,8 @@ import * as React from "react";
 import sinon from "sinon";
 
 import * as Classes from "../src/common/classes";
-import { Resizable, ResizableProps, ResizeableState } from "../src/interactions/resizable";
-import { Orientation, ResizeHandle } from "../src/interactions/resizeHandle";
+import { Resizable, type ResizableProps, type ResizeableState } from "../src/interactions/resizable";
+import { Orientation, type ResizeHandle } from "../src/interactions/resizeHandle";
 import { ReactHarness } from "./harness";
 
 interface ResizableDivProps {

@@ -17,10 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Code, H5, Icon, Switch } from "@blueprintjs/core";
+import { Classes, Code, FormGroup, H5, Icon, Switch } from "@blueprintjs/core";
 import { DateInput3, TimePrecision } from "@blueprintjs/datetime2";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
+import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateTag } from "../../common/formattedDateTag";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
@@ -33,6 +34,7 @@ interface DateInput3ExampleState {
     disabled: boolean;
     disableTimezoneSelect: boolean;
     fill: boolean;
+    localeCode: CommonDateFnsLocale;
     reverseMonthAndYearMenus: boolean;
     shortcuts: boolean;
     showActionsBar: boolean;
@@ -51,6 +53,7 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
         disableTimezoneSelect: false,
         disabled: false,
         fill: false,
+        localeCode: DateInput3.defaultProps.locale as CommonDateFnsLocale,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: false,
@@ -91,17 +94,20 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
 
     private handleFormatChange = (dateFnsFormat: string) => this.setState({ dateFnsFormat });
 
+    private handleLocaleCodeChange = (localeCode: CommonDateFnsLocale) => this.setState({ localeCode });
+
     private handleTimePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
 
     public render() {
-        const { date, showRightElement, showTimePickerArrows, useAmPm, ...spreadProps } = this.state;
+        const { date, localeCode, showRightElement, showTimePickerArrows, useAmPm, ...spreadProps } = this.state;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <DateInput3
                     {...spreadProps}
+                    locale={localeCode}
                     onChange={this.handleDateChange}
                     popoverProps={{ placement: "bottom" }}
                     rightElement={
@@ -165,6 +171,13 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
                 <PropCodeTooltip snippet={`reverseMonthAndYearMenus={${reverse.toString()}}`}>
                     <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
                 </PropCodeTooltip>
+                <FormGroup inline={true} label="Locale">
+                    <DateFnsLocaleSelect
+                        value={this.state.localeCode}
+                        onChange={this.handleLocaleCodeChange}
+                        popoverProps={{ placement: "bottom-start" }}
+                    />
+                </FormGroup>
 
                 <H5>Input appearance props</H5>
                 <PropCodeTooltip snippet={`disabled={${disabled.toString()}}`}>

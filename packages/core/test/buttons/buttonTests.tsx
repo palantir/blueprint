@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { AnchorButton, Button, ButtonProps, Classes, Icon, Spinner } from "../../src";
+import { AnchorButton, Button, type ButtonProps, Classes, Icon, Spinner } from "../../src";
 
 describe("Buttons:", () => {
     buttonTestSuite(Button, "button");
@@ -82,6 +82,11 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
         it('doesn\'t render a text span if text=""', () => {
             const wrapper = button({ text: "" });
             assert.equal(wrapper.find("span").length, 0);
+        });
+
+        it("accepts textClassName prop", () => {
+            const wrapper = button({ text: "text", textClassName: "text-class" });
+            assert.isTrue(wrapper.find(".text-class").exists());
         });
 
         it("renders a loading spinner when the loading prop is true", () => {

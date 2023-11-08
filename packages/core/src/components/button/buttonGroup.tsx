@@ -17,8 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Alignment, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
+import { type Alignment, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
 
 export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**

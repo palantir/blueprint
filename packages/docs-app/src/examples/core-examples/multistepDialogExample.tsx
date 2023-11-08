@@ -18,7 +18,7 @@ import * as React from "react";
 
 import {
     Button,
-    ButtonProps,
+    type ButtonProps,
     Code,
     DialogBody,
     DialogStep,
@@ -26,7 +26,7 @@ import {
     HTMLSelect,
     Label,
     MultistepDialog,
-    MultistepDialogNavPosition,
+    type MultistepDialogNavPosition,
     NumericInput,
     Radio,
     RadioGroup,
@@ -34,13 +34,13 @@ import {
 } from "@blueprintjs/core";
 import {
     Example,
-    ExampleProps,
+    type ExampleProps,
     handleBooleanChange,
     handleStringChange,
     handleValueChange,
 } from "@blueprintjs/docs-theme";
 
-import { BlueprintExampleData } from "../../tags/types";
+import type { BlueprintExampleData } from "../../tags/types";
 
 export interface MultistepDialogExampleState {
     autoFocus: boolean;

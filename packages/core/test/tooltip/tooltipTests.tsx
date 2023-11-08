@@ -22,7 +22,7 @@ import { spy, stub } from "sinon";
 import { Classes } from "../../src/common";
 import { Button, Overlay } from "../../src/components";
 import { Popover } from "../../src/components/popover/popover";
-import { Tooltip, TooltipProps } from "../../src/components/tooltip/tooltip";
+import { Tooltip, type TooltipProps } from "../../src/components/tooltip/tooltip";
 
 const TARGET_SELECTOR = `.${Classes.POPOVER_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;

@@ -1,3 +1,7 @@
+---
+tag: deprecated
+---
+
 @# Panel stack
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
@@ -8,7 +12,7 @@ Deprecated: use [PanelStack2](#core/components/panel-stack2)
 </h5>
 
 This API is **deprecated since @blueprintjs/core v3.40.0** in favor of the new
-__PanelStack2__ component. You should migrate to the new API which will become the
+**PanelStack2** component. You should migrate to the new API which will become the
 standard in a future major version of Blueprint.
 
 </div>
@@ -46,7 +50,7 @@ import { Button, IPanelProps, PanelStack } from "@blueprintjs/core";
 
 class MyPanel extends React.Component<IPanelProps> {
     public render() {
-        return <Button onClick={this.openSettingsPanel} text="Settings" />
+        return <Button onClick={this.openSettingsPanel} text="Settings" />;
     }
 
     private openSettingsPanel() {
@@ -54,7 +58,7 @@ class MyPanel extends React.Component<IPanelProps> {
         this.props.openPanel({
             component: SettingsPanel, // <- class or stateless function type
             props: { enabled: true }, // <- SettingsPanel props without IPanelProps
-            title: "Settings",        // <- appears in header and back button
+            title: "Settings", // <- appears in header and back button
         });
     }
 }
@@ -63,7 +67,7 @@ class SettingsPanel extends React.Component<IPanelProps & { enabled: boolean }> 
     // ...
 }
 
-<PanelStack initialPanel={{ component: MyPanel, title: "Home" }} />
+<PanelStack initialPanel={{ component: MyPanel, title: "Home" }} />;
 ```
 
 @interface IPanel

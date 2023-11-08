@@ -16,12 +16,12 @@
 
 import * as React from "react";
 
-import { MenuItem, MenuItemProps } from "@blueprintjs/core";
+import { MenuItem, type MenuItemProps } from "@blueprintjs/core";
 
 import { Clipboard } from "../../common/clipboard";
 import { TABLE_COPY_FAILED } from "../../common/errors";
 import { Regions } from "../../regions";
-import { MenuContext } from "./menuContext";
+import type { MenuContext } from "./menuContext";
 
 export interface CopyCellsMenuItemProps extends Omit<MenuItemProps, "onCopy"> {
     /**

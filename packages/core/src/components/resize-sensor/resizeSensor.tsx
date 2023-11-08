@@ -74,13 +74,14 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
 
     private prevElement: HTMLElement | undefined = undefined;
 
-    private observer =
-        globalThis.ResizeObserver != null ? new ResizeObserver(entries => this.props.onResize?.(entries)) : undefined;
+    private observer: ResizeObserver | undefined;
 
     public render(): React.ReactNode {
         const onlyChild = React.Children.only(this.props.children);
 
-        // if we're provided a ref to the child already, we don't need to attach one ourselves
+        // If we're provided a mutable ref to the child element already, we must re-use that one. This is necessary
+        // in cases where the child node is not a native DOM element and does not use `React.forwardRef`, since
+        // there's no way for us to know how to attach to the underlying DOM node.
         if (this.props.targetRef !== undefined) {
             return onlyChild;
         }
@@ -89,6 +90,12 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     }
 
     public componentDidMount() {
+        // ResizeObserver is available in all modern browsers supported by Blueprint but not in server-side rendering
+        // and some test environments like jsdom, so we to do a feature check here.
+        this.observer =
+            globalThis.ResizeObserver != null
+                ? new ResizeObserver(entries => this.props.onResize?.(entries))
+                : undefined;
         this.observeElement();
     }
 
@@ -107,7 +114,7 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
      * re-observe.
      */
     private observeElement(force = false) {
-        if (this.observer == null) {
+        if (this.observer === undefined) {
             return;
         }
 

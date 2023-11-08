@@ -35,8 +35,32 @@ const ruleTester = new RuleTester({
 ruleTester.run("no-deprecated-select-components", noDeprecatedSelectComponentsRule, {
     // N.B. most other deprecated components are tested by no-deprecated-components.test.ts, this suite just tests
     // for more specific violations which involve certain syntax
-    invalid: [],
+    invalid: [
+        {
+            code: dedent`
+                import { Select2 } from "@blueprintjs/select";
+
+                return <Select2<string> />;
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: {
+                        deprecatedComponentName: "Select2",
+                        newComponentName: "Select",
+                    },
+                },
+            ],
+        },
+    ],
     valid: [
+        {
+            code: dedent`
+                import { Select } from "@blueprintjs/select";
+
+                return <Select<string> />;
+            `,
+        },
         {
             code: dedent`
                 import { MultiSelect } from "@blueprintjs/select";

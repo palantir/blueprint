@@ -2,11 +2,11 @@
 @import "../../common/variables";
 
 .#{$ns}-segmented-control {
-  padding: 3px;
   background-color: $light-gray5;
   border-radius: $pt-border-radius;
   display: flex;
   gap: 3px;
+  padding: 3px;
 
   > .#{$ns}-button:not(.#{$ns}-minimal) {
     box-shadow: 0 0 0 1px $pt-divider-black-muted;

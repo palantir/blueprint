@@ -17,16 +17,16 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSize, SmallCross } from "@blueprintjs/icons";
+import { type IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes, Props } from "../../common";
+import { AbstractPureComponent, Classes, type Props } from "../../common";
 import * as Errors from "../../common/errors";
-import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
-import { DISPLAYNAME_PREFIX, MaybeElement } from "../../common/props";
+import { getPositionIgnoreAngles, isPositionHorizontal, type Position } from "../../common/position";
+import { DISPLAYNAME_PREFIX, type MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon } from "../icon/icon";
-import { BackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
+import { type BackdropProps, Overlay, type OverlayableProps } from "../overlay/overlay";
 
 export enum DrawerSize {
     SMALL = "360px",

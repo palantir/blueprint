@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IKssPluginData, ITag } from "@documentalist/client";
+import type { KssPluginData, Tag } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -27,7 +27,7 @@ import { Example } from "../components/example";
 const MODIFIER_ATTR_REGEXP = /\{\{:modifier}}/g;
 const MODIFIER_CLASS_REGEXP = /\{\{\.modifier}}/g;
 
-export const CssExample: React.FC<ITag> = ({ value }) => {
+export const CssExample: React.FC<Tag> = ({ value }) => {
     const { getDocsData } = React.useContext(DocumentationContext);
     const [activeModifiers, setActiveModifiers] = React.useState<Set<string>>(new Set());
 
@@ -53,7 +53,7 @@ export const CssExample: React.FC<ITag> = ({ value }) => {
         };
     };
 
-    const { css } = getDocsData() as IKssPluginData;
+    const { css } = getDocsData() as KssPluginData;
     if (css == null || css[value] == null) {
         return null;
     }

@@ -16,7 +16,7 @@
 
 import { TIMEZONE_ITEMS } from "./timezoneItems";
 import { getTimezoneNames } from "./timezoneNameUtils";
-import { Timezone, TimezoneWithNames } from "./timezoneTypes";
+import type { Timezone, TimezoneWithNames } from "./timezoneTypes";
 
 /**
  * Given a timezone IANA code and an optional date object, retrieve additional metadata like its common name, offset,

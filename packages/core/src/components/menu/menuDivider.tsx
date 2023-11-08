@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { H6 } from "../html/html";
 
 export interface MenuDividerProps extends Props {
@@ -47,7 +47,7 @@ export class MenuDivider extends React.Component<MenuDividerProps> {
         } else {
             // section header with title
             return (
-                <li className={classNames(Classes.MENU_HEADER, className)} role="separator" tabIndex={-1}>
+                <li className={classNames(Classes.MENU_HEADER, className)} role="separator">
                     <H6 id={titleId}>{title}</H6>
                 </li>
             );

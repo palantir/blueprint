@@ -19,13 +19,13 @@
 import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import {
     Cell,
     Column,
     ColumnHeaderCell,
     CopyCellsMenuItem,
-    MenuContext,
+    type MenuContext,
     SelectionModes,
     Table2,
     Utils,

@@ -17,42 +17,39 @@
 import { assert } from "chai";
 import { format, parse } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import { DayModifiers, DayPicker, ModifiersClassNames } from "react-day-picker";
+import { type DayModifiers, DayPicker, type ModifiersClassNames } from "react-day-picker";
 import sinon from "sinon";
 
 import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
 import {
     DatePickerShortcutMenu,
-    DateRange,
-    DateRangeShortcut,
+    type DateRange,
+    type DateRangeShortcut,
     DateUtils,
     Errors,
     MonthAndYear,
     Months,
-    NonNullDateRange,
+    type NonNullDateRange,
     TimePicker,
-    TimePrecision,
+    type TimePrecision,
 } from "@blueprintjs/datetime";
 
-import { DateRangePicker3, DateRangePicker3Props, Datetime2Classes, ReactDayPickerClasses } from "../../src";
-import * as DateFnsLocaleUtils from "../../src/common/dateFnsLocaleUtils";
-import { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
+import { DateRangePicker3, type DateRangePicker3Props, Datetime2Classes, ReactDayPickerClasses } from "../../src";
+import type { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
-describe("<DatePicker3>", () => {
+// Change the default for testability
+(DateRangePicker3.defaultProps as DateRangePicker3Props).dateFnsLocaleLoader = loadDateFnsLocaleFake;
+
+describe("<DateRangePicker3>", () => {
     let testsContainerElement: HTMLElement;
     let drpWrapper: ReactWrapper<DateRangePicker3Props, DateRangePicker3State>;
 
     let onChangeSpy: sinon.SinonSpy;
     let onHoverChangeSpy: sinon.SinonSpy;
-    let loadDateFnsLocaleStub: sinon.SinonStub;
-
-    before(() => {
-        loadDateFnsLocaleStub = sinon.stub(DateFnsLocaleUtils, "loadDateFnsLocale").callsFake(loadDateFnsLocaleFake);
-    });
 
     beforeEach(() => {
         testsContainerElement = document.createElement("div");
@@ -63,10 +60,6 @@ describe("<DatePicker3>", () => {
         drpWrapper?.unmount();
         drpWrapper?.detach();
         testsContainerElement.remove();
-    });
-
-    after(() => {
-        loadDateFnsLocaleStub.restore();
     });
 
     it("renders its template", () => {
@@ -261,6 +254,45 @@ describe("<DatePicker3>", () => {
                 const onDayClick = sinon.spy();
                 render({ defaultValue, dayPickerProps: { onDayClick } }).left.clickDay(14);
                 assert.isTrue(onDayClick.called);
+            });
+        });
+
+        describe("for i18n", () => {
+            // regression test for https://github.com/palantir/blueprint/issues/6489
+            it("DatePicker3Caption accepts custom month name formatters (contiguousCalendarMonths={false})", () => {
+                const CUSTOM_MONTH_NAMES = [
+                    "First",
+                    "Second",
+                    "Third",
+                    "Fourth",
+                    "Fifth",
+                    "Sixth",
+                    "Seventh",
+                    "Eighth",
+                    "Ninth",
+                    "Tenth",
+                    "Eleventh",
+                    "Twelfth",
+                ];
+                const formatters = {
+                    formatMonthCaption: (d: Date) => CUSTOM_MONTH_NAMES[d.getMonth()],
+                };
+                // try a month which is not January to make sure we're actually setting a value in the <select>
+                // and not just displaying the default value which is the first option
+                const initialMonthIndex = Months.AUGUST;
+                const initialMonth = new Date(2023, initialMonthIndex, 1);
+                const { left } = wrap(
+                    <DateRangePicker3
+                        initialMonth={initialMonth}
+                        contiguousCalendarMonths={false}
+                        dayPickerProps={{ formatters }}
+                    />,
+                );
+                const leftMonth = left.monthSelect.getDOMNode<HTMLSelectElement>();
+                assert.strictEqual(leftMonth.selectedIndex, initialMonthIndex);
+                for (const option of Array.from(leftMonth.options)) {
+                    assert.strictEqual(option.text, CUSTOM_MONTH_NAMES[option.index]);
+                }
             });
         });
     });

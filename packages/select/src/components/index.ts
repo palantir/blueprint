@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-export { MultiSelect, MultiSelectProps } from "./multi-select/multiSelect";
-export { Omnibar, OmnibarProps } from "./omnibar/omnibar";
-export { QueryList, QueryListProps, QueryListRendererProps } from "./query-list/queryList";
-export { Select, SelectProps } from "./select/select";
-export { Suggest, SuggestProps } from "./suggest/suggest";
+export { MultiSelect, type MultiSelectProps } from "./multi-select/multiSelect";
+export { Omnibar, type OmnibarProps } from "./omnibar/omnibar";
+export { QueryList, type QueryListProps, type QueryListRendererProps } from "./query-list/queryList";
+export { Select, type SelectProps } from "./select/select";
+export { Suggest, type SuggestProps } from "./suggest/suggest";

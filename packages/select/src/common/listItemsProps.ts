@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Props, Utils } from "@blueprintjs/core";
+import { type Props, Utils } from "@blueprintjs/core";
 
-import { ItemListRenderer } from "./itemListRenderer";
-import { ItemRenderer } from "./itemRenderer";
-import { CreateNewItem } from "./listItemsUtils";
-import { ItemListPredicate, ItemPredicate } from "./predicate";
+import type { ItemListRenderer } from "./itemListRenderer";
+import type { ItemRenderer } from "./itemRenderer";
+import type { CreateNewItem } from "./listItemsUtils";
+import type { ItemListPredicate, ItemPredicate } from "./predicate";
 
 /**
  * Equality test comparator to determine if two {@link ListItemsProps} items are equivalent.

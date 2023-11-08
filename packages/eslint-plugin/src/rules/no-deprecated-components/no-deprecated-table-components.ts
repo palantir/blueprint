@@ -2,14 +2,16 @@
  * (c) Copyright 2022 Palantir Technologies Inc. All rights reserved.
  */
 
-import { TSESLint } from "@typescript-eslint/utils";
+import type { TSESLint } from "@typescript-eslint/utils";
 
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
 export const tableComponentsMigrationMapping = {
-    // TODO(@adidahiya): Blueprint v6
-    // EditableCell: "EditableCell2",
-    // Table: "Table2",
+    // listed in packages/table/src/deprecatedAliases.ts
+    ColumnHeaderCell2: "ColumnHeaderCell",
+    JSONFormat2: "JSONFormat",
+    RowHeaderCell2: "RowHeaderCell",
+    TruncatedFormat2: "TruncatedFormat",
 };
 
 /**

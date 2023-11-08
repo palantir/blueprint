@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { ControlledProps, DISPLAYNAME_PREFIX, HTMLInputProps, removeNonHTMLProps } from "../../common/props";
+import { type ControlledProps, DISPLAYNAME_PREFIX, type HTMLInputProps, removeNonHTMLProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { AsyncControllableInput } from "./asyncControllableInput";
 import type { InputSharedProps } from "./inputSharedProps";
@@ -133,6 +133,7 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
         const inputProps = {
             type: "text",
             ...removeNonHTMLProps(this.props, NON_HTML_PROPS, true),
+            "aria-disabled": disabled,
             className: classNames(Classes.INPUT, inputClassName),
             onChange: this.handleInputChange,
             style,

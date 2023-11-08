@@ -12,9 +12,18 @@ import { join, resolve } from "node:path";
 import { cwd } from "node:process";
 import semver from "semver";
 
-import { Classes } from "@blueprintjs/core";
+import { hooks, markedRenderer } from "./markdownRenderer.mjs";
 
-import { markedRenderer } from "./markdownRenderer.mjs";
+/** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
+const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table"];
+
+/** This package is expected to have the markdown "navPage" */
+const DOCS_PACKAGE = "docs-app";
+
+/** Run Documentalist on Markdown files in these packages */
+const LIBRARY_AND_DOCS_PACKAGES = [...LIBRARY_PACKAGES, DOCS_PACKAGE];
+
+console.info(`[docs-data] compiling documentation for library packages: ${LIBRARY_PACKAGES.join(", ")}`);
 
 // assume we are running from packages/docs-app
 const monorepoRootDir = resolve(cwd(), "../../");
@@ -41,7 +50,10 @@ console.info(`[docs-data] successfully generated docs.json`);
  */
 async function generateDocumentalistData() {
     const documentalist = new Documentalist({
-        markdown: { renderer: markedRenderer },
+        markdown: {
+            renderer: markedRenderer,
+            hooks,
+        },
         sourceBaseDir: monorepoRootDir,
         // must mark our @Decorator APIs as reserved so we can use them in code samples
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget", "param", "returns"],
@@ -56,18 +68,19 @@ async function generateDocumentalistData() {
         .use(
             /\.tsx?$/,
             new TypescriptPlugin({
-                excludeNames: [/I.+State$/],
-                excludePaths: ["node_modules/", "-app/", "test-commons/", "-build-scripts/"],
-                tsconfigPath: resolve(monorepoRootDir, "./config/tsconfig.base.json"),
+                excludeNames: [/.+State$/],
+                excludePaths: ["node_modules/", "-app/", "test-commons/", "-build-scripts/", "test/"],
+                verbose: true,
             }),
         )
         .use(".scss", new KssPlugin())
         .use("package.json", new NpmPlugin());
 
     const docs = await documentalist.documentGlobs(
-        "../*/src/**/*.{scss,md}",
-        "../*/src/index.{ts,tsx}",
-        "../*/package.json",
+        `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.md`,
+        `../{${LIBRARY_PACKAGES.join(",")}}/src/**/*.scss`,
+        `../{${LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
+        `../{${LIBRARY_PACKAGES}}/package.json`,
     );
 
     const content = JSON.stringify(docs, transformDocumentalistData, 2);
@@ -92,18 +105,5 @@ function transformDocumentalistData(key, value) {
         // reverse the list so highest version is first (easier indexing)
         return Array.from(majors.values()).reverse();
     }
-    if (value != null) {
-        return interpolateClassNamespace(value);
-    }
-    return undefined;
-}
-
-/**
- * If value is a string, replaces `#{$ns}` in that string with the actual Blueprint class namespace.
- * Otherwise, simply returns the value.
- *
- * @param {any} value
- */
-function interpolateClassNamespace(value) {
-    return typeof value === "string" ? value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace()) : value;
+    return value;
 }

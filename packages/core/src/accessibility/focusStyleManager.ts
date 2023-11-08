@@ -17,7 +17,6 @@
 import { FOCUS_DISABLED } from "../common/classes";
 import { InteractionModeEngine } from "../common/interactionMode";
 
-/* istanbul ignore next */
 const fakeFocusEngine = {
     isActive: () => true,
     start: () => true,

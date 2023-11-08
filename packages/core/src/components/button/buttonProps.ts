@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import type * as React from "react";
 
 import type { ActionProps, Alignment, MaybeElement } from "../../common";
 import type { IconName } from "../icon/icon";
@@ -67,6 +67,9 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
 
     /** Whether this button should use small styles. */
     small?: boolean;
+
+    /** Class name(s) to apply to the text span element. */
+    textClassName?: string;
 
     /**
      * HTML `type` attribute of button. Accepted values are `"button"`, `"submit"`, and `"reset"`.

@@ -19,7 +19,8 @@ import { mount } from "enzyme";
 import * as React from "react";
 
 import { Classes } from "../../src";
-import { Checkbox, ControlProps, Radio, Switch } from "../../src/components/forms/controls";
+import type { ControlProps } from "../../src/components/forms/controlProps";
+import { Checkbox, Radio, Switch } from "../../src/components/forms/controls";
 
 type ControlType = typeof Checkbox | typeof Radio | typeof Switch;
 

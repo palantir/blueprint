@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import { ITsTypeAlias } from "@documentalist/client";
+import type { TsTypeAlias } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
-import { Props } from "@blueprintjs/core";
+import type { Props } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContext } from "../../common/context";
 import { ApiHeader } from "./apiHeader";
 
 export interface TypeAliasTableProps extends Props {
-    data: ITsTypeAlias;
+    data: TsTypeAlias;
 }
 
 export const TypeAliasTable: React.FC<TypeAliasTableProps> = ({ className, data }) => {

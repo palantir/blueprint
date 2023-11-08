@@ -17,8 +17,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
-import { ValidationMap } from "../../common/context";
+import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
+import type { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
 import { PortalContext } from "../../context/portal/portalProvider";
 

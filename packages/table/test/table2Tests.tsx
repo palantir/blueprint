@@ -15,7 +15,7 @@
  */
 
 import { expect } from "chai";
-import { MountRendererProps, ReactWrapper, mount as untypedMount } from "enzyme";
+import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
@@ -24,7 +24,7 @@ import sinon from "sinon";
 import { Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Cell, Column, RegionCardinality, Table2, TableLoadingOption, TableProps } from "../src";
+import { Cell, Column, RegionCardinality, Table2, TableLoadingOption, type TableProps } from "../src";
 import type { CellCoordinates, FocusedCellCoordinates } from "../src/common/cellTypes";
 import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
@@ -33,10 +33,10 @@ import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
-import { Region, Regions } from "../src/regions";
-import { TableState } from "../src/tableState";
+import { type Region, Regions } from "../src/regions";
+import type { TableState } from "../src/tableState";
 import { CellType, expectCellLoading } from "./cellTestUtils";
-import { ElementHarness, ReactHarness } from "./harness";
+import { type ElementHarness, ReactHarness } from "./harness";
 import { createStringOfLength, createTableOfSize } from "./mocks/table";
 
 /**

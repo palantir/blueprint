@@ -32,25 +32,31 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     InputGroup,
-    InputGroupProps,
+    type InputGroupProps,
     Intent,
     Popover,
-    PopoverClickTargetHandlers,
-    PopoverTargetProps,
-    Props,
+    type PopoverClickTargetHandlers,
+    type PopoverTargetProps,
+    type Props,
     refHandler,
     setRef,
     Utils,
 } from "@blueprintjs/core";
 
-import { Classes, DateFormatProps, DatePickerBaseProps, DateRange, NonNullDateRange } from "../../common";
+import {
+    Classes,
+    type DateFormatProps,
+    type DatePickerBaseProps,
+    type DateRange,
+    type NonNullDateRange,
+} from "../../common";
 import { getFormattedDateString } from "../../common/dateFormatProps";
-import { DatetimePopoverProps } from "../../common/datetimePopoverProps";
+import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import { isDayInRange, isSameTime } from "../../common/dateUtils";
 import * as Errors from "../../common/errors";
 import { DatePickerUtils } from "../date-picker/datePickerUtils";
 import { DateRangePicker } from "../date-range-picker/dateRangePicker";
-import { DateRangeShortcut } from "../shortcuts/shortcuts";
+import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 
 // We handle events in a kind of generic way in this component, so here
 // we enumerate all the different kinds of events for which we have handlers.

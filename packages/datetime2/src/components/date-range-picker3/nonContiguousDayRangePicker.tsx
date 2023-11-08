@@ -15,15 +15,20 @@
  */
 
 import * as React from "react";
-import { DayPicker, DayPickerRangeProps, MonthChangeEventHandler, SelectRangeEventHandler } from "react-day-picker";
+import {
+    DayPicker,
+    type DayPickerRangeProps,
+    type MonthChangeEventHandler,
+    type SelectRangeEventHandler,
+} from "react-day-picker";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
-import { DateRange, DateRangeSelectionStrategy, DateUtils, MonthAndYear } from "@blueprintjs/datetime";
+import { type DateRange, DateRangeSelectionStrategy, DateUtils, MonthAndYear } from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { DatePicker3Caption } from "../react-day-picker/datePicker3Caption";
-import { DayRangePickerProps } from "./dayRangePickerProps";
+import type { DayRangePickerProps } from "./dayRangePickerProps";
 
 /**
  * Date range picker with two calendars which can move independently of each other.

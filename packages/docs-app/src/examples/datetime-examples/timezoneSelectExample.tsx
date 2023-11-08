@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { H5, Position, Radio, RadioGroup, Switch } from "@blueprintjs/core";
 import { TimezoneDisplayFormat, TimezoneSelect } from "@blueprintjs/datetime";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 export interface TimezoneSelectExampleState {
     disabled: boolean;

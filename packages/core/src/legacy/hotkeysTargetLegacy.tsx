@@ -24,9 +24,9 @@
 import * as React from "react";
 
 import { isFunction } from "../common/utils";
-import { HotkeysProps } from "../components/hotkeys";
+import type { HotkeysProps } from "../components/hotkeys";
 import { HotkeyScope, HotkeysEvents } from "./hotkeysEvents";
-import { Constructor, getDisplayName } from "./legacyCommon";
+import { type Constructor, getDisplayName } from "./legacyCommon";
 
 const HOTKEYS_WARN_DECORATOR_NO_METHOD = `[Blueprint] @HotkeysTargetLegacy-decorated class should implement renderHotkeys.`;
 const HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT = `[Blueprint] "@HotkeysTargetLegacy-decorated components must return a single JSX.Element or an empty render.`;

@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { ExampleMap, ExampleProps } from "@blueprintjs/docs-theme";
+import type { ExampleMap, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { getTheme } from "../components/blueprintDocs";
 import * as CoreExamples from "../examples/core-examples";
@@ -24,7 +24,7 @@ import * as DatetimeExamples from "../examples/datetime-examples";
 import * as Datetime2Examples from "../examples/datetime2-examples";
 import * as SelectExamples from "../examples/select-examples";
 import * as TableExamples from "../examples/table-examples";
-import { BlueprintExampleData } from "./types";
+import type { BlueprintExampleData } from "./types";
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
 

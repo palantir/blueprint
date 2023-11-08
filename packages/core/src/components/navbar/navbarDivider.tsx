@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
 
 // allow the empty interface so we can label it clearly in the docs
 export interface NavbarDividerProps extends Props, HTMLDivProps {

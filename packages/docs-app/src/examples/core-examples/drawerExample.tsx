@@ -29,19 +29,19 @@ import {
     Label,
     Menu,
     MenuItem,
-    OptionProps,
+    type OptionProps,
     Position,
     Switch,
 } from "@blueprintjs/core";
 import {
     Example,
-    ExampleProps,
+    type ExampleProps,
     handleBooleanChange,
     handleStringChange,
     handleValueChange,
 } from "@blueprintjs/docs-theme";
 
-import { BlueprintExampleData } from "../../tags/types";
+import type { BlueprintExampleData } from "../../tags/types";
 
 export interface DrawerExampleState {
     autoFocus: boolean;

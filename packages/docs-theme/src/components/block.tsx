@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import { IBlock } from "@documentalist/client";
+import type { Block } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Code, H3 } from "@blueprintjs/core";
 
-import { TagRendererMap } from "../tags";
+import type { TagRendererMap } from "../tags";
 
 export function renderBlock(
     /** the block to render */
-    block: IBlock | undefined,
+    block: Block | undefined,
     /** known tag renderers */
     tagRenderers: TagRendererMap,
     /** class names to apply to element wrapping string content. */

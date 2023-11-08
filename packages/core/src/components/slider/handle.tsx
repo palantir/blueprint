@@ -20,7 +20,7 @@ import * as React from "react";
 import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp } from "../../common/utils";
-import { HandleProps } from "./handleProps";
+import type { HandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
 
 /**
@@ -84,6 +84,7 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
                 aria-valuemin={min}
                 aria-valuemax={max}
                 aria-valuenow={value}
+                aria-disabled={disabled}
                 aria-orientation={vertical ? "vertical" : "horizontal"}
             >
                 {label == null ? null : <span className={Classes.SLIDER_LABEL}>{label}</span>}

@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { Button, Classes, Code, ControlGroup, Placement, Popover } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Button, Classes, Code, ControlGroup, type Placement, Popover } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 const EXAMPLE_CLASS = "docs-popover-placement-example";
 const SIDE_LABEL_CLASS = "docs-popover-placement-label-side";

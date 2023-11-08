@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-import { Boundary, Modifier, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
-import * as React from "react";
-import { StrictModifier } from "react-popper";
+import type { Boundary, Modifier, Placement, RootBoundary, StrictModifiers } from "@popperjs/core";
+import type * as React from "react";
+import type { StrictModifier } from "react-popper";
 
-import { Position, Props } from "../../common";
-import { OverlayableProps } from "../overlay/overlay";
+import type { Props } from "../../common";
+import type { OverlayableProps } from "../overlay/overlay";
+import type { PopoverPosition } from "./popoverPosition";
 
-export const PopoverPosition = {
-    ...Position,
-    AUTO: "auto" as "auto",
-    AUTO_END: "auto-end" as "auto-end",
-    AUTO_START: "auto-start" as "auto-start",
-};
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export type PopoverPosition = (typeof PopoverPosition)[keyof typeof PopoverPosition];
-
-export { Boundary as PopperBoundary, Placement, placements as PopperPlacements };
+export type { Boundary as PopperBoundary, Placement };
 // copied from @popperjs/core, where it is not exported as public
 export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
 

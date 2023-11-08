@@ -9,6 +9,7 @@ previously available in @blueprintjs/popover v4.x, but they were promoted to the
 @blueprintjs/core v5.x.
 
 Once you upgrade to Blueprint v5.0, you should migrate your imports to the @blueprintjs/core package.
+See the [Popover2 migration guide](https://github.com/palantir/blueprint/wiki/Popover2-migration) for more info.
 
 ```diff
 - import { Popover2 } from "@blueprintjs/popover2";

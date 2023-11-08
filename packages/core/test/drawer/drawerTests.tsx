@@ -15,11 +15,11 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Button, Classes, Drawer, DrawerProps, Position } from "../../src";
+import { Button, Classes, Drawer, type DrawerProps, Position } from "../../src";
 
 describe("<Drawer>", () => {
     let drawer: ReactWrapper<DrawerProps, any>;

@@ -15,12 +15,12 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
 
-import { Classes, Tree, TreeNodeInfo, TreeProps } from "../../src";
+import { Classes, Tree, type TreeNodeInfo, type TreeProps } from "../../src";
 
 describe("<Tree>", () => {
     let testsContainerElement: Element;

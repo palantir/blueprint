@@ -116,6 +116,7 @@ export const CARD = `${NS}-card`;
 export const CONTROL_CARD = `${NS}-control-card`;
 export const CONTROL_CARD_LABEL = `${CONTROL_CARD}-label`;
 export const SWITCH_CONTROL_CARD = `${NS}-switch-control-card`;
+export const CHECKBOX_CONTROL_CARD = `${NS}-checkbox-control-card`;
 
 export const CARD_LIST = `${NS}-card-list`;
 export const CARD_LIST_BORDERED = `${CARD_LIST}-bordered`;

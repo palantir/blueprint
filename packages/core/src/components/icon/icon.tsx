@@ -18,19 +18,26 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
-    DefaultSVGIconProps,
-    IconName,
-    IconPaths,
+    type DefaultSVGIconProps,
+    type IconName,
+    type IconPaths,
     Icons,
     IconSize,
     SVGIconContainer,
-    SVGIconProps,
+    type SVGIconProps,
 } from "@blueprintjs/icons";
 
-import { Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props, removeNonHTMLProps } from "../../common";
+import {
+    Classes,
+    DISPLAYNAME_PREFIX,
+    type IntentProps,
+    type MaybeElement,
+    type Props,
+    removeNonHTMLProps,
+} from "../../common";
 
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
-export { IconName, IconSize };
+export { type IconName, IconSize };
 
 export interface IconOwnProps {
     /**

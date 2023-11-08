@@ -19,9 +19,9 @@ import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Popover } from "../popover/popover";
-import { PopoverTargetProps } from "../popover/popoverSharedProps";
+import type { PopoverTargetProps } from "../popover/popoverSharedProps";
 import { Portal } from "../portal/portal";
-import { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
+import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
 
 export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
     isOpen: boolean;

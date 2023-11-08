@@ -23,12 +23,12 @@ import type { CellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { RenderMode } from "./common/renderMode";
-import { CoordinateData } from "./interactions/dragTypes";
-import { ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
-import { DragSelectable, SelectableProps } from "./interactions/selectable";
-import { Locator } from "./locator";
-import { Region, Regions } from "./regions";
-import { TableBodyCells, TableBodyCellsProps } from "./tableBodyCells";
+import type { CoordinateData } from "./interactions/dragTypes";
+import { type ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
+import { DragSelectable, type SelectableProps } from "./interactions/selectable";
+import type { Locator } from "./locator";
+import { type Region, Regions } from "./regions";
+import { TableBodyCells, type TableBodyCellsProps } from "./tableBodyCells";
 
 export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
     /**

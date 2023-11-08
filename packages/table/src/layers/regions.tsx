@@ -17,11 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Utils as CoreUtils, Props } from "@blueprintjs/core";
+import { Utils as CoreUtils, type Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { QuadrantType } from "../quadrants/tableQuadrant";
-import { Region, Regions } from "../regions";
+import type { QuadrantType } from "../quadrants/tableQuadrant";
+import { type Region, Regions } from "../regions";
 
 export type RegionStyler = (region: Region, quadrantType?: QuadrantType) => React.CSSProperties;
 

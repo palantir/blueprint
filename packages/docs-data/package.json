@@ -1,24 +1,21 @@
 {
     "name": "@blueprintjs/docs-data",
-    "version": "5.4.0",
+    "version": "5.6.0",
     "main": "src/index.js",
     "types": "src/index.d.ts",
     "private": true,
     "scripts": {
-        "clean": "rm -rf src/generated/*",
+        "clean": "rm -rf src/generated/* || true",
         "compile": "node ./compile-docs-data.mjs",
         "test": "exit 0"
     },
     "dependencies": {
-        "@blueprintjs/core": "^5.4.0",
-        "@blueprintjs/docs-theme": "^5.0.14",
-        "@documentalist/compiler": "^4.0.0",
+        "@blueprintjs/core": "workspace:^",
+        "@blueprintjs/docs-theme": "workspace:^",
+        "@documentalist/compiler": "^5.0.0",
         "escape-html": "^1.0.3",
-        "marked": "^9.1.0",
-        "semver": "^7.5.2"
-    },
-    "devDependencies": {
-        "@types/marked": "^4.0.8"
+        "marked": "^9.1.2",
+        "semver": "^7.5.4"
     },
     "repository": {
         "type": "git",

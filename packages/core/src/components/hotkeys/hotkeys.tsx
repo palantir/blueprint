@@ -17,11 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { isElementOfType, isReactChildrenElementOrElements } from "../../common/utils";
 import { H4 } from "../html/html";
-import { Hotkey, HotkeyProps } from "./hotkey";
+import { Hotkey, type HotkeyProps } from "./hotkey";
 
 export interface HotkeysProps extends Props {
     /**

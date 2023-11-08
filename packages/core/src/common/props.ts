@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import type * as React from "react";
 
 import type { IconName } from "@blueprintjs/icons";
 
-import { Intent } from "./intent";
+import type { Intent } from "./intent";
 
 export const DISPLAYNAME_PREFIX = "Blueprint5";
 
@@ -140,6 +140,7 @@ const INVALID_PROPS = [
     "small",
     "tagName",
     "text",
+    "textClassName", // ButtonProps
 ];
 
 /**

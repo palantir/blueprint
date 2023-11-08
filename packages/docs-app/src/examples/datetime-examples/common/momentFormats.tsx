@@ -17,9 +17,9 @@
 import moment from "moment";
 import * as React from "react";
 
-import { DateFormatProps } from "@blueprintjs/datetime";
+import type { DateFormatProps } from "@blueprintjs/datetime";
 
-import { DateFormatSelector, DateFormatSelectorProps } from "../../../common/dateFormatSelector";
+import { DateFormatSelector, type DateFormatSelectorProps } from "../../../common/dateFormatSelector";
 
 export const MomentFormatSelector: React.FC<Omit<DateFormatSelectorProps, "formatOptions">> = props => {
     return (

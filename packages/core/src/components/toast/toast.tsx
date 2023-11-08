@@ -20,10 +20,17 @@ import * as React from "react";
 import { Cross } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { ActionProps, DISPLAYNAME_PREFIX, IntentProps, LinkProps, MaybeElement, Props } from "../../common/props";
+import {
+    type ActionProps,
+    DISPLAYNAME_PREFIX,
+    type IntentProps,
+    type LinkProps,
+    type MaybeElement,
+    type Props,
+} from "../../common/props";
 import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
-import { Icon, IconName } from "../icon/icon";
+import { Icon, type IconName } from "../icon/icon";
 
 export interface ToastProps extends Props, IntentProps {
     /**

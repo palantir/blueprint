@@ -17,9 +17,9 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSize } from "@blueprintjs/icons";
+import { type IconName, IconSize } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type MaybeElement, type Props } from "../../common";
 import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
 import { Icon } from "../icon/icon";

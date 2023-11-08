@@ -15,7 +15,7 @@
  */
 
 import { Direction } from "../direction";
-import { MovementDelta } from "../movementDelta";
+import type { MovementDelta } from "../movementDelta";
 
 export function directionToDelta(direction: Direction): MovementDelta {
     switch (direction) {

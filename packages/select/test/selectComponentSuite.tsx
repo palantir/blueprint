@@ -15,18 +15,18 @@
  */
 
 import { assert } from "chai";
-import { ReactWrapper } from "enzyme";
+import type { ReactWrapper } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 
-import { Classes, HTMLInputProps } from "@blueprintjs/core";
+import { Classes, type HTMLInputProps } from "@blueprintjs/core";
 
-import { ListItemsProps } from "../src";
+import type { ListItemsProps } from "../src";
 import {
     areFilmsEqual,
     createFilm,
     createFilms,
-    Film,
+    type Film,
     filterFilm,
     renderFilm,
     TOP_100_FILMS,

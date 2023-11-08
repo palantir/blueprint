@@ -1,0 +1,17 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "compile-docs-data",
+            "skipFiles": ["<node_internals>/**"],
+            "program": "${workspaceFolder}/packages/docs-data/compile-docs-data.mjs",
+            "outFiles": ["${workspaceFolder}/packages/docs-data/src/generated/*.json"],
+            "cwd": "${workspaceFolder}/packages/docs-data"
+        }
+    ]
+}

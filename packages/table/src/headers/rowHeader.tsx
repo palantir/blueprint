@@ -18,13 +18,13 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
-import { RowIndices } from "../common/grid";
-import { ClientCoordinates } from "../interactions/dragTypes";
-import { IndexedResizeCallback } from "../interactions/resizable";
+import type { RowIndices } from "../common/grid";
+import type { ClientCoordinates } from "../interactions/dragTypes";
+import type { IndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
-import { Header, HeaderProps } from "./header";
-import { RowHeaderCell, RowHeaderCellProps } from "./rowHeaderCell";
+import { Header, type HeaderProps } from "./header";
+import { RowHeaderCell, type RowHeaderCellProps } from "./rowHeaderCell";
 
 export type RowHeaderRenderer = (rowIndex: number) => React.ReactElement<RowHeaderCellProps>;
 

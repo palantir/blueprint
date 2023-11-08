@@ -21,7 +21,7 @@
 
 /* eslint-disable deprecation/deprecation */
 
-import * as React from "react";
+import type * as React from "react";
 
 /**
  * An object describing a panel in a `PanelStack`.

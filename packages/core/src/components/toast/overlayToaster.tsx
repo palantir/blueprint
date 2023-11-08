@@ -24,7 +24,7 @@ import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import type { OverlayToasterProps } from "./overlayToasterProps";
-import { Toast, ToastProps } from "./toast";
+import { Toast, type ToastProps } from "./toast";
 import type { Toaster, ToastOptions } from "./toaster";
 
 export interface OverlayToasterState {

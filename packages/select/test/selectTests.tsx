@@ -15,14 +15,14 @@
  */
 
 import { assert } from "chai";
-import { HTMLAttributes, mount, ReactWrapper } from "enzyme";
+import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
 import { Button, Classes, InputGroup, MenuItem, Popover } from "@blueprintjs/core";
 
-import { ItemRendererProps, Select, SelectProps } from "../src";
-import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
+import { type ItemRendererProps, Select, type SelectProps } from "../src";
+import { type Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import type { SelectState } from "../src/components/select/select";
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";

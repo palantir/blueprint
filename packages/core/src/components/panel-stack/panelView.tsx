@@ -26,7 +26,7 @@ import * as React from "react";
 import { AbstractPureComponent, Classes } from "../../common";
 import { Button } from "../button/buttons";
 import { Text } from "../text/text";
-import { IPanel } from "./panelProps";
+import type { IPanel } from "./panelProps";
 
 export interface IPanelViewProps {
     /**

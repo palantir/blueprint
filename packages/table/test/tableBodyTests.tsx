@@ -22,7 +22,7 @@
 /* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
 
 import { expect } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 
@@ -32,9 +32,9 @@ import * as Classes from "../src/common/classes";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
-import { MenuContext } from "../src/interactions/menus/menuContext";
-import { Region, Regions } from "../src/regions";
-import { TableBody, TableBodyProps } from "../src/tableBody";
+import type { MenuContext } from "../src/interactions/menus/menuContext";
+import { type Region, Regions } from "../src/regions";
+import { TableBody, type TableBodyProps } from "../src/tableBody";
 import { cellClassNames } from "../src/tableBodyCells";
 
 describe("TableBody", () => {
