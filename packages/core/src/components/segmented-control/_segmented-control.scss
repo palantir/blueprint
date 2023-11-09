@@ -8,6 +8,18 @@
   gap: 3px;
   padding: 3px;
 
+  &.#{$ns}-inline {
+    display: inline-flex;
+  }
+
+  &.#{$ns}-fill {
+    width: 100%;
+
+    > .#{$ns}-button {
+      flex-grow: 1;
+    }
+  }
+
   > .#{$ns}-button:not(.#{$ns}-minimal) {
     box-shadow: 0 0 0 1px $pt-divider-black-muted;
 
@@ -25,6 +37,14 @@
 
     .#{$ns}-dark & {
       color: $pt-dark-text-color-muted;
+    }
+  }
+
+  > .#{$ns}-button.#{$ns}-minimal:disabled {
+    color: $pt-text-color-disabled;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-disabled;
     }
   }
 

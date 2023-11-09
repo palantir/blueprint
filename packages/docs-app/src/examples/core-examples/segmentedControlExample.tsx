@@ -16,21 +16,24 @@
 
 import * as React from "react";
 
-import { FormGroup, H5, SegmentedControl, type SegmentedControlIntent } from "@blueprintjs/core";
-import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { FormGroup, H5, SegmentedControl, type SegmentedControlIntent, Switch } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+
+import { type Size, SizeSelect } from "./common/sizeSelect";
 
 export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
-    const handleActiveOptionChange = React.useCallback(
-        activeOptionId => setIntent(activeOptionId as SegmentedControlIntent),
-        [],
-    );
+    const handleIntentChange = React.useCallback(newIntent => setIntent(newIntent as SegmentedControlIntent), []);
+
+    const [fill, setFill] = React.useState<boolean>(false);
+    const [size, setSize] = React.useState<Size>("small");
 
     const options = (
         <>
             <H5>Props</H5>
             <FormGroup label="Intent">
                 <SegmentedControl
+                    inline={true}
                     options={[
                         {
                             label: "None",
@@ -42,15 +45,20 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                         },
                     ]}
                     defaultValue="none"
-                    onChange={handleActiveOptionChange}
+                    onValueChange={handleIntentChange}
                 />
             </FormGroup>
+            <SizeSelect size={size} onChange={setSize} />
+            <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
         </>
     );
 
     return (
         <Example options={options} {...props}>
             <SegmentedControl
+                defaultValue="list"
+                fill={fill}
+                intent={intent}
                 options={[
                     {
                         label: "List",
@@ -64,9 +72,14 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                         label: "Gallery",
                         value: "gallery",
                     },
+                    {
+                        disabled: true,
+                        label: "Disabled",
+                        value: "disabled",
+                    },
                 ]}
-                defaultValue="list"
-                intent={intent}
+                large={size === "large"}
+                small={size === "small"}
             />
         </Example>
     );
