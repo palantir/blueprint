@@ -19,14 +19,21 @@ import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { type ControlledProps, DISPLAYNAME_PREFIX, type HTMLInputProps, removeNonHTMLProps } from "../../common/props";
+import {
+    type ControlledValueProps,
+    DISPLAYNAME_PREFIX,
+    type HTMLInputProps,
+    removeNonHTMLProps,
+} from "../../common/props";
 import { Icon } from "../icon/icon";
 import { AsyncControllableInput } from "./asyncControllableInput";
 import type { InputSharedProps } from "./inputSharedProps";
 
+type ControlledInputValueProps = ControlledValueProps<string, HTMLInputElement>;
+
 export interface InputGroupProps
-    extends Omit<HTMLInputProps, keyof ControlledProps>,
-        ControlledProps,
+    extends Omit<HTMLInputProps, keyof ControlledInputValueProps>,
+        ControlledInputValueProps,
         InputSharedProps {
     /**
      * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
@@ -39,16 +46,6 @@ export interface InputGroupProps
 
     /** Whether this input should use large styles. */
     large?: boolean;
-
-    /**
-     * Callback invoked when the input value changes, typically via keyboard interactions.
-     *
-     * Using this prop instead of `onChange` can help avoid common bugs in React 16 related to Event Pooling
-     * where developers forget to save the text value from a change event or call `event.persist()`.
-     *
-     * @see https://legacy.reactjs.org/docs/legacy-event-pooling.html
-     */
-    onValueChange?(value: string, targetElement: HTMLInputElement | null): void;
 
     /** Whether this input should use small styles. */
     small?: boolean;

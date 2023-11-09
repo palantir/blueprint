@@ -25,7 +25,6 @@
 @page progress-bar
 @page resize-sensor
 @page section
-@page segmented-control
 @page skeleton
 @page spinner
 @page tabs
@@ -41,6 +40,7 @@
 @page checkbox
 @page radio
 @page html-select
+@page segmented-control
 @page sliders
 @page switch
 

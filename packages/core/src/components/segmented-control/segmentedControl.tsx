@@ -19,8 +19,8 @@ import * as React from "react";
 
 import { Classes, Intent } from "../../common";
 import {
+    type ControlledValueProps,
     DISPLAYNAME_PREFIX,
-    type HTMLDivProps,
     type OptionProps,
     type Props,
     removeNonHTMLProps,
@@ -34,13 +34,17 @@ export type SegmentedControlIntent = typeof Intent.NONE | typeof Intent.PRIMARY;
  */
 export interface SegmentedControlProps
     extends Props,
-        Omit<HTMLDivProps, "onChange">,
+        ControlledValueProps<string>,
         React.RefAttributes<HTMLDivElement> {
-    defaultValue?: string;
+    /**
+     * Visual intent to apply to the selected value.
+     */
     intent?: SegmentedControlIntent;
-    onChange?: (value: string) => void;
+
+    /**
+     * List of available options.
+     */
     options: Array<OptionProps<string>>;
-    value?: string;
 }
 
 /**
@@ -49,17 +53,17 @@ export interface SegmentedControlProps
  * @see https://blueprintjs.com/docs/#core/components/segmented-control
  */
 export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRef((props, ref) => {
-    const { className, options, defaultValue, intent, onChange, value: controlledValue, ...htmlProps } = props;
+    const { className, options, defaultValue, intent, onValueChange, value: controlledValue, ...htmlProps } = props;
 
     const [localValue, setLocalValue] = React.useState<string | undefined>(defaultValue);
     const selectedValue = controlledValue ?? localValue;
 
     const handleOptionClick = React.useCallback(
-        (newSelectedValue: string) => {
+        (newSelectedValue: string, targetElement) => {
             setLocalValue(newSelectedValue);
-            onChange?.(newSelectedValue);
+            onValueChange?.(newSelectedValue, targetElement);
         },
-        [onChange],
+        [onValueChange],
     );
 
     return (
@@ -84,11 +88,14 @@ SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
 interface SegmentedControlOptionProps extends OptionProps<string>, Pick<SegmentedControlProps, "intent"> {
     isSelected: boolean;
-    onClick: (value: string) => void;
+    onClick: (value: string, element: HTMLElement) => void;
 }
 
 function SegmentedControlOption({ intent, isSelected, label, onClick, value }: SegmentedControlOptionProps) {
-    const handleClick = React.useCallback(() => onClick?.(value), [onClick, value]);
+    const handleClick = React.useCallback(
+        (event: React.MouseEvent<HTMLElement>) => onClick?.(value, event.currentTarget),
+        [onClick, value],
+    );
 
     return (
         <Button onClick={handleClick} intent={isSelected ? intent : Intent.NONE} minimal={!isSelected} small={true}>
