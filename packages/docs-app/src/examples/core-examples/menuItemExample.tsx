@@ -82,8 +82,9 @@ export function MenuItemExample(props: ExampleProps) {
                         { label: "menuitem", value: "menuitem" },
                         { label: "listoption", value: "listoption" },
                     ]}
-                    value={roleStructure}
                     onValueChange={handleRoleStructureChange}
+                    small={true}
+                    value={roleStructure}
                 />
             </FormGroup>
         </>

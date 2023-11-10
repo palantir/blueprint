@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { type Alignment, AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
+import { type Alignment, AnchorButton, Button, Code, Divider, H5, Intent, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Duplicate, Refresh } from "@blueprintjs/icons";
 
@@ -92,6 +92,7 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Outlined" checked={this.state.outlined} onChange={this.handleOutlinedChange} />
                 <Switch label="Fill" checked={this.state.fill} onChange={this.handleFillChange} />
+                <Divider />
                 <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignTextChange} />
                 <SizeSelect size={this.state.size} onChange={this.handleSizeChange} />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />

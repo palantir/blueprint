@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { H5, HTMLSelect, type HTMLSelectIconName, Label, Switch } from "@blueprintjs/core";
+import { Divider, FormGroup, H5, HTMLSelect, type HTMLSelectIconName, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 export interface HTMLSelectExampleState {
@@ -60,14 +60,14 @@ export class HTMLSelectExample extends React.PureComponent<ExampleProps, HTMLSel
                 <Switch checked={this.state.large} label="Large" onChange={this.handleLargeChange} />
                 <Switch checked={this.state.minimal} label="Minimal" onChange={this.handleMinimalChange} />
                 <Switch checked={this.state.disabled} label="Disabled" onChange={this.handleDisabledChange} />
-                <Label>
-                    Icon
+                <Divider />
+                <FormGroup label="Icon">
                     <HTMLSelect
                         placeholder="Choose an item..."
                         options={SUPPORTED_ICON_NAMES}
                         onChange={this.handleIconChange}
                     />
-                </Label>
+                </FormGroup>
             </>
         );
 
