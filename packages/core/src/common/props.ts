@@ -87,17 +87,35 @@ export interface LinkProps {
 }
 
 /**
- * Interface for a controlled input.
+ * Interface for a controlled or uncontrolled component, typically a form control.
  */
-export interface ControlledProps {
-    /** Initial value of the input, for uncontrolled usage. */
-    defaultValue?: string;
+export interface ControlledValueProps<T, E extends HTMLElement = HTMLElement> {
+    /**
+     * Initial value for uncontrolled usage. Mutually exclusive with `value` prop.
+     */
+    defaultValue?: T;
 
-    /** Form value of the input, for controlled usage. */
-    value?: string;
+    /**
+     * Controlled value. Mutually exclusive with `defaultValue` prop.
+     */
+    value?: T;
+
+    /**
+     * Callback invoked when the component value changes, typically via user interaction, in both controlled and
+     * uncontrolled mode.
+     *
+     * Using this prop instead of `onChange` can help avoid common bugs in React 16 related to Event Pooling
+     * where developers forget to save the text value from a change event or call `event.persist()`.
+     *
+     * @see https://legacy.reactjs.org/docs/legacy-event-pooling.html
+     */
+    onValueChange?: (value: T, targetElement: E | null) => void;
 }
 
-export interface OptionProps extends Props {
+/** @deprecated use `ControlledValueProps` */
+export type ControlledProps = Omit<ControlledValueProps<string, HTMLInputElement>, "onChange">;
+
+export interface OptionProps<T extends string | number = string | number> extends Props {
     /** Whether this option is non-interactive. */
     disabled?: boolean;
 
@@ -105,7 +123,7 @@ export interface OptionProps extends Props {
     label?: string;
 
     /** Value of this option. */
-    value: string | number;
+    value: T;
 }
 
 /** A collection of curated prop keys used across our Components which are not valid HTMLElement props. */

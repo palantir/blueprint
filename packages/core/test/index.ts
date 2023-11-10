@@ -63,6 +63,7 @@ import "./portal/portalTests";
 import "./progress/progressBarTests";
 import "./resize-sensor/resizeSensorTests";
 import "./section/sectionTests";
+import "./segmented-control/segmentedControlTests";
 import "./slider/handleTests";
 import "./slider/multiSliderTests";
 import "./slider/rangeSliderTests";
