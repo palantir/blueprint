@@ -33,6 +33,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
             <H5>Props</H5>
             <FormGroup label="Intent">
                 <SegmentedControl
+                    defaultValue="none"
                     inline={true}
                     options={[
                         {
@@ -44,8 +45,8 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                             value: "primary",
                         },
                     ]}
-                    defaultValue="none"
                     onValueChange={handleIntentChange}
+                    small={true}
                 />
             </FormGroup>
             <SizeSelect size={size} onChange={setSize} />

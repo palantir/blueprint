@@ -19,16 +19,16 @@ import * as React from "react";
 import {
     Classes,
     Code,
+    FormGroup,
     H5,
-    HTMLSelect,
     type Intent,
-    Label,
     Menu,
     MenuItem,
     type MenuItemProps,
+    SegmentedControl,
     Switch,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { BooleanOrUndefinedSelect } from "./common/booleanOrUndefinedSelect";
@@ -42,6 +42,11 @@ export function MenuItemExample(props: ExampleProps) {
     const [iconEnabled, setIconEnabled] = React.useState(true);
     const [submenuEnabled, setSubmenuEnabled] = React.useState(true);
     const [roleStructure, setRoleStructure] = React.useState<MenuItemProps["roleStructure"]>("menuitem");
+
+    const handleRoleStructureChange = React.useCallback(
+        (newValue: string) => setRoleStructure(newValue as MenuItemProps["roleStructure"]),
+        [],
+    );
 
     const isSelectable = roleStructure === "listoption";
 
@@ -71,14 +76,16 @@ export function MenuItemExample(props: ExampleProps) {
             <Switch label="Enable icon" checked={iconEnabled} onChange={handleBooleanChange(setIconEnabled)} />
             <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
             <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
-            <Label>
-                Role structure
-                <HTMLSelect
-                    options={["menuitem", "listoption"]}
+            <FormGroup label="Role structure">
+                <SegmentedControl
+                    options={[
+                        { label: "menuitem", value: "menuitem" },
+                        { label: "listoption", value: "listoption" },
+                    ]}
                     value={roleStructure}
-                    onChange={handleValueChange(setRoleStructure)}
+                    onValueChange={handleRoleStructureChange}
                 />
-            </Label>
+            </FormGroup>
         </>
     );
 
