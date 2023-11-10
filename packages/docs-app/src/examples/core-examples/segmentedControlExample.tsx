@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { FormGroup, H5, SegmentedControl, type SegmentedControlIntent, Switch } from "@blueprintjs/core";
+import { Divider, FormGroup, H5, SegmentedControl, type SegmentedControlIntent, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { type Size, SizeSelect } from "./common/sizeSelect";
@@ -26,13 +26,18 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const handleIntentChange = React.useCallback(newIntent => setIntent(newIntent as SegmentedControlIntent), []);
 
     const [fill, setFill] = React.useState<boolean>(false);
+    const [inline, setInline] = React.useState<boolean>(false);
     const [size, setSize] = React.useState<Size>("small");
 
     const options = (
         <>
             <H5>Props</H5>
+            <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
+            <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
+            <Divider />
             <FormGroup label="Intent">
                 <SegmentedControl
+                    defaultValue="none"
                     inline={true}
                     options={[
                         {
@@ -44,12 +49,11 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                             value: "primary",
                         },
                     ]}
-                    defaultValue="none"
                     onValueChange={handleIntentChange}
+                    small={true}
                 />
             </FormGroup>
             <SizeSelect size={size} onChange={setSize} />
-            <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
         </>
     );
 
@@ -58,6 +62,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
             <SegmentedControl
                 defaultValue="list"
                 fill={fill}
+                inline={inline}
                 intent={intent}
                 options={[
                     {

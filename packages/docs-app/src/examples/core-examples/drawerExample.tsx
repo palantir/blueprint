@@ -24,22 +24,17 @@ import {
     Divider,
     Drawer,
     DrawerSize,
+    FormGroup,
     H5,
     HTMLSelect,
-    Label,
     Menu,
     MenuItem,
     type OptionProps,
     Position,
+    SegmentedControl,
     Switch,
 } from "@blueprintjs/core";
-import {
-    Example,
-    type ExampleProps,
-    handleBooleanChange,
-    handleStringChange,
-    handleValueChange,
-} from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 import type { BlueprintExampleData } from "../../tags/types";
 
@@ -77,7 +72,7 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
 
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
 
-    private handlePositionChange = handleValueChange((position: Position) => this.setState({ position }));
+    private handlePositionChange = (position: string) => this.setState({ position: position as Position });
 
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
@@ -143,22 +138,28 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
     }
 
     private renderOptions() {
-        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, hasBackdrop, usePortal } = this.state;
+        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, hasBackdrop, position, usePortal } =
+            this.state;
         return (
             <>
                 <H5>Props</H5>
-                <Label>
-                    Position
-                    <HTMLSelect
-                        value={this.state.position}
-                        onChange={this.handlePositionChange}
-                        options={VALID_POSITIONS}
+                <FormGroup label="Position">
+                    <SegmentedControl
+                        fill={true}
+                        options={[
+                            { label: Position.TOP, value: Position.TOP },
+                            { label: Position.RIGHT, value: Position.RIGHT },
+                            { label: Position.BOTTOM, value: Position.BOTTOM },
+                            { label: Position.LEFT, value: Position.LEFT },
+                        ]}
+                        onValueChange={this.handlePositionChange}
+                        small={true}
+                        value={position}
                     />
-                </Label>
-                <Label>
-                    Size
+                </FormGroup>
+                <FormGroup label="Size">
                     <HTMLSelect options={SIZES} onChange={this.handleSizeChange} />
-                </Label>
+                </FormGroup>
                 <Divider />
                 <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
                 <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
@@ -189,5 +190,3 @@ const SIZES: Array<string | OptionProps> = [
     "72%",
     "560px",
 ];
-
-const VALID_POSITIONS: Position[] = [Position.TOP, Position.RIGHT, Position.BOTTOM, Position.LEFT];
