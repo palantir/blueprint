@@ -19,8 +19,8 @@
 
 // @ts-check
 
-import { FontAssetType, OtherAssetType, generateFonts as runFantasticon } from "fantasticon";
-import { getLogger } from "fantasticon/lib/cli/logger.js";
+import { FontAssetType, OtherAssetType, generateFonts as runFantasticon } from "@twbs/fantasticon";
+import { getLogger } from "@twbs/fantasticon/lib/cli/logger.js";
 import { mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 
@@ -35,7 +35,7 @@ import {
 
 const logger = getLogger();
 
-/** @type {import("fantasticon/lib/utils/codepoints").CodepointsMap} */
+/** @type {import("@twbs/fantasticon/lib/utils/codepoints").CodepointsMap} */
 const codepoints = {};
 
 for (const icon of iconsMetadata) {
@@ -84,7 +84,7 @@ async function generateFonts(size, prefix) {
 }
 
 /**
- * @param {Promise<import("fantasticon/lib/core/runner").RunnerResults>} runner
+ * @param {Promise<import("@twbs/fantasticon/lib/core/runner").RunnerResults>} runner
  * @returns {Promise<void>}
  */
 async function connectToLogger(runner) {
