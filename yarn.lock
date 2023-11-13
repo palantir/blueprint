@@ -2934,12 +2934,12 @@ __metadata:
   linkType: hard
 
 "@types/fs-extra@npm:~11.0.2":
-  version: 11.0.3
-  resolution: "@types/fs-extra@npm:11.0.3"
+  version: 11.0.4
+  resolution: "@types/fs-extra@npm:11.0.4"
   dependencies:
     "@types/jsonfile": "npm:*"
     "@types/node": "npm:*"
-  checksum: c3b83e6e88e0ef56de0a48b0df27a173a7e6d6a527e0e1b9692c61c186f5a4bfe0c6cb464ff02528165dd8d90acc6d09e2df1d138fdc6fae7680a73c6e714958
+  checksum: 9e34f9b24ea464f3c0b18c3f8a82aefc36dc524cc720fc2b886e5465abc66486ff4e439ea3fb2c0acebf91f6d3f74e514f9983b1f02d4243706bdbb7511796ad
   languageName: node
   linkType: hard
 
