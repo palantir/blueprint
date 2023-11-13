@@ -89,16 +89,16 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
         return this.state.iconOnly
             ? undefined
             : this.state.longText
-            ? "Click to trigger a whimsical wiggling animation"
-            : "Click to wiggle";
+              ? "Click to trigger a whimsical wiggling animation"
+              : "Click to wiggle";
     }
 
     private get duplicateButtonText() {
         return this.state.iconOnly
             ? undefined
             : this.state.longText
-            ? "Duplicate this web page in a new browser tab"
-            : "Duplicate this page";
+              ? "Duplicate this web page in a new browser tab"
+              : "Duplicate this page";
     }
 
     public componentWillUnmount() {
