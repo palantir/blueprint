@@ -77,10 +77,10 @@ function convertDateToDateString(date: Date, timePrecision?: TimePrecision) {
         date.getMilliseconds() !== 0
             ? TimePrecision.MILLISECOND
             : date.getSeconds() !== 0
-            ? TimePrecision.SECOND
-            : date.getMinutes() !== 0
-            ? TimePrecision.MINUTE
-            : undefined;
+              ? TimePrecision.SECOND
+              : date.getMinutes() !== 0
+                ? TimePrecision.MINUTE
+                : undefined;
 
     return TimezoneUtils.getIsoEquivalentWithUpdatedTimezone(date, tz, timePrecision ?? inferredTimePrecision);
 }
