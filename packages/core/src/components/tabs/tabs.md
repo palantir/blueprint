@@ -21,7 +21,7 @@ import { Tab, Tabs } from "@blueprintjs/core";
     <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
     <Tab id="rx" title="React" panel={<ReactPanel />} />
     <Tab id="bb" disabled title="Backbone" panel={<BackbonePanel />} />
-    <Tabs.Expander />
+    <TabsExpander />
     <input className="@ns-input" type="text" placeholder="Search..." />
 </Tabs>
 ```
@@ -36,7 +36,7 @@ Children of `<Tabs>` are rendered in order in the tab list, which is a flex cont
 `<Tab>` child elements are managed by the component; clicking one will change selection.
 Other child elements are rendered in order; interactions are your responsibility.
 
-Insert a `<Tabs.Expander />` between any two children to right-align all subsequent children
+Insert a `<TabsExpander />` between any two children to right-align all subsequent children
 (or bottom-align when `vertical`).
 
 @interface TabsProps

@@ -28,6 +28,7 @@ import {
     Tab,
     type TabId,
     Tabs,
+    TabsExpander,
 } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
@@ -156,7 +157,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
                     />
                     <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
                     <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
-                    <Tabs.Expander />
+                    <TabsExpander />
                     <InputGroup fill={true} type="text" placeholder="Search..." />
                 </Tabs>
             </Example>

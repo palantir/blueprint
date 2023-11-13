@@ -87,12 +87,17 @@ interface PanelStack2Component {
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props: PanelStack2Props<T>) => {
-    const { renderActivePanelOnly = true, showPanelHeader = true, stack: propsStack } = props;
+    const {
+        initialPanel,
+        onClose,
+        onOpen,
+        renderActivePanelOnly = true,
+        showPanelHeader = true,
+        stack: propsStack,
+    } = props;
     const [direction, setDirection] = React.useState("push");
 
-    const [localStack, setLocalStack] = React.useState<T[]>(
-        props.initialPanel !== undefined ? [props.initialPanel] : [],
-    );
+    const [localStack, setLocalStack] = React.useState<T[]>(initialPanel !== undefined ? [initialPanel] : []);
     const stack = React.useMemo(
         () => (propsStack != null ? propsStack.slice().reverse() : localStack),
         [localStack, propsStack],
@@ -108,12 +113,12 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
 
     const handlePanelOpen = React.useCallback(
         (panel: T) => {
-            props.onOpen?.(panel);
-            if (props.stack == null) {
+            onOpen?.(panel);
+            if (propsStack == null) {
                 setLocalStack(prevStack => [panel, ...prevStack]);
             }
         },
-        [props.onOpen],
+        [onOpen, propsStack],
     );
     const handlePanelClose = React.useCallback(
         (panel: T) => {
@@ -121,12 +126,12 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
             if (stack[0] !== panel || stack.length <= 1) {
                 return;
             }
-            props.onClose?.(panel);
-            if (props.stack == null) {
+            onClose?.(panel);
+            if (propsStack == null) {
                 setLocalStack(prevStack => prevStack.slice(1));
             }
         },
-        [stack, props.onClose],
+        [stack, onClose, propsStack],
     );
 
     // early return, after all hooks are called
