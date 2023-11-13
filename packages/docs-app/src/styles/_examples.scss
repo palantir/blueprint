@@ -62,6 +62,10 @@
   .docs-wiggle {
     animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
   }
+
+  .#{$ns}-button:not(.#{$ns}-fill) {
+    max-width: 200px;
+  }
 }
 
 #{example("CardList")} {

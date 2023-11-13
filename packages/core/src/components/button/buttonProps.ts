@@ -41,6 +41,14 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /** Button contents. */
     children?: React.ReactNode;
 
+    /**
+     * If set to `true`, the button text element will hide overflow text that does not fit into a
+     * single line and show a trailing ellipsis, similar to the `Text` component.
+     *
+     * @default false
+     */
+    ellipsizeText?: boolean;
+
     /** Whether this button should expand to fill its container. */
     fill?: boolean;
 
