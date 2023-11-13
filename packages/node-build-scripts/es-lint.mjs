@@ -9,49 +9,57 @@
 
 // @ts-check
 
-import { spawn } from "cross-spawn";
+import { ESLint } from "eslint";
 import { globSync } from "glob";
 import { createWriteStream } from "node:fs";
-import { basename, resolve } from "node:path";
-import { argv, cwd, env, exit, stderr, stdout } from "node:process";
+import { resolve } from "node:path";
+import { argv, cwd, env, exit } from "node:process";
 
 import { junitReportPath } from "./src/utils.mjs";
 
-let format = "codeframe";
-let outputPath;
-let outputStream = stdout;
-if (env.JUNIT_REPORT_PATH != null) {
-    format = "junit";
-    outputPath = junitReportPath("eslint");
-    console.info(`[node-build-scripts] ESLint report will appear in ${outputPath}`);
-    // @ts-ignore
-    outputStream = createWriteStream(outputPath, { flags: "w+" });
-}
+env.LINT_SCRIPT = "true";
 
-// additional args provided to es-lint script
-const additionalArgs = argv.filter(a => {
-    // exclude engine and script name
-    return ["node", "node.exe", "es-lint", "es-lint.js"].every(s => basename(a) !== s);
-});
+const FILES_GLOB = "{src,test}/**/*.{ts,tsx}";
+const absoluteFileGlob = resolve(cwd(), FILES_GLOB);
 
-const commandLineOptions = ["--color", "-f", format, ...additionalArgs];
-
-// ESLint will fail if provided with no files, so we expand the glob before running it
-const fileGlob = "{src,test}/**/*.{ts,tsx}";
-const absoluteFileGlob = resolve(cwd(), fileGlob);
+// ESLint may fail if provided with no files, so we expand the glob before running it
 const anyFilesToLint = globSync(absoluteFileGlob);
 if (anyFilesToLint.length === 0) {
-    console.log(`[node-build-scripts] Not running ESLint because no files match the glob "${fileGlob}"`);
+    console.log(`[node-build-scripts] Not running ESLint because no files match the glob "${FILES_GLOB}"`);
     exit();
 }
 
-env.LINT_SCRIPT = "true";
+let formatterName = "codeframe";
+let outputPath;
+if (env.JUNIT_REPORT_PATH != null) {
+    formatterName = "junit";
+    outputPath = junitReportPath("eslint");
+    console.info(`[node-build-scripts] ESLint report will appear in ${outputPath}`);
+}
 
-const eslint = spawn("eslint", [...commandLineOptions, absoluteFileGlob]);
+const fix = argv.includes("--fix");
+const eslint = new ESLint({ fix });
 
-eslint.stdout.pipe(outputStream);
-eslint.stderr.pipe(stderr);
+try {
+    console.info(`[node-build-scripts] Running ESLint on ${absoluteFileGlob}`);
+    const results = await eslint.lintFiles([absoluteFileGlob]);
 
-eslint.on("close", code => {
-    exit(code ?? undefined);
-});
+    if (fix) {
+        console.info(`[node-build-scripts] Applying ESLint auto-fixes...`);
+        await ESLint.outputFixes(results);
+    }
+
+    const formatter = await eslint.loadFormatter(formatterName);
+    const resultText = formatter.format(results);
+
+    if (outputPath !== undefined) {
+        const outputStream = createWriteStream(outputPath);
+        outputStream.write(resultText);
+        outputStream.close();
+    } else {
+        console.log(resultText);
+    }
+} catch (error) {
+    process.exitCode = 1;
+    console.error(`[node-build-scripts] ESLint failed with error: ${error}`);
+}
