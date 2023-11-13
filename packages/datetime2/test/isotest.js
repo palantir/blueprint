@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,27 +13,24 @@
  * limitations under the License.
  */
 
-// @ts-check
 require("@blueprintjs/test-commons/bootstrap");
+const { add } = require("date-fns");
 
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 
-const Table = require("../lib/cjs");
+const DateTime = require("../lib/cjs");
 
-describe("Table isomorphic rendering", () => {
+describe("@blueprintjs/datetime2 isomorphic rendering", () => {
     generateIsomorphicTests(
-        Table,
+        DateTime,
         {
-            // Pass-through renders
-            Column: { skip: true },
-            DragSelectable: { skip: true },
-            Draggable: { skip: true },
-            HorizontalCellDivider: { className: false },
-            // needs at least one handler or it returns undefined
-            ResizeHandle: { props: { onDoubleClick: () => undefined } },
+            DatePicker3: {},
+            DateInput3: {},
+            DateRangeInput3: {},
+            DateRangePicker3: {},
         },
         {
-            excludedSymbols: ["Grid", "Rect", "Regions"],
+            excludedSymbols: ["DateInput2", "DateInput2MigrationUtils", "DateRangeInput2", "TimezoneSelect"],
         },
     );
 });

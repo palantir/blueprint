@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import "../lib/css/blueprint.css";
+
 import "@blueprintjs/test-commons/bootstrap";
 
 // common
