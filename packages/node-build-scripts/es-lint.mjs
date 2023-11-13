@@ -59,6 +59,7 @@ try {
     } else {
         console.log(resultText);
     }
+    console.info(`[node-build-scripts] Done running ESLint.`);
 } catch (error) {
     process.exitCode = 1;
     console.error(`[node-build-scripts] ESLint failed with error: ${error}`);

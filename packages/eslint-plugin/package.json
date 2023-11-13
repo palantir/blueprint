@@ -6,8 +6,7 @@
     "scripts": {
         "clean": "rm -rf lib/* || true",
         "compile": "tsc -p src/",
-        "lint": "run-p lint:es",
-        "lint:es": "es-lint",
+        "lint": "es-lint",
         "lint-fix": "es-lint --fix",
         "test": "SWC_NODE_PROJECT=./tsconfig.test.json mocha --require @swc-node/register,test/setup.ts --watch-extensions ts,tsx 'test/**/*.{ts,tsx}'"
     },

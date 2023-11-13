@@ -20,8 +20,7 @@
         "dev": "run-p \"compile:esm --watch\"",
         "dist": "run-s \"dist:*\"",
         "dist:verify": "assert-package-layout",
-        "lint": "run-p lint:es",
-        "lint:es": "es-lint",
+        "lint": "es-lint",
         "lint-fix": "es-lint --fix",
         "verify": "npm-run-all compile -p dist lint"
     },

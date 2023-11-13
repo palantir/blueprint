@@ -954,6 +954,7 @@ __metadata:
     chai: "npm:^4.3.7"
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.7"
+    npm-run-all: "npm:^4.1.5"
     react: "npm:^16.13.1"
     typescript: "npm:~5.2.2"
   peerDependencies:

@@ -6,8 +6,7 @@
     "scripts": {
         "clean": "rm -rf lib/* || true",
         "compile": "tsc -p src/",
-        "lint": "run-p lint:es",
-        "lint:es": "es-lint",
+        "lint": "es-lint",
         "lint-fix": "es-lint --fix",
         "test": "mocha test/index.js"
     },
