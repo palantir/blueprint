@@ -81,7 +81,7 @@ export function Portal(
     const context = React.useContext(PortalContext);
 
     const portalContainer =
-        container ?? context.portalContainer ?? typeof document !== "undefined" ? document.body : undefined;
+        container ?? context.portalContainer ?? (typeof document !== "undefined" ? document.body : undefined);
 
     const [portalElement, setPortalElement] = React.useState<HTMLElement>();
 

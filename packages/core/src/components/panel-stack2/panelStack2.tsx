@@ -95,12 +95,13 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
         showPanelHeader = true,
         stack: propsStack,
     } = props;
+    const isControlled = propsStack != null;
     const [direction, setDirection] = React.useState("push");
 
     const [localStack, setLocalStack] = React.useState<T[]>(initialPanel !== undefined ? [initialPanel] : []);
     const stack = React.useMemo(
-        () => (propsStack != null ? propsStack.slice().reverse() : localStack),
-        [localStack, propsStack],
+        () => (isControlled ? propsStack.slice().reverse() : localStack),
+        [localStack, isControlled, propsStack],
     );
     const stackLength = React.useRef<number>(stack.length);
     React.useEffect(() => {
@@ -114,11 +115,11 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
     const handlePanelOpen = React.useCallback(
         (panel: T) => {
             onOpen?.(panel);
-            if (propsStack == null) {
+            if (!isControlled) {
                 setLocalStack(prevStack => [panel, ...prevStack]);
             }
         },
-        [onOpen, propsStack],
+        [onOpen, isControlled],
     );
     const handlePanelClose = React.useCallback(
         (panel: T) => {
@@ -127,11 +128,11 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
                 return;
             }
             onClose?.(panel);
-            if (propsStack == null) {
+            if (!isControlled) {
                 setLocalStack(prevStack => prevStack.slice(1));
             }
         },
-        [stack, onClose, propsStack],
+        [stack, onClose, isControlled],
     );
 
     // early return, after all hooks are called
