@@ -26,7 +26,7 @@
         "compile:css": "sass-compile ./src",
         "copy:scss": "scripts/copy-scss.sh",
         "copy:fonts": "scripts/copy-fonts.sh",
-        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+        "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
         "dist:bundle": "NODE_ENV=production webpack",
         "dist:css": "css-dist lib/css",
