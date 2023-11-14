@@ -36,7 +36,7 @@ type SupportedCardProps = Omit<CardProps, "interactive" | "onChange">;
  */
 type SupportedControlProps = Pick<
     ControlProps,
-    keyof CheckedControlProps | "alignIndicator" | "disabled" | "inputRef" | "value"
+    keyof CheckedControlProps | "alignIndicator" | "disabled" | "inputRef" | "label" | "value"
 >;
 
 export interface ControlCardProps extends SupportedCardProps, SupportedControlProps {
@@ -68,13 +68,14 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
     const {
         alignIndicator,
         checked: _checked,
-        children: labelContent,
+        children,
         className,
         controlKind,
         defaultChecked: _defaultChecked,
         disabled,
         inputProps,
         inputRef,
+        label,
         onChange: _onChange,
         showAsSelectedWhenChecked,
         value,
@@ -84,7 +85,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
     const { checked, onChange } = useCheckedControl(props);
 
     // use a container element to achieve a good flex layout
-    const labelElement = <div className={Classes.CONTROL_CARD_LABEL}>{labelContent}</div>;
+    const labelElement = <div className={Classes.CONTROL_CARD_LABEL}>{children ?? label}</div>;
     const controlProps: ControlProps = {
         alignIndicator,
         checked,
@@ -109,7 +110,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
             ) : controlKind === "radio" ? (
                 <Radio {...controlProps} />
             ) : (
-                props.children
+                labelElement
             )}
         </Card>
     );
