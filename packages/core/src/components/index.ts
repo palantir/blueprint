@@ -108,7 +108,9 @@ export {
 } from "./segmented-control/segmentedControl";
 export { Slider, type SliderProps } from "./slider/slider";
 export { Spinner, type SpinnerProps, SpinnerSize } from "./spinner/spinner";
+export type { ControlCardProps } from "./control-card/controlCard";
 export { CheckboxCard, type CheckboxCardProps } from "./control-card/checkboxCard";
+export { RadioCard, type RadioCardProps } from "./control-card/radioCard";
 export { SwitchCard, type SwitchCardProps } from "./control-card/switchCard";
 export { Tab, type TabId, type TabProps } from "./tabs/tab";
 // eslint-disable-next-line deprecation/deprecation

@@ -117,6 +117,7 @@ export const CONTROL_CARD = `${NS}-control-card`;
 export const CONTROL_CARD_LABEL = `${CONTROL_CARD}-label`;
 export const SWITCH_CONTROL_CARD = `${NS}-switch-control-card`;
 export const CHECKBOX_CONTROL_CARD = `${NS}-checkbox-control-card`;
+export const RADIO_CONTROL_CARD = `${NS}-radio-control-card`;
 
 export const CARD_LIST = `${NS}-card-list`;
 export const CARD_LIST_BORDERED = `${CARD_LIST}-bordered`;
@@ -187,6 +188,7 @@ export const CONTROL_INDICATOR = `${CONTROL}-indicator`;
 export const CONTROL_INDICATOR_CHILD = `${CONTROL_INDICATOR}-child`;
 export const CHECKBOX = `${NS}-checkbox`;
 export const RADIO = `${NS}-radio`;
+export const RADIO_GROUP = `${NS}-radio-group`;
 export const SWITCH = `${NS}-switch`;
 export const SWITCH_INNER_TEXT = `${SWITCH}-inner-text`;
 export const FILE_INPUT = `${NS}-file-input`;
