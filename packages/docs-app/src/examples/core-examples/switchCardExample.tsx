@@ -38,7 +38,11 @@ export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchC
     public render() {
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <FormGroup className="docs-control-card-group" label={<H5>Communication Settings</H5>}>
+                <FormGroup
+                    className="docs-control-card-group"
+                    contentClassName="docs-control-card-group-row"
+                    label={<H5>Communication Settings</H5>}
+                >
                     <SwitchCard {...this.state}>Wifi</SwitchCard>
                     <SwitchCard {...this.state}>Bluetooth</SwitchCard>
                     <SwitchCard {...this.state}>VPN</SwitchCard>

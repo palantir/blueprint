@@ -49,7 +49,11 @@ export class CheckboxCardExample extends React.PureComponent<ExampleProps, Check
         const { showSubtext, ...checkboxCardProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <FormGroup className="docs-control-card-group" label={<H5>Lunch Special</H5>}>
+                <FormGroup
+                    className="docs-control-card-group"
+                    contentClassName="docs-control-card-group-row"
+                    label={<H5>Lunch Special</H5>}
+                >
                     <CheckboxCard {...checkboxCardProps}>
                         Soup
                         {showSubtext && <Subtext>Tomato Basil or Broccoli Cheddar</Subtext>}

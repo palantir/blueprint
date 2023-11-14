@@ -44,3 +44,19 @@ Most of the properties in [**CardProps**](#core/components/card.props-interface)
 Control cards work just like regular cards inside a [**CardList**](#core/components/card-list).
 
 @reactExample ControlCardListExample
+
+@## Radio card
+
+Card with an embedded [**Radio**](#core/components/radio) control (right-alignted by default).
+
+Most of the properties in [**CardProps**](#core/components/card.props-interface) and
+[**RadioProps**](#core/components/radio.props-interface) are available on the root component.
+
+Just like the **Radio** component, a **RadioCard** needs to be contained in a **RadioCardGroup** element which
+manages its selection state.
+
+@reactExample RadioCardGroupExample
+
+@interface RadioCardProps
+
+@interface RadioCardGroupProps

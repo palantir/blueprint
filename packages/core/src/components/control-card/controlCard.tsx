@@ -21,10 +21,10 @@ import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLInputProps } from "../../common/props";
 import { Card, type CardProps } from "../card/card";
 import type { CheckedControlProps, ControlProps } from "../forms/controlProps";
-import { Checkbox, Switch } from "../forms/controls";
+import { Checkbox, Radio, Switch } from "../forms/controls";
 import { useCheckedControl } from "./useCheckedControl";
 
-export type ControlKind = "switch" | "checkbox";
+export type ControlKind = "switch" | "checkbox" | "radio";
 
 /**
  * Subset of {@link Card} which can be used to adjust its behavior.
@@ -34,7 +34,10 @@ type SupportedCardProps = Omit<CardProps, "interactive" | "onChange">;
 /**
  * Subset of {@link ControlProps} which can be used to adjust its behavior.
  */
-type SupportedControlProps = Pick<ControlProps, keyof CheckedControlProps | "alignIndicator" | "disabled" | "inputRef">;
+type SupportedControlProps = Pick<
+    ControlProps,
+    keyof CheckedControlProps | "alignIndicator" | "disabled" | "inputRef" | "value"
+>;
 
 export interface ControlCardProps extends SupportedCardProps, SupportedControlProps {
     /**
@@ -102,6 +105,8 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
                 <Switch {...controlProps} />
             ) : controlKind === "checkbox" ? (
                 <Checkbox {...controlProps} />
+            ) : controlKind === "radio" ? (
+                <Radio {...controlProps} />
             ) : (
                 props.children
             )}
