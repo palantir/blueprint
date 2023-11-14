@@ -43,10 +43,15 @@ const eslint = new ESLint({ fix });
 try {
     console.info(`[node-build-scripts] Running ESLint on ${absoluteFileGlob}`);
     const results = await eslint.lintFiles([absoluteFileGlob]);
+    const hasAnyErrors = results.some(result => result.errorCount > 0);
+    const hasNonFixableErrors = results.some(result => result.errorCount > result.fixableErrorCount);
 
     if (fix) {
         console.info(`[node-build-scripts] Applying ESLint auto-fixes...`);
         await ESLint.outputFixes(results);
+        process.exitCode = hasNonFixableErrors ? 1 : 0;
+    } else {
+        process.exitCode = hasAnyErrors ? 1 : 0;
     }
 
     const formatter = await eslint.loadFormatter(formatterName);
