@@ -22,6 +22,7 @@ import {
     CheckboxCard,
     type CheckboxCardProps,
     Classes,
+    Divider,
     FormGroup,
     H5,
     Switch,
@@ -90,7 +91,8 @@ export class CheckboxCardExample extends React.PureComponent<ExampleProps, Check
                         onChange={this.toggleShowAsSelected}
                     />
                 </PropCodeTooltip>
-                <PropCodeTooltip snippet={`alignIndicator={${alignIndicator}}`}>
+                <Divider />
+                <PropCodeTooltip snippet={`alignIndicator="${alignIndicator}"`}>
                     <AlignmentSelect
                         align={alignIndicator}
                         allowCenter={false}

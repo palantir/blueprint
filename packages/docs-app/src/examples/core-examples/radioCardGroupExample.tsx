@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { type Alignment, Classes, FormGroup, H5, RadioCard, RadioGroup, Switch } from "@blueprintjs/core";
+import { type Alignment, Classes, Divider, FormGroup, H5, RadioCard, RadioGroup, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
@@ -48,7 +48,8 @@ export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
                     onChange={handleBooleanChange(setShowAsSelectedWhenChecked)}
                 />
             </PropCodeTooltip>
-            <PropCodeTooltip snippet={`alignIndicator={${alignIndicator}}`}>
+            <Divider />
+            <PropCodeTooltip snippet={`alignIndicator="${alignIndicator}"`}>
                 <AlignmentSelect
                     align={alignIndicator}
                     allowCenter={false}

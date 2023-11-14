@@ -5,17 +5,18 @@ tag: new
 @# Control card
 
 A control card is an interactive [**Card**](#core/components/card) with an embedded form control.
-There are a few supported form controls:
+There are a few supported form controls, each has a corresponding component API:
 
 -   [**SwitchCard**](#core/components/control-card.switch-card)
 -   [**CheckboxCard**](#core/components/control-card.checkbox-card)
 -   [**RadioCard**](#core/components/control-card.radio-card)
 
-The children of a control card will be used as the `labelElement` of the form control. Users may click anywhere
-inside the card to toggle the control state.
+The label may be specified as either `children` (`React.ReactNode`) or the `label` prop (`string`).
 
-By default, a "checked" control card will be displayed with the same appearance as a "selected" card. This behavior
-may be toggled with the `showAsSelectedWhenChecked` prop.
+Users may click anywhere inside the card to toggle the control state.
+
+By default, a "checked" control card will be displayed with the same appearance as a "selected" card.
+This behavior may be toggled with the `showAsSelectedWhenChecked` prop.
 
 @## Switch card
 
@@ -52,14 +53,14 @@ import React from "react";
 function RadioCardGroupExample() {
     const [selectedValue, setSelectedValue] = React.useState<string | undefined>();
     const handleChange = React.useCallback((event: React.FormEvent<HTMLInputElement>) => {
-        setSelectedValue(event.target.value);
+        setSelectedValue(event.currentTarget.value);
     }, []);
 
     return (
         <RadioGroup selectedValue={selectedValue} onChange={handleChange} label="Lunch Special">
-            <RadioCard label="Soup" value="soup">
-            <RadioCard label="Salad" value="salad">
-            <RadioCard label="Sandwich" value="sandwich">
+            <RadioCard label="Soup" value="soup" />
+            <RadioCard label="Salad" value="salad" />
+            <RadioCard label="Sandwich" value="sandwich" />
         </RadioGroup>
     );
 }
