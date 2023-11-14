@@ -27,7 +27,7 @@ import { useCheckedControl } from "./useCheckedControl";
 export type ControlKind = "switch" | "checkbox" | "radio";
 
 /**
- * Subset of {@link Card} which can be used to adjust its behavior.
+ * Subset of {@link CardProps} which can be used to adjust its behavior.
  */
 type SupportedCardProps = Omit<CardProps, "interactive" | "onChange">;
 
@@ -64,7 +64,6 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
  *
  * @internal
  */
-
 export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, ref) => {
     const {
         alignIndicator,
@@ -78,6 +77,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
         inputRef,
         onChange: _onChange,
         showAsSelectedWhenChecked,
+        value,
         ...cardProps
     } = props;
 
@@ -93,6 +93,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
         inputRef,
         labelElement,
         onChange,
+        value,
         ...inputProps,
     };
     const classes = classNames(Classes.CONTROL_CARD, className, {

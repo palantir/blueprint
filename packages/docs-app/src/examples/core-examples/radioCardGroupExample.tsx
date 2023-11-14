@@ -23,11 +23,6 @@ import { Example, type ExampleProps, handleBooleanChange, handleStringChange } f
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
-// interface CheckboxCardExampleState
-//     extends Pick<CheckboxCardProps, "alignIndicator" | "compact" | "disabled" | "showAsSelectedWhenChecked"> {
-//     showSubtext: boolean;
-// }
-
 export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
     const [alignIndicator, setAlignIndicator] = React.useState<Alignment>("left");
     const [compact, setCompact] = React.useState(false);
@@ -80,11 +75,11 @@ export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
                         Soup
                         {showSubtext && <Subtext>Tomato Basil or Broccoli Cheddar</Subtext>}
                     </RadioCard>
-                    <RadioCard {...radioProps} value="two">
+                    <RadioCard {...radioProps} value="salad">
                         Salad
                         {showSubtext && <Subtext>Caesar, Caprese, or Fresh fruit</Subtext>}
                     </RadioCard>
-                    <RadioCard {...radioProps}>
+                    <RadioCard {...radioProps} value="sandwicth">
                         Sandwich
                         {showSubtext && <Subtext>Chicken, Turkey, or Vegetable</Subtext>}
                     </RadioCard>
@@ -93,83 +88,6 @@ export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
         </Example>
     );
 };
-
-// export class CheckboxCardExample extends React.PureComponent<ExampleProps, CheckboxCardExampleState> {
-//     public state: CheckboxCardExampleState = {
-//         alignIndicator: "left",
-//         compact: false,
-//         disabled: false,
-//         showAsSelectedWhenChecked: true,
-//         showSubtext: true,
-//     };
-
-//     public render() {
-//         const { showSubtext, ...checkboxCardProps } = this.state;
-//         return (
-//             <Example options={this.renderOptions()} {...this.props}>
-//                 <FormGroup className="docs-control-card-group" label={<H5>Lunch Special</H5>}>
-//                     <CheckboxCard {...checkboxCardProps}>
-//                         Soup
-//                         {showSubtext && <Subtext>Tomato Basil or Broccoli Cheddar</Subtext>}
-//                     </CheckboxCard>
-//                     <CheckboxCard {...checkboxCardProps}>
-//                         Salad
-//                         {showSubtext && <Subtext>Caesar, Caprese, or Fresh fruit</Subtext>}
-//                     </CheckboxCard>
-//                     <CheckboxCard {...checkboxCardProps}>
-//                         Sandwich
-//                         {showSubtext && <Subtext>Chicken, Turkey, or Vegetable</Subtext>}
-//                     </CheckboxCard>
-//                 </FormGroup>
-//             </Example>
-//         );
-//     }
-
-//     private renderOptions() {
-//         const { alignIndicator, compact, disabled, showAsSelectedWhenChecked, showSubtext } = this.state;
-//         return (
-//             <>
-//                 <H5>Props</H5>
-//                 <Switch checked={compact} label="Compact" onChange={this.toggleCompact} />
-//                 <Switch checked={disabled} label="Disabled" onChange={this.toggleDisabled} />
-//                 <PropCodeTooltip snippet={`showAsSelectedWhenChecked={${showAsSelectedWhenChecked}}`}>
-//                     <Switch
-//                         checked={showAsSelectedWhenChecked}
-//                         labelElement={
-//                             <span>
-//                                 Show as selected <br />
-//                                 when checked
-//                             </span>
-//                         }
-//                         onChange={this.toggleShowAsSelected}
-//                     />
-//                 </PropCodeTooltip>
-//                 <PropCodeTooltip snippet={`alignIndicator={${alignIndicator}}`}>
-//                     <AlignmentSelect
-//                         align={alignIndicator}
-//                         allowCenter={false}
-//                         label="Align control indicator"
-//                         onChange={this.handleAlignChange}
-//                     />
-//                 </PropCodeTooltip>
-//                 <H5>Content</H5>
-//                 <Switch checked={showSubtext} label="Show sub text" onChange={this.toggleShowSubtext} />
-//             </>
-//         );
-//     }
-
-//     private handleAlignChange = (alignIndicator: Alignment) => this.setState({ alignIndicator });
-
-//     private toggleCompact = handleBooleanChange(compact => this.setState({ compact }));
-
-//     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
-
-//     private toggleShowAsSelected = handleBooleanChange(showAsSelectedWhenChecked =>
-//         this.setState({ showAsSelectedWhenChecked }),
-//     );
-
-//     private toggleShowSubtext = handleBooleanChange(showSubtext => this.setState({ showSubtext }));
-// }
 
 function Subtext(props: { children: React.ReactNode }) {
     return (
