@@ -12,8 +12,8 @@
     },
     "dependencies": {
         "@blueprintjs/colors": "workspace:^",
-        "postcss": "^8.4.21",
-        "postcss-selector-parser": "^6.0.10",
+        "postcss": "^8.4.31",
+        "postcss-selector-parser": "^6.0.13",
         "postcss-value-parser": "^4.2.0"
     },
     "peerDependencies": {
