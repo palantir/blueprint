@@ -39,6 +39,10 @@ type SupportedControlProps = Pick<
     keyof CheckedControlProps | "alignIndicator" | "disabled" | "inputRef" | "label" | "value"
 >;
 
+/**
+ * Shared props interface for all control card components, including `CheckboxCard`, `RadioCard`, and `SwitchCard`.
+ * The label content may be specified as either `label` or `children`, but not both.
+ */
 export interface ControlCardProps extends SupportedCardProps, SupportedControlProps {
     /**
      * Which kind of form control to render inside the card.

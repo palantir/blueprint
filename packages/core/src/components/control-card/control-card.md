@@ -37,7 +37,7 @@ Most of the properties in [**CardProps**](#core/components/card.props-interface)
 
 @## Radio card
 
-Card with an embedded [**Radio**](#core/components/radio) control (right-aligned by default).
+Card with an embedded [**Radio**](#core/components/radio) control (left-aligned by default).
 
 Most of the properties in [**CardProps**](#core/components/card.props-interface) and
 [**RadioProps**](#core/components/radio.props-interface) are available on the root component.
