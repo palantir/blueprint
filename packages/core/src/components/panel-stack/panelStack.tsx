@@ -92,8 +92,8 @@ export class PanelStack extends AbstractPureComponent<PanelStackProps, PanelStac
             this.props.stack != null
                 ? this.props.stack.slice().reverse()
                 : this.props.initialPanel !== undefined
-                  ? [this.props.initialPanel]
-                  : [],
+                ? [this.props.initialPanel]
+                : [],
     };
 
     public componentDidUpdate(prevProps: PanelStackProps, prevState: PanelStackState) {
