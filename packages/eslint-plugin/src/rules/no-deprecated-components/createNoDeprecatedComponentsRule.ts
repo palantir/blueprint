@@ -273,8 +273,8 @@ function getReportDescriptor(
                 ? "migration"
                 : "migrationToNewPackage"
             : newPackageName === undefined
-              ? "migrationWithPropUsage"
-              : "migrationWithPropUsageToNewPackage";
+            ? "migrationWithPropUsage"
+            : "migrationWithPropUsageToNewPackage";
 
     return {
         data: {
