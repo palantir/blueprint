@@ -451,9 +451,12 @@ function getInitialMonth(props: DateRangePicker3Props, value: DateRange): Date {
             month.setMonth(month.getMonth() - 1);
         }
         return month;
-    } else if (DateUtils.isDayInRange(today, [props.minDate!, props.maxDate!])) {
+    } else if (
+        DateUtils.isDayInRange(today, [props.minDate!, props.maxDate!]) &&
+        !DateUtils.isSameMonth(today, props.maxDate!)
+    ) {
         return today;
     } else {
-        return DateUtils.getDateBetween([props.minDate!, props.maxDate!]);
+        return props.minDate!;
     }
 }
