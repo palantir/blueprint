@@ -115,7 +115,7 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
     /**
      * @default H6
      */
-    titleTagName?: keyof JSX.IntrinsicElements | React.FC<React.AllHTMLAttributes<HTMLElement>>;
+    renderTitle?: React.FC<React.HTMLAttributes<HTMLElement>>;
 }
 
 /**
@@ -135,7 +135,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         rightElement,
         subtitle,
         title,
-        titleTagName = H6,
+        renderTitle = H6,
         ...htmlProps
     } = props;
     // Determine whether to use controlled or uncontrolled state.
@@ -186,7 +186,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                         {icon && <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />}
                         <div>
                             {React.createElement(
-                                titleTagName,
+                                renderTitle,
                                 { className: Classes.SECTION_HEADER_TITLE, id: sectionTitleId },
                                 title,
                             )}
