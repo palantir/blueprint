@@ -16,10 +16,11 @@
 
 import * as React from "react";
 
-import { AnchorButton, Code, ControlGroup, H5, Switch, TextArea, Tooltip } from "@blueprintjs/core";
+import { AnchorButton, Code, ControlGroup, H5, Intent, Switch, TextArea, Tooltip } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+import { IntentSelect } from "./common/intentSelect";
 
 const INTITIAL_CONTROLLED_TEXT = "In a galaxy far, far away...";
 const CONTROLLED_TEXT_TO_APPEND =
@@ -29,6 +30,7 @@ interface TextAreaExampleState {
     autoResize: boolean;
     controlled: boolean;
     disabled: boolean;
+    intent: Intent;
     growVertically: boolean;
     large: boolean;
     readOnly: boolean;
@@ -42,6 +44,7 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
         controlled: false,
         disabled: false,
         growVertically: false,
+        intent: Intent.NONE,
         large: false,
         readOnly: false,
         small: false,
@@ -51,6 +54,8 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
     private handleControlledChange = handleBooleanChange(controlled => this.setState({ controlled }));
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private handleAutoResizeChange = handleBooleanChange(autoResize => this.setState({ autoResize }));
 
@@ -83,12 +88,13 @@ export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaE
     }
 
     private renderOptions() {
-        const { controlled, disabled, growVertically, large, readOnly, small, autoResize } = this.state;
+        const { controlled, disabled, growVertically, intent, large, readOnly, small, autoResize } = this.state;
         return (
             <>
                 <H5>Appearance props</H5>
                 <Switch label="Large" disabled={small} onChange={this.handleLargeChange} checked={large} />
                 <Switch label="Small" disabled={large} onChange={this.handleSmallChange} checked={small} />
+                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
                 <H5>Behavior props</H5>
                 <Switch label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />
                 <Switch label="Read-only" onChange={this.handleReadOnlyChange} checked={readOnly} />
