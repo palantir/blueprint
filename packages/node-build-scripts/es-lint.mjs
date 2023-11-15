@@ -10,7 +10,7 @@
 // @ts-check
 
 import { ESLint } from "eslint";
-import { ensureDirSync, writeFileSync } from "fs-extra";
+import fs from "fs-extra";
 import { globSync } from "glob";
 import { dirname, resolve } from "node:path";
 import { argv, cwd, env } from "node:process";
@@ -36,7 +36,6 @@ async function main() {
     const outputReportPath = junitReportPath("eslint");
     if (outputReportPath !== undefined) {
         formatterName = "junit";
-        ensureDirSync(dirname(outputReportPath));
         console.info(`[node-build-scripts/es-lint] ESLint report will appear in ${outputReportPath}`);
     }
 
@@ -61,7 +60,7 @@ async function main() {
         const resultText = await formatter.format(results);
 
         if (outputReportPath !== undefined) {
-            writeFileSync(outputReportPath, resultText);
+            fs.outputFileSync(outputReportPath, resultText);
         } else {
             console.log(resultText);
         }

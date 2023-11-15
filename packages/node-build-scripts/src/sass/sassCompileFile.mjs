@@ -4,7 +4,7 @@
 
 // @ts-check
 
-import fsExtra from "fs-extra";
+import fs from "fs-extra";
 import { dirname, join, parse as parsePath, relative } from "node:path";
 import * as sass from "sass";
 import { SourceMapConsumer, SourceMapGenerator } from "source-map-js";
@@ -29,10 +29,10 @@ export async function sassCompileFile(inputFilePath, outputDir, customFunctions)
         },
         charset: true,
     });
-    fsExtra.outputFileSync(outputFilepath, result.css, { flag: "w" });
+    fs.outputFileSync(outputFilepath, result.css, { flag: "w" });
     if (result.sourceMap != null) {
         const outputSourceMapFilepath = `${outputFilepath}.map`;
-        fsExtra.outputFileSync(
+        fs.outputFileSync(
             outputSourceMapFilepath,
             fixSourcePathsInSourceMap({ outputMapFile: outputSourceMapFilepath, rawSourceMap: result.sourceMap }),
         );
