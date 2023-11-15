@@ -247,10 +247,10 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
             const inputValue = isOpen
                 ? listProps.query
                 : selectedItemText === ""
-                ? resetOnClose
-                    ? ""
-                    : listProps.query
-                : selectedItemText;
+                  ? resetOnClose
+                      ? ""
+                      : listProps.query
+                  : selectedItemText;
 
             return (
                 <InputGroup

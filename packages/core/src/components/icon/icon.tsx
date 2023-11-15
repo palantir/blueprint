@@ -169,8 +169,8 @@ export const Icon: IconComponent = React.forwardRef(function <T extends Element>
             size === IconSize.STANDARD
                 ? Classes.ICON_STANDARD
                 : size === IconSize.LARGE
-                ? Classes.ICON_LARGE
-                : undefined;
+                  ? Classes.ICON_LARGE
+                  : undefined;
         return React.createElement(tagName!, {
             ...removeNonHTMLProps(htmlProps),
             "aria-hidden": title ? undefined : true,
