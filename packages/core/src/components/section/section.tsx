@@ -113,9 +113,13 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
     title?: JSX.Element | string;
 
     /**
+     * Optional title renderer function. If provided, it is recommended to include a Blueprint `<H6>` element
+     * as part of the title. The render function is supplied with `className` and `id` attributes which you must
+     * forward to the DOM.
+     *
      * @default H6
      */
-    renderTitle?: React.FC<React.HTMLAttributes<HTMLElement>>;
+    titleRenderer?: React.FC<React.HTMLAttributes<HTMLElement>>;
 }
 
 /**
@@ -135,7 +139,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         rightElement,
         subtitle,
         title,
-        renderTitle = H6,
+        titleRenderer = H6,
         ...htmlProps
     } = props;
     // Determine whether to use controlled or uncontrolled state.
@@ -186,7 +190,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                         {icon && <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />}
                         <div>
                             {React.createElement(
-                                renderTitle,
+                                titleRenderer,
                                 { className: Classes.SECTION_HEADER_TITLE, id: sectionTitleId },
                                 title,
                             )}

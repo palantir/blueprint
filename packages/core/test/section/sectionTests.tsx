@@ -73,8 +73,8 @@ describe("<Section>", () => {
         assert.isTrue(wrapper.find(`.${Classes.SECTION_HEADER_SUB_TITLE}`).hostNodes().exists());
     });
 
-    it("renders title element with passed renderTitle", () => {
-        const wrapper = mount(<Section title="title" renderTitle={H5} />, {
+    it("renders custom title element with titleRenderer", () => {
+        const wrapper = mount(<Section title="title" titleRenderer={H5} />, {
             attachTo: containerElement,
         });
         assert.isTrue(wrapper.find(H5).exists());
