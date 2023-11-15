@@ -55,7 +55,7 @@ export const iconComponentsRule = createRule<Options, MessageIds>({
 
 function create(context: TSESLint.RuleContext<MessageIds, Options>, node: TSESTree.JSXAttribute): void {
     const option = context.options[0] || OPTION_COMPONENT;
-    const sourceCode = context.getSourceCode();
+    const sourceCode = context.sourceCode;
 
     if (node.name.name !== "icon") {
         return;

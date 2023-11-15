@@ -214,7 +214,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
         > = [];
         // keep a list of already fixed imports in the file so that we do not report overlapping fixes
         const fixedImportNames: string[] = [];
-        const identifiersInFile = getAllIdentifiersInFile(context.getSourceCode());
+        const identifiersInFile = getAllIdentifiersInFile(context.sourceCode);
 
         function isDeprecatedTypeReference(name: string) {
             return (

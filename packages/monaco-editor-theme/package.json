@@ -17,11 +17,10 @@
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
-        "dev": "run-p \"compile:esm -- --watch\"",
+        "dev": "run-p \"compile:esm --watch\"",
         "dist": "run-s \"dist:*\"",
         "dist:verify": "assert-package-layout",
-        "lint": "run-p lint:es",
-        "lint:es": "es-lint",
+        "lint": "es-lint",
         "lint-fix": "es-lint --fix",
         "verify": "npm-run-all compile -p dist lint"
     },

@@ -48,7 +48,7 @@
         "@types/yargs": "~17.0.22",
         "chai": "^4.3.7",
         "dedent": "^1.5.1",
-        "eslint": "^8.50.0",
+        "eslint": "^8.53.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-prettier": "^5.0.0",
         "gh-pages": "^6.0.0",
