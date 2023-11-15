@@ -47,8 +47,8 @@ export type DefaultSVGIconAttributes = React.AriaAttributes &
 export type SVGIconAttributes<T extends Element = Element> = T extends SVGElement
     ? Omit<React.SVGAttributes<T>, OmittedDOMAttributes>
     : T extends HTMLElement
-    ? Omit<React.HTMLAttributes<T>, OmittedDOMAttributes>
-    : DefaultSVGIconAttributes;
+      ? Omit<React.HTMLAttributes<T>, OmittedDOMAttributes>
+      : DefaultSVGIconAttributes;
 
 export interface SVGIconOwnProps {
     /** A space-delimited list of class names to pass along to the SVG element. */

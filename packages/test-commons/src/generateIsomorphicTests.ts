@@ -1,7 +1,5 @@
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- *
- * Generates isomorphic tests for React components.
  */
 
 import { strictEqual } from "assert";
@@ -33,21 +31,33 @@ export interface IsomorphicTestConfig {
     skip?: boolean;
 }
 
+export interface GenerateIsomorphicTestsOptions {
+    /**
+     * Exclude these exports from being tested.
+     *
+     * @default []
+     */
+    excludedSymbols?: string[];
+
+    /**
+     * Whether to try and detect and test function components.
+     *
+     * @default true
+     */
+    testFunctionComponents?: boolean;
+}
+
 /**
  * Tests that each ComponentClass in Components can be isomorphically rendered on the server.
+ *
+ * @param Components Namespace import of all components to test.
+ * @param config Configuration per component. This is a mapped type supporting all keys in Components.
+ * @param options Test generator options.
  */
 export function generateIsomorphicTests<T extends { [name: string]: any }>(
-    /** Namespace import of all components to test. */
     Components: T,
-    /** Configuration per component. This is a mapped type supporting all keys in `Components`. */
     config: { [P in keyof T]?: IsomorphicTestConfig } = {},
-    /** Test generator options */
-    options: {
-        /** Exclude these exports from being tested */
-        excludedSymbols?: string[];
-        /** Whether to try and detect and test function components */
-        testFunctionComponents?: boolean;
-    } = {},
+    options: GenerateIsomorphicTestsOptions = {},
 ) {
     function render(name: string, extraProps?: Record<string, unknown>) {
         const { children, props }: IsomorphicTestConfig = config[name] || {};
@@ -59,7 +69,7 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
         return Enzyme.render(element);
     }
 
-    const { excludedSymbols = [], testFunctionComponents = false } = options;
+    const { excludedSymbols = [], testFunctionComponents = true } = options;
 
     Object.keys(Components)
         .sort()

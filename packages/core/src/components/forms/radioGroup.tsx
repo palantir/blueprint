@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type OptionProps, type Props } from "../../common";
 import * as Errors from "../../common/errors";
 import { isElementOfType } from "../../common/utils";
+import { RadioCard } from "../control-card/radioCard";
+import type { ControlProps } from "./controlProps";
 import { Radio, type RadioProps } from "./controls";
 
 export interface RadioGroupProps extends Props {
@@ -84,7 +87,7 @@ export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
     public render() {
         const { label } = this.props;
         return (
-            <div className={this.props.className}>
+            <div className={classNames(Classes.RADIO_GROUP, this.props.className)}>
                 {label == null ? null : <label className={Classes.LABEL}>{label}</label>}
                 {Array.isArray(this.props.options) ? this.renderOptions() : this.renderChildren()}
             </div>
@@ -99,8 +102,14 @@ export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
 
     private renderChildren() {
         return React.Children.map(this.props.children, child => {
-            if (isElementOfType(child, Radio)) {
-                return React.cloneElement(child, this.getRadioProps(child.props as OptionProps));
+            if (isElementOfType(child, Radio) || isElementOfType(child, RadioCard)) {
+                return React.cloneElement(
+                    // Need this cast here to suppress a TS error caused by differing `ref` types for the Radio and
+                    // RadioCard components. We aren't injecting a ref, so we don't need to be strict about that
+                    // incompatibility.
+                    child as React.ReactElement<ControlProps>,
+                    this.getRadioProps(child.props as OptionProps),
+                );
             } else {
                 return child;
             }
@@ -113,7 +122,7 @@ export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
         ));
     }
 
-    private getRadioProps(optionProps: OptionProps): RadioProps {
+    private getRadioProps(optionProps: OptionProps): Omit<RadioProps, "ref"> {
         const { name } = this.props;
         const { className, disabled, value } = optionProps;
         return {

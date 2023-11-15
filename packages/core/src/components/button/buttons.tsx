@@ -22,6 +22,7 @@ import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { mergeRefs } from "../../common/refs";
 import { Icon } from "../icon/icon";
 import { Spinner, SpinnerSize } from "../spinner/spinner";
+import { Text } from "../text/text";
 import type { AnchorButtonProps, ButtonProps } from "./buttonProps";
 
 /**
@@ -55,6 +56,7 @@ export const AnchorButton: React.FC<AnchorButtonProps> = React.forwardRef<HTMLAn
                 role="button"
                 {...removeNonHTMLProps(props)}
                 {...commonProps}
+                aria-disabled={commonProps.disabled}
                 href={commonProps.disabled ? undefined : href}
                 tabIndex={commonProps.disabled ? -1 : tabIndex}
             >
@@ -72,7 +74,20 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
     ref: React.Ref<E>,
 ) {
-    const { active = false, alignText, fill, large, loading = false, outlined, minimal, small, tabIndex } = props;
+    const {
+        active = false,
+        alignText,
+        fill,
+        large,
+        loading = false,
+        minimal,
+        onBlur,
+        onKeyDown,
+        onKeyUp,
+        outlined,
+        small,
+        tabIndex,
+    } = props;
     const disabled = props.disabled || loading;
 
     // the current key being pressed
@@ -87,9 +102,9 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
             if (isActive) {
                 setIsActive(false);
             }
-            props.onBlur?.(e);
+            onBlur?.(e);
         },
-        [isActive, props.onBlur],
+        [isActive, onBlur],
     );
     const handleKeyDown = React.useCallback(
         (e: React.KeyboardEvent<any>) => {
@@ -100,9 +115,9 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
                 }
             }
             setCurrentKeyPressed(e.key);
-            props.onKeyDown?.(e);
+            onKeyDown?.(e);
         },
-        [currentKeyPressed, props.onKeyDown],
+        [currentKeyPressed, onKeyDown],
     );
     const handleKeyUp = React.useCallback(
         (e: React.KeyboardEvent<any>) => {
@@ -111,9 +126,9 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
                 buttonRef.current?.click();
             }
             setCurrentKeyPressed(undefined);
-            props.onKeyUp?.(e);
+            onKeyUp?.(e);
         },
-        [props.onKeyUp],
+        [onKeyUp],
     );
 
     const className = classNames(
@@ -152,17 +167,26 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
 function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(
     props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
 ) {
-    const { children, icon, loading, rightIcon, text } = props;
+    const { children, ellipsizeText, icon, loading, rightIcon, text, textClassName } = props;
     const hasTextContent = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
     return (
         <>
             {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={SpinnerSize.SMALL} />}
             <Icon key="leftIcon" icon={icon} />
             {hasTextContent && (
-                <span key="text" className={Classes.BUTTON_TEXT}>
+                <Text
+                    key="text"
+                    className={classNames(Classes.BUTTON_TEXT, textClassName)}
+                    ellipsize={ellipsizeText}
+                    tagName="span"
+                >
                     {text}
                     {children}
-                </span>
+                </Text>
+                // <span key="text" className={classNames(Classes.BUTTON_TEXT, textClassName)}>
+                //     {text}
+                //     {children}
+                // </span>
             )}
             <Icon key="rightIcon" icon={rightIcon} />
         </>

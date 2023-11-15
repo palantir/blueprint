@@ -30,6 +30,9 @@ export interface CheckedControlProps {
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
+/**
+ * Shared props for form control components like Switch, Checkbox, and Radio.
+ */
 export interface ControlProps
     extends CheckedControlProps,
         Props,

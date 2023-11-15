@@ -200,7 +200,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
                     <div className={rootClasses}>
                         {this.props.banner}
                         <div className="docs-app">
-                            <div className="docs-nav-wrapper">
+                            <div className="docs-nav-wrapper" role="navigation">
                                 <div className="docs-nav" ref={this.refHandlers.nav}>
                                     {this.props.header}
                                     <div className="docs-nav-divider" />

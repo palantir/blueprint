@@ -31,8 +31,8 @@ export const Heading: React.FC<Tag> = props => {
     const { level, route, value } = props;
     const className = classNames(Classes.HEADING, "docs-title");
     const children = [
-        <a className="docs-anchor" data-route={route} key="anchor" />,
-        <a className="docs-anchor-link" href={"#" + route} key="link">
+        <a className="docs-anchor" data-route={route} key="anchor" aria-hidden={true} tabIndex={-1} />,
+        <a className="docs-anchor-link" href={"#" + route} key="link" aria-hidden={true} tabIndex={-1}>
             <Link />
         </a>,
         value,

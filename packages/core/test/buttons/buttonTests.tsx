@@ -84,6 +84,11 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
             assert.equal(wrapper.find("span").length, 0);
         });
 
+        it("accepts textClassName prop", () => {
+            const wrapper = button({ text: "text", textClassName: "text-class" });
+            assert.isTrue(wrapper.find(".text-class").exists());
+        });
+
         it("renders a loading spinner when the loading prop is true", () => {
             const wrapper = button({ loading: true });
             assert.lengthOf(wrapper.find(Spinner), 1);

@@ -27,7 +27,9 @@ export { KeyCodes as Keys } from "./keyCodes";
 export { Position } from "./position";
 export {
     type ActionProps,
+    // eslint-disable-next-line deprecation/deprecation
     type ControlledProps,
+    type ControlledValueProps,
     type IntentProps,
     type LinkProps,
     type OptionProps,

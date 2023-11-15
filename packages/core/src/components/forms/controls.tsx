@@ -79,6 +79,9 @@ ControlInternal.displayName = `${DISPLAYNAME_PREFIX}.Control`;
 // Switch
 //
 
+/**
+ * Switch component props.
+ */
 export interface SwitchProps extends ControlProps {
     /**
      * Text to display inside the switch indicator when checked.
@@ -132,6 +135,9 @@ Switch.displayName = `${DISPLAYNAME_PREFIX}.Switch`;
 // Radio
 //
 
+/**
+ * Radio component props.
+ */
 export type RadioProps = ControlProps;
 
 /**
@@ -148,6 +154,9 @@ Radio.displayName = `${DISPLAYNAME_PREFIX}.Radio`;
 // Checkbox
 //
 
+/**
+ * Checkbox component props.
+ */
 export interface CheckboxProps extends ControlProps {
     /** Whether this checkbox is initially indeterminate (uncontrolled mode). */
     defaultIndeterminate?: boolean;

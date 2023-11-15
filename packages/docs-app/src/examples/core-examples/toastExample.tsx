@@ -20,10 +20,10 @@ import * as React from "react";
 import {
     Button,
     Classes,
+    FormGroup,
     H5,
     HTMLSelect,
     Intent,
-    Label,
     NumericInput,
     OverlayToaster,
     type OverlayToasterProps,
@@ -158,12 +158,10 @@ export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExam
         return (
             <>
                 <H5>Props</H5>
-                <Label>
-                    Position
+                <FormGroup label="Position">
                     <HTMLSelect value={position} onChange={this.handlePositionChange} options={POSITIONS} />
-                </Label>
-                <Label>
-                    Maximum active toasts
+                </FormGroup>
+                <FormGroup label="Maximum active toasts">
                     <NumericInput
                         allowNumericCharactersOnly={true}
                         placeholder="No maximum!"
@@ -171,7 +169,7 @@ export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExam
                         value={maxToasts}
                         onValueChange={this.handleValueChange}
                     />
-                </Label>
+                </FormGroup>
                 <Switch label="Auto focus" checked={autoFocus} onChange={this.toggleAutoFocus} />
                 <Switch label="Can escape key clear" checked={canEscapeKeyClear} onChange={this.toggleEscapeKey} />
                 <Switch label="Use portal" checked={usePortal} onChange={this.toggleUsePortal} />
