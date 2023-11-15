@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { type Alignment, FormGroup, H5, Switch, SwitchCard, type SwitchCardProps } from "@blueprintjs/core";
+import { type Alignment, Divider, FormGroup, H5, Switch, SwitchCard, type SwitchCardProps } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
@@ -38,7 +38,11 @@ export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchC
     public render() {
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <FormGroup className="docs-control-card-group" label={<H5>Communication Settings</H5>}>
+                <FormGroup
+                    className="docs-control-card-group"
+                    contentClassName="docs-control-card-group-row"
+                    label={<H5>Communication Settings</H5>}
+                >
                     <SwitchCard {...this.state}>Wifi</SwitchCard>
                     <SwitchCard {...this.state}>Bluetooth</SwitchCard>
                     <SwitchCard {...this.state}>VPN</SwitchCard>
@@ -66,6 +70,7 @@ export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchC
                         onChange={this.toggleShowAsSelected}
                     />
                 </PropCodeTooltip>
+                <Divider />
                 <PropCodeTooltip snippet={`alignIndicator={${alignIndicator}}`}>
                     <AlignmentSelect
                         align={alignIndicator}

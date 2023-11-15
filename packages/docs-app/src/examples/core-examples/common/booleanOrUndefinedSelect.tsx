@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, ButtonGroup, Code, Label } from "@blueprintjs/core";
+import { FormGroup, SegmentedControl } from "@blueprintjs/core";
 
 export type BooleanOrUndefined = undefined | false | true;
 
@@ -33,23 +33,24 @@ export const BooleanOrUndefinedSelect: React.FC<BooleanOrUndefinedSelectProps> =
     value,
     onChange,
 }) => {
-    const handleUndefined = React.useCallback(() => onChange(undefined), []);
-    const handleTrue = React.useCallback(() => onChange(true), []);
-    const handleFalse = React.useCallback(() => onChange(false), []);
+    const handleChange = React.useCallback(
+        (newValue: string) => onChange(newValue === "undefined" ? undefined : newValue === "true" ? true : false),
+        [onChange],
+    );
 
     return (
-        <Label>
-            {label}
-            <ButtonGroup fill={true} style={{ marginTop: 5 }}>
-                <Button
-                    disabled={disabled}
-                    active={value === undefined}
-                    text={<Code>undefined</Code>}
-                    onClick={handleUndefined}
-                />
-                <Button disabled={disabled} active={value === true} text={<Code>true</Code>} onClick={handleTrue} />
-                <Button disabled={disabled} active={value === false} text={<Code>false</Code>} onClick={handleFalse} />
-            </ButtonGroup>
-        </Label>
+        <FormGroup label={label}>
+            <SegmentedControl
+                fill={true}
+                options={[
+                    { disabled, label: "undefined", value: "undefined" },
+                    { disabled, label: "true", value: "true" },
+                    { disabled, label: "false", value: "false" },
+                ]}
+                onValueChange={handleChange}
+                small={true}
+                value={value === undefined ? "undefined" : value === true ? "true" : "false"}
+            />
+        </FormGroup>
     );
 };

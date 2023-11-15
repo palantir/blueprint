@@ -21,7 +21,7 @@ These "V2" names are backwards-compatible with the previous major version of @bl
 ### Motivation
 
 **DatePicker3** and its related "V3" components are next-generation variants of components currently available in the
-[**@blueprintjs/datetime**](#datetime) package. They will become the standard date & time components in a
+[**@blueprintjs/datetime2**](#datetime2) package. They will become the standard date & time components in a
 future major version of Blueprint. You are encouraged to try out the new APIs, provide feedback, and set yourself
 up for forward compatibility in the Blueprint ecosystem.
 

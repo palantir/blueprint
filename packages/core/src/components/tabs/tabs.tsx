@@ -119,7 +119,11 @@ export interface TabsState {
  * @see https://blueprintjs.com/docs/#core/components/tabs
  */
 export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
-    /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
+    /**
+     * Insert a `TabsExpander` between any two children to right-align all subsequent children.
+     *
+     * @deprecated use `TabsExpander`
+     */
     public static Expander = TabsExpander;
 
     public static Tab = Tab;

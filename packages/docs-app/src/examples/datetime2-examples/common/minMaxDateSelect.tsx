@@ -17,7 +17,7 @@
 import { add } from "date-fns";
 import * as React from "react";
 
-import { HTMLSelect, Label } from "@blueprintjs/core";
+import { FormGroup, HTMLSelect } from "@blueprintjs/core";
 import { handleNumberChange } from "@blueprintjs/docs-theme";
 
 interface DateOption {
@@ -36,6 +36,7 @@ export interface DateSelectProps {
 const DateSelect: React.FC<DateSelectProps> = ({ label, onChange, options }) => {
     const [selectedOptionIndex, setSelectedOptionIndex] = React.useState(0);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const handleSelectChange = React.useCallback(
         handleNumberChange(optionIndex => {
             setSelectedOptionIndex(optionIndex);
@@ -45,14 +46,13 @@ const DateSelect: React.FC<DateSelectProps> = ({ label, onChange, options }) => 
     );
 
     return (
-        <Label>
-            {label}
+        <FormGroup label={label}>
             <HTMLSelect value={selectedOptionIndex} onChange={handleSelectChange}>
                 {options.map((opt, i) => (
                     <option key={i} value={i} label={opt.label} />
                 ))}
             </HTMLSelect>
-        </Label>
+        </FormGroup>
     );
 };
 

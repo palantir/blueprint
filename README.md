@@ -74,7 +74,7 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 [Lerna](https://lerna.js.org/) manages inter-package dependencies in this monorepo.
 Builds are orchestrated via `lerna run` and NPM scripts.
 
-**Prerequisites**: Node.js v18+ (see version specified in `.nvmrc`), Yarn v1.22 (see version specified in `.yarnrc`)
+**Prerequisites**: Node.js v18+ (see version specified in `.nvmrc`), Yarn v4.x (see version specified in `package.json`)
 
 ### One-time setup
 
@@ -83,7 +83,7 @@ First, ensure you have `nvm` ([Node Version Manager](https://github.com/nvm-sh/n
 After cloning this repo, run:
 
 1. `nvm use` to use the supported Node version for Blueprint development.
-1. `corepack enable` to activate Yarn as the Node package manager.
+1. `corepack enable` to activate [Yarn](https://yarnpkg.com/getting-started) as the Node package manager.
 1. `yarn` to install all dependencies for the monorepo.
 1. If running on Windows:
     1. `npm install -g windows-build-tools` to install build tools globally

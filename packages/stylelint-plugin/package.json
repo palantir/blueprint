@@ -4,24 +4,23 @@
     "description": "Stylelint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
-        "clean": "rm -rf lib/*",
+        "clean": "rm -rf lib/* || true",
         "compile": "tsc -p src/",
-        "lint": "run-p lint:es",
-        "lint:es": "es-lint",
+        "lint": "es-lint",
         "lint-fix": "es-lint --fix",
         "test": "mocha test/index.js"
     },
     "dependencies": {
-        "@blueprintjs/colors": "^5.0.5",
-        "postcss": "^8.4.21",
-        "postcss-selector-parser": "^6.0.10",
+        "@blueprintjs/colors": "workspace:^",
+        "postcss": "^8.4.31",
+        "postcss-selector-parser": "^6.0.13",
         "postcss-value-parser": "^4.2.0"
     },
     "peerDependencies": {
         "stylelint": "^14.12.1 || ^15.10.3"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^8.1.0",
+        "@blueprintjs/node-build-scripts": "workspace:^",
         "mocha": "^10.2.0",
         "typescript": "~5.2.2"
     },

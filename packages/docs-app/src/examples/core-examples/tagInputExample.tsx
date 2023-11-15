@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, H5, Intent, Switch, TagInput, type TagProps } from "@blueprintjs/core";
+import { Button, Divider, H5, Intent, Switch, TagInput, type TagProps } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -127,6 +127,7 @@ export class TagInputExample extends React.PureComponent<ExampleProps, TagInputE
                 <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
                 <Switch label="Left icon" checked={this.state.leftIcon} onChange={this.handleLeftIconChange} />
                 <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
+                <Divider />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
                 <H5>Behavior props</H5>
                 <Switch label="Add on blur" checked={this.state.addOnBlur} onChange={this.handleAddOnBlurChange} />
