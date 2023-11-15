@@ -67,6 +67,28 @@ packages' CSS files as well (if you are not doing this already):
 
 </div>
 
+### Loading `date-fns` locales
+
+The "V3" components in this package support internationalization via date-fns locales. By default, locales
+are loaded via an async `import("date-fns/*")` of the corresponding locale submodule. If you need to customize
+this loader function, you may do so with the `dateFnsLocaleLoader` prop. The following code example shows how this
+is done for Vite bundler environments (note that `date-fns` will need to to be an explicit dependency of your package):
+
+```tsx
+import { Locale } from "date-fns";
+import React from "react";
+import { DatePicker3 } from "@blueprintjs/datetime2";
+
+const loadDateFnsLocale: (localeCode: string) => Promise<Locale> = async localeCode => {
+    const localeModule = await import(`../node_modules/date-fns/esm/locale/${localeCode}/index.js`);
+    return localeModule.default;
+};
+
+export const Example: React.FC = () => {
+    return <DatePicker3 dateFnsLocaleLoader={loadDateFnsLocale} />;
+};
+```
+
 @page date-picker3
 @page date-input3
 @page date-range-picker3
