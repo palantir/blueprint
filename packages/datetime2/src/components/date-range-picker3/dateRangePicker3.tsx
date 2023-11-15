@@ -451,12 +451,18 @@ function getInitialMonth(props: DateRangePicker3Props, value: DateRange): Date {
             month.setMonth(month.getMonth() - 1);
         }
         return month;
-    } else if (
-        DateUtils.isDayInRange(today, [props.minDate!, props.maxDate!]) &&
-        !DateUtils.isSameMonth(today, props.maxDate!)
-    ) {
+    } else if (DateUtils.isDayInRange(today, [props.minDate!, props.maxDate!])) {
+        if (!isSingleMonthOnly && DateUtils.isSameMonth(today, props.maxDate!)) {
+            // special case: if today is in the maxDate month, display it on the right calendar
+            today.setMonth(today.getMonth() - 1);
+        }
         return today;
     } else {
-        return props.minDate!;
+        const betweenDate = DateUtils.getDateBetween([props.minDate!, props.maxDate!]);
+        if (!isSingleMonthOnly && DateUtils.isSameMonth(betweenDate, props.maxDate!)) {
+            // special case: if betweenDate is in the maxDate month, display it on the right calendar
+            betweenDate.setMonth(betweenDate.getMonth() - 1);
+        }
+        return betweenDate;
     }
 }
