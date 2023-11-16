@@ -30,9 +30,6 @@ module.exports = {
     parserOptions: { ecmaVersion: 2022 },
     settings: {
         "import/internal-regex": "^@blueprintjs",
-        react: {
-            version: "detect",
-        },
     },
     rules: {
         // HACKHACK: this rule impl has too many false positives

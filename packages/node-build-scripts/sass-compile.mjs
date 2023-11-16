@@ -5,7 +5,7 @@
 // @ts-check
 
 import { watch } from "chokidar";
-import fsExtra from "fs-extra";
+import fs from "fs-extra";
 import { basename, extname, join, resolve } from "node:path";
 import { argv } from "node:process";
 import * as sass from "sass";
@@ -68,7 +68,7 @@ if (args.watch) {
 }
 
 async function compileAllFiles() {
-    const files = fsExtra.readdirSync(inputFolder);
+    const files = fs.readdirSync(inputFolder);
     const inputFilePaths = files
         .filter(file => extname(file) === ".scss" && !basename(file).startsWith("_"))
         .map(fileName => join(inputFolder, fileName));
