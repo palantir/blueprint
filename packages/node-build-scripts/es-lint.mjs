@@ -12,12 +12,12 @@
 import { ESLint } from "eslint";
 import fs from "fs-extra";
 import { globSync } from "glob";
-import { dirname, resolve } from "node:path";
-import { argv, cwd, env } from "node:process";
+import { resolve } from "node:path";
+import { argv, cwd, env, exit } from "node:process";
 
 import { junitReportPath } from "./src/utils.mjs";
 
-main();
+await main();
 
 async function main() {
     env.LINT_SCRIPT = "true";
@@ -41,6 +41,7 @@ async function main() {
 
     const fix = argv.includes("--fix");
     const eslint = new ESLint({ fix });
+    let exitCode = 0;
 
     try {
         console.info(`[node-build-scripts/es-lint] Running ESLint on ${absoluteFileGlob}`);
@@ -51,9 +52,9 @@ async function main() {
         if (fix) {
             console.info(`[node-build-scripts/es-lint] Applying ESLint auto-fixes...`);
             await ESLint.outputFixes(results);
-            process.exitCode = hasNonFixableErrors ? 1 : 0;
+            exitCode = hasNonFixableErrors ? 1 : 0;
         } else {
-            process.exitCode = hasAnyErrors ? 1 : 0;
+            exitCode = hasAnyErrors ? 1 : 0;
         }
 
         const formatter = await eslint.loadFormatter(formatterName);
@@ -67,8 +68,10 @@ async function main() {
         console.info(
             `[node-build-scripts/es-lint] Done running ESLint, with ${process.exitCode === 0 ? "no" : "some"} errors.`,
         );
+
+        exit(exitCode);
     } catch (error) {
-        process.exitCode = 1;
         console.error(`[node-build-scripts/es-lint] ESLint failed with error: ${error}`);
+        exit(1);
     }
 }
