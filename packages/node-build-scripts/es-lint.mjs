@@ -66,7 +66,7 @@ async function main() {
             console.log(resultText);
         }
         console.info(
-            `[node-build-scripts/es-lint] Done running ESLint, with ${process.exitCode === 0 ? "no" : "some"} errors.`,
+            `[node-build-scripts/es-lint] Done running ESLint, with ${exitCode === 0 ? "no" : "some"} errors.`,
         );
 
         exit(exitCode);
