@@ -2,6 +2,11 @@
     "affected": {
         "defaultBase": "develop"
     },
+    "tasksRunnerOptions": {
+        "default": {
+            "runner": "nx/tasks-runners/default"
+        }
+    },
     "targetDefaults": {
         "compile": {
             "dependsOn": ["^compile"],
