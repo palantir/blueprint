@@ -6,8 +6,20 @@
     "private": true,
     "scripts": {
         "clean": "rm -rf src/generated/* || true",
-        "compile": "node ./compile-docs-data.mjs",
-        "test": "exit 0"
+        "compile": "node ./compile-docs-data.mjs"
+    },
+    "nx": {
+        "targets": {
+            "compile": {
+                "dependsOn": [],
+                "inputs": [
+                    "{workspaceRoot}/packages/*/src/**/*.{md,ts,tsx,scss}"
+                ],
+                "outputs": [
+                    "{projectRoot}/src/generated"
+                ]
+            }
+        }
     },
     "dependencies": {
         "@blueprintjs/core": "workspace:^",

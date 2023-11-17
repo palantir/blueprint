@@ -64,7 +64,7 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: yarn compile
+      - run: yarn compile --parallel=7
       - persist_to_workspace:
           root: "."
           paths:
@@ -110,7 +110,7 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: yarn dist
+      - run: yarn dist --parallel=7
       - persist_to_workspace:
           root: "."
           paths: [packages/*/lib, packages/*/dist]
@@ -129,8 +129,8 @@ jobs:
       - run:
           command: |
             case $CIRCLE_NODE_INDEX in \
-            0) yarn lerna run --scope "@blueprintjs/eslint-plugin" test ;; \
-            1) yarn lerna run --scope "@blueprintjs/stylelint-plugin" test ;; \
+            0) yarn nx test @blueprintjs/eslint-plugin ;; \
+            1) yarn nx test @blueprintjs/stylelint-plugin ;; \
             esac
           when: always
       - store_test_results: { path: ./reports }
@@ -166,12 +166,12 @@ jobs:
           # see https://github.com/palantir/blueprint/issues/3616
           command: |
             case $CIRCLE_NODE_INDEX in \
-            0) yarn lerna run test:typeCheck ;; \
-            1) yarn lerna run --scope "@blueprintjs/core" test:karma ;; \
-            2) yarn lerna run --scope "@blueprintjs/datetime" test:karma ;; \
-            3) yarn lerna run --scope "@blueprintjs/datetime2" test:karma ;; \
-            4) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
-            5) yarn lerna run --scope "@blueprintjs/table" test:karma
+            0) yarn nx run-many -t test:typeCheck ;; \
+            1) yarn nx test:karma @blueprintjs/core ;; \
+            2) yarn nx test:karma @blueprintjs/datetime ;; \
+            3) yarn nx test:karma @blueprintjs/datetime2 ;; \
+            4) yarn nx test:karma @blueprintjs/select ;; \
+            5) yarn nx test:karma @blueprintjs/table
             esac
           when: always
       - store_test_results: { path: ./reports }
@@ -187,7 +187,7 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir ./reports
-      - run: yarn lerna run test:iso
+      - run: yarn nx run-many -t test:iso
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
