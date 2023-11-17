@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/table-dev-app",
-    "version": "5.0.17",
+    "version": "5.0.18",
     "description": "Dev application for @blueprintjs/table",
     "private": true,
     "scripts": {

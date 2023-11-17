@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/stylelint-plugin",
-    "version": "4.1.3",
+    "version": "4.1.4",
     "description": "Stylelint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
