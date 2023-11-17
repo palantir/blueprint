@@ -882,7 +882,7 @@ __metadata:
     http-server: "npm:^14.1.1"
     lerna: "npm:^7.4.2"
     npm-run-all: "npm:^4.1.5"
-    nx: "npm:17.1.2"
+    nx: "npm:^17.1.2"
     octokit: "npm:^3.1.2"
     prettier: "npm:~3.1.0"
     sinon: "npm:^17.0.1"
@@ -12937,7 +12937,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nx@npm:17.1.2":
+"nx@npm:17.1.2, nx@npm:^17.1.2":
   version: 17.1.2
   resolution: "nx@npm:17.1.2"
   dependencies:
