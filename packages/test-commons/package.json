@@ -14,17 +14,19 @@
         "test": "exit 0"
     },
     "dependencies": {
-        "chai": "^4.3.7",
+        "chai": "^4.3.10",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.7"
     },
     "peerDependencies": {
-        "react": ">=16.8"
+        "react": ">=16.8",
+        "react-dom": ">=16.8"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
         "npm-run-all": "^4.1.5",
-        "react": "^16.13.1",
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0",
         "typescript": "~5.2.2"
     },
     "repository": {

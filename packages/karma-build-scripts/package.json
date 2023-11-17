@@ -20,7 +20,8 @@
         "karma-remap-coverage": "^0.1.5",
         "karma-sourcemap-loader": "^0.4.0",
         "karma-webpack": "^5.0.0",
-        "mocha": "^10.2.0"
+        "mocha": "^10.2.0",
+        "webpack": "^5.89.0"
     },
     "repository": {
         "type": "git",

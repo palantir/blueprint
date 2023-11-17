@@ -16,6 +16,17 @@
         "eslint-plugin-react": "^7.33.2",
         "eslint-plugin-react-hooks": "^4.6.0"
     },
+    "peerDependencies": {
+        "typescript": "^5.2.2"
+    },
+    "peerDependenciesMeta": {
+        "typescript": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "typescript": "^5.2.2"
+    },
     "repository": {
         "type": "git",
         "url": "git@github.com:palantir/blueprint.git",

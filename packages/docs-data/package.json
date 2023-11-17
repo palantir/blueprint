@@ -14,7 +14,7 @@
         "@blueprintjs/docs-theme": "workspace:^",
         "@documentalist/compiler": "^5.0.0",
         "escape-html": "^1.0.3",
-        "marked": "^9.1.2",
+        "marked": "^9.1.6",
         "semver": "^7.5.4"
     },
     "repository": {
