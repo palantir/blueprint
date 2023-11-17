@@ -859,6 +859,42 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@blueprintjs/root@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@blueprintjs/root@workspace:."
+  dependencies:
+    "@types/chai": "npm:~4.3.10"
+    "@types/enzyme": "npm:~3.10.16"
+    "@types/enzyme-adapter-react-16": "npm:~1.0.9"
+    "@types/mocha": "npm:~10.0.4"
+    "@types/node": "npm:~18.16.20"
+    "@types/react": "npm:~16.14.51"
+    "@types/react-dom": "npm:~16.9.22"
+    "@types/react-transition-group": "npm:~4.4.9"
+    "@types/sinon": "npm:~17.0.1"
+    "@types/yargs": "npm:~17.0.31"
+    chai: "npm:^4.3.10"
+    dedent: "npm:^1.5.1"
+    eslint: "npm:^8.53.0"
+    eslint-config-prettier: "npm:^9.0.0"
+    eslint-plugin-prettier: "npm:^5.0.1"
+    gh-pages: "npm:^6.0.0"
+    http-server: "npm:^14.1.1"
+    lerna: "npm:^7.4.2"
+    npm-run-all: "npm:^4.1.5"
+    nx: "npm:^17.1.2"
+    octokit: "npm:^3.1.2"
+    prettier: "npm:~3.1.0"
+    sinon: "npm:^17.0.1"
+    stylelint: "npm:~14.16.1"
+    stylelint-config-palantir: "npm:^6.0.1"
+    stylelint-scss: "npm:^5.3.1"
+    typescript: "npm:~5.2.2"
+    yargs: "npm:^17.7.2"
+    yarn-deduplicate: "npm:^6.0.2"
+  languageName: unknown
+  linkType: soft
+
 "@blueprintjs/select@workspace:^, @blueprintjs/select@workspace:packages/select":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/select@workspace:packages/select"
@@ -1738,6 +1774,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nrwl/tao@npm:17.1.2":
+  version: 17.1.2
+  resolution: "@nrwl/tao@npm:17.1.2"
+  dependencies:
+    nx: "npm:17.1.2"
+    tslib: "npm:^2.3.0"
+  bin:
+    tao: index.js
+  checksum: 4c6c98d4296e5d16e56c13ab79ce96ec68848a48b6241301cd0834861c63e28d155d79ce629154210c1904da98fc2c60b9bf2c183b6c1f9e9bf23541a19bcdf0
+  languageName: node
+  linkType: hard
+
 "@nx/devkit@npm:16.10.0, @nx/devkit@npm:>=16.5.1 < 17":
   version: 16.10.0
   resolution: "@nx/devkit@npm:16.10.0"
@@ -1762,9 +1810,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/nx-darwin-arm64@npm:17.1.2":
+  version: 17.1.2
+  resolution: "@nx/nx-darwin-arm64@npm:17.1.2"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@nx/nx-darwin-x64@npm:16.10.0":
   version: 16.10.0
   resolution: "@nx/nx-darwin-x64@npm:16.10.0"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@nx/nx-darwin-x64@npm:17.1.2":
+  version: 17.1.2
+  resolution: "@nx/nx-darwin-x64@npm:17.1.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -1776,9 +1838,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/nx-freebsd-x64@npm:17.1.2":
+  version: 17.1.2
+  resolution: "@nx/nx-freebsd-x64@npm:17.1.2"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@nx/nx-linux-arm-gnueabihf@npm:16.10.0":
   version: 16.10.0
   resolution: "@nx/nx-linux-arm-gnueabihf@npm:16.10.0"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@nx/nx-linux-arm-gnueabihf@npm:17.1.2":
+  version: 17.1.2
+  resolution: "@nx/nx-linux-arm-gnueabihf@npm:17.1.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
@@ -1790,9 +1866,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/nx-linux-arm64-gnu@npm:17.1.2":
+  version: 17.1.2
+  resolution: "@nx/nx-linux-arm64-gnu@npm:17.1.2"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
 "@nx/nx-linux-arm64-musl@npm:16.10.0":
   version: 16.10.0
   resolution: "@nx/nx-linux-arm64-musl@npm:16.10.0"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@nx/nx-linux-arm64-musl@npm:17.1.2":
+  version: 17.1.2
+  resolution: "@nx/nx-linux-arm64-musl@npm:17.1.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
@@ -1804,9 +1894,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/nx-linux-x64-gnu@npm:17.1.2":
+  version: 17.1.2
+  resolution: "@nx/nx-linux-x64-gnu@npm:17.1.2"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
 "@nx/nx-linux-x64-musl@npm:16.10.0":
   version: 16.10.0
   resolution: "@nx/nx-linux-x64-musl@npm:16.10.0"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@nx/nx-linux-x64-musl@npm:17.1.2":
+  version: 17.1.2
+  resolution: "@nx/nx-linux-x64-musl@npm:17.1.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
@@ -1818,9 +1922,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/nx-win32-arm64-msvc@npm:17.1.2":
+  version: 17.1.2
+  resolution: "@nx/nx-win32-arm64-msvc@npm:17.1.2"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@nx/nx-win32-x64-msvc@npm:16.10.0":
   version: 16.10.0
   resolution: "@nx/nx-win32-x64-msvc@npm:16.10.0"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@nx/nx-win32-x64-msvc@npm:17.1.2":
+  version: 17.1.2
+  resolution: "@nx/nx-win32-x64-msvc@npm:17.1.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4473,14 +4591,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.0.0":
-  version: 1.6.0
-  resolution: "axios@npm:1.6.0"
+"axios@npm:^1.0.0, axios@npm:^1.5.1":
+  version: 1.6.2
+  resolution: "axios@npm:1.6.2"
   dependencies:
     follow-redirects: "npm:^1.15.0"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 2879e17b96cbca7e2096d231a44e2d0f03e657d79f8928ea38ec5fbaf5a5b7bf952d580cdb58a66ba328c26eb3528b89d5a32da57cc5cf89813786c044f7e9d6
+  checksum: 9b77e030e85e4f9cbcba7bb52fbff67d6ce906c92d213e0bd932346a50140faf83733bf786f55bd58301bd92f9973885c7b87d6348023e10f7eaf286d0791a1d
   languageName: node
   linkType: hard
 
@@ -4755,41 +4873,6 @@ __metadata:
   checksum: 680de03adc54ff925eaa6c7bb9a47a0690e8b5de60f4792604aae8ed618c65e6b63a7893b57ca924beaf53eee69c5af4f8314148c08124c550fe1df1add897d2
   languageName: node
   linkType: hard
-
-"blueprintjs-monorepo@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "blueprintjs-monorepo@workspace:."
-  dependencies:
-    "@types/chai": "npm:~4.3.10"
-    "@types/enzyme": "npm:~3.10.16"
-    "@types/enzyme-adapter-react-16": "npm:~1.0.9"
-    "@types/mocha": "npm:~10.0.4"
-    "@types/node": "npm:~18.16.20"
-    "@types/react": "npm:~16.14.51"
-    "@types/react-dom": "npm:~16.9.22"
-    "@types/react-transition-group": "npm:~4.4.9"
-    "@types/sinon": "npm:~17.0.1"
-    "@types/yargs": "npm:~17.0.31"
-    chai: "npm:^4.3.10"
-    dedent: "npm:^1.5.1"
-    eslint: "npm:^8.53.0"
-    eslint-config-prettier: "npm:^9.0.0"
-    eslint-plugin-prettier: "npm:^5.0.1"
-    gh-pages: "npm:^6.0.0"
-    http-server: "npm:^14.1.1"
-    lerna: "npm:^7.4.2"
-    npm-run-all: "npm:^4.1.5"
-    octokit: "npm:^3.1.2"
-    prettier: "npm:~3.1.0"
-    sinon: "npm:^17.0.1"
-    stylelint: "npm:~14.16.1"
-    stylelint-config-palantir: "npm:^6.0.1"
-    stylelint-scss: "npm:^5.3.1"
-    typescript: "npm:~5.2.2"
-    yargs: "npm:^17.7.2"
-    yarn-deduplicate: "npm:^6.0.2"
-  languageName: unknown
-  linkType: soft
 
 "body-parser@npm:1.20.1":
   version: 1.20.1
@@ -12840,6 +12923,91 @@ __metadata:
   bin:
     nx: bin/nx.js
   checksum: 89f202b9192c3225a4cdedeb13ac3953366a4c0e2d9d7f223b0e0b9dab11482cfe8b6661f7eac8e84bad5cf08294f5858e76e0d18d8d48d5dfa4f789d495d217
+  languageName: node
+  linkType: hard
+
+"nx@npm:17.1.2, nx@npm:^17.1.2":
+  version: 17.1.2
+  resolution: "nx@npm:17.1.2"
+  dependencies:
+    "@nrwl/tao": "npm:17.1.2"
+    "@nx/nx-darwin-arm64": "npm:17.1.2"
+    "@nx/nx-darwin-x64": "npm:17.1.2"
+    "@nx/nx-freebsd-x64": "npm:17.1.2"
+    "@nx/nx-linux-arm-gnueabihf": "npm:17.1.2"
+    "@nx/nx-linux-arm64-gnu": "npm:17.1.2"
+    "@nx/nx-linux-arm64-musl": "npm:17.1.2"
+    "@nx/nx-linux-x64-gnu": "npm:17.1.2"
+    "@nx/nx-linux-x64-musl": "npm:17.1.2"
+    "@nx/nx-win32-arm64-msvc": "npm:17.1.2"
+    "@nx/nx-win32-x64-msvc": "npm:17.1.2"
+    "@yarnpkg/lockfile": "npm:^1.1.0"
+    "@yarnpkg/parsers": "npm:3.0.0-rc.46"
+    "@zkochan/js-yaml": "npm:0.0.6"
+    axios: "npm:^1.5.1"
+    chalk: "npm:^4.1.0"
+    cli-cursor: "npm:3.1.0"
+    cli-spinners: "npm:2.6.1"
+    cliui: "npm:^8.0.1"
+    dotenv: "npm:~16.3.1"
+    dotenv-expand: "npm:~10.0.0"
+    enquirer: "npm:~2.3.6"
+    figures: "npm:3.2.0"
+    flat: "npm:^5.0.2"
+    fs-extra: "npm:^11.1.0"
+    glob: "npm:7.1.4"
+    ignore: "npm:^5.0.4"
+    jest-diff: "npm:^29.4.1"
+    js-yaml: "npm:4.1.0"
+    jsonc-parser: "npm:3.2.0"
+    lines-and-columns: "npm:~2.0.3"
+    minimatch: "npm:3.0.5"
+    node-machine-id: "npm:1.1.12"
+    npm-run-path: "npm:^4.0.1"
+    open: "npm:^8.4.0"
+    semver: "npm:7.5.3"
+    string-width: "npm:^4.2.3"
+    strong-log-transformer: "npm:^2.1.0"
+    tar-stream: "npm:~2.2.0"
+    tmp: "npm:~0.2.1"
+    tsconfig-paths: "npm:^4.1.2"
+    tslib: "npm:^2.3.0"
+    v8-compile-cache: "npm:2.3.0"
+    yargs: "npm:^17.6.2"
+    yargs-parser: "npm:21.1.1"
+  peerDependencies:
+    "@swc-node/register": ^1.6.7
+    "@swc/core": ^1.3.85
+  dependenciesMeta:
+    "@nx/nx-darwin-arm64":
+      optional: true
+    "@nx/nx-darwin-x64":
+      optional: true
+    "@nx/nx-freebsd-x64":
+      optional: true
+    "@nx/nx-linux-arm-gnueabihf":
+      optional: true
+    "@nx/nx-linux-arm64-gnu":
+      optional: true
+    "@nx/nx-linux-arm64-musl":
+      optional: true
+    "@nx/nx-linux-x64-gnu":
+      optional: true
+    "@nx/nx-linux-x64-musl":
+      optional: true
+    "@nx/nx-win32-arm64-msvc":
+      optional: true
+    "@nx/nx-win32-x64-msvc":
+      optional: true
+  peerDependenciesMeta:
+    "@swc-node/register":
+      optional: true
+    "@swc/core":
+      optional: true
+  bin:
+    nx: bin/nx.js
+    nx-cloud: bin/nx-cloud.js
+  checksum: 45f0424213bfe82e548a6e5b09304039851a393dc2fc25109a596045c719261e6c9edf8582ea1c4a9a928db8132a17d2cca97ae8316aa7c2ed4dcaf5f4628270
   languageName: node
   linkType: hard
 
