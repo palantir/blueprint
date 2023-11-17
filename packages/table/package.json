@@ -60,14 +60,14 @@
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
         "enzyme": "^3.11.0",
-        "karma": "^6.4.1",
+        "karma": "^6.4.2",
         "mocha": "^10.2.0",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
         "typescript": "~5.2.2",
-        "webpack": "^5.76.2"
+        "webpack": "^5.89.0"
     },
     "repository": {
         "type": "git",
