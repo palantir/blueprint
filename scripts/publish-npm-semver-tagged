@@ -19,10 +19,8 @@ if [ -z "${NPM_AUTH_TOKEN}" ]; then
     exit 1
 fi
 
-# set the auth token for this user, not just the repo
-# N.B. `npm set` doesn't work here, it complains that it doesn't work for NPM workspaces
-echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
-chmod 0600 ~/.npmrc
+# see https://yarnpkg.com/cli/config/set, https://yarnpkg.com/configuration/yarnrc#npmAuthToken
+yarn config set npmAuthToken "${NPM_AUTH_TOKEN}"
 
 for path in $publishable_paths; do
     pushd "$path"
