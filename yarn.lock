@@ -609,7 +609,7 @@ __metadata:
     downloadjs: "npm:^1.4.7"
     lodash: "npm:^4.17.21"
     moment: "npm:^2.29.4"
-    monaco-editor: "npm:^0.37.1"
+    monaco-editor: "npm:^0.44.0"
     monaco-editor-webpack-plugin: "npm:^7.1.0"
     normalize.css: "npm:^8.0.1"
     npm-run-all: "npm:^4.1.5"
@@ -783,7 +783,7 @@ __metadata:
   dependencies:
     "@blueprintjs/colors": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
-    monaco-editor: "npm:^0.37.1"
+    monaco-editor: "npm:^0.44.0"
     npm-run-all: "npm:^4.1.5"
     typescript: "npm:~5.2.2"
   languageName: unknown
@@ -12215,10 +12215,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monaco-editor@npm:^0.37.1":
-  version: 0.37.1
-  resolution: "monaco-editor@npm:0.37.1"
-  checksum: a582e1e39ea4c8ab51cd7771c6fe5ab2fbcafdaaa72a10c9419ec02f1d527a20fab14d8ee2c1abbfe33445443a5492bf4ef92f6d1eea180ab9c84210201e3375
+"monaco-editor@npm:^0.44.0":
+  version: 0.44.0
+  resolution: "monaco-editor@npm:0.44.0"
+  checksum: 22676f597f702763c33dcdec8b5d6d1c3a5e1a52910074c46a6477ac9c8308cec2dede968230fb9b69fc91f4fc4687cff8bbe0f2365ece49ded9b248a7dcbc62
   languageName: node
   linkType: hard
 
