@@ -209,6 +209,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
       - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
