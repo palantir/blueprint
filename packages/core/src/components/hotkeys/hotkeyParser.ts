@@ -109,6 +109,11 @@ export const parseKeyCombo = (combo: string): KeyCombo => {
                 Valid key combos look like "cmd + plus", "shift+p", or "!"`);
         }
 
+        if (piece === "esc") {
+            piece = "escape";
+            piece = CONFIG_ALIASES[piece];
+        }
+
         if (CONFIG_ALIASES[piece] !== undefined) {
             piece = CONFIG_ALIASES[piece];
         }
