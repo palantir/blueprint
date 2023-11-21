@@ -12,6 +12,9 @@ node_modules
 npm-debug.log*
 lerna-debug.log
 
+# Nx
+.nx/cache
+
 # Yarn
 # see https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 yarn-error.log

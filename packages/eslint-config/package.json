@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/eslint-config",
-    "version": "5.0.0",
+    "version": "5.0.2",
     "description": "ESLint configuration for @blueprintjs packages",
     "dependencies": {
         "@blueprintjs/eslint-plugin": "workspace:^",
@@ -15,6 +15,17 @@
         "eslint-plugin-jsdoc": "^46.9.0",
         "eslint-plugin-react": "^7.33.2",
         "eslint-plugin-react-hooks": "^4.6.0"
+    },
+    "peerDependencies": {
+        "typescript": "^5.2.2"
+    },
+    "peerDependenciesMeta": {
+        "typescript": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "typescript": "^5.2.2"
     },
     "repository": {
         "type": "git",
