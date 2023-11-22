@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  */
