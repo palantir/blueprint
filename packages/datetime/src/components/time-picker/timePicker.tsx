@@ -180,8 +180,6 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         return (
             <input
                 aria-label={getTimeUnitPrintStr(unit)}
-                // we use a type="text" input here, so we must set these a11y attributes
-                // which we would otherwise get for free with a type="number" input
                 aria-valuemin={0}
                 aria-valuenow={valueNumber}
                 aria-valuemax={getTimeUnitMax(unit)}
@@ -197,6 +195,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
                 onKeyDown={this.getInputKeyDownHandler(unit)}
                 onKeyUp={this.getInputKeyUpHandler(unit)}
                 role={this.props.showArrowButtons ? "spinbutton" : undefined}
+                type="number"
                 value={value}
                 disabled={this.props.disabled}
                 autoFocus={isHour && this.props.autoFocus}
