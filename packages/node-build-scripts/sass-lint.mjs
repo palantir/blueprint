@@ -32,7 +32,7 @@ stylelint
     })
     .then(resultObject => {
         if (reportPath !== undefined) {
-            console.info(`[node-build-scripts] Stylelint report will appear in ${reportPath}`);
+            console.info(`[node-build-scripts/sass-lint] Stylelint report will appear in ${reportPath}`);
             writeFileSync(reportPath, resultObject.output);
         } else {
             console.info(resultObject.output);
@@ -42,7 +42,7 @@ stylelint
         }
     })
     .catch(error => {
-        console.error("[node-build-scripts] sass-lint failed with error:");
+        console.error("[node-build-scripts/sass-lint] sass-lint failed with error:");
         console.error(error);
         exit(2);
     });

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/colors",
-    "version": "5.0.5",
+    "version": "5.0.7",
     "description": "Blueprint color definitions",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",

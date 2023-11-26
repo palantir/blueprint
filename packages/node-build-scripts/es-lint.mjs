@@ -10,14 +10,14 @@
 // @ts-check
 
 import { ESLint } from "eslint";
+import fs from "fs-extra";
 import { globSync } from "glob";
-import { createWriteStream } from "node:fs";
 import { resolve } from "node:path";
-import { argv, cwd, env } from "node:process";
+import { argv, cwd, env, exit } from "node:process";
 
 import { junitReportPath } from "./src/utils.mjs";
 
-main();
+await main();
 
 async function main() {
     env.LINT_SCRIPT = "true";
@@ -28,50 +28,50 @@ async function main() {
     // ESLint may fail if provided with no files, so we expand the glob before running it
     const anyFilesToLint = globSync(absoluteFileGlob);
     if (anyFilesToLint.length === 0) {
-        console.log(`[node-build-scripts] Not running ESLint because no files match the glob "${FILES_GLOB}"`);
+        console.log(`[node-build-scripts/es-lint] Not running ESLint because no files match the glob "${FILES_GLOB}"`);
         return;
     }
 
     let formatterName = "codeframe";
-    let outputPath;
-    if (env.JUNIT_REPORT_PATH != null) {
+    const outputReportPath = junitReportPath("eslint");
+    if (outputReportPath !== undefined) {
         formatterName = "junit";
-        outputPath = junitReportPath("eslint");
-        console.info(`[node-build-scripts] ESLint report will appear in ${outputPath}`);
+        console.info(`[node-build-scripts/es-lint] ESLint report will appear in ${outputReportPath}`);
     }
 
     const fix = argv.includes("--fix");
     const eslint = new ESLint({ fix });
+    let exitCode = 0;
 
     try {
-        console.info(`[node-build-scripts] Running ESLint on ${absoluteFileGlob}`);
+        console.info(`[node-build-scripts/es-lint] Running ESLint on ${absoluteFileGlob}`);
         const results = await eslint.lintFiles([absoluteFileGlob]);
         const hasAnyErrors = results.some(result => result.errorCount > 0);
         const hasNonFixableErrors = results.some(result => result.errorCount > result.fixableErrorCount);
 
         if (fix) {
-            console.info(`[node-build-scripts] Applying ESLint auto-fixes...`);
+            console.info(`[node-build-scripts/es-lint] Applying ESLint auto-fixes...`);
             await ESLint.outputFixes(results);
-            process.exitCode = hasNonFixableErrors ? 1 : 0;
+            exitCode = hasNonFixableErrors ? 1 : 0;
         } else {
-            process.exitCode = hasAnyErrors ? 1 : 0;
+            exitCode = hasAnyErrors ? 1 : 0;
         }
 
         const formatter = await eslint.loadFormatter(formatterName);
-        const resultText = formatter.format(results);
+        const resultText = await formatter.format(results);
 
-        if (outputPath !== undefined) {
-            const outputStream = createWriteStream(outputPath);
-            outputStream.write(resultText);
-            outputStream.close();
+        if (outputReportPath !== undefined) {
+            fs.outputFileSync(outputReportPath, resultText);
         } else {
             console.log(resultText);
         }
         console.info(
-            `[node-build-scripts] Done running ESLint, with ${process.exitCode === 0 ? "no" : "some"} errors.`,
+            `[node-build-scripts/es-lint] Done running ESLint, with ${exitCode === 0 ? "no" : "some"} errors.`,
         );
+
+        exit(exitCode);
     } catch (error) {
-        process.exitCode = 1;
-        console.error(`[node-build-scripts] ESLint failed with error: ${error}`);
+        console.error(`[node-build-scripts/es-lint] ESLint failed with error: ${error}`);
+        exit(1);
     }
 }
