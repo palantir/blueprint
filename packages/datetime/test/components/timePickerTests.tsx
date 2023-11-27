@@ -144,16 +144,27 @@ describe("<TimePicker>", () => {
         hourInput.value = "2";
         TestUtils.Simulate.change(hourInput);
         assert.strictEqual(hourInput.value, "2");
+        assert.isFalse(hourInput.classList.contains(CoreClasses.intentClass(Intent.DANGER)));
     });
 
-    it("allows invalid text entry, but shows visual indicator", () => {
+    it("disallows allows non-number text entry", () => {
         renderTimePicker();
         const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
         assert.strictEqual(hourInput.value, "0");
 
         hourInput.value = "ab";
         TestUtils.Simulate.change(hourInput);
-        assert.strictEqual(hourInput.value, "ab");
+        assert.strictEqual(hourInput.value, "");
+    });
+
+    it("allows invalid number entry, but shows visual indicator", () => {
+        renderTimePicker();
+        const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+        assert.strictEqual(hourInput.value, "0");
+
+        hourInput.value = "300";
+        TestUtils.Simulate.change(hourInput);
+        assert.strictEqual(hourInput.value, "300");
         assert.isTrue(hourInput.classList.contains(CoreClasses.intentClass(Intent.DANGER)));
     });
 
