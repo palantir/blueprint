@@ -368,6 +368,7 @@ export class Popover<
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
         const ownTargetProps = {
+            "aria-expanded": isOpen,
             "aria-haspopup":
                 this.props.popupKind ??
                 (this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
