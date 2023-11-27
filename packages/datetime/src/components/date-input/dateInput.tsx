@@ -23,7 +23,6 @@
 /* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
 
 import classNames from "classnames";
-import { uniqueId } from "lodash";
 import * as React from "react";
 import type { DayPickerProps } from "react-day-picker";
 
@@ -246,7 +245,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
 
     const inputRef = React.useRef<HTMLInputElement | null>(null);
     const popoverContentRef = React.useRef<HTMLDivElement | null>(null);
-    const popoverId = uniqueId("date-picker");
+    const popoverId = Utils.uniqueId("date-picker");
 
     // State
     // ------------------------------------------------------------------------
