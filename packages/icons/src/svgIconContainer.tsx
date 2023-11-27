@@ -93,8 +93,8 @@ export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(func
         return React.createElement(
             tagName,
             {
-                ...htmlProps,
                 "aria-hidden": title ? undefined : true,
+                ...htmlProps,
                 className: classNames(Classes.ICON, `${Classes.ICON}-${iconName}`, className),
                 ref,
                 title: htmlTitle,
