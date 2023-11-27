@@ -15,18 +15,18 @@
  */
 
 export const Position = {
-    BOTTOM: "bottom" as "bottom",
-    BOTTOM_LEFT: "bottom-left" as "bottom-left",
-    BOTTOM_RIGHT: "bottom-right" as "bottom-right",
-    LEFT: "left" as "left",
-    LEFT_BOTTOM: "left-bottom" as "left-bottom",
-    LEFT_TOP: "left-top" as "left-top",
-    RIGHT: "right" as "right",
-    RIGHT_BOTTOM: "right-bottom" as "right-bottom",
-    RIGHT_TOP: "right-top" as "right-top",
-    TOP: "top" as "top",
-    TOP_LEFT: "top-left" as "top-left",
-    TOP_RIGHT: "top-right" as "top-right",
+    BOTTOM: "bottom" as const,
+    BOTTOM_LEFT: "bottom-left" as const,
+    BOTTOM_RIGHT: "bottom-right" as const,
+    LEFT: "left" as const,
+    LEFT_BOTTOM: "left-bottom" as const,
+    LEFT_TOP: "left-top" as const,
+    RIGHT: "right" as const,
+    RIGHT_BOTTOM: "right-bottom" as const,
+    RIGHT_TOP: "right-top" as const,
+    TOP: "top" as const,
+    TOP_LEFT: "top-left" as const,
+    TOP_RIGHT: "top-right" as const,
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Position = (typeof Position)[keyof typeof Position];

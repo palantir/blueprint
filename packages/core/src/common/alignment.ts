@@ -16,9 +16,9 @@
 
 /** Alignment along the horizontal axis. */
 export const Alignment = {
-    CENTER: "center" as "center",
-    LEFT: "left" as "left",
-    RIGHT: "right" as "right",
+    CENTER: "center" as const,
+    LEFT: "left" as const,
+    RIGHT: "right" as const,
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Alignment = (typeof Alignment)[keyof typeof Alignment];
