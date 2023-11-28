@@ -21,8 +21,6 @@
   }
 
   > .#{$ns}-button:not(.#{$ns}-minimal) {
-    box-shadow: 0 0 0 1px $pt-divider-black-muted;
-
     &:not(.#{$ns}-intent-primary) {
       background-color: $white;
 
