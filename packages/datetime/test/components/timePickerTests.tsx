@@ -147,7 +147,7 @@ describe("<TimePicker>", () => {
         assert.isFalse(hourInput.classList.contains(CoreClasses.intentClass(Intent.DANGER)));
     });
 
-    it("disallows allows non-number text entry", () => {
+    it("disallows non-number text entry", () => {
         renderTimePicker();
         const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
         assert.strictEqual(hourInput.value, "0");
