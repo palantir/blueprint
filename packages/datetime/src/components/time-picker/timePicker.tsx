@@ -180,15 +180,14 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         return (
             <input
                 aria-label={getTimeUnitPrintStr(unit)}
-                aria-valuemin={0}
-                aria-valuenow={valueNumber}
-                aria-valuemax={getTimeUnitMax(unit)}
                 className={classNames(
                     Classes.TIMEPICKER_INPUT,
                     { [CoreClasses.intentClass(Intent.DANGER)]: !isValid },
                     className,
                 )}
                 id={this.timeInputIds[unit]}
+                min={0}
+                max={getTimeUnitMax(unit)}
                 onBlur={this.getInputBlurHandler(unit)}
                 onChange={this.getInputChangeHandler(unit)}
                 onFocus={this.getInputFocusHandler(unit)}

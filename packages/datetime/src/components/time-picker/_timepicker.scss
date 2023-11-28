@@ -67,9 +67,15 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     text-align: center;
     transition: $input-transition;
     width: $timepicker-control-width;
+    -moz-appearance: textfield;
 
     &:focus {
       box-shadow: input-transition-shadow($input-shadow-color-focus, true);
+    }
+
+    &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
 
     @each $intent, $color in $pt-intent-colors {
