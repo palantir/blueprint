@@ -46,6 +46,8 @@ export const MODIFIER_BIT_MASKS: KeyCodeReverseTable = {
 export const CONFIG_ALIASES: KeyMap = {
     cmd: "meta",
     command: "meta",
+    del: "delete",
+    esc: "escape",
     escape: "escape",
     minus: "-",
     mod: isMac() ? "meta" : "ctrl",
