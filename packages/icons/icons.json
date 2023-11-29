@@ -4095,9 +4095,9 @@
         "codepoint": 62281
     },
     {
-        "displayName": "group",
-        "iconName": "group",
-        "tags": "group, widget",
+        "displayName": "group-item",
+        "iconName": "group-item",
+        "tags": "group, widget, item",
         "group": "interface",
         "codepoint": 62282
     },
