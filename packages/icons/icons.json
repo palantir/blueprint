@@ -4093,5 +4093,19 @@
         "tags": "shield, new, add, marking",
         "group": "miscellaneous",
         "codepoint": 62281
+    },
+    {
+        "displayName": "group-item",
+        "iconName": "group-item",
+        "tags": "group, widget, item",
+        "group": "interface",
+        "codepoint": 62282
+    },
+    {
+        "displayName": "input",
+        "iconName": "input",
+        "tags": "input, right, arrow",
+        "group": "interface",
+        "codepoint": 62283
     }
 ]
