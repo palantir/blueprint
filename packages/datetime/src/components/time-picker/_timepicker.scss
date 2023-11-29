@@ -56,6 +56,10 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
   }
 
   .#{$ns}-timepicker-input {
+    /* stylelint-disable property-no-vendor-prefix */
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    /* stylelint-enable property-no-vendor-prefix */
     background: transparent;
     border: 0;
     border-radius: $pt-border-radius;
@@ -67,16 +71,17 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     text-align: center;
     transition: $input-transition;
     width: $timepicker-control-width;
-    -moz-appearance: textfield;
 
     &:focus {
       box-shadow: input-transition-shadow($input-shadow-color-focus, true);
     }
 
-    &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
       margin: 0;
     }
+
 
     @each $intent, $color in $pt-intent-colors {
       &.#{$ns}-intent-#{$intent} {
