@@ -168,8 +168,9 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
                     <Popover
                         popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}
-                        portalClassName="foo"
+                        portalClassName="docs-popover-example-portal"
                         {...popoverProps}
+                        content={this.getContents(exampleIndex)}
                         boundary={
                             boundary === "scrollParent"
                                 ? this.scrollParentElement ?? undefined
@@ -179,7 +180,6 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                         }
                         enforceFocus={false}
                         isOpen={this.state.isControlled ? this.state.isOpen : undefined}
-                        content={this.getContents(exampleIndex)}
                     >
                         <Button intent={Intent.PRIMARY} text={buttonText} tabIndex={0} />
                     </Popover>

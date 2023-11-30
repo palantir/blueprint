@@ -439,7 +439,16 @@ export class Popover<
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const { interactionKind, shouldReturnFocusOnClose, usePortal } = this.props;
+        const {
+            autoFocus,
+            enforceFocus,
+            backdropProps,
+            canEscapeKeyClose,
+            hasBackdrop,
+            interactionKind,
+            shouldReturnFocusOnClose,
+            usePortal,
+        } = this.props;
         const { isOpen } = this.state;
 
         // compute an appropriate transform origin so the scale animation points towards target
@@ -484,14 +493,15 @@ export class Popover<
 
         return (
             <Overlay
-                autoFocus={this.props.autoFocus ?? defaultAutoFocus}
+                autoFocus={autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
-                backdropProps={this.props.backdropProps}
-                canEscapeKeyClose={this.props.canEscapeKeyClose}
-                canOutsideClickClose={this.props.interactionKind === PopoverInteractionKind.CLICK}
-                enforceFocus={this.props.enforceFocus}
-                hasBackdrop={this.props.hasBackdrop}
+                backdropProps={backdropProps}
+                canEscapeKeyClose={canEscapeKeyClose}
+                canOutsideClickClose={interactionKind === PopoverInteractionKind.CLICK}
+                enforceFocus={enforceFocus}
+                hasBackdrop={hasBackdrop}
                 isOpen={isOpen}
+                lazy={this.props.lazy}
                 onClose={this.handleOverlayClose}
                 onClosed={this.props.onClosed}
                 onClosing={this.props.onClosing}
@@ -499,7 +509,7 @@ export class Popover<
                 onOpening={this.props.onOpening}
                 transitionDuration={this.props.transitionDuration}
                 transitionName={Classes.POPOVER}
-                usePortal={this.props.usePortal}
+                usePortal={usePortal}
                 portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
                 portalStopPropagationEvents={this.props.portalStopPropagationEvents}
