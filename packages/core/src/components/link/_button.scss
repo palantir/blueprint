@@ -1,0 +1,258 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+@import "../../common/variables-extended";
+@import "./common";
+
+/*
+Button
+
+Markup:
+<a role="button" class="#{$ns}-button {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
+<button type="button" class="#{$ns}-button #{$ns}-icon-add {{.modifier}}" {{:modifier}}>Button</button>
+
+:disabled - Disabled state
+.#{$ns}-active - Active appearance
+.#{$ns}-disabled - Disabled appearance
+.#{$ns}-intent-primary - Primary intent
+.#{$ns}-intent-success - Success intent
+.#{$ns}-intent-warning - Warning intent
+.#{$ns}-intent-danger - Danger intent
+.#{$ns}-minimal - More subtle appearance
+.#{$ns}-outlined - Subtle yet structured appearance
+.#{$ns}-large - Larger size
+.#{$ns}-small - Smaller size
+.#{$ns}-fill - Fill parent container
+
+Styleguide button
+*/
+.#{$ns}-button {
+  @include pt-button-layout();
+  @include pt-button-height($pt-button-height);
+
+  &:empty {
+    // override padding from other modifiers (for CSS icon support)
+    /* stylelint-disable-next-line declaration-no-important */
+    padding: 0 !important;
+  }
+
+  &:disabled,
+  &.#{$ns}-disabled {
+    cursor: not-allowed;
+  }
+
+  &.#{$ns}-fill {
+    display: flex;
+    width: 100%;
+  }
+
+  &.#{$ns}-align-right,
+  .#{$ns}-align-right & {
+    text-align: right;
+  }
+
+  &.#{$ns}-align-left,
+  .#{$ns}-align-left & {
+    text-align: left;
+  }
+
+  // default styles
+  &:not([class*="#{$ns}-intent-"]) {
+    @include pt-button();
+  }
+
+  // intents
+  @each $intent, $colors in $button-intents {
+    &.#{$ns}-intent-#{$intent} {
+      @include pt-button-intent($colors...);
+    }
+  }
+
+  &[class*="#{$ns}-intent-"] .#{$ns}-button-spinner .#{$ns}-spinner-head {
+    stroke: $white;
+  }
+
+  // size modifiers
+  &.#{$ns}-large,
+  .#{$ns}-large & {
+    @include pt-button-height-large();
+  }
+
+  &.#{$ns}-small,
+  .#{$ns}-small & {
+    @include pt-button-height-small();
+  }
+
+  // loading state
+  &.#{$ns}-loading {
+    position: relative;
+
+    &[class*="#{$ns}-icon-"]::before {
+      visibility: hidden;
+    }
+
+    .#{$ns}-button-spinner {
+      margin: 0;
+      // spinner appears centered within button
+      position: absolute;
+    }
+
+    > :not(.#{$ns}-button-spinner) {
+      visibility: hidden;
+    }
+  }
+
+  // icons
+  &[class*="#{$ns}-icon-"] {
+    &::before {
+      @include pt-icon();
+      color: $pt-icon-color;
+    }
+  }
+
+  #{$icon-classes} {
+    color: $pt-icon-color;
+
+    &.#{$ns}-align-right {
+      margin-left: $button-icon-spacing;
+    }
+  }
+
+  // button with SVG icon only (no text or children)
+  .#{$ns}-icon:first-child:last-child,
+  // if loading, then it contains exactly [spinner, icon]
+  .#{$ns}-spinner + .#{$ns}-icon:last-child {
+    // center icon horizontally. this works for large buttons too.
+    margin: 0 (-($pt-button-height - $pt-icon-size-standard) * 0.5);
+  }
+
+  // dark theme
+  .#{$ns}-dark & {
+    &:not([class*="#{$ns}-intent-"]) {
+      @include pt-dark-button();
+
+      &[class*="#{$ns}-icon-"]::before {
+        color: $pt-dark-icon-color;
+      }
+
+      #{$icon-classes} {
+        &:not([class*="#{$ns}-intent-"]) {
+          color: $pt-dark-icon-color;
+        }
+      }
+    }
+
+    &[class*="#{$ns}-intent-"] {
+      @include pt-dark-button-intent();
+
+      .#{$ns}-button-spinner .#{$ns}-spinner-head {
+        stroke: $dark-progress-head-color;
+      }
+    }
+  }
+
+  // disabled and intent button icon should use same color as text
+  &:disabled,
+  &.#{$ns}-disabled,
+  &[class*="#{$ns}-intent-"] {
+    &::before,
+    #{$icon-classes} {
+      /* stylelint-disable-next-line declaration-no-important */
+      color: inherit !important;
+    }
+  }
+
+  // minimal must come last to override all default styles
+  &.#{$ns}-minimal {
+    @include pt-button-minimal();
+  }
+
+  // outline is based on the styles of minimal
+  &.#{$ns}-outlined {
+    @include pt-button-minimal();
+    @include pt-button-outlined();
+  }
+
+  // special case override: use dark text for warning intent
+  &.#{$ns}-intent-warning {
+    background: $orange5;
+    color: $pt-text-color;
+
+    &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+      fill: rgba($dark-gray1, 0.7);
+    }
+
+    &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
+      &:hover {
+        background: $orange4;
+        color: $pt-text-color;
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        background: $orange3;
+        color: $pt-text-color;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // Windows High Contrast dark theme
+          background: $pt-high-contrast-mode-active-background-color;
+        }
+      }
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      background: rgba($orange3, 0.5);
+      color: rgba($dark-gray1, 0.35);
+
+      .#{$ns}-dark & {
+        color: rgba($dark-gray1, 0.6);
+      }
+    }
+
+    &.#{$ns}-minimal,
+    &.#{$ns}-outlined {
+      background: none;
+
+      .#{$ns}-dark & {
+        &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+          fill: $orange5;
+        }
+      }
+    }
+  }
+}
+
+a.#{$ns}-button {
+  text-align: center;
+  text-decoration: none;
+  transition: none;
+
+  &,
+  &:hover,
+  &:active {
+    // override global 'a' styles
+    color: $pt-text-color;
+  }
+
+  &.#{$ns}-disabled {
+    color: $button-color-disabled;
+  }
+}
+
+.#{$ns}-button-text {
+  // default: don't grow to fill but allow shrinking as necessary
+  flex: 0 1 auto;
+}
+
+// when alignment is set, grow to fill and inherit `text-align` set on `.#{$ns}-button`
+.#{$ns}-button,
+.#{$ns}-button-group {
+  &.#{$ns}-align-left,
+  &.#{$ns}-align-right {
+    .#{$ns}-button-text {
+      flex: 1 1 auto;
+    }
+  }
+}

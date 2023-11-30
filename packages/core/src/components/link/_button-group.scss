@@ -1,0 +1,237 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+@import "../forms/common";
+@import "./common";
+
+/*
+Button groups
+
+Markup:
+<div class="#{$ns}-button-group {{.modifier}}">
+  <button type="button" class="#{$ns}-button #{$ns}-intent-success">Save</button>
+  <button type="button" class="#{$ns}-button #{$ns}-intent-success #{$ns}-icon-caret-down"></button>
+</div>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <a class="#{$ns}-button #{$ns}-icon-database" tabindex="0" role="button">Queries</a>
+  <a class="#{$ns}-button #{$ns}-icon-function" tabindex="0" role="button">Functions</a>
+  <a class="#{$ns}-button" tabindex="0" role="button">
+    Options <span class="#{$ns}-icon-standard #{$ns}-icon-caret-down #{$ns}-align-right"></span>
+  </a>
+</div>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <a class="#{$ns}-button #{$ns}-icon-chart" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-control" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-graph" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-camera" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-map" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-code" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-th" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-time" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-compressed" tabindex="0" role="button"></a>
+</div>
+
+.#{$ns}-fill - Buttons expand equally to fill container
+.#{$ns}-large - Use large buttons
+.#{$ns}-minimal - Use minimal buttons
+.#{$ns}-vertical - Vertical layout
+
+Styleguide button-group
+*/
+
+.#{$ns}-button-group {
+  display: inline-flex;
+
+  .#{$ns}-button {
+    // ensure button can never be smaller than its default size
+    flex: 0 0 auto;
+    position: relative;
+    z-index: index($control-group-stack, "button-default");
+
+    // the ordering of these z-index CSS rules is particular because of CSS
+    // selector specificity. specifically, disabled styles should have
+    // precedence over hover and active styles to prevent mouse interactions on
+    // disabled buttons from reordering elements in the stack.
+
+    &:focus {
+      z-index: index($control-group-stack, "button-focus");
+    }
+
+    &:hover {
+      z-index: index($control-group-stack, "button-hover");
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      z-index: index($control-group-stack, "button-active");
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      z-index: index($control-group-stack, "button-disabled");
+    }
+
+    &[class*="#{$ns}-intent-"] {
+      z-index: index($control-group-stack, "intent-button-default");
+
+      &:focus {
+        z-index: index($control-group-stack, "intent-button-focus");
+      }
+
+      &:hover {
+        z-index: index($control-group-stack, "intent-button-hover");
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        z-index: index($control-group-stack, "intent-button-active");
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        z-index: index($control-group-stack, "intent-button-disabled");
+      }
+    }
+  }
+
+  // support wrapping buttons in a tooltip, which adds a wrapper element
+  &:not(.#{$ns}-minimal) {
+    > .#{$ns}-popover-wrapper:not(:first-child) .#{$ns}-button,
+    > .#{$ns}-button:not(:first-child) {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+    }
+
+    > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
+    > .#{$ns}-button:not(:last-child) {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+      margin-right: -$button-border-width;
+    }
+  }
+
+  &.#{$ns}-minimal {
+    .#{$ns}-button {
+      @include pt-button-minimal();
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Because we give even minimal buttons a border in high contrast mode, we need to handle border styles
+      // similar to how we handle non-minimal buttons
+
+      &:not(:first-child) {
+        border-bottom-left-radius: 0;
+        border-left: none;
+        border-top-left-radius: 0;
+      }
+
+      &:not(:last-child) {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+        margin-right: -$button-border-width;
+      }
+    }
+  }
+
+  .#{$ns}-popover-wrapper,
+  .#{$ns}-popover-target {
+    display: flex;
+    flex: 1 1 auto;
+  }
+
+  /*
+  Responsive
+
+  Markup:
+  <div class="#{$ns}-button-group #{$ns}-large #{$ns}-fill">
+    <a class="#{$ns}-button #{$ns}-intent-primary #{$ns}-fixed" tabindex="0" role="button">Start</a>
+    <a class="#{$ns}-button #{$ns}-intent-primary" tabindex="0" role="button">Left</a>
+    <a class="#{$ns}-button #{$ns}-intent-primary #{$ns}-active" tabindex="0" role="button">Middle</a>
+    <a class="#{$ns}-button #{$ns}-intent-primary" tabindex="0" role="button">Right</a>
+    <a class="#{$ns}-button #{$ns}-intent-primary #{$ns}-fixed" tabindex="0" role="button">End</a>
+  </div>
+  <br />
+  <div class="#{$ns}-button-group #{$ns}-fill">
+    <button class="#{$ns}-button #{$ns}-icon-arrow-left"></button>
+    <button class="#{$ns}-button #{$ns}-fill">Middle</button>
+    <button class="#{$ns}-button #{$ns}-icon-arrow-right"></button>
+  </div>
+
+  Styleguide button-group}-fill
+  */
+
+  &.#{$ns}-fill {
+    display: flex;
+    width: 100%;
+  }
+
+  .#{$ns}-button.#{$ns}-fill,
+  &.#{$ns}-fill .#{$ns}-button:not(.#{$ns}-fixed) {
+    flex: 1 1 auto;
+  }
+
+  /*
+  Vertical button groups
+
+  Markup:
+  <div class="#{$ns}-button-group #{$ns}-vertical">
+    <a class="#{$ns}-button #{$ns}-icon-search-template" role="button" tabindex="0"></a>
+    <a class="#{$ns}-button #{$ns}-icon-zoom-in" role="button" tabindex="0"></a>
+    <a class="#{$ns}-button #{$ns}-icon-zoom-out" role="button" tabindex="0"></a>
+    <a class="#{$ns}-button #{$ns}-icon-zoom-to-fit" role="button" tabindex="0"></a>
+  </div>
+  <div class="#{$ns}-button-group #{$ns}-vertical">
+    <button type="button" class="#{$ns}-button #{$ns}-active">Home</button>
+    <button type="button" class="#{$ns}-button">Pages</button>
+    <button type="button" class="#{$ns}-button">Blog</button>
+    <button type="button" class="#{$ns}-button">Calendar</button>
+  </div>
+  <div class="#{$ns}-button-group #{$ns}-vertical #{$ns}-align-left #{$ns}-large">
+    <button type="button" class="#{$ns}-button #{$ns}-intent-primary #{$ns}-icon-document">Text</button>
+    <button type="button" class="#{$ns}-button #{$ns}-intent-primary #{$ns}-icon-media #{$ns}-active">Media</button>
+    <button type="button" class="#{$ns}-button #{$ns}-intent-primary #{$ns}-icon-link">Sources</button>
+  </div>
+
+  Styleguide button-group-vertical
+  */
+
+  &.#{$ns}-vertical {
+    align-items: stretch;
+    flex-direction: column;
+    vertical-align: top;
+
+    &.#{$ns}-fill {
+      height: 100%;
+      width: unset;
+    }
+
+    .#{$ns}-button {
+      // we never want that margin-right when vertical
+      margin-right: 0 !important; /* stylelint-disable-line declaration-no-important */
+      // needed to ensure buttons take up the full width when wrapped in a Popover:
+      width: 100%;
+    }
+
+    &:not(.#{$ns}-minimal) {
+      > .#{$ns}-popover-wrapper:first-child .#{$ns}-button,
+      > .#{$ns}-button:first-child {
+        border-radius: $pt-border-radius $pt-border-radius 0 0;
+      }
+
+      > .#{$ns}-popover-wrapper:last-child .#{$ns}-button,
+      > .#{$ns}-button:last-child {
+        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+      }
+
+      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
+      > .#{$ns}-button:not(:last-child) {
+        margin-bottom: -$button-border-width;
+      }
+    }
+  }
+
+  &.#{$ns}-align-left .#{$ns}-button {
+    text-align: left;
+  }
+}
