@@ -111,7 +111,7 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
      * Whether the application should return focus to the last active element in the
      * document after this popover closes.
      *
-     * This is automatically set to `false` if this is a hover interaction popover.
+     * This is automatically set (overridden) to `false` for hover interaction popovers.
      *
      * If you are attaching a popover _and_ a tooltip to the same target, you must take
      * care to either disable this prop for the popover _or_ disable the tooltip's

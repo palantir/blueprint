@@ -21,6 +21,7 @@ import {
     Button,
     Classes,
     Code,
+    Divider,
     FormGroup,
     H5,
     HTMLSelect,
@@ -71,8 +72,10 @@ export interface PopoverExampleState {
     matchTargetWidth: boolean;
     minimal?: boolean;
     modifiers?: PopperModifierOverrides;
+    openOnTargetFocus: boolean;
     placement?: Placement;
     rangeSliderValue?: NumberRange;
+    shouldReturnFocusOnClose: boolean;
     sliderValue?: number;
     usePortal?: boolean;
 }
@@ -97,8 +100,10 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
             flip: { enabled: true },
             preventOverflow: { enabled: true },
         },
+        openOnTargetFocus: true,
         placement: "auto",
         rangeSliderValue: [0, 10],
+        shouldReturnFocusOnClose: false,
         sliderValue: 5,
         usePortal: true,
     };
@@ -138,6 +143,12 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
     });
 
     private toggleMinimal = handleBooleanChange(minimal => this.setState({ minimal }));
+
+    private toggleOpenOnTargetFocus = handleBooleanChange(openOnTargetFocus => this.setState({ openOnTargetFocus }));
+
+    private toggleShouldReturnFocusOnClose = handleBooleanChange(shouldReturnFocusOnClose =>
+        this.setState({ openOnTargetFocus: shouldReturnFocusOnClose ? false : undefined, shouldReturnFocusOnClose }),
+    );
 
     private toggleUsePortal = handleBooleanChange(usePortal => {
         if (usePortal) {
@@ -194,11 +205,13 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
     }
 
     private renderOptions() {
-        const { matchTargetWidth, modifiers, placement } = this.state;
+        const { interactionKind, matchTargetWidth, modifiers, placement } = this.state;
         const { arrow, flip, preventOverflow } = modifiers;
 
         // popper.js requires this modiifer for "auto" placement
         const forceFlipEnabled = placement.startsWith("auto");
+
+        const isHoverInteractionKind = interactionKind === "hover" || interactionKind === "hover-target";
 
         return (
             <>
@@ -208,11 +221,7 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                     label="Position when opened"
                     labelFor="position"
                 >
-                    <HTMLSelect
-                        value={this.state.placement}
-                        onChange={this.handlePlacementChange}
-                        options={PopperPlacements}
-                    />
+                    <HTMLSelect value={placement} onChange={this.handlePlacementChange} options={PopperPlacements} />
                 </FormGroup>
                 <FormGroup label="Example content">
                     <HTMLSelect value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
@@ -241,14 +250,27 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                 <H5>Interactions</H5>
                 <RadioGroup
                     label="Interaction kind"
-                    selectedValue={this.state.interactionKind.toString()}
+                    selectedValue={interactionKind.toString()}
                     options={INTERACTION_KINDS}
                     onChange={this.handleInteractionChange}
                 />
+                <Divider />
                 <Switch
                     checked={this.state.canEscapeKeyClose}
                     label="Can escape key close"
                     onChange={this.toggleEscapeKey}
+                />
+                <Switch
+                    checked={this.state.openOnTargetFocus}
+                    disabled={!isHoverInteractionKind}
+                    label="Open on target focus"
+                    onChange={this.toggleOpenOnTargetFocus}
+                />
+                <Switch
+                    checked={isHoverInteractionKind ? false : this.state.shouldReturnFocusOnClose}
+                    disabled={isHoverInteractionKind}
+                    label="Should return focus on close"
+                    onChange={this.toggleShouldReturnFocusOnClose}
                 />
 
                 <H5>Modifiers</H5>
