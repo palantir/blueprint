@@ -34,12 +34,12 @@ Styleguide headings
 
 // tag: (font-size, line-height)
 $headings: (
-  "h1": (36px, 40px),
-  "h2": (28px, 32px),
-  "h3": (22px, 25px),
-  "h4": (18px, 21px),
-  "h5": (16px, 19px),
-  "h6": (14px, 16px)
+  "h1": (36px, 44px),
+  "h2": (28px, 34px),
+  "h3": (22px, 26px),
+  "h4": (18px, 22px),
+  "h5": (16px, 20px),
+  "h6": (14px, 18px)
 ) !default;
 
 @each $tag, $props in $headings {
