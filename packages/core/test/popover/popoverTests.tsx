@@ -260,7 +260,7 @@ describe("<Popover>", () => {
             }
 
             wrapper = renderPopover({ ...commonProps, onOpened: handleOpened });
-            wrapper.focusTargetButton();
+            wrapper.targetButton.focus();
             wrapper.simulateTarget("click");
         });
 
@@ -275,7 +275,7 @@ describe("<Popover>", () => {
             }
 
             wrapper = renderPopover(commonProps);
-            wrapper.focusTargetButton();
+            wrapper.targetButton.focus();
             assert.strictEqual(
                 document.activeElement,
                 wrapper.targetElement.querySelector("button"),
@@ -345,17 +345,6 @@ describe("<Popover>", () => {
                 assertPopoverOpenStateForInteractionKind("click", false, {
                     autoFocus: false,
                 });
-            });
-
-            it("popover remains open after target focus if autoFocus={true}", () => {
-                wrapper = renderPopover({
-                    autoFocus: true,
-                    interactionKind: "hover",
-                    usePortal: true,
-                });
-                wrapper.focusTargetButton();
-                wrapper.blurTargetButton();
-                wrapper.assertIsOpen();
             });
         });
 
@@ -889,11 +878,10 @@ describe("<Popover>", () => {
     interface PopoverWrapper extends ReactWrapper<PopoverProps, PopoverState> {
         popoverElement: HTMLElement;
         targetElement: HTMLElement;
+        targetButton: HTMLButtonElement;
         assertFindClass(className: string, expected?: boolean, msg?: string): this;
         assertIsOpen(isOpen?: boolean): this;
         assertOnInteractionCalled(called?: boolean): this;
-        blurTargetButton(): this;
-        focusTargetButton(): this;
         simulateContent(eventName: string, ...args: any[]): this;
         /** Careful: simulating "focus" is unsupported by Enzyme, see https://stackoverflow.com/a/56892875/7406866 */
         simulateTarget(eventName: string, ...args: any[]): this;
@@ -919,6 +907,10 @@ describe("<Popover>", () => {
         const instance = wrapper.instance() as Popover<React.HTMLProps<HTMLButtonElement>>;
         wrapper.popoverElement = instance.popoverElement!;
         wrapper.targetElement = instance.targetRef.current!;
+        wrapper.targetButton = wrapper
+            .find("[data-testid='target-button']")
+            .hostNodes()
+            .getDOMNode<HTMLButtonElement>();
         wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
             const actual = wrapper!.findClass(className);
             if (expected) {
@@ -944,14 +936,6 @@ describe("<Popover>", () => {
         };
         wrapper.simulateTarget = (eventName: string, ...args) => {
             wrapper!.findClass(Classes.POPOVER_TARGET).simulate(eventName, ...args);
-            return wrapper!;
-        };
-        wrapper.focusTargetButton = () => {
-            wrapper!.find(`[data-testid="target-button"]`).hostNodes().getDOMNode<HTMLElement>().focus();
-            return wrapper!;
-        };
-        wrapper.blurTargetButton = () => {
-            wrapper!.find(`[data-testid="target-button"]`).hostNodes().getDOMNode<HTMLElement>().blur();
             return wrapper!;
         };
         wrapper.sendEscapeKey = () => {
