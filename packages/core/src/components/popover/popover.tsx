@@ -111,7 +111,7 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
      * Whether the application should return focus to the last active element in the
      * document after this popover closes.
      *
-     * This is automatically set to `false` if this is a hover interaction popover.
+     * This is automatically set (overridden) to `false` for hover interaction popovers.
      *
      * If you are attaching a popover _and_ a tooltip to the same target, you must take
      * care to either disable this prop for the popover _or_ disable the tooltip's
@@ -439,7 +439,16 @@ export class Popover<
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const { interactionKind, shouldReturnFocusOnClose, usePortal } = this.props;
+        const {
+            autoFocus,
+            enforceFocus,
+            backdropProps,
+            canEscapeKeyClose,
+            hasBackdrop,
+            interactionKind,
+            shouldReturnFocusOnClose,
+            usePortal,
+        } = this.props;
         const { isOpen } = this.state;
 
         // compute an appropriate transform origin so the scale animation points towards target
@@ -484,14 +493,15 @@ export class Popover<
 
         return (
             <Overlay
-                autoFocus={this.props.autoFocus ?? defaultAutoFocus}
+                autoFocus={autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
-                backdropProps={this.props.backdropProps}
-                canEscapeKeyClose={this.props.canEscapeKeyClose}
-                canOutsideClickClose={this.props.interactionKind === PopoverInteractionKind.CLICK}
-                enforceFocus={this.props.enforceFocus}
-                hasBackdrop={this.props.hasBackdrop}
+                backdropProps={backdropProps}
+                canEscapeKeyClose={canEscapeKeyClose}
+                canOutsideClickClose={interactionKind === PopoverInteractionKind.CLICK}
+                enforceFocus={enforceFocus}
+                hasBackdrop={hasBackdrop}
                 isOpen={isOpen}
+                lazy={this.props.lazy}
                 onClose={this.handleOverlayClose}
                 onClosed={this.props.onClosed}
                 onClosing={this.props.onClosing}
@@ -499,7 +509,7 @@ export class Popover<
                 onOpening={this.props.onOpening}
                 transitionDuration={this.props.transitionDuration}
                 transitionName={Classes.POPOVER}
-                usePortal={this.props.usePortal}
+                usePortal={usePortal}
                 portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
                 portalStopPropagationEvents={this.props.portalStopPropagationEvents}
