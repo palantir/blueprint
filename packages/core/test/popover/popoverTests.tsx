@@ -244,8 +244,6 @@ describe("<Popover>", () => {
         const commonProps: Partial<PopoverProps> = {
             className: targetClassName,
             interactionKind: PopoverInteractionKind.CLICK,
-            openOnTargetFocus: false,
-            popoverClassName: Classes.POPOVER_CONTENT_SIZING,
             shouldReturnFocusOnClose: true,
             transitionDuration: 0,
             usePortal: true,
@@ -355,8 +353,8 @@ describe("<Popover>", () => {
                     interactionKind: "hover",
                     usePortal: true,
                 });
-                wrapper.simulateTarget("focus");
-                wrapper.simulateTarget("blur");
+                wrapper.focusTargetButton();
+                wrapper.blurTargetButton();
                 wrapper.assertIsOpen();
             });
         });
@@ -894,6 +892,7 @@ describe("<Popover>", () => {
         assertFindClass(className: string, expected?: boolean, msg?: string): this;
         assertIsOpen(isOpen?: boolean): this;
         assertOnInteractionCalled(called?: boolean): this;
+        blurTargetButton(): this;
         focusTargetButton(): this;
         simulateContent(eventName: string, ...args: any[]): this;
         /** Careful: simulating "focus" is unsupported by Enzyme, see https://stackoverflow.com/a/56892875/7406866 */
@@ -949,6 +948,10 @@ describe("<Popover>", () => {
         };
         wrapper.focusTargetButton = () => {
             wrapper!.find(`[data-testid="target-button"]`).hostNodes().getDOMNode<HTMLElement>().focus();
+            return wrapper!;
+        };
+        wrapper.blurTargetButton = () => {
+            wrapper!.find(`[data-testid="target-button"]`).hostNodes().getDOMNode<HTMLElement>().blur();
             return wrapper!;
         };
         wrapper.sendEscapeKey = () => {
