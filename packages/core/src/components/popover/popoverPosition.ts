@@ -18,9 +18,9 @@ import { Position } from "../../common";
 
 export const PopoverPosition = {
     ...Position,
-    AUTO: "auto" as "auto",
-    AUTO_END: "auto-end" as "auto-end",
-    AUTO_START: "auto-start" as "auto-start",
+    AUTO: "auto" as const,
+    AUTO_END: "auto-end" as const,
+    AUTO_START: "auto-start" as const,
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type PopoverPosition = (typeof PopoverPosition)[keyof typeof PopoverPosition];

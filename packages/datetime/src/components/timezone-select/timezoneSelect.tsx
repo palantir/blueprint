@@ -172,7 +172,7 @@ export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, T
                 itemListPredicate={this.filterItems}
                 itemRenderer={this.renderItem}
                 items={query ? this.timezoneItems : this.initialTimezoneItems}
-                noResults={<MenuItem disabled={true} text="No matching timezones." />}
+                noResults={<MenuItem disabled={true} roleStructure="listoption" text="No matching timezones." />}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 popoverProps={{

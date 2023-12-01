@@ -53,10 +53,10 @@ import { getBasePlacement, getTransformOrigin } from "./popperUtils";
 import type { PopupKind } from "./popupKind";
 
 export const PopoverInteractionKind = {
-    CLICK: "click" as "click",
-    CLICK_TARGET_ONLY: "click-target" as "click-target",
-    HOVER: "hover" as "hover",
-    HOVER_TARGET_ONLY: "hover-target" as "hover-target",
+    CLICK: "click" as const,
+    CLICK_TARGET_ONLY: "click-target" as const,
+    HOVER: "hover" as const,
+    HOVER_TARGET_ONLY: "hover-target" as const,
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type PopoverInteractionKind = (typeof PopoverInteractionKind)[keyof typeof PopoverInteractionKind];
@@ -368,11 +368,12 @@ export class Popover<
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
         const ownTargetProps = {
+            "aria-expanded": isOpen,
             "aria-haspopup":
                 this.props.popupKind ??
                 (this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
                     ? undefined
-                    : ("true" as "true")),
+                    : ("true" as const)),
             // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
             // If, instead, renderTarget is undefined and the target is provided as a child, this.props.className is
             // applied to the generated target wrapper element.

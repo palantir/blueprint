@@ -18,15 +18,15 @@
 
 /** @deprecated use named keys instead of key codes */
 export const KeyCodes = {
-    BACKSPACE: 8,
-    TAB: 9,
-    ENTER: 13,
-    SHIFT: 16,
-    ESCAPE: 27,
-    SPACE: 32,
-    ARROW_LEFT: 37,
-    ARROW_UP: 38,
-    ARROW_RIGHT: 39,
-    ARROW_DOWN: 40,
-    DELETE: 46,
+    BACKSPACE: 8 as const,
+    TAB: 9 as const,
+    ENTER: 13 as const,
+    SHIFT: 16 as const,
+    ESCAPE: 27 as const,
+    SPACE: 32 as const,
+    ARROW_LEFT: 37 as const,
+    ARROW_UP: 38 as const,
+    ARROW_RIGHT: 39 as const,
+    ARROW_DOWN: 40 as const,
+    DELETE: 46 as const,
 };

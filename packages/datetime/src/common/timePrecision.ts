@@ -15,9 +15,9 @@
  */
 
 export const TimePrecision = {
-    MILLISECOND: "millisecond" as "millisecond",
-    MINUTE: "minute" as "minute",
-    SECOND: "second" as "second",
+    MILLISECOND: "millisecond" as const,
+    MINUTE: "minute" as const,
+    SECOND: "second" as const,
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type TimePrecision = (typeof TimePrecision)[keyof typeof TimePrecision];

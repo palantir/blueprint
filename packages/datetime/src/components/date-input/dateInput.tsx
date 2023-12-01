@@ -245,6 +245,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
 
     const inputRef = React.useRef<HTMLInputElement | null>(null);
     const popoverContentRef = React.useRef<HTMLDivElement | null>(null);
+    const popoverId = Utils.uniqueId("date-picker");
 
     // State
     // ------------------------------------------------------------------------
@@ -405,7 +406,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
     // provide it the focusIn event handlers instead of using a ref and manually adding the
     // event listeners ourselves.
     const popoverContent = (
-        <div ref={popoverContentRef}>
+        <div ref={popoverContentRef} role="dialog" aria-label="date picker" id={popoverId}>
             <div onFocus={handleStartFocusBoundaryFocusIn} tabIndex={0} />
             <DatePicker
                 {...datePickerProps}
@@ -638,8 +639,10 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
                     }
                     tagName={popoverProps.targetTagName}
                     type="text"
+                    role="combobox"
                     {...targetProps}
                     {...inputProps}
+                    aria-controls={popoverId}
                     aria-expanded={targetIsOpen}
                     disabled={props.disabled}
                     fill={fill}

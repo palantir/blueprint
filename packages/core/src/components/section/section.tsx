@@ -115,7 +115,7 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
     /**
      * Optional title renderer function. If provided, it is recommended to include a Blueprint `<H6>` element
      * as part of the title. The render function is supplied with `className` and `id` attributes which you must
-     * forward to the DOM.
+     * forward to the DOM. The `title` prop is also passed along to this renderer via `props.children`.
      *
      * @default H6
      */
