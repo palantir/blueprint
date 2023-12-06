@@ -49,6 +49,7 @@ export { EditableText, type EditableTextProps } from "./editable-text/editableTe
 export { ControlGroup, type ControlGroupProps } from "./forms/controlGroup";
 export { Checkbox, type CheckboxProps, Radio, type RadioProps, Switch, type SwitchProps } from "./forms/controls";
 export type { ControlProps } from "./forms/controlProps";
+export { EntityTitle, type EntityTitleProps } from "./entity-title/entityTitle";
 export { FileInput, type FileInputProps } from "./forms/fileInput";
 export { FormGroup, type FormGroupProps } from "./forms/formGroup";
 export { InputGroup, type InputGroupProps } from "./forms/inputGroup";
