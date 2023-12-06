@@ -16,7 +16,9 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { IconNames, type IconName } from "@blueprintjs/icons";
+
+import { type IconName, IconNames } from "@blueprintjs/icons";
+
 import { Classes, DISPLAYNAME_PREFIX, type MaybeElement, type Props } from "../../common";
 import { H1, H2, H3, H4, H5, H6 } from "../html/html";
 import { Icon } from "../icon/icon";
@@ -53,8 +55,13 @@ export interface EntityTitleProps extends Props {
     tags?: React.ReactNode;
 
     subtitle?: JSX.Element | string;
-};
+}
 
+/**
+ * EntityTitle component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/entity-title
+ */
 export const EntityTitle: React.FC<EntityTitleProps> = ({
     className,
     headingSize,

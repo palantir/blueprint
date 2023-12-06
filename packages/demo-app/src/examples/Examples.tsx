@@ -28,7 +28,7 @@ import { DatePickerExample } from "./DatePickerExample";
 import { DateRangePickerExample } from "./DateRangePickerExample";
 import { DialogExample } from "./DialogExample";
 import { EditableTextExample } from "./EditableTextExample";
-import { EntityTitleExample} from "./EntityTitleExample";
+import { EntityTitleExample } from "./EntityTitleExample";
 import { HtmlCodeExample } from "./HtmlCodeExample";
 import { HtmlTableExample } from "./HtmlTableExample";
 import { IconExample } from "./IconExample";
