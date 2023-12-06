@@ -111,7 +111,9 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
      * Whether the application should return focus to the last active element in the
      * document after this popover closes.
      *
-     * This is automatically set (overridden) to `false` for hover interaction popovers.
+     * This is automatically set (overridden) to:
+     *  - `false` for hover interaction popovers
+     *  - `true` when a popover closes due to an ESC keypress
      *
      * If you are attaching a popover _and_ a tooltip to the same target, you must take
      * care to either disable this prop for the popover _or_ disable the tooltip's
@@ -131,8 +133,10 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
 }
 
 export interface PopoverState {
-    isOpen: boolean;
     hasDarkParent: boolean;
+    // when an ESC keypress interaction closes the overlay, we want to force-enable `shouldReturnFocusOnClose` behavior
+    isClosingViaEscapeKeypress: boolean;
+    isOpen: boolean;
 }
 
 /**
@@ -174,6 +178,7 @@ export class Popover<
 
     public state: PopoverState = {
         hasDarkParent: false,
+        isClosingViaEscapeKeypress: false,
         isOpen: this.getIsOpen(this.props),
     };
 
@@ -439,17 +444,9 @@ export class Popover<
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const {
-            autoFocus,
-            enforceFocus,
-            backdropProps,
-            canEscapeKeyClose,
-            hasBackdrop,
-            interactionKind,
-            shouldReturnFocusOnClose,
-            usePortal,
-        } = this.props;
-        const { isOpen } = this.state;
+        const { autoFocus, enforceFocus, backdropProps, canEscapeKeyClose, hasBackdrop, interactionKind, usePortal } =
+            this.props;
+        const { isClosingViaEscapeKeypress: isClosingViaKeyboardInteraction, isOpen } = this.state;
 
         // compute an appropriate transform origin so the scale animation points towards target
         const transformOrigin = getTransformOrigin(
@@ -490,6 +487,12 @@ export class Popover<
         );
 
         const defaultAutoFocus = this.isHoverInteractionKind() ? false : undefined;
+        // if hover interaction, it doesn't make sense to take over focus control
+        const shouldReturnFocusOnClose = this.isHoverInteractionKind()
+            ? false
+            : isClosingViaKeyboardInteraction
+              ? true
+              : this.props.shouldReturnFocusOnClose;
 
         return (
             <Overlay
@@ -513,8 +516,7 @@ export class Popover<
                 portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
                 portalStopPropagationEvents={this.props.portalStopPropagationEvents}
-                // if hover interaction, it doesn't make sense to take over focus control
-                shouldReturnFocusOnClose={this.isHoverInteractionKind() ? false : shouldReturnFocusOnClose}
+                shouldReturnFocusOnClose={shouldReturnFocusOnClose}
             >
                 <div className={Classes.POPOVER_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
                     <ResizeSensor onResize={this.reposition}>
@@ -717,11 +719,7 @@ export class Popover<
         if (!shouldIgnoreClick) {
             // ensure click did not originate from within inline popover before closing
             if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
-                if (this.props.isOpen == null) {
-                    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
-                } else {
-                    this.setOpenState(!this.props.isOpen, e);
-                }
+                this.setOpenState(!this.props.isOpen, e);
             }
         }
     };
@@ -747,6 +745,7 @@ export class Popover<
                 // non-null assertion because the only time `e` is undefined is when in controlled mode
                 // or the rare special case in uncontrolled mode when the `disabled` flag is toggled true
                 this.props.onClose?.(e!);
+                this.setState({ isClosingViaEscapeKeypress: isEscapeKeypressEvent(e?.nativeEvent) });
             }
         }
     }
@@ -761,6 +760,10 @@ export class Popover<
     private isElementInPopover(element: Element) {
         return this.getPopoverElement()?.contains(element) ?? false;
     }
+}
+
+function isEscapeKeypressEvent(e?: Event) {
+    return e instanceof KeyboardEvent && e.key === "Escape";
 }
 
 function noop() {
