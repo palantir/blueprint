@@ -4091,7 +4091,7 @@
         "displayName": "new-shield",
         "iconName": "new-shield",
         "tags": "shield, new, add, marking",
-        "group": "miscellaneous",
+        "group": "security",
         "codepoint": 62281
     },
     {
@@ -4107,5 +4107,20 @@
         "tags": "input, right, arrow",
         "group": "interface",
         "codepoint": 62283
+    },
+    {
+        "displayName": "generate",
+        "iconName": "generate",
+        "tags": "generate, ai, aip, create",
+        "group": "action",
+        "codepoint": 62284
+    },
+    {
+        "displayName": "explain",
+        "iconName": "explain",
+        "tags": "explain, ai, aip, describe",
+        "group": "action",
+        "group": "miscellaneous",
+        "codepoint": 62285
     }
 ]
