@@ -446,7 +446,7 @@ export class Popover<
     private renderPopover = (popperProps: PopperChildrenProps) => {
         const { autoFocus, enforceFocus, backdropProps, canEscapeKeyClose, hasBackdrop, interactionKind, usePortal } =
             this.props;
-        const { isClosingViaEscapeKeypress: isClosingViaKeyboardInteraction, isOpen } = this.state;
+        const { isClosingViaEscapeKeypress, isOpen } = this.state;
 
         // compute an appropriate transform origin so the scale animation points towards target
         const transformOrigin = getTransformOrigin(
@@ -490,7 +490,7 @@ export class Popover<
         // if hover interaction, it doesn't make sense to take over focus control
         const shouldReturnFocusOnClose = this.isHoverInteractionKind()
             ? false
-            : isClosingViaKeyboardInteraction
+            : isClosingViaEscapeKeypress
               ? true
               : this.props.shouldReturnFocusOnClose;
 
