@@ -17,9 +17,9 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { type IconName, IconNames } from "@blueprintjs/icons";
+import { type IconName } from "@blueprintjs/icons";
 
-import { Classes, DISPLAYNAME_PREFIX, type MaybeElement, type Props } from "../../common";
+import { Classes, type MaybeElement, type Props } from "../../common";
 import { H1, H2, H3, H4, H5, H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
@@ -141,25 +141,12 @@ export const EntityTitle: React.FC<EntityTitleProps> = ({
     );
 };
 
-EntityTitle.defaultProps = {};
-EntityTitle.displayName = `${DISPLAYNAME_PREFIX}.EntityTitle`;
-
-type ISkeletonEntityTitleProps = Props &
-    Pick<EntityTitleProps, "headingSize"> & {
-        hasIcon?: boolean;
-        hasSubtitle?: boolean;
-    };
-
-export const SkeletonEntityTitle: React.FC<ISkeletonEntityTitleProps> = ({ hasSubtitle, hasIcon, ...props }) => {
-    return (
-        <EntityTitle
-            title={<span className={Classes.SKELETON}>xxxxxxxxxxxxxxxx</span>}
-            icon={hasIcon ? <Icon icon={IconNames.SQUARE} className={Classes.SKELETON} /> : undefined}
-            subtitle={hasSubtitle ? <span className={Classes.SKELETON}>xxxxxxxx</span> : undefined}
-            {...props}
-        />
-    );
-};
-
-SkeletonEntityTitle.defaultProps = {};
-SkeletonEntityTitle.displayName = `${DISPLAYNAME_PREFIX}.SleletonEntityTitle`;
+// Construct header class name from H{*}. Returns `undefined` if `heading` is
+// not a Blueprint heading.
+// function getClassNameFromHeading(heading: React.FC<any>) {
+//     const headerIndex = [H1, H2, H3, H4, H5, H6].findIndex(header => header === heading);
+//     if (headerIndex < 0) {
+//         return undefined;
+//     }
+//     return Classes.nsClass(`entity-title-heading-h${headerIndex + 1}`);
+// }
