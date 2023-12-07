@@ -719,7 +719,11 @@ export class Popover<
         if (!shouldIgnoreClick) {
             // ensure click did not originate from within inline popover before closing
             if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
-                this.setOpenState(!this.props.isOpen, e);
+                if (this.props.isOpen == null) {
+                    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+                } else {
+                    this.setOpenState(!this.props.isOpen, e);
+                }
             }
         }
     };
