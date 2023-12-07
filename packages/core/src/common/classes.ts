@@ -163,13 +163,14 @@ export const EDITABLE_TEXT_INPUT = `${EDITABLE_TEXT}-input`;
 export const EDITABLE_TEXT_PLACEHOLDER = `${EDITABLE_TEXT}-placeholder`;
 
 export const ENTITY_TITLE = `${NS}-entity-title`;
-export const ENTITY_TITLE_ICON_CONTAINER = `${ENTITY_TITLE}-icon-container`;
-export const ENTITY_TITLE_RIGHT = `${ENTITY_TITLE}-right`;
-export const ENTITY_TITLE_TOP_LINE = `${ENTITY_TITLE}-top-line`;
-export const ENTITY_TITLE_TAGS_CONTAINER = `${ENTITY_TITLE}-tags-container`;
-export const ENTITY_TITLE_TITLE = `${ENTITY_TITLE}-title`;
+export const ENTITY_TITLE_ELLIPSIZE = `${NS}-entity-title-ellipsize`;
 export const ENTITY_TITLE_HAS_SUBTITLE = `${ENTITY_TITLE}-has-subtitle`;
+export const ENTITY_TITLE_ICON_CONTAINER = `${ENTITY_TITLE}-icon-container`;
 export const ENTITY_TITLE_SUBTITLE = `${ENTITY_TITLE}-subtitle`;
+export const ENTITY_TITLE_TAGS_CONTAINER = `${ENTITY_TITLE}-tags-container`;
+export const ENTITY_TITLE_TEXT = `${ENTITY_TITLE}-text`;
+export const ENTITY_TITLE_TITLE = `${ENTITY_TITLE}-title`;
+export const ENTITY_TITLE_TITLE_AND_TAGS = `${ENTITY_TITLE}-title-and-tags`;
 
 export const FLEX_EXPANDER = `${NS}-flex-expander`;
 

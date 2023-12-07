@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { type IconName } from "@blueprintjs/icons";
+import { type IconName, IconNames } from "@blueprintjs/icons";
 
 import { Classes, type MaybeElement, type Props } from "../../common";
 import { H1, H2, H3, H4, H5, H6 } from "../html/html";
@@ -34,14 +34,24 @@ export enum HeadingSize {
 }
 
 export interface EntityTitleProps extends Props {
-    title: JSX.Element | string;
+    /**
+     * Whether the overflowing text content should be ellipsized.
+     *
+     * @default false
+     */
+    ellipsize?: boolean;
 
     /**
-     * Inherit font size if not provided
+     * React component to render the main title heading. This defaults to
+     * Blueprint's `<Text>` component, * which inherits font size from its
+     * containing element(s).
+     *
+     * To render larger, more prominent titles, Use Blueprint's heading
+     * components instead (e.g. `{ H1 } from "@blueprintjs/core"`).
+     *
+     * @default Text
      */
-    headingSize?: HeadingSize;
-
-    titleURL?: string;
+    heading?: React.FC<any>;
 
     /**
      * Name of a Blueprint UI icon (or an icon element) to render in the section's header.
@@ -50,11 +60,25 @@ export interface EntityTitleProps extends Props {
     icon?: IconName | MaybeElement;
 
     /**
+     * Whether to render as loading state.
+     *
+     * @default false
+     */
+    loading?: boolean;
+
+    /** The content to render below the title. Defaults to render muted text. */
+    subtitle?: JSX.Element | string;
+
+    /** The primary title to render. */
+    title: JSX.Element | string;
+
+    /** If specified, the title will be wrapped in an anchor with this URL. */
+    titleURL?: string;
+
+    /**
      * <Tag> components work best - if multiple, wrap in <React.Fragment>
      */
     tags?: React.ReactNode;
-
-    subtitle?: JSX.Element | string;
 }
 
 /**
@@ -64,14 +88,16 @@ export interface EntityTitleProps extends Props {
  */
 export const EntityTitle: React.FC<EntityTitleProps> = ({
     className,
-    headingSize,
-    title,
+    ellipsize = false,
+    heading = Text,
     icon,
-    tags,
+    loading = false,
     subtitle,
+    tags,
+    title,
     titleURL,
 }) => {
-    const titleComponent = React.useMemo(() => {
+    const titleElement = React.useMemo(() => {
         const maybeTitleWithURL =
             titleURL != null ? (
                 <a target="_blank" href={titleURL} rel="noreferrer">
@@ -81,61 +107,63 @@ export const EntityTitle: React.FC<EntityTitleProps> = ({
                 title
             );
 
-        const titleClassName = classNames(Classes.ENTITY_TITLE_TITLE);
+        return React.createElement(
+            heading,
+            {
+                className: classNames(Classes.ENTITY_TITLE_TITLE, { [Classes.SKELETON]: loading }),
+                ellipsize: heading === Text ? ellipsize : undefined,
+            },
+            maybeTitleWithURL,
+        );
+    }, [titleURL, title, heading, loading, ellipsize]);
 
-        switch (headingSize) {
-            case HeadingSize.h1:
-                return <H1 className={titleClassName}>{maybeTitleWithURL}</H1>;
-            case HeadingSize.h2:
-                return <H2 className={titleClassName}>{maybeTitleWithURL}</H2>;
-            case HeadingSize.h3:
-                return <H3 className={titleClassName}>{maybeTitleWithURL}</H3>;
-            case HeadingSize.h4:
-                return <H4 className={titleClassName}>{maybeTitleWithURL}</H4>;
-            case HeadingSize.h5:
-                return <H5 className={titleClassName}>{maybeTitleWithURL}</H5>;
-            case HeadingSize.h6:
-                return <H6 className={titleClassName}>{maybeTitleWithURL}</H6>;
-            default:
-                return <Text className={titleClassName}>{maybeTitleWithURL}</Text>;
-        }
-    }, [title, titleURL, headingSize]);
-
-    const subtitleComponent = React.useMemo(() => {
-        if (!subtitle) {
+    const maybeSubtitle = React.useMemo(() => {
+        if (subtitle == null) {
             return null;
         }
 
         return (
             <Text
-                className={classNames(
-                    Classes.TEXT_MUTED,
-                    headingSize == null && Classes.TEXT_SMALL,
-                    Classes.ENTITY_TITLE_SUBTITLE,
-                )}
+                className={classNames(Classes.TEXT_MUTED, Classes.ENTITY_TITLE_SUBTITLE, {
+                    [Classes.SKELETON]: loading,
+                })}
+                ellipsize={ellipsize}
             >
                 {subtitle}
             </Text>
         );
-    }, [headingSize, subtitle]);
+    }, [ellipsize, loading, subtitle]);
 
     return (
-        <div className={classNames(className, Classes.ENTITY_TITLE, headingSize)}>
+        <div
+            className={classNames(className, Classes.ENTITY_TITLE, getClassNameFromHeading(heading), {
+                [Classes.ENTITY_TITLE_ELLIPSIZE]: ellipsize,
+            })}
+        >
             {icon != null && (
                 <div
                     className={classNames(Classes.ENTITY_TITLE_ICON_CONTAINER, {
-                        [Classes.ENTITY_TITLE_HAS_SUBTITLE]: subtitleComponent != null,
+                        [Classes.ENTITY_TITLE_HAS_SUBTITLE]: maybeSubtitle != null,
                     })}
                 >
-                    <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />
+                    <Icon
+                        aria-hidden={true}
+                        className={classNames(Classes.TEXT_MUTED, { [Classes.SKELETON]: loading })}
+                        icon={loading ? IconNames.SQUARE : icon}
+                        tabIndex={-1}
+                    />
                 </div>
             )}
-            <div className={Classes.ENTITY_TITLE_RIGHT}>
-                <div className={Classes.ENTITY_TITLE_TOP_LINE}>
-                    {titleComponent}
+            <div className={Classes.ENTITY_TITLE_TEXT}>
+                <div
+                    className={classNames(Classes.ENTITY_TITLE_TITLE_AND_TAGS, {
+                        [Classes.SKELETON]: loading,
+                    })}
+                >
+                    {titleElement}
                     {tags != null && <div className={Classes.ENTITY_TITLE_TAGS_CONTAINER}>{tags}</div>}
                 </div>
-                {subtitleComponent}
+                {maybeSubtitle}
             </div>
         </div>
     );
@@ -143,10 +171,10 @@ export const EntityTitle: React.FC<EntityTitleProps> = ({
 
 // Construct header class name from H{*}. Returns `undefined` if `heading` is
 // not a Blueprint heading.
-// function getClassNameFromHeading(heading: React.FC<any>) {
-//     const headerIndex = [H1, H2, H3, H4, H5, H6].findIndex(header => header === heading);
-//     if (headerIndex < 0) {
-//         return undefined;
-//     }
-//     return Classes.nsClass(`entity-title-heading-h${headerIndex + 1}`);
-// }
+function getClassNameFromHeading(heading: React.FC<any>) {
+    const headerIndex = [H1, H2, H3, H4, H5, H6].findIndex(header => header === heading);
+    if (headerIndex < 0) {
+        return undefined;
+    }
+    return [Classes.getClassNamespace(), "entity-title-heading", `h${headerIndex + 1}`].join("-");
+}
