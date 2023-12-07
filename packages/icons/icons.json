@@ -4093,5 +4093,33 @@
         "tags": "shield, new, add, marking",
         "group": "security",
         "codepoint": 62281
+    },
+    {
+        "displayName": "generate",
+        "iconName": "generate",
+        "tags": "generate, ai, aip, create",
+        "group": "action",
+        "codepoint": 62282
+    },
+    {
+        "displayName": "explain",
+        "iconName": "explain",
+        "tags": "explain, ai, aip, describe",
+        "group": "action",
+        "codepoint": 62283
+    },
+    {
+        "displayName": "group-item",
+        "iconName": "group-item",
+        "tags": "group, widget group, grid",
+        "group": "interface",
+        "codepoint": 62284
+    },
+    {
+        "displayName": "input",
+        "iconName": "input",
+        "tags": "input, value",
+        "group": "interface",
+        "codepoint": 62285
     }
 ]
