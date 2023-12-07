@@ -30,7 +30,7 @@ import {
     type Props,
     Utils,
 } from "../../common";
-import { H5 } from "../html/html";
+import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 
 /** This component also supports the full range of HTML `<div>` attributes. */
@@ -62,6 +62,13 @@ export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
      * component).
      */
     title?: string;
+
+    /**
+     * Compact variant (optional)
+     *
+     * Whether to use a compact appearance, which reduces the visual padding around tooltip content.
+     */
+    compact?: boolean
 }
 
 /**
@@ -73,17 +80,18 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
     public render() {
-        const { className, children, icon, intent, title, ...htmlProps } = this.props;
+        const { className, children, icon, intent, title, compact, ...htmlProps } = this.props;
         const iconElement = this.renderIcon(icon, intent);
         const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className, {
             [Classes.CALLOUT_HAS_BODY_CONTENT]: !Utils.isReactNodeEmpty(children),
             [Classes.CALLOUT_ICON]: iconElement != null,
+            [Classes.COMPACT]: compact,
         });
 
         return (
             <div className={classes} {...htmlProps}>
                 {iconElement}
-                {title && <H5>{title}</H5>}
+                {title && <H6>{title}</H6>}
                 {children}
             </div>
         );

@@ -23,6 +23,7 @@ Styleguide callout
 
 $callout-padding: $pt-grid-size * 1.5;
 $callout-header-margin-top: $pt-grid-size * 0.2;
+$callout-compact-padding: $pt-grid-size;
 
 .#{$ns}-callout {
   @include running-typography();
@@ -45,6 +46,10 @@ $callout-header-margin-top: $pt-grid-size * 0.2;
     }
   }
 
+  .#{$ns}-compact {
+    padding: $callout-compact-padding;
+  }
+
   // High contrast mode hides backgrounds, so we need to use a border instead
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     border: 1px solid $pt-high-contrast-mode-border-color;
@@ -55,9 +60,9 @@ $callout-header-margin-top: $pt-grid-size * 0.2;
 
     > .#{$ns}-icon:first-child {
       color: $pt-icon-color;
-      left: $callout-padding;
+      left: 12px;
       position: absolute;
-      top: $callout-padding + $callout-header-margin-top;
+      top: 12px;
     }
   }
 
