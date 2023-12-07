@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { AST_TOKEN_TYPES, TSESLint } from "@typescript-eslint/utils";
+import { AST_TOKEN_TYPES, type TSESLint } from "@typescript-eslint/utils";
 
 /**
  * Gets all identifier tokens in a source file.

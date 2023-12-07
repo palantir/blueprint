@@ -24,8 +24,8 @@
 import * as React from "react";
 
 import { Callout, Classes, H5, Switch } from "@blueprintjs/core";
-import { DatePicker, TimePrecision } from "@blueprintjs/datetime";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { DatePicker, type TimePrecision } from "@blueprintjs/datetime";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { MomentDate } from "./common/momentDate";
 import { PrecisionSelect } from "./common/precisionSelect";

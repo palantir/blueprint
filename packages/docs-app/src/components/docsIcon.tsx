@@ -18,7 +18,7 @@ import classNames from "classnames";
 import download from "downloadjs";
 import * as React from "react";
 
-import { Classes, ContextMenu, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
+import { Classes, ContextMenu, Icon, type IconName, Menu, MenuItem } from "@blueprintjs/core";
 import { IconSize } from "@blueprintjs/icons";
 
 import { ClickToCopy } from "./clickToCopy";

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  */
@@ -5,7 +6,7 @@
 // @ts-check
 
 import { watch } from "chokidar";
-import fsExtra from "fs-extra";
+import fs from "fs-extra";
 import { basename, extname, join, resolve } from "node:path";
 import { argv } from "node:process";
 import * as sass from "sass";
@@ -22,8 +23,18 @@ const args = yargs(truncatedArgv)
         type: "string",
         description: "Path to file with exported custom sass functions",
     })
-    .option("output", { alias: "o", type: "string", description: "Output folder" })
-    .option("watch", { alias: "w", type: "boolean", description: "Watch mode" })
+    .option("output", {
+        alias: "o",
+        type: "string",
+        description: "Output folder",
+        default: "lib/css/",
+    })
+    .option("watch", {
+        alias: "w",
+        type: "boolean",
+        description: "Watch mode",
+        default: false,
+    })
     .check(argv => {
         const hasOneStringArgument = argv._.length === 1 && typeof argv._[0] === "string";
         return hasOneStringArgument;
@@ -31,7 +42,7 @@ const args = yargs(truncatedArgv)
     .parseSync();
 
 /** @type {string} */
-// @ts-ignore
+// @ts-ignore - we know this is a string because of the yargs constraint
 const inputFolder = args._[0];
 
 /** @type {Record<string, sass.CustomFunction<"async">>} */
@@ -58,7 +69,7 @@ if (args.watch) {
 }
 
 async function compileAllFiles() {
-    const files = fsExtra.readdirSync(inputFolder);
+    const files = fs.readdirSync(inputFolder);
     const inputFilePaths = files
         .filter(file => extname(file) === ".scss" && !basename(file).startsWith("_"))
         .map(fileName => join(inputFolder, fileName));

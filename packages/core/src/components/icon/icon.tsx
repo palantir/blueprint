@@ -18,16 +18,23 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
-    DefaultSVGIconProps,
-    IconName,
-    IconPaths,
+    type DefaultSVGIconProps,
+    type IconName,
+    type IconPaths,
     Icons,
     IconSize,
     SVGIconContainer,
-    SVGIconProps,
+    type SVGIconProps,
 } from "@blueprintjs/icons";
 
-import { Classes, DISPLAYNAME_PREFIX, IntentProps, MaybeElement, Props, removeNonHTMLProps } from "../../common";
+import {
+    Classes,
+    DISPLAYNAME_PREFIX,
+    type IntentProps,
+    type MaybeElement,
+    type Props,
+    removeNonHTMLProps,
+} from "../../common";
 
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
 export { type IconName, IconSize };
@@ -162,11 +169,11 @@ export const Icon: IconComponent = React.forwardRef(function <T extends Element>
             size === IconSize.STANDARD
                 ? Classes.ICON_STANDARD
                 : size === IconSize.LARGE
-                ? Classes.ICON_LARGE
-                : undefined;
+                  ? Classes.ICON_LARGE
+                  : undefined;
         return React.createElement(tagName!, {
-            ...removeNonHTMLProps(htmlProps),
             "aria-hidden": title ? undefined : true,
+            ...removeNonHTMLProps(htmlProps),
             className: classNames(
                 Classes.ICON,
                 sizeClass,

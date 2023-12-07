@@ -17,9 +17,9 @@
 import * as React from "react";
 
 import { Classes, H5, Icon, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
-import { getSizeProp, Size, SizeSelect } from "./common/sizeSelect";
+import { getSizeProp, type Size, SizeSelect } from "./common/sizeSelect";
 
 export function MenuExample(props: ExampleProps) {
     const [size, setSize] = React.useState<Size>("regular");

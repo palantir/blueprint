@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { Classes, Code, FormGroup, H5, Icon, InputGroup, Intent, Switch, Tooltip } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Classes, Code, Divider, FormGroup, H5, Icon, InputGroup, Intent, Switch, Tooltip } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -62,6 +62,7 @@ export const FormGroupExample: React.FC<ExampleProps> = props => {
             <Switch label="Show label" checked={label} onChange={handleBooleanChange(setLabel)} />
             <Switch label="Show label info" checked={requiredLabel} onChange={handleBooleanChange(setRequiredLabel)} />
             <Switch label="Show sub label" checked={subLabel} onChange={handleBooleanChange(setSubLabel)} />
+            <Divider />
             <IntentSelect intent={intent} label={intentLabelInfo} onChange={setIntent} showClearButton={true} />
         </>
     );

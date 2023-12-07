@@ -23,14 +23,14 @@ import {
     OverlayToaster,
     Position,
     Switch,
-    Toaster,
+    type Toaster,
 } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 import {
     areFilmsEqual,
     createFilm,
-    Film,
+    type Film,
     filterFilm,
     renderCreateFilmMenuItem,
     renderFilm,

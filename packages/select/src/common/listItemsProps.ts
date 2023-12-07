@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Props, Utils } from "@blueprintjs/core";
+import { type Props, Utils } from "@blueprintjs/core";
 
 import type { ItemListRenderer } from "./itemListRenderer";
 import type { ItemRenderer } from "./itemRenderer";

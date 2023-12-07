@@ -15,15 +15,15 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, MenuItem, Popover, PopoverProps } from "@blueprintjs/core";
+import { InputGroup, MenuItem, Popover, type PopoverProps } from "@blueprintjs/core";
 
-import { ItemRendererProps, QueryList } from "../src";
-import { Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
-import { Suggest, SuggestProps, SuggestState } from "../src/components/suggest/suggest";
+import { type ItemRendererProps, QueryList } from "../src";
+import { type Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
+import { Suggest, type SuggestProps, type SuggestState } from "../src/components/suggest/suggest";
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 

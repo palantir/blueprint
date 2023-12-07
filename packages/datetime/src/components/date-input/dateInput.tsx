@@ -27,20 +27,20 @@ import * as React from "react";
 import type { DayPickerProps } from "react-day-picker";
 
 import {
-    ButtonProps,
+    type ButtonProps,
     DISPLAYNAME_PREFIX,
     InputGroup,
-    InputGroupProps,
+    type InputGroupProps,
     mergeRefs,
     Popover,
-    PopoverClickTargetHandlers,
-    PopoverTargetProps,
-    Props,
+    type PopoverClickTargetHandlers,
+    type PopoverTargetProps,
+    type Props,
     Tag,
     Utils,
 } from "@blueprintjs/core";
 
-import { Classes, DateFormatProps, DatePickerBaseProps } from "../../common";
+import { Classes, type DateFormatProps, type DatePickerBaseProps } from "../../common";
 import { getFormattedDateString } from "../../common/dateFormatProps";
 import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import { hasMonthChanged, hasTimeChanged, isDateValid, isDayInRange } from "../../common/dateUtils";
@@ -245,6 +245,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
 
     const inputRef = React.useRef<HTMLInputElement | null>(null);
     const popoverContentRef = React.useRef<HTMLDivElement | null>(null);
+    const popoverId = Utils.uniqueId("date-picker");
 
     // State
     // ------------------------------------------------------------------------
@@ -405,7 +406,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
     // provide it the focusIn event handlers instead of using a ref and manually adding the
     // event listeners ourselves.
     const popoverContent = (
-        <div ref={popoverContentRef}>
+        <div ref={popoverContentRef} role="dialog" aria-label="date picker" id={popoverId}>
             <div onFocus={handleStartFocusBoundaryFocusIn} tabIndex={0} />
             <DatePicker
                 {...datePickerProps}
@@ -638,8 +639,10 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
                     }
                     tagName={popoverProps.targetTagName}
                     type="text"
+                    role="combobox"
                     {...targetProps}
                     {...inputProps}
+                    aria-controls={popoverId}
                     aria-expanded={targetIsOpen}
                     disabled={props.disabled}
                     fill={fill}

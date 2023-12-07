@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/monaco-editor-theme",
-    "version": "1.0.4",
+    "version": "1.0.7",
     "description": "Blueprint theme for monaco-editor",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -12,27 +12,26 @@
     ],
     "sideEffects": [],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/*",
+        "clean": "rm -rf dist/* || rm -rf lib/* || true",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
-        "dev": "run-p \"compile:esm -- --watch\"",
+        "dev": "run-p \"compile:esm --watch\"",
         "dist": "run-s \"dist:*\"",
         "dist:verify": "assert-package-layout",
-        "lint": "run-p lint:es",
-        "lint:es": "es-lint",
+        "lint": "es-lint",
         "lint-fix": "es-lint --fix",
         "verify": "npm-run-all compile -p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/colors": "^5.0.4",
-        "monaco-editor": "^0.37.1"
+        "@blueprintjs/colors": "workspace:^",
+        "monaco-editor": "^0.44.0"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^8.0.4",
+        "@blueprintjs/node-build-scripts": "workspace:^",
         "npm-run-all": "^4.1.5",
-        "typescript": "~4.9.5"
+        "typescript": "~5.2.2"
     },
     "repository": {
         "type": "git",

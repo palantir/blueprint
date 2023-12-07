@@ -20,7 +20,7 @@ import * as ReactDOM from "react-dom";
 
 import { Utils } from "../src";
 import { Grid } from "../src/common/grid";
-import { Locator, LocatorImpl } from "../src/locator";
+import { type Locator, LocatorImpl } from "../src/locator";
 
 const N_ROWS = 10;
 const N_COLS = 10;

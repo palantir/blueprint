@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/colors",
-    "version": "5.0.4",
+    "version": "5.0.7",
     "description": "Blueprint color definitions",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -11,14 +11,14 @@
         "src"
     ],
     "scripts": {
-        "clean": "rm -rf lib/*",
+        "clean": "rm -rf lib/* || true",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
         "compile:css-colors": "generate-css-variables --retainDefault true --outputFileName colors _colors.scss",
-        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+        "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "lint": "npm-run-all -p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
@@ -26,12 +26,12 @@
         "verify": "npm-run-all compile -p dist lint"
     },
     "dependencies": {
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^8.0.4",
+        "@blueprintjs/node-build-scripts": "workspace:^",
         "mocha": "^10.2.0",
-        "typescript": "~4.9.5"
+        "typescript": "~5.2.2"
     },
     "repository": {
         "type": "git",

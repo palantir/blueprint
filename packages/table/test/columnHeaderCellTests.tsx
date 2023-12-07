@@ -21,7 +21,7 @@ import * as sinon from "sinon";
 
 import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
 
-import { ColumnHeaderCell, ColumnHeaderCellProps } from "../src";
+import { ColumnHeaderCell, type ColumnHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";

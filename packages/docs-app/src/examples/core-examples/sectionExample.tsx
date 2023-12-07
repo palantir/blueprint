@@ -22,15 +22,15 @@ import {
     Classes,
     EditableText,
     Elevation,
+    FormGroup,
     H5,
-    Label,
     Section,
     SectionCard,
-    SectionElevation,
+    type SectionElevation,
     Slider,
     Switch,
 } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 export interface SectionExampleState {
@@ -92,7 +92,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                 <Switch checked={hasDescription} label="Sub-title" onChange={this.toggleHasDescription} />
                 <Switch checked={hasRightElement} label="Right element" onChange={this.toggleHasRightElement} />
                 <Switch checked={collapsible} label="Collapsible" onChange={this.toggleCollapsible} />
-                <Label>
+                <FormGroup label="Elevation">
                     Elevation
                     <Slider
                         max={1}
@@ -101,7 +101,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                         onChange={this.handleElevationChange}
                         handleHtmlProps={{ "aria-label": "Section elevation" }}
                     />
-                </Label>
+                </FormGroup>
 
                 <H5>Collapse Props</H5>
                 <Switch

@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Button, Classes, Dialog, DialogBody, DialogFooter, DialogProps } from "../../src";
+import { Button, Classes, Dialog, DialogBody, DialogFooter, type DialogProps } from "../../src";
 
 const COMMON_PROPS: Partial<DialogProps> = {
     icon: "inbox",

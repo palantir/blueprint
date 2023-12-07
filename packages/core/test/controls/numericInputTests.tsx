@@ -15,14 +15,14 @@
 
 import { assert, expect } from "chai";
 import {
-    MountRendererProps,
-    ReactWrapper,
-    ShallowRendererProps,
+    type MountRendererProps,
+    type ReactWrapper,
+    type ShallowRendererProps,
     mount as untypedMount,
     shallow as untypedShallow,
 } from "enzyme";
 import * as React from "react";
-import { SinonStub, spy, stub } from "sinon";
+import { type SinonStub, spy, stub } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
@@ -30,11 +30,11 @@ import {
     Button,
     ButtonGroup,
     ControlGroup,
-    HTMLInputProps,
+    type HTMLInputProps,
     Icon,
     InputGroup,
     NumericInput,
-    NumericInputProps,
+    type NumericInputProps,
     Position,
 } from "../../src";
 import * as Errors from "../../src/common/errors";

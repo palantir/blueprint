@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, ButtonGroup, Label } from "@blueprintjs/core";
+import { FormGroup, SegmentedControl } from "@blueprintjs/core";
 
 export type Size = "small" | "regular" | "large";
 
@@ -28,19 +28,22 @@ export interface SizeSelectProps {
 }
 
 export const SizeSelect: React.FC<SizeSelectProps> = ({ label, size, optionLabels, onChange }) => {
-    const handleSmall = React.useCallback(() => onChange("small"), []);
-    const handleRegular = React.useCallback(() => onChange("regular"), []);
-    const handleLarge = React.useCallback(() => onChange("large"), []);
+    const handleChange = React.useCallback((value: string) => onChange(value as Size), [onChange]);
 
     return (
-        <Label>
-            {label}
-            <ButtonGroup fill={true} style={{ marginTop: 5 }}>
-                <Button active={size === "small"} text={optionLabels[0]} onClick={handleSmall} />
-                <Button active={size === "regular"} text={optionLabels[1]} onClick={handleRegular} />
-                <Button active={size === "large"} text={optionLabels[2]} onClick={handleLarge} />
-            </ButtonGroup>
-        </Label>
+        <FormGroup label={label}>
+            <SegmentedControl
+                fill={true}
+                small={true}
+                options={[
+                    { label: optionLabels[0], value: "small" },
+                    { label: optionLabels[1], value: "regular" },
+                    { label: optionLabels[2], value: "large" },
+                ]}
+                onValueChange={handleChange}
+                value={size}
+            />
+        </FormGroup>
     );
 };
 SizeSelect.defaultProps = {

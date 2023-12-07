@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, hideContextMenu, Menu, MenuDivider, MenuItem, showContextMenu } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const ContextMenuPopoverExample: React.FC<ExampleProps> = props => {
     const [isOpen, setIsOpen] = React.useState(false);

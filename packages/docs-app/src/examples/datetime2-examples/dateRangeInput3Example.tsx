@@ -17,9 +17,9 @@
 import * as React from "react";
 
 import { Callout, Code, FormGroup, H5, Switch } from "@blueprintjs/core";
-import { DateRange, TimePrecision } from "@blueprintjs/datetime";
+import { type DateRange, TimePrecision } from "@blueprintjs/datetime";
 import { DateRangeInput3 } from "@blueprintjs/datetime2";
-import { Example, ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateRange } from "../../common/formattedDateRange";

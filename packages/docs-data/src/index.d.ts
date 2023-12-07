@@ -2,14 +2,8 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-import {
-    INpmPluginData,
-    IMarkdownPluginData,
-    IKssExample,
-    IKssPluginData,
-    ITypescriptPluginData,
-} from "@documentalist/client";
+import { NpmPluginData, MarkdownPluginData, KssPluginData, TypescriptPluginData } from "@documentalist/client";
 
-export type DocsCompleteData = IMarkdownPluginData & INpmPluginData & IKssPluginData & ITypescriptPluginData;
+export type DocsCompleteData = MarkdownPluginData & NpmPluginData & KssPluginData & TypescriptPluginData;
 
 export const docsData: DocsCompleteData;

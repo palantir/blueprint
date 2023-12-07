@@ -18,27 +18,22 @@ import * as React from "react";
 
 import {
     Button,
-    ButtonProps,
+    type ButtonProps,
     Code,
     DialogBody,
     DialogStep,
+    Divider,
+    FormGroup,
     H5,
-    HTMLSelect,
-    Label,
     MultistepDialog,
-    MultistepDialogNavPosition,
+    type MultistepDialogNavPosition,
     NumericInput,
     Radio,
     RadioGroup,
+    SegmentedControl,
     Switch,
 } from "@blueprintjs/core";
-import {
-    Example,
-    ExampleProps,
-    handleBooleanChange,
-    handleStringChange,
-    handleValueChange,
-} from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 import type { BlueprintExampleData } from "../../tags/types";
 
@@ -95,9 +90,8 @@ export class MultistepDialogExample extends React.PureComponent<
 
     private handleHasTitleChange = handleBooleanChange(hasTitle => this.setState({ hasTitle }));
 
-    private handleNavPositionChange = handleValueChange((navPosition: MultistepDialogNavPosition) =>
-        this.setState({ navPosition }),
-    );
+    private handleNavPositionChange = (newValue: string) =>
+        this.setState({ navPosition: newValue as MultistepDialogNavPosition });
 
     public render() {
         const finalButtonProps: Partial<ButtonProps> = {
@@ -147,7 +141,7 @@ export class MultistepDialogExample extends React.PureComponent<
             hasTitle,
             initialStepIndex,
             isCloseButtonShown,
-            navPosition: position,
+            navPosition,
             showCloseButtonInFooter,
         } = this.state;
         return (
@@ -175,17 +169,24 @@ export class MultistepDialogExample extends React.PureComponent<
                     onChange={this.handleFooterCloseButtonChange}
                 />
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
-                <Label>
-                    Navigation Position
-                    <HTMLSelect value={position} onChange={this.handleNavPositionChange} options={NAV_POSITIONS} />
-                </Label>
-                <Label>Initial step index (0-indexed)</Label>
-                <NumericInput
-                    value={initialStepIndex}
-                    onValueChange={this.handleInitialStepIndexChange}
-                    max={2}
-                    min={-1}
-                />
+                <Divider />
+                <FormGroup label="Navigation Position">
+                    <SegmentedControl
+                        fill={true}
+                        onValueChange={this.handleNavPositionChange}
+                        options={NAV_POSITIONS.map(p => ({ label: p, value: p }))}
+                        small={true}
+                        value={navPosition}
+                    />
+                </FormGroup>
+                <FormGroup label="Initial step index (0-indexed)">
+                    <NumericInput
+                        value={initialStepIndex}
+                        onValueChange={this.handleInitialStepIndexChange}
+                        max={2}
+                        min={-1}
+                    />
+                </FormGroup>
             </>
         );
     }

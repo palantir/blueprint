@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { HTMLSelect, Label } from "@blueprintjs/core";
-import { Example, ExampleProps, handleNumberChange } from "@blueprintjs/docs-theme";
+import { FormGroup, HTMLSelect } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleNumberChange } from "@blueprintjs/docs-theme";
 import { Cell, Column, ColumnLoadingOption, Table2 } from "@blueprintjs/table";
 
 interface BigSpaceRock {
@@ -55,12 +55,11 @@ export class ColumnLoadingExample extends React.PureComponent<ExampleProps, Colu
             options.push(<option key={i} value={i} label={label} />);
         }
         return (
-            <Label>
-                Loading column
+            <FormGroup label="Loading column">
                 <HTMLSelect value={this.state.loadingColumn} onChange={this.handleLoadingColumnChange}>
                     {options}
                 </HTMLSelect>
-            </Label>
+            </FormGroup>
         );
     }
 

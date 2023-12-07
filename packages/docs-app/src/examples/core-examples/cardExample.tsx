@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { Button, Card, Classes, Elevation, H5, Label, Slider, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Button, Card, Classes, type Elevation, FormGroup, H5, Slider, Switch } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface CardExampleState {
     compact: boolean;
@@ -57,8 +57,7 @@ export class CardExample extends React.PureComponent<ExampleProps, CardExampleSt
                 <Switch checked={this.state.selected} label="Selected" onChange={this.handleSelectedChange} />
             )}
             <Switch checked={this.state.compact} label="Compact" onChange={this.handleCompactChange} />
-            <Label>
-                Elevation
+            <FormGroup label="Elevation">
                 <Slider
                     max={4}
                     showTrackFill={false}
@@ -66,7 +65,7 @@ export class CardExample extends React.PureComponent<ExampleProps, CardExampleSt
                     onChange={this.handleElevationChange}
                     handleHtmlProps={{ "aria-label": "card elevation" }}
                 />
-            </Label>
+            </FormGroup>
         </>
     );
 

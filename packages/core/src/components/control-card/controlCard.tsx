@@ -18,24 +18,31 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLInputProps } from "../../common/props";
-import { Card, CardProps } from "../card/card";
+import { DISPLAYNAME_PREFIX, type HTMLInputProps } from "../../common/props";
+import { Card, type CardProps } from "../card/card";
 import type { CheckedControlProps, ControlProps } from "../forms/controlProps";
-import { Checkbox, Switch } from "../forms/controls";
+import { Checkbox, Radio, Switch } from "../forms/controls";
 import { useCheckedControl } from "./useCheckedControl";
 
-export type ControlKind = "switch" | "checkbox";
+export type ControlKind = "switch" | "checkbox" | "radio";
 
 /**
- * Subset of {@link Card} which can be used to adjust its behavior.
+ * Subset of {@link CardProps} which can be used to adjust its behavior.
  */
 type SupportedCardProps = Omit<CardProps, "interactive" | "onChange">;
 
 /**
  * Subset of {@link ControlProps} which can be used to adjust its behavior.
  */
-type SupportedControlProps = Pick<ControlProps, keyof CheckedControlProps | "alignIndicator" | "disabled" | "inputRef">;
+type SupportedControlProps = Pick<
+    ControlProps,
+    keyof CheckedControlProps | "alignIndicator" | "disabled" | "inputRef" | "label" | "value"
+>;
 
+/**
+ * Shared props interface for all control card components, including `CheckboxCard`, `RadioCard`, and `SwitchCard`.
+ * The label content may be specified as either `label` or `children`, but not both.
+ */
 export interface ControlCardProps extends SupportedCardProps, SupportedControlProps {
     /**
      * Which kind of form control to render inside the card.
@@ -61,27 +68,28 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
  *
  * @internal
  */
-
 export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, ref) => {
     const {
         alignIndicator,
         checked: _checked,
-        children: labelContent,
+        children,
         className,
         controlKind,
         defaultChecked: _defaultChecked,
         disabled,
         inputProps,
         inputRef,
+        label,
         onChange: _onChange,
         showAsSelectedWhenChecked,
+        value,
         ...cardProps
     } = props;
 
     const { checked, onChange } = useCheckedControl(props);
 
     // use a container element to achieve a good flex layout
-    const labelElement = <div className={Classes.CONTROL_CARD_LABEL}>{labelContent}</div>;
+    const labelElement = <div className={Classes.CONTROL_CARD_LABEL}>{children ?? label}</div>;
     const controlProps: ControlProps = {
         alignIndicator,
         checked,
@@ -90,6 +98,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
         inputRef,
         labelElement,
         onChange,
+        value,
         ...inputProps,
     };
     const classes = classNames(Classes.CONTROL_CARD, className, {
@@ -102,8 +111,10 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
                 <Switch {...controlProps} />
             ) : controlKind === "checkbox" ? (
                 <Checkbox {...controlProps} />
+            ) : controlKind === "radio" ? (
+                <Radio {...controlProps} />
             ) : (
-                props.children
+                labelElement
             )}
         </Card>
     );

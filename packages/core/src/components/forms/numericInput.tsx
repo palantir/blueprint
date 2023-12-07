@@ -23,7 +23,7 @@ import {
     AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
-    HTMLInputProps,
+    type HTMLInputProps,
     Intent,
     Position,
     refHandler,

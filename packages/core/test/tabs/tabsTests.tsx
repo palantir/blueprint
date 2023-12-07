@@ -14,13 +14,13 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
 import { Classes } from "../../src/common";
 import { Tab } from "../../src/components/tabs/tab";
-import { Tabs, TabsProps, TabsState } from "../../src/components/tabs/tabs";
+import { Tabs, type TabsProps, type TabsState } from "../../src/components/tabs/tabs";
 
 describe("<Tabs>", () => {
     const ID = "tabsTests";

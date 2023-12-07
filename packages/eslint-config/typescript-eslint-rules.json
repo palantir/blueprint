@@ -8,6 +8,19 @@
     ],
     "@typescript-eslint/ban-types": "error",
     "@typescript-eslint/consistent-type-assertions": "error",
+    "@typescript-eslint/consistent-type-exports": [
+        "error",
+        {
+            "fixMixedExportsWithInlineTypeSpecifier": true
+        }
+    ],
+    "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+            "prefer": "type-imports",
+            "fixStyle": "inline-type-imports"
+        }
+    ],
     "@typescript-eslint/dot-notation": "error",
     "@typescript-eslint/explicit-member-accessibility": [
         "error",

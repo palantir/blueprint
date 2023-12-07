@@ -1,0 +1,52 @@
+@use "sass:math";
+@import "../../common/variables";
+
+.#{$ns}-segmented-control {
+  background-color: $light-gray5;
+  border-radius: $pt-border-radius;
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+
+  &.#{$ns}-inline {
+    display: inline-flex;
+  }
+
+  &.#{$ns}-fill {
+    width: 100%;
+
+    > .#{$ns}-button {
+      flex-grow: 1;
+    }
+  }
+
+  > .#{$ns}-button:not(.#{$ns}-minimal) {
+    &:not(.#{$ns}-intent-primary) {
+      background-color: $white;
+
+      .#{$ns}-dark & {
+        background-color: $dark-gray5;
+      }
+    }
+  }
+
+  > .#{$ns}-button.#{$ns}-minimal {
+    color: $pt-text-color-muted;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-muted;
+    }
+  }
+
+  > .#{$ns}-button.#{$ns}-minimal:disabled {
+    color: $pt-text-color-disabled;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-disabled;
+    }
+  }
+
+  .#{$ns}-dark & {
+    background-color: $dark-gray3;
+  }
+}

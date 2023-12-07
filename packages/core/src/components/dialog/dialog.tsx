@@ -17,15 +17,15 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSize, SmallCross } from "@blueprintjs/icons";
+import { type IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, MaybeElement, Props } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type MaybeElement, type Props } from "../../common";
 import * as Errors from "../../common/errors";
 import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
-import { BackdropProps, Overlay, OverlayableProps } from "../overlay/overlay";
+import { type BackdropProps, Overlay, type OverlayableProps } from "../overlay/overlay";
 
 export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /** Dialog contents. */

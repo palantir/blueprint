@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { DatePickerModifiers, Months } from "../../common";
+import { type DatePickerModifiers, Months } from "../../common";
 
 export const DISABLED_MODIFIER = "disabled";
 export const HOVERED_RANGE_MODIFIER = "hovered-range";

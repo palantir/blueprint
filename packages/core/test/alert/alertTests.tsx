@@ -15,17 +15,28 @@
  */
 
 import { assert } from "chai";
-import { mount, shallow, ShallowWrapper } from "enzyme";
+import { mount, shallow, type ShallowWrapper } from "enzyme";
 import * as React from "react";
-import { SinonStub, spy, stub } from "sinon";
+import { type SinonStub, spy, stub } from "sinon";
 
 import { WarningSign } from "@blueprintjs/icons";
 
-import { Alert, AlertProps, Button, ButtonProps, Classes, Icon, Intent } from "../../src";
+import { Alert, type AlertProps, Button, type ButtonProps, Classes, Icon, Intent } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { findInPortal } from "../utils";
 
 describe("<Alert>", () => {
+    let testsContainerElement: HTMLElement | undefined;
+
+    beforeEach(() => {
+        testsContainerElement = document.createElement("div");
+        document.body.appendChild(testsContainerElement);
+    });
+
+    afterEach(() => {
+        testsContainerElement?.remove();
+    });
+
     it("renders its content correctly", () => {
         const noop = () => true;
         const wrapper = shallow(
@@ -55,6 +66,7 @@ describe("<Alert>", () => {
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,
+            { attachTo: testsContainerElement },
         );
         assert.lengthOf(container.getElementsByClassName(Classes.ALERT), 1);
         document.body.removeChild(container);
@@ -79,6 +91,7 @@ describe("<Alert>", () => {
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,
+            { attachTo: testsContainerElement },
         );
         assert.isTrue(onOpening.calledOnce);
         wrapper.unmount();
@@ -174,6 +187,7 @@ describe("<Alert>", () => {
                     <p>Are you sure you want to delete this file?</p>
                     <p>There is no going back.</p>
                 </Alert>,
+                { attachTo: testsContainerElement },
             );
             const overlay = findInPortal(alert, "." + Classes.OVERLAY).first();
 
@@ -193,6 +207,7 @@ describe("<Alert>", () => {
                     <p>Are you sure you want to delete this file?</p>
                     <p>There is no going back.</p>
                 </Alert>,
+                { attachTo: testsContainerElement },
             );
             const backdrop = findInPortal(alert, "." + Classes.OVERLAY_BACKDROP).hostNodes();
 

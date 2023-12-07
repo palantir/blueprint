@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { H5, Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { H5, type Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 

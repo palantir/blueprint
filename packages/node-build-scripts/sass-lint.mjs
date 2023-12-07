@@ -20,17 +20,19 @@ const reportPath = junitReportPath("stylelint");
 /** Path to Stylelint config file */
 const configFile = join(getRootDir(), ".stylelintrc");
 
+const FILES_GLOB = "src/**/*.scss";
+
 stylelint
     .lint({
         configFile,
-        files: "src/**/*.scss",
+        files: FILES_GLOB,
         formatter: reportPath !== undefined ? stylelintJUnitFormater : "string",
         customSyntax: "postcss-scss",
         fix: argv.indexOf("--fix") > 0,
     })
     .then(resultObject => {
         if (reportPath !== undefined) {
-            console.info(`Stylelint report will appear in ${reportPath}`);
+            console.info(`[node-build-scripts/sass-lint] Stylelint report will appear in ${reportPath}`);
             writeFileSync(reportPath, resultObject.output);
         } else {
             console.info(resultObject.output);
@@ -40,7 +42,7 @@ stylelint
         }
     })
     .catch(error => {
-        console.error("[node-build-scripts] sass-lint failed with error:");
+        console.error("[node-build-scripts/sass-lint] sass-lint failed with error:");
         console.error(error);
         exit(2);
     });

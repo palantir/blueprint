@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-theme",
-    "version": "5.1.1",
+    "version": "5.2.2",
     "description": "Blueprint theme for documentalist",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -17,16 +17,16 @@
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/*",
+        "clean": "rm -rf dist/* || rm -rf lib/* || true",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
-        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+        "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "cross-env NODE_ENV=production webpack",
-        "dist:css": "css-dist lib/css/*.css",
+        "dist:bundle": "NODE_ENV=production webpack",
+        "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
@@ -35,13 +35,13 @@
         "verify": "npm-run-all compile -p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/colors": "^5.0.4",
-        "@blueprintjs/core": "^5.5.1",
-        "@blueprintjs/select": "^5.0.16",
-        "@documentalist/client": "^4.0.0",
+        "@blueprintjs/colors": "workspace:^",
+        "@blueprintjs/core": "workspace:^",
+        "@blueprintjs/select": "workspace:^",
+        "@documentalist/client": "^5.0.0",
         "classnames": "^2.3.1",
         "fuzzaldrin-plus": "^0.6.0",
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "peerDependencies": {
         "@types/react": "^16.14.32 || 17 || 18",
@@ -54,13 +54,13 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^8.0.4",
-        "@types/fuzzaldrin-plus": "~0.6.2",
+        "@blueprintjs/node-build-scripts": "workspace:^",
+        "@types/fuzzaldrin-plus": "~0.6.5",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
-        "typescript": "~4.9.5",
-        "webpack-cli": "^5.0.1"
+        "typescript": "~5.2.2",
+        "webpack-cli": "^5.1.4"
     },
     "repository": {
         "type": "git",

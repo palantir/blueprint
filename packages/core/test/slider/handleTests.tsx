@@ -15,11 +15,11 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 
-import { Handle, HandleState, InternalHandleProps } from "../../src/components/slider/handle";
+import { Handle, type HandleState, type InternalHandleProps } from "../../src/components/slider/handle";
 import { DRAG_SIZE, simulateMovement } from "./sliderTestUtils";
 
 const HANDLE_PROPS: InternalHandleProps = {

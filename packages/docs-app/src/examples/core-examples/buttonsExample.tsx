@@ -17,22 +17,25 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Alignment, AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { type Alignment, AnchorButton, Button, Code, Divider, H5, Intent, Switch } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Duplicate, Refresh } from "@blueprintjs/icons";
 
+import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
-import { Size, SizeSelect } from "./common/sizeSelect";
+import { type Size, SizeSelect } from "./common/sizeSelect";
 
 interface ButtonsExampleState {
     active: boolean;
     alignText: Alignment | undefined;
     disabled: boolean;
+    ellipsizeText: boolean;
     fill: boolean;
     iconOnly: boolean;
     intent: Intent;
     loading: boolean;
+    longText: boolean;
     minimal: boolean;
     outlined: boolean;
     size: Size;
@@ -44,10 +47,12 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
         active: false,
         alignText: undefined,
         disabled: false,
+        ellipsizeText: false,
         fill: false,
         iconOnly: false,
         intent: Intent.NONE,
         loading: false,
+        longText: false,
         minimal: false,
         outlined: false,
         size: "regular",
@@ -60,11 +65,17 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
 
+    private handleEllipsizeTextChange = handleBooleanChange(ellipsizeText => this.setState({ ellipsizeText }));
+
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
 
     private handleIconOnlyChange = handleBooleanChange(iconOnly => this.setState({ iconOnly }));
 
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
+
     private handleLoadingChange = handleBooleanChange(loading => this.setState({ loading }));
+
+    private handleLongTextChange = handleBooleanChange(longText => this.setState({ longText }));
 
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
 
@@ -72,9 +83,23 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
 
     private handleSizeChange = (size: Size) => this.setState({ size });
 
-    private handleIntentChange = (intent: Intent) => this.setState({ intent });
-
     private wiggleTimeoutId: number;
+
+    private get wiggleButtonText() {
+        return this.state.iconOnly
+            ? undefined
+            : this.state.longText
+              ? "Click to trigger a whimsical wiggling animation"
+              : "Click to wiggle";
+    }
+
+    private get duplicateButtonText() {
+        return this.state.iconOnly
+            ? undefined
+            : this.state.longText
+              ? "Duplicate this web page in a new browser tab"
+              : "Duplicate this page";
+    }
 
     public componentWillUnmount() {
         window.clearTimeout(this.wiggleTimeoutId);
@@ -92,11 +117,20 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Outlined" checked={this.state.outlined} onChange={this.handleOutlinedChange} />
                 <Switch label="Fill" checked={this.state.fill} onChange={this.handleFillChange} />
+                <PropCodeTooltip snippet={`ellipsizeText={${this.state.ellipsizeText.toString()}}`}>
+                    <Switch
+                        label="Ellipsize long text"
+                        checked={this.state.ellipsizeText}
+                        onChange={this.handleEllipsizeTextChange}
+                    />
+                </PropCodeTooltip>
+                <Divider />
                 <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignTextChange} />
                 <SizeSelect size={this.state.size} onChange={this.handleSizeChange} />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
                 <H5>Example</H5>
                 <Switch label="Icons only" checked={this.state.iconOnly} onChange={this.handleIconOnlyChange} />
+                <Switch label="Long text" checked={this.state.longText} onChange={this.handleLongTextChange} />
             </>
         );
 
@@ -112,10 +146,9 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
                         onClick={this.beginWiggling}
                         small={size === "small"}
                         large={size === "large"}
+                        text={this.wiggleButtonText}
                         {...buttonProps}
-                    >
-                        {!iconOnly && "Click to wiggle"}
-                    </Button>
+                    />
                 </div>
                 <div className={classNames({ "docs-flex-column": this.state.fill })}>
                     <p>
@@ -126,7 +159,7 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
                         icon={<Duplicate />}
                         rightIcon="share"
                         target="_blank"
-                        text={iconOnly ? undefined : "Duplicate this page"}
+                        text={this.duplicateButtonText}
                         small={size === "small"}
                         large={size === "large"}
                         {...buttonProps}

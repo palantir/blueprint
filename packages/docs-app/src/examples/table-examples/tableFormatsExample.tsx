@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, JSONFormat, Table2, TruncatedFormat } from "@blueprintjs/table";
 
 interface Timezone {

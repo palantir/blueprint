@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { IHeadingTag } from "@documentalist/client";
+import { isHeadingTag, type Tag } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -23,15 +23,22 @@ import { Link } from "@blueprintjs/icons";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 
-export const Heading: React.FC<IHeadingTag> = ({ level, route, value }) =>
-    // use createElement so we can dynamically choose tag based on depth
-    React.createElement(
-        `h${level}`,
-        { className: classNames(Classes.HEADING, "docs-title") },
-        <a className="docs-anchor" data-route={route} key="anchor" />,
-        <a className="docs-anchor-link" href={"#" + route} key="link">
+export const Heading: React.FC<Tag> = props => {
+    if (!isHeadingTag(props)) {
+        return null;
+    }
+
+    const { level, route, value } = props;
+    const className = classNames(Classes.HEADING, "docs-title");
+    const children = [
+        <a className="docs-anchor" data-route={route} key="anchor" aria-hidden={true} tabIndex={-1} />,
+        <a className="docs-anchor-link" href={"#" + route} key="link" aria-hidden={true} tabIndex={-1}>
             <Link />
         </a>,
         value,
-    );
+    ];
+
+    // use createElement so we can dynamically choose tag based on depth
+    return React.createElement(`h${level}`, { className }, children);
+};
 Heading.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.Heading`;

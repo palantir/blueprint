@@ -16,9 +16,9 @@
 
 /** Boundary of a one-dimensional interval. */
 export const Boundary = {
-    START: "start" as "start",
+    START: "start" as const,
     // tslint:disable-next-line:object-literal-sort-keys
-    END: "end" as "end",
+    END: "end" as const,
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Boundary = (typeof Boundary)[keyof typeof Boundary];

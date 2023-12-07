@@ -17,14 +17,14 @@
 import classNames from "classnames";
 import { format } from "date-fns";
 import * as React from "react";
-import { ActiveModifiers, DateFormatter, DayPicker } from "react-day-picker";
+import { type ActiveModifiers, type DateFormatter, DayPicker } from "react-day-picker";
 
 import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 import {
     DatePickerShortcutMenu,
     DatePickerUtils,
-    DateRange,
-    DateRangeShortcut,
+    type DateRange,
+    type DateRangeShortcut,
     DateUtils,
     Errors,
     TimePicker,
@@ -38,7 +38,7 @@ import { DatePicker3Provider } from "./datePicker3Context";
 import type { DatePicker3Props } from "./datePicker3Props";
 import type { DatePicker3State } from "./datePicker3State";
 
-export { DatePicker3Props };
+export type { DatePicker3Props };
 
 /**
  * Date picker (v3) component.

@@ -21,29 +21,29 @@ import {
     Button,
     Classes,
     Code,
+    Divider,
     FormGroup,
     H5,
     HTMLSelect,
     Intent,
-    Label,
     Menu,
     MenuDivider,
     MenuItem,
-    NumberRange,
-    Placement,
+    type NumberRange,
+    type Placement,
     Popover,
-    PopoverInteractionKind,
-    PopperModifierOverrides,
+    type PopoverInteractionKind,
+    type PopperModifierOverrides,
     PopperPlacements,
     RadioGroup,
     RangeSlider,
     Slider,
-    StrictModifierNames,
+    type StrictModifierNames,
     Switch,
 } from "@blueprintjs/core";
 import {
     Example,
-    ExampleProps,
+    type ExampleProps,
     handleBooleanChange,
     handleNumberChange,
     handleValueChange,
@@ -72,8 +72,10 @@ export interface PopoverExampleState {
     matchTargetWidth: boolean;
     minimal?: boolean;
     modifiers?: PopperModifierOverrides;
+    openOnTargetFocus: boolean;
     placement?: Placement;
     rangeSliderValue?: NumberRange;
+    shouldReturnFocusOnClose: boolean;
     sliderValue?: number;
     usePortal?: boolean;
 }
@@ -98,8 +100,10 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
             flip: { enabled: true },
             preventOverflow: { enabled: true },
         },
+        openOnTargetFocus: true,
         placement: "auto",
         rangeSliderValue: [0, 10],
+        shouldReturnFocusOnClose: false,
         sliderValue: 5,
         usePortal: true,
     };
@@ -140,6 +144,12 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
 
     private toggleMinimal = handleBooleanChange(minimal => this.setState({ minimal }));
 
+    private toggleOpenOnTargetFocus = handleBooleanChange(openOnTargetFocus => this.setState({ openOnTargetFocus }));
+
+    private toggleShouldReturnFocusOnClose = handleBooleanChange(shouldReturnFocusOnClose =>
+        this.setState({ openOnTargetFocus: shouldReturnFocusOnClose ? false : undefined, shouldReturnFocusOnClose }),
+    );
+
     private toggleUsePortal = handleBooleanChange(usePortal => {
         if (usePortal) {
             this.setState({ hasBackdrop: false, inheritDarkTheme: false });
@@ -169,18 +179,18 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
                     <Popover
                         popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}
-                        portalClassName="foo"
+                        portalClassName="docs-popover-example-portal"
                         {...popoverProps}
+                        content={this.getContents(exampleIndex)}
                         boundary={
                             boundary === "scrollParent"
                                 ? this.scrollParentElement ?? undefined
                                 : boundary === "body"
-                                ? this.bodyElement ?? undefined
-                                : boundary
+                                  ? this.bodyElement ?? undefined
+                                  : boundary
                         }
                         enforceFocus={false}
                         isOpen={this.state.isControlled ? this.state.isOpen : undefined}
-                        content={this.getContents(exampleIndex)}
                     >
                         <Button intent={Intent.PRIMARY} text={buttonText} tabIndex={0} />
                     </Popover>
@@ -195,11 +205,13 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
     }
 
     private renderOptions() {
-        const { matchTargetWidth, modifiers, placement } = this.state;
+        const { interactionKind, matchTargetWidth, modifiers, placement } = this.state;
         const { arrow, flip, preventOverflow } = modifiers;
 
         // popper.js requires this modiifer for "auto" placement
         const forceFlipEnabled = placement.startsWith("auto");
+
+        const isHoverInteractionKind = interactionKind === "hover" || interactionKind === "hover-target";
 
         return (
             <>
@@ -209,14 +221,9 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                     label="Position when opened"
                     labelFor="position"
                 >
-                    <HTMLSelect
-                        value={this.state.placement}
-                        onChange={this.handlePlacementChange}
-                        options={PopperPlacements}
-                    />
+                    <HTMLSelect value={placement} onChange={this.handlePlacementChange} options={PopperPlacements} />
                 </FormGroup>
-                <Label>
-                    Example content
+                <FormGroup label="Example content">
                     <HTMLSelect value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
                         <option value="0">Text</option>
                         <option value="1">Input</option>
@@ -225,7 +232,7 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                         <option value="4">Select</option>
                         <option value="5">Empty</option>
                     </HTMLSelect>
-                </Label>
+                </FormGroup>
                 <Switch checked={this.state.usePortal} onChange={this.toggleUsePortal}>
                     Use <Code>Portal</Code>
                 </Switch>
@@ -243,14 +250,27 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                 <H5>Interactions</H5>
                 <RadioGroup
                     label="Interaction kind"
-                    selectedValue={this.state.interactionKind.toString()}
+                    selectedValue={interactionKind.toString()}
                     options={INTERACTION_KINDS}
                     onChange={this.handleInteractionChange}
                 />
+                <Divider />
                 <Switch
                     checked={this.state.canEscapeKeyClose}
                     label="Can escape key close"
                     onChange={this.toggleEscapeKey}
+                />
+                <Switch
+                    checked={this.state.openOnTargetFocus}
+                    disabled={!isHoverInteractionKind}
+                    label="Open on target focus"
+                    onChange={this.toggleOpenOnTargetFocus}
+                />
+                <Switch
+                    checked={isHoverInteractionKind ? false : this.state.shouldReturnFocusOnClose}
+                    disabled={isHoverInteractionKind}
+                    label="Should return focus on close"
+                    onChange={this.toggleShouldReturnFocusOnClose}
                 />
 
                 <H5>Modifiers</H5>
@@ -279,7 +299,7 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                 </Switch>
                 <Switch checked={matchTargetWidth} label="Match target width" onChange={this.toggleMatchTargetWidth} />
 
-                <Label>
+                <FormGroup>
                     <AnchorButton
                         href={POPPER_DOCS_URL}
                         fill={true}
@@ -291,7 +311,7 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                     >
                         Visit Popper.js docs
                     </AnchorButton>
-                </Label>
+                </FormGroup>
             </>
         );
     }

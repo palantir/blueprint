@@ -4,7 +4,7 @@
 
 import * as React from "react";
 
-import { Classes, DISPLAYNAME_PREFIX, HTMLInputProps } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, type HTMLInputProps } from "../../common";
 
 export type Ref = HTMLInputElement;
 

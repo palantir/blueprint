@@ -125,7 +125,7 @@ export default {
     // to automatically find tsconfig.json
     context: cwd(),
 
-    devtool: IS_PRODUCTION ? false : "inline-source-map",
+    devtool: IS_PRODUCTION ? false : "eval-source-map",
 
     devServer: {
         allowedHosts: "all",

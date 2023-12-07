@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import "../lib/css/blueprint.css";
+
 import "@blueprintjs/test-commons/bootstrap";
 
 // common
@@ -63,6 +65,7 @@ import "./portal/portalTests";
 import "./progress/progressBarTests";
 import "./resize-sensor/resizeSensorTests";
 import "./section/sectionTests";
+import "./segmented-control/segmentedControlTests";
 import "./slider/handleTests";
 import "./slider/multiSliderTests";
 import "./slider/rangeSliderTests";

@@ -15,11 +15,11 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { type EnzymePropSelector, mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import { SinonSpy, spy } from "sinon";
+import { type SinonSpy, spy } from "sinon";
 
-import { CheckboxCard, Classes, SwitchCard } from "../../src";
+import { CheckboxCard, Classes, RadioCard, RadioGroup, SwitchCard } from "../../src";
 
 describe("ControlCard", () => {
     let testsContainerElement: HTMLElement | undefined;
@@ -58,4 +58,23 @@ describe("ControlCard", () => {
             );
         });
     });
+
+    describe("RadioCard", () => {
+        it("works like a Radio component inside a RadioGroup", () => {
+            const changeSpy = spy();
+            const group = mount(
+                <RadioGroup onChange={changeSpy}>
+                    <RadioCard value="one" label="One" />
+                    <RadioCard value="two" label="Two" />
+                </RadioGroup>,
+            );
+            findInput(group, { value: "one" }).simulate("change");
+            findInput(group, { value: "two" }).simulate("change");
+            assert.equal(changeSpy.callCount, 2);
+        });
+    });
+
+    function findInput(wrapper: ReactWrapper<any, any>, props: EnzymePropSelector) {
+        return wrapper.find("input").filter(props);
+    }
 });

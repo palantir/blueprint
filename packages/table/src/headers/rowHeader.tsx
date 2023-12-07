@@ -23,8 +23,8 @@ import type { ClientCoordinates } from "../interactions/dragTypes";
 import type { IndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
-import { Header, HeaderProps } from "./header";
-import { RowHeaderCell, RowHeaderCellProps } from "./rowHeaderCell";
+import { Header, type HeaderProps } from "./header";
+import { RowHeaderCell, type RowHeaderCellProps } from "./rowHeaderCell";
 
 export type RowHeaderRenderer = (rowIndex: number) => React.ReactElement<RowHeaderCellProps>;
 

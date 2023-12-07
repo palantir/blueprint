@@ -18,6 +18,7 @@ import * as React from "react";
 
 import {
     Button,
+    Divider,
     H5,
     Icon,
     InputGroup,
@@ -30,16 +31,19 @@ import {
     Tag,
     Tooltip,
 } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 import { IconSize } from "@blueprintjs/icons";
+
+import { IntentSelect } from "./common/intentSelect";
 
 export interface InputGroupExampleState {
     disabled: boolean;
-    readOnly: boolean;
     filterValue: string;
+    intent: Intent;
     large: boolean;
-    small: boolean;
+    readOnly: boolean;
     showPassword: boolean;
+    small: boolean;
     tagValue: string;
 }
 
@@ -47,6 +51,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
     public state: InputGroupExampleState = {
         disabled: false,
         filterValue: "",
+        intent: Intent.NONE,
         large: false,
         readOnly: false,
         showPassword: false,
@@ -55,6 +60,8 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private handleReadOnlyChange = handleBooleanChange(readOnly => this.setState({ readOnly }));
 
@@ -69,7 +76,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
     public render() {
-        const { disabled, filterValue, large, readOnly, small, showPassword, tagValue } = this.state;
+        const { disabled, filterValue, intent, large, readOnly, small, showPassword, tagValue } = this.state;
 
         const maybeSpinner = filterValue ? <Spinner size={IconSize.STANDARD} /> : undefined;
 
@@ -104,56 +111,42 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
 
         const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
 
+        const sharedProps = { disabled, large, small, readOnly, intent };
+
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <Tooltip content="My input value state is updated asynchronously with a 10ms delay">
                     <InputGroup
+                        {...sharedProps}
                         asyncControl={true}
-                        disabled={disabled}
-                        large={large}
                         leftIcon="filter"
                         onChange={this.handleFilterChange}
                         placeholder="Filter histogram..."
-                        readOnly={readOnly}
                         rightElement={maybeSpinner}
-                        small={small}
                         value={filterValue}
                     />
                 </Tooltip>
                 <InputGroup
-                    disabled={disabled}
-                    large={large}
+                    {...sharedProps}
                     placeholder="Enter your password..."
-                    readOnly={readOnly}
                     rightElement={lockButton}
-                    small={small}
                     type={showPassword ? "text" : "password"}
                 />
                 <InputGroup
-                    disabled={disabled}
-                    large={large}
+                    {...sharedProps}
                     leftElement={<Icon icon="tag" />}
                     onChange={this.handleTagChange}
                     placeholder="Find tags"
-                    readOnly={readOnly}
                     rightElement={resultsTag}
-                    small={small}
                     value={tagValue}
                 />
-                <InputGroup
-                    disabled={disabled}
-                    large={large}
-                    placeholder="Add people or groups..."
-                    readOnly={readOnly}
-                    rightElement={permissionsMenu}
-                    small={small}
-                />
+                <InputGroup {...sharedProps} placeholder="Add people or groups..." rightElement={permissionsMenu} />
             </Example>
         );
     }
 
     private renderOptions() {
-        const { disabled, readOnly, large, small } = this.state;
+        const { disabled, intent, readOnly, large, small } = this.state;
         return (
             <>
                 <H5>Props</H5>
@@ -161,6 +154,8 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
                 <Switch label="Read-only" onChange={this.handleReadOnlyChange} checked={readOnly} />
                 <Switch label="Large" onChange={this.handleLargeChange} checked={large} />
                 <Switch label="Small" onChange={this.handleSmallChange} checked={small} />
+                <Divider />
+                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
             </>
         );
     }

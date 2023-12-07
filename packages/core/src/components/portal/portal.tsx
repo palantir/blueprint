@@ -17,7 +17,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import type { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
 import { PortalContext } from "../../context/portal/portalProvider";
@@ -80,7 +80,8 @@ export function Portal(
 ) {
     const context = React.useContext(PortalContext);
 
-    const portalContainer = container ?? context.portalContainer ?? document?.body;
+    const portalContainer =
+        container ?? context.portalContainer ?? (typeof document !== "undefined" ? document.body : undefined);
 
     const [portalElement, setPortalElement] = React.useState<HTMLElement>();
 

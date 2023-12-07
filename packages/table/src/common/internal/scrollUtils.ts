@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Region, RegionCardinality, Regions } from "../../regions";
+import { type Region, RegionCardinality, Regions } from "../../regions";
 
 /**
  * Returns the scroll{Left,Top} offsets of the provided region based on its

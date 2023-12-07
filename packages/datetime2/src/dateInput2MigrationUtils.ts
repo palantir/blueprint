@@ -16,7 +16,7 @@
 
 import { isValid } from "date-fns";
 
-import { DateInputProps, TimePrecision, TimezoneUtils } from "@blueprintjs/datetime";
+import { type DateInputProps, TimePrecision, TimezoneUtils } from "@blueprintjs/datetime";
 
 type DateInputLegacyValue = Date | null | undefined;
 type DateInputLegacyDefaultValue = Date | undefined;
@@ -77,10 +77,10 @@ function convertDateToDateString(date: Date, timePrecision?: TimePrecision) {
         date.getMilliseconds() !== 0
             ? TimePrecision.MILLISECOND
             : date.getSeconds() !== 0
-            ? TimePrecision.SECOND
-            : date.getMinutes() !== 0
-            ? TimePrecision.MINUTE
-            : undefined;
+              ? TimePrecision.SECOND
+              : date.getMinutes() !== 0
+                ? TimePrecision.MINUTE
+                : undefined;
 
     return TimezoneUtils.getIsoEquivalentWithUpdatedTimezone(date, tz, timePrecision ?? inferredTimePrecision);
 }

@@ -19,7 +19,7 @@ import * as React from "react";
 import { Classes, H3, InputGroup, NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
 
-import { DocsIcon, DocsIconProps as Icon } from "./docsIcon";
+import { DocsIcon, type DocsIconProps as Icon } from "./docsIcon";
 
 const ICONS_PER_ROW = 5;
 

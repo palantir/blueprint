@@ -40,6 +40,7 @@
 @page checkbox
 @page radio
 @page html-select
+@page segmented-control
 @page sliders
 @page switch
 

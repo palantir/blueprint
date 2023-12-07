@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { HotkeyProps, HotkeysTarget2, NonIdealState } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { type HotkeyProps, HotkeysTarget2, NonIdealState } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { PianoKey } from "./audio";
 

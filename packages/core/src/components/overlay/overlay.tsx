@@ -19,7 +19,7 @@ import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
 import { getActiveElement, isFunction } from "../../common/utils";
 import { Portal } from "../portal/portal";
 

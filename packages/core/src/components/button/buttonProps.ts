@@ -41,6 +41,14 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /** Button contents. */
     children?: React.ReactNode;
 
+    /**
+     * If set to `true`, the button text element will hide overflow text that does not fit into a
+     * single line and show a trailing ellipsis, similar to the `Text` component.
+     *
+     * @default false
+     */
+    ellipsizeText?: boolean;
+
     /** Whether this button should expand to fill its container. */
     fill?: boolean;
 
@@ -67,6 +75,9 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
 
     /** Whether this button should use small styles. */
     small?: boolean;
+
+    /** Class name(s) to apply to the text span element. */
+    textClassName?: string;
 
     /**
      * HTML `type` attribute of button. Accepted values are `"button"`, `"submit"`, and `"reset"`.

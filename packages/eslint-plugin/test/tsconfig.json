@@ -1,19 +1,10 @@
 {
+    "extends": "../../../config/tsconfig.node",
     "compilerOptions": {
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "moduleResolution": "nodenext",
         "lib": ["es2021"],
         "module": "commonjs",
         "noEmit": true,
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "pretty": true,
         "skipLibCheck": true,
-        "strict": true,
         "target": "es2021"
     }
 }

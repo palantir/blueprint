@@ -16,11 +16,11 @@
 
 import * as React from "react";
 
-import { AbstractPureComponent, Props } from "@blueprintjs/core";
+import { AbstractPureComponent, type Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
-import { HeaderCell, HeaderCellProps } from "./headerCell";
+import { HeaderCell, type HeaderCellProps } from "./headerCell";
 
 export interface RowHeaderCellProps extends HeaderCellProps, Props {
     /**

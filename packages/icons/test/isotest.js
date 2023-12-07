@@ -14,14 +14,24 @@
  */
 
 // @ts-check
-
+require("@blueprintjs/test-commons/bootstrap");
 const React = require("react");
 
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
-require("@blueprintjs/test-commons/bootstrap");
 
 const Icons = require("../lib/cjs/generated");
 
-describe("Icons isomorphic rendering", () => {
-    generateIsomorphicTests(Icons, {}, { excludedSymbols: ["Icons"], testFunctionComponents: true });
+describe("@blueprintjs/icons isomorphic rendering", () => {
+    generateIsomorphicTests(
+        Icons,
+        {
+            SVGIconContainer: {
+                props: {
+                    iconName: "add",
+                },
+                children: React.createElement("path"),
+            },
+        },
+        { excludedSymbols: ["Icons"] },
+    );
 });

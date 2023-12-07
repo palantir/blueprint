@@ -26,7 +26,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { Classes } from "../common";
-import { Dialog, DialogProps, Hotkey, HotkeyProps, Hotkeys } from "../components";
+import { Dialog, type DialogProps, Hotkey, type HotkeyProps, Hotkeys } from "../components";
 
 interface HotkeysDialogProps extends DialogProps {
     /**

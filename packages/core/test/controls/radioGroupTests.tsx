@@ -15,11 +15,11 @@
  */
 
 import { assert } from "chai";
-import { EnzymePropSelector, mount, ReactWrapper } from "enzyme";
+import { type EnzymePropSelector, mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy, stub } from "sinon";
 
-import { OptionProps, Radio, RadioGroup } from "../../src";
+import { type OptionProps, Radio, RadioGroup } from "../../src";
 import { RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX } from "../../src/common/errors";
 
 describe("<RadioGroup>", () => {

@@ -20,7 +20,7 @@ import {
     comboMatches,
     getKeyCombo,
     getKeyComboString,
-    KeyCombo,
+    type KeyCombo,
     normalizeKeyCombo,
     parseKeyCombo,
 } from "../../src/components/hotkeys/hotkeyParser";
@@ -148,6 +148,8 @@ describe("HotkeysParser", () => {
         it("applies aliases", () => {
             expect(comboMatches(parseKeyCombo("return"), parseKeyCombo("enter"))).to.be.true;
             expect(comboMatches(parseKeyCombo("win + F"), parseKeyCombo("meta + f"))).to.be.true;
+            // regression test for https://github.com/palantir/blueprint/issues/6471
+            expect(comboMatches(parseKeyCombo("esc"), parseKeyCombo("escape"))).to.be.true;
         });
     });
 

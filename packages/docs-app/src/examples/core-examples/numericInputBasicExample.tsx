@@ -17,22 +17,23 @@ import * as React from "react";
 
 import {
     Button,
+    Divider,
+    FormGroup,
     H5,
     HTMLSelect,
     Intent,
-    Label,
     Menu,
     MenuItem,
     NumericInput,
-    NumericInputProps,
-    OptionProps,
+    type NumericInputProps,
+    type OptionProps,
     Popover,
     Position,
     Switch,
 } from "@blueprintjs/core";
 import {
     Example,
-    ExampleProps,
+    type ExampleProps,
     handleBooleanChange,
     handleNumberChange,
     handleStringChange,
@@ -175,6 +176,7 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
                 {this.renderSwitch("Numeric characters only", allowNumericCharactersOnly, this.toggleNumericCharsOnly)}
                 {this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus)}
                 {this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement)}
+                <Divider />
                 {this.renderSelectMenu("Minimum value", min, MIN_VALUES, this.handleMinChange)}
                 {this.renderSelectMenu("Maximum value", max, MAX_VALUES, this.handleMaxChange)}
                 {this.renderSelectMenu(
@@ -205,10 +207,9 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
         onChange: React.FormEventHandler,
     ) {
         return (
-            <Label>
-                {label}
+            <FormGroup label={label}>
                 <HTMLSelect {...{ value, onChange, options }} />
-            </Label>
+            </FormGroup>
         );
     }
 

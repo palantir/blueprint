@@ -1,5 +1,5 @@
 {
-    "extends": "../../../config/tsconfig.base.json",
+    "extends": "../../../config/tsconfig.web.json",
     "compilerOptions": {
         "declaration": false,
         "lib": ["dom", "es5", "es6"],

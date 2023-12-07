@@ -1,20 +1,31 @@
 {
     "name": "@blueprintjs/eslint-config",
-    "version": "4.3.2",
+    "version": "5.0.2",
     "description": "ESLint configuration for @blueprintjs packages",
     "dependencies": {
-        "@blueprintjs/eslint-plugin": "^5.1.2",
-        "@blueprintjs/tslint-config": "^4.0.1",
-        "@typescript-eslint/eslint-plugin": "^6.7.4",
-        "@typescript-eslint/eslint-plugin-tslint": "^6.7.4",
-        "@typescript-eslint/parser": "^6.7.4",
-        "eslint": "^8.50.0",
+        "@blueprintjs/eslint-plugin": "workspace:^",
+        "@blueprintjs/tslint-config": "workspace:^",
+        "@typescript-eslint/eslint-plugin": "^6.11.0",
+        "@typescript-eslint/eslint-plugin-tslint": "^6.11.0",
+        "@typescript-eslint/parser": "^6.11.0",
+        "eslint": "^8.53.0",
         "eslint-plugin-deprecation": "^2.0.0",
         "eslint-plugin-header": "^3.1.1",
         "eslint-plugin-import": "~2.26.0",
-        "eslint-plugin-jsdoc": "^46.5.0",
+        "eslint-plugin-jsdoc": "^46.9.0",
         "eslint-plugin-react": "^7.33.2",
         "eslint-plugin-react-hooks": "^4.6.0"
+    },
+    "peerDependencies": {
+        "typescript": "^5.2.2"
+    },
+    "peerDependenciesMeta": {
+        "typescript": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "typescript": "^5.2.2"
     },
     "repository": {
         "type": "git",

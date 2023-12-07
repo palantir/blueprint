@@ -16,8 +16,21 @@
 
 import * as React from "react";
 
-import { Alignment, Classes, Divider, H4, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import {
+    Alignment,
+    Classes,
+    Divider,
+    H4,
+    H5,
+    InputGroup,
+    Navbar,
+    Switch,
+    Tab,
+    type TabId,
+    Tabs,
+    TabsExpander,
+} from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
@@ -144,7 +157,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
                     />
                     <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
                     <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
-                    <Tabs.Expander />
+                    <TabsExpander />
                     <InputGroup fill={true} type="text" placeholder="Search..." />
                 </Tabs>
             </Example>

@@ -8,18 +8,18 @@ Unlike a simpler split, this one includes the delimiter splitted on in the resul
 export type SplitIncludingDelimiters<Source extends string, Delimiter extends string> = Source extends ""
     ? []
     : Source extends `${infer FirstPart}${Delimiter}${infer SecondPart}`
-    ? Source extends `${FirstPart}${infer UsedDelimiter}${SecondPart}`
-        ? UsedDelimiter extends Delimiter
-            ? Source extends `${infer FirstPart}${UsedDelimiter}${infer SecondPart}`
-                ? [
-                      ...SplitIncludingDelimiters<FirstPart, Delimiter>,
-                      UsedDelimiter,
-                      ...SplitIncludingDelimiters<SecondPart, Delimiter>,
-                  ]
-                : never
-            : never
-        : never
-    : [Source];
+      ? Source extends `${FirstPart}${infer UsedDelimiter}${SecondPart}`
+          ? UsedDelimiter extends Delimiter
+              ? Source extends `${infer FirstPart}${UsedDelimiter}${infer SecondPart}`
+                  ? [
+                        ...SplitIncludingDelimiters<FirstPart, Delimiter>,
+                        UsedDelimiter,
+                        ...SplitIncludingDelimiters<SecondPart, Delimiter>,
+                    ]
+                  : never
+              : never
+          : never
+      : [Source];
 
 /**
 Format a specific part of the splitted string literal that `StringArrayToDelimiterCase<>` fuses together, ensuring desired casing.
@@ -34,8 +34,8 @@ type StringPartToDelimiterCase<
 > = StringPart extends UsedWordSeparators
     ? Delimiter
     : StringPart extends UsedUpperCaseCharacters
-    ? `${Delimiter}${Lowercase<StringPart>}`
-    : StringPart;
+      ? `${Delimiter}${Lowercase<StringPart>}`
+      : StringPart;
 
 /**
 Takes the result of a splitted string literal and recursively concatenates it together into the desired casing.

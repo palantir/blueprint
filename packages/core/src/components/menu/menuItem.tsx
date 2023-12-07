@@ -20,12 +20,12 @@ import * as React from "react";
 import { CaretRight, SmallTick } from "@blueprintjs/icons";
 
 import { Classes } from "../../common";
-import { ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
+import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
-import { Popover, PopoverProps } from "../popover/popover";
+import { Popover, type PopoverProps } from "../popover/popover";
 import { Text } from "../text/text";
-import { Menu, MenuProps } from "./menu";
+import { Menu, type MenuProps } from "./menu";
 
 /**
  * Note that the HTML attributes supported by this component are spread to the nested `<a>` element, while the
@@ -201,23 +201,23 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
                   Boolean(selected), // aria-selected prop
               ]
             : roleStructure === "menuitem" // "menuitem": parent has menu role
-            ? [
-                  "none",
-                  "menuitem",
-                  undefined, // don't set aria-selected prop
-              ]
-            : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
-            ? [
-                  "none",
-                  undefined, // target should have no role
-                  undefined, // don't set aria-selected prop
-              ]
-            : // roleStructure === "listitem"
-              [
-                  undefined, // needs no role prop, li is listitem by default
-                  undefined,
-                  undefined, // don't set aria-selected prop
-              ];
+              ? [
+                    "none",
+                    "menuitem",
+                    undefined, // don't set aria-selected prop
+                ]
+              : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
+                ? [
+                      "none",
+                      undefined, // target should have no role
+                      undefined, // don't set aria-selected prop
+                  ]
+                : // roleStructure === "listitem"
+                  [
+                      undefined, // needs no role prop, li is listitem by default
+                      undefined,
+                      undefined, // don't set aria-selected prop
+                  ];
 
     const isSelectable = roleStructure === "listoption";
     const isSelected = isSelectable && selected;
@@ -323,6 +323,7 @@ const SUBMENU_POPOVER_MODIFIERS: PopoverProps["modifiers"] = {
 
 // props to ignore when disabled
 const DISABLED_PROPS: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
+    "aria-disabled": true,
     href: undefined,
     onClick: undefined,
     onMouseDown: undefined,

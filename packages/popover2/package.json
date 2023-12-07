@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/popover2",
-    "version": "2.0.16",
+    "version": "2.0.19",
     "description": "Re-exports of popover-related components from @blueprintjs/core",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -15,15 +15,15 @@
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/*",
+        "clean": "rm -rf dist/* || rm -rf lib/* || true",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
-        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+        "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:css": "css-dist lib/css/*.css",
+        "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
@@ -33,9 +33,9 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^5.5.1",
+        "@blueprintjs/core": "workspace:^",
         "classnames": "^2.3.1",
-        "tslib": "~2.5.0"
+        "tslib": "~2.6.2"
     },
     "peerDependencies": {
         "@types/react": "^16.14.32 || 17 || 18",
@@ -48,11 +48,11 @@
         }
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^8.0.4",
+        "@blueprintjs/node-build-scripts": "workspace:^",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
-        "typescript": "~4.9.5"
+        "typescript": "~5.2.2"
     },
     "repository": {
         "type": "git",

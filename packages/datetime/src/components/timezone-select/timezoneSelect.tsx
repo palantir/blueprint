@@ -20,16 +20,16 @@ import * as React from "react";
 import {
     AbstractPureComponent,
     Button,
-    ButtonProps,
+    type ButtonProps,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
-    InputGroupProps,
+    type InputGroupProps,
     MenuItem,
-    Props,
+    type Props,
 } from "@blueprintjs/core";
-import { ItemListPredicate, ItemRenderer, Select, SelectPopoverProps } from "@blueprintjs/select";
+import { type ItemListPredicate, type ItemRenderer, Select, type SelectPopoverProps } from "@blueprintjs/select";
 
-import { Classes, TimezoneWithNames } from "../../common";
+import { Classes, type TimezoneWithNames } from "../../common";
 import { formatTimezone, TimezoneDisplayFormat } from "../../common/timezoneDisplayFormat";
 import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../common/timezoneNameUtils";
@@ -172,7 +172,7 @@ export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, T
                 itemListPredicate={this.filterItems}
                 itemRenderer={this.renderItem}
                 items={query ? this.timezoneItems : this.initialTimezoneItems}
-                noResults={<MenuItem disabled={true} text="No matching timezones." />}
+                noResults={<MenuItem disabled={true} roleStructure="listoption" text="No matching timezones." />}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 popoverProps={{

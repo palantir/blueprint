@@ -23,12 +23,12 @@ import {
     Dialog,
     DialogBody,
     DialogFooter,
-    DialogProps,
+    type DialogProps,
     H5,
     Switch,
     Tooltip,
 } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import type { BlueprintExampleData } from "../../tags/types";
 

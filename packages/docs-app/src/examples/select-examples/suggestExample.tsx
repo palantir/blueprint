@@ -17,12 +17,12 @@
 import * as React from "react";
 
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { ItemRenderer, Suggest } from "@blueprintjs/select";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { type ItemRenderer, Suggest } from "@blueprintjs/select";
 import {
     areFilmsEqual,
     createFilm,
-    Film,
+    type Film,
     filterFilm,
     getFilmItemProps,
     maybeAddCreatedFilmToArrays,

@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
 import { clamp } from "../../common/utils";
 
 export interface EditableTextProps extends IntentProps, Props {

@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, InputGroup, Switch } from "@blueprintjs/core";
-import { Example, ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 interface SearchInputExampleProps {
     disabled: boolean;

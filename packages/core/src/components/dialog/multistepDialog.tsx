@@ -17,13 +17,13 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, Position, Utils } from "../../common";
+import { AbstractPureComponent, Classes, type Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clickElementOnKeyPress } from "../../common/utils";
-import { Dialog, DialogProps } from "./dialog";
+import { Dialog, type DialogProps } from "./dialog";
 import { DialogFooter } from "./dialogFooter";
-import { DialogStep, DialogStepId, DialogStepProps } from "./dialogStep";
-import { DialogStepButton, DialogStepButtonProps } from "./dialogStepButton";
+import { DialogStep, type DialogStepId, type DialogStepProps } from "./dialogStep";
+import { DialogStepButton, type DialogStepButtonProps } from "./dialogStepButton";
 
 type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.ReactNode }>;
 
@@ -180,6 +180,7 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
                     [Classes.DIALOG_STEP_VIEWED]: hasBeenViewed,
                 })}
                 key={index}
+                aria-disabled={!currentlySelected && !hasBeenViewed}
                 aria-selected={currentlySelected}
                 role="tab"
             >

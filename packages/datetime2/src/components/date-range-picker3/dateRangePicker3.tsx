@@ -23,9 +23,9 @@ import { Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 import {
     DatePickerShortcutMenu,
     DatePickerUtils,
-    DateRange,
+    type DateRange,
     DateRangeSelectionStrategy,
-    DateRangeShortcut,
+    type DateRangeShortcut,
     DateUtils,
     Errors,
     MonthAndYear,
@@ -42,7 +42,7 @@ import type { DateRangePicker3DefaultProps, DateRangePicker3Props } from "./date
 import type { DateRangePicker3State } from "./dateRangePicker3State";
 import { NonContiguousDayRangePicker } from "./nonContiguousDayRangePicker";
 
-export { DateRangePicker3Props };
+export type { DateRangePicker3Props };
 
 const NULL_RANGE: DateRange = [null, null];
 
@@ -452,8 +452,17 @@ function getInitialMonth(props: DateRangePicker3Props, value: DateRange): Date {
         }
         return month;
     } else if (DateUtils.isDayInRange(today, [props.minDate!, props.maxDate!])) {
+        if (!isSingleMonthOnly && DateUtils.isSameMonth(today, props.maxDate!)) {
+            // special case: if today is in the maxDate month, display it on the right calendar
+            today.setMonth(today.getMonth() - 1);
+        }
         return today;
     } else {
-        return DateUtils.getDateBetween([props.minDate!, props.maxDate!]);
+        const betweenDate = DateUtils.getDateBetween([props.minDate!, props.maxDate!]);
+        if (!isSingleMonthOnly && DateUtils.isSameMonth(betweenDate, props.maxDate!)) {
+            // special case: if betweenDate is in the maxDate month, display it on the right calendar
+            betweenDate.setMonth(betweenDate.getMonth() - 1);
+        }
+        return betweenDate;
     }
 }

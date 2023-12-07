@@ -17,8 +17,8 @@
 import * as React from "react";
 
 import { H5, Icon, Intent, Label, Slider } from "@blueprintjs/core";
-import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { IconName, IconSize } from "@blueprintjs/icons";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { type IconName, IconSize } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
