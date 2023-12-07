@@ -4107,19 +4107,5 @@
         "tags": "explain, ai, aip, describe",
         "group": "action",
         "codepoint": 62283
-    },
-    {
-        "displayName": "group-item",
-        "iconName": "group-item",
-        "tags": "group, widget group, grid",
-        "group": "interface",
-        "codepoint": 62284
-    },
-    {
-        "displayName": "input",
-        "iconName": "input",
-        "tags": "input, value",
-        "group": "interface",
-        "codepoint": 62285
     }
 ]
