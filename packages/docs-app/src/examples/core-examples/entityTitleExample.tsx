@@ -27,7 +27,9 @@ import {
     H5,
     H6,
     HTMLSelect,
+    Intent,
     Switch,
+    Tag,
     Text,
 } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -36,35 +38,50 @@ import { IconNames } from "@blueprintjs/icons";
 export interface EntityTitleExampleState {
     ellipsize: boolean;
     heading: string;
+    icon: boolean;
     withSubtitle: boolean;
+    withTag: boolean;
 }
 
 export class EntityTitleExample extends React.PureComponent<ExampleProps, EntityTitleExampleState> {
     public state: EntityTitleExampleState = {
         ellipsize: false,
         heading: "Default",
+        icon: true,
         withSubtitle: false,
+        withTag: false,
     };
 
     private toggleEllipsize = handleBooleanChange((ellipsize: boolean) => this.setState({ ellipsize }));
 
+    private toggleIcon = handleBooleanChange((icon: boolean) => this.setState({ icon }));
+
     private toggleSubtitle = handleBooleanChange((withSubtitle: boolean) => this.setState({ withSubtitle }));
+
+    private toggleTag = handleBooleanChange((withTag: boolean) => this.setState({ withTag }));
 
     private handleChange = (event: React.FormEvent<HTMLSelectElement>) => {
         this.setState({ heading: event.currentTarget.value });
     };
 
     public render() {
-        const { ellipsize, heading, withSubtitle } = this.state;
+        const { ellipsize, heading, icon, withSubtitle, withTag } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div style={{ width: this.state.ellipsize ? WIDTH_LIMIT : undefined }}>
                     <EntityTitle
                         ellipsize={ellipsize}
                         heading={getHeading(heading)}
-                        icon={IconNames.Circle}
+                        icon={icon ? IconNames.Circle : undefined}
                         title="Buy groceries on my way home"
                         subtitle={withSubtitle ? "Reminder set for today at 6:00 PM" : undefined}
+                        tags={
+                            withTag ? (
+                                <Tag intent={Intent.DANGER} minimal={true}>
+                                    Due today
+                                </Tag>
+                            ) : undefined
+                        }
                     />
                 </div>
             </Example>
@@ -86,7 +103,9 @@ export class EntityTitleExample extends React.PureComponent<ExampleProps, Entity
                     </ControlGroup>
                 </FormGroup>
                 <Switch checked={this.state.ellipsize} label="Ellipsize" onChange={this.toggleEllipsize} />
+                <Switch checked={this.state.icon} label="Display icon" onChange={this.toggleIcon} />
                 <Switch checked={this.state.withSubtitle} label="Display subtitle" onChange={this.toggleSubtitle} />
+                <Switch checked={this.state.withTag} label="Display tag" onChange={this.toggleTag} />
             </>
         );
     }
