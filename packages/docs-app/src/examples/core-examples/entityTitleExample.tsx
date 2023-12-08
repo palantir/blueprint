@@ -16,25 +16,53 @@
 
 import * as React from "react";
 
-import { EntityTitle, H5, Switch } from "@blueprintjs/core";
+import {
+    ControlGroup,
+    EntityTitle,
+    FormGroup,
+    H1,
+    H2,
+    H3,
+    H4,
+    H5,
+    H6,
+    HTMLSelect,
+    Switch,
+    Text,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 export interface EntityTitleExampleState {
-    ellipsize?: boolean;
+    ellipsize: boolean;
+    heading: string;
 }
 
 export class EntityTitleExample extends React.PureComponent<ExampleProps, EntityTitleExampleState> {
     public state: EntityTitleExampleState = {
         ellipsize: false,
+        heading: "Text",
     };
 
     private toggleEllipsize = handleBooleanChange((ellipsize: boolean) => this.setState({ ellipsize }));
 
+    private handleChange = (event: React.FormEvent<HTMLSelectElement>) => {
+        this.setState({ heading: event.currentTarget.value });
+    };
+
     public render() {
+        const { ellipsize, heading } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <EntityTitle icon={IconNames.Add} title="Foobar" subtitle="This is a subtitle" />
+                <div style={{ width: this.state.ellipsize ? 100 : undefined }}>
+                    <EntityTitle
+                        ellipsize={ellipsize}
+                        heading={getHeading(heading)}
+                        icon={IconNames.Circle}
+                        title="Buy groceries on my way home"
+                        subtitle="Reminder set for today at 6:00 PM"
+                    />
+                </div>
             </Example>
         );
     }
@@ -43,8 +71,41 @@ export class EntityTitleExample extends React.PureComponent<ExampleProps, Entity
         return (
             <>
                 <H5>Props</H5>
+                <FormGroup label="Heading">
+                    <ControlGroup>
+                        <HTMLSelect
+                            value={this.state.heading}
+                            onChange={this.handleChange}
+                            options={HEADINGS}
+                            fill={true}
+                        />
+                    </ControlGroup>
+                </FormGroup>
                 <Switch checked={this.state.ellipsize} label="Ellipsize" onChange={this.toggleEllipsize} />
             </>
         );
+    }
+}
+
+// Headings selector
+
+const HEADINGS = ["Text", "H1", "H2", "H3", "H4", "H5", "H6"].map(value => ({ label: value, value }));
+
+function getHeading(heading: string): React.FC<any> {
+    switch (heading) {
+        case "H1":
+            return H1;
+        case "H2":
+            return H2;
+        case "H3":
+            return H3;
+        case "H4":
+            return H4;
+        case "H5":
+            return H5;
+        case "H6":
+            return H6;
+        default:
+            return Text;
     }
 }
