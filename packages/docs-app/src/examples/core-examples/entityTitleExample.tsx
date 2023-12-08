@@ -39,6 +39,7 @@ export interface EntityTitleExampleState {
     ellipsize: boolean;
     heading: string;
     icon: boolean;
+    loading: boolean;
     withSubtitle: boolean;
     withTag: boolean;
 }
@@ -48,6 +49,7 @@ export class EntityTitleExample extends React.PureComponent<ExampleProps, Entity
         ellipsize: false,
         heading: "Default",
         icon: true,
+        loading: false,
         withSubtitle: false,
         withTag: false,
     };
@@ -55,6 +57,8 @@ export class EntityTitleExample extends React.PureComponent<ExampleProps, Entity
     private toggleEllipsize = handleBooleanChange((ellipsize: boolean) => this.setState({ ellipsize }));
 
     private toggleIcon = handleBooleanChange((icon: boolean) => this.setState({ icon }));
+
+    private toggleLoading = handleBooleanChange((loading: boolean) => this.setState({ loading }));
 
     private toggleSubtitle = handleBooleanChange((withSubtitle: boolean) => this.setState({ withSubtitle }));
 
@@ -65,7 +69,7 @@ export class EntityTitleExample extends React.PureComponent<ExampleProps, Entity
     };
 
     public render() {
-        const { ellipsize, heading, icon, withSubtitle, withTag } = this.state;
+        const { ellipsize, heading, icon, loading, withSubtitle, withTag } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div style={{ width: this.state.ellipsize ? WIDTH_LIMIT : undefined }}>
@@ -73,6 +77,7 @@ export class EntityTitleExample extends React.PureComponent<ExampleProps, Entity
                         ellipsize={ellipsize}
                         heading={getHeading(heading)}
                         icon={icon ? IconNames.Circle : undefined}
+                        loading={loading}
                         title="Buy groceries on my way home"
                         subtitle={withSubtitle ? "Reminder set for today at 6:00 PM" : undefined}
                         tags={
@@ -104,6 +109,7 @@ export class EntityTitleExample extends React.PureComponent<ExampleProps, Entity
                 </FormGroup>
                 <Switch checked={this.state.ellipsize} label="Ellipsize" onChange={this.toggleEllipsize} />
                 <Switch checked={this.state.icon} label="Display icon" onChange={this.toggleIcon} />
+                <Switch checked={this.state.loading} label="Loading" onChange={this.toggleLoading} />
                 <Switch checked={this.state.withSubtitle} label="Display subtitle" onChange={this.toggleSubtitle} />
                 <Switch checked={this.state.withTag} label="Display tag" onChange={this.toggleTag} />
             </>
