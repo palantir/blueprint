@@ -41,6 +41,7 @@ import "./controls/radioGroupTests";
 import "./dialog/dialogTests";
 import "./drawer/drawerTests";
 import "./editable-text/editableTextTests";
+import "./entity-title/entityTitleTests";
 import "./forms/asyncControllableInputTests";
 import "./forms/fileInputTests";
 import "./forms/formGroupTests";
