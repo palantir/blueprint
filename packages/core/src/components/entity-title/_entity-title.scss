@@ -9,89 +9,82 @@
   align-items: center;
   display: flex;
   gap: 0.7 * $pt-grid-size;
+  min-width: 0;
 
   &-icon-container {
-      &.#{$ns}-entity-title-has-description {
-          align-self: flex-start;
-      }
+    &.#{$ns}-entity-title-has-subtitle {
+      align-self: flex-start;
+    }
 
-      &:not(.#{$ns}-entity-title-has-description) {
-          align-items: center;
-          display: flex;
-      }
-  }
-
-  &-right {
+    &:not(.#{$ns}-entity-title-has-subtitle) {
+      align-items: center;
       display: flex;
-      flex-direction: column;
+    }
   }
 
-  &-top-line {
+  &-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-title-and-tags {
     align-items: center;
     display: flex;
     flex-direction: row;
-    gap: $half-grid-size;
+    gap: 0.5 * $pt-grid-size;
   }
 
   &-tags-container {
-      display: flex;
-      gap: 0.2 * $pt-grid-size;
-      margin-left: $half-grid-size;
+    display: flex;
+    gap: 0.2 * $pt-grid-size;
+    margin-left: 0.5 * $pt-grid-size;
   }
 
   &-title {
-      margin-bottom: 0;
+    margin-bottom: 0;
+    min-width: 0;
+    overflow-wrap: break-word;
   }
 
   &-subtitle {
-      display: flex;
-      font-size: $pt-font-size-small;
+    font-size: $pt-font-size-small;
+  }
+
+  &-ellipsize,
+  &-ellipsize &-text {
+    overflow: hidden;
   }
 
   @each $tag, $props in $headings {
-    &.#{$tag} .#{$ns}-icon-container {
+    &-heading-#{$tag} .#{$ns}-icon-container {
       align-items: center;
       display: flex;
-
       // Aligning icon which has unknown dimensions on the title size
       height: nth($props, 2);
     }
   }
 
-  &.h2,
-  &.h3 {
-      gap: 1.5 * $pt-grid-size;
+  &-heading-h1,
+  &-heading-h2,
+  &-heading-h3 {
+    gap: 1.5 * $pt-grid-size;
 
-      .status-tag {
-          margin-left: $pt-grid-size;
-      }
+    .#{$ns}-entity-title-status-tag {
+      margin-left: $pt-grid-size;
+    }
 
-      .subtitle {
-          font-size: $pt-font-size;
-      }
+    .#{$ns}-entity-title-subtitle {
+      font-size: $pt-font-size;
+    }
   }
 
-  &.h4,
-  &.h5,
-  &.h6 {
-      gap: $pt-grid-size;
+  &-heading-h4,
+  &-heading-h5,
+  &-heading-h6 {
+    gap: $pt-grid-size;
 
-      .subtitle {
-          font-size: $pt-font-size;
-      }
-  }
-
-  .skeleton-icon {
-      height: $pt-icon-size-standard;
-      width: $pt-icon-size-standard;
-  }
-
-  .skeleton-title {
-      margin-bottom: $half-grid-size;
-      min-width: 10 * $pt-grid-size;
-  }
-
-  .skeleton-subtitle {
-      margin-top: $half-grid-size;
+    .#{$ns}-entity-title-subtitle {
+      font-size: $pt-font-size-small;
+    }
   }
 }
