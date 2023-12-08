@@ -16,7 +16,8 @@
 
 import * as React from "react";
 
-import { EntityTitle, H1 } from "@blueprintjs/core";
+import { Classes, EntityTitle, H4, UL } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -24,18 +25,25 @@ export class EntityTitleExample extends React.PureComponent {
     public render() {
         return (
             <ExampleCard label="Entity title">
-                <H1>
-                    <EntityTitle title="Placeholder title" />
-                </H1>
-                <EntityTitle title="Placeholder text" />
-                <H1>
-                    <EntityTitle title="Sample title" />
-                </H1>
-                <EntityTitle title="Sample text" />
-                <H1>
-                    <EntityTitle title="Disabled title" />
-                </H1>
-                <EntityTitle title="Disabled text" />
+                <UL className={Classes.LIST_UNSTYLED}>
+                    <li>
+                        <EntityTitle icon={IconNames.ADD} title="Title" />
+                    </li>
+                    <li>
+                        <EntityTitle heading={H4} icon={IconNames.ADD} title="With heading" />
+                    </li>
+                    <li>
+                        <EntityTitle icon={IconNames.ADD} title="Title" subtitle="With subtitle" />
+                    </li>
+                    <li>
+                        <EntityTitle
+                            ellipsize={true}
+                            icon={IconNames.ADD}
+                            title="Title title title title"
+                            subtitle="With subtitle"
+                        />
+                    </li>
+                </UL>
             </ExampleCard>
         );
     }
