@@ -36,31 +36,35 @@ import { IconNames } from "@blueprintjs/icons";
 export interface EntityTitleExampleState {
     ellipsize: boolean;
     heading: string;
+    withSubtitle: boolean;
 }
 
 export class EntityTitleExample extends React.PureComponent<ExampleProps, EntityTitleExampleState> {
     public state: EntityTitleExampleState = {
         ellipsize: false,
-        heading: "Text",
+        heading: "Default",
+        withSubtitle: false,
     };
 
     private toggleEllipsize = handleBooleanChange((ellipsize: boolean) => this.setState({ ellipsize }));
+
+    private toggleSubtitle = handleBooleanChange((withSubtitle: boolean) => this.setState({ withSubtitle }));
 
     private handleChange = (event: React.FormEvent<HTMLSelectElement>) => {
         this.setState({ heading: event.currentTarget.value });
     };
 
     public render() {
-        const { ellipsize, heading } = this.state;
+        const { ellipsize, heading, withSubtitle } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <div style={{ width: this.state.ellipsize ? 100 : undefined }}>
+                <div style={{ width: this.state.ellipsize ? WIDTH_LIMIT : undefined }}>
                     <EntityTitle
                         ellipsize={ellipsize}
                         heading={getHeading(heading)}
                         icon={IconNames.Circle}
                         title="Buy groceries on my way home"
-                        subtitle="Reminder set for today at 6:00 PM"
+                        subtitle={withSubtitle ? "Reminder set for today at 6:00 PM" : undefined}
                     />
                 </div>
             </Example>
@@ -82,14 +86,17 @@ export class EntityTitleExample extends React.PureComponent<ExampleProps, Entity
                     </ControlGroup>
                 </FormGroup>
                 <Switch checked={this.state.ellipsize} label="Ellipsize" onChange={this.toggleEllipsize} />
+                <Switch checked={this.state.withSubtitle} label="Display subtitle" onChange={this.toggleSubtitle} />
             </>
         );
     }
 }
 
-// Headings selector
+// Limit width to display ellipsizing behavior.
+const WIDTH_LIMIT = 200;
 
-const HEADINGS = ["Text", "H1", "H2", "H3", "H4", "H5", "H6"].map(value => ({ label: value, value }));
+// Headings selector.
+const HEADINGS = ["Default", "H1", "H2", "H3", "H4", "H5", "H6"].map(value => ({ label: value, value }));
 
 function getHeading(heading: string): React.FC<any> {
     switch (heading) {
