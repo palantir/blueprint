@@ -110,7 +110,10 @@ export const EntityTitle: React.FC<EntityTitleProps> = ({
         return React.createElement(
             heading,
             {
-                className: classNames(Classes.ENTITY_TITLE_TITLE, { [Classes.SKELETON]: loading }),
+                className: classNames(Classes.ENTITY_TITLE_TITLE, {
+                    [Classes.SKELETON]: loading,
+                    [Classes.TEXT_OVERFLOW_ELLIPSIS]: heading !== Text && ellipsize,
+                }),
                 ellipsize: heading === Text ? ellipsize : undefined,
             },
             maybeTitleWithURL,
