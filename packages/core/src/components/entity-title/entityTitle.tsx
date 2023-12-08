@@ -24,15 +24,6 @@ import { H1, H2, H3, H4, H5, H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
 
-export enum HeadingSize {
-    h6 = "h6",
-    h5 = "h5",
-    h4 = "h4",
-    h3 = "h3",
-    h2 = "h2",
-    h1 = "h1",
-}
-
 export interface EntityTitleProps extends Props {
     /**
      * Whether the overflowing text content should be ellipsized.
