@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { spy } from "sinon";
+import sinon, { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
@@ -145,13 +145,20 @@ describe("OverlayToaster", () => {
 
         it("reusing props object does not produce React errors", () => {
             const errorSpy = spy(console, "error");
-            // if Toaster doesn't clone the props object before injecting key then there will be a
-            // React error that both toasts have the same key, because both instances refer to the
-            // same object.
-            const toast = { message: "repeat" };
-            toaster.show(toast);
-            toaster.show(toast);
-            assert.isFalse(errorSpy.calledWithMatch("two children with the same key"), "mutation side effect!");
+            try {
+                // if Toaster doesn't clone the props object before injecting key then there will be a
+                // React error that both toasts have the same key, because both instances refer to the
+                // same object.
+                const toast = { message: "repeat" };
+                toaster.show(toast);
+                toaster.show(toast);
+                assert.isFalse(errorSpy.calledWithMatch("two children with the same key"), "mutation side effect!");
+            } finally {
+                // Restore console.error. Otherwise other tests will fail
+                // with "TypeError: Attempted to wrap error which is already
+                // wrapped" when attempting to spy on console.error again.
+                sinon.restore();
+            }
         });
     });
 
