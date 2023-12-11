@@ -32,6 +32,12 @@ const SPECS = [
             OverlayToaster.create(props, containerElement),
         name: "create",
     },
+    {
+        cleanup: unmountReact16Toaster,
+        create: (props: OverlayToasterProps | undefined, containerElement: HTMLElement) =>
+            OverlayToaster.createAsync(props, { container: containerElement }),
+        name: "createAsync",
+    },
 ];
 
 /**
@@ -63,10 +69,10 @@ describe("OverlayToaster", () => {
 
     describeEach(SPECS, spec => {
         describe("with default props", () => {
-            before(() => {
+            before(async () => {
                 testsContainerElement = document.createElement("div");
                 document.documentElement.appendChild(testsContainerElement);
-                toaster = spec.create({}, testsContainerElement);
+                toaster = await spec.create({}, testsContainerElement);
             });
 
             afterEach(() => {
@@ -189,10 +195,10 @@ describe("OverlayToaster", () => {
         });
 
         describe("with maxToasts set to finite value", () => {
-            before(() => {
+            before(async () => {
                 testsContainerElement = document.createElement("div");
                 document.documentElement.appendChild(testsContainerElement);
-                toaster = spec.create({ maxToasts: 3 }, testsContainerElement);
+                toaster = await spec.create({ maxToasts: 3 }, testsContainerElement);
             });
 
             after(() => {
@@ -210,10 +216,10 @@ describe("OverlayToaster", () => {
         });
 
         describe("with autoFocus set to true", () => {
-            before(() => {
+            before(async () => {
                 testsContainerElement = document.createElement("div");
                 document.documentElement.appendChild(testsContainerElement);
-                toaster = spec.create({ autoFocus: true }, testsContainerElement);
+                toaster = await spec.create({ autoFocus: true }, testsContainerElement);
             });
 
             after(() => {
