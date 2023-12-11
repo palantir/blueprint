@@ -30,7 +30,14 @@ horizontally aligned along the left edge, center, or right edge of its container
 
 There are three ways to use __OverlayToaster__:
 
-1. __Recommended__: use the `OverlayToaster.create()` static method to create a new `Toaster` instance:
+1. __Recommended__: use the `OverlayToaster.createAsync()` static method to create a new `Toaster` instance:
+    ```ts
+    const myToaster: Toaster = await OverlayToaster.createAsync({ position: "bottom" });
+    myToaster.show({ ...toastOptions });
+    ```
+
+    A synchronous `OverlayToaster.create()` static method is also available, but will be phased out since React 18+ no longer synchronously renders components to the DOM.
+
     ```ts
     const myToaster: Toaster = OverlayToaster.create({ position: "bottom" });
     myToaster.show({ ...toastOptions });
