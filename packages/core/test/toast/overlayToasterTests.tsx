@@ -153,9 +153,21 @@ describe("OverlayToaster", () => {
             toaster.show(toast);
             assert.isFalse(errorSpy.calledWithMatch("two children with the same key"), "mutation side effect!");
         });
+    });
+
+    describe("with maxToasts set to finite value", () => {
+        before(() => {
+            testsContainerElement = document.createElement("div");
+            document.documentElement.appendChild(testsContainerElement);
+            toaster = OverlayToaster.create({ maxToasts: 3 }, testsContainerElement);
+        });
+
+        after(() => {
+            unmountReact16Toaster(testsContainerElement);
+            document.documentElement.removeChild(testsContainerElement);
+        });
 
         it("does not exceed the maximum toast limit set", () => {
-            toaster = OverlayToaster.create({ maxToasts: 3 });
             toaster.show({ message: "one" });
             toaster.show({ message: "two" });
             toaster.show({ message: "three" });
@@ -164,17 +176,16 @@ describe("OverlayToaster", () => {
         });
     });
 
-    describe("validation", () => {
-        it("throws an error when max toast is set to a number less than 1", () => {
-            expectPropValidationError(OverlayToaster, { maxToasts: 0 }, TOASTER_MAX_TOASTS_INVALID);
-        });
-    });
-
     describe("with autoFocus set to true", () => {
         before(() => {
             testsContainerElement = document.createElement("div");
             document.documentElement.appendChild(testsContainerElement);
             toaster = OverlayToaster.create({ autoFocus: true }, testsContainerElement);
+        });
+
+        after(() => {
+            unmountReact16Toaster(testsContainerElement);
+            document.documentElement.removeChild(testsContainerElement);
         });
 
         it("focuses inside toast container", done => {
@@ -189,6 +200,8 @@ describe("OverlayToaster", () => {
     });
 
     it("throws an error if used within a React lifecycle method", () => {
+        testsContainerElement = document.createElement("div");
+
         class LifecycleToaster extends React.Component {
             public render() {
                 return React.createElement("div");
@@ -196,12 +209,20 @@ describe("OverlayToaster", () => {
 
             public componentDidMount() {
                 try {
-                    OverlayToaster.create();
+                    OverlayToaster.create({}, testsContainerElement);
                 } catch (err: any) {
                     assert.equal(err.message, TOASTER_CREATE_NULL);
+                } finally {
+                    unmountReact16Toaster(testsContainerElement);
                 }
             }
         }
         mount(React.createElement(LifecycleToaster));
+    });
+
+    describe("validation", () => {
+        it("throws an error when max toast is set to a number less than 1", () => {
+            expectPropValidationError(OverlayToaster, { maxToasts: 0 }, TOASTER_MAX_TOASTS_INVALID);
+        });
     });
 });
