@@ -31,7 +31,7 @@
         "mini-svg-data-uri": "^1.4.4",
         "pkg-up": "^4.0.0",
         "postcss": "^8.4.31",
-        "postcss-cli": "^10.1.0",
+        "postcss-cli": "^11.0.0",
         "postcss-discard-comments": "^6.0.0",
         "postcss-scss": "^4.0.9",
         "postcss-simple-vars": "^7.0.1",
