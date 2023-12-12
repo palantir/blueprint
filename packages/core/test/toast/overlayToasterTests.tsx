@@ -18,138 +18,168 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { spy } from "sinon";
+import sinon, { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes, OverlayToaster, type Toaster } from "../../src";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
 
+/**
+ * @param containerElement The container argument passed to OverlayToaster.create/OverlayToaster.createAsync
+ */
+function unmountReact16Toaster(containerElement: HTMLElement) {
+    const toasterRenderRoot = containerElement.firstElementChild;
+    if (toasterRenderRoot == null) {
+        throw new Error("No elements were found under Toaster container.");
+    }
+    ReactDOM.unmountComponentAtNode(toasterRenderRoot);
+}
+
 describe("OverlayToaster", () => {
     let testsContainerElement: HTMLElement;
     let toaster: Toaster;
 
-    before(() => {
-        testsContainerElement = document.createElement("div");
-        document.documentElement.appendChild(testsContainerElement);
-        toaster = OverlayToaster.create({}, testsContainerElement);
-    });
-
-    afterEach(() => {
-        toaster.clear();
-        ReactDOM.unmountComponentAtNode(testsContainerElement);
-    });
-
-    it("does not attach toast container to body on script load", () => {
-        assert.lengthOf(document.getElementsByClassName(Classes.TOAST_CONTAINER), 0, "unexpected toast container");
-    });
-
-    it("show() renders toast immediately", () => {
-        toaster.show({
-            message: "Hello world",
+    describe("with default props", () => {
+        before(() => {
+            testsContainerElement = document.createElement("div");
+            document.documentElement.appendChild(testsContainerElement);
+            toaster = OverlayToaster.create({}, testsContainerElement);
         });
-        assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
-        assert.isNotNull(document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`));
-    });
 
-    it("multiple show()s renders them all", () => {
-        toaster.show({ message: "one" });
-        toaster.show({ message: "two" });
-        toaster.show({ message: "six" });
-        assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
-    });
-
-    it("show() updates existing toast", () => {
-        const key = toaster.show({ message: "one" });
-        assert.deepEqual(toaster.getToasts()[0].message, "one");
-        toaster.show({ message: "two" }, key);
-        assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
-        assert.deepEqual(toaster.getToasts()[0].message, "two");
-    });
-
-    it("dismiss() removes just the toast in question", () => {
-        toaster.show({ message: "one" });
-        const key = toaster.show({ message: "two" });
-        toaster.show({ message: "six" });
-        toaster.dismiss(key);
-        assert.deepEqual(
-            toaster.getToasts().map(t => t.message),
-            ["six", "one"],
-        );
-    });
-
-    it("clear() removes all toasts", () => {
-        toaster.show({ message: "one" });
-        toaster.show({ message: "two" });
-        toaster.show({ message: "six" });
-        assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
-        toaster.clear();
-        assert.lengthOf(toaster.getToasts(), 0, "expected 0 toasts");
-    });
-
-    it("action onClick callback invoked when action clicked", () => {
-        const onClick = spy();
-        toaster.show({
-            action: { onClick, text: "action" },
-            message: "message",
-            timeout: 0,
+        afterEach(() => {
+            toaster.clear();
         });
-        // action is first descendant button
-        const action = document.querySelector<HTMLElement>(`.${Classes.TOAST} .${Classes.BUTTON}`);
-        action?.click();
-        assert.isTrue(onClick.calledOnce, "expected onClick to be called once");
-    });
 
-    it("onDismiss callback invoked when close button clicked", () => {
-        const handleDismiss = spy();
-        toaster.show({
-            message: "dismiss",
-            onDismiss: handleDismiss,
-            timeout: 0,
+        after(() => {
+            unmountReact16Toaster(testsContainerElement);
+            document.documentElement.removeChild(testsContainerElement);
         });
-        // without action, dismiss is first descendant button
-        const dismiss = document.querySelector<HTMLElement>(`.${Classes.TOAST} .${Classes.BUTTON}`);
-        dismiss?.click();
-        assert.isTrue(handleDismiss.calledOnce);
+
+        it("does not attach toast container to body on script load", () => {
+            assert.lengthOf(document.getElementsByClassName(Classes.TOAST_CONTAINER), 0, "unexpected toast container");
+        });
+
+        it("show() renders toast immediately", () => {
+            toaster.show({
+                message: "Hello world",
+            });
+            assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
+            assert.isNotNull(document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`));
+        });
+
+        it("multiple show()s renders them all", () => {
+            toaster.show({ message: "one" });
+            toaster.show({ message: "two" });
+            toaster.show({ message: "six" });
+            assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+        });
+
+        it("show() updates existing toast", () => {
+            const key = toaster.show({ message: "one" });
+            assert.deepEqual(toaster.getToasts()[0].message, "one");
+            toaster.show({ message: "two" }, key);
+            assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
+            assert.deepEqual(toaster.getToasts()[0].message, "two");
+        });
+
+        it("dismiss() removes just the toast in question", () => {
+            toaster.show({ message: "one" });
+            const key = toaster.show({ message: "two" });
+            toaster.show({ message: "six" });
+            toaster.dismiss(key);
+            assert.deepEqual(
+                toaster.getToasts().map(t => t.message),
+                ["six", "one"],
+            );
+        });
+
+        it("clear() removes all toasts", () => {
+            toaster.show({ message: "one" });
+            toaster.show({ message: "two" });
+            toaster.show({ message: "six" });
+            assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+            toaster.clear();
+            assert.lengthOf(toaster.getToasts(), 0, "expected 0 toasts");
+        });
+
+        it("action onClick callback invoked when action clicked", () => {
+            const onClick = spy();
+            toaster.show({
+                action: { onClick, text: "action" },
+                message: "message",
+                timeout: 0,
+            });
+            // action is first descendant button
+            const action = document.querySelector<HTMLElement>(`.${Classes.TOAST} .${Classes.BUTTON}`);
+            action?.click();
+            assert.isTrue(onClick.calledOnce, "expected onClick to be called once");
+        });
+
+        it("onDismiss callback invoked when close button clicked", () => {
+            const handleDismiss = spy();
+            toaster.show({
+                message: "dismiss",
+                onDismiss: handleDismiss,
+                timeout: 0,
+            });
+            // without action, dismiss is first descendant button
+            const dismiss = document.querySelector<HTMLElement>(`.${Classes.TOAST} .${Classes.BUTTON}`);
+            dismiss?.click();
+            assert.isTrue(handleDismiss.calledOnce);
+        });
+
+        it("onDismiss callback invoked on toaster.dismiss()", () => {
+            const onDismiss = spy();
+            const key = toaster.show({ message: "dismiss me", onDismiss });
+            toaster.dismiss(key);
+            assert.isTrue(onDismiss.calledOnce, "onDismiss not called");
+        });
+
+        it("onDismiss callback invoked on toaster.clear()", () => {
+            const onDismiss = spy();
+            toaster.show({ message: "dismiss me", onDismiss });
+            toaster.clear();
+            assert.isTrue(onDismiss.calledOnce, "onDismiss not called");
+        });
+
+        it("reusing props object does not produce React errors", () => {
+            const errorSpy = spy(console, "error");
+            try {
+                // if Toaster doesn't clone the props object before injecting key then there will be a
+                // React error that both toasts have the same key, because both instances refer to the
+                // same object.
+                const toast = { message: "repeat" };
+                toaster.show(toast);
+                toaster.show(toast);
+                assert.isFalse(errorSpy.calledWithMatch("two children with the same key"), "mutation side effect!");
+            } finally {
+                // Restore console.error. Otherwise other tests will fail
+                // with "TypeError: Attempted to wrap error which is already
+                // wrapped" when attempting to spy on console.error again.
+                sinon.restore();
+            }
+        });
     });
 
-    it("onDismiss callback invoked on toaster.dismiss()", () => {
-        const onDismiss = spy();
-        const key = toaster.show({ message: "dismiss me", onDismiss });
-        toaster.dismiss(key);
-        assert.isTrue(onDismiss.calledOnce, "onDismiss not called");
-    });
+    describe("with maxToasts set to finite value", () => {
+        before(() => {
+            testsContainerElement = document.createElement("div");
+            document.documentElement.appendChild(testsContainerElement);
+            toaster = OverlayToaster.create({ maxToasts: 3 }, testsContainerElement);
+        });
 
-    it("onDismiss callback invoked on toaster.clear()", () => {
-        const onDismiss = spy();
-        toaster.show({ message: "dismiss me", onDismiss });
-        toaster.clear();
-        assert.isTrue(onDismiss.calledOnce, "onDismiss not called");
-    });
+        after(() => {
+            unmountReact16Toaster(testsContainerElement);
+            document.documentElement.removeChild(testsContainerElement);
+        });
 
-    it("reusing props object does not produce React errors", () => {
-        const errorSpy = spy(console, "error");
-        // if Toaster doesn't clone the props object before injecting key then there will be a
-        // React error that both toasts have the same key, because both instances refer to the
-        // same object.
-        const toast = { message: "repeat" };
-        toaster.show(toast);
-        toaster.show(toast);
-        assert.isFalse(errorSpy.calledWithMatch("two children with the same key"), "mutation side effect!");
-    });
-
-    it("does not exceed the maximum toast limit set", () => {
-        toaster = OverlayToaster.create({ maxToasts: 3 });
-        toaster.show({ message: "one" });
-        toaster.show({ message: "two" });
-        toaster.show({ message: "three" });
-        toaster.show({ message: "oh no" });
-        assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
-    });
-
-    describe("validation", () => {
-        it("throws an error when max toast is set to a number less than 1", () => {
-            expectPropValidationError(OverlayToaster, { maxToasts: 0 }, TOASTER_MAX_TOASTS_INVALID);
+        it("does not exceed the maximum toast limit set", () => {
+            toaster.show({ message: "one" });
+            toaster.show({ message: "two" });
+            toaster.show({ message: "three" });
+            toaster.show({ message: "oh no" });
+            assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
         });
     });
 
@@ -158,6 +188,11 @@ describe("OverlayToaster", () => {
             testsContainerElement = document.createElement("div");
             document.documentElement.appendChild(testsContainerElement);
             toaster = OverlayToaster.create({ autoFocus: true }, testsContainerElement);
+        });
+
+        after(() => {
+            unmountReact16Toaster(testsContainerElement);
+            document.documentElement.removeChild(testsContainerElement);
         });
 
         it("focuses inside toast container", done => {
@@ -172,6 +207,8 @@ describe("OverlayToaster", () => {
     });
 
     it("throws an error if used within a React lifecycle method", () => {
+        testsContainerElement = document.createElement("div");
+
         class LifecycleToaster extends React.Component {
             public render() {
                 return React.createElement("div");
@@ -179,12 +216,20 @@ describe("OverlayToaster", () => {
 
             public componentDidMount() {
                 try {
-                    OverlayToaster.create();
+                    OverlayToaster.create({}, testsContainerElement);
                 } catch (err: any) {
                     assert.equal(err.message, TOASTER_CREATE_NULL);
+                } finally {
+                    unmountReact16Toaster(testsContainerElement);
                 }
             }
         }
         mount(React.createElement(LifecycleToaster));
+    });
+
+    describe("validation", () => {
+        it("throws an error when max toast is set to a number less than 1", () => {
+            expectPropValidationError(OverlayToaster, { maxToasts: 0 }, TOASTER_MAX_TOASTS_INVALID);
+        });
     });
 });
