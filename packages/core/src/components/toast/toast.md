@@ -86,21 +86,34 @@ enable `autoFocus` for an individual `OverlayToaster` via a prop, if desired.
 
 @## Static usage
 
-__OverlayToaster__ provides the static `create` method that returns a new `Toaster`, rendered into an
+__OverlayToaster__ provides the static `createAsync` method that returns a new `Toaster`, rendered into an
 element attached to `<body>`. A toaster instance has a collection of methods to show and hide toasts in its given container.
 
 ```ts
-OverlayToaster.create(props?: ToasterProps, container = document.body): Toaster
+OverlayToaster.createAsync(props?: OverlayToasterProps, options?: OverlayToasterCreateOptions): Promise<Toaster>;
 ```
+
+@interface OverlayToasterCreateOptions
 
 The toaster will be rendered into a new element appended to the given `container`.
 The `container` determines which element toasts are positioned relative to; the default value of `<body>` allows them to use the entire viewport.
 
-Note that the return type is `Toaster`, which is a minimal interface that exposes only the instance
-methods detailed below. It can be thought of as `OverlayToaster` minus the `React.Component` methods,
-because the `OverlayToaster` should not be treated as a normal React component.
+The return type is `Promise<Toaster>`, which is a minimal interface that exposes only the instance methods detailed
+below. It can be thought of as `OverlayToaster` minus the `React.Component` methods, because the `OverlayToaster` should
+not be treated as a normal React component.
 
-Note that `OverlayToaster.create()` will throw an error if invoked inside a component lifecycle method, as
+A promise is returned as React components cannot be rendered synchronously after React version 18. If this makes
+`Toaster` usage difficult outside of a function that's not `async`, it's still possible to attach `.then()` handlers to
+the returned toaster.
+
+```ts
+function synchronousFn() {
+    const toasterPromise = OverlayToaster.createAsync({});
+    toasterPromise.then(toaster => toaster.show({ message: "Toast!" }));
+}
+```
+
+Note that `OverlayToaster.createAsync()` will throw an error if invoked inside a component lifecycle method, as
 `ReactDOM.render()` will return `null` resulting in an inaccessible toaster instance.
 
 @interface Toaster
@@ -117,7 +130,7 @@ The following code samples demonstrate our preferred pattern for intergrating a 
 import { OverlayToaster, Position } from "@blueprintjs/core";
 
 /** Singleton toaster instance. Create separate instances for different options. */
-export const AppToaster = OverlayToaster.create({
+export const AppToaster = OverlayToaster.createAsync({
     className: "recipe-toaster",
     position: Position.TOP,
 });
@@ -135,10 +148,10 @@ export class App extends React.PureComponent {
         return <Button onClick={this.showToast} text="Toast please" />;
     }
 
-    showToast = () => {
+    showToast = async () => {
         // create toasts in response to interactions.
         // in most cases, it's enough to simply create and forget (thanks to timeout).
-        AppToaster.show({ message: "Toasted." });
+        (await AppToaster).show({ message: "Toasted." });
     }
 }
 ```
