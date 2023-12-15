@@ -373,12 +373,6 @@ export class Popover<
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
         const ownTargetProps = {
-            "aria-expanded": isOpen,
-            "aria-haspopup":
-                this.props.popupKind ??
-                (this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
-                    ? undefined
-                    : ("true" as const)),
             // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
             // If, instead, renderTarget is undefined and the target is provided as a child, this.props.className is
             // applied to the generated target wrapper element.
@@ -389,7 +383,13 @@ export class Popover<
             }),
             ref,
             ...targetEventHandlers,
-        };
+        } satisfies React.HTMLProps<HTMLElement>;
+        const childTargetProps = {
+            "aria-expanded": isOpen,
+            "aria-haspopup":
+                this.props.popupKind ??
+                (this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY ? undefined : true),
+        } satisfies React.HTMLProps<HTMLElement>;
 
         const targetModifierClasses = {
             // this class is mainly useful for Blueprint <Button> targets; we should only apply it for
@@ -404,6 +404,7 @@ export class Popover<
         if (renderTarget !== undefined) {
             target = renderTarget({
                 ...ownTargetProps,
+                ...childTargetProps,
                 className: classNames(ownTargetProps.className, targetModifierClasses),
                 // if the consumer renders a tooltip target, it's their responsibility to disable that tooltip
                 // when *this* popover is open
@@ -418,6 +419,7 @@ export class Popover<
             }
 
             const clonedTarget: JSX.Element = React.cloneElement(childTarget, {
+                ...childTargetProps,
                 className: classNames(childTarget.props.className, targetModifierClasses),
                 // force disable single Tooltip child when popover is open
                 disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip) ? true : childTarget.props.disabled,
