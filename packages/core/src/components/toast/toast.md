@@ -143,6 +143,10 @@ export class App extends React.PureComponent {
 }
 ```
 
+The example below uses the `OverlayToaster.createAsync()` static method. Clicking the button will create a new toaster mounted to `<body>`, show a message, and unmount the toaster from the DOM once the message is dismissed.
+
+@reactExample ToastCreateAsyncExample
+
 @## React component usage
 
 Render the `<OverlayToaster>` component like any other element and supply `<Toast>` elements as `children`. You can
