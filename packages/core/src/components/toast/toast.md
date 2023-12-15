@@ -36,6 +36,8 @@ There are three ways to use __OverlayToaster__:
     myToaster.show({ ...toastOptions });
     ```
 
+    We recommend calling `OverlayToaster.createAsync` once in your application and [sharing the created instance](#core/components/toast.example) throughout your application.
+
     A synchronous `OverlayToaster.create()` static method is also available, but will be phased out since React 18+ no longer synchronously renders components to the DOM.
 
     ```ts
@@ -115,6 +117,19 @@ function synchronousFn() {
 
 Note that `OverlayToaster.createAsync()` will throw an error if invoked inside a component lifecycle method, as
 `ReactDOM.render()` will return `null` resulting in an inaccessible toaster instance.
+
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Beware of memory leaks</h5>
+
+The static `createAsync` and `create` methods create a new `OverlayToaster` instance for the full lifetime of your
+application. Since there's no React parent component, these methods create a new DOM node as a container for the
+rendered `<OverlayToaster>` component. Every `createAsync` call will add a new DOM node. We do not recommend creating a
+new `Toaster` every time a toast needs to be shown. To minimize leaking:
+
+1. Call `OverlayToaster.createAsync` once in an application and [share the instance](#core/components/toast.example).
+2. Consider one of the alternative APIs that mount the `<OverlayToaster>` somewhere in the application's React component tree. This provides component lifecycle management out of the box. See [_React component usage_](#core/components/toast.react-component-usage) for an example.
+
+</div>
 
 @interface Toaster
 
