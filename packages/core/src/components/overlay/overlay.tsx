@@ -222,7 +222,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         usePortal: true,
     };
 
-    public static getDerivedStateFromProps({ isOpen: hasEverOpened }: OverlayProps) {
+    public static getDerivedStateFromProps ({ isOpen: hasEverOpened }: OverlayProps) {
         if (hasEverOpened) {
             return { hasEverOpened };
         }
@@ -250,7 +250,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     // An empty, keyboard-focusable div at the end of the Overlay content
     private endFocusTrapElement = React.createRef<HTMLDivElement>();
 
-    public render() {
+    public render () {
         // oh snap! no reason to render anything at all if we're being truly lazy
         if (this.props.lazy && !this.state.hasEverOpened) {
             return null;
@@ -323,21 +323,24 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         }
     }
 
-    public componentDidMount() {
+    public componentDidMount () {
         if (this.props.isOpen) {
             this.overlayWillOpen();
         }
     }
 
-    public componentDidUpdate(prevProps: OverlayProps) {
-        if (prevProps.isOpen && !this.props.isOpen) {
-            this.overlayWillClose();
-        } else if (!prevProps.isOpen && this.props.isOpen) {
-            this.overlayWillOpen();
-        }
+    public componentDidUpdate (prevProps: OverlayProps) {
+        // Wait until the this.containerElement is updated
+        this.setTimeout(() => {
+            if (prevProps.isOpen && !this.props.isOpen) {
+                this.overlayWillClose();
+            } else if (!prevProps.isOpen && this.props.isOpen) {
+                this.overlayWillOpen();
+            }
+        });
     }
 
-    public componentWillUnmount() {
+    public componentWillUnmount () {
         this.overlayWillClose();
     }
 
@@ -345,7 +348,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
      * @public for testing
      * @internal
      */
-    public bringFocusInsideOverlay() {
+    public bringFocusInsideOverlay () {
         // always delay focus manipulation to just before repaint to prevent scroll jumping
         return this.requestAnimationFrame(() => {
             // container element may be undefined between component mounting and Portal rendering
@@ -373,7 +376,6 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         if (child == null) {
             return null;
         }
-
         // decorate the child with a few injected props
         const tabIndex = this.props.enforceFocus || this.props.autoFocus ? 0 : undefined;
         const decoratedChild =
@@ -405,7 +407,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         );
     };
 
-    private maybeRenderBackdrop() {
+    private maybeRenderBackdrop () {
         const { backdropClassName, backdropProps, hasBackdrop, isOpen, transitionDuration, transitionName } =
             this.props;
 
@@ -429,7 +431,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         }
     }
 
-    private renderDummyElement(key: string, props: HTMLDivProps & { ref?: React.Ref<HTMLDivElement> }) {
+    private renderDummyElement (key: string, props: HTMLDivProps & { ref?: React.Ref<HTMLDivElement> }) {
         const { transitionDuration, transitionName } = this.props;
         return (
             <CSSTransition
@@ -520,25 +522,25 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         }
     };
 
-    private getKeyboardFocusableElements() {
+    private getKeyboardFocusableElements () {
         const focusableElements: HTMLElement[] =
             this.containerElement.current !== null
                 ? Array.from(
-                      // Order may not be correct if children elements use tabindex values > 0.
-                      // Selectors derived from this SO question:
-                      // https://stackoverflow.com/questions/1599660/which-html-elements-can-receive-focus
-                      this.containerElement.current.querySelectorAll(
-                          [
-                              'a[href]:not([tabindex="-1"])',
-                              'button:not([disabled]):not([tabindex="-1"])',
-                              'details:not([tabindex="-1"])',
-                              'input:not([disabled]):not([tabindex="-1"])',
-                              'select:not([disabled]):not([tabindex="-1"])',
-                              'textarea:not([disabled]):not([tabindex="-1"])',
-                              '[tabindex]:not([tabindex="-1"])',
-                          ].join(","),
-                      ),
-                  )
+                    // Order may not be correct if children elements use tabindex values > 0.
+                    // Selectors derived from this SO question:
+                    // https://stackoverflow.com/questions/1599660/which-html-elements-can-receive-focus
+                    this.containerElement.current.querySelectorAll(
+                        [
+                            'a[href]:not([tabindex="-1"])',
+                            'button:not([disabled]):not([tabindex="-1"])',
+                            'details:not([tabindex="-1"])',
+                            'input:not([disabled]):not([tabindex="-1"])',
+                            'select:not([disabled]):not([tabindex="-1"])',
+                            'textarea:not([disabled]):not([tabindex="-1"])',
+                            '[tabindex]:not([tabindex="-1"])',
+                        ].join(","),
+                    ),
+                )
                 : [];
 
         return focusableElements.filter(
@@ -548,7 +550,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         );
     }
 
-    private overlayWillClose() {
+    private overlayWillClose () {
         document.removeEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", this.handleDocumentClick);
 
@@ -573,7 +575,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         }
     }
 
-    private overlayWillOpen() {
+    private overlayWillOpen () {
         const { getLastOpened, openStack } = Overlay;
         if (openStack.length > 0) {
             document.removeEventListener("focus", getLastOpened().handleDocumentFocus, /* useCapture */ true);
@@ -666,6 +668,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         const { canEscapeKeyClose, onClose } = this.props;
         if (e.key === "Escape" && canEscapeKeyClose) {
+            console.log("Esc");
             onClose?.(e);
             // prevent other overlays from closing
             e.stopPropagation();
