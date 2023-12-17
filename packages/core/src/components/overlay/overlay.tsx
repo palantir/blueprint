@@ -668,7 +668,6 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         const { canEscapeKeyClose, onClose } = this.props;
         if (e.key === "Escape" && canEscapeKeyClose) {
-            console.log("Esc");
             onClose?.(e);
             // prevent other overlays from closing
             e.stopPropagation();
