@@ -175,6 +175,26 @@ The example below uses the `OverlayToaster.createAsync()` static method. Clickin
 
 @reactExample ToastCreateAsyncExample
 
+#### React 18
+
+To maintain backwards compatibility with React 16 and 17, `OverlayToaster.createAsync` uses `ReactDOM.render` out of the box. This triggers a [console warning on React 18](https://react.dev/blog/2022/03/08/react-18-upgrade-guide#updates-to-client-rendering-apis). A future major version of Blueprint will drop support for React versions before 18 and switch the default rendering function from `ReactDOM.render` to `createRoot`.
+
+If you're using React 18, we recommend passing in a custom `domRenderer` function.
+
+```tsx
+import { OverlayToaster } from "@blueprintjs/core";
+import { createRoot } from "react-dom/client";
+
+const toaster = await OverlayToaster.createAsync(toasterProps, {
+    // Use createRoot() instead of ReactDOM.render(). This can be deleted after
+    // a future Blueprint version uses createRoot() for Toasters by default.
+    domRenderer: (toaster, containerElement) => createRoot(containerElement).render(toaster),
+});
+
+toaster.show({ message: "Hello React 18!" })
+```
+
+
 @## React component usage
 
 Render the `<OverlayToaster>` component like any other element and supply `<Toast>` elements as `children`. You can
