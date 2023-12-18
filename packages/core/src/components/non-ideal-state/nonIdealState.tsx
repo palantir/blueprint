@@ -46,7 +46,7 @@ export interface NonIdealStateProps extends Props {
      */
     description?: React.ReactChild;
 
-    /** The name of a Blueprint icon or a JSX Element (such as `<Spinner/>`) to render above the title. */
+    /** The name of a Blueprint icon or a JSX element (such as `<Spinner/>`) to render above the title. */
     icon?: IconName | MaybeElement;
 
     /**
@@ -55,6 +55,13 @@ export interface NonIdealStateProps extends Props {
      * @default NonIdealStateIconSize.STANDARD
      */
     iconSize?: NonIdealStateIconSize;
+
+    /**
+     * Whether the `icon` should attempt to use a muted appearence.
+     *
+     * @default true
+     */
+    mutedIcon?: boolean;
 
     /**
      * Component layout, either vertical or horizontal.
@@ -78,6 +85,7 @@ export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
     public static defaultProps: Partial<NonIdealStateProps> = {
         iconSize: NonIdealStateIconSize.STANDARD,
         layout: "vertical",
+        mutedIcon: true,
     };
 
     public render() {
@@ -94,13 +102,13 @@ export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
     }
 
     private maybeRenderVisual() {
-        const { icon, iconSize } = this.props;
+        const { icon, iconSize, mutedIcon } = this.props;
         if (icon == null) {
             return undefined;
         } else {
             return (
                 <div
-                    className={Classes.NON_IDEAL_STATE_VISUAL}
+                    className={classNames(mutedIcon && Classes.NON_IDEAL_STATE_VISUAL)}
                     style={{ fontSize: `${iconSize}px`, lineHeight: `${iconSize}px` }}
                 >
                     <Icon icon={icon} size={iconSize} aria-hidden={true} tabIndex={-1} />
