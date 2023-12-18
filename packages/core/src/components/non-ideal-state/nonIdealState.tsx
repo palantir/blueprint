@@ -57,7 +57,7 @@ export interface NonIdealStateProps extends Props {
     iconSize?: NonIdealStateIconSize;
 
     /**
-     * Whether the `icon` should attempt to use a muted appearence.
+     * Whether the `icon` should attempt to use a muted style.
      *
      * @default true
      */

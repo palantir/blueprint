@@ -28,7 +28,7 @@ __NonIdealState__ component props are rendered in this order in the DOM, with co
 By default, a vertical layout is used, but you can make it horizontal with `layout="horizontal"`.
 
 Icons take on a muted appearance inside this component, but their shape contrast is preserved by adding a small stroke
-to the SVG paths.
+to the SVG paths. This behavior may be disabled by setting `mutedIcon={false}`.
 
 @## Props interface
 
