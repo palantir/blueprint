@@ -36,6 +36,14 @@ describe("<NonIdealState>", () => {
         });
     });
 
+    it("doesn't render muted icon style", () => {
+        const wrapper = shallow(<NonIdealState title="ERROR" icon="folder-close" mutedIcon={false} />);
+        assert.isFalse(
+            wrapper.find(`.${Classes.NON_IDEAL_STATE_VISUAL}`).exists(),
+            `unexpected ${Classes.NON_IDEAL_STATE_VISUAL}`,
+        );
+    });
+
     it("ensures description is wrapped in an element", () => {
         const wrapper = shallow(<NonIdealState action={<strong />} description="foo" />);
         const div = wrapper.find(`.${Classes.NON_IDEAL_STATE_TEXT}`).children().find("div");
