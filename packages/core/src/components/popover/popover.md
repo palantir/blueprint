@@ -387,7 +387,7 @@ documentation.
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
 Your best resource for strategies in popover testing is
-[its own unit test suite.](https://github.com/palantir/blueprint/blob/develop/packages/popover/test/popover/popoverTests.tsx)
+[its own unit test suite.](https://github.com/palantir/blueprint/blob/develop/packages/core/test/popover/popoverTests.tsx)
 
 </div>
 
