@@ -46,7 +46,7 @@ const DELAY_IN_MS = 10;
 class HotkeysDialogLegacy {
     public componentProps = {
         globalHotkeysGroup: "Global hotkeys",
-    } as any as HotkeysDialogProps;
+    } as HotkeysDialogProps;
 
     private container: HTMLElement | null = null;
 

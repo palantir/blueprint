@@ -288,7 +288,7 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
             onPaste: this.handleInputPaste,
             placeholder: resolvedPlaceholder,
             ref: this.handleRef,
-        };
+        } satisfies React.HTMLProps<HTMLElement>;
 
         return (
             <div className={classes} onBlur={this.handleContainerBlur} onClick={this.handleContainerClick}>

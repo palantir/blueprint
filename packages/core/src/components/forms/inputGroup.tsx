@@ -134,7 +134,7 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
             className: classNames(Classes.INPUT, inputClassName),
             onChange: this.handleInputChange,
             style,
-        };
+        } satisfies React.HTMLProps<HTMLInputElement>;
         const inputElement = asyncControl ? (
             <AsyncControllableInput {...inputProps} inputRef={inputRef} />
         ) : (
