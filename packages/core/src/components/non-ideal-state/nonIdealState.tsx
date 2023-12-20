@@ -61,7 +61,7 @@ export interface NonIdealStateProps extends Props {
      *
      * @default true
      */
-    mutedIcon?: boolean;
+    iconMuted?: boolean;
 
     /**
      * Component layout, either vertical or horizontal.
@@ -108,10 +108,10 @@ export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
         } else {
             return (
                 <div
-                    className={classNames(mutedIcon && Classes.NON_IDEAL_STATE_VISUAL)}
+                    className={Classes.NON_IDEAL_STATE_VISUAL}
                     style={{ fontSize: `${iconSize}px`, lineHeight: `${iconSize}px` }}
                 >
-                    <Icon icon={icon} size={iconSize} aria-hidden={true} tabIndex={-1} />
+                    <Icon className={classNames({ [Classes.ICON_MUTED]: iconMuted })} icon={icon} size={iconSize} aria-hidden={true} tabIndex={-1} />
                 </div>
             );
         }
