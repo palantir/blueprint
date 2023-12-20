@@ -80,6 +80,7 @@ export * from "./tabsExample";
 export * from "./inputGroupExample";
 export { SearchInputExample } from "./searchInputExample";
 export * from "./tagExample";
+export * from "./toastCreateAsyncExample";
 export * from "./toastExample";
 export * from "./tooltipExample";
 export * from "./treeExample";

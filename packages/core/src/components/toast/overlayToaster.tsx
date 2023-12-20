@@ -19,7 +19,12 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { AbstractPureComponent, Classes, Position } from "../../common";
-import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
+import {
+    TOASTER_CREATE_ASYNC_NULL,
+    TOASTER_CREATE_NULL,
+    TOASTER_MAX_TOASTS_INVALID,
+    TOASTER_WARN_INLINE,
+} from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
@@ -29,6 +34,26 @@ import type { Toaster, ToastOptions } from "./toaster";
 
 export interface OverlayToasterState {
     toasts: ToastOptions[];
+}
+
+export interface OverlayToasterCreateOptions {
+    /**
+     * A new DOM element will be created to render the OverlayToaster component
+     * and appended to this container.
+     *
+     * @default document.body
+     */
+    container?: HTMLElement;
+
+    /**
+     * A function to render the OverlayToaster React component onto a newly
+     * created DOM element.
+     *
+     * Defaults to `ReactDOM.render`. A future version of Blueprint will default
+     * to using React 18's createRoot API, but it's possible to configure this
+     * function to use createRoot on earlier Blueprint versions.
+     */
+    domRenderer?: (toaster: React.ReactElement<OverlayToasterProps>, containerElement: HTMLElement) => void;
 }
 
 /**
@@ -64,6 +89,55 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
             throw new Error(TOASTER_CREATE_NULL);
         }
         return toaster;
+    }
+
+    /**
+     * Similar to {@link OverlayToaster.create}, but returns a Promise to a
+     * Toaster instance after it's rendered and mounted to the DOM.
+     *
+     * This API will replace the synchronous {@link OverlayToaster.create} in a
+     * future major version of Blueprint to reflect React 18+'s new asynchronous
+     * rendering API.
+     */
+    public static createAsync(props?: OverlayToasterProps, options?: OverlayToasterCreateOptions): Promise<Toaster> {
+        if (props != null && props.usePortal != null && !isNodeEnv("production")) {
+            console.warn(TOASTER_WARN_INLINE);
+        }
+
+        const container = options?.container ?? document.body;
+        const domRenderer = options?.domRenderer ?? ReactDOM.render;
+
+        const toasterComponentRoot = document.createElement("div");
+        container.appendChild(toasterComponentRoot);
+
+        return new Promise<Toaster>((resolve, reject) => {
+            try {
+                domRenderer(<OverlayToaster {...props} ref={handleRef} usePortal={false} />, toasterComponentRoot);
+            } catch (error) {
+                // Note that we're catching errors from the domRenderer function
+                // call, but not errors when rendering <OverlayToaster>, which
+                // happens in a separate scheduled tick. Wrapping the
+                // OverlayToaster in an error boundary would be necessary to
+                // capture rendering errors, but that's still a bit unreliable
+                // and would only catch errors rendering the initial mount.
+                reject(error);
+            }
+
+            // We can get a rough guarantee that the OverlayToaster has been
+            // mounted to the DOM by waiting until the ref callback here has
+            // been fired.
+            //
+            // This is the approach suggested under "What about the render
+            // callback?" at https://github.com/reactwg/react-18/discussions/5.
+            function handleRef(ref: OverlayToaster | null) {
+                if (ref == null) {
+                    reject(new Error(TOASTER_CREATE_ASYNC_NULL));
+                    return;
+                }
+
+                resolve(ref);
+            }
+        });
     }
 
     public state: OverlayToasterState = {
