@@ -47,7 +47,7 @@ often fall out of sync as the design system is updated. You should use the React
 Note that you are required to set the `font-size` and `line-height` styles for the icon element to render it properly.
 
 Also, since the CSS API uses the icon font, Blueprint styles cannot adjust the icon visual design to have a muted
-appearance like it does with the React component API. This means **NonIdealState** elements rendered with this API will
+appearance like it does with the React component API. This means __NonIdealState__ elements rendered with this API will
 stand out visually (in a bad way) within the design system.
 
 </div>
