@@ -111,7 +111,13 @@ export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
                     className={Classes.NON_IDEAL_STATE_VISUAL}
                     style={{ fontSize: `${iconSize}px`, lineHeight: `${iconSize}px` }}
                 >
-                    <Icon className={classNames({ [Classes.ICON_MUTED]: iconMuted })} icon={icon} size={iconSize} aria-hidden={true} tabIndex={-1} />
+                    <Icon
+                        className={classNames({ [Classes.ICON_MUTED]: iconMuted })}
+                        icon={icon}
+                        size={iconSize}
+                        aria-hidden={true}
+                        tabIndex={-1}
+                    />
                 </div>
             );
         }
