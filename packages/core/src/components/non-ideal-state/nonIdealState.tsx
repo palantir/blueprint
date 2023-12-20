@@ -57,7 +57,7 @@ export interface NonIdealStateProps extends Props {
     iconSize?: NonIdealStateIconSize;
 
     /**
-     * Whether the `icon` should attempt to use a muted style.
+     * Whether the icon should use a muted style.
      *
      * @default true
      */
@@ -83,9 +83,9 @@ export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
 
     public static defaultProps: Partial<NonIdealStateProps> = {
+        iconMuted: true,
         iconSize: NonIdealStateIconSize.STANDARD,
         layout: "vertical",
-        mutedIcon: true,
     };
 
     public render() {
@@ -102,7 +102,7 @@ export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
     }
 
     private maybeRenderVisual() {
-        const { icon, iconSize, mutedIcon } = this.props;
+        const { icon, iconMuted, iconSize } = this.props;
         if (icon == null) {
             return undefined;
         } else {

@@ -53,7 +53,7 @@ stand out visually (in a bad way) within the design system.
 </div>
 
 Apply the `.@ns-non-ideal-state` class to the root container element and wrap the icon element with a
-`.@ns-non-ideal-state-visual` container. To use the muted icon style, apply `.@ns-icon-muted` to the icon element.
+`.@ns-non-ideal-state-visual` container.
 
 The root container should only have direct element children, no grandchildren (except for text, which is enclosed in a
 `.@ns-non-ideal-state-text` wrapper element). This constraint ensures proper spacing between each child.
