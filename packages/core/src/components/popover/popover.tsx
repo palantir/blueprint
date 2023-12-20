@@ -389,7 +389,7 @@ export class Popover<
             }),
             ref,
             ...targetEventHandlers,
-        };
+        } satisfies React.HTMLProps<HTMLElement>;
 
         const targetModifierClasses = {
             // this class is mainly useful for Blueprint <Button> targets; we should only apply it for
