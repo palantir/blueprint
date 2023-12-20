@@ -33,6 +33,25 @@
       fill: currentcolor;
     }
   }
+
+  // muted icon style used by NonIdealState
+  &.#{$ns}-icon-muted svg {
+    fill-opacity: 15%;
+    // need to show overflow for some strokes on paths that reach the edge of the icon bounding box
+    overflow: visible;
+
+    path {
+      stroke: $gray3;
+      stroke-opacity: 50%;
+      stroke-width: 0.5px;
+    }
+  }
+
+  .#{$ns}-dark & {
+    .#{$ns}-icon-muted svg {
+      fill-opacity: 20%;
+    }
+  }
 }
 
 // intent colors for both SVG and font icons are set in _typography-colors.scss
