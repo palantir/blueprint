@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { format } from "date-fns";
+import { format, type Locale } from "date-fns";
 import * as React from "react";
 import { type ActiveModifiers, type DateFormatter, DayPicker } from "react-day-picker";
 
