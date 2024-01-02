@@ -92,7 +92,12 @@ export const SPINNER_WARN_CLASSES_SIZE = ns + ` <Spinner> Classes.SMALL/LARGE ar
 export const TOASTER_CREATE_NULL =
     ns +
     ` OverlayToaster.create() is not supported inside React lifecycle methods in React 16.` +
-    ` See usage example on the docs site.`;
+    ` See usage example on the docs site. https://blueprintjs.com/docs/#core/components/toast.example`;
+export const TOASTER_CREATE_ASYNC_NULL =
+    ns +
+    ` OverlayToaster.createAsync() received a null component ref. This can happen if called inside React lifecycle ` +
+    `methods in React 16. See usage example on the docs site. ` +
+    `https://blueprintjs.com/docs/#core/components/toast.example`;
 export const TOASTER_MAX_TOASTS_INVALID =
     ns + ` <OverlayToaster> maxToasts is set to an invalid number, must be greater than 0`;
 export const TOASTER_WARN_INLINE =
