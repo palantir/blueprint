@@ -10,7 +10,7 @@
         "tslib": "~2.6.2",
         "tslint-react": "^5.0.0",
         "tsutils": "^3.21.0",
-        "typescript": "~5.2.2"
+        "typescript": "~5.3.3"
     },
     "peerDependencies": {
         "tslint": "^6.0.0"

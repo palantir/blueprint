@@ -23,7 +23,7 @@
         "@typescript-eslint/rule-tester": "^6.17.0",
         "dedent": "^1.5.1",
         "mocha": "^10.2.0",
-        "typescript": "~5.2.2"
+        "typescript": "~5.3.3"
     },
     "repository": {
         "type": "git",
