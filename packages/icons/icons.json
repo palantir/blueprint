@@ -4120,7 +4120,36 @@
         "iconName": "explain",
         "tags": "explain, ai, aip, describe",
         "group": "action",
-        "group": "miscellaneous",
         "codepoint": 62285
+    },
+    {
+        "displayName": "trophy",
+        "iconName": "trophy",
+        "tags": "win, award, sport, trophy",
+        "group": "miscellaneous",
+        "codepoint": 62286
+    },
+    {
+        "displayName": "soccer-ball",
+        "iconName": "soccer-ball",
+        "tags": "soccer, ball, sports",
+        "group": "miscellaneous",
+        "codepoint": 62287
+    },
+    {
+        "displayName": "sports-stadium",
+        "iconName": "sports-stadium",
+        "tags": "stadium, sports",
+        "group": "miscellaneous",
+        "codepoint": 62288
+    },
+    {
+        "displayName": "team",
+        "iconName": "team",
+        "tags": "person, people, teammate, team",
+        "group": "utilities",
+        "codepoint": 62289
     }
+    
+
 ]
