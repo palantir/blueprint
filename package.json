@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "description": "A React UI toolkit for the web.",
-    "packageManager": "yarn@4.0.1",
+    "packageManager": "yarn@4.0.2",
     "workspaces": [
         "packages/*"
     ],
@@ -69,7 +69,7 @@
         "@types/react": "16.14.32"
     },
     "engines": {
-        "node": ">=18.13"
+        "node": ">=20.10"
     },
     "repository": {
         "type": "git",
