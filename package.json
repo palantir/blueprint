@@ -28,7 +28,7 @@
         "lint": "nx run-many -t lint",
         "lint-fix": "nx run-many -t lint-fix",
         "serve": "http-server site",
-        "site": "npm-run-all site:clean -p copy:* -s serve",
+        "site": "npm-run-all site:clean -p 'copy:*' -s serve",
         "site:clean": "git clean -xdfq site/",
         "test": "nx run-many -t test",
         "verify": "npm-run-all -s compile dist -p test lint format-check"
