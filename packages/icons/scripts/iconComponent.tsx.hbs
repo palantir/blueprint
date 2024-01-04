@@ -27,7 +27,6 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<
             <path
                 d={isLarge ? "{{icon20pxPath}}" : "{{icon16pxPath}}"}
                 fillRule="evenodd"
-                transformOrigin="center"
                 transform={`scale({{pathScaleFactor}}, -{{pathScaleFactor}}) translate(${translation}, ${translation})`}
             />
         </SVGIconContainer>

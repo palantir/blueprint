@@ -67,8 +67,7 @@ export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(func
     const pixelGridSize = isLarge ? IconSize.LARGE : IconSize.STANDARD;
     const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
     const titleId = uniqueId("iconTitle");
-    const sharedSvgProps = {
-        "data-icon": iconName,
+    const sharedSvgProps: React.SVGProps<SVGSVGElement> = {
         fill: color,
         height: size,
         role: "img",
@@ -81,7 +80,9 @@ export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(func
         return (
             <svg
                 aria-labelledby={title ? titleId : undefined}
+                data-icon={iconName}
                 ref={ref as React.Ref<SVGSVGElement>}
+                transform-origin="center"
                 {...sharedSvgProps}
                 {...htmlProps}
             >
@@ -99,7 +100,7 @@ export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(func
                 ref,
                 title: htmlTitle,
             },
-            <svg {...sharedSvgProps}>
+            <svg data-icon={iconName} transform-origin="center" {...sharedSvgProps}>
                 {title && <title>{title}</title>}
                 {children}
             </svg>,
