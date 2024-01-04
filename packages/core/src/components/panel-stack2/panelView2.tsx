@@ -52,11 +52,17 @@ interface PanelView2Component {
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: PanelView2Props<T>) => {
-    const handleClose = React.useCallback(() => props.onClose(props.panel), [props.onClose, props.panel]);
+export const PanelView2: PanelView2Component = <T extends Panel<object>>({
+    panel,
+    onClose,
+    onOpen,
+    previousPanel,
+    showHeader,
+}: PanelView2Props<T>) => {
+    const handleClose = React.useCallback(() => onClose(panel), [onClose, panel]);
 
     const maybeBackButton =
-        props.previousPanel === undefined ? null : (
+        previousPanel === undefined ? null : (
             <Button
                 aria-label="Back"
                 className={Classes.PANEL_STACK_HEADER_BACK}
@@ -64,8 +70,8 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: 
                 minimal={true}
                 onClick={handleClose}
                 small={true}
-                text={props.previousPanel.title}
-                title={props.previousPanel.htmlTitle}
+                text={previousPanel.title}
+                title={previousPanel.htmlTitle}
             />
         );
 
@@ -78,22 +84,22 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: 
             // instantiated with a type unrelated to our generic constraint `T` here. We know
             // we're sending the right values here though, and it makes the consumer API for this
             // component type safe, so it's ok to do this...
-            props.panel.renderPanel({
+            panel.renderPanel({
                 closePanel: handleClose,
-                openPanel: props.onOpen,
-                ...props.panel.props,
+                openPanel: onOpen,
+                ...panel.props,
             } as PanelProps<T>),
-        [props.panel, props.onOpen],
+        [panel, handleClose, onOpen],
     );
 
     return (
         <div className={Classes.PANEL_STACK2_VIEW}>
-            {props.showHeader && (
+            {showHeader && (
                 <div className={Classes.PANEL_STACK2_HEADER}>
                     {/* two <span> tags here ensure title is centered as long as possible, with `flex: 1` styling */}
                     <span>{maybeBackButton}</span>
-                    <Text className={Classes.HEADING} ellipsize={true} title={props.panel.htmlTitle}>
-                        {props.panel.title}
+                    <Text className={Classes.HEADING} ellipsize={true} title={panel.htmlTitle}>
+                        {panel.title}
                     </Text>
                     <span />
                 </div>

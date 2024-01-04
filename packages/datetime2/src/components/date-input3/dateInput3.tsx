@@ -540,6 +540,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             isInputFocused,
             maybeTimezonePicker,
             placeholder,
+            popoverId,
             popoverProps.targetTagName,
             rightElement,
             shouldShowErrorStyling,
