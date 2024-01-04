@@ -21,6 +21,7 @@ import { MenuItem, type MenuItemProps } from "@blueprintjs/core";
 import { Clipboard } from "../../common/clipboard";
 import { TABLE_COPY_FAILED } from "../../common/errors";
 import { Regions } from "../../regions";
+
 import type { MenuContext } from "./menuContext";
 
 export interface CopyCellsMenuItemProps extends Omit<MenuItemProps, "onCopy"> {

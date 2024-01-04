@@ -43,6 +43,7 @@ import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import { DatePicker3 } from "../date-picker3/datePicker3";
+
 import type { DateInput3DefaultProps, DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
 import { useDateFormatter } from "./useDateFormatter";
 import { useDateParser } from "./useDateParser";

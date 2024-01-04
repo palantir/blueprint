@@ -25,6 +25,7 @@ import * as React from "react";
 
 import { isFunction } from "../common/utils";
 import type { HotkeysProps } from "../components/hotkeys";
+
 import { HotkeyScope, HotkeysEvents } from "./hotkeysEvents";
 import { type Constructor, getDisplayName } from "./legacyCommon";
 

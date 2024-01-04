@@ -23,6 +23,7 @@ import { Classes, Menu } from "@blueprintjs/core";
 import { Clipboard } from "../src/common/clipboard";
 import { CopyCellsMenuItem, MenuContextImpl } from "../src/interactions/menus";
 import { Regions } from "../src/regions";
+
 import { ReactHarness } from "./harness";
 
 describe("Menus", () => {

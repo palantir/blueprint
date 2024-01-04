@@ -24,6 +24,7 @@ import { Button, Classes, InputGroup, MenuItem, Popover } from "@blueprintjs/cor
 import { type ItemRendererProps, Select, type SelectProps } from "../src";
 import { type Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import type { SelectState } from "../src/components/select/select";
+
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 

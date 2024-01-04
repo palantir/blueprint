@@ -35,6 +35,7 @@ import { TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
 import { type Region, Regions } from "../src/regions";
 import type { TableState } from "../src/tableState";
+
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { type ElementHarness, ReactHarness } from "./harness";
 import { createStringOfLength, createTableOfSize } from "./mocks/table";

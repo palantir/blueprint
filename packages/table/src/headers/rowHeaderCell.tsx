@@ -20,6 +20,7 @@ import { AbstractPureComponent, type Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
+
 import { HeaderCell, type HeaderCellProps } from "./headerCell";
 
 export interface RowHeaderCellProps extends HeaderCellProps, Props {

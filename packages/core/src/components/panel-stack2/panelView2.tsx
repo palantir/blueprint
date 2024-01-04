@@ -19,6 +19,7 @@ import * as React from "react";
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Button } from "../button/buttons";
 import { Text } from "../text/text";
+
 import type { Panel, PanelProps } from "./panelTypes";
 
 // eslint-disable-next-line @typescript-eslint/ban-types

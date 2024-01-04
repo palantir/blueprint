@@ -29,6 +29,7 @@ import {
 } from "@blueprintjs/docs-theme";
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
+
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 

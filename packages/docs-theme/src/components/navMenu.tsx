@@ -21,6 +21,7 @@ import * as React from "react";
 import { Classes, type Props } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+
 import { NavMenuItem, type NavMenuItemProps } from "./navMenuItem";
 
 export interface NavMenuProps extends Props {

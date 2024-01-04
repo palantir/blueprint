@@ -20,6 +20,7 @@ import * as React from "react";
 import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp } from "../../common/utils";
+
 import type { HandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
 

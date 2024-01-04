@@ -28,6 +28,7 @@ import {
 
 import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
+
 import { Cell, type CellProps } from "./cell";
 
 export interface EditableCell2Props extends Omit<CellProps, "onKeyDown" | "onKeyUp"> {

@@ -22,7 +22,7 @@
                 "order": "asc",
                 "caseInsensitive": true
             },
-            "groups": [["builtin", "external"], "internal", ["parent", "sibling", "index"], ["unknown", "object"]],
+            "groups": [["builtin", "external"], "internal", "parent", "sibling", "index", ["unknown", "object"]],
             "newlines-between": "always"
         }
     ],
