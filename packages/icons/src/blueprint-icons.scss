@@ -6,6 +6,7 @@ Licensed under the Apache License, Version 2.0.
 @import "generated/16px/blueprint-icons-16";
 @import "generated/20px/blueprint-icons-20";
 
+/* stylelint-disable-next-line @blueprintjs/no-prefix-literal -- we don't have access to core variables in this file */
 .bp5-icon-svg {
   // Despite being added to added as a supported SVG attribute to React in 2023, the `transformOrigin` JSX attribute
   // is still difficult to use in our statically-generated icon components (`<AddClip>`, `<Calendar>`, etc.)
