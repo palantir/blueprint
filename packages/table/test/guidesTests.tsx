@@ -19,6 +19,7 @@ import * as React from "react";
 
 import * as Classes from "../src/common/classes";
 import { GuideLayer } from "../src/layers/guides";
+
 import { ReactHarness } from "./harness";
 
 describe("Guides", () => {

@@ -20,6 +20,7 @@ import * as React from "react";
 import sinon from "sinon";
 
 import { Handle, type HandleState, type InternalHandleProps } from "../../src/components/slider/handle";
+
 import { DRAG_SIZE, simulateMovement } from "./sliderTestUtils";
 
 const HANDLE_PROPS: InternalHandleProps = {

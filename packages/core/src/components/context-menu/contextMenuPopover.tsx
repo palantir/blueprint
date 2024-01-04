@@ -21,6 +21,7 @@ import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Popover } from "../popover/popover";
 import type { PopoverTargetProps } from "../popover/popoverSharedProps";
 import { Portal } from "../portal/portal";
+
 import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
 
 export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {

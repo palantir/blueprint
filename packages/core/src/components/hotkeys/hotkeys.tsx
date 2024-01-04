@@ -21,6 +21,7 @@ import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props } from "
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { isElementOfType, isReactChildrenElementOrElements } from "../../common/utils";
 import { H4 } from "../html/html";
+
 import { Hotkey, type HotkeyProps } from "./hotkey";
 
 export interface HotkeysProps extends Props {

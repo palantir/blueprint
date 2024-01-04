@@ -18,6 +18,7 @@ import * as React from "react";
 
 import { Cell, Column, ColumnHeaderCell, ColumnLoadingOption, RowHeaderCell, Table2, TableLoadingOption } from "../src";
 import * as Classes from "../src/common/classes";
+
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 

@@ -45,6 +45,7 @@ import { getDateFnsFormatter, getDateFnsParser, getDefaultDateFnsFormat } from "
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
 import { DateRangePicker3 } from "../date-range-picker3/dateRangePicker3";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
+
 import type {
     DateRangeInput3DefaultProps,
     DateRangeInput3Props,

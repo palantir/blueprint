@@ -25,6 +25,7 @@ import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
 import { Popover, type PopoverProps } from "../popover/popover";
 import { Text } from "../text/text";
+
 import { Menu, type MenuProps } from "./menu";
 
 /**

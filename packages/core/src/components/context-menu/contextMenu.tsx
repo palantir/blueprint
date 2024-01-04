@@ -19,6 +19,7 @@ import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, mergeRefs, type Props, Utils } from "../../common";
 import { TooltipContext, TooltipProvider } from "../popover/tooltipContext";
+
 import { ContextMenuPopover } from "./contextMenuPopover";
 import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
 

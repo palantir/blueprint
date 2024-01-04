@@ -27,6 +27,7 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
+
 import { Handle } from "./handle";
 import { HandleInteractionKind, type HandleProps, HandleType } from "./handleProps";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";

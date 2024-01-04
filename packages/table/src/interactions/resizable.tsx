@@ -19,6 +19,7 @@ import * as React from "react";
 import { AbstractPureComponent, type Props } from "@blueprintjs/core";
 
 import { Utils } from "../common/index";
+
 import { type LockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
 
 export type IndexedResizeCallback = (index: number, size: number) => void;

@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
+
 import { TreeNode } from "./treeNode";
 import type { TreeEventHandler, TreeNodeInfo } from "./treeTypes";
 

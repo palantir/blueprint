@@ -25,6 +25,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { isDarkTheme, isFunction } from "../common/utils";
+
 import { show as showLegacyContextMenu } from "./contextMenuLegacy";
 import { type Constructor, getDisplayName } from "./legacyCommon";
 

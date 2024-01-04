@@ -21,6 +21,7 @@ import { type Alignment, Classes, Divider, FormGroup, H5, RadioCard, RadioGroup,
 import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export const RadioCardGroupExample: React.FC<ExampleProps> = props => {

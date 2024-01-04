@@ -32,6 +32,7 @@ import type { LockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, type SelectableProps } from "../interactions/selectable";
 import type { Locator } from "../locator";
 import { type Region, RegionCardinality, Regions } from "../regions";
+
 import type { HeaderCellProps } from "./headerCell";
 
 export type HeaderCellRenderer = (index: number) => React.ReactElement<HeaderCellProps>;

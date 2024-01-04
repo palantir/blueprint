@@ -20,6 +20,7 @@ import * as React from "react";
 import { AbstractPureComponent, Classes, type Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clickElementOnKeyPress } from "../../common/utils";
+
 import { Dialog, type DialogProps } from "./dialog";
 import { DialogFooter } from "./dialogFooter";
 import { DialogStep, type DialogStepId, type DialogStepProps } from "./dialogStep";
