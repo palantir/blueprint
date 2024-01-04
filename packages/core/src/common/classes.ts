@@ -359,6 +359,7 @@ export const TREE_ROOT = `${NS}-tree-root`;
 export const ICON = `${NS}-icon`;
 export const ICON_STANDARD = `${ICON}-standard`;
 export const ICON_LARGE = `${ICON}-large`;
+export const ICON_MUTED = `${ICON}-muted`;
 
 /**
  * Returns the namespace prefix for all Blueprint CSS classes.
