@@ -4122,5 +4122,12 @@
         "group": "action",
         "group": "miscellaneous",
         "codepoint": 62285
+    },
+    {
+        "displayName": "Cloud: tick",
+        "iconName": "cloud-tick",
+        "tags": "file, storage, transfer, save",
+        "group": "file",
+        "codepoint": 62286
     }
 ]
