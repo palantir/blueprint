@@ -117,7 +117,7 @@ export { Tab, type TabId, type TabProps } from "./tabs/tab";
 export { Tabs, type TabsProps, TabsExpander, Expander } from "./tabs/tabs";
 export { Tag, type TagProps } from "./tag/tag";
 export { TagInput, type TagInputProps, type TagInputAddMethod } from "./tag-input/tagInput";
-export { OverlayToaster } from "./toast/overlayToaster";
+export { OverlayToaster, type OverlayToasterCreateOptions } from "./toast/overlayToaster";
 export type { OverlayToasterProps, ToasterPosition } from "./toast/overlayToasterProps";
 export { Toast, type ToastProps } from "./toast/toast";
 export { Toaster, type ToastOptions } from "./toast/toaster";

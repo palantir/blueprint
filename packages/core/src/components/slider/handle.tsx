@@ -43,7 +43,7 @@ export interface HandleState {
 }
 
 // props that require number values, for validation
-const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
+const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"] satisfies Array<keyof InternalHandleProps>;
 
 /** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
 export class Handle extends AbstractPureComponent<InternalHandleProps, HandleState> {
