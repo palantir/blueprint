@@ -155,7 +155,7 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
             document!.removeEventListener("keydown", handleGlobalKeyDown);
             document!.removeEventListener("keyup", handleGlobalKeyUp);
         };
-    }, [handleGlobalKeyDown, handleGlobalKeyUp]);
+    }, [document, handleGlobalKeyDown, handleGlobalKeyUp]);
 
     return { handleKeyDown: handleLocalKeyDown, handleKeyUp: handleLocalKeyUp };
 }

@@ -20,7 +20,7 @@
  * package instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components, react-hooks/exhaustive-deps */
 
 import classNames from "classnames";
 import * as React from "react";

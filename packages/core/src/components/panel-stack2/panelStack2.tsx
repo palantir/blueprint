@@ -124,16 +124,12 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
     );
     const handlePanelClose = React.useCallback(
         (panel: T) => {
-            // only remove this panel if it is at the top and not the only one.
-            if (stack[0] !== panel || stack.length <= 1) {
-                return;
-            }
             onClose?.(panel);
             if (!isControlled) {
                 setLocalStack(prevStack => prevStack.slice(1));
             }
         },
-        [stack, onClose, isControlled],
+        [onClose, isControlled],
     );
 
     // early return, after all hooks are called

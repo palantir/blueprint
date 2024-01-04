@@ -147,16 +147,17 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
     React.useEffect(() => {
         setIsOpen(false);
         tooltipCtxDispatch({ type: "RESET_DISABLED_STATE" });
-    }, [disabled]);
+    }, [disabled, tooltipCtxDispatch]);
 
     const handlePopoverClose = React.useCallback(() => {
         setIsOpen(false);
         setMouseEvent(undefined);
         tooltipCtxDispatch({ type: "RESET_DISABLED_STATE" });
         onClose?.();
-    }, []);
+    }, [onClose, tooltipCtxDispatch]);
 
     // if the menu was just opened, we should check for dark theme (but don't do this on every render)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const isDarkTheme = React.useMemo(() => Utils.isDarkTheme(childRef.current), [childRef, isOpen]);
 
     const contentProps: ContextMenuContentProps = React.useMemo(
@@ -224,7 +225,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
 
             onContextMenu?.(e);
         },
-        [children, onContextMenu, menuContent, renderMenu],
+        [disabled, children, content, onContextMenu, tooltipCtxDispatch, renderMenu],
     );
 
     const containerClassName = classNames(className, Classes.CONTEXT_MENU);

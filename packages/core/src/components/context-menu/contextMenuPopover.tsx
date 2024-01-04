@@ -63,11 +63,14 @@ export const ContextMenuPopover = React.memo(function _ContextMenuPopover(props:
         [targetOffset],
     );
 
-    const handleInteraction = React.useCallback((nextOpenState: boolean) => {
-        if (!nextOpenState) {
-            onClose?.();
-        }
-    }, []);
+    const handleInteraction = React.useCallback(
+        (nextOpenState: boolean) => {
+            if (!nextOpenState) {
+                onClose?.();
+            }
+        },
+        [onClose],
+    );
 
     return (
         <Popover
