@@ -4120,7 +4120,6 @@
         "iconName": "explain",
         "tags": "explain, ai, aip, describe",
         "group": "action",
-        "group": "miscellaneous",
         "codepoint": 62285
     }
 ]
