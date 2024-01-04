@@ -82,9 +82,9 @@ export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(func
                 aria-labelledby={title ? titleId : undefined}
                 data-icon={iconName}
                 ref={ref as React.Ref<SVGSVGElement>}
-                transform-origin="center"
                 {...sharedSvgProps}
                 {...htmlProps}
+                className={classNames(Classes.ICON_SVG, className, svgProps?.className)}
             >
                 {title && <title id={titleId}>{title}</title>}
                 {children}
@@ -100,7 +100,7 @@ export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(func
                 ref,
                 title: htmlTitle,
             },
-            <svg data-icon={iconName} transform-origin="center" {...sharedSvgProps}>
+            <svg data-icon={iconName} {...sharedSvgProps} className={classNames(Classes.ICON_SVG, svgProps?.className)}>
                 {title && <title>{title}</title>}
                 {children}
             </svg>,
