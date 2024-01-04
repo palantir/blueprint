@@ -59,7 +59,12 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>({
     previousPanel,
     showHeader,
 }: PanelView2Props<T>) => {
-    const handleClose = React.useCallback(() => onClose(panel), [onClose, panel]);
+    const handleClose = React.useCallback(() => {
+        // only remove this panel if it is not the only one.
+        if (previousPanel !== undefined) {
+            onClose(panel);
+        }
+    }, [onClose, panel, previousPanel]);
 
     const maybeBackButton =
         previousPanel === undefined ? null : (
@@ -75,7 +80,7 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>({
             />
         );
 
-    // `props.panel.renderPanel` is simply a function that returns a JSX.Element. It may be an FC which
+    // `panel.renderPanel` is simply a function that returns a JSX.Element. It may be an FC which
     // uses hooks. In order to avoid React errors due to inconsistent hook calls, we must encapsulate
     // those hooks with their own lifecycle through a very simple wrapper component.
     const PanelWrapper: React.FC = React.useMemo(
