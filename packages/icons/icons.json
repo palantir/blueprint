@@ -4121,5 +4121,12 @@
         "tags": "explain, ai, aip, describe",
         "group": "action",
         "codepoint": 62285
+    },
+    {
+        "displayName": "Cloud: tick",
+        "iconName": "cloud-tick",
+        "tags": "file, storage, transfer, save",
+        "group": "file",
+        "codepoint": 62286
     }
 ]
