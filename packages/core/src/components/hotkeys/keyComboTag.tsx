@@ -17,23 +17,36 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import {
+    ArrowDown,
+    ArrowLeft,
+    ArrowRight,
+    ArrowUp,
+    KeyCommand,
+    KeyControl,
+    KeyDelete,
+    KeyEnter,
+    KeyOption,
+    KeyShift,
+} from "@blueprintjs/icons";
+
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
-import { Icon, type IconName } from "../icon/icon";
+import { Icon } from "../icon/icon";
 
 import { normalizeKeyCombo } from "./hotkeyParser";
 
-const KEY_ICONS: Record<string, { icon: IconName; iconTitle: string }> = {
-    ArrowDown: { icon: "arrow-down", iconTitle: "Down key" },
-    ArrowLeft: { icon: "arrow-left", iconTitle: "Left key" },
-    ArrowRight: { icon: "arrow-right", iconTitle: "Right key" },
-    ArrowUp: { icon: "arrow-up", iconTitle: "Up key" },
-    alt: { icon: "key-option", iconTitle: "Alt/Option key" },
-    cmd: { icon: "key-command", iconTitle: "Command key" },
-    ctrl: { icon: "key-control", iconTitle: "Control key" },
-    delete: { icon: "key-delete", iconTitle: "Delete key" },
-    enter: { icon: "key-enter", iconTitle: "Enter key" },
-    meta: { icon: "key-command", iconTitle: "Command key" },
-    shift: { icon: "key-shift", iconTitle: "Shift key" },
+const KEY_ICONS: Record<string, { icon: JSX.Element; iconTitle: string }> = {
+    ArrowDown: { icon: <ArrowDown />, iconTitle: "Down key" },
+    ArrowLeft: { icon: <ArrowLeft />, iconTitle: "Left key" },
+    ArrowRight: { icon: <ArrowRight />, iconTitle: "Right key" },
+    ArrowUp: { icon: <ArrowUp />, iconTitle: "Up key" },
+    alt: { icon: <KeyOption />, iconTitle: "Alt/Option key" },
+    cmd: { icon: <KeyCommand />, iconTitle: "Command key" },
+    ctrl: { icon: <KeyControl />, iconTitle: "Control key" },
+    delete: { icon: <KeyDelete />, iconTitle: "Delete key" },
+    enter: { icon: <KeyEnter />, iconTitle: "Enter key" },
+    meta: { icon: <KeyCommand />, iconTitle: "Command key" },
+    shift: { icon: <KeyShift />, iconTitle: "Shift key" },
 };
 
 /** Reverse table of some CONFIG_ALIASES fields, for display by KeyComboTag */
