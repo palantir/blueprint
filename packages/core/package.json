@@ -43,7 +43,7 @@
         "lint-fix": "es-lint --fix && sass-lint --fix",
         "test": "run-s test:typeCheck test:iso test:karma",
         "test:typeCheck": "tsc -p ./test",
-        "test:iso": "mocha test/isotest.js",
+        "test:iso": "mocha test/isotest.mjs",
         "test:karma": "karma start",
         "test:karma:debug": "karma start --single-run=false --reporters=helpful --debug",
         "verify": "npm-run-all compile -p dist test lint"

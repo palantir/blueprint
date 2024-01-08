@@ -13,12 +13,13 @@
  * limitations under the License.
  */
 
-require("@blueprintjs/test-commons/bootstrap");
-const { add } = require("date-fns");
+import "@blueprintjs/test-commons/bootstrap";
 
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
+import { add } from "date-fns";
 
-const DateTime = require("../lib/cjs");
+import { generateIsomorphicTests } from "@blueprintjs/test-commons";
+
+import DateTime from "../lib/cjs/index.js";
 
 describe("@blueprintjs/datetime isomorphic rendering", () => {
     const formatProps = {

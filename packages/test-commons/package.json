@@ -2,8 +2,13 @@
     "name": "@blueprintjs/test-commons",
     "version": "2.2.2",
     "description": "Common utilities for tests in @blueprintjs packages",
-    "main": "lib/cjs/index.js",
-    "typings": "lib/cjs/index.d.ts",
+    "type": "module",
+    "types": "./lib/index.d.ts",
+    "exports": {
+        ".": "./lib/index.js",
+        "./bootstrap": "./bootstrap.mjs",
+        "./lib/datetimeUtils": "./lib/datetimeUtils.mjs"
+    },
     "scripts": {
         "compile": "tsc -p ./src",
         "clean": "rm -rf lib/* || true",

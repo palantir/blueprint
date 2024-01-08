@@ -30,7 +30,7 @@
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix && sass-lint --fix",
         "test": "run-s test:typeCheck test:iso test:karma",
-        "test:iso": "mocha test/isotest.js",
+        "test:iso": "mocha test/isotest.mjs",
         "test:typeCheck": "tsc -p ./test",
         "test:karma": "karma start",
         "test:karma:debug": "karma start --single-run=false --reporters=helpful --debug",

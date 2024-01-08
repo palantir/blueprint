@@ -38,7 +38,7 @@
         "lint-fix": "es-lint --fix && sass-lint --fix",
         "test": "run-s test:typeCheck test:iso",
         "test:typeCheck": "tsc -p ./test",
-        "test:iso": "mocha test/isotest.js",
+        "test:iso": "mocha test/isotest.mjs",
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
