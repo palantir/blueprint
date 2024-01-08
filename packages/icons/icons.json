@@ -4156,5 +4156,33 @@
         "tags": "person, people, teammate, team, sports",
         "group": "miscellaneous",
         "codepoint": 62290
+    }, 
+    {
+        "displayName": "crop",
+        "iconName": "crop",
+        "tags": "crop, cut, resize",
+        "group": "action",
+        "codepoint": 62291
+    }, 
+    {
+        "displayName": "bring forward",
+        "iconName": "bring-forward",
+        "tags": "bring, forward, drawer, arrow, move, shift, send, backward",
+        "group": "action",
+        "codepoint": 62292
+    }, 
+    {
+        "displayName": "send backward",
+        "iconName": "send-backward",
+        "tags": "send, backward, drawer, arrow, move, shift, bring, forward",
+        "group": "action",
+        "codepoint": 62293
+    }, 
+    {
+        "displayName": "endnote",
+        "iconName": "endnote",
+        "tags": "endnote, notebook, note, footnote",
+        "group": "editor",
+        "codepoint": 62294
     }
 ]
