@@ -35,7 +35,7 @@ Markup:
 Styleguide dialog
 */
 
-$pt-dialog-background-color: $light-gray5 !default;
+$dialog-background-color: $light-gray5 !default;
 $dialog-border-radius: $pt-border-radius * 2 !default;
 $dialog-margin: ($pt-grid-size * 3) 0 !default;
 $dialog-padding: $pt-grid-size * 1.5 !default;
@@ -64,7 +64,7 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
 }
 
 .#{$ns}-dialog {
-  background: $pt-dialog-background-color;
+  background: $dialog-background-color;
   border-radius: $dialog-border-radius;
   box-shadow: $pt-dialog-box-shadow;
   display: flex;
