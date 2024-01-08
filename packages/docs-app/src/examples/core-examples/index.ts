@@ -36,6 +36,7 @@ export * from "./dividerExample";
 export * from "./drawerExample";
 export * from "./dropdownMenuExample";
 export * from "./editableTextExample";
+export * from "./entityTitleExample";
 export * from "./fileInputExample";
 export * from "./focusExample";
 export * from "./formGroupExample";
