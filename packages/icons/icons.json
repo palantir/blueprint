@@ -4156,28 +4156,28 @@
         "tags": "person, people, teammate, team, sports",
         "group": "miscellaneous",
         "codepoint": 62290
-    }, 
+    },
     {
         "displayName": "crop",
         "iconName": "crop",
         "tags": "crop, cut, resize",
         "group": "action",
         "codepoint": 62291
-    }, 
+    },
     {
         "displayName": "bring forward",
         "iconName": "bring-forward",
         "tags": "bring, drawer, forward",
         "group": "action",
         "codepoint": 62292
-    }, 
+    },
     {
         "displayName": "send backward",
         "iconName": "send-backward",
         "tags": "backward, drawer, send",
         "group": "action",
         "codepoint": 62293
-    }, 
+    },
     {
         "displayName": "endnote",
         "iconName": "endnote",
