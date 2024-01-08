@@ -718,7 +718,7 @@ describe("TableQuadrantStack", () => {
         // tslint:enable:object-literal-sort-keys
     }
 
-    function renderIntoDom(element: JSX.Element) {
+    function renderIntoDom(element: React.JSX.Element) {
         const containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
         const component = ReactDOM.render<any>(element, containerElement);

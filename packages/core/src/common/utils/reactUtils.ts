@@ -38,7 +38,9 @@ export function isReactNodeEmpty(node?: React.ReactNode, skipArray = false): boo
  *
  * @internal
  */
-export function isReactChildrenElementOrElements(children: React.ReactNode): children is JSX.Element[] | JSX.Element {
+export function isReactChildrenElementOrElements(
+    children: React.ReactNode,
+): children is React.JSX.Element[] | React.JSX.Element {
     return !isReactNodeEmpty(children, true) && children !== true;
 }
 
@@ -47,7 +49,7 @@ export function isReactChildrenElementOrElements(children: React.ReactNode): chi
  * `React.Fragment` (React 16.3+) is wrapped in given tag name; empty strings
  * and booleans are discarded.
  */
-export function ensureElement(child: React.ReactNode | undefined, tagName: keyof JSX.IntrinsicElements = "span") {
+export function ensureElement(child: React.ReactNode | undefined, tagName: keyof React.JSX.IntrinsicElements = "span") {
     if (child == null || typeof child === "boolean") {
         return undefined;
     } else if (typeof child === "string") {

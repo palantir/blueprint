@@ -852,7 +852,7 @@ describe("<DatePicker3>", () => {
         });
     });
 
-    function wrap(datepicker: JSX.Element) {
+    function wrap(datepicker: React.JSX.Element) {
         const wrapper = mount<DatePicker3Props, DatePicker3State>(datepicker, { attachTo: testsContainerElement });
         datePicker3Wrapper = wrapper;
         return {

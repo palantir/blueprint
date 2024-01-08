@@ -37,7 +37,7 @@ describe("Suggest", () => {
     let handlers: {
         inputValueRenderer: sinon.SinonSpy<[Film], string>;
         itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
-        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], React.JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
     let testsContainerElement: HTMLElement | undefined;

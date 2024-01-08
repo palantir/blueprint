@@ -35,7 +35,7 @@ import { Icon } from "../icon/icon";
 
 import { normalizeKeyCombo } from "./hotkeyParser";
 
-const KEY_ICONS: Record<string, { icon: JSX.Element; iconTitle: string }> = {
+const KEY_ICONS: Record<string, { icon: React.JSX.Element; iconTitle: string }> = {
     ArrowDown: { icon: <ArrowDown />, iconTitle: "Down key" },
     ArrowLeft: { icon: <ArrowLeft />, iconTitle: "Left key" },
     ArrowRight: { icon: <ArrowRight />, iconTitle: "Right key" },

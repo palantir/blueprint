@@ -84,7 +84,7 @@ export class Toast extends AbstractPureComponent<ToastProps> {
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Toast`;
 
-    public render(): JSX.Element {
+    public render(): React.JSX.Element {
         const { className, icon, intent, message, isCloseButtonShown } = this.props;
         return (
             <div

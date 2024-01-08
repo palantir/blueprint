@@ -316,7 +316,7 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
         );
     }
 
-    private getContents(index: number): JSX.Element {
+    private getContents(index: number): React.JSX.Element {
         return [
             <div key="text">
                 <H5>Confirm deletion</H5>

@@ -239,7 +239,7 @@ export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps
         // Popover<TProps, "click" | "hover">. Instead of discriminating, we union the different possible event handlers
         // that may be passed (they are all optional properties anyway).
         props: PopoverTargetProps & PopoverHoverTargetHandlers<TProps> & PopoverClickTargetHandlers<TProps>,
-    ) => JSX.Element;
+    ) => React.JSX.Element;
 
     /**
      * A root boundary element supplied to the "flip" and "preventOverflow" modifiers.
@@ -297,7 +297,7 @@ export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps
      *
      * @default "span" ("div" if `fill={true}`)
      */
-    targetTagName?: keyof JSX.IntrinsicElements;
+    targetTagName?: keyof React.JSX.IntrinsicElements;
 
     /**
      * HTML props for the target element. This is useful in some cases where you

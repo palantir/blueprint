@@ -65,7 +65,7 @@ export interface TreeNodeInfo<T = {}> {
     /**
      * The main label for the node.
      */
-    label: string | JSX.Element;
+    label: string | React.JSX.Element;
 
     /**
      * A secondary label/component that is displayed at the right side of the node.

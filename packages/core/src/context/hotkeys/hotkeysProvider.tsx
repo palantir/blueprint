@@ -96,7 +96,7 @@ export interface HotkeysProviderProps {
     dialogProps?: Partial<Omit<HotkeysDialogProps, "hotkeys">>;
 
     /** If provided, this dialog render function will be used in place of the default implementation. */
-    renderDialog?: (state: HotkeysContextState, contextActions: { handleDialogClose: () => void }) => JSX.Element;
+    renderDialog?: (state: HotkeysContextState, contextActions: { handleDialogClose: () => void }) => React.JSX.Element;
 
     /** If provided, we will use this context instance instead of generating our own. */
     value?: HotkeysContextInstance;

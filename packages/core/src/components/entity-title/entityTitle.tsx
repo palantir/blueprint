@@ -58,10 +58,10 @@ export interface EntityTitleProps extends Props {
     loading?: boolean;
 
     /** The content to render below the title. Defaults to render muted text. */
-    subtitle?: JSX.Element | string;
+    subtitle?: React.JSX.Element | string;
 
     /** The primary title to render. */
-    title: JSX.Element | string;
+    title: React.JSX.Element | string;
 
     /** If specified, the title will be wrapped in an anchor with this URL. */
     titleURL?: string;

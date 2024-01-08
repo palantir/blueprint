@@ -48,7 +48,7 @@ export interface PanelView2Props<T extends Panel<object>> {
 
 interface PanelView2Component {
     // eslint-disable-next-line @typescript-eslint/ban-types
-    <T extends Panel<object>>(props: PanelView2Props<T>): JSX.Element | null;
+    <T extends Panel<object>>(props: PanelView2Props<T>): React.JSX.Element | null;
     displayName: string;
 }
 
@@ -81,7 +81,7 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>({
             />
         );
 
-    // `panel.renderPanel` is simply a function that returns a JSX.Element. It may be an FC which
+    // `panel.renderPanel` is simply a function that returns a React.JSX.Element. It may be an FC which
     // uses hooks. In order to avoid React errors due to inconsistent hook calls, we must encapsulate
     // those hooks with their own lifecycle through a very simple wrapper component.
     const PanelWrapper: React.FC = React.useMemo(

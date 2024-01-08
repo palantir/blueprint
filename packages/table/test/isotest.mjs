@@ -14,11 +14,12 @@
  */
 
 // @ts-check
-require("@blueprintjs/test-commons/bootstrap");
 
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
+import "@blueprintjs/test-commons/bootstrap";
 
-const Table = require("../lib/cjs");
+import { generateIsomorphicTests } from "@blueprintjs/test-commons";
+
+import Table from "../lib/cjs/index.js";
 
 describe("Table isomorphic rendering", () => {
     generateIsomorphicTests(

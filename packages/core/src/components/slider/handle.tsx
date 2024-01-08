@@ -29,7 +29,7 @@ import { formatPercentage } from "./sliderUtils";
  */
 export interface InternalHandleProps extends HandleProps {
     disabled?: boolean;
-    label: JSX.Element | string | undefined;
+    label: React.JSX.Element | string | undefined;
     max: number;
     min: number;
     stepSize: number;

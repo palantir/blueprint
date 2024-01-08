@@ -31,7 +31,7 @@ export type SVGIconContainerProps<T extends Element> = Omit<SVGIconProps<T>, "ch
     /**
      * Icon contents, loaded via `IconLoader` and specified as `<path>` elements.
      */
-    children: JSX.Element | JSX.Element[];
+    children: React.JSX.Element | React.JSX.Element[];
 };
 
 /**

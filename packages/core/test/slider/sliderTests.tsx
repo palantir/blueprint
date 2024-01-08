@@ -97,7 +97,7 @@ describe("<Slider>", () => {
         assert.isTrue(eventSpy.notCalled);
     });
 
-    function renderSlider(slider: JSX.Element) {
+    function renderSlider(slider: React.JSX.Element) {
         return mount(slider, { attachTo: testsContainerElement });
     }
 });

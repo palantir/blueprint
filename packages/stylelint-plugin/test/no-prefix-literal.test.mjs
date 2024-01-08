@@ -13,11 +13,11 @@
  * limitations under the License.
  */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { expect } = require("chai");
-const fs = require("fs");
-const path = require("path");
-const stylelint = require("stylelint");
+import { expect } from "chai";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import stylelint from "stylelint";
 
 const config = {
     customSyntax: "postcss-scss",
@@ -127,6 +127,7 @@ describe("no-prefix-literal", () => {
     it("Accepts a valid secondary config", async () => {
         const result = await stylelint.lint({
             files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
+            customSyntax: "postcss-scss",
             config: {
                 plugins: ["@blueprintjs/stylelint-plugin"],
                 rules: {
@@ -143,6 +144,7 @@ describe("no-prefix-literal", () => {
     it("Rejects an invalid secondary config", async () => {
         const result = await stylelint.lint({
             files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
+            customSyntax: "postcss-scss",
             config: {
                 plugins: ["@blueprintjs/stylelint-plugin"],
                 rules: {
@@ -170,7 +172,8 @@ describe("no-prefix-literal", () => {
     });
 
     describe("auto-fixer", () => {
-        const tmpDir = path.join(__dirname, "tmp");
+        const testDir = path.dirname(fileURLToPath(import.meta.url));
+        const tmpDir = path.join(testDir, "tmp");
 
         before(() => {
             fs.mkdirSync(tmpDir);
@@ -182,7 +185,7 @@ describe("no-prefix-literal", () => {
         it("Replaces selector text properly", async () => {
             const fixtureFilename = "contains-bp3.scss";
             // path to the fixture we want to test
-            const fixturePath = path.join(__dirname, "fixtures/no-prefix-literal", fixtureFilename);
+            const fixturePath = path.join(testDir, "fixtures", "no-prefix-literal", fixtureFilename);
             // path to a copy of the fixture which we can allow stylelint to mutate
             const mutableFixturePath = path.join(tmpDir, fixtureFilename);
             fs.copyFileSync(fixturePath, mutableFixturePath);

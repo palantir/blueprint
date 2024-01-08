@@ -86,7 +86,7 @@ describe("<Icon>", () => {
 
     it("icon element passes through unchanged", async () => {
         // NOTE: This is supported to simplify usage of this component in other
-        // Blueprint components which accept `icon?: IconName | JSX.Element`.
+        // Blueprint components which accept `icon?: IconName | React.JSX.Element`.
         const onClick = () => true;
         const wrapper = mount(<Icon icon={<article onClick={onClick} />} />);
         wrapper.update();

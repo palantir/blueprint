@@ -30,7 +30,7 @@ export interface NavMenuProps extends Props {
     level: number;
     onItemClick: (reference: string) => void;
     items: Array<PageNode | HeadingNode>;
-    renderNavMenuItem?: (props: NavMenuItemProps) => JSX.Element;
+    renderNavMenuItem?: (props: NavMenuItemProps) => React.JSX.Element;
 }
 
 export const NavMenu: React.FunctionComponent<NavMenuProps> = props => {

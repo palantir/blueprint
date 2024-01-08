@@ -37,7 +37,7 @@ export interface Offset {
 interface ContextMenuLegacyState {
     isOpen: boolean;
     isDarkTheme: boolean;
-    menu?: JSX.Element;
+    menu?: React.JSX.Element;
     offset?: Offset;
     onClose?: () => void;
 }
@@ -90,7 +90,7 @@ class ContextMenuLegacy extends AbstractPureComponent<ContextMenuLegacyProps, Co
         );
     }
 
-    public show(menu: JSX.Element, offset: Offset, onClose?: () => void, isDarkTheme = false) {
+    public show(menu: React.JSX.Element, offset: Offset, onClose?: () => void, isDarkTheme = false) {
         this.setState({ isOpen: true, menu, offset, onClose, isDarkTheme });
     }
 
@@ -136,7 +136,7 @@ let contextMenu: ContextMenuLegacy | undefined;
  *
  * @deprecated use ContextMenu2
  */
-export function show(menu: JSX.Element, offset: Offset, onClose?: () => void, isDarkTheme?: boolean) {
+export function show(menu: React.JSX.Element, offset: Offset, onClose?: () => void, isDarkTheme?: boolean) {
     if (contextMenuElement === undefined) {
         contextMenuElement = document.createElement("div");
         contextMenuElement.classList.add(Classes.CONTEXT_MENU);

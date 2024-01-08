@@ -34,7 +34,7 @@
         "lint-fix": "es-lint --fix && sass-lint --fix",
         "test": "run-s test:typeCheck test:iso test:karma",
         "test:typeCheck": "tsc -p ./test",
-        "test:iso": "mocha test/isotest.js",
+        "test:iso": "mocha test/isotest.mjs",
         "test:karma": "karma start",
         "test:karma:debug": "karma start --single-run=false --reporters=helpful --debug",
         "verify": "npm-run-all compile -p dist test lint"
@@ -51,7 +51,7 @@
         "tslib": "~2.6.2"
     },
     "peerDependencies": {
-        "@types/react": "^16.14.32 || 17",
+        "@types/react": "^16.14.41 || 17",
         "react": "^16.8 || 17",
         "react-dom": "^16.8 || 17"
     },
@@ -65,7 +65,7 @@
         "@blueprintjs/karma-build-scripts": "workspace:^",
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
-        "@types/lodash": "~4.14.201",
+        "@types/lodash": "~4.14.202",
         "enzyme": "^3.11.0",
         "karma": "^6.4.2",
         "mocha": "^10.2.0",

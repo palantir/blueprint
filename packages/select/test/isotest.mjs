@@ -14,11 +14,12 @@
  */
 
 // @ts-check
-require("@blueprintjs/test-commons/bootstrap");
 
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
+import "@blueprintjs/test-commons/bootstrap";
 
-const Select = require("../lib/cjs");
+import { generateIsomorphicTests } from "@blueprintjs/test-commons";
+
+import Select from "../lib/cjs/index.js";
 
 describe("Select isomorphic rendering", () => {
     generateIsomorphicTests(Select, {

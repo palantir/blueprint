@@ -31,7 +31,7 @@ describe("<Drawer>", () => {
      * Mount the `content` into `testsContainerElement` and assign to local `wrapper` variable.
      * Use this method in this suite instead of Enzyme's `mount` method.
      */
-    function mountDrawer(content: JSX.Element) {
+    function mountDrawer(content: React.JSX.Element) {
         drawer = mount(content, { attachTo: testsContainerElement });
         isMounted = true;
         return drawer;
@@ -260,7 +260,7 @@ describe("<Drawer>", () => {
 
     // everything else about Drawer is tested by Overlay
 
-    function createDrawerContents(): JSX.Element[] {
+    function createDrawerContents(): React.JSX.Element[] {
         return [
             <div className={Classes.DRAWER_BODY} key={1}>
                 <p>

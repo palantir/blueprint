@@ -943,7 +943,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
     }
 
     private wrapDisabledControlWithTooltip(
-        element: JSX.Element,
+        element: React.JSX.Element,
         prereqStateKey: keyof MutableTableState,
         prereqStateKeyValue: any,
     ) {

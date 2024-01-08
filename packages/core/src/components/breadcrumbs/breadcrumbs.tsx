@@ -33,7 +33,7 @@ export interface BreadcrumbsProps extends Props {
      *
      * @default Breadcrumb
      */
-    breadcrumbRenderer?: (props: BreadcrumbProps) => JSX.Element;
+    breadcrumbRenderer?: (props: BreadcrumbProps) => React.JSX.Element;
 
     /**
      * Which direction the breadcrumbs should collapse from: start or end.
@@ -49,7 +49,7 @@ export interface BreadcrumbsProps extends Props {
      * If this prop is omitted, `breadcrumbRenderer` will be invoked for the
      * current breadcrumb instead.
      */
-    currentBreadcrumbRenderer?: (props: BreadcrumbProps) => JSX.Element;
+    currentBreadcrumbRenderer?: (props: BreadcrumbProps) => React.JSX.Element;
 
     /**
      * All breadcrumbs to display. Breadcrumbs that do not fit in the container

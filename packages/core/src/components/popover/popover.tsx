@@ -77,7 +77,7 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
     /**
      * The content displayed inside the popover.
      */
-    content?: string | JSX.Element;
+    content?: string | React.JSX.Element;
 
     /**
      * The kind of interaction that triggers the display of the popover.
@@ -400,7 +400,7 @@ export class Popover<
             [Classes.FILL]: fill,
         };
 
-        let target: JSX.Element | undefined;
+        let target: React.JSX.Element | undefined;
 
         if (renderTarget !== undefined) {
             target = renderTarget({
@@ -419,7 +419,7 @@ export class Popover<
                 return null;
             }
 
-            const clonedTarget: JSX.Element = React.cloneElement(childTarget, {
+            const clonedTarget: React.JSX.Element = React.cloneElement(childTarget, {
                 ...childTargetProps,
                 className: classNames(childTarget.props.className, targetModifierClasses),
                 // force disable single Tooltip child when popover is open

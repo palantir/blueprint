@@ -49,7 +49,7 @@ export interface TabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "on
      * Panel content, rendered by the parent `Tabs` when this tab is active.
      * If omitted, no panel will be rendered for this tab.
      */
-    panel?: JSX.Element;
+    panel?: React.JSX.Element;
 
     /**
      * Space-delimited string of class names applied to tab panel container.

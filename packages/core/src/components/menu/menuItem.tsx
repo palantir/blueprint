@@ -153,7 +153,7 @@ export interface MenuItemProps
      *
      * @default "a"
      */
-    tagName?: keyof JSX.IntrinsicElements;
+    tagName?: keyof React.JSX.IntrinsicElements;
 
     /**
      * A space-delimited list of class names to pass along to the text wrapper element.

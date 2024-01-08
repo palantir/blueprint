@@ -93,7 +93,7 @@ export interface OverflowListProps<T> extends Props {
      *
      * @default "div"
      */
-    tagName?: keyof JSX.IntrinsicElements;
+    tagName?: keyof React.JSX.IntrinsicElements;
 
     /**
      * Callback invoked to render each visible item.

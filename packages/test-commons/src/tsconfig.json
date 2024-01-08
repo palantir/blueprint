@@ -1,9 +1,7 @@
 {
-    "extends": "../../../config/tsconfig.web",
+    "extends": "../../../config/tsconfig.node",
     "compilerOptions": {
-        "lib": ["dom", "es5", "es6", "es2016.array.include"],
-        "module": "commonjs",
-        "outDir": "../lib/cjs",
-        "verbatimModuleSyntax": false
+        "lib": ["dom", "es5", "es6", "es2016", "es2017", "es2018"],
+        "outDir": "../lib"
     }
 }
