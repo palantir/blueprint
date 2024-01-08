@@ -66,7 +66,7 @@
         "yarn-deduplicate": "^6.0.2"
     },
     "resolutions": {
-        "@types/react": "16.14.32"
+        "@types/react": "16.14.55"
     },
     "engines": {
         "node": ">=20.10"
