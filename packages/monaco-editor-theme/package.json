@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/monaco-editor-theme",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "description": "Blueprint theme for monaco-editor",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
