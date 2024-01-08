@@ -59,7 +59,7 @@
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
-        "@twbs/fantasticon": "^2.7.1",
+        "@twbs/fantasticon": "^2.7.2",
         "@types/handlebars": "^4.1.0",
         "enzyme": "^3.11.0",
         "handlebars": "^4.7.8",

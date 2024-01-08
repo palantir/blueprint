@@ -6,7 +6,7 @@
 
 import { dirname, join, resolve } from "node:path";
 import { cwd } from "node:process";
-import { pkgUpSync } from "pkg-up";
+import { packageUpSync } from "package-up";
 
 const packageJsonPath = pkgUpSync({ cwd: cwd() });
 if (packageJsonPath === undefined) {

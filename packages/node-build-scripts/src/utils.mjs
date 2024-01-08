@@ -19,7 +19,7 @@
 import { basename, dirname, join, resolve } from "node:path";
 import { cwd, env } from "node:process";
 import { fileURLToPath } from "node:url";
-import { pkgUpSync } from "pkg-up";
+import { packageUpSync } from "package-up";
 
 /**
  * @param {string} dirName name of directory containing XML file.
